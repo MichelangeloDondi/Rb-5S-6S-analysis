@@ -72,6 +72,25 @@ SKIP = {"laser_epoch.csv", "qc_metrics.csv",
         "kernel_k4.csv", "kernel_k7.csv", "kernel_worlds.csv",
         # the fibre twin, same reason: its producer writes per-row statuses
         "fibre_twin.csv",
+        # the transit-additivity producer, same reason and one more: it mixes
+        # ENVELOPE forecast rows with DIAGNOSTIC rows that exist to be COMPARED
+        # with each other (the kernel-versus-package check and the
+        # non-Gaussian shortfall), and only the producer knows which is which.
+        # Registered in the same commit that created it, because a results CSV
+        # absent from this dict takes run_all.sh down with a KeyError that the
+        # gate cannot see.
+        "transit_additivity.csv",
+        # the two-arm twin forecast, same reason: its producer writes CALIB
+        # for solved mode quantities, ENVELOPE for forecast precisions and
+        # DIAGNOSTIC for the measured correlations, within one quantity column.
+        "campaign_twin_forecast.csv",
+        # the lever ranking: every row is a Fisher forecast about a DESIGN, and
+        # its inputs split measured from estimated, so the producer tags them.
+        "onf_lever_ranking.csv",
+        # the guided-mode tables. Rows carry their own status because a mode
+        # solve is CALIB, a profile ratio is DIAGNOSTIC and the retired
+        # transit kernel is an ARTIFACT kept so its size stays visible.
+        "guided_mode_tables.csv",
         # M28's window attribution and M29's centre Fisher, added 2026-08-24
         # and 2026-08-25 and the last two files to reach results/ without
         # entering this map, so the deliberate KeyError below was live in both

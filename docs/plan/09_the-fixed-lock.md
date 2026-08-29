@@ -1,4 +1,4 @@
-*Chapter 9 of 11 of [the plan](../PLAN.md)*
+*Chapter 9 of 12 of [the plan](../PLAN.md)*
 
 **The question.** What does a fixed lock convert, and how is the frequency axis built once positions carry meaning?
 **Takes.** The acquisition settings of chapter 7 and the record discipline of chapter 8.

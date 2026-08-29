@@ -40,12 +40,42 @@ EPS0_F_PER_M = 8.854_187_8128e-12  # vacuum permittivity, F/m. ESTABLISHED (CODA
 TAU_6S_S = 45.57e-9
 """6S1/2 lifetime, 45.57(17) ns. ESTABLISHED (Gomez et al., PRA 72, 012502 (2005))."""
 
+TAU_6S_ERR_S = 0.17e-9
+"""One sigma on TAU_6S_S, the (17) of 45.57(17) ns. ESTABLISHED, same source.
+
+WHY THIS EXISTS AS A CONSTANT AND NOT ONLY IN THE LINE ABOVE (2026-08-28).
+The uncertainty was stated in prose in the docstring and nowhere the software
+could reach, so nothing could propagate it and no reader could re-derive the
+natural width's error with this package. A number a reader is told but cannot
+reproduce fails the standing rule that every model term carries a derivation
+or a reference, an uncertainty, and a route to re-derive it here."""
+
 GAMMA_NAT_HZ = 1.0 / (2.0 * math.pi * TAU_6S_S)
 """Natural Lorentzian FWHM of the two-photon line, 3.4925 MHz on the
 TRANSITION axis (1.746 MHz if read on the laser axis). CALCULATED from
 TAU_6S_S. Note: the 6S->5P->5S cascade adds NO width to the 5S->6S resonance —
 the 6S total decay rate already includes the branch; the 5P width belongs to
 the emitted 795 nm photon (settled earlier)."""
+
+GAMMA_NAT_ERR_HZ = GAMMA_NAT_HZ * (TAU_6S_ERR_S / TAU_6S_S)
+"""One sigma on GAMMA_NAT_HZ, 13 kHz. CALCULATED from TAU_6S_ERR_S.
+
+Gamma goes as one over tau, so the FRACTIONAL uncertainty carries across
+unchanged and the propagation is a single multiplication rather than a
+derivative. On the transition axis that is 3.493 +- 0.013 MHz, which is the
+form LANGUAGE 8a.2 asks for: two significant digits on the uncertainty and the
+value matching its decimals.
+
+That line read "3.4925 +- 0.0130" until 2026-08-28, which is THREE significant
+digits on the uncertainty, in a sentence claiming compliance with the rule it
+broke. The full-precision value stays in the constant; what 8a.2 governs is
+how the pair is WRITTEN, and a docstring is writing.
+
+It is 0.37 per cent of the natural width and the natural width is about 65 per
+cent of the observed line, so this term contributes about 0.24 per cent to the
+total and is not what limits any bound here. That is the reason to carry it
+rather than the reason to omit it: a budget missing its smallest term cannot
+be checked for completeness."""
 
 TAU_5P12_S = 27.7e-9
 """5P1/2 lifetime. ESTABLISHED. Sets the ~73 ns cascade latency (matters only

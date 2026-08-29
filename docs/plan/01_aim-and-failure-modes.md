@@ -1,4 +1,4 @@
-*Chapter 1 of 11 of [the plan](../PLAN.md)*
+*Chapter 1 of 12 of [the plan](../PLAN.md)*
 
 ## 1. Aim
 

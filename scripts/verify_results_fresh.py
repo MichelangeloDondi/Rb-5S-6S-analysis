@@ -54,6 +54,12 @@ CHEAP = {
     # point of the file is that the gap it measures is graded like any number.
     "run_unregenerated_claims": ["unregenerated_claims.csv"],
     "run_kernel_identifiability": ["kernel_identifiability.csv"],
+    # a Fisher forecast over five rungs per lever, milliseconds, no traces.
+    "run_onf_lever_ranking": ["onf_lever_ranking.csv"],
+    # three closed-form tables: a root of the HE11 characteristic equation at
+    # three diameters, one quadrature of the Poynting flux, and a lookup of
+    # the transit kernel factors. Well under a second and it reads no traces.
+    "run_guided_mode_tables": ["guided_mode_tables.csv"],
     # reads two committed CSVs and does arithmetic; seconds.
     "run_kernel_budget": ["kernel_budget.csv"],
     # reads the vapour-pressure chain, the van der Waals anchor and the
@@ -107,6 +113,9 @@ EXPENSIVE = {
     # 1.7 s, but it refits 16 conditions from the raw traces, so it belongs
     # with the producers a clone without data_raw cannot run.
     "run_band_excess": ["band_excess.csv"],
+    # 24 Monte-Carlo datasets per configuration through synthetic_traces and
+    # fit_condition, about three minutes, deterministic under its fixed seed.
+    "run_campaign_twin_forecast": ["campaign_twin_forecast.csv"],
     # 2000 multi-condition fits at ~1.05 s each, about five minutes on eight
     # lanes. Deterministic despite being Monte-Carlo: every trial's seed is its
     # index, so the CSV reproduces exactly and IS checkable rather than merely
@@ -176,6 +185,13 @@ EXPENSIVE = {
 # decision rather than an omission nobody noticed. Before this registry existed,
 # 19 of 46 committed CSVs were unchecked and nothing said so.
 UNCOVERED = {
+    "transit_additivity.csv": (
+        "run_transit_additivity.py performs fifteen convolutions on a 600,000 "
+        "point grid and takes minutes, so it is not in the cheap set. It is "
+        "deterministic and depends on no raw trace, so `--all` would cover it "
+        "at that cost; it is listed here rather than there because the "
+        "quantity it computes is a property of the kernel and moves only when "
+        "rb5s6s.fibre does, which the fibre tests already guard."),
     "commit_sweep.csv": (
         "run_commit_sweep.py counts the samples the joint fit loads at each "
         "commit of a historical range, so it needs BOTH excluded-session "

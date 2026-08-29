@@ -73,7 +73,7 @@ Three separate labels recur throughout the repo and are easy to conflate:
   | M24 wing check (null) | M25 global dataset fit (both coefficients free) | M26 pilot ruler (the pilot day's own rate) | M27 centre-channel Stark |
   | M28 full dataset in one likelihood | M29 trap-design corrections at the magic crossings | M30 cavity-scan photograph, integrated |  |
   | M31 cascade populations and ground-F depletion | M32 blackbody as a campaign temperature boundary | M33 model comparison as an evidence vector | M34 the digital twin: forecast a design before building it |
-  | M35 the detection channel: which decay branch is collected, and its trapping | M36 polarisation: what ellipticity and a beam mismatch open | M37 the two-atom channel: what a pair accepts that one atom must refuse | M38 the fibre twin's forward model: a Lorentzian transit kernel that adds exactly, so only a temperature ladder separates it |
+  | M35 the detection channel: which decay branch is collected, and its trapping | M36 polarisation: what ellipticity and a beam mismatch open | M37 the two-atom channel: what a pair accepts that one atom must refuse | M38 the fibre twin's forward model: a transit kernel entering at second order, contributing a few per cent of its own width and growing as T not sqrt(T), so a temperature ladder reads it weakly |
 
 - **CI, Continuous Integration** (*not* C1): the GitHub Actions workflow that
   runs the full `pytest` battery on every push, on the minimum *and* latest
@@ -119,6 +119,7 @@ it. The frequency-axis convention above (§0) is assumed by all of them.
 | **6** | [The statistics](methods/06_the_statistics.md) | measured weights, hierarchical sharing, the σ_laser↔γ_coll degeneracy, and the pre-registered measurement-vs-bound rule |
 | **7** | [What we found](methods/07_what_we_found.md) | the 2025 dataset's results: the bounds, the nulls, and the consistency checks |
 | **8** | [Assumptions, and where this can go](methods/08_assumptions_and_outlook.md) | the load-bearing assumptions to challenge, and what a fixed-lock session would lift |
+| **9** | [The guided geometry](methods/09_the_guided_geometry.md) | the same four terms derived in an evanescent field: the guided mode solved from the fibre diameter and validated against its own boundary conditions, transit turning near-Lorentzian, the atom-surface potential, and which knobs separate them |
 
 For the project's goals, the prior art, and what each future measurement would
 add, see [BIG_PICTURE.md](BIG_PICTURE.md).
@@ -187,10 +188,14 @@ rb5s6s/   api(the supported entry point: a trace in, a linewidth out)
                       satellite at the Delta m_F = +-2 position, at 1.5e-10
                       of the single-atom rate)
           fibre(M38: the fibre twin's forward model, PROSPECTIVE. The
-                transit kernel is Lorentzian with FWHM v/(pi*Lambda), so it
-                adds exactly to every other Lorentzian term and has no
-                separate existence at one temperature. A leaf module: it
-                imports core and core never imports it)
+                transit kernel is a Maxwell-averaged SQUARED Lorentzian,
+                FWHM f*vbar/(pi*Lambda) with f spanned 0.24 to 0.44. Its
+                time function is quadratic at the origin, not linear, so it
+                enters the width at second order and contributes a fraction
+                of its own FWHM, not all of it, growing as T**0.98 and not
+                as sqrt(T). The band, and the line it was computed
+                against, are in the guided-geometry chapter. A leaf module:
+                it imports core and core never imports it)
           fitutil _compat
           (M18, M19, M29, M31, M32, M33, M34, M35, M36 and M37 are library-and-test only: they have
            no CSV product, so grepping results/ for them finds nothing -- see
@@ -206,7 +211,7 @@ scripts/  import_data (+ annotate_manifest_qc: qc_reason provenance)
           run_geometry_design (the running-wave and waist designs, whose
           weak-field branch reproduces lineshape.stark_ramp_axial_moments)
 data_raw/ MANIFEST.csv, and the 297 traces where the copy carries them
-tests/    2957-test battery (2916 fast ~5 min + 41 `slow` high-statistics
+tests/    3103-test battery (3062 fast ~5 min + 41 `slow` high-statistics
           closure tests via --runslow, incl. the M4d synthetic-β and M4e
           synthetic-κ closures, the MANIFEST qc_reason guards, and the
           docs-consistency gates: canonical numbers, links+anchors, math
@@ -230,8 +235,8 @@ The first six scripts form the pipeline (each reads the previous ones'
 
 ```bash
 python3 -m venv .venv && source .venv/bin/activate
-pip install -e ".[dev]" && pytest -q          # 2916 fast tests (~5 min)
-pytest -q --runslow                           # full 2957 incl. slow closures (what CI runs)
+pip install -e ".[dev]" && pytest -q          # 3062 fast tests (~5 min)
+pytest -q --runslow                           # full 3103 incl. slow closures (what CI runs)
 # reproduce every committed CSV, figure, and docs/RESULTS.md from data_raw/
 # (already in git; import_data.py only re-imports from the original tree):
 bash scripts/run_all.sh

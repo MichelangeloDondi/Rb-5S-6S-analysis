@@ -102,8 +102,9 @@ the current construction no longer buy that coefficient.
 ![which experimental variable breaks which degeneracy](../../figures/fig35_orthogonal_information.png)
 
 *Left, the component identified at each peak with its own likelihood-ratio
-gate. Right, why the levers differ: the homogeneous terms add exactly, so one
-condition determines only their sum, and each variable moves one term. The
+gate. Right, why the levers differ: the Lorentzian terms add exactly and the
+remaining kernels enter the width more weakly, so one condition still
+determines close to a sum, and each variable moves one term. The
 independent laser diagnostic is drawn greyed because no such measurement has
 been taken.*
 

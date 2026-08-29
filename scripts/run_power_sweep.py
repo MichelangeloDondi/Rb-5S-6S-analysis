@@ -43,6 +43,7 @@ from rb5s6s.qc import boxcar, contiguous_fwhm_ms  # noqa: E402
 from rb5s6s.linefit import fit_condition, to_frequency, transit_fwhm_at_T  # noqa: E402
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _producer_lock import take_producer_lock     # noqa: E402
 from run_beta_self import load_t_rates  # noqa: E402  (reuse bracket-rate loader)
 
 PEAKS = ("4121", "4154", "4192", "4207")
@@ -70,6 +71,7 @@ def raw_fwhm_amp(recs, rate, rate_relerr):
 
 
 def main() -> int:
+    take_producer_lock("run_power_sweep")
     rows = load_manifest()
     _, prates = load_t_rates()
 

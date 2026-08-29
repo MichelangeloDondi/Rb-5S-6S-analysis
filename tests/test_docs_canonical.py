@@ -786,8 +786,14 @@ def test_readme_diagram_labels_outcomes_by_their_actual_type():
     -- and STYLE.md says bounds stay bounds), and amplitude ~ P^2 is a
     CONFIRMED prediction -- the README's own results table says so three
     sections later. A reader who trusts the diagram would mis-state two of the
-    record's four headline outcomes."""
-    txt = (ROOT / "README.md").read_text(encoding="utf-8")
+    record's four headline outcomes.
+
+    2026-08-28: the pipeline diagram MOVED to docs/methods/06_the_statistics.md
+    when the README was cut to a four-minute read. The guard follows it. What
+    it protects is that the diagram labels an outcome by its actual type
+    wherever it lives, not that it lives on the front page."""
+    txt = (ROOT / "docs" / "methods" / "06_the_statistics.md").read_text(
+        encoding="utf-8")
     assert "→ nulls]" not in txt, (
         "the README diagram again folds distinct outcome types into 'nulls'; "
         "label each branch by what it delivers (bound / null / confirmed law)")

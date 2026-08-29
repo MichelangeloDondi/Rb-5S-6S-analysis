@@ -5576,11 +5576,15 @@ def fig_orthogonal_information():
     right panel is why one lever would settle the question and another would
     not.
 
-    THE EXACT DEGENERACY IS THE POINT OF THE RIGHT PANEL. Two Lorentzians of
-    width a and b convolve to one Lorentzian of width a + b, exactly. This is
-    not an approximation that a better fit or more signal-to-noise breaks: at
-    one condition the individual terms have no separate existence in the
-    lineshape at all. Only a variable that moves one term while leaving the
+    THE DEGENERACY IS THE POINT OF THE RIGHT PANEL. Two Lorentzians of
+    width a and b convolve to one Lorentzian of width a + b, exactly, and
+    that is not an approximation a better fit or more signal-to-noise
+    breaks. The docstring extended it to all four terms until 2026-08-28:
+    the guided transit kernel is a squared Lorentzian entering the width at
+    SECOND order (results/transit_additivity.csv), so the additivity is
+    exact for the Lorentzian pair and near-exact for the set, and at one
+    condition the terms still have no usably separate existence in the
+    lineshape. Only a variable that moves one term while leaving the
     others fixed can separate them, which is what the arrows mean.
 
     THE ABSENT ROW IS DRAWN, NOT OMITTED. The independent laser diagnostic is
@@ -5670,8 +5674,10 @@ def fig_orthogonal_information():
     # Caption text in AXES coordinates, not anchored to a data point: the
     # guard in tests/test_figure_text_stays_on_the_canvas.py caught this box
     # leaving its own axes when it was placed in data coordinates.
-    axR.text(0.5, 0.02, "these four ADD exactly, so a single condition "
-             "determines only their SUM",
+    # This label said "these four ADD exactly" until 2026-08-28, retired with
+    # the transit kernel's exact additivity (results/transit_additivity.csv).
+    axR.text(0.5, 0.02, "the Lorentzian terms add exactly, so a single "
+             "condition determines close to a sum",
              transform=axR.transAxes, ha="center", va="bottom",
              fontsize=8.0, color="#5A5750")
 

@@ -14,6 +14,30 @@ carries the rule the headline results turn on.
 > explains the measurement in six sentences, then defines every term
 > and symbol used anywhere in this repository.
 
+## 4a. The pipeline, end to end
+
+Raw traces enter on the left and the four levers leave on the right. The
+guards sit across the two levers that carry a published bound.
+
+```mermaid
+flowchart LR
+    T["297 raw traces"] --> N["measured noise law"]
+    T --> K["frequency ruler"]
+    N --> F["hierarchical<br/>lineshape fits"]
+    K --> F
+    F --> W["widths and shapes<br/>vs T, P"]
+    W --> D["density lever<br/>β_self bound"]
+    W --> P["power lever<br/>S₀ bound"]
+    W --> S["ramp asymmetry<br/>upper bound"]
+    W --> A["amplitude laws<br/>P² and density<br/>checks"]
+    G["guards<br/>model ladder<br/>identifiability<br/>coverage"] -.-> D
+    G -.-> P
+```
+
+This diagram lived on the front page and nowhere else until 2026-08-28, which
+made it the only end-to-end map of the analysis and put it on the one surface
+a reader has least time for.
+
 ## 4. The statistics, from first principles
 
 ### 4.1 Weighted least squares with *measured* weights

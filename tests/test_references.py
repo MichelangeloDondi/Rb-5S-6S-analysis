@@ -86,3 +86,50 @@ def test_the_committed_graph_is_fresh():
     assert before == after, (
         "the committed reference graph is stale: re-run "
         "scripts/check_references.py --graph and commit the result")
+
+
+def test_an_ambiguous_coordinate_is_refused_not_resolved_to_the_first_row(tmp_path):
+    """A resolver that can match several rows must refuse, not choose.
+
+    WHY THIS EXISTS. `_csv_cell` matched the first two columns and returned on
+    the FIRST hit. A release board found two live coordinates that named more
+    than one row: three cell rows shared `gamma_coll_err`, separated only by a
+    `basis` cell, and two onf rows shared `minutes_per_trace`. Neither
+    published number was wrong, because in both cases the first row happened
+    to be the one quoted -- which is the exact shape of a false pass, and the
+    reason the resolver may not choose.
+
+    THE SECOND FAILURE MODE OF A RESOLVER. A checker that merely MATCHES can
+    only fail to find. A checker that RESOLVES can find the wrong thing and
+    report success, and nobody looks for that. Ask of any resolver not only
+    whether it found something but whether it could have found more than one.
+
+    Planted here rather than against the tree because the tree now has no
+    ambiguous coordinate left: the producer gives those rows distinct
+    quantities. A guard whose only plant is a state the tree no longer holds
+    is a guard with no plant, so the fixture carries the state.
+    """
+    import importlib.util
+    spec = importlib.util.spec_from_file_location(
+        "check_references", ROOT / "scripts" / "check_references.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+
+    results = tmp_path / "results"
+    results.mkdir()
+    (results / "amb.csv").write_text(
+        "arm,quantity,value,unit,basis,status\n"
+        "cell,g_err,0.015,MHz,5 traces,ENVELOPE\n"
+        "cell,g_err,0.007,MHz,20 traces,ENVELOPE\n"
+        "cell,unique_row,1.234,MHz,only one,ENVELOPE\n")
+    mod.RESULTS = results
+
+    assert mod._csv_cell("amb", "cell", "g_err") is mod.AMBIGUOUS, (
+        "a coordinate naming two rows must be refused; returning the first "
+        "row silently validates prose against a value it may not mean")
+    assert mod._csv_cell("amb", "cell", "unique_row") == "1.234", (
+        "the false-positive direction: a unique coordinate must still resolve"
+    )
+    assert mod._csv_cell("amb", "cell", "absent") is None, (
+        "a coordinate naming no row is DANGLING, which is a different "
+        "finding from AMBIGUOUS and must stay distinguishable")

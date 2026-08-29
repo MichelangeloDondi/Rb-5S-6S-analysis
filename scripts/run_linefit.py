@@ -32,6 +32,7 @@ from pathlib import Path
 import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from _producer_lock import take_producer_lock     # noqa: E402
 from rb5s6s import config as C  # noqa: E402
 from rb5s6s.constants import GAMMA_NAT_HZ, TOOTH_SPACING_LASER_HZ  # noqa: E402
 from rb5s6s.ingest import load_manifest, load_trace, trace_path  # noqa: E402
@@ -102,6 +103,7 @@ def condition_rate(role, peak, T, trate, prate):
 
 
 def main() -> int:
+    take_producer_lock("run_linefit")
     rows = load_manifest()
     trate, prate = load_block_rates()
     # Sibling outliers are removed from the condition fits: a trace whose own

@@ -77,6 +77,7 @@ from scipy.optimize import least_squares
 REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO))
 sys.path.insert(0, str(REPO / "scripts"))
+from _producer_lock import take_producer_lock     # noqa: E402
 
 from rb5s6s import config as C  # noqa: E402
 from rb5s6s.density import number_density_cm3  # noqa: E402
@@ -176,6 +177,7 @@ def wmean(pairs):
 
 
 def main() -> int:
+    take_producer_lock("run_wing_check")
     rows = load_manifest()
     _, prates = load_t_rates()
     out_rows = []

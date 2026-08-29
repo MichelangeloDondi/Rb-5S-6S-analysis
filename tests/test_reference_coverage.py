@@ -16,6 +16,29 @@ inside a reference link's text. Integers are not counted, which spares
 dates and counts and misses integer-valued claims; a paraphrase carries no
 token at all. Both misses are recorded in the design note rather than
 discovered later.
+
+2026-08-28, a SECOND re-seed the same day, and the first one was wrong in the
+direction that matters. README.md was re-seeded UPWARD, 62 to 68, describing a
+state of the file that no longer existed: the same commit cut the page from
+6,101 words to 1,339 and its real count is 10. The seed was left 6.8 times
+looser than the tree, which is 58 unreferenced decimals of silent headroom on
+the one page a reader meets first.
+
+A ratchet seeded above reality has stopped ratcheting. It is now seeded at the
+measured counts, and `test_the_baseline_is_not_looser_than_reality` below makes
+the failure impossible to repeat, which is the test both sibling ratchets
+written the same night already carried and this one did not.
+
+2026-08-28, a third time and a FALL, caught by the anti-slack test added six
+hours earlier in this same file. The board of record found that methods/09
+cited fibre_twin.csv at coverage values the transit-kernel correction in
+this same wave had already replaced. Referencing the four of them properly, instead of
+restating them, took the chapter below its seed and the new test refused the
+slack. That is the guard doing on its first working day exactly what it was
+written for.
+
+
+RE-SEEDED 2026-08-29, and the reason each file moved. `docs/history/09` rose because a correction entry landed and a history table's `was` column names values with no live row to cite. `docs/big_picture/09` rose because the fibre payback gained the operating point it was quoted without, which is three derived numbers. `docs/notes/onf_candidate.md` rose by one, the spectroscopy power a board found stated ten times too high. `docs/big_picture/06` FELL, from a drafting narrative cut out of a reader table. RE-SEEDED AGAIN THE SAME DAY, after a release board found the CSV retracting a claim five prose surfaces still asserted: `docs/notes/onf_candidate.md` rose 47 to 48 when the atom-surface term was propagated into that page's budget equation. The two shift values it quotes carry `ref:` tags; the committed 3.49 MHz natural width beside them is stated rather than cited, and that is the decimal that moved.
 """
 from __future__ import annotations
 
@@ -25,6 +48,74 @@ import subprocess
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+
+# THE RE-SEED LOG LIVES HERE AND IT IS NOT THE PROJECT'S HISTORY.
+# LANGUAGE 19.16a confines history to one file, and a board seat was right
+# that this preamble had grown into a second one: it reached 1,393 words of
+# dated entries. A re-seed's REASON has to sit where the re-seed happens, or
+# the ratchet stops being legible, so the recent reasons stay. The older ones
+# are compressed to their outcome, and the full account of every move is the
+# git history of _reference_coverage_baseline.json, which is the primary.
+#
+# Moves before 2026-08-29, in one line each: README re-seeded UPWARD once and
+# left 6.8x looser than the tree, which is a ratchet that has stopped
+# ratcheting and is why test_the_baseline_is_not_looser_than_reality exists;
+# methods/09 entered at its full count as a new chapter; several chapters rose
+# as corrections added figures no committed row holds; onf_candidate fell twice
+# as typed values became citations. The ordinals in those entries reused
+# TENTH and ELEVENTH for two dates each, which is why entries are dated now.
+
+# Re-seeded 2026-08-29, after the final board. Two entries moved and both fell:
+#   docs/history/09 30 -> 28, because the lever table's two hand-typed values
+#   (30.6 where the CSV says 30.7, and 186 per cent where 1.851 is 185.1) now
+#   carry ref: tags, so they leave the undeclared set and can no longer drift.
+#   docs/methods/09 47 -> 45, because a dated correction narrative moved to a
+#   citation of the history chapter, which is where LANGUAGE 19.16a puts it.
+# Both are the ratchet's intended traffic: a typed value became a citation.
+#
+# Re-seeded 2026-08-29, late. Exactly one entry moved and it fell:
+#   docs/history/09_the-guided-geometry.md 36 -> 30. Its new hot-transit entry
+#   ran 318 words and H3 caps an entry at 150, so it was cut to the four facts
+#   the rule names: the quantity, what it was, what it is now with its file,
+#   and the cause in one clause. Six undeclared decimals left with the
+#   reasoning. **The reasoning did not vanish**: the producer comment carries
+#   why the two errors cancel, and the plan carries the lesson. That is H3's
+#   own division of labour, and the fall is what obeying it looks like.
+# Diffed entry by entry against the previous baseline before this was written.
+#
+# Re-seeded 2026-08-29, earlier the same day, and both moves are FALLS, which is
+# the direction this ratchet exists to allow. Diffed against the previous
+# baseline entry by entry before the reason was written, which is what the
+# operational lesson below demands and what the sixth re-seed did not do:
+#   docs/big_picture/06_next-nanofibre.md 24 -> 21. Its mode table carried
+#   three effective indices and three decay lengths as bare numbers; the
+#   three decimals now carry ref: tags into results/guided_mode_tables.csv,
+#   so they leave the undeclared set. The integers were never in it.
+#   docs/methods/09_the_guided_geometry.md 47 -> 46. One bare 0.156, ten
+#   lines from its own tagged twin in the table below it, now carries the
+#   tag as well.
+# Exactly two entries moved and no entry rose. That matters more than usual
+# here, because the run that found these falls also found that a guard's
+# blind region is what a board cannot see: the tag is the only mechanism in
+# this tree that catches a number which never matched its cell, so widening
+# the tagged set is the counter, and this ratchet is how the widening is
+# measured.
+#
+# Re-seeded 2026-08-29, first of the day, and THE ACCOUNT WRITTEN HERE FOR IT
+# WAS WRONG. It said docs/history/09_the-guided-geometry.md rose 24 to 25
+# "from the entry recording that the fused-silica index carried the 852 nm
+# value". A seat re-ran this module's own strip-and-count over that file at
+# the base, at the mode-solve commit and at HEAD, and got 25 at all three:
+# FLAT, not a rise. The cited sentence is byte-identical across the range and
+# contributes zero decimal tokens anyway, because its figures sit inside
+# backticks and the strip pattern removes them.
+#
+# THE OPERATIONAL LESSON, and it is the reason this is written down rather
+# than fixed silently: a blanket re-seed accepts every rise in one command,
+# and the convention that a re-seed carries its dated reason does not say
+# "the ones you noticed". Diff the baseline against HEAD after re-seeding
+# and account for every entry that rose.
+
 BASELINE = Path(__file__).with_name("_reference_coverage_baseline.json")
 
 _STRIP = re.compile(
@@ -75,7 +166,7 @@ def _counts() -> dict[str, int]:
     #
     # Re-seeded a FOURTH time, and this note is retrospective: that re-seed
     # landed with no reason at all, the first in the file's history to do
-    # so, and a board seat caught it. Recorded now because the
+    # so, and it was caught. Recorded now because the
     # convention three paragraphs up is the whole reason the ratchet keeps
     # falling, and a re-seed that skips it is the failure the convention
     # exists to prevent. Most of that seed was a FALL and needed no defence:
@@ -105,7 +196,7 @@ def _counts() -> dict[str, int]:
     # docs/history/01 and its index row in docs/HISTORY.md gained a lineage
     # table with twelve was-and-now pairs, the night the collisional-shift
     # entry was re-read seat by seat. Counted, not estimated: a first draft of
-    # this comment said eleven and a board seat counted the rows. A history table is the one place in
+    # this comment said eleven and the rows were counted. A history table is the one place in
     # this repository a replaced number is licensed to appear, which is the
     # same argument the third re-seed made for the eight chapters, and the
     # figures in it are was-and-now pairs, so the replaced halves are
@@ -254,6 +345,79 @@ def _counts() -> dict[str, int]:
     # Delta_chi2 ranges, and the four arms. The same board caught a note this
     # wave had itself introduced, which copied the joint fit's finding into
     # the full-archive producer where zero of four sit below threshold.
+    #
+    # Re-seeded a SIXTEENTH time, 2026-08-27, and this one carries a
+    # correction of its own. The baseline moved 62 to 65 earlier the same night with
+    # NO paragraph here at all, which is the one thing this convention exists
+    # to prevent, and it was caught. The re-seed was also wrong: the
+    # true count was 72, so an under-seeded baseline sat in the index looking
+    # deliberate.
+    #
+    # What the rise actually buys, now that the file has been cut from 6612
+    # words back to its budget. README gained a nanofibre block whose numbers
+    # are the first two-arm campaign forecast this record has run through the
+    # twin: the collisional-against-Gaussian correlation at -0.941 and -0.913
+    # on the cell against -0.941 on the fibre, the collisional width falling
+    # from 0.19-0.93 MHz to 178 Hz at MOT density, and about 69 minutes per
+    # trace to match the cell's per-trace precision at 25 to 40 counts per ms.
+    # Each is computed by scripts/run_campaign_twin_forecast.py into
+    # results/campaign_twin_forecast.csv, which the same block names one line
+    # above them, so they are traceable by file even where the inline ref
+    # syntax does not reach a table cell. The paid-for subtraction is real:
+    # three duplicated retellings, two paragraph-in-cell table rows, a
+    # 343-word caption and a stale nav claim came out to fit them.
+    #
+    # Re-seeded a SEVENTEENTH time, 2026-08-27, same wave and same night as
+    # the sixteenth, and this one is three decimals for a physics repair. The
+    # mode solve replaced the assumed neff_band in results/onf_candidate.csv
+    # and moved twenty of its rows, so docs/big_picture/06_next-nanofibre.md
+    # and docs/wiki/guided-atoms-and-nanofibres.md now carry the solved
+    # effective mode area of 1.98 um^2 in place of an assumed 0.50, the
+    # computed transit band 105 to 141 kHz in place of a hardcoded 98 to 181,
+    # and the intensity decay length beside the amplitude one because the
+    # producer had been returning one while labelled the other. Each replaces
+    # a WRONG number with a right one and each is a row of the CSV those
+    # sections name. The rise is three and the physics it corrects was a
+    # factor of four in every guided intensity.
+    #
+    # Re-seeded a TENTH time, 2026-08-28, and it moves in BOTH directions,
+    # which is why it is recorded rather than waved through. THREE FILES FELL
+    # and that is the point of the wave: a board found correction narration
+    # sitting outside docs/HISTORY.md on the two chapters written to carry
+    # this work to a hiring reader and to the group whose fibre it is, which
+    # is the register STYLE.md bans and which reads as advocacy. Cutting it
+    # took docs/big_picture/06 from 22 to 20, docs/big_picture/09 from 12 to
+    # 11, and docs/wiki/guided-atoms-and-nanofibres.md from 9 to 5, because
+    # the narrated numbers were retired values that no `results/` row holds
+    # and none could be referenced.
+    #
+    # THREE FILES ROSE and the reason is the other half of the same repair.
+    # docs/HISTORY.md gained seven, which is where those retired values went:
+    # this file is the one surface licensed to print a value the record no
+    # longer believes, and a retired number is unreferenceable BY DEFINITION,
+    # since the row that would hold it is the row that was replaced.
+    # docs/methods/09 gained two, 1.554 and 1.811, the two levers inside the
+    # transit kernel factor: a seat showed the 0.6436 is the envelope's
+    # two-sidedness and not the squared-magnitude rule, so the chapter now
+    # names sidedness and weighting as separate assumptions and states both
+    # sizes. docs/notes/onf_candidate.md gained one from the same correction.
+    #
+    # Re-seeded an ELEVENTH time, 2026-08-28, for the ninth board round, and it
+    # moves in both directions again. THREE FELL. docs/HISTORY.md 161 to 158,
+    # because the guided-geometry section was rewritten against HEAD: three of
+    # its six rows retired values that were never committed, which is
+    # intra-wave churn and not history, and the row for a CSV absent from HEAD
+    # entirely was deleted. docs/big_picture/06 20 to 17 and docs/methods/09 45
+    # to 43, because the additivity correction replaced a narrated sequence of
+    # retired precisions with one statement of the mechanism.
+    #
+    # ONE ROSE. docs/notes/onf_candidate.md gained two, the fraction 0.04 to
+    # 0.09 and the exponent 0.98, which are the size and the temperature
+    # scaling of the transit kernel's second-order entry into the width.
+    # NEITHER CAN TAKE A `ref:` LINK, because neither is a committed row: they
+    # are properties of the kernel measured by convolution, and no producer
+    # emits them. That is a real gap, it is the reason this file's count rose,
+    # and it is named here instead of worked around.
     counts: dict[str, int] = {}
     for rel in _tracked_markdown():
         path = ROOT / rel
@@ -285,3 +449,25 @@ if __name__ == "__main__":
         BASELINE.write_text(json.dumps(_counts(), indent=1, sort_keys=True)
                             + "\n")
         print(f"reseeded {BASELINE.name} over {len(_counts())} files")
+
+
+def test_the_baseline_is_not_looser_than_reality():
+    """A seed above the real count is headroom, and headroom is not a ratchet.
+
+    Its two siblings, the reader-surface budget and the uncertainty gap, have
+    carried this check since they were written. This one did not, and on
+    2026-08-28 it let README.md sit at a seed of 68 against a real count of 10
+    after the page was cut by four fifths. The guard reported green over the
+    whole of that gap.
+    """
+    seeded = json.loads(BASELINE.read_text())
+    now = _counts()
+    slack = {f: (seeded[f], now[f]) for f in now
+             if f in seeded and now[f] < seeded[f]}
+    assert not slack, (
+        "the baseline is looser than the tree for "
+        f"{len(slack)} file(s), so the ratchet has stopped falling: "
+        + ", ".join(f"{f} seeded {a} actual {b}" for f, (a, b) in
+                    sorted(slack.items())[:6])
+        + ".\n  Re-seed with python tests/test_reference_coverage.py --reseed "
+          "and say in the docstring why each fell.")

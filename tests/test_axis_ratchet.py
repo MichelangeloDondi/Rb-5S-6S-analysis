@@ -23,6 +23,12 @@ both photons, so a width on the laser axis is half the same width on the
 transition axis, and a reader who cannot tell which one a row means cannot use
 the number at all.
 
+RE-RECORDED 2026-08-29, onf_candidate.csv 17 to 16, and the entry that left
+is the hot transit row. It was rebuilt on the direct form and its note now
+names the axis it is on, TRANSITION AXIS, in the same sentence as its value,
+where the old note gave the scaling story and no axis at all. One row moved
+and no row rose, diffed against the previous baseline rather than counted.
+
 LOWERING THE NUMBERS IS THE WORK. Add the axis to a row's note, then re-record
 with `python tests/test_axis_ratchet.py --relax`.
 """

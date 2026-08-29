@@ -3,9 +3,10 @@
 
 WHY THIS IS NOT A RANKING. An earlier framing scored three candidate levers
 against each other and picked a winner. That framing is wrong about the
-problem. Spectroscopy measures the INTEGRATED homogeneous response, and the
-components of that response add exactly, so no single lever recovers the
-budget: each supplies one coordinate while the others are held fixed. They are
+problem. Spectroscopy measures the INTEGRATED homogeneous response. Its Lorentzian
+components add exactly, its remaining kernels enter more weakly, and no
+single lever recovers the budget: each supplies one coordinate while the
+others are held fixed (results/transit_additivity.csv has the kernel rows). They are
 COMPLEMENTS. In particular K5's attribution triangle needs the independent
 laser diagnostic no matter which spectroscopic lever is chosen, so a ranking
 that put the laser diagnostic third would have licensed skipping the one
@@ -57,19 +58,21 @@ def main() -> int:
 
     add("temperature T",
         "Gamma_transit from the temperature-independent homogeneous terms",
-        "the fibre platform's only spectroscopic lever, since transit is "
-        "Lorentzian with FWHM v/(pi*Lambda) and so enters the same additive "
-        "degeneracy as everything else",
+        "the fibre platform's only spectroscopic lever. The guided transit "
+        "kernel is a squared Lorentzian entering the width at SECOND order "
+        "(results/transit_additivity.csv, temperature_exponent_band), so a "
+        "ladder reads a temperature exponent near 1, not the sqrt(T) of an "
+        "additive Lorentzian. This cell said transit is Lorentzian and adds "
+        "exactly until 2026-08-28, the claim that file retires",
         "INTENDED, NOT ESTABLISHED: that temperature moves transit while the "
         "laser contribution stays approximately invariant. Temperature also "
         "moves density, optical depth, absorption, thermal gradients, "
         "alignment and background. A campaign using this lever REQUIRES "
         "controls that validate the invariance. On the decay length, a "
         "stronger claim was drafted on 2026-08-22 and then WITHDRAWN by the "
-        "twin that tested it: the raw magnitudes look alarming, since over the "
-        "plausible Lambda band the ladder span is 161 to 297 kHz while the "
-        "edge-to-edge ambiguity at the top rung is 214 kHz, and that was read "
-        "as an unpinned Lambda consuming the lever. It does not. Gamma_L is "
+        "twin that tested it: the raw magnitudes looked alarming over the "
+        "plausible Lambda band, read as an unpinned Lambda consuming the "
+        "lever. It does not. Gamma_L is "
         "temperature-INDEPENDENT while transit follows a known SHAPE, so a "
         "ladder fitting the intercept and the Lambda scale together separates "
         "them by shape rather than by magnitude, and results/fibre_twin.csv "

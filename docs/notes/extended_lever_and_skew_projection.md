@@ -5,7 +5,7 @@ Nothing here is a result about the atom, and no committed number moves.
 Producers: `scripts/run_extended_lever.py` and, for the pinning factor it
 cites, `scripts/run_width_pinning.py`. Run logs under `private/run_logs/`.
 
-`provenance: DESIGN` - projections of what proposed levers would buy, by its own header, with nothing about the atom and no committed number moving. It names `run_extended_lever.py` and `run_width_pinning.py`, both of which exist and neither of which writes a results file. All eleven of its values are grounded. **No claim on this page is unaccounted for.** Declared after checking every three-significant-figure value on the page against `results/`, not by labelling.
+`provenance: DESIGN` - projections of what proposed levers would buy, by its own header, with nothing about the atom and no committed number moving. It names `run_extended_lever.py` and `run_width_pinning.py`, both of which exist and neither of which writes a results file. An untagged number here is a claim to check, not a checked one.
 
 
 ## 1. The extended temperature lever for the collisional bound

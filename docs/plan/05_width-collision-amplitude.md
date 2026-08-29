@@ -1,4 +1,4 @@
-*Chapter 5 of 11 of [the plan](../PLAN.md)*
+*Chapter 5 of 12 of [the plan](../PLAN.md)*
 
 **The question.** How would the collisional coefficient be separated from the laser width, and what does the amplitude channel add?
 **Takes.** The intensity axis of chapter 4.

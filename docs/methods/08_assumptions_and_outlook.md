@@ -129,4 +129,4 @@ this repository leans on, and a waist measured away from the lineage value
 would move the transit subtraction and the Stark prediction together, in the
 same direction, without any fit noticing.
 
-[← What we found](07_what_we_found.md) · [methods index →](../methods.md)
+[← What we found](07_what_we_found.md) · [The guided geometry →](09_the_guided_geometry.md)

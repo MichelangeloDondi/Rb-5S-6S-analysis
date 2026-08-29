@@ -23,6 +23,7 @@ Run: python scripts/make_wiki_figures.py
 
 from __future__ import annotations
 
+import csv
 import sys
 from pathlib import Path
 
@@ -786,14 +787,24 @@ def fig_guided_atoms_and_nanofibres_1():
 
 def fig_guided_atoms_and_nanofibres_2():
     """Drive power for the same effective intensity: milliwatts in the cell against microwatts in the fibre mode."""
-    # quoted from results/onf_candidate.csv: intensity_cell_eff (at 225 mW) and mode_area_eff
-    INTENSITY_CELL_EFF_WM2 = 6.784e7
+    # READ from results/onf_candidate.csv, not retyped. These were hardcoded as
+    # 6.784e7 and 0.50 um^2 with a comment saying they were quoted from that
+    # file. The area moved to a solved value in the 2026-08-28 wave and this
+    # figure kept drawing the assumption, which is the drawn-number-is-a-new-copy
+    # class on a wiki surface.
+    #
+    # It takes the STARK area, because the quantity being drawn is the power
+    # that reaches a given light-shift-equivalent intensity.
+    _oc = {x["quantity"]: x["value"] for x in
+            csv.DictReader(open(Path(__file__).resolve().parents[1]
+                                / "results" / "onf_candidate.csv"))}
+    INTENSITY_CELL_EFF_WM2 = float(_oc["intensity_cell_eff"])
     CELL_POWER_MW = 225.0
-    MODE_AREA_EFF_UM2 = 0.50
+    MODE_AREA_EFF_UM2 = float(_oc["mode_area_stark"])
     onf_power_uw = INTENSITY_CELL_EFF_WM2 * (MODE_AREA_EFF_UM2 * 1e-12) * 1e6
 
     fig, ax = plt.subplots(figsize=(5.2, 3.2))
-    labels = ["vapour cell", "nanofibre mode\n(0.50 um^2)"]
+    labels = ["vapour cell", f"nanofibre mode\n({MODE_AREA_EFF_UM2:.2f} um^2)"]
     powers_mw = [CELL_POWER_MW, onf_power_uw / 1000.0]
     bars = ax.bar(labels, powers_mw, color=[ACCENT, ACCENT2], width=0.5)
     ax.set_yscale("log")
@@ -804,7 +815,8 @@ def fig_guided_atoms_and_nanofibres_2():
         ax.text(b.get_x() + b.get_width() / 2, b.get_height() * 1.3, tag,
                 ha="center", fontsize=7.5, color=INK)
     ax.grid(alpha=0.25, axis="y", which="both")
-    _footer(fig, "intensity_cell_eff=6.784e7 W/m^2 at 225 mW, mode_area_eff=0.50 um^2 "
+    _footer(fig, f"intensity_cell_eff={INTENSITY_CELL_EFF_WM2:.3e} W/m^2 at 225 mW, "
+                 f"mode_area_stark={MODE_AREA_EFF_UM2:.2f} um^2 "
                  "(results/onf_candidate.csv).\nRebuild: python scripts/make_wiki_figures.py")
     _save(fig, "wiki_guided_atoms_and_nanofibres_2.png")
 

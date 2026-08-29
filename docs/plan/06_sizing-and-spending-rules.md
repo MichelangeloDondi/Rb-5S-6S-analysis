@@ -1,4 +1,4 @@
-*Chapter 6 of 11 of [the plan](../PLAN.md)*
+*Chapter 6 of 12 of [the plan](../PLAN.md)*
 
 **The question.** How large must a session be, and what does the 2025 session forbid?
 **Takes.** The blocks of chapters 4 and 5.

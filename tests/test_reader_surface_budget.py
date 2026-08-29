@@ -45,7 +45,7 @@ beside it. The addition cost sixty words and about ninety were paid back
 first, by DELETING a retracted tune-out value and two derivation steps from
 the polarizability bullet: reference detail a reader of a results ledger
 does not need. A first draft of this note said those words were MOVED to
-the pages that own them. They were not, and a board seat checked; nothing
+the pages that own them. They were not, and this was checked. Nothing
 in this diff received them. The residual twenty is what a caveat costs when
 it stands where its claim does.
 
@@ -170,7 +170,79 @@ where the record said dropping any one peak left the tension intact. **The
 words bought here replace a false sentence with the four numbers that
 refute it.** That is the cheapest kind of prose this budget will ever pay
 for, and it took five boards to find it.
+
+2026-08-28, README 6189 -> 6157, a CUT and not a raise. Three seats
+independently flagged the Conventions block: a false universal, ratchets
+promoted to the front page, and 115 words of the repository describing itself
+on the one surface where everything else in the wave shrank. What was cut is
+the self-assessing half of two bullets -- that repeat counts are read from a
+manifest "rather than inferred from filenames" and that cuts are fixed "rather
+than chosen afterward", both of which tell the reader the work is careful
+instead of telling them a convention. The conventions themselves stay, and so
+does the physics-mathematics-simulation ladder, which is load-bearing.
+
+The raise this replaces (6177 -> 6189) went in WITHOUT a reason, which is what
+this docstring exists to prevent and the third such omission in one night.
+
+2026-08-28, START_HERE 1284 -> 1281, and the row it BOUGHT is the point. A
+seat found that no routing row used the word "model", so the owner's own first
+complaint -- an unclear model with no link to its derivations -- had no served
+path at all. The new row routes to `docs/methods/04` and `09`. It was paid for
+by merging two rows that pointed at the same file and trimming five others,
+which is the offsetting cut this ratchet exists to force rather than a
+coincidence.
+
+2026-08-28, README 6157 -> 1339, and this is the largest cut the budget has
+recorded. The owner set the reading budget explicitly: half a minute on the
+introduction, one on the about, one on the model, half a minute each on the
+results, the campaign and everything else. Four minutes, about a thousand
+words, against a page of 6157.
+
+What made the cut safe was an audit rather than a judgement. Eight readers
+took one section each and asked whether its destination already covered it and
+whether any NUMBER in it appeared nowhere else in the tree. Almost every
+destination existed already: the page was long because it restated
+`docs/RESULTS.md`, `docs/methods/04`, `REPRODUCING.md`, `ADAPTING.md`,
+`PLAN.md` and `START_HERE.md`. Three things had no other home and were moved
+rather than dropped: the pipeline diagram, which went to
+`docs/methods/06_the_statistics.md`, and the author and provenance block and
+the assistant disclosure, which stayed.
+
+The prose is now 728 words, under three minutes. The rest of the page is three
+figures, two display equations, a mermaid diagram and nine tables, on his
+instruction that visual information saves attention where prose spends it.
 """
+
+# RE-RECORDED 2026-08-28. The moves were README +18, docs/RESULTS.md +12 and
+# START_HERE -1, all corrections rather than volume.
+#
+# NO TOTAL IS WRITTEN HERE, and that is the repair. This paragraph carried
+# "29088 -> 29117" and the budget file summed to 29114, a three-word
+# disagreement between a note and the primary it describes. A first version
+# had also stated the two rises and not the fall, so its deltas summed to 30
+# against a stated 29. Twice in one paragraph, which is what a hand-copied
+# total does. The file is the authority and `sum(_budget().values())` reads
+# it; a total in prose is a second copy of a number that moves.
+#
+# README.md, +18: the fibre's stated cost said one trace at 69 minutes to match
+# the cell's collisional-width error. The row it cites carries the error on the
+# TOTAL LORENTZIAN EXCESS, which its own CSV note says is not the collisional
+# width and is not separable from it at one temperature. Equating them on the
+# page a hiring PI opens was a quantity conflation, and the qualification costs
+# words. The same edit put the next campaign into the conditional, because the
+# indicative form it used is the verbatim example docs/STYLE.md gives as the
+# thing never to write.
+#
+# docs/RESULTS.md, +12: the flagship C3f entry enumerated "the second" and "the
+# third" session with no first, and ended a paragraph on a dangling fragment.
+# The fix is in scripts/make_results_ledger.py, since the page is generated.
+#
+# THE HEADROOM WAS ZERO WHEN THIS FIRED, which had been flagged one
+# round earlier: the budget sat exactly at its own measurement, so the next
+# edit to any front-path file failed by default rather than by margin. That is
+# the ratchet working as designed and it is worth naming, because a ratchet at
+# its floor turns every correction into a re-record.
+
 from __future__ import annotations
 
 import json

@@ -41,8 +41,8 @@ RUNNER = ROOT / "scripts" / "run_all.sh"
 
 # Scripts that consume the status column and therefore must follow the
 # annotator. Each is checked to still contain a status read, so that if one
-# stops reading the column this list is pruned deliberately rather than
-# quietly protecting nothing.
+# stops reading the column this list is pruned, so that it never sits here
+# protecting nothing.
 CONSUMERS = ("make_figures.py", "make_results_ledger.py")
 ANNOTATOR = "annotate_results_status.py"
 

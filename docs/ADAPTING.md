@@ -367,9 +367,9 @@ guards (the canonical-value test, the figure fingerprint, the results status
 tags). [`methods/06_the_statistics.md`](methods/06_the_statistics.md)
 derives each one.
 
-## The eighteen names you can import
+## The names you can import
 
-`import rb5s6s` gives an eighteen-name public surface, and it is deliberately
+`import rb5s6s` gives a small public surface, and it is deliberately
 small: every name on it is **pure**, meaning it computes and does not read the
 repository, so it works from an installed wheel with no data alongside it. That
 is checked by [`tests/test_package_surface.py`](../tests/test_package_surface.py),
@@ -390,11 +390,29 @@ from rb5s6s import (
 )
 ```
 
-Everything else is reached through its module. Six modules read from disk
-(`config`, `ingest`, `qc`, `rate_model`, `ruler`, `cavity_scan`), and from an
-installed wheel their paths resolve inside site-packages, where the
-directories are not. Those six split into two contracts, and the split is
-deliberate.
+Everything else is reached through its module, and two kinds of module are
+worth naming separately.
+
+**`rb5s6s.fibre` is pure and is deliberately not re-exported.** It carries the
+guided geometry: the HE11 mode solve, the vector fields, the evanescent
+profile and the transit kernel. It touches no file, so it works from an
+installed wheel, and the route is
+
+```python
+from rb5s6s.fibre import solve_he11, transit_fwhm, evanescent_intensity
+```
+
+It stays out of the top-level namespace because it is the prospective layer,
+describing hardware this record has not run, and `tests/test_module_boundaries.py`
+forbids a core module importing it so that the published analysis cannot come
+to depend on unbuilt apparatus. Hoisting it into `__all__` was tried on
+2026-08-28 and that guard refused it. **The gap that was real is that no page
+said this**, which is what this paragraph fixes.
+
+**Six modules read from disk** (`config`, `ingest`, `qc`, `rate_model`,
+`ruler`, `cavity_scan`), and from an installed wheel their paths resolve inside
+site-packages, where the directories are not. Those six split into two
+contracts, and the split is deliberate.
 
 The ones that require the repository raise `config.RepoDataMissing` naming
 what needs cloning, rather than resolving a path into site-packages and

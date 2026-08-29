@@ -1,4 +1,4 @@
-*Chapter 7 of 11 of [the plan](../PLAN.md)*
+*Chapter 7 of 12 of [the plan](../PLAN.md)*
 
 **The question.** What span, record length and sweep rate does the next session need?
 **Takes.** Nothing beyond the block register of chapter 6.

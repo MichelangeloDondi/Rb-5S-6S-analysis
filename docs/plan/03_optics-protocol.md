@@ -1,4 +1,4 @@
-*Chapter 3 of 11 of [the plan](../PLAN.md)*
+*Chapter 3 of 12 of [the plan](../PLAN.md)*
 
 ## 4. Configurations and optics protocol
 

@@ -173,6 +173,15 @@ FORBIDDEN = {
     "sales and mood register": [
         r"\brisks?\b", r"\brisk(?:y|ed|ing|ier|iest)\b",
         r"\bat risk\b", r"\bpitch(?:es|ed|ing)?\b",
+        # de-risk slipped past every pattern above, because each anchors \b
+        # BEFORE "risk" and there is no word boundary inside "derisking".
+        # Found 2026-08-28 in docs/FUTURE_TRANSITIONS_titsapph.md, by a
+        # crude substring bank that had no exemptions and therefore also
+        # fired on the frozen preregistration this family correctly exempts.
+        # The lesson is the narrow one: a prefixed form is a different string,
+        # and a family of \b-anchored patterns does not cover its own word's
+        # compounds. The blunt instrument found what the precise one missed.
+        r"\bde-?risk(?:s|y|ed|ing)?\b",
     ],
     "assistant/tool name": [
         r"\bchatgpt\b", r"\bclaude\b", r"\banthropic\b", r"\bopenai\b",
@@ -572,7 +581,21 @@ def test_r_kernel_is_not_called_an_uncertainty_across_a_line_break():
 # marker, whose scope is the block. A hard wrap never crosses a blank line,
 # so the paragraph is exactly the right window.
 def _paragraphs_with_lines(text):
-    """(first_line_number, flattened text) per blank-line-delimited block."""
+    """(first_line_number, flattened text) per blank-line-delimited block.
+
+    A LEADING COMMENT MARKER IS STRIPPED BEFORE FLATTENING, and it was not
+    until 2026-08-28. Joining `# ...honest` with `# trade:...` produced
+    "honest # trade", so a banned phrase wrapped across two comment lines was
+    invisible to every space-separated pattern -- in the guard written to
+    catch phrases hidden by wrapping. Found by a reader who reproduced the
+    flattening by hand rather than trusting that the guard covered its own
+    stated case.
+
+    This is the third population defect of the same shape found in one
+    session: `docs/lit/` for the prose banks, `HEAD` for the freshness check,
+    and `#` here. Each is a population defined by a proxy that excludes the
+    thing being introduced.
+    """
     out, buf, start = [], [], 0
     for i, line in enumerate(text.split("\n"), 1):
         if not line.strip():
@@ -582,7 +605,10 @@ def _paragraphs_with_lines(text):
             continue
         if not buf:
             start = i
-        buf.append(line.strip())
+        stripped = line.strip()
+        if stripped.startswith("#"):
+            stripped = stripped.lstrip("#").strip()
+        buf.append(stripped)
     if buf:
         out.append((start, " ".join(buf)))
     return out

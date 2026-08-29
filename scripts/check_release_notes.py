@@ -25,7 +25,7 @@ What it checks, all of it borrowed:
 * the house punctuation rule, no em-dashes and no semicolons
 * the release-note style rules' mechanical half (docs/RELEASE_NOTE_STYLE.md,
   2026-08-26, written after a reading of every published note): a
-  400-word ceiling on the body, no internal shorthand codes
+  refusal ceiling on the body, no internal shorthand codes
   outside file paths, and the narrative-register markers that reading
   measured in every published note. Passing `--self-check` skips these
   three, for the protocol-file self-audits of LOGIC 17.3, whose subjects
@@ -121,7 +121,13 @@ def _fallback_math(text: str) -> list[str]:
 # spares physics vocabulary that shares the shape: "the M1 transition" and
 # "the C3 dispersion coefficient" name multipoles and dispersion physics,
 # recognised when any of the next three words names the physics.
+# THE RULE SAYS 300 AND THIS REFUSED AT 400, so a note already breaching the
+# stated rule passed the checker written for it. N2 has TWO numbers and they
+# are not the same one: a body "stays at or under 300 words" and the checker
+# "refuses above 400". An edit earlier on 2026-08-28 collapsed them, so the
+# checker refused at the target and left no band between advice and refusal.
 WORD_CEILING = 400
+WORD_TARGET = 300
 _CODE = re.compile(r"(?<![\w/.-])([MCKP]\d{1,2}[a-z]?)(?![\w/.-])")
 _PHYSICS_NEXT = ("transition", "coefficient", "multipole", "admixture",
                  "dispersion")
@@ -141,7 +147,7 @@ NARRATIVE_MARKERS = [
 ]
 
 
-def _paragraphs(text: str) -> list[tuple[int, str]]:
+def _paragraphs(text: str, strip_code: bool = True) -> list[tuple[int, str]]:
     """(start_line, flattened prose) per paragraph, code fences skipped,
     inline code spans stripped, bullets treated as their own paragraphs.
 
@@ -167,7 +173,7 @@ def _paragraphs(text: str) -> list[tuple[int, str]]:
                 buf = []
             if fenced or not line.strip():
                 continue
-        cleaned = re.sub(r"`[^`]*`", "", line).strip()
+        cleaned = (re.sub(r"`[^`]*`", "", line) if strip_code else line).strip()
         if not buf:
             start = i
         buf.append(cleaned)
@@ -176,12 +182,65 @@ def _paragraphs(text: str) -> list[tuple[int, str]]:
     return out
 
 
+# N3'S MECHANISM, added 2026-08-28 after the owner said the withdrawn v4.3 and
+# v4.4
+# notes failed "mainly because the physics was wrong and/or confused". Every
+# rule above this one is about REGISTER, and a reading of those notes found
+# ten physics defects, seven of them unreachable by any register rule: a
+# waist no producer computes, a bound divided by a point prediction, a null
+# reported as a size. What they share is that no number named where it lives.
+#
+# THIS IS NOT A NEW RULE AND MUST NOT BECOME ONE. N3 already says every
+# number names its committed file in the same sentence, and it had no
+# mechanism, so the first draft of this check invented a sibling N12 for a
+# rule that existed. The ceiling rule refuses exactly that: a defect an
+# existing rule already covers is evidence for MECHANISING that rule, never
+# for adding another beside it.
+#
+# The check is the weakest mechanical form of N3 that would have fired on the
+# withdrawn notes: a paragraph stating a quantity in a physical unit also
+# names a source. The unit list keeps the population tight -- a bare integer
+# is a count, a version or a date, and is not N3's business.
+_UNITED = re.compile(
+    r"(?<![\w.])\d+(?:\.\d+)?\s*"
+    r"(?:MHz|kHz|GHz|Hz|nm|um|µm|mm|mW|W|a\.u\.|atomic units|sigma|σ)\b")
+# A citation is a tracked path, a results row key, or a markdown link. The
+# note may also discharge one by naming the producer that makes the number.
+_CITED = re.compile(
+    r"`[\w./-]+\.(?:csv|py|md)`|\]\([^)]+\)|results/|scripts/run_")
+
+
+def _uncited_quantities(paragraphs: list[tuple[int, str]]) -> list[str]:
+    """N3, mechanised. A paragraph quoting a united quantity names its source.
+
+    Fails when a release body states a physical quantity and the paragraph
+    carries no path, no results row and no link -- the shape every one of
+    the withdrawn notes' physics defects had in common.
+    """
+    out = []
+    for ln, flat in paragraphs:
+        hits = [m.group(0).strip() for m in _UNITED.finditer(flat)]
+        if not hits or _CITED.search(flat):
+            continue
+        quoted = ", ".join(sorted(set(hits)))
+        out.append(f"[style N3] paragraph at line {ln}: quantity "
+                   f"{quoted} with no committed row, producer or link: "
+                   f"{flat[:64]}")
+    return out
+
+
+_TEXT: list[str] = [""]
+
+
 def _protocol_findings(paragraphs: list[tuple[int, str]],
                        n_words: int) -> list[str]:
     out = []
     if n_words > WORD_CEILING:
         out.append(f"[style N2] body is {n_words} words against the "
-                   f"{WORD_CEILING}-word refusal ceiling (target 300)")
+                   f"{WORD_CEILING}-word refusal ceiling (target {WORD_TARGET})")
+    elif n_words > WORD_TARGET:
+        print(f"  check_release_notes: ADVISORY, {n_words} words against "
+              f"N2's {WORD_TARGET}-word target (refusal is {WORD_CEILING})")
     for ln, flat in paragraphs:
         for m in _CODE.finditer(flat):
             following = re.findall(r"[A-Za-z-]+", flat[m.end():])[:3]
@@ -194,6 +253,12 @@ def _protocol_findings(paragraphs: list[tuple[int, str]],
             if phrase in low:
                 out.append(f"[style N7] paragraph at line {ln}: register "
                            f"marker {phrase!r}: {flat[:70]}")
+    # N3 reads paragraphs with the code spans KEPT. The default strip is
+    # right for the register banks, which must not flag a banned word inside
+    # a quoted path, and it is fatal here: a citation in this house IS a
+    # backticked path, so the first draft of this check could never see one
+    # and fired on every paragraph that obeyed the rule.
+    out.extend(_uncited_quantities(_paragraphs(_TEXT[0], strip_code=False)))
     return out
 
 
@@ -243,6 +308,7 @@ def main(argv: list[str]) -> int:
             findings.append(f"[punctuation] {i}: semicolon: {line.strip()[:80]}")
 
     if not self_check:
+        _TEXT[0] = text
         findings.extend(_protocol_findings(paragraphs, len(text.split())))
 
     if findings:

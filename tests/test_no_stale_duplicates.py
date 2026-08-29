@@ -87,6 +87,16 @@ def test_no_nested_checkout_below_the_root():
     LEAVING them: remove one when its work lands, and prune after. Three
     abandoned ones produced the 2026-08-17 report of a reverted figure.
     """
+    # private/ IS ITS OWN REPOSITORY BY DESIGN, since 2026-08-29, and it is
+    # not a checkout of this one: it holds the governance layer -- the
+    # protocols, the checkers, the board ledger, the handover files and the
+    # design record -- which governed this archive for weeks with no history
+    # and no copy off this disk, which an outside reading ranked the
+    # gravest exposure in the system. The hazard this test exists for is a STALE COPY
+    # of tracked files; private/ shares no file with the tracked set, so a
+    # figure or document cannot be opened from it by mistake. The exemption
+    # is one path, named, and it would still fire on any other nested tree.
+    GOVERNANCE_REPO = "private"
     nested = []
     for dirpath, dirnames, _ in os.walk(ROOT):
         if Path(dirpath) == ROOT:
@@ -94,7 +104,9 @@ def test_no_nested_checkout_below_the_root():
             continue
         dirnames[:] = [d for d in dirnames if d not in _SKIP_DIRS]
         if ".git" in os.listdir(dirpath):
-            nested.append(str(Path(dirpath).relative_to(ROOT)))
+            rel = str(Path(dirpath).relative_to(ROOT))
+            if rel != GOVERNANCE_REPO:
+                nested.append(rel)
     assert not nested, (
         "these directories hold a whole second checkout of this repository, at "
         "whatever commit they were made. Their files are ignored, so no guard "

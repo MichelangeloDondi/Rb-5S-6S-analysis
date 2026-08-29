@@ -23,6 +23,7 @@ from pathlib import Path
 import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from _producer_lock import take_producer_lock     # noqa: E402
 from rb5s6s import config as C  # noqa: E402
 from rb5s6s.constants import (PEAKS as PEAKINFO,  # noqa: E402
                               W0_BAND_M, W0_MEASURED_M, transit_fwhm_from_w0)
@@ -63,6 +64,7 @@ def build_blocks(rows, trates):
 
 
 def main() -> int:
+    take_producer_lock("run_global_fit")
     rows = load_manifest()
     trates = {}
     for r in csv.DictReader(open(C.RESULTS_DIR / "ruler_blocks.csv")):

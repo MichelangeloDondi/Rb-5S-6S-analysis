@@ -19,7 +19,7 @@ installed package without the repository beside it fails in a way worth failing
 loudly (see :func:`rb5s6s.config.require_repo_data`).
 """
 
-__version__ = "4.5"
+__version__ = "4.6"
 
 from .constants import (                                    # noqa: F401
     DELTA_ALPHA_AU,
@@ -74,4 +74,15 @@ __all__ = [
     "fit_linewidth", "LinewidthResult", "fit_condition",
     "total_fwhm_mhz", "voigt_fwhm",
     "linefit", "ingest",
+    # THE GUIDED GEOMETRY IS DELIBERATELY NOT RE-EXPORTED HERE, and a board
+    # seat was right that it is hard to reach and wrong about the remedy.
+    # `rb5s6s.fibre` is the PROSPECTIVE layer, and
+    # tests/test_module_boundaries.py forbids a core module importing it:
+    # the published analysis must not depend on unbuilt hardware. Hoisting
+    # it into this namespace was tried on 2026-08-28 and that guard refused
+    # it within one suite run.
+    #
+    # It is reachable, and the route is `from rb5s6s.fibre import solve_he11`.
+    # What was actually missing is that no page said so, which is a
+    # documentation fix and not an API one.
 ]

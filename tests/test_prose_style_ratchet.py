@@ -289,12 +289,23 @@ FILLER_PHRASES = [
     "defeat",
     "snug",
     "intervention",
-    # The evening additions are loaded from _banned_words.json: naming them
+    # The banked additions are loaded from _banned_words.json: naming them
     # here as literals made this file fail the internal-vocabulary bank,
     # which is the guard-fixture-is-prose lesson a second time. The family:
     # words that dress work as drama, and the assistant register's verbs.
-    *json.loads((Path(__file__).parent / "_banned_words.json").read_text())[
-        "banned_words_2026_08_24_evening"],
+    #
+    # EVERY KEY IS LOADED, and it read exactly one until 2026-08-28. The
+    # defect was found by adding a second dated key and watching the bank go
+    # on enforcing only the first: a word could be banked, committed and
+    # enforced by nothing. That key was then withdrawn, because the ban it
+    # carried already existed in test_repo_hygiene.py with a better regex and
+    # a frozen-preregistration exemption, so only this loader change remains.
+    # A bank whose entries must each be wired by hand is a bank that silently
+    # drops additions, which is this record's "a guard that nothing calls is
+    # not a guard" arriving inside the fixture rather than the caller.
+    *[w for words in json.loads(
+        (Path(__file__).parent / "_banned_words.json").read_text()).values()
+      for w in words],
 ]
 
 
@@ -523,6 +534,27 @@ def _caps_ok(word: str) -> bool:
     return False
 
 
+def _mermaid_label_text(text: str) -> str:
+    """Rendered label text inside mermaid fences, node IDs excluded.
+
+    A mermaid label is prose a reader sees, and CAPS_PROT's fence span,
+    built for real code samples, made every diagram invisible to this
+    guard: a release wave shipped three drama capitals in the README's own
+    diagram and the guard was green (2026-08-28, found by a board seat that
+    re-ran the guard's regex by hand). THE FALSE-PASS DIRECTION FIRST: a
+    drama capital that is also in CAPS_TOKEN's allowlist stays invisible
+    here, because the allowlist cannot see context -- of the three shipped
+    capitals this pass recovers only the one outside it. Only double-quoted
+    spans are taken, so node IDs, which are uppercase identifiers rather
+    than words, stay exempt without an allowlist.
+    """
+    labels = []
+    for fence in re.findall(r"```mermaid\n(.*?)```", text, re.S):
+        for lab in re.findall(r'"([^"]*)"', fence):
+            labels.append(lab.replace("<br/>", " ").replace("<br>", " "))
+    return " ".join(labels)
+
+
 def _emphasis_caps(rel: str) -> list[str]:
     text = (ROOT / rel).read_text(encoding="utf-8")
     spans = [m.span() for m in CAPS_PROT.finditer(text)]
@@ -535,6 +567,12 @@ def _emphasis_caps(rel: str) -> list[str]:
         if _caps_ok(w) or any(a <= m.start() < b for a, b in spans):
             continue
         out.append(w)
+    # the mermaid pass: same token rule, over the labels the fence hid
+    for m in CAPS_TOKEN_RE.finditer(_mermaid_label_text(text)):
+        w = m.group(0)
+        letters = [ch for ch in w if ch.isalpha()]
+        if letters and all(ch.isupper() for ch in letters) and not _caps_ok(w):
+            out.append(w)
     return out
 
 

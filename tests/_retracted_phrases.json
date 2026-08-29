@@ -9,11 +9,24 @@
     "Seed the bank when a claim is retired, in the same commit that retires it."
   ],
   "markers": [
-    "withdrawn", "withdraw", "retired", "retracted", "used to read",
-    "used to say", "no longer", "until 2026-", "corrected 2026-",
-    "intermediate draft", "earlier draft", "an earlier version",
-    "first draft", "NOT a stable summary", "no count of arms",
-    "is not quotable", "do NOT summarise", "criterion corrected"
+    "withdrawn",
+    "withdraw",
+    "retired",
+    "retracted",
+    "used to read",
+    "used to say",
+    "no longer",
+    "until 2026-",
+    "corrected 2026-",
+    "intermediate draft",
+    "earlier draft",
+    "an earlier version",
+    "first draft",
+    "NOT a stable summary",
+    "no count of arms",
+    "is not quotable",
+    "do NOT summarise",
+    "criterion corrected"
   ],
   "entries": [
     {
@@ -44,6 +57,12 @@
       "pattern": "closer to five to eight",
       "retired": "2026-08-27",
       "why": "an intermediate draft of the Orson density-null comparison; the committed like-for-like figure is about 24",
+      "marker_window": 400
+    },
+    {
+      "pattern": "(?:homogeneous terms|these four|components of th\\w+ response|transit[^.]{0,60}) adds? exactly|adds? exactly[^.]{0,60}transit",
+      "retired": "2026-08-28",
+      "why": "the guided transit kernel is a squared Lorentzian entering the width at second order (results/transit_additivity.csv temperature_exponent_band 0.97 to 0.98), so the four-term exact-additivity model is retired; exact additivity survives for the Lorentzian pair alone. Survived 14 board rounds in files no round was pointed at, and two clean-sweep greps missed it on grammatical number",
       "marker_window": 400
     }
   ]

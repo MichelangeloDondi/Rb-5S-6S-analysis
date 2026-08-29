@@ -26,6 +26,7 @@ from pathlib import Path
 import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from _producer_lock import take_producer_lock     # noqa: E402
 from rb5s6s import config as C  # noqa: E402
 from rb5s6s._compat import trapezoid  # noqa: E402  (np.trapezoid is numpy 2.0+)
 from rb5s6s.constants import GAMMA_NAT_HZ  # noqa: E402
@@ -50,6 +51,7 @@ def _add_and_err(w0_m, z_half_m, n_full=300_000, n_err=50_000, k_seeds=4):
 
 
 def main() -> int:
+    take_producer_lock("run_transit_mc")
     out = []
     print("=" * 74)
     print("(M9) TRANSIT MONTE-CARLO -- 3D MB + w(z) + collection")

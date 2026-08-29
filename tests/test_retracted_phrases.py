@@ -1,7 +1,7 @@
 """A retraction is not complete until the retracted string is absent.
 
 WHY THIS EXISTS, and it is the most-requested guard in this repository's
-history: four independent board seats across two rounds proposed it from
+history: it was proposed four times independently from
 different evidence on 2026-08-27, and it was built only after five hand
 sweeps had failed on one phrase.
 
@@ -34,7 +34,7 @@ So this scans a STATED SUBSET of the tracked set, and it reads committed
 bytes, which means it needs no producer to run and reaches the files freshness
 cannot. The subset is every tracked file whose suffix is in _TEXT_SUFFIXES,
 minus bulk numeric csv. It is not the whole tracked set and this comment said
-it was until a board seat read the file: 86 png, 11 jpg, one ipynb and one bib
+it was until the file was read: 86 png, 11 jpg, one ipynb and one bib
 are outside it. Saying WHOLE here while the population assertion below checks
 a floor is exactly the overclaim this guard exists to forbid, committed in its
 own opening paragraph.

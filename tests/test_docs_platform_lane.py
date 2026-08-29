@@ -1,9 +1,9 @@
 """The platform-lane promise in BIG_PICTURE.md is checkable, so it is checked.
 
 WHAT THE PROMISE IS. `docs/BIG_PICTURE.md` tells a reader with no fibre
-interest that the fibre thread of this repository is exactly three surfaces,
+interest that the fibre thread of this repository is a named set of surfaces,
 and that "everything else, the method, the results, the plan and the wiki, is
-platform-neutral", so they may skip those three "and lose nothing on their
+platform-neutral", so they may skip that named set "and lose nothing on their
 path". That is not a decoration. It is a load-bearing claim about what a
 reader can skip, and it is the kind of claim that decays silently: one number
 quoted from a fibre result in a platform-neutral chapter breaks it, and
@@ -39,11 +39,39 @@ DOCS = ROOT / "docs"
 # A results CSV only the fibre layer produces. Derived from the producers that
 # describe a guided platform, and asserted non-empty below so a rename cannot
 # empty it silently.
-FIBRE_ONLY_RESULTS = ("fibre_twin.csv", "onf_candidate.csv")
+# A GUARD'S POPULATION IS A FIXED ENUMERATION and the wave that adds fibre
+# content must add it here, or the lane guard reports green over exactly the
+# material it exists to check. `onf_lever_ranking.csv` was added 2026-08-28
+# after a seat found it entirely fibre content and outside this tuple.
+# `campaign_twin_forecast.csv` is deliberately NOT here. It carries BOTH arms
+# and is the surface a reader compares them on, so a neutral page citing it is
+# correct. It was added to this tuple for ten minutes on 2026-08-28 and the
+# guard immediately failed on `plan/02_priorities.md`, which was the guard
+# being right about an over-wide population rather than a real lane break.
+# `guided_mode_tables.csv` was added 2026-08-28, one round after
+# `onf_lever_ranking.csv`, under a comment saying a wave that adds fibre content
+# must add it here. The wave that wrote that comment then added a second
+# fibre-only CSV and did not. The guard was green by luck: no neutral page
+# happened to cite it.
+FIBRE_ONLY_RESULTS = ("fibre_twin.csv", "onf_candidate.csv",
+                      "onf_lever_ranking.csv", "transit_additivity.csv", "guided_mode_tables.csv")
 
 # Index and catalogue files list every surface by design; a one-line row naming
 # a fibre note is the catalogue doing its job, not a dependency on it.
-INDEX_FILES = {"README.md", "RESULTS.md"}
+#
+# REPRODUCING.md was added 2026-08-28 and the reasoning is worth stating,
+# because widening a guard to make a failure go away is the move this file
+# exists to refuse. Two producers written that August appeared in no list on
+# that page, so two committed CSVs had no reproduction route named anywhere a
+# reader looks, which means a stranger could not regenerate them. Naming them
+# there requires citing their filenames, and the guard fired.
+#
+# The platform-lane promise is that a reader with no fibre interest can skip
+# the fibre thread and lose no CLAIM. A reproduction catalogue that omits a
+# producer is not protecting that reader, it is hiding a file from everyone.
+# The two obligations are only in tension if the catalogue is read as an
+# argument, and it is a map.
+INDEX_FILES = {"README.md", "RESULTS.md", "REPRODUCING.md"}
 
 
 def _lane_surfaces():

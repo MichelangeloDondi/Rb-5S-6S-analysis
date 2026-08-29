@@ -49,6 +49,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+AMBIGUOUS = "\0ambiguous"   # a coordinate matching more than one row
 RESULTS = ROOT / "results"
 LIT = ROOT / "docs" / "lit"
 
@@ -86,12 +87,23 @@ def _csv_cell(stem: str, a: str, b: str, col: str | None = None) -> str | None:
         if want not in header:
             return None
         vi = header.index(want)
-        for row in reader:
-            if len(row) <= vi:
-                continue
-            if row[0] == a and (b == "" or row[1] == b):
-                return row[vi]
-    return None
+        hits = [row[vi] for row in reader
+                if len(row) > vi and row[0] == a and (b == "" or row[1] == b)]
+    # AN AMBIGUOUS COORDINATE IS REFUSED, NOT RESOLVED TO THE FIRST HIT.
+    # Until 2026-08-29 this returned on the first match, so a coordinate
+    # naming several rows silently validated against whichever came first.
+    # Measured then: 92 distinct coordinates in tracked markdown, 2 of them
+    # ambiguous, both in the one results CSV whose first two columns were not
+    # a key. No published number was wrong, because in both cases the first
+    # row happened to be the one quoted -- which is exactly the shape of a
+    # false pass, and why the resolver may not choose.
+    #
+    # THE FALSE-PASS DIRECTION: this cannot see a coordinate that is unique
+    # today and becomes ambiguous when a producer adds a row, until the next
+    # run. That is why the refusal lives here rather than in a one-off audit.
+    if len(hits) > 1:
+        return AMBIGUOUS
+    return hits[0] if hits else None
 
 
 def _lit_value(citekey: str, field: str) -> str | None:
@@ -167,6 +179,11 @@ def _scan() -> list[dict]:
                 producer = None
             elif parts[0] != "lit" and len(parts) in (3, 4):
                 source = _csv_cell(*parts)
+                # The graph records resolved values. An ambiguous coordinate
+                # has no resolved value, so it is recorded as unresolved and
+                # the checker's own run is what reports it.
+                if source is AMBIGUOUS:
+                    source = None
                 src_file = f"results/{parts[0]}.csv"
                 producer = _producers().get(parts[0])
             else:
@@ -266,7 +283,11 @@ def main() -> int:
                 source = _csv_cell(*parts)
                 kind = (f"results/{parts[0]}.csv row ({parts[1]}, {parts[2]})"
                         + (f" column {parts[3]}" if len(parts) == 4 else ""))
-            if source is None:
+            if source is AMBIGUOUS:
+                bad.append(f"{where}: AMBIGUOUS, {kind} matches more than "
+                           f"one row, so the tag cannot say which. Give the "
+                           f"rows distinct coordinates in the producer.")
+            elif source is None:
                 bad.append(f"{where}: DANGLING, {kind} does not exist "
                            f"(renamed row or moved file)")
             elif not _matches(m.group("text"), source):

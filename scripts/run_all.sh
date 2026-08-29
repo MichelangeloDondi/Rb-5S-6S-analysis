@@ -1,14 +1,21 @@
 #!/usr/bin/env bash
 # Reproduce the committed results/*.csv, figures, and docs/RESULTS.md from the
-# already-committed data_raw/ (see README.md "Reproduce"). It runs 31 analysis
-# stages, then the figures, the results ledger and the CSV status column. It is
-# not the whole repository. Thirteen committed CSVs are written by twelve scripts
-# this file never calls, listed in README.md "Reproduce". Five of those need
+# already-committed data_raw/ (see README.md "Reproduce"). It runs the analysis
+# stages listed in the loop below, then the reference graph, the figures, the
+# results ledger and the CSV status column. It is not the whole repository:
+# several committed CSVs are written by scripts this file never calls.
+#
+# THE COUNTS THAT USED TO BE HERE ARE GONE ON PURPOSE. This header said "31
+# analysis stages" while the loop ran 32, and "thirteen CSVs by twelve scripts"
+# while enumerating eleven. A count duplicated into prose beside the thing it
+# counts goes stale the first time either moves, and both had. `results/README.md`
+# maps every CSV to its producer and is regenerated, so it is the authority.
+# Some of those need
 # the prehistory or pilot trees, which stay outside the repository (the
 # rehearsal traces sit inside the prehistory tree, and data_raw/excluded/ is
 # a committed directory, not one of these):
 # run_stark_joint.py, run_global_dataset_fit.py, _m25_norulers.py,
-# run_morning_ruler.py and run_full_dataset_fit.py. The other six do run from a clone and are left out for
+# run_morning_ruler.py and run_full_dataset_fit.py. Others do run from a clone and are left out for
 # runtime or because they are diagnostics: run_wing_check.py loads raw traces
 # and takes about 6 min, run_wavemeter_reconstruction.py digitises a tracked
 # photograph, run_cavity_scan.py integrates the tracked cavity-scan
@@ -34,12 +41,24 @@ for s in run_qc run_noise run_ruler run_linefit run_trim_report \
          run_model_ladder run_identifiability run_coverage run_sharing_bic run_fringe_tail \
          run_polarizability run_resolving_power run_projections \
          run_trapping_channels run_blackbody_channels run_skew_scaling \
-         run_polarisation_bound run_collisional_shift_bound run_delta_alpha_posterior; do
+         run_polarisation_bound run_collisional_shift_bound run_delta_alpha_posterior \
+         run_guided_mode_tables run_onf_lever_ranking; do
     echo "== scripts/$s.py =="
     python scripts/$s.py
 done
 
 python scripts/annotate_results_status.py
+
+# The reference graph is regenerated HERE, between the annotator and the
+# ledger, and it was left out of this sequence entirely until 2026-08-28.
+# The ledger reads what the graph resolves, so the order matters.
+#
+# It was omitted because a person is expected to remember it, and on the night
+# this line was added it had been forgotten twice in one session, costing a
+# five-minute suite run each time. A step that lives only in someone's memory
+# is a step that gets skipped.
+python scripts/check_references.py --graph
+
 python scripts/make_fig0_spectrum.py
 python scripts/make_figures.py
 python scripts/make_results_ledger.py

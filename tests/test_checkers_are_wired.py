@@ -45,6 +45,19 @@ ROOT = Path(__file__).resolve().parents[1]
 # outside this guard's population entirely. scripts/annotate_results_status.py
 # is exactly such a script and this guard does not see it.
 #
+# AND THE POPULATION IS A FILESYSTEM GLOB WHILE EVERY BOARD READS A DIFF.
+# `private/` became its own git repository on 2026-08-29, so the archive's
+# history cannot see a file appear under private/checks/ at all: a checker
+# added there is invisible to `git diff`, to `git ls-files`, and therefore to
+# every seat reading a staged diff. This guard is the ONLY thing that notices,
+# and it notices at collection time, not when a seat reads a diff. So the
+# obligation sits here rather than in a seat's brief: adding a checker under
+# private/checks/ means adding it to a caller or to NOT_WIRED in the SAME
+# edit, because no seat downstream can be shown that it exists.
+# Earned on 2026-08-29, when backup_governance.py was created and committed
+# in a batch that edited this very dict to add its sibling, and the suite went
+# red at HEAD for want of the entry below.
+#
 # checker path (relative to the repo root) -> why it is not wired
 NOT_WIRED = {
     "private/check_carriers.py":
@@ -59,6 +72,16 @@ NOT_WIRED = {
         "cross-checks the untracked application drafts against each other, "
         "and which drafts are in flight changes between sessions, so its "
         "input set is not a property of any commit",
+    "private/checks/reader_brief.py":
+        "TRANSPORT, not a guard: it carries the rule text verbatim and each "
+        "source's hash to a reader who did not do the work, and it decides "
+        "nothing. There is no property for a gate to assert, because a brief "
+        "cannot pass or fail -- what it produces is an input to a human "
+        "judgement, and wiring it into the suite would be asserting that the "
+        "reader read it, which no test can see. It is invoked by the convener "
+        "when briefing the enforcement reader, per LOGIC 0b.2, and its own "
+        "docstring says that if it ever returns a conclusion it has become "
+        "the checker-of-the-checker the ceiling rule refuses",
     "private/checks/anchor_drafts.py":
         "a one-shot batch tool that takes a drafts file for one subagent "
         "fan-out and compares each drafted body against the file it claims "
@@ -67,11 +90,29 @@ NOT_WIRED = {
         "counts content-hash changes to the untracked protocol files across "
         "sessions, so its ledger is machine state rather than tree state and "
         "a hermetic checkout would make its count meaningless",
-    "scripts/check_release_notes.py":
-        "checks a release body pasted into the GitHub release form, which is "
-        "by construction not a tracked file, so no test over the tracked "
-        "tree can reach the thing it checks",
+    "private/checks/governance_msa.py":
+        "measures the board's own discrimination from the ledger and is read "
+        "at audits, not at commits: its output is a judgement about whether "
+        "the seats are worth their cost, which no gate should act on "
+        "automatically. Wiring it would make a governance metric into a "
+        "commit blocker, which is the Goodhart move this record refuses",
+    "private/checks/backup_governance.py":
+        "an operator-run backup, not a gate step: it writes a bundle and an "
+        "archive to iCloud, which is a side effect on a path outside both "
+        "repositories, and a gate that wrote to the operator's cloud storage "
+        "on every commit would be doing something no commit asked for. Its "
+        "own --check mode reports the artefacts' ages and is what an audit "
+        "runs. THE FALSE PASS THIS LEAVES OPEN: nothing fails when the backup "
+        "goes stale, so an age reported in a session nobody read is the same "
+        "as no backup at all",
 }
+# scripts/check_release_notes.py left NOT_WIRED on 2026-08-28:
+# tests/test_release_note_checker.py now exercises it against planted bodies
+# in both directions, so the recorded reason (nothing can reach it) went
+# false the day the release drill gained step D5 and the plant became a test.
+# THE FALSE PASS THIS DOES NOT CLOSE: the test feeds it synthetic bodies, so
+# a defective REAL note still ships if nobody runs the drill's D5 step --
+# wiring here proves the checker works, not that a release used it.
 
 # Places a checker may be called from. A checker named in any of these is
 # wired; run_all.sh counts because a producer that dies takes the pipeline

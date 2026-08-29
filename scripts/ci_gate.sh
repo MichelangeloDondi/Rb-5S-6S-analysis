@@ -96,6 +96,34 @@ fi
 if [ -f private/checks/protocol_citations.py ]; then
   "$PY" private/checks/protocol_citations.py || exit 1
 fi
+# Every literal a results/ cell held anywhere in the unpushed range is
+# grepped for, which is the complement of check_references.py's population:
+# that one resolves numbers carrying a ref: tag, so a plain typed copy is
+# outside it. A wave on 2026-08-28 corrected every tagged copy of eighteen
+# moved values and left the untagged ones standing on a campaign chapter, in
+# a correction record and in four docstrings.
+#
+# WHAT IT DOES NOT CATCH, stated here because this comment claimed a
+# detection of 1.00 until the rewrite's plant refuted it: a number that never
+# matched the CSV in the first place. Two of the CSVs whose stale copies a
+# board found on 2026-08-29 did not exist at origin/main, so nothing in them
+# had moved. That class is the ref: tag's, not this script's.
+#
+# EXIT 2 IS NOT A CLEAN BILL. It means the script could not run -- an
+# unresolvable base, or no CSV carrying a `value` column -- and collapsing it
+# with 1 was reported by a seat as a real confusion: a gate that dies on a
+# usage error and a gate that found a defect should not read alike.
+if [ -f scripts/check_moved_values.py ]; then
+  "$PY" scripts/check_moved_values.py "origin/main"
+  _mv=$?
+  if [ "$_mv" = 2 ]; then
+    echo "ci_gate: check_moved_values could not run (exit 2). That is not a"
+    echo "         clean result; it compared nothing."
+    exit 1
+  elif [ "$_mv" != 0 ]; then
+    exit 1
+  fi
+fi
 # The board ledger, wired for the same reason and after the same finding.
 # LOGIC 0c says five adversarial seats read the staged diff before every
 # commit. The ledger that measures it was written, shipped, and called by
@@ -111,6 +139,16 @@ fi
 # consulted. It runs here so the verdict a terminal state quotes is the
 # verdict of the tree that just passed, rather than one remembered from
 # earlier in the session.
+# The cold-start summary must agree with the primary records it restates.
+# Added 2026-08-28 after a bus test found the resume file claiming four board
+# refusals where the ledger held five. It exits 1 on drift AND on a check that
+# stopped matching its claim, so a reworded file cannot pass by going vacuous.
+# `|| true` for the same reason the report has it: a stale summary blocks a
+# terminal-state declaration, not a push.
+if [ -f private/checks/summary_drift.py ]; then
+  "$PY" private/checks/summary_drift.py || true
+fi
+
 if [ -f private/checks/enforcement_report.py ]; then
   "$PY" private/checks/enforcement_report.py || true
 fi

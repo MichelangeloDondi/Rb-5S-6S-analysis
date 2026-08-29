@@ -27,6 +27,7 @@ from pathlib import Path
 import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from _producer_lock import take_producer_lock     # noqa: E402
 from rb5s6s import config as C  # noqa: E402
 from rb5s6s.stark import fit_stark_sweep  # noqa: E402
 
@@ -73,6 +74,7 @@ def resample(grid: dict, rng: np.random.Generator) -> dict:
 
 
 def main() -> int:
+    take_producer_lock("run_s0_block_bootstrap")
     rng = np.random.default_rng(SEED)
     grid = load_grid()
     target = committed_bound()

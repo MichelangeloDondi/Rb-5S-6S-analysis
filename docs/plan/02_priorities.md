@@ -1,4 +1,4 @@
-*Chapter 2 of 11 of [the plan](../PLAN.md)*
+*Chapter 2 of 12 of [the plan](../PLAN.md)*
 
 **The question.** If the session loses a day, what gets cut, and what must never be cut?
 **Takes.** The aim of chapter 1, and the block costs of chapter 6.
@@ -269,8 +269,12 @@ demonstration of what any one of them leaves behind: a null on a product.
    has the table, the identity that a smaller waist buys no shift at matched
    intensity, and what the machinery needs before 16 µm is chosen deliberately.
 7. **Power.** The 2025 ceiling of 225 mW is almost certainly an assumption, not
-   physics. Photoionization is excluded (993 nm, 1.25 eV, is below the 6S
-   threshold at 1.68 eV). Two-photon saturation leaves 1–2 W of headroom at
+   physics. Single-photon photoionization from 6S is excluded (993 nm, 1.25 eV,
+   against a 1.68 eV threshold, a margin of 0.433 eV,
+   `results/campaign_twin_forecast.csv`). **Two-photon ionization from 6S is
+   energetically open** and no committed row bounds its rate, so no claim that this
+   probe cannot ionize rests on the single-photon margin alone.
+   Two-photon saturation leaves 1–2 W of headroom at
    the measured waist, where the on-axis saturation parameter is 0.033 at
    225 mW and falls as the inverse fourth power of the waist, so a wider
    focus only adds headroom. The predicted on-axis shift at 225 mW is 0.36 MHz at the accepted

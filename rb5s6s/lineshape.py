@@ -97,7 +97,14 @@ def stark_ramp(nu: np.ndarray, s0: float) -> np.ndarray:
     density f(s) ∝ |s| on s in [-s0, 0] (red shifts), area-normalized on the
     grid. Derivation (cell and evanescent geometry alike): two-photon signal
     ∝ I^2, shift ∝ I, volume measure gives du/u, so dS/du ∝ u -> linear ramp.
-    s0 > 0 is the on-axis (maximum) red shift in MHz. Returns a delta-like
+    s0 > 0 is the on-axis (maximum) shift in MHz, and THE SIDE IS AN OPEN
+    QUESTION rather than a settled convention. The adopted DELTA_ALPHA_AU
+    implies a BLUE shift while this ramp is coded red-sided;
+    tests/test_ramp_side_matches_the_polarizability.py holds the
+    disagreement as a strict xfail pending the owner's adjudication. Every
+    bound this record quotes is unaffected because it reads the magnitude,
+    but a caller using this function for a DIRECTIONAL shift should read
+    that test before trusting the side. Returns a delta-like
     unit spike at nu=0 when s0 <= 0 (no shift).
 
     THE I^2 IS A WEAK-FIELD STATEMENT (2026-08-10). The signal weight above is
@@ -263,9 +270,9 @@ def composite_profile(gamma_coll: float, sigma_laser: float,
     # absent, and only the half that could produce nan was unguarded. A
     # zero-width kernel is a delta function and convolution with it is the
     # identity, so skipping it IS the correct limit rather than a guard
-    # against it. Reached first by the fibre twin, whose Lorentzian transit is
-    # carried inside the additive Lorentzian channel and needs no separate
-    # transit kernel at all. Nothing committed changes: fit_transit=False pins
+    # against it. Reached first by the fibre twin, whose near-Lorentzian
+    # transit is carried inside the additive Lorentzian channel to the
+    # accuracy that approximation holds, needing no separate transit kernel. Nothing committed changes: fit_transit=False pins
     # the width at TRANSIT_FWHM_PLACEHOLDER_MHZ, so no committed call reaches
     # zero, and the only values affected were nan.
     if transit_fwhm > 0.0:

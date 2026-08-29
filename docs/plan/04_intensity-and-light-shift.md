@@ -1,4 +1,4 @@
-*Chapter 4 of 11 of [the plan](../PLAN.md)*
+*Chapter 4 of 12 of [the plan](../PLAN.md)*
 
 **The question.** How is the drive intensity pinned, and how would the light shift be measured rather than bounded?
 **Takes.** The optics of chapter 3.

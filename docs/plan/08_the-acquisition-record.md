@@ -1,4 +1,4 @@
-*Chapter 8 of 11 of [the plan](../PLAN.md)*
+*Chapter 8 of 12 of [the plan](../PLAN.md)*
 
 **The question.** What must every block log, and which single omission cost a measurement?
 **Takes.** The acquisition settings of chapter 7.

@@ -94,7 +94,7 @@ on the v4.3 release pages of both repositories.
 
 ## The collisional-shift entry and Orson's own axis, 2026-08-27
 
-Five board seats read the entry the night it was written, and four of
+The entry was checked the night it was written, and four of
 its numbers did not survive. The sharpest sat inside a sentence the previous
 round had just corrected: fixing *which* resolution Orson's null used broke
 the *axis* that resolution belongs to. The entry now has a producer,

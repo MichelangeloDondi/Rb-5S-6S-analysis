@@ -13,8 +13,10 @@ number is read from a committed file, named inline. Nothing below is
 scheduled or agreed.
 
 A reader with no fibre loses nothing on their path by stopping after the
-first scenario. The fibre thread of this repository is chapter 6, the second
-scenario here, and [the sized candidate](../notes/onf_candidate.md), and it
+first scenario. The fibre thread of this repository is the set of surfaces
+[BIG_PICTURE.md](../BIG_PICTURE.md) declares, which is where the list is kept
+and is not restated here, because a second copy drifts and this sentence
+carried one that did. It
 is deliberately separable: the analysis pipeline is platform-neutral, and
 [ADAPTING.md](../ADAPTING.md) carries the seam map for a different
 transition or a different geometry.
@@ -63,19 +65,32 @@ Everything in scenario one, plus four additions no cell can provide.
 **The physics.**
 
 * The laser's shape, measured independently. The cold trap-off line at the
-  fibre is the known natural width plus the laser contribution plus a
-  0.14 MHz transit, and the molasses temperature sweep turns the transit
-  term into its own sqrt(T) ladder, so the laser measurement calibrates
-  itself (`results/onf_candidate.csv`). Fed back as a prior, it recovers
+  fibre is the known natural width plus the laser contribution, a
+  73 to 98 kHz transit, and the atom-surface term, and the molasses
+  temperature sweep turns the transit term into its own sqrt(T) ladder.
+  **The atom-surface term makes the trap a precondition, not an
+  enhancement**: untrapped, atoms sampling 50 to 300 nm carry an
+  inhomogeneous red tail that is degenerate with the laser width, and at a
+  fixed 200 nm it falls to 0.21 to 0.53 MHz and is largely common-mode
+  (`results/onf_candidate.csv`). Fed back as a prior, it recovers
   the collisional coefficient's error to 0.36 of the free-kernel fit
-  on the DATA already taken, against the exact floor of 0.585 that any
+  on the data already taken, against the exact floor of 0.585 that any
   single-component measurement hits (`results/kernel_identifiability.csv`,
-  the joint rows). This is the one addition that improves the committed
-  record retroactively, before any new cell point is taken.
+  and **that prior is the one asking 0.01 MHz on each of the two kernel
+  widths. That is the 69-minute trace, not the 2.78-minute working point the
+  cost rows below quote. It is about 5.5 hours of acquisition, some
+  twenty-four times the per-lever figure**,
+  the joint rows). This addition improves the committed record
+  retroactively, before any new cell point is taken. **The payback is on the
+  collisional coefficient specifically**, and it is not a general claim that
+  the fibre improves the record: on the width channel the twin measures the
+  same Lorentzian-against-Gaussian correlation of about -0.94 in both arms
+  ([chapter 6](06_next-nanofibre.md),
+  `results/campaign_twin_forecast.csv`).
 * The intercept budget closes. With density, the sqrt(T) ladder, the laser
   prior and geometry each pinning their own slot, the width intercept
   becomes overdetermined, and the sum of independently measured parts
-  against the measured whole is a falsifiable closure test rather than a
+  against the measured whole is a falsifiable closure test, not a
   decomposition argued from a fit.
 * The near-surface lineshape. The two-peak pushing profile observed on this
   exact line at this exact platform ([Gokhroo 2022](../lit/gokhroo2022.md))
@@ -95,11 +110,16 @@ near-surface physics above, and the joint-metrology payback into the
 committed cell record, quantified row by row in
 `results/kernel_identifiability.csv`. A fibre measurement therefore
 improves the committed record retroactively, before any new cell point is
-taken, which no other addition on this list does.
+taken. The scope is the collisional coefficient, not the record as a whole,
+and no count of what else on this list does the same is made here because
+none has been run.
 
 **The instrumentation.** This register is where the fibre scenario is
-strongest, because every item below outlives the campaign as a working tool
-of the platform it runs on.
+strongest, because what it leaves behind is a set of working tools, not a
+result. The first of them is conditional, and its condition is stated below
+instead of promised here: the surface-charge calibration reaches 6S only if
+the repaired lock's residual drift is small enough, and at the 2025 archive's
+rate it is not a calibration at all.
 
 * A per-run calibration of the electrostatic surface-charge term at 6S
   sensitivity, on the same class of fibre that Rydberg-near-fibre
@@ -121,6 +141,56 @@ of the platform it runs on.
 * A characterised laser, as in scenario one, but now characterised through
   the same guided path that fibre experiments use, under the shared-path
   condition the candidate note states.
+
+### The comparison for the group whose fibre it is
+
+**The question is not whether the fibre is interesting. It is whether the
+fibre arm earns its beam time and its exposure, or whether the cell alone is
+enough.** Both columns below are what a new campaign delivers, and the second
+row is the one that matters to a group whose own programme is Rydberg atoms
+near a nanofibre and not spectroscopy.
+
+| | cell alone | cell plus nanofibre |
+|---|---|---|
+| **what the host group keeps afterwards** | nothing on their platform. The results are ours | a per-run calibration of the surface-charge term at 6S sensitivity, an atom-based monitor of adsorbate dynamics on the fibre, the two-colour trap's magic power ratio for this transition, a quadratic-Zeeman line shifter, and a laser characterised through their own guided path |
+| **what it measures about the fibre** | nothing | the **fibre diameter**, the tolerance no held paper states and which every guided quantity depends on, to between [30.73](../../results/onf_lever_ranking.csv "ref:onf_lever_ranking:lock_span_0.04:sigma_diameter_nm") nm at the 2025 drifting lock and [0.67](../../results/onf_lever_ranking.csv "ref:onf_lever_ranking:lock_span_0.0:sigma_diameter_nm") nm at the photon floor, marginalised over the drive amplitude the scan cannot know. The repaired lock decides where in that span the campaign sits, and its residual is unmeasured. Also the light-shift coefficient, and the surface coefficient $C_3$ which is the weakest of the three (`results/onf_lever_ranking.csv`). **The diameter is not only obtainable this way**: the group's own scanning electron microscope gives it without atoms, and the published proximity to the 352 nm mode cutoff is a sharp independent diagnostic. What the atoms add is the quantity that actually enters the physics, measured in situ under the conditions of use, rather than a fibre characterised before it was installed ([chapter 6](06_next-nanofibre.md)) |
+| **fibre time** | none | **acquisition only**, about [0.23](../../results/onf_lever_ranking.csv "ref:onf_lever_ranking:temperature_ladder:hours") hours per lever across three levers. Alignment, setup and the trap settling the distance scan needs between rungs are **not costed**, and the producer says so. The interval the host group would actually be asked to grant is an open item, not this number |
+| **fibre exposure** | none | what can be quoted is integration time: about [2.78](../../results/campaign_twin_forecast.csv "ref:campaign_twin_forecast:onf:minutes_per_trace_0.02") minutes per trace at the working precision, and [69](../../results/campaign_twin_forecast.csv "ref:campaign_twin_forecast:onf:minutes_per_trace_0.004") +- [16](../../results/campaign_twin_forecast.csv "ref:campaign_twin_forecast:onf:minutes_per_trace_0.004_err") at cell-matching precision, the half-span of the committed 25 to 40 counts per ms band. **The degradation that time causes is a different quantity and is an open item**: rubidium adsorption against exposure bounds the whole arm and nothing here converts one into the other ([chapter 6](06_next-nanofibre.md)) |
+| **what it settles for us** | the collisional and light-shift coefficients, from bounds to measurements | the same, plus the laser-shape confound acted on retroactively |
+
+**The cell campaign is scheduled and the fibre arm is not yet.** The cell side is eight days, D1 to D8, each with its content and its deliverable, ordered so a truncation at any point leaves the higher-priority conversions done ([the plan](../PLAN.md), section 9). The fibre side has its acquisition hours from the lever ranking and no day plan, so the interval it would occupy is not yet a stated number. That is an open item and not an omission from this table.
+
+**The row that decides it is the first one, and it carries a condition that
+belongs beside it.** The surface-charge calibration is available at
+[4 to 9](../../results/onf_lever_ranking.csv "ref:onf_lever_ranking:lock_requirement_4kHz:surface_shift_significance_at_400nm_band")
+sigma once residual lock drift is at or below 4 kHz per minute, and at
+[0 to 1](../../results/onf_lever_ranking.csv "ref:onf_lever_ranking:lock_requirement_40kHz:surface_shift_significance_at_400nm_band")
+sigma at the 2025 archive rate, where it is not a calibration at all. The
+repaired lock's residual is unmeasured, so this item is offered as a span and
+its first hour is what collapses it.
+
+**And the same threshold decides what the campaign costs the fibre.** Below
+about 4 kHz per minute the surface measurement is available **without moving
+atoms closer to the glass**, which is the gentler configuration for the fibre.
+Above it, reaching the same significance means working nearer the surface.
+That is why the lock matters to the fibre's owner and not only to us: it sets
+how close to the glass the atoms have to be.
+
+The keep row is the currency a group lending a nanofibre is paid in. The
+physics we gain is in the last row and is ours, not theirs.
+
+**The keep row survives the mode solve unchanged.** Replacing the assumed
+guided geometry with the solved one redrew the mode tables and the diameter
+precision, left the cost rows standing, and moved nothing the host group
+keeps, because that row is a set of calibrations and instruments and not a
+precision. The corrections themselves are in
+[the guided-geometry record](../history/09_the-guided-geometry.md).
+
+**And the surface characterisation is not a by-product.** The near-fibre field
+is what limits Rydberg spectroscopy on this platform, and the published state
+of the art recovers it as a free parameter of a fit its own authors call
+qualitative. A 5S-6S probe populates no Rydberg state, so it reads the same
+environment without the population that complicates it.
 
 ### What decides between them
 

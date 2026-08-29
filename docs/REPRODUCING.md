@@ -4,10 +4,27 @@ What runs from a clone, what needs data that is not in it, and how the
 committed numbers are held to the files that produce them. The short version
 is on the front page under Reproduce. This is the detail behind it.
 
-## The runner, and the sixteen scripts outside it
+**Cutting a release** follows
+[the release checklist](RELEASE_CHECKLIST.md), whose form is stated publicly in
+[the release-note style](RELEASE_NOTE_STYLE.md) so a reader can check the rules
+a note claims to obey. The front page no longer carries operational detail,
+which is what this page is for.
 
-`bash scripts/run_all.sh` executes 31 analysis stages in dependency order,
-then the figures, `docs/RESULTS.md`, and the CSV status column. Re-running any
+## The runner, and the scripts outside it
+
+`bash scripts/run_all.sh` executes 33 analysis stages in dependency order,
+then the reference graph, the figures, `docs/RESULTS.md`, and the CSV status
+column.
+
+**Two producers written in August 2026 sat outside every list on this page
+until 2026-08-28**, which meant two committed CSVs had no route named anywhere
+a reader looks. `run_guided_mode_tables.py` (`guided_mode_tables.csv`, the
+HE11 mode solve and the evanescent profile, under a second) and
+`run_onf_lever_ranking.py` (`onf_lever_ranking.csv`, a Fisher forecast over the
+nanofibre levers, milliseconds) are now stages of the runner.
+`run_campaign_twin_forecast.py` (`campaign_twin_forecast.csv`, the two-arm
+campaign comparison) stays outside it for runtime: it is a Monte Carlo through
+simulate-and-fit and takes about four minutes. Re-running any
 stage reproduces its committed CSV in `results/` within the tolerance
 `scripts/verify_results_fresh.py` states.
 
@@ -34,7 +51,7 @@ under moving dependencies is a property of the environment until the pinned
 comparison disagrees, and that the pinned comparison is the one that speaks
 for the record.
 
-The runner's stages write the core subset of the 74 committed CSVs. The
+The runner's stages write the core subset of the 78 committed CSVs. The
 rest each have their own script, held out for one of two reasons.
 
 ### Six need trees that stay outside the repository
@@ -53,14 +70,14 @@ git worktree per commit.
 Three of those five reach the trees indirectly, importing `run_stark_joint`'s
 `load_session_20250704` and `load_session_20250717` rather than reading the environment
 variables themselves, which is worth knowing if you are grepping for what
-depends on them. Three further scripts outside this thirteen also need the trees
+depends on them. Three further scripts outside the two lists above also need the trees
 and write no CSV: `build_clock_table.py`, `run_epoch_checks.py`, and
 `run_saturation_probe.py` in its opt-in `--joint` stage.
 
 Point `RB5S6S_SESSION_20250704_DIR` and `RB5S6S_SESSION_20250717_DIR` at the trees if you have
 them. The fallback path the scripts fall back to is not where they live.
 
-### Seven run from a clone, held out for runtime or as diagnostics
+### The rest run from a clone, held out for runtime or as diagnostics
 
 `run_wing_check.py` (`wing_check.csv`, about 6 minutes over the raw traces),
 `run_wavemeter_reconstruction.py` (`wavemeter_reconstruction.csv`, digitised
@@ -69,12 +86,25 @@ from a tracked photograph), `run_laser_history.py` (`laser_history.csv` and
 `run_centre_stark.py` (`centre_stark.csv`), `run_cavity_scan.py`
 (`cavity_scan_integrals.csv`) and `run_tooth_scatter.py`
 (`ruler_tooth_scatter.csv`, about a minute refitting every RF-on comb with
-free tooth centres, held out because nothing downstream reads its bound).
+free tooth centres, held out because nothing downstream reads its bound),
+`run_transit_additivity.py` (`transit_additivity.csv`, the guided transit
+kernel's second-order entry computed two independent ways, a few minutes
+over a 600,000-point grid) and `run_fibre_twin.py` (`fibre_twin.csv`).
+
+**`run_fibre_twin.py` was absent from this page as a standing omission**, the
+same defect the paragraph above records. `run_transit_additivity.py` was
+written in the same wave that documented it, so it is not an instance of that
+class and calling it one overstated a claim about recurrence.
+
+**And the class is larger than this page's repairs have measured.** A reading
+of every `scripts/run_*.py` against every committed CSV found roughly twenty
+with a producer, runnable from a clone, named nowhere here. The two lists below
+are therefore not the exhaustive partition the sentence above them implies.
 Three of them read only committed files (the
 cavity-scan one integrates the tracked digitisation
 `docs/apparatus/2025-06-12_cavity_scan_IMG_2508_digitised.csv`).
 
-Four of the thirteen are still checked without being in the runner:
+Four of them are still checked without being in the runner:
 `tests/test_results_fresh.py` re-runs `run_laser_history.py` and
 `run_stark_centres.py` and diffs what they produce against what is committed,
 and `tests/test_cavity_scan.py` does the same for `run_cavity_scan.py`.

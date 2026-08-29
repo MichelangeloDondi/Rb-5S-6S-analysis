@@ -43,6 +43,66 @@
   "source_file": "results/beta_self_probe.csv",
   "source_value": "0.02983110511392229"
  },
+ "campaign_twin_forecast:cell:gamma_coll_5traces_err": {
+  "producer": "run_campaign_twin_forecast.py",
+  "quoting_sites": [
+   {
+    "file": "README.md",
+    "line": 155,
+    "writes": "0.015"
+   }
+  ],
+  "source_file": "results/campaign_twin_forecast.csv",
+  "source_value": "0.01538"
+ },
+ "campaign_twin_forecast:model:photoionisation_margin_from_6S": {
+  "producer": "run_campaign_twin_forecast.py",
+  "quoting_sites": [
+   {
+    "file": "docs/big_picture/06_next-nanofibre.md",
+    "line": 75,
+    "writes": "0.433"
+   }
+  ],
+  "source_file": "results/campaign_twin_forecast.csv",
+  "source_value": "0.433"
+ },
+ "campaign_twin_forecast:onf:minutes_per_trace_0.004": {
+  "producer": "run_campaign_twin_forecast.py",
+  "quoting_sites": [
+   {
+    "file": "docs/big_picture/09_the-campaign-cases.md",
+    "line": 158,
+    "writes": "69"
+   }
+  ],
+  "source_file": "results/campaign_twin_forecast.csv",
+  "source_value": "69.44"
+ },
+ "campaign_twin_forecast:onf:minutes_per_trace_0.004_err": {
+  "producer": "run_campaign_twin_forecast.py",
+  "quoting_sites": [
+   {
+    "file": "docs/big_picture/09_the-campaign-cases.md",
+    "line": 158,
+    "writes": "16"
+   }
+  ],
+  "source_file": "results/campaign_twin_forecast.csv",
+  "source_value": "15.62"
+ },
+ "campaign_twin_forecast:onf:minutes_per_trace_0.02": {
+  "producer": "run_campaign_twin_forecast.py",
+  "quoting_sites": [
+   {
+    "file": "docs/big_picture/09_the-campaign-cases.md",
+    "line": 158,
+    "writes": "2.78"
+   }
+  ],
+  "source_file": "results/campaign_twin_forecast.csv",
+  "source_value": "2.78"
+ },
  "centre_fisher:inflation_linear_over_constant:measured": {
   "producer": "run_centre_fisher.py",
   "quoting_sites": [
@@ -105,11 +165,6 @@
   "producer": "run_centre_fisher.py",
   "quoting_sites": [
    {
-    "file": "README.md",
-    "line": 215,
-    "writes": "3.48"
-   },
-   {
     "file": "docs/history/01_bounds-and-the-light-shift.md",
     "line": 89,
     "writes": "3.48"
@@ -131,11 +186,6 @@
  "centre_fisher:sigma_amplitude_forecast:linear_drift_cycled": {
   "producer": "run_centre_fisher.py",
   "quoting_sites": [
-   {
-    "file": "README.md",
-    "line": 215,
-    "writes": "0.48"
-   },
    {
     "file": "docs/history/01_bounds-and-the-light-shift.md",
     "line": 91,
@@ -290,7 +340,7 @@
    },
    {
     "file": "docs/plan/00_the-case.md",
-    "line": 137,
+    "line": 135,
     "writes": "0.0324"
    },
    {
@@ -324,7 +374,7 @@
    },
    {
     "file": "docs/plan/00_the-case.md",
-    "line": 133,
+    "line": 131,
     "writes": "0.35"
    }
   ],
@@ -358,7 +408,7 @@
    },
    {
     "file": "docs/plan/00_the-case.md",
-    "line": 131,
+    "line": 129,
     "writes": "1038"
    }
   ],
@@ -375,12 +425,80 @@
    },
    {
     "file": "docs/plan/00_the-case.md",
-    "line": 129,
+    "line": 127,
     "writes": "837"
    }
   ],
   "source_file": "results/delta_alpha_posterior.csv",
   "source_value": "837"
+ },
+ "fibre_twin:O2A_lambda_312nm:coverage_gamma_l": {
+  "producer": "run_fibre_twin.py",
+  "quoting_sites": [
+   {
+    "file": "docs/big_picture/06_next-nanofibre.md",
+    "line": 231,
+    "writes": "0.9640"
+   },
+   {
+    "file": "docs/methods/09_the_guided_geometry.md",
+    "line": 378,
+    "writes": "0.9640"
+   }
+  ],
+  "source_file": "results/fibre_twin.csv",
+  "source_value": "0.9640"
+ },
+ "fibre_twin:O2A_lambda_312nm:coverage_sigma_g": {
+  "producer": "run_fibre_twin.py",
+  "quoting_sites": [
+   {
+    "file": "docs/big_picture/06_next-nanofibre.md",
+    "line": 233,
+    "writes": "0.4040"
+   },
+   {
+    "file": "docs/methods/09_the_guided_geometry.md",
+    "line": 381,
+    "writes": "0.4040"
+   }
+  ],
+  "source_file": "results/fibre_twin.csv",
+  "source_value": "0.4040"
+ },
+ "fibre_twin:O2A_lambda_492nm:coverage_gamma_l": {
+  "producer": "run_fibre_twin.py",
+  "quoting_sites": [
+   {
+    "file": "docs/big_picture/06_next-nanofibre.md",
+    "line": 231,
+    "writes": "0.9580"
+   },
+   {
+    "file": "docs/methods/09_the_guided_geometry.md",
+    "line": 379,
+    "writes": "0.9580"
+   }
+  ],
+  "source_file": "results/fibre_twin.csv",
+  "source_value": "0.9580"
+ },
+ "fibre_twin:O2A_lambda_492nm:coverage_sigma_g": {
+  "producer": "run_fibre_twin.py",
+  "quoting_sites": [
+   {
+    "file": "docs/big_picture/06_next-nanofibre.md",
+    "line": 233,
+    "writes": "0.3760"
+   },
+   {
+    "file": "docs/methods/09_the_guided_geometry.md",
+    "line": 382,
+    "writes": "0.3760"
+   }
+  ],
+  "source_file": "results/fibre_twin.csv",
+  "source_value": "0.3760"
  },
  "full_dataset_fit:kappa_ub95:primary": {
   "producer": "run_full_dataset_fit.py",
@@ -394,6 +512,350 @@
   "source_file": "results/full_dataset_fit.csv",
   "source_value": "0.944"
  },
+ "guided_mode_tables:evanescent_profile_370nm_at_100nm:flux_fraction": {
+  "producer": "run_guided_mode_tables.py",
+  "quoting_sites": [
+   {
+    "file": "docs/methods/09_the_guided_geometry.md",
+    "line": 77,
+    "writes": "0.580"
+   }
+  ],
+  "source_file": "results/guided_mode_tables.csv",
+  "source_value": "0.580"
+ },
+ "guided_mode_tables:evanescent_profile_370nm_at_100nm:flux_fraction_exponential": {
+  "producer": "run_guided_mode_tables.py",
+  "quoting_sites": [
+   {
+    "file": "docs/methods/09_the_guided_geometry.md",
+    "line": 77,
+    "writes": "0.779"
+   }
+  ],
+  "source_file": "results/guided_mode_tables.csv",
+  "source_value": "0.779"
+ },
+ "guided_mode_tables:evanescent_profile_370nm_at_200nm:flux_fraction": {
+  "producer": "run_guided_mode_tables.py",
+  "quoting_sites": [
+   {
+    "file": "docs/methods/09_the_guided_geometry.md",
+    "line": 78,
+    "writes": "0.360"
+   }
+  ],
+  "source_file": "results/guided_mode_tables.csv",
+  "source_value": "0.360"
+ },
+ "guided_mode_tables:evanescent_profile_370nm_at_200nm:flux_fraction_exponential": {
+  "producer": "run_guided_mode_tables.py",
+  "quoting_sites": [
+   {
+    "file": "docs/methods/09_the_guided_geometry.md",
+    "line": 78,
+    "writes": "0.607"
+   }
+  ],
+  "source_file": "results/guided_mode_tables.csv",
+  "source_value": "0.607"
+ },
+ "guided_mode_tables:evanescent_profile_370nm_at_400nm:flux_fraction": {
+  "producer": "run_guided_mode_tables.py",
+  "quoting_sites": [
+   {
+    "file": "docs/methods/09_the_guided_geometry.md",
+    "line": 69,
+    "writes": "0.156"
+   },
+   {
+    "file": "docs/methods/09_the_guided_geometry.md",
+    "line": 79,
+    "writes": "0.156"
+   }
+  ],
+  "source_file": "results/guided_mode_tables.csv",
+  "source_value": "0.156"
+ },
+ "guided_mode_tables:evanescent_profile_370nm_at_400nm:flux_fraction_exponential": {
+  "producer": "run_guided_mode_tables.py",
+  "quoting_sites": [
+   {
+    "file": "docs/methods/09_the_guided_geometry.md",
+    "line": 79,
+    "writes": "0.369"
+   }
+  ],
+  "source_file": "results/guided_mode_tables.csv",
+  "source_value": "0.369"
+ },
+ "guided_mode_tables:evanescent_profile_370nm_at_600nm:flux_fraction": {
+  "producer": "run_guided_mode_tables.py",
+  "quoting_sites": [
+   {
+    "file": "docs/methods/09_the_guided_geometry.md",
+    "line": 80,
+    "writes": "0.074"
+   }
+  ],
+  "source_file": "results/guided_mode_tables.csv",
+  "source_value": "0.074"
+ },
+ "guided_mode_tables:evanescent_profile_370nm_at_600nm:flux_fraction_exponential": {
+  "producer": "run_guided_mode_tables.py",
+  "quoting_sites": [
+   {
+    "file": "docs/methods/09_the_guided_geometry.md",
+    "line": 80,
+    "writes": "0.224"
+   }
+  ],
+  "source_file": "results/guided_mode_tables.csv",
+  "source_value": "0.224"
+ },
+ "guided_mode_tables:evanescent_profile_400nm_at_400nm:flux_fraction": {
+  "producer": "run_guided_mode_tables.py",
+  "quoting_sites": [
+   {
+    "file": "docs/methods/09_the_guided_geometry.md",
+    "line": 71,
+    "writes": "0.119"
+   }
+  ],
+  "source_file": "results/guided_mode_tables.csv",
+  "source_value": "0.119"
+ },
+ "guided_mode_tables:mode_solve_350nm:amplitude_decay_length": {
+  "producer": "run_guided_mode_tables.py",
+  "quoting_sites": [
+   {
+    "file": "docs/big_picture/06_next-nanofibre.md",
+    "line": 93,
+    "writes": "984"
+   }
+  ],
+  "source_file": "results/guided_mode_tables.csv",
+  "source_value": "984"
+ },
+ "guided_mode_tables:mode_solve_350nm:neff": {
+  "producer": "run_guided_mode_tables.py",
+  "quoting_sites": [
+   {
+    "file": "docs/big_picture/06_next-nanofibre.md",
+    "line": 93,
+    "writes": "1.01283"
+   }
+  ],
+  "source_file": "results/guided_mode_tables.csv",
+  "source_value": "1.01283"
+ },
+ "guided_mode_tables:mode_solve_370nm:amplitude_decay_length": {
+  "producer": "run_guided_mode_tables.py",
+  "quoting_sites": [
+   {
+    "file": "docs/big_picture/06_next-nanofibre.md",
+    "line": 94,
+    "writes": "802"
+   }
+  ],
+  "source_file": "results/guided_mode_tables.csv",
+  "source_value": "802"
+ },
+ "guided_mode_tables:mode_solve_370nm:neff": {
+  "producer": "run_guided_mode_tables.py",
+  "quoting_sites": [
+   {
+    "file": "docs/big_picture/06_next-nanofibre.md",
+    "line": 94,
+    "writes": "1.01927"
+   }
+  ],
+  "source_file": "results/guided_mode_tables.csv",
+  "source_value": "1.01927"
+ },
+ "guided_mode_tables:mode_solve_370nm:qa": {
+  "producer": "run_guided_mode_tables.py",
+  "quoting_sites": [
+   {
+    "file": "docs/big_picture/06_next-nanofibre.md",
+    "line": 102,
+    "writes": "0.231"
+   }
+  ],
+  "source_file": "results/guided_mode_tables.csv",
+  "source_value": "0.231"
+ },
+ "guided_mode_tables:mode_solve_400nm:amplitude_decay_length": {
+  "producer": "run_guided_mode_tables.py",
+  "quoting_sites": [
+   {
+    "file": "docs/big_picture/06_next-nanofibre.md",
+    "line": 95,
+    "writes": "624"
+   }
+  ],
+  "source_file": "results/guided_mode_tables.csv",
+  "source_value": "624"
+ },
+ "guided_mode_tables:mode_solve_400nm:mode_area_azimuthal_mean": {
+  "producer": "run_guided_mode_tables.py",
+  "quoting_sites": [
+   {
+    "file": "docs/big_picture/06_next-nanofibre.md",
+    "line": 105,
+    "writes": "0.615"
+   },
+   {
+    "file": "docs/wiki/guided-atoms-and-nanofibres.md",
+    "line": 56,
+    "writes": "0.615"
+   }
+  ],
+  "source_file": "results/guided_mode_tables.csv",
+  "source_value": "0.615"
+ },
+ "guided_mode_tables:mode_solve_400nm:mode_area_peak": {
+  "producer": "run_guided_mode_tables.py",
+  "quoting_sites": [
+   {
+    "file": "docs/big_picture/06_next-nanofibre.md",
+    "line": 106,
+    "writes": "0.489"
+   },
+   {
+    "file": "docs/wiki/guided-atoms-and-nanofibres.md",
+    "line": 56,
+    "writes": "0.489"
+   }
+  ],
+  "source_file": "results/guided_mode_tables.csv",
+  "source_value": "0.489"
+ },
+ "guided_mode_tables:mode_solve_400nm:neff": {
+  "producer": "run_guided_mode_tables.py",
+  "quoting_sites": [
+   {
+    "file": "docs/big_picture/06_next-nanofibre.md",
+    "line": 95,
+    "writes": "1.03164"
+   },
+   {
+    "file": "docs/wiki/guided-atoms-and-nanofibres.md",
+    "line": 54,
+    "writes": "1.03164"
+   }
+  ],
+  "source_file": "results/guided_mode_tables.csv",
+  "source_value": "1.03164"
+ },
+ "guided_mode_tables:mode_solve_400nm:power_fraction_in_glass": {
+  "producer": "run_guided_mode_tables.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/guided-atoms-and-nanofibres.md",
+    "line": 65,
+    "writes": "0.231"
+   }
+  ],
+  "source_file": "results/guided_mode_tables.csv",
+  "source_value": "0.231"
+ },
+ "guided_mode_tables:transit_kernel_amplitude_lorentzian:factor": {
+  "producer": "run_guided_mode_tables.py",
+  "quoting_sites": [
+   {
+    "file": "docs/methods/09_the_guided_geometry.md",
+    "line": 160,
+    "writes": "1.0"
+   }
+  ],
+  "source_file": "results/guided_mode_tables.csv",
+  "source_value": "1.0"
+ },
+ "guided_mode_tables:transit_kernel_amplitude_lorentzian:fwhm": {
+  "producer": "run_guided_mode_tables.py",
+  "quoting_sites": [
+   {
+    "file": "docs/methods/09_the_guided_geometry.md",
+    "line": 160,
+    "writes": "151.8"
+   }
+  ],
+  "source_file": "results/guided_mode_tables.csv",
+  "source_value": "151.8"
+ },
+ "guided_mode_tables:transit_kernel_ensemble_flux:factor": {
+  "producer": "run_guided_mode_tables.py",
+  "quoting_sites": [
+   {
+    "file": "docs/methods/09_the_guided_geometry.md",
+    "line": 162,
+    "writes": "0.4387"
+   }
+  ],
+  "source_file": "results/guided_mode_tables.csv",
+  "source_value": "0.4387"
+ },
+ "guided_mode_tables:transit_kernel_ensemble_flux:fwhm": {
+  "producer": "run_guided_mode_tables.py",
+  "quoting_sites": [
+   {
+    "file": "docs/methods/09_the_guided_geometry.md",
+    "line": 162,
+    "writes": "66.6"
+   }
+  ],
+  "source_file": "results/guided_mode_tables.csv",
+  "source_value": "66.6"
+ },
+ "guided_mode_tables:transit_kernel_ensemble_speed:factor": {
+  "producer": "run_guided_mode_tables.py",
+  "quoting_sites": [
+   {
+    "file": "docs/methods/09_the_guided_geometry.md",
+    "line": 163,
+    "writes": "0.2422"
+   }
+  ],
+  "source_file": "results/guided_mode_tables.csv",
+  "source_value": "0.2422"
+ },
+ "guided_mode_tables:transit_kernel_ensemble_speed:fwhm": {
+  "producer": "run_guided_mode_tables.py",
+  "quoting_sites": [
+   {
+    "file": "docs/methods/09_the_guided_geometry.md",
+    "line": 163,
+    "writes": "36.8"
+   }
+  ],
+  "source_file": "results/guided_mode_tables.csv",
+  "source_value": "36.8"
+ },
+ "guided_mode_tables:transit_kernel_single_velocity:factor": {
+  "producer": "run_guided_mode_tables.py",
+  "quoting_sites": [
+   {
+    "file": "docs/methods/09_the_guided_geometry.md",
+    "line": 161,
+    "writes": "0.6436"
+   }
+  ],
+  "source_file": "results/guided_mode_tables.csv",
+  "source_value": "0.6436"
+ },
+ "guided_mode_tables:transit_kernel_single_velocity:fwhm": {
+  "producer": "run_guided_mode_tables.py",
+  "quoting_sites": [
+   {
+    "file": "docs/methods/09_the_guided_geometry.md",
+    "line": 161,
+    "writes": "97.7"
+   }
+  ],
+  "source_file": "results/guided_mode_tables.csv",
+  "source_value": "97.7"
+ },
  "laser_epoch:sigma_laser_bound:over_w0_band": {
   "producer": "run_laser_epoch.py",
   "quoting_sites": [
@@ -404,7 +866,7 @@
    },
    {
     "file": "docs/plan/00_the-case.md",
-    "line": 61,
+    "line": 60,
     "writes": "1.2"
    }
   ],
@@ -476,6 +938,284 @@
   "source_file": "docs/lit/orson2021.md",
   "source_value": "18"
  },
+ "onf_candidate:S0_onf_50uW:": {
+  "producer": "run_onf_candidate.py",
+  "quoting_sites": [
+   {
+    "file": "docs/notes/onf_candidate.md",
+    "line": 114,
+    "writes": "0.57"
+   }
+  ],
+  "source_file": "results/onf_candidate.csv",
+  "source_value": "0.57"
+ },
+ "onf_candidate:cp_shift_at_200nm:": {
+  "producer": "run_onf_candidate.py",
+  "quoting_sites": [
+   {
+    "file": "docs/notes/onf_candidate.md",
+    "line": 84,
+    "writes": "0.21 to 0.53"
+   }
+  ],
+  "source_file": "results/onf_candidate.csv",
+  "source_value": "0.21 to 0.53"
+ },
+ "onf_candidate:cp_shift_at_50nm:": {
+  "producer": "run_onf_candidate.py",
+  "quoting_sites": [
+   {
+    "file": "docs/notes/onf_candidate.md",
+    "line": 77,
+    "writes": "13.52 to 33.80"
+   }
+  ],
+  "source_file": "results/onf_candidate.csv",
+  "source_value": "13.52 to 33.80"
+ },
+ "onf_candidate:eom_drive_needed_onf_hot_130C:": {
+  "producer": "run_onf_candidate.py",
+  "quoting_sites": [
+   {
+    "file": "docs/notes/onf_candidate.md",
+    "line": 312,
+    "writes": "358.6 to 483.4"
+   },
+   {
+    "file": "docs/notes/onf_candidate.md",
+    "line": 339,
+    "writes": "358.6 to 483.4"
+   }
+  ],
+  "source_file": "results/onf_candidate.csv",
+  "source_value": "358.6 to 483.4"
+ },
+ "onf_candidate:eom_teeth_per_transit_cell_130C:": {
+  "producer": "run_onf_candidate.py",
+  "quoting_sites": [
+   {
+    "file": "docs/notes/onf_candidate.md",
+    "line": 303,
+    "writes": "13.06"
+   }
+  ],
+  "source_file": "results/onf_candidate.csv",
+  "source_value": "13.06"
+ },
+ "onf_candidate:eom_teeth_per_transit_onf_cold:": {
+  "producer": "run_onf_candidate.py",
+  "quoting_sites": [
+   {
+    "file": "docs/notes/onf_candidate.md",
+    "line": 304,
+    "writes": "127.18 to 171.45"
+   }
+  ],
+  "source_file": "results/onf_candidate.csv",
+  "source_value": "127.18 to 171.45"
+ },
+ "onf_candidate:eom_teeth_per_transit_onf_hot_130C:": {
+  "producer": "run_onf_candidate.py",
+  "quoting_sites": [
+   {
+    "file": "docs/notes/onf_candidate.md",
+    "line": 305,
+    "writes": "0.08 to 0.10"
+   }
+  ],
+  "source_file": "results/onf_candidate.csv",
+  "source_value": "0.08 to 0.10"
+ },
+ "onf_candidate:transit_cell_130C:": {
+  "producer": "run_onf_candidate.py",
+  "quoting_sites": [
+   {
+    "file": "docs/notes/onf_candidate.md",
+    "line": 303,
+    "writes": "0.958"
+   }
+  ],
+  "source_file": "results/onf_candidate.csv",
+  "source_value": "0.9575"
+ },
+ "onf_candidate:transit_onf_cold_band:": {
+  "producer": "run_onf_candidate.py",
+  "quoting_sites": [
+   {
+    "file": "docs/big_picture/06_next-nanofibre.md",
+    "line": 50,
+    "writes": "73 to 98"
+   },
+   {
+    "file": "docs/notes/onf_candidate.md",
+    "line": 304,
+    "writes": "73 to 98"
+   }
+  ],
+  "source_file": "results/onf_candidate.csv",
+  "source_value": "73 to 98"
+ },
+ "onf_candidate:transit_onf_hot_130C:": {
+  "producer": "run_onf_candidate.py",
+  "quoting_sites": [
+   {
+    "file": "docs/notes/onf_candidate.md",
+    "line": 305,
+    "writes": "140.3"
+   }
+  ],
+  "source_file": "results/onf_candidate.csv",
+  "source_value": "140.3"
+ },
+ "onf_lever_ranking:distance_scan:sigma_C3_frac": {
+  "producer": "run_onf_lever_ranking.py",
+  "quoting_sites": [
+   {
+    "file": "docs/history/09_the-guided-geometry.md",
+    "line": 78,
+    "writes": "1.851"
+   },
+   {
+    "file": "docs/methods/09_the_guided_geometry.md",
+    "line": 338,
+    "writes": "1.851"
+   }
+  ],
+  "source_file": "results/onf_lever_ranking.csv",
+  "source_value": "1.851"
+ },
+ "onf_lever_ranking:distance_scan:sigma_diameter_nm": {
+  "producer": "run_onf_lever_ranking.py",
+  "quoting_sites": [
+   {
+    "file": "docs/history/09_the-guided-geometry.md",
+    "line": 77,
+    "writes": "30.7"
+   },
+   {
+    "file": "docs/methods/09_the_guided_geometry.md",
+    "line": 332,
+    "writes": "30.7"
+   }
+  ],
+  "source_file": "results/onf_lever_ranking.csv",
+  "source_value": "30.7"
+ },
+ "onf_lever_ranking:distance_scan:sigma_lambda_frac": {
+  "producer": "run_onf_lever_ranking.py",
+  "quoting_sites": [
+   {
+    "file": "docs/big_picture/06_next-nanofibre.md",
+    "line": 79,
+    "writes": "0.2895"
+   },
+   {
+    "file": "docs/methods/09_the_guided_geometry.md",
+    "line": 330,
+    "writes": "0.2895"
+   }
+  ],
+  "source_file": "results/onf_lever_ranking.csv",
+  "source_value": "0.2895"
+ },
+ "onf_lever_ranking:lock_requirement_40kHz:surface_shift_significance_at_400nm_band": {
+  "producer": "run_onf_lever_ranking.py",
+  "quoting_sites": [
+   {
+    "file": "docs/big_picture/09_the-campaign-cases.md",
+    "line": 167,
+    "writes": "0 to 1"
+   }
+  ],
+  "source_file": "results/onf_lever_ranking.csv",
+  "source_value": "0 to 1"
+ },
+ "onf_lever_ranking:lock_requirement_4kHz:surface_shift_significance_at_400nm_band": {
+  "producer": "run_onf_lever_ranking.py",
+  "quoting_sites": [
+   {
+    "file": "docs/big_picture/09_the-campaign-cases.md",
+    "line": 165,
+    "writes": "4 to 9"
+   }
+  ],
+  "source_file": "results/onf_lever_ranking.csv",
+  "source_value": "4 to 9"
+ },
+ "onf_lever_ranking:lock_span_0.04:sigma_diameter_nm": {
+  "producer": "run_onf_lever_ranking.py",
+  "quoting_sites": [
+   {
+    "file": "docs/big_picture/06_next-nanofibre.md",
+    "line": 126,
+    "writes": "30.73"
+   },
+   {
+    "file": "docs/big_picture/09_the-campaign-cases.md",
+    "line": 156,
+    "writes": "30.73"
+   }
+  ],
+  "source_file": "results/onf_lever_ranking.csv",
+  "source_value": "30.73"
+ },
+ "onf_lever_ranking:lock_span_0.0:sigma_diameter_nm": {
+  "producer": "run_onf_lever_ranking.py",
+  "quoting_sites": [
+   {
+    "file": "docs/big_picture/06_next-nanofibre.md",
+    "line": 128,
+    "writes": "0.67"
+   },
+   {
+    "file": "docs/big_picture/09_the-campaign-cases.md",
+    "line": 156,
+    "writes": "0.67"
+   },
+   {
+    "file": "docs/history/09_the-guided-geometry.md",
+    "line": 77,
+    "writes": "0.67"
+   },
+   {
+    "file": "docs/methods/09_the_guided_geometry.md",
+    "line": 334,
+    "writes": "0.67"
+   }
+  ],
+  "source_file": "results/onf_lever_ranking.csv",
+  "source_value": "0.67"
+ },
+ "onf_lever_ranking:temperature_ladder:hours": {
+  "producer": "run_onf_lever_ranking.py",
+  "quoting_sites": [
+   {
+    "file": "docs/big_picture/09_the-campaign-cases.md",
+    "line": 157,
+    "writes": "0.23"
+   }
+  ],
+  "source_file": "results/onf_lever_ranking.csv",
+  "source_value": "0.23"
+ },
+ "onf_lever_ranking:temperature_ladder:sigma_transit_frac": {
+  "producer": "run_onf_lever_ranking.py",
+  "quoting_sites": [
+   {
+    "file": "docs/methods/09_the_guided_geometry.md",
+    "line": 241,
+    "writes": "5.0452"
+   },
+   {
+    "file": "docs/methods/09_the_guided_geometry.md",
+    "line": 369,
+    "writes": "5.0452"
+   }
+  ],
+  "source_file": "results/onf_lever_ranking.csv",
+  "source_value": "5.0452"
+ },
  "saturation_companion:C3d:factor_with_saturation_ratio_-1p2362": {
   "producer": null,
   "quoting_sites": [
@@ -486,7 +1226,7 @@
    },
    {
     "file": "docs/plan/00_the-case.md",
-    "line": 200,
+    "line": 198,
     "writes": "2.75"
    }
   ],
@@ -520,7 +1260,7 @@
    },
    {
     "file": "docs/plan/00_the-case.md",
-    "line": 88,
+    "line": 87,
     "writes": "0.26"
    },
    {
@@ -585,7 +1325,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/00_the-case.md",
-    "line": 99,
+    "line": 98,
     "writes": "0.364"
    }
   ],
@@ -604,62 +1344,45 @@
   "source_file": "results/stark_sweep.csv",
   "source_value": "3.705"
  },
- "wavemeter_reconstruction:settle_tau_min:2025-06-11": {
-  "producer": "run_wavemeter_reconstruction.py",
+ "transit_additivity:spanned:added_fraction_170uK_band": {
+  "producer": "run_transit_additivity.py",
   "quoting_sites": [
    {
-    "file": "README.md",
-    "line": 215,
-    "writes": "12.6"
+    "file": "docs/notes/onf_candidate.md",
+    "line": 265,
+    "writes": "0.083 to 0.171"
    }
   ],
-  "source_file": "results/wavemeter_reconstruction.csv",
-  "source_value": "12.6"
+  "source_file": "results/transit_additivity.csv",
+  "source_value": "0.083 to 0.171"
  },
- "wavemeter_reconstruction:settle_tau_min:2025-06-11:err": {
-  "producer": "run_wavemeter_reconstruction.py",
+ "transit_additivity:spanned:added_width_170uK_band": {
+  "producer": "run_transit_additivity.py",
   "quoting_sites": [
    {
-    "file": "README.md",
-    "line": 215,
-    "writes": "1.2"
+    "file": "docs/methods/09_the_guided_geometry.md",
+    "line": 239,
+    "writes": "6.70 to 9.94"
    }
   ],
-  "source_file": "results/wavemeter_reconstruction.csv",
-  "source_value": "1.2"
+  "source_file": "results/transit_additivity.csv",
+  "source_value": "6.70 to 9.94"
  },
- "window_attribution:n_block_steps_within_line:peak_power": {
-  "producer": "run_window_attribution.py",
+ "transit_additivity:spanned:temperature_exponent_band": {
+  "producer": "run_transit_additivity.py",
   "quoting_sites": [
    {
-    "file": "README.md",
-    "line": 215,
-    "writes": "16"
+    "file": "docs/methods/09_the_guided_geometry.md",
+    "line": 213,
+    "writes": "0.973 to 0.980"
    }
   ],
-  "source_file": "results/window_attribution.csv",
-  "source_value": "16.0000"
- },
- "window_attribution:rms_residual_ms:peak_power": {
-  "producer": "run_window_attribution.py",
-  "quoting_sites": [
-   {
-    "file": "README.md",
-    "line": 215,
-    "writes": "8"
-   }
-  ],
-  "source_file": "results/window_attribution.csv",
-  "source_value": "7.9991"
+  "source_file": "results/transit_additivity.csv",
+  "source_value": "0.973 to 0.980"
  },
  "window_attribution:window_attributed_pct:peak_power": {
   "producer": "run_window_attribution.py",
   "quoting_sites": [
-   {
-    "file": "README.md",
-    "line": 215,
-    "writes": "99.8"
-   },
    {
     "file": "docs/plan/01_aim-and-failure-modes.md",
     "line": 97,
@@ -668,17 +1391,5 @@
   ],
   "source_file": "results/window_attribution.csv",
   "source_value": "99.7680"
- },
- "window_attribution:window_attributed_pct_within_line:peak_power": {
-  "producer": "run_window_attribution.py",
-  "quoting_sites": [
-   {
-    "file": "README.md",
-    "line": 215,
-    "writes": "99.6"
-   }
-  ],
-  "source_file": "results/window_attribution.csv",
-  "source_value": "99.6300"
  }
 }

@@ -255,10 +255,8 @@ systematic as fig1.*
 - No environmental coefficient of the 993 nm line is measured here.
   The coefficients are bounds, and the collisional floor is not read as
   a detection of Rb-Rb collisions.
-- **No claim that the laser broadening is Gaussian, and the assumption is now
-  MEASURED rather than unquantified** (updated 2026-08-21: the earlier form of
-  this entry said the size was unquantified and that the data do not settle
-  it, and both halves changed). Every lineshape in this record convolves the
+- **No claim that the laser broadening is Gaussian, and the size of that
+  assumption is MEASURED**. Every lineshape in this record convolves the
   natural Lorentzian with a gaussian kernel for the laser, which is what slow
   frequency noise produces. Fast noise produces a lorentzian laser line
   instead, and a Lorentzian laser width enters the fixed-condition model only

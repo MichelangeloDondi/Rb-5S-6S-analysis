@@ -11,7 +11,7 @@ to 64 µm. An earlier draft of this note claimed the MC had **two** bugs and
 inferred **w₀ ≈ 90 µm**, which was wrong by a factor of 2 (see "What the
 earlier note got wrong" below) and is retracted.
 
-`provenance: results/transit_mc.csv` - RESOLVED by its own header, with the accepted 64 um waist in force since v3.0.0. It cites this file and every one of its 30 three-significant-figure values appears in a committed CSV. **No claim on this page is unaccounted for.** Declared after checking every three-significant-figure value on the page against `results/`, not by labelling.
+`provenance: results/transit_mc.csv` - RESOLVED by its own header, with the accepted 64 um waist in force since v3.0.0. It cites this file. An untagged number here is a claim to check, not a checked one.
 
 
 ## The one real bug (flux), and the fix

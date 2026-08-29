@@ -56,8 +56,7 @@ the 20% density systematic. The effective coefficients sit at 0.005 to
 0.016, each below 2 sigma against its own standard error, so nothing
 resolves a collisional width and every number here is a bound.
 
-**The unexplained Gaussian width, which this record used to call the laser
-width.** Below 2.4 MHz on the two-photon transition axis, the axis the
+**The unexplained Gaussian width, which is not the laser.** Below 2.4 MHz on the two-photon transition axis, the axis the
 analysis works on, or [1.2](../../results/laser_epoch.csv "ref:laser_epoch:sigma_laser_bound:over_w0_band") MHz per photon
 ([`laser_epoch.csv`](../../results/laser_epoch.csv)). **The name matters
 more than the number.** What the fit bounds is the Gaussian left over once
@@ -99,8 +98,7 @@ the cell at campaign time, which is why section 4 still asks for the
 profile, the prediction is [0.364](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred:shared") MHz, above the limit, and the limit lies below the whole predicted envelope,
 1.404 to 1.760 in κ over the stated waist and retro band, so on the full
 three-session fit the prediction is excluded at 95 per cent at every geometry
-in that band. **This page called that an exclusion at roughly the two-sigma
-level, and two things qualify it that the page did not state.**
+in that band. **Two things qualify that exclusion.**
 
 **The strength is a range and not a number.** Δχ² runs 4.1 to 5.7 across the
 envelope, 2.0 to 2.4 σ, and the same profile read as a posterior puts the
@@ -358,5 +356,5 @@ alternative,
 commitments made before looking, and
 [REPRODUCING.md](../REPRODUCING.md) for what runs from a clone.
 
-This page opens [the plan](../PLAN.md), whose eleven chapters carry the
+This page opens [the plan](../PLAN.md), whose chapters carry the
 designs behind sections 4 and 5.

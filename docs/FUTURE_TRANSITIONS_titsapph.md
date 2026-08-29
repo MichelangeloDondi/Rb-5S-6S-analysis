@@ -222,8 +222,8 @@ exactly where an upper-ladder line is faintest.
 `rb5s6s.noise.condition_noise_model` fits a and b from a handful of repeats, so
 the blue chain's V\* can be measured on the bench with a lamp, the filter and the
 detector, before any transition is attempted. Doing it first converts the
-detection swap from an assumption into a number, and it is the cheapest
-derisking step on this page.
+detection swap from an assumption into a number, and it is the cheapest step
+on this page for narrowing what could go wrong.
 
 ## 3. The case for running more than one line
 

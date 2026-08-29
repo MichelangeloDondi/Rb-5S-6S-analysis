@@ -13,8 +13,10 @@ item below exists to make that invitation honest.
 
 ## Before the release
 
-**1. Decide what the version means.** The package is at 4.1 and the framework
-and the rubidium result move independently, which the README states. A release
+**1. Decide what the version means.** The framework and the rubidium result
+move independently, which the README states, and the current number is in
+`pyproject.toml`, not here, because this sentence carried 4.1 through three
+releases. A release
 should say which of the two the number tracks. The current answer is the
 framework, and it is worth saying so in `pyproject.toml`'s description rather
 than leaving it inferred.

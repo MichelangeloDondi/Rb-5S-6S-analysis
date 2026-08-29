@@ -42,6 +42,7 @@ remains the complete record and this file is the curated part.
 * **[The digital twin](history/06_the-digital-twin.md)**, the twin's own corrections.
 * **[The environment and the code](history/07_the-environment-and-the-code.md)**, migrations, renames and switches that moved committed numbers.
 * **[Documents and publishing](history/08_documents-and-publishing.md)**, corrections to what the record said rather than to what it measured.
+* **[The guided geometry](history/09_the-guided-geometry.md)**, the nanofibre mode, its kernels, and what an assumed geometry had been carrying. **A fibre-thread page**: a reader with no fibre skips it and loses nothing.
 
 ## What moved, and where the live value is
 
@@ -108,7 +109,7 @@ A row appears here because a number was published and then replaced. Each entry 
 | [the package's exported differential polarizability](history/01_bounds-and-the-light-shift.md#the-package-exported-a-polarizability-the-record-disagreed-with-2026-08-25) | `DELTA_ALPHA_AU` exported the cited +1093 while `results/polarizability.csv` had carried -1145 since 2026-07-17 | reconciled to this record's -1145 by owner decision on the theory; the cited value kept as `DELTA_ALPHA_AU_ORSON2021` | [`results/polarizability.csv`](../results/polarizability.csv), row `delta_alpha_993` |
 | [the two quantities pages' headline statements](history/08_documents-and-publishing.md#the-quantities-pages-disagreed-with-the-record-they-index-2026-08-26) | light shift: the cited polarizability named as the package value; self-broadening: the bound quoted without the density-scale systematic | both pages now state what the record states, sign and column | [`docs/THEORY_NOTE.md`](THEORY_NOTE.md), [`docs/RESULTS.md`](RESULTS.md) |
 | [the collisional-shift entry and the comparisons drawn from it: twelve figures and claims, including Orson's null on the wrong axis, a differential over the wrong temperature range, and two cross-record comparisons that divided quantities taken at different conditions](history/01_bounds-and-the-light-shift.md#the-collisional-shift-entry-and-orsons-own-axis-2026-08-27) | nine times; 0.036 MHz; seven times; 24 kHz; two independent routes; "already carries" shift machinery; Orson's section 4; 23x and twenty times against Orson's AC-Stark null; **three orders of magnitude** against his density null | eighteen times; 0.044 MHz; 5.9 times; 32 kHz; one route through Zameroski 2014; a width prefactor only; section 3; about 13x, on the coefficient and not on shifts taken at different powers; **about 24 times, an overstatement of roughly forty-fold corrected downward** | [`results/collisional_shift_bound.csv`](../results/collisional_shift_bound.csv) |
-| [The v4.3 and first v4.4 release pages](history/08_documents-and-publishing.md#the-v43-and-v44-release-pages-withdrawn-2026-08-26) | v4.3 page and first v4.4 page, narrative form, numbers naming no committed file, terms unresolvable | both withdrawn and neither republished; their content carries forward in the v4.5 page, which spans v4.2 to that tag | [`docs/RELEASE_NOTE_STYLE.md`](RELEASE_NOTE_STYLE.md) |
+| [The v4.3 and first v4.4 release pages](history/08_documents-and-publishing.md#the-v43-and-v44-release-pages-withdrawn-2026-08-26) | v4.3 page and first v4.4 page. The cause was first recorded as register and is **corrected**: the physics was wrong or confused, and the register was the smaller half | both withdrawn and neither republished; their content carries forward in the v4.5 page, which spans v4.2 to that tag. N3 gained the mechanism it had always lacked | [`docs/RELEASE_NOTE_STYLE.md`](RELEASE_NOTE_STYLE.md) |
 
 ## The bound history
 
@@ -142,3 +143,13 @@ the citation.
 | beam waist w₀ | 64 µm | 2026-08-01 | Rajasree 2020's direct measurement on the same laser | nothing yet | **the accepted prior**, and still open |
 
 Each row's argument, and what it taught, is in §6.
+
+## The guided-geometry corrections
+
+**Moved to [chapter 9](history/09_the-guided-geometry.md), 2026-08-28.**
+The cluster grew past a table: the mode solve, the two effective areas, the
+transit kernel's three retired claims and the lever precisions are one
+story and belong on one page. **It is a fibre-thread page and this hub
+stays platform-neutral**, which is why the detail moved rather than the
+citations being repeated here. The reasoning behind each correction is on
+that page, not here.

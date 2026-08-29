@@ -94,3 +94,4 @@ docs/reference_setup/photos/
 # exit status where a caller's pipe or trailing echo cannot overwrite it, per
 # protocol rule 19.24. Local run state, never tracked.
 .ci_gate_verdict
+.producer_locks/

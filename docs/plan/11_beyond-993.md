@@ -1,4 +1,4 @@
-*Chapter 11 of 11 of [the plan](../PLAN.md)*
+*Chapter 11 of 12 of [the plan](../PLAN.md)*
 
 ## 12. Beyond 993 nm, and the one rider that costs no drive time
 
@@ -69,4 +69,4 @@ frequency axis everywhere, and nothing numeric hard-coded outside
 
 ---
 
-*[The instrument and the session](10_the-fixed-lock-instrument.md) · [the plan](../PLAN.md)*
+*[The instrument and the session](10_the-fixed-lock-instrument.md) · [The open apparatus items](12_open-apparatus-items.md)*

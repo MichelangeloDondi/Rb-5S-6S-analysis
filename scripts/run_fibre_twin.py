@@ -10,13 +10,21 @@ THE FIBRE DOES NOT MEASURE LASER LINEWIDTH. It measures whether the observed
 homogeneous component moves as the transit law predicts when temperature
 varies.
 
-WHY THE STRUCTURE IS WHAT IT IS. The fibre transit kernel is LORENTZIAN, so it
-adds EXACTLY to every other Lorentzian term. The observable at one rung is
-therefore a single Lorentzian total plus a Gaussian sigma_G, and the individual
-Lorentzian terms have no separate existence there at all. That is not a
-limitation of the fit; it is the algebra. The ladder is the only lever: across
-rungs the transit term moves with temperature and the rest does not, so
-Gamma_L is an INTERCEPT and transit is a SLOPE.
+WHY THE STRUCTURE IS WHAT IT IS. The fibre transit kernel is NEAR-LORENTZIAN,
+so it adds very nearly exactly to every other Lorentzian term. The observable
+at one rung is therefore a single Lorentzian total plus a Gaussian sigma_G, and
+the individual Lorentzian terms have almost no separate existence there. That
+is not a limitation of the fit; it is the algebra. The ladder is the only
+lever: across rungs the transit term moves with temperature and the rest does
+not, so Gamma_L is an INTERCEPT and transit is a SLOPE.
+
+THIS PARAGRAPH SAID "LORENTZIAN" FLATLY UNTIL 2026-08-28. The lineshape is the
+squared magnitude of the coupling's transform, which is a SQUARED Lorentzian,
+and averaging it over the Maxwell distribution narrows it further; see
+`TRANSIT_KERNEL_FACTOR`. THE STRUCTURAL ARGUMENT IS UNAFFECTED, because it
+rests on the sqrt(T) scaling and not on the kernel's exact shape, and that is
+why the correction changes this docstring and not the design. What it does
+change is the transit term's SIZE, by a factor between 2.3 and 4.1.
 
 This is why world D shares O2-A's generator with the ladder collapsed to one
 rung. Passing world D means FAILING to split, and the two results are directly
@@ -31,6 +39,7 @@ import numpy as np
 from scipy.optimize import least_squares
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from _producer_lock import take_producer_lock     # noqa: E402
 from rb5s6s import config as C          # noqa: E402
 from rb5s6s.lineshape import composite_profile  # noqa: E402
 from rb5s6s.fibre import transit_fwhm   # noqa: E402
@@ -40,7 +49,12 @@ OUT = C.RESULTS_DIR / "fibre_twin.csv"
 LADDER_K = (20e-6, 60e-6, 150e-6)      # the preregistered ladder
 GAMMA_L_TRUE_MHZ = 0.398               # a common component of the measured size
 SIGMA_G_TRUE_MHZ = 0.30                # a Gaussian laser contribution
-LAMBDA_EDGES_M = (0.13e-6, 0.24e-6)    # both decay-length band edges
+# The solved INTENSITY-decay band across the 350 to 400 nm diameter range,
+# from solve_he11 at the corrected silica index: 492 nm at 350 and 312 nm at
+# 400. Until 2026-08-28 this read (0.13e-6, 0.24e-6), a band matching neither
+# the retired assumed-index geometry nor the solved one -- refuted geometry
+# published under live row keys, found by a release board's physics seat.
+LAMBDA_EDGES_M = (0.312e-6, 0.492e-6)
 # THE WORLD'S INFORMATION CONTENT IS CALIBRATED, NOT CHOSEN (2026-08-22).
 # A twin run at an arbitrary signal-to-noise answers "can this design work at a
 # level I picked", which is not the question. The archive DEMONSTRATES a total
@@ -77,9 +91,20 @@ def _rung_total_mhz(T_k, lam_m, alpha=1.0):
 
 
 def _spectrum(total_lor_mhz, sigma_g_mhz, rng):
-    """One noisy rung. The Lorentzian total enters through gamma_l, which is
-    the additive Lorentzian channel; transit_fwhm is left at zero because the
-    transit contribution is ALREADY inside the total by exact additivity."""
+    """One noisy rung, generated under an assumption this record has retracted.
+
+    The Lorentzian total enters through gamma_l, the additive Lorentzian
+    channel, and transit_fwhm is left at zero on the ground that the transit
+    contribution is already inside the total. THAT GROUND IS EXACT ADDITIVITY,
+    and the guided kernel does not have it: its time function is quadratic at
+    the origin, so it enters at second order and contributes about a tenth of
+    its own FWHM (docs/methods/09). Every world this driver generates, and so
+    every coverage row in results/fibre_twin.csv, therefore describes a
+    platform whose transit term is larger in the line than the physics allows.
+    The conclusions are reported with that stated rather than withdrawn,
+    because the degeneracy they measure is between gamma_l and sigma_g and
+    does not turn on the transit term's size. Re-running against the correct
+    kernel is a named next item and not a refinement."""
     grid, prof = composite_profile(0.0, sigma_g_mhz, 0.0,
                                    laser_kind="gaussian", transit_kind="exp",
                                    gamma_l=total_lor_mhz)
@@ -220,6 +245,7 @@ def run_o2b(n_trials, lam_m, departure_mhz, seed0, crit):
 
 
 def main() -> int:
+    take_producer_lock("run_fibre_twin")
     ap = argparse.ArgumentParser()
     # N FIXED FROM A TIMED TRIAL BEFORE THE RUN, as the preregistration
     # requires: 0.03 s per rung fit, three rungs, so 500 trials is about 45 s

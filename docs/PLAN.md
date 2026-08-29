@@ -92,7 +92,7 @@ today and a precision after. The width split moves least, which is the
 argument for a fixed lock and against simply taking more traces. Every value
 is read from a committed CSV.*
 
-**Where the detailed design lives.** In the eleven chapters below, with
+**Where the detailed design lives.** In the chapters below, with
 [the case in ten minutes](plan/00_the-case.md) as their opening summary.
 Nothing
 here is scheduled, no date is assumed, and the specification names no
@@ -117,15 +117,40 @@ costed against exactly that.*
 | 3 | [Configurations and optics](plan/03_optics-protocol.md) | the optical layout and the alignment protocol |
 | 4 | [Intensity and the light shift](plan/04_intensity-and-light-shift.md) | the intensity axis and the light-shift programme |
 | 5 | [Width, collisions and amplitude](plan/05_width-collision-amplitude.md) | the width and collision programme, the amplitude programme, the cascade's competing prediction that makes the four-peak trace discriminating, and the asymmetry budget that decomposes the open C3g finding by reversal knobs, the laser kernel as the largest assumption the width channel rests on, and the one term a density ladder cannot separate from collisions |
-| 6 | [Session sizing and spending rules](plan/06_sizing-and-spending-rules.md) | the uncertainty ledger of the next campaign, one row per component with its knob, its expected purchase and the twin world that sizes it, then the block register, session sizing, the 2025 session reading rules and the twin costing |
+| 6 | [Session sizing and spending rules](plan/06_sizing-and-spending-rules.md) | **the eight-day schedule, D1 to D8**, each day with its content and its deliverable, ordered so that a truncation at any point leaves the higher-priority conversions done. Plus the uncertainty ledger, one row per component with its knob and its expected purchase |
 | 7 | [Acquisition settings](plan/07_acquisition-settings.md) | span, sweep and instrument settings, the three-oscilloscope comparison measured from the files, the settings card, and the modulation-and-rate menu that assigns the depth and the scan rate per scan purpose |
 | 8 | [The acquisition record](plan/08_the-acquisition-record.md) | what every block must log, the comb read as a ruler and as a clock, the EOM drive menu with the coincidence and cascade designs, the coincidence block's own in-cell field readout, the sweep-direction and mains-phase columns, and the wavemeter shots |
 | 9 | [The fixed lock, and what it buys](plan/09_the-fixed-lock.md) | identifiability, drift, the sweep and the scan axis, and the two rulers with their division of labour, the atomic pairs as the light-shift-immune anchor and the comb as the interpolator and the clock |
 | 10 | [The instrument and the session](plan/10_the-fixed-lock-instrument.md) | the oscilloscopes and the measured noise budget that retires the bit-depth argument, the pedestal thermometer, the day-one list with the wing-noise discriminator, polarisation, and the comb as a statistical instrument |
 | 11 | [Beyond 993 nm](plan/11_beyond-993.md) | the riders that cost no drive time, and the analysis plan of record |
+| 12 | [The open apparatus items](plan/12_open-apparatus-items.md) | every number in this plan nobody has measured, what each would change, and the producer that spans it |
 
 **The block register**, which is the table a session actually runs from, is at
 the head of [chapter 6](plan/06_sizing-and-spending-rules.md).
+
+
+### Where each section lives
+
+The chapters are files and the sections are numbered across them, so `§9` is not chapter 9. The section map below covers the numbered sections of the chapters. It does not yet cover every lettered subsection: the labels `§7a` through `§7j`, and `§7D` and `§7F`, are not in it. No count is written here, because one was and it was wrong by one. `§7F` is defined in this file and used four times in chapter 6. [The case](plan/00_the-case.md) numbers its own sections separately and is not part of this scheme.
+
+| § | section | chapter |
+|---|---|---|
+| **§1** | Aim | [`aim and failure modes`](plan/01_aim-and-failure-modes.md) |
+| **§2** | The objections a referee would raise | [`aim and failure modes`](plan/01_aim-and-failure-modes.md) |
+| **§3** | Priorities if the budget shrinks | [`priorities`](plan/02_priorities.md) |
+| **§4** | Configurations and optics protocol | [`optics protocol`](plan/03_optics-protocol.md) |
+| **§5** | The intensity axis | [`intensity and light shift`](plan/04_intensity-and-light-shift.md) |
+| **§6** | The light-shift program | [`intensity and light shift`](plan/04_intensity-and-light-shift.md) |
+| **§7** | The width and collision program | [`width collision amplitude`](plan/05_width-collision-amplitude.md) |
+| **§8** | The amplitude program | [`width collision amplitude`](plan/05_width-collision-amplitude.md) |
+| **§9** | Session sizing | [`sizing and spending rules`](plan/06_sizing-and-spending-rules.md) |
+| **§10** | Spending rules from the 2025 session | [`sizing and spending rules`](plan/06_sizing-and-spending-rules.md) |
+| **§10a** | Acquisition settings, and why 2025's choices bounded what could be learned | [`acquisition settings`](plan/07_acquisition-settings.md) |
+| **§10b** | The acquisition record itself, and the one setting whose absence cost a measurement | [`the acquisition record`](plan/08_the-acquisition-record.md) |
+| **§10c** | The fixed cavity lock, and the settings that follow from it | [`the fixed lock`](plan/09_the-fixed-lock.md) |
+| **§11** | Wavemeter calibration shots | [`the acquisition record`](plan/08_the-acquisition-record.md) |
+| **§12** | Beyond 993 nm, and the one rider that costs no drive time | [`beyond 993`](plan/11_beyond-993.md) |
+| **§13** | The open apparatus items, and how the forecast handles each | [`open apparatus items`](plan/12_open-apparatus-items.md) |
 
 ## This proposal can be run before it is run
 
@@ -267,3 +292,4 @@ index maps each section to the chapter that now holds it.
 **10c.** The fixed cavity lock, in [chapter 9](plan/09_the-fixed-lock.md) and [chapter 10](plan/10_the-fixed-lock-instrument.md).
 **11.** Wavemeter calibration shots, in [chapter 8](plan/08_the-acquisition-record.md).
 **12.** Beyond 993 nm, in [chapter 11](plan/11_beyond-993.md).
+**13.** The open apparatus items, in [chapter 12](plan/12_open-apparatus-items.md).

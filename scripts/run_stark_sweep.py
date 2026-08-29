@@ -29,11 +29,13 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from _producer_lock import take_producer_lock     # noqa: E402
 from rb5s6s import config as C  # noqa: E402
 from rb5s6s.stark import fit_stark_sweep  # noqa: E402
 
 
 def main() -> int:
+    take_producer_lock("run_stark_sweep")
     grid = {}
     for r in csv.DictReader(open(C.RESULTS_DIR / "power_sweep.csv")):
         grid[(r["peak"], float(r["power_mW"]) / 1000.0)] = (

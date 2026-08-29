@@ -1,4 +1,4 @@
-*Chapter 10 of 11 of [the plan](../PLAN.md)*
+*Chapter 10 of 12 of [the plan](../PLAN.md)*
 
 **The question.** Which instruments acquire the fixed-lock campaign, at which settings, and what actually limits them?
 **Takes.** Chapter 9's fixed-lock design and the measured noise budget of [`quantisation.csv`](../../results/quantisation.csv).

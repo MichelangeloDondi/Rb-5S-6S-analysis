@@ -74,6 +74,7 @@ import numpy as np
 from scipy.stats import t as student_t
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from _producer_lock import take_producer_lock     # noqa: E402
 from rb5s6s import config as C
 from rb5s6s import rate_model as RM
 from rb5s6s import constants as _CONST  # noqa: E402
@@ -636,6 +637,7 @@ def pooled_probe_rows(fields, pooled, split, anchor, chi2_line, gain, worst_peak
 
 
 def main() -> int:
+    take_producer_lock("run_beta_self")
     rows = load_manifest()
     # Sibling outliers leave the density fits entirely. A trace whose own
     # siblings do not share its height or width is not a repeat of the same

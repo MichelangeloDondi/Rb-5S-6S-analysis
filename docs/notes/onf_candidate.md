@@ -3,7 +3,10 @@
 **The question.** What a nanofibre alongside the vapour cell would add to this
 measurement, sized from committed numbers rather than asserted, and which of
 its settings can carry which instrument.
-**Takes.** The lineshape and identifiability chapters for the kernel budget,
+**Takes.** The guided-geometry derivations of
+[methods chapter 9](../methods/09_the_guided_geometry.md), which this page
+restates in its own words and now cites instead of re-deriving. Then the
+lineshape and identifiability chapters for the kernel budget,
 and the joint Fisher block for what a second platform is worth to beta_self.
 **Gives.** The sized candidate, the three instruments the apparatus already
 provides, the joint forecast, and what the EOM ruler is worth once the drive
@@ -13,7 +16,7 @@ platform-neutral and this note is one of the three surfaces you can skip whole
 without losing anything on your path. Terms are in
 [GLOSSARY.md](../GLOSSARY.md).
 
-`provenance: results/onf_candidate.csv` - Sized from committed numbers rather than asserted, in its own words, and every one of its 24 three-significant-figure values appears in a committed CSV. This is the fibre lane's own row set. **No claim on this page is unaccounted for.** Declared after checking every three-significant-figure value on the page against `results/`, not by labelling.
+`provenance: results/onf_candidate.csv` - Sized from committed numbers rather than asserted, in its own words. This is the fibre lane's own row set. An untagged number here is a claim to check, not a checked one. Two untagged figures on this page stood stale until a board read it, and the count of grounded values this line used to assert was never checkable: it ranged over a population nobody had defined.
 
 
 **Status.** DESIGN NOTE, written 2026-08-21. Every number here is produced by
@@ -57,19 +60,32 @@ published lineage above, operated with the trap dark where the spectroscopy
 wants it. One apparatus provides three distinct instruments, sized below in
 the order of what they remove from this record's uncertainty.
 
-## A. Cold atoms, trap off: an independent laser-width instrument
+## A. Cold atoms at the fibre: a laser-width instrument once the distance is fixed
 
 MOT atoms drift through the evanescent field of the guided 993 nm mode. At
-150 uK the transit contribution is about 0.14 MHz across the 210 to 390 nm
-decay length, and at MOT density the collisional term is about 180 Hz, which
-is nine orders below the cell's. What remains is
+150 uK the transit contribution is 73 to 98 kHz across the 272 to 366 nm
+intensity-decay band, and at MOT density the collisional term is about 180 Hz,
+which is nine orders below the cell's. What remains is
 
-$$\Gamma_{\rm line} \approx \Gamma_{\rm nat} + \Gamma_{\rm laser} + 0.14\ \text{MHz}$$
+$$\Gamma_{\rm line} \approx \Gamma_{\rm nat} + \Gamma_{\rm laser} + (0.073\ \text{to}\ 0.098)\ \text{MHz} + \Delta U_{\rm surf}(z)$$
 
-with the natural width 3.49 MHz known from the committed lifetime. The laser
-contribution, 1.5 to 1.9 MHz FWHM in the cell fits, is then a large and
-resolvable fraction of a line whose every other component is known or
-negligible. That is a direct measurement of the laser's width including its
+with the natural width 3.49 MHz known from the committed lifetime.
+
+**The last term is not a correction, and trap-off is where it bites.**
+Atoms drifting through the evanescent field sample 50 to 300 nm, and the
+differential atom-surface shift runs
+[13.52 to 33.80](../../results/onf_candidate.csv "ref:onf_candidate:cp_shift_at_50nm:") MHz
+at 50 nm against a 3.49 MHz natural width, so across a drifting ensemble it is
+an inhomogeneous red tail and not a shift, and a broad red-shifted
+nuisance is degenerate with the laser width. **That is the identifiability failure the fibre was proposed to break,
+reappearing in the fibre.**
+
+**With the distance held fixed it becomes tractable**: at 200 nm the term falls to
+[0.21 to 0.53](../../results/onf_candidate.csv "ref:onf_candidate:cp_shift_at_200nm:") MHz
+and is largely common-mode, so the two-colour trap is a precondition of the
+measurement and not an enhancement of it. Under that condition the laser
+contribution, 1.5 to 1.9 MHz FWHM in the cell fits, is a large and resolvable
+fraction of the line. That is a direct measurement of the laser's width including its
 Lorentzian content, the quantity the kernel window calls Gamma_L,equiv and
 can only bound from cell data, because in the cell it is degenerate with the
 collisional width at fixed condition and correlated at 0.82 to 0.98 with the
@@ -83,12 +99,21 @@ minimum rather than a null by the longitudinal field. Detectability is settled
 there by measurement, at 25 to 40 counts per millisecond on this platform and
 this line, so the ratios that follow are context for the light-shift budget
 rather than the case for seeing the signal. The per-atom two-photon rate at
-1 mW guided is about 870 times the 225 mW cell rate, because the mode area is
-half a square micron. That
-intensity carries the drive's own light shift with it: scaling the committed
-cell value gives 10 MHz at 1 mW, so the spectroscopy setting is tens of
-microwatts, where the shift is at the cell's own 0.3 to 0.5 MHz scale and the
-per-atom rate still exceeds the cell's. About three atoms occupy the
+1 mW guided is `two_photon_rate_ratio_per_atom` times the 225 mW cell rate,
+because the mode area is well below a square micron. **That figure was retyped
+as 870 here and read 581 in the CSV the day the mode area was computed rather
+than assumed**, which is why it now names the row instead of a digit. That
+intensity carries the drive's own light shift with it. **Every guided figure
+above is evaluated at the glass and no atom sits there**: at the 400 nm trap
+distance the axial flux is `guided_intensity_fraction_at_400nm` of the surface
+value, so the shift at 1 mW is `S0_onf_1mW_at_400nm` rather than the surface
+row beside it. Scaling the committed cell value at the surface gives about
+11.5 MHz at 1 mW, so reaching the cell's own 0.3 to 0.5 MHz scale takes
+tens of microwatts, and the committed setting is 50 uW at the glass, where
+the shift is
+[0.57](../../results/onf_candidate.csv "ref:onf_candidate:S0_onf_50uW:") MHz
+and the per-atom rate still exceeds the cell's. About twelve
+atoms occupy the
 evanescent shell on average at MOT density, which is the signal regime the
 Rydberg-near-fiber detection already operates in.
 
@@ -128,7 +153,7 @@ the powers quoted here bound an integration window rather than a steady state.
 ## C. Hot vapor: the transit kernel where it is the whole line
 
 Thermal atoms cross the evanescent field in about a nanosecond, so the
-transit width scales from 0.96 MHz in the cell to roughly 230 MHz at the
+transit width scales from 0.96 MHz in the cell to about 140 MHz at the
 fiber, from a small component of the line to essentially all of it. The
 transit kernel, whose Gaussian versus cusp choice carries 18 to 23 per cent
 of model form on the collisional coefficient and cannot be resolved inside
@@ -190,7 +215,7 @@ Four numbers carry the case.
   budget from the start.
 
 The ceiling with both components pinned exactly is 0.24 of the free fit.
-Multiplied by the 1.71 inflation this is 0.41 of the TWO-parameter fit,
+Multiplied by the 1.71 inflation this is 0.41 of the two-parameter fit,
 which equals the square root of one minus the validation correlation
 squared, so the forecast agrees with the covariance algebra it must reduce
 to. The shared-path condition below applies to every row.
@@ -211,28 +236,40 @@ in this repository yet measures either, which is why the forecast rows are
 expectations and the transfer condition is named here rather than assumed
 away.
 
-## The transit kernel in the fibre is a Lorentzian, and that changes the plan
+## The transit kernel in the fibre is near-Lorentzian, and that changes the plan
 
-The cold-transit figure this note previously carried, 141 kHz, was obtained by
-scaling the cell's transit width by the ratio of the beam waist to the
-evanescent decay length. That scaling carries the cell's Gaussian-beam
-convention onto a profile that is not Gaussian, and the profile is the thing
-that sets the kernel. Derived instead for the profile the atoms actually cross:
+Scaling the cell's transit width by the ratio of the beam waist to the
+evanescent decay length carries the cell's Gaussian-beam convention onto a
+profile that is not Gaussian, and the profile is the thing that sets the
+kernel. Derived instead for the profile the atoms actually cross:
 
 An atom on a radial pass through an evanescent field sees
-$I(t) = I_0 e^{-v|t|/\Lambda}$, a two-sided exponential in time, whose Fourier
-transform is a **Lorentzian** of FWHM $v/(\pi\Lambda)$. A Gaussian beam gives
+$I(t) = I_0 e^{-v|t|/\Lambda}$, a two-sided exponential in time. The lineshape
+is the **squared magnitude** of its transform, so a squared Lorentzian, and the
+Maxwell average narrows it again: the FWHM is $f\bar v/(\pi\Lambda)$ with $f$
+spanned 0.24 to 0.44, not 1. A Gaussian beam gives
 the Biraben-Cagnac two-sided exponential in frequency, which is the cusp the
 cell's kernel uses. The two geometries give different kernel shapes, not merely
 different widths.
 
-At 150 uK the width lands between **98 and 181 kHz** across the 211 to 388 nm
-decay-length band, which brackets the 141 kHz this note used to carry. So that figure was
-not far wrong as a magnitude, and the correction that matters is the shape.
+At 150 uK the width lands between **73 to 98 kHz** across the 272 to 366 nm
+intensity-decay band. Every site stating this band cites the committed row
+instead of restating the literal. Earlier values are in
+[HISTORY](../HISTORY.md). **What matters here is the shape, not the
+magnitude.**
 
-**Why the shape matters more than the width.** A Lorentzian transit width adds
-into the homogeneous width, exactly as the collisional width and
-$\Gamma_{L,\text{equiv}}$ do. In the fibre the transit term is therefore not a
+**Why the shape matters more than the width.** A guided transit width does
+**not** add into the homogeneous width the way the collisional width and
+$\Gamma_{L,\text{equiv}}$ do. Its time function is quadratic at the origin
+and not linear, so at 170 µK it enters at second order and contributes
+[0.083 to 0.171](../../results/transit_additivity.csv "ref:transit_additivity:spanned:added_fraction_170uK_band")
+of its own FWHM, each branch against its own kernel, growing as $T^{0.98}$ and
+not as $\sqrt T$. **The fraction is a property of the kernel together with the
+line it is added to**, and the per-branch rows of that file name the core each
+was computed against. This page is otherwise built at 150 µK, where the
+fraction is smaller. A squared Lorentzian's wings also fall as $\nu^{-4}$
+where a Lorentzian's fall as $\nu^{-2}$, but that is a separate fact and not
+the one that governs the addition. In the fibre the transit term is therefore not a
 separable nuisance: it enters the same exact degeneracy the cell's kernel work
 characterised, where only the sum of the Lorentzian contributions is
 identifiable at a fixed condition.
@@ -263,15 +300,22 @@ axis:
 
 | platform | transit width | teeth per transit width |
 |---|---|---|
-| cell, 130 C | 0.958 MHz | 13.1 |
-| fibre, cold, 150 uK | 0.141 MHz | 88.5 |
-| fibre, room temperature | 232 MHz | 0.05 |
+| cell, 130 C | [0.958](../../results/onf_candidate.csv "ref:onf_candidate:transit_cell_130C:") MHz | [13.06](../../results/onf_candidate.csv "ref:onf_candidate:eom_teeth_per_transit_cell_130C:") |
+| fibre, cold, 150 uK | [73 to 98](../../results/onf_candidate.csv "ref:onf_candidate:transit_onf_cold_band:") kHz | [127.18 to 171.45](../../results/onf_candidate.csv "ref:onf_candidate:eom_teeth_per_transit_onf_cold:") |
+| fibre, 130 C | [140.3](../../results/onf_candidate.csv "ref:onf_candidate:transit_onf_hot_130C:") MHz | [0.08 to 0.10](../../results/onf_candidate.csv "ref:onf_candidate:eom_teeth_per_transit_onf_hot_130C:") |
 
-The cold fibre resolves the ruler about seven times more cleanly than the cell,
+The cold fibre resolves the ruler roughly ten to thirteen times more cleanly
+than the cell, the ratio of the two cited rows above,
 because transit broadening there is two orders below the tooth spacing. The
-room-temperature fibre does not resolve it at all: the teeth are washed out
-twenty-fold, and a drive of about 695 MHz would be needed to restore them.
-This is a settings-level statement, not a preference. Any room-temperature
+130 C fibre does not resolve it at all: fewer than one tooth falls
+across the line, and a drive of
+[358.6 to 483.4](../../results/onf_candidate.csv "ref:onf_candidate:eom_drive_needed_onf_hot_130C:")
+MHz would be needed to restore them.
+
+*(Every cell above is a citation and not a typed number. What the table
+carried before, and why, is in
+[the guided geometry's correction record](../history/09_the-guided-geometry.md).)*
+This is a settings-level statement, not a preference. Any 130 C
 fibre measurement at the present drive has no ruler, and the MOT, molasses and
 trap-off settings have a better one than the cell does.
 
@@ -291,8 +335,10 @@ is inversely proportional to that extent. The carrier weight at the depth
 | 700 MHz | 0.089584 | 0.000000 |
 | 1.5 GHz | 0.438608 | 0.000001 |
 
-At the drive the room-temperature fibre would need, the cell's carrier null has
-filled in to about nine per cent and by 1.5 GHz it is gone. The fibre's null
+The 130 C fibre would need a drive of
+[358.6 to 483.4](../../results/onf_candidate.csv "ref:onf_candidate:eom_drive_needed_onf_hot_130C:") MHz. By
+700 MHz, the nearest tabulated point above it, the cell's carrier null has
+filled in to about nine per cent, and by 1.5 GHz it is gone. The fibre's null
 survives both, because the waist is some thirty-five times shorter than the
 cell path. That null is the one calibration-free reference the comb offers: it
 occurs at a known modulation depth and nowhere else, so hitting it measures the
@@ -335,9 +381,9 @@ absorbing it.
 
 They do not constrain the guided-mode index, and so they do not narrow the
 evanescent decay length. That would need a dispersion lever, and even a 1.5 GHz
-drive spans a few parts per million of the optical frequency. The 211 to 388 nm
+drive spans a few parts per million of the optical frequency. The 543 to 732 nm
 decay-length band, which is what makes the cold transit term a band from about
-96 to 177 kHz rather than a number, is untouched by anything the modulator can
+73 to 98 kHz rather than a number, is untouched by anything the modulator can
 do and needs a different instrument.
 
 One geometry constraint travels with all of the above. Two photons taken from
@@ -364,7 +410,7 @@ it seems.
 **The nanofibre twin now exists and its honesty is in its own flags.** The
 producer (`scripts/run_fibre_twin.py`, registered as an expensive producer)
 marks itself `design_validation_only` and `measures_laser_linewidth FALSE`:
-it validates that the DESIGN can identify the intended quantities under
+it validates that the design can identify the intended quantities under
 synthetic worlds, with per-rung scatter 4.0 kHz against the 3.2 kHz the
 record demonstrates per condition, and it carries the band-edge licensing
 sentence (lever and calibration are the same order, so a disagreement means
@@ -383,9 +429,10 @@ leads this note.
 
 ## Apparatus parameters to replace before this enters the ranking
 
-* The fiber diameter, hence the guided-mode index at 993 nm and the decay
-  length. The CSV carries 1.08 to 1.25 as a band.
-* The effective mode area at the surface, carried as 0.5 square microns.
+* The fiber diameter tolerance. The index and the decay length are no longer
+  assumed: they are solved from the diameter, and the CSV's band is that
+  diameter's ignorance carried through the solve. What is missing is the
+  tolerance itself, which no held paper states.
 * The species and temperature of the MOT, carried as Rb at 150 uK.
 * Transmission of the existing pigtails at 993 nm.
 * A Casimir-Polder sum for C3 of the 6S state, replacing the 3 to 6 band.
