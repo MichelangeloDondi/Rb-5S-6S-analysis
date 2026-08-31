@@ -1,0 +1,18 @@
+defect,size,value,err,unit,note,status
+nominal,0,0.994,0.002,fraction,"994 of 1000 intervals cover the injected 0.55 MHz, binomial err",DIAGNOSTIC
+ramp_omitted,0.35,0.997,0.002,fraction,"997 of 1000 intervals cover the injected 0.55 MHz, binomial err",DIAGNOSTIC
+ramp_omitted,2.5,0.999,0.001,fraction,"999 of 1000 intervals cover the injected 0.55 MHz, binomial err",DIAGNOSTIC
+ramp_omitted,5.6,0.981,0.004,fraction,"981 of 1000 intervals cover the injected 0.55 MHz, binomial err",DIAGNOSTIC
+lorentz_component,0.1,0.450,0.016,fraction,"450 of 1000 intervals cover the injected 0.55 MHz, binomial err",DIAGNOSTIC
+lorentz_component,0.3,0.000,0.000,fraction,"0 of 1000 intervals cover the injected 0.55 MHz, binomial err",DIAGNOSTIC
+lorentz_component,0.6,0.000,0.000,fraction,"0 of 1000 intervals cover the injected 0.55 MHz, binomial err",DIAGNOSTIC
+laser_form_flipped,1,0.000,0.000,fraction,"0 of 1000 intervals cover the injected 0.55 MHz, binomial err",DIAGNOSTIC
+saturation,0.35,0.990,0.003,fraction,"990 of 1000 intervals cover the injected 0.55 MHz, binomial err",DIAGNOSTIC
+saturation,2.5,0.994,0.002,fraction,"994 of 1000 intervals cover the injected 0.55 MHz, binomial err",DIAGNOSTIC
+saturation,5.6,0.990,0.003,fraction,"990 of 1000 intervals cover the injected 0.55 MHz, binomial err",DIAGNOSTIC
+cascade,1,0.992,0.003,fraction,"992 of 1000 intervals cover the injected 0.55 MHz, binomial err",DIAGNOSTIC
+cascade,3,0.990,0.003,fraction,"990 of 1000 intervals cover the injected 0.55 MHz, binomial err",DIAGNOSTIC
+cascade,6,0.990,0.003,fraction,"990 of 1000 intervals cover the injected 0.55 MHz, binomial err",DIAGNOSTIC
+broken_kernel_plant,1,0.000,0.000,fraction,"0 of 1000 intervals cover the injected 0.55 MHz, binomial err",DIAGNOSTIC
+B1_nominal_covers,False,,,,nominal 0.994 within 0.02 of 0.95 (preregistered): the harness's own gage,DIAGNOSTIC
+G2_plant_fails,True,,,,"the halved-transit plant covers at 0.000, required below 0.90: a leg that cannot fail has measured nothing",DIAGNOSTIC

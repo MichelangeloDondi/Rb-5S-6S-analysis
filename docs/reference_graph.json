@@ -53,7 +53,7 @@
    }
   ],
   "source_file": "results/campaign_twin_forecast.csv",
-  "source_value": "0.01538"
+  "source_value": "0.01536"
  },
  "campaign_twin_forecast:model:photoionisation_margin_from_6S": {
   "producer": "run_campaign_twin_forecast.py",

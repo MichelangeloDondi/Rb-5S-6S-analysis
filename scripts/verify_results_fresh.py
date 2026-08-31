@@ -135,6 +135,9 @@ EXPENSIVE = {
     # minutes, seed-pinned. Leg 1 of the twin validation.
     "run_twin_closed_loop": ["twin_closed_loop.csv"],
     "run_quantisation_crosscheck": ["quantisation_crosscheck.csv"],
+    # fifteen configurations at a thousand law-weighted trials each on
+    # eight workers, about forty minutes. Leg 2 of the twin validation.
+    "run_coverage_grid": ["coverage_grid.csv"],
     # 2000 multi-condition fits at ~1.05 s each, about five minutes on eight
     # lanes. Deterministic despite being Monte-Carlo: every trial's seed is its
     # index, so the CSV reproduces exactly and IS checkable rather than merely

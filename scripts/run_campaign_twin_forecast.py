@@ -69,7 +69,14 @@ RESULTS = ROOT / "results"
 REALISM = RESULTS / "twin_realism.csv"
 ONF = RESULTS / "onf_candidate.csv"
 
-N_TRIALS = 24          # Monte Carlo datasets per configuration
+# 200 Monte-Carlo datasets per configuration since 2026-08-31; the first
+# committed version ran 24, and its rows carried no spread, which the
+# chapter's section 7 listed as a caveat. The spread rows retire it: each
+# precision row gains a sibling *_spread row, the standard deviation of
+# the per-dataset reported errors, so a reader can see how much the
+# median moves between synthetic campaigns. Computation was the only
+# reason for 24, and computation is not rationed any more.
+N_TRIALS = 200
 CELL_NOISE = 0.004     # fraction of peak, the archive's working value
 ONF_COUNTS_PER_MS = 30.0   # centre of the committed 25 to 40 band
 ONF_DIAMETER_NM = 370.0    # raj2026's fibre, the one a campaign would use
@@ -122,11 +129,18 @@ def main() -> None:
                             (80, "80 traces")):
         d = dict(cell_design, n_traces=n_traces)
         out = forecast_precision(cell_truth, d, n_trials=N_TRIALS,
-                                 scalings=False)
+                                 scalings=False, return_trials=True)
+        import numpy as _np
+        spread = float(_np.std(out["gamma_coll_err_trials"], ddof=1))
         add("cell", f"gamma_coll_{n_traces}traces_err",
             round(out["gamma_coll_err"], 5), "MHz",
             label, "median of the fit's own reported error over "
             f"{N_TRIALS} synthetic datasets", "ENVELOPE")
+        add("cell", f"gamma_coll_{n_traces}traces_err_spread",
+            round(spread, 5), "MHz", label,
+            "standard deviation of the reported error across the "
+            f"{N_TRIALS} datasets, the sibling row the chapter's caveat "
+            "asked for", "DIAGNOSTIC")
         add("cell", f"sigma_laser_{n_traces}traces_err",
             round(out["sigma_laser_err"], 5), "MHz",
             label, "the residual Gaussian, not a laser linewidth", "ENVELOPE")

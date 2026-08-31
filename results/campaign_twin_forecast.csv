@@ -1,25 +1,28 @@
 arm,quantity,value,unit,basis,note,status
-cell,gamma_coll_5traces_err,0.01538,MHz,5 traces,median of the fit's own reported error over 24 synthetic datasets,ENVELOPE
-cell,sigma_laser_5traces_err,0.02945,MHz,5 traces,"the residual Gaussian, not a laser linewidth",ENVELOPE
-cell,corr_laser_coll_5traces,-0.941,correlation,5 traces,"THE CELL'S FIRST DEGENERACY, measured by the twin rather than asserted. Near -1 means the two widths trade off and the split is not identified",DIAGNOSTIC
-cell,gamma_coll_20traces_err,0.00769,MHz,20 traces,median of the fit's own reported error over 24 synthetic datasets,ENVELOPE
-cell,sigma_laser_20traces_err,0.01465,MHz,20 traces,"the residual Gaussian, not a laser linewidth",ENVELOPE
+cell,gamma_coll_5traces_err,0.01536,MHz,5 traces,median of the fit's own reported error over 200 synthetic datasets,ENVELOPE
+cell,gamma_coll_5traces_err_spread,9e-05,MHz,5 traces,"standard deviation of the reported error across the 200 datasets, the sibling row the chapter's caveat asked for",DIAGNOSTIC
+cell,sigma_laser_5traces_err,0.02932,MHz,5 traces,"the residual Gaussian, not a laser linewidth",ENVELOPE
+cell,corr_laser_coll_5traces,-0.9411,correlation,5 traces,"THE CELL'S FIRST DEGENERACY, measured by the twin rather than asserted. Near -1 means the two widths trade off and the split is not identified",DIAGNOSTIC
+cell,gamma_coll_20traces_err,0.00768,MHz,20 traces,median of the fit's own reported error over 200 synthetic datasets,ENVELOPE
+cell,gamma_coll_20traces_err_spread,2e-05,MHz,20 traces,"standard deviation of the reported error across the 200 datasets, the sibling row the chapter's caveat asked for",DIAGNOSTIC
+cell,sigma_laser_20traces_err,0.01463,MHz,20 traces,"the residual Gaussian, not a laser linewidth",ENVELOPE
 cell,corr_laser_coll_20traces,-0.9411,correlation,20 traces,"THE CELL'S FIRST DEGENERACY, measured by the twin rather than asserted. Near -1 means the two widths trade off and the split is not identified",DIAGNOSTIC
-cell,gamma_coll_80traces_err,0.00351,MHz,80 traces,median of the fit's own reported error over 24 synthetic datasets,ENVELOPE
-cell,sigma_laser_80traces_err,0.00877,MHz,80 traces,"the residual Gaussian, not a laser linewidth",ENVELOPE
-cell,corr_laser_coll_80traces,-0.9129,correlation,80 traces,"THE CELL'S FIRST DEGENERACY, measured by the twin rather than asserted. Near -1 means the two widths trade off and the split is not identified",DIAGNOSTIC
+cell,gamma_coll_80traces_err,0.0037,MHz,80 traces,median of the fit's own reported error over 200 synthetic datasets,ENVELOPE
+cell,gamma_coll_80traces_err_spread,0.00034,MHz,80 traces,"standard deviation of the reported error across the 200 datasets, the sibling row the chapter's caveat asked for",DIAGNOSTIC
+cell,sigma_laser_80traces_err,0.00851,MHz,80 traces,"the residual Gaussian, not a laser linewidth",ENVELOPE
+cell,corr_laser_coll_80traces,-0.9267,correlation,80 traces,"THE CELL'S FIRST DEGENERACY, measured by the twin rather than asserted. Near -1 means the two widths trade off and the split is not identified",DIAGNOSTIC
 onf,neff,1.01927,index,"HE11 solve, 370 nm fibre at 993.4181 nm","SOLVED, replacing the assumed neff_band 1.08 to 1.25 which corresponds to 485 to 796 nm fibres and does not contain this one",CALIB
 onf,amplitude_decay_length,801.5,nm,1/q from the same solve,"AMPLITUDE convention, the same one the committed evanescent_decay_length band carries. That band read 211 to 388 nm while it was an assumed index range and did not contain this value. The producer now computes it from the solve and it does",CALIB
 onf,lorentzian_excess_truth,0.06694,MHz,mean fibre transit plus collisional at MOT density,"the fibre's whole non-natural Lorentzian budget, summed linearly. Its parts have almost no separate existence at one temperature, which is the cost the fibre pays for removing the cell's degeneracies. The sum is exact for Lorentzians and the transit kernel is a Maxwell-averaged squared Lorentzian, so this is an approximation whose error is not characterised here",ENVELOPE
 onf,minutes_per_trace_0.02_err,0.62,minutes,noise 0.02,"half-span of the committed 25 to 40 counts per ms band, which is the dominant uncertainty here because minutes go as one over the rate",ENVELOPE
 onf,minutes_per_trace_0.02,2.78,minutes,noise 0.02,"shot noise at 30 counts per ms over 2000 points. THE FIBRE'S REAL COST IS TIME, and the cell reaches 0.004 in seconds",ENVELOPE
-onf,lorentzian_excess_0.02_err,0.03872,MHz,noise 0.02,"error on the TOTAL Lorentzian excess, which is what a fibre line at one temperature can report",ENVELOPE
-onf,sigma_laser_0.02_err,0.05627,MHz,noise 0.02,"the Gaussian residual, testable here because a guided mode has no free-space retro to tilt",ENVELOPE
-onf,corr_laser_coll_0.02,-0.9413,correlation,noise 0.02,"the fibre's own degeneracy between its Lorentzian total and the Gaussian, to be read against the cell's",DIAGNOSTIC
+onf,lorentzian_excess_0.02_err,0.03862,MHz,noise 0.02,"error on the TOTAL Lorentzian excess, which is what a fibre line at one temperature can report",ENVELOPE
+onf,sigma_laser_0.02_err,0.05622,MHz,noise 0.02,"the Gaussian residual, testable here because a guided mode has no free-space retro to tilt",ENVELOPE
+onf,corr_laser_coll_0.02,-0.9412,correlation,noise 0.02,"the fibre's own degeneracy between its Lorentzian total and the Gaussian, to be read against the cell's",DIAGNOSTIC
 onf,minutes_per_trace_0.004_err,15.62,minutes,noise 0.004,"half-span of the committed 25 to 40 counts per ms band, which is the dominant uncertainty here because minutes go as one over the rate",ENVELOPE
 onf,minutes_per_trace_0.004,69.44,minutes,noise 0.004,"shot noise at 30 counts per ms over 2000 points. THE FIBRE'S REAL COST IS TIME, and the cell reaches 0.004 in seconds",ENVELOPE
-onf,lorentzian_excess_0.004_err,0.009,MHz,noise 0.004,"error on the TOTAL Lorentzian excess, which is what a fibre line at one temperature can report",ENVELOPE
-onf,sigma_laser_0.004_err,0.01312,MHz,noise 0.004,"the Gaussian residual, testable here because a guided mode has no free-space retro to tilt",ENVELOPE
+onf,lorentzian_excess_0.004_err,0.00898,MHz,noise 0.004,"error on the TOTAL Lorentzian excess, which is what a fibre line at one temperature can report",ENVELOPE
+onf,sigma_laser_0.004_err,0.01308,MHz,noise 0.004,"the Gaussian residual, testable here because a guided mode has no free-space retro to tilt",ENVELOPE
 onf,corr_laser_coll_0.004,-0.9414,correlation,noise 0.004,"the fibre's own degeneracy between its Lorentzian total and the Gaussian, to be read against the cell's",DIAGNOSTIC
 comparison,collisional_budget_ratio,3262.8,factor,committed cell gamma_coll over gamma_coll at MOT density,"the collisional channel essentially leaves the budget. This is the cell contribution the fibre removes. It does NOT remove the Lorentzian-against-Gaussian correlation, which the twin measures at about -0.94 in BOTH arms",DIAGNOSTIC
 comparison,geometry_parameter,waist assumed to diameter measured,kind,w0 has no upper bound from the cell data. a fibre diameter is an SEM or mode-cutoff measurement,"A CHANGE OF KIND, not a smaller uncertainty, and the reason the arms are not two versions of one measurement",DIAGNOSTIC
