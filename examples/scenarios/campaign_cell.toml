@@ -1,0 +1,31 @@
+# The proposed vapour-cell campaign: repaired lock, tighter focus, the
+# LeCroy's deep memory, and every open apparatus item entering as a span.
+
+[scenario]
+name = "campaign_cell"
+platform = "cell"
+temperatures_c = [70.0, 100.0, 130.0]
+powers_w = [0.225, 0.175, 0.125, 0.075, 0.025]
+waist_um = [8.0, 24.0]
+retro_ratio = 0.94
+retro_ratio_err = 0.04
+lock = "fixed"
+lock_drift_mhz_per_min = [0.0, 0.04]
+session_hours = 8.0
+noise_law_csv = "results/noise_model.csv"
+
+[acquisition]
+instrument = "lecroy_ws3104z"
+resolution_mode = "raw"
+record_length = 500001
+
+[provenance]
+temperatures_c = "the 2025 dwell set, docs/DATA.md; re-used so the two campaigns compare like for like"
+powers_w = "the 2025 ladder, docs/DATA.md; the ordering is a design choice the twin randomises"
+waist_um = "the proposed 16 um focus spans its own uncertainty until the knife-edge lands: rb5s6s.forecast's S0 note and docs/plan/12's open item"
+retro_ratio = "rb5s6s.constants RHO_RETRO 0.94 with RHO_RETRO_ERR 0.04, remeasured on the day per docs/quantities/campaign.md A"
+lock = "repaired 2026-08-16, docs/plan/09 and docs/quantities/campaign.md"
+lock_drift_mhz_per_min = "the repaired lock's residual is UNMEASURED (docs/plan/12); spanned from zero to the old held-lock bound 0.04 MHz/min as the ceiling"
+session_hours = "one bench day's acquisition envelope, matching the 2025 sessions"
+acquisition = "rb5s6s.instruments lecroy_ws3104z raw at its measured 500001-point record, manual-checked 2026-08-31; raw because ERes correlates neighbours"
+noise_law_csv = "results/noise_model.csv, the measured 2025 detection law, carried until the new chain is characterised"

@@ -1,0 +1,34 @@
+# The 2025 dataset's own conditions, the validation target: a twin run under
+# this scenario must land inside the record's committed uncertainty bands.
+
+[scenario]
+name = "dataset_2025"
+platform = "cell"
+temperatures_c = [70.0, 100.0, 130.0]
+powers_w = [0.225, 0.175, 0.125, 0.075, 0.025]
+waist_um = [62.0, 68.0]
+retro_ratio = 0.94
+retro_ratio_err = 0.04
+lock = "drifting"
+lock_drift_mhz_per_min = [0.04, 0.04]
+session_hours = 8.0
+noise_law_csv = "results/noise_model.csv"
+
+[acquisition]
+instrument = "agilent_3054a"
+resolution_mode = "hires"
+record_length = 2000
+
+[scenario.extra]
+repeats_per_rung = 5
+
+[provenance]
+temperatures_c = "docs/DATA.md: three temperature dwells, all sessions at internal 130 C for the power ladder"
+powers_w = "docs/DATA.md: the ladder ran descending 225-175-125-75-25 mW on all four peaks"
+waist_um = "rb5s6s.constants W0_BAND_M (62, 68) um about the 64 um lineage value; the knife-edge stays open"
+retro_ratio = "rb5s6s.constants RHO_RETRO 0.94 with RHO_RETRO_ERR 0.04"
+lock = "the 2025 cavity lock drifted; docs/plan/09 records the repair as later"
+lock_drift_mhz_per_min = "results/projections.csv input_lock_drift_rate, the held-lock bound 0.04 MHz/min, CALIB"
+session_hours = "docs/DATA.md: the campaign's session envelope"
+acquisition = "the 2025 record: Agilent dso-x 3054a at 2000 points, high resolution; rb5s6s.instruments, manual-checked 2026-08-31"
+noise_law_csv = "results/noise_model.csv, the measured 2025 detection law"

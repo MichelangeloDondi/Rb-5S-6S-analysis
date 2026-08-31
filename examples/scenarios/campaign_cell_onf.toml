@@ -1,0 +1,41 @@
+# The cell campaign plus the nanofibre arm: identical cell settings so the
+# comparison isolates the fibre, and the fibre geometry reaching the solved
+# HE11 mode. The radiation temperature is not a field here on purpose:
+# rb5s6s.twin fixes a laboratory fibre's radiation environment at 300 K and
+# refuses to read the atoms' microkelvin as a radiation temperature.
+
+[scenario]
+name = "campaign_cell_onf"
+platform = "onf"
+temperatures_c = [70.0, 100.0, 130.0]
+powers_w = [0.225, 0.175, 0.125, 0.075, 0.025]
+waist_um = [8.0, 24.0]
+retro_ratio = 0.94
+retro_ratio_err = 0.04
+lock = "fixed"
+lock_drift_mhz_per_min = [0.0, 0.04]
+session_hours = 8.0
+noise_law_csv = "results/noise_model.csv"
+
+[acquisition]
+instrument = "lecroy_ws3104z"
+resolution_mode = "raw"
+record_length = 500001
+
+[fibre]
+diameter_nm = 400.0
+diameter_tolerance_nm = 50.0
+distances_nm = [100.0, 200.0, 300.0]
+atom_temperature_k = 1e-4
+
+[provenance]
+temperatures_c = "identical to campaign_cell so the fibre arm is the only difference"
+powers_w = "identical to campaign_cell"
+waist_um = "identical to campaign_cell; the free-space beam still feeds the cell half"
+retro_ratio = "identical to campaign_cell"
+lock = "identical to campaign_cell"
+lock_drift_mhz_per_min = "identical to campaign_cell"
+session_hours = "identical to campaign_cell"
+acquisition = "identical to campaign_cell"
+noise_law_csv = "identical to campaign_cell"
+fibre = "350-400 nm diameter class of the guided-mode correction (docs/methods/09, commit 142c62c); 50 nm tolerance and the 100-300 nm distance grid follow docs/big_picture/09's evanescent working range; microkelvin atoms per the cold-atom platform"

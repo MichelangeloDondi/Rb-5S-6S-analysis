@@ -127,6 +127,10 @@ EXPENSIVE = {
     # 24 Monte-Carlo datasets per configuration through synthetic_traces and
     # fit_condition, about three minutes, deterministic under its fixed seed.
     "run_campaign_twin_forecast": ["campaign_twin_forecast.csv"],
+    # three presets x three waist points x two fitter variants through
+    # forecast_precision, about four minutes, deterministic under crc32
+    # seeds. The scenario layer's end-to-end proof.
+    "run_scenario_forecast": ["scenario_forecast.csv"],
     # 2000 multi-condition fits at ~1.05 s each, about five minutes on eight
     # lanes. Deterministic despite being Monte-Carlo: every trial's seed is its
     # index, so the CSV reproduces exactly and IS checkable rather than merely

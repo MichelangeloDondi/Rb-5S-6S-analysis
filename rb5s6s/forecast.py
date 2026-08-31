@@ -278,7 +278,8 @@ def _one_trial(truth: Dict, design: Dict, rng: np.random.Generator) -> Dict:
 
 
 def forecast_precision(truth: Dict, design: Dict, *, n_trials: int = 8,
-                       seed: int = 0, scalings: bool = True) -> Dict:
+                       seed: int = 0, scalings: bool = True,
+                       return_trials: bool = False) -> Dict:
     """Forecast what your design would measure, by running it in software.
 
     ``truth`` holds the line you believe you have: gamma_coll, sigma_laser
@@ -307,6 +308,13 @@ def forecast_precision(truth: Dict, design: Dict, *, n_trials: int = 8,
 
     out: Dict = {
         "gamma_coll_err": med("gamma_coll_err"),
+        # return_trials=True adds the raw per-trial list, so a caller can
+        # state the world-to-world spread of the reported error instead of
+        # quoting the median as if it were exact. Additive, default off:
+        # every committed CSV predates the key and does not read it.
+        **({"gamma_coll_err_trials":
+            [t.get("gamma_coll_err", float("nan")) for t in trials]}
+           if return_trials else {}),
         "sigma_laser_err": med("sigma_laser_err"),
         "corr_laser_coll": med("corr_laser_coll"),
         "chi2_red": med("chi2_red"),

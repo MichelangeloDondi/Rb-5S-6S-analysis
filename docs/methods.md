@@ -162,6 +162,11 @@ rb5s6s/   api(the supported entry point: a trace in, a linewidth out)
           forecast(M34: the digital twin, synthesise traces for an experiment
                    that does not exist yet, fit them back, and read the
                    achievable precision from the fit's own covariance)
+          scenario(M34c: a campaign session as a loadable file. Every
+                   field carries its provenance or refuses to load, open
+                   apparatus items enter as spans, and an acquisition the
+                   named scope cannot realise is rejected citing the manual's
+                   own limit)
           instruments(M34a: the oscilloscopes as objects, record length,
                       effective depth per resolution mode, and whether that
                       mode correlates neighbouring samples, every number from

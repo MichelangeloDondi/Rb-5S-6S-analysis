@@ -84,6 +84,9 @@ SKIP = {"laser_epoch.csv", "qc_metrics.csv",
         # for solved mode quantities, ENVELOPE for forecast precisions and
         # DIAGNOSTIC for the measured correlations, within one quantity column.
         "campaign_twin_forecast.csv",
+        # the scenario forecasts, same mixed class: forecast precisions are
+        # ENVELOPE, solved-mode quantities CALIB, so the producer tags rows.
+        "scenario_forecast.csv",
         # the lever ranking: every row is a Fisher forecast about a DESIGN, and
         # its inputs split measured from estimated, so the producer tags them.
         "onf_lever_ranking.csv",
