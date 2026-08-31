@@ -87,7 +87,7 @@ where the next defect lands**, because it has been rewritten since the last
 reading and re-read by nobody. Three of the four pages here grew
 because a wrong sentence had to be replaced twice.
 
-AMENDED THE SAME NIGHT, to 32,559, after a SECOND board read the
+AMENDED THE SAME NIGHT, to 32,559, after a SECOND reading of the
 repair this raise paid for and refuted its leading reason. The
 retraction had argued that a limit moving by a quarter between two
 readings of one likelihood cannot support an exclusion at 95 per
@@ -215,6 +215,30 @@ instruction that visual information saves attention where prose spends it.
 
 # RE-RECORDED 2026-08-28. The moves were README +18, docs/RESULTS.md +12 and
 # START_HERE -1, all corrections rather than volume.
+#
+# RE-RECORDED a second time 2026-08-31 after the pointer moved into the
+# ledger generator: docs/RESULTS.md 9441 -> 9445, the generated clause four
+# words longer than the hand-written one it replaced. Movement from the
+# tool, which now prints it per key.
+#
+# RE-RECORDED 2026-08-31, UPWARD, measured against HEAD per file:
+# CLAIMS +6 (the self-centred qualifier on the novelty claim, twice, a
+# board-mandated correction), RESULTS +4 (the headline bound's pointer to
+# UNCERTAINTY 3a, likewise), methods.md +8 (row 3's qualifier and row 6
+# naming its chapter's new section), README -1. Net front path +17. The
+# first account of this wave's budget move said "downward" from memory and
+# a seat falsified it from the file; this note is generated from the same
+# measurement it records.
+#
+# RE-RECORDED 2026-08-29, downward, and the reason is a restoration rather
+# than a cut. The assistant disclosure had been lifted out of the provenance
+# paragraph into a standalone blockquote, which changes what it is: embedded it
+# is one clause among the project's provenance facts, isolated it reads as a
+# disclaimer banner. It is back in the paragraph in its original wording, with
+# 'the analysis was written after the campaign' restored beside it. The words
+# were paid by merging the opening line's 'The data were taken at OIST in 2025'
+# into the sentence above it, which already said the same thing, so no fact
+# left the page.
 #
 # NO TOTAL IS WRITTEN HERE, and that is the repair. This paragraph carried
 # "29088 -> 29117" and the budget file summed to 29114, a three-word
@@ -354,5 +378,10 @@ if __name__ == "__main__":   # python tests/test_reader_surface_budget.py --rela
                                encoding="utf-8")
         b, a = sum(before.values()), sum(now.values())
         print(f"reader surface re-recorded: {b} -> {a} ({a - b:+d})")
+        moved = [f"  {k}: {before.get(k, 0)} -> {now.get(k, 0)}"
+                 for k in sorted(set(before) | set(now))
+                 if before.get(k) != now.get(k)]
+        print("movement (paste this into the dated note):")
+        print("\n".join(moved) if moved else "  (no key moved)")
     else:
         print(__doc__.strip().split("\n")[0])

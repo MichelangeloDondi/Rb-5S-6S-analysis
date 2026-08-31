@@ -75,13 +75,20 @@ the target of the form test below. What varies with power is the
 of the line.
 
 **[Cumulants add under convolution](../wiki/third-cumulant.md)** (the cumulant of a sum of independent
-variables is the sum of the cumulants), and the symmetric kernels contribute
-nothing asymmetric: the Lorentzian, Gaussian and transit kernels all have
-$\kappa_1=\kappa_3=0$. So the ramp's odd cumulants pass through the
-convolution untouched, so the *whole line's* first-moment pull is
-$-\tfrac23 S_0$ and its third cumulant is $\kappa_3^{\text{tot}}=S_0^3/135$,
-**exactly**, independent of the (unknown) laser/transit widths. These two
-odd cumulants are the clean, apparatus-independent handles, and the mean
+variables is the sum of the cumulants), and the Gaussian and transit kernels
+have $\kappa_1=\kappa_3=0$ exactly. **The Lorentzian is the qualified case.** Its even cumulants diverge, so
+whole-line $\kappa_2$ and any standardised skew exist only at a fixed
+window, and the caveat below stands. The whole line's pre-window third
+cumulant is still $\kappa_3^{\text{tot}} = S_0^3/135$, since the odd
+moments of every kernel cancel. What a windowed, self-centred readout keeps
+of it is the truncation-limited fraction the `survival` rows of
+[`results/cumulant_window_check.csv`](../../results/cumulant_window_check.csv)
+measure, while mis-centring by $\delta$ leaks first cumulant at
+$\sim(2/\pi)\gamma\delta W$ ($\gamma$ the half-width). Drift immunity
+therefore belongs to self-centred readouts, the fit's free per-scan centre
+first among them. Derivation and numbers are on
+[the concept page](../wiki/third-cumulant.md), the dated account in
+[the history](../history/02_the-lineshape-and-its-kernel.md). The mean
 pull is the primary fixed-lock-session observable
 ([where this can go](08_assumptions_and_outlook.md)).
 (The dataset's centre channel supplies no bound of its own. A peak position is
@@ -102,7 +109,9 @@ nearly power-independent), against which the asymmetry reads as
 $$g_1^{\text{obs}} \sim \frac{\kappa_3^{\text{tot}}}{\sigma_\text{eff}^3}
 =\frac{S_0^3/135}{\sigma_\text{eff}^3} \propto S_0^3 \propto P^3$$
 
-since $S_0\propto$ power $P$. (No contradiction with the fixed $0.566$: that
+since $S_0\propto$ power $P$. This is a self-centred construction, the
+window riding the fitted centre, which is what licenses using
+$\kappa_3^{\text{tot}} = S_0^3/135$ here at all (remark above). (No contradiction with the fixed $0.566$: that
 is the standardized skew of the ramp *alone*, where here the same $\kappa_3$ is
 divided by a much larger and nearly fixed symmetric width.)
 
@@ -178,8 +187,10 @@ g_1\equiv\frac{\kappa_3}{\mathrm{Var}(s)^{3/2}}
 A fixed-lock session would test them in order of statistical cost.
 
 1. **Mean pull against $P$.** The first cumulant, exact and
-   apparatus-independent (§above), first order in $S_0$, and a fixed lock is
-   what makes centres usable at all.
+   apparatus-independent up to a windowed deficit of a tenth to a fifth of
+   a per cent (`kappa1_window_deficit_pct` row and its construction note),
+   first order in $S_0$, and a fixed
+   lock is what makes centres usable at all.
 2. **Excess variance against $P^2$.** The symmetric second-moment growth
    $\mathrm{Var}\propto S_0^2$, which is exactly what the Cs 6S to 8S
    literature reported as a growing Gaussian width.
@@ -398,7 +409,8 @@ question are in [`docs/THEORY_NOTE.md`](../THEORY_NOTE.md).
 ---
 
 **Where the numbers live.** Modules M16, M19 · producers
-`scripts/run_ramp_geometry.py`, `scripts/run_polarizability.py` · results
+`scripts/run_ramp_geometry.py`, `scripts/run_polarizability.py`,
+`scripts/run_cumulant_window_check.py` · results
 `results/polarizability.csv` · figures: `fig24_weak_field_limit.png` for the
 regime this law holds in and `fig25_retro_combination.png` for the intensity
 convention behind $S_0$. Library code:

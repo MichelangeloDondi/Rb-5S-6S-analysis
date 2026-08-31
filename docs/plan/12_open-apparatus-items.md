@@ -23,6 +23,16 @@ next session inventing a value, or asking for one nobody has.
 | **cell temperature against the cold spot** | instrumented but the gradient is not resolved | the density lever, and through it the collisional coefficient | carried as a stated systematic in `results/beta_self_probe.csv` |
 | **retro-reflection intensity ratio** | not measured. The working value is a stated prior, carried with its spread in `results/delta_alpha_posterior.csv`'s notes, and [chapter 7](07_acquisition-settings.md) records one in-record reading that contradicts it outright | the effective intensity, and through it every light-shift prediction. [Chapter 6](06_sizing-and-spending-rules.md) already schedules turning the assumption into a measurement | carried as the prior in `results/delta_alpha_posterior.csv`, whose limit row states how far the priors move it, and inside the predicted envelope of `results/stark_joint.csv` |
 
+**The fit-window systematic on the collisional width**, not an apparatus
+number but an analysis unknown the same rules govern: the window scan
+(`results/fit_window_scan.csv`) shows a coherent drift of the fitted width
+with the fit window that no committed error bar carries
+(`docs/UNCERTAINTY.md` §3a). What closes it: the committed shared-slope
+$\beta$ construction re-run per window. Until then the headline bound's own
+line in [RESULTS.md](../RESULTS.md) points at that section, and the
+forecast proceeds unchanged because every per-window indicative slope is
+consistent with zero.
+
 ### What each item costs to close
 
 **The lock residual is the cheapest and the highest leverage.** It needs no

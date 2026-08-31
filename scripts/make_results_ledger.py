@@ -137,7 +137,8 @@ def main() -> int:
     if pooled:
         pb = float(pooled["bound95_nscale"])
         W(f"**The headline bound is the pooled one: below [{pb:.3F}](../results/beta_self_probe.csv \"ref:beta_self_probe:pooled_slope::bound95_nscale\") MHz per "
-          f"10¹² cm⁻³ at 95%**, one shared slope across the four lines with "
+          f"10¹² cm⁻³ at 95%** (window robustness: "
+          f"[UNCERTAINTY §3a](UNCERTAINTY.md)), one shared slope across the four lines with "
           "per-line floors, a construction preregistered before computation "
           "and accepted on its adjudication "
           "([the prereg](notes/beta_self_pooling_prereg.md), with the "

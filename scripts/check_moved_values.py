@@ -19,7 +19,8 @@ history rather than arguing it.
 
 * THE VALUE COLUMN WAS READ AT POSITION 2, on a docstring claim that
   `(scope, quantity, value)` is "the shape every results CSV in this tree
-  uses". Measured: 78 CSVs carry 45 distinct header shapes. For the
+  uses". Measured 2026-08-31: 80 CSVs (this count moved with the tree; the
+  header-shape census below was taken at 78). For the
   `quantity,value,unit` shape the old key embedded the changing value and
   read the UNIT as the value, so detection on those files was 0 BY
   CONSTRUCTION. That false universal was written in the docstring of the
@@ -119,7 +120,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 
-# The whole unpushed wave. A wave is what a board reads and what a port
+# The whole unpushed wave. A wave is what the commit team reads and what a port
 # carries, so it is the unit a propagation check should grade.
 DEFAULT_BASE = "origin/main"
 

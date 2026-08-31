@@ -26,7 +26,9 @@
     "no count of arms",
     "is not quotable",
     "do NOT summarise",
-    "criterion corrected"
+    "criterion corrected",
+    "replaced by",
+    "was replaced"
   ],
   "entries": [
     {
@@ -63,6 +65,24 @@
       "pattern": "(?:homogeneous terms|these four|components of th\\w+ response|transit[^.]{0,60}) adds? exactly|adds? exactly[^.]{0,60}transit",
       "retired": "2026-08-28",
       "why": "the guided transit kernel is a squared Lorentzian entering the width at second order (results/transit_additivity.csv temperature_exponent_band 0.97 to 0.98), so the four-term exact-additivity model is retired; exact additivity survives for the Lorentzian pair alone. Survived 14 board rounds in files no round was pointed at, and two clean-sweep greps missed it on grammatical number",
+      "marker_window": 400
+    },
+    {
+      "pattern": "odd cumulants pass(?:es)? through[a-z ,-]{0,30}untouched",
+      "retired": "2026-08-31",
+      "why": "the whole-line odd cumulants survive only as the truncation-limited, self-centred fraction results/cumulant_window_check.csv measures; the unqualified pass-through claim is the retracted form",
+      "marker_window": 400
+    },
+    {
+      "pattern": "gamma\\s*/\\s*W[ -]suppressed|γ\\s*/\\s*W[ -]suppressed",
+      "retired": "2026-08-31",
+      "why": "suppression wording implies a ratio below one; the measured quantity is a truncation-limited fraction and the correct wording names the fraction and its rows",
+      "marker_window": 400
+    },
+    {
+      "pattern": "floor[ -]dominated",
+      "retired": "2026-08-31",
+      "why": "the small-shift ratio is finite (survival_vs_S0 rows); the floor-domination story was grid noise from edge-snapped windows, and floor already means the noise floor in this record",
       "marker_window": 400
     }
   ]

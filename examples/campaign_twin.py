@@ -73,7 +73,33 @@ NOISE_FRAC_BRIGHT = 0.004
 # 12-bit converter, snug bright range at 1.25x the brightest signal.
 ADC_LEVELS = 4096
 REPEATS_PER_RUNG = 4
+# CHECK 4 is a scatter measurement, so it needs several worlds; see main().
+CHECK4_SEEDS = (11, 12, 13, 14, 15)
 CYCLES_AT_225MW = 3.0        # pumping cycles an atom completes at full power
+
+
+def _pull_per_s0() -> float:
+    """The ramp's first moment per unit S0, MEASURED from the library kernel.
+
+    The derivation gives -2/3 for the density f(s) ∝ |s| on [-s0, 0], but this
+    is measured rather than written down because a literal here is exactly what
+    went wrong before: the file carried 0.5, the mean of a UNIFORM density, and
+    the estimator built on it read kappa 33 per cent high while its own
+    null-versus-prediction check passed, injection and recovery sharing the
+    error. Reading the constant off `stark_ramp` means the twin cannot disagree
+    with the kernel it convolves, in magnitude or in SIDE -- and the side is an
+    open question (`tests/test_ramp_side_matches_the_polarizability.py`), so it
+    is inherited here and never re-chosen.
+    """
+    from rb5s6s._compat import trapezoid
+    from rb5s6s.lineshape import stark_ramp
+    g = np.linspace(-4.0, 4.0, 40001)
+    r = stark_ramp(g, 1.0)
+    r = r / trapezoid(r, g)
+    return float(trapezoid(g * r, g))
+
+
+PULL_PER_S0 = _pull_per_s0()
 
 
 def line_positions_mhz() -> dict:
@@ -106,16 +132,30 @@ def build_rung(power_w: float, kappa: float, t_c: float, order_idx: int,
         if layers["saturation"]:
             gamma = gamma + stark.companion_gamma_mhz(s0, peak)
         centre = pos[peak]
-        if layers["stark"]:
-            centre += 0.5 * s0                        # ramp's mean pull
         if layers["bbr"]:
             centre += -blackbody.shift_hz(273.15 + t_c) / 1e6
         if layers["drift"]:
             centre += DRIFT_MHZ_TOTAL * (order_idx / max(n_rungs - 1, 1) - 0.5)
-        from rb5s6s.lineshape import composite_profile
-        grid, prof = composite_profile(gamma, SIGMA_LASER_MHZ, TRANSIT_FWHM_MHZ)
-        shape = np.interp(nu - centre, grid, prof, left=0.0, right=0.0)
-        v += amp * (shape / prof.max())
+        # THE RAMP IS CONVOLVED, NOT APPLIED AS A SHIFT (corrected 2026-08-30).
+        # It used to enter as `centre += 0.5 * s0`, which was wrong twice over.
+        # The magnitude: the ramp density is f(s) = 2s/S0^2, whose mean is
+        # (2/3) S0; S0/2 is the mean of a UNIFORM density, not of this one.
+        # The kind: a rigid translation carries only the first moment, so every
+        # trace this twin emitted was exactly SYMMETRIC (skewness ~1e-16) while
+        # the third cumulant, kappa_3 = +S0^3/135 for a SELF-CENTRED readout
+        # (docs/wiki/third-cumulant.md), is the channel this record is built
+        # on. A twin that cannot emit the asymmetry
+        # cannot forecast it, and cannot test a fitter against it.
+        # model_profile convolves lineshape.stark_ramp, so BOTH the -2/3 pull
+        # and the skew come from the library rather than from a literal here,
+        # and the ramp's coded DIRECTION is inherited rather than re-chosen.
+        from rb5s6s.lineshape import model_profile
+        shape = model_profile(nu - centre,
+                              gamma_coll=gamma,
+                              sigma_laser_fwhm=SIGMA_LASER_MHZ,
+                              transit_fwhm=TRANSIT_FWHM_MHZ,
+                              s0=(s0 if layers["stark"] else 0.0))
+        v += amp * (shape / shape.max())
         truth_amps[peak] = amp
     v += 0.01                                          # detector offset
     # shot-like noise: sigma grows as the root of the LOCAL signal, anchored
@@ -182,13 +222,18 @@ def run_world(kappa: float, layers: dict, seed: int) -> dict:
     w = np.array([1 / s[1] ** 2 for s in slopes])
     slope = float(np.sum([s[0] * wi for s, wi in zip(slopes, w)]) / w.sum())
     slope_err = float(1 / math.sqrt(w.sum()))
-    # the centre channel measures HALF of kappa: a triangular ramp density
-    # from 0 to s0 pulls the mean by s0/2, so the estimator is 2 x slope.
+    # The centre channel reads the ramp's MEAN, and for the density this record
+    # derives, f(s) = 2s/S0^2, that mean is (2/3) S0 and not S0/2 (corrected
+    # 2026-08-30; S0/2 is the mean of a UNIFORM density). lineshape.stark_ramp
+    # codes the pull NEGATIVE, so the fitted slope of centre against power is
+    # -(2/3) kappa and the estimator is -3/2 times it. The factor is written as
+    # -1/PULL_PER_S0 rather than as a literal so it cannot drift from the
+    # library again.
     # The first version of this file compared the raw slope to kappa and
     # under-read its own injection by exactly that factor, which the twin's
     # null-versus-prediction check exposed.
-    kap = 2.0 * slope
-    kap_err = 2.0 * slope_err
+    kap = slope / PULL_PER_S0
+    kap_err = abs(slope_err / PULL_PER_S0)
     # amplitude RATIOS at the bright rung, against the shares: the pumping
     # signature is a per-line DEVIATION from the degeneracy law, not a gross
     # reordering, because amp = share x survival and the shares dominate.
@@ -221,21 +266,49 @@ def main() -> int:
     print(f"CHECK 3 blackbody: {bb*1e3:.3f} kHz at 130 C against MHz widths "
           f"-> negligible = {abs(bb) < 1e-3 * GAMMA_COLL_MHZ * 1e3}")
 
-    pred = run_world(KAPPA_PRED, layers, seed=11)
-    null = run_world(0.0, layers, seed=12)
+    # CHECK 4 IS RUN OVER SEVERAL SEEDS, and that is the point of it
+    # (2026-08-30). A single world reports the regression's own error on the
+    # centre-versus-power slope, which knows nothing about the randomised power
+    # ORDER it happened to draw. Measured over eight seeds the recovered kappa
+    # ran 0.22 to 7.28 for an injected 1.556 while each world quoted about
+    # +/-0.6, so the per-world error understates the scatter by roughly four.
+    # Quoting one seed therefore turns a channel the record calls unusable into
+    # a 4.8-sigma "detection" or a clean null depending on the draw. The spread
+    # ACROSS seeds is the uncertainty to report, and it states M21 more
+    # directly: drift aliases onto the power order, so what moves between
+    # worlds is the answer and not merely its error bar.
+    pred_worlds = [run_world(KAPPA_PRED, layers, seed=s) for s in CHECK4_SEEDS]
+    null_worlds = [run_world(0.0, layers, seed=s + 100) for s in CHECK4_SEEDS]
+
+    def _pool(ws):
+        k = np.array([w["kappa"] for w in ws])
+        return {"kappa": float(np.median(k)),
+                "kappa_err": float(np.std(k, ddof=1)),
+                "quoted_err": float(np.median([w["kappa_err"] for w in ws])),
+                "lo": float(k.min()), "hi": float(k.max()),
+                "dither": ws[0]["dither"], "ratio_dev": ws[0]["ratio_dev"]}
+
+    pred, null = _pool(pred_worlds), _pool(null_worlds)
 
     print(f"\nCHECK 2 one-range dither at the dim rung: {pred['dither']:.2f} "
           f"(2025 measured 0.99 at a 1.0x-snug range; this twin ranges at 1.25x, usable above ~0.9)")
     sig = pred["kappa"] / pred["kappa_err"]
     nsig = null["kappa"] / null["kappa_err"]
-    print(f"CHECK 4 the centre channel (M21 says it cannot measure the pull):")
+    # the channel is unusable when its answer moves more than its own error bar
+    # admits: that is a calibration failure, not merely an imprecise estimate.
+    understated = pred["kappa_err"] / pred["quoted_err"]
+    print("CHECK 4 the centre channel (M21 says it cannot measure the pull):")
     print(f"           injected kappa {KAPPA_PRED:.3f} -> centres recover "
-          f"{pred['kappa']:.3f} +/- {pred['kappa_err']:.3f} ({sig:+.1f} sigma), "
-          f"no detection, M21 confirmed = {abs(sig) < 3}")
+          f"{pred['kappa']:.3f} +/- {pred['kappa_err']:.3f} over "
+          f"{len(CHECK4_SEEDS)} seeds, spanning {pred['lo']:.2f} to {pred['hi']:.2f}")
+    print(f"           each world quoted only +/-{pred['quoted_err']:.3f}, so the "
+          f"per-world error understates the scatter by {understated:.1f}x")
+    print(f"           -> the channel's own error bar is not trustworthy, "
+          f"M21 confirmed = {understated > 2}")
     print(f"           null world: {null['kappa']:.3f} +/- {null['kappa_err']:.3f} "
           f"({abs(nsig):.1f} sigma) -> null stays null = {abs(nsig) < 3}")
-    print(f"           the bound construction of record is the joint width "
-          f"likelihood over 172 traces, not this channel")
+    print("           the bound construction of record is the joint width "
+          "likelihood over 172 traces, not this channel")
 
     # pumping predicts each line's amplitude falls below the degeneracy law
     # by its survival factor, so the ratio-to-4192 deviations should match

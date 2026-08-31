@@ -88,7 +88,9 @@ suppression of the third cumulant is `fringe_tail` (M15) -- neither is
 re-derived here. Third and higher cumulants are NOT resolved by this simulation -- the
 numerical noise floor of the FFT, weighted by nu^3, swamps kappa_3 -- so the
 change-of-variables argument is the only support for the odd cumulants above
-the first, and it carries the quasi-static assumption. kappa_3 is the moment the asymmetry claim rests on.
+the first, and it carries the quasi-static assumption. kappa_3, read
+self-centred (docs/wiki/third-cumulant.md), is the moment the asymmetry
+claim rests on.
 """
 
 from __future__ import annotations

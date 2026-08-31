@@ -45,7 +45,7 @@ ROOT = Path(__file__).resolve().parents[1]
 # outside this guard's population entirely. scripts/annotate_results_status.py
 # is exactly such a script and this guard does not see it.
 #
-# AND THE POPULATION IS A FILESYSTEM GLOB WHILE EVERY BOARD READS A DIFF.
+# AND THE POPULATION IS A FILESYSTEM GLOB WHILE THE COMMIT TEAM READS A DIFF.
 # `private/` became its own git repository on 2026-08-29, so the archive's
 # history cannot see a file appear under private/checks/ at all: a checker
 # added there is invisible to `git diff`, to `git ls-files`, and therefore to
@@ -82,6 +82,14 @@ NOT_WIRED = {
         "when briefing the enforcement reader, per LOGIC 0b.2, and its own "
         "docstring says that if it ever returns a conclusion it has become "
         "the checker-of-the-checker the ceiling rule refuses",
+    "private/checks/check_prose_numbers.py":
+        "grades an UNTRACKED prose file -- the thesis chapter, the application "
+        "drafts -- against the committed results CSVs, and which of those "
+        "exists changes between sessions, so there is no committed input a "
+        "per-commit gate could hold still. It also cannot pass or fail on its "
+        "own: a hit can be coincidental and only the MISS list carries signal, "
+        "so what it produces is an input to a human reading rather than an "
+        "assertion. Wiring it would mean asserting that someone read the list",
     "private/checks/anchor_drafts.py":
         "a one-shot batch tool that takes a drafts file for one subagent "
         "fan-out and compares each drafted body against the file it claims "

@@ -136,7 +136,7 @@ def _gaps() -> list[str]:
 # guard's only escape is a sibling `_err` row, so recording those reasons means
 # emitting nine new rows, four of them behind a Monte Carlo, each needing a
 # physics judgement about what the error even means for that quantity. That is
-# a wave, and doing it inside this one is what six board rounds have shown does
+# a wave, and doing it inside this one is what repeated readings have shown do
 # not converge.
 #
 # SO IT IS OWED, dated, and named: nine rows, two files, next wave. The guard

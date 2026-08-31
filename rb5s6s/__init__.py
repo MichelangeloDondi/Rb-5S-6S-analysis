@@ -74,8 +74,8 @@ __all__ = [
     "fit_linewidth", "LinewidthResult", "fit_condition",
     "total_fwhm_mhz", "voigt_fwhm",
     "linefit", "ingest",
-    # THE GUIDED GEOMETRY IS DELIBERATELY NOT RE-EXPORTED HERE, and a board
-    # seat was right that it is hard to reach and wrong about the remedy.
+    # THE GUIDED GEOMETRY IS DELIBERATELY NOT RE-EXPORTED HERE, and a reading
+    # was right that it is hard to reach and wrong about the remedy.
     # `rb5s6s.fibre` is the PROSPECTIVE layer, and
     # tests/test_module_boundaries.py forbids a core module importing it:
     # the published analysis must not depend on unbuilt hardware. Hoisting

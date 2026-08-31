@@ -48,7 +48,7 @@
   "quoting_sites": [
    {
     "file": "README.md",
-    "line": 155,
+    "line": 154,
     "writes": "0.015"
    }
   ],
@@ -234,7 +234,7 @@
   "quoting_sites": [
    {
     "file": "docs/UNCERTAINTY.md",
-    "line": 336,
+    "line": 354,
     "writes": "0.044"
    }
   ],
@@ -246,7 +246,7 @@
   "quoting_sites": [
    {
     "file": "docs/UNCERTAINTY.md",
-    "line": 338,
+    "line": 356,
     "writes": "5.9"
    }
   ],
@@ -299,7 +299,7 @@
   "quoting_sites": [
    {
     "file": "docs/UNCERTAINTY.md",
-    "line": 376,
+    "line": 394,
     "writes": "0.87"
    }
   ],
@@ -311,7 +311,7 @@
   "quoting_sites": [
    {
     "file": "docs/UNCERTAINTY.md",
-    "line": 374,
+    "line": 392,
     "writes": "0.032"
    }
   ],
@@ -437,7 +437,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 231,
+    "line": 233,
     "writes": "0.9640"
    },
    {
@@ -454,7 +454,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 233,
+    "line": 235,
     "writes": "0.4040"
    },
    {
@@ -471,7 +471,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 231,
+    "line": 233,
     "writes": "0.9580"
    },
    {
@@ -488,7 +488,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 233,
+    "line": 235,
     "writes": "0.3760"
    },
    {
@@ -878,7 +878,7 @@
   "quoting_sites": [
    {
     "file": "docs/THEORY_NOTE.md",
-    "line": 770,
+    "line": 772,
     "writes": "45.57(17)"
    }
   ],
@@ -890,7 +890,7 @@
   "quoting_sites": [
    {
     "file": "docs/THEORY_NOTE.md",
-    "line": 730,
+    "line": 732,
     "writes": "790.032326(32)"
    }
   ],
@@ -902,7 +902,7 @@
   "quoting_sites": [
    {
     "file": "docs/THEORY_NOTE.md",
-    "line": 706,
+    "line": 708,
     "writes": "-1093"
    }
   ],
@@ -914,7 +914,7 @@
   "quoting_sites": [
    {
     "file": "docs/UNCERTAINTY.md",
-    "line": 309,
+    "line": 327,
     "writes": "30"
    }
   ],
@@ -1255,7 +1255,7 @@
    },
    {
     "file": "docs/UNCERTAINTY.md",
-    "line": 341,
+    "line": 359,
     "writes": "0.26"
    },
    {

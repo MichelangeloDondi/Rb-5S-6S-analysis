@@ -237,9 +237,10 @@ systematic as fig1.*
   Eq. (5.3). What this record adds is the closure of that frame for a
   focused beam, where the shift distribution is fixed by geometry
   rather than by unknown field statistics: a closed-form distribution,
-  analytic cumulants on bounded support, and a third cumulant that a
-  drifting lock cannot corrupt. That channel is why a dataset with no
-  usable line centres constrains anything at all.
+  analytic cumulants on bounded support, and a third cumulant a drifting
+  lock cannot corrupt when read self-centred
+  ([the condition](wiki/third-cumulant.md)). That channel is why a dataset
+  with no usable line centres constrains anything at all.
 - A self-calibrating frequency axis: an EOM comb acquired as its own
   bracketing traces in every block, so the axis is calibrated per block
   under a drifting lock, and the tooth spacing is proved exact by a
@@ -445,7 +446,8 @@ would add:
   20 percent density scale would leave the coefficient itself known to
   about 22 percent until the absorption channel of [PLAN.md](PLAN.md) §8
   measures the density directly.
-- A demonstration of the drift-immune third-cumulant readout, under a
+- A demonstration of the self-centred third-cumulant readout
+  ([the condition](wiki/third-cumulant.md)), under a
   named condition: the ramp asymmetry reaches detection only with the
   small-waist option (a tighter focus raises S₀ about sixteenfold over
   the dataset's 64 µm waist), which

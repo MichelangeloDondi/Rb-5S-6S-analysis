@@ -36,6 +36,15 @@ def _load_make_figures():
     return mod
 
 DATA_DRIVEN = [
+    # Added 2026-08-30 with the two guided-geometry figures. Both read
+    # committed CSVs (guided_mode_tables, onf_lever_ranking), so both go
+    # stale when those move. They were drawn, wired into main() and
+    # passed every other figure guard while sitting OUTSIDE this list,
+    # which is the same population defect the checker-wiring guard
+    # caught the same day: a hardcoded population does not grow with the
+    # thing it governs unless someone adds to it.
+    "fig36_guided_mode",
+    "fig37_onf_levers",
     # Added 2026-08-20. The one carrying figure for the campaign case,
     # drawn from five committed CSVs, so it goes stale if any of them move.
     "fig34_campaign_projection",

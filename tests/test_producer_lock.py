@@ -124,7 +124,7 @@ def test_every_results_producer_that_takes_minutes_holds_a_lock():
     that fires on things it should not is a guard people switch off.
 
     THE NAME SAYS "EVERY" AND THE POPULATION IS A HAND-MAINTAINED LIST, which
-    a board seat named as a completeness claim the guard cannot make. Both
+    a reader named as a completeness claim the guard cannot make. Both
     halves are true and the tension is the point: this cannot be derived,
     because "takes minutes" is a property of running the thing, not of reading
     it. The list IS the population, and a new slow producer joins it only by

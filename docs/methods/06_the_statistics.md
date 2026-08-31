@@ -6,9 +6,9 @@ rather than a confident one?
 parameters are the ones being fitted.
 **Gives.** The pre-registered rule that decides measurement against bound, and
 the error budget every result in the next chapter carries.
-**Skip if.** You are reading for the physics rather than the inference. This is
-the longest chapter in the set at over four hundred lines, and §4.5 alone
-carries the rule the headline results turn on.
+**Skip if.** You are reading for the physics rather than the inference. This
+is the longest chapter in the set, and §4.5 alone carries the rule the
+headline results turn on.
 
 > **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
 > explains the measurement in six sentences, then defines every term
@@ -294,7 +294,12 @@ that mirror as unmodelled signal and let it bias the baseline and width. So the
 line fits are restricted to a window around each trace's peak, wide enough to
 keep the fat Lorentzian wings (where $\gamma_\text{coll}$ lives, since cutting too
 tight would bias it) but tight enough to exclude the mirror: $\pm3.5\times$ the
-trace's own measured FWHM, clipped to $[9,25]$ MHz. The rulers need no such cut
+trace's own measured FWHM, clipped to $[9,25]$ MHz. That choice is no longer
+treated as settled: the window scan of §4.14 and
+[`results/fit_window_scan.csv`](../../results/fit_window_scan.csv) re-runs
+every condition across this multiplier and finds a coherent width drift the
+goodness of fit cannot see, so the committed window is a stated convention
+with a measured robustness axis, not a solved problem. The rulers need no such cut
 on the same grounds. A symmetric triangle has the same rate magnitude on both
 ramps, so a fold preserves the tooth *spacing* of a correctly labelled comb,
 while a single line simply appears twice. That argument covers the spacing and
@@ -576,16 +581,91 @@ detects real sharing structure when the data carry the power the dataset lacks.
 
 ---
 
+### 4.14 Sufficiency, and the one condition it rests on
+
+**The theorem, and its scope.** The full-profile likelihood is
+sufficient, so no statistic computed from the same trace carries information
+it lacks. What that buys operationally is asymptotic efficiency among
+regular estimators. It does **not** promise the fit the smallest
+mean-squared error against a biased competitor at finite samples, and this
+chapter's own table below shows the cumulant route winning exactly there
+(model correct, $S_0 = 0.35$: spread 0.014 against 0.215).
+
+**The condition.** Efficiency claims assume the model is right, and
+[`results/fit_window_scan.csv`](../../results/fit_window_scan.csv) shows this
+one is not: the fitted collisional width falls as the fit window widens in
+30 of 32 canonical conditions **over the wing-safe multiplier range the
+file's `wing_safe_mults` row defines** (`n_drift_negative` and `sign_test_p` rows, the tail taken under
+exchangeable signs. The mean $-1.08 \pm 0.17$ is the
+`gamma_drift_sigma_mean` row), while the per-window median $\chi^2_\nu$
+(`chi2_red_median` rows) is flat to a few parts in a thousand. A tail the
+model does not carry is absorbed by the free width while the core, where
+the counts and therefore the misspecified fit's compromise live, stays
+well described.
+
+**Two structural facts favour the moments, and both carry their limits.**
+Parity: a symmetric kernel contributes nothing to a **self-centred** odd
+moment, the Lorentzian to a truncation-limited remainder
+([the condition](../wiki/third-cumulant.md)). The remainder is a regime,
+not a licence: the `kappa3_sigma_blindness_pct` row measures the
+self-centred $\kappa_3$ moving 110 per cent when the laser width is taken
+fourfold to 6.4 MHz against the same $\pm 8$ MHz window, because a kernel
+comparable to the window truncates past what parity protects. The
+earlier lab-frame and mode-centred variants are emitted beside it as
+rows, so the earlier values stay reproducible. What the duel's
+estimator actually leans on is the joint likelihood over
+$(\kappa_3, \kappa_5)$ at two windows with $\gamma$ floated, not
+moment-level blindness. And the
+incidental parameters: §4.2 frees four per-trace nuisances against two
+shared physics parameters, while cumulants of order two and above are
+invariant to the centre, normalised ones to the amplitude.
+
+**What decides it is a measurement.** In
+[`results/estimator_duel.csv`](../../results/estimator_duel.csv) a twin
+injects a known $S_0$ and estimates it both ways, with and without an
+asymmetric defect the fitter lacks.
+
+| estimator | model correct | with the defect | shift |
+|---|---|---|---|
+| profile likelihood | $-0.023 \pm 0.036$ | $-2.145 \pm 0.085$ | 2.12 |
+| $\kappa_3, \kappa_5$ | $-0.957 \pm 0.035$ | $-0.990 \pm 0.045$ | 0.033 |
+
+Bias in MHz, injected $S_0 = 3$ MHz. The $\pm$ is the spread over 120
+realisations, not the bias's own error, which is $\sqrt{120}$ smaller: the
+fit's $-0.023$ is seven of its standard errors from zero, small but real.
+With the model correct the profile fit is the better estimator at this
+$S_0$. With the defect its bias moves by 2.12 MHz and the cumulant route's
+by 0.033, a factor of 65: the fit is the more efficient estimator and the
+more fragile one.
+
+**Three cautions before anyone uses this.** The cumulant route's standing
+bias is not the laser width. A control row repeats it with the true
+$\sigma$ and gets $-0.978$ against $-0.990$, and the remainder is
+consistent with window placement, though no committed row yet isolates
+placement from the $\gamma$ float, so that attribution is plausible rather
+than measured. At the archive's own $S_0$ of 0.35 MHz the picture inverts:
+the fit's spread grows to 0.215 where the cumulants' is 0.014, and the two
+defect sensitivities become comparable, 0.028 against 0.036. And the twin is
+one defect shape with white noise and no baseline, so it speaks to a
+mechanism and not to this dataset.
+
+**The use that survives all three.** The two estimators disagree by one
+amount when the model is right and by another when it is not, so their
+difference tests the model, at a sensitivity the table's own shift column
+measures.
+
 **Where the numbers live.** Modules M1, M4b, M4c, M4d, M8, M11, M12, M13, M14 ·
 producers `scripts/run_noise.py`, `scripts/run_global_fit.py`,
 `scripts/run_lever_crosscheck.py`, `scripts/run_modelform.py`,
 `scripts/run_model_ladder.py`, `scripts/run_identifiability.py`,
-`scripts/run_coverage.py`, `scripts/run_sharing_bic.py` · results
+`scripts/run_coverage.py`, `scripts/run_sharing_bic.py`,
+`scripts/run_fit_window_scan.py`, `scripts/run_estimator_duel.py` · results
 `results/noise_model.csv`, `results/global_fit.csv`,
 `results/lever_crosscheck.csv`, `results/modelform.csv`,
 `results/model_ladder.csv`, `results/identifiability.csv`,
 `results/identifiability_profile.csv`, `results/coverage.csv`,
-`results/sharing_bic.csv` · figures
+`results/sharing_bic.csv`, `results/fit_window_scan.csv`,
+`results/estimator_duel.csv` · figures
 `figures/fig7_identifiability_profile.png`. Library code: `rb5s6s/noise.py`,
 `rb5s6s/linefit.py`, `rb5s6s/beta.py`, `rb5s6s/fitutil.py`,
 `rb5s6s/modelform.py`, `rb5s6s/model_ladder.py`, `rb5s6s/identifiability.py`,

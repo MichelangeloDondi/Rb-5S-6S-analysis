@@ -212,6 +212,7 @@ def fit_condition(freqs: List[np.ndarray], volts: List[np.ndarray], *,
                   transit_fwhm: float = C.TRANSIT_FWHM_PLACEHOLDER_MHZ, fit_transit: bool = False,
                   laser_kind: str = "gaussian", trim_tails: bool = False,
                   gamma_l: float = 0.0, fit_gamma_l: bool = False,
+                  halfwidth_mult: float = 1.0,
                   profile: Callable[[np.ndarray, float], np.ndarray] = stark_ramp) -> Dict:
     """Joint fit of one condition's repeats. `freqs` already in transition MHz.
 
@@ -244,6 +245,20 @@ def fit_condition(freqs: List[np.ndarray], volts: List[np.ndarray], *,
     and earlier decision, and it cannot reach the line because of the core
     guard. The per-trace record comes back as `trim_records`. Default off, so a
     plain call reproduces the fit as it stood before the trimmer existed.
+
+    `halfwidth_mult` SCALES the adaptive fit window, and exists so the window
+    can be treated as a robustness axis rather than a fixed choice. It
+    multiplies each trace's own adaptive half-width, so a scan keeps the same
+    fraction of every line's wing whether that line is narrow or collisionally
+    broadened. 1.0 is the committed window and is bit-identical to the call
+    before this parameter existed.
+
+    THE CAP IS NOT NEGOTIABLE AND IS THE REASON THIS IS A MULTIPLIER RATHER
+    THAN A FREE WIDTH. The off-centre-sweep mirror re-crosses the line about
+    40 MHz away, so FIT_HALFWIDTH_MAX_MHZ is re-applied after scaling: a scan
+    that widened past it would be fitting the mirror, and would report the
+    resulting bias as a window trend. Widening therefore SATURATES rather than
+    continuing, which a reader of the output has to know.
     """
     ntr = len(freqs)
     # per-trace seeds from simple moments
@@ -268,7 +283,8 @@ def fit_condition(freqs: List[np.ndarray], volts: List[np.ndarray], *,
     # see adaptive_halfwidth() and config.FIT_HALFWIDTH_FWHM_MULT.
     wf, wv, ws = [], [], []
     for i in range(ntr):
-        hw = adaptive_halfwidth(freqs[i], volts[i])
+        hw = min(adaptive_halfwidth(freqs[i], volts[i]) * halfwidth_mult,
+                 C.FIT_HALFWIDTH_MAX_MHZ)
         m = np.abs(freqs[i] - centers0[i]) <= hw
         wf.append(freqs[i][m]); wv.append(volts[i][m]); ws.append(sigmas[i][m])
     freqs, volts, sigmas = wf, wv, ws

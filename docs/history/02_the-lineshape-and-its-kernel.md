@@ -70,3 +70,15 @@ Chapter 6 also gains an uncertainty ledger for the next campaign: one row
 per component of the three headline uncertainties, with its size, limiting
 factor, acting knob, expected purchase, and validating check, scoped to
 the cell campaign alone.
+
+## The windowed third cumulant's survival, quantified, 2026-08-31
+
+The quantity: what a windowed third cumulant keeps of the ramp's
+$S_0^3/135$ after convolution with the symmetric kernels. The record said
+the odd cumulants pass through untouched, and the claim was replaced by a
+truncation-limited, self-centred survival, produced in
+[`results/cumulant_window_check.csv`](../../results/cumulant_window_check.csv)
+and stated on [the concept page](../wiki/third-cumulant.md). Cause: the old
+sentence treated a windowed estimate as the whole-line cumulant, which the
+Lorentzian core's divergent even moments and finite-window truncation do not
+license.

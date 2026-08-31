@@ -1,6 +1,7 @@
 *Chapter 2 of 9 of [the big picture](../BIG_PICTURE.md)*
 
-**The question.** What is the drift-immune method, and what does it cost to
+**The question.** What is the drift-immune method, immune through its free
+per-scan centres, and what does it cost to
 use it?
 **Takes.** The motivation of chapter 1, or nothing if you already accept that
 the line is worth measuring.

@@ -6,7 +6,7 @@ commit, the board ran twice on a large wave and then not at all before the
 two version bumps, the two ports, or the commit after them, and nothing
 noticed because nothing measured it. The ledger is the measurement.
 
-It shipped with no test file, and a board seat reading it found two
+It shipped with no test file, and review found two
 defects the same evening. Both are the same class the repository already
 names: **a mechanism asserted a property it never tested against a synthetic
 instance of the failure it was built for.**
@@ -209,7 +209,7 @@ def test_recording_with_a_clean_index_is_refused(bl, repo):
     A reader demonstrated it: commit with no board, then call record() with
     nothing staged. `staged_tree()` then equals the already-landed commit's
     tree, so verify() scored an unread commit as covered. The file's own
-    premise is that a board reads the staged diff BEFORE the commit exists,
+    premise is that the commit team reads the staged diff BEFORE the commit exists,
     so a clean index means there is nothing a board could have read.
     """
     _point_at(bl, repo)

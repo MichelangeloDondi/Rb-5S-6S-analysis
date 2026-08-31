@@ -98,7 +98,7 @@ is where the `I²` weight lives. The trapped distribution piles its weight at
 **zero** deficit, because a cold sample sits at the bottom of the well, and
 tails off toward large deficits. Any analysis that carries the ramp over
 unchanged would therefore get the sign of the line's asymmetry wrong, which
-matters because the third cumulant is the drift-immune channel this programme
+matters because the self-centred third cumulant is the drift-immune channel this programme
 already relies on.
 
 The two agree in one limit and it is the informative one. When `k_B T ≫ U0` the

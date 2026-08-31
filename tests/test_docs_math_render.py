@@ -240,3 +240,81 @@ def test_no_inline_math_span_wraps_a_line():
         "inline math span left open at end of line — GitHub renders these as "
         "literal LaTeX because $…$ does not cross a newline; join the lines:\n  "
         + "\n  ".join(bad[:15]))
+
+
+def test_table_rows_are_single_lines():
+    """Every row of a GFM table is one physical line with the header's pipes.
+
+    WHY. A qualifier added to docs/methods.md's chapter table wrapped row 3
+    across two lines (2026-08-31): GFM parses per line, so the cell truncated
+    mid-clause and the continuation rendered as a spurious one-cell row on
+    the methods hub. Independent passes found it repeatedly and measured
+    that both existing table-adjacent guards select lines by startswith('|'),
+    leaving a wrapped continuation outside every population. Verified by
+    re-wrapping that row and watching this test fire.
+
+    THE RULE. Inside a table block (from a |---| delimiter line until the
+    first blank line), every non-blank line either starts with '|' or is an
+    HTML comment, and a wrapped cell shows its exact signature: a line that
+    does not start with a pipe but ends with one, directly under a row. Two
+    wider rules were tried in this same edit and withdrawn against the tree:
+    pipe-count equality false-fires on GFM's optional trailing pipes and on
+    pipes inside code spans, and until-blank-line block scanning false-fires
+    on the prose that legally ends a table without a blank line. The
+    signature rule fires on the one true positive and on nothing else.
+    """
+    import re
+    bad = []
+    for doc in DOCS:
+        lines = (ROOT / doc).read_text(encoding="utf-8").splitlines()
+        in_fence = False
+        i = 0
+        while i < len(lines):
+            line = lines[i]
+            if line.lstrip().startswith("```"):
+                in_fence = not in_fence
+            if not in_fence and re.match(r"^\|[\s:|-]+\|$", line.strip()) \
+                    and "-" in line:
+                j = i + 1
+                while j < len(lines) and lines[j].strip():
+                    row = lines[j].lstrip()
+                    if not (row.startswith("|") or row.startswith("<!--")):
+                        if row.rstrip().endswith("|"):
+                            bad.append(f"{doc}:{j+1}: wrapped table cell "
+                                       f"(no leading pipe, trailing pipe): "
+                                       f"{row[:60]!r}")
+                        break              # a non-row line ends the table
+                    j += 1
+                i = j
+            else:
+                i += 1
+    assert not bad, ("broken table rows (a table row must be one physical "
+                     "line):\n  " + "\n  ".join(bad[:12]))
+
+
+def test_symmetric_kernel_claims_carry_their_centring():
+    """No tracked page claims symmetric kernels add nothing to the asymmetry
+    without the self-centred qualifier in the same paragraph.
+
+    WHY. The claim's unqualified form was retracted, re-qualified, and then
+    found surviving on the canonical concept page itself, twelve lines below
+    its own correction (2026-08-31). The qualifier is
+    physics, not style: the cancellation holds only for a window symmetric
+    about the line's own centre, and only up to the truncation fraction
+    results/cumulant_window_check.csv measures. Verified by restoring the
+    wiki's old unqualified sentence and watching this test fire.
+    """
+    import re
+    pat = re.compile(r"contribut\w*\s+(?:nothing|zero)[^.]{0,80}"
+                     r"(?:\\kappa_3|κ₃|third cumulant|asymmetry|odd)",
+                     re.I)
+    bad = []
+    for doc in DOCS:
+        text = (ROOT / doc).read_text(encoding="utf-8")
+        for para in text.split("\n\n"):
+            if pat.search(para) and "self-centred" not in para \
+                    and "self-centering" not in para:
+                bad.append(f"{doc}: {para.strip()[:90]!r}")
+    assert not bad, ("symmetric-kernel cancellation stated without its "
+                     "self-centred qualifier in the paragraph:\n  "
+                     + "\n  ".join(bad[:8]))

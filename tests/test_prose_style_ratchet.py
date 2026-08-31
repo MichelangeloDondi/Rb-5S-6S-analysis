@@ -46,6 +46,37 @@ GENERATED = {
 }
 
 
+# The construction baseline was re-recorded wholesale on 2026-08-31 during
+# the cumulant fix waves. Measured against the committed baseline: the sum
+# fell 1867 -> 1323 over 203 -> 157 keys, 97 files fell, and the 21 keys
+# that rose all rose from zero, files entering the graded population (the
+# lit notes, the history chapters, and the thesis chapter's requested
+# coverage), not prose regressing. A first version of this note said "no
+# governed file rose" and a reading falsified it from exactly this diff;
+# the movement is measured, never composed. Recorded here because a reseed
+# without its reason is how a falling ratchet stops falling.
+GITIGNORED_PROSE = ("private/THESIS_CHAPTER.md", "private/GOVERNANCE.md")
+"""Prose this project ships that git cannot see, graded when present.
+
+The thesis chapter lives under `private/`, which `.gitignore` excludes
+wholesale, so every guard whose population comes from git is blind to it. It is
+still prose this project ships, and on 2026-08-30 its owner asked for it to be
+covered here.
+
+TWO THINGS THIS DELIBERATELY DOES NOT DO. It does not impose this repository's
+register on the chapter. The project's own rule file records that the thesis
+voice is the author's, so the chapter enters at whatever counts it already has
+and the ratchet only stops those growing. And it skips silently when the file is
+absent, as the quotation guard does for `PDF_papers/`, so a clone without
+`private/` -- the public mirror, and CI -- is unaffected.
+
+It also would NOT have caught the defect that prompted it. Literal `**`
+markers reached the built PDF from a converter fault while the markdown was
+correct, so the guard for that class lives in the converter's own output audit,
+not here.
+"""
+
+
 def _tracked_markdown() -> list[str]:
     """Markdown this commit would ship: tracked, PLUS untracked and not ignored.
 
@@ -67,8 +98,29 @@ def _tracked_markdown() -> list[str]:
     new = subprocess.run(["git", "ls-files", "--others", "--exclude-standard",
                           "*.md"], cwd=ROOT, capture_output=True, text=True)
     untracked = new.stdout.split() if new.returncode == 0 else []
-    return sorted(f for f in set(tracked) | set(untracked)
-                  if f not in GENERATED)
+    files = set(tracked) | set(untracked)
+    files |= {f for f in GITIGNORED_PROSE if (ROOT / f).exists()}
+    return sorted(f for f in files if f not in GENERATED)
+
+
+def _plain(text: str) -> str:
+    r"""Text with code, MATHS and the reference list removed.
+
+    THE $$ ORDER MATTERS, and getting it wrong is why this exists. The pattern
+    `\$[^$]*\$` looks like it strips maths, but against a `$$...$$` display its
+    first `$` matches, `[^$]*` matches nothing, and the second `$` closes: it
+    removes the two delimiters and LEAVES THE INTERIOR. Display maths was
+    therefore graded as prose, and `\mathrm{DF}` and a `2s` subscript were
+    reported as writing faults. Displays are stripped first, then inline spans.
+
+    The reference list goes too, because a bibliography carries titles as
+    published. One of them is `Lifetime Measurement of the 6s Level of
+    Rubidium`, and lowering the state notation to satisfy a house rule would
+    falsify the citation.
+    """
+    text = re.sub(r"\$\$.*?\$\$", " ", text, flags=re.S)
+    text = re.sub(r"```.*?```|`[^`]*`|\$[^$\n]*\$", " ", text, flags=re.S)
+    return re.split(r"(?m)^#{1,3}\s*(?:[0-9.]+\s*)?References\s*$", text)[0]
 
 
 def _prose(text: str) -> str:
@@ -540,7 +592,7 @@ def _mermaid_label_text(text: str) -> str:
     A mermaid label is prose a reader sees, and CAPS_PROT's fence span,
     built for real code samples, made every diagram invisible to this
     guard: a release wave shipped three drama capitals in the README's own
-    diagram and the guard was green (2026-08-28, found by a board seat that
+    diagram and the guard was green (2026-08-28, found by a reading that
     re-ran the guard's regex by hand). THE FALSE-PASS DIRECTION FIRST: a
     drama capital that is also in CAPS_TOKEN's allowlist stays invisible
     here, because the allowlist cannot see context -- of the three shipped
@@ -556,7 +608,9 @@ def _mermaid_label_text(text: str) -> str:
 
 
 def _emphasis_caps(rel: str) -> list[str]:
-    text = (ROOT / rel).read_text(encoding="utf-8")
+    # _plain, not raw: a display-maths subscript is not emphasis. \mathrm{DF}
+    # inside a $$ block was being reported as a capitalised word.
+    text = _plain((ROOT / rel).read_text(encoding="utf-8"))
     spans = [m.span() for m in CAPS_PROT.finditer(text)]
     out = []
     for m in CAPS_TOKEN_RE.finditer(text):
@@ -621,12 +675,11 @@ def test_no_lowered_state_notation_in_prose():
     it likes, and code identifiers are not prose).
     """
     lowered = re.compile(r"\b\d[spdf]\b(?!\))")
-    strip = re.compile(r"```.*?```|`[^`]*`|\$[^$]*\$", re.S)
     hits = {}
     for rel in _tracked_markdown():
         if rel.startswith("docs/lit/") or not (ROOT / rel).exists():
             continue
-        text = strip.sub("", (ROOT / rel).read_text(encoding="utf-8"))
+        text = _plain((ROOT / rel).read_text(encoding="utf-8"))
         found = sorted(set(lowered.findall(text)))
         if found:
             hits[rel] = found[:5]
@@ -704,25 +757,35 @@ def test_shaped_bans_stay_at_zero():
     assert not hits, ("a shaped ban regressed:\n  " + "\n  ".join(hits[:12]))
 
 
+def _print_movement(old: dict, new: dict) -> None:
+    """Emit the measured per-key movement of a baseline write.
+
+    Same contract as the reference-coverage twin: the dated note beside a
+    baseline is pasted from this output, never composed from intention."""
+    moved = [f"  {k}: {old.get(k, 0)} -> {new.get(k, 0)}"
+             for k in sorted(set(old) | set(new)) if old.get(k) != new.get(k)]
+    print("movement (paste this into the dated note):")
+    print("\n".join(moved) if moved else "  (no key moved)")
+
+
+def _rewrite(path, counts_fn, label):
+    new = counts_fn()
+    old = json.loads(path.read_text()) if path.exists() else {}
+    path.write_text(json.dumps(new, indent=1, sort_keys=True) + "\n")
+    print(f"re-recorded {path.name} ({label}: "
+          f"{sum(old.values())} -> {sum(new.values())})")
+    _print_movement(old, new)
+
+
 if __name__ == "__main__":  # `python tests/test_prose_style_ratchet.py --relax`
     import sys
     if "--relax-csv-semicolons" in sys.argv:
-        CSV_SEMICOLON_BASELINE.write_text(
-            json.dumps(_csv_semicolon_counts(), indent=1, sort_keys=True)
-            + "\n")
-        print(f"re-recorded {CSV_SEMICOLON_BASELINE.name} "
-              f"({sum(_csv_semicolon_counts().values())} total)")
+        _rewrite(CSV_SEMICOLON_BASELINE, _csv_semicolon_counts,
+                 "csv semicolons")
     elif "--relax-constructions" in sys.argv:
-        CONSTRUCTION_BASELINE.write_text(
-            json.dumps(_rather_than_counts(), indent=1, sort_keys=True) + "\n")
-        print(f"re-recorded {CONSTRUCTION_BASELINE.name} "
-              f"({sum(_rather_than_counts().values())} total)")
+        _rewrite(CONSTRUCTION_BASELINE, _rather_than_counts, "constructions")
     elif "--relax" in sys.argv:
-        cur = _current()
-        old = json.loads(BASELINE.read_text()) if BASELINE.exists() else {}
-        BASELINE.write_text(json.dumps(cur, indent=1, sort_keys=True) + "\n")
-        before, after = sum(old.values()), sum(cur.values())
-        print(f"baseline re-recorded: {before} -> {after} ({after - before:+d})")
+        _rewrite(BASELINE, _current, "splice punctuation")
     else:
         print(f"total splice punctuation in prose: {sum(_current().values())}")
 

@@ -4895,8 +4895,9 @@ def fig_third_cumulant():
     ladder: three analytic functionals of the single parameter S0, which is
     what makes the fixed-lock session's joint fit a consistency test rather
     than three separate extractions. The third panel is the point of the
-    figure, a contribution table in which every symmetric kernel has an empty
-    third column. The fourth puts the campaign on it: at 225 mW the predicted
+    figure, a contribution table in which the symmetric kernels' third column
+    is empty for a self-centred readout up to the truncation fraction
+    results/cumulant_window_check.csv measures (docs/wiki/third-cumulant.md). The fourth puts the campaign on it: at 225 mW the predicted
     kappa_3 sits under the noise floor, which is why the record carries a bound
     rather than a value, and it shows what a fixed-lock session buys.
     """
@@ -4979,9 +4980,9 @@ def fig_third_cumulant():
                     transform=ax.transAxes,
                     color="#993C1D" if c else "#B4B2A9")
     ax.text(0.0, 0.19,
-            r"Every symmetric kernel is empty in $\kappa_3$, so the"
+            r"A self-centred $\kappa_3$ keeps a measured fraction of the ramp's"
             "\n"
-            r"$\gamma_{coll}$ against $\sigma_{laser}$ degeneracy, which"
+            r"own value, so the $\gamma$ against $\sigma$ degeneracy, which"
             "\n"
             r"lives entirely in $\kappa_2$, cannot reach it.",
             fontsize=8.5, transform=ax.transAxes, va="top", color="#5F5E5A")
@@ -5686,6 +5687,139 @@ def fig_orthogonal_information():
     _save(fig, "fig35_orthogonal_information.png")
 
 
+def fig_guided_mode():
+    """The evanescent field the fibre arm is designed against, solved and
+    approximated.
+
+    WHY THIS FIGURE EXISTS. The guided surfaces of this record were the only
+    ones carrying no picture at all, so the mode was a table of numbers and a
+    reader had to hold the geometry in their head. It also draws the one thing
+    those tables state and never show, which is how far the exponential
+    approximation sits from the solved profile at the distance a trap uses.
+    """
+    rows = {(r["scope"], r["quantity"]): r for r in _rows("guided_mode_tables")}
+
+    def val(scope, q):
+        return float(rows[(scope, q)]["value"])
+
+    D = [100, 200, 400, 600]
+    fibres = [("370", "#0072B2"), ("400", "#D55E00")]
+    fig, (a0, a1) = plt.subplots(1, 2, figsize=(9.8, 3.9))
+
+    for nm, col in fibres:
+        sc = [f"evanescent_profile_{nm}nm_at_{d}nm" for d in D]
+        solved = [val(s, "flux_fraction") for s in sc]
+        err = [val(s, "flux_fraction_err") for s in sc]
+        expo = [val(s, "flux_fraction_exponential") for s in sc]
+        over = [val(s, "exponential_overstatement") for s in sc]
+        a0.errorbar(D, solved, yerr=err, marker="o", ms=5, lw=1.6, color=col,
+                    capsize=2.5, label=f"{nm} nm fibre, solved mode")
+        a0.plot(D, expo, ls="--", lw=1.4, color=col, alpha=0.75,
+                label=f"{nm} nm fibre, exponential estimate")
+        a1.plot(D, over, marker="s", ms=5, lw=1.6, color=col,
+                label=f"{nm} nm fibre")
+
+    a0.axvline(400, color="0.55", lw=1.0, ls=":")
+    a0.text(412, 0.44, "a trap at 400 nm", fontsize=8, color="0.35")
+    a0.set_xlabel("distance from the glass surface (nm)")
+    a0.set_ylabel("intensity, relative to the surface")
+    a0.set_title("(a) the field the atoms actually sit in", fontsize=10)
+    a0.set_ylim(0, 1.0)
+    a0.legend(fontsize=7.5, frameon=True, framealpha=1.0, loc="upper right",
+              borderpad=0.4)
+
+    a1.axhline(1.0, color="0.55", lw=1.0, ls=":")
+    a1.text(108, 1.06, "estimate and solved mode agree", fontsize=8,
+            color="0.35")
+    a1.set_xlabel("distance from the glass surface (nm)")
+    a1.set_ylabel("exponential estimate over solved mode")
+    a1.set_title("(b) what the simple estimate costs", fontsize=10)
+    a1.set_ylim(0.9, 3.3)
+    a1.legend(fontsize=8, frameon=True, framealpha=1.0, loc="upper left")
+
+    fig.suptitle("The evanescent field of a nanofibre, solved against the "
+                 "exponential estimate", fontsize=11)
+    _footer(fig, "Source: results/guided_mode_tables.csv (rb5s6s.fibre). "
+                 "Error bars are the half-span over an assumed +/-20 nm "
+                 "diameter tolerance. Regenerate: python "
+                 "scripts/make_figures.py.")
+    _save(fig, "fig36_guided_mode.png")
+
+
+def fig_onf_levers():
+    """What each fibre measurement buys per unit time, and what the lock costs
+    the one result that outlives the campaign."""
+    rows = {(r["lever"], r["quantity"]): r for r in _rows("onf_lever_ranking")}
+
+    def val(lever, q):
+        return float(rows[(lever, q)]["value"])
+
+    LEVERS = [
+        ("power sweep,\nthe light shift", val("power_sweep",
+                                              "sigma_kappa_frac")),
+        ("distance scan,\nthe fibre diameter", val("distance_scan",
+                                                   "sigma_lambda_frac")),
+        ("distance scan,\nthe surface coefficient", val("distance_scan",
+                                                        "sigma_C3_frac")),
+        ("temperature ladder,\nthe transit width", val("temperature_ladder",
+                                                       "sigma_transit_frac")),
+    ]
+    fig, (a0, a1) = plt.subplots(1, 2, figsize=(10.0, 3.8))
+    names = [n for n, _ in LEVERS]
+    vals = [v for _, v in LEVERS]
+    cols = ["#2F5D50" if v < 1 else "#B4553F" for v in vals]
+
+    a0.barh(range(len(vals)), vals, color=cols, height=0.6)
+    for i, v in enumerate(vals):
+        a0.text(v * 1.14, i, f"{v:.3g}", va="center", fontsize=8.5,
+                color="0.25")
+    a0.axvline(1.0, color="0.4", lw=1.2, ls="--")
+    a0.text(1.12, 1.5, "as large as the\nquantity itself", fontsize=8,
+            color="0.4", va="center")
+    # barh starts its bars at zero, which a log axis cannot place, so
+    # BOTH limits are set. Passing only `right` let matplotlib choose a
+    # left edge from the zero-anchored bars and collapsed the panel.
+    a0.set_xlim(min(vals) * 0.55, max(vals) * 3.0)
+    a0.set_yticks(range(len(names)))
+    a0.set_yticklabels(names, fontsize=8.5)
+    a0.invert_yaxis()
+    a0.set_xscale("log")
+    a0.set_xlabel("uncertainty as a fraction of the quantity measured")
+    a0.set_title("(a) what a quarter hour of fibre time buys", fontsize=10)
+
+    drifts, diam = [], []
+    for lever in sorted(k for k, _ in rows if k.startswith("lock_span_")):
+        drifts.append(float(lever.split("_")[-1]))
+        diam.append(val(lever, "sigma_diameter_nm"))
+    drifts = np.array(drifts)
+    diam = np.array(diam)
+    order = np.argsort(drifts)
+    drifts, diam = drifts[order], diam[order]
+    live = drifts > 0
+    a1.plot(drifts[live], diam[live], marker="o", ms=5.5, lw=1.7,
+            color="#0072B2")
+    a1.axhline(diam[~live][0], color="0.55", lw=1.1, ls=":")
+    a1.text(0.0013, diam[~live][0] * 1.18,
+            f"floor set by photons alone, {diam[~live][0]:.2f} nm",
+            fontsize=8, color="0.35")
+    a1.axvline(0.04, color="#B4553F", lw=1.1, ls="--")
+    a1.text(0.033, 6.0, "the 2025 lock", fontsize=8, color="#B4553F",
+            rotation=90, va="center", ha="right")
+    a1.set_xscale("log")
+    a1.set_yscale("log")
+    a1.set_xlabel("residual drift of the repaired lock (MHz per minute)")
+    a1.set_ylabel("uncertainty on the fibre diameter (nm)")
+    a1.set_title("(b) the lock sets the diameter, not the fibre", fontsize=10)
+
+    fig.suptitle("Ranking the nanofibre measurements, and what the lock costs "
+                 "the one that lasts", fontsize=11)
+    _footer(fig, "Source: results/onf_lever_ranking.csv "
+                 "(scripts/run_onf_lever_ranking.py). The repaired lock's "
+                 "residual drift is not yet measured, so the right panel spans "
+                 "it. Regenerate: python scripts/make_figures.py.")
+    _save(fig, "fig37_onf_levers.png")
+
+
 def main() -> int:
     fig_width_vs_density()
     fig_power_sweep()
@@ -5726,6 +5860,8 @@ def main() -> int:
     fig_campaign_projection()
     fig_identifiability_matrix()
     fig_orthogonal_information()
+    fig_guided_mode()
+    fig_onf_levers()
     print(f"wrote figures to {FIG}/")
     for p in sorted(FIG.glob("*.png")):
         print(f"  {p.name}")

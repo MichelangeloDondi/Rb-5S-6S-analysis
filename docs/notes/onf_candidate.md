@@ -16,7 +16,7 @@ platform-neutral and this note is one of the three surfaces you can skip whole
 without losing anything on your path. Terms are in
 [GLOSSARY.md](../GLOSSARY.md).
 
-`provenance: results/onf_candidate.csv` - Sized from committed numbers rather than asserted, in its own words. This is the fibre lane's own row set. An untagged number here is a claim to check, not a checked one. Two untagged figures on this page stood stale until a board read it, and the count of grounded values this line used to assert was never checkable: it ranged over a population nobody had defined.
+`provenance: results/onf_candidate.csv` - Sized from committed numbers rather than asserted, in its own words. This is the fibre lane's own row set. An untagged number here is a claim to check, not a checked one. Two untagged figures on this page stood stale until a reading found them, and the count of grounded values this line used to assert was never checkable: it ranged over a population nobody had defined.
 
 
 **Status.** DESIGN NOTE, written 2026-08-21. Every number here is produced by

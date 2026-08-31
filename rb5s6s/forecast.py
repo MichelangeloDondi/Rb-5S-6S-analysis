@@ -39,7 +39,7 @@ from typing import Dict, List, Optional, Tuple
 import numpy as np
 from scipy.special import jv
 
-from .lineshape import composite_profile
+from .lineshape import composite_profile, model_profile
 from .linefit import fit_condition
 from .noise import sigma_of_v
 
@@ -70,6 +70,7 @@ def synthetic_traces(gamma_coll: float, sigma_laser: float, transit_fwhm: float,
                      offset: float = 0.010, offset_spread: float = 0.002,
                      centre_mhz: float = 0.0,
                      laser_kind: str = "gaussian", gamma_l: float = 0.0,
+                     s0: float = 0.0,
                      rng: Optional[np.random.Generator] = None,
                      ) -> Tuple[List[np.ndarray], List[np.ndarray]]:
     """Generate the traces your instrument would record for this line.
@@ -85,6 +86,38 @@ def synthetic_traces(gamma_coll: float, sigma_laser: float, transit_fwhm: float,
     comes from the law evaluated at that point's signal level, which is how
     the real detector behaves.
 
+    ``s0`` IS THE ONE ASYMMETRIC TERM, and it defaults to zero (2026-08-30).
+    Until it existed this generator only ever called `composite_profile`, whose
+    three kernels are all symmetric, so every trace it had ever produced had a
+    skewness of about 1e-16. That matters more than it sounds: the AC-Stark
+    ramp is the only asymmetric term in the model, and the asymmetry it puts
+    into the line is the observable this record is built on. Its third
+    cumulant is +S0^3/135 (sign per docs/methods/03 and stark_ramp's own
+    axis), and the statement of what a windowed readout keeps of it was
+    replaced, the account in docs/history/02): the Lorentzian's even
+    cumulants diverge, its odd moments cancel under a window symmetric about
+    the line's own centre, so a SELF-CENTRED windowed kappa_3 keeps a
+    truncation-limited fraction of the ramp's value
+    (results/cumulant_window_check.csv, survival rows) while a lab-frame
+    window under drift takes on (2/pi)*gamma*delta*W of first-cumulant
+    leakage (gamma the half-width). Drift immunity belongs to self-centred readouts,
+    the fit's free per-scan centre above all. Derivation and numbers:
+    docs/wiki/third-cumulant.md. A generator
+    that cannot emit the asymmetry cannot forecast a precision on it, and
+    cannot test a fitter against it.
+
+    WHY THE DEFAULT IS ZERO, AND WHAT IT COSTS. At the 2025 configuration the
+    ramp broadens a 5.3 MHz line by about 2 kHz against a 24 kHz fit error on
+    gamma_coll. That is derivable from the ramp's own variance, S0^2/18, added
+    in quadrature -- physics and algebra, no Monte-Carlo -- so the omission
+    costs nothing there, and every committed row of
+    `results/campaign_twin_forecast.csv` was produced without it. The s0 = 0
+    branch below is the ORIGINAL code path, untouched, so those rows do not
+    move. The omission stops being safe at about S0 = 0.91 MHz, where the
+    added width equals the fit error; at the proposed w0 = 16 um focus S0 rises
+    roughly sixteenfold, since S0 goes as 1/w0^2, and the ramp then dominates
+    the width budget. FORECAST THAT SESSION WITH s0 SET.
+
     Returns (freqs, volts), each a list of arrays, one per trace, in the form
     `fit_condition` accepts.
     """
@@ -97,9 +130,20 @@ def synthetic_traces(gamma_coll: float, sigma_laser: float, transit_fwhm: float,
     # cannot test whether the fitter recovers one, and a coverage or
     # false-positive rate measured on a twin that only ever emits Gaussian
     # kernels would be a statement about a world the question is not about.
-    grid, prof = composite_profile(gamma_coll, sigma_laser, transit_fwhm,
-                                   laser_kind, gamma_l=gamma_l)
-    shape = np.interp(nu - centre_mhz, grid, prof, left=0.0, right=0.0)
+    # The same argument is why s0 reaches the generator, one term later.
+    if s0 > 0.0:
+        # model_profile convolves lineshape.stark_ramp, so the -2/3 S0 pull and
+        # the skew both come from the library rather than from a literal here,
+        # and the ramp's coded SIDE is inherited rather than re-chosen (it is
+        # an open question: tests/test_ramp_side_matches_the_polarizability).
+        shape = model_profile(nu - centre_mhz, gamma_coll=gamma_coll,
+                              sigma_laser_fwhm=sigma_laser,
+                              transit_fwhm=transit_fwhm, s0=s0,
+                              laser_kind=laser_kind, gamma_l=gamma_l)
+    else:
+        grid, prof = composite_profile(gamma_coll, sigma_laser, transit_fwhm,
+                                       laser_kind, gamma_l=gamma_l)
+        shape = np.interp(nu - centre_mhz, grid, prof, left=0.0, right=0.0)
     peak = shape.max()
     if peak <= 0.0:
         raise ValueError("the composite profile vanished on this axis: widen "
@@ -123,6 +167,10 @@ def synthetic_traces(gamma_coll: float, sigma_laser: float, transit_fwhm: float,
 
 
 def _one_trial(truth: Dict, design: Dict, rng: np.random.Generator) -> Dict:
+    # s0 is a property of the WORLD, so it lives in `truth` beside the widths,
+    # not in `design` beside the acquisition settings. Absent, it is zero and
+    # both generator and fitter behave exactly as they did before 2026-08-30.
+    s0 = float(truth.get("s0", 0.0))
     freqs, volts = synthetic_traces(
         truth["gamma_coll"], truth["sigma_laser"], truth["transit_fwhm"],
         span_mhz=design.get("span_mhz", 60.0),
@@ -130,9 +178,17 @@ def _one_trial(truth: Dict, design: Dict, rng: np.random.Generator) -> Dict:
         n_traces=design.get("n_traces", 5),
         noise=design.get("noise", 0.004),
         amp=design.get("amp", 1.0),
+        s0=s0,
         rng=rng)
+    # The fitter is MATCHED to the injected ramp by default. `design["fit_s0"]`
+    # deliberately mismatches it, which is how the twin measures what omitting
+    # the ramp costs the widths rather than assuming it costs nothing: at the
+    # 2025 S0 the answer is about 0.1 sigma on gamma_coll, and at a tight focus
+    # it is not. A twin that generates and fits with the same s0 can never see
+    # that, the way this one could not see it while s0 did not exist.
     return fit_condition(freqs, volts, T_C=design.get("T_C", 130.0),
                          transit_fwhm=truth["transit_fwhm"],
+                         s0=float(design.get("fit_s0", s0)),
                          law=design.get("law"))
 
 

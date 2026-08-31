@@ -258,7 +258,9 @@ the line, the centroid pull $-\tfrac23 S_0$, and a shift is exactly what a
 per-scan free centre absorbs. In the drifted dataset the pull is degenerate
 with the drift and is not a usable handle on $S_0$. What survives is the ramp's
 **shape asymmetry**, which no free centre can absorb because it is not a
-translation. That is the drift-immune observable and the methodologically
+translation. That is the drift-immune observable (immune through the free
+per-scan centre, the self-centring [the concept page](wiki/third-cumulant.md)
+requires) and the methodologically
 specific point (§6). The light shift is read from a drift-invariant *shape*,
 not from a line position the drift has destroyed.
 
@@ -286,7 +288,7 @@ exchange against $\Gamma_{\rm nat}$, $\gamma_{\rm coll}$, $\sigma_{\rm laser}$ o
 the transit width, which is the four-way degeneracy that dominates the width
 channel and that M9 and M4c work on. (Stated as symmetry rather
 than as $\kappa_3 = 0$. Cumulants are additive under convolution and vanish for
-symmetric factors, but a Lorentzian has no finite third moment, so symmetry is
+symmetric factors, but a Lorentzian has no finite third moment (the windowed, self-centred form and its measured remainder: [the concept page](wiki/third-cumulant.md)), so symmetry is
 the property the fit actually uses. This is the same reason the extraction is a
 model fit rather than a raw-moment computation.)
 

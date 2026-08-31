@@ -151,7 +151,7 @@ focused beam, and a trapped sample sits concentrated where the intensity is
 highest, so its shift distribution has no hard edge and carries the opposite
 sign of skewness (section 1.2 of the design note, which computes both).
 Carrying the ramp over unchanged would get the sign of the line's asymmetry
-wrong, and the third cumulant is the drift-immune channel this programme
+wrong, and the self-centred third cumulant is the drift-immune channel this programme
 relies on.
 
 ![the third cumulant as an observable: the two-photon asymmetry, the cumulant ladder, what each mechanism reaches, and the ceiling the record's bound puts on it](../../figures/fig30_third_cumulant.png)
@@ -160,7 +160,9 @@ relies on.
 the ramp does to the observable, and the difference below it is the
 antisymmetric one-lobe-up, one-lobe-down signature that the third cumulant
 measures. The third panel is the argument: every symmetric kernel contributes
-to the variance and exactly nothing to κ₃, so the collisional-against-laser
+to the variance and nothing to a self-centred κ₃ (the Lorentzian to the truncation fraction
+[the condition](../wiki/third-cumulant.md) quantifies), so
+the collisional-against-laser
 degeneracy that dominates the width budget cannot reach it. The ramp is the
 only asymmetric term in the model.*
 

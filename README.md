@@ -5,8 +5,8 @@
 [![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 A forward-model analysis of the rubidium **5S₁/₂ → 6S₁/₂** two-photon
-transition at **993 nm**, from Doppler-free spectroscopy in a hot vapour cell.
-The data were taken at OIST in 2025.
+transition at **993 nm**, from Doppler-free spectroscopy in a hot vapour cell
+at OIST in 2025.
 
 **The line is used as an instrument, not as a reference.** Its width is a sum
 of mechanisms that respond differently to the two knobs a cell gives you,
@@ -33,8 +33,12 @@ I am Michelangelo Dondi, a PhD candidate in experimental cold-atom physics at
 the University of Bologna, on the EU project CRYST³, working on the transport
 and cooling of cold ⁸⁷Rb atoms inside hollow-core photonic-crystal fibres.
 
+<!-- term-of-art: the disclosure names the tool deliberately, on owner instruction -->
 These data were taken during a six-month research visit to OIST in 2025, an
-independent project alongside my work there on atom–nanofibre interfaces. A
+independent project alongside my work there on atom–nanofibre interfaces. The
+analysis was written after the campaign. This repository was developed with
+the assistance of Claude Code for coding, documentation and workflow support.
+The experiment, data analysis, and scientific decisions are my own. A
 manuscript is in preparation.
 
 **Why this line is worth the difficulty.** The physics here limits cold atoms
@@ -51,11 +55,6 @@ not support.
 → [why this transition](docs/big_picture/01_why-this-line.md) ·
 [the case in ten minutes](docs/plan/00_the-case.md) ·
 [prior art](docs/big_picture/03_goals-and-prior-art.md)
-
-<!-- term-of-art: the assistant is named because the disclosure is the point -->
-> This repository was developed with the assistance of Claude Code for coding,
-> documentation and workflow support. The experiment, data analysis, and
-> scientific decisions are my own.
 
 ---
 

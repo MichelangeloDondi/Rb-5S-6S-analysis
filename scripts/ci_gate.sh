@@ -125,7 +125,7 @@ if [ -f scripts/check_moved_values.py ]; then
   fi
 fi
 # The board ledger, wired for the same reason and after the same finding.
-# LOGIC 0c says five adversarial seats read the staged diff before every
+# LOGIC 0c says the commit team (REQUIRED_SEATS sizes it) reads the staged diff before every
 # commit. The ledger that measures it was written, shipped, and called by
 # NOTHING -- in the very commit whose best content was a docstring recording
 # that the results annotator's deliberate KeyError had fired for nobody

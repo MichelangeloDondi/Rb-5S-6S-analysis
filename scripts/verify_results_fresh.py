@@ -53,6 +53,8 @@ CHEAP = {
     # milliseconds, no traces, and deliberately checkable because the whole
     # point of the file is that the gap it measures is graded like any number.
     "run_unregenerated_claims": ["unregenerated_claims.csv"],
+    # pure quadrature over the model line, a few seconds, no traces
+    "run_cumulant_window_check": ["cumulant_window_check.csv"],
     "run_kernel_identifiability": ["kernel_identifiability.csv"],
     # a Fisher forecast over five rungs per lever, milliseconds, no traces.
     "run_onf_lever_ranking": ["onf_lever_ranking.csv"],
@@ -113,6 +115,14 @@ EXPENSIVE = {
     # 1.7 s, but it refits 16 conditions from the raw traces, so it belongs
     # with the producers a clone without data_raw cannot run.
     "run_band_excess": ["band_excess.csv"],
+    # 13 s, and it refits all 32 canonical conditions at six fit windows from
+    # the raw traces, so like run_band_excess it belongs with the producers a
+    # clone without data_raw cannot run.
+    "run_fit_window_scan": ["fit_window_scan.csv"],
+    # about two minutes of Monte-Carlo over two estimators at four
+    # configurations, deterministic under its fixed seed. No traces needed,
+    # but far too slow for the cheap set.
+    "run_estimator_duel": ["estimator_duel.csv"],
     # 24 Monte-Carlo datasets per configuration through synthetic_traces and
     # fit_condition, about three minutes, deterministic under its fixed seed.
     "run_campaign_twin_forecast": ["campaign_twin_forecast.csv"],

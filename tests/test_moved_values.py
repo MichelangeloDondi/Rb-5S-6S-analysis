@@ -172,7 +172,7 @@ def test_a_csv_with_no_value_column_is_reported_as_unchecked(mv, repo, capsys):
     mv.main(["check_moved_values.py", "HEAD~2"])
     out = capsys.readouterr().out
     # THE PHRASE IS PRESENT EVEN WHEN THE COUNT IS ZERO, so asserting the
-    # phrase asserts nothing. A board seat found this: the run always prints
+    # phrase asserts nothing. A pre-commit reading found this: the run always prints
     # "N CSV(s) carry no `value` column and were NOT checked", so the original
     # assertion passed whether or not the per-trace table was detected. Parse
     # the number.

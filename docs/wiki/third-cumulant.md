@@ -3,7 +3,9 @@
 *[wiki index](README.md) · concept*
 
 **The question.** How a single number can isolate a lineshape's asymmetry
-from every symmetric mechanism broadening it at the same time.
+from every symmetric mechanism broadening it at the same time, provided the
+number is taken about the line's own centre, which is the condition the whole
+page turns on.
 **Takes.** A line already understood as a convolution of kernels, and no
 fitted data of its own.
 **Gives.** The additivity property that lets $\kappa_3$ single out one
@@ -31,16 +33,36 @@ convolution. The cumulant of a sum of independent variables is the sum of the
 cumulants, at every order. Moments do not do this, and neither do widths in
 general.
 
-For spectroscopy that is decisive, because an observed line is a convolution
-of kernels. Each kernel contributes its own $\kappa_3$ and they simply add.
-Every symmetric kernel, a Lorentzian, a Gaussian, a two-sided exponential,
-has $\kappa_3 = 0$ exactly. So the third cumulant of a composite line is the
-sum of the third cumulants of only its asymmetric components, and every
-symmetric mechanism drops out of the arithmetic regardless of how wide it is.
+For spectroscopy the property holds in a qualified form (the dated account
+of how the qualification was reached is in
+[the history](../history/02_the-lineshape-and-its-kernel.md)). Three layers:
 
-That is what turns $\kappa_3$ into a selective probe. A width mixes every
-mechanism together and cannot separate them. A third cumulant is blind, by
-construction, to all the symmetric ones.
+1. **Even cumulants of the observed line diverge.** The Lorentzian core's
+   generating function is $-\gamma\lvert t\rvert$ ($\gamma$ the half-width
+   here), not differentiable at the
+   origin, so its cumulants are undefined and $\kappa_2, \kappa_4$ of the
+   whole line grow with any window that tries to hold them.
+2. **Odd cumulants survive, about the line's own centre.** The Cauchy
+   density is even, so a window symmetric about the line centre cancels its
+   odd moments, and the self-centred windowed $\kappa_3$ keeps a
+   truncation-limited fraction of the ramp's own $S_0^3/135$. For this
+   record's line at the $S_0 = 3$ MHz reference the fraction is 0.42, 0.39,
+   0.34 at $\gamma_\mathrm{coll} = 0.2, 0.55, 1.1$ MHz, 0.58 to 0.49 for
+   the bare core the textbook case describes, and it stays finite at small
+   shifts, 0.20 at the archive's own 0.35 MHz
+   ([the rows](../../results/cumulant_window_check.csv), kernel widths and
+   conventions in their notes, every row convergence-checked at doubled
+   resolution).
+3. **Mis-centring is where the sensitivity lives.** A window off the line
+   centre by $\delta$ injects roughly $(2/\pi)\gamma\delta W$ into
+   $\kappa_3$ ($\gamma$ again the half-width): the first cumulant leaking
+   into the third. A lab-frame window under a drifting lock has $\delta$ =
+   the drift, which is why a drift-immune readout must be **self-centred**:
+   the free per-scan centre of the fit, or a window centred on the line's
+   own estimated centre.
+
+Every windowed-moment number therefore names its centring, its kernel set,
+its window and its convergence, or it is not yet a claim.
 
 ## What problem it solves
 
@@ -52,17 +74,19 @@ model of the others required beyond the assumption that they are symmetric.
 
 The line here is convolved from a natural Lorentzian, a laser kernel, a
 transit kernel and the light-shift distribution. The first three are
-symmetric and contribute nothing to $\kappa_3$, so the third cumulant is a
-channel for the [AC-Stark shift](ac-stark-shift.md) alone. The derivation of
+symmetric, so a self-centred $\kappa_3$ is a channel for the
+[AC-Stark shift](ac-stark-shift.md) alone up to the truncation fraction the
+layers above quantify. The derivation of
 the ramp's own cumulants, and the standardised skew they predict, is in
 [methods chapter 3](../methods/03_the_ac_stark_ramp.md) and
 [THEORY_NOTE.md](../THEORY_NOTE.md), which are the derivation of record.
 
 ![the third cumulant as an observable](../../figures/fig30_third_cumulant.png)
 
-*How the third-cumulant observable works: symmetric kernels contribute
-nothing to the asymmetry, so what survives belongs to the light-shift
-distribution (shift exaggerated for visibility).*
+*How the third-cumulant observable works: symmetric kernels add no
+asymmetry of their own, so what a self-centred readout keeps belongs to the
+light-shift distribution (shift exaggerated for visibility). The kept
+fraction is the `survival` rows'.*
 
 The current status of the light-shift parameter it feeds is a bound, not a
 measurement, and the numbers are in [RESULTS.md](../RESULTS.md).
@@ -114,16 +138,19 @@ over a truncated window is not the cumulant of the line, and the truncation
 enters the answer.
 
 Two implementation traps follow from that. Subtracting a baseline that is
-itself slightly asymmetric injects a third cumulant directly. And computing
-$\kappa_3$ about the fitted centre instead of the true one couples the
-answer to the centre estimate, which is the sort of thing that produces a
-confident skew from a symmetric line.
+itself slightly asymmetric injects a third cumulant directly. And at finite
+noise the fitted centre is correlated with the trace it was fitted to, so a
+self-centred $\kappa_3$ carries a noise-coupling bias even though
+self-centring is exactly the right convention for the signal: the
+centring that layer 3 requires is what this trap quantifies, not what it
+forbids.
 
 ## Try it
 
-Every symmetric kernel contributes zero. The skew that survives belongs to the
-shift distribution, and it exists only because the signal goes as the square of
-the intensity.
+Every symmetric kernel contributes zero to a self-centred odd moment (the
+Lorentzian only up to the truncation fraction the layers above quantify). The skew
+that survives belongs to the shift distribution, and it exists only because
+the signal goes as the square of the intensity.
 
 ```python
 from rb5s6s import stark_ramp_axial_moments
@@ -137,6 +164,15 @@ for n in (1, 2):
 Every snippet on these pages is executed by `tests/test_wiki_snippets_run.py`.
 One that stops working fails the suite instead of sitting here misleading a
 reader.
+
+## Is it a better estimator than the fit?
+
+Usually not, and when it is, the reason is model error or small samples,
+never extra information. The comparison lives in
+[methods §4.14](../methods/06_the_statistics.md) with its rows in
+[`results/estimator_duel.csv`](../../results/estimator_duel.csv): the fit is
+the more efficient estimator and the more fragile one, so the size of their
+disagreement checks the model.
 
 ## Instrumental asymmetry
 

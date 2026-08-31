@@ -144,6 +144,21 @@ FILE_STATUS = {
     # every row of each is DIAGNOSTIC. Both producers already write their
     # own status column, which is why nothing downstream noticed.
     "quantisation.csv": "DIAGNOSTIC",
+    # A TWIN RESULT ABOUT TWO ESTIMATORS, not a measurement of the atom.
+    # Every row is a bias or a spread recovered from injected truth under a
+    # deliberately wrong model, so the whole file is DIAGNOSTIC and no row of
+    # it is a value of anything the apparatus has.
+    "estimator_duel.csv": "DIAGNOSTIC",
+    # A ROBUSTNESS AXIS, NOT A MEASUREMENT. Every row is the committed fit
+    # re-run at a window the record does not use, so no row is a value of
+    # anything: the gamma_coll rows are the same quantity at deliberately
+    # wrong windows, and the slope rows are indicative of beta_self, not its
+    # committed shared-slope construction. The whole file is DIAGNOSTIC, and
+    # a row of it may never be quoted as a result.
+    "fit_window_scan.csv": "DIAGNOSTIC",
+    # THE ARBITER ROWS for the three-layer cumulant statement: survival
+    # fractions of the model line, pure quadrature, no apparatus quantity.
+    "cumulant_window_check.csv": "DIAGNOSTIC",
     "twin_realism.csv": "DIAGNOSTIC",
     "band_excess.csv": "DIAGNOSTIC",
     "twin_span_sweep.csv": "DIAGNOSTIC",

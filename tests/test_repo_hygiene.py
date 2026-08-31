@@ -242,6 +242,13 @@ FORBIDDEN = {
         r"class of proposal",
     ],
     "internal process vocabulary": [
+        # Review-machinery vocabulary joined 2026-08-31: three correction
+        # waves each leaked board/round language onto tracked surfaces that
+        # port to the mirror, twice through the very docstrings written to
+        # guard against the previous leak. docs/history/ is the one licensed
+        # home for dated review accounts and is not in this population.
+        r"board[- ]read", r"\bboard rounds?\b", r"\bcorrection rounds?\b",
+        r"\bboard seats?\b",
         r"red[- ]?team",
         r"\bprice[sd]?\b", r"\bpricing\b",
         r"supersed",
@@ -468,6 +475,11 @@ _LABEL_EXEMPT_PRED = {
     # entry saying "this page used to read X, it now reads Y" does. Without
     # this the record cannot describe the correction it is the record of.
     "R_kernel described as an uncertainty": _is_history,
+    # The ledger's own test file cannot avoid naming its subject, and the
+    # history chapters are the licensed home for dated review accounts.
+    # Everything else that ports keeps the ban.
+    "internal process vocabulary": lambda rel: (
+        _is_history(rel) or rel == "tests/test_board_ledger.py"),
 }
 
 

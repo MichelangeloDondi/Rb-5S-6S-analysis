@@ -113,10 +113,10 @@ it. The frequency-axis convention above (§0) is assumed by all of them.
 |---|---|---|
 | **1** | [The measurement](methods/01_the_measurement.md) | the apparatus, the cascade we detect, and why two counter-propagating photons cancel the Doppler width |
 | **2** | [The lineshape, kernel by kernel](methods/02_the_lineshape.md) | natural, collisional, laser and transit-time broadening, each derived, and why the transit kernel is a cusp rather than a Gaussian |
-| **3** | [The AC-Stark ramp](methods/03_the_ac_stark_ramp.md) | the analysis's novel core: a focused beam makes the light shift a *distribution*, closed-form and triangular for a two-photon rate, with a drift-immune skew |
+| **3** | [The AC-Stark ramp](methods/03_the_ac_stark_ramp.md) | the analysis's novel core: a focused beam makes the light shift a *distribution*, closed-form and triangular for a two-photon rate, with a self-centred drift-immune skew |
 | **4** | [The composite model](methods/04_the_composite_model.md) | the assembled profile in code, and radiation trapping, the mechanism that moves amplitudes but not shapes |
 | **5** | [From volts to a frequency axis](methods/05_the_frequency_ruler.md) | the EOM sideband ruler that calibrates every scan |
-| **6** | [The statistics](methods/06_the_statistics.md) | measured weights, hierarchical sharing, the σ_laser↔γ_coll degeneracy, and the pre-registered measurement-vs-bound rule |
+| **6** | [The statistics](methods/06_the_statistics.md) | measured weights, hierarchical sharing, the σ_laser↔γ_coll degeneracy, the pre-registered measurement-vs-bound rule, and the fit-against-moments comparison the twin measured (§4.14) |
 | **7** | [What we found](methods/07_what_we_found.md) | the 2025 dataset's results: the bounds, the nulls, and the consistency checks |
 | **8** | [Assumptions, and where this can go](methods/08_assumptions_and_outlook.md) | the load-bearing assumptions to challenge, and what a fixed-lock session would lift |
 | **9** | [The guided geometry](methods/09_the_guided_geometry.md) | the same four terms derived in an evanescent field: the guided mode solved from the fibre diameter and validated against its own boundary conditions, transit turning near-Lorentzian, the atom-surface potential, and which knobs separate them |

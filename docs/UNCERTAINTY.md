@@ -161,6 +161,24 @@ for that row, and the row's `unit` field says why. Counts, flags and grid-read
 sensitivities are the usual cases. A guard checks intervals rather than blanks,
 see section 5.
 
+### 3a. An open systematic the error bars do not yet carry: the fit window
+
+The fitted collisional width falls with widening fit window in 30 of 32
+conditions over the wing-safe range
+([`results/fit_window_scan.csv`](../results/fit_window_scan.csv),
+`sign_test_p` = 2.46e-7, a tail under exchangeable signs, its note says
+why) while the fit quality stays flat
+(`chi2_red_median` rows). In the bound's own units, the indicative
+per-window slope spans 0.0069 to 0.0105 MHz per 10¹² cm⁻³ across that range
+(`gamma_density_slope` rows): the slope values sit at a quarter to a third
+of the 0.030 headline bound, and window choice moves them by 0.0036, about
+an eighth of it. Every window is consistent with zero, so the committed
+bound stands. No
+committed error bar yet carries a window term. The closing measurement is
+the shared-slope construction re-run per window. §4.14 of
+[the statistics chapter](methods/06_the_statistics.md) carries the full
+treatment.
+
 ## 4. Bounds: four constructions, and when each is valid
 
 The project quotes several one-sided 95 per cent limits and they are not built
