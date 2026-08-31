@@ -134,6 +134,7 @@ EXPENSIVE = {
     # two full closed-loop passes (base and gage-shifted), about eight
     # minutes, seed-pinned. Leg 1 of the twin validation.
     "run_twin_closed_loop": ["twin_closed_loop.csv"],
+    "run_quantisation_crosscheck": ["quantisation_crosscheck.csv"],
     # 2000 multi-condition fits at ~1.05 s each, about five minutes on eight
     # lanes. Deterministic despite being Monte-Carlo: every trial's seed is its
     # index, so the CSV reproduces exactly and IS checkable rather than merely

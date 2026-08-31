@@ -247,3 +247,58 @@ def sigma_of_v(level: np.ndarray, law: Dict) -> np.ndarray:
     extrapolate a dim condition's law to bright levels."""
     var = law["a"] ** 2 + law["b"] * np.maximum(level, 0.0) + law["c"] * np.maximum(level, 0.0) ** 2
     return np.sqrt(np.maximum(var, law["a"] ** 2))
+
+
+def load_noise_model(csv_path, *, role: str = None, peak: str = None,
+                     temperature_C: float = None, power_mW: float = None,
+                     pool: str = None) -> Dict:
+    """The committed noise law, back from `results/noise_model.csv`.
+
+    `condition_noise_model` fits the law FROM raw traces, which a clone
+    without `data_raw/` cannot run; this reads the committed coefficients
+    so the twin can weight and generate under the measured law from the
+    public tree alone. Select one condition by its keys, or pass
+    ``pool="median"`` with a `role` for the campaign-representative median
+    coefficients over that role's conditions.
+
+    The returned dict feeds `sigma_of_v` (keys ``a``, ``b``, ``c``) and
+    carries ``tau_int``, ``rho1``, ``sigma_wing_direct`` and ``n_traces``
+    from the rows. ``lev_max``, the fitted-domain marker, is not stored per
+    row: it returns NaN and the DOMAIN caution in `sigma_of_v`'s docstring
+    becomes the caller's to honour. Raises on an empty selection, never
+    returns a default law: a law nobody selected is a guess.
+    """
+    import csv as _csv
+    from pathlib import Path as _Path
+    rows = list(_csv.DictReader(_Path(csv_path).open(encoding="utf-8")))
+    if pool is None:
+        sel = [r for r in rows
+               if (role is None or r["role"] == role)
+               and (peak is None or r["peak"] == str(peak))
+               and (temperature_C is None
+                    or float(r["temperature_C"]) == float(temperature_C))
+               and (power_mW is None
+                    or float(r["power_mW"]) == float(power_mW))]
+        if len(sel) != 1:
+            raise ValueError(
+                f"load_noise_model: selection matched {len(sel)} rows, "
+                "need exactly 1. Name the condition fully, or pool.")
+        r = sel[0]
+        return {"a": float(r["a_V"]), "b": float(r["b_V"]),
+                "c": float(r["c"]), "tau_int": float(r["tau_int"]),
+                "rho1": float(r["rho1"]),
+                "sigma_wing_direct": float(r["sigma_wing_direct_V"]),
+                "n_traces": int(r["n_traces"]),
+                "white_ratio": float(r["white_ratio"]),
+                "lev_max": float("nan")}
+    if pool != "median":
+        raise ValueError(f"unknown pool {pool!r}, only 'median'")
+    sel = [r for r in rows if role is None or r["role"] == role]
+    if not sel:
+        raise ValueError(f"load_noise_model: no rows for role {role!r}")
+    med = lambda k: float(np.median([float(r[k]) for r in sel]))  # noqa: E731
+    return {"a": med("a_V"), "b": med("b_V"), "c": med("c"),
+            "tau_int": med("tau_int"), "rho1": med("rho1"),
+            "sigma_wing_direct": med("sigma_wing_direct_V"),
+            "n_traces": len(sel), "white_ratio": med("white_ratio"),
+            "lev_max": float("nan")}

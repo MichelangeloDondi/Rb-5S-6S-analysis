@@ -90,6 +90,9 @@ SKIP = {"laser_epoch.csv", "qc_metrics.csv",
         # the closed-loop leg: recovered medians and preregistered verdict
         # booleans, all diagnostics of the twin, tagged by the producer.
         "twin_closed_loop.csv",
+        # leg 4, the manual-against-lattice crosscheck: same verdict-boolean
+        # class, tagged by the producer.
+        "quantisation_crosscheck.csv",
         # the lever ranking: every row is a Fisher forecast about a DESIGN, and
         # its inputs split measured from estimated, so the producer tags them.
         "onf_lever_ranking.csv",

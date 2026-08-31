@@ -1,0 +1,5 @@
+quantity,value,err,unit,note,status
+conditions_joined,20,,count,per-condition lattice steps joined to their wing sigmas across both committed files,DIAGNOSTIC
+implied_range_offset,0.152,,fraction,"median fractional distance of step times two-to-the-twelve from the nearest settable eight-division range. The tail runs to 0.475 at the worst of the 20 conditions, quoted here so it cannot hide behind the median",DIAGNOSTIC
+D1_manual_and_ingest_agree,False,,,"every implied range within 25% of a settable coarse range (preregistered). Ships as found: fourteen of twenty conditions sit on the one-two-five ladder and six imply ranges clustered near 1.4 times a settable value, consistent with the scope's Fine vertical adjustment, which the manual states stays fully calibrated at in-between sensitivities, or with a root-two factor in the sigma chain. The two readings are distinguishable on the bench, not from here, and the crosscheck's coarse-ladder premise was too strong for an instrument with Fine ranging",DIAGNOSTIC
+G4_gage_crosscheck_can_fail,True,,,"steps inflated thirty per cent must breach the band, and do",DIAGNOSTIC

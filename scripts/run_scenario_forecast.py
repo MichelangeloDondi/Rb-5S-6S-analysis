@@ -36,6 +36,7 @@ import numpy as np
 
 from rb5s6s import fibre  # noqa: E402
 from rb5s6s.forecast import forecast_precision  # noqa: E402
+from rb5s6s.noise import load_noise_model  # noqa: E402
 from rb5s6s.scenario import load_scenario  # noqa: E402
 
 # The record's committed line, the truth the forecast perturbs around.
@@ -44,6 +45,11 @@ SIGMA_LASER_MHZ = 1.6
 TRANSIT_FWHM_64UM_MHZ = 1.8  # at the 64 um lineage waist
 S0_225MW_64UM_MHZ = 0.348    # results/stark_joint.csv S0_225mW_pred
 NOISE_FRAC = 0.004           # the 2025 bright-rung dither regime
+# The measured-law rows generate and weight in the bench's own volts: the
+# acquisition layer's peak convention, 0.8 of a 1.0 V full scale. The flat
+# rows keep amp = 1 normalised, which is what every committed forecast row
+# used, so the delta column isolates the law and not a rescale.
+AMP_LAW_V = 0.8
 N_TRIALS = 6
 LAMBDA_NM = 993.4            # the drive wavelength reaching the fibre solver
 
@@ -60,6 +66,8 @@ def _two_sig(x: float) -> str:
 
 
 def main() -> int:
+    law = load_noise_model(ROOT / "results" / "noise_model.csv",
+                           role="p_sweep", pool="median")
     rows = []
     for name in PRESETS:
         sc = load_scenario(ROOT / "examples" / "scenarios" / f"{name}.toml")
@@ -106,6 +114,21 @@ def main() -> int:
                          "ignoring the asymmetric term at this focus, and "
                          "the mismatched fitter's reported error can also "
                          "under-state itself", "ENVELOPE"])
+            lawful = forecast_precision(
+                truth, {**design, "noise": law, "amp": AMP_LAW_V},
+                n_trials=N_TRIALS, seed=seed, scalings=False,
+                return_trials=True)
+            l_spread = float(np.std(lawful["gamma_coll_err_trials"], ddof=1))
+            delta_pct = 100.0 * (lawful["gamma_coll_err"]
+                                 / matched["gamma_coll_err"] - 1.0)
+            rows.append([name, f"w0_{w0:g}um", "gamma_coll_err_measured_law",
+                         f"{lawful['gamma_coll_err']:.4f}",
+                         _two_sig(l_spread), "MHz",
+                         "same worlds under the committed noise law "
+                         "(noise_model.csv p_sweep median, volts, amp 0.8 V "
+                         f"per the acquisition convention): {delta_pct:+.0f} "
+                         "per cent against the flat row, which is leg 3's "
+                         "committed delta", "ENVELOPE"])
             rows.append([name, f"w0_{w0:g}um", "s0_225mW",
                          f"{truth['s0']:.4f}", _two_sig(s0_err), "MHz",
                          "the committed 0.348 MHz at 64 um scaled by "
@@ -141,6 +164,35 @@ def main() -> int:
                          f"cold atoms at {sc.fibre.atom_temperature_k:g} K "
                          "crossing the evanescent decay length, ensemble "
                          "flux kernel, rb5s6s.fibre.transit_fwhm", "CALIB"])
+    # G3, the wired-knob gage: doubling the law's floor must move the dim
+    # forecast visibly, or the law knob reaches nothing. One configuration,
+    # committed beside the physics rows.
+    sc16 = load_scenario(ROOT / "examples" / "scenarios" / "campaign_cell.toml")
+    w0g = sc16.waist_um.grid(3)[1]
+    sg = 64.0 / w0g
+    tg = {"gamma_coll": GAMMA_COLL_MHZ, "sigma_laser": SIGMA_LASER_MHZ,
+          "transit_fwhm": TRANSIT_FWHM_64UM_MHZ * sg,
+          "s0": S0_225MW_64UM_MHZ * sg ** 2}
+    # THE GAGE RUNS AT THE DIM RUNG, the regime the preregistration names:
+    # at the bright amplitude the shot term b times level buries the floor
+    # thirty-seven-fold and the first version of this gage read minus five
+    # per cent there, a wrong-regime test, not an unwired knob. At the dim
+    # rung's two-photon amplitude the floor dominates and the knob shows.
+    amp_dim = AMP_LAW_V * (0.025 / 0.225) ** 2
+    dg = {"n_traces": 5, "n_points": 2000, "T_C": 130.0, "amp": amp_dim}
+    seed_g = zlib.crc32(b"gage:G3") % (2 ** 31)
+    base_g = forecast_precision(tg, {**dg, "noise": law}, n_trials=N_TRIALS,
+                                seed=seed_g, scalings=False)
+    law2 = dict(law); law2["a"] = 2.0 * law["a"]
+    dbl_g = forecast_precision(tg, {**dg, "noise": law2}, n_trials=N_TRIALS,
+                               seed=seed_g, scalings=False)
+    moved = 100.0 * (dbl_g["gamma_coll_err"] / base_g["gamma_coll_err"] - 1.0)
+    rows.append(["gage", "G3", "law_floor_doubling_moves_error",
+                 str(moved > 10.0), "", "",
+                 f"doubling the law's floor moves the dim-rung campaign error "
+                 f"by {moved:+.0f} per cent, required past +10 per the "
+                 "preregistration: a law knob that moves nothing is not "
+                 "wired", "DIAGNOSTIC"])
     out = ROOT / "results" / "scenario_forecast.csv"
     with out.open("w", newline="", encoding="utf-8") as fh:
         w = csv.writer(fh)

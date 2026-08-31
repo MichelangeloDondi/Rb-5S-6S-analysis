@@ -106,3 +106,28 @@ def test_sigma_of_v_floored_at_dark_noise_even_for_negative_c():
     inside = V <= 0.525
     expect = np.sqrt(law["a"] ** 2 + law["b"] * V[inside] + law["c"] * V[inside] ** 2)
     assert np.allclose(s[inside], expect)
+
+
+def test_load_noise_model_reads_the_committed_law():
+    """The from-CSV loader must hand sigma_of_v a law it can evaluate.
+
+    Exists for the unit seam the closed-loop leg found: the law lives in
+    volts and a caller must be able to get the committed coefficients
+    without the raw traces. An ambiguous selection refuses rather than
+    averaging silently, and the median pool is the campaign-representative
+    law the scenario forecast quotes.
+    """
+    import numpy as np
+    import pytest
+    from rb5s6s.noise import load_noise_model, sigma_of_v
+    from pathlib import Path
+    csv_path = Path(__file__).resolve().parents[1] / "results" / "noise_model.csv"
+    one = load_noise_model(csv_path, role="p_sweep", peak="4121",
+                           temperature_C=130, power_mW=225)
+    assert 1e-4 < one["a"] < 1e-1, "the floor should be millivolts"
+    med = load_noise_model(csv_path, role="p_sweep", pool="median")
+    sig = sigma_of_v(np.array([0.0, 0.5]), med)
+    assert sig[0] == med["a"], "zero level returns the floor"
+    assert sig[1] > sig[0], "the law grows with level"
+    with pytest.raises(ValueError, match="matched"):
+        load_noise_model(csv_path, role="p_sweep")
