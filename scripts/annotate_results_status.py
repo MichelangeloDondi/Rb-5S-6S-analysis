@@ -185,7 +185,8 @@ FILE_STATUS = {
     "amplitude_ratios.csv": "NULL",       # degeneracy-law ratios drift-limited -> untestable in the dataset
     "amplitude_trapping.csv": "MEASURED", # amp ~ N, slopes 0.85-1.02, no rollover
     "modelform.csv": "NULL",              # Voigt-vs-Lehmann BIC below the gate -> no preference
-    "power_sweep.csv": "MEASURED",        # width null + amp~P^2 consistency check (resid_skew=ARTIFACT, RESULTS C3c)
+    "power_sweep.csv": "MEASURED",  # width null + amp~P^2 consistency check (resid_skew=ARTIFACT, RESULTS C3c)
+    "sobol_acquisition.csv": "ENVELOPE",  # exact shares over stated design-knob ranges (plan/07)
     "ruler_campaign.csv": "MEASURED",     # the frequency rate (axis-independent)
     "ruler_rate_model.csv": "MEASURED",
     "morning_ruler.csv": "CALIB",           # M26: the campaign morning's own rate from its 27 recovered rulers   # per-(session,peak) rate(t): a real drift, resolved (rate_model.py)

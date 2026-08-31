@@ -40,6 +40,7 @@ for s in run_qc run_noise run_ruler run_linefit run_trim_report \
          run_sigma_laser_sharing run_transit_mc run_amplitude_ratios run_ramp_geometry \
          run_model_ladder run_identifiability run_coverage run_sharing_bic run_fringe_tail \
          run_polarizability run_resolving_power run_projections \
+         run_sobol_acquisition \
          run_trapping_channels run_blackbody_channels run_skew_scaling \
          run_polarisation_bound run_collisional_shift_bound run_delta_alpha_posterior \
          run_guided_mode_tables run_onf_lever_ranking; do

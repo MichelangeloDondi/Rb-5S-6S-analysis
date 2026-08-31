@@ -236,6 +236,10 @@ if [ -f private/checks/summary_drift.py ]; then
 fi
 
 if [ -f private/checks/enforcement_report.py ]; then
+  # parse gate first, and hard: a checker that cannot parse reports nothing,
+  # and the advisory || true below would hide exactly that (E13).
+  "$PY" -c "import ast,glob; [ast.parse(open(f,encoding='utf-8').read(),f) for f in glob.glob('private/checks/*.py')]" \
+    || { echo "ci_gate: a private/checks file does not parse"; exit 1; }
   "$PY" private/checks/enforcement_report.py || true
 fi
 # The chimera check, at the last possible moment so the digest brackets

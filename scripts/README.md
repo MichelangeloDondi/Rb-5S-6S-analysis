@@ -6,7 +6,7 @@ as a committed CSV, so any single stage can be re-run and its output compared
 against the copy in the repository. Alongside the producers sit the builders
 that draw the figures and generate the documents, and two shell scripts.
 
-`run_all.sh` runs the twenty-five analysis stages below in order, then the
+`run_all.sh` runs the thirty-four analysis stages below in order, then the
 figures, then `docs/RESULTS.md`, then the status column. `ci_gate.sh` runs the
 lint pass and the full test battery including the slow closure tests, in the
 order continuous integration runs them, and is meant to be run before a push.
@@ -42,6 +42,7 @@ committed table holds. The `M` codes below are the pipeline stage labels of
 | `run_saturation_probe.py --emit` | writes `results/saturation_companion.csv`, the C3d half only. Without `--emit` it writes nothing, which was its original opt-in design and is why the factors it reports reached RESULTS.md with no row behind them. The joint factor is never written here, because stage 3 states that quoting a joint number before the fit runs would be inventing one. |
 | `run_cumulant_window_check.py` | computes the self-centred windowed third cumulant's survival fractions for this record's own composite line and its bare-core textbook case, at a stated window and reference shift, writing `results/cumulant_window_check.csv`. A few seconds, no traces. Exists because three hand quantifications of the same ratio disagreed in two days. The producer is the arbiter and every prose surface quotes its rows. |
 | `make_twin_term_census.py` | inspects `rb5s6s.forecast`, the example's layer switches and the physics modules, and writes `results/twin_term_census.csv`: one row per model term, four answers and a provenance note each. Instant, no traces. Exists so the census is measured from signatures and layer keys, never recalled, which is the class the correction history is made of. |
+| `run_sobol_acquisition.py` | Sobol decomposition of the width precision over the acquisition knobs (Saltelli/Jansen, bootstrap errors); writes `results/sobol_acquisition.csv`, quoted by `docs/plan/07`'s index table. |
 | `run_scenario_forecast.py` | loads every preset under `examples/scenarios/`, refuses any the named scope cannot realise, and forecasts each across its open spans through `forecast_precision`, writing `results/scenario_forecast.csv`. About four minutes, crc32-seeded so the CSV reproduces exactly. The scenario layer's end-to-end proof. |
 | `run_twin_closed_loop.py` | generates dataset_2025 worlds through the public builder, fits them by the record's own joint five-repeat protocol, and stands the recovered medians against the preregistered bands, writing `results/twin_closed_loop.csv` with verdict booleans the prose quotes verbatim. Includes its own gage: a shifted truth must fail. About eight minutes, seed-pinned. |
 | `run_quantisation_crosscheck.py` | joins each condition's measured lattice step to its wing sigma, derives the range the manual's twelve bits imply, and stands every condition against the scope's settable ranges, writing `results/quantisation_crosscheck.csv`. Instant, no traces. One number checks the manual reading and the ingest chain at once. |

@@ -118,7 +118,7 @@
    },
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 1244,
+    "line": 1272,
     "writes": "7.3"
    }
   ],
@@ -142,7 +142,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 1244,
+    "line": 1272,
     "writes": "7.2"
    }
   ],
@@ -154,7 +154,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 1244,
+    "line": 1272,
     "writes": "2.1"
    }
   ],
@@ -176,7 +176,7 @@
    },
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 1244,
+    "line": 1272,
     "writes": "3.48"
    }
   ],
@@ -198,7 +198,7 @@
    },
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 1244,
+    "line": 1272,
     "writes": "0.48"
    }
   ],
@@ -210,7 +210,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 1244,
+    "line": 1272,
     "writes": "0.025"
    }
   ],
@@ -222,7 +222,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 1244,
+    "line": 1272,
     "writes": "0.065"
    }
   ],
@@ -1232,6 +1232,365 @@
   ],
   "source_file": "results/saturation_companion.csv",
   "source_value": "2.75"
+ },
+ "sobol_acquisition:check:mc_max_z": {
+  "producer": "run_sobol_acquisition.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/07_acquisition-settings.md",
+    "line": 518,
+    "writes": "2.0"
+   }
+  ],
+  "source_file": "results/sobol_acquisition.csv",
+  "source_value": "2.0"
+ },
+ "sobol_acquisition:model:p_floor_fit": {
+  "producer": "run_sobol_acquisition.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/07_acquisition-settings.md",
+    "line": 507,
+    "writes": "0.85"
+   }
+  ],
+  "source_file": "results/sobol_acquisition.csv",
+  "source_value": "0.85"
+ },
+ "sobol_acquisition:model:p_floor_fit:err": {
+  "producer": "run_sobol_acquisition.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/07_acquisition-settings.md",
+    "line": 507,
+    "writes": "0.11"
+   }
+  ],
+  "source_file": "results/sobol_acquisition.csv",
+  "source_value": "0.11"
+ },
+ "sobol_acquisition:sobol:S1_eta": {
+  "producer": "run_sobol_acquisition.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/07_acquisition-settings.md",
+    "line": 524,
+    "writes": "0.102"
+   }
+  ],
+  "source_file": "results/sobol_acquisition.csv",
+  "source_value": "0.102"
+ },
+ "sobol_acquisition:sobol:S1_eta:err": {
+  "producer": "run_sobol_acquisition.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/07_acquisition-settings.md",
+    "line": 524,
+    "writes": "0.014"
+   }
+  ],
+  "source_file": "results/sobol_acquisition.csv",
+  "source_value": "0.014"
+ },
+ "sobol_acquisition:sobol:S1_n_line": {
+  "producer": "run_sobol_acquisition.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/07_acquisition-settings.md",
+    "line": 523,
+    "writes": "0.118"
+   }
+  ],
+  "source_file": "results/sobol_acquisition.csv",
+  "source_value": "0.118"
+ },
+ "sobol_acquisition:sobol:S1_n_line:err": {
+  "producer": "run_sobol_acquisition.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/07_acquisition-settings.md",
+    "line": 523,
+    "writes": "0.017"
+   }
+  ],
+  "source_file": "results/sobol_acquisition.csv",
+  "source_value": "0.017"
+ },
+ "sobol_acquisition:sobol:S1_power": {
+  "producer": "run_sobol_acquisition.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/07_acquisition-settings.md",
+    "line": 522,
+    "writes": "0.428"
+   },
+   {
+    "file": "docs/plan/07_acquisition-settings.md",
+    "line": 548,
+    "writes": "0.428"
+   }
+  ],
+  "source_file": "results/sobol_acquisition.csv",
+  "source_value": "0.428"
+ },
+ "sobol_acquisition:sobol:S1_power:err": {
+  "producer": "run_sobol_acquisition.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/07_acquisition-settings.md",
+    "line": 522,
+    "writes": "0.032"
+   }
+  ],
+  "source_file": "results/sobol_acquisition.csv",
+  "source_value": "0.032"
+ },
+ "sobol_acquisition:sobol:S1_repeats": {
+  "producer": "run_sobol_acquisition.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/07_acquisition-settings.md",
+    "line": 525,
+    "writes": "0.0485"
+   }
+  ],
+  "source_file": "results/sobol_acquisition.csv",
+  "source_value": "0.0485"
+ },
+ "sobol_acquisition:sobol:S1_repeats:err": {
+  "producer": "run_sobol_acquisition.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/07_acquisition-settings.md",
+    "line": 525,
+    "writes": "0.0068"
+   }
+  ],
+  "source_file": "results/sobol_acquisition.csv",
+  "source_value": "0.0068"
+ },
+ "sobol_acquisition:sobol:S1_tau": {
+  "producer": "run_sobol_acquisition.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/07_acquisition-settings.md",
+    "line": 526,
+    "writes": "0.0285"
+   }
+  ],
+  "source_file": "results/sobol_acquisition.csv",
+  "source_value": "0.0285"
+ },
+ "sobol_acquisition:sobol:S1_tau:err": {
+  "producer": "run_sobol_acquisition.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/07_acquisition-settings.md",
+    "line": 526,
+    "writes": "0.0040"
+   }
+  ],
+  "source_file": "results/sobol_acquisition.csv",
+  "source_value": "0.0040"
+ },
+ "sobol_acquisition:sobol:ST_eta": {
+  "producer": "run_sobol_acquisition.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/07_acquisition-settings.md",
+    "line": 524,
+    "writes": "0.223"
+   },
+   {
+    "file": "docs/plan/07_acquisition-settings.md",
+    "line": 1467,
+    "writes": "0.223"
+   }
+  ],
+  "source_file": "results/sobol_acquisition.csv",
+  "source_value": "0.223"
+ },
+ "sobol_acquisition:sobol:ST_eta:err": {
+  "producer": "run_sobol_acquisition.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/07_acquisition-settings.md",
+    "line": 524,
+    "writes": "0.012"
+   }
+  ],
+  "source_file": "results/sobol_acquisition.csv",
+  "source_value": "0.012"
+ },
+ "sobol_acquisition:sobol:ST_n_line": {
+  "producer": "run_sobol_acquisition.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/07_acquisition-settings.md",
+    "line": 523,
+    "writes": "0.253"
+   },
+   {
+    "file": "docs/plan/07_acquisition-settings.md",
+    "line": 1466,
+    "writes": "0.253"
+   }
+  ],
+  "source_file": "results/sobol_acquisition.csv",
+  "source_value": "0.253"
+ },
+ "sobol_acquisition:sobol:ST_n_line:err": {
+  "producer": "run_sobol_acquisition.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/07_acquisition-settings.md",
+    "line": 523,
+    "writes": "0.014"
+   }
+  ],
+  "source_file": "results/sobol_acquisition.csv",
+  "source_value": "0.014"
+ },
+ "sobol_acquisition:sobol:ST_power": {
+  "producer": "run_sobol_acquisition.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/07_acquisition-settings.md",
+    "line": 522,
+    "writes": "0.653"
+   },
+   {
+    "file": "docs/plan/07_acquisition-settings.md",
+    "line": 595,
+    "writes": "0.653"
+   },
+   {
+    "file": "docs/plan/07_acquisition-settings.md",
+    "line": 1465,
+    "writes": "0.653"
+   }
+  ],
+  "source_file": "results/sobol_acquisition.csv",
+  "source_value": "0.653"
+ },
+ "sobol_acquisition:sobol:ST_power:err": {
+  "producer": "run_sobol_acquisition.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/07_acquisition-settings.md",
+    "line": 522,
+    "writes": "0.049"
+   }
+  ],
+  "source_file": "results/sobol_acquisition.csv",
+  "source_value": "0.049"
+ },
+ "sobol_acquisition:sobol:ST_repeats": {
+  "producer": "run_sobol_acquisition.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/07_acquisition-settings.md",
+    "line": 525,
+    "writes": "0.1140"
+   },
+   {
+    "file": "docs/plan/07_acquisition-settings.md",
+    "line": 596,
+    "writes": "0.1140"
+   },
+   {
+    "file": "docs/plan/07_acquisition-settings.md",
+    "line": 1468,
+    "writes": "0.1140"
+   }
+  ],
+  "source_file": "results/sobol_acquisition.csv",
+  "source_value": "0.1140"
+ },
+ "sobol_acquisition:sobol:ST_repeats:err": {
+  "producer": "run_sobol_acquisition.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/07_acquisition-settings.md",
+    "line": 525,
+    "writes": "0.0063"
+   }
+  ],
+  "source_file": "results/sobol_acquisition.csv",
+  "source_value": "0.0063"
+ },
+ "sobol_acquisition:sobol:ST_tau": {
+  "producer": "run_sobol_acquisition.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/07_acquisition-settings.md",
+    "line": 526,
+    "writes": "0.0688"
+   }
+  ],
+  "source_file": "results/sobol_acquisition.csv",
+  "source_value": "0.0688"
+ },
+ "sobol_acquisition:sobol:ST_tau:err": {
+  "producer": "run_sobol_acquisition.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/07_acquisition-settings.md",
+    "line": 526,
+    "writes": "0.0038"
+   }
+  ],
+  "source_file": "results/sobol_acquisition.csv",
+  "source_value": "0.0038"
+ },
+ "sobol_acquisition:sobol:interaction_share": {
+  "producer": "run_sobol_acquisition.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/07_acquisition-settings.md",
+    "line": 530,
+    "writes": "0.275"
+   }
+  ],
+  "source_file": "results/sobol_acquisition.csv",
+  "source_value": "0.275"
+ },
+ "sobol_acquisition:sobol:interaction_share:err": {
+  "producer": "run_sobol_acquisition.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/07_acquisition-settings.md",
+    "line": 530,
+    "writes": "0.039"
+   }
+  ],
+  "source_file": "results/sobol_acquisition.csv",
+  "source_value": "0.039"
+ },
+ "sobol_acquisition:sobol:sum_S1": {
+  "producer": "run_sobol_acquisition.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/07_acquisition-settings.md",
+    "line": 529,
+    "writes": "0.725"
+   }
+  ],
+  "source_file": "results/sobol_acquisition.csv",
+  "source_value": "0.725"
+ },
+ "sobol_acquisition:sobol:sum_S1:err": {
+  "producer": "run_sobol_acquisition.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/07_acquisition-settings.md",
+    "line": 529,
+    "writes": "0.039"
+   }
+  ],
+  "source_file": "results/sobol_acquisition.csv",
+  "source_value": "0.039"
  },
  "stark_joint:S0_225mW_pred:prediction": {
   "producer": "run_stark_joint.py",

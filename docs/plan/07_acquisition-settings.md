@@ -500,25 +500,52 @@ property of the detection chain rather than of the condition.
 
 ### Which acquisition knob actually controls the precision
 
-The Sobol decomposition queued above has been run, over a forward model built
-only from committed quantities: the measured noise law with its floor scaling
-as the 0.85 power, a line height going as the square of the power and the
-collection efficiency, and a width uncertainty scaling as the linewidth over
-the peak signal-to-noise times the square root of the independent sample
-count.
+The Sobol decomposition queued above is computed by
+`scripts/run_sobol_acquisition.py` into `results/sobol_acquisition.csv`,
+over a forward model built only from committed quantities: the measured
+noise law with its floor scaling as the
+[0.85](../../results/sobol_acquisition.csv "ref:sobol_acquisition:model:p_floor_fit") ± [0.11](../../results/sobol_acquisition.csv "ref:sobol_acquisition:model:p_floor_fit:err")
+power, fit at run time from the committed per-condition floors and
+never typed, a line height going as the square of the power and the
+collection efficiency, and a width uncertainty scaling as the linewidth
+over the peak signal-to-noise times the square root of the independent
+sample count. The model is a product of independent factors, so the
+indices are exact: five one-dimensional moments, no simulation, with
+the derivation in the producer's docstring. Each error below is the
+floor exponent's fitted uncertainty propagated through that closed
+form. A Saltelli/Jansen run is kept as the cross-check, and
+its largest disagreement is
+[2.0](../../results/sobol_acquisition.csv "ref:sobol_acquisition:check:mc_max_z") bootstrap sigma.
 
 | input | first-order | total | reading |
 |---|---|---|---|
-| power | 0.514 | 0.648 | dominates |
-| points across the line | 0.151 | 0.217 | second |
-| collection efficiency | 0.101 | 0.160 | third |
-| repeats | 0.083 | 0.122 | fourth |
-| correlation length | 0.056 | 0.108 | least |
+| power | [0.428](../../results/sobol_acquisition.csv "ref:sobol_acquisition:sobol:S1_power") ± [0.032](../../results/sobol_acquisition.csv "ref:sobol_acquisition:sobol:S1_power:err") | [0.653](../../results/sobol_acquisition.csv "ref:sobol_acquisition:sobol:ST_power") ± [0.049](../../results/sobol_acquisition.csv "ref:sobol_acquisition:sobol:ST_power:err") | dominates |
+| points across the line | [0.118](../../results/sobol_acquisition.csv "ref:sobol_acquisition:sobol:S1_n_line") ± [0.017](../../results/sobol_acquisition.csv "ref:sobol_acquisition:sobol:S1_n_line:err") | [0.253](../../results/sobol_acquisition.csv "ref:sobol_acquisition:sobol:ST_n_line") ± [0.014](../../results/sobol_acquisition.csv "ref:sobol_acquisition:sobol:ST_n_line:err") | second |
+| collection efficiency | [0.102](../../results/sobol_acquisition.csv "ref:sobol_acquisition:sobol:S1_eta") ± [0.014](../../results/sobol_acquisition.csv "ref:sobol_acquisition:sobol:S1_eta:err") | [0.223](../../results/sobol_acquisition.csv "ref:sobol_acquisition:sobol:ST_eta") ± [0.012](../../results/sobol_acquisition.csv "ref:sobol_acquisition:sobol:ST_eta:err") | third |
+| repeats | [0.0485](../../results/sobol_acquisition.csv "ref:sobol_acquisition:sobol:S1_repeats") ± [0.0068](../../results/sobol_acquisition.csv "ref:sobol_acquisition:sobol:S1_repeats:err") | [0.1140](../../results/sobol_acquisition.csv "ref:sobol_acquisition:sobol:ST_repeats") ± [0.0063](../../results/sobol_acquisition.csv "ref:sobol_acquisition:sobol:ST_repeats:err") | fourth |
+| correlation length | [0.0285](../../results/sobol_acquisition.csv "ref:sobol_acquisition:sobol:S1_tau") ± [0.0040](../../results/sobol_acquisition.csv "ref:sobol_acquisition:sobol:S1_tau:err") | [0.0688](../../results/sobol_acquisition.csv "ref:sobol_acquisition:sobol:ST_tau") ± [0.0038](../../results/sobol_acquisition.csv "ref:sobol_acquisition:sobol:ST_tau:err") | least |
 
-First-order indices sum to 0.91, so about nine per cent of the variance is
-interaction and no input is a pure lever.
+First-order indices sum to
+[0.725](../../results/sobol_acquisition.csv "ref:sobol_acquisition:sobol:sum_S1") ± [0.039](../../results/sobol_acquisition.csv "ref:sobol_acquisition:sobol:sum_S1:err"), so
+[0.275](../../results/sobol_acquisition.csv "ref:sobol_acquisition:sobol:interaction_share") ± [0.039](../../results/sobol_acquisition.csv "ref:sobol_acquisition:sobol:interaction_share:err")
+of the variance is interaction: the knobs compound through the
+signal-to-noise product, and no input is a pure lever. That share is a
+property of the linear variance metric, not of the apparatus. On a
+log scale this model is additive and first-order shares sum to one,
+so the share says the knobs multiply, never that the bench couples
+them.
+Corrected 2026-08-31: this table was first published as hand-typed
+prose with no producer behind it (power 0.514, sum 0.91, interaction
+nine per cent), and the committed Monte Carlo run moved every share.
+Corrected again 2026-09-01: the product model's indices close in
+one-dimensional moments, so the table now carries the exact values
+(power 0.401 to 0.428, sum 0.705 to 0.725, within the old run's
+sampling error) with the simulation demoted to a cross-check. Every
+ranking survives both corrections, and with exact values the ordering
+is no longer a statistical statement.
 
-**Power controls two thirds of it**, which is the arithmetic behind the
+**Power controls two thirds of it through its total effect** (alone it
+carries [0.428](../../results/sobol_acquisition.csv "ref:sobol_acquisition:sobol:S1_power")), which is the arithmetic behind the
 recommendation to work at the top of the ladder and the reason the saturation
 and light-shift costs of doing so are the binding constraint rather than the
 noise. **Points across the line comes second and is nearly free**, since the
@@ -564,8 +591,9 @@ and there are strong ones below.
 the power while the shot noise goes as the square root of the signal, so the
 signal-to-noise goes as the power itself, linearly. Doubling the power is
 worth quadrupling the time. This is the arithmetic behind the Sobol
-decomposition above putting power at a total index of 0.648 while repeats sit
-at 0.122, and it is why the binding constraints at the top of a power ladder
+decomposition above putting power at a total index of
+[0.653](../../results/sobol_acquisition.csv "ref:sobol_acquisition:sobol:ST_power") while repeats sit at
+[0.1140](../../results/sobol_acquisition.csv "ref:sobol_acquisition:sobol:ST_repeats"), and it is why the binding constraints at the top of a power ladder
 are saturation and the light shift rather than noise.
 
 **And when time is the thing being spent, spend it on repeats rather than on a
@@ -1433,8 +1461,11 @@ The two-photon rate goes as the square of intensity, so signal-to-noise is
 linear in power and only square-root in time. Doubling the power is worth four
 doublings of integration.
 
-A sensitivity analysis over the acquisition inputs put power at 0.648, points
-across the line at 0.217, collection efficiency at 0.160 and repeats at 0.122.
+The Sobol totals of section 4 put power at
+[0.653](../../results/sobol_acquisition.csv "ref:sobol_acquisition:sobol:ST_power"), points across the line at
+[0.253](../../results/sobol_acquisition.csv "ref:sobol_acquisition:sobol:ST_n_line"), collection efficiency at
+[0.223](../../results/sobol_acquisition.csv "ref:sobol_acquisition:sobol:ST_eta") and repeats at
+[0.1140](../../results/sobol_acquisition.csv "ref:sobol_acquisition:sobol:ST_repeats").
 Between the two square-root options, prefer repeats over slower scans: they cost
 the same in time and additionally deliver a direct estimate of the
 trace-to-trace scatter, which a single long scan cannot give at any length.
