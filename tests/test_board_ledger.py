@@ -90,10 +90,32 @@ def repo(tmp_path: Path) -> Path:
     return r
 
 
-def _point_at(bl, repo: Path):
+def _point_at(bl, repo: Path, verdict: str = "PASS 0",
+              tree: str | None = None):
     bl.ROOT = repo
     bl.LEDGER = repo / ".board_ledger.jsonl"
     bl.OPEN = repo / ".board_running"
+    # begin() and declare_gate_covered() read the gate verdict since
+    # 2026-08-31 (0c.13's computable readiness) and, since the ten-seat
+    # board of the same day, believe it only for the tree it graded
+    # (19.24): the fixture stamps the tmp repo's real staged tree unless a
+    # test passes another to probe that refusal. tree="" writes an
+    # unstamped legacy file, which every consumer refuses.
+    if tree is None:
+        tree = bl.staged_tree()
+    stamp = f"tree {tree}\n" if tree else ""
+    (repo / ".ci_gate_verdict").write_text(verdict + "\n" + stamp)
+
+
+def _regate(bl):
+    """Re-stamp the verdict for the CURRENT staged tree, as a real regate
+    would: tests stage their files after _point_at, and begin() refuses a
+    verdict graded on any other tree."""
+    f = bl.ROOT / ".ci_gate_verdict"
+    if not f.is_file():
+        return  # the absent-verdict refusal is itself under test
+    first = f.read_text().splitlines()[0]
+    f.write_text(first + "\n" + f"tree {bl.staged_tree()}\n")
 
 
 # Derived from the ledger's own source, NOT re-typed. A seat list written in
@@ -141,10 +163,16 @@ def test_the_staged_patch_id_is_the_forward_diff_not_the_parents(bl, repo):
 
 
 def test_a_partial_board_is_refused_rather_than_recorded(bl, repo):
-    """One seat used to satisfy coverage. It must now be refused outright."""
+    """One seat used to satisfy coverage. It must now be refused outright.
+    The diff stages a docs file so seats_for sizes the need well above
+    one; a diff needing only `rules` makes a one-seat board conformant
+    by design (see test_required_is_sized_by_the_diff)."""
     _point_at(bl, repo)
-    (repo / "a.txt").write_text("three\n")
+    (repo / "docs").mkdir()
+    (repo / "docs" / "f.md").write_text("three\n")
     _run(repo, "add", "-A")
+    _regate(bl)
+    bl.begin(FULL, expect=0)
     with pytest.raises(SystemExit) as e:
         bl.record(["rules"], ["CONFIRM"])
     assert "missing seat" in str(e.value)
@@ -166,6 +194,8 @@ def test_a_release_needs_its_two_extra_seats(bl, repo):
     _point_at(bl, repo)
     (repo / "a.txt").write_text("three\n")
     _run(repo, "add", "-A")
+    _regate(bl)
+    bl.begin(FULL, expect=0)
     with pytest.raises(SystemExit) as e:
         bl.record(FULL, CONFIRMS, release=True)
     assert "voice" in str(e.value) and "cold_reader" in str(e.value)
@@ -176,11 +206,13 @@ def test_a_full_board_records_and_confers_coverage(bl, repo):
     _point_at(bl, repo)
     (repo / "a.txt").write_text("three\n")
     _run(repo, "add", "-A")
+    _regate(bl)
+    bl.begin(FULL, expect=0)
     tree = bl.record(FULL, CONFIRMS, note="planted")
     assert tree, "record() returned no tree"
     _run(repo, "commit", "-q", "-m", "third")
 
-    covered, uncovered, _grand = bl.verify("HEAD~1..HEAD")
+    covered, uncovered, _grand, _gc, _named = bl.verify("HEAD~1..HEAD")
     assert len(covered) == 1 and not uncovered, (
         "a board recorded against the staged tree did not cover the commit "
         "made from that same index")
@@ -197,7 +229,7 @@ def test_a_nonconformant_line_confers_no_coverage(bl, repo):
         encoding="utf-8")
     _run(repo, "commit", "-q", "-m", "third")
 
-    covered, uncovered, _grand = bl.verify("HEAD~1..HEAD")
+    covered, uncovered, _grand, _gc, _named = bl.verify("HEAD~1..HEAD")
     assert not covered and len(uncovered) == 1, (
         "a hand-written one-seat line was accepted as coverage, which is the "
         "exact gap the seat check was added to close")
@@ -228,6 +260,8 @@ def test_a_refute_with_no_blocking_findings_is_refused(bl, repo):
     (repo / "a.txt").write_text("three\n")
     _run(repo, "add", "-A")
     seats = sorted(bl.REQUIRED_SEATS)
+    _regate(bl)
+    bl.begin(FULL, expect=0)
     with pytest.raises(SystemExit) as e:
         bl.record(seats, ["REFUTE"] * len(seats), blocking=[])
     assert "no blocking finding was declared" in str(e.value)
@@ -240,13 +274,17 @@ def test_begin_refuses_while_a_blocking_finding_stands(bl, repo):
     (repo / "a.txt").write_text("three\n")
     _run(repo, "add", "-A")
     seats = sorted(bl.REQUIRED_SEATS)
+    _regate(bl)
+    bl.begin(seats, expect=1)
     bl.record(seats, ["REFUTE"] * len(seats), blocking=["the planted defect"])
     with pytest.raises(SystemExit) as e:
-        bl.begin(seats)
+        _regate(bl)
+        bl.begin(seats, expect=0)
     assert "REFUSING to open a round" in str(e.value)
     # and resolution with evidence clears it
     bl.resolve("planted defect", "the fix that closed it")
-    bl.begin(seats)
+    _regate(bl)
+    bl.begin(seats, expect=0)
     assert bl.OPEN.exists()
 
 
@@ -256,6 +294,8 @@ def test_resolve_without_a_reason_is_refused(bl, repo):
     (repo / "a.txt").write_text("three\n")
     _run(repo, "add", "-A")
     seats = sorted(bl.REQUIRED_SEATS)
+    _regate(bl)
+    bl.begin(FULL, expect=0)
     bl.record(seats, ["REFUTE"] * len(seats), blocking=["the planted defect"])
     with pytest.raises(SystemExit) as e:
         bl.resolve("planted defect", "   ")
@@ -278,7 +318,8 @@ def test_a_board_that_stayed_open_across_the_commit_can_still_record(bl, repo):
     (repo / "a.txt").write_text("three\n")
     _run(repo, "add", "-A")
     seats = sorted(bl.REQUIRED_SEATS)
-    bl.begin(seats)
+    _regate(bl)
+    bl.begin(seats, expect=0)
     _run(repo, "commit", "-q", "-m", "landed while the board read it")
     # nothing further staged: the index now equals HEAD
     assert bl.staged_tree() == _run(repo, "rev-parse", "HEAD^{tree}")
@@ -307,7 +348,8 @@ def test_begin_on_a_tree_already_head_is_refused(bl, repo):
     _point_at(bl, repo)
     assert bl.staged_tree() == _run(repo, "rev-parse", "HEAD^{tree}")
     with pytest.raises(SystemExit) as e:
-        bl.begin(sorted(bl.REQUIRED_SEATS))
+        _regate(bl)
+        bl.begin(sorted(bl.REQUIRED_SEATS), expect=0)
     assert "already HEAD" in str(e.value)
     assert not bl.OPEN.exists()
 
@@ -324,8 +366,9 @@ def test_a_post_commit_review_is_admitted_but_recorded_as_one(bl, repo):
     this record has built one of those before.
     """
     _point_at(bl, repo)
+    _regate(bl)
     tree = bl.begin(sorted(bl.REQUIRED_SEATS),
-                    "release board on the tagged artifact")
+                    "release board on the tagged artifact", expect=0)
     assert tree == _run(repo, "rev-parse", "HEAD^{tree}")
     assert bl.OPEN.exists()
     assert bl.open_board()["on_head"] == "release board on the tagged artifact"
@@ -347,7 +390,8 @@ def test_abandon_records_a_row_and_clears_the_marker(bl, repo):
     (repo / "a.txt").write_text("three\n")
     _run(repo, "add", "-A")
     seats = sorted(bl.REQUIRED_SEATS)
-    tree = bl.begin(seats)
+    _regate(bl)
+    tree = bl.begin(seats, expect=0)
     assert bl.OPEN.exists()
 
     assert bl.abandon("the findings moved the tree, so no verdict is honest",
@@ -361,7 +405,7 @@ def test_abandon_records_a_row_and_clears_the_marker(bl, repo):
     assert "moved the tree" in row["reason"]
 
     _run(repo, "commit", "-q", "-m", "landed after the round was abandoned")
-    covered, uncovered, _g = bl.verify("HEAD~1..HEAD")
+    covered, uncovered, _g, _gc3, _nm3 = bl.verify("HEAD~1..HEAD")
     assert not covered and len(uncovered) == 1, (
         "an abandoned round must confer no coverage; if it did, abandoning "
         "would be a cheaper way to launder a commit than recording one")
@@ -399,7 +443,8 @@ def test_abandon_must_say_what_the_round_found_or_that_it_found_nothing(bl, repo
     (repo / "a.txt").write_text("three\n")
     _run(repo, "add", "-A")
     seats = sorted(bl.REQUIRED_SEATS)
-    bl.begin(seats)
+    _regate(bl)
+    bl.begin(seats, expect=0)
     assert bl.abandon("a reason but no account of what was found") == 2, (
         "abandoning without saying what the round found must be refused")
     assert bl.OPEN.exists(), "a refused abandon must not close the board"
@@ -424,6 +469,8 @@ def test_a_row_without_findings_does_not_clear_a_standing_refusal(bl, repo):
     (repo / "a.txt").write_text("four\n")
     _run(repo, "add", "-A")
     seats = sorted(bl.REQUIRED_SEATS)
+    _regate(bl)
+    bl.begin(FULL, expect=0)
     bl.record(seats, ["REFUTE"] * len(seats), blocking=["the standing defect"])
     assert bl.unresolved_blocking() == ["the standing defect"]
 
@@ -449,6 +496,8 @@ def test_a_second_record_on_one_reading_is_refused(bl, repo):
     _point_at(bl, repo)
     (repo / "a.txt").write_text("four\n")
     _run(repo, "add", "-A")
+    _regate(bl)
+    bl.begin(FULL, expect=0)
     assert bl.record(FULL, CONFIRMS, note="first reading")
 
     with pytest.raises(SystemExit) as e:
@@ -464,3 +513,154 @@ def test_a_second_record_on_one_reading_is_refused(bl, repo):
     assert "already carries" not in str(e.value), (
         "the duplicate guard shadowed the seat-list refusal, which is the "
         "defect the first repair introduced")
+
+
+def test_begin_refuses_a_failing_or_absent_gate_verdict(bl, repo):
+    """0c.13's computable readiness: no green verdict, no round.
+
+    Fail-closed both ways: FAIL refuses, a missing file refuses as ABSENT.
+    """
+    _point_at(bl, repo, verdict="FAIL 1")
+    (repo / "a.txt").write_text("three\n")
+    _run(repo, "add", "-A")
+    with pytest.raises(SystemExit, match="FAIL"):
+        _regate(bl)
+        bl.begin(sorted(bl.REQUIRED_SEATS), expect=0)
+    (repo / ".ci_gate_verdict").unlink()
+    with pytest.raises(SystemExit, match="ABSENT"):
+        _regate(bl)
+        bl.begin(sorted(bl.REQUIRED_SEATS), expect=0)
+
+
+def test_begin_accepts_pass_modulo_and_records_it(bl, repo):
+    """The register-aware verdict opens a round and lands in the row."""
+    _point_at(bl, repo, verdict="PASS_MODULO 1")
+    (repo / "a.txt").write_text("three\n")
+    _run(repo, "add", "-A")
+    _regate(bl)
+    bl.begin(sorted(bl.REQUIRED_SEATS), expect=2)
+    import json as _json
+    row = _json.loads((repo / ".board_running").read_text())
+    assert row["gate_verdict"] == "PASS_MODULO 1"
+    assert row["expected_blocking"] == 2
+
+
+def test_begin_refuses_without_a_prediction(bl, repo):
+    """The measured half: no --expect, no calibratable convener."""
+    _point_at(bl, repo)
+    (repo / "a.txt").write_text("three\n")
+    _run(repo, "add", "-A")
+    with pytest.raises(SystemExit, match="expect"):
+        _regate(bl)
+        bl.begin(sorted(bl.REQUIRED_SEATS))
+
+
+def test_record_stores_predicted_against_actual(bl, repo):
+    """begin's expectation meets record's blocking count in one row."""
+    _point_at(bl, repo)
+    (repo / "a.txt").write_text("three\n")
+    _run(repo, "add", "-A")
+    _regate(bl)
+    bl.begin(sorted(bl.REQUIRED_SEATS), expect=2)
+    bl.record(FULL, ["REFUTE"] * len(FULL), note="planted",
+              blocking=["one finding"])
+    import json as _json
+    rows = [_json.loads(x) for x in
+            (repo / ".board_ledger.jsonl").read_text().splitlines()]
+    assert rows[-1]["expected_blocking"] == 2
+    assert rows[-1]["actual_blocking"] == 1
+
+
+def test_gate_coverage_refuses_fail_ceiling_and_consecutive(bl, repo):
+    """The hatch's three coded constraints, each refused in turn."""
+    _point_at(bl, repo, verdict="FAIL 1")
+    with pytest.raises(SystemExit, match="covers nothing"):
+        bl.declare_gate_covered("HEAD", "probe")
+    # an unstamped green refuses on the tree binding (19.24)
+    (repo / ".ci_gate_verdict").write_text("PASS 0\n")
+    with pytest.raises(SystemExit, match="unstamped"):
+        bl.declare_gate_covered("HEAD", "probe")
+    # a green stamped for ANOTHER tree refuses. Both tree refusals are
+    # one raise with one message, so a phrase from it cannot tell the two
+    # probes apart; the planted hash can -- only the wrong-tree path puts
+    # feedface in the message.
+    _point_at(bl, repo, tree="feedface" * 5)
+    with pytest.raises(SystemExit, match="feedface"):
+        bl.declare_gate_covered("HEAD", "probe")
+    # green on this tree, but a >3-file commit refuses on the ceiling
+    for n in "wxyz":
+        (repo / f"{n}.txt").write_text(n)
+    _run(repo, "add", "-A")
+    _run(repo, "commit", "-q", "-m", "four files")
+    _regate(bl)
+    with pytest.raises(SystemExit, match="ceiling"):
+        bl.declare_gate_covered("HEAD", "probe")
+    # a small commit passes, and its row lands as gate coverage, never as
+    # a board reading: the two must stay distinguishable or a hatch use
+    # reads as a review.
+    (repo / "w.txt").write_text("w2")
+    _run(repo, "add", "-A")
+    _run(repo, "commit", "-q", "-m", "one file")
+    _regate(bl)
+    bl.declare_gate_covered("HEAD", "small repair")
+    head = _run(repo, "rev-parse", "HEAD").strip()
+    _, uncov, _, gatecov, _ = bl.verify("HEAD~1..HEAD")
+    assert head in gatecov and head not in uncov
+    # and a second consecutive hatch row refuses
+    (repo / "w.txt").write_text("w3")
+    _run(repo, "add", "-A")
+    _run(repo, "commit", "-q", "-m", "one file again")
+    _regate(bl)
+    with pytest.raises(SystemExit, match="consecutive"):
+        bl.declare_gate_covered("HEAD", "probe")
+    # the owner's recorded reason is the one escape, and it arrives as an
+    # argument, never sniffed from argv (which under pytest would be
+    # pytest's own command line)
+    bl.declare_gate_covered("HEAD", "probe", "his words")
+    assert "his words" in bl.LEDGER.read_text()
+
+
+def test_sibling_refusals_outrank_the_no_board_one(bl, repo):
+    """The no-board refusal is the LAST resort: with a partial seat list
+    and no open board, the conformance message must win, or one guard
+    replaces its siblings (the first two placements of this refusal both
+    did exactly that)."""
+    _point_at(bl, repo)
+    (repo / "f.txt").write_text("x")
+    _run(repo, "add", "f.txt")
+    with pytest.raises(SystemExit, match="held to"):
+        bl.record(["rules"], ["CONFIRM"])
+    # with a full, valid board and no begin, the residual fires
+    with pytest.raises(SystemExit, match="no open board"):
+        bl.record(FULL, CONFIRMS)
+
+
+def test_begin_refuses_a_running_gate(bl, repo):
+    """RUNNING is a live gate, not a verdict; opening a board under it
+    would read a tree mid-mutation (the suite regenerates results/)."""
+    _point_at(bl, repo, verdict="RUNNING")
+    (repo / "f.txt").write_text("x")
+    _run(repo, "add", "f.txt")
+    with pytest.raises(SystemExit, match="RUNNING"):
+        bl.begin(FULL, expect=0)
+
+
+def test_required_is_sized_by_the_diff(bl, repo):
+    """A focused diff stamps the seats it needed, never the universe, and
+    a seat list below the need is refused at begin. Before seats_for was
+    wired in, a focused board's row was a lie in one direction or the
+    other: ten names nobody fielded, or a non-conformant five."""
+    (repo / "notes.txt").write_text("x")
+    _run(repo, "add", "-A")
+    _point_at(bl, repo)
+    with pytest.raises(SystemExit, match="needs seat"):
+        bl.begin([], expect=0)
+    bl.begin(["rules"], expect=0)
+    bl.record(["rules"], ["CONFIRM"])
+    import json as _json
+    row = _json.loads(
+        (repo / ".board_ledger.jsonl").read_text().splitlines()[-1])
+    assert row["required"] == ["rules"]
+    assert row["seats"] == ["rules"]
+    ok, why = bl.entry_is_conformant(row)
+    assert ok, why

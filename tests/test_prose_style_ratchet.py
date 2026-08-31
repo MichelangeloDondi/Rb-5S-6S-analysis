@@ -681,7 +681,11 @@ def test_no_lowered_state_notation_in_prose():
     and lit notes keep their own case (a paper may typeset states however
     it likes, and code identifiers are not prose).
     """
-    lowered = re.compile(r"\b\d[spdf]\b(?!\))")
+    # [1-9], not \d (2026-08-31): no atomic state has principal quantum
+    # number zero, and the governance rule families 0d and 0f matched the
+    # old pattern the day GOVERNANCE.md first cited them. Physics decides
+    # the population: n starts at one.
+    lowered = re.compile(r"\b[1-9][spdf]\b(?!\))")
     hits = {}
     for rel in _tracked_markdown():
         if rel.startswith("docs/lit/") or not (ROOT / rel).exists():
@@ -697,9 +701,10 @@ def test_no_lowered_state_notation_in_prose():
 
 def test_the_state_notation_detector_sees_a_planted_case():
     """Ceiling test on the planted forms."""
-    pat = re.compile(r"\b\d[spdf]\b(?!\))")
+    pat = re.compile(r"\b[1-9][spdf]\b(?!\))")
     assert pat.search("the 5s level")
-    assert pat.search("the 5s-6s line") 
+    assert pat.search("the 5s-6s line")
+    assert not pat.search("LOGIC 0d and 0f are rule families, not states")
     assert not pat.search("the 5S-6S line")
     assert not pat.search("about 5 seconds")
 
@@ -875,3 +880,14 @@ def test_the_lowered_acronym_detector_sees_a_planted_case():
     assert not pat.search("2.83 on 3 dof")
     assert not pat.search("an ad hoc correction")
     assert not pat.search("exports at most 64k points")
+
+
+def test_the_caps_allowlist_is_in_its_writers_format():
+    """A three-token change once arrived as a 538-line reindent diff, and
+    the additions were only findable by parsing both revisions. The file
+    must stay byte-identical to what its own --relax writer emits, so a
+    hand edit or a foreign formatter fails here instead of hiding a
+    widening inside a reflow."""
+    import json
+    raw = (ROOT / "tests" / "_caps_allowlist.json").read_text(encoding="utf-8")
+    assert raw == json.dumps(json.loads(raw), indent=1, sort_keys=True) + "\n"

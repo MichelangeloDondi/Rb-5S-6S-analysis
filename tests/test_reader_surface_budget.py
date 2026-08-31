@@ -171,6 +171,21 @@ words bought here replace a false sentence with the four numbers that
 refute it.** That is the cheapest kind of prose this budget will ever pay
 for, and it took five boards to find it.
 
+AND FORTY-SEVEN FOR A PROVENANCE TRUTH, 2026-08-31, in two steps of
+twenty and twenty-seven within one wave. The saturation companion's
+freshness registry entry had been unrunnable for the file's whole
+life, so the results ledger's C3d bullet claimed rows "regenerated
+and checked" that nothing had ever regenerated. The retraction now
+states the defect, the sign flip the repaired run produces, and the
+ungraded status pending that investigation. The stop clause above
+was honoured the only way a live wave can: the facts were handed to
+the owner in session on 2026-08-31, the forty-seven words buy the
+removal of a false provenance claim, and the note stands unless he
+rules otherwise. A first version of this paragraph claimed the
+fourth and fifth ordinals, both already spent above, and sat out of
+order; the collision was a board finding, which is this file's own
+lesson landing on the file that teaches it.
+
 2026-08-28, README 6189 -> 6157, a CUT and not a raise. Three seats
 independently flagged the Conventions block: a false universal, ratchets
 promoted to the front page, and 115 words of the repository describing itself

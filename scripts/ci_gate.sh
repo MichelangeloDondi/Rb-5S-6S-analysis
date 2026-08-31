@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+[ -n "${BASH_VERSION:-}" ] || exec /bin/bash "$0" "$@"
 # The pre-push gate: exactly what CI runs, in CI's order, so a push can
 # only turn red for a reason this machine could not have seen (an OS or
 # dependency difference), never for one it could. The archive repository
@@ -54,10 +55,50 @@ fi
 printf '%s\n' "$$" > "$GATE_LOCK/pid"
 trap 'rm -rf "$GATE_LOCK"' EXIT
 
-GATE_VERDICT="${CI_GATE_VERDICT_FILE:-$(pwd)/.ci_gate_verdict}"
-printf 'RUNNING\n' > "$GATE_VERDICT"
-trap 'rc=$?; if [ "$rc" -eq 0 ]; then printf "PASS 0\n" > "$GATE_VERDICT";
-      else printf "FAIL %s\n" "$rc" > "$GATE_VERDICT"; fi; rm -rf "$GATE_LOCK"' EXIT
+# The verdict file is anchored to the MAIN checkout's root -- the parent
+# of the common git dir -- which from a linked worktree is the main tree
+# and from the main tree is itself, so a gate and a board can never read
+# different files (the first form used --show-toplevel, which in a
+# worktree IS the worktree, and its comment claimed the repair this line
+# actually makes). The second line records the index tree at gate start;
+# the ledger refuses a verdict stamped for any other tree.
+GATE_COMMON="$(git rev-parse --git-common-dir 2>/dev/null || echo .git)"
+GATE_ROOT="$(cd "$(dirname "$GATE_COMMON")" && pwd)"
+GATE_VERDICT="${CI_GATE_VERDICT_FILE:-$GATE_ROOT/.ci_gate_verdict}"
+GATE_TREE="$(git write-tree 2>/dev/null || echo unknown)"
+# The chimera sentinel's digest: a gate grades ONE tree. `git diff HEAD`
+# hashes the CONTENT of staged and unstaged changes to tracked paths, so
+# a second edit to an already-dirty file moves it; untracked files ride
+# by NAME (an arrival or a departure moves it, an edit inside one does
+# not). A MODIFIED tracked file that is then staged leaves this digest
+# alone (its content was already counted) and is caught downstream
+# instead: the ledger refuses any verdict stamped for a tree other than
+# the one it grades (the tree line below); a NEW file staged mid-gate
+# moves both halves and fails honestly here. results/
+# is NOT special-cased: the freshness stage restores it byte-identically
+# before the end recompute, so its by-design mutation never trips this,
+# while a hand edit under the gate -- one half of the class that has
+# shipped damage twice -- now does. The killed-restore half stays
+# outside this bracket: a killed gate never reaches the end recompute,
+# a later gate sees the damage at both ends, and the git status
+# results/ reflex remains that half's only cover.
+gate_dirty_digest() {
+  { git diff HEAD -- .; git ls-files -o --exclude-standard; } | git hash-object --stdin
+}
+printf 'RUNNING\ntree %s\n' "$GATE_TREE" > "$GATE_VERDICT"
+# The ONE exit trap for the rest of the script: any exit that leaves the
+# first line at RUNNING writes FAIL with the real rc. PASS and
+# PASS_MODULO have exactly one author, the explicit write at the end of
+# the script, which runs only after every stage completed; the trap
+# leaves finished verdicts alone. A single trap installed once is the
+# whole design - bash keeps one EXIT trap, and an earlier version
+# installed a second one further down, leaving this span's writer dead
+# while a test still graded it.
+trap 'rc=$?; if [ "$(head -n1 "$GATE_VERDICT" 2>/dev/null)" = "RUNNING" ]; then printf "FAIL %s\ntree %s\n" "$rc" "$GATE_TREE" > "$GATE_VERDICT"; fi; rm -rf "$GATE_LOCK"; { [ -n "${GATE_PYLOG:-}" ] && rm -f "$GATE_PYLOG"; } || true' EXIT
+# Computed AFTER the trap is armed: a git failure inside the digest
+# aborts through the trap and writes FAIL, instead of dying with the
+# previous gate's verdict still on disk.
+GATE_DIRTY_START="$(gate_dirty_digest)"
 # The checkout's own interpreter where there is one, the ambient python
 # otherwise, which is the case in CI. Hard-coding either breaks the other:
 # the bare python3 on a development machine need not carry ruff or pytest.
@@ -88,11 +129,55 @@ if git rev-parse --git-dir >/dev/null 2>&1; then
   fi
 fi
 "$PY" -m ruff check rb5s6s scripts tests
-"$PY" -m pytest -q --runslow
+# THE REGISTER-AWARE VERDICT (LOGIC 0e.1). The decision lives in
+# scripts/compute_gate_verdict.py - a tested python module, because a
+# shell implementation of this decision is unreviewable by reading and
+# the first one shipped dead under pipefail. PASS_MODULO does NOT exit here: the
+# downstream stages always run, and the final verdict is written at the
+# end of the script, so the register can never excuse the checkers.
+GATE_PYLOG="$(mktemp)"
+set +e
+"$PY" -m pytest -q --runslow 2>&1 | tee "$GATE_PYLOG"
+PYRC=${PIPESTATUS[0]:-$?}
+set -e
+# The module is invoked on every run, green included, so "rc 0 means
+# PASS" is encoded in exactly one place. Only the first word of its
+# output is matched: a partial line plus the fallback FAIL can never
+# smuggle FAIL into PMOD.
+GV=$("$PY" scripts/compute_gate_verdict.py "$PYRC" "$GATE_PYLOG" || echo FAIL)
+read -r GVWORD GVREST <<< "$GV"
+PMOD=""
+case "$GVWORD" in
+  PASS) ;;
+  PASS_MODULO)
+    PMOD="$GVREST"
+    echo "ci_gate: every failure matches register entries ${PMOD} - continuing to the downstream stages, verdict PASS_MODULO at the end"
+    ;;
+  *)
+    # Never exit 0 from this arm: with a green suite and an unusable
+    # verdict module, exit "$PYRC" was exit 0 -- downstream checkers
+    # skipped and the shell status green. The sentinel plants exactly
+    # that input.
+    if [ "$PYRC" -ne 0 ]; then exit "$PYRC"; fi
+    echo "ci_gate: the verdict module is unusable on a green suite" >&2
+    exit 1
+    ;;
+esac
 # The protocol citation checker was written to catch the one propagation
 # failure a grep of a claim cannot see, because the claim IS a pointer, and
 # it had never been wired into the gate: it ran when someone remembered to
 # run it. Skipped where private/ is absent, which is every clone but this one.
+# The governance layer lives at the MAIN checkout. From a checkout that
+# cannot reach it, skipping the four governance stages silently would
+# print "clean" while grading nothing (the worktree blind region, three
+# faces) -- so absence of the layer where it is EXPECTED is a refusal,
+# and only a checkout with no private/ anywhere (CI, the mirror, a
+# stranger's clone) passes through with the stages honestly not applicable.
+if [ -d "$GATE_ROOT/private/checks" ] && [ ! -f private/checks/protocol_citations.py ]; then
+  echo "ci_gate: FAIL. The governance layer exists at $GATE_ROOT but this" >&2
+  echo "  checkout cannot reach it; a gate here would skip four stages." >&2
+  exit 1
+fi
 if [ -f private/checks/protocol_citations.py ]; then
   "$PY" private/checks/protocol_citations.py || exit 1
 fi
@@ -114,8 +199,8 @@ fi
 # with 1 was reported by a seat as a real confusion: a gate that dies on a
 # usage error and a gate that found a defect should not read alike.
 if [ -f scripts/check_moved_values.py ]; then
-  "$PY" scripts/check_moved_values.py "origin/main"
-  _mv=$?
+  _mv=0
+  "$PY" scripts/check_moved_values.py "origin/main" || _mv=$?
   if [ "$_mv" = 2 ]; then
     echo "ci_gate: check_moved_values could not run (exit 2). That is not a"
     echo "         clean result; it compared nothing."
@@ -136,9 +221,10 @@ if [ -f private/checks/board_ledger.py ]; then
 fi
 # The enforcement report is a REPORT and not a gate: it prints one line per
 # standing owner rule and does not decide anything, so its exit code is not
-# consulted. It runs here so the verdict a terminal state quotes is the
-# verdict of the tree that just passed, rather than one remembered from
-# earlier in the session.
+# consulted. Its gate row always quotes this run's own RUNNING pre-write
+# (the verdict file is rewritten before any stage runs), so inside a gate
+# that row is red by construction; the row that describes this gate is
+# read from the NEXT invocation, or from the verdict file directly.
 # The cold-start summary must agree with the primary records it restates.
 # Added 2026-08-28 after a bus test found the resume file claiming four board
 # refusals where the ledger held five. It exits 1 on drift AND on a check that
@@ -152,4 +238,24 @@ fi
 if [ -f private/checks/enforcement_report.py ]; then
   "$PY" private/checks/enforcement_report.py || true
 fi
+# The chimera check, at the last possible moment so the digest brackets
+# every stage above, not only the suite: an edit during the governance
+# stages voids a verdict just as surely, and the first placement left
+# them outside the bracket.
+GATE_DIRTY_END="$(gate_dirty_digest)"
+if [ "$GATE_DIRTY_START" != "$GATE_DIRTY_END" ]; then
+  echo "ci_gate: FAIL. The working tree moved while the gate ran; this" >&2
+  echo "  verdict would grade a chimera. Re-run on a still tree." >&2
+  exit 1
+fi
 echo "ci_gate: clean"
+
+# The final verdict. The exit trap writes only FAIL-on-RUNNING, so PASS
+# and PASS_MODULO have no author but this block, which is reached only
+# after every stage above completed. The verdict names the register
+# entries that excused the suite, or PASS, and repeats the tree line.
+if [ -n "$PMOD" ]; then
+  printf 'PASS_MODULO %s\ntree %s\n' "$PMOD" "$GATE_TREE" > "$GATE_VERDICT"
+else
+  printf 'PASS 0\ntree %s\n' "$GATE_TREE" > "$GATE_VERDICT"
+fi

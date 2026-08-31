@@ -81,6 +81,7 @@ packages = ["rb5s6s"]
 rb5s6s = ["README.md", "data/*.csv"]
 
 [tool.pytest.ini_options]
+addopts = "-rfE"  # compute_gate_verdict.py parses FAILED/ERROR summary lines; default reportchars emit them today, this pins it
 testpaths = ["tests"]
 markers = [
     "slow: high-statistics closure test, skipped by default; run with --runslow (CI always does)",

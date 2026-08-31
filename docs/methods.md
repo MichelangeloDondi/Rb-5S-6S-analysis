@@ -216,7 +216,7 @@ scripts/  import_data (+ annotate_manifest_qc: qc_reason provenance)
           run_geometry_design (the running-wave and waist designs, whose
           weak-field branch reproduces lineshape.stark_ramp_axial_moments)
 data_raw/ MANIFEST.csv, and the 297 traces where the copy carries them
-tests/    3103-test battery (3062 fast ~5 min + 41 `slow` high-statistics
+tests/    3185-test battery (3143 fast ~5 min + 42 `slow` high-statistics
           closure tests via --runslow, incl. the M4d synthetic-β and M4e
           synthetic-κ closures, the MANIFEST qc_reason guards, and the
           docs-consistency gates: canonical numbers, links+anchors, math
@@ -240,8 +240,8 @@ The first six scripts form the pipeline (each reads the previous ones'
 
 ```bash
 python3 -m venv .venv && source .venv/bin/activate
-pip install -e ".[dev]" && pytest -q          # 3062 fast tests (~5 min)
-pytest -q --runslow                           # full 3103 incl. slow closures (what CI runs)
+pip install -e ".[dev]" && pytest -q          # 3143 fast tests (~5 min)
+pytest -q --runslow                           # full 3185 incl. slow closures (what CI runs)
 # reproduce every committed CSV, figure, and docs/RESULTS.md from data_raw/
 # (already in git; import_data.py only re-imports from the original tree):
 bash scripts/run_all.sh

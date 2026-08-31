@@ -606,11 +606,18 @@ def verify(producers: dict) -> list[str]:
             _committed(f.name, stash / f.name)       # to compare against
 
         for script, outputs in producers.items():
-            proc = subprocess.run([sys.executable, f"scripts/{script}.py"],
-                                  cwd=ROOT, capture_output=True, text=True)
+            # a registry key may carry CLI arguments after the script
+            # name ("run_saturation_probe --emit"); the first full --all
+            # of 2026-08-31 found the join producing a filename with a
+            # flag inside it, unrunnable for the whole life of the entry
+            name_and_args = script.split()
+            proc = subprocess.run(
+                [sys.executable, f"scripts/{name_and_args[0]}.py",
+                 *name_and_args[1:]],
+                cwd=ROOT, capture_output=True, text=True)
             if proc.returncode != 0:
                 tail = (proc.stderr or "").strip().splitlines()[-1:] or ["(no stderr)"]
-                problems.append(f"{script}.py exited {proc.returncode}: {tail[0]}")
+                problems.append(f"{script.split()[0]}.py exited {proc.returncode}: {tail[0]}")
                 continue
             for name in outputs:
                 fresh, committed = RESULTS / name, stash / name

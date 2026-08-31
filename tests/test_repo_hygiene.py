@@ -1585,3 +1585,303 @@ def test_the_o2b_guard_fires_when_a_violation_is_planted(tmp_path):
 
     assert check(unmarked), "the planted violation was not detected"
     assert not check(marked), "a reasoned marker failed to licence the pairing"
+
+
+
+def _script_private_loaders(root):
+    """The private-reading surface of scripts/ modules: {stem: surface}.
+
+    For each tracked scripts/ module whose source touches the governance
+    layer, `surface["names"]` holds the module-level names bound to a
+    private path (the REGISTER pattern) and `surface["funcs"]` the
+    functions that read through one of those names. A test reaches the
+    layer through this surface without ever writing a private path
+    itself, which is the attribute route the string arms cannot see.
+    One level deep by design: a module function reading the layer only
+    through a second function is outside this map."""
+    import ast
+    import subprocess
+    tracked = subprocess.run(
+        ["git", "-C", str(root), "ls-files", "scripts/*.py"],
+        capture_output=True, text=True).stdout.split()
+    out = {}
+    for rel in tracked:
+        src = (root / rel).read_text(encoding="utf-8")
+        if "private/" not in src:
+            continue
+        try:
+            tree = ast.parse(src)
+        except SyntaxError:
+            continue
+        names = set()
+        for st in tree.body:
+            if isinstance(st, ast.Assign) and any(
+                    isinstance(t, ast.Name) for t in st.targets):
+                if any(_is_private_pathish(n) for n in ast.walk(st.value)):
+                    names.update(t.id for t in st.targets
+                                 if isinstance(t, ast.Name))
+        funcs = set()
+        for st in ast.walk(tree):
+            if isinstance(st, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                if any(isinstance(n, ast.Name) and n.id in names
+                       for n in ast.walk(st)):
+                    funcs.add(st.name)
+        if names or funcs:
+            out[Path(rel).stem] = {"names": names, "funcs": funcs}
+    return out
+
+
+def _is_private_pathish(node):
+    """A constant or Div-chain that names a path into private/."""
+    import ast
+    if isinstance(node, ast.Constant) and isinstance(node.value, str):
+        return ("private/" in node.value
+                or "COMMON_CAUSE_REGISTER" in node.value)
+    if isinstance(node, ast.BinOp) and isinstance(node.op, ast.Div):
+        parts = set()
+        for c in ast.walk(node):
+            if isinstance(c, ast.Constant) and isinstance(c.value, str):
+                parts.update(q for q in c.value.split("/") if q)
+        return "private" in parts
+    return False
+
+
+def _unguarded_private_loaders(sources, script_loaders=None):
+    """tests that LOAD private/ content with no skip guard, from {path: src}.
+
+    AST-based and FUNCTION-granular, on load CONSUMERS rather than path
+    mentions. A scope (a function, or the module level) is hot when,
+    inside it,
+      * a loading call (open, spec_from_file_location, subprocess.run and
+        friends) takes an argument that is a private path -- written as a
+        string, built as a Div-chain (segments split on "/", so both
+        ROOT / "private/checks" / "x.py" and ROOT / "private" /
+        "COMMON_CAUSE_REGISTER.md" count), or carried by a name assigned
+        from one (assign-then-load); or
+      * a read method (read_text, read_bytes, open, glob and friends) is
+        called on such a chain or tainted name; or
+      * a zero-argument call is made, through a name this file binds to
+        a scripts/ module (import, or a spec_from_file_location chain
+        naming it), to a function on that module's private-reading
+        surface (see _script_private_loaders), while the scope never
+        rebinds that module's path constant -- the live-parse route; a
+        fixture test that rebinds REGISTER first is cold, and so is a
+        call to an unrelated function that merely shares a surface name.
+    A path that is only compared, existence-checked, written to under an
+    is_dir gate, or held in a data structure never reaches a load
+    consumer and stays cold. A hot function is guarded by a skip in its
+    own decorators or body; a hot module-level statement only by a
+    module-level importorskip, skip or skipif pytestmark. File-level
+    substring matching was tried twice and failed in both directions: a
+    docstring MENTIONING a path made a file hot, and one skipif anywhere
+    licensed every unrelated function in the file.
+    """
+    import ast
+    script_loaders = script_loaders or {}
+    load_calls = {"open", "spec_from_file_location", "load_scenario",
+                  "run", "check_output", "check_call", "Popen", "call"}
+    read_methods = {"read_text", "read_bytes", "open", "iterdir",
+                    "glob", "rglob"}
+
+    def calls_skip(node):
+        for c in ast.walk(node):
+            if isinstance(c, ast.Call):
+                n = ""
+                if isinstance(c.func, ast.Attribute):
+                    n = c.func.attr
+                elif isinstance(c.func, ast.Name):
+                    n = c.func.id
+                if n in ("importorskip", "skip"):
+                    return True
+        return False
+
+    offenders = []
+    for rel, src in sources.items():
+        try:
+            tree = ast.parse(src)
+        except SyntaxError:
+            continue
+        tainted = set()
+        for node in ast.walk(tree):
+            if isinstance(node, ast.Assign):
+                if any(_is_private_pathish(n) for n in ast.walk(node.value)):
+                    tainted.update(t.id for t in node.targets
+                                   if isinstance(t, ast.Name))
+        # names this file binds to a private-reading scripts/ module:
+        # imports, path-built loads, and one-step propagation through
+        # assignments (spec -> module_from_spec(spec) -> the alias).
+        alias, from_funcs = {}, {}
+        for _pass in (0, 1):
+            for node in ast.walk(tree):
+                if isinstance(node, ast.Import):
+                    for a in node.names:
+                        stem = a.name.split(".")[0]
+                        if stem in script_loaders:
+                            alias[a.asname or stem] = stem
+                elif isinstance(node, ast.ImportFrom):
+                    stem = (node.module or "").split(".")[0]
+                    if stem in script_loaders:
+                        for a in node.names:
+                            if a.name in script_loaders[stem]["funcs"]:
+                                from_funcs[a.asname or a.name] = stem
+                elif isinstance(node, ast.Assign):
+                    hit = ""
+                    for n in ast.walk(node.value):
+                        if (isinstance(n, ast.Constant)
+                                and isinstance(n.value, str)):
+                            for stem in script_loaders:
+                                if f"scripts/{stem}" in n.value \
+                                        or n.value == f"{stem}.py":
+                                    hit = stem
+                        elif isinstance(n, ast.Name) and n.id in alias:
+                            hit = alias[n.id]
+                    if hit:
+                        for t in node.targets:
+                            if isinstance(t, ast.Name):
+                                alias[t.id] = hit
+
+        def carries_private(subtree):
+            for n in ast.walk(subtree):
+                if _is_private_pathish(n):
+                    return True
+                if isinstance(n, ast.Name) and n.id in tainted:
+                    return True
+            return False
+
+        def scope_hot(stmts):
+            rebinds = set()
+            for st in stmts:
+                for n in ast.walk(st):
+                    if isinstance(n, ast.Assign):
+                        for t in n.targets:
+                            if (isinstance(t, ast.Attribute)
+                                    and isinstance(t.value, ast.Name)
+                                    and alias.get(t.value.id)
+                                    and t.attr in script_loaders[
+                                        alias[t.value.id]]["names"]):
+                                rebinds.add(alias[t.value.id])
+            for st in stmts:
+                for node in ast.walk(st):
+                    if not isinstance(node, ast.Call):
+                        continue
+                    name = ""
+                    if isinstance(node.func, ast.Attribute):
+                        name = node.func.attr
+                    elif isinstance(node.func, ast.Name):
+                        name = node.func.id
+                    if name in load_calls and any(
+                            carries_private(a) for a in
+                            list(node.args) + [k.value for k in node.keywords]):
+                        return True
+                    if (name in read_methods
+                            and isinstance(node.func, ast.Attribute)
+                            and carries_private(node.func.value)):
+                        return True
+                    if not node.args and not node.keywords:
+                        f = node.func
+                        if (isinstance(f, ast.Attribute)
+                                and isinstance(f.value, ast.Name)
+                                and alias.get(f.value.id)
+                                and f.attr in script_loaders[
+                                    alias[f.value.id]]["funcs"]
+                                and alias[f.value.id] not in rebinds):
+                            return True
+                        if (isinstance(f, ast.Name)
+                                and f.id in from_funcs
+                                and from_funcs[f.id] not in rebinds):
+                            return True
+            return False
+
+        module_stmts, funcs = [], []
+
+        def split(body):
+            for st in body:
+                if isinstance(st, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                    funcs.append(st)
+                elif isinstance(st, ast.ClassDef):
+                    split(st.body)
+                else:
+                    module_stmts.append(st)
+        split(tree.body)
+        mod_guard = any(calls_skip(st) for st in module_stmts) or any(
+            isinstance(st, ast.Assign)
+            and any(isinstance(t, ast.Name) and t.id == "pytestmark"
+                    for t in st.targets)
+            and "skip" in ast.unparse(st)
+            for st in module_stmts)
+        if mod_guard:
+            continue
+        offend = scope_hot(module_stmts)
+        for fn in funcs:
+            if offend:
+                break
+            if scope_hot([fn]):
+                fn_guard = calls_skip(fn) or any(
+                    "skip" in ast.unparse(d) for d in fn.decorator_list)
+                if not fn_guard:
+                    offend = True
+        if offend:
+            offenders.append(rel)
+    return offenders
+
+
+def test_tests_loading_private_code_carry_a_skip_guard():
+    """A tracked test that loads code or fixtures from private/ fails in
+    every clone but this one, because private/ is gitignored wholesale --
+    the mirror's whole suite is the reference green check and a single
+    unguarded loader turns its badge red on port. Twice now: the board
+    ledger's module-level import killed mirror collection (2f3c7c71), and
+    the gate-verdict live-register test reached review staged without
+    a skipif.
+    """
+    import subprocess
+    tracked = subprocess.run(
+        ["git", "-C", str(ROOT), "ls-files", "tests/*.py"],
+        capture_output=True, text=True).stdout.split()
+    sources = {rel: (ROOT / rel).read_text(encoding="utf-8")
+               for rel in tracked}
+    offenders = _unguarded_private_loaders(
+        sources, _script_private_loaders(ROOT))
+    assert not offenders, (
+        "these tests load private/ code or fixtures with no skip guard, "
+        f"and will fail every public clone: {offenders}")
+    # the plants, all through the real function: direct load, module
+    # guard licensing it, the single-constant chain, the existence-check
+    # pattern staying cold, and per-function granularity (an unrelated
+    # skipif in the same file licenses nothing).
+    bad = ('REG = "private/COMMON_CAUSE_REGISTER.md"\n'
+           'text = open(REG).read_text()\n')
+    good = ("import pytest\n"
+            "pytestmark = pytest.mark.skipif(True, reason='x')\n" + bad)
+    chain = ('from pathlib import Path\n'
+             'ROOT = Path(".")\n'
+             'p = ROOT / "private" / "COMMON_CAUSE_REGISTER.md"\n'
+             'text = p.read_text()\n')
+    probe = ('from pathlib import Path\n'
+             'HAVE = (Path(".") / "private" / "checks").is_dir()\n')
+    split_guard = (
+        "import pytest\n"
+        "@pytest.mark.skipif(True, reason='unrelated')\n"
+        "def test_other():\n    pass\n"
+        "def test_loader():\n"
+        "    open('private/checks/board_ledger.py').read_text()\n")
+    checks = {
+        "tests/p_bad.py": bad, "tests/p_good.py": good,
+        "tests/p_chain.py": chain, "tests/p_probe.py": probe,
+        "tests/p_split.py": split_guard}
+    got = set(_unguarded_private_loaders(checks))
+    assert got == {"tests/p_bad.py", "tests/p_chain.py",
+                   "tests/p_split.py"}, got
+    # the attribute route, on the real recurrence: the live gate-verdict
+    # test with its skip guards disarmed must offend, and as committed it
+    # must not; compute_gate_verdict must itself be in the loader set, or
+    # the route is wired to nothing.
+    loaders = _script_private_loaders(ROOT)
+    assert "compute_gate_verdict" in loaders, loaders
+    gv = (ROOT / "tests/test_gate_verdict.py").read_text(encoding="utf-8")
+    assert _unguarded_private_loaders(
+        {"tests/test_gate_verdict.py": gv}, loaders) == []
+    disarmed = gv.replace("skip", "sk_ip")
+    assert _unguarded_private_loaders(
+        {"tests/test_gate_verdict.py": disarmed}, loaders) == [
+        "tests/test_gate_verdict.py"]

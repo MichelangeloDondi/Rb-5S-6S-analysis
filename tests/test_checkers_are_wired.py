@@ -60,6 +60,13 @@ ROOT = Path(__file__).resolve().parents[1]
 #
 # checker path (relative to the repo root) -> why it is not wired
 NOT_WIRED = {
+    "private/checks/opus_reports_check.py":
+        "session-scoped: it counts completed agent transcripts in the "
+        "live session's task directory against the filed verbatim "
+        "reports, so it means nothing in CI or a clone; the operator "
+        "runs it at each wave boundary beside the standard's step 8c "
+        "filing, and the enforcement wiring that would make that "
+        "mechanical is queued for wave P.",
     "private/check_carriers.py":
         "checks the outbound blocks of untracked application and outreach "
         "drafts before a send, so there is no committed input a per-commit "
@@ -137,7 +144,12 @@ EXCLUDED_DIRS = ("private/mirror_stash_",)
 def _checkers() -> list[str]:
     found = []
     for pat in ("private/checks/*.py", "private/check_*.py",
-                "scripts/check_*.py", "scripts/verify_*.py"):
+                "scripts/check_*.py", "scripts/verify_*.py",
+                # compute_* joined 2026-08-31: compute_gate_verdict.py is a
+                # validator the gate calls, and a name-shaped glob that
+                # missed it would have left the verdict decider unwired
+                # without a sound.
+                "scripts/compute_*.py"):
         for p in sorted(ROOT.glob(pat)):
             rel = p.relative_to(ROOT).as_posix()
             if p.name == "__init__.py" or rel.startswith(EXCLUDED_DIRS):
