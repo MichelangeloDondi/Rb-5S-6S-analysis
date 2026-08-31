@@ -424,13 +424,26 @@ def main(argv: list[str]) -> int:
         # commit on the ground that a propagation checker had found no
         # propagation to check. That is a guard whose passing state is
         # unreachable, which this record has built once before and named.
-        touched = [ln for ln in _git("diff", "--name-only", base, "HEAD")
-                   .splitlines() if ln.startswith("results/")
-                   and ln.endswith(".csv")]
+        status = [ln.split("\t") for ln in
+                  _git("diff", "--name-status", base, "HEAD").splitlines()]
+        touched = [(s[0], s[-1]) for s in status
+                   if s[-1].startswith("results/") and s[-1].endswith(".csv")]
         if not touched:
             print("  NOTHING TO CHECK, and that is COMPLETE rather than "
                   "empty: no results/ CSV changed in this window, so no "
                   "value could have moved and there is nothing to compare.")
+            return 0
+        if all(code.startswith("A") for code, _ in touched):
+            # The second unreachable-passing-state face, found 2026-09-01 on
+            # the sobol wave's mirror gate: a window whose only CSV changes
+            # are ADDITIONS retires no value by construction -- an added
+            # value arrives, it does not move -- so the empty sweep is
+            # COMPLETE here too. A MODIFIED CSV that retires nothing still
+            # refuses below, because a modification with no readable old
+            # value is exactly what this checker exists to be suspicious of.
+            print("  NOTHING TO CHECK, and that is COMPLETE rather than "
+                  "empty: every changed results/ CSV in this window is an "
+                  "addition, and an added value cannot have moved.")
             return 0
         print("  NOTHING TO CHECK: results/ CSVs changed in this window but "
               "no value moved, so this compares nothing and its silence is "
