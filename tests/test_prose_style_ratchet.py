@@ -201,8 +201,15 @@ def test_the_baseline_itself_only_ever_shrinks():
     """
     baseline = json.loads(BASELINE.read_text())
     current = _current()
+    # A GITIGNORED_PROSE entry is ungradable where its file is absent: the
+    # grading side already skips it there, and the same baseline must hold
+    # in both trees the porter serves. The mirror's suite found the
+    # asymmetry on 2026-08-31: the thesis chapter's budget of 79 read as
+    # slack against a tree that cannot hold the file. A TRACKED file that
+    # vanishes still fires, as it should.
     slack = {rel: (was, current.get(rel, 0))
-             for rel, was in baseline.items() if was > current.get(rel, 0)}
+             for rel, was in baseline.items() if was > current.get(rel, 0)
+             and not (rel in GITIGNORED_PROSE and not (ROOT / rel).is_file())}
     assert not slack, (
         "the baseline is looser than reality, which leaves room for silent "
         "regressions. Re-record it:\n  "
