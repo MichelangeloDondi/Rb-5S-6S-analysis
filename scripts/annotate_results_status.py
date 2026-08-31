@@ -87,6 +87,9 @@ SKIP = {"laser_epoch.csv", "qc_metrics.csv",
         # the scenario forecasts, same mixed class: forecast precisions are
         # ENVELOPE, solved-mode quantities CALIB, so the producer tags rows.
         "scenario_forecast.csv",
+        # the closed-loop leg: recovered medians and preregistered verdict
+        # booleans, all diagnostics of the twin, tagged by the producer.
+        "twin_closed_loop.csv",
         # the lever ranking: every row is a Fisher forecast about a DESIGN, and
         # its inputs split measured from estimated, so the producer tags them.
         "onf_lever_ranking.csv",

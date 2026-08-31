@@ -176,7 +176,9 @@ def build_world_trace(power_w: float, kappa: float, t_c: float,
                      cycles_at_max: float, drift_mhz_total: float,
                      noise_frac_bright: float, adc_levels: int,
                      range_headroom: float = 1.25,
-                     offset: float = 0.01) -> Tuple[np.ndarray, np.ndarray, Dict]:
+                     offset: float = 0.01,
+                     range_anchor: str = "global",
+                     ) -> Tuple[np.ndarray, np.ndarray, Dict]:
     """One campaign trace: every peak in `positions`, one vertical range.
 
     Promoted from `examples/campaign_twin.py` (2026-08-31) so the example
@@ -242,11 +244,25 @@ def build_world_trace(power_w: float, kappa: float, t_c: float,
     # so the brightest rung's peak carries noise_frac_bright of itself; the
     # noise falls with the signal while the quantisation step does not,
     # which is what makes one vertical range survivable at the dim rung.
-    bright_peak = max(shares.values()) + offset
+    # `range_anchor` says which vertical range the noise and the ADC step
+    # anchor to. "global" is the proposed campaign's design: ONE range,
+    # snug on the full-power brightest peak, held across the whole ladder.
+    # "per_rung" is what the 2025 bench actually did: it re-ranged as the
+    # power fell (the display-epoch moves docs/RESULTS.md C3e records), so
+    # each rung's noise and step follow its own brightest signal. The twin
+    # validation's closed loop needs the second to reproduce the record's
+    # own error scale; the default stays "global" and every earlier caller
+    # is unchanged.
+    if range_anchor == "per_rung":
+        bright_peak = max(shares.values()) * p_rel ** 2 + offset
+    elif range_anchor == "global":
+        bright_peak = max(shares.values()) + offset
+    else:
+        raise ValueError(f"unknown range_anchor {range_anchor!r}")
     sigma = noise_frac_bright * np.sqrt(np.clip(v, 0.0, None) * bright_peak)
     v = v + sigma * rng.standard_normal(nu.size)
     if layers["quantise"]:
-        step = range_headroom * (max(shares.values()) + offset) / adc_levels
+        step = range_headroom * bright_peak / adc_levels
         v = np.round(v / step) * step
     return nu, v, truth_amps
 
