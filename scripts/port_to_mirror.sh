@@ -35,6 +35,20 @@ if [ "${1:-}" = "--check" ]; then MODE=check; fi
 # The clean-tree precondition guards the PORT (a port onto strays carries them
 # forward invisibly). A check writes nothing, so it must be runnable at any
 # moment, including mid-edit, which is exactly when one wants to ask it.
+#
+# AND THE PORT REFUSES WHILE ANY PYTEST RUNS ON THIS MACHINE (2026-08-31).
+# The suite regenerates results/ into the real directory and restores it in
+# a finally, so a port taken mid-run copies transient CSV states into the
+# mirror as if they were the record. That happened the night this check was
+# added: a port raced a background freshness run and carried two ruler CSVs
+# in their regenerated state. The gate lock cannot cover it, because a bare
+# pytest takes no lock. pgrep is broader than one checkout, and that is
+# accepted: a refused port costs a wait, a transient port costs an audit.
+if [ "$MODE" = port ] && pgrep -f pytest >/dev/null 2>&1; then
+  echo "ABORT: a pytest run is live on this machine and the suite mutates"
+  echo "results/ while it runs. Port after it finishes."
+  exit 4
+fi
 if [ "$MODE" = port ]; then
   cd "$M"
   if [ -n "$(git status --short)" ]; then

@@ -52,6 +52,7 @@ from rb5s6s import blackbody
 from rb5s6s import stark
 from rb5s6s.amplitudes import predicted_shares
 from rb5s6s.constants import PEAKS
+from rb5s6s.forecast import build_world_trace
 from rb5s6s.linefit import fit_condition
 
 C_M_S = 299792458.0
@@ -115,61 +116,23 @@ def line_positions_mhz() -> dict:
 
 def build_rung(power_w: float, kappa: float, t_c: float, order_idx: int,
                n_rungs: int, rng, layers) -> tuple:
-    """One trace: all four peaks, one range, at this power."""
-    pos = line_positions_mhz()
-    nu = np.linspace(min(pos.values()) - 60.0, 60.0, 6000)
-    shares = predicted_shares()
-    s0 = kappa * power_w
-    p_rel = (power_w / POWERS_W.max())
+    """One trace: all four peaks, one range, at this power.
 
-    v = np.zeros_like(nu)
-    truth_amps = {}
-    for peak, share in shares.items():
-        amp = share * p_rel ** 2                      # two-photon: signal ~ P^2
-        if layers["cascade"]:
-            amp *= cascade.amplitude_factor(peak, CYCLES_AT_225MW * p_rel)
-        gamma = GAMMA_COLL_MHZ
-        if layers["saturation"]:
-            gamma = gamma + stark.companion_gamma_mhz(s0, peak)
-        centre = pos[peak]
-        if layers["bbr"]:
-            centre += -blackbody.shift_hz(273.15 + t_c) / 1e6
-        if layers["drift"]:
-            centre += DRIFT_MHZ_TOTAL * (order_idx / max(n_rungs - 1, 1) - 0.5)
-        # THE RAMP IS CONVOLVED, NOT APPLIED AS A SHIFT (corrected 2026-08-30).
-        # It used to enter as `centre += 0.5 * s0`, which was wrong twice over.
-        # The magnitude: the ramp density is f(s) = 2s/S0^2, whose mean is
-        # (2/3) S0; S0/2 is the mean of a UNIFORM density, not of this one.
-        # The kind: a rigid translation carries only the first moment, so every
-        # trace this twin emitted was exactly SYMMETRIC (skewness ~1e-16) while
-        # the third cumulant, kappa_3 = +S0^3/135 for a SELF-CENTRED readout
-        # (docs/wiki/third-cumulant.md), is the channel this record is built
-        # on. A twin that cannot emit the asymmetry
-        # cannot forecast it, and cannot test a fitter against it.
-        # model_profile convolves lineshape.stark_ramp, so BOTH the -2/3 pull
-        # and the skew come from the library rather than from a literal here,
-        # and the ramp's coded DIRECTION is inherited rather than re-chosen.
-        from rb5s6s.lineshape import model_profile
-        shape = model_profile(nu - centre,
-                              gamma_coll=gamma,
-                              sigma_laser_fwhm=SIGMA_LASER_MHZ,
-                              transit_fwhm=TRANSIT_FWHM_MHZ,
-                              s0=(s0 if layers["stark"] else 0.0))
-        v += amp * (shape / shape.max())
-        truth_amps[peak] = amp
-    v += 0.01                                          # detector offset
-    # shot-like noise: sigma grows as the root of the LOCAL signal, anchored
-    # so the brightest rung's peak carries NOISE_FRAC_BRIGHT of itself. This
-    # is the regime the 2025 noise law measured (variance linear in signal),
-    # and it is what makes one vertical range survivable at the dim rung: the
-    # noise falls with the signal while the quantisation step does not.
-    bright_peak = max(predicted_shares().values()) + 0.01
-    sigma = NOISE_FRAC_BRIGHT * np.sqrt(np.clip(v, 0.0, None) * bright_peak)
-    v = v + sigma * rng.standard_normal(nu.size)
-    if layers["quantise"]:
-        step = 1.25 * (max(shares.values()) + 0.01) / ADC_LEVELS
-        v = np.round(v / step) * step
-    return nu, v, truth_amps
+    The world builder itself is `rb5s6s.forecast.build_world_trace`, promoted
+    there 2026-08-31 so the physics layers are options of the public path and
+    this example is a CALLER: it owns the provenance-tagged inputs above and
+    hands them over, so the constants stay beside their sources and the
+    physics stays in the library. The ramp-convolution account (why a rigid
+    shift was wrong twice over, corrected 2026-08-30) lives on the function's
+    own docstring and docs/wiki/third-cumulant.md.
+    """
+    return build_world_trace(
+        power_w, kappa, t_c, order_idx, n_rungs, rng, layers,
+        positions=line_positions_mhz(), shares=predicted_shares(),
+        gamma_coll=GAMMA_COLL_MHZ, sigma_laser_fwhm=SIGMA_LASER_MHZ,
+        transit_fwhm=TRANSIT_FWHM_MHZ, power_max_w=POWERS_W.max(),
+        cycles_at_max=CYCLES_AT_225MW, drift_mhz_total=DRIFT_MHZ_TOTAL,
+        noise_frac_bright=NOISE_FRAC_BRIGHT, adc_levels=ADC_LEVELS)
 
 
 def fit_rung(nu, v, rng) -> dict:

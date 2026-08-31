@@ -55,6 +55,7 @@ CHEAP = {
     "run_unregenerated_claims": ["unregenerated_claims.csv"],
     # pure quadrature over the model line, a few seconds, no traces
     "run_cumulant_window_check": ["cumulant_window_check.csv"],
+    "make_twin_term_census": ["twin_term_census.csv"],
     "run_kernel_identifiability": ["kernel_identifiability.csv"],
     # a Fisher forecast over five rungs per lever, milliseconds, no traces.
     "run_onf_lever_ranking": ["onf_lever_ranking.csv"],

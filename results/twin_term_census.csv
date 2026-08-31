@@ -1,0 +1,14 @@
+term,forecast_path,example_world,module,fitter,provenance,status
+lorentzian_core_collisional,yes,yes,lineshape.py,yes,inspected: gamma_coll in synthetic_traces and the fitter,DIAGNOSTIC
+laser_kernel_both_forms,yes,yes,lineshape.py,"yes, form assumed","inspected: laser_kind in synthetic_traces. The form choice was audited 2026-08-20, the switch never thrown before then",DIAGNOSTIC
+transit_cusp,yes,yes,lineshape.py,yes,inspected: transit_fwhm in both signatures,DIAGNOSTIC
+ac_stark_ramp,yes,yes,lineshape.stark_ramp,optional,inspected: s0 in synthetic_traces since 2026-08-30 and the stark layer in build_world_trace. The side stays open per tests/test_ramp_side_matches_the_polarizability,DIAGNOSTIC
+saturation_companions,yes,yes,stark.companion_gamma_mhz,"stated: deliberately absent (science plan T1: truth carries it, the fitter keeps the committed model, the gap is measured in T3)",inspected: saturation layer in build_world_trace,DIAGNOSTIC
+cascade_depletion,yes,yes,cascade.py,stated: deliberately absent (same T1 clause as saturation),inspected: cascade layer in build_world_trace,DIAGNOSTIC
+blackbody,yes,yes,"blackbody.py, two-platform rule in twin.py",no,inspected: bbr layer in build_world_trace. Negligible at MHz widths per the example's CHECK 3,DIAGNOSTIC
+lock_drift,yes,yes,-,absorbed by free per-scan centres,inspected: drift layer in build_world_trace,DIAGNOSTIC
+noise,flat fraction or measured law,shot-like anchored,"noise.py, per-point law in twin.acquire",weights by the law,"inspected: noise accepts a law dict in synthetic_traces, and build_world_trace anchors shot-like noise at the bright rung",DIAGNOSTIC
+scope_quantisation,yes,yes,"instruments.py, applied by twin.acquire",-,inspected: quantise layer in build_world_trace. The named scopes in rb5s6s.instruments were manual-checked 2026-08-31 and the ERes kernel now hits the printed table,DIAGNOSTIC
+power_order_randomisation,caller-side by design,yes,-,-,"stated: the rung order is a design choice of the caller, not a physics term, and run_world draws it",DIAGNOSTIC
+detection_channel,no,no,detection.py,-,"open: wiring unverified, on the verification queue",DIAGNOSTIC
+onf_guided_geometry,no scenario yet (T2),no,fibre.py,-,inspected: solved HE11 machinery present. The scenario layer lands with the configuration work,DIAGNOSTIC

@@ -181,7 +181,7 @@ that cannot be run should not pass in a twin.
 The two resolution mechanisms are distinguished in code, since treating
 them alike is how an artefact enters. High resolution is a disjoint
 boxcar, leaving neighbouring samples independent. Enhanced resolution is
-a moving average across stored samples, correlating neighbours by
+a constant-phase FIR across stored samples (the operator's manual prints its length and bandwidth per step), correlating neighbours by
 construction, which the analysis would later read as physics, and a test
 asserts the difference on white noise.
 

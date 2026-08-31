@@ -77,7 +77,7 @@ def test_four_peak_traces_carry_all_four_lines_on_one_range():
 def test_the_enhanced_mode_correlates_neighbours_and_the_boxcar_does_not():
     """The two resolution mechanisms are not interchangeable, in code.
 
-    Enhanced resolution is a moving average ACROSS stored samples, so it
+    Enhanced resolution is a constant-phase FIR ACROSS stored samples, so it
     imposes correlation the analysis would later read as physics. High
     resolution is a disjoint boxcar and leaves neighbours independent. A twin
     that modelled both as "more bits" would hide the artefact class this
@@ -134,3 +134,28 @@ def test_sample_correlation_reduces_independent_information():
         r = resid - resid.mean()
         out[tau] = float(np.corrcoef(r[:-1], r[1:])[0, 1])
     assert out[10.0] > out[1.0] + 0.2
+
+
+def test_eres_kernel_matches_the_manual_table():
+    """The ERes FIR must hit the numbers the operator's manual prints.
+
+    The WaveSurfer manual (p. 64) publishes, per half-bit step, the filter
+    LENGTH in samples and the -3 dB bandwidth as a fraction of Nyquist --
+    the only two facts it makes checkable about the filter. An earlier
+    implementation convolved a boxcar of width 4^(bits-8), wrong on both
+    counts (8 against 10 at 1.5 bits, 64 against 117 at 3.0), and no test
+    could see it because nothing compared the kernel to the manual. Length
+    must match exactly; the measured -3 dB point sits within 8 per cent of
+    the printed value (the truncated-Gaussian design lands 0 to 6 per cent
+    high at the short lengths, measured 2026-08-31).
+    """
+    for bits, (bw_nyq, length) in inst.ERES_TABLE.items():
+        k = inst.eres_kernel(bits)
+        assert k.size == length, f"{bits} bits: length {k.size} != {length}"
+        assert k.sum() == pytest.approx(1.0, abs=1e-12)
+        n_fft = 65536
+        h = np.abs(np.fft.rfft(k, n_fft))
+        f = np.fft.rfftfreq(n_fft)
+        meas = 2.0 * f[int(np.argmin(np.abs(h - 2 ** -0.5)))]
+        assert meas == pytest.approx(bw_nyq, rel=0.08), (
+            f"{bits} bits: -3 dB at {meas:.3f} x Nyquist, manual prints {bw_nyq}")

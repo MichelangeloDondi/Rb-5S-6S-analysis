@@ -39,12 +39,13 @@ from typing import Dict, List, Optional, Tuple
 import numpy as np
 from scipy.special import jv
 
+from . import blackbody, cascade, stark
 from .lineshape import composite_profile, model_profile
 from .linefit import fit_condition
 from .noise import sigma_of_v
 
-__all__ = ["synthetic_traces", "forecast_precision", "n_eff",
-           "external_constraint_gain"]
+__all__ = ["synthetic_traces", "build_world_trace", "forecast_precision",
+           "n_eff", "external_constraint_gain"]
 
 
 def n_eff(n: int, tau_int: float) -> float:
@@ -164,6 +165,90 @@ def synthetic_traces(gamma_coll: float, sigma_laser: float, transit_fwhm: float,
         freqs.append(nu.copy())
         volts.append(v)
     return freqs, volts
+
+
+def build_world_trace(power_w: float, kappa: float, t_c: float,
+                     order_idx: int, n_rungs: int,
+                     rng: np.random.Generator, layers: Dict, *,
+                     positions: Dict[str, float], shares: Dict[str, float],
+                     gamma_coll: float, sigma_laser_fwhm: float,
+                     transit_fwhm: float, power_max_w: float,
+                     cycles_at_max: float, drift_mhz_total: float,
+                     noise_frac_bright: float, adc_levels: int,
+                     range_headroom: float = 1.25,
+                     offset: float = 0.01) -> Tuple[np.ndarray, np.ndarray, Dict]:
+    """One campaign trace: every peak in `positions`, one vertical range.
+
+    Promoted from `examples/campaign_twin.py` (2026-08-31) so the example
+    became a caller and the physics layers became options of this one public
+    path. Each `layers` key is a committed claim the twin can switch on to
+    test and off to isolate: ``cascade`` (pumping depletion of the
+    amplitudes, `rb5s6s.cascade`), ``saturation`` (drive-dependent companion
+    width, `rb5s6s.stark`), ``stark`` (the AC-Stark ramp convolved through
+    `model_profile` -- the one asymmetric term; a rigid shift instead of the
+    convolution is exactly the defect this builder was corrected for),
+    ``bbr`` (the blackbody centre shift), ``drift`` (a linear session drift
+    of the common centre across the rung order), ``quantise`` (the ADC step
+    of one snug vertical range anchored `range_headroom` above the brightest
+    peak). A missing key raises KeyError on purpose, the
+    `annotate_results_status` convention: every layer must be decided, not
+    defaulted into.
+
+    The noise is shot-like, sigma growing as the root of the local signal
+    and anchored so the brightest rung's peak carries `noise_frac_bright` of
+    itself -- the regime the 2025 noise law measured (variance linear in
+    signal). Amplitudes scale as the two-photon P^2 with the hyperfine
+    `shares`; positions and shares stay caller-owned so their provenance
+    stays beside their values, in the example or the scenario layer.
+
+    Returns (nu, volts, truth_amps): the frequency axis (MHz, transition
+    axis), the one recorded trace, and each peak's injected amplitude.
+    """
+    nu = np.linspace(min(positions.values()) - 60.0, 60.0, 6000)
+    s0 = kappa * power_w
+    p_rel = (power_w / power_max_w)
+
+    v = np.zeros_like(nu)
+    truth_amps = {}
+    for peak, share in shares.items():
+        amp = share * p_rel ** 2                      # two-photon: signal ~ P^2
+        if layers["cascade"]:
+            amp *= cascade.amplitude_factor(peak, cycles_at_max * p_rel)
+        gamma = gamma_coll
+        if layers["saturation"]:
+            gamma = gamma + stark.companion_gamma_mhz(s0, peak)
+        centre = positions[peak]
+        if layers["bbr"]:
+            centre += -blackbody.shift_hz(273.15 + t_c) / 1e6
+        if layers["drift"]:
+            centre += drift_mhz_total * (order_idx / max(n_rungs - 1, 1) - 0.5)
+        # THE RAMP IS CONVOLVED, NOT APPLIED AS A SHIFT (corrected
+        # 2026-08-30): a rigid translation carries only the first moment and
+        # leaves the trace symmetric, while the self-centred windowed third
+        # cumulant (docs/wiki/third-cumulant.md) is the channel this record
+        # is built on. model_profile convolves lineshape.stark_ramp, so the
+        # pull and the skew both come from the library, and the ramp's coded
+        # SIDE is inherited rather than re-chosen (it is an open question:
+        # tests/test_ramp_side_matches_the_polarizability).
+        shape = model_profile(nu - centre,
+                              gamma_coll=gamma,
+                              sigma_laser_fwhm=sigma_laser_fwhm,
+                              transit_fwhm=transit_fwhm,
+                              s0=(s0 if layers["stark"] else 0.0))
+        v += amp * (shape / shape.max())
+        truth_amps[peak] = amp
+    v += offset                                        # detector offset
+    # shot-like noise: sigma grows as the root of the LOCAL signal, anchored
+    # so the brightest rung's peak carries noise_frac_bright of itself; the
+    # noise falls with the signal while the quantisation step does not,
+    # which is what makes one vertical range survivable at the dim rung.
+    bright_peak = max(shares.values()) + offset
+    sigma = noise_frac_bright * np.sqrt(np.clip(v, 0.0, None) * bright_peak)
+    v = v + sigma * rng.standard_normal(nu.size)
+    if layers["quantise"]:
+        step = range_headroom * (max(shares.values()) + offset) / adc_levels
+        v = np.round(v / step) * step
+    return nu, v, truth_amps
 
 
 def _one_trial(truth: Dict, design: Dict, rng: np.random.Generator) -> Dict:

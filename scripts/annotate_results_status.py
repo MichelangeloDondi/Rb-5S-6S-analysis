@@ -159,6 +159,7 @@ FILE_STATUS = {
     # THE ARBITER ROWS for the three-layer cumulant statement: survival
     # fractions of the model line, pure quadrature, no apparatus quantity.
     "cumulant_window_check.csv": "DIAGNOSTIC",
+    "twin_term_census.csv": "DIAGNOSTIC",
     "twin_realism.csv": "DIAGNOSTIC",
     "band_excess.csv": "DIAGNOSTIC",
     "twin_span_sweep.csv": "DIAGNOSTIC",

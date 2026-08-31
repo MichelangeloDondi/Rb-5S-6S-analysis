@@ -17,12 +17,22 @@ exists to make unavoidable in code. High resolution on the InfiniiVision and
 the RTM is a DISJOINT boxcar: each stored point averages its own block of raw
 samples and adjacent points share none, so it raises the effective bit depth
 and leaves neighbouring samples uncorrelated. Enhanced resolution on the
-LeCroy is a moving-average FIR ACROSS stored samples: it also raises the bit
-depth, and it correlates neighbours by construction and halves the bandwidth
-per half-bit. A twin that treats them alike will report an artefact class the
-record spent two days removing.
+LeCroy is a constant-phase FIR ACROSS stored samples -- the operator's
+manual (p. 64, "ERes Function") says "similar to smoothing the signal with
+a simple, moving-average filter, but ... more efficient concerning
+bandwidth and pass-band filtering", and prints the filter length and -3 dB
+bandwidth per step, which `ERES_TABLE` transcribes. It also raises the bit
+depth, and it correlates neighbours by construction, each half-bit step
+halving the bandwidth (the manual's own sentence). A twin that treats the
+two families alike will report an artefact class the record spent two days
+removing. An earlier version of this module implemented the ERes branch as
+a plain boxcar of an invented width; the manual check of 2026-08-31 found
+both the kind and the printed lengths against it, and the kernel now hits
+the printed numbers, tested in `tests/test_twin.py`.
 """
 from __future__ import annotations
+
+import math
 
 from dataclasses import dataclass
 from typing import Dict, Optional
@@ -78,7 +88,9 @@ class Instrument:
 AGILENT = Instrument(
     key="agilent_3054a",
     model="Agilent dso-x 3054a (InfiniiVision)",
-    adc_bits=8,
+    adc_bits=8,                 # printed: the hires table's fast-sweep row
+                                # is "8 bits of resolution" with no averaging
+                                # (manual p. 195), which is the converter
     max_points=64_000,          # the CSV export cap measured on the bench
     default_points=2_000,       # the 2025 campaign's own record
     channels=4,
@@ -92,24 +104,31 @@ AGILENT = Instrument(
     provenance="Keysight InfiniiVision instrument manual, private/Manuals",
 )
 
-# The deep instrument. Enhanced resolution is a moving average ACROSS stored
-# samples, 0.5 to 3.0 bits in half-bit steps, each step halving bandwidth, so
-# the design runs it RAW and smooths offline where the kernel is known.
+# The deep instrument. Enhanced resolution is a constant-phase FIR ACROSS
+# stored samples, 0.5 to 3.0 bits in half-bit steps, each step halving the
+# bandwidth (ERES_TABLE carries the manual's printed lengths and -3 dB
+# points), so the design runs it RAW and smooths offline where the kernel
+# is known.
 LECROY = Instrument(
     key="lecroy_ws3104z",
     model="LeCroy WaveSurfer 3104z",
-    adc_bits=8,
+    adc_bits=None,              # the operator's manual prints no native
+                                # depth (checked 2026-08-31); the raw mode's
+                                # 8.0 below is the working assumption for
+                                # the family and says so
     max_points=500_001,         # measured in the rehearsal files
     default_points=500_001,
     channels=4,
     modes={
         "raw": ResolutionMode("raw", "raw", 8.0, False,
-                              "the design's choice: smooth offline instead"),
+                              "the design's choice: smooth offline instead. "
+                              "8.0 is assumed, the held manual printing no "
+                              "native depth"),
         "eres_1.5": ResolutionMode(
-            "eres_1.5", "moving_average", 9.5, True,
+            "eres_1.5", "eres_fir", 9.5, True,
             "1.5 bits, and it halves bandwidth three times over"),
         "eres_3.0": ResolutionMode(
-            "eres_3.0", "moving_average", 11.0, True,
+            "eres_3.0", "eres_fir", 11.0, True,
             "the top of the range, at the cost of most of the bandwidth"),
     },
     default_mode="raw",
@@ -155,6 +174,38 @@ def quantise(v: np.ndarray, step: float) -> np.ndarray:
     return np.round(np.asarray(v, dtype=float) / step) * step
 
 
+# The WaveSurfer operator's manual, p. 64, "How ERes Is Applied": resolution
+# increase in bits -> (-3 dB bandwidth as a fraction of Nyquist, FIR filter
+# length in samples). Transcribed verbatim; the kernel below is built to hit
+# these printed numbers, and tests/test_twin.py measures it against them.
+ERES_TABLE: Dict[float, tuple] = {
+    0.5: (0.5, 2),
+    1.0: (0.241, 5),
+    1.5: (0.121, 10),
+    2.0: (0.058, 24),
+    2.5: (0.029, 51),
+    3.0: (0.016, 117),
+}
+
+
+def eres_kernel(bits_increase: float) -> np.ndarray:
+    """The ERes FIR at one of the manual's six steps.
+
+    The manual prints each filter's LENGTH and -3 dB point and not its
+    coefficients, so the kernel is a truncated Gaussian at the printed
+    length with its width set from the printed bandwidth -- a constant-phase
+    low-pass that meets both published numbers, which is everything the
+    manual makes checkable. Raises KeyError off the table on purpose: the
+    instrument itself offers no other step.
+    """
+    bw_nyquist, length = ERES_TABLE[float(bits_increase)]
+    f3 = 0.5 * bw_nyquist                 # cycles per sample
+    sigma = math.sqrt(math.log(2.0)) / (2.0 * math.pi * f3)
+    n = np.arange(length, dtype=float) - (length - 1) / 2.0
+    k = np.exp(-0.5 * (n / sigma) ** 2)
+    return k / k.sum()
+
+
 def apply_resolution_mode(v: np.ndarray, mode: ResolutionMode,
                           *, raw_per_point: int = 1) -> np.ndarray:
     """What the instrument's own vertical processing does to the samples.
@@ -162,15 +213,15 @@ def apply_resolution_mode(v: np.ndarray, mode: ResolutionMode,
     The disjoint boxcar is applied by the CALLER, by generating raw samples
     and averaging blocks of them, because that is what the instrument does
     and it changes the noise as well as the depth. This function carries the
-    part that acts on the stored record: the moving average of the enhanced
-    mode, which correlates neighbours and is the whole reason the design
-    prefers raw.
+    part that acts on the stored record: the ERes FIR of the enhanced mode,
+    which correlates neighbours and is the whole reason the design prefers
+    raw. An earlier version convolved a plain boxcar of width 4^(bits-8),
+    which matched neither the manual's filter lengths nor its bandwidths;
+    the kernel now comes from `eres_kernel` and the manual's own table.
     """
-    if mode.kind != "moving_average":
+    if mode.kind != "eres_fir":
         return v
-    # half a bit per doubling of the window, which inverts to this width
-    width = max(1, int(round(4.0 ** (mode.bits - 8.0))))
-    if width <= 1:
+    kernel = eres_kernel(mode.bits - 8.0)
+    if kernel.size <= 1:
         return v
-    kernel = np.ones(width) / width
     return np.convolve(np.asarray(v, dtype=float), kernel, mode="same")

@@ -3,18 +3,18 @@ TRUTH,source,linefit_conditions p_sweep/4154/130/225,reference,"the truth is rea
 TRUTH,gamma_coll_mhz,0.580779,MHz,the world the twin generates,DIAGNOSTIC
 TRUTH,sigma_laser_mhz,1.560691,MHz,the world the twin generates,DIAGNOSTIC
 TRUTH,transit_fwhm_mhz,0.957477,MHz,the world the twin generates,DIAGNOSTIC
-agilent_3054a_one_peak,n_points,2000,count,"the instrument's own record length, Keysight InfiniiVision manual, private/Manuals",DIAGNOSTIC
+agilent_3054a_one_peak,n_points,2000,count,"the instrument's own record length, Keysight InfiniiVision instrument manual, private/Manuals",DIAGNOSTIC
 agilent_3054a_one_peak,peak_over_lsb,3236,LSB,"line peak in vertical steps at hires, a boxcar mechanism",DIAGNOSTIC
 agilent_3054a_one_peak,span_mhz,120,MHz,"the frequency window the trace covers, which for a four-peak trace has to hold all four lines on one vertical range",DIAGNOSTIC
-agilent_3054a_one_peak,correlates_neighbours,False,flag,"true only for the moving-average mode, which is why the design runs the LeCroy raw and smooths offline",DIAGNOSTIC
+agilent_3054a_one_peak,correlates_neighbours,False,flag,"true only for the ERes FIR mode, which is why the design runs the LeCroy raw and smooths offline",DIAGNOSTIC
 lecroy_ws3104z_four_peak,n_points,500001,count,"the instrument's own record length, WaveSurfer 3000z operator manual, private/Manuals",DIAGNOSTIC
 lecroy_ws3104z_four_peak,peak_over_lsb,202,LSB,"line peak in vertical steps at raw, a raw mechanism",DIAGNOSTIC
 lecroy_ws3104z_four_peak,span_mhz,5345,MHz,"the frequency window the trace covers, which for a four-peak trace has to hold all four lines on one vertical range",DIAGNOSTIC
-lecroy_ws3104z_four_peak,correlates_neighbours,False,flag,"true only for the moving-average mode, which is why the design runs the LeCroy raw and smooths offline",DIAGNOSTIC
-rtm3004_four_peak,n_points,5000000,count,"the instrument's own record length, RTM3000 user manual, private/Manuals",DIAGNOSTIC
+lecroy_ws3104z_four_peak,correlates_neighbours,False,flag,"true only for the ERes FIR mode, which is why the design runs the LeCroy raw and smooths offline",DIAGNOSTIC
+rtm3004_four_peak,n_points,5000000,count,"the instrument's own record length, RTM3000 instrument manual, private/Manuals",DIAGNOSTIC
 rtm3004_four_peak,peak_over_lsb,51773,LSB,"line peak in vertical steps at hires, a boxcar mechanism",DIAGNOSTIC
 rtm3004_four_peak,span_mhz,5345,MHz,"the frequency window the trace covers, which for a four-peak trace has to hold all four lines on one vertical range",DIAGNOSTIC
-rtm3004_four_peak,correlates_neighbours,False,flag,"true only for the moving-average mode, which is why the design runs the LeCroy raw and smooths offline",DIAGNOSTIC
+rtm3004_four_peak,correlates_neighbours,False,flag,"true only for the ERes FIR mode, which is why the design runs the LeCroy raw and smooths offline",DIAGNOSTIC
 RECOVERY_tau1,gamma_coll_ratio,1.045,dimensionless,fitted over true at sample correlation 1. One means the production fitter reads the twin's world correctly,DIAGNOSTIC
 RECOVERY_tau1,sigma_laser_ratio,0.989,dimensionless,fitted over true at sample correlation 1. One means the production fitter reads the twin's world correctly,DIAGNOSTIC
 RECOVERY_tau3.8,gamma_coll_ratio,1.055,dimensionless,fitted over true at sample correlation 3.8. One means the production fitter reads the twin's world correctly,DIAGNOSTIC

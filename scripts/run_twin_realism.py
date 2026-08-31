@@ -71,7 +71,7 @@ def main() -> int:
             "the frequency window the trace covers, which for a four-peak "
             "trace has to hold all four lines on one vertical range")
         add(scope, "correlates_neighbours", meta["correlates_neighbours"],
-            "flag", "true only for the moving-average mode, which is why the "
+            "flag", "true only for the ERes FIR mode, which is why the "
             "design runs the LeCroy raw and smooths offline")
 
     # ---- does the production fitter recover the truth -------------------
