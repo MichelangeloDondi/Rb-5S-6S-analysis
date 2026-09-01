@@ -74,7 +74,7 @@ def n_silica_malitson(lambda_nm: float) -> float:
     duplicated, a 0.0020 error at the one wavelength every result in this
     record uses, attributed to a source that does not give it -- and a second
     bare 1.4525 literal in `HE11Field.__init__` that agreed with the table
-    only while both were wrong. A release board's physics seat found it by
+    only while both were wrong. A 2026-08 physics audit found it by
     re-solving the characteristic equation with both indices. Computing from
     the source formula removes every copy that could drift, and the strict
     table lookup this replaced refused full-precision wavelengths one hour
@@ -457,9 +457,9 @@ def evanescent_intensity(distance_nm: float, diameter_nm: float,
 # The full vector HE11 fields, and why they are here (2026-08-28)
 #
 # An effective mode area was computed from a shell approximation
-# pi[(a+1/q)^2 - a^2] and committed. The commit team refuted it, and FOUR
+# pi[(a+1/q)^2 - a^2] and committed. Recomputation refuted it, and FOUR
 # computations of that one quantity then spanned a factor of six: an assumed
-# 0.50 um^2, the shell's 1.98, a seat's Poynting integral 0.4634, and a
+# 0.50 um^2, the shell's 1.98, an independent Poynting integral 0.4634, and a
 # plane-wave-impedance integration giving 2.73.
 #
 # None of the four could be adjudicated by inspection, so the fields are built
@@ -470,7 +470,7 @@ def evanescent_intensity(distance_nm: float, diameter_nm: float,
 # first version used one s in both regions.
 #
 # With that fixed, E_z closes to 6e-10, H_phi to 2e-09, and the power fraction
-# inside the glass comes out at 23.3 per cent against a seat's independently
+# inside the glass comes out at 23.3 per cent against an independently
 # computed 23 per cent.
 #
 # THE LESSON IS NOT THE NUMBER. A shell approximation produced a plausible

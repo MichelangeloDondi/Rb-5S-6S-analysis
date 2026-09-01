@@ -664,3 +664,90 @@ def test_required_is_sized_by_the_diff(bl, repo):
     assert row["seats"] == ["rules"]
     ok, why = bl.entry_is_conformant(row)
     assert ok, why
+
+
+def test_a_targeted_stamp_admits_when_the_gate_verdict_is_absent(bl, repo):
+    """The workflow-v2 admission: no gate verdict at all, a stamp naming
+    the staged tree, and begin() opens with vstate TARGETED. This is the
+    path every mid-wave board now takes, and it shipped untested."""
+    (repo / "f.txt").write_text("x")
+    _run(repo, "add", "-A")
+    _point_at(bl, repo)
+    (repo / ".ci_gate_verdict").unlink()
+    (repo / ".targeted_ok").write_text(
+        f"TARGETED\ntree {bl.staged_tree()}\n")
+    bl.begin(["rules"], expect=0)
+    bl.record(["rules"], ["CONFIRM"])
+
+
+def test_a_stale_green_with_a_matching_stamp_still_admits(bl, repo):
+    """The shadow the first live run hit: a pass-class verdict for an
+    OLDER tree must neither admit (19.24) nor veto — the stamp on THIS
+    tree is the ticket."""
+    (repo / "f.txt").write_text("x")
+    _run(repo, "add", "-A")
+    _point_at(bl, repo, verdict="PASS_MODULO 1",
+              tree="0" * 40)
+    (repo / ".targeted_ok").write_text(
+        f"TARGETED\ntree {bl.staged_tree()}\n")
+    bl.begin(["rules"], expect=0)
+    bl.record(["rules"], ["CONFIRM"])
+
+
+def test_a_stamp_for_another_tree_refuses(bl, repo):
+    """A stamp is believed only for the tree it names, exactly like the
+    verdict; a stale stamp plus a stale verdict opens nothing."""
+    (repo / "f.txt").write_text("x")
+    _run(repo, "add", "-A")
+    _point_at(bl, repo, verdict="PASS 0", tree="0" * 40)
+    (repo / ".targeted_ok").write_text("TARGETED\ntree " + "1" * 40 + "\n")
+    with pytest.raises(SystemExit, match="targeted"):
+        bl.begin(["rules"], expect=0)
+
+
+def test_an_empty_stamp_tree_never_admits(bl, repo):
+    """The truthiness guard: a stamp with no tree line yields "", and ""
+    must not compare equal to anything begin() would accept — the
+    admission requires a NAMED tree on both sides."""
+    (repo / "f.txt").write_text("x")
+    _run(repo, "add", "-A")
+    _point_at(bl, repo)
+    (repo / ".ci_gate_verdict").unlink()
+    (repo / ".targeted_ok").write_text("TARGETED\n")
+    with pytest.raises(SystemExit):
+        bl.begin(["rules"], expect=0)
+    assert bl._targeted_stamp_tree() == ""
+
+
+def test_the_hatch_rides_a_real_targeted_stamp(bl, repo):
+    """The v2 re-key, tested from the admitting side: no pass-class gate
+    verdict anywhere, a TARGETED stamp naming the covered tree, a
+    small commit -- the hatch admits and writes its coverage row."""
+    (repo / "h.txt").write_text("h")
+    _run(repo, "add", "-A")
+    _run(repo, "commit", "-q", "-m", "one file")
+    _point_at(bl, repo, verdict="FAIL 1")
+    tree = bl._git("rev-parse", "HEAD^{tree}")
+    (repo / ".targeted_ok").write_text(f"TARGETED\ntree {tree}\n")
+    bl.declare_gate_covered("HEAD", "probe")
+    import json as _json
+    row = _json.loads(
+        (repo / ".board_ledger.jsonl").read_text().splitlines()[-1])
+    assert row.get("kind") == "gate_covered", "the row lands as coverage, never as a reading"
+
+
+def test_a_nomodules_stamp_never_admits_the_ledger(bl, repo):
+    """TARGETED-NOMODULES exists so the GATE can start on an unmapped
+    change set; zero guard modules ran under it, so it must admit
+    neither the hatch nor board entry. The focused re-read demonstrated
+    the admission live before this test existed -- the stamp's first
+    line is load-bearing now, and this pins it."""
+    (repo / "h.txt").write_text("h")
+    _run(repo, "add", "-A")
+    _run(repo, "commit", "-q", "-m", "one file")
+    _point_at(bl, repo, verdict="FAIL 1")
+    tree = bl._git("rev-parse", "HEAD^{tree}")
+    (repo / ".targeted_ok").write_text(f"TARGETED-NOMODULES\ntree {tree}\n")
+    with pytest.raises(SystemExit):
+        bl.declare_gate_covered("HEAD", "probe")
+    assert bl._targeted_stamp_tree() == ""

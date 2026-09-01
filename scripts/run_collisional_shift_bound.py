@@ -11,12 +11,12 @@ in prose.
 
 WHY THIS EXISTS, and it is worth stating because the file is small. Every
 figure it emits was previously a digit typed into `docs/UNCERTAINTY.md` and
-`docs/lit/rahaman2022.md`. On 2026-08-26 the five-seat board recomputed
+`docs/lit/rahaman2022.md`. On 2026-08-26 a five-reader audit recomputed
 them and four were wrong or unwarranted in the same paragraph pair:
 
   * a differential quoted "across this campaign's range" was arithmetically
     the 110-130 C span, three sentences after the text insisted on the
-    four-point 70/90/110/130 grid -- the identical frame error the board had
+    four-point 70/90/110/130 grid -- the identical frame error the audit had
     just corrected in the paragraph above, re-authored one paragraph down;
   * `rb5s6s/density.py` mandates in its own docstring that consumers
     "multiply their quoted upper bounds by (1 + N_SCALE_FRAC_SYST)" for the

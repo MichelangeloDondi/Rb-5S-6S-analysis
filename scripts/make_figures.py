@@ -2971,7 +2971,7 @@ def fig_drift_story():
         # the as-taken value exists twice, as the MEASURED sigma_amplitude
         # row and as the ordering-forecast row with the identical value. The
         # filled marker claims a measurement, so it reads the measured row;
-        # the board's second convening caught it reading the forecast twin.
+        # a second audit pass caught it reading the forecast twin.
         ("the 2025 ladder, as taken",
          _cfv("sigma_amplitude", "linear_per_epoch"), "#D55E00",
          True),

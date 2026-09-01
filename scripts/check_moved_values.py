@@ -12,8 +12,8 @@ inside the module the repair fixed, a producer comment, and a CSV note's
 reference to its own sibling row. This population is the COMPLEMENT of the
 citation checker's.
 
-FOUR DEFECTS FOUND BY ONE BOARD ON 2026-08-29, AND THE REPAIRS ARE HERE.
-The first form of this file diffed two named commits. Three seats found it
+FOUR DEFECTS FOUND BY ONE AUDIT ON 2026-08-29, AND THE REPAIRS ARE HERE.
+The first form of this file diffed two named commits. Three independent readers found it
 vacuous over the very class it was built for, and a fourth proved why on the
 history rather than arguing it.
 
@@ -34,8 +34,8 @@ history rather than arguing it.
   column, and a stale `now` cell in the page a release note names as its
   disclosure is what found this. The skip is column-aware now.
 * THE WINDOW WAS ONE DIFF AND IT WAS THE WRONG ONE. A value that moved
-  before the chosen base is invisible, and every value this board caught had
-  moved in the commit BEFORE the base a brief handed the seats. The window is
+  before the chosen base is invisible, and every value this audit caught had
+  moved in the commit BEFORE the base a brief handed the readers. The window is
   now the whole unpushed RANGE -- every literal a cell held at any commit in
   `origin/main..HEAD` -- so a wave is graded as a wave. It is deliberately
   not the file's whole history: measured over 156 commits the run returned
@@ -43,7 +43,7 @@ history rather than arguing it.
   and a guard whose findings are mostly false trains the eye to skip it.
 
 WHAT WAS TRIED AND REJECTED, because a rejected design is worth more than a
-silent one. A seat proposed grading NEAR NEIGHBOURS of current values -- any
+silent one. One reader proposed grading NEAR NEIGHBOURS of current values -- any
 number within a few per cent of a committed cell -- so that a value which was
 never right, rather than one that moved, would also be caught. Implemented,
 it returned 16,552 findings on a clean tree, because a file citing one CSV is
@@ -53,7 +53,7 @@ skip it, which is worse than no guard. The class it aimed at is real and is
 the first blind region below, named rather than covered by a noisy check.
 
 THE PLANT FAILED, AND THAT IS THE MOST USEFUL THING THIS FILE KNOWS.
-Three of the board's own defects were re-inserted to confirm the rewrite
+Three of the audit's own defects were re-inserted to confirm the rewrite
 caught them -- a stale `now` cell in `docs/history/09`, a stale mode area in
 this package's docstrings, a stale band in a note. **It fired on none of
 them**, and the reason is not a bug:
@@ -72,7 +72,7 @@ was written into prose that never matched the CSV at all", and no
 propagation check in any window can see it, because there is nothing to have
 moved from. The counter for that class already exists and is not a new
 guard: a number carrying a `ref:` tag is RESOLVED against its cell by
-`check_references.py`, so it cannot be born wrong. Every defect that board
+`check_references.py`, so it cannot be born wrong. Every defect that audit
 found was an untagged plain number. Widen the tagged population; do not
 widen this one.
 
@@ -120,7 +120,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 
-# The whole unpushed wave. A wave is what the commit team reads and what a port
+# The whole unpushed wave. A wave is what one recorded audit reads and what a port
 # carries, so it is the unit a propagation check should grade.
 DEFAULT_BASE = "origin/main"
 
@@ -148,7 +148,7 @@ ACCOUNT_MARKERS = (
 
 # Under private/: captured process output and regenerable bulk, not claims.
 # A suite log QUOTES a failing assertion, so grading it reports the defect the
-# log exists to record; `cache/` holds a board's queued findings, which quote
+# log exists to record; `cache/` holds an audit's queued findings, which quote
 # the stale value on purpose.
 _PRIVATE_SKIP = {".git", "cache", "run_logs", "internal", "Manuals",
                  "qc_gallery", "qc_gallery_prev_layout", "__pycache__"}
@@ -315,8 +315,8 @@ def scannable() -> list[Path]:
     """Tracked text files, PLUS private/, which git here cannot see any more.
 
     `private/` became its own repository on 2026-08-29, so `git ls-files` in
-    THIS repository does not list it, and the release note a board convenes to
-    bless had no propagation protection at all -- structurally and
+    THIS repository does not list it, and the release note a release-time
+    audit is convened to bless had no propagation protection at all -- structurally and
     permanently, rather than by a decision anyone took. Only files that NAME a
     results CSV are opened, so the correspondence and career material there
     are never read.
@@ -327,8 +327,8 @@ def scannable() -> list[Path]:
     if priv.is_dir():
         # THE POPULATION IS NAMED, NOT GLOBBED, and it is narrow on purpose.
         # This scan was extended into private/ for ONE artifact: the release
-        # note, which a board convenes to bless and which no propagation
-        # check could see. Recursing further swept in the board reports,
+        # note, which a release-time audit is convened to bless and which no propagation
+        # check could see. Recursing further swept in the audit reports,
         # which quote the stale value they FOUND, and `manuscripts/`,
         # where a median delta chi-square of 232 collided with a retired
         # transit width. Both are records, and a record quoting a retired
@@ -434,6 +434,10 @@ def main(argv: list[str]) -> int:
                   "value could have moved and there is nothing to compare.")
             return 0
         if all(code.startswith("A") for code, _ in touched):
+            # FALSE-PASS DIRECTION FIRST: this branch never reads an added
+            # CSV's contents, so a wave whose only results change is an
+            # addition CONTRADICTING live prose returns 0 silently; the
+            # prose-side guards own that class, not this sweep.
             # The second unreachable-passing-state face, found 2026-09-01 on
             # the sobol wave's mirror gate: a window whose only CSV changes
             # are ADDITIONS retires no value by construction -- an added

@@ -57,7 +57,7 @@ trap 'rm -rf "$GATE_LOCK"' EXIT
 
 # The verdict file is anchored to the MAIN checkout's root -- the parent
 # of the common git dir -- which from a linked worktree is the main tree
-# and from the main tree is itself, so a gate and a board can never read
+# and from the main tree is itself, so the gate and the ledger can never read
 # different files (the first form used --show-toplevel, which in a
 # worktree IS the worktree, and its comment claimed the repair this line
 # actually makes). The second line records the index tree at gate start;
@@ -66,6 +66,25 @@ GATE_COMMON="$(git rev-parse --git-common-dir 2>/dev/null || echo .git)"
 GATE_ROOT="$(cd "$(dirname "$GATE_COMMON")" && pwd)"
 GATE_VERDICT="${CI_GATE_VERDICT_FILE:-$GATE_ROOT/.ci_gate_verdict}"
 GATE_TREE="$(git write-tree 2>/dev/null || echo unknown)"
+# THE TARGETED FLOOR (owner redesign 2026-08-31, workflow v2). The gate is
+# the certification instrument, spent once per wave on the final tree; the
+# iteration instrument is scripts/targeted.sh, which stamps .targeted_ok
+# with the tree it graded. A gate started without a matching stamp is a
+# gate spent re-finding what seconds already find, so it refuses unless
+# CI_GATE_SKIP_TARGETED carries a stated reason (a docs-only mirror run,
+# an emergency re-certification): the reason is echoed into the gate's
+# own log line rather than silently accepted.
+if [ -n "${CI_GATE_SKIP_TARGETED:-}" ]; then
+  echo "ci_gate: targeted floor SKIPPED, reason: $CI_GATE_SKIP_TARGETED"
+elif [ ! -f "$GATE_ROOT/.targeted_ok" ] || ! grep -q "^tree $GATE_TREE$" "$GATE_ROOT/.targeted_ok"; then
+  echo "ci_gate: REFUSED, no targeted pass stamped for this tree."
+  echo "ci_gate: run scripts/targeted.sh first (seconds; on a fresh port or"
+  echo "ci_gate: clean tree: git add -A, then targeted -- an unmapped change"
+  echo "ci_gate: set stamps NOMODULES and this gate proceeds; scripts/README"
+  echo "ci_gate: is the authority). Or set"
+  echo "ci_gate: CI_GATE_SKIP_TARGETED=\"<reason>\" to certify without it."
+  exit 4
+fi
 # The chimera sentinel's digest: a gate grades ONE tree. `git diff HEAD`
 # hashes the CONTENT of staged and unstaged changes to tracked paths, so
 # a second edit to an already-dirty file moves it; untracked files ride
@@ -190,13 +209,13 @@ fi
 #
 # WHAT IT DOES NOT CATCH, stated here because this comment claimed a
 # detection of 1.00 until the rewrite's plant refuted it: a number that never
-# matched the CSV in the first place. Two of the CSVs whose stale copies a
-# board found on 2026-08-29 did not exist at origin/main, so nothing in them
+# matched the CSV in the first place. Two of the CSVs whose stale copies an
+# audit found on 2026-08-29 did not exist at origin/main, so nothing in them
 # had moved. That class is the ref: tag's, not this script's.
 #
 # EXIT 2 IS NOT A CLEAN BILL. It means the script could not run -- an
 # unresolvable base, or no CSV carrying a `value` column -- and collapsing it
-# with 1 was reported by a seat as a real confusion: a gate that dies on a
+# with 1 was reported by a reader as a real confusion: a gate that dies on a
 # usage error and a gate that found a defect should not read alike.
 if [ -f scripts/check_moved_values.py ]; then
   _mv=0
@@ -209,8 +228,9 @@ if [ -f scripts/check_moved_values.py ]; then
     exit 1
   fi
 fi
-# The board ledger, wired for the same reason and after the same finding.
-# LOGIC 0c says the commit team (REQUIRED_SEATS sizes it) reads the staged diff before every
+# The commit-coverage ledger, wired for the same reason and after the same
+# finding. LOGIC 0c says the staged diff is read (REQUIRED_SEATS sizes the
+# team that reads) before every
 # commit. The ledger that measures it was written, shipped, and called by
 # NOTHING -- in the very commit whose best content was a docstring recording
 # that the results annotator's deliberate KeyError had fired for nobody
@@ -226,7 +246,7 @@ fi
 # that row is red by construction; the row that describes this gate is
 # read from the NEXT invocation, or from the verdict file directly.
 # The cold-start summary must agree with the primary records it restates.
-# Added 2026-08-28 after a bus test found the resume file claiming four board
+# Added 2026-08-28 after a cold-start reading found the summary claiming four ledger
 # refusals where the ledger held five. It exits 1 on drift AND on a check that
 # stopped matching its claim, so a reworded file cannot pass by going vacuous.
 # `|| true` for the same reason the report has it: a stale summary blocks a
@@ -235,11 +255,17 @@ if [ -f private/checks/summary_drift.py ]; then
   "$PY" private/checks/summary_drift.py || true
 fi
 
-if [ -f private/checks/enforcement_report.py ]; then
-  # parse gate first, and hard: a checker that cannot parse reports nothing,
-  # and the advisory || true below would hide exactly that (E13).
-  "$PY" -c "import ast,glob; [ast.parse(open(f,encoding='utf-8').read(),f) for f in glob.glob('private/checks/*.py')]" \
+# parse gate first, and hard: a checker that cannot parse reports nothing,
+# and the advisory calls below would hide exactly that (E13). Guarded on
+# the DIRECTORY, not on any one file it grades -- nesting it inside the
+# enforcement_report existence test let a rename retire the gate over the
+# other ten (confirmation round, 2026-09-01). Recursive so a future
+# subdirectory stays in the population.
+if [ -d private/checks ]; then
+  "$PY" -c "import ast,glob; [ast.parse(open(f,encoding='utf-8').read(),f) for f in glob.glob('private/checks/**/*.py',recursive=True)]" \
     || { echo "ci_gate: a private/checks file does not parse"; exit 1; }
+fi
+if [ -f private/checks/enforcement_report.py ]; then
   "$PY" private/checks/enforcement_report.py || true
 fi
 # The chimera check, at the last possible moment so the digest brackets

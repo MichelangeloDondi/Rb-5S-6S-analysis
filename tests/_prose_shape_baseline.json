@@ -1,0 +1,53 @@
+{
+ "files": {
+  "README.md": {
+   "longest_para": 184,
+   "to_first_anchor": 150
+  },
+  "START_HERE.md": {
+   "longest_para": 424,
+   "to_first_anchor": 47
+  },
+  "docs/APPARATUS.md": {
+   "longest_para": 603,
+   "to_first_anchor": 147
+  },
+  "docs/BIG_PICTURE.md": {
+   "longest_para": 466,
+   "to_first_anchor": 97
+  },
+  "docs/CLAIMS.md": {
+   "longest_para": 1496,
+   "to_first_anchor": 142
+  },
+  "docs/DATA.md": {
+   "longest_para": 778,
+   "to_first_anchor": 143
+  },
+  "docs/GLOSSARY.md": {
+   "longest_para": 154,
+   "to_first_anchor": 94
+  },
+  "docs/PLAN.md": {
+   "longest_para": 474,
+   "to_first_anchor": 80
+  },
+  "docs/RESULTS.md": {
+   "longest_para": 1354,
+   "to_first_anchor": 73
+  },
+  "docs/UNCERTAINTY.md": {
+   "longest_para": 325,
+   "to_first_anchor": 157
+  },
+  "docs/big_picture/01_why-this-line.md": {
+   "longest_para": 723,
+   "to_first_anchor": 0
+  },
+  "docs/plan/00_the-case.md": {
+   "longest_para": 366,
+   "to_first_anchor": 94
+  }
+ },
+ "rail_debt": 15
+}

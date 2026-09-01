@@ -71,6 +71,10 @@ def _run(cmd: str, tmp_path: Path, caller: str = "{probe}",
     probe = tmp_path / "probe.sh"
     body = ("set -euo pipefail\n"
             "GATE_LOCK=$(mktemp -d)\nGATE_PYLOG=$(mktemp)\n"
+            # the harness exercises the verdict machinery; the targeted
+            # floor is its own scenario below, so every other probe skips
+            # it exactly the way a caller with a reason would
+            "export CI_GATE_SKIP_TARGETED='sentinel harness'\n"
             + _sentinel_block()
             + (f'PMOD="{pmod}"\n' if with_final else "")
             + cmd + "\n"
@@ -152,7 +156,9 @@ def test_the_verdict_carries_the_tree_it_graded(tmp_path):
     verdict = tmp_path / "verdict"
     probe = tmp_path / "probe.sh"
     probe.write_text("set -euo pipefail\nGATE_LOCK=$(mktemp -d)\n"
-                     "GATE_PYLOG=$(mktemp)\n" + _sentinel_block()
+                     "GATE_PYLOG=$(mktemp)\n"
+                     "export CI_GATE_SKIP_TARGETED='sentinel harness'\n"
+                     + _sentinel_block()
                      + 'PMOD=""\n' + _final_block())
     subprocess.run(["bash", str(probe)], capture_output=True,
                    env={"CI_GATE_VERDICT_FILE": str(verdict),
@@ -225,7 +231,7 @@ def test_the_chimera_digest_sees_what_its_comment_claims(tmp_path):
     untracked arrival; an edit INSIDE an untracked file staying
     invisible (the stated name-only limit, asserted so it stays
     stated); an untracked departure; and a NEW file staged mid-gate
-    failing honestly. Eight directions, eight assertions."""
+    failing honestly. Eight directions. Nine assertions, one of them a consistency check that recreation restores the digest."""
     repo = tmp_path / "r"; repo.mkdir()
     env = _git_env(repo)
     run = lambda *a: subprocess.run(["git", *a], cwd=repo, env=env,
@@ -328,3 +334,28 @@ def test_the_common_dir_resolution_finds_the_main_checkout(tmp_path):
         assert got == repo.resolve(), (
             f"from {cwd.name} the root resolved to {got}, not the main "
             "checkout, so two callers would read different verdict files")
+
+
+def test_a_missing_targeted_stamp_refuses_before_any_verdict(tmp_path):
+    """The targeted floor (workflow v2): no stamp, no gate, no verdict.
+
+    The refusal must land BEFORE the RUNNING write, so a refused gate
+    leaves whatever verdict a real run last recorded; a refusal that
+    wrote RUNNING would turn every stamp mismatch into a fake
+    interrupted-gate record. Run the extracted block in a bare
+    directory with no .targeted_ok and no skip reason: it must exit 4
+    and create nothing.
+    """
+    verdict = tmp_path / "verdict"
+    probe = tmp_path / "probe.sh"
+    probe.write_text("set -euo pipefail\n"
+                     "GATE_LOCK=$(mktemp -d)\nGATE_PYLOG=$(mktemp)\n"
+                     + _sentinel_block()
+                     + "echo unreachable\n")
+    done = subprocess.run(
+        ["bash", str(probe)], cwd=tmp_path, capture_output=True, text=True,
+        env={"PATH": "/usr/bin:/bin", "CI_GATE_VERDICT_FILE": str(verdict)})
+    assert done.returncode == 4, (done.returncode, done.stdout, done.stderr)
+    assert "unreachable" not in done.stdout
+    assert not verdict.exists(), "a refused gate must not touch the verdict"
+

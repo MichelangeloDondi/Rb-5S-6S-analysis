@@ -24,9 +24,11 @@ MEASURED BEFORE CHOOSING THE THRESHOLD (2026-08-14, both repositories, 177
 tracked `.md` each): exactly three files contained a repeated block of four
 or more identical non-blank lines. START_HERE at twenty-two,
 PREREGISTRATION_RESULTS at eight, and the ruler preregistration at six, the
-last of which is entirely table rows. Ten is therefore clean today with the
-duplication removed, and it leaves the two append-only records room to keep
-doing what they are for.
+last of which is entirely table rows. RE-MEASURED 2026-09-01 when the
+threshold fell to nine: the largest legitimate within-file repeat is eight
+prose lines (PREREGISTRATION_RESULTS, its addendum quoting the data it
+amends), so nine clears the live population by one line — a deliberate
+one-line margin, measured again rather than inherited.
 
 SCOPE IS WHAT GIT TRACKS, and that is not a detail. The first version of this
 guard walked the filesystem, which scanned 180 documents in the working
@@ -48,7 +50,7 @@ from rb5s6s import config as C
 # Prose lines in one repeated block. Chosen from the measurement in the
 # docstring: above the largest legitimate repeat, below the defect that
 # prompted the check.
-MAX_REPEATED_PROSE_LINES = 10
+MAX_REPEATED_PROSE_LINES = 9
 
 
 def _tracked_markdown():
@@ -157,3 +159,51 @@ def test_the_detector_can_see_duplication_at_all():
         "repeats even four consecutive lines of prose, which was not true of "
         "any measured state of this tree. The scanner is broken, not the "
         "documents.")
+
+# ---------------------------------------------------------------------------
+# The cross-file pass (prose-ratchet v2, 2026-09-01). The within-file test
+# above cannot see the hub carrying a chapter's forty-five lines verbatim,
+# which is exactly what docs/BIG_PICTURE.md did against big_picture/07 until
+# the day this landed: two copies of one analysis, one link-path apart, so a
+# correction to either would have missed the other. Nine-line prose shingles
+# (the within-file threshold) are hashed per document and collisions across
+# DIFFERENT documents are reported with both locations. The hub now carries
+# a short non-verbatim summary with one pointer instead, so the pass starts green.
+
+SHINGLE = MAX_REPEATED_PROSE_LINES
+
+
+def _prose_shingles(lines):
+    """Yield (start_line_1based, tuple_of_stripped_prose_lines) windows."""
+    mask = _prose_mask(lines)
+    prose = [(i + 1, lines[i].strip()) for i in range(len(lines)) if mask[i]]
+    for k in range(len(prose) - SHINGLE + 1):
+        window = prose[k:k + SHINGLE]
+        yield window[0][0], tuple(t for _, t in window)
+
+
+def test_no_document_repeats_a_block_of_another():
+    """A block living in two documents doubles every future correction.
+
+    docs/lit/ is outside this pass for the same reason it is outside the
+    prose banks: bibliographic stubs share templated frontmatter and dated
+    demotion flags by design (the first live run found exactly that —
+    roy2017 and ray2020, two placeholder records demoted the same day),
+    and that is not the hub-carrying-a-chapter class this exists to stop.
+    """
+    seen = {}
+    hits = []
+    for rel, lines in _DOCS:
+        if rel.startswith("docs/lit/"):
+            continue
+        for start, window in _prose_shingles(lines):
+            key = hash(window)
+            if key in seen and seen[key][0] != rel:
+                other_rel, other_start = seen[key]
+                hits.append(f"{rel}:{start} repeats {other_rel}:{other_start}")
+                break  # one report per file pair is enough to act on
+            seen.setdefault(key, (rel, start))
+    assert not hits, (
+        f"a {SHINGLE}-line prose block appears verbatim in two documents. "
+        "Keep the copy where the analysis lives and replace the other with "
+        "a pointer to it:\n  " + "\n  ".join(sorted(set(hits))))

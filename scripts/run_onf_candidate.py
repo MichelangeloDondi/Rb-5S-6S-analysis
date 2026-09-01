@@ -192,9 +192,9 @@ def main() -> int:
     # THE EFFECTIVE MODE AREA, SETTLED 2026-08-28 BY A VALIDATED FIELD SOLVE.
     #
     # A shell formula pi[(a+1/q)^2 - a^2] was committed here and gave 1.98
-    # um^2, replacing the assumed 0.50. The commit team refuted it, and four
+    # um^2, replacing the assumed 0.50. Recomputation refuted it, and four
     # computations of the one quantity then spanned a factor of six: the
-    # assumed 0.50, the shell's 1.98, a seat's Poynting integral 0.4634, and a
+    # assumed 0.50, the shell's 1.98, an independent Poynting integral 0.4634, and a
     # plane-wave-impedance integration 2.73.
     #
     # None was adjudicable by inspection, so `rb5s6s.fibre.HE11Field` builds
@@ -202,10 +202,10 @@ def main() -> int:
     # be continuous at the glass boundary. The first attempt failed H_phi by
     # 53 per cent and the ratio was exactly n1^2, locating the error in one
     # line. Corrected, E_z closes to 6e-10, H_phi to 2e-09, and the power
-    # fraction inside the glass is 23.3 per cent against the seat's
+    # fraction inside the glass is 23.3 per cent against an
     # independently computed 23.
     #
-    # THE SHELL'S 1.98 IS REFUTED: it is 3.2x the field answer, as the seat
+    # THE SHELL'S 1.98 IS REFUTED: it is 3.2x the field answer, as the independent integration
     # said. THE ASSUMED 0.50 WAS GOOD TO 20 PER CENT, which is why nothing
     # downstream moved when it was replaced.
     #

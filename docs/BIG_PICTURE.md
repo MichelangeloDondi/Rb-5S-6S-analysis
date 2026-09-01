@@ -151,62 +151,19 @@ width integrates (`results/kernel_k5.csv`). And $R_\text{kernel}$ is a
 sensitivity within the two forms tested, not over all model forms. A parameter
 identified is not a common parameter identified is not an origin identified is
 not a model class shown adequate, and this result sits at the first of those
-four. [Chapter 7](big_picture/07_limitations-and-identifiability.md) carries it
-with the figure.
+four.
 
-**The atlas now qualifies, and it detects.** Stacking per-condition residuals
-on a common axis and testing against a null that flips each condition's sign, a
-common residual structure appears at the permutation floor in both arms, the
-synthetic control built from the fitted model returns clean, and **the
-detection survives the removal of any single condition**. The tested inference
-family leaves **reproducible residual structure** that no member of it produces
-(`results/kernel_k4.csv`).
-
-**What that is and is not.** It is named unexplained reproducible residual
-structure rather than model inadequacy, because a residual can come from the
-physical model, the noise model, preprocessing or the instrument, and this test
-separates none of them. **No mechanism is named.** **$R_\text{kernel}$ is
-unchanged and remains a sensitivity within the class that was tested**, since
-turning this structure into an admissible alternative model and computing its
-effect on the collisional coefficient has not been done. And the domain is
-stated: the structure is inside the fit window.
-
-**Its relation to the excess outside the window has since been measured and is no longer
-unresolved.** Regressing each condition's in-window amplitude on
-the model's own profile height and on vapour density at once, weighted, height
-wins at 9.4 sigma and density gives 1.3, with the two predictors correlated
-only 0.49 and the height term surviving every leave-one-out above 8.5
-(`results/kernel_k8.csv`). **The band excess outside the window gives +8.65 and
--0.75 on the same two predictors by the same method**, so both structures share
-a predictor and both exclude density, and one common cause explains them better
-than two unrelated ones. **The two band figures are the weaker pair**: they
-come from [a note with no committed producer](notes/band_excess_is_model_form.md).
-**A documented reconstruction (`results/band_excess.csv`) rebuilt
-the construction from the same committed traces and did not reproduce them**:
-the census matches exactly at 79 traces while the cubic-surviving amplitude
-and the height significance come back far weaker. **A preregistered recovery
-then identified the note's predictor** (the absolute in-band model height,
-matching the note's 0.415 correlation to 0.001) **and proved no predictor
-reaches the note's significance with the current amplitudes** (0.70 partial
-correlation required, 0.39 available), so the discrepancy sits in the
-amplitude vector itself. The density reading is construction-dependent in
-the current tree, negative under the shape-only predictor and the marginal
-positive under the recovered one, so the band's mechanism question is OPEN.
-The K8 pair beside them is regenerated and graded on every run.
-
-**What that does not say.** A residual normalised by the noise scales with the
-signal under any fractional model error, so profile mismatch, a detector
-nonlinearity and an amplitude-dependent baseline all predict this. **The
-mechanism is not named.** What is excluded is a density-driven collisional
-origin.
-
-**On the two runs.** An earlier run of the same atlas on the same data was
-declared void by its own preregistered check, which had invented a reproduction
-threshold twenty times stricter than the one `verify_results_fresh.py` sets for
-this repository and voided on a single condition already measured as
-environment-sensitive. The criterion was not loosened afterwards: a second run
-was preregistered with the repository's own standard plus a leave-one-out test,
-and both runs stand in the record.
+**The atlas detects, and the detection is qualified where it stands.**
+Stacked per-condition residuals, tested against a null that flips each
+condition's sign, show a common
+structure at the permutation floor in both arms, surviving the removal of
+any single condition, with the synthetic control clean
+(`results/kernel_k4.csv`). **No mechanism is named, and the structure sits
+inside the fit window.** The four-step distinction above, the full
+qualifications, the height-versus-density measurement, the band
+reconstruction's open question and the two-runs record are all in
+[chapter 7](big_picture/07_limitations-and-identifiability.md), with the
+figure.
 
 **The absolute frequency axis is undetermined by construction.** The lock
 drifted and the wavemeter was photographed rather than logged, so every axis in

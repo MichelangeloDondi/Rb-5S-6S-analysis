@@ -164,7 +164,7 @@ def main() -> None:
     # was wrong: the coefficient was fitted by convolving a SINGLE squared
     # Lorentzian at the ENSEMBLE's FWHM, when the ensemble is a MIXTURE whose
     # curvature at the origin -- the thing the added width depends on -- is
-    # different. A board physics seat caught it and the row was out by about a
+    # different. A physics audit caught it and the row was out by about a
     # factor of two.
     #
     # That quantity had by then been wrong three times in one day, all three

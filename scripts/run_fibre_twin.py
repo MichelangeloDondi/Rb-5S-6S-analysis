@@ -53,7 +53,7 @@ SIGMA_G_TRUE_MHZ = 0.30                # a Gaussian laser contribution
 # from solve_he11 at the corrected silica index: 492 nm at 350 and 312 nm at
 # 400. Until 2026-08-28 this read (0.13e-6, 0.24e-6), a band matching neither
 # the retired assumed-index geometry nor the solved one -- refuted geometry
-# published under live row keys, found by a release board's physics seat.
+# published under live row keys, found by a 2026-08 physics audit.
 LAMBDA_EDGES_M = (0.312e-6, 0.492e-6)
 # THE WORLD'S INFORMATION CONTENT IS CALIBRATED, NOT CHOSEN (2026-08-22).
 # A twin run at an arbitrary signal-to-noise answers "can this design work at a

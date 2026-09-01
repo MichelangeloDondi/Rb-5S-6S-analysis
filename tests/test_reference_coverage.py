@@ -136,6 +136,34 @@ def _tracked_markdown() -> list[str]:
 
 
 def _counts() -> dict[str, int]:
+    # Re-seeded 2026-09-01, prose-ratchet v2, instrument output pasted:
+    #   docs/BIG_PICTURE.md: 34 -> 24
+    # The duplicated 45-line identifiability block in the hub became a
+    # four-line pointer into chapter 7, and the ten counted references
+    # inside it now stand once, in the chapter. A fall by deletion of a
+    # duplicate, nothing relaxed.
+    # Re-seeded 2026-09-01, the sobol wave, terminal movement:
+    #   docs/plan/07_acquisition-settings.md: 245 -> 233
+    # as the board's anchor findings landed -- the table's ten error
+    # values, the floor exponent's pair, the interaction pair and the
+    # section-6 totals gained inline references: twelve unreferenced
+    # decimal claims left the page. A fall, nothing relaxed. (This entry
+    # was first written one round late FROM MEMORY, said 246 -> 245 -> 233
+    # with thirteen and eleven, and was corrected by the final round --
+    # the class's sixth instance; the reseed-log guard that ends it by
+    # instrument is queued to wave F.) Re-seeded again 2026-09-01 in the same fix pass, movement
+    # pasted from the instrument:
+    #   docs/plan/07_acquisition-settings.md: 233 -> 230
+    # the correction clause's transient decimals (B5) removed. A fall.
+    # Re-seeded once more 2026-09-01 (the 19.16a repair of the same
+    # clause), movement pasted from the instrument:
+    #   docs/plan/07_acquisition-settings.md: 230 -> 227
+    # the retired hand-typed digits left the clause. A fall. (This
+    # line first said 228, written in the same command as the reseed,
+    # BEFORE its output existed -- the fifth recurrence of the class,
+    # caught by reading the instrument after. The rule that survives:
+    # the note is written in a separate step after the output prints,
+    # never alongside the command that produces it.)
     # Re-seeded 2026-08-31 across the board-2 fix wave. Measured against
     # HEAD, every moved key (the two blocks this replaces described the
     # movement from intention and got both the direction and the
@@ -198,7 +226,18 @@ def _print_movement(old: dict, new: dict) -> None:
 if __name__ == "__main__":
     import sys
     if "--reseed" in sys.argv:
+        _ri = sys.argv.index("--reason") if "--reason" in sys.argv else -1
+        if _ri < 0 or _ri + 1 >= len(sys.argv):
+            raise SystemExit("reseed refuses without --reason (the "
+                             "ratchet history book records it)")
         new = _counts()
+        from datetime import date as _date
+        _old_total = sum(json.loads(BASELINE.read_text()).values()) \
+            if BASELINE.exists() else 0
+        with (Path(__file__).with_name("_ratchet_history.md")).open("a") as _fh:
+            _fh.write(f"| {_date.today()} | reference_coverage | reseed "
+                      f"{_old_total} -> {sum(new.values())} | "
+                      f"{sys.argv[_ri + 1].replace(chr(124), chr(47))} |\n")
         old = json.loads(BASELINE.read_text()) if BASELINE.exists() else {}
         BASELINE.write_text(json.dumps(new, indent=1, sort_keys=True) + "\n")
         print(f"reseeded {BASELINE.name} over {len(new)} files")

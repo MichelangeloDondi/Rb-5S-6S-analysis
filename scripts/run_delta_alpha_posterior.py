@@ -117,7 +117,7 @@ def _rows():
     # the minimum. The pair's keys read 1.50 and 1.54, but run_stark_joint
     # writes that column as f"{kap:.2f}" and the second point is the
     # prediction point at KAPPA_PRED = 1.545, so the label is a ROUNDED
-    # WRITE and not a coordinate. A board caught the first version of this
+    # WRITE and not a coordinate. An audit caught the first version of this
     # row reading it as one.
     i50, i54 = int(np.argmin(abs(kap - 1.50))), int(np.argmin(abs(kap - 1.54)))
     scatter = float(abs(dchi2[i50] - dchi2[i54]))

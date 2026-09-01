@@ -791,13 +791,29 @@ def _rewrite(path, counts_fn, label):
 
 if __name__ == "__main__":  # `python tests/test_prose_style_ratchet.py --relax`
     import sys
+    _did_relax = None
+    if any(a.startswith("--relax") for a in sys.argv):
+        _ri = sys.argv.index("--reason") if "--reason" in sys.argv else -1
+        if _ri < 0 or _ri + 1 >= len(sys.argv):
+            raise SystemExit("a relax refuses without --reason (the ratchet "
+                             "history book records it)")
     if "--relax-csv-semicolons" in sys.argv:
         _rewrite(CSV_SEMICOLON_BASELINE, _csv_semicolon_counts,
                  "csv semicolons")
+        _did_relax = "csv semicolons"
     elif "--relax-constructions" in sys.argv:
         _rewrite(CONSTRUCTION_BASELINE, _rather_than_counts, "constructions")
+        _did_relax = "constructions"
     elif "--relax" in sys.argv:
         _rewrite(BASELINE, _current, "splice punctuation")
+        _did_relax = "splice punctuation"
+    if _did_relax:
+        # the row lands AFTER the rewrite, so a relax that dies leaves no
+        # row for a movement that never happened (an audit finding)
+        from datetime import date as _date
+        with (Path(__file__).with_name("_ratchet_history.md")).open("a") as _fh:
+            _fh.write(f"| {_date.today()} | prose_style | relax {_did_relax} | "
+                      f"{sys.argv[_ri + 1].replace(chr(124), chr(47))} |\n")
     else:
         print(f"total splice punctuation in prose: {sum(_current().values())}")
 

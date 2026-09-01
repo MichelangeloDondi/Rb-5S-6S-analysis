@@ -164,7 +164,7 @@ def main() -> int:
                  f"docs/wiki/third-cumulant.md quantifies)"])
     # The sigma-blindness of the self-centred kappa_3, with its centring
     # NAMED because the same number under a lab-frame window is two orders
-    # larger (board finding, 2026-08-31): windows ride the profile's own
+    # larger (audit finding, 2026-08-31): windows ride the profile's own
     # mean, the translation-invariant centring the fit licenses.
     def _k3_centred(sigma):
         # MEAN-centred by fixed point on a fine local grid, with the

@@ -526,8 +526,8 @@ its largest disagreement is
 | correlation length | [0.0285](../../results/sobol_acquisition.csv "ref:sobol_acquisition:sobol:S1_tau") ± [0.0040](../../results/sobol_acquisition.csv "ref:sobol_acquisition:sobol:S1_tau:err") | [0.0688](../../results/sobol_acquisition.csv "ref:sobol_acquisition:sobol:ST_tau") ± [0.0038](../../results/sobol_acquisition.csv "ref:sobol_acquisition:sobol:ST_tau:err") | least |
 
 First-order indices sum to
-[0.725](../../results/sobol_acquisition.csv "ref:sobol_acquisition:sobol:sum_S1") ± [0.039](../../results/sobol_acquisition.csv "ref:sobol_acquisition:sobol:sum_S1:err"), so
-[0.275](../../results/sobol_acquisition.csv "ref:sobol_acquisition:sobol:interaction_share") ± [0.039](../../results/sobol_acquisition.csv "ref:sobol_acquisition:sobol:interaction_share:err")
+[0.7250](../../results/sobol_acquisition.csv "ref:sobol_acquisition:sobol:sum_S1") ± [0.0099](../../results/sobol_acquisition.csv "ref:sobol_acquisition:sobol:sum_S1:err"), so
+[0.2750](../../results/sobol_acquisition.csv "ref:sobol_acquisition:sobol:interaction_share") ± [0.0099](../../results/sobol_acquisition.csv "ref:sobol_acquisition:sobol:interaction_share:err")
 of the variance is interaction: the knobs compound through the
 signal-to-noise product, and no input is a pure lever. That share is a
 property of the linear variance metric, not of the apparatus. On a
@@ -535,12 +535,13 @@ log scale this model is additive and first-order shares sum to one,
 so the share says the knobs multiply, never that the bench couples
 them.
 Corrected 2026-08-31: this table was first published as hand-typed
-prose with no producer behind it (power 0.514, sum 0.91, interaction
-nine per cent), and the committed Monte Carlo run moved every share.
-Corrected again 2026-09-01: the product model's indices close in
-one-dimensional moments, so the table now carries the exact values
-(power 0.401 to 0.428, sum 0.705 to 0.725, within the old run's
-sampling error) with the simulation demoted to a cross-check. Every
+prose with no producer behind it, and every share moved when the
+producer replaced it. Corrected again 2026-09-01: the product model's
+indices close in one-dimensional moments, so the table now carries
+the exact values, with the simulation kept only as the in-run
+cross-check whose largest disagreement is
+[2.0](../../results/sobol_acquisition.csv "ref:sobol_acquisition:check:mc_max_z")
+sigma. Every
 ranking survives both corrections, and with exact values the ordering
 is no longer a statistical statement.
 

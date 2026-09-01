@@ -350,6 +350,46 @@ FORBIDDEN = {
         r"writing a " + r"thesis" + r" chapter",
         r"\bbus[- ]" + r"test\b",
     ],
+    # THE AGONISTIC REGISTER, hard tier (owner order 2026-08-31). Verified
+    # zero-population at introduction outside the specification files, so the
+    # bank starts green with no exemptions: prose about measurements does not
+    # frame them as combat. The soft tier (win/lose/waste/play), which has a
+    # real live population, is a per-file ratchet in
+    # tests/test_agonistic_ratchet.py rather than a ban — it only falls.
+    # EXCLUDED AS PHYSICS TERMS OF ART, priced at introduction: loss/losses
+    # (92 lines, optical/transmission/insertion loss) and beat/beats/beaten
+    # (66, heterodyne beat notes). Neither appears below for that reason.
+    "agonistic register": [
+        # battles?/warfare live in "wound and battle metaphor" above; listing
+        # them twice double-reports every hit, so this label carries only
+        # what that one lacks.
+        r"\bwar\b", r"\bwartime\b",
+        r"\bvictor(?:y|ies|ious)\b",
+        r"\bbattled\b", r"\bfought\b",
+    ],
+    # The same register's markdown-only half: these three have legitimate
+    # technical uses in code (a defeated check in a guard's account, a
+    # game-theoretic label), so the ban covers prose surfaces only; the
+    # per-file ratchet covers the code population.
+    "agonistic register in prose": [
+        r"\bdefeat(?:s|ed|ing)?\b", r"\bgames?\b", r"\bwon\b",
+    ],
+    # PROCESS-ROLE NOUNS IN PACKAGE CODE (prose-ratchet v2, 2026-09-01).
+    # rb5s6s/ and scripts/ ship to the public mirror and to PyPI (the
+    # population is whatever _prose_files defines — shell included since
+    # 2026-09-01, which is what forced the gate scripts' own rewording);
+    # a comment
+    # narrating which committee role found a defect is internal process
+    # leaking into a library. The dated fact stays ("a 2026-08 physics audit
+    # found it"); the role vocabulary does not. Scoped to the two shipped
+    # trees by the label predicate; the live sites were reworded the day
+    # this landed, so the bank starts green.
+    "process-role nouns in package code": [
+        r"\b(?:board|seat)s?(?:'s)?\b",
+        # the same class spelled as the team rather than the role — found
+        # surviving INSIDE two blocks the first sweep reworded
+        r"\bcommit team\b", r"\breview team\b",
+    ],
 }
 
 # docs/lit/ are per-paper notes: published titles/abstract wording are quoted
@@ -362,6 +402,20 @@ SKIP_PREFIXES = ("docs/lit/",)
 # the rules belongs here too.
 SKIP_EXACT = {"docs/STYLE.md", "tests/test_repo_hygiene.py",
               "tests/test_lit_consistency.py",
+              # The ledger's test file IS the specification of the review
+              # machinery: its fixtures quote seat names, verdict strings and
+              # refusal messages verbatim, and threading a marker through
+              # every such line teaches the eye to skip markers. Joined
+              # 2026-09-01 with the process-role bank (prose-ratchet v2).
+              "tests/test_board_ledger.py",
+              # The prose-ratchet v2 instruments encode the vocabulary rules
+              # (the agonistic tiers quote their own banned words; the shape
+              # ratchet documents the measurement that set its thresholds),
+              # and the shared history book records reseed reasons in process
+              # vocabulary by design. Specification, not instances.
+              "tests/test_agonistic_ratchet.py",
+              "tests/test_prose_shape.py",
+              "tests/_ratchet_history.md",
               # These three detect stale and replaced values in the documents
               # and the figures, so their patterns and their test names must
               # name the vocabulary of supersession. Added 2026-08-09 with the
@@ -421,7 +475,11 @@ def _prose_files() -> list[str]:
     # a plan chapter and on the wiki index, and it carried a retired
     # provenance tag through a whole rename that swept every other surface.
     # It was found by hand, which is the definition of an uncovered surface.
-    _EXTS = ("*.md", "*.py", "*.svg")
+    # *.sh JOINED 2026-09-01 for the same reason and by the same account:
+    # the gate scripts are reader-facing surfaces with prose inside them,
+    # they port wholesale to the mirror, and a review found five sites of
+    # banned vocabulary living in the one extension the banks never read.
+    _EXTS = ("*.md", "*.py", "*.svg", "*.sh")
     candidates = _tracked(*_EXTS) + _about_to_be_tracked(*_EXTS)
     return [p for p in candidates
             if not p.startswith(SKIP_PREFIXES) and p not in SKIP_EXACT]
@@ -478,8 +536,18 @@ _LABEL_EXEMPT_PRED = {
     # The ledger's own test file cannot avoid naming its subject, and the
     # history chapters are the licensed home for dated review accounts.
     # Everything else that ports keeps the ban.
-    "internal process vocabulary": lambda rel: (
-        _is_history(rel) or rel == "tests/test_board_ledger.py"),
+    "internal process vocabulary": _is_history,
+    # (test_board_ledger.py moved from a per-label exemption here into
+    # SKIP_EXACT on 2026-09-01: it is the specification of every process
+    # bank, not only this one.)
+    # The markdown-only agonistic half: code surfaces are covered by the
+    # per-file ratchet instead, so everything that is not markdown is
+    # exempt from the BAN while still counted by the RATCHET.
+    "agonistic register in prose": lambda rel: not rel.endswith(".md"),
+    # The package-code bank runs the other way: only the two shipped code
+    # trees are graded; docs/ and tests/ keep their own banks.
+    "process-role nouns in package code": lambda rel: not rel.startswith(
+        ("rb5s6s/", "scripts/")),
 }
 
 

@@ -14,8 +14,7 @@ uncertainty of one fitted condition is taken as
     sigma_rel = 1 / (SNR_peak * sqrt(N_indep))
 
 the standard half-width estimator scaling (rung 2: mathematics, the
-Cramer-Rao shape for a resolved line; docs/wiki/sensitivity-analysis.md
-carries the method background). Its pieces:
+Cramer-Rao shape for a resolved line). Its pieces:
 
   * SNR_peak = height / floor.
   * height ~ P^2 * eta. Two-photon signal goes as the square of the
@@ -33,8 +32,9 @@ carries the method background). Its pieces:
     column (10th to 90th percentile), never typed.
 
 THE INPUT RANGES, one line each, with the provenance tag of the range:
-  power_mW        uniform 25 to 225      MEASURED-HERE: the 2025 ladder
-                                         (docs/plan/04's rungs).
+  power_mW        uniform over the loaded p_sweep span (currently 25
+                                         to 225) MEASURED-HERE: the 2025
+                                         ladder (docs/plan/04's rungs).
   n_line          log-uniform 50 to 1000 ESTABLISHED: the sampling
                                          requirement is ~90 points and
                                          the instrument oversamples
@@ -56,10 +56,12 @@ elementary one-dimensional moments: with r_i = E[X_i^2]/E[X_i]^2,
     S1_i = (r_i - 1) / (prod_j r_j - 1)
     ST_i = (r_i - 1) * prod_{j!=i} r_j / (prod_j r_j - 1)
 
-(derivation: docs/wiki/sensitivity-analysis.md; for a product of
-independent factors the partial variance of a subset u is
+(derivation, in full here since no docs page carries it yet: for a
+product of independent factors the partial variance of a subset u is
 prod_{j in u}(r_j - 1) times prod E[X_j]^2, and the subset sums
-telescope). A first version simulated these ten numbers with 57,344
+telescope; docs/wiki/sensitivity-analysis.md covers the separate
+campaign-projection decomposition, and extending it to this producer
+is queued). A first version simulated these ten numbers with 57,344
 Saltelli evaluations before the closed form replaced it, and the
 simulation now serves as the cross-check it should have been.
 
@@ -267,11 +269,15 @@ def main() -> int:
                      "fraction_of_variance", note))
         rows.append(("sobol", f"ST_{name}", vts, ets,
                      "fraction_of_variance", note))
-    ssums, esums = _pair(float(s1.sum()), float(np.sqrt((e1 ** 2).sum())))
+    # The five index errors are all images of ONE scalar (p_floor), so the
+    # summary rows' err comes from the same span evaluation as every other
+    # row -- quadrature over five perfectly correlated components was 4.0x
+    # too wide (confirmation round, 2026-09-01).
+    e_span = abs(float(s1_hi.sum() - s1_lo.sum())) / 2.0
+    ssums, esums = _pair(float(s1.sum()), e_span)
     rows.append(("sobol", "sum_S1", ssums, esums, "fraction_of_variance",
                  "first-order shares, exact. One minus this is interaction"))
-    isums, iesums = _pair(1.0 - float(s1.sum()),
-                          float(np.sqrt((e1 ** 2).sum())))
+    isums, iesums = _pair(1.0 - float(s1.sum()), e_span)
     rows.append(("sobol", "interaction_share", isums, iesums,
                  "fraction_of_variance",
                  "1 - sum_S1. On the log scale the model is additive and "

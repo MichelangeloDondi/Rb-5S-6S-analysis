@@ -47,7 +47,7 @@ sys.path.insert(0, str(ROOT / "tests"))
 def _load_rules():
     """Import the banks from the test modules, so there is one definition.
 
-    THE FILLER BANK WAS MISSING UNTIL THE BOARD'S THIRD CONVENING. This
+    THE FILLER BANK WAS MISSING UNTIL A THIRD AUDIT PASS. This
     guard imported only test_repo_hygiene.FORBIDDEN, so the zero-cost
     filler list and the vague-judgement ban, both of which exist BECAUSE of
     a release note, were invisible to the one checker release notes get.

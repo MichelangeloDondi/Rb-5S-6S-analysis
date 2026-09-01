@@ -139,7 +139,7 @@ stated: the structure is inside the fit window.
 **Its relation to the excess outside the window has since been measured and is no longer
 unresolved.** Regressing each condition's in-window amplitude on
 the model's own profile height and on vapour density at once, weighted, height
-wins at 9.4 sigma and density gives 1.3, with the two predictors correlated
+prevails at 9.4 sigma and density gives 1.3, with the two predictors correlated
 only 0.49 and the height term surviving every leave-one-out above 8.5
 (`results/kernel_k8.csv`). **The band excess outside the window gives +8.65 and
 -0.75 on the same two predictors by the same method**, so both structures share

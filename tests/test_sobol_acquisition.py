@@ -109,6 +109,9 @@ def test_committed_indices_are_internally_consistent():
     rows = {r["key"]: r for r in csv.DictReader(CSV_PATH.open())}
     assert float(rows["sum_S1"]["value"]) < 1.0
     assert float(rows["interaction_share"]["err"]) > 0.0
+    for key in ("sum_S1", "interaction_share", "p_floor_fit"):
+        digs = rows[key]["err"].replace(".", "").lstrip("0")
+        assert 1 <= len(digs) <= 2, (key, rows[key]["err"])
     assert float(rows["mc_max_z"]["value"]) < 4.0
     for name in rsa.INPUTS:
         s1r, str_ = rows[f"S1_{name}"], rows[f"ST_{name}"]

@@ -186,6 +186,18 @@ fourth and fifth ordinals, both already spent above, and sat out of
 order; the collision was a board finding, which is this file's own
 lesson landing on the file that teaches it.
 
+2026-09-01, BIG_PICTURE 4008 -> 3583 and then 3583 -> 3561 in the same
+wave's repair pass (instrument outputs pasted; totals 29163 -> 28738 ->
+28716), then the pointer merge (movement in the book's own row; per-file
+values in the budget json). The cuts are the seam rewrite that inlined
+the qualification sentence, removed the last verbatim atlas paragraph,
+and left the hub one chapter-7 pointer. The certification gate then returned five words (3556 -> 3561, instrument output pasted): the geometry guard reserves the sign-flip bigram for the g1 claim, so the atlas null reverted to its long form. The hub carried chapter 7's whole
+45-line identifiability analysis verbatim, one link path apart, so every
+future correction owed two copies. The hub's copy became a short summary with one pointer
+and the chapter keeps the analysis; the cross-file shingle pass in
+test_docs_no_duplicated_blocks was added the same day so the class cannot
+return silently.
+
 2026-08-28, README 6189 -> 6157, a CUT and not a raise. Three seats
 independently flagged the Conventions block: a false universal, ratchets
 promoted to the front page, and 115 words of the repository describing itself
@@ -387,11 +399,20 @@ def test_the_budget_is_not_looser_than_reality():
 
 if __name__ == "__main__":   # python tests/test_reader_surface_budget.py --relax
     if "--relax" in sys.argv:
+        _ri = sys.argv.index("--reason") if "--reason" in sys.argv else -1
+        if _ri < 0 or _ri + 1 >= len(sys.argv):
+            raise SystemExit("a relax refuses without --reason (the ratchet "
+                             "history book records it)")
         before = _budget() if BUDGET_FILE.is_file() else {}
         now = _counts()
         BUDGET_FILE.write_text(json.dumps(now, indent=1, sort_keys=True) + "\n",
                                encoding="utf-8")
         b, a = sum(before.values()), sum(now.values())
+        from datetime import date as _date
+        with (Path(__file__).with_name("_ratchet_history.md")).open("a") as _fh:
+            _fh.write(f"| {_date.today()} | reader_surface | relax "
+                      f"{b} -> {a} | "
+                      f"{sys.argv[_ri + 1].replace(chr(124), chr(47))} |\n")
         print(f"reader surface re-recorded: {b} -> {a} ({a - b:+d})")
         moved = [f"  {k}: {before.get(k, 0)} -> {now.get(k, 0)}"
                  for k in sorted(set(before) | set(now))
