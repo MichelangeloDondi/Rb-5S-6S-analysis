@@ -51,23 +51,25 @@ under moving dependencies is a property of the environment until the pinned
 comparison disagrees, and that the pinned comparison is the one that speaks
 for the record.
 
-The runner's stages write the core subset of the 87 committed CSVs. The
+The runner's stages write the core subset of the 89 committed CSVs. The
 rest each have their own script, held out for one of two reasons.
 
-### Six need trees that stay outside the repository
+### Seven need trees that stay outside the repository
 
 These do not run from a clone: `run_stark_joint.py` (`stark_joint.csv`, the
 joint three-session AC-Stark bound, a long profile-likelihood run that also
-reads the raw 4 July and campaign-morning trees), `run_full_dataset_fit.py`
+reads the raw 4 July and campaign-morning trees),
+`run_power_time_sign_test.py` (`power_time_sign_test.csv`, the sign test on
+the rehearsal's bidirectional ladders), `run_full_dataset_fit.py`
 (`full_dataset_fit.csv`, the same construction over the full dataset),
 `run_global_dataset_fit.py` (`global_dataset_fit.csv`), `_m25_norulers.py`
 (`global_dataset_fit_norulers.csv`) and `run_morning_ruler.py`
-(`morning_ruler.csv`). The sixth is `run_commit_sweep.py`
+(`morning_ruler.csv`). The seventh is `run_commit_sweep.py`
 (`commit_sweep.csv`), which counts the samples the joint fit loads at each
 commit of a historical range, so it needs the excluded-session trees and a
 git worktree per commit.
 
-Three of those five reach the trees indirectly, importing `run_stark_joint`'s
+Four of those seven reach the trees indirectly, importing `run_stark_joint`'s
 `load_session_20250704` and `load_session_20250717` rather than reading the environment
 variables themselves, which is worth knowing if you are grepping for what
 depends on them. Three further scripts outside the two lists above also need the trees
@@ -89,7 +91,10 @@ from a tracked photograph), `run_laser_history.py` (`laser_history.csv` and
 free tooth centres, held out because nothing downstream reads its bound),
 `run_transit_additivity.py` (`transit_additivity.csv`, the guided transit
 kernel's second-order entry computed two independent ways, a few minutes
-over a 600,000-point grid) and `run_fibre_twin.py` (`fibre_twin.csv`).
+over a 600,000-point grid), `run_fibre_twin.py` (`fibre_twin.csv`) and
+`run_paired_reference_forecast.py` (`paired_reference_forecast.csv`, about
+three minutes of Monte-Carlo comparing the paired cell-plus-fibre
+acquisition against unreferenced sweeps, with no traces needed).
 
 **`run_fibre_twin.py` was absent from this page as a standing omission**, the
 same defect the paragraph above records. `run_transit_additivity.py` was

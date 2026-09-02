@@ -19,6 +19,13 @@ cd "$(dirname "$(git rev-parse --git-common-dir)")"
 PY=.venv/bin/python; [ -x "$PY" ] || PY=python3
 # untracked files cannot reach the map: the refusal below sends them to
 # git add first, so CHANGED reads only tracked changes against HEAD
+# WHAT THIS MAP STRUCTURALLY CANNOT SEE, stated because a green stamp
+# that never looked is worse than a red one. `private/` is gitignored,
+# so a private-only edit never appears in CHANGED and no branch below
+# can fire on it - the rule at the private/checks/ branch has been dead
+# since it was written, and tests/test_tqm_report.py inherited the same
+# gap on arrival. A change confined to private/ therefore takes the FULL
+# gate, which runs everything regardless, and not this fast path.
 CHANGED=$(git diff --name-only HEAD | sort -u)
 # THE STAMP IS THE INDEX TREE (git write-tree), so an unstaged edit would be
 # tested here and then stamped as if it were not there -- the first live run
@@ -41,9 +48,20 @@ add() { for m in "$@"; do [ -f "$m" ] && MODS+=("$m") || true; done; return 0; }
 # a missing module must skip, never kill: under set -e the old form died
 # silently when a listed file was absent (found 2026-09-01, first live run)
 grep -q '^tests/' <<<"$CHANGED" && while read -r f; do
-  case "$f" in tests/*.py) add "$f";; esac; done <<<"$CHANGED"
+  case "$f" in tests/*.py) add "$f";; esac; done <<<"$CHANGED" && add \
+  tests/test_repo_hygiene.py tests/test_prose_style_ratchet.py \
+  tests/test_agonistic_ratchet.py
+# ^ a tests-only change set skipped every bank that grades test
+# docstrings, in this map and the pre-commit hook alike; the first
+# tests-only wave stamped a red tree green through the hole (an audit
+# finding, its own commit)
 grep -qE '^(docs/|README|START_HERE)' <<<"$CHANGED" && add \
   tests/test_prose_style_ratchet.py tests/test_repo_hygiene.py \
+  tests/test_open_apparatus_items.py tests/test_docs_platform_lane.py \
+  tests/test_docs_structure.py \
+  tests/test_references.py \
+  tests/test_lit_consistency.py \
+  tests/test_docs_no_duplicated_blocks.py \
   tests/test_history_tense.py tests/test_docs_math_render.py \
   tests/test_docs_links.py tests/test_reference_coverage.py \
   tests/test_reader_surface_budget.py tests/test_history_form.py \
@@ -51,6 +69,7 @@ grep -qE '^(docs/|README|START_HERE)' <<<"$CHANGED" && add \
   tests/test_ramp_geometry_docs.py
 grep -q '^results/' <<<"$CHANGED" && add \
   tests/test_results_status.py tests/test_freshness_covers_every_result.py \
+  tests/test_distribution_ratchet.py tests/test_results_err_format.py \
   tests/test_results_index_is_complete.py tests/test_references.py \
   tests/test_figures_fresh.py tests/test_every_claim_carries_an_uncertainty.py \
   tests/test_docs_canonical.py

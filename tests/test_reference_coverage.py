@@ -136,6 +136,33 @@ def _tracked_markdown() -> list[str]:
 
 
 def _counts() -> dict[str, int]:
+    # Re-seeded 2026-09-01, wave F's prose unit, instrument output pasted
+    # Re-seeded 2026-09-01 again in the same unit, instrument output pasted:
+    #   docs/methods/07_what_we_found.md: 77 -> 70
+    #   docs/plan/07_acquisition-settings.md: 228 -> 227
+    # THE FIRST ACCOUNT OF THIS MOVEMENT WAS FALSE IN BOTH CLAUSES (the
+    # class's eighth instance, caught by a reading): it said "tightening"
+    # and "merged a duplicate". Measured, the fall is seven values
+    # entering the methods chapter's own math-mode convention, whose
+    # spans this counter strips BY DESIGN. One further wrap in the
+    # plan had
+    # no such convention and was undone the same day. No duplicate ever
+    # existed.
+    # Re-seeded 2026-09-01 once more for that undoing, instrument output
+    # pasted:
+    #   docs/plan/07_acquisition-settings.md: 227 -> 228
+    # The bare value re-entered the counted set (the
+    # first draft of the clause above composed the pair as 228 -> 228
+    # and was corrected from the instrument's print before staging).
+    # (this date first said 09-02, composed from the operator clock while
+    # the instrument row says 09-01 -- the class's seventh instance, and
+    # the guard below now reads the book so a composed DATE cannot ship
+    # again):
+    #   docs/methods/07_what_we_found.md: 67 -> 77
+    #   docs/plan/07_acquisition-settings.md: 227 -> 228
+    # The rises are the sign test's producer values quoted beside their
+    # power_time_sign_test.csv links (the documented rise class); each
+    # decimal resolves to a row of that CSV.
     # Re-seeded 2026-09-01, prose-ratchet v2, instrument output pasted:
     #   docs/BIG_PICTURE.md: 34 -> 24
     # The duplicated 45-line identifiability block in the hub became a
@@ -264,3 +291,38 @@ def test_the_baseline_is_not_looser_than_reality():
                     sorted(slack.items())[:6])
         + ".\n  Re-seed with python tests/test_reference_coverage.py --reseed "
           "and say in the docstring why each fell.")
+
+
+def test_reseed_notes_match_the_book():
+    """Every dated reseed note in this module's own account has a book row.
+
+    The composed-note class shipped eight times through this docstring:
+    a date or a number or an account written beside instrument output
+    rather than derived from it. This guard covers the DATE face only.
+    FALSE-PASS DIRECTION, stated first: with no reference_coverage rows
+    in the book the epoch floor grandfathers everything and the guard
+    passes on an empty population. The instrument writes tests/_ratchet_history.md
+    itself, so the book is the ground truth this note is graded
+    against: each "Re-seeded <date>" line here must name a date on
+    which the book holds a reference_coverage row. The seventh
+    instance (a tomorrow-date composed from the operator clock) is the
+    plant this guard was verified against at introduction.
+    """
+    import re
+    here = Path(__file__).read_text(encoding="utf-8")
+    noted = set(re.findall(r"Re-seeded (\d{4}-\d{2}-\d{2})", here))
+    book = Path(__file__).with_name("_ratchet_history.md").read_text(
+        encoding="utf-8")
+    booked = {m.group(1) for m in re.finditer(
+        r"^\| (\d{4}-\d{2}-\d{2}) \| reference_coverage \|", book,
+        re.M)}
+    # notes older than the book itself predate the instrument's ledger
+    # (the book began 2026-09-01) and are grandfathered: the guard grades
+    # only dates the instrument could have written
+    epoch = min(booked) if booked else "9999-99-99"
+    orphans = sorted(d for d in noted - booked if d >= epoch)
+    assert not orphans, (
+        "reseed notes dated with no matching book row (a composed date "
+        "beside pasted numbers is this class's signature): "
+        + ", ".join(orphans))
+

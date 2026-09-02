@@ -1,0 +1,25 @@
+{
+ "files": {
+  "results/blackbody_channels.csv": 4,
+  "results/centre_stark.csv": 14,
+  "results/coverage.csv": 16,
+  "results/coverage_grid.csv": 14,
+  "results/delta_alpha_posterior.csv": 1,
+  "results/estimator_duel.csv": 9,
+  "results/fit_window_scan.csv": 199,
+  "results/full_dataset_fit.csv": 36,
+  "results/global_dataset_fit.csv": 26,
+  "results/global_dataset_fit_norulers.csv": 26,
+  "results/lever_crosscheck.csv": 17,
+  "results/morning_ruler.csv": 1,
+  "results/polarisation_bound.csv": 2,
+  "results/projections.csv": 1,
+  "results/scenario_forecast.csv": 30,
+  "results/skew_scaling.csv": 3,
+  "results/stark_joint.csv": 11,
+  "results/stark_sweep.csv": 2,
+  "results/twin_closed_loop.csv": 1,
+  "results/wavemeter_reconstruction.csv": 2,
+  "results/wing_check.csv": 23
+ }
+}

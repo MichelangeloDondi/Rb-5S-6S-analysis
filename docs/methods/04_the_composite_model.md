@@ -108,7 +108,13 @@ not.
 concave width against power, and that concavity has since been withdrawn to
 provisional: it is 1.4 standard deviations under the between-block treatment,
 is not confirmed by either independent power ladder, and shows
-order-dependence where it can be tested. A mechanism for an effect whose
+order-dependence where it can be tested. (A later reanalysis,
+[`power_time_sign_test.csv`](../../results/power_time_sign_test.csv),
+DIAGNOSTIC, prefers power over clock time in a pooled comparison under a
+model-independent width on the same session. The fitted width's
+descending-only trend, as the results ledger reports it, is a different metric, not yet
+reconciled with it row to row, and this demotion of the second-order
+shape stands unchanged beside both.) A mechanism for an effect whose
 existence is not established is not itself established, so the treatment below
 is retained as a physically real channel of the apparatus and is no longer
 offered as an explanation of anything measured. See

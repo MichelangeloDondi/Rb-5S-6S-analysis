@@ -112,7 +112,8 @@ CHEAP = {
     "run_centre_fisher": ["centre_fisher.csv"],
 }
 
-# Minutes each, and they need data_raw/ traces.
+# Minutes each, or needing data_raw/ traces, or both - everything the
+# per-pass cheap set must not pay for.
 EXPENSIVE = {
     # 1.7 s, but it refits 16 conditions from the raw traces, so it belongs
     # with the producers a clone without data_raw cannot run.
@@ -125,6 +126,11 @@ EXPENSIVE = {
     # configurations, deterministic under its fixed seed. No traces needed,
     # but far too slow for the cheap set.
     "run_estimator_duel": ["estimator_duel.csv"],
+    # about three minutes of Monte-Carlo over the excursion-drift grid
+    # and both detection branches, deterministic under its fixed seed.
+    # No traces needed, but far too slow for the cheap set's every-pass
+    # run.
+    "run_paired_reference_forecast": ["paired_reference_forecast.csv"],
     # 24 Monte-Carlo datasets per configuration through synthetic_traces and
     # fit_condition, about three minutes, deterministic under its fixed seed.
     "run_campaign_twin_forecast": ["campaign_twin_forecast.csv"],
@@ -231,6 +237,13 @@ UNCOVERED = {
         "and exits 0, so a freshness comparison would be vacuous rather than "
         "green. This is the most-cited uncovered file, appearing in 26 "
         "documents, so the gap is stated here rather than left implicit."
+    ),
+    "power_time_sign_test.csv": (
+        "run_power_time_sign_test.py reads the excluded 2025-07-04 and "
+        "campaign-morning trees through run_stark_joint's loaders; without "
+        "them it prints what is missing and exits 0, so a freshness "
+        "comparison would be vacuous rather than green, exactly as for "
+        "stark_joint.csv above."
     ),
     "global_dataset_fit_norulers.csv": (
         "the second arm of M25, produced by _m25_norulers.py against the same "

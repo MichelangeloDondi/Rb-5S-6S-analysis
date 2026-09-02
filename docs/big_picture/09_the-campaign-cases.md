@@ -2,6 +2,20 @@
 
 ## 9. The two campaign cases, side by side
 
+**The question.** What does a new campaign add in total, if it is
+cell-only, and what does the fibre add on top?
+**Takes.** The per-measurement weighings of
+[chapter 5](05_next-vapour-cell.md) and [chapter 6](06_next-nanofibre.md).
+**Gives.** The two scenarios in three registers each, the paired
+acquisition geometry's conditional verdict, and the comparison read
+for the group whose fibre it is.
+**Skip if.** You want single measurements costed, which is chapters 5
+and 6, or the day-by-day schedule, which is [the plan](../PLAN.md).
+
+> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> explains the measurement in six sentences, then defines every term
+> and symbol used anywhere in this repository.
+
 [Chapter 5](05_next-vapour-cell.md) weighs each vapour-cell measurement with its cost and
 [chapter 6](06_next-nanofibre.md) does the same for the guided platform. This
 chapter answers the question those two leave open: what does a new campaign
@@ -60,7 +74,7 @@ later experiment that needs a known injected shift.
 
 ### Scenario two, the fibre added
 
-Everything in scenario one, plus four additions no cell can provide.
+Everything in scenario one, plus five additions no cell can provide.
 
 **The physics.**
 
@@ -104,6 +118,50 @@ Everything in scenario one, plus four additions no cell can provide.
 * Signal feasibility is not a projection: this transition has been driven
   through a 400 nm nanofibre with cold atoms at 25 to 40 counts per
   millisecond ([Rajasree 2020](../lit/rajasree2020spin.md)).
+* **The acquisition geometry, a conditional default.** The candidate
+  design puts the vapour cell on the fibre channel's own sweep: the
+  surface shift is read as fibre minus cell within each sweep, the
+  residual lock noise is common mode to first order, and the cell's
+  carrier with its EOM comb is the in-sweep ruler. The twin forecasts this against
+  unreferenced acquisition, the 2025 default, across the spans of
+  both unmeasured lock quantities, the drift and the per-sweep
+  excursion (`run_paired_reference_forecast.py`, simulation rung).
+  The scopes' acquisition memory imposes no depth penalty, and the
+  export path's 64 k cap sits under a factor of two above the
+  recommended record length, its two-channel behaviour unstated in
+  the record. Verdicts are against a
+  [0.7](../../results/paired_reference_forecast.csv "ref:paired_reference_forecast:design:ratio_threshold")
+  decisive-gain threshold, each with its distance in the run's own
+  sigma. At the comb-limit excursion class the worst ratio is
+  [0.735](../../results/paired_reference_forecast.csv "ref:paired_reference_forecast:span_j0.028:worst_shift_ratio")
+  ± [0.040](../../results/paired_reference_forecast.csv "ref:paired_reference_forecast:span_j0.028:worst_shift_ratio:err"):
+  under one sigma from the bar, no side licensed. From the mid class
+  the criterion clears,
+  [0.490](../../results/paired_reference_forecast.csv "ref:paired_reference_forecast:span_j0.05:worst_shift_ratio")
+  ± [0.023](../../results/paired_reference_forecast.csv "ref:paired_reference_forecast:span_j0.05:worst_shift_ratio:err")
+  at about nine sigma, reaching twenty-nine at the ceiling class.
+  With the cleanest spanned lock the pairing sits near parity,
+  [0.957](../../results/paired_reference_forecast.csv "ref:paired_reference_forecast:limit:clean_lock_ratio_analog")
+  ± [0.046](../../results/paired_reference_forecast.csv "ref:paired_reference_forecast:limit:clean_lock_ratio_analog:err")
+  measured against
+  [0.96](../../results/paired_reference_forecast.csv "ref:paired_reference_forecast:check:clean_lock_decomposition_analog")
+  from its own error decomposition, failing the bar by more than
+  five sigma. So the decision row reads
+  [conditional](../../results/paired_reference_forecast.csv "ref:paired_reference_forecast:decision:adopt_paired_default"):
+  the scheduled lock characterisation measures which class the
+  apparatus is in (the drift item of
+  [plan chapter 12](../plan/12_open-apparatus-items.md), whose same
+  run reads the excursion), and the geometry choice follows it. The
+  pairing removes the laser only: Stark, Zeeman and transit kernels
+  stay modelled offsets. No width is shared, on the record's own
+  sigma_laser caveat, and the width-error ratio measures at parity.
+  A cell reference on alternating separate sweeps sits between these
+  modes, an unmodelled limit in the producer. The quartet spans
+  gigahertz against a megahertz sweep and stays pinned across
+  sweeps, as in 2025. What the geometry asks of
+  the fibre itself is not costed here or elsewhere yet: the
+  chapter-end comparison table carries acquisition hours only, and
+  says so.
 
 **The record.** The guided-platform study becomes two results in one: the
 near-surface physics above, and the joint-metrology payback into the

@@ -1,0 +1,20 @@
+quantity,key,value,err,unit,status
+n_traces,reh,46,,"count, loader accounting",DIAGNOSTIC
+n_corrupt,reh,4,,"count, parse or segmentation exits of the loader",DIAGNOSTIC
+n_traces,pil,26,,count,DIAGNOSTIC
+corr_P_t,pil/4192,-0.427,,"ladder direction, sign is the reading",DIAGNOSTIC
+slope_w_vs_P,pil/4192,-2.7,1.7,"MHz per W. Weak and unresolved, the recorded caveat of this file, beside three positive rehearsal slopes",DIAGNOSTIC
+slope_w_vs_t,pil/4192,0.019,0.015,"MHz per run-order step, no stamps on this arm",DIAGNOSTIC
+corr_P_t,reh/4121,0.972,,"ladder direction, sign is the reading",DIAGNOSTIC
+slope_w_vs_P,reh/4121,3.00,0.78,"MHz per W, the SIGN is the result",DIAGNOSTIC
+slope_w_vs_t,reh/4121,0.042,0.011,"MHz per min, trigger stamps",DIAGNOSTIC
+slope_w_vs_t,reh/4154,-0.03,0.34,"MHz per min, trigger stamps",DIAGNOSTIC
+corr_P_t,reh/4192,-0.721,,"ladder direction, sign is the reading",DIAGNOSTIC
+slope_w_vs_P,reh/4192,0.70,0.93,"MHz per W, the SIGN is the result",DIAGNOSTIC
+slope_w_vs_t,reh/4192,-0.0012,0.0017,"MHz per min, trigger stamps",DIAGNOSTIC
+corr_P_t,reh/4207,0.989,,"ladder direction, sign is the reading",DIAGNOSTIC
+slope_w_vs_P,reh/4207,0.86,0.66,"MHz per W, the SIGN is the result",DIAGNOSTIC
+slope_w_vs_t,reh/4207,0.014,0.010,"MHz per min, trigger stamps",DIAGNOSTIC
+pooled_slope_power,reh,1.7023,,MHz per W,DIAGNOSTIC
+pooled_slope_time,reh,0.0008,,MHz per min,DIAGNOSTIC
+delta_aic_power_minus_time,reh,-12.42,,"negative prefers power. Per-peak intercepts, one common slope. This pooled row carries the discrimination, the per-peak descending slope alone does not resolve its sign",DIAGNOSTIC

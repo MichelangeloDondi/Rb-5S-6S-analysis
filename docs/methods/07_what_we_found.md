@@ -130,6 +130,33 @@ data confirm.
 (C3a) The linewidth is **flat**, with no monotonic power broadening, and its
 3 to 8% block scatter is the same between-block wander seen elsewhere.
 
+A separate question about any width-versus-power reading is whether its
+power axis is physical at all, since every campaign ladder ran monotone
+in time. The 2025-07-04 rehearsal permits a one-metric test, the only such comparison the record holds today: its
+trigger stamps show two peaks' ladders ascending and one descending, and
+on a deliberately biased model-independent width a pooled comparison
+with per-peak intercepts prefers power over clock time at
+ΔAIC $= -12.4$, with the per-peak slopes carrying one sign in both
+directions (ascending 993.4121 nm at $+3.00 \pm 0.78$ MHz/W and
+993.4207 nm at $+0.86 \pm 0.66$, descending 993.4192 nm at
+$+0.70 \pm 0.93$) but the descending one unresolved on its own, so the
+pooled row, not any single ladder, carries the discrimination
+([`power_time_sign_test.csv`](../../results/power_time_sign_test.csv),
+every row DIAGNOSTIC). Three limits are part of the statement. The
+campaign-morning pilot, the least collinear arm in the file, gives a weak opposite-sign slope
+($-2.7 \pm 1.7$ MHz/W) that resolves nothing either way and is that
+file's recorded caveat. The fitted width on the same rehearsal behaves
+differently: [the results ledger](../RESULTS.md) reports its trend on
+the descending ladder while both ascending ladders show none, the
+order-dependence that keeps the concavity provisional, and the
+model-free and fitted metrics have not been reconciled row to row,
+which is an open analysis item. And the campaign's own axis remains
+unseparated: this paragraph is about the rehearsal, under one metric.
+It neither measures the campaign's width law nor disturbs C3a's
+flatness, and the withdrawn concavity of
+[the composite-model chapter](04_the_composite_model.md) stays
+withdrawn.
+
 (C3b) The amplitude is **near $P^2$, and three of the four slopes are not
 consistent with it** (log-log slopes 1.83 to 2.12). **Corrected**:
 this paragraph previously read the four slopes as a band clustered on the rate

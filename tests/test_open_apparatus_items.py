@@ -1,4 +1,4 @@
-"""An open apparatus item is spanned by a producer, or nothing rests on it.
+"""An open apparatus item is spanned by a named producer, spanned in the fibre thread, or nothing rests on it.
 
 WHY THIS EXISTS. On 2026-08-28 a forecast of the next campaign used the 2025
 archive's lock drift rate as though it described the lock, which had been
@@ -9,13 +9,13 @@ what the forecast does about each.
 
 WHAT THIS GUARD CHECKS, and it is deliberately narrow. Every row of the open
 items table in docs/plan/12_open-apparatus-items.md must say, in its last
-column, EITHER which committed `results/*.csv` spans the unknown, OR that no
-forecast rests on it. Those are the only two honest states for a number
-nobody has measured. A row that names neither is an unknown being carried
+column, which committed `results/*.csv` spans the unknown, OR that no
+forecast rests on it. With the lane-restricted spanned state beside those two, these are the three honest states for a number
+nobody has measured. A row that claims none of them is an unknown being carried
 silently, which is the thing that went wrong.
 
 WHAT IT DOES NOT CHECK. It cannot verify that the producer really spans the
-item, only that a row claims one and that the file exists. That is the same
+item, only that a row claims one and, for the named-producer state, that the file exists; the fibre-thread state names no file here by design, the lane guard owning that restriction. That is the same
 limit every citation guard here has, and it is recorded rather than papered
 over.
 """
@@ -31,7 +31,11 @@ CHAPTER = ROOT / "docs" / "plan" / "12_open-apparatus-items.md"
 RESULTS = ROOT / "results"
 
 _CSV = re.compile(r"`?results/([a-z0-9_]+\.csv)`?")
-_NOTHING_RESTS = "no forecast rests on it"
+_NOTHING_RESTS = re.compile(r"(?:^|\. |\| )no forecast rests on it")
+# the third honest state: the spanning producer is fibre-only, so the
+# platform-lane guard forbids naming its CSV on this neutral page; the
+# row says where the span lives instead of what file holds it
+_SPANNED_LANE = re.compile(r"(?:^|\. |\| |: )spanned in the fibre thread")
 
 
 def _rows() -> list[tuple[str, str]]:
@@ -58,11 +62,13 @@ def test_the_chapter_exists_and_has_rows():
                          ids=[r[0][:40] for r in _rows()])
 def test_every_open_item_is_spanned_or_disclaimed(item, handling):
     named = _CSV.findall(handling)
-    if _NOTHING_RESTS in handling.lower():
+    if (_NOTHING_RESTS.search(handling.lower())
+            or _SPANNED_LANE.search(handling.lower())):
         return
     assert named, (
         f"the open item {item!r} names neither a producer that spans it nor "
-        f"the words {_NOTHING_RESTS!r}. An unmeasured apparatus number must "
+        f"the words {_NOTHING_RESTS.pattern!r} at a clause start, or "
+        f"{_SPANNED_LANE.pattern!r}. An unmeasured apparatus number must "
         "be spanned by a committed forecast or explicitly rest under nothing")
     for csv_name in named:
         assert (RESULTS / csv_name).is_file(), (
@@ -93,15 +99,25 @@ def test_the_repaired_lock_is_listed():
 # when it fails, which is the class this record already pays for elsewhere.
 # ---------------------------------------------------------------------------
 
+def test_the_disclaimer_is_anchored_and_the_third_state_counts():
+    """A negated or mid-sentence use of the disclaimer must not pass, a
+    clause-initial one and the lane-restricted third state must."""
+    assert not _verdict("it is not true that no forecast rests on it")
+    assert _verdict("nothing else applies. No forecast rests on it")
+    assert _verdict("spanned in the fibre thread: the forecast there")
+    assert not _verdict("it is not spanned in the fibre thread")
+
+
 def _verdict(handling: str) -> bool:
     """The guard's own rule, factored so a plant can exercise it."""
-    if _NOTHING_RESTS in handling.lower():
+    if (_NOTHING_RESTS.search(handling.lower())
+            or _SPANNED_LANE.search(handling.lower())):
         return True
     named = _CSV.findall(handling)
     return bool(named) and all((RESULTS / n).is_file() for n in named)
 
 
-def test_the_guard_accepts_the_two_honest_states():
+def test_the_guard_accepts_the_honest_states():
     assert _verdict("spanned from 0 to 40 kHz per minute in "
                     "`results/projections.csv`")
     assert _verdict("no forecast rests on it")
@@ -123,5 +139,9 @@ def test_the_live_chapter_would_fail_if_a_row_lost_its_handling():
     rows = _rows()
     assert rows, "no rows to plant against"
     assert all(_verdict(h) for _, h in rows), "the live chapter must pass"
-    assert not _verdict(rows[0][1].replace("results/", "resultz/")
-                        .replace(_NOTHING_RESTS, "it will be fine"))
+    for _, handling in rows:
+        mutated = re.sub("(?i)no forecast rests on it", "it will",
+                         handling.replace("results/", "resultz/"))
+        mutated = re.sub("(?i)spanned in the fibre thread", "it will",
+                         mutated)
+        assert not _verdict(mutated)

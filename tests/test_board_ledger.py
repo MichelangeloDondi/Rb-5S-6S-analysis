@@ -751,3 +751,37 @@ def test_a_nomodules_stamp_never_admits_the_ledger(bl, repo):
     with pytest.raises(SystemExit):
         bl.declare_gate_covered("HEAD", "probe")
     assert bl._targeted_stamp_tree() == ""
+def test_the_delta_hatch_covers_the_post_round_delta(bl, repo):
+    """A commit larger than the ceiling is covered by its small delta
+    against the tree a recorded round read - the seam that bit three
+    times in one night before the hatch existed."""
+    for n in "abcd":
+        (repo / f"{n}.txt").write_text(n)
+    _run(repo, "add", "-A")
+    _point_at(bl, repo)
+    bl.begin(["rules"], expect=0)
+    round_tree = bl.staged_tree()
+    bl.record(["rules"], ["CONFIRM"])
+    (repo / "a.txt").write_text("a2")
+    # add the one changed file by name: -A would sweep in the ledger and
+    # verdict files living in the fixture repo, and the delta means one
+    _run(repo, "add", "a.txt")
+    _run(repo, "commit", "-q", "-m", "four files, one past the round")
+    (repo / ".targeted_ok").write_text(
+        f"TARGETED\ntree {bl._git('rev-parse', 'HEAD^{tree}')}\n")
+    (repo / ".ci_gate_verdict").write_text("FAIL 1\n")
+    bl.declare_gate_covered("HEAD", "probe", delta_from=round_tree)
+    import json as _json
+    row = _json.loads(
+        (repo / ".board_ledger.jsonl").read_text().splitlines()[-1])
+    assert row["delta_from"] == round_tree
+    assert "1 file" in row["diff_scale"]
+
+
+def test_the_delta_hatch_refuses_an_unread_tree(bl, repo):
+    (repo / "x.txt").write_text("x")
+    _run(repo, "add", "-A")
+    _run(repo, "commit", "-q", "-m", "one file")
+    _point_at(bl, repo)
+    with pytest.raises(SystemExit, match="no recorded round read"):
+        bl.declare_gate_covered("HEAD", "probe", delta_from="0" * 40)

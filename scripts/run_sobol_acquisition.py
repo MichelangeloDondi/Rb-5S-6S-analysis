@@ -227,12 +227,6 @@ def sobol_rows():
     return p_floor, s1, st, boots1.std(axis=0), bootst.std(axis=0)
 
 
-def _fmt_err(e: float) -> str:
-    """Two significant digits on a Gaussian uncertainty (LOGIC 8a.2)."""
-    if e <= 0:
-        return "0.0"
-    digits = max(0, 1 - int(math.floor(math.log10(e))))
-    return f"{e:.{digits}f}"
 
 
 def main() -> int:
@@ -255,11 +249,7 @@ def main() -> int:
             "against Saltelli/Jansen MC (mc_max_z row). Re-derive with "
             "scripts/run_sobol_acquisition.py")
 
-    def _pair(v: float, e: float) -> tuple[str, str]:
-        """value printed to its error's decimals (LOGIC 8a.2)."""
-        es = _fmt_err(e)
-        dec = len(es.split(".")[1]) if "." in es else 0
-        return f"{v:.{dec}f}", es
+    from rb5s6s.pmfmt import pm_cells as _pair
 
     rows = []
     for i, name in enumerate(INPUTS):

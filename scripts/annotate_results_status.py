@@ -168,6 +168,13 @@ FILE_STATUS = {
     # committed shared-slope construction. The whole file is DIAGNOSTIC, and
     # a row of it may never be quoted as a result.
     "fit_window_scan.csv": "DIAGNOSTIC",
+    # A REANALYSIS OF HELD SESSIONS AGAINST A DESIGN QUESTION, not a
+    # measurement of the atom: every row is a sign, a slope of a
+    # deliberately biased model-independent width, or a model-selection
+    # difference on the rehearsal's bidirectional ladders. No row is a
+    # value of anything the apparatus has, so the whole file is
+    # DIAGNOSTIC and its absolute widths must never meet the fitted ones.
+    "power_time_sign_test.csv": "DIAGNOSTIC",
     # THE ARBITER ROWS for the three-layer cumulant statement: survival
     # fractions of the model line, pure quadrature, no apparatus quantity.
     "cumulant_window_check.csv": "DIAGNOSTIC",
@@ -187,9 +194,10 @@ FILE_STATUS = {
     "modelform.csv": "NULL",              # Voigt-vs-Lehmann BIC below the gate -> no preference
     "power_sweep.csv": "MEASURED",  # width null + amp~P^2 consistency check (resid_skew=ARTIFACT, RESULTS C3c)
     "sobol_acquisition.csv": "ENVELOPE",  # exact shares over stated design-knob ranges (plan/07)
+    "paired_reference_forecast.csv": "ENVELOPE",  # paired-vs-unreferenced error forecast of the ONF acquisition, spanned over the unmeasured lock drift and per-sweep excursion
     "ruler_campaign.csv": "MEASURED",     # the frequency rate (axis-independent)
-    "ruler_rate_model.csv": "MEASURED",
-    "morning_ruler.csv": "CALIB",           # M26: the campaign morning's own rate from its 27 recovered rulers   # per-(session,peak) rate(t): a real drift, resolved (rate_model.py)
+    "ruler_rate_model.csv": "MEASURED",   # per-(session,peak) rate(t): a real drift, resolved (rate_model.py)
+    "morning_ruler.csv": "CALIB",           # M26: the campaign morning's own rate from its 27 recovered rulers
     "global_dataset_fit.csv": "PRELIM",   # M25 joint dataset fit, rulers-on arm; headline stays with M23
     "global_dataset_fit_norulers.csv": "PRELIM",  # M25 rulers-off arm; the pair's gap is a stated systematic
     "linefit_conditions.csv": "PRELIM",   # per-condition joint fits, degenerate split

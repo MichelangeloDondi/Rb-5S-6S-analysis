@@ -582,7 +582,7 @@ def test_verified_notes_carry_a_verification_date():
     This freezes the debt rather than papering over it. UNDATED_VERIFIED lists
     the notes whose date could not be recovered from their own body; everything
     else must carry one. So a NEW note cannot be VERIFIED without a date, and
-    the list can only shrink -- the second assertion fails if a listed note
+    the list can only shrink -- the staleness assertion below fails if a listed note
     gains a date and is not removed, which is what stops the allowlist
     outliving its reason.
     """

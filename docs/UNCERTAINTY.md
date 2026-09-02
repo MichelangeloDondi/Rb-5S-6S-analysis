@@ -76,14 +76,19 @@ a new quantity cannot ship untagged.
 | `CALIB` | an instrument calibration rather than a physics result |
 | `DIAGNOSTIC` | an internal check, a count, a flag, or an error on another row. Never a result |
 | `ENVELOPE` | as in section 1: an order of magnitude, re-derive before publication |
-| `ARTIFACT` | identified as an instrumental or statistical artifact, kept so the identification stays visible. Carried by four rows, all in `results/polarisation_bound.csv`, for a retracted channel. This cell said the tag was carried by no row until 2026-08-27, which was already false when written |
+| `ARTIFACT` | identified as an instrumental or statistical artifact, kept so the identification stays visible. Carried by 15 rows in two files: `results/polarisation_bound.csv` (the retracted channel) and `results/guided_mode_tables.csv` in the fibre thread. This cell said the tag was carried by no row until 2026-08-27, then by four rows in one file until 2026-09-01, both stale when corrected, which is the hand-maintenance defect the paragraph below records |
 
-Counts across the ledger, recounted from every committed `results/*.csv`:
-3818 `DIAGNOSTIC`, 425 `PRELIM`, 201 `CALIB`, 168 `ENVELOPE`, 141 `BOUND`,
-62 `MEASURED`, 21 `NULL`, 4 `ARTIFACT`. **The previous line stood at
-2026-08-15 figures and five of its seven counts had drifted**, `CALIB` last of
-all, because this wave's own retag moved seven rows out of it. It also said
-`ARTIFACT` was carried by no row, which four rows already contradicted. **No
+Counts across the ledger, recounted from every committed `results/*.csv` on
+2026-09-01, after this wave's annotator pass: 4296 `DIAGNOSTIC`,
+425 `PRELIM`, 434 `ENVELOPE`, 264 `CALIB`, 141 `BOUND`,
+62 `MEASURED`, 21 `NULL`, 15 `ARTIFACT`. **The previous line stood at
+2026-08-27 figures and four of its eight counts had drifted by this
+recount** (`DIAGNOSTIC` 3818 to 4296, `CALIB` 201 to 264, `ENVELOPE`
+168 to 434 with 164 of the rise being `results/paired_reference_forecast.csv`, and
+`ARTIFACT` 4 to 15). The 2026-08-27 correction before it had found
+five counts drifted and an `ARTIFACT` claim that was false when
+written. The layers are kept so the staleness rate of a
+hand-maintained census stays visible. **No
 guard ties this census to a live recount**, unlike the test-count line in
 `docs/methods.md`, so it is a hand-maintained number in a document about
 provenance discipline. It is recorded as a defect until a guard sums the

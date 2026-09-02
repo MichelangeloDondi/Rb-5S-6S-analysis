@@ -44,6 +44,7 @@ committed table holds. The `M` codes below are the pipeline stage labels of
 | `make_twin_term_census.py` | inspects `rb5s6s.forecast`, the example's layer switches and the physics modules, and writes `results/twin_term_census.csv`: one row per model term, four answers and a provenance note each. Instant, no traces. Exists so the census is measured from signatures and layer keys, never recalled, which is the class the correction history is made of. |
 | `run_sobol_acquisition.py` | closed-form Sobol decomposition of the width precision over the acquisition knobs (errors from the floor exponent's se; Saltelli/Jansen retained as the cross-check); writes `results/sobol_acquisition.csv`, quoted by `docs/plan/07`'s index table. |
 | `run_scenario_forecast.py` | loads every preset under `examples/scenarios/`, refuses any the named scope cannot realise, and forecasts each across its open spans through `forecast_precision`, writing `results/scenario_forecast.csv`. About four minutes, crc32-seeded so the CSV reproduces exactly. The scenario layer's end-to-end proof. |
+| `run_paired_reference_forecast.py` | forecasts the paired cell-plus-fibre acquisition against unreferenced sweeps, one offset realisation per iteration acquired in both modes, over the spans of the unmeasured lock drift and per-sweep excursion and both detection branches. Writes `results/paired_reference_forecast.csv`, quoted by the fibre scenario of `docs/big_picture/09`. The criterion and limit rows carry their distance to the threshold in their own sigma. The decision row is conditional on the excursion class. About three minutes, seeded. |
 | `run_twin_closed_loop.py` | generates dataset_2025 worlds through the public builder, fits them by the record's own joint five-repeat protocol, and stands the recovered medians against the preregistered bands, writing `results/twin_closed_loop.csv` with verdict booleans the prose quotes verbatim. Includes its own gage: a shifted truth must fail. About eight minutes, seed-pinned. |
 | `run_quantisation_crosscheck.py` | joins each condition's measured lattice step to its wing sigma, derives the range the manual's twelve bits imply, and stands every condition against the scope's settable ranges, writing `results/quantisation_crosscheck.csv`. Instant, no traces. One number checks the manual reading and the ingest chain at once. |
 | `compute_gate_verdict.py` | decides the suite's contribution to the gate's verdict from the pytest log and the common-cause register: PASS, PASS_MODULO with the entry numbers whose signatures excuse every `FAILED` or `ERROR` id, or FAIL. Not a producer; `ci_gate.sh` invokes it after the battery. The register is the operator's private file, so in a public clone the module is fail-closed and excuses nothing. A tested module, not shell: the shell form died unreviewably under pipefail. `tests/test_gate_verdict.py` is its standing plant. |
@@ -96,6 +97,7 @@ diagnostic rather than write a table.
 |---|---|
 | `run_commit_sweep.py` | how many samples the joint fit loads at each commit of a historical range, into `commit_sweep.csv`. Needs both excluded-session trees and a git worktree per commit, so it is not runnable from a plain clone. It exists because the 2026-08-14 instability was traced with it: the point count changes at one commit that regenerated the committed ruler CSVs while renaming a vocabulary |
 | `run_stark_joint.py` (M23) | the joint light-shift fit over all three sessions with one shared coefficient, into `stark_joint.csv`. A long profile-likelihood run |
+| `run_power_time_sign_test.py` | the power-versus-time sign test: regresses `rb5s6s.qc.contiguous_fwhm_ms` widths against power and clock time over the 2025-07-04 rehearsal's bidirectional ladders and the campaign-morning pilot, through `run_stark_joint`'s own loaders, into `power_time_sign_test.csv` (all rows DIAGNOSTIC). Exits 0 with a message when the excluded trees are absent |
 | `run_global_dataset_fit.py` (M25) | one likelihood over every canonical trace, collisional and AC-Stark coefficients both free, into `global_dataset_fit.csv` |
 | `_m25_norulers.py` | the same fit with the ruler arm removed, into `global_dataset_fit_norulers.csv` |
 | `run_full_dataset_fit.py` (M28) | the M23 construction on the M25 data, into `full_dataset_fit.csv` |
@@ -203,7 +205,8 @@ columns, so `annotate_results_status.py` skips them, and both are in
 committed CSV rather than restate a number independently, and once those numbers
 appeared in CLAIMS and the methods chapters, not writing them was the defect.
 
-Six need more than the traces. `run_stark_joint.py`,
+Seven need more than the traces. `run_stark_joint.py`,
+`run_power_time_sign_test.py`,
 `run_global_dataset_fit.py`, `_m25_norulers.py`, `run_full_dataset_fit.py` and
 `run_epoch_checks.py` read the campaign-morning and 4 July sessions, which sit outside
 the frozen record and outside the repository, and `run_morning_ruler.py` reads

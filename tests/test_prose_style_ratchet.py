@@ -2,7 +2,7 @@
 
 Why a ratchet and not a ban. The style rule is that where a sentence wants an
 em-dash or a semicolon, it should end and the next should begin. The corpus
-began with 3063 of them across 112 files, so a hard ban would have failed on
+began with 3063 of them at the 2026-08 seeding, so a hard ban would have failed on
 the first run and been switched off on the second. A guard that cannot pass is
 not a guard.
 

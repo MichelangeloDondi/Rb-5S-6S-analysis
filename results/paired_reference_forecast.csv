@@ -1,0 +1,165 @@
+quantity,key,value,err,unit,note,status
+analog/j0.009/d0,shift_err_unreferenced,0.0293,0.0011,MHz,per-sweep sd over sweeps,ENVELOPE
+analog/j0.009/d0,shift_err_paired,0.0281,0.0010,MHz,"per-sweep sd, the offset cancelled by the cell pin",ENVELOPE
+analog/j0.009/d0,shift_err_ratio,0.957,0.046,ratio,"paired over unreferenced, delete-one jackknife se. Smaller favours paired",ENVELOPE
+analog/j0.009/d0,width_err_ratio,1.041,0.054,ratio,"expected at parity, the photon budget is conserved and no width is shared (this row: 0.8 sigma from one)",ENVELOPE
+counting/j0.009/d0,shift_err_unreferenced,0.02311,0.00084,MHz,per-sweep sd over sweeps,ENVELOPE
+counting/j0.009/d0,shift_err_paired,0.02210,0.00080,MHz,"per-sweep sd, the offset cancelled by the cell pin",ENVELOPE
+counting/j0.009/d0,shift_err_ratio,0.956,0.047,ratio,"paired over unreferenced, delete-one jackknife se. Smaller favours paired",ENVELOPE
+counting/j0.009/d0,width_err_ratio,0.979,0.048,ratio,"expected at parity, the photon budget is conserved and no width is shared (this row: 0.4 sigma from one)",ENVELOPE
+analog/j0.009/d5,shift_err_unreferenced,0.0315,0.0011,MHz,per-sweep sd over sweeps,ENVELOPE
+analog/j0.009/d5,shift_err_paired,0.02663,0.00096,MHz,"per-sweep sd, the offset cancelled by the cell pin",ENVELOPE
+analog/j0.009/d5,shift_err_ratio,0.847,0.043,ratio,"paired over unreferenced, delete-one jackknife se. Smaller favours paired",ENVELOPE
+analog/j0.009/d5,width_err_ratio,1.069,0.055,ratio,"expected at parity, the photon budget is conserved and no width is shared (this row: 1.3 sigma from one)",ENVELOPE
+counting/j0.009/d5,shift_err_unreferenced,0.02614,0.00094,MHz,per-sweep sd over sweeps,ENVELOPE
+counting/j0.009/d5,shift_err_paired,0.02266,0.00082,MHz,"per-sweep sd, the offset cancelled by the cell pin",ENVELOPE
+counting/j0.009/d5,shift_err_ratio,0.867,0.043,ratio,"paired over unreferenced, delete-one jackknife se. Smaller favours paired",ENVELOPE
+counting/j0.009/d5,width_err_ratio,1.019,0.050,ratio,"expected at parity, the photon budget is conserved and no width is shared (this row: 0.4 sigma from one)",ENVELOPE
+analog/j0.009/d20,shift_err_unreferenced,0.0533,0.0019,MHz,per-sweep sd over sweeps,ENVELOPE
+analog/j0.009/d20,shift_err_paired,0.02693,0.00097,MHz,"per-sweep sd, the offset cancelled by the cell pin",ENVELOPE
+analog/j0.009/d20,shift_err_ratio,0.505,0.025,ratio,"paired over unreferenced, delete-one jackknife se. Smaller favours paired",ENVELOPE
+analog/j0.009/d20,width_err_ratio,0.998,0.053,ratio,"expected at parity, the photon budget is conserved and no width is shared (this row: 0.0 sigma from one)",ENVELOPE
+counting/j0.009/d20,shift_err_unreferenced,0.0511,0.0018,MHz,per-sweep sd over sweeps,ENVELOPE
+counting/j0.009/d20,shift_err_paired,0.02228,0.00081,MHz,"per-sweep sd, the offset cancelled by the cell pin",ENVELOPE
+counting/j0.009/d20,shift_err_ratio,0.436,0.018,ratio,"paired over unreferenced, delete-one jackknife se. Smaller favours paired",ENVELOPE
+counting/j0.009/d20,width_err_ratio,0.947,0.049,ratio,"expected at parity, the photon budget is conserved and no width is shared (this row: 1.1 sigma from one)",ENVELOPE
+analog/j0.009/d40,shift_err_unreferenced,0.1000,0.0036,MHz,per-sweep sd over sweeps,ENVELOPE
+analog/j0.009/d40,shift_err_paired,0.02748,0.00099,MHz,"per-sweep sd, the offset cancelled by the cell pin",ENVELOPE
+analog/j0.009/d40,shift_err_ratio,0.275,0.013,ratio,"paired over unreferenced, delete-one jackknife se. Smaller favours paired",ENVELOPE
+analog/j0.009/d40,width_err_ratio,0.990,0.053,ratio,"expected at parity, the photon budget is conserved and no width is shared (this row: 0.2 sigma from one)",ENVELOPE
+counting/j0.009/d40,shift_err_unreferenced,0.0897,0.0032,MHz,per-sweep sd over sweeps,ENVELOPE
+counting/j0.009/d40,shift_err_paired,0.02296,0.00083,MHz,"per-sweep sd, the offset cancelled by the cell pin",ENVELOPE
+counting/j0.009/d40,shift_err_ratio,0.256,0.011,ratio,"paired over unreferenced, delete-one jackknife se. Smaller favours paired",ENVELOPE
+counting/j0.009/d40,width_err_ratio,1.051,0.062,ratio,"expected at parity, the photon budget is conserved and no width is shared (this row: 0.8 sigma from one)",ENVELOPE
+span_j0.009,worst_shift_ratio,0.957,0.046,ratio,"max over the drift span and both branches at this excursion (analog/j0.009/d0). The err is the selected configuration's own se, read with the margin beside it: the runner-up (counting/j0.009/d0) sits 0.0 combined sigma below. A sub-one margin whose candidates' own states disagree makes the criterion row say unresolved, and one whose candidates agree leaves which configuration is worst open, not the side",ENVELOPE
+span_j0.009,criterion,fails,,,"the worst ratio sits 5.5 sigma of its own se above the 0.7 threshold, with a selection margin of 0.0 sigma to the runner-up",ENVELOPE
+analog/j0.028/d0,shift_err_unreferenced,0.0387,0.0014,MHz,per-sweep sd over sweeps,ENVELOPE
+analog/j0.028/d0,shift_err_paired,0.0284,0.0010,MHz,"per-sweep sd, the offset cancelled by the cell pin",ENVELOPE
+analog/j0.028/d0,shift_err_ratio,0.735,0.040,ratio,"paired over unreferenced, delete-one jackknife se. Smaller favours paired",ENVELOPE
+analog/j0.028/d0,width_err_ratio,0.996,0.055,ratio,"expected at parity, the photon budget is conserved and no width is shared (this row: 0.1 sigma from one)",ENVELOPE
+counting/j0.028/d0,shift_err_unreferenced,0.0344,0.0012,MHz,per-sweep sd over sweeps,ENVELOPE
+counting/j0.028/d0,shift_err_paired,0.02149,0.00078,MHz,"per-sweep sd, the offset cancelled by the cell pin",ENVELOPE
+counting/j0.028/d0,shift_err_ratio,0.625,0.031,ratio,"paired over unreferenced, delete-one jackknife se. Smaller favours paired",ENVELOPE
+counting/j0.028/d0,width_err_ratio,0.972,0.055,ratio,"expected at parity, the photon budget is conserved and no width is shared (this row: 0.5 sigma from one)",ENVELOPE
+analog/j0.028/d5,shift_err_unreferenced,0.0412,0.0015,MHz,per-sweep sd over sweeps,ENVELOPE
+analog/j0.028/d5,shift_err_paired,0.0301,0.0011,MHz,"per-sweep sd, the offset cancelled by the cell pin",ENVELOPE
+analog/j0.028/d5,shift_err_ratio,0.730,0.039,ratio,"paired over unreferenced, delete-one jackknife se. Smaller favours paired",ENVELOPE
+analog/j0.028/d5,width_err_ratio,1.088,0.051,ratio,"expected at parity, the photon budget is conserved and no width is shared (this row: 1.7 sigma from one)",ENVELOPE
+counting/j0.028/d5,shift_err_unreferenced,0.0381,0.0014,MHz,per-sweep sd over sweeps,ENVELOPE
+counting/j0.028/d5,shift_err_paired,0.02275,0.00082,MHz,"per-sweep sd, the offset cancelled by the cell pin",ENVELOPE
+counting/j0.028/d5,shift_err_ratio,0.598,0.030,ratio,"paired over unreferenced, delete-one jackknife se. Smaller favours paired",ENVELOPE
+counting/j0.028/d5,width_err_ratio,1.099,0.061,ratio,"expected at parity, the photon budget is conserved and no width is shared (this row: 1.6 sigma from one)",ENVELOPE
+analog/j0.028/d20,shift_err_unreferenced,0.0601,0.0022,MHz,per-sweep sd over sweeps,ENVELOPE
+analog/j0.028/d20,shift_err_paired,0.0280,0.0010,MHz,"per-sweep sd, the offset cancelled by the cell pin",ENVELOPE
+analog/j0.028/d20,shift_err_ratio,0.466,0.022,ratio,"paired over unreferenced, delete-one jackknife se. Smaller favours paired",ENVELOPE
+analog/j0.028/d20,width_err_ratio,1.004,0.051,ratio,"expected at parity, the photon budget is conserved and no width is shared (this row: 0.1 sigma from one)",ENVELOPE
+counting/j0.028/d20,shift_err_unreferenced,0.0595,0.0021,MHz,per-sweep sd over sweeps,ENVELOPE
+counting/j0.028/d20,shift_err_paired,0.02198,0.00079,MHz,"per-sweep sd, the offset cancelled by the cell pin",ENVELOPE
+counting/j0.028/d20,shift_err_ratio,0.370,0.017,ratio,"paired over unreferenced, delete-one jackknife se. Smaller favours paired",ENVELOPE
+counting/j0.028/d20,width_err_ratio,1.018,0.057,ratio,"expected at parity, the photon budget is conserved and no width is shared (this row: 0.3 sigma from one)",ENVELOPE
+analog/j0.028/d40,shift_err_unreferenced,0.0993,0.0036,MHz,per-sweep sd over sweeps,ENVELOPE
+analog/j0.028/d40,shift_err_paired,0.02574,0.00093,MHz,"per-sweep sd, the offset cancelled by the cell pin",ENVELOPE
+analog/j0.028/d40,shift_err_ratio,0.259,0.012,ratio,"paired over unreferenced, delete-one jackknife se. Smaller favours paired",ENVELOPE
+analog/j0.028/d40,width_err_ratio,1.012,0.057,ratio,"expected at parity, the photon budget is conserved and no width is shared (this row: 0.2 sigma from one)",ENVELOPE
+counting/j0.028/d40,shift_err_unreferenced,0.1001,0.0036,MHz,per-sweep sd over sweeps,ENVELOPE
+counting/j0.028/d40,shift_err_paired,0.02279,0.00082,MHz,"per-sweep sd, the offset cancelled by the cell pin",ENVELOPE
+counting/j0.028/d40,shift_err_ratio,0.228,0.010,ratio,"paired over unreferenced, delete-one jackknife se. Smaller favours paired",ENVELOPE
+counting/j0.028/d40,width_err_ratio,0.939,0.047,ratio,"expected at parity, the photon budget is conserved and no width is shared (this row: 1.3 sigma from one)",ENVELOPE
+span_j0.028,worst_shift_ratio,0.735,0.040,ratio,"max over the drift span and both branches at this excursion (analog/j0.028/d0). The err is the selected configuration's own se, read with the margin beside it: the runner-up (analog/j0.028/d5) sits 0.1 combined sigma below. A sub-one margin whose candidates' own states disagree makes the criterion row say unresolved, and one whose candidates agree leaves which configuration is worst open, not the side",ENVELOPE
+span_j0.028,criterion,unresolved,,,"the worst ratio sits 0.9 sigma of its own se above the 0.7 threshold, with a selection margin of 0.1 sigma to the runner-up. The side is not licensed at one sigma, here by the distance, so this row says unresolved",ENVELOPE
+analog/j0.05/d0,shift_err_unreferenced,0.0581,0.0021,MHz,per-sweep sd over sweeps,ENVELOPE
+analog/j0.05/d0,shift_err_paired,0.0276,0.0010,MHz,"per-sweep sd, the offset cancelled by the cell pin",ENVELOPE
+analog/j0.05/d0,shift_err_ratio,0.475,0.025,ratio,"paired over unreferenced, delete-one jackknife se. Smaller favours paired",ENVELOPE
+analog/j0.05/d0,width_err_ratio,1.024,0.060,ratio,"expected at parity, the photon budget is conserved and no width is shared (this row: 0.4 sigma from one)",ENVELOPE
+counting/j0.05/d0,shift_err_unreferenced,0.0555,0.0020,MHz,per-sweep sd over sweeps,ENVELOPE
+counting/j0.05/d0,shift_err_paired,0.02174,0.00079,MHz,"per-sweep sd, the offset cancelled by the cell pin",ENVELOPE
+counting/j0.05/d0,shift_err_ratio,0.391,0.021,ratio,"paired over unreferenced, delete-one jackknife se. Smaller favours paired",ENVELOPE
+counting/j0.05/d0,width_err_ratio,0.993,0.057,ratio,"expected at parity, the photon budget is conserved and no width is shared (this row: 0.1 sigma from one)",ENVELOPE
+analog/j0.05/d5,shift_err_unreferenced,0.0567,0.0020,MHz,per-sweep sd over sweeps,ENVELOPE
+analog/j0.05/d5,shift_err_paired,0.0278,0.0010,MHz,"per-sweep sd, the offset cancelled by the cell pin",ENVELOPE
+analog/j0.05/d5,shift_err_ratio,0.490,0.023,ratio,"paired over unreferenced, delete-one jackknife se. Smaller favours paired",ENVELOPE
+analog/j0.05/d5,width_err_ratio,0.975,0.052,ratio,"expected at parity, the photon budget is conserved and no width is shared (this row: 0.5 sigma from one)",ENVELOPE
+counting/j0.05/d5,shift_err_unreferenced,0.0550,0.0020,MHz,per-sweep sd over sweeps,ENVELOPE
+counting/j0.05/d5,shift_err_paired,0.02164,0.00078,MHz,"per-sweep sd, the offset cancelled by the cell pin",ENVELOPE
+counting/j0.05/d5,shift_err_ratio,0.394,0.020,ratio,"paired over unreferenced, delete-one jackknife se. Smaller favours paired",ENVELOPE
+counting/j0.05/d5,width_err_ratio,1.037,0.059,ratio,"expected at parity, the photon budget is conserved and no width is shared (this row: 0.6 sigma from one)",ENVELOPE
+analog/j0.05/d20,shift_err_unreferenced,0.0701,0.0025,MHz,per-sweep sd over sweeps,ENVELOPE
+analog/j0.05/d20,shift_err_paired,0.02717,0.00098,MHz,"per-sweep sd, the offset cancelled by the cell pin",ENVELOPE
+analog/j0.05/d20,shift_err_ratio,0.388,0.019,ratio,"paired over unreferenced, delete-one jackknife se. Smaller favours paired",ENVELOPE
+analog/j0.05/d20,width_err_ratio,0.992,0.061,ratio,"expected at parity, the photon budget is conserved and no width is shared (this row: 0.1 sigma from one)",ENVELOPE
+counting/j0.05/d20,shift_err_unreferenced,0.0732,0.0026,MHz,per-sweep sd over sweeps,ENVELOPE
+counting/j0.05/d20,shift_err_paired,0.02193,0.00079,MHz,"per-sweep sd, the offset cancelled by the cell pin",ENVELOPE
+counting/j0.05/d20,shift_err_ratio,0.300,0.014,ratio,"paired over unreferenced, delete-one jackknife se. Smaller favours paired",ENVELOPE
+counting/j0.05/d20,width_err_ratio,0.939,0.043,ratio,"expected at parity, the photon budget is conserved and no width is shared (this row: 1.4 sigma from one)",ENVELOPE
+analog/j0.05/d40,shift_err_unreferenced,0.1036,0.0037,MHz,per-sweep sd over sweeps,ENVELOPE
+analog/j0.05/d40,shift_err_paired,0.0283,0.0010,MHz,"per-sweep sd, the offset cancelled by the cell pin",ENVELOPE
+analog/j0.05/d40,shift_err_ratio,0.273,0.014,ratio,"paired over unreferenced, delete-one jackknife se. Smaller favours paired",ENVELOPE
+analog/j0.05/d40,width_err_ratio,0.939,0.049,ratio,"expected at parity, the photon budget is conserved and no width is shared (this row: 1.2 sigma from one)",ENVELOPE
+counting/j0.05/d40,shift_err_unreferenced,0.1068,0.0039,MHz,per-sweep sd over sweeps,ENVELOPE
+counting/j0.05/d40,shift_err_paired,0.02155,0.00078,MHz,"per-sweep sd, the offset cancelled by the cell pin",ENVELOPE
+counting/j0.05/d40,shift_err_ratio,0.2018,0.0091,ratio,"paired over unreferenced, delete-one jackknife se. Smaller favours paired",ENVELOPE
+counting/j0.05/d40,width_err_ratio,0.939,0.045,ratio,"expected at parity, the photon budget is conserved and no width is shared (this row: 1.3 sigma from one)",ENVELOPE
+span_j0.05,worst_shift_ratio,0.490,0.023,ratio,"max over the drift span and both branches at this excursion (analog/j0.05/d5). The err is the selected configuration's own se, read with the margin beside it: the runner-up (analog/j0.05/d0) sits 0.4 combined sigma below. A sub-one margin whose candidates' own states disagree makes the criterion row say unresolved, and one whose candidates agree leaves which configuration is worst open, not the side",ENVELOPE
+span_j0.05,criterion,clears,,,"the worst ratio sits 8.9 sigma of its own se below the 0.7 threshold, with a selection margin of 0.4 sigma to the runner-up",ENVELOPE
+analog/j0.1/d0,shift_err_unreferenced,0.1013,0.0037,MHz,per-sweep sd over sweeps,ENVELOPE
+analog/j0.1/d0,shift_err_paired,0.0279,0.0010,MHz,"per-sweep sd, the offset cancelled by the cell pin",ENVELOPE
+analog/j0.1/d0,shift_err_ratio,0.275,0.015,ratio,"paired over unreferenced, delete-one jackknife se. Smaller favours paired",ENVELOPE
+analog/j0.1/d0,width_err_ratio,1.146,0.065,ratio,"expected at parity, the photon budget is conserved and no width is shared (this row: 2.2 sigma from one)",ENVELOPE
+counting/j0.1/d0,shift_err_unreferenced,0.1009,0.0036,MHz,per-sweep sd over sweeps,ENVELOPE
+counting/j0.1/d0,shift_err_paired,0.02138,0.00077,MHz,"per-sweep sd, the offset cancelled by the cell pin",ENVELOPE
+counting/j0.1/d0,shift_err_ratio,0.212,0.012,ratio,"paired over unreferenced, delete-one jackknife se. Smaller favours paired",ENVELOPE
+counting/j0.1/d0,width_err_ratio,1.012,0.052,ratio,"expected at parity, the photon budget is conserved and no width is shared (this row: 0.2 sigma from one)",ENVELOPE
+analog/j0.1/d5,shift_err_unreferenced,0.0960,0.0035,MHz,per-sweep sd over sweeps,ENVELOPE
+analog/j0.1/d5,shift_err_paired,0.0280,0.0010,MHz,"per-sweep sd, the offset cancelled by the cell pin",ENVELOPE
+analog/j0.1/d5,shift_err_ratio,0.292,0.014,ratio,"paired over unreferenced, delete-one jackknife se. Smaller favours paired",ENVELOPE
+analog/j0.1/d5,width_err_ratio,0.940,0.052,ratio,"expected at parity, the photon budget is conserved and no width is shared (this row: 1.2 sigma from one)",ENVELOPE
+counting/j0.1/d5,shift_err_unreferenced,0.1021,0.0037,MHz,per-sweep sd over sweeps,ENVELOPE
+counting/j0.1/d5,shift_err_paired,0.02279,0.00082,MHz,"per-sweep sd, the offset cancelled by the cell pin",ENVELOPE
+counting/j0.1/d5,shift_err_ratio,0.223,0.011,ratio,"paired over unreferenced, delete-one jackknife se. Smaller favours paired",ENVELOPE
+counting/j0.1/d5,width_err_ratio,1.057,0.055,ratio,"expected at parity, the photon budget is conserved and no width is shared (this row: 1.0 sigma from one)",ENVELOPE
+analog/j0.1/d20,shift_err_unreferenced,0.1107,0.0040,MHz,per-sweep sd over sweeps,ENVELOPE
+analog/j0.1/d20,shift_err_paired,0.02710,0.00098,MHz,"per-sweep sd, the offset cancelled by the cell pin",ENVELOPE
+analog/j0.1/d20,shift_err_ratio,0.245,0.013,ratio,"paired over unreferenced, delete-one jackknife se. Smaller favours paired",ENVELOPE
+analog/j0.1/d20,width_err_ratio,0.975,0.055,ratio,"expected at parity, the photon budget is conserved and no width is shared (this row: 0.4 sigma from one)",ENVELOPE
+counting/j0.1/d20,shift_err_unreferenced,0.1115,0.0040,MHz,per-sweep sd over sweeps,ENVELOPE
+counting/j0.1/d20,shift_err_paired,0.02203,0.00080,MHz,"per-sweep sd, the offset cancelled by the cell pin",ENVELOPE
+counting/j0.1/d20,shift_err_ratio,0.197,0.010,ratio,"paired over unreferenced, delete-one jackknife se. Smaller favours paired",ENVELOPE
+counting/j0.1/d20,width_err_ratio,1.035,0.053,ratio,"expected at parity, the photon budget is conserved and no width is shared (this row: 0.7 sigma from one)",ENVELOPE
+analog/j0.1/d40,shift_err_unreferenced,0.1404,0.0051,MHz,per-sweep sd over sweeps,ENVELOPE
+analog/j0.1/d40,shift_err_paired,0.0285,0.0010,MHz,"per-sweep sd, the offset cancelled by the cell pin",ENVELOPE
+analog/j0.1/d40,shift_err_ratio,0.2028,0.0095,ratio,"paired over unreferenced, delete-one jackknife se. Smaller favours paired",ENVELOPE
+analog/j0.1/d40,width_err_ratio,1.053,0.060,ratio,"expected at parity, the photon budget is conserved and no width is shared (this row: 0.9 sigma from one)",ENVELOPE
+counting/j0.1/d40,shift_err_unreferenced,0.1329,0.0048,MHz,per-sweep sd over sweeps,ENVELOPE
+counting/j0.1/d40,shift_err_paired,0.02158,0.00078,MHz,"per-sweep sd, the offset cancelled by the cell pin",ENVELOPE
+counting/j0.1/d40,shift_err_ratio,0.1624,0.0086,ratio,"paired over unreferenced, delete-one jackknife se. Smaller favours paired",ENVELOPE
+counting/j0.1/d40,width_err_ratio,0.972,0.053,ratio,"expected at parity, the photon budget is conserved and no width is shared (this row: 0.5 sigma from one)",ENVELOPE
+span_j0.1,worst_shift_ratio,0.292,0.014,ratio,"max over the drift span and both branches at this excursion (analog/j0.1/d5). The err is the selected configuration's own se, read with the margin beside it: the runner-up (analog/j0.1/d0) sits 0.8 combined sigma below. A sub-one margin whose candidates' own states disagree makes the criterion row say unresolved, and one whose candidates agree leaves which configuration is worst open, not the side",ENVELOPE
+span_j0.1,criterion,clears,,,"the worst ratio sits 29.1 sigma of its own se below the 0.7 threshold, with a selection margin of 0.8 sigma to the runner-up",ENVELOPE
+limit,clean_lock_ratio_analog,0.957,0.046,ratio,restates analog/j0.009/d0's ratio under its decision-facing name: 5.5 sigma above the 0.7 threshold and 0.9 sigma below parity. Parity is the floor only at exactly zero lock noise. The derived row beside this one carries the one-line identity,ENVELOPE
+check,clean_lock_decomposition_analog,0.96,,ratio,"a consistency companion, not a separate rung: sqrt((f^2+p^2)/(f^2+j^2)) recombines the run's measured fit error (f=0.02745 MHz, the unreferenced residuals against the injected offsets) and pin residual (p=0.00424 MHz, the joint fit's pinned offset against the injected one) with the design excursion j=0.009 MHz. It sits 0.1 sigma of the measured row's se from it, and a decomposition error above about two sigma is what it would catch. Empty err: recomputable from the three quoted operands",ENVELOPE
+limit,clean_lock_ratio_counting,0.956,0.047,ratio,restates counting/j0.009/d0's ratio under its decision-facing name: 5.4 sigma above the 0.7 threshold and 0.9 sigma below parity. Parity is the floor only at exactly zero lock noise. The derived row beside this one carries the one-line identity,ENVELOPE
+check,clean_lock_decomposition_counting,0.94,,ratio,"a consistency companion, not a separate rung: sqrt((f^2+p^2)/(f^2+j^2)) recombines the run's measured fit error (f=0.02139 MHz, the unreferenced residuals against the injected offsets) and pin residual (p=0.00415 MHz, the joint fit's pinned offset against the injected one) with the design excursion j=0.009 MHz. It sits 0.4 sigma of the measured row's se from it, and a decomposition error above about two sigma is what it would catch. Empty err: recomputable from the three quoted operands",ENVELOPE
+boundary,criterion_by_excursion,0.009: fails / 0.028: unresolved / 0.05: clears / 0.1: clears,,,"the criterion's state at each spanned excursion class, from the per-class rows above. The boundary lies where the state changes, and an unresolved class means the run's own error does not pick a side there",ENVELOPE
+design,ratio_threshold,0.7,,ratio,"the adjudication constant: a design choice with no record source, owner-adjustable. Each criterion and limit row carries its distance to it, so moving it re-reads the table",ENVELOPE
+design,n_sweeps_per_configuration,384,,sweeps,"the Monte-Carlo sample behind every se here. An exact count, so the empty err is not a gap",ENVELOPE
+registry,record_depth_note,not binding,,,"the 2025 archive's records ran 2000 points and the campaign recommendation is 40000 (docs/plan/07). Both sit far under the two stated per-channel ceilings, by 25 to 500 times on the Agilent's 1 Mpts and 250 to 5000 on the WaveSurfer 10's 10 Mpts (the same table, with no per-channel figure stated for the WS3104z). The chapter's tighter figure is the export-path cap, 64 k points, 1.6 times above the recommended 40000, and whether that cap is per channel with two enabled is unstated in the record, so the no-penalty reading is conditional on it. Both modes run at one depth here",ENVELOPE
+sensitivity,baseline,0.85,0.14,ratio,"the unperturbed boundary-region configuration (analog/j0.028/d5) at the sensitivity sample. Every row below is read against this one. At this sample a perturbation must move the ratio by about a fifth to read yes, and the cell-side constants cannot: the pin error sits several times under the fibre arm's own, so their no is structural, not reassuring",ENVELOPE
+sensitivity,CELL_SNR_PEAK_x2,0.85,0.14,ratio,CELL_SNR_PEAK at x2. Distance from baseline +0.0 sigma combined. Distinguishable: no,ENVELOPE
+sensitivity,CELL_SNR_PEAK_half,0.87,0.15,ratio,CELL_SNR_PEAK at half. Distance from baseline +0.1 sigma combined. Distinguishable: no,ENVELOPE
+sensitivity,N_POINTS_x2,0.70,0.11,ratio,"N_POINTS at x2. Distance from baseline -0.8 sigma combined. Distinguishable: no. This row changes the draw count, so the common-random-number pairing is broken here",ENVELOPE
+sensitivity,N_POINTS_half,0.650,0.093,ratio,"N_POINTS at half. Distance from baseline -1.2 sigma combined. Distinguishable: yes. This row changes the draw count, so the common-random-number pairing is broken here",ENVELOPE
+sensitivity,SIGMA_CELL_x2,0.85,0.14,ratio,SIGMA_CELL at x2. Distance from baseline +0.0 sigma combined. Distinguishable: no,ENVELOPE
+sensitivity,SIGMA_CELL_half,0.85,0.14,ratio,SIGMA_CELL at half. Distance from baseline +0.0 sigma combined. Distinguishable: no,ENVELOPE
+sensitivity,GAMMA_CELL_x2,0.86,0.14,ratio,GAMMA_CELL at x2. Distance from baseline +0.0 sigma combined. Distinguishable: no,ENVELOPE
+sensitivity,GAMMA_CELL_half,0.86,0.14,ratio,GAMMA_CELL at half. Distance from baseline +0.0 sigma combined. Distinguishable: no,ENVELOPE
+sensitivity,GAMMA_FIBRE_x2,0.85,0.10,ratio,GAMMA_FIBRE at x2. Distance from baseline +0.0 sigma combined. Distinguishable: no,ENVELOPE
+sensitivity,GAMMA_FIBRE_half,0.73,0.13,ratio,GAMMA_FIBRE at half. Distance from baseline -0.7 sigma combined. Distinguishable: no,ENVELOPE
+sensitivity,SIGMA_FIBRE_x2,0.85,0.14,ratio,SIGMA_FIBRE at x2. Distance from baseline +0.0 sigma combined. Distinguishable: no,ENVELOPE
+sensitivity,SIGMA_FIBRE_half,0.85,0.14,ratio,SIGMA_FIBRE at half. Distance from baseline +0.0 sigma combined. Distinguishable: no,ENVELOPE
+sensitivity,SIDEBAND_AMP_x2,0.85,0.14,ratio,SIDEBAND_AMP at x2. Distance from baseline +0.0 sigma combined. Distinguishable: no,ENVELOPE
+sensitivity,SIDEBAND_AMP_half,0.85,0.14,ratio,SIDEBAND_AMP at half. Distance from baseline +0.0 sigma combined. Distinguishable: no,ENVELOPE
+sensitivity,FIBRE_COUNTS_PER_MS_x2,0.69,0.11,ratio,FIBRE_COUNTS_PER_MS at x2. Distance from baseline -0.9 sigma combined. Distinguishable: no,ENVELOPE
+sensitivity,FIBRE_COUNTS_PER_MS_half,0.99,0.16,ratio,FIBRE_COUNTS_PER_MS at half. Distance from baseline +0.6 sigma combined. Distinguishable: no,ENVELOPE
+sensitivity,FIBRE_BG_FRAC_x2,0.86,0.14,ratio,FIBRE_BG_FRAC at x2. Distance from baseline +0.1 sigma combined. Distinguishable: no,ENVELOPE
+sensitivity,FIBRE_BG_FRAC_half,0.85,0.14,ratio,FIBRE_BG_FRAC at half. Distance from baseline +0.0 sigma combined. Distinguishable: no,ENVELOPE
+decision,adopt_paired_default,conditional,,,"the criterion rows decide by excursion class, with unresolved classes named as unresolved. The lock characterisation the plan already schedules (docs/plan/12, the drift and excursion rows) measures the class the apparatus is actually in, and the geometry choice follows that measurement. Threshold 0.7 owner-adjustable. Each criterion and limit row carries its distance in sigma, so the threshold can be moved and re-read",ENVELOPE

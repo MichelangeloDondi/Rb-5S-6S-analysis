@@ -57,12 +57,11 @@ PRESETS = ("dataset_2025", "campaign_cell", "campaign_cell_onf")
 
 
 def _two_sig(x: float) -> str:
-    """LOGIC 8a.2: a Gaussian uncertainty carries two significant digits."""
-    if x == 0.0 or not np.isfinite(x):
-        return "0.0"
-    from math import floor, log10
-    d = 1 - int(floor(log10(abs(x))))
-    return f"{round(x, d):.{max(d, 0)}f}"
+    """LOGIC 8a.2 through the shared seam; the local form this replaces
+    carried the decade-carry defect the audit measured at 0.0999."""
+    from rb5s6s.pmfmt import fmt_err
+    out = fmt_err(abs(x))
+    return out if out else "0.0"
 
 
 def main() -> int:

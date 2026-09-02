@@ -331,10 +331,18 @@ cannot be established, and it can be removed for free.
 
 **Randomise or interleave the rung order within each ladder, and record the
 seed.** Run at least one ladder in each direction per session, so that the
-direction test exists by design. The archive shows what it is worth: the
-rehearsal's alternating directions, run that way by convenience rather than
-by intent, are the only reason the amplitude departure could be shown to be
-invariant under acquisition order.
+direction test exists by design. The archive shows what it is worth twice
+over. The rehearsal's alternating directions, run that way by convenience
+rather than by intent, are the only reason the amplitude departure could
+be shown to be invariant under acquisition order, and the only reason
+any one-metric separation of the rehearsal width's power axis from
+clock time exists: the DIAGNOSTIC reanalysis in
+[`power_time_sign_test.csv`](../../results/power_time_sign_test.csv)
+prefers power in a pooled comparison (ΔAIC = −12.4) under a
+model-independent width. The fitted-width contrast and its open
+reconciliation are in
+[the methods record](../methods/07_what_we_found.md), and the
+campaign's axis stays unseparated.
 
 ### Where the noise actually comes from, measured rather than assumed
 
@@ -716,7 +724,11 @@ The 2025 archive holds one frozen campaign and two excluded sessions, and the
 **What one campaign cannot do.** It cannot separate a parameter from anything
 collinear with it. The campaign's power descends with time, so no analysis of
 that session alone can distinguish power dependence from drift, and the
-concave width against power is provisional for exactly that reason.
+concave width against power is provisional for exactly that reason (the
+rehearsal's own axis has such a separation, per the DIAGNOSTIC
+[`power_time_sign_test.csv`](../../results/power_time_sign_test.csv).
+The campaign session's axis and that second-order verdict are both
+untouched by it).
 
 **What several campaigns buy.** Replication under changed nuisances is the
 only way to establish that an effect belongs to the atom. The amplitude

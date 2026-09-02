@@ -182,7 +182,7 @@ def _prose_shingles(lines):
         yield window[0][0], tuple(t for _, t in window)
 
 
-def test_no_document_repeats_a_block_of_another():
+def test_no_document_repeats_a_block_of_another(capsys):
     """A block living in two documents doubles every future correction.
 
     docs/lit/ is outside this pass for the same reason it is outside the
@@ -203,7 +203,99 @@ def test_no_document_repeats_a_block_of_another():
                 hits.append(f"{rel}:{start} repeats {other_rel}:{other_start}")
                 break  # one report per file pair is enough to act on
             seen.setdefault(key, (rel, start))
+    # the guard reports its own margin the way the budget reports its
+    # totals (through capsys.disabled, which survives the gate's -rfE):
+    # a margin one line under the threshold was found only when a
+    # reader went looking, and a printed number is read at every run
+    margin_k = 0
+    for k in range(SHINGLE - 1, 0, -1):
+        seen_k: dict[int, str] = {}
+        found = False
+        for rel, lines in _DOCS:
+            if rel.startswith("docs/lit/"):
+                continue
+            mask = _prose_mask(lines)
+            prose = [lines[i].strip() for i in range(len(lines)) if mask[i]]
+            for j in range(len(prose) - k + 1):
+                key = hash(tuple(prose[j:j + k]))
+                if key in seen_k and seen_k[key] != rel:
+                    found = True
+                    break
+                seen_k.setdefault(key, rel)
+            if found:
+                break
+        if found:
+            margin_k = k
+            break
+    with capsys.disabled():
+        print(f"\n  cross-file margin: longest repeat {margin_k} lines "
+              f"against a threshold of {SHINGLE}")
     assert not hits, (
         f"a {SHINGLE}-line prose block appears verbatim in two documents. "
         "Keep the copy where the analysis lives and replace the other with "
         "a pointer to it:\n  " + "\n  ".join(sorted(set(hits))))
+
+
+# --------------------------------------------------------------------
+# THE SHORT ADJACENT REPEAT, which the long-block ratchet cannot see
+# --------------------------------------------------------------------
+# MAX_REPEATED_PROSE_LINES is 9 because that is where legitimate long
+# repeats live. It is the right threshold for the class it was written
+# for and the wrong one for the class that actually bit: on 2026-09-02 a
+# patch script re-run from the top appended two lines twice, and the
+# duplicate sat IMMEDIATELY after its original inside one blockquote,
+# nine lines under the ratchet's reach (escape E14).
+#
+# An immediately adjacent repeat is a different animal from a long one.
+# Prose repeats a paragraph at distance for emphasis or structure; it
+# does not repeat two lines back to back. So this check needs no
+# threshold negotiation: any block of two or more non-trivial lines
+# followed instantly by its own copy is a copy-paste artefact.
+
+
+def _adjacent_repeat(lines, min_len=2):
+    """The first (start, length) whose block is immediately followed by
+    an identical block, or None. Blank and structural lines do not
+    count toward a block, so a table of repeated separators is not a
+    finding."""
+    body = [(i, ln.rstrip()) for i, ln in enumerate(lines)
+            if ln.strip() and not set(ln.strip()) <= set("|-> #*_=")]
+    text = [b for _, b in body]
+    for n in range(len(text) // 2, min_len - 1, -1):
+        for i in range(len(text) - 2 * n + 1):
+            if text[i:i + n] == text[i + n:i + 2 * n]:
+                return body[i][0] + 1, n
+    return None
+
+
+@pytest.mark.parametrize("rel,lines", _DOCS, ids=[r for r, _ in _DOCS])
+def test_no_document_repeats_a_block_immediately_after_itself(rel, lines):
+    """The E14 class: a copy-paste append that lands its duplicate
+    directly beneath the original. No threshold, because prose does not
+    do this on purpose."""
+    hit = _adjacent_repeat(lines)
+    assert hit is None, (
+        f"docs/{rel} line {hit[0]}: {hit[1]} lines are repeated "
+        "immediately after themselves. That is the copy-paste shape "
+        "escape E14 recorded, which the long-block ratchet is nine "
+        "lines too coarse to see. Delete the duplicate.")
+
+
+def test_the_adjacent_detector_fires_on_the_real_incident():
+    """Planted with the actual E14 content rather than an invented
+    string, so the guard is known to catch the thing it was written
+    for."""
+    real = [
+        "> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)",
+        "> explains the measurement in six sentences, then defines every term",
+        "> and symbol used anywhere in this repository.",
+        "> explains the measurement in six sentences, then defines every term",
+        "> and symbol used anywhere in this repository.",
+    ]
+    hit = _adjacent_repeat(real)
+    assert hit is not None and hit[1] == 2, (
+        "the detector cannot see the duplication it exists for")
+    fixed = real[:3]
+    assert _adjacent_repeat(fixed) is None, (
+        "the detector fires on the corrected form, which would make it "
+        "unusable")

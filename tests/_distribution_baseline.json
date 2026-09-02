@@ -6,6 +6,7 @@
  "results/kernel_k4.csv": 6,
  "results/kernel_worlds.csv": 1,
  "results/onf_candidate.csv": 1,
+ "results/paired_reference_forecast.csv": 4,
  "results/ruler_rate_model.csv": 1,
  "results/stark_joint.csv": 1
 }

@@ -10,7 +10,7 @@ quoted from a fibre result in a platform-neutral chapter breaks it, and
 nothing else in the tree would notice.
 
 WHAT THIS GUARD DOES NOT DO, and why. A keyword sweep for "fibre" across
-docs/ matches fifty-four files, nearly all of them legitimately: literature
+docs/ matches the fibre-citing files, nearly all of them legitimately: literature
 notes on nanofibre papers, the bibliography, and the apparatus chapter
 describing a bench that really did have a nanofibre in it. A guard that fired
 on those would be measuring vocabulary, not the promise, and would be turned
@@ -54,7 +54,8 @@ DOCS = ROOT / "docs"
 # fibre-only CSV and did not. The guard was green by luck: no neutral page
 # happened to cite it.
 FIBRE_ONLY_RESULTS = ("fibre_twin.csv", "onf_candidate.csv",
-                      "onf_lever_ranking.csv", "transit_additivity.csv", "guided_mode_tables.csv")
+                      "onf_lever_ranking.csv", "transit_additivity.csv", "guided_mode_tables.csv",
+                      "paired_reference_forecast.csv")
 
 # Index and catalogue files list every surface by design; a one-line row naming
 # a fibre note is the catalogue doing its job, not a dependency on it.
@@ -71,7 +72,8 @@ FIBRE_ONLY_RESULTS = ("fibre_twin.csv", "onf_candidate.csv",
 # producer is not protecting that reader, it is hiding a file from everyone.
 # The two obligations are only in tension if the catalogue is read as an
 # argument, and it is a map.
-INDEX_FILES = {"README.md", "RESULTS.md", "REPRODUCING.md"}
+INDEX_FILES = {"README.md", "RESULTS.md", "REPRODUCING.md",
+}
 
 
 def _lane_surfaces():
@@ -107,6 +109,18 @@ def test_the_fibre_only_results_exist():
         "A rename must update this list, or the lane guard checks nothing.")
 
 
+# A census page may name exactly the fibre-only files its counts
+# require and nothing more: UNCERTAINTY.md's status table says which
+# files carry the ARTIFACT tag and which file drove the ENVELOPE rise.
+# Scoped per DOCS-relative path and per name, radius two filenames, as
+# the whole-file INDEX_FILES exemption first tried here would have
+# taken a ten-heading policy page out of the lane for one table cell.
+CENSUS_ALLOWANCES = {
+    "UNCERTAINTY.md": ("guided_mode_tables.csv",
+                       "paired_reference_forecast.csv"),
+}
+
+
 def _citing_files():
     hits = {}
     for path in sorted(DOCS.rglob("*.md")):
@@ -125,6 +139,10 @@ def test_no_platform_neutral_surface_cites_a_fibre_only_result():
     bad = []
     for rel, names in _citing_files().items():
         if rel in lane or Path(rel).name in INDEX_FILES:
+            continue
+        allowed = CENSUS_ALLOWANCES.get(rel, ())
+        names = [n for n in names if n not in allowed]
+        if not names:
             continue
         bad.append(f"{rel}: {', '.join(names)}")
     assert not bad, (
@@ -145,9 +163,26 @@ def test_the_lane_guard_fires_when_a_violation_is_planted(tmp_path):
     def check(rel, text):
         if rel in lane or Path(rel).name in INDEX_FILES:
             return False
-        return any(n in text for n in FIBRE_ONLY_RESULTS)
+        allowed = CENSUS_ALLOWANCES.get(rel, ())
+        return any(n in text and n not in allowed
+                   for n in FIBRE_ONLY_RESULTS)
 
     assert check(planted, "the coverage in `results/fibre_twin.csv` shows"), (
         "the planted citation was not detected")
     assert not check(next(iter(lane)), "results/fibre_twin.csv"), (
         "a lane surface must be allowed to cite its own results")
+
+
+def test_the_census_allowance_is_scoped():
+    """The allowance admits exactly its two names on exactly its one
+    page: a third fibre-only filename on UNCERTAINTY.md must still
+    fire, and the allowed pages must exist."""
+    for name in CENSUS_ALLOWANCES:
+        assert (DOCS / name).exists(), f"allowance for a missing page: {name}"
+    allowed = CENSUS_ALLOWANCES["UNCERTAINTY.md"]
+    others = [n for n in FIBRE_ONLY_RESULTS if n not in allowed]
+    assert others, "no third name left to plant with"
+    text = f"the census also counts `results/{others[0]}` here"
+    leftover = [n for n in FIBRE_ONLY_RESULTS
+                if n in text and n not in allowed]
+    assert leftover == [others[0]]
