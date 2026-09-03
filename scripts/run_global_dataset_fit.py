@@ -178,6 +178,23 @@ from scipy.sparse import lil_matrix, vstack
 
 REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO))
+# _producer_lock lives in scripts/, which Python puts on sys.path only
+# when a script is run DIRECTLY. A test that loads this module by path
+# gets no such favour, and three sibling test files do exactly that - two
+# of them failed at collection and a third swallowed the ImportError in a
+# bare except and reported a pass. Making the import self-sufficient is
+# cheaper than remembering.
+sys.path.insert(0, str(Path(__file__).resolve().parent))  # _producer_lock lives here
+from _producer_lock import take_producer_lock     # noqa: E402
+
+# A pooled map dies rather than hangs. Without a deadline a spawn child
+# that cannot import its function's defining module leaves the parent
+# blocked in `map` forever, and a gate then reports nothing at all
+# instead of a failure - strictly worse, because a hang has to be
+# noticed by a person while a failure notices itself. This producer's
+# fits are the slowest in the tree, so the budget is generous: two
+# hours is only ever reached by a fault.
+_POOL_TIMEOUT_S = 7200
 sys.path.insert(0, str(REPO / "scripts"))
 
 from rb5s6s import config as C  # noqa: E402
@@ -695,12 +712,20 @@ def _w0_row(args):
 
 
 def n_workers() -> int:
-    """0 means sequential, which is the default and the path of record."""
-    import os as _os
-    try:
-        return max(0, int(_os.environ.get("RB5S6S_WORKERS", "0")))
-    except ValueError:
-        return 0
+    """0 means sequential, which is the default and the path of record.
+
+    The count and its ceiling now live in `rb5s6s.workers`, which is the
+    one place the environment is read; this wrapper stays so the call
+    sites below read the same as they always did.
+
+    The plant for the move is tests/test_workers.py, which asserts this
+    delegation and that no second read of the environment survives
+    here. The parallel smoke test is unchanged and remains the equality
+    plant for the pooled paths, but it needs the excluded session trees
+    and so cannot run on a checkout without them.
+    """
+    from rb5s6s.workers import n_workers as _n
+    return _n()
 
 
 def profile2d(resid, Sf, lo, hi, q0, kappas, betas, tag="2D"):
@@ -718,7 +743,7 @@ def profile2d(resid, Sf, lo, hi, q0, kappas, betas, tag="2D"):
         jobs = [(kap, tuple(betas), np.asarray(q0, float).copy(), 800)
                 for kap in kappas]
         with _mp.get_context("spawn").Pool(nw, initializer=_init_worker) as pool:
-            rows = pool.map(_p2d_row, jobs)
+            rows = pool.map_async(_p2d_row, jobs).get(_POOL_TIMEOUT_S)
         out = {}
         for r in rows:
             out.update(r)
@@ -752,7 +777,7 @@ def w0_scan(traces, offsets, w0s, kappas):
         jobs = [(w0, tuple(kappas), 1200) for w0 in w0s]
         with _mp.get_context("spawn").Pool(min(nw, len(jobs)),
                                            initializer=_init_worker) as pool:
-            rows = pool.map(_w0_row, jobs)
+            rows = pool.map_async(_w0_row, jobs).get(_POOL_TIMEOUT_S)
         for r in rows:
             print(f"  w0={r[0] * 1e6:.0f}um transit={r[1]:.3f}: "
                   f"kappa<{r[2]:.3f} beta={r[4]:.4f}", flush=True)
@@ -805,6 +830,14 @@ def _preflight() -> str | None:
 
 
 def main() -> int:
+    # A pooled producer is the one that most needs this: it holds most
+    # of the machine for its whole run, so a second copy started because
+    # the first "looked stuck" is both likelier and more damaging. The
+    # the sequential producers took the lock and the three pooled ones
+    # did not, which is exactly backwards. NO COUNT HERE: this comment
+    # said "nineteen" where the tree held seventeen, wrong the hour it
+    # was written, and a comment cannot derive what it asserts.
+    take_producer_lock("run_global_dataset_fit")
     if not (SESSION_20250704.is_dir() and SESSION_20250717.is_dir()):
         print(f"excluded trees absent ({SESSION_20250704}, {SESSION_20250717}) -- the "
               f"committed results/global_dataset_fit.csv is the record.")

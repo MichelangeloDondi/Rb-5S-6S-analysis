@@ -69,3 +69,47 @@ requires_raw_traces = _pytest.mark.skipif(
     reason="raw traces not in this checkout (held privately, available on "
            "request); the manifest, results and analysis tests still run",
 )
+
+
+def load_script_module(name: str, path):
+    """Load a script by path under `name`, returning THE ONE object
+    registered under that name.
+
+    WHY THIS IS SHARED AND NOT COPIED INTO EACH FILE. Two test modules
+    loading the same producer each built their own object and each
+    registered it with `sys.modules.setdefault`, which returns the
+    FIRST. Whichever collected second then used an object that was not
+    the one in `sys.modules`, and a multiprocessing Pool - which pickles
+    a function BY REFERENCE through `sys.modules` - raised
+    `PicklingError: not the same object as <module>.<name>`. It failed
+    in one collection order and passed in the other, so the shipped
+    suite never saw it: the per-commit floor sorts its file list and
+    landed in the safe order by luck.
+
+    Two files were repaired by hand. This exists so the third does not
+    have to be: a caller gets the registered module whatever order
+    pytest collects in, and the failure cannot be reintroduced by
+    copying the old idiom.
+    """
+    import importlib.util
+    import sys
+    from pathlib import Path as _P
+
+    # AND THE SCRIPT'S OWN DIRECTORY ON THE PATH. A producer may import
+    # a sibling module such as `_producer_lock`, which Python resolves
+    # only because a directly-run script puts its own directory on
+    # `sys.path`. A test loading it by path gets no such favour, and
+    # two modules failed at COLLECTION when that was left to each
+    # caller to remember.
+    _d = str(_P(path).resolve().parent)
+    if _d not in sys.path:
+        sys.path.insert(0, _d)
+
+    existing = sys.modules.get(name)
+    if existing is not None:
+        return existing
+    spec = importlib.util.spec_from_file_location(name, str(path))
+    mod = importlib.util.module_from_spec(spec)
+    sys.modules[name] = mod
+    spec.loader.exec_module(mod)
+    return mod

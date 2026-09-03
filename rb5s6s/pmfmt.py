@@ -1,4 +1,4 @@
-"""One place for the value-uncertainty cell format (LOGIC 8a.2).
+"""One place for the value-uncertainty cell format (LANGUAGE 8a.2).
 
 The rule: a Gaussian uncertainty carries exactly two significant digits
 and the value is rounded to the same decimal place, so the pair reads

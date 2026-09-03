@@ -126,16 +126,27 @@ EXPENSIVE = {
     # configurations, deterministic under its fixed seed. No traces needed,
     # but far too slow for the cheap set.
     "run_estimator_duel": ["estimator_duel.csv"],
-    # about three minutes of Monte-Carlo over the excursion-drift grid
-    # and both detection branches, deterministic under its fixed seed.
-    # No traces needed, but far too slow for the cheap set's every-pass
-    # run.
+    # Monte-Carlo over the excursion-drift grid and both detection
+    # branches, deterministic under its fixed seeds and needing no
+    # traces, but far too slow for the cheap set's every-pass run.
+    # ELEVEN TO THIRTEEN MINUTES sequentially, up from about three: the
+    # grid gained six replicates per configuration on 2026-09-02 and
+    # this dict is what `--all` re-runs, so the manual post-edit
+    # freshness pass now costs that for this producer alone. Setting
+    # RB5S6S_WORKERS brings it to under three minutes. Measured three
+    # times on a ten-core machine that day, spanning 668 to 789 s
+    # sequential and 153 to 170 s at six workers, the spread being
+    # other load.
     "run_paired_reference_forecast": ["paired_reference_forecast.csv"],
-    # 24 Monte-Carlo datasets per configuration through synthetic_traces and
-    # fit_condition, about three minutes, deterministic under its fixed seed.
+    # 200 Monte-Carlo datasets per configuration through synthetic_traces
+    # and fit_condition, about forty-six minutes measured 2026-09-02,
+    # deterministic under its fixed seed. The trial count rose from 24 on
+    # 2026-08-31 and this comment kept the old number and the old runtime
+    # until the twin was timed: a gate reader budgeting three minutes for
+    # a forty-six minute producer is how gates get killed.
     "run_campaign_twin_forecast": ["campaign_twin_forecast.csv"],
     # three presets x three waist points x two fitter variants through
-    # forecast_precision, about four minutes, deterministic under crc32
+    # forecast_precision, about fifty seconds sequential, deterministic under crc32
     # seeds. The scenario layer's end-to-end proof.
     "run_scenario_forecast": ["scenario_forecast.csv"],
     # two full closed-loop passes (base and gage-shifted), about eight
@@ -196,7 +207,22 @@ EXPENSIVE = {
     "run_projections": ["projections.csv"],
     "run_wing_check": ["wing_check.csv"],
     "run_lever_crosscheck": ["lever_crosscheck.csv"],
+    # BOTH of the next two early-return without writing when the
+    # excluded session trees are absent, so on a checkout without them
+    # each comparison reads the committed CSV against itself: green
+    # because nothing ran, not because it matched. Verified by runtime
+    # probe on 2026-09-02, on the OWNER'S OWN machine, where
+    # ~/rb-2025-sessions/prehistory does not exist: exit 0, CSV md5
+    # unchanged.
+    #
+    # This comment used to sit BETWEEN the two entries and describe
+    # only the second. A reader scanning whether the first was covered
+    # met a paragraph immediately under it describing exactly its
+    # defect, and stopped looking. A comment between two entries
+    # documents one of them and reassures about both.
     "run_full_dataset_fit": ["full_dataset_fit.csv"],
+    # The workers seam's contract names this second file as its
+    # enforcer, so that limit belongs here where a reader meets it.
     "run_global_dataset_fit": ["global_dataset_fit.csv"],
     "run_global_fit": ["global_fit.csv"],
     "run_stark_sweep": ["stark_sweep.csv"],
@@ -248,7 +274,11 @@ UNCOVERED = {
     "global_dataset_fit_norulers.csv": (
         "the second arm of M25, produced by _m25_norulers.py against the same "
         "private working copies as its partner. The partner "
-        "global_dataset_fit.csv IS checked, which covers the shared machinery."
+        "global_dataset_fit.csv is LISTED as checked, but that producer "
+        "early-returns without writing when the excluded session trees are "
+        "absent, so on such a checkout the comparison reads the committed "
+        "file against itself and covers nothing. The shared machinery is "
+        "genuinely checked only where those trees exist."
     ),
     "morning_ruler.csv": (
         "run_morning_ruler.py needs the campaign-morning excluded tree, which "

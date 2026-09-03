@@ -94,5 +94,16 @@ docs/reference_setup/photos/
 # exit status where a caller's pipe or trailing echo cannot overwrite it, per
 # protocol rule 19.24. Local run state, never tracked.
 .ci_gate_verdict
+# The gate's kept failure log, written by ci_gate.sh's EXIT trap so a
+# FAIL can be diagnosed at the artefact. It was NOT ignored when the
+# trap was written, so a test that drives the FAIL branch created it in
+# the repository root and it was staged. Three consequences, all
+# measured: its CONTENT enters gate_dirty_digest, so the first real
+# failure fills it and every gate afterwards fails on a moved tree and
+# refills it; it carries absolute home paths and private test ids and
+# the porter would carry it to the public mirror; and targeted.sh
+# refuses on untracked files, so the instrument told the operator to
+# stage exactly this.
+.ci_gate_fail.log
 .targeted_ok
 .producer_locks/

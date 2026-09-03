@@ -105,7 +105,7 @@ def test_committed_indices_are_internally_consistent():
     ST > S1 for every input (the model interacts), S1 sums below one,
     interaction_share carries an err (propagated from the floor fit), the
     cross-check z sits under 4, and every index err has two significant
-    digits (LOGIC 8a.2)."""
+    digits (LANGUAGE 8a.2)."""
     rows = {r["key"]: r for r in csv.DictReader(CSV_PATH.open())}
     assert float(rows["sum_S1"]["value"]) < 1.0
     assert float(rows["interaction_share"]["err"]) > 0.0

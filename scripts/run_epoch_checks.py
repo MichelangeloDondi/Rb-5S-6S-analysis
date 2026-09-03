@@ -311,11 +311,26 @@ def pilot_ch1_identity() -> None:
     print("   scan, not a usable frequency axis. The EOM comb remains the ruler.")
 
 
+# The house code for "the precondition is absent, so this check did not
+# run". NOT 0. A CHECK that returns 0 when it cannot run is readable as
+# one that passed, and that is never right whatever a producer may do -
+# a producer returning 0 without writing leaves its committed file as
+# the record, which is a defensible state; a check returning 0 without
+# checking asserts something it never looked at. `_m25_parallel_smoke.py`
+# used this code first, after reporting a pass on every checkout but the
+# owner's for the life of the file.
+COULD_NOT_RUN = 77   # the house code; `_m25_parallel_smoke.py` uses
+#   the same value and `tests/test_repo_hygiene.py` asserts they agree,
+#   because a third copy typed by hand is how the first two would drift
+
+
 def main() -> int:
     if not (QP.is_dir() and QH.is_dir()):
         print("outside session trees not on this machine -- the committed "
-              "numbers in this docstring and addendum 11 are the record.")
-        return 0
+              "numbers in this docstring and addendum 11 are the record. "
+              f"Exiting {COULD_NOT_RUN}, which is NOT a pass: nothing "
+              "was checked.")
+        return COULD_NOT_RUN
     trigtime_check()
     pilot_steps()
     morning_ruler_rate()

@@ -321,8 +321,19 @@ def scannable() -> list[Path]:
     results CSV are opened, so the correspondence and career material there
     are never read.
     """
+    # GENERATED FILES ARE NOT AUTHORED CLAIMS. `docs/reference_graph.json`
+    # is written by `check_references.py --graph` and records, for every
+    # ref-linked cell, the value the DOCUMENT writes. So a retired literal
+    # appears there exactly when it appears in a document - where this scan
+    # already finds it - and reporting both makes one defect look like
+    # three, or, worse, makes a false positive in the document look
+    # corroborated by an independent file. Three such pairs failed a gate
+    # on 2026-09-02.
+    _GENERATED = ("docs/reference_graph.json",)
     out = [ROOT / f for f in _git("ls-files").split()
-           if not f.startswith("results/") and not f.endswith(BINARY_SUFFIXES)]
+           if not f.startswith("results/")
+           and f not in _GENERATED
+           and not f.endswith(BINARY_SUFFIXES)]
     priv = ROOT / "private"
     if priv.is_dir():
         # THE POPULATION IS NAMED, NOT GLOBBED, and it is narrow on purpose.
@@ -338,6 +349,109 @@ def scannable() -> list[Path]:
             out += [q for q in sorted(priv.glob(pat))
                     if q.is_file() and not _DATED.search(q.name)]
     return out
+
+
+# A LITERAL THAT ALREADY NAMES ITS SOURCE IS NOT A STALE COPY OF SOME
+# OTHER FILE'S RETIRED VALUE. `[0.223](../../results/sobol_acquisition.csv
+# "ref:sobol_acquisition:sobol:ST_eta")` is the Sobol total for collection
+# efficiency, correct and current, and it collided by literal with a
+# retired cell of the paired forecast. Three such collisions failed a
+# gate on 2026-09-02, every one of them a sentence doing its job.
+#
+# The checker already knows short literals collide and demotes them to
+# advisory. Three significant digits is not enough protection on its own -
+# `0.223` and `0.0285` both cleared it - and the ref tag is the direct
+# evidence the guess was reaching for.
+_SOURCED = re.compile(r"\[([-+0-9.eE]+)\]\([^)]*?ref:([A-Za-z0-9_]+):")
+
+
+_UNIT_CACHE: dict[str, dict[str, str]] = {}
+
+
+def _cell_unit(csv_rel: str, row_key: str) -> str | None:
+    """The `unit` column of the row a retired literal came from.
+
+    Looked up rather than threaded, because the retired-literal map is a
+    three-tuple used at several call sites and widening it to carry one
+    string would touch all of them for no other gain. Cached per file.
+    """
+    if csv_rel not in _UNIT_CACHE:
+        m: dict[str, str] = {}
+        try:
+            import csv as _csv
+            with (ROOT / csv_rel).open(encoding="utf-8") as fh:
+                for r in _csv.DictReader(fh):
+                    q = (r.get("quantity") or "").strip()
+                    k = (r.get("key") or "").strip()
+                    m[f"{q} {k}"] = (r.get("unit") or "").strip()
+        except (OSError, UnicodeDecodeError):
+            m = {}
+        _UNIT_CACHE[csv_rel] = m
+    # None means NOT FOUND, which is different from found-and-empty.
+    # Conflating them made a lookup miss read as "this cell is
+    # unitless", which then suppressed every literal that carried a
+    # unit - and a fixture whose CSV has no `key` column at all missed
+    # every lookup, so the guard's own regression plant stopped firing.
+    return _UNIT_CACHE[csv_rel].get(row_key.strip())
+
+
+_UNIT_AFTER = re.compile(r"\s*(?:to\s+[-+0-9.eE]+\s*)?([A-Za-z][A-Za-z/%^0-9]*)")
+
+
+# A UNIT IS A SHORT TOKEN FROM A NAMED SET, not "any word after the
+# number". The first version of this check matched `[A-Za-z]\w*` and
+# therefore read "0.716 with no unit" as carrying the unit "with", which
+# suppressed a genuinely stale literal - the same over-suppression class
+# it was written to fix, committed inside the fix. The set is closed and
+# short on purpose: an unrecognised token means "do not know", and not
+# knowing must fall through to the checks below rather than silence
+# them.
+_UNITS = frozenset("""
+    hz khz mhz ghz thz k mk uk c j ev mev nm um mm cm m km s ms us ns ps
+    w mw uw kw v mv uv a ma ua t mt ut g mg ug kg mol pa bar torr lsb
+    db dbm rad mrad urad sr px count counts points sweeps sigma ratio
+""".split())
+
+
+def _unit_clash(line: str, lit: str, cell_unit: str | None) -> bool:
+    """True when the literal carries a unit and the retired cell carries
+    a DIFFERENT one, and both are recognised.
+
+    Conservative by construction: an unrecognised token on either side
+    returns False, so the checks that follow still run. It exists for
+    one measured case - "0.963 to 0.959 MHz/W", a power coefficient
+    colliding with a dimensionless width ratio, which failed the gate on
+    a document that was correct and untouched, and which no count of
+    significant digits can separate.
+    """
+    if cell_unit is None:
+        return False                       # cell not found, so nothing known
+    cu = cell_unit.strip().lower().split()[0] if cell_unit.strip() else ""
+    i = line.find(lit)
+    if i < 0:
+        return False
+    m = _UNIT_AFTER.match(line, i + len(lit))
+    if not m:
+        return False
+    written = m.group(1).lower()
+    head = written.split("/")[0].split("^")[0]
+    if head not in _UNITS:
+        return False                       # not a unit, so no clash known
+    cell_head = cu.split("/")[0].split("^")[0]
+    if cell_head in ("", "ratio", "count", "counts", "sigma"):
+        return head not in ("ratio", "count", "counts", "sigma")
+    if cell_head not in _UNITS:
+        return False                       # cell unit unrecognised
+    return head != cell_head
+
+
+def _sourced_elsewhere(line: str, lit: str, csv_rel: str) -> bool:
+    """True when `lit` on this line is ref-tagged to a DIFFERENT csv."""
+    stem = Path(csv_rel).stem
+    for m in _SOURCED.finditer(line):
+        if m.group(1) == lit and m.group(2) != stem:
+            return True
+    return False
 
 
 def scan(stale: dict[str, dict[str, tuple[str, str]]],
@@ -393,6 +507,21 @@ def scan(stale: dict[str, dict[str, tuple[str, str]]],
                     # sentence doing its job. Reported, never blocking.
                     distinctive = blocks and (" to " in lit
                                               or _sig_digits(lit) >= 3)
+                    # A LITERAL CARRYING A DIFFERENT UNIT IS NOT A
+                    # COPY. "0.963 to 0.959 MHz/W" is a power
+                    # coefficient and the retired cell it collided with
+                    # is a dimensionless ratio: no count of significant
+                    # digits separates those, and the CSV already
+                    # carries the unit that does. Found 2026-09-02,
+                    # failing the gate on a document that was correct
+                    # and untouched.
+                    if _unit_clash(line, lit,
+                                   _cell_unit(csv_rel, row)):
+                        continue
+                    if _sourced_elsewhere(line, lit, csv_rel):
+                        # not this file's value at all, and saying so
+                        # keeps the FAIL list readable
+                        continue
                     if now == ROW_GONE or not distinctive:
                         advisories.append(msg)
                     else:

@@ -72,7 +72,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 216,
+    "line": 251,
     "writes": "69"
    }
   ],
@@ -84,7 +84,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 216,
+    "line": 251,
     "writes": "16"
    }
   ],
@@ -96,7 +96,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 216,
+    "line": 251,
     "writes": "2.78"
    }
   ],
@@ -1124,7 +1124,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 225,
+    "line": 260,
     "writes": "0 to 1"
    }
   ],
@@ -1136,7 +1136,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 223,
+    "line": 258,
     "writes": "4 to 9"
    }
   ],
@@ -1153,7 +1153,7 @@
    },
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 214,
+    "line": 249,
     "writes": "30.73"
    }
   ],
@@ -1170,7 +1170,7 @@
    },
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 214,
+    "line": 249,
     "writes": "0.67"
    },
    {
@@ -1192,7 +1192,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 215,
+    "line": 250,
     "writes": "0.23"
    }
   ],
@@ -1216,29 +1216,89 @@
   "source_file": "results/onf_lever_ranking.csv",
   "source_value": "5.0452"
  },
+ "paired_reference_forecast:analog/j0.028/d0:shift_err_ratio_one_campaign:err": {
+  "producer": "run_paired_reference_forecast.py",
+  "quoting_sites": [
+   {
+    "file": "docs/big_picture/09_the-campaign-cases.md",
+    "line": 146,
+    "writes": "0.029"
+   }
+  ],
+  "source_file": "results/paired_reference_forecast.csv",
+  "source_value": "0.029"
+ },
  "paired_reference_forecast:check:clean_lock_decomposition_analog": {
   "producer": "run_paired_reference_forecast.py",
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 147,
+    "line": 167,
     "writes": "0.96"
    }
   ],
   "source_file": "results/paired_reference_forecast.csv",
   "source_value": "0.96"
  },
+ "paired_reference_forecast:check:clean_lock_decomposition_counting": {
+  "producer": "run_paired_reference_forecast.py",
+  "quoting_sites": [
+   {
+    "file": "docs/big_picture/09_the-campaign-cases.md",
+    "line": 169,
+    "writes": "0.94"
+   }
+  ],
+  "source_file": "results/paired_reference_forecast.csv",
+  "source_value": "0.94"
+ },
+ "paired_reference_forecast:check:width_ratio_within_2sigma": {
+  "producer": "run_paired_reference_forecast.py",
+  "quoting_sites": [
+   {
+    "file": "docs/big_picture/09_the-campaign-cases.md",
+    "line": 182,
+    "writes": "29"
+   }
+  ],
+  "source_file": "results/paired_reference_forecast.csv",
+  "source_value": "29"
+ },
+ "paired_reference_forecast:check:width_ratio_within_2sigma:err": {
+  "producer": "run_paired_reference_forecast.py",
+  "quoting_sites": [
+   {
+    "file": "docs/big_picture/09_the-campaign-cases.md",
+    "line": 184,
+    "writes": "32"
+   }
+  ],
+  "source_file": "results/paired_reference_forecast.csv",
+  "source_value": "32"
+ },
  "paired_reference_forecast:decision:adopt_paired_default": {
   "producer": "run_paired_reference_forecast.py",
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 150,
+    "line": 174,
     "writes": "conditional"
    }
   ],
   "source_file": "results/paired_reference_forecast.csv",
   "source_value": "conditional"
+ },
+ "paired_reference_forecast:design:grid_replicates": {
+  "producer": "run_paired_reference_forecast.py",
+  "quoting_sites": [
+   {
+    "file": "docs/big_picture/09_the-campaign-cases.md",
+    "line": 135,
+    "writes": "6"
+   }
+  ],
+  "source_file": "results/paired_reference_forecast.csv",
+  "source_value": "6"
  },
  "paired_reference_forecast:design:ratio_threshold": {
   "producer": "run_paired_reference_forecast.py",
@@ -1257,72 +1317,144 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 144,
-    "writes": "0.957"
+    "line": 160,
+    "writes": "0.997"
    }
   ],
   "source_file": "results/paired_reference_forecast.csv",
-  "source_value": "0.957"
+  "source_value": "0.997"
  },
  "paired_reference_forecast:limit:clean_lock_ratio_analog:err": {
   "producer": "run_paired_reference_forecast.py",
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 145,
-    "writes": "0.046"
+    "line": 161,
+    "writes": "0.021"
    }
   ],
   "source_file": "results/paired_reference_forecast.csv",
-  "source_value": "0.046"
+  "source_value": "0.021"
+ },
+ "paired_reference_forecast:limit:clean_lock_ratio_counting": {
+  "producer": "run_paired_reference_forecast.py",
+  "quoting_sites": [
+   {
+    "file": "docs/big_picture/09_the-campaign-cases.md",
+    "line": 163,
+    "writes": "0.960"
+   }
+  ],
+  "source_file": "results/paired_reference_forecast.csv",
+  "source_value": "0.960"
+ },
+ "paired_reference_forecast:limit:clean_lock_ratio_counting:err": {
+  "producer": "run_paired_reference_forecast.py",
+  "quoting_sites": [
+   {
+    "file": "docs/big_picture/09_the-campaign-cases.md",
+    "line": 164,
+    "writes": "0.020"
+   }
+  ],
+  "source_file": "results/paired_reference_forecast.csv",
+  "source_value": "0.020"
+ },
+ "paired_reference_forecast:span_j0.009:criterion": {
+  "producer": "run_paired_reference_forecast.py",
+  "quoting_sites": [
+   {
+    "file": "docs/big_picture/09_the-campaign-cases.md",
+    "line": 171,
+    "writes": "fails"
+   }
+  ],
+  "source_file": "results/paired_reference_forecast.csv",
+  "source_value": "fails"
+ },
+ "paired_reference_forecast:span_j0.028:criterion": {
+  "producer": "run_paired_reference_forecast.py",
+  "quoting_sites": [
+   {
+    "file": "docs/big_picture/09_the-campaign-cases.md",
+    "line": 141,
+    "writes": "unresolved"
+   }
+  ],
+  "source_file": "results/paired_reference_forecast.csv",
+  "source_value": "unresolved"
  },
  "paired_reference_forecast:span_j0.028:worst_shift_ratio": {
   "producer": "run_paired_reference_forecast.py",
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 136,
-    "writes": "0.735"
+    "line": 138,
+    "writes": "0.705"
    }
   ],
   "source_file": "results/paired_reference_forecast.csv",
-  "source_value": "0.735"
+  "source_value": "0.705"
  },
  "paired_reference_forecast:span_j0.028:worst_shift_ratio:err": {
   "producer": "run_paired_reference_forecast.py",
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 137,
-    "writes": "0.040"
+    "line": 139,
+    "writes": "0.015"
    }
   ],
   "source_file": "results/paired_reference_forecast.csv",
-  "source_value": "0.040"
+  "source_value": "0.015"
+ },
+ "paired_reference_forecast:span_j0.05:criterion": {
+  "producer": "run_paired_reference_forecast.py",
+  "quoting_sites": [
+   {
+    "file": "docs/big_picture/09_the-campaign-cases.md",
+    "line": 151,
+    "writes": "clears"
+   }
+  ],
+  "source_file": "results/paired_reference_forecast.csv",
+  "source_value": "clears"
  },
  "paired_reference_forecast:span_j0.05:worst_shift_ratio": {
   "producer": "run_paired_reference_forecast.py",
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 140,
-    "writes": "0.490"
+    "line": 152,
+    "writes": "0.4727"
    }
   ],
   "source_file": "results/paired_reference_forecast.csv",
-  "source_value": "0.490"
+  "source_value": "0.4727"
  },
  "paired_reference_forecast:span_j0.05:worst_shift_ratio:err": {
   "producer": "run_paired_reference_forecast.py",
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 141,
-    "writes": "0.023"
+    "line": 153,
+    "writes": "0.0097"
    }
   ],
   "source_file": "results/paired_reference_forecast.csv",
-  "source_value": "0.023"
+  "source_value": "0.0097"
+ },
+ "paired_reference_forecast:span_j0.1:criterion": {
+  "producer": "run_paired_reference_forecast.py",
+  "quoting_sites": [
+   {
+    "file": "docs/big_picture/09_the-campaign-cases.md",
+    "line": 155,
+    "writes": "clears"
+   }
+  ],
+  "source_file": "results/paired_reference_forecast.csv",
+  "source_value": "clears"
  },
  "saturation_companion:C3d:factor_with_saturation_ratio_-1p2362": {
   "producer": null,

@@ -359,3 +359,55 @@ def test_a_missing_targeted_stamp_refuses_before_any_verdict(tmp_path):
     assert "unreachable" not in done.stdout
     assert not verdict.exists(), "a refused gate must not touch the verdict"
 
+
+
+def test_every_dotfile_an_instrument_writes_is_ignored_or_tracked_on_purpose():
+    """The class, not the instance.
+
+    An instrument that writes run state into the repository root needs
+    a gitignore entry, and four such paths now exist: `.ci_gate_verdict`,
+    `.targeted_ok`, `.producer_locks/` and `.ci_gate_fail.log`. The
+    first three were ignored. The fourth was not, and the cost was
+    measured rather than imagined: its CONTENT enters
+    `gate_dirty_digest`, so the first real gate failure fills it and
+    every gate afterwards fails on a moved tree and refills it, never
+    recovering. It also carries absolute home paths and private test
+    ids, and the mirror porter excludes only `data_raw/` and
+    `.github/`.
+
+    So the population is every dotted path a shell script or a private
+    checker writes under the root, and each must be ignored. A path
+    that is meant to be tracked fails this and should be named here
+    with its reason - none is today.
+
+    Failure mode guarded: the fifth such path, introduced the way the
+    fourth was, by an instrument gaining a new artefact.
+    """
+    import re
+    root = GATE.parents[1]
+    pat = re.compile(r'"?\$(?:GATE_ROOT|ROOT)"?/(\.[A-Za-z0-9_.]+)')
+    found: set[str] = set()
+    for d, glob in ((root / "scripts", "*.sh"),
+                    (root / "private" / "checks", "*.py")):
+        if not d.is_dir():
+            continue
+        for f in sorted(d.glob(glob)):
+            found |= set(pat.findall(f.read_text(encoding="utf-8",
+                                                 errors="replace")))
+    assert found, (
+        "no instrument-written dotfile was found, so this guard is "
+        "grading an empty population and would pass over any number "
+        "of them")
+    bad = []
+    for name in sorted(found):
+        out = subprocess.run(["git", "-C", str(root), "check-ignore", name],
+                             capture_output=True, text=True)
+        if out.returncode == 128:
+            pytest.skip("not a git checkout")
+        if out.returncode != 0:
+            bad.append(name)
+    assert not bad, (
+        "these paths are written into the repository root by an "
+        f"instrument and are not gitignored: {bad}. Run state that is "
+        "tracked enters the gate's own dirty digest and ports to the "
+        "public mirror.")

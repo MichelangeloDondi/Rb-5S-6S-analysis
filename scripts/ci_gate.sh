@@ -113,10 +113,29 @@ printf 'RUNNING\ntree %s\n' "$GATE_TREE" > "$GATE_VERDICT"
 # whole design - bash keeps one EXIT trap, and an earlier version
 # installed a second one further down, leaving this span's writer dead
 # while a test still graded it.
-trap 'rc=$?; if [ "$(head -n1 "$GATE_VERDICT" 2>/dev/null)" = "RUNNING" ]; then printf "FAIL %s\ntree %s\n" "$rc" "$GATE_TREE" > "$GATE_VERDICT"; fi; rm -rf "$GATE_LOCK"; { [ -n "${GATE_PYLOG:-}" ] && rm -f "$GATE_PYLOG"; } || true' EXIT
+# A FAILING PYTEST STAGE KEEPS ITS EVIDENCE, and only that stage:
+# GATE_PYLOG is created after the reachability check and after ruff,
+# and nine later stages exit non-zero without it, so each of those
+# still writes 'log not captured'. That is honest and it is not the
+# whole job. The trap used to write FAIL and
+# remove GATE_PYLOG in the same handler, so every failed run destroyed
+# the log that said what failed - and LOGIC 0d.6, diagnose at the
+# artefact and never from a report of it, could not be obeyed for a
+# gate verdict at all. Measured 2026-09-02: a FAIL stood on disk whose
+# cause could only be recovered by spending another sixteen minutes.
+# On failure the log is kept and its path is the verdict file's THIRD
+# line; the ledger reads only the first two, so the line is free.
+trap 'rc=$?; if [ "$(head -n1 "$GATE_VERDICT" 2>/dev/null)" = "RUNNING" ]; then kept=""; if [ -n "${GATE_PYLOG:-}" ] && [ -f "$GATE_PYLOG" ]; then kept="$GATE_ROOT/.ci_gate_fail.log"; cp "$GATE_PYLOG" "$kept" 2>/dev/null || kept=""; fi; printf "FAIL %s\ntree %s\nlog=%s\n" "$rc" "$GATE_TREE" "${kept:-not captured}" > "$GATE_VERDICT"; fi; rm -rf "$GATE_LOCK"; { [ -n "${GATE_PYLOG:-}" ] && rm -f "$GATE_PYLOG"; } || true' EXIT
 # Computed AFTER the trap is armed: a git failure inside the digest
 # aborts through the trap and writes FAIL, instead of dying with the
 # previous gate's verdict still on disk.
+# ANY LOG FROM AN EARLIER FAILURE GOES NOW, before this run can write
+# a verdict. Otherwise a stage that fails before GATE_PYLOG exists
+# writes "log=not captured" while a stale log from a different, earlier
+# failure sits unchanged at the well-known path, and a reader binds the
+# wrong evidence to the wrong run. Removing it here also keeps it out
+# of the dirty digest computed on the next line.
+rm -f "$GATE_ROOT/.ci_gate_fail.log"
 GATE_DIRTY_START="$(gate_dirty_digest)"
 # The checkout's own interpreter where there is one, the ambient python
 # otherwise, which is the case in CI. Hard-coding either breaks the other:
@@ -253,6 +272,28 @@ fi
 # terminal-state declaration, not a push.
 if [ -f private/checks/summary_drift.py ]; then
   "$PY" private/checks/summary_drift.py || true
+fi
+
+# The two thesis-chapter checkers, wired 2026-09-04. Both existed and BOTH
+# WERE CALLED BY NOTHING: `tests/test_checkers_are_wired.py` named them
+# orphans, and running the bibliography one by hand for the first time
+# returned "9 vs 17, COUNT MISMATCH" -- eight references had been added to
+# the markdown list and never to bibliography.bib, so the PDF would have
+# shipped without the entry the wave's own correction rests on. The gate
+# found the orphan and the orphan found the defect.
+#
+# ADVISORY, `|| true`, and the reason is the chapter's own status: it lives
+# under private/, so a clone and the public mirror do not have it, and the
+# checkers skip on an absent file. A missing chapter must not fail a push.
+# The bibliography checker also cannot decode LaTeX escapes, so a name
+# written H\"{a}nsch in the bib and Hansch in the markdown reports as a
+# divergence that is a checker limit rather than a defect; teaching it to
+# decode is queued and is a checker-only change.
+if [ -f private/checks/check_chapter_bibliography_sync.py ]; then
+  "$PY" private/checks/check_chapter_bibliography_sync.py || true
+fi
+if [ -f private/checks/check_chapter_xrefs.py ]; then
+  "$PY" private/checks/check_chapter_xrefs.py || true
 fi
 
 # parse gate first, and hard: a checker that cannot parse reports nothing,

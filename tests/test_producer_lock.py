@@ -146,17 +146,43 @@ def test_every_results_producer_that_takes_minutes_holds_a_lock():
     corruption this mechanism exists to prevent. Adding a producer that writes
     `results/` and runs for minutes means adding it here.
     """
-    slow = ("run_fibre_twin", "run_campaign_twin_forecast",
-            "run_onf_candidate", "run_onf_lever_ranking",
-            "run_guided_mode_tables",
-            "run_linefit", "run_beta_self", "run_global_fit",
-            "run_stark_sweep", "run_wing_check", "run_s0_block_bootstrap",
-            "run_power_sweep", "run_transit_mc",
-            "run_transit_additivity", "run_campaign_twin_forecast",
-            "run_onf_candidate", "run_guided_mode_tables")
-    missing = [s for s in slow
-               if "take_producer_lock" not in (ROOT / "scripts" / f"{s}.py").read_text()]
+    # A SET, not a tuple, and sorted: the tuple carried
+    # run_campaign_twin_forecast, run_onf_candidate and
+    # run_guided_mode_tables TWICE, which a membership test cannot
+    # notice and which made the population look larger than it was.
+    slow = {
+        "run_beta_self", "run_campaign_twin_forecast",
+        # found by the reverse check below on its first run: three
+        # producers held the lock and were absent from this set, which
+        # is the omission the docstring above says nothing detects
+        "run_cumulant_window_check", "run_estimator_duel",
+        "run_fit_window_scan", "run_fibre_twin",
+        "run_global_fit", "run_guided_mode_tables", "run_linefit",
+        "run_onf_candidate", "run_onf_lever_ranking", "run_power_sweep",
+        "run_s0_block_bootstrap", "run_stark_sweep",
+        "run_transit_additivity", "run_transit_mc", "run_wing_check",
+        # the three pooled producers, added 2026-09-02 with the locks
+        # themselves. They hold most of the machine for their whole run,
+        # so a second copy started because the first looked stuck is both
+        # likelier and more damaging than for any sequential producer.
+        "run_global_dataset_fit", "run_paired_reference_forecast",
+        "run_scenario_forecast",
+    }
+    missing = sorted(s for s in slow
+                     if "take_producer_lock"
+                     not in (ROOT / "scripts" / f"{s}.py").read_text())
     assert not missing, f"these producers write results/ without a lock: {missing}"
+    # THE OTHER DIRECTION, which the docstring above says nothing detects.
+    # A producer that TAKES the lock and is absent from this set means the
+    # set is no longer the population it claims to be - which is exactly
+    # what happened when three producers were locked on 2026-09-02 and
+    # this guard passed anyway.
+    holds = {p.stem for p in (ROOT / "scripts").glob("run_*.py")
+             if "take_producer_lock(" in p.read_text()}
+    unlisted = sorted(holds - slow)
+    assert not unlisted, (
+        "these producers hold the lock and are not in the set above, so "
+        f"the set has stopped being the population it names: {unlisted}")
 
 
 @pytest.fixture(autouse=True)

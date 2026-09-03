@@ -1,6 +1,6 @@
 """The err-cell format ratchet: nonconforming cells only fall per file.
 
-LOGIC 8a.2 (two significant digits on the uncertainty, the value
+LANGUAGE 8a.2 (two significant digits on the uncertainty, the value
 matching its decimals) was guarded on markdown and on figure canvases
 while the committed results' own err columns had no reader: an audit
 counted 397 of 544 cells across 21 files falling short. A ban would

@@ -19,7 +19,8 @@ The lock-drift span rides along in the note, carried but not
 modelled here: this producer is the scenario layer's end-to-end proof, and
 the campaign case builds on it separately.
 
-Runtime about four minutes, deterministic under fixed seeds. Output:
+Runtime about fifty seconds sequential and twenty at four workers,
+measured 2026-09-02, deterministic under fixed seeds at any count. Output:
 results/scenario_forecast.csv.
 """
 from __future__ import annotations
@@ -31,11 +32,20 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
+# _producer_lock lives in scripts/, which Python puts on sys.path only
+# when a script is run DIRECTLY. A test that loads this module by path
+# gets no such favour, and three sibling test files do exactly that - two
+# of them failed at collection and a third swallowed the ImportError in a
+# bare except and reported a pass. Making the import self-sufficient is
+# cheaper than remembering.
+sys.path.insert(0, str(Path(__file__).resolve().parent))  # _producer_lock lives here
+from _producer_lock import take_producer_lock     # noqa: E402
 
 import numpy as np
 
 from rb5s6s import fibre  # noqa: E402
 from rb5s6s.forecast import forecast_precision  # noqa: E402
+from rb5s6s.workers import n_workers  # noqa: E402
 from rb5s6s.noise import load_noise_model  # noqa: E402
 from rb5s6s.scenario import load_scenario  # noqa: E402
 
@@ -57,23 +67,92 @@ PRESETS = ("dataset_2025", "campaign_cell", "campaign_cell_onf")
 
 
 def _two_sig(x: float) -> str:
-    """LOGIC 8a.2 through the shared seam; the local form this replaces
+    """LANGUAGE 8a.2 through the shared seam; the local form this replaces
     carried the decade-carry defect the audit measured at 0.0999."""
     from rb5s6s.pmfmt import fmt_err
     out = fmt_err(abs(x))
     return out if out else "0.0"
 
 
+# --------------------------------------------------------------------
+# the Monte-Carlo phase, factored so it can run in a worker
+# --------------------------------------------------------------------
+
+
+def _fp_triple(args):
+    """The three forecasts one (preset, waist) task runs: the ramp
+    matched, the ramp omitted, and the committed noise law. All three
+    take the task's own derived seed, so this function's output depends
+    on nothing but its arguments - which is what lets it run in any
+    process in any order."""
+    truth, design, law_noise, amp_law, seed, n_trials = args
+    matched = forecast_precision(truth, design, n_trials=n_trials,
+                                 seed=seed, scalings=False,
+                                 return_trials=True)
+    omitted = forecast_precision(truth, {**design, "fit_s0": 0.0},
+                                 n_trials=n_trials, seed=seed,
+                                 scalings=False, return_trials=True)
+    lawful = forecast_precision(
+        truth, {**design, "noise": law_noise, "amp": amp_law},
+        n_trials=n_trials, seed=seed, scalings=False, return_trials=True)
+    return matched, omitted, lawful
+
+
+def _assemble_forecasts(tasks, res):
+    """Pair each task's key with its own result.
+
+    ONE LINE, EXTRACTED ON PURPOSE. It was inline in `main()`, where no
+    test could reach it, and the cost of that was demonstrated on
+    2026-09-02 by injection: rotating `res` by one position before the
+    zip writes a CSV with the right row count, no error, and every
+    value on the wrong row - one preset's number landing on another
+    preset's waist. Every test in the determinism file passed, because
+    they all call `_fp_triple` directly and none of them touches this.
+
+    `pool.map` preserves order, so the pairing is positional and
+    correct. That is a property to PIN, not to trust: it is the single
+    assumption standing between a pooled producer and a silently
+    mislabelled result table.
+    """
+    if len(tasks) != len(res):
+        raise RuntimeError(
+            f"{len(tasks)} tasks against {len(res)} results: the pooled "
+            "map dropped or duplicated one, and pairing them positionally "
+            "would mislabel every row after the gap")
+    return {key: r for (key, _, _, _), r in zip(tasks, res)}
+
+
+def _init_fp_worker():
+    """One BLAS thread per worker: the forecasts are many small solves,
+    so nested threading costs more than it buys and oversubscription is
+    the failure mode a pooled gate would feel first."""
+    import os as _os
+    for v in ("OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS",
+              "VECLIB_MAXIMUM_THREADS", "NUMEXPR_NUM_THREADS"):
+        _os.environ.setdefault(v, "1")
+
+
 def main() -> int:
+    # A pooled producer is the one that most needs this: it holds most
+    # of the machine for its whole run, so a second copy started because
+    # the first "looked stuck" is both likelier and more damaging. The
+    # the sequential producers took the lock and the three pooled ones
+    # did not, which is exactly backwards. NO COUNT HERE: this comment
+    # said "nineteen" where the tree held seventeen, wrong the hour it
+    # was written, and a comment cannot derive what it asserts.
+    take_producer_lock("run_scenario_forecast")
     law = load_noise_model(ROOT / "results" / "noise_model.csv",
                            role="p_sweep", pool="median")
-    rows = []
+    # PHASE ONE: every (preset, waist) task with the seed it will use.
+    # The seed is the producer's own crc32 of the task identity, so the
+    # jobs are independent of each other and of the order they run in.
+    # Byte-identity across worker counts follows from that and is
+    # MEASURED, not argued, exactly as rb5s6s.workers states: 0, 3 and 8
+    # workers each reproduced the committed CSV on 2026-09-02.
+    _tasks = []
+    _built = {}
     for name in PRESETS:
         sc = load_scenario(ROOT / "examples" / "scenarios" / f"{name}.toml")
-        drift_note = (f"lock {sc.lock}, drift span "
-                      f"[{sc.lock_drift_mhz_per_min.low}, "
-                      f"{sc.lock_drift_mhz_per_min.high}] MHz/min carried, "
-                      "not modelled here")
         for w0 in sc.waist_um.grid(3):
             scale = 64.0 / w0
             truth = {"gamma_coll": GAMMA_COLL_MHZ,
@@ -85,12 +164,43 @@ def main() -> int:
             # zlib.crc32, not hash(): string hashing is per-process
             # randomised and a seed that moves would fail freshness forever
             seed = zlib.crc32(f"{name}:{w0:.3f}".encode()) % (2 ** 31)
-            matched = forecast_precision(truth, design, n_trials=N_TRIALS,
-                                         seed=seed, scalings=False,
-                                         return_trials=True)
-            omitted = forecast_precision(truth, {**design, "fit_s0": 0.0},
-                                         n_trials=N_TRIALS, seed=seed,
-                                         scalings=False, return_trials=True)
+            _tasks.append(((name, w0), truth, design, seed))
+            _built[(name, w0)] = (truth, seed)
+
+    # PHASE TWO: run them. pool.map preserves order, so the results line
+    # up with the tasks whatever the worker count, including zero.
+    _jobs = [(tr, de, law, AMP_LAW_V, sd, N_TRIALS)
+             for _, tr, de, sd in _tasks]
+    _nw = n_workers()
+    if _nw > 0:
+        import multiprocessing as _mp
+        with _mp.get_context("spawn").Pool(
+                min(_nw, len(_jobs)), initializer=_init_fp_worker) as _pool:
+            # a deadline, for the reason the sibling producer states:
+            # a spawn child that cannot import its function's module
+            # leaves the parent blocked in `map` forever, and a gate
+            # then reports nothing at all instead of a failure
+            _res = _pool.map_async(_fp_triple, _jobs).get(600)
+    else:
+        _res = [_fp_triple(j) for j in _jobs]
+    _fp = _assemble_forecasts(_tasks, _res)
+
+    # PHASE THREE: the rows, exactly as before, reading the forecasts
+    # instead of computing them.
+    rows = []
+    for name in PRESETS:
+        sc = load_scenario(ROOT / "examples" / "scenarios" / f"{name}.toml")
+        drift_note = (f"lock {sc.lock}, drift span "
+                      f"[{sc.lock_drift_mhz_per_min.low}, "
+                      f"{sc.lock_drift_mhz_per_min.high}] MHz/min carried, "
+                      "not modelled here")
+        for w0 in sc.waist_um.grid(3):
+            # read back what phase one built rather than rebuilding it:
+            # two independent reconstructions of the same truth cannot be
+            # kept in step by anything, and the rows below quote these
+            # values while the Monte Carlo consumed phase one's copy
+            truth, seed = _built[(name, w0)]
+            matched, omitted, lawful = _fp[(name, w0)]
             m_spread = float(np.std(matched["gamma_coll_err_trials"], ddof=1))
             o_spread = float(np.std(omitted["gamma_coll_err_trials"], ddof=1))
             # The retro-ratio term alone moves the shift: the ramp samples
@@ -113,10 +223,6 @@ def main() -> int:
                          "ignoring the asymmetric term at this focus, and "
                          "the mismatched fitter's reported error can also "
                          "under-state itself", "ENVELOPE"])
-            lawful = forecast_precision(
-                truth, {**design, "noise": law, "amp": AMP_LAW_V},
-                n_trials=N_TRIALS, seed=seed, scalings=False,
-                return_trials=True)
             l_spread = float(np.std(lawful["gamma_coll_err_trials"], ddof=1))
             delta_pct = 100.0 * (lawful["gamma_coll_err"]
                                  / matched["gamma_coll_err"] - 1.0)

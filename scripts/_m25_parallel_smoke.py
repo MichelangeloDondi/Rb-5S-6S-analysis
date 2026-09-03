@@ -20,7 +20,9 @@ ever fails, the two paths have diverged in what they FIT, most likely because
 main()'s trace assembly changed and _load_everything() did not follow, which
 is the one seam this construction has.
 
-Prints PASS or the first differing cell, exits nonzero on any difference.
+Prints PASS or the first differing cell, exits nonzero on any
+difference, and exits 77 when the trees it needs are absent, so a
+checkout that cannot run it never reads a pass.
 Writes nothing. The full-scale acceptance (reproducing the committed
 results/global_dataset_fit.csv end to end with workers on) is a separate,
 deliberate run recorded in its own right, not this smoke.
@@ -72,10 +74,22 @@ def _same(a, b) -> bool:
     return True
 
 
+# The house code for "the precondition is absent, so this check did not
+# run". NOT 0: a check that cannot run must never be readable as one
+# that passed, and this smoke returned 0 on every checkout without the
+# private session trees - which is every checkout but the owner's, CI
+# included - for as long as it has existed. Found 2026-09-02 while the
+# worker seam was being checked: the seam had named this smoke as its
+# own plant and would have inherited the false green.
+COULD_NOT_RUN = 77
+
+
 def main() -> int:
     if not (G.SESSION_20250704.is_dir() and G.SESSION_20250717.is_dir()):
-        print("excluded trees absent: this smoke needs the full assembly.")
-        return 0
+        print("excluded trees absent: this smoke needs the full assembly. "
+              f"Exiting {COULD_NOT_RUN}, which is NOT a pass: the check did "
+              "not run.")
+        return COULD_NOT_RUN
 
     t0 = time.time()
     W = G._load_everything()

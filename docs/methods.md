@@ -201,7 +201,7 @@ rb5s6s/   api(the supported entry point: a trace in, a linewidth out)
                 as sqrt(T). The band, and the line it was computed
                 against, are in the guided-geometry chapter. A leaf module:
                 it imports core and core never imports it)
-          fitutil pmfmt _compat
+          fitutil pmfmt workers _compat
           (M18, M19, M29, M31, M32, M33, M34, M35, M36 and M37 are library-and-test only: they have
            no CSV product, so grepping results/ for them finds nothing -- see
            their test files, and for M34 also examples/campaign_twin.py)
@@ -216,7 +216,7 @@ scripts/  import_data (+ annotate_manifest_qc: qc_reason provenance)
           run_geometry_design (the running-wave and waist designs, whose
           weak-field branch reproduces lineshape.stark_ramp_axial_moments)
 data_raw/ MANIFEST.csv, and the 297 traces where the copy carries them
-tests/    3532-test battery (3490 fast ~5 min + 42 `slow` high-statistics
+tests/    3539-test battery (3497 fast ~5 min + 42 `slow` high-statistics
           closure tests via --runslow, incl. the M4d synthetic-β and M4e
           synthetic-κ closures, the MANIFEST qc_reason guards, and the
           docs-consistency gates: canonical numbers, links+anchors, math
@@ -240,8 +240,8 @@ The first six scripts form the pipeline (each reads the previous ones'
 
 ```bash
 python3 -m venv .venv && source .venv/bin/activate
-pip install -e ".[dev]" && pytest -q          # 3490 fast tests (~5 min)
-pytest -q --runslow                           # full 3532 incl. slow closures (what CI runs)
+pip install -e ".[dev]" && pytest -q          # 3497 fast tests (~5 min)
+pytest -q --runslow                           # full 3539 incl. slow closures (what CI runs)
 # reproduce every committed CSV, figure, and docs/RESULTS.md from data_raw/
 # (already in git; import_data.py only re-imports from the original tree):
 bash scripts/run_all.sh

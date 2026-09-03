@@ -102,8 +102,11 @@ def take_producer_lock(name: str) -> None:
     `main()` uses, because wrapping an existing several-hundred-line body in a
     `with` is a large diff for a small guarantee and a large diff is where the
     next defect hides. Release is by `atexit`, which runs on a normal exit and
-    on an unhandled exception, and does NOT run on SIGKILL -- the stale-pid
-    check in `producer_lock` is what covers that case.
+    on an unhandled exception, and does NOT run on SIGKILL -- the KERNEL is
+    what covers that case, releasing the flock when the process dies. There
+    is no stale-pid check and this sentence used to name one, contradicting
+    the note forty lines above that explains why flock replaced exactly
+    that design.
     """
     import atexit
     cm = producer_lock(name)

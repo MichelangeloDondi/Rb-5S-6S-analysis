@@ -37,6 +37,7 @@ from __future__ import annotations
 import importlib.util
 import json
 import os
+import pathlib
 import subprocess
 from pathlib import Path
 
@@ -785,3 +786,113 @@ def test_the_delta_hatch_refuses_an_unread_tree(bl, repo):
     _point_at(bl, repo)
     with pytest.raises(SystemExit, match="no recorded round read"):
         bl.declare_gate_covered("HEAD", "probe", delta_from="0" * 40)
+
+
+def _seed_biased_history(bl, n_pairs=20, under=12):
+    """A ledger with a MEASURED under-prediction bias.
+
+    Every existing test in this file runs against an EMPTY ledger, so
+    `_n_pairs` is zero, `_biased` is False, and the refusal below is
+    unreachable. Three plants were claimed for it and none existed; a
+    repo-wide grep for its own message returned nothing. That is the
+    class this file's own subject exists to catch, arriving inside the
+    tests for it.
+    """
+    import json
+    # REFUSE TO WRITE INTO THE REAL REPOSITORY. This helper writes to
+    # `bl.LEDGER`, and `bl` is the live module: if a caller seeds before
+    # calling `_point_at`, that path is the REAL governance ledger and
+    # this function silently replaces ninety-four recorded rounds with
+    # twenty synthetic ones. It did exactly that on 2026-09-02, and the
+    # ledger is not in git, not in the iCloud archive (which skips it)
+    # and recoverable only from a local snapshot needing a password.
+    #
+    # Ordering is a convention and conventions are what this record
+    # keeps finding broken. This is the mechanism: the path must be
+    # under a temporary directory, or the helper refuses.
+    import tempfile
+    real_root = pathlib.Path(__file__).resolve().parents[1]
+    target = pathlib.Path(bl.LEDGER).resolve()
+    tmp_root = pathlib.Path(tempfile.gettempdir()).resolve()
+    if real_root in target.parents or tmp_root not in target.parents:
+        raise AssertionError(
+            f"refusing to seed a ledger at {target}: it is not under a "
+            f"temporary directory. Call _point_at(bl, repo) FIRST. This "
+            "helper replaces the whole file, and the real one is not in "
+            "git.")
+    rows = []
+    # THE BIASED ROWS GO LAST. The refusal reads a TRAILING window, so
+    # a seed that puts the under-predictions first describes a convener
+    # who has already recovered, and the refusal correctly declines to
+    # fire. That is the mechanism working, and it made two tests fail
+    # until the fixture was told which end of the series matters.
+    for i in range(n_pairs):
+        actual = 10 if i >= n_pairs - under else 4
+        rows.append({"tree": f"{i:040x}", "at": "2026-09-02T00:00:00+00:00",
+                     "seats": sorted(bl.REQUIRED_SEATS),
+                     "verdicts": ["CONFIRM"] * len(bl.REQUIRED_SEATS),
+                     "required": sorted(bl.REQUIRED_SEATS),
+                     "expected_blocking": 5, "actual_blocking": actual,
+                     "blocking": [], "resolved": [], "note": ""})
+    bl.LEDGER.write_text("\n".join(json.dumps(r) for r in rows) + "\n")
+
+
+def test_an_under_base_expect_is_refused_only_when_the_bias_is_measured(bl, repo):
+    """The refusal this ledger is named for, exercised at last."""
+    (repo / "f.txt").write_text("x")
+    subprocess.run(["git", "-C", str(repo), "add", "f.txt"], check=True)
+    _point_at(bl, repo, tree=subprocess.run(
+        ["git", "-C", str(repo), "write-tree"], capture_output=True,
+        text=True, check=True).stdout.strip())
+    _seed_biased_history(bl, n_pairs=20, under=12)      # 80 per cent under
+    with pytest.raises(SystemExit, match="REFUSING --expect"):
+        bl.begin(sorted(bl.REQUIRED_SEATS), expect=1)
+
+
+def test_a_stated_reason_admits_the_under_base_expect_and_is_recorded(bl, repo):
+    """And the reason survives onto the PERMANENT row.
+
+    It used to be written only to the open marker, which `record()`
+    deletes, so zero rows carried it while four surfaces said it was
+    measured against the outcome."""
+    import json
+    (repo / "f.txt").write_text("x")
+    subprocess.run(["git", "-C", str(repo), "add", "f.txt"], check=True)
+    _point_at(bl, repo, tree=subprocess.run(
+        ["git", "-C", str(repo), "write-tree"], capture_output=True,
+        text=True, check=True).stdout.strip())
+    _seed_biased_history(bl, n_pairs=20, under=12)
+    bl.begin(sorted(bl.REQUIRED_SEATS), expect=1,
+             expect_reason="a one-file comment repair")
+    bl.record(sorted(bl.REQUIRED_SEATS),
+              ["CONFIRM"] * len(bl.REQUIRED_SEATS))
+    last = json.loads(bl.LEDGER.read_text().splitlines()[-1])
+    assert last.get("expect_reason") == "a one-file comment repair", (
+        "the reason did not reach the recorded row, so nothing can "
+        "measure whether an under-base prediction was justified")
+
+
+def test_a_blank_reason_is_not_a_reason(bl, repo):
+    """A control whose input the constrained party writes freely is
+    decoration, and whitespace was passing."""
+    (repo / "f.txt").write_text("x")
+    subprocess.run(["git", "-C", str(repo), "add", "f.txt"], check=True)
+    _point_at(bl, repo, tree=subprocess.run(
+        ["git", "-C", str(repo), "write-tree"], capture_output=True,
+        text=True, check=True).stdout.strip())
+    _seed_biased_history(bl, n_pairs=20, under=12)
+    with pytest.raises(SystemExit, match="REFUSING --expect"):
+        bl.begin(sorted(bl.REQUIRED_SEATS), expect=1, expect_reason="   ")
+
+
+def test_no_measured_bias_means_no_refusal(bl, repo):
+    """The refusal SELF-RETIRES. A first version refused on a ledger of
+    one round while printing zero per cent as its own justification -
+    a control citing the absence of the thing it exists for."""
+    (repo / "f.txt").write_text("x")
+    subprocess.run(["git", "-C", str(repo), "add", "f.txt"], check=True)
+    _point_at(bl, repo, tree=subprocess.run(
+        ["git", "-C", str(repo), "write-tree"], capture_output=True,
+        text=True, check=True).stdout.strip())
+    _seed_biased_history(bl, n_pairs=20, under=2)       # 10 per cent under
+    bl.begin(sorted(bl.REQUIRED_SEATS), expect=1)      # must not raise

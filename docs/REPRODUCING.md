@@ -24,7 +24,11 @@ HE11 mode solve and the evanescent profile, under a second) and
 nanofibre levers, milliseconds) are now stages of the runner.
 `run_campaign_twin_forecast.py` (`campaign_twin_forecast.csv`, the two-arm
 campaign comparison) stays outside it for runtime: it is a Monte Carlo through
-simulate-and-fit and takes about four minutes. Re-running any
+simulate-and-fit and takes about forty-six minutes, measured
+2026-09-02. It takes no workers: the parallel switch is carried by
+`run_global_dataset_fit.py`, `run_scenario_forecast.py` and
+`run_paired_reference_forecast.py`, and this figure replaces a
+four-minute claim that understated it elevenfold. Re-running any
 stage reproduces its committed CSV in `results/` within the tolerance
 `scripts/verify_results_fresh.py` states.
 
@@ -92,9 +96,15 @@ free tooth centres, held out because nothing downstream reads its bound),
 `run_transit_additivity.py` (`transit_additivity.csv`, the guided transit
 kernel's second-order entry computed two independent ways, a few minutes
 over a 600,000-point grid), `run_fibre_twin.py` (`fibre_twin.csv`) and
-`run_paired_reference_forecast.py` (`paired_reference_forecast.csv`, about
-three minutes of Monte-Carlo comparing the paired cell-plus-fibre
-acquisition against unreferenced sweeps, with no traces needed).
+`run_paired_reference_forecast.py` (`paired_reference_forecast.csv`,
+Monte-Carlo comparing the paired cell-plus-fibre acquisition against
+unreferenced sweeps, with no traces needed. It draws six
+independent base seeds per configuration and concatenates them, and is
+byte-identical at every worker count. Measured on a ten-core machine on
+2026-09-02, three times and independently, spanning 668 to 789 s
+sequential, about 240 s at three workers, 153 to 170 s at six and 142 s
+at eight, the spread being other load. The replication multiplied the
+cost by about five, and the figures before it are not comparable).
 
 **`run_fibre_twin.py` was absent from this page as a standing omission**, the
 same defect the paragraph above records. `run_transit_additivity.py` was

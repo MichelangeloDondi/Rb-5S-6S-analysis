@@ -60,6 +60,24 @@ ROOT = Path(__file__).resolve().parents[1]
 #
 # checker path (relative to the repo root) -> why it is not wired
 NOT_WIRED = {
+    # Added 2026-09-04. Neither is a checker; both were swept in because the
+    # population is "*.py under private/checks", which is a path rule rather
+    # than a kind rule. The other two orphans of that sweep WERE checkers and
+    # are now called by scripts/ci_gate.sh, and one of them returned a real
+    # defect on its first ever run.
+    "private/checks/_population.py":
+        "a shared helper, not a checker: leading underscore by this tree's "
+        "own convention, no main and no argv, and it is imported by the "
+        "checkers that use it rather than run. It is the rung-1 form of "
+        "LOGIC 19.138, so the thing that exercises it is every check that "
+        "imports it, and a caller of its own would test nothing.",
+    "private/checks/plant_persist_ledger.py":
+        "a plant, not a guard: it builds a throwaway repository in a "
+        "tempdir to prove board_ledger._persist refuses a non-temp path, "
+        "and it is run by hand at the moment that guard is changed. "
+        "Wiring a plant into the gate would run a destructive rehearsal on "
+        "every push to prove something no commit can regress without "
+        "touching the guard it plants against.",
     "private/checks/opus_reports_check.py":
         "session-scoped: it counts completed agent transcripts in the "
         "live session's task directory against the filed verbatim "

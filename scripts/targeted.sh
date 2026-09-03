@@ -77,6 +77,27 @@ grep -qE '^scripts/run_|^scripts/make_' <<<"$CHANGED" && add \
   tests/test_results_index_is_complete.py tests/test_pipeline_order.py \
   tests/test_checkers_are_wired.py tests/test_repo_hygiene.py \
   tests/test_docs_canonical.py
+# AND THE TEST FILES THAT LOAD THAT PRODUCER BY PATH. The branch above
+# adds a fixed generic set and stops, while the rb5s6s branch below maps
+# a changed module to its own test file by name. A changed producer had
+# no such mapping at all, and on 2026-09-02 that cost a CRITICAL: three
+# producers gained an import that broke two sibling test files at
+# COLLECTION and silently defanged a third, and this script stamped
+# green over 2470 passing tests without ever loading any of the three.
+# Producers are not named `tests/test_<stem>.py` by convention, so the
+# map is by CONTENT: a test that names the producer in a
+# spec_from_file_location owns it.
+grep -qE '^scripts/(run_|make_|_)' <<<"$CHANGED" && while read -r f; do
+  case "$f" in scripts/*.py)
+    stem="$(basename "${f%.py}")"
+    while read -r owner; do add "$owner"; done < <(
+      # the file list is ENUMERATED, not filtered by --include: that
+      # flag let stale __pycache__/*.pyc through, and a compiled test
+      # carries both strings as constants, so pytest was handed .pyc
+      # paths and refused to collect anything at all
+      find tests -maxdepth 1 -name 'test_*.py' -print0 2>/dev/null | xargs -0 -r grep -l -- "$stem" 2>/dev/null | xargs -r grep -l 'spec_from_file_location' 2>/dev/null)
+    ;; esac
+  done <<<"$CHANGED"
 grep -q '^rb5s6s/' <<<"$CHANGED" && while read -r f; do
   case "$f" in rb5s6s/*.py)
     t="tests/test_$(basename "${f%.py}").py"; add "$t";; esac

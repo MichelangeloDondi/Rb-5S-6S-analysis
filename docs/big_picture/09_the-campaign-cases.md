@@ -131,22 +131,46 @@ Everything in scenario one, plus five additions no cell can provide.
   recommended record length, its two-channel behaviour unstated in
   the record. Verdicts are against a
   [0.7](../../results/paired_reference_forecast.csv "ref:paired_reference_forecast:design:ratio_threshold")
-  decisive-gain threshold, each with its distance in the run's own
-  sigma. At the comb-limit excursion class the worst ratio is
-  [0.735](../../results/paired_reference_forecast.csv "ref:paired_reference_forecast:span_j0.028:worst_shift_ratio")
-  ± [0.040](../../results/paired_reference_forecast.csv "ref:paired_reference_forecast:span_j0.028:worst_shift_ratio:err"):
-  under one sigma from the bar, no side licensed. From the mid class
-  the criterion clears,
-  [0.490](../../results/paired_reference_forecast.csv "ref:paired_reference_forecast:span_j0.05:worst_shift_ratio")
-  ± [0.023](../../results/paired_reference_forecast.csv "ref:paired_reference_forecast:span_j0.05:worst_shift_ratio:err")
-  at about nine sigma, reaching twenty-nine at the ceiling class.
-  With the cleanest spanned lock the pairing sits near parity,
-  [0.957](../../results/paired_reference_forecast.csv "ref:paired_reference_forecast:limit:clean_lock_ratio_analog")
-  ± [0.046](../../results/paired_reference_forecast.csv "ref:paired_reference_forecast:limit:clean_lock_ratio_analog:err")
-  measured against
+  decisive-gain threshold. Each configuration is drawn at
+  [6](../../results/paired_reference_forecast.csv "ref:paired_reference_forecast:design:grid_replicates")
+  independent base seeds, concatenated, so these are not single draws.
+  At the comb-limit excursion class the worst ratio is
+  [0.705](../../results/paired_reference_forecast.csv "ref:paired_reference_forecast:span_j0.028:worst_shift_ratio")
+  ± [0.015](../../results/paired_reference_forecast.csv "ref:paired_reference_forecast:span_j0.028:worst_shift_ratio:err")
+  and the criterion reads
+  [unresolved](../../results/paired_reference_forecast.csv "ref:paired_reference_forecast:span_j0.028:criterion"):
+  under one sigma from the bar, no side licensed. **That error is how
+  well this forecast knows the number, not what one run would give.**
+  A single campaign at the same configuration realises the ratio with a
+  spread of
+  [0.029](../../results/paired_reference_forecast.csv "ref:paired_reference_forecast:analog/j0.028/d0:shift_err_ratio_one_campaign:err"),
+  twice the forecast's own, so a real run at this excursion class can
+  land on either side of the bar while the forecast's knowledge of the
+  mean does not move. The two are different quantities and the file
+  carries both, per configuration. From the mid class it
+  [clears](../../results/paired_reference_forecast.csv "ref:paired_reference_forecast:span_j0.05:criterion"),
+  [0.4727](../../results/paired_reference_forecast.csv "ref:paired_reference_forecast:span_j0.05:worst_shift_ratio")
+  ± [0.0097](../../results/paired_reference_forecast.csv "ref:paired_reference_forecast:span_j0.05:worst_shift_ratio:err"),
+  and it
+  [clears](../../results/paired_reference_forecast.csv "ref:paired_reference_forecast:span_j0.1:criterion")
+  again at the ceiling class. Each row carries its own distance to the
+  bar in sigma.
+  With the cleanest spanned lock the pairing sits near parity on both
+  branches,
+  [0.997](../../results/paired_reference_forecast.csv "ref:paired_reference_forecast:limit:clean_lock_ratio_analog")
+  ± [0.021](../../results/paired_reference_forecast.csv "ref:paired_reference_forecast:limit:clean_lock_ratio_analog:err")
+  analog and
+  [0.960](../../results/paired_reference_forecast.csv "ref:paired_reference_forecast:limit:clean_lock_ratio_counting")
+  ± [0.020](../../results/paired_reference_forecast.csv "ref:paired_reference_forecast:limit:clean_lock_ratio_counting:err")
+  counting. Each branch is measured against its own error
+  decomposition, the analog against
   [0.96](../../results/paired_reference_forecast.csv "ref:paired_reference_forecast:check:clean_lock_decomposition_analog")
-  from its own error decomposition, failing the bar by more than
-  five sigma. So the decision row reads
+  and the counting against
+  [0.94](../../results/paired_reference_forecast.csv "ref:paired_reference_forecast:check:clean_lock_decomposition_counting").
+  At that limit the criterion
+  [fails](../../results/paired_reference_forecast.csv "ref:paired_reference_forecast:span_j0.009:criterion"):
+  the pairing buys no decisive gain, and the file carries how far. So
+  the decision row reads
   [conditional](../../results/paired_reference_forecast.csv "ref:paired_reference_forecast:decision:adopt_paired_default"):
   the scheduled lock characterisation measures which class the
   apparatus is in (the drift item of
@@ -154,7 +178,18 @@ Everything in scenario one, plus five additions no cell can provide.
   run reads the excursion), and the geometry choice follows it. The
   pairing removes the laser only: Stark, Zeeman and transit kernels
   stay modelled offsets. No width is shared, on the record's own
-  sigma_laser caveat, and the width-error ratio measures at parity.
+  sigma_laser caveat, and the width-error ratio measures at parity in
+  [29](../../results/paired_reference_forecast.csv "ref:paired_reference_forecast:check:width_ratio_within_2sigma")
+  of its
+  [32](../../results/paired_reference_forecast.csv "ref:paired_reference_forecast:check:width_ratio_within_2sigma:err")
+  rows, the three exceptions sitting between two and three sigma, which
+  is about what that many draws give when parity holds. Two of the
+  three are the analog branch at the comb best-fit excursion, at
+  different drifts, and the third is the counting branch at the
+  ceiling. That is a concentration, not an even scatter, so the
+  best-fit excursion is where to look first if the count moves. (The
+  comb-limit class, which the worst ratio above is quoted from, has no
+  row past two sigma at all.)
   A cell reference on alternating separate sweeps sits between these
   modes, an unmodelled limit in the producer. The quartet spans
   gigahertz against a megahertz sweep and stays pinned across

@@ -70,7 +70,7 @@ fitted floor exponent's standard error, from the log-log fit's
 covariance, propagated through the closed form by evaluating at
 p_floor +- se. Only the power factor depends on p_floor, but every
 share moves with it through the common denominator, so every index
-carries an err (LOGIC 8a.1) at two significant digits (8a.2), and so
+carries an err (LANGUAGE 8a.1) at two significant digits (8a.2), and so
 does interaction_share, which the Monte Carlo version carried bare.
 
 THE CROSS-CHECK. The Saltelli/Jansen machinery is retained and run

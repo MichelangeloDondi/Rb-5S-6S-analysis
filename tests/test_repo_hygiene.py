@@ -1953,3 +1953,165 @@ def test_tests_loading_private_code_carry_a_skip_guard():
     assert _unguarded_private_loaders(
         {"tests/test_gate_verdict.py": disarmed}, loaders) == [
         "tests/test_gate_verdict.py"]
+
+
+def test_no_library_function_falls_back_to_an_entropy_seed_unasked():
+    """A generator opened with no seed makes a committed CSV
+    irreproducible, and the freshness check reports that as DRIFT - a
+    producer disagreeing with its file - which sends a reader looking
+    for a physics change.
+
+    Two functions carry `rng=None` with a `default_rng()` fallback:
+    `synthetic_traces` and `acquire`. Measured 2026-09-02, ZERO call
+    sites omit the argument, so this is planted while its population is
+    empty, which is the only honest moment to plant it.
+
+    Failure mode guarded: one forgotten argument, and a committed
+    result that cannot be reproduced, diagnosed as drift.
+    """
+    import ast
+
+    fallback = set()
+    for mod in sorted((ROOT / "rb5s6s").glob("*.py")):
+        src = mod.read_text(encoding="utf-8")
+        if "default_rng()" not in src:
+            continue
+        for node in ast.walk(ast.parse(src)):
+            if isinstance(node, ast.FunctionDef):
+                seg = ast.get_source_segment(src, node) or ""
+                if "np.random.default_rng()" in seg:
+                    fallback.add(node.name)
+    assert fallback, (
+        "no function was found with an entropy fallback, so this guard "
+        "is grading an empty population and would pass over any number "
+        "of them")
+
+    # THE POPULATION IS RECURSIVE AND INCLUDES tests/. The first
+    # version globbed three directories non-recursively, so a call in
+    # `examples/scenarios/` was invisible, and it omitted `tests/`
+    # entirely - the directory a brief had claimed was measured.
+    # An ALIASED call (`f = synthetic_traces; f(...)`) is still
+    # invisible and is stated here rather than left to be discovered:
+    # closing it needs name resolution this guard does not do, and no
+    # such alias exists today.
+    bad = []
+    seen_calls = 0
+    for f in sorted(ROOT.rglob("*.py")):
+        rel = f.relative_to(ROOT).as_posix()
+        if not rel.startswith(("scripts/", "rb5s6s/", "examples/", "tests/")):
+            continue
+        try:
+            tree = ast.parse(f.read_text(encoding="utf-8"))
+        except (SyntaxError, UnicodeDecodeError):
+            continue
+        for node in ast.walk(tree):
+            if not isinstance(node, ast.Call):
+                continue
+            name = ast.unparse(node.func).split(".")[-1]
+            if name not in fallback:
+                continue
+            seen_calls += 1
+            if "rng" not in {k.arg for k in node.keywords}:
+                bad.append(f"{f.relative_to(ROOT)}:{node.lineno}: "
+                           f"{name}() without rng=")
+    assert seen_calls, (
+        "no call site of a fallback function was found at all, so this "
+        "guard is grading an empty population - which is a different "
+        "thing from finding no defect, and the two must not look alike")
+    assert not bad, (
+        "these call sites let a generator be seeded from entropy, so "
+        "the result they produce cannot be reproduced:\n  "
+        + "\n  ".join(bad))
+
+
+def test_a_check_script_never_returns_zero_when_it_cannot_run():
+    """A check that exits 0 without checking asserts something it never
+    looked at.
+
+    `_m25_parallel_smoke.py` did exactly that for the life of the file,
+    on every checkout without the excluded session trees - which is
+    every checkout but the owner's, CI included - and a board named it
+    as a plant while it was reporting a pass it never earned.
+
+    The population is deliberately narrow: scripts whose NAME says they
+    check. A PRODUCER returning 0 without writing leaves its committed
+    file standing as the record, which is defensible; a check doing so
+    is not. 77 is the house code for could-not-run.
+
+    Failure mode guarded: a new check that early-returns on an absent
+    input tree and reads as green everywhere the input is absent.
+    """
+    import ast
+
+    bad = []
+    checked = 0
+    for f in sorted(ROOT.glob("scripts/*.py")):
+        if not any(w in f.stem for w in ("check", "smoke", "verify")):
+            continue
+        try:
+            tree = ast.parse(f.read_text(encoding="utf-8"))
+        except (SyntaxError, UnicodeDecodeError):
+            continue
+        seen_guard = False
+        for node in ast.walk(tree):
+            if not isinstance(node, ast.If):
+                continue
+            test = ast.unparse(node.test)
+            if "not " not in test or not any(
+                    k in test for k in ("is_dir()", "is_file()", "exists()")):
+                continue
+            seen_guard = True
+            for st in node.body:
+                # THREE WAYS TO EXIT ZERO, not one. A first version
+                # matched `return 0` alone and let both of the others
+                # through - and the bare `return` is the sharpest,
+                # because `run_epoch_checks.py` is wired
+                # `raise SystemExit(main())`, so returning None exits 0
+                # by exactly the route this guard forbids.
+                zero = False
+                if isinstance(st, ast.Return):
+                    zero = (st.value is None
+                            or (isinstance(st.value, ast.Constant)
+                                and st.value.value == 0))
+                elif isinstance(st, ast.Raise) and st.exc is not None:
+                    exc = ast.unparse(st.exc)
+                    zero = exc in ("SystemExit(0)", "SystemExit()")
+                elif (isinstance(st, ast.Expr)
+                      and isinstance(st.value, ast.Call)
+                      and ast.unparse(st.value.func).endswith("exit")):
+                    a = st.value.args
+                    zero = not a or (isinstance(a[0], ast.Constant)
+                                     and a[0].value in (0, None))
+                if zero:
+                    bad.append(f"{f.relative_to(ROOT)}:{st.lineno}")
+        if seen_guard:
+            checked += 1
+    assert checked, (
+        "no check script was found with an absent-input guard, so this "
+        "test is grading an empty population and would pass over any "
+        "number of them")
+    assert not bad, (
+        "these checks return 0 when a precondition is absent, so a "
+        "checkout without it reads them as passing:\n  "
+        + "\n  ".join(bad) + "\n  Use 77, the could-not-run code.")
+
+
+def test_the_could_not_run_code_agrees_across_the_scripts_that_use_it():
+    """77 is the house code and it is typed in more than one file.
+
+    Two carry it today. A third copy typed by hand is how the first two
+    would drift apart, and a check exiting 78 while a reader expects 77
+    is a could-not-run that reads as a failure - or the reverse.
+    """
+    import re
+    seen = {}
+    for f in sorted(ROOT.glob("scripts/*.py")):
+        m = re.search(r"^COULD_NOT_RUN\s*=\s*(\d+)", f.read_text(
+            encoding="utf-8"), re.M)
+        if m:
+            seen[f.relative_to(ROOT).as_posix()] = int(m.group(1))
+    assert len(seen) >= 2, (
+        f"expected the code in at least two scripts, found {seen}: this "
+        "guard is grading a population too small to disagree")
+    assert len(set(seen.values())) == 1, (
+        f"the could-not-run code differs between scripts: {seen}")
