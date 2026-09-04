@@ -44,18 +44,27 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from rb5s6s.amplitudes import predicted_shares  # noqa: E402
-from rb5s6s.constants import PEAKS  # noqa: E402
+from rb5s6s.constants import PEAKS, W0_MEASURED_M, RHO_RETRO, transit_fwhm_from_w0  # noqa: E402
+from rb5s6s.lineshape import stark_shift_S0_mhz  # noqa: E402
 from rb5s6s.forecast import build_world_trace  # noqa: E402
 from rb5s6s.linefit import fit_condition  # noqa: E402
 from rb5s6s.scenario import load_scenario  # noqa: E402
 
 C_M_S = 299_792_458.0
 
-# The truth injected, the record's own committed line (PRELIM medians).
+# The truth injected. The two widths are PRELIM medians of the per-condition
+# joint fits (results/linefit_conditions). The transit and the coefficient are
+# NOT, and used to be written here as though they were.
+# SOURCED, not written down (2026-09-04). The transit stood at 1.8 MHz and
+# the prediction at 0.35, both claimed as the record's own committed line.
+# results/linefit_conditions.csv has gamma_coll and sigma_laser columns and
+# NO transit column, so that provenance was one the file could not carry:
+# the record's transit at its measured waist and 130 C is 0.9575 MHz, and
+# its predicted coefficient is 1.618 MHz per W.
 TRUTH_GAMMA = 0.55
 TRUTH_SIGMA = 1.6
-TRUTH_TRANSIT = 1.8
-KAPPA = 0.35 / 0.225           # the predicted shift coefficient, MHz per W
+TRUTH_TRANSIT = transit_fwhm_from_w0(W0_MEASURED_M, T_C=130.0)
+KAPPA = stark_shift_S0_mhz(1.0, W0_MEASURED_M, rho=RHO_RETRO)
 CYCLES_AT_MAX = 3.0
 NOISE_FRAC_BRIGHT = 0.004
 ADC_LEVELS = 4096

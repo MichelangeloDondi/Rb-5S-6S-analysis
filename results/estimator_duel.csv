@@ -1,17 +1,17 @@
 quantity,key,value,err,unit,status
-bias_profile_mle,S0_3_clean,-0.0232,0.0357,"MHz. RMSE 0.0426. model correct, injected S0 3 MHz, err column is the spread",DIAGNOSTIC
-bias_odd_cumulants,S0_3_clean,-0.9567,0.0348,"MHz. RMSE 0.9574. model correct, injected S0 3 MHz, err column is the spread",DIAGNOSTIC
-bias_profile_mle,S0_3_defect,-2.1446,0.0847,"MHz. RMSE 2.1463. an ASYMMETRIC defect the fitter lacks, injected S0 3 MHz, err column is the spread",DIAGNOSTIC
-bias_odd_cumulants,S0_3_defect,-0.9895,0.0454,"MHz. RMSE 0.9906. an ASYMMETRIC defect the fitter lacks, injected S0 3 MHz, err column is the spread",DIAGNOSTIC
-defect_sensitivity_profile_mle,S0_3,2.1215,,"MHz. How far the bias MOVES when the defect appears. This, not the bias itself, is what robustness means",DIAGNOSTIC
-defect_sensitivity_odd_cumulants,S0_3,0.0328,,"MHz. How far the bias MOVES when the defect appears. This, not the bias itself, is what robustness means",DIAGNOSTIC
-bias_profile_mle,S0_0.35_clean,+0.0265,0.2151,"MHz. RMSE 0.2167. model correct, injected S0 0.35 MHz, err column is the spread",DIAGNOSTIC
-bias_odd_cumulants,S0_0.35_clean,-0.1017,0.0137,"MHz. RMSE 0.1026. model correct, injected S0 0.35 MHz, err column is the spread",DIAGNOSTIC
-bias_profile_mle,S0_0.35_defect,-0.0016,0.1308,"MHz. RMSE 0.1308. an ASYMMETRIC defect the fitter lacks, injected S0 0.35 MHz, err column is the spread",DIAGNOSTIC
-bias_odd_cumulants,S0_0.35_defect,-0.1380,0.0242,"MHz. RMSE 0.1401. an ASYMMETRIC defect the fitter lacks, injected S0 0.35 MHz, err column is the spread",DIAGNOSTIC
-defect_sensitivity_profile_mle,S0_0.35,0.0281,,"MHz. How far the bias MOVES when the defect appears. This, not the bias itself, is what robustness means",DIAGNOSTIC
-defect_sensitivity_odd_cumulants,S0_0.35,0.0364,,"MHz. How far the bias MOVES when the defect appears. This, not the bias itself, is what robustness means",DIAGNOSTIC
-bias_odd_cumulants_correct_sigma,S0_3_defect,-0.9783,0.0375,"MHz. Same as bias_odd_cumulants but with the TRUE laser width 1.6 rather than 2.4. The gap is what the laser width costs the cumulant route, and it is small because a symmetric kernel contributes nothing to a SELF-CENTRED odd moment (the Lorentzian to the truncation fraction docs/wiki/third-cumulant.md quantifies)",DIAGNOSTIC
-kappa3_sigma_blindness_pct,S0_3,110.3,,"per cent change of the self-centred windowed kappa_3, window +/-8 MHz about its own mean (the centre iterated until it equals the windowed mean), laser width 1.6 to 6.4 MHz. Earlier centrings in the two rows below",DIAGNOSTIC
-kappa3_sigma_blindness_labframe_pct,S0_3,3.3,,"the same sweep under the earlier window pinned at the laboratory zero, kept so the retracted variants stay reproducible",DIAGNOSTIC
-kappa3_sigma_blindness_modecentred_pct,S0_3,175.2,,"the same sweep under the earlier smoothed-mode centring on the trace grid, kept so the retracted variants stay reproducible",DIAGNOSTIC
+bias_profile_mle,S0_3_clean,-0.0006,0.0036,"MHz. RMSE 0.0036. model correct, injected S0 3 MHz, err column is the spread",DIAGNOSTIC
+bias_odd_cumulants,S0_3_clean,-0.9642,0.0314,"MHz. RMSE 0.9647. model correct, injected S0 3 MHz, err column is the spread",DIAGNOSTIC
+bias_profile_mle,S0_3_defect,-2.3951,0.0938,"MHz. RMSE 2.3969. an ASYMMETRIC defect the fitter lacks, injected S0 3 MHz, err column is the spread",DIAGNOSTIC
+bias_odd_cumulants,S0_3_defect,-1.0701,0.0454,"MHz. RMSE 1.0710. an ASYMMETRIC defect the fitter lacks, injected S0 3 MHz, err column is the spread",DIAGNOSTIC
+defect_sensitivity_profile_mle,S0_3,2.3944,,"MHz. How far the bias MOVES when the defect appears. This, not the bias itself, is what robustness means",DIAGNOSTIC
+defect_sensitivity_odd_cumulants,S0_3,0.1059,,"MHz. How far the bias MOVES when the defect appears. This, not the bias itself, is what robustness means",DIAGNOSTIC
+bias_profile_mle,S0_0.35_clean,+0.0403,0.2030,"MHz. RMSE 0.2069. model correct, injected S0 0.35 MHz, err column is the spread",DIAGNOSTIC
+bias_odd_cumulants,S0_0.35_clean,-0.1064,0.0102,"MHz. RMSE 0.1068. model correct, injected S0 0.35 MHz, err column is the spread",DIAGNOSTIC
+bias_profile_mle,S0_0.35_defect,-0.1100,0.0520,"MHz. RMSE 0.1216. an ASYMMETRIC defect the fitter lacks, injected S0 0.35 MHz, err column is the spread",DIAGNOSTIC
+bias_odd_cumulants,S0_0.35_defect,-0.1861,0.0128,"MHz. RMSE 0.1866. an ASYMMETRIC defect the fitter lacks, injected S0 0.35 MHz, err column is the spread",DIAGNOSTIC
+defect_sensitivity_profile_mle,S0_0.35,0.1503,,"MHz. How far the bias MOVES when the defect appears. This, not the bias itself, is what robustness means",DIAGNOSTIC
+defect_sensitivity_odd_cumulants,S0_0.35,0.0798,,"MHz. How far the bias MOVES when the defect appears. This, not the bias itself, is what robustness means",DIAGNOSTIC
+bias_odd_cumulants_correct_sigma,S0_3_defect,-0.9797,0.0688,"MHz. Same as bias_odd_cumulants but with the TRUE laser width 1.6 rather than 2.4. The gap is what the laser width costs the cumulant route, and it is small because a symmetric kernel contributes nothing to a SELF-CENTRED odd moment (the Lorentzian to the truncation fraction docs/wiki/third-cumulant.md quantifies)",DIAGNOSTIC
+kappa3_sigma_blindness_pct,S0_3,39.7,,"per cent change of the self-centred windowed kappa_3, window +/-8 MHz about its own mean (the centre iterated until it equals the windowed mean), laser width 1.6 to 6.4 MHz. Earlier centrings in the two rows below",DIAGNOSTIC
+kappa3_sigma_blindness_labframe_pct,S0_3,4.4,,"the same sweep under the earlier window pinned at the laboratory zero, kept so the retracted variants stay reproducible",DIAGNOSTIC
+kappa3_sigma_blindness_modecentred_pct,S0_3,248.4,,"the same sweep under the earlier smoothed-mode centring on the trace grid, kept so the retracted variants stay reproducible",DIAGNOSTIC

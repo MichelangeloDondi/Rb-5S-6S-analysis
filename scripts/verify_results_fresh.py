@@ -392,7 +392,7 @@ _COLUMN_RTOL = {
 #   same at all three.
 #
 #   wide_dchi2 is a raw delta-chi2 map over the wide profile grid. Observed
-#   3.3e-2 on single cells between environments, different cell each run.
+#   4.4e-2 on single cells between environments, different cell each run.
 _ROW_QUANTITY_RTOL = {
     # Cells of the wide profile map that sit ABOVE the pin floor still live on
     # the multi-optimum surface the map exists to draw, so their per-cell
@@ -400,7 +400,7 @@ _ROW_QUANTITY_RTOL = {
     # 4.6e-2 on a single cell, a different cell each run.
     ("identifiability_profile.csv", "wide_transit"): 0.10,
     # wide_dchi2 is a raw delta-chi2 map over the wide profile grid, observed
-    # moving 3.3e-2 on single cells between environments, a different cell each
+    # moving 4.4e-2 on single cells between environments, a different cell each
     # run. This is a per-quantity tolerance and not a per-file one: the sibling
     # quantities in the same file keep the default.
     ("identifiability_profile.csv", "wide_dchi2"): 0.10,

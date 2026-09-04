@@ -551,16 +551,16 @@
    {
     "file": "docs/methods/06_the_statistics.md",
     "line": 598,
-    "writes": "0.0137"
+    "writes": "0.0102"
    },
    {
     "file": "docs/methods/06_the_statistics.md",
-    "line": 656,
-    "writes": "0.0137"
+    "line": 654,
+    "writes": "0.0102"
    }
   ],
   "source_file": "results/estimator_duel.csv",
-  "source_value": "0.0137"
+  "source_value": "0.0102"
  },
  "estimator_duel:bias_profile_mle:S0_0.35_clean:err": {
   "producer": "run_estimator_duel.py",
@@ -568,16 +568,16 @@
    {
     "file": "docs/methods/06_the_statistics.md",
     "line": 599,
-    "writes": "0.2151"
+    "writes": "0.2030"
    },
    {
     "file": "docs/methods/06_the_statistics.md",
-    "line": 656,
-    "writes": "0.2151"
+    "line": 654,
+    "writes": "0.2030"
    }
   ],
   "source_file": "results/estimator_duel.csv",
-  "source_value": "0.2151"
+  "source_value": "0.2030"
  },
  "fibre_twin:O2A_lambda_312nm:coverage_gamma_l": {
   "producer": "run_fibre_twin.py",
@@ -2204,7 +2204,7 @@
    },
    {
     "file": "docs/methods/06_the_statistics.md",
-    "line": 655,
+    "line": 653,
     "writes": "0.364"
    },
    {

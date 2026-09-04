@@ -1,7 +1,7 @@
 quantity,value,err,unit,note,status
-gamma_coll_recovered,0.5734,0.4885,MHz,"median over 20 per-condition joint fits (five repeats each, the record's own protocol) of the dataset_2025 worlds. The err is the median reported per-condition error",DIAGNOSTIC
-sigma_laser_recovered,1.5870,,MHz,"same fits, the injected truth 1.6",DIAGNOSTIC
-A1_gamma_within_band,True,,,"|0.5734 - 0.55| <= 0.0778 (preregistered, linefit_conditions p_sweep median error)",DIAGNOSTIC
-A2_sigma_within_band,True,,,"|1.5870 - 1.6| <= 0.1675 (preregistered, same source)",DIAGNOSTIC
-A3_reported_err_in_scale,False,,,"median reported err over committed median = 6.28, accepted in [0.5, 2.0] (preregistered). Diagnosed by layer elimination: every layer off leaves the ratio, and chi2_red sits near 0.002, so the error is the M1 noise law's absolute floor read against the world builder's normalised units (fit_condition weights in volts, noise_floor_limited). The value channels A1 and A2 are unaffected. The unit-faithful rerun goes through twin.acquire with the loaded law, after leg 3",DIAGNOSTIC
-G1_gage_leg_can_fail,True,,,truth shifted +0.16 MHz recovers 0.7481 and must breach A1's band: a leg that cannot fail has measured nothing,DIAGNOSTIC
+gamma_coll_recovered,0.5681,0.5190,MHz,"median over 20 per-condition joint fits (five repeats each, the record's own protocol) of the dataset_2025 worlds. The err is the median reported per-condition error",DIAGNOSTIC
+sigma_laser_recovered,1.5709,,MHz,"same fits, the injected truth 1.6",DIAGNOSTIC
+A1_gamma_within_band,True,,,"|0.5681 - 0.55| <= 0.0778 (preregistered, linefit_conditions p_sweep median error)",DIAGNOSTIC
+A2_sigma_within_band,True,,,"|1.5709 - 1.6| <= 0.1675 (preregistered, same source)",DIAGNOSTIC
+A3_reported_err_in_scale,False,,,"median reported err over committed median = 6.67, accepted in [0.5, 2.0] (preregistered). Diagnosed by layer elimination: every layer off leaves the ratio, and chi2_red sits near 0.002, so the error is the M1 noise law's absolute floor read against the world builder's normalised units (fit_condition weights in volts, noise_floor_limited). The value channels A1 and A2 are unaffected. The unit-faithful rerun goes through twin.acquire with the loaded law, after leg 3",DIAGNOSTIC
+G1_gage_leg_can_fail,True,,,truth shifted +0.16 MHz recovers 0.7274 and must breach A1's band: a leg that cannot fail has measured nothing,DIAGNOSTIC

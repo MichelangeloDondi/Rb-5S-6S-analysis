@@ -5,7 +5,7 @@
   "results/coverage.csv": 16,
   "results/coverage_grid.csv": 14,
   "results/delta_alpha_posterior.csv": 1,
-  "results/estimator_duel.csv": 9,
+  "results/estimator_duel.csv": 8,
   "results/fit_window_scan.csv": 199,
   "results/full_dataset_fit.csv": 36,
   "results/global_dataset_fit.csv": 26,

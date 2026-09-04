@@ -48,6 +48,8 @@ import sys
 import numpy as np
 
 from rb5s6s import cascade
+from rb5s6s import constants as C
+from rb5s6s.lineshape import stark_shift_S0_mhz
 from rb5s6s import blackbody
 from rb5s6s import stark
 from rb5s6s.amplitudes import predicted_shares
@@ -58,13 +60,18 @@ from rb5s6s.linefit import fit_condition
 C_M_S = 299792458.0
 
 # ---- provenance-tagged inputs (no file reads, per the no-data rule) --------
-# PRELIM medians of the per-condition joint fits (results/linefit_conditions).
+# The two widths are PRELIM medians of the per-condition joint fits
+# (results/linefit_conditions). The transit and the coefficient are NOT, and
+# stood here as though they were: that file has gamma_coll and sigma_laser
+# columns and no transit column at all. Both are taken from the constants
+# (2026-09-04), where the transit at the measured waist and 130 C is 0.9575
+# MHz and the predicted coefficient is 1.618 MHz per W, against the 1.8 and
+# the 1.556 written here before.
 GAMMA_COLL_MHZ = 0.55
 SIGMA_LASER_MHZ = 1.6
-TRANSIT_FWHM_MHZ = 1.8
-# The prediction under test: S0(225 mW) = 0.35 MHz (docs/plan/04; kappa in
-# MHz per W on the transition axis).
-KAPPA_PRED = 0.35 / 0.225
+TRANSIT_FWHM_MHZ = C.transit_fwhm_from_w0(C.W0_MEASURED_M, T_C=130.0)
+# The prediction under test, kappa in MHz per W on the transition axis.
+KAPPA_PRED = stark_shift_S0_mhz(1.0, C.W0_MEASURED_M, rho=C.RHO_RETRO)
 # The 2025 ladder, watts.
 POWERS_W = np.array([0.025, 0.075, 0.125, 0.175, 0.225])
 # Session drift, MHz over the whole session (plan/06's confound scale).

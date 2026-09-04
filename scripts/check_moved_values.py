@@ -172,6 +172,20 @@ ADVISORY_CAP = 12
 # is the gap this scan was extended to cover.
 _DATED = re.compile(r"20\d\d-\d\d-\d\d")
 
+# A CROSS-REFERENCE IS NOT A VALUE, and this cost a certification.
+# `_NUM_ONLY` matches a bare numeral, so a chapter's own "the census of
+# section 3.3" and "Figure 3.3" and its numbered heading "### 2.12" were all
+# read as quoted cells and reported as retired copies. Measured 2026-09-04 on
+# private/THESIS_CHAPTER.md: TEN of twelve hits in that one file were section
+# and figure numbers, plus the retro ratio's own 0.94 +- 0.04, and the two
+# real ones were buried among them. This module's own opening already says a
+# guard whose findings are mostly false trains the eye to skip it. The
+# reference forms are struck from the line before it is tokenised, so a
+# genuine value on the same line still counts.
+_XREF = re.compile(
+    r"(?:\u00a7\s*|(?:Figure|Table|Section|Fig\.|Eq\.|Appendix)\s+)\d+(?:\.\d+)*"
+    r"|^\s*#{1,6}\s+\d+(?:\.\d+)*"
+    r"|^\s*\*{0,2}Figure\s+\d+(?:\.\d+)*")
 _NUM_ONLY = re.compile(r"-?\d+(?:\.\d+)?")
 _BAND_ONLY = re.compile(r"(-?\d+(?:\.\d+)?)\s+to\s+(-?\d+(?:\.\d+)?)")
 
@@ -511,6 +525,7 @@ def scan(stale: dict[str, dict[str, tuple[str, str]]],
             # Searching per literal is O(retired x lines) and took longer
             # than the gate step this sits in; the tokens on a line are a
             # handful, so the comparison is a set lookup.
+            probe = _XREF.sub(" ", probe)
             written = {m.group(0) for m in _NUM_ONLY.finditer(probe)}
             written |= {f"{m.group(1)} to {m.group(2)}"
                         for m in _BAND_ONLY.finditer(probe)}

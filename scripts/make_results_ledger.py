@@ -693,6 +693,15 @@ def main() -> int:
         rp_a = next((r for r in rows("resolving_power")
                      if r["kind"] == "assumption"), None)
         perm_p = f"p = {float(rp_a['ratio']):.2F}" if rp_a else "not computed here"
+        # THE COMMUNITY QUANTITY LEADS (2026-09-04). A peak shift in MHz is this
+        # bench's number: it means nothing to a reader without this waist and
+        # this retro ratio. The differential scalar polarizability is what the
+        # literature reports, what the sum-over-states calculations produce and
+        # what the sign dispute is about, so the bound is stated in atomic units
+        # first and in MHz second. The conversion carries the waist SQUARED, and
+        # the waist is the record's largest open input, so it is named in the
+        # same breath rather than a footnote.
+        from rb5s6s.constants import DELTA_ALPHA_AU as _DA
         W(f"- **C3d. The AC-Stark coefficient from the power lever is an upper bound, "
           f"$S_0$(225 mW) below {ub:.2F} MHz (95%, over-dispersion-adjusted "
           f"profile likelihood, the C3f construction), "
@@ -886,7 +895,11 @@ def main() -> int:
           f"unscaled 2.706 threshold. The over-dispersion widening of "
           f"`rb5s6s/stark.py` belongs to C3d's width-only bound, not to this "
           f"joint construction, a misattribution caught on 2026-08-04 "
-          f"and this sentence corrects)."
+          f"and this sentence corrects). "
+          f"**As a polarizability that is below "
+          f"{abs(_DA) * v('S0_225mW_ub95','primary') / pr:.0F} a.u. against the "
+          f"{abs(_DA):.0F} this record carries**, so the bound sits below what it "
+          f"tests, carrying the waist squared."
           f"\n\n  Instead "
           f"of C3d's 20 summary widths, every point of every canonical "
           f"power-sweep profile enters a joint maximum-likelihood fit, "

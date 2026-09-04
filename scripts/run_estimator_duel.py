@@ -46,11 +46,16 @@ sys.path.insert(0, str(ROOT / "scripts"))
 from _producer_lock import take_producer_lock                     # noqa: E402
 from rb5s6s import config as C                                    # noqa: E402
 from rb5s6s._compat import trapezoid as tz                        # noqa: E402
+from rb5s6s.constants import W0_MEASURED_M, transit_fwhm_from_w0  # noqa: E402
 from rb5s6s.lineshape import model_profile                        # noqa: E402
 
 OUT = C.RESULTS_DIR / "estimator_duel.csv"
 
-GAMMA, SIGMA, TRANSIT = 0.55, 1.6, 1.8      # MHz, the campaign twin's own widths
+# MHz, the campaign twin's own widths. The transit is now the twin's, where
+# a retired 1.8 stood here (2026-09-04): the record's transit at its measured
+# waist and 130 C is 0.9575, and no committed row ever held 1.8.
+GAMMA, SIGMA = 0.55, 1.6
+TRANSIT = transit_fwhm_from_w0(W0_MEASURED_M, T_C=130.0)
 SIGMA_HANDED_TO_B = 2.4                     # deliberately 50% wrong, to show parity
 NU = np.linspace(-20, 20, 2001)
 W1, W2 = 8.0, 16.0                          # the two moment windows, MHz
@@ -169,8 +174,8 @@ def main() -> int:
     def _k3_centred(sigma):
         # MEAN-centred by fixed point on a fine local grid, with the
         # earlier centrings emitted as rows below so every retracted
-        # number stays reproducible: mean-centred 110.3, lab-frame 3.3,
-        # mode-on-trace-grid 175.2 (all per cent, this sweep, the rows'
+        # number stays reproducible: mean-centred 39.7, lab-frame 4.4,
+        # mode-on-trace-grid 248.4 (all per cent, this sweep, the rows'
         # own values). The first version used the mode and shipped an
         # irreproducible figure; mode and mean differ by O(S0), and that
         # offset leaks kappa_1 into kappa_3. The trio shares a four-pass
