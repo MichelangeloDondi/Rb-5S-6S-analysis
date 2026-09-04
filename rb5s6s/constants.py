@@ -313,8 +313,19 @@ resolution, so no experiment has set the sign either way.
 
 WHAT THE ADOPTION MOVES, stated because it is not nothing: every BOUND
 in this record uses |Delta_alpha| and is untouched, but the PREDICTED
-light shift is computed from this constant and rises 4.6 per cent, from
-0.348 to 0.364 MHz at 225 mW (kappa_pred 1.545 -> 1.618 MHz/W). Both sit
+light shift is computed from this constant and rises 4.8 per cent, from
+0.348 to 0.364 MHz at 225 mW (kappa_pred 1.545 -> 1.618 MHz/W). The ratio is
+of the CONSTANTS, 1145/1093 = 1.04758, and this line said 4.6 until 2026-09-04
+because it had been taken from the printed cells instead: 0.364 over 0.348 is
+4.598. Both figures appear in this record and neither is loose. results/README
+says the two FILES disagree by 4.6 per cent, which is the printed cells and is
+right for what it claims. The 4.7 per cent elsewhere in this file and in
+hyperpolarizability.py is a third statement and its denominator is not
+ambiguous: it is the UNROUNDED line-list value against Orson's, and
+delta_alpha(993.4) = -1144.6461 over 1093 gives 4.7252. Rounding that
+magnitude to -1145 first is what turns it into 4.758. A ratio is only
+checkable beside its denominator and its precision, which is why this one now
+carries both. Both sit
 inside the predicted band 0.30-0.38 MHz that the measured waist already
 implies, and the bound at 0.258 excludes the prediction either way, with
 the margin widening from 1.35x to 1.41x. The joint fit's committed

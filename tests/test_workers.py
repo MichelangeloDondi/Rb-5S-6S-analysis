@@ -78,8 +78,17 @@ def test_the_producer_reads_the_seam_and_not_its_own_copy():
         pytest.skip(f"the producer needs {exc.name}, absent here")
     old = os.environ.get(ENV_VAR)
     try:
+        # DERIVED, not written. This asked for three and asserted three,
+        # which is only true where the ceiling is at least three: the
+        # module derives MAX_WORKERS as cpu_count minus two, so a
+        # four-core runner clamps to two and this line failed on every
+        # public CI run from 2026-09-03 while passing on the ten-core
+        # machine it was written on. The module's own docstring says the
+        # ceiling is derived and wrong for a small host; the test did not
+        # follow it.
+        want = min(3, MAX_WORKERS)
         os.environ[ENV_VAR] = "3"
-        assert mod.n_workers() == 3
+        assert mod.n_workers() == want
         os.environ[ENV_VAR] = str(MAX_WORKERS + 4)
         assert mod.n_workers() == MAX_WORKERS
     finally:
@@ -93,7 +102,7 @@ def test_the_real_environment_path_is_the_one_callers_use(monkeypatch):
     takes. A seam that read a snapshot taken at import would pass all
     of them and serve a stale number to every producer."""
     monkeypatch.setenv(ENV_VAR, "2")
-    assert n_workers() == 2
+    assert n_workers() == min(2, MAX_WORKERS)
     monkeypatch.setenv(ENV_VAR, "0")
     assert n_workers() == 0
     monkeypatch.delenv(ENV_VAR, raising=False)

@@ -63,9 +63,10 @@ Several unrelated values were corrected on this date, tabulated below with the f
 |---|---|---|
 | original | 0.258 MHz, mislabeled bound | 4.5 kHz |
 | first correction | 0.35 MHz, rounded, wrong file | 6.1 kHz |
-| live | 0.348 MHz, from `stark_joint.csv` | 6.0 kHz |
+| second correction | 0.348 MHz, from `stark_joint.csv` | 6.0 kHz |
+| live | [0.364](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred:shared") MHz, from `stark_sweep.csv` | 6.3 kHz |
 
-Both values now come from `stark_joint.csv` at run time, each cell naming the shift it used, tied to the two documents by a registry entry.
+The prediction now comes from `stark_sweep.csv` and the bound from `stark_joint.csv`, each cell naming the shift it used. `scripts/run_polarisation_bound.py` carries the reason they differ. The systematic had fallen 4.5 per cent short.
 
 ## The saturation companion factor, 2026-08-23
 

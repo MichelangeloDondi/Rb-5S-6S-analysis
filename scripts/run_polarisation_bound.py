@@ -60,27 +60,38 @@ FWHM_NOMINAL = 5.37
 
 
 def _s0_225():
-    """The two differential scalar shifts the record carries at 225 mW, read
-    from results/stark_joint.csv rather than hard-coded.
+    """The two differential scalar shifts the record carries at 225 mW, each
+    read from the file that owns it rather than hard-coded.
 
     THEY ARE DIFFERENT STATEMENTS and this producer used to conflate them. The
     CALIBRATED PREDICTION is what the light shift is expected to be. The 95 per
     cent UPPER BOUND is what the widths permit, and it happens to sit BELOW the
     prediction. A systematic has to be sized against the larger of the two, so
     the prediction is the headline here and the bound is carried beside it.
+
+    THEY COME FROM DIFFERENT FILES, and that is the 2026-09-04 repair. Both
+    used to be read from results/stark_joint.csv, which the freshness check
+    exempts because its producer needs an excluded trace tree and about five
+    hours. That reason covers the bound, which the traces determine. It does
+    not cover the prediction, which is computed from constants alone, and that
+    row still stands at the polarizability this record retired on 2026-08-25:
+    0.348 MHz where the adopted value gives 0.364. Sizing a systematic against
+    the smaller number understated it by 4.8 per cent, in the flattering
+    direction. The prediction now comes from results/stark_sweep.csv, which IS
+    in the checked set and carries the current value. The bound stays in the
+    joint file, because the sweep's row of that name is a replaced diagnostic
+    of a different construction and reads 2.205.
     """
     import csv as _csv
-    src = REPO / "results" / "stark_joint.csv"
-    got = {}
-    with open(src) as fh:
-        for r in _csv.DictReader(fh):
-            if r["quantity"] in ("S0_225mW_pred", "S0_225mW_ub95"):
-                got[r["quantity"]] = float(r["value"])
-    missing = {"S0_225mW_pred", "S0_225mW_ub95"} - set(got)
-    if missing:
-        raise KeyError(f"{src.name} is missing {sorted(missing)}, so the "
-                       f"vector spread cannot be sized against a named shift")
-    return got["S0_225mW_pred"], got["S0_225mW_ub95"]
+    def _row(fname, key):
+        src = REPO / "results" / fname
+        with open(src) as fh:
+            for r in _csv.DictReader(fh):
+                if r["quantity"] == key:
+                    return float(r["value"])
+        raise KeyError(f"{fname} is missing {key!r}, so the vector spread "
+                       f"cannot be sized against a named shift")
+    return _row("stark_sweep.csv", "S0_225mW_pred"), _row("stark_joint.csv", "S0_225mW_ub95")
 
 
 def _weighted(vals, errs):

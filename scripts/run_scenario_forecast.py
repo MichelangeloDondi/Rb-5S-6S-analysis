@@ -44,6 +44,9 @@ from _producer_lock import take_producer_lock     # noqa: E402
 import numpy as np
 
 from rb5s6s import fibre  # noqa: E402
+from rb5s6s import constants as C  # noqa: E402
+from rb5s6s.constants import transit_fwhm_from_w0  # noqa: E402
+from rb5s6s.lineshape import stark_shift_S0_mhz  # noqa: E402
 from rb5s6s.forecast import forecast_precision  # noqa: E402
 from rb5s6s.workers import n_workers  # noqa: E402
 from rb5s6s.noise import load_noise_model  # noqa: E402
@@ -52,9 +55,17 @@ from rb5s6s.scenario import load_scenario  # noqa: E402
 # The record's committed line, the truth the forecast perturbs around.
 GAMMA_COLL_MHZ = 0.55        # PRELIM medians, results/linefit_conditions
 SIGMA_LASER_MHZ = 1.6
-TRANSIT_FWHM_64UM_MHZ = 1.8  # at the 64 um lineage waist
-S0_225MW_64UM_MHZ = 0.348    # results/stark_joint.csv S0_225mW_pred
+# SOURCED, not written down (2026-09-04). The
+# transit stood at 1.8 MHz, the retired 32 um figure relabelled, 88 per cent
+# above what this file's own 130 C and the record's 64 um waist give. The shift
+# stood at the retired polarizability. Neither was reachable by the sweep that
+# closed the transit class, because its pattern could not match an identifier
+# carrying digits.
+TRANSIT_FWHM_64UM_MHZ = transit_fwhm_from_w0(C.W0_MEASURED_M, T_C=130.0)
+S0_225MW_64UM_MHZ = stark_shift_S0_mhz(0.225, C.W0_MEASURED_M, rho=C.RHO_RETRO)
 NOISE_FRAC = 0.004           # the 2025 bright-rung dither regime
+GAGE_SEEDS = 5               # G3's verdict is a median over seeds, see below
+GAGE_TRIALS = 24             # where all eight measured seeds cleared the gate
 # The measured-law rows generate and weight in the bench's own volts: the
 # acquisition layer's peak convention, 0.8 of a 1.0 V full scale. The flat
 # rows keep amp = 1 normalised, which is what every committed forecast row
@@ -236,7 +247,7 @@ def main() -> int:
                          "committed delta", "ENVELOPE"])
             rows.append([name, f"w0_{w0:g}um", "s0_225mW",
                          f"{truth['s0']:.4f}", _two_sig(s0_err), "MHz",
-                         "the committed 0.348 MHz at 64 um scaled by "
+                         f"the record's {S0_225MW_64UM_MHZ:.3f} MHz at 64 um scaled by "
                          "(64/w0)^2, geometry only", "CALIB"])
         if sc.fibre is not None:
             mode = fibre.solve_he11(sc.fibre.diameter_nm, LAMBDA_NM)
@@ -285,19 +296,34 @@ def main() -> int:
     # rung's two-photon amplitude the floor dominates and the knob shows.
     amp_dim = AMP_LAW_V * (0.025 / 0.225) ** 2
     dg = {"n_traces": 5, "n_points": 2000, "T_C": 130.0, "amp": amp_dim}
-    seed_g = zlib.crc32(b"gage:G3") % (2 ** 31)
-    base_g = forecast_precision(tg, {**dg, "noise": law}, n_trials=N_TRIALS,
-                                seed=seed_g, scalings=False)
-    law2 = dict(law); law2["a"] = 2.0 * law["a"]
-    dbl_g = forecast_precision(tg, {**dg, "noise": law2}, n_trials=N_TRIALS,
-                               seed=seed_g, scalings=False)
-    moved = 100.0 * (dbl_g["gamma_coll_err"] / base_g["gamma_coll_err"] - 1.0)
+    # THE VERDICT IS A MEDIAN OVER SEEDS, AND THAT IS THE 2026-09-04 REPAIR.
+    # One seed at N_TRIALS was inside its own noise. Measured over eight seeds
+    # at six trials the movement runs +7.6 to +106.4 per cent, standard
+    # deviation 34.5 against a threshold of 10, and it passes on seven of the
+    # eight. The committed seed happened to be the eighth once the transit was
+    # sourced, and read -7 per cent: a knob that IS wired, reported unwired.
+    # At twenty-four trials the spread is 26.0 and all eight seeds pass. So the
+    # gage takes the median of GAGE_SEEDS draws at GAGE_TRIALS, which is what
+    # makes its verdict a property of the wiring rather than of the seed. The
+    # gage's own history already carried one misreading of this statistic, put
+    # down at the time to the wrong rung.
+    moves = []
+    for gi in range(GAGE_SEEDS):
+        seed_g = zlib.crc32(f"gage:G3:{gi}".encode()) % (2 ** 31)
+        base_g = forecast_precision(tg, {**dg, "noise": law}, n_trials=GAGE_TRIALS,
+                                    seed=seed_g, scalings=False)
+        law2 = dict(law); law2["a"] = 2.0 * law["a"]
+        dbl_g = forecast_precision(tg, {**dg, "noise": law2}, n_trials=GAGE_TRIALS,
+                                   seed=seed_g, scalings=False)
+        moves.append(100.0 * (dbl_g["gamma_coll_err"] / base_g["gamma_coll_err"] - 1.0))
+    moved = float(np.median(moves))
     rows.append(["gage", "G3", "law_floor_doubling_moves_error",
-                 str(moved > 10.0), "", "",
+                 str(moved > 10.0), f"{np.std(moves, ddof=1):.0f}", "",
                  f"doubling the law's floor moves the dim-rung campaign error "
-                 f"by {moved:+.0f} per cent, required past +10 per the "
-                 "preregistration: a law knob that moves nothing is not "
-                 "wired", "DIAGNOSTIC"])
+                 f"by {moved:+.0f} per cent, the median of {GAGE_SEEDS} seeds at "
+                 f"{GAGE_TRIALS} trials with the err column carrying their spread, "
+                 "required past +10 per the preregistration: a law knob that "
+                 "moves nothing is not wired", "DIAGNOSTIC"])
     out = ROOT / "results" / "scenario_forecast.csv"
     with out.open("w", newline="", encoding="utf-8") as fh:
         w = csv.writer(fh)

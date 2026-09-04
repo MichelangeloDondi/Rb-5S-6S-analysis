@@ -182,7 +182,7 @@ experiment is for. It reaches 0.4 per cent of one error bar.
 A fourth candidate is elliptical polarisation, computed 2026-08-20 from this
 package's own line lists. The differential vector polarizability is 1.7 per
 cent of the differential scalar one at the drive wavelength, so an imperfectly
-polarised beam spreads the magnetic sublevels by 6.0 kHz at the campaign's
+polarised beam spreads the magnetic sublevels by 6.3 kHz at the campaign's
 highest power even for fully circular light, against per-condition width
 errors near 30 kHz. It is small enough to leave every current bound untouched.
 It is named here because it stops being small once centres rather than widths

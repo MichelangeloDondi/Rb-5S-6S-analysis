@@ -113,7 +113,7 @@
    },
    {
     "file": "docs/history/01_bounds-and-the-light-shift.md",
-    "line": 85,
+    "line": 86,
     "writes": "7.3"
    },
    {
@@ -130,7 +130,7 @@
   "quoting_sites": [
    {
     "file": "docs/history/01_bounds-and-the-light-shift.md",
-    "line": 83,
+    "line": 84,
     "writes": "14.4"
    }
   ],
@@ -166,7 +166,7 @@
   "quoting_sites": [
    {
     "file": "docs/history/01_bounds-and-the-light-shift.md",
-    "line": 89,
+    "line": 90,
     "writes": "3.48"
    },
    {
@@ -188,7 +188,7 @@
   "quoting_sites": [
    {
     "file": "docs/history/01_bounds-and-the-light-shift.md",
-    "line": 91,
+    "line": 92,
     "writes": "0.48"
    },
    {
@@ -263,7 +263,7 @@
    },
    {
     "file": "docs/history/01_bounds-and-the-light-shift.md",
-    "line": 108,
+    "line": 109,
     "writes": "24"
    }
   ],
@@ -1721,7 +1721,7 @@
   "quoting_sites": [
    {
     "file": "docs/history/01_bounds-and-the-light-shift.md",
-    "line": 72,
+    "line": 73,
     "writes": "2.75"
    },
    {
@@ -2102,7 +2102,7 @@
   "quoting_sites": [
    {
     "file": "docs/history/01_bounds-and-the-light-shift.md",
-    "line": 129,
+    "line": 130,
     "writes": "0.348"
    },
    {
@@ -2194,7 +2194,12 @@
   "quoting_sites": [
    {
     "file": "docs/history/01_bounds-and-the-light-shift.md",
-    "line": 123,
+    "line": 67,
+    "writes": "0.364"
+   },
+   {
+    "file": "docs/history/01_bounds-and-the-light-shift.md",
+    "line": 124,
     "writes": "0.364"
    },
    {
@@ -2210,6 +2215,11 @@
    {
     "file": "docs/wiki/identifiability.md",
     "line": 204,
+    "writes": "0.364"
+   },
+   {
+    "file": "docs/wiki/magnetic-sublevels.md",
+    "line": 138,
     "writes": "0.364"
    }
   ],
