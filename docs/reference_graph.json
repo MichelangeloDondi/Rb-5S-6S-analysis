@@ -318,6 +318,119 @@
   "source_file": "results/collisional_shift_bound.csv",
   "source_value": "0.03170"
  },
+ "cumulant_window_check:kappa1_window_excess_pct:gc0.55": {
+  "producer": "run_cumulant_window_check.py",
+  "quoting_sites": [
+   {
+    "file": "docs/methods/03_the_ac_stark_ramp.md",
+    "line": 192,
+    "writes": "0.051"
+   },
+   {
+    "file": "results/README.md",
+    "line": 50,
+    "writes": "0.051"
+   }
+  ],
+  "source_file": "results/cumulant_window_check.csv",
+  "source_value": "0.051"
+ },
+ "cumulant_window_check:survival_full_line:gc0.2": {
+  "producer": "run_cumulant_window_check.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/third-cumulant.md",
+    "line": 50,
+    "writes": "0.525"
+   }
+  ],
+  "source_file": "results/cumulant_window_check.csv",
+  "source_value": "0.525"
+ },
+ "cumulant_window_check:survival_full_line:gc0.55": {
+  "producer": "run_cumulant_window_check.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/third-cumulant.md",
+    "line": 50,
+    "writes": "0.489"
+   }
+  ],
+  "source_file": "results/cumulant_window_check.csv",
+  "source_value": "0.489"
+ },
+ "cumulant_window_check:survival_full_line:gc1.1": {
+  "producer": "run_cumulant_window_check.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/third-cumulant.md",
+    "line": 51,
+    "writes": "0.438"
+   }
+  ],
+  "source_file": "results/cumulant_window_check.csv",
+  "source_value": "0.438"
+ },
+ "cumulant_window_check:survival_lorentzian_alone:gc0.2": {
+  "producer": "run_cumulant_window_check.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/third-cumulant.md",
+    "line": 52,
+    "writes": "0.577"
+   }
+  ],
+  "source_file": "results/cumulant_window_check.csv",
+  "source_value": "0.577"
+ },
+ "cumulant_window_check:survival_lorentzian_alone:gc1.1": {
+  "producer": "run_cumulant_window_check.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/third-cumulant.md",
+    "line": 52,
+    "writes": "0.491"
+   }
+  ],
+  "source_file": "results/cumulant_window_check.csv",
+  "source_value": "0.491"
+ },
+ "cumulant_window_check:survival_vs_S0:S0_0.364": {
+  "producer": "run_cumulant_window_check.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/third-cumulant.md",
+    "line": 55,
+    "writes": "0.498"
+   }
+  ],
+  "source_file": "results/cumulant_window_check.csv",
+  "source_value": "0.498"
+ },
+ "cumulant_window_check:survival_vs_S0:S0_1": {
+  "producer": "run_cumulant_window_check.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/third-cumulant.md",
+    "line": 56,
+    "writes": "0.497"
+   }
+  ],
+  "source_file": "results/cumulant_window_check.csv",
+  "source_value": "0.497"
+ },
+ "cumulant_window_check:survival_vs_S0:S0_3": {
+  "producer": "run_cumulant_window_check.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/third-cumulant.md",
+    "line": 57,
+    "writes": "0.489"
+   }
+  ],
+  "source_file": "results/cumulant_window_check.csv",
+  "source_value": "0.489"
+ },
  "delta_alpha_posterior:budget:geometry_share_of_variance": {
   "producer": "run_delta_alpha_posterior.py",
   "quoting_sites": [
@@ -431,6 +544,40 @@
   ],
   "source_file": "results/delta_alpha_posterior.csv",
   "source_value": "837"
+ },
+ "estimator_duel:bias_odd_cumulants:S0_0.35_clean:err": {
+  "producer": "run_estimator_duel.py",
+  "quoting_sites": [
+   {
+    "file": "docs/methods/06_the_statistics.md",
+    "line": 598,
+    "writes": "0.0137"
+   },
+   {
+    "file": "docs/methods/06_the_statistics.md",
+    "line": 656,
+    "writes": "0.0137"
+   }
+  ],
+  "source_file": "results/estimator_duel.csv",
+  "source_value": "0.0137"
+ },
+ "estimator_duel:bias_profile_mle:S0_0.35_clean:err": {
+  "producer": "run_estimator_duel.py",
+  "quoting_sites": [
+   {
+    "file": "docs/methods/06_the_statistics.md",
+    "line": 599,
+    "writes": "0.2151"
+   },
+   {
+    "file": "docs/methods/06_the_statistics.md",
+    "line": 656,
+    "writes": "0.2151"
+   }
+  ],
+  "source_file": "results/estimator_duel.csv",
+  "source_value": "0.2151"
  },
  "fibre_twin:O2A_lambda_312nm:coverage_gamma_l": {
   "producer": "run_fibre_twin.py",
@@ -856,6 +1003,119 @@
   "source_file": "results/guided_mode_tables.csv",
   "source_value": "97.7"
  },
+ "identifiability:anisotropy_ratio:split_over_total": {
+  "producer": "run_identifiability.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/identifiability.md",
+    "line": 206,
+    "writes": "18.6"
+   },
+   {
+    "file": "docs/wiki/identifiability.md",
+    "line": 206,
+    "writes": "18.6"
+   }
+  ],
+  "source_file": "results/identifiability.csv",
+  "source_value": "18.6"
+ },
+ "identifiability:best_constrained_sigma:total_width": {
+  "producer": "run_identifiability.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/identifiability.md",
+    "line": 206,
+    "writes": "0.0032"
+   }
+  ],
+  "source_file": "results/identifiability.csv",
+  "source_value": "0.0032"
+ },
+ "identifiability:width_signature_broadening_khz:cusp_branch": {
+  "producer": "run_identifiability.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/identifiability.md",
+    "line": 204,
+    "writes": "7.23"
+   }
+  ],
+  "source_file": "results/identifiability.csv",
+  "source_value": "7.23"
+ },
+ "identifiability:width_signature_broadening_khz:gaussian_branch": {
+  "producer": "run_identifiability.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/identifiability.md",
+    "line": 204,
+    "writes": "6.48"
+   }
+  ],
+  "source_file": "results/identifiability.csv",
+  "source_value": "6.48"
+ },
+ "identifiability:width_signature_centre_over_width:cusp_branch": {
+  "producer": "run_identifiability.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/identifiability.md",
+    "line": 204,
+    "writes": "33.6"
+   }
+  ],
+  "source_file": "results/identifiability.csv",
+  "source_value": "33.6"
+ },
+ "identifiability:width_signature_centre_over_width:gaussian_branch": {
+  "producer": "run_identifiability.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/identifiability.md",
+    "line": 204,
+    "writes": "37.4"
+   }
+  ],
+  "source_file": "results/identifiability.csv",
+  "source_value": "37.4"
+ },
+ "identifiability:width_signature_fwhm_mhz:cusp_branch": {
+  "producer": "run_identifiability.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/identifiability.md",
+    "line": 204,
+    "writes": "5.3179"
+   }
+  ],
+  "source_file": "results/identifiability.csv",
+  "source_value": "5.3179"
+ },
+ "identifiability:width_signature_fwhm_mhz:gaussian_branch": {
+  "producer": "run_identifiability.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/identifiability.md",
+    "line": 204,
+    "writes": "5.4036"
+   }
+  ],
+  "source_file": "results/identifiability.csv",
+  "source_value": "5.4036"
+ },
+ "identifiability:worst_constrained_sigma:split": {
+  "producer": "run_identifiability.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/identifiability.md",
+    "line": 206,
+    "writes": "0.0588"
+   }
+  ],
+  "source_file": "results/identifiability.csv",
+  "source_value": "0.0588"
+ },
  "laser_epoch:sigma_laser_bound:over_w0_band": {
   "producer": "run_laser_epoch.py",
   "quoting_sites": [
@@ -1073,7 +1333,7 @@
   "quoting_sites": [
    {
     "file": "docs/history/09_the-guided-geometry.md",
-    "line": 78,
+    "line": 75,
     "writes": "1.851"
    },
    {
@@ -1090,7 +1350,7 @@
   "quoting_sites": [
    {
     "file": "docs/history/09_the-guided-geometry.md",
-    "line": 77,
+    "line": 74,
     "writes": "30.7"
    },
    {
@@ -1175,7 +1435,7 @@
    },
    {
     "file": "docs/history/09_the-guided-geometry.md",
-    "line": 77,
+    "line": 74,
     "writes": "0.67"
    },
    {
@@ -1841,6 +2101,11 @@
   "producer": "run_stark_joint.py",
   "quoting_sites": [
    {
+    "file": "docs/history/01_bounds-and-the-light-shift.md",
+    "line": 129,
+    "writes": "0.348"
+   },
+   {
     "file": "docs/quantities/ac-stark-light-shift.md",
     "line": 114,
     "writes": "0.348"
@@ -1928,13 +2193,62 @@
   "producer": "run_stark_sweep.py",
   "quoting_sites": [
    {
+    "file": "docs/history/01_bounds-and-the-light-shift.md",
+    "line": 123,
+    "writes": "0.364"
+   },
+   {
+    "file": "docs/methods/06_the_statistics.md",
+    "line": 655,
+    "writes": "0.364"
+   },
+   {
     "file": "docs/plan/00_the-case.md",
     "line": 98,
+    "writes": "0.364"
+   },
+   {
+    "file": "docs/wiki/identifiability.md",
+    "line": 204,
     "writes": "0.364"
    }
   ],
   "source_file": "results/stark_sweep.csv",
   "source_value": "0.364"
+ },
+ "stark_sweep:S0_225mW_pred_hi:shared": {
+  "producer": "run_stark_sweep.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/identifiability.md",
+    "line": 204,
+    "writes": "0.396"
+   },
+   {
+    "file": "results/README.md",
+    "line": 270,
+    "writes": "0.396"
+   }
+  ],
+  "source_file": "results/stark_sweep.csv",
+  "source_value": "0.396"
+ },
+ "stark_sweep:S0_225mW_pred_lo:shared": {
+  "producer": "run_stark_sweep.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/identifiability.md",
+    "line": 204,
+    "writes": "0.316"
+   },
+   {
+    "file": "results/README.md",
+    "line": 270,
+    "writes": "0.316"
+   }
+  ],
+  "source_file": "results/stark_sweep.csv",
+  "source_value": "0.316"
  },
  "stark_sweep:chi2_red:fit": {
   "producer": "run_stark_sweep.py",

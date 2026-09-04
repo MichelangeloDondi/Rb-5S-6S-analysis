@@ -46,13 +46,25 @@ of how the qualification was reached is in
    density is even, so a window symmetric about the line centre cancels its
    odd moments, and the self-centred windowed $\kappa_3$ keeps a
    truncation-limited fraction of the ramp's own $S_0^3/135$. For this
-   record's line at the $S_0 = 3$ MHz reference the fraction is 0.42, 0.39,
-   0.34 at $\gamma_\mathrm{coll} = 0.2, 0.55, 1.1$ MHz, 0.58 to 0.49 for
-   the bare core the textbook case describes, and it stays finite at small
-   shifts, 0.20 at the archive's own 0.35 MHz
+   record's line at the $S_0 = 3$ MHz reference the fraction is
+   [0.525](../../results/cumulant_window_check.csv "ref:cumulant_window_check:survival_full_line:gc0.2"), [0.489](../../results/cumulant_window_check.csv "ref:cumulant_window_check:survival_full_line:gc0.55") and
+   [0.438](../../results/cumulant_window_check.csv "ref:cumulant_window_check:survival_full_line:gc1.1") at $\gamma_\mathrm{coll} = 0.2, 0.55, 1.1$ MHz,
+   [0.577](../../results/cumulant_window_check.csv "ref:cumulant_window_check:survival_lorentzian_alone:gc0.2") to [0.491](../../results/cumulant_window_check.csv "ref:cumulant_window_check:survival_lorentzian_alone:gc1.1") for
+   the bare core the textbook case describes. The ratio is independent of the
+   shift only while the shift is small against the window: at the archive's
+   own shift the row reads [0.498](../../results/cumulant_window_check.csv "ref:cumulant_window_check:survival_vs_S0:S0_0.364")
+   and at 1 MHz [0.497](../../results/cumulant_window_check.csv "ref:cumulant_window_check:survival_vs_S0:S0_1") (the producer refuses a gap above
+   one per cent between those two), and at the 3 MHz reference [0.489](../../results/cumulant_window_check.csv "ref:cumulant_window_check:survival_vs_S0:S0_3"),
+   because the fixed spectral window clips more of the composite's tails as the
+   shift grows (a fall the producer measures and no page yet derives), once the ramp is resolved on the model's grid (a first version
+   put the ramp on fewer than five of the model's grid cells and read a lower
+   number, which two pages then explained as physics), and each row prints the number of
+   grid cells its ramp spans
    ([the rows](../../results/cumulant_window_check.csv), kernel widths and
-   conventions in their notes, every row convergence-checked at doubled
-   resolution).
+   conventions in their notes, every row checked against the unrounded value at
+   half the model grid step, half the ambient grid, twice the window grid and
+   twice the fixed-point passes. The values before 2026-09-04 rested on a transit literal
+   the producer no longer carries).
 3. **Mis-centring is where the sensitivity lives.** A window off the line
    centre by $\delta$ injects roughly $(2/\pi)\gamma\delta W$ into
    $\kappa_3$ ($\gamma$ again the half-width): the first cumulant leaking

@@ -228,6 +228,12 @@ def composite_profile(gamma_coll: float, sigma_laser: float,
             f"string as Lorentzian, so a typo chose a MODEL FORM "
             f"silently, which is the systematic this record spends its "
             f"kernel chain measuring.")
+    # DELIBERATELY NOT _kernel_widths: this path clamps negative collisional and
+    # laser widths, which the model's own path does not (both clamp gamma_l), so
+    # unifying them would change behaviour on
+    # clamped inputs (absent kernels are excluded from the grid step in both:
+    # here when `widths` is built, and in the model's path one level down in
+    # model_grid_step_mhz, not in _kernel_widths itself) (2026-09-04).
     _lorentz_laser = laser_kind != "gaussian"
     homog = (GAMMA_NAT_HZ / 1e6 + max(gamma_coll, 0.0) + max(gamma_l, 0.0)
              + (max(sigma_laser, 0.0) if _lorentz_laser else 0.0))
@@ -439,11 +445,54 @@ def _grid(span: float, dnu: float) -> np.ndarray:
     return (np.arange(-n, n + 1)) * dnu
 
 
+def _kernel_widths(gamma_coll, sigma_laser_fwhm, transit_fwhm, gamma_nat_mhz, laser_kind, gamma_l):
+    """The one computation of the smooth kernels' widths, for model_profile and
+    for model_grid_step_mhz (a reader found the two carrying textually identical
+    copies, 2026-09-04): returns (lorentzian laser?, the homogeneous FWHM, the
+    kernel widths that set the grid)."""
+    lorentz_laser = laser_kind != "gaussian"
+    homog = (gamma_nat_mhz + gamma_coll + max(gamma_l, 0.0)
+             + (sigma_laser_fwhm if lorentz_laser else 0.0))
+    kernel_widths = ([homog] + ([] if lorentz_laser else [sigma_laser_fwhm])
+                     + [transit_fwhm])
+    return lorentz_laser, homog, kernel_widths
+
+
+def model_grid_step_mhz(*, gamma_coll: float, sigma_laser_fwhm: float,
+                        transit_fwhm: float, s0: float = 0.0,
+                        gamma_nat_mhz: float = GAMMA_NAT_HZ / 1e6,
+                        laser_kind: str = "gaussian", gamma_l: float = 0.0,
+                        resolve_shift: bool = False,
+                        grid_steps_per_kernel: float | None = None) -> float:
+    """The internal grid step model_profile convolves on, in MHz.
+
+    Public so a producer that must know how many cells its ramp spans asks
+    the model instead of re-deriving the rule beside it: the first such
+    mirror (2026-09-04) named a constant the producer did not have, and a
+    mirror that drifts from the model is exactly the blind spot A33 found.
+    The rule: the narrowest smooth kernel over ``grid_steps_per_kernel``
+    (the module constant when None), the shift joining the candidates only
+    under ``resolve_shift``, floored at GRID_STEP_FLOOR_MHZ.
+    """
+    _lorentz_laser, homog, kernel_widths = _kernel_widths(gamma_coll, sigma_laser_fwhm, transit_fwhm,
+                                                          gamma_nat_mhz, laser_kind, gamma_l)
+    steps = GRID_STEPS_PER_KERNEL if grid_steps_per_kernel is None else float(grid_steps_per_kernel)
+    grid_widths = kernel_widths + ([s0] if (resolve_shift and s0 > 0) else [])
+    positive = [w for w in grid_widths if w > 0]
+    # every width zero is a degenerate call rather than an error: the floor is
+    # the answer, and the docstring promised it unconditionally while min() on
+    # an empty candidate list raised (2026-09-04)
+    dnu = (min(positive) / steps) if positive else GRID_STEP_FLOOR_MHZ
+    return max(dnu, GRID_STEP_FLOOR_MHZ)
+
+
 def model_profile(nu: np.ndarray, *, gamma_coll: float, sigma_laser_fwhm: float,
                   transit_fwhm: float, s0: float = 0.0,
                   gamma_nat_mhz: float = GAMMA_NAT_HZ / 1e6,
                   laser_kind: str = "gaussian", gamma_l: float = 0.0,
-                  profile: Callable[[np.ndarray, float], np.ndarray] = stark_ramp
+                  profile: Callable[[np.ndarray, float], np.ndarray] = stark_ramp,
+                  resolve_shift: bool = False,
+                  grid_steps_per_kernel: float | None = None,
                   ) -> np.ndarray:
     """Area-normalized composite line on the transition axis (MHz).
 
@@ -504,18 +553,27 @@ def model_profile(nu: np.ndarray, *, gamma_coll: float, sigma_laser_fwhm: float,
             f"string as Lorentzian, so a typo chose a MODEL FORM "
             f"silently, which is the systematic this record spends its "
             f"kernel chain measuring.")
-    _lorentz_laser = laser_kind != "gaussian"
-    homog = (gamma_nat_mhz + gamma_coll + max(gamma_l, 0.0)
-             + (sigma_laser_fwhm if _lorentz_laser else 0.0))
-    kernel_widths = ([homog] + ([] if _lorentz_laser else [sigma_laser_fwhm])
-                     + [transit_fwhm])
+    _lorentz_laser, homog, kernel_widths = _kernel_widths(gamma_coll, sigma_laser_fwhm, transit_fwhm,
+                                                          gamma_nat_mhz, laser_kind, gamma_l)
     span_widths = kernel_widths + ([s0] if s0 > 0 else [])
     span = 6.0 * (sum(span_widths) + max(span_widths)) + 5.0
     # grid step from the smooth kernels only: stark_ramp handles s0 below the
     # grid step exactly (cell integrals + moment correction), so a tiny s0
     # must not explode the grid (fix, 2026-07-11)
-    dnu = min(w for w in kernel_widths if w > 0) / GRID_STEPS_PER_KERNEL
-    dnu = max(dnu, GRID_STEP_FLOOR_MHZ)
+    # The grid is set by the smooth kernels; the ramp handles a shift below one
+    # cell exactly in its mean, but a derivative of the profile (a windowed
+    # moment, a width difference) converges only when the ramp itself is
+    # resolved: the error collapses on the ramp's cell count (found 2026-09-04:
+    # 0.478 to 0.498 on the survival ratio and 7.48 to a value about three per
+    # cent lower on the cusp-branch broadening; with the shift on the grid the
+    # steps per kernel and the shift together set that count). resolve_shift
+    # adds the shift to the widths that set the grid; grid_steps_per_kernel
+    # overrides the module constant.
+    dnu = model_grid_step_mhz(gamma_coll=gamma_coll, sigma_laser_fwhm=sigma_laser_fwhm,
+                              transit_fwhm=transit_fwhm, s0=s0, gamma_nat_mhz=gamma_nat_mhz,
+                              laser_kind=laser_kind, gamma_l=gamma_l,
+                              resolve_shift=resolve_shift,
+                              grid_steps_per_kernel=grid_steps_per_kernel)
     g = _grid(span, dnu)
 
     prof = lorentzian(g, homog)

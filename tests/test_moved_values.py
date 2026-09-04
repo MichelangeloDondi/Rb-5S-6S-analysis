@@ -157,6 +157,61 @@ def test_the_history_now_column_is_graded_and_the_was_column_is_not(mv):
     assert graded[2] == {2}, (
         "only the `now` cell may be graded; grading the whole row reports "
         "the `was` cell, which is the account")
+    bound = [
+        "| quantity | value | date | construction | what moved it | standing |",
+        "|---|---|---|---|---|---|",
+        "| beam waist | 0.611 | 2026-07-13 | a note | arithmetic | retracted |",
+    ]
+    assert mv.history_now_columns(bound)[2] == set(), (
+        "a bound-history row is a value as recorded on its date, retired by "
+        "design; no cell of it is a live claim")
+    dated = [
+        "| quantity | value | date | file |",
+        "|---|---|---|---|",
+        "| the width | 0.611 | 2026-07-13 | `results/m.csv` |",
+    ]
+    assert mv.history_now_columns(dated)[2] == {0, 1, 2, 3}, (
+        "a table with a date column and no standing column is not a bound "
+        "history: every cell is graded (the carve-out needs both names, "
+        "a seat reverted it in a clone and the suite stayed green, 2026-09-04)")
+    apparatus = [
+        "| date | etalon lock | ref-cav lock | ecd lock |",
+        "|---|---|---|---|",
+        "| 2026-08-16 | locked | 0.611 | free |",
+    ]
+    assert mv.history_now_columns(apparatus)[2] == {0, 1, 2, 3}, (
+        "a live apparatus log with a date column (docs/APPARATUS.md carries "
+        "three) is graded in every cell")
+    standing_only = [
+        "| quantity | value | standing |",
+        "|---|---|---|",
+        "| the width | 0.611 | open |",
+    ]
+    assert mv.history_now_columns(standing_only)[2] == {0, 1, 2}, (
+        "a standing column alone is not a bound history either")
+
+
+def test_the_hub_index_is_graded_by_its_now_cell_like_the_chapter_tables(mv, repo, capsys):
+    """docs/HISTORY.md is the same table as the chapter tables and joined the
+    now-cell rule on 2026-09-04, when two of its rows carried a retired literal
+    in their title and was cells at a board's open."""
+    _point_at(mv, repo)
+    base = _run(repo, "rev-parse", "HEAD~1").strip()  # the fixture's first commit, before the values moved
+    hub = repo / "docs" / "HISTORY.md"
+    hub.write_text("| quantity | was | now | live value in |\n|---|---|---|---|\n"
+                   "| the mode area (0.611 in the title) | 0.611 | 0.615 | `results/m.csv` |\n")
+    (repo / "docs" / "note.md").write_text("Quoting `results/m.csv`: the area is 0.615 um^2.\n")
+    _run(repo, "add", "-A")
+    _run(repo, "commit", "-q", "-m", "the hub row and a corrected note")
+    rc = mv.main(["check_moved_values.py", base])
+    assert rc in (0, 2), capsys.readouterr().out
+    hub.write_text("| quantity | was | now | live value in |\n|---|---|---|---|\n"
+                   "| the mode area | 0.615 | 0.611 | `results/m.csv` |\n")
+    _run(repo, "add", "-A")
+    _run(repo, "commit", "-q", "-m", "a stale now cell")
+    rc = mv.main(["check_moved_values.py", base])
+    out = capsys.readouterr().out
+    assert rc == 1 and "docs/HISTORY.md" in out, out
 
 
 def test_a_csv_with_no_value_column_is_reported_as_unchecked(mv, repo, capsys):
@@ -193,3 +248,64 @@ def test_the_blind_region_is_stated_in_the_docstring(mv):
     doc = mv.__doc__ or ""
     assert "THE PLANT FAILED" in doc
     assert "never" in doc.lower() and "ref:" in doc
+    assert "rounded-copy" in doc.lower() and "markdown only" in doc.lower(), "the advisory's blind region (markdown only) must be stated in the docstring"
+
+
+# --- appended 2026-09-04 by the landing board's second round (concision seat, SEVERE:
+# the advisory shipped without a test) -----------------------------------------
+def test_rounded_forms_round_half_up_and_keep_every_collision():
+    """The rounded-copy advisory's core: a retired literal's two-decimal form is
+    the writer's rounding (half-up: 0.415 is 0.42, not the binary 0.41), a
+    literal with fewer than three significant digits or a band is skipped, and
+    two literals that round alike are BOTH kept under the one key (0.386 and
+    0.393 both round to 0.39; the first version silently dropped one, a near
+    miss the physics seat measured). Failure mode if this regresses: a rounded
+    echo of a retired cell passes the scan, which is how four of them lived on a
+    wiki page through a clean run on 2026-09-04 (private/ANALYSIS_FINDINGS_2026-09-03.md, A26)."""
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("cm", ROOT / "scripts" / "check_moved_values.py")
+    m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m)
+    retired = {"0.415": ("a", "0.527", True), "0.386": ("b", "0.492", True), "0.393": ("c", "0.497", True),
+               "0.5": ("d", "0.6", True), "1.08 to 1.25": ("e", "row", True), "0.201": ("f", "0.494", True)}
+    out = m._rounded_forms(retired)
+    assert out["0.42"] == ["0.415"]
+    assert sorted(out["0.39"]) == ["0.386", "0.393"], "a collision must keep both literals"
+    assert out["0.20"] == ["0.201"]
+    assert "0.50" not in out and "0.5" not in out, "fewer than three significant digits is not distinctive"
+    assert not any(" to " in k for k in out), "bands are never rounded"
+
+
+def test_prose_under_a_results_page_row_inherits_its_file_and_a_second_page_does_not(mv, repo, capsys):
+    """The per-line rule for pages under results/ (2026-09-04): a line naming
+    no file inherits the nearest earlier row's CSVs, a row of another file
+    keeps its own numbers, and the inheritance is reset per page. The fixture
+    covers both directions: a bullet under a table row that quotes a
+    retired value without naming the file (must be found), and the first
+    line of the NEXT page quoting the same digits (must not be attributed to
+    the previous page's file)."""
+    _point_at(mv, repo)
+    (repo / "results" / "A.md").write_text(
+        "| `results/m.csv` | the mode area | 0.615 um^2 |\n"
+        "\n"
+        "* the area is 0.611 um^2 in the row above, a stale copy quoted with no file named\n")
+    (repo / "results" / "B.md").write_text(
+        "0.611 is a number of this page's own, naming no file, and must not inherit A's\n"
+        "\n"
+        "| `results/m.csv` | the mode area | 0.615 um^2 |\n")
+    _run(repo, "add", "-A")   # the scan's population is git-defined: an unadded page is invisible to it
+    assert mv.main(["check_moved_values.py", "HEAD~1"]) == 1
+    out = capsys.readouterr().out
+    assert "results/A.md" in out and "0.611" in out, "the bullet under A's row must be found through the inheritance"
+    assert "results/B.md" not in out, "the inheritance leaked across the page boundary"
+
+
+def test_a_base_that_is_not_a_commit_is_refused_with_the_reason(mv, repo, capsys):
+    """A tree hash resolves as an object but cannot bound git log; the scan used to accept it
+    and report a false completeness (2026-09-04). It now says so and falls back."""
+    _point_at(mv, repo)
+    tree = _run(repo, "write-tree").strip()
+    rc = mv.main(["check_moved_values.py", tree])
+    out = capsys.readouterr().out
+    assert rc == 1, "the fixture's moved value is a finding, so the scan exits 1 after the fallback"
+    assert "0.611" in out, "after the fallback the scan must still find the fixture's moved value"
+    assert "as a commit" in out and "falling back" in out

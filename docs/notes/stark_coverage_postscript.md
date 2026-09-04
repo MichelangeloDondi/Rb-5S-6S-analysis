@@ -71,16 +71,23 @@ so costs kappa information that the real data never lose. The over-dispersed
 arm is therefore a pessimistic caricature rather than a model of this dataset.
 
 **A wrong diagnosis, proposed and then refuted here, because the refutation is
-the useful part.** The rail rate is 14 per cent where a naive argument expects
-50, and the first reading of that was an optimiser failing to reach the
+the useful part.** The rail rate at the zero-shift cell is 14 per cent in the
+over-dispersed arm and 6 per cent in the nominal one (91 and 41 of 650, in
+the run's own summary), against the 50 a naive argument gives there, and the first reading of that was an optimiser failing to reach the
 boundary, which would have made the whole over-coverage result an artefact. It
 is testable: if the minimiser were failing, the unrailed fits would sit at
 worse chi-square than the railed ones. Measured, they sit at better, 3.83
 against 4.27 mean reduced chi-square. The unrailed fits found genuinely lower
-minima, the optimiser is working, and the low rail rate is the zero-gradient
-boundary `rb5s6s/stark.py` already describes: the width handle broadens as the
-square of the shift, so the information at the boundary is zero and the minimum
-is quartic-flat. The naive 50 per cent never applied.
+minima and the optimiser is working. The low rail rate is not the quartic
+flatness of the boundary, which this note claimed when it was written: the
+residual alone at zero shift rails half the time, because the profiled residual
+is second order in the shift and a linear estimator of it is negative half the
+time under the null (derived on `docs/wiki/identifiability.md`, corrected
+2026-09-04), so a rate near one half is what that argument predicts at zero
+shift. The measured zero-shift rates sit a factor of three to eight below it,
+and the discrepancy is real and open: the argument concerns a coefficient
+linear in the data, and the railed quantity is the profiled fit's boundary,
+which need not behave as that coefficient.
 
 **What this does and does not cost.** The direction of the primary result
 survives, because over-covering at a boundary is a property of the threshold

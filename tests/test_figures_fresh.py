@@ -78,7 +78,24 @@ def _embedded(name: str):
     return Image.open(p).text.get("DataFingerprint")
 
 
-@pytest.mark.parametrize("name", DATA_DRIVEN)
+def _fingerprinted() -> list[str]:
+    """Every figure carrying a DataFingerprint, discovered from the PNGs
+    themselves rather than from a hand-kept list. Added 2026-09-04 after a
+    seat read the stamps back: 39 of 41 figures carried one and DATA_DRIVEN
+    named 13, so 26 fingerprinted figures (fig33_identifiability_matrix among
+    them) were never checked for freshness. A figure without a stamp is
+    exempt only through tests/test_figures_have_a_producer.py."""
+    figs = C.REPO_ROOT / "figures"
+    if not figs.is_dir():
+        return []
+    return sorted(p.stem for p in figs.glob("*.png")
+                  if Image.open(p).text.get("DataFingerprint") is not None)
+
+
+CHECKED = sorted(set(DATA_DRIVEN) | set(_fingerprinted()))
+
+
+@pytest.mark.parametrize("name", CHECKED)
 def test_figure_drawn_from_current_results(name):
     embedded = _embedded(name)
     current = C.results_fingerprint()
@@ -94,10 +111,18 @@ def test_figure_drawn_from_current_results(name):
         f"scripts/make_figures.py and commit the updated PNGs.")
 
 
+def test_discovery_covers_the_hand_list():
+    """The discovered population contains every hand-listed figure, so a
+    change that stopped make_figures.py stamping could not empty the check
+    silently."""
+    missing = sorted(set(DATA_DRIVEN) - set(_fingerprinted()))
+    assert not missing, f"hand-listed figures carry no DataFingerprint: {missing}"
+
+
 def test_all_data_driven_figures_share_one_fingerprint():
     # They are all drawn in one make_figures.py run, so a split fingerprint means
     # a partial/hand-edited regeneration -- exactly the half-updated state to catch.
-    fps = {name: _embedded(name) for name in DATA_DRIVEN}
+    fps = {name: _embedded(name) for name in CHECKED}
     distinct = set(fps.values())
     assert len(distinct) == 1, f"figures drawn from different results snapshots: {fps}"
 

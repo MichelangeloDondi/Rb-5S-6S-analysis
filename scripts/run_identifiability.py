@@ -55,6 +55,10 @@ WIDE_SL = (0.2, 2.8, 21)
 ZOOM_NSD, ZOOM_N = 6.0, 21
 
 
+FWHM_DECIMALS = 4     # the width rows print to this many decimals of MHz
+BROAD_DECIMALS = 2    # the broadening rows to this many decimals of kHz
+
+
 def main() -> int:
     rows = load_manifest()
     prate = {}
@@ -186,6 +190,79 @@ def main() -> int:
                     "MHz; 1sigma on the best-constrained width combination (~the total)"])
         w.writerow(["worst_constrained_sigma", "split", f"{r['worst_constrained_sigma']:.4f}",
                     "MHz; 1sigma on the degenerate split direction"])
+        # The width channel's whole signal at the predicted shift, per fitted
+        # branch, so the wiki's identifiability page quotes producer cells and
+        # not prose arithmetic (a pure-Gaussian estimate of 3.9 kHz stood in a
+        # withdrawn chapter where the real line, two thirds Lorentzian, gives
+        # about 1.8 times more). The shift is sourced through the package's
+        # own function at the sweep's 225 mW operating point; the only
+        # literals here are that operating point and the grid.
+        from rb5s6s.lineshape import stark_shift_S0_mhz, total_fwhm_mhz  # noqa: PLC0415
+        s0_pred = stark_shift_S0_mhz(0.225, C.W0_MEASURED_M, rho=C.RHO_RETRO)
+        # np.convolve is direct, not FFT, so the grid is what the half-maximum
+        # interpolation needs and no finer: 2 kHz steps over +-30 MHz. A
+        # first version used 1e-4 MHz over +-40 and ran for an hour without
+        # reaching this line. The self-check below doubles the MODEL's grid
+        # steps until the row's printed digits stop moving, then offsets the
+        # output grid's phase by half a step.
+        grid = np.arange(-30.0, 30.0, 2e-3)
+        shifted = grid + 1e-3                      # the same grid at a half-step phase
+        w.writerow(["anisotropy_ratio", "split_over_total",
+                    f"{r['worst_constrained_sigma'] / r['best_constrained_sigma']:.1f}",
+                    "ratio, worst_constrained_sigma over best_constrained_sigma, the split against the total"])
+        w.writerow(["s0_pred_225mW", "shared", f"{s0_pred:.3f}",
+                    "MHz, stark_shift_S0_mhz(0.225 W, W0_MEASURED_M, RHO_RETRO), the shift the rows below are evaluated at"])
+        for name, rb in (("gaussian_branch", r_gauss), ("cusp_branch", r_cusp)):
+            kw = dict(gamma_coll=rb["fit"]["gamma_coll"], sigma_laser_fwhm=rb["fit"]["sigma_laser"],
+                      transit_fwhm=rb["fit"]["transit"])
+            # The model's own grid is the axis the broadening moves on (found
+            # 2026-09-04: about three per cent of the cusp broadening between
+            # twelve and ninety-six steps per kernel with the ramp unresolved);
+            # the ramp is resolved, the check doubles the model's steps and
+            # offsets the output grid's phase.
+            # the tolerance is derived from the print format, half the last printed digit
+            # in the row's own unit, so a widened format tightens the check by construction
+            # (a reader found the hand-picked 2e-5 twice the printed precision, 2026-09-04)
+            TOL_BROAD = 0.5e-3 * 10.0 ** -BROAD_DECIMALS   # MHz
+            TOL_FWHM = 0.5 * 10.0 ** -FWHM_DECIMALS          # MHz
+            steps = 48.0
+            mk = dict(kw, resolve_shift=True, grid_steps_per_kernel=steps)
+            # double the model's grid steps until the broadening and the width both
+            # move by less than half their last printed digit; the converged pair is written
+            f0 = total_fwhm_mhz(grid, s0=0.0, **mk); f1 = total_fwhm_mhz(grid, s0=s0_pred, **mk)
+            sequence = [(steps, f0, f1)]
+            while True:
+                steps *= 2.0
+                if steps > 1536.0:
+                    raise SystemExit(f"width_signature {name}: not converged by {steps / 2:g} steps per shift; no row written")
+                mk = dict(kw, resolve_shift=True, grid_steps_per_kernel=steps)
+                g0 = total_fwhm_mhz(grid, s0=0.0, **mk); g1 = total_fwhm_mhz(grid, s0=s0_pred, **mk)
+                sequence.append((steps, g0, g1))
+                # the tolerance and the printed digits both: a pair within the tolerance can
+                # still print differently across a rounding boundary (a reader found the
+                # converged cusp value 0.6 of a tolerance from one, 2026-09-04)
+                same_digits = (round(1e3 * (g1 - g0), BROAD_DECIMALS) == round(1e3 * (f1 - f0), BROAD_DECIMALS)
+                               and round(g0, FWHM_DECIMALS) == round(f0, FWHM_DECIMALS))
+                if abs((g1 - g0) - (f1 - f0)) < TOL_BROAD and abs(g0 - f0) < TOL_FWHM and same_digits:
+                    break
+                f0, f1 = g0, g1
+            print("      convergence " + ", ".join(f"{s:g}: {1e3 * (b - a):.4f} kHz" for s, a, b in sequence))
+            c0, c1 = g0, g1                            # the converged pair, named apart from the loop's own
+            # the second axis, the output grid's phase, checked against the converged pair; the
+            # doubling axis is the loop's own break condition and is not re-tested here (a reader
+            # found the re-test comparing a pair with itself, 2026-09-04)
+            h0 = total_fwhm_mhz(shifted, s0=0.0, **mk)
+            h1 = total_fwhm_mhz(shifted, s0=s0_pred, **mk)
+            if abs((h1 - h0) - (c1 - c0)) > TOL_BROAD or abs(h0 - c0) > TOL_FWHM:
+                raise SystemExit(f"width_signature {name}: on a half-step phase of the output grid the broadening moved from "
+                                 f"{1e3 * (c1 - c0):.3f} to {1e3 * (h1 - h0):.3f} kHz and the width from {c0:.5f} to {h0:.5f} MHz; not converged, no row written")
+            f0, f1 = c0, c1
+            w.writerow(["width_signature_fwhm_mhz", name, f"{f0:.{FWHM_DECIMALS}f}",
+                        "MHz, FWHM with s0=0 at this branch's fitted widths"])
+            w.writerow(["width_signature_broadening_khz", name, f"{1e3 * (f1 - f0):.{BROAD_DECIMALS}f}",
+                        "kHz, FWHM(s0_pred) - FWHM(0), the width channel's whole signal at the predicted shift"])
+            w.writerow(["width_signature_centre_over_width", name, f"{(2.0 * s0_pred / 3.0) / (f1 - f0):.1f}",
+                        "ratio, the centre pull 2 s0/3 over the broadening, what a free centre throws away"])
         w.writerow(["banana_rms", "zoom_profile", f"{zfl['banana_rms']:.4f}",
                     f"MHz; RMS of the zoom-map valley floor about a straight line, "
                     f"transit-unpinned rows only (vs gc grid step {zfl['gc_step']:.4f}; "
@@ -215,9 +292,9 @@ def main() -> int:
                     "(there the Gaussian ellipse equivalence does not apply)"])
         for nm, rb in (("gaussian", r_gauss), ("cusp", r_cusp)):
             w.writerow(["branch", nm, f"{rb['chi2']:.1f}",
-                        f"raw chi2; gc={rb['fit']['gamma_coll']:.3f}, "
-                        f"sl={rb['fit']['sigma_laser']:.3f}, tr={rb['fit']['transit']:.3f} MHz "
-                        f"(two-start local fit; the analysis anchors at the deeper branch)"])
+                        f"raw chi2; gc={rb['fit']['gamma_coll']:.6f}, "
+                        f"sl={rb['fit']['sigma_laser']:.6f}, tr={rb['fit']['transit']:.6f} MHz "
+                        f"(two-start local fit, printed at six decimals as the reproduction seed of the width rows, not a resolved precision; the analysis anchors at the deeper branch)"])
         w.writerow(["branch_gap", "local", f"{branch_gap:.1f}",
                     "chi2 gap between the Gaussian- and cusp-dominated local minima "
                     "(the branch choice was invisible to a single-start fit)"])

@@ -189,7 +189,7 @@ case "$GVWORD" in
   PASS) ;;
   PASS_MODULO)
     PMOD="$GVREST"
-    echo "ci_gate: every failure matches register entries ${PMOD} - continuing to the downstream stages, verdict PASS_MODULO at the end"
+    echo "ci_gate: every failure matches register entries ${PMOD} - continuing to the downstream stages; the verdict is written only at the end and reads PASS_MODULO only if every later stage passes"
     ;;
   *)
     # Never exit 0 from this arm: with a green suite and an unusable
@@ -274,27 +274,7 @@ if [ -f private/checks/summary_drift.py ]; then
   "$PY" private/checks/summary_drift.py || true
 fi
 
-# The two thesis-chapter checkers, wired 2026-09-04. Both existed and BOTH
-# WERE CALLED BY NOTHING: `tests/test_checkers_are_wired.py` named them
-# orphans, and running the bibliography one by hand for the first time
-# returned "9 vs 17, COUNT MISMATCH" -- eight references had been added to
-# the markdown list and never to bibliography.bib, so the PDF would have
-# shipped without the entry the wave's own correction rests on. The gate
-# found the orphan and the orphan found the defect.
-#
-# ADVISORY, `|| true`, and the reason is the chapter's own status: it lives
-# under private/, so a clone and the public mirror do not have it, and the
-# checkers skip on an absent file. A missing chapter must not fail a push.
-# The bibliography checker also cannot decode LaTeX escapes, so a name
-# written H\"{a}nsch in the bib and Hansch in the markdown reports as a
-# divergence that is a checker limit rather than a defect; teaching it to
-# decode is queued and is a checker-only change.
-if [ -f private/checks/check_chapter_bibliography_sync.py ]; then
-  "$PY" private/checks/check_chapter_bibliography_sync.py || true
-fi
-if [ -f private/checks/check_chapter_xrefs.py ]; then
-  "$PY" private/checks/check_chapter_xrefs.py || true
-fi
+
 
 # parse gate first, and hard: a checker that cannot parse reports nothing,
 # and the advisory calls below would hide exactly that (E13). Guarded on
@@ -309,6 +289,40 @@ fi
 if [ -f private/checks/enforcement_report.py ]; then
   "$PY" private/checks/enforcement_report.py || true
 fi
+# The thesis chapter's two checkers, ADVISORY and three-valued, placed below
+# the parse gate where the E13 comment says advisory calls live. Exit 2 means
+# the chapter is absent (a clone, the mirror) and prints a skip; exit 1 is a
+# divergence and FAILS the gate outright, with no register or PASS_MODULO
+# path for these two checkers; exit 0 passes. Each call's name, exit code and
+# last line go to the advisory sink and are printed into the gate's own log on
+# every path, the failing one included (a reader found the failure branch
+# exiting before the sink was printed, 2026-09-04). The
+# first wiring of these two (566d9b2b) was `|| true` above the parse gate and
+# could not fail at all, which was found the same day.
+ADVISORY_SINK="$GATE_ROOT/.ci_gate_advisory"
+: > "$ADVISORY_SINK"
+advisory_chapter_check() {
+  # $1 is the checker path; named literally at each call so the wiring
+  # guard (tests/test_checkers_are_wired.py) can see it is called.
+  [ -f "$1" ] || return 0
+  local out rc
+  # Under set -e a bare assignment from a failing substitution ends the
+  # script before the exit code is read (two independent readings reproduced
+  # it on 2026-09-04; the earlier plant had run this stanza without the
+  # preamble). The if-form is the one errexit permits.
+  if out="$("$PY" "$1" 2>&1)"; then rc=0; else rc=$?; fi
+  printf '%s exit %s: %s\n' "$(basename "$1" .py)" "$rc" "$(printf '%s\n' "$out" | tail -n 1)" >> "$ADVISORY_SINK"
+  case "$rc" in
+    0) ;;
+    2) echo "ci_gate: $(basename "$1" .py) skipped, the chapter is not in this tree" ;;
+    *) sed 's/^/ci_gate: advisory: /' "$ADVISORY_SINK"; echo "ci_gate: FAIL. $(basename "$1" .py) exit $rc:" >&2; printf '%s\n' "$out" | tail -n 6 >&2; exit 1 ;;
+  esac
+}
+advisory_chapter_check private/checks/check_chapter_bibliography_sync.py
+advisory_chapter_check private/checks/check_chapter_xrefs.py
+# the sink is read here, into the gate's own log, so a standing advisory line
+# is on the verdict's page and not in a file nothing opens
+sed 's/^/ci_gate: advisory: /' "$ADVISORY_SINK"
 # The chimera check, at the last possible moment so the digest brackets
 # every stage above, not only the suite: an edit during the governance
 # stages voids a verdict just as surely, and the first placement left

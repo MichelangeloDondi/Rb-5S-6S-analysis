@@ -25,8 +25,7 @@ quantities it touched.
 | guided light shift at 1 mW | 10.7 MHz, one number at the glass under the assumed geometry | two rows on the solved one: 11.5 MHz at the glass (`S0_onf_1mW`) and 1.12 MHz at the 400 nm trap distance (`S0_onf_1mW_at_400nm`), same fibre | `results/onf_candidate.csv` | **evaluated at the glass surface, where no atom is**, and scaled by axial flux where a shift scales with the field squared |
 
 **The two areas are two quantities, and the dispute was not arithmetic.** Four
-computations spanning a factor of six turned out to be measuring different
-things: power over the axial flux is a *power budget*, power over the mean
+computations spanning a factor of six measured different things: power over the axial flux is a *power budget*, power over the mean
 squared field is what a *light shift* divides by. Both are now emitted under
 stated conventions, because for a guided mode they are not proportional, a
 large part of the near-surface energy sits in $E_z$, which carries no axial
@@ -39,8 +38,6 @@ factor in the H fields in one line. That validator is why the settled numbers
 can be trusted without re-deriving them.
 
 ## The transit kernel, and every claim about it retired in one day, 2026-08-28
-
-The claim was retired, replaced, and the replacement retired again, in one day.
 
 | the claim | why it died |
 |---|---|

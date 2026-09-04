@@ -472,6 +472,9 @@ as a posterior. $w_0$ is instead measured out of band (knife-edge and/or camera)
 propagated as an explicit band. *Code:* `rb5s6s/identifiability.py`,
 `run_identifiability.py`, closure `tests/test_identifiability.py`, numbers
 `results/identifiability.csv`.
+What a free per-trace centre removes, and why the information for the shift
+vanishes at the boundary, is derived once on the
+[identifiability wiki page](../wiki/identifiability.md) and not repeated here.
 
 ### 4.11 Does the 95% bound actually cover? An injection-recovery study
 
@@ -587,9 +590,15 @@ detects real sharing structure when the data carry the power the dataset lacks.
 sufficient, so no statistic computed from the same trace carries information
 it lacks. What that buys operationally is asymptotic efficiency among
 regular estimators. It does **not** promise the fit the smallest
-mean-squared error against a biased competitor at finite samples, and this
-chapter's own table below shows the cumulant route winning exactly there
-(model correct, $S_0 = 0.35$: spread 0.014 against 0.215).
+mean-squared error against a biased competitor at finite samples, and
+`results/estimator_duel.csv` shows the cumulant route winning exactly there
+(model correct, at the duel's injected $S_0 = 0.35$ MHz: root-mean-square errors
+of 0.1026 MHz for the cumulant route and 0.2167 for the fit, both from the two
+rows' own notes, with spreads of
+[0.0137](../../results/estimator_duel.csv "ref:estimator_duel:bias_odd_cumulants:S0_0.35_clean:err") and
+[0.2151](../../results/estimator_duel.csv "ref:estimator_duel:bias_profile_mle:S0_0.35_clean:err") MHz). The duel's producer
+carries a retired transit literal, so these cells are re-read when it is
+regenerated.
 
 **The condition.** Efficiency claims assume the model is right, and
 [`results/fit_window_scan.csv`](../../results/fit_window_scan.csv) shows this
@@ -643,8 +652,8 @@ bias is not the laser width. A control row repeats it with the true
 $\sigma$ and gets $-0.978$ against $-0.990$, and the remainder is
 consistent with window placement, though no committed row yet isolates
 placement from the $\gamma$ float, so that attribution is plausible rather
-than measured. At the archive's own $S_0$ of 0.35 MHz the picture inverts:
-the fit's spread grows to 0.215 where the cumulants' is 0.014, and the two
+than measured. At the duel's injected 0.35 MHz, near the archive's predicted $S_0$ of [0.364](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred:shared") MHz (an envelope, not a measurement), the picture inverts:
+the fit's spread grows to [0.2151](../../results/estimator_duel.csv "ref:estimator_duel:bias_profile_mle:S0_0.35_clean:err") where the cumulants' is [0.0137](../../results/estimator_duel.csv "ref:estimator_duel:bias_odd_cumulants:S0_0.35_clean:err") (the same producer's cells, re-read with it), and the two
 defect sensitivities become comparable, 0.028 against 0.036. And the twin is
 one defect shape with white noise and no baseline, so it speaks to a
 mechanism and not to this dataset.

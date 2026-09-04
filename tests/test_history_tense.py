@@ -65,25 +65,71 @@ BASELINE = Path(__file__).with_name("_history_tense_baseline.json")
 # "now <verb>" and bare present-tense state claims. Deliberately not a general
 # tense detector: this bank is the shapes the two real defects took.
 _PRESENT = re.compile(
-    r"\bnow\s+(?:states|reads|says|carries|quotes|defines|stands|holds)\b"
+    r"\bnow\s+(?:states?|reads?|says?|carr(?:y|ies)|quotes?|defines?|stands?|holds?|names?|points?|labels?|identif(?:y|ies)|calls?|marks?|terms?|lists?|cites?|shows?|gives?|takes?|uses?)\b"
     r"|\bis\s+currently\b"
-    r"|\bthe\s+current\s+value\s+is\b",
+    r"|\bthe\s+current\s+value\s+is\b"
+    r"|\brepaired\s+in\s+the\s+commit\s+that\s+follows\b",   # a promise read as a fact (docs/history/02, 2026-09-04)
     re.I)
 # a clause naming a results/ path is the checkable form the sibling guard owns
 _ESCAPE = re.compile(r"results/[\w./-]+\.csv")
+# the escape applies only to a claim carrying a number in its clause; the class
+# excludes semicolons only, since a results path carries a period of its own
+# and the sentence is already the unit (a seat planted "now names results/x.csv,
+# 0.611 MHz", 2026-09-04)
+_NUMERIC = re.compile(r"\bnow\s+\w+\s+[^;]*?(?<![\w/.-])-?\d", re.I)   # a digit inside a filename (kernel_k3.csv) is not a number
+
+
+def _claim_flagged(sent: str) -> bool:
+    """A sentence is flagged when it carries a present-tense claim and is not
+    escaped: the escape needs a results/ path AND a number in the claim."""
+    m = _PRESENT.search(sent)
+    return bool(m) and not (_ESCAPE.search(sent) and _NUMERIC.search(sent))
+
+
+def _units(para: list[str]) -> list[str]:
+    """The units a paragraph is judged in: a table row is its own unit (a cell
+    must not borrow a neighbouring cell's path or number to escape), and prose
+    splits at every stop followed by whitespace, so a sentence that starts with
+    a lowercase path cannot merge with the claim before it (a seat planted
+    that, 2026-09-04; a capital-lookahead splitter had merged them)."""
+    if any(ln.lstrip().startswith("|") for ln in para):
+        # each CELL is a unit: a claim in one cell must not borrow a path or
+        # number from another cell of the same row (a seat planted that too)
+        return [c.strip() for ln in para for c in ln.strip().strip("|").split("|") if c.strip()]
+    return re.split(r"(?<=[.!?])\s+", " ".join(ln.strip() for ln in para))
 
 
 def _entries() -> list[tuple[str, int, str]]:
-    out = subprocess.run(["git", "-C", str(ROOT), "ls-files", "docs/history/*.md"],
+    # the hub joined 2026-09-04 (H11a: every guard that reads the record reads
+    # the hub and the chapters); its count entered the baseline as debt
+    out = subprocess.run(["git", "-C", str(ROOT), "ls-files", "docs/history/*.md", "docs/HISTORY.md"],
                          capture_output=True, text=True)
     found = []
     for rel in out.stdout.split():
         path = ROOT / rel
         if not path.exists():
             continue
-        for i, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
-            if _PRESENT.search(line) and not _ESCAPE.search(line):
-                found.append((rel, i, line.strip()[:110]))
+        lines = path.read_text(encoding="utf-8").splitlines()
+        # sentence-scoped since 2026-09-04: the escape is judged on the
+        # sentence carrying the claim, so a reflow that moves a clause onto
+        # the line of a results/ path cannot excuse it (a seat planted that)
+        start = 0
+        while start < len(lines):
+            end = start
+            while end < len(lines) and lines[end].strip():
+                end += 1
+            para = lines[start:end]
+            for sent in _units(para):
+                m = _PRESENT.search(sent)
+                if _claim_flagged(sent):
+                    # the line of the match, or of its first word when the match
+                    # straddles a wrapped line (the default pointed at the
+                    # paragraph's first line, a seat found, 2026-09-04)
+                    k = next((j for j, ln in enumerate(para) if m.group(0) in ln), None)
+                    if k is None:
+                        k = next((j for j, ln in enumerate(para) if m.group(0).split()[0] in ln), 0)
+                    found.append((rel, start + k + 1, sent.strip()[:110]))
+            start = end + 1
     return found
 
 
@@ -92,6 +138,35 @@ def _counts() -> dict[str, int]:
     for rel, _, _ in _entries():
         c[rel] = c.get(rel, 0) + 1
     return c
+
+
+def test_the_escape_needs_a_number_and_reads_it_on_either_side_of_the_path():
+    """The worked examples of the bank's comment, as a test: a claim naming a
+    file and no number stays flagged; a number before or after the path
+    escapes (the after case failed until 2026-09-04, when the class
+    excluded the period every results path carries)."""
+    assert _claim_flagged("The sentence now names results/x.csv.")
+    assert not _claim_flagged("The sentence now names 0.611 MHz, in results/x.csv.")
+    assert not _claim_flagged("The sentence now names results/x.csv, 0.611 MHz.")
+    assert _claim_flagged("The sentence now names it as the duel's, near the archive's own.")
+    assert _claim_flagged("The table now names results/kernel_k3.csv as the source.")
+    assert not _claim_flagged("The row now reads -0.978 MHz, in results/x.csv.")
+
+
+def test_the_units_split_prose_at_every_stop_and_keep_rows_apart():
+    """A violation cannot borrow the next sentence's path and number: the
+    splitter cuts at every stop, whatever follows, and a table row stands
+    alone (a seat's plant of 2026-09-04 merged two sentences under a
+    capital-lookahead splitter and the count did not move)."""
+    units = _units(["The retained value now identifies the wrong isotope entirely.",
+                    "results/plant_test.csv carries 0.611 MHz for the corrected row."])
+    assert len(units) == 2 and _claim_flagged(units[0]) and not _claim_flagged(units[1])
+    cells = _units(["| a | now states 0.611 (`results/x.csv`) | b |"])
+    assert len(cells) == 3 and not _claim_flagged(cells[1]), "a cell with its own path and number escapes on its own"
+    cross = _units(["| a | now states 0.611 | `results/x.csv` |"])
+    assert _claim_flagged(cross[1]), "a cell cannot borrow the next cell's path"
+    lone = _units(["| a | now states the wrong sign | b |", "| c | 0.611 | `results/x.csv` |"])
+    assert _claim_flagged(lone[1]), "a cell cannot borrow the next row's path and number"
 
 
 def test_present_tense_claims_in_history_only_fall():

@@ -188,6 +188,10 @@ wasted: it would place the missing information somewhere other than the laser
 linewidth, most likely in the transit kernel of chain 4, and it would do so
 with an independent measurement in hand rather than by inference.
 
+What a free per-trace centre removes, and why the information for the shift
+vanishes at the boundary, is derived once on the
+[identifiability wiki page](../wiki/identifiability.md).
+
 ## 2. The absolute frequency axis
 
 **The limitation.** The archive has no absolute frequencies. Every axis is

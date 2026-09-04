@@ -64,7 +64,10 @@ still prose this project ships, and on 2026-08-30 its owner asked for it to be
 covered here.
 
 TWO THINGS THIS DELIBERATELY DOES NOT DO. It does not impose this repository's
-register on the chapter. The project's own rule file records that the thesis
+register on the chapter, and since 2026-09-04 that is true of the hard-zero
+filler bank too, which excludes the chapter alone; until then it was true of
+the growth ratchets alone, and a word was changed on the gap.
+The project's own rule file records that the thesis
 voice is the author's, so the chapter enters at whatever counts it already has
 and the ratchet only stops those growing. And it skips silently when the file is
 absent, as the quotation guard does for `PDF_papers/`, so a clone without
@@ -381,8 +384,20 @@ def test_filler_openers_stay_absent(phrase):
     # in a paper title and in an abstract, which is what surfaced the gap:
     # tests/test_repo_hygiene.py has skipped that directory for this reason
     # since it was written, and this guard never learned to.
+    # The thesis chapter, and only it, is excluded from this hard-zero bank
+    # (2026-09-04). The chapter is graded for growth alone: a bank that can
+    # force one of the author's words to change imposes this repository's
+    # register on his prose, which the project's rule file forbids. The
+    # promise was false here and a word was changed on it. The other
+    # member of GITIGNORED_PROSE is this record's own prose and stays in.
+    # Consequence, stated: the chapter has no hard-zero filler coverage, and
+    # test_chapter_filler_count_only_falls below holds it at growth only.
+    # Plant: a banned opener in the chapter stays green here; the same opener
+    # in a tracked file fires.
     hits = [rel for rel in _tracked_markdown()
-            if not rel.startswith("docs/lit/") and (ROOT / rel).exists()
+            if not rel.startswith("docs/lit/")
+            and rel != "private/THESIS_CHAPTER.md"
+            and (ROOT / rel).exists()
             and phrase in (ROOT / rel).read_text(encoding="utf-8").lower()]
     assert not hits, f"{phrase!r} appears in: {', '.join(hits)}"
 
@@ -401,6 +416,47 @@ def _rather_than_counts() -> dict[str, int]:
         if n:
             out[rel] = n
     return out
+
+
+CHAPTER_FILLER_BASELINE = 1   # measured 2026-09-04: one banked word stands in the chapter, a verb the author chose
+
+
+def test_chapter_filler_count_only_falls():
+    """The chapter's banked-phrase count may fall and may not rise.
+
+    Excluding the chapter from the hard-zero bank left it with no filler
+    coverage at all, a blind region the docstring did not declare. This is the growth-only form the chapter was promised:
+    it entered at its measured count and the count may only fall. Plant: a
+    second banked opener in the chapter fails this; removing it passes.
+    """
+    p = ROOT / "private" / "THESIS_CHAPTER.md"
+    if not p.is_file():
+        pytest.skip("private/ is absent from this clone; the chapter is not graded here")
+    text = p.read_text(encoding="utf-8").lower()
+    n = sum(text.count(phrase) for phrase in FILLER_PHRASES)
+    assert n <= CHAPTER_FILLER_BASELINE, (
+        f"the chapter's banked-phrase count rose to {n} against a budget of "
+        f"{CHAPTER_FILLER_BASELINE}; end the sentence or lower the budget after a cleanup")
+
+
+def test_the_construction_baseline_itself_only_ever_shrinks():
+    """The constructions budget must not sit above what the files need.
+
+    The style baseline has had this guard since it was written; this one had
+    none, and on 2026-09-04 docs/BIG_PICTURE.md sat at 22 against a real 21
+    for days, undetected. Plant: raise one entry above its file's count and
+    this fires; restore and it passes. Same GITIGNORED_PROSE exemption as the
+    style twin, for the same reason.
+    """
+    baseline = json.loads(CONSTRUCTION_BASELINE.read_text())
+    current = _rather_than_counts()
+    slack = {rel: (was, current.get(rel, 0))
+             for rel, was in baseline.items() if was > current.get(rel, 0)
+             and not (rel in GITIGNORED_PROSE and not (ROOT / rel).is_file())}
+    assert not slack, (
+        "the constructions baseline is looser than reality:\n  "
+        + "\n  ".join(f"{r}: budget {w}, actual {c}" for r, (w, c) in sorted(slack.items()))
+        + "\n  python tests/test_prose_style_ratchet.py --relax-constructions")
 
 
 def test_no_file_gains_the_rather_than_construction():

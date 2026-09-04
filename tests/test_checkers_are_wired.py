@@ -66,11 +66,11 @@ NOT_WIRED = {
     # are now called by scripts/ci_gate.sh, and one of them returned a real
     # defect on its first ever run.
     "private/checks/_population.py":
-        "a shared helper, not a checker: leading underscore by this tree's "
-        "own convention, no main and no argv, and it is imported by the "
-        "checkers that use it rather than run. It is the rung-1 form of "
-        "LOGIC 19.138, so the thing that exercises it is every check that "
-        "imports it, and a caller of its own would test nothing.",
+        "the rung-1 form of LOGIC 19.138, written and never adopted: "
+        "nothing imports it, measured 2026-09-04, so it is dead code and "
+        "not a checker. The earlier reason written here asserted importers "
+        "that do not exist. Adopt it into the checks it "
+        "was written for, or retire it, in a named wave.",
     "private/checks/plant_persist_ledger.py":
         "a plant, not a guard: it builds a throwaway repository in a "
         "tempdir to prove board_ledger._persist refuses a non-temp path, "

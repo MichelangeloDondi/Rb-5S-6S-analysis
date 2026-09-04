@@ -9,15 +9,15 @@
 This record computed alpha(6S) - alpha(5S) = -1145 a.u. on 2026-07-17
 ([`results/polarizability.csv`](../../results/polarizability.csv), row
 `delta_alpha_993`), finding the cited magnitude and the opposite sign.
-`rb5s6s.constants.DELTA_ALPHA_AU` went on exporting +1093 for five weeks and
-the shift predictor defaulted to it. The two were reconciled on 2026-08-25
-by owner decision on the theory, not by a measurement, the published value
+`rb5s6s.constants.DELTA_ALPHA_AU` exported +1093 for five more weeks and
+the shift predictor defaulted to it. Reconciled on 2026-08-25 by owner
+decision on the theory, not by a measurement, with the published value
 kept beside it as `DELTA_ALPHA_AU_ORSON2021`.
 
-No committed bound moved, which is why nothing caught it: every bound reads
+No committed bound moved, so nothing caught it: every bound reads
 the magnitude. Three consumers written against +1093 broke when the
-constant caught up, repaired 2026-08-26. Two further defects in the value
-were found the same day, one now closed and one open.
+constant caught up, repaired 2026-08-26. Two further defects in the value were
+found the same day, one now closed and one open.
 
 | defect | was | now |
 |---|---|---|
@@ -26,8 +26,8 @@ were found the same day, one now closed and one open.
 
 An earlier wording called both "making it less negative", true of the
 repairs and false of the defects. [RESULTS.md](../RESULTS.md) and the
-`delta_alpha_993` note now carry the open one, disclosed here alone until
-then.
+`delta_alpha_993` note were given the open one on 2026-08-26, disclosed
+here alone until then.
 
 ## The 2026-08-17 corrections
 
@@ -115,3 +115,18 @@ so its figures are rows rather than hand arithmetic.
 | `vanderwaals.py`'s shift machinery | "already carries" it | a width prefactor only; no shift prefactor exists in the package |
 | Orson's 0.09 MHz at 140 C | explained by the vapour-pressure correlation spread | their own stated density contradicts their own stated pressure by 1.4 |
 | Orson's section number | section 4, three times, plus a section 5 | section 3; the paper has four sections |
+
+## The duel's injected shift labelled as the archive's, 2026-09-04
+
+`docs/methods/06_the_statistics.md`, in its estimator-duel section, called
+the duel's injected shift "the archive's own". The archive's predicted shift at
+225 mW is the [0.364](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred:shared") MHz of `results/stark_sweep.csv`,
+and the duel's is a literal in `scripts/run_estimator_duel.py`, the retired
+prediction rounded. The
+sentence was corrected to name it as the duel's, near the archive's predicted
+value.
+Corrected on 2026-09-04. The cause: the retired prediction of
+[0.348](../../results/stark_joint.csv "ref:stark_joint:S0_225mW_pred:prediction") MHz,
+which is this shift under Orson's polarizability and not under the value this
+record adopts, carried rounded as a literal in the duel's producer and quoted
+as the archive's own.

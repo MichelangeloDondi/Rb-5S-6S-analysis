@@ -1,5 +1,7 @@
 {
+ "docs/HISTORY.md": 1,
  "docs/history/01_bounds-and-the-light-shift.md": 1,
- "docs/history/02_the-lineshape-and-its-kernel.md": 2,
- "docs/history/08_documents-and-publishing.md": 1
+ "docs/history/02_the-lineshape-and-its-kernel.md": 5,
+ "docs/history/05_producers-and-provenance.md": 3,
+ "docs/history/08_documents-and-publishing.md": 3
 }

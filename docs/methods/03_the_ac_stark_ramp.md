@@ -186,11 +186,11 @@ g_1\equiv\frac{\kappa_3}{\mathrm{Var}(s)^{3/2}}
 
 A fixed-lock session would test them in order of statistical cost.
 
-1. **Mean pull against $P$.** The first cumulant, exact and
-   apparatus-independent up to a windowed deficit of a tenth to a fifth of
-   a per cent (`kappa1_window_deficit_pct` row and its construction note),
-   first order in $S_0$, and a fixed
-   lock is what makes centres usable at all.
+1. **Mean pull against $P$.** The first cumulant, exact,
+   apparatus-independent and first order in $S_0$. At the producer's 3 MHz
+   reference shift, window and collisional width (named in the file's notes) it
+   carries a windowed excess of [0.051](../../results/cumulant_window_check.csv "ref:cumulant_window_check:kappa1_window_excess_pct:gc0.55") per cent (`kappa1_window_excess_pct` row and its construction note), measured at that
+   shift alone. A fixed lock is what makes centres usable at all.
 2. **Excess variance against $P^2$.** The symmetric second-moment growth
    $\mathrm{Var}\propto S_0^2$, which is exactly what the Cs 6S to 8S
    literature reported as a growing Gaussian width.

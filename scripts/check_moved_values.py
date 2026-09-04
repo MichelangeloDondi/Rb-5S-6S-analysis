@@ -105,6 +105,12 @@ THE FALSE-PASS DIRECTION, MEASURED RATHER THAN GUESSED.
 * A value restated in words.
 * A CSV with no `value` column is skipped, and the run PRINTS how many,
   because a skipped file is not a checked one.
+* The rounded-copy ADVISORY (2026-09-04) reads MARKDOWN only: on its first
+  unscoped run every hit was an axis margin or a text coordinate in
+  make_figures.py and none was in markdown, so a rounded copy of a retired
+  cell inside a script's comment or docstring is never seen by it. That is its
+  blind region, stated here because the file's own test reads this docstring
+  for the blind regions.
 
 Exit 1 on any finding, 0 when clean, 2 on usage or when nothing could be
 compared. The gate distinguishes them: 2 is not a clean bill.
@@ -114,6 +120,7 @@ from __future__ import annotations
 import csv
 import io
 import re
+from decimal import Decimal, ROUND_HALF_UP
 import subprocess
 import sys
 from pathlib import Path
@@ -279,13 +286,23 @@ def retired_literals(base: str) -> tuple[
                     if lit in current:
                         continue
                     name = " ".join(v for _, v in key if v)[:52]
-                    stale.setdefault(rel, {}).setdefault(
-                        lit, (name, now.get(key, ROW_GONE), blocks))
+                    d = stale.setdefault(rel, {})
+                    if lit in d:
+                        # two rows retired one literal (cumulant_window_check's
+                        # 0.386 on 2026-09-04): name both, so a finding never
+                        # attributes the literal to whichever row came first
+                        n0, w0, b0 = d[lit]
+                        w1 = now.get(key, ROW_GONE)
+                        d[lit] = (f"{n0} and {name}", w0 if w0 == w1 else f"{w0} or {w1}", b0)
+                    else:
+                        d[lit] = (name, now.get(key, ROW_GONE), blocks)
     return stale, skipped, commits
 
 
 def history_now_columns(lines: list[str]) -> dict[int, set[int]]:
-    """For docs/history/ tables, the cell indices carrying the NEW value.
+    """For docs/history/ tables and the hub index docs/HISTORY.md, the cell
+    indices carrying the NEW value (the hub joined 2026-09-04: its rows carry
+    retired values in their title and was cells by design).
 
     Those tables are `| quantity | was | now | file |`. Grading the whole row
     reports the `was` cell, which is the account and is what the old wholesale
@@ -302,6 +319,10 @@ def history_now_columns(lines: list[str]) -> dict[int, set[int]]:
         if current is None:
             if "was" in cells and ({"now", "to"} & set(cells)):
                 current = {j for j, c in enumerate(cells) if c in ("now", "to")}
+            elif {"date", "standing"} <= set(cells):
+                # a bound history: every row is a value AS RECORDED ON ITS DATE,
+                # retired by design, so no cell is a live claim (2026-09-04)
+                current = set()
             else:
                 current = set(range(len(cells)))
             continue
@@ -331,7 +352,7 @@ def scannable() -> list[Path]:
     # on 2026-09-02.
     _GENERATED = ("docs/reference_graph.json",)
     out = [ROOT / f for f in _git("ls-files").split()
-           if not f.startswith("results/")
+           if not (f.startswith("results/") and f.endswith(".csv"))   # the CSVs are the source; results/README.md is prose about them and is scanned (2026-09-04)
            and f not in _GENERATED
            and not f.endswith(BINARY_SUFFIXES)]
     priv = ROOT / "private"
@@ -459,6 +480,7 @@ def scan(stale: dict[str, dict[str, tuple[str, str]]],
     findings: list[str] = []
     advisories: list[str] = []
     for path in paths:
+        _last_named: list[str] = []   # the inheritance state, reset per file (a reader found it leaking across pages, 2026-09-04)
         try:
             text = path.read_text(encoding="utf-8", errors="replace")
         except OSError:
@@ -472,7 +494,8 @@ def scan(stale: dict[str, dict[str, tuple[str, str]]],
             continue
         lines = text.splitlines()
         hist_cols = (history_now_columns(lines)
-                     if rel.startswith("docs/history/") else None)
+                     if rel.startswith("docs/history/") or rel == "docs/HISTORY.md"
+                     else None)
         for n, line in enumerate(lines, 1):
             if any(m in line.lower() for m in ACCOUNT_MARKERS):
                 continue
@@ -493,7 +516,50 @@ def scan(stale: dict[str, dict[str, tuple[str, str]]],
                         for m in _BAND_ONLY.finditer(probe)}
             if not written:
                 continue
-            for csv_rel in cited:
+            # An index page under results/ cites every CSV on one page and one
+            # per line, so a literal there is read against the CSV its own line
+            # names; read against the whole page, band_excess's 0.896 row was
+            # reported as a copy of a cumulant cell (2026-09-04).
+            if rel.startswith("results/"):
+                named = [c for c in cited if c.split("/")[-1] in line]
+                if named:
+                    _last_named = named
+                    line_cited = named
+                elif ".csv" in line:
+                    # the row of some other file: its numbers are its own
+                    line_cited = []
+                else:
+                    # prose naming no file inherits the nearest earlier row's
+                    # (a bullet under a table row: the false-pass direction a
+                    # reader planted 2026-09-04)
+                    line_cited = _last_named
+            else:
+                line_cited = cited
+            for csv_rel in line_cited:
+                # A ROUNDED COPY IS A COPY THE LITERAL MATCH CANNOT SEE.
+                # docs/wiki/third-cumulant.md quoted 0.415, 0.386, 0.343 and
+                # 0.201 as 0.42, 0.39, 0.34 and 0.20 through a clean run
+                # (2026-09-04, private/ANALYSIS_FINDINGS_2026-09-03.md, A26). Reported as an ADVISORY, never
+                # blocking, until its false-positive rate on the tracked set
+                # is measured and written beside the arming.
+                # Prose only: on its first run over the tracked set every hit
+                # was an axis margin or a text coordinate in make_figures.py and
+                # none was in markdown (2026-09-04, and the count is not written
+                # here because the collision fix of the same day changed it).
+                for short, lits in (_rounded_forms(stale[csv_rel]).items() if rel.endswith(".md") else ()):
+                  for lit in lits:
+                    if short in written and lit not in written:
+                        row, now, _b = stale[csv_rel][lit]
+                        # the same two exemptions the exact path applies: a
+                        # different unit is not a copy, and a value the line
+                        # sources elsewhere is not this file's
+                        if _unit_clash(line, short, _cell_unit(csv_rel, row)) \
+                                or _sourced_elsewhere(line, short, csv_rel):
+                            continue
+                        advisories.append(
+                            f"{rel}:{n}: ROUNDED COPY? writes {short!r}, the two-digit "
+                            f"form of retired {lit!r}, which {csv_rel} ({row}) now holds "
+                            f"as {now!r}\n      {line.strip()[:92]}")
                 for lit in written & stale[csv_rel].keys():
                     row, now, blocks = stale[csv_rel][lit]
                     msg = (f"{rel}:{n}: writes {lit!r}, which {csv_rel} "
@@ -529,14 +595,35 @@ def scan(stale: dict[str, dict[str, tuple[str, str]]],
     return findings, advisories
 
 
+def _rounded_forms(retired: dict) -> dict:
+    """Two-decimal rounding of each retired literal with three or more
+    significant digits, keyed by the rounded string, each key holding EVERY
+    literal that rounds to it (0.386 and 0.393 both round to 0.39; the first
+    version kept one). Only forms that differ from the literal are returned,
+    so an exact copy is never reported twice."""
+    out = {}
+    for lit in retired:
+        if " to " in lit or _sig_digits(lit) < 3:
+            continue
+        try:
+            # Decimal half-up, the way a writer rounds: 0.415 is 0.42 on the
+            # page and 0.41 in binary, and the page is what is being read.
+            short = str(Decimal(lit).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP))
+        except (ValueError, ArithmeticError):
+            continue
+        if short != lit:
+            out.setdefault(short, []).append(lit)
+    return out
+
+
 def main(argv: list[str]) -> int:
     base = argv[1] if len(argv) > 1 else DEFAULT_BASE
-    if not _git("rev-parse", "--verify", base).strip():
+    if not _git("rev-parse", "--verify", "--quiet", f"{base}^{{commit}}").strip():
         fallback = "HEAD~1"
-        print(f"check_moved_values: cannot resolve {base!r}; falling back to "
+        print(f"check_moved_values: cannot resolve {base!r} as a commit (a tree hash cannot bound git log); falling back to "
               f"{fallback}, which is a NARROWER window than intended.")
         base = fallback
-        if not _git("rev-parse", "--verify", base).strip():
+        if not _git("rev-parse", "--verify", "--quiet", f"{base}^{{commit}}").strip():
             print("check_moved_values: no usable base, so nothing was "
                   "compared and this silence is not evidence.")
             return 2
@@ -586,8 +673,9 @@ def main(argv: list[str]) -> int:
     findings, advisories = scan(stale, scannable())
 
     if advisories:
-        print(f"\n  ADVISORY, {len(advisories)} hit(s) on literals under "
-              f"three significant digits, which collide easily. These never "
+        print(f"\n  ADVISORY, {len(advisories)} hit(s): literals under three "
+              f"significant digits, which collide easily, and two-decimal roundings "
+              f"of retired cells in prose. These never "
               f"fail the run and need a person:")
         for a in advisories[:ADVISORY_CAP]:
             print(f"    {a}")

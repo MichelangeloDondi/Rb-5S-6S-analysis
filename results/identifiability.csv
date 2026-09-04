@@ -8,6 +8,14 @@ corr,sigma_laser_transit,-0.421,width-width correlation coefficient,DIAGNOSTIC
 corr,transit_transit,1.000,width-width correlation coefficient,DIAGNOSTIC
 best_constrained_sigma,total_width,0.0032,MHz; 1sigma on the best-constrained width combination (~the total),DIAGNOSTIC
 worst_constrained_sigma,split,0.0588,MHz; 1sigma on the degenerate split direction,DIAGNOSTIC
+anisotropy_ratio,split_over_total,18.6,"ratio, worst_constrained_sigma over best_constrained_sigma, the split against the total",DIAGNOSTIC
+s0_pred_225mW,shared,0.364,"MHz, stark_shift_S0_mhz(0.225 W, W0_MEASURED_M, RHO_RETRO), the shift the rows below are evaluated at",DIAGNOSTIC
+width_signature_fwhm_mhz,gaussian_branch,5.4036,"MHz, FWHM with s0=0 at this branch's fitted widths",DIAGNOSTIC
+width_signature_broadening_khz,gaussian_branch,6.48,"kHz, FWHM(s0_pred) - FWHM(0), the width channel's whole signal at the predicted shift",DIAGNOSTIC
+width_signature_centre_over_width,gaussian_branch,37.4,"ratio, the centre pull 2 s0/3 over the broadening, what a free centre throws away",DIAGNOSTIC
+width_signature_fwhm_mhz,cusp_branch,5.3179,"MHz, FWHM with s0=0 at this branch's fitted widths",DIAGNOSTIC
+width_signature_broadening_khz,cusp_branch,7.23,"kHz, FWHM(s0_pred) - FWHM(0), the width channel's whole signal at the predicted shift",DIAGNOSTIC
+width_signature_centre_over_width,cusp_branch,33.6,"ratio, the centre pull 2 s0/3 over the broadening, what a free centre throws away",DIAGNOSTIC
 banana_rms,zoom_profile,0.0020,"MHz; RMS of the zoom-map valley floor about a straight line, transit-unpinned rows only (vs gc grid step 0.0192; the trust verdict needs this AND the slope agreement below)",DIAGNOSTIC
 ridge_slope,zoom_profile,0.086,d(gamma_coll)/d(sigma_laser) along the profile valley (compare ridge_slope_covariance_pred; agreement = the Gaussian profile<->ellipse correspondence holds where transit is unpinned),DIAGNOSTIC
 ridge_slope_covariance_pred,zoom_profile,0.110,"d(gamma_coll)/d(sigma_laser) predicted by the marginal covariance ellipse at the constrained minimum, the other half of the ridge_slope agreement check",DIAGNOSTIC
@@ -15,8 +23,8 @@ profile_free_gap,zoom_profile,-1.30,profile chi2_min minus the free-fit chi2 (sa
 audit_max_gain,zoom_profile,0.000,largest chi2 improvement when every 5th cell is refit from the fresh seed (warm-start trapping bound; <<2.30 certifies the surface),DIAGNOSTIC
 audit_max_gain,wide_profile,0.010,same fresh-seed audit on the wide map,DIAGNOSTIC
 transit_railed_frac,zoom_profile,0.00,fraction of zoom cells whose profiled transit pins at its 0 bound (there the Gaussian ellipse equivalence does not apply),DIAGNOSTIC
-branch,gaussian,5024.3,"raw chi2; gc=0.727, sl=2.452, tr=0.078 MHz (two-start local fit; the analysis anchors at the deeper branch)",DIAGNOSTIC
-branch,cusp,4549.4,"raw chi2; gc=0.227, sl=0.562, tr=1.422 MHz (two-start local fit; the analysis anchors at the deeper branch)",DIAGNOSTIC
+branch,gaussian,5024.3,"raw chi2; gc=0.727209, sl=2.451888, tr=0.078438 MHz (two-start local fit, printed at six decimals as the reproduction seed of the width rows, not a resolved precision; the analysis anchors at the deeper branch)",DIAGNOSTIC
+branch,cusp,4549.4,"raw chi2; gc=0.227048, sl=0.561661, tr=1.422265 MHz (two-start local fit, printed at six decimals as the reproduction seed of the width rows, not a resolved precision; the analysis anchors at the deeper branch)",DIAGNOSTIC
 branch_gap,local,474.9,chi2 gap between the Gaussian- and cusp-dominated local minima (the branch choice was invisible to a single-start fit),DIAGNOSTIC
 wide_free_gap,wide_profile,1.2,free-fit chi2 minus the wide-map chi2_min; >6 means the free fit (and hence the local covariance analysis above) sits at a LOCAL optimum and the global valley is deeper -- the map-level statement of the split's non-identifiability,DIAGNOSTIC
 closed_95,wide_profile,False,"does the dchi2=5.99 region (raw, shape diagnostic) close inside the wide grid (sub-grid edge minima; edge min dchi2 = 1.0)? open edges: sl_low; at the chi2_red-scaled threshold 5.99x1.04 the verdict is the same",DIAGNOSTIC

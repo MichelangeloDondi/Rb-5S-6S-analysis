@@ -71,6 +71,21 @@ per component of the three headline uncertainties, with its size, limiting
 factor, acting knob, expected purchase, and validating check, scoped to
 the cell campaign alone.
 
+## The cumulant producer's transit, from a literal to the record's value, 2026-09-04
+
+`scripts/run_cumulant_window_check.py` carried its transit width as a
+literal nearly twice the record's value. It was made to take `transit_fwhm_from_w0`
+at the archive's 130 C, the value `results/twin_realism.csv` held as
+truth. Seven rows of `results/cumulant_window_check.csv` moved: three full-line
+survival ratios, three survival_vs_S0 rows and the first-cumulant row. The
+one at the archive's own shift had read low with the ramp on fewer than five
+grid cells, and resolved it agrees with the 1 MHz row to a unit in the third
+decimal. The cause: freshness proves a
+CSV matches its producer and nothing proves a producer matches the
+physics. The sweep that closed this one found four more producers, the
+campaign twin's own example and a figure panel with a transit literal of
+their own, open items at this entry's date.
+
 ## The windowed third cumulant's survival, quantified, 2026-08-31
 
 The quantity: what a windowed third cumulant keeps of the ramp's

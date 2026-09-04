@@ -410,6 +410,14 @@ QUANTITY_STATUS = {
         "audit_max_gain": "DIAGNOSTIC", "transit_railed_frac": "DIAGNOSTIC",
         "wide_free_gap": "DIAGNOSTIC", "branch": "DIAGNOSTIC",
         "branch_gap": "DIAGNOSTIC",
+        # the width channel's signal at the predicted shift (2026-09-04): the
+        # shift row restates stark_sweep's S0_225mW_pred as the operating point
+        # the rows below are evaluated at; the claim and its band live in the
+        # sweep, so here it is a diagnostic and carries no uncertainty column
+        "anisotropy_ratio": "DIAGNOSTIC", "s0_pred_225mW": "DIAGNOSTIC",
+        "width_signature_fwhm_mhz": "DIAGNOSTIC",
+        "width_signature_broadening_khz": "DIAGNOSTIC",
+        "width_signature_centre_over_width": "DIAGNOSTIC",
     },
     "coverage.csv": {
         "bias": "DIAGNOSTIC", "coverage95": "DIAGNOSTIC",
@@ -501,15 +509,29 @@ def main() -> int:
         if not rows:
             continue
         fields = [f for f in rows[0].keys() if f != "status"] + ["status"]
+        # A RAGGED ROW IS REFUSED BEFORE ANYTHING IS WRITTEN. On 2026-09-04
+        # a hand-edited note cell carried an unquoted comma, DictReader put
+        # the overflow under the key None, DictWriter raised on that row with
+        # the file already open for writing, and results/identifiability.csv
+        # was left with the twelve rows before it (private/ANALYSIS_FINDINGS_2026-09-03.md, A28). The file
+        # is now written to a sibling and renamed, so a crash anywhere in the
+        # write leaves the original untouched.
+        for n, r in enumerate(rows, start=2):
+            if None in r or any(v is None for v in r.values()):
+                raise SystemExit(f"{path.name}: line {n} has a different number of "
+                                 f"fields from the header; a results CSV is never "
+                                 "edited by hand, regenerate it from its producer")
         for r in rows:
             st = status_for(path.name, r)
             if st not in VOCAB:
                 raise SystemExit(f"{path.name}: status {st!r} not in vocab")
             r["status"] = st
-        with open(path, "w", newline="") as f:
+        tmp = path.with_name(path.name + ".annotating")
+        with open(tmp, "w", newline="") as f:
             w = csv.DictWriter(f, fieldnames=fields)
             w.writeheader()
             w.writerows(rows)
+        tmp.replace(path)
         tagged += 1
     print(f"tagged {tagged} result CSVs with a `status` column "
           f"({len(SKIP)} already carried their own; vocab {sorted(VOCAB)}).")

@@ -47,7 +47,7 @@
  "docs/methods/03_the_ac_stark_ramp.md": 35,
  "docs/methods/04_the_composite_model.md": 53,
  "docs/methods/05_the_frequency_ruler.md": 20,
- "docs/methods/06_the_statistics.md": 79,
+ "docs/methods/06_the_statistics.md": 77,
  "docs/methods/07_what_we_found.md": 70,
  "docs/methods/08_assumptions_and_outlook.md": 7,
  "docs/methods/09_the_guided_geometry.md": 45,
@@ -127,7 +127,7 @@
  "docs/wiki/the-noise-law.md": 2,
  "docs/wiki/the-two-photon-comb.md": 5,
  "docs/wiki/the-wavemeter-and-the-frequency-axis.md": 4,
- "docs/wiki/third-cumulant.md": 12,
+ "docs/wiki/third-cumulant.md": 5,
  "docs/wiki/vapour-density-and-temperature.md": 4,
  "docs/wiki/voigt-profile.md": 3,
  "docs/wiki/weighted-least-squares.md": 2
