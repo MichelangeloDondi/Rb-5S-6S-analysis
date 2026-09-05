@@ -551,7 +551,7 @@ dated screen photographs (±20%, and the band centre of a swept trace is an
 eyeball estimate). **Two fall inside the 17–18 July campaign**, and the second
 was added on 2026-08-16 when the owner pointed at three photographs this
 register had never taken in. The earlier count is in
-[HISTORY.md](HISTORY.md).
+the private correction record.
 
 Lock state is recorded on six of the ten records,
 across four separate dates, which turns the table from a list

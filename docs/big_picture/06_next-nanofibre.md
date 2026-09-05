@@ -106,7 +106,7 @@ found returning one while labelled the other.
 averaged surface flux, and [0.489](../../results/guided_mode_tables.csv "ref:guided_mode_tables:mode_solve_400nm:mode_area_peak")
 on the polarisation axis, so it is not quotable without saying which. Both come
 from vector fields checked against their own boundary conditions before
-integration. Earlier values are in [HISTORY](../HISTORY.md).
+integration. Earlier values are in HISTORY.
 
 **What is not yet settled, stated so nothing rests on it.** No published
 source gives a diameter tolerance for these fibres. Three routes were listed
@@ -133,7 +133,7 @@ unmeasured, so the campaign sits inside that span.
 scan cannot know and the power sweep measures. Amplitude against decay length
 is the classic degeneracy of a short near-exponential scan, and holding the
 amplitude fixed makes the lever look about twice as good as it is. Earlier
-values are in [HISTORY](../HISTORY.md).
+values are in HISTORY.
 
 **The route the campaign can run itself is open, and it is worth less than
 this chapter claimed.** A repaired lock is what makes it competitive with the

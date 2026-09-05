@@ -380,10 +380,41 @@ def scannable() -> list[Path]:
         # transit width. Both are records, and a record quoting a retired
         # value is doing its job. Correspondence and career material are
         # never opened at all.
+        # THE EXEMPTION IS DECLARED BY THE FILE, NOT GUESSED FROM ITS NAME.
+        # `_DATED` tested the FILENAME on the premise that a dated name marks a
+        # record. Measured 2026-09-05, it excluded 72 of 128 private markdown
+        # files, 56 per cent, including MASTER_PLAN_2026-09-05.md -- the
+        # execution authority, whose own header says a number appearing in it
+        # and elsewhere is a defect in it -- while NOT excluding
+        # ESCAPE_LEDGER.md, whose entries quote retired values as their job and
+        # were reported as stale copies. Wrong in both directions at once, and
+        # the two errors masked each other. A file now declares what it is.
         for pat in ("*.md", "checks/*.py"):
             out += [q for q in sorted(priv.glob(pat))
-                    if q.is_file() and not _DATED.search(q.name)]
+                    if q.is_file() and not _declares_record(q)]
     return out
+
+
+_RECORD_MARK = "<!-- kind: record -->"
+
+
+def _declares_record(path) -> bool:
+    """True when a file declares itself an append-only record.
+
+    A record quotes retired values as its job; anything else is a live document
+    and must not carry a value the record has moved past. The marker is read
+    from the first forty lines so this stays cheap.
+    """
+    try:
+        with open(path, encoding="utf-8", errors="replace") as fh:
+            for i, line in enumerate(fh):
+                if i > 40:
+                    return False
+                if _RECORD_MARK in line:
+                    return True
+    except OSError:
+        return False
+    return False
 
 
 # A LITERAL THAT ALREADY NAMES ITS SOURCE IS NOT A STALE COPY OF SOME
@@ -508,7 +539,7 @@ def scan(stale: dict[str, dict[str, tuple[str, str]]],
             continue
         lines = text.splitlines()
         hist_cols = (history_now_columns(lines)
-                     if rel.startswith("docs/history/") or rel == "docs/HISTORY.md"
+                     if rel.startswith("private/history/") or rel == "docs/HISTORY.md"
                      else None)
         for n, line in enumerate(lines, 1):
             if any(m in line.lower() for m in ACCOUNT_MARKERS):
@@ -554,7 +585,7 @@ def scan(stale: dict[str, dict[str, tuple[str, str]]],
                 # A ROUNDED COPY IS A COPY THE LITERAL MATCH CANNOT SEE.
                 # docs/wiki/third-cumulant.md quoted 0.415, 0.386, 0.343 and
                 # 0.201 as 0.42, 0.39, 0.34 and 0.20 through a clean run
-                # (2026-09-04, private/ANALYSIS_FINDINGS_2026-09-03.md, A26). Reported as an ADVISORY, never
+                # (2026-09-04, the correction record). Reported as an ADVISORY, never
                 # blocking, until its false-positive rate on the tracked set
                 # is measured and written beside the arming.
                 # Prose only: on its first run over the tracked set every hit

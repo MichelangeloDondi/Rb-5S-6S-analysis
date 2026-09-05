@@ -216,7 +216,7 @@ rebuilt on the Student-t quantile those degrees of freedom call for, with
 no new data behind the change. Neither figure is a resample as this page
 defines the term, both being closed-form quantiles, but the same check
 applies: a cutoff must match the degrees of freedom actually available.
-[HISTORY.md](../HISTORY.md) carries the before and after.
+the private correction record carries the before and after.
 
 ## Further reading
 

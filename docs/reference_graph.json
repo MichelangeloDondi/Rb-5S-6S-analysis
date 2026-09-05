@@ -43,12 +43,65 @@
   "source_file": "results/beta_self_probe.csv",
   "source_value": "0.02983110511392229"
  },
+ "blackbody_channels:bbr_detector_background:T70C": {
+  "producer": "run_blackbody_channels.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/12_open-apparatus-items.md",
+    "line": 93,
+    "writes": "2994.39"
+   },
+   {
+    "file": "docs/wiki/blackbody-radiation.md",
+    "line": 150,
+    "writes": "2994.39"
+   }
+  ],
+  "source_file": "results/blackbody_channels.csv",
+  "source_value": "2994.39"
+ },
+ "blackbody_channels:bbr_reexcitation:5P3/2_to_6S": {
+  "producer": "run_blackbody_channels.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/blackbody-radiation.md",
+    "line": 132,
+    "writes": "3.32229e-05"
+   }
+  ],
+  "source_file": "results/blackbody_channels.csv",
+  "source_value": "3.32229e-05"
+ },
+ "blackbody_channels:bbr_stark_shift:T70C": {
+  "producer": "run_blackbody_channels.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/blackbody-radiation.md",
+    "line": 111,
+    "writes": "-79.9349"
+   }
+  ],
+  "source_file": "results/blackbody_channels.csv",
+  "source_value": "-79.9349"
+ },
+ "blackbody_channels:bbr_transfer:6S_to_6P": {
+  "producer": "run_blackbody_channels.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/blackbody-radiation.md",
+    "line": 129,
+    "writes": "44.2953"
+   }
+  ],
+  "source_file": "results/blackbody_channels.csv",
+  "source_value": "44.2953"
+ },
  "campaign_twin_forecast:cell:gamma_coll_5traces_err": {
   "producer": "run_campaign_twin_forecast.py",
   "quoting_sites": [
    {
     "file": "README.md",
-    "line": 154,
+    "line": 153,
     "writes": "0.015"
    }
   ],
@@ -72,7 +125,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 251,
+    "line": 269,
     "writes": "69"
    }
   ],
@@ -84,7 +137,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 251,
+    "line": 269,
     "writes": "16"
    }
   ],
@@ -96,7 +149,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 251,
+    "line": 269,
     "writes": "2.78"
    }
   ],
@@ -112,11 +165,6 @@
     "writes": "7.3"
    },
    {
-    "file": "docs/history/01_bounds-and-the-light-shift.md",
-    "line": 86,
-    "writes": "7.3"
-   },
-   {
     "file": "docs/plan/07_acquisition-settings.md",
     "line": 1285,
     "writes": "7.3"
@@ -124,18 +172,6 @@
   ],
   "source_file": "results/centre_fisher.csv",
   "source_value": "7.3456"
- },
- "centre_fisher:inflation_linear_over_drift_known:forecast": {
-  "producer": "run_centre_fisher.py",
-  "quoting_sites": [
-   {
-    "file": "docs/history/01_bounds-and-the-light-shift.md",
-    "line": 84,
-    "writes": "14.4"
-   }
-  ],
-  "source_file": "results/centre_fisher.csv",
-  "source_value": "14.3958"
  },
  "centre_fisher:ladder_order_gain:cycled_over_as_taken": {
   "producer": "run_centre_fisher.py",
@@ -165,11 +201,6 @@
   "producer": "run_centre_fisher.py",
   "quoting_sites": [
    {
-    "file": "docs/history/01_bounds-and-the-light-shift.md",
-    "line": 90,
-    "writes": "3.48"
-   },
-   {
     "file": "docs/plan/01_aim-and-failure-modes.md",
     "line": 104,
     "writes": "3.48"
@@ -186,11 +217,6 @@
  "centre_fisher:sigma_amplitude_forecast:linear_drift_cycled": {
   "producer": "run_centre_fisher.py",
   "quoting_sites": [
-   {
-    "file": "docs/history/01_bounds-and-the-light-shift.md",
-    "line": 92,
-    "writes": "0.48"
-   },
    {
     "file": "docs/plan/01_aim-and-failure-modes.md",
     "line": 106,
@@ -259,11 +285,6 @@
    {
     "file": "docs/LITERATURE.md",
     "line": 207,
-    "writes": "24"
-   },
-   {
-    "file": "docs/history/01_bounds-and-the-light-shift.md",
-    "line": 109,
     "writes": "24"
    }
   ],
@@ -1036,6 +1057,16 @@
   "producer": "run_identifiability.py",
   "quoting_sites": [
    {
+    "file": "docs/LITERATURE.md",
+    "line": 334,
+    "writes": "7.23"
+   },
+   {
+    "file": "docs/THEORY_NOTE.md",
+    "line": 310,
+    "writes": "7.23"
+   },
+   {
     "file": "docs/wiki/identifiability.md",
     "line": 204,
     "writes": "7.23"
@@ -1047,6 +1078,16 @@
  "identifiability:width_signature_broadening_khz:gaussian_branch": {
   "producer": "run_identifiability.py",
   "quoting_sites": [
+   {
+    "file": "docs/LITERATURE.md",
+    "line": 333,
+    "writes": "6.48"
+   },
+   {
+    "file": "docs/THEORY_NOTE.md",
+    "line": 309,
+    "writes": "6.48"
+   },
    {
     "file": "docs/wiki/identifiability.md",
     "line": 204,
@@ -1138,7 +1179,7 @@
   "quoting_sites": [
    {
     "file": "docs/THEORY_NOTE.md",
-    "line": 772,
+    "line": 786,
     "writes": "45.57(17)"
    }
   ],
@@ -1150,7 +1191,7 @@
   "quoting_sites": [
    {
     "file": "docs/THEORY_NOTE.md",
-    "line": 732,
+    "line": 746,
     "writes": "790.032326(32)"
    }
   ],
@@ -1162,7 +1203,7 @@
   "quoting_sites": [
    {
     "file": "docs/THEORY_NOTE.md",
-    "line": 708,
+    "line": 722,
     "writes": "-1093"
    }
   ],
@@ -1332,11 +1373,6 @@
   "producer": "run_onf_lever_ranking.py",
   "quoting_sites": [
    {
-    "file": "docs/history/09_the-guided-geometry.md",
-    "line": 75,
-    "writes": "1.851"
-   },
-   {
     "file": "docs/methods/09_the_guided_geometry.md",
     "line": 338,
     "writes": "1.851"
@@ -1348,11 +1384,6 @@
  "onf_lever_ranking:distance_scan:sigma_diameter_nm": {
   "producer": "run_onf_lever_ranking.py",
   "quoting_sites": [
-   {
-    "file": "docs/history/09_the-guided-geometry.md",
-    "line": 74,
-    "writes": "30.7"
-   },
    {
     "file": "docs/methods/09_the_guided_geometry.md",
     "line": 332,
@@ -1384,7 +1415,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 260,
+    "line": 278,
     "writes": "0 to 1"
    }
   ],
@@ -1396,7 +1427,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 258,
+    "line": 276,
     "writes": "4 to 9"
    }
   ],
@@ -1413,7 +1444,7 @@
    },
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 249,
+    "line": 267,
     "writes": "30.73"
    }
   ],
@@ -1430,12 +1461,7 @@
    },
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 249,
-    "writes": "0.67"
-   },
-   {
-    "file": "docs/history/09_the-guided-geometry.md",
-    "line": 74,
+    "line": 267,
     "writes": "0.67"
    },
    {
@@ -1452,7 +1478,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 250,
+    "line": 268,
     "writes": "0.23"
    }
   ],
@@ -1465,23 +1491,23 @@
    {
     "file": "docs/methods/09_the_guided_geometry.md",
     "line": 241,
-    "writes": "5.0452"
+    "writes": "5.0322"
    },
    {
     "file": "docs/methods/09_the_guided_geometry.md",
     "line": 369,
-    "writes": "5.0452"
+    "writes": "5.0322"
    }
   ],
   "source_file": "results/onf_lever_ranking.csv",
-  "source_value": "5.0452"
+  "source_value": "5.0322"
  },
  "paired_reference_forecast:analog/j0.028/d0:shift_err_ratio_one_campaign:err": {
   "producer": "run_paired_reference_forecast.py",
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 146,
+    "line": 164,
     "writes": "0.029"
    }
   ],
@@ -1493,7 +1519,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 167,
+    "line": 185,
     "writes": "0.96"
    }
   ],
@@ -1505,7 +1531,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 169,
+    "line": 187,
     "writes": "0.94"
    }
   ],
@@ -1517,7 +1543,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 182,
+    "line": 200,
     "writes": "29"
    }
   ],
@@ -1529,7 +1555,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 184,
+    "line": 202,
     "writes": "32"
    }
   ],
@@ -1541,7 +1567,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 174,
+    "line": 192,
     "writes": "conditional"
    }
   ],
@@ -1553,7 +1579,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 135,
+    "line": 153,
     "writes": "6"
    }
   ],
@@ -1565,7 +1591,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 133,
+    "line": 151,
     "writes": "0.7"
    }
   ],
@@ -1577,7 +1603,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 160,
+    "line": 178,
     "writes": "0.997"
    }
   ],
@@ -1589,7 +1615,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 161,
+    "line": 179,
     "writes": "0.021"
    }
   ],
@@ -1601,7 +1627,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 163,
+    "line": 181,
     "writes": "0.960"
    }
   ],
@@ -1613,7 +1639,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 164,
+    "line": 182,
     "writes": "0.020"
    }
   ],
@@ -1625,7 +1651,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 171,
+    "line": 189,
     "writes": "fails"
    }
   ],
@@ -1637,7 +1663,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 141,
+    "line": 159,
     "writes": "unresolved"
    }
   ],
@@ -1649,7 +1675,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 138,
+    "line": 156,
     "writes": "0.705"
    }
   ],
@@ -1661,7 +1687,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 139,
+    "line": 157,
     "writes": "0.015"
    }
   ],
@@ -1673,7 +1699,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 151,
+    "line": 169,
     "writes": "clears"
    }
   ],
@@ -1685,7 +1711,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 152,
+    "line": 170,
     "writes": "0.4727"
    }
   ],
@@ -1697,7 +1723,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 153,
+    "line": 171,
     "writes": "0.0097"
    }
   ],
@@ -1709,7 +1735,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 155,
+    "line": 173,
     "writes": "clears"
    }
   ],
@@ -1767,7 +1793,7 @@
    },
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 67,
+    "line": 72,
     "writes": "-1.97"
    }
   ],
@@ -1784,7 +1810,7 @@
    },
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 71,
+    "line": 76,
     "writes": "1.117"
    }
   ],
@@ -1794,6 +1820,11 @@
  "prediction_band:collection_window:transit_kernel_rms_spread_pct": {
   "producer": "run_prediction_band.py",
   "quoting_sites": [
+   {
+    "file": "docs/methods/03_the_ac_stark_ramp.md",
+    "line": 325,
+    "writes": "0.97"
+   },
    {
     "file": "docs/methods/10_the_odd_moments.md",
     "line": 50,
@@ -1813,7 +1844,7 @@
    },
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 69,
+    "line": 74,
     "writes": "1.691"
    }
   ],
@@ -1830,7 +1861,7 @@
    },
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 64,
+    "line": 69,
     "writes": "0.26"
    }
   ],
@@ -1864,11 +1895,6 @@
  "saturation_companion:C3d:factor_with_saturation_ratio_-1p2362": {
   "producer": null,
   "quoting_sites": [
-   {
-    "file": "docs/history/01_bounds-and-the-light-shift.md",
-    "line": 73,
-    "writes": "2.75"
-   },
    {
     "file": "docs/plan/00_the-case.md",
     "line": 198,
@@ -2246,11 +2272,6 @@
   "producer": "run_stark_joint.py",
   "quoting_sites": [
    {
-    "file": "docs/history/01_bounds-and-the-light-shift.md",
-    "line": 130,
-    "writes": "0.348"
-   },
-   {
     "file": "docs/quantities/ac-stark-light-shift.md",
     "line": 114,
     "writes": "0.348"
@@ -2338,16 +2359,6 @@
   "producer": "run_stark_sweep.py",
   "quoting_sites": [
    {
-    "file": "docs/history/01_bounds-and-the-light-shift.md",
-    "line": 67,
-    "writes": "0.364"
-   },
-   {
-    "file": "docs/history/01_bounds-and-the-light-shift.md",
-    "line": 124,
-    "writes": "0.364"
-   },
-   {
     "file": "docs/methods/06_the_statistics.md",
     "line": 653,
     "writes": "0.364"
@@ -2381,7 +2392,7 @@
    },
    {
     "file": "results/README.md",
-    "line": 271,
+    "line": 272,
     "writes": "0.396"
    }
   ],
@@ -2398,7 +2409,7 @@
    },
    {
     "file": "results/README.md",
-    "line": 271,
+    "line": 272,
     "writes": "0.316"
    }
   ],

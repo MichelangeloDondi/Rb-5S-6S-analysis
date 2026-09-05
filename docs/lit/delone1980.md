@@ -162,7 +162,7 @@ $g_1 = +0.566$ at $n=2$ on the bounded support $[-S_0,0]$. The third cumulant
 is used as a drift-immune channel for measuring $S_0$.
 
 At the measured beam waist in this experiment, the Section 5 validity
-condition holds with about a factor of ten to spare: the ramp edge is 0.348
+condition holds with about a factor of ten to spare: the ramp edge is 0.364
 MHz against a natural width of 3.4925 MHz. For the resonance-enhanced case of
 Section 6c, applied to a third 993 nm photon reaching the real 6S population
 through a 2+1 process: the intermediate state lies 345 cm⁻¹ from the

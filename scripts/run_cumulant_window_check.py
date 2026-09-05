@@ -44,7 +44,7 @@ W = 8.0                  # MHz, window half-width about the self-centre
 SIGMA_LASER_FWHM = 1.6   # MHz FWHM (the twin's own laser kernel)
 # MHz FWHM at the archive's 130 C from the measured waist, the value
 # twin_realism.csv carries as TRUTH; the config placeholder is the same function
-# at 110 C and the archive's line is not at 110 C. Never a literal (E15).
+# at 110 C and the archive's line is not at 110 C. Never a literal.
 TRANSIT_FWHM = C.transit_fwhm_from_w0(C.W0_MEASURED_M, 130.0)
 GAMMAS = (0.2, 0.55, 1.1)   # MHz, gamma_coll grid spanning the record's range
 S0_2025 = round(float(stark_shift_S0_mhz(0.225, C.W0_MEASURED_M, rho=C.RHO_RETRO)), 3)   # the 2025 campaign's shift, sourced (0.364)

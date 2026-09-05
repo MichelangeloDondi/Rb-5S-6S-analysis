@@ -220,7 +220,7 @@ def acquire(platform: Platform, acq: Acquisition, *,
             # the twin must not invent a branching ratio it does not have
             shares = {k: 1.0 for k in pos}
         else:
-            # THE DETECTION CHANNEL, wired 2026-09-05 (register A56, A57).
+            # THE DETECTION CHANNEL, wired 2026-09-05.
             #
             # NOT exp(-tau). The first draft of this wiring attenuated each peak
             # by its own optical depth and would have generated BLANK traces:

@@ -90,7 +90,7 @@ each one is scored against what happened, including runs that failed their
 own gate outright and not just the ones that went well. A correction
 enters as a dated addendum after the original text instead of a silent
 edit, and where a number has since been replaced,
-[`docs/HISTORY.md`](../HISTORY.md) is the one place licensed to carry the
+the private correction record is the one place licensed to carry the
 retired value alongside the current one.
 
 Two dated notes name both tests explicitly.

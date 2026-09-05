@@ -282,7 +282,8 @@ def main() -> int:
 
     lp = PR[(PR.t_h > LATE_H) & ~PR.touches_step]
     med = float(lp.rate.median())
-    mad = float(1.4826 * (lp.rate - med).abs().median() / np.sqrt(len(lp)))
+    from rb5s6s.qc import median_standard_error
+    mad = median_standard_error(lp.rate.to_numpy(), robust=True)   # the median's own
     print(f"\nSETTLED DRIFT (t > {LATE_H:g} h, median of {len(lp)} pairs):")
     print(f"  {med:+.2f} +/- {mad:.2f} ms/min "
           f"= {med * RATE_MHZ_MS:+.3f} MHz/min laser axis "

@@ -145,7 +145,7 @@ $\kappa = 0$, and there the width handle broadens as $S_0$ squared, so its
 gradient vanishes. A Wald error taken by finite difference at a point of
 zero gradient measures numerical noise rather than the likelihood, and
 carried no coverage at all. The bound is now the profile bound this page
-describes. [HISTORY.md](../HISTORY.md) carries the figures.
+describes. the private correction record carries the figures.
 
 ## Further reading
 

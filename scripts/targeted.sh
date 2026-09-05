@@ -126,10 +126,29 @@ grep -qE '^scripts/(ci_gate|targeted)\.sh$' <<<"$CHANGED" && add \
   tests/test_gate_verdict_sentinel.py tests/test_repo_hygiene.py
 grep -qE '^scripts/check_' <<<"$CHANGED" && add \
   tests/test_checkers_are_wired.py tests/test_repo_hygiene.py
-grep -q '^private/checks/' <<<"$CHANGED" && add tests/test_board_ledger.py
+# THE GOVERNANCE MODULES RUN ALWAYS. This line used to read
+# `grep -q '^private/checks/' <<<"$CHANGED"`, and $CHANGED is the ARCHIVE's
+# staged diff, where private/ is gitignored: the path could not appear and the
+# rule never fired once. Reading the governance repo's own working tree instead
+# fails the same way one step along, because committing governance at a wave
+# boundary -- which the standing rules require -- empties that diff before the
+# floor runs. Detection depends on a window correct practice closes, so there
+# is no detection here. These modules are seconds and they are exactly what a
+# governance edit endangers.
+# These are added to whatever the change set selected, and are NOT counted as
+# selecting it: a diff that maps to nothing must still stamp NOMODULES so the
+# gate knows the floor covered nothing of its own. Making the add unconditional
+# without this made that branch unreachable (finding 13), so a change to a file
+# no rule matches stamped a plain TARGETED and claimed coverage it lacked.
+GOVERNANCE_ALWAYS="tests/test_board_ledger.py tests/test_governance_instruments.py"
 grep -q '^figures/' <<<"$CHANGED" && add tests/test_figures_fresh.py
 grep -qE '^(pyproject\.toml|CITATION\.cff)$' <<<"$CHANGED" && add \
   tests/test_repo_hygiene.py
+# the snapshot comes AFTER the figure and packaging rules, which select
+# modules of their own, and BEFORE the unconditional governance add, which
+# does not: a figures-only diff stamped NOMODULES when it stood above them
+MAPPED_COUNT=${#MODS[@]}
+add $GOVERNANCE_ALWAYS
 # assembled without a pipeline: a py-less change set made the old
 # grep-fed substitution die silently under set -e on its first
 # py-less run, and the caller's tail masked the status (19.24's
@@ -143,7 +162,9 @@ if [ -n "${PYFILES// /}" ]; then
   # (its status was thrown away here until an audit read the line).
   "$PY" -m ruff check $PYFILES
 fi
-if [ "${#MODS[@]}" -eq 0 ]; then
+# NOMODULES keys on what the CHANGE SET selected, not on the governance
+# modules added unconditionally beside it.
+if [ "$MAPPED_COUNT" -eq 0 ]; then
   echo "targeted: no owning modules for this change set; the FULL gate is"
   echo "targeted: the instrument. Stamping NOMODULES so the gate can start."
   printf 'TARGETED-NOMODULES\ntree %s\n' "$(git write-tree)" > .targeted_ok

@@ -85,7 +85,7 @@ rebuild replaced a hard-coded multiplier, which silently assumed more
 degrees of freedom than the fit had, with the Student-t quantile for the
 degrees of freedom actually present. The second admitted a fourth
 temperature session, stretching the density lever and producing the
-headline this page quotes. [HISTORY.md](../HISTORY.md) carries every
+headline this page quotes. the private correction record carries every
 retired figure and its date.
 
 ## A second term

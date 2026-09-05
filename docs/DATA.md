@@ -1016,7 +1016,7 @@ Lorentzian at 4.2 widths standoff.
 
 ## 8. The bound history
 
-Moved to [HISTORY.md](HISTORY.md), the one file in this repository licensed to
+Moved to the private correction record, the one place licensed to
 print a value the record no longer holds. This page, like every other, now
 states only what is live.
 

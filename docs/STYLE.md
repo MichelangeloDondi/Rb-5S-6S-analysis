@@ -74,18 +74,17 @@ how they are stated, not what they say.
   the old value across the tree and decide per site whether it is history or a
   live claim. `tests/test_repo_hygiene.py` now fails on a retired beam waist
   quoted beside a live claim, and the same discipline applies to any re-pin.
-- **A superseded number is replaced here and recorded in `HISTORY.md`.** That
-  file is the one place in this repository licensed to print a value the
-  record no longer believes. Every other document, this one included, states
-  only what is live, and refers to a superseded value by linking to
-  `HISTORY.md` rather than repeating the number. Where the number was computed
+- **A superseded number is replaced here and recorded in the correction
+  record**, which is private and is the one place licensed to print a value
+  the record no longer believes. Every other document, this one included,
+  states only what is live, and names the correction record for a
+  superseded value without repeating the number. Where the number was computed
   at the old value, recompute rather than relabel, since a relabelled table is
   a new falsehood rather than a surviving one. Earned 2026-08-15, when a
   pre-measurement stand-in for the beam waist survived a re-pin in three
   forward-looking documents and outvoted the one page that was right, which
   produced a wrong edit to the front page. The version history remains the
-  complete record, and `HISTORY.md` is the curated part a reader needs
-  without running `git log`.
+  complete record, and the correction record is the curated part.
 - **Two documents agreeing is not corroboration if they share an ancestor.**
   Date a claim before counting the sites that repeat it, and resolve prose
   against its source (a constant, a CSV, a measurement) rather than against

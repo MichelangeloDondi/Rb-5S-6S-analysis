@@ -165,7 +165,14 @@ this section, which has to be in place before any of them runs.
    moment may stay under its floor at every power, in which case item 1 carries
    the section alone. **Record.** The excess variance per condition with its
    floor, beside the pull.
-3. **Skew hunt at S.** Not a promised result: sized for the pessimistic end
+3. **Skew hunt at S.** Not a promised result, and the twin says why: on a
+   ladder of synthetic traces across the laser kernel, the noise, the
+   oscilloscope and the analysis window
+   ([the map](../../results/moment_power_map.csv)), the third cumulant's
+   cubic law is not recovered at shifts at or below the 2025 one, and on the
+   campaign's own power ladder with every layer on its top rung is
+   sign-degenerate at the predicted coefficient, opening only as the shift
+   nears a megahertz. Sized for the pessimistic end
    (≥ 15× the 2025-equivalent trace count at one condition), which turns even
    the worst-case per-block significance into ≥ 3σ, detection or meaningful
    bound either way. The fringe-resolved tail suppresses the small-waist skew

@@ -21,8 +21,15 @@ from pathlib import Path
 import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
-HISTORY = ROOT / "docs" / "HISTORY.md"
-CHAPTERS = ROOT / "docs" / "history"
+HISTORY = ROOT / "private" / "HISTORY.md"
+CHAPTERS = ROOT / "private" / "history"   # private since 2026-09-05
+
+# The correction record is private since 2026-09-05 (owner decision), so a
+# public clone has nothing to grade and must skip rather than fail.
+pytestmark = pytest.mark.skipif(
+    not (ROOT / "private" / "history").is_dir(),
+    reason="the correction record is private and absent from this clone")
+
 
 
 def _history_sources() -> list[Path]:

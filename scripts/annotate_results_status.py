@@ -96,6 +96,7 @@ SKIP = {"laser_epoch.csv", "qc_metrics.csv",
         # leg 2, the coverage grid: measured coverage rows and verdict
         # booleans, tagged by the producer.
         "coverage_grid.csv",
+        "moment_power_map.csv",
         # the lever ranking: every row is a Fisher forecast about a DESIGN, and
         # its inputs split measured from estimated, so the producer tags them.
         "onf_lever_ranking.csv",
@@ -529,7 +530,7 @@ def main() -> int:
         # a hand-edited note cell carried an unquoted comma, DictReader put
         # the overflow under the key None, DictWriter raised on that row with
         # the file already open for writing, and results/identifiability.csv
-        # was left with the twelve rows before it (private/ANALYSIS_FINDINGS_2026-09-03.md, A28). The file
+        # was left with the twelve rows before it (the correction record). The file
         # is now written to a sibling and renamed, so a crash anywhere in the
         # write leaves the original untouched.
         for n, r in enumerate(rows, start=2):

@@ -75,7 +75,7 @@ makes it measurable. `background_degeneracy_factor` in the design script
 computes it and a test pins the value.
 
 (The earlier span and its assumed degeneracy factor are recorded in
-[HISTORY.md](../HISTORY.md).)
+the private correction record.)
 
 The reach schedule, which is also the fallback if the piezo cannot reach three
 sigma. Read off the widest row the hardware allows:
@@ -120,7 +120,7 @@ fitted, which at three sigma of reach leaves 0.645 of the ideal information.
 These figures rose on 2026-08-16 with the record length, when the shape
 requirement was raised to the 90 points across the line that the B5 and B6
 simulations support. What they replaced is recorded in
-[HISTORY.md](../HISTORY.md).
+the private correction record.
 
 The tau assumption is not load-bearing, and the range is wide enough that this
 matters: at the record's best tau the detection is 105 sigma per trace, at its

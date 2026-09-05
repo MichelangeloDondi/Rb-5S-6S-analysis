@@ -277,7 +277,7 @@ fi
 
 
 # parse gate first, and hard: a checker that cannot parse reports nothing,
-# and the advisory calls below would hide exactly that (E13). Guarded on
+# and the advisory calls below would hide exactly that. Guarded on
 # the DIRECTORY, not on any one file it grades -- nesting it inside the
 # enforcement_report existence test let a rename retire the gate over the
 # other ten (confirmation round, 2026-09-01). Recursive so a future

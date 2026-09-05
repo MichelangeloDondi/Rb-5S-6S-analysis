@@ -35,7 +35,7 @@ general.
 
 For spectroscopy the property holds in a qualified form (the dated account
 of how the qualification was reached is in
-[the history](../history/02_the-lineshape-and-its-kernel.md)). Three layers:
+the private correction record). Three layers:
 
 1. **Even cumulants of the observed line diverge.** The Lorentzian core's
    generating function is $-\gamma\lvert t\rvert$ ($\gamma$ the half-width
@@ -148,6 +148,54 @@ distribution, so they converge slowly and are extremely sensitive to how far
 out the data extend and to where a baseline is placed. A cumulant computed
 over a truncated window is not the cumulant of the line, and the truncation
 enters the answer.
+
+**And the sharpest form of that problem was measured across 432
+configurations, in [`results/moment_power_map.csv`](../../results/moment_power_map.csv).**
+The map generates traces through the production world builder at five
+light-shift rungs spanning the archive's 0.364 MHz and 1.0 MHz, a round figure inside the campaign's range (the plan's chapter 4 gives 1.42 MHz at a 40 um waist and 500 mW),
+at 2,000 traces a rung, and fits the power of $S_0$ that the windowed cumulant
+carries. In the noiseless limit, with the model's grid resolving the shift,
+that power is 3.00 at half-windows of 8 MHz and above and 2.86 at the 3.25 MHz
+optimum ([the map](../../results/moment_power_map.csv) states its grid), because the ladder's lowest rung sits below the region where the
+windowed cumulant is cubic. The windowed cumulant is positive at every rung.
+It is not the ramp's own $-S_0^3/135$ from the derivation above but the
+truncated estimator's reading of it. Under the archive's own noise and
+quantisation **no configuration on the grid recovers it**: over all three
+orders the file's `min_snr_over_rungs` reaches 2.9 at best and 0.45 at the
+median, and the median fitted power of the third cumulant is 1.8. That column
+is a median over its own standard error and is inflated wherever the true
+cumulant lies below the noise, so 2.9 is not a signal-to-scatter but the
+noise's own reading of one. The rung it belongs to has a signal-to-scatter
+against the injected truth of 0.45.
+
+**The failure is not that the answer is noisy. It is that the answer is
+confidently wrong**, and the mechanism is worth stating because it is generic.
+Where the true cumulant lies below its own scatter, the magnitude of a noisy
+estimate is inflated, since noise cannot cancel in an absolute value. That lifts
+the low rungs of the ladder, flattens the fitted slope, and returns a power near
+2 where the physics carries 3. A reader who quoted that slope would
+conclude the cumulant does not go as the cube, which is a statement about the
+noise and not about the line. **The column that prevents it is
+`min_snr_over_rungs`**, and it exists so a power can be read beside the evidence
+that it was measurable at all.
+
+The three figures quoted above are aggregates over the whole file and so carry
+no single-cell reference. Recompute them from the committed file with
+
+```bash
+python -c "import csv,math,statistics as s; r=list(csv.DictReader(open('results/moment_power_map.csv'))); f=lambda k,rr: [y for y in (float(x[k]) for x in rr) if math.isfinite(y)]; v=f('min_snr_over_rungs', r); p=f('s0_power', [x for x in r if x['order']=='3']); print(max(v), s.median(v), s.median(p))"
+```
+
+
+The map's ladder is the twin's, five shifts at constant amplitude and two
+thousand traces a rung. The 2025 archive took five traces a rung over shifts
+of 0.04 to 0.364 MHz with amplitude rising as the power squared, so the map's
+exponent is not the archive's number. What is derivable from one cell is the
+archive's own: at its shift, noise and scope a single trace's cumulant has a
+signal-to-scatter of a few hundredths, so five traces reach a few tenths of
+that and a usable channel needs of order thirty thousand. The consequence for this repository is stated
+in [the campaign cases](../big_picture/09_the-campaign-cases.md): the third
+cumulant is the campaign's channel and not the archive's, and the map is why.
 
 Two implementation traps follow from that. Subtracting a baseline that is
 itself slightly asymmetric injects a third cumulant directly. And at finite

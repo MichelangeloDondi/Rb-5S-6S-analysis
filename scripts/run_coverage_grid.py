@@ -36,12 +36,21 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
+from rb5s6s import constants as K  # noqa: E402
 from rb5s6s import stark  # noqa: E402
 from rb5s6s.forecast import synthetic_traces  # noqa: E402
 from rb5s6s.linefit import fit_condition  # noqa: E402
 from rb5s6s.noise import load_noise_model  # noqa: E402
 
-GAMMA, SIGMA, TRANSIT = 0.55, 1.6, 1.8
+# MHz. The transit is the twin's own, where a retired 1.8 stood until
+# 2026-09-05: the record's transit at its measured waist and 130 C is 0.9575,
+# so the literal was 88 per cent high and no committed row ever held 1.8. The
+# same triple was repaired in run_estimator_duel.py on 2026-09-04 and this
+# producer was missed by that sweep, which is why the value is now DERIVED
+# here rather than typed -- a literal cannot be missed by a sweep it cannot
+# be the subject of.
+GAMMA, SIGMA = 0.55, 1.6
+TRANSIT = K.transit_fwhm_from_w0(K.W0_MEASURED_M, T_C=130.0)
 AMP_V = 0.8
 N_TRIALS = 1000
 WORKERS = min(8, os.cpu_count() or 1)

@@ -2507,6 +2507,33 @@ out: one arm clearly excludes, two clearly do not, and the fourth is
 indistinguishable from the threshold at 1.618. The
 exclusion on the full fit itself stands. See RESULTS.md C3f.
 
+**Amendment, 2026-09-05. The paragraph above is left standing and is not
+edited. What follows is the correction to it.** Its prediction is superseded.
+`stark_shift_S0_mhz`, evaluated at the measured waist and the committed retro
+ratio, returns a larger shift than the figure quoted above, which was carried
+from an earlier evaluation. `results/stark_sweep.csv`, `results/projections.csv`
+and `results/identifiability.csv` all carry the corrected prediction.
+`results/stark_joint.csv` still carries the earlier one, and
+`results/README.md` records that lag and its cause.
+
+**The retraction above rests on a comparison that inverts at the corrected
+value.** Its stated ground is that the drop-4192 subset reaches the value quoted two
+paragraphs above, "slightly above the predicted central value". Against the
+corrected prediction that same subset sits **below** it, so the reason given
+for retracting "every subset requires a lower intensity than the prior
+assumes" no longer holds as written.
+
+**This amendment does not reinstate the retracted statement.** A retraction
+withdrawn on its own arithmetic needs the subset analysis re-run against the
+corrected prediction before anything is claimed in either direction, and that
+re-run is owed. What is established here is narrower: the number the comparison
+was made against was wrong, so the comparison is void, and the status of the
+retracted sentence is **open**.
+
+The coefficient quoted above is likewise superseded. Gate A's committed band is
+`results/prediction_band.csv`, whose worst-case low edge still sits above the
+archive's bound.
+
 **One observation logged, not interpreted.** With the wing nuisance free,
 the flipped-direction family settles about 54 units below its unflipped
 twin, while the no-wing families are direction-indifferent. This pattern

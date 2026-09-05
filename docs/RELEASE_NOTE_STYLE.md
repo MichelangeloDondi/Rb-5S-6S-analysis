@@ -55,13 +55,13 @@ by a physicist in under a minute.
   it does carry is checked against the tagged tree before publishing.
 * **N10.** A page reconstructed for an already-published tag states the
   frozen record in the template's Unchanged form and closes with one
-  provenance line naming the `docs/HISTORY.md` disclosure. The
+  provenance line naming the private correction record's disclosure. The
   reconstruction fact is that closing line, never the opening one.
 * **N11. A note reports a change and names where it is recorded. It does not
   perform the inference in front of the reader.** It does not weigh evidence,
   explain how a finding was reached, or narrate a correction as a discovery
   with a discoverer and a moment of realisation. That belongs in
-  `docs/RESULTS.md`, in `docs/history/`, or in the results row the note cites,
+  `docs/RESULTS.md`, in `the private correction record or in the results row the note cites,
   and the note points at it in one clause.
 
   **This rule was missing, and it is one of two things the withdrawn pages
@@ -95,4 +95,4 @@ implied the opposite.
   term. Either reader can block. The cold reader exists because anyone who
   knows the repository resolves undefined terms without noticing them.
 * A published body is edited in place only with a disclosure entry in
-  `docs/HISTORY.md` naming what changed and why.
+  the private correction record naming what changed and why.

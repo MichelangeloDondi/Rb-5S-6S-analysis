@@ -355,7 +355,7 @@ def main() -> int:
         "with the laser width, which is the identifiability failure the fibre "
         "was proposed to break. The probe's own shift is inhomogeneous too, "
         "spreading about 0.23 MHz across the shell at S0_onf_50uW. "
-        "Correction history: docs/history/09_the-guided-geometry.md")
+        "the private correction record")
 
     # ---- drive strength and its Stark cost --------------------------------
     #

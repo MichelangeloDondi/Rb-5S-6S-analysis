@@ -327,10 +327,14 @@ A number here is an identifier, not a position.
    core, which is checkable by BIC and the M8 cusp fit. See
    [THEORY_NOTE](THEORY_NOTE.md) §3.
    *And the width channel is not a weaker alternative. It is blind.* At 225 mW
-   and the measured $w_0 = 64$ µm the ramp kernel is 0.20 MHz FWHM, which added
-   in quadrature to the observed 5.2 MHz line is **0.004 MHz**, a part in
-   1400. No width measurement reaches this signal at any precision.
-   The same arithmetic settles a loose end in [lee2010](lit/lee2010.md): their
+   and the measured $w_0 = 64$ µm the ramp kernel's own width is $S_0/2$ exactly
+   (its density peaks at $|s|=S_0$ and halves at $|s|=S_0/2$). The extra width
+   that puts on the line is read from `run_identifiability.py`, not composed
+   here: [6.48](../results/identifiability.csv "ref:identifiability:width_signature_broadening_khz:gaussian_branch")
+   kHz on the Gaussian branch and [7.23](../results/identifiability.csv "ref:identifiability:width_signature_broadening_khz:cusp_branch")
+   kHz on the cusp, a part in some 800 of the line. No width measurement
+   reaches this signal at any precision.
+   The same comparison settles a loose end in [lee2010](lit/lee2010.md): their
    power-dependent Gaussian growth of ~1.9 MHz is **4–9× larger** than the ramp
    their own measured light-shift coefficient can produce, so the intensity
    inhomogeneity they name (tentatively, "possibly", against velocity-dependent

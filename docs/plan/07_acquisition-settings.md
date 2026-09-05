@@ -123,7 +123,7 @@ curvature across the span. The amplitude's retained signal-to-noise is the
 Fisher ratio sqrt(1 - <g>^2/<g^2>), which is 0.14 at one sigma of reach and
 0.645 at three. A span chosen so the pedestal looks visible is not the span
 that makes it measurable. The earlier figure and what replaced it
-are recorded in [HISTORY.md](../HISTORY.md).
+are recorded in the private correction record.
 
 If the piezo cannot reach three sigma, the schedule in
 [the design note](../notes/widescan_block_design.md) is also the fallback: take

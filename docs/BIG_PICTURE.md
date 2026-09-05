@@ -255,7 +255,7 @@ repository is [chapter 6](big_picture/06_next-nanofibre.md), the second
 scenario of [chapter 9](big_picture/09_the-campaign-cases.md),
 [the sized candidate](notes/onf_candidate.md),
 [methods chapter 9](methods/09_the_guided_geometry.md),
-[the guided geometry's correction record](history/09_the-guided-geometry.md),
+the guided geometry's correction record,
 and [guided atoms and nanofibres](wiki/guided-atoms-and-nanofibres.md), which
 carries its own skip line. Everything else, the
 method, the results, the plan and the rest of the wiki, is platform-neutral,

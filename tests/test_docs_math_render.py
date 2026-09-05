@@ -76,7 +76,13 @@ ROOT = Path(__file__).resolve().parents[1]
 # (rule 19.24, tests/_fileset.py). PDF_papers stays excluded on its own merits:
 # it is tracked but is a vendored reprint area, not repository prose.
 from _fileset import tracked_and_new as _tan            # noqa: E402
-DOCS = [ROOT / p for p in _tan("*.md") if not p.startswith("PDF_papers/")]
+from _fileset import population as _population          # noqa: E402
+# INVARIANT 1: an empty or shrunken population refuses rather than
+# degrading to a silent SKIPPED under the gate's -q.
+DOCS = _population("math_render: tracked markdown",
+                   [ROOT / p for p in _tan("*.md")
+                    if not p.startswith("PDF_papers/")],
+                   minimum=40)
 
 _PUNCT = re.compile(r"\\([!-/:-@\[-`{-~])")          # backslash + ASCII punctuation
 _TEXTGRP = re.compile(r"\\(?:text|mathrm|mathbf|textrm)\{([^{}]*)\}")

@@ -261,7 +261,7 @@ def test_rounded_forms_round_half_up_and_keep_every_collision():
     0.393 both round to 0.39; the first version silently dropped one, a near
     miss the physics seat measured). Failure mode if this regresses: a rounded
     echo of a retired cell passes the scan, which is how four of them lived on a
-    wiki page through a clean run on 2026-09-04 (private/ANALYSIS_FINDINGS_2026-09-03.md, A26)."""
+    wiki page through a clean run on 2026-09-04 (the correction record)."""
     import importlib.util
     spec = importlib.util.spec_from_file_location("cm", ROOT / "scripts" / "check_moved_values.py")
     m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m)

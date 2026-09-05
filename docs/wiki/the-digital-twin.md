@@ -260,7 +260,7 @@ $-0.9177$, $-0.9166$ and $-0.881$ for that same correlation, and it
 recorded neither its truth parameters nor its seed, so nobody can
 regenerate those four decimals. The public surfaces that once quoted them
 now quote the producer's rows instead. Both corrections are recorded in
-[HISTORY.md](../HISTORY.md).
+the private correction record.
 
 ## Further reading
 

@@ -45,6 +45,47 @@ def _git(*args: str) -> list[str]:
     return [p for p in out.stdout.split("\n") if p]
 
 
+def population(name: str, found, *, minimum: int = 1, unreachable=()):
+    """Return a population, or REFUSE when it is emptier than it should be.
+
+    INVARIANT 1: no instrument reports without its denominator, and a checker
+    that grades less than it claims fails instead of passing quietly.
+
+    THE DEFECT THIS CLOSES, measured 2026-09-05. `_git` returns [] on any git
+    failure -- deliberately, and pinned by this module's own contract test --
+    and twelve importers feed that straight into `@pytest.mark.parametrize`,
+    which degrades to `SKIPPED [1] got empty parameter set`. `ci_gate.sh` runs
+    `pytest -q --runslow` with no `-rs`, so each silently disabled module is
+    one more `s` in a multi-thousand-dot run and the gate reports green
+    throughout. A single git hiccup could switch off every docs guard at once
+    with nothing red anywhere.
+
+    Forty-two per cent of one board's findings were this shape: a guard whose
+    population shrinks without saying so. This turns "silently shrinks" into
+    "loudly refuses", which is the whole of invariant 1.
+
+    `unreachable` is what the caller could see but could not parse. It is
+    reported, never silently dropped, because a checker that counts what it
+    parsed and stays quiet about what it could not is how a malformed
+    reference left the checked set while the run printed zero findings.
+    """
+    items = list(found)
+    if len(items) < minimum:
+        raise AssertionError(
+            f"population {name!r} holds {len(items)} item(s), fewer than the "
+            f"{minimum} it must have. An empty or shrunken population PASSES "
+            "by grading nothing, which is the failure this refusal exists to "
+            "prevent. Check that the query defining it still works: git "
+            "returning nothing on error is the usual cause here.")
+    if unreachable:
+        raise AssertionError(
+            f"population {name!r}: {len(unreachable)} item(s) were found but "
+            f"could not be graded: {list(unreachable)[:5]}. A checker that "
+            "counts what it parsed and stays quiet about what it could not is "
+            "reporting a denominator it did not use.")
+    return items
+
+
 def tracked(*globs: str) -> list[str]:
     """Repo-relative paths git already tracks, matching `globs`."""
     return _git("ls-files", *globs)

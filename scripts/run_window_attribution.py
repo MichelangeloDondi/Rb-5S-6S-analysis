@@ -9,7 +9,7 @@ excursion is the horizontal setting" appears in DATA.md, in
 PREREGISTRATION_RESULTS addendum 4, on the front page's fig15 caption and
 inside panel (b) of the figure itself, and the 2026-08-24 provenance audit
 found that no committed row carried it. It is recorded as an open debt in
-HISTORY.md, in the same paragraph as the twin span-sweep correlations.
+the private correction record, in the same paragraph as the twin span-sweep correlations.
 This closes that half of the debt.
 
 It is also the reason the campaign has line SHAPES and no line CENTRES, so

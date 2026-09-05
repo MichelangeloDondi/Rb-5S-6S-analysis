@@ -137,7 +137,7 @@ The ramp prediction published in July was evaluated at the beam waist
 accepted at the time, and that waist was later replaced by a direct
 same-bench measurement. The prediction has not been recomputed against the
 replacement, so it stands at a retired input.
-[HISTORY.md](../HISTORY.md) carries both rows and the live figures.
+the private correction record carries both rows and the live figures.
 
 ## Further reading
 

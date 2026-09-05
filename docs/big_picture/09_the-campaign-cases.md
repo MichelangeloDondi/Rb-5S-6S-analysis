@@ -37,6 +37,24 @@ transition or a different geometry.
 
 ### Scenario one, a new vapour-cell campaign alone
 
+**Why a new campaign and not a re-analysis, in one measurement.** The
+fixed-lock workhorse is the mean pull, first order in the shift, which the 2025
+drifting lock absorbed into free centres. The third cumulant is a skew hunt
+the plan lists third and does not promise, and
+[`results/moment_power_map.csv`](../../results/moment_power_map.csv) measures
+why: across 432 configurations of the laser kernel, the noise level, the
+oscilloscope, the analysis window and the model's own grid, at two thousand
+traces on each of five shifts from 0.18 to 2.0 MHz, **the cubic law is not
+recovered on a ladder that starts below the 2025 shift**. The fitted exponent
+of the third cumulant comes back at 1.8 with a spread of about 0.5 across the
+grid where the physics gives 3, because the magnitude of a cumulant smaller
+than its own noise is inflated by that noise, and the rungs at and below the
+archive's shift are that case. The archive took five traces a rung against the
+map's two thousand. What raises the shift is the power and the tighter waist.
+What the repaired lock buys is the pull channel that does not need it. Raising the
+shift is what opens the channel, and raising it is what the higher power and
+the repaired lock do.
+
 **The physics.** Four conversions, from bounds to measurements.
 
 * The beam waist, measured in an afternoon with no atoms, converts every
@@ -276,8 +294,8 @@ physics we gain is in the last row and is ours, not theirs.
 guided geometry with the solved one redrew the mode tables and the diameter
 precision, left the cost rows standing, and moved nothing the host group
 keeps, because that row is a set of calibrations and instruments and not a
-precision. The corrections themselves are in
-[the guided-geometry record](../history/09_the-guided-geometry.md).
+precision. The corrections themselves are in the
+private correction record.
 
 **And the surface characterisation is not a by-product.** The near-fibre field
 is what limits Rydberg spectroscopy on this platform, and the published state

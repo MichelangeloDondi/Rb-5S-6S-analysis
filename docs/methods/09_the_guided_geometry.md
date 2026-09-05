@@ -202,7 +202,7 @@ committed table is reproduced only by the standard-deviation reading. That
 pairing is not decoration: the fraction is a property of the kernel together
 with the line it is added to, and a band stated without its core is uninterpretable.
 Its correction history is in
-[the guided-geometry record](../history/09_the-guided-geometry.md).
+the guided-geometry record.
 **The fraction is not a constant**: being second
 order it is set by the ratio of the two widths, so it grows with
 $\Gamma_\mathrm{transit}$ and falls against a broader Lorentzian core.
@@ -238,7 +238,7 @@ question and the answer is badly**: what the ladder reads is not
 $\Gamma_{\mathrm{transit}}$ but the second-order contribution below,
 [6.70 to 9.94](../../results/transit_additivity.csv "ref:transit_additivity:spanned:added_width_170uK_band")
 kHz at 170 µK against a 71 kHz kernel, and
-[5.0452](../../results/onf_lever_ranking.csv "ref:onf_lever_ranking:temperature_ladder:sigma_transit_frac")
+[5.0322](../../results/onf_lever_ranking.csv "ref:onf_lever_ranking:temperature_ladder:sigma_transit_frac")
 fractional precision at the 2025 lock, read from a design whose added width
 comes from `results/transit_additivity.csv` and not from a coefficient
 fitted here. Being the only lever and being a good one are different claims.
@@ -264,7 +264,7 @@ $A_{\mathrm{eff}}$ instead lands a reader a quarter low.
 $[K_1(q(a+d))/K_1(qa)]^2$, for two reasons: $K_1$ alone describes $E_z$, about
 a tenth of the field, and a light shift scales with $|E|^2$ rather than with
 the axial flux, which for a guided mode is a further 18 per cent at the trap
-distance. Earlier forms are in [HISTORY](../HISTORY.md).
+distance. Earlier forms are in HISTORY.
 
 What changes is that $w_0$, an assumed quantity in the cell and the record's
 largest open systematic, is replaced by $a$, which is measurable, and by a
@@ -366,7 +366,7 @@ Monte Carlo through simulate, fit and read the covariance
    instead of two, and the ladder of 9.2 becomes attributive and not
    merely constraining. **Attributive is not the same as precise**: the
    ladder's own fractional precision is
-   [5.0452](../../results/onf_lever_ranking.csv "ref:onf_lever_ranking:temperature_ladder:sigma_transit_frac")
+   [5.0322](../../results/onf_lever_ranking.csv "ref:onf_lever_ranking:temperature_ladder:sigma_transit_frac")
    at the 2025 lock, so what it
    buys is which mechanism the width belongs to, not how big it is.
 3. **The cost is photons.** At the demonstrated 25 to 40 counts per ms,

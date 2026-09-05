@@ -56,11 +56,20 @@ from __future__ import annotations
 
 import json
 import re
+
+import pytest
 import subprocess
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 BASELINE = Path(__file__).with_name("_history_tense_baseline.json")
+
+# The correction record is private since 2026-09-05 (owner decision), so a
+# public clone has nothing to grade and must skip rather than fail.
+pytestmark = pytest.mark.skipif(
+    not (ROOT / "private" / "history").is_dir(),
+    reason="the correction record is private and absent from this clone")
+
 
 # "now <verb>" and bare present-tense state claims. Deliberately not a general
 # tense detector: this bank is the shapes the two real defects took.
@@ -102,11 +111,14 @@ def _units(para: list[str]) -> list[str]:
 def _entries() -> list[tuple[str, int, str]]:
     # the hub joined 2026-09-04 (H11a: every guard that reads the record reads
     # the hub and the chapters); its count entered the baseline as debt
-    out = subprocess.run(["git", "-C", str(ROOT), "ls-files", "docs/history/*.md", "docs/HISTORY.md"],
+    # private/ is its own repository and is gitignored here, so the ARCHIVE's
+    # ls-files returned nothing for it and this guard passed on an empty
+    # population (found by a board). The governance repo is asked.
+    out = subprocess.run(["git", "-C", str(ROOT / "private"), "ls-files", "history/*.md", "HISTORY.md"],
                          capture_output=True, text=True)
     found = []
     for rel in out.stdout.split():
-        path = ROOT / rel
+        path = ROOT / "private" / rel          # the governance repo's paths are relative to it
         if not path.exists():
             continue
         lines = path.read_text(encoding="utf-8").splitlines()

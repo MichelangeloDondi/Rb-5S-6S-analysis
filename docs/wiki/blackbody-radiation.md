@@ -107,7 +107,9 @@ shows how much the correction extends the ceiling.
 *The blackbody shift across the campaign's temperature range, and how far a naive T^4 law would undershoot it.*
 
 For this experiment, the boundary is not binding. Across the cell's 70 to
-130 C range the differential shift runs 79.9 to 161.0 Hz, four orders of
+130 C range the differential shift runs from
+[-79.9349](../../results/blackbody_channels.csv "ref:blackbody_channels:bbr_stark_shift:T70C") Hz at the cold end
+to about -161 Hz at the hot one, the sign being a downward shift and the size four orders of
 magnitude below the light-shift bound the record quotes, and even a campaign
 targeting one kilohertz has an uncorrected ceiling near 340 C, far above any
 vapour cell this experiment would use. The temperature lever is limited by
@@ -118,6 +120,53 @@ of temperature. The measured shift scales as T to the 4.35, the excess being
 the near-resonant 6S to 6P contribution whose weight grows with temperature,
 so a model that assumes the fourth power understates the shift where a
 ceiling matters most.
+
+## The 6S to 6P channel, and where it now lives
+
+The near-resonant channel is not only a correction to the shift. It also
+**transfers population**: `results/blackbody_channels.csv` gives the 6S to 6P
+transfer rate at 130 C, summed over both fine-structure partners, as
+[44.2953](../../results/blackbody_channels.csv "ref:blackbody_channels:bbr_transfer:6S_to_6P") per second. The
+reverse leg matters far less. The 5P3/2 to 6S re-excitation driven by the
+thermal field is
+[3.32229e-05](../../results/blackbody_channels.csv "ref:blackbody_channels:bbr_reexcitation:5P3/2_to_6S") per
+second, so the thermal field empties 6S and does not fill it.
+
+**Neither rate depletes the state, and the comparison that shows it is one
+division.** The total rate out of 6S is $1/\tau_{6S}$, and
+`constants.TAU_6S_S` holds the measured lifetime, 45.57 ns, so that rate is
+$2.19\times10^{7}$ per second. The blackbody transfer above is 44.3 per
+second, which is **two parts in a million** of it. So the thermal field removes
+a negligible fraction of the excited population per lifetime, and the term that
+survives into a measurement is the *shift*, not the transfer. This is the whole
+reason the census row for blackbody reads as a centre shift and the depletion
+budget of `docs/methods/02` does not carry a blackbody line. The argument is
+physics and arithmetic, so it sits on the first rung of the ladder and needs no
+simulation. Re-derive it with `constants.TAU_6S_S` and the transfer cell above.
+
+**The same file bounds the thermal light the detector itself sees**, which is a
+different question from what the atoms do and is easy to conflate with it. The
+cell wall emits
+[2994.39](../../results/blackbody_channels.csv "ref:blackbody_channels:bbr_detector_background:T70C")
+photons per second at 70 C into the band the photocathode responds to, before
+any collection solid angle is applied, so it is an upper bound. That is an
+additive pedestal under the line and not a reshaping of it, which is why the
+per-trace linear baseline absorbs it in a fit. It is one of the contributors to
+the background scattering opened as an apparatus item in
+[the plan's open list](../plan/12_open-apparatus-items.md), and the reason that
+item matters is that a *moment* estimator carries no baseline model at all.
+
+**The blackbody shift is in the twin's world builder and not in its forecast
+generator, and the trapped-light halo is in both.** `blackbody.shift_hz` moves the
+line centre in `build_world_trace`, and `synthetic_traces` carries no blackbody
+argument at all. Read `results/twin_term_census.csv` for which term reaches
+which path. That file is measured from the signatures, not asserted.
+
+**Do not confuse this channel with radiation trapping.** Blackbody transfer is
+driven by the thermal field and depends on temperature through the photon
+occupation. Trapping is driven by the atoms' own resonant D-line photons and
+depends on optical depth. They act on the same detection leg and are separate
+terms with separate producers.
 
 ## What can go wrong
 

@@ -274,7 +274,7 @@ def main() -> None:
         "NO EARLIER VALUE IS NARRATED HERE ON PURPOSE: this note carried a "
         "three-step history whose terminal figure was stale within hours, "
         "twice, because a note that restates a number is a second copy of it. "
-        "The correction record is in docs/HISTORY.md, which is generated",
+        "The correction record is in the private correction record, which is generated",
         "ENVELOPE")
     add("power_sweep", "sigma_surface_shift", round(sig[0], 5), "MHz",
         "the intercept of the same fit",

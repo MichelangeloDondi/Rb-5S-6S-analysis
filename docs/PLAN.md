@@ -185,7 +185,7 @@ that widening the scan span breaks the width degeneracy, and the twin measured
 the correlation moving by 0.0075 across a factor of five in span
 ([`twin_span_sweep.csv`](../results/twin_span_sweep.csv)), which is no
 movement at all. That correction is in
-[HISTORY.md](HISTORY.md), and the surviving lever is in
+the private correction record, and the surviving lever is in
 [chapter 5](plan/05_width-collision-amplitude.md).
 
 The 2026-08-19 design pass over chapters 7 and 8 ran the same way: every
@@ -193,7 +193,7 @@ modulation depth, drive frequency and scan rate now in those chapters was
 adjudicated by computing the design's information under the measured noise
 law rather than by preference, five of the six candidate arguments failed
 under computation before they could ship, and the corrections are each
-recorded in [HISTORY.md](HISTORY.md). The general form of the discipline,
+recorded privately. The general form of the discipline,
 separating effects by parity under a knob before any fit is asked to, is
 [reversal tests](wiki/reversal-tests.md), and the sharpest instance cost
 nothing because the hyperfine g-factor's sign structure supplied the flip.

@@ -1,5 +1,10 @@
 *Chapter 12 of 12 of [the plan](../PLAN.md)*
 
+**The question.** Which cell-side numbers has nobody measured, what would each change, and how does the forecast proceed without them?
+**Takes.** Every chapter that quotes an apparatus number, chapters 3, 4 and 9 above all.
+**Gives.** The open list, the cost of closing each, and the span the forecast uses in place of a value.
+**Skip if.** You want the measurements that are already made, which are chapters 3 to 11.
+
 ## 13. The open apparatus items, and how the forecast handles each
 
 Every cell-side number in this plan that nobody has measured is listed here,
@@ -73,6 +78,55 @@ and the third cumulant's own null sits at
 image distance it gives the window above, and as the object distance it would
 give one about three times wider, a twelvefold larger bias with the null within
 reach. `constants.COLLECTION_IMAGE_DIST_M` names the reading it takes.
+
+### The background scattering reaching the detector
+
+**Is background scattering in the model?** It is
+not, in either the forward model or the twin, and the reason it has never
+mattered is worth stating before the item is opened. The detection is at
+795 nm, the D1 photon of the cascade, behind about 50 dB of 795 nm filtering,
+with the drive at 993 nm, so the filter rejects elastically scattered drive
+light and the model never has to carry it. What the filter does not reject is
+795 nm light that does not come from the interaction volume. Three sources
+are known. The detector's own dark rate. The cell wall's thermal emission in
+the passband, which `results/blackbody_channels.csv` bounds at
+[2994.39](../../results/blackbody_channels.csv "ref:blackbody_channels:bbr_detector_background:T70C")
+photons per second at 70 C before any collection solid angle, and which rises
+steeply with temperature. And the cascade's own D1 light scattered off the
+walls and windows after being trapped, which exists only with hot atoms,
+scales with the signal, and is therefore the halo term of the twin and not a
+background at all.
+
+**Why it is an apparatus item and not a derivation.** All three enter the trace
+the same way, as an **additive pedestal** under the line, and the fitter already
+carries a per-trace linear baseline, `b0` and `b1`, which absorbs a constant and
+a slope exactly. So a flat background is not a model error at all: it is
+absorbed, and it costs only the two degrees of freedom already spent. **The term
+that would matter is one that varies across the scan on the scale of the line**,
+and nothing in the apparatus is known to do that. Whether anything does is a
+measurement and not an argument, which is what opens it as an item here.
+
+**What closes it, in two readings.** A scan with the drive blocked, at the
+working temperature, reads the dark rate plus the wall's thermal emission and
+nothing else, since neither depends on the drive. A scan with the drive on and
+detuned from the two-photon resonance by many linewidths, at the same
+temperature, adds whatever drive light the filter passes. Neither reading can
+be taken cold: the thermal term is the one that matters and it needs the hot
+cell. What the pair does not measure is the trapped D1 light, because it is
+not separable from the signal, and the twin carries it as the halo fraction
+from `results/trapping_channels.csv`.
+
+**What it would change if it is not flat.** A background with curvature on the
+line's own scale biases the widths, since the baseline model cannot follow it,
+and a background whose scan dependence is **asymmetric** is the one term that could
+imitate the third cumulant. That is the channel the campaign now rests on, and
+it is the single reason this item is worth an afternoon: **a shift-like
+asymmetry from the detection path would be read as a light shift by every
+estimator in this record.** The power ladder is what separates them, since the
+true shift's third cumulant goes as the cube of the power and a detection
+background does not, so the discriminator exists and is already in the design.
+Until the measurement is made the forecast spans the term by treating it as
+absent and naming it here.
 
 ### What each item costs to close
 

@@ -114,7 +114,7 @@ transit Monte Carlo was found and fixed, which is the same implementation
 trap [transit-time broadening](transit-time-broadening.md) names in its
 "What can go wrong" section. Then the corrected Monte Carlo figure,
 validated against Lehmann's worked example. Then a stand-in used in three
-documents before the waist was stated as measured. [HISTORY.md](../HISTORY.md)
+documents before the waist was stated as measured. the private correction record
 carries each with its date.
 
 ## What can go wrong

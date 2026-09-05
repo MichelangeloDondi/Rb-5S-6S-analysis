@@ -374,3 +374,20 @@ production model, with the window set as a multiple of each line's own width,
 the fifth cumulant's local power is 3.00 in every cell tested, including a
 Gaussian-dominated line of 42 MHz at ten times its own width. That comparison
 is in the right units and it is the one to cite.
+
+**And under noise the windowed third cumulant does not reach its own power law
+at the archive's shift.** The moment-power map
+([`results/moment_power_map.csv`](../../results/moment_power_map.csv)) runs
+the estimator above on synthetic traces from the world builder, every physics
+layer on, across the laser kernel's Lorentzian component, the noise level, the
+oscilloscope, the analysis window and the model's own grid, at two thousand
+traces on each of five shifts from below the archive's to twice the campaign's.
+The noiseless exponent is three at wide windows with the shift resolved. Under
+the archive's noise the fitted exponent of the third cumulant sits near two,
+because a cumulant smaller than its own noise has its magnitude inflated by
+that noise and the rungs at and below the archive's shift are that case. The
+same estimator on the campaign's power ladder, with the drift and the drawn
+rung order on, is sign-degenerate on its top rung at the predicted coefficient
+and becomes a measurement only where the shift approaches a megahertz. That is
+the measured reason the campaign reads the mean pull first and the skew
+second.

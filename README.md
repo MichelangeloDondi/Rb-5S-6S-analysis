@@ -136,8 +136,7 @@ One representative trace per line at the best-fit parameters, residuals below.
 Reduced chi-square runs 0.78 to 1.09 across the 32 fitted conditions.
 
 → [every headline read from its producing CSV](docs/RESULTS.md) ·
-[what is and is not claimed](docs/CLAIMS.md) ·
-[what the record refuted in itself](docs/HISTORY.md)
+[what is and is not claimed](docs/CLAIMS.md)
 
 ---
 

@@ -37,8 +37,14 @@ ROOT = Path(__file__).resolve().parents[1]
 # one prior incident of private/ being scanned locally and disagreeing with CI;
 # asking git removes that class entirely (rule 19.24, tests/_fileset.py).
 from _fileset import tracked_and_new as _tan            # noqa: E402
-DOCS = sorted(ROOT / p for p in _tan("*.md")
-              if not p.startswith("PDF_papers/"))
+from _fileset import population as _population          # noqa: E402
+# INVARIANT 1: a population that shrinks refuses instead of skipping. `_tan`
+# returns [] on any git failure, and an empty parametrize degrades to a silent
+# SKIPPED that a `-q` gate never surfaces.
+DOCS = _population("docs_links: tracked markdown",
+                   sorted(ROOT / p for p in _tan("*.md")
+                          if not p.startswith("PDF_papers/")),
+                   minimum=40)
 
 
 def _slug(heading: str) -> str:

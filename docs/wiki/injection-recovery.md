@@ -189,7 +189,7 @@ sixteen-condition cohort, at a p-value that would have been decisive. Two
 of those conditions were the pilot's own traces, regrouped by peak and
 counted again as independent evidence. The tally was replaced the same day
 by a count from 11 of 14 fresh conditions, at $p = 0.029$.
-[HISTORY.md](../HISTORY.md) records both entries.
+the private correction record records both entries.
 
 The same principle applies here: a check built partly from the material
 used to produce the result it checks passes too easily, regardless of

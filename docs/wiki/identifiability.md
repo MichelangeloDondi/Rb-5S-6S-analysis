@@ -286,7 +286,7 @@ artefact rather than to physics. A background span sized on an assumed
 signal retention was rebuilt once the true fraction was computed. And a
 campaign-only bound that appeared to move across commits was traced to a
 sample-count change landing on a discrete trim boundary in a nearly flat
-profile direction. [HISTORY.md](../HISTORY.md) carries each row with its
+profile direction. the private correction record carries each row with its
 before and after.
 
 ## What can go wrong

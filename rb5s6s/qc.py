@@ -66,6 +66,20 @@ def robust_sigma_from_diff(x: np.ndarray) -> float:
     return 1.4826 * np.median(np.abs(d - np.median(d))) / np.sqrt(2.0)
 
 
+def median_standard_error(x: np.ndarray, robust: bool = False) -> float:
+    """The standard error of a MEDIAN: 1.2533 times sd over root n under
+    near-Gaussian scatter (pi/2 to the half). Three producers had written
+    sd/sqrt(n), the mean's, beside a median and called it the median's own;
+    one helper so the denominator is chosen once. ``robust`` uses 1.4826 MAD
+    for the sd."""
+    x = np.asarray(x, dtype=float)
+    n = x.size
+    if n < 2:
+        return float("nan")
+    sd = 1.4826 * float(np.median(np.abs(x - np.median(x)))) if robust else float(np.std(x, ddof=1))
+    return 1.2533 * sd / np.sqrt(n)
+
+
 def contiguous_fwhm_ms(t_ms: np.ndarray, v: np.ndarray, smooth_w: int = 21) -> float:
     """Model-independent FWHM (ms) from the smoothed, baseline-subtracted line,
     measured on the CONTIGUOUS above-half region CONTAINING THE PEAK.

@@ -50,6 +50,7 @@ from rb5s6s.lineshape import stark_shift_S0_mhz  # noqa: E402
 from rb5s6s.forecast import forecast_precision  # noqa: E402
 from rb5s6s.workers import n_workers  # noqa: E402
 from rb5s6s.noise import load_noise_model  # noqa: E402
+from rb5s6s.qc import median_standard_error  # noqa: E402
 from rb5s6s.scenario import load_scenario  # noqa: E402
 
 # The record's committed line, the truth the forecast perturbs around.
@@ -75,6 +76,33 @@ N_TRIALS = 6
 LAMBDA_NM = 993.4            # the drive wavelength reaching the fibre solver
 
 PRESETS = ("dataset_2025", "campaign_cell", "campaign_cell_onf")
+
+
+def _omission_gap_note(matched: float, omitted: float) -> str:
+    """State the measured gap, including when there is none.
+
+    The note this replaces asserted that "the gap against the matched row is
+    the measured cost of ignoring the asymmetric term" on EVERY row, including
+    the dataset_2025 presets where matched and omitted both read 0.0100 and the
+    gap is null. A fixed sentence describing a measurement is wrong wherever the
+    measurement disagrees with it, and it disagreed on three rows of nine while
+    reading as a result.
+
+    The null is not a missing result. At the 2025 waist the on-axis shift is a
+    fraction of a MHz against a 5 MHz line, so omitting the ramp costs nothing a
+    fit can see, which is the same fact that makes the width channel blind
+    there. Saying so is more informative than reporting a cost of zero.
+    """
+    if matched <= 0:
+        return "The matched error is not positive, so no ratio is quoted."
+    pct = 100.0 * (omitted / matched - 1.0)
+    if abs(pct) < 1.0:
+        return (f"The gap against the matched row is null at this focus "
+                f"({pct:+.2f} per cent): the shift is too small here for a fit "
+                f"to see the asymmetric term, the same fact that makes the "
+                f"width channel blind at this waist.")
+    return (f"The gap against the matched row is {pct:+.1f} per cent, the "
+            f"measured cost of ignoring the asymmetric term at this focus.")
 
 
 def _two_sig(x: float) -> str:
@@ -229,11 +257,11 @@ def main() -> int:
             rows.append([name, f"w0_{w0:g}um", "gamma_coll_err_ramp_omitted",
                          f"{omitted['gamma_coll_err']:.4f}",
                          _two_sig(o_spread), "MHz",
-                         "same worlds, fitter refuses the ramp. The gap "
-                         "against the matched row is the measured cost of "
-                         "ignoring the asymmetric term at this focus, and "
-                         "the mismatched fitter's reported error can also "
-                         "under-state itself", "ENVELOPE"])
+                         "same worlds, fitter refuses the ramp. "
+                         + _omission_gap_note(matched["gamma_coll_err"],
+                                              omitted["gamma_coll_err"])
+                         + " The mismatched fitter's reported error can also "
+                         "under-state itself.", "ENVELOPE"])
             l_spread = float(np.std(lawful["gamma_coll_err_trials"], ddof=1))
             delta_pct = 100.0 * (lawful["gamma_coll_err"]
                                  / matched["gamma_coll_err"] - 1.0)
@@ -317,13 +345,29 @@ def main() -> int:
                                    seed=seed_g, scalings=False)
         moves.append(100.0 * (dbl_g["gamma_coll_err"] / base_g["gamma_coll_err"] - 1.0))
     moved = float(np.median(moves))
+    # THE VERDICT'S MARGIN IS PUBLISHED BESIDE IT, 2026-09-05. The row carried a
+    # boolean and the seeds' raw spread, and a reader could not tell whether the
+    # median cleared +10 by a lot or by nothing: the spread alone is 33 against a
+    # threshold of 10, which reads as though the verdict were inside its own
+    # noise. What decides a median is its OWN uncertainty, sd/sqrt(n), and that
+    # number was never printed. A producer publishing a boolean prints the margin
+    # that decided it, which is the same rule this record already applies to a
+    # producer publishing a ratio.
+    g_sd = float(np.std(moves, ddof=1))
+    g_se = median_standard_error(moves)          # the MEDIAN's, not the mean's
+    g_pass = sum(1 for m in moves if m > 10.0)
     rows.append(["gage", "G3", "law_floor_doubling_moves_error",
-                 str(moved > 10.0), f"{np.std(moves, ddof=1):.0f}", "",
+                 str(moved > 10.0), f"{g_sd:.0f}", "",
                  f"doubling the law's floor moves the dim-rung campaign error "
                  f"by {moved:+.0f} per cent, the median of {GAGE_SEEDS} seeds at "
                  f"{GAGE_TRIALS} trials with the err column carrying their spread, "
                  "required past +10 per the preregistration: a law knob that "
-                 "moves nothing is not wired", "DIAGNOSTIC"])
+                 f"moves nothing is not wired. The margin that decides it is the "
+                 f"median's own uncertainty, not the seed spread: 1.2533 times sd {g_sd:.0f} "
+                 f"over sqrt({len(moves)}) gives {g_se:.0f} points, so the median "
+                 f"sits {(moved - 10.0) / g_se:.1f} standard errors above the "
+                 f"threshold and {g_pass} of {len(moves)} seeds clear it "
+                 f"individually", "DIAGNOSTIC"])
     out = ROOT / "results" / "scenario_forecast.csv"
     with out.open("w", newline="", encoding="utf-8") as fh:
         w = csv.writer(fh)

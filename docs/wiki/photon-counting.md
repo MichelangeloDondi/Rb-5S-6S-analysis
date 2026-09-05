@@ -154,7 +154,7 @@ A photon count only obeys the shot-noise scaling above where events are
 independent, the same condition the dead-time discussion rests on. A
 record's own correlation time sets an analogous ceiling, and treating a
 correlated record as independent overstates a detectability figure.
-[HISTORY.md](../HISTORY.md) records one correction to this repository's
+the private correction record records one correction to this repository's
 pedestal-detectability estimate that came from exactly that assumption,
 and a second, unrelated revision after the record length changed to meet
 a separate shape requirement.

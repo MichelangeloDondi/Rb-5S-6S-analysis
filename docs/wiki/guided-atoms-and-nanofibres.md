@@ -51,9 +51,9 @@ sizes a nanofibre candidate alongside this vapour cell:
 | quantity | value | what it sets |
 |---|---|---|
 | fibre diameter | 400 nm | below the wavelength, which makes the field evanescent |
-| effective index | [1.03164](../../results/guided_mode_tables.csv "ref:guided_mode_tables:mode_solve_400nm:neff") at 400 nm | how tightly the mode is bound. Solved from the diameter. Earlier values in [HISTORY](../HISTORY.md) |
+| effective index | [1.03164](../../results/guided_mode_tables.csv "ref:guided_mode_tables:mode_solve_400nm:neff") at 400 nm | how tightly the mode is bound. Solved from the diameter. Earlier values in HISTORY |
 | evanescent decay length | 543 to 732 nm amplitude, 312 nm intensity at the central diameter | the atom-surface distance scale. Solved from the diameter, not assumed |
-| effective mode area | [0.615](../../results/guided_mode_tables.csv "ref:guided_mode_tables:mode_solve_400nm:mode_area_azimuthal_mean") µm² | the intensity a given power makes. P divided by the azimuthally averaged flux at the surface. The peak convention gives the smaller area, [0.489](../../results/guided_mode_tables.csv "ref:guided_mode_tables:mode_solve_400nm:mode_area_peak"), so the number is not quotable without its convention. Earlier values in [HISTORY](../HISTORY.md) |
+| effective mode area | [0.615](../../results/guided_mode_tables.csv "ref:guided_mode_tables:mode_solve_400nm:mode_area_azimuthal_mean") µm² | the intensity a given power makes. P divided by the azimuthally averaged flux at the surface. The peak convention gives the smaller area, [0.489](../../results/guided_mode_tables.csv "ref:guided_mode_tables:mode_solve_400nm:mode_area_peak"), so the number is not quotable without its convention. Earlier values in HISTORY |
 
 The same file gives the cell's effective intensity as 6.784e7 W per square
 metre, with a 0.348 MHz shift at 225 mW. A mode area below a square micron
@@ -65,7 +65,7 @@ before integration: $E_z$ and $H_\phi$ are continuous across the glass surface
 to one part in $10^9$, and a fraction [0.231](../../results/guided_mode_tables.csv "ref:guided_mode_tables:mode_solve_400nm:power_fraction_in_glass")
 of the power travels inside the glass. That continuity check is what makes the
 area checkable instead of asserted. Earlier values are in
-[HISTORY](../HISTORY.md).
+HISTORY.
 
 ## A lever on the degeneracy
 

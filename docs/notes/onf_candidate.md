@@ -255,7 +255,7 @@ different widths.
 At 150 uK the width lands between **73 to 98 kHz** across the 272 to 366 nm
 intensity-decay band. Every site stating this band cites the committed row
 instead of restating the literal. Earlier values are in
-[HISTORY](../HISTORY.md). **What matters here is the shape, not the
+HISTORY. **What matters here is the shape, not the
 magnitude.**
 
 **Why the shape matters more than the width.** A guided transit width does
@@ -314,7 +314,7 @@ MHz would be needed to restore them.
 
 *(Every cell above is a citation and not a typed number. What the table
 carried before, and why, is in
-[the guided geometry's correction record](../history/09_the-guided-geometry.md).)*
+the guided geometry's correction record.)*
 This is a settings-level statement, not a preference. Any 130 C
 fibre measurement at the present drive has no ruler, and the MOT, molasses and
 trap-off settings have a better one than the cell does.

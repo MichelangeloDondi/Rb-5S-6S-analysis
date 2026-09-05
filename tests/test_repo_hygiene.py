@@ -522,7 +522,7 @@ _FORBIDDEN_EXEMPT_FILES = {"docs/PREREGISTRATION_RESULTS.md",
 # predicate rather than a set, because a set of filenames goes stale the
 # next time a chapter is added and nothing would say so.
 def _is_history(rel: str) -> bool:
-    return rel == "docs/HISTORY.md" or rel.startswith("docs/history/")
+    return rel == "private/HISTORY.md" or rel.startswith("private/history/")
 
 
 _LABEL_EXEMPT_PRED = {
@@ -612,14 +612,14 @@ _RKERNEL_FLAT = [
 
 # HISTORY.md is licensed to print what the record no longer believes, and this
 # file necessarily quotes the phrases it bans.
-_FLAT_EXEMPT = {"docs/HISTORY.md", "tests/test_repo_hygiene.py"}
+_FLAT_EXEMPT = {"private/HISTORY.md", "tests/test_repo_hygiene.py"}
 
 
 # The record is licensed to QUOTE the wording it retired, which is how a
 # reader identifies what was corrected, so the flat R_kernel check spares
 # the record and its chapters exactly as the banks do.
 def _flat_exempt(rel: str) -> bool:
-    return rel in _FLAT_EXEMPT or rel.startswith("docs/history/")
+    return rel in _FLAT_EXEMPT or rel.startswith("private/history/")
 
 
 def test_r_kernel_is_not_called_an_uncertainty_across_a_line_break():
@@ -1473,7 +1473,14 @@ def test_history_is_confined_to_the_history_file():
     exists, says what it is for, is reachable from the documents that used to
     carry history, and no other document announces itself as a history table.
     """
-    hist = ROOT / "docs" / "HISTORY.md"
+    # PRIVATE SINCE 2026-09-05 (owner decision). The correction record was 37
+    # per cent the history of our own machinery, which speaks to neither reader
+    # and feeds the one wrong reading the strategic record most wants removed.
+    # It is kept privately until it is fit for disclosure, so a public clone has
+    # no history file and this architectural check has nothing to assert.
+    hist = ROOT / "private" / "HISTORY.md"
+    if not hist.is_file():
+        pytest.skip("the correction record is private and absent from this clone")
     assert hist.is_file(), (
         "docs/HISTORY.md is missing, so superseded values have nowhere "
         "licensed to live and will scatter back into the working documents")
@@ -1485,12 +1492,30 @@ def test_history_is_confined_to_the_history_file():
     assert any(w in text.lower() for w in ("replaced", "retired")), (
         "HISTORY.md no longer says what it is for")
 
-    # the page that used to hold the bound history must point at it, or a
-    # reader following the old path finds nothing
-    data = (ROOT / "docs" / "DATA.md").read_text(encoding="utf-8")
-    assert "HISTORY.md" in data, (
-        "docs/DATA.md no longer points at HISTORY.md, so the bound history "
-        "is unreachable from where it used to live")
+    # REACHABILITY FROM PUBLIC DOCS WAS REMOVED, 2026-09-05. While the record
+    # was public, a page that had held history had to point at where it went.
+    # The record is private now, so a public document linking to it would
+    # dangle in the mirror, and the requirement inverts: public prose names the
+    # correction record without linking to it. The check that remains is that
+    # the record exists, says what it is for, and is the only thing declaring
+    # itself a history table.
+    # THE INVERTED REQUIREMENT, ENFORCED: public prose names the correction
+    # record and never the path it left. A bare docs/HISTORY.md or docs/history/
+    # in tracked prose points at a file this tree does not carry, and no link
+    # checker sees a bare path (a board found forty of them).
+    stale = []
+    for rel in subprocess.run(["git", "-C", str(ROOT), "ls-files", "*.md", "*.py", "*.csv"],
+                              capture_output=True, text=True).stdout.split():
+        if rel.startswith("tests/") or rel == "scripts/check_moved_values.py":
+            continue
+        if not (ROOT / rel).is_file():          # tracked raw-data stubs absent here
+            continue
+        txt = (ROOT / rel).read_text(encoding="utf-8", errors="replace")
+        if re.search(r"docs/HISTORY\.md|docs/history/", txt):
+            stale.append(rel)
+    assert not stale, (
+        "public files still point at the path the correction record left; "
+        "name the private correction record instead:\n  " + "\n  ".join(stale))
 
     # and no OTHER document may declare itself a history table
     offenders = []

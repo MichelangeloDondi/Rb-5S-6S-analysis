@@ -71,7 +71,7 @@ def synthetic_traces(gamma_coll: float, sigma_laser: float, transit_fwhm: float,
                      offset: float = 0.010, offset_spread: float = 0.002,
                      centre_mhz: float = 0.0,
                      laser_kind: str = "gaussian", gamma_l: float = 0.0,
-                     s0: float = 0.0,
+                     s0: float = 0.0, halo_fraction: float = 0.0,
                      rng: Optional[np.random.Generator] = None,
                      ) -> Tuple[List[np.ndarray], List[np.ndarray]]:
     """Generate the traces your instrument would record for this line.
@@ -95,7 +95,7 @@ def synthetic_traces(gamma_coll: float, sigma_laser: float, transit_fwhm: float,
     into the line is the observable this record is built on. Its third
     cumulant is +S0^3/135 (sign per docs/methods/03 and stark_ramp's own
     axis), and the statement of what a windowed readout keeps of it was
-    replaced, the account in docs/history/02): the Lorentzian's even
+    replaced (the account is in the private correction record): the Lorentzian's even
     cumulants diverge, its odd moments cancel under a window symmetric about
     the line's own centre, so a SELF-CENTRED windowed kappa_3 keeps a
     truncation-limited fraction of the ramp's value
@@ -154,7 +154,12 @@ def synthetic_traces(gamma_coll: float, sigma_laser: float, transit_fwhm: float,
     freqs: List[np.ndarray] = []
     volts: List[np.ndarray] = []
     for i in range(n_traces):
-        a = amp * (1.0 + amp_spread * i)
+        # The trapped-light halo raises the collected amplitude by a fixed
+        # fraction of the primary rate. It does NOT reshape the line: the
+        # trapped photon is the D-line cascade photon, whose frequency is
+        # unrelated to the 993 nm two-photon detuning, so the term is flat
+        # across the scan (docs/methods/04 section 2.7).
+        a = amp * (1.0 + amp_spread * i) * (1.0 + halo_fraction)
         base = offset + offset_spread * i
         clean = a * shape + base
         if isinstance(noise, dict):
@@ -176,6 +181,10 @@ def build_world_trace(power_w: float, kappa: float, t_c: float,
                      cycles_at_max: float, drift_mhz_total: float,
                      noise_frac_bright: float, adc_levels: int,
                      range_headroom: float = 1.25,
+                     halo_fraction: float = 0.0,
+                     gamma_l: float = 0.0,
+                     laser_kind: str = "gaussian",
+                     resolve_shift: bool = False,
                      offset: float = 0.01,
                      range_anchor: str = "global",
                      ) -> Tuple[np.ndarray, np.ndarray, Dict]:
@@ -203,6 +212,17 @@ def build_world_trace(power_w: float, kappa: float, t_c: float,
     `shares`; positions and shares stay caller-owned so their provenance
     stays beside their values, in the example or the scenario layer.
 
+    Four keywords are opt-in and off by default, so a call written before
+    them is byte-identical. ``gamma_l`` and ``laser_kind`` give the laser
+    kernel a Lorentzian component or form. ``halo_fraction`` adds the
+    trapped-light re-excitation as a flat amplitude factor. ``resolve_shift``
+    makes the internal convolution grid resolve the light shift as well as
+    the kernels: left off, a shift well below the kernel widths sits inside
+    one grid cell, which overstates the third cumulant by 68 per cent at
+    0.18 MHz and misreads it by a few per cent at 0.364, while at 1.0 MHz
+    and above the two settings agree to every printed digit. Set it for any
+    small-shift moment study.
+
     Returns (nu, volts, truth_amps): the frequency axis (MHz, transition
     axis), the one recorded trace, and each peak's injected amplitude.
     """
@@ -214,6 +234,7 @@ def build_world_trace(power_w: float, kappa: float, t_c: float,
     truth_amps = {}
     for peak, share in shares.items():
         amp = share * p_rel ** 2                      # two-photon: signal ~ P^2
+        amp *= (1.0 + halo_fraction)                  # trapped-light halo, flat in nu
         if layers["cascade"]:
             amp *= cascade.amplitude_factor(peak, cycles_at_max * p_rel)
         gamma = gamma_coll
@@ -236,6 +257,17 @@ def build_world_trace(power_w: float, kappa: float, t_c: float,
                               gamma_coll=gamma,
                               sigma_laser_fwhm=sigma_laser_fwhm,
                               transit_fwhm=transit_fwhm,
+                              gamma_l=gamma_l,
+                              laser_kind=laser_kind,
+                              # A33: the internal convolution grid is sized by
+                              # the narrowest KERNEL and never by the shift, so
+                              # a small shift can sit inside one cell. Opt-in
+                              # and False by default, so every committed CSV
+                              # made through this path is unchanged. The cost
+                              # of leaving it False is measured rather than
+                              # asserted: results/moment_power_map.csv carries
+                              # the windowed third-cumulant power both ways.
+                              resolve_shift=resolve_shift,
                               s0=(s0 if layers["stark"] else 0.0))
         v += amp * (shape / shape.max())
         truth_amps[peak] = amp

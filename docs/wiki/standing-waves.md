@@ -186,7 +186,7 @@ A tilt tolerance for the retro-reflector was once computed from the
 same-beam term's coefficient, which carries the wavevector sum $2k$, when
 the mechanism is the cross term, whose sum for a small tilt $\theta$ is
 $k\theta$, half of it. The tolerance quoted above is the recomputed one.
-[HISTORY.md](../HISTORY.md) carries the figure that was replaced.
+the private correction record carries the figure that was replaced.
 
 ## Further reading
 

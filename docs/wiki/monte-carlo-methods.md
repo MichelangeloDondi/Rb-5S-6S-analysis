@@ -99,7 +99,7 @@ The simulations above answer what an estimator would do with data that already e
 
 ## Correction record
 
-The transit Monte Carlo's crossing-flux weighting was corrected once, and the fitted beam waist moved twice afterwards before a direct measurement replaced it. [HISTORY.md](../HISTORY.md) carries each figure with its date, and [the beam waist](the-beam-waist.md) carries the live one.
+The transit Monte Carlo's crossing-flux weighting was corrected once, and the fitted beam waist moved twice afterwards before a direct measurement replaced it. the private correction record carries each figure with its date, and [the beam waist](the-beam-waist.md) carries the live one.
 
 ## Further reading
 

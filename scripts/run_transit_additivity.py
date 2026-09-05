@@ -324,7 +324,7 @@ def main() -> int:
                 "routes agree at leading order by construction, so the gap IS "
                 "the first-order term, which is negative. This module's "
                 "docstring derives that and its size. The correction history "
-                "is in docs/history/09_the-guided-geometry.md",
+                "the private correction record",
                 "DIAGNOSTIC")
     # THE CLAIM IS THE SPAN, AND ITS WIDTH IS THE UNCERTAINTY. Protocol 8a.1
     # asks for an uncertainty or a stated reason there is none. There is one

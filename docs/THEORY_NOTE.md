@@ -299,8 +299,22 @@ which is why those exist.
 
 **And the width channel is not merely worse, it is blind.** At the campaign's
 maximum 225 mW with the measured $w_0 = 64$ µm prior, `stark_shift_S0_mhz` gives
-$S_0 = 0.348$ MHz, so the ramp kernel is 0.20 MHz FWHM. Added in quadrature to
-the observed 5.2 MHz line that is **0.004 MHz** of extra width, a part in 1400,
+$S_0 = 0.364$ MHz. The ramp's density is $f(s)\propto|s|$ on $[-S_0,0]$, so it
+peaks at $|s|=S_0$ and halves at $|s|=S_0/2$: the kernel's full width at half
+maximum is $S_0/2$ exactly, with no grid and no fit.
+
+**The extra width it puts on the line is read from a producer, never composed
+here.** `run_identifiability.py` evaluates the profile at the fitted widths and
+reports the whole width-channel signal at the predicted shift as
+[6.48](../results/identifiability.csv "ref:identifiability:width_signature_broadening_khz:gaussian_branch") kHz on the Gaussian branch and
+[7.23](../results/identifiability.csv "ref:identifiability:width_signature_broadening_khz:cusp_branch") kHz on the cusp. **Composing it
+instead, by adding the kernel width to the line in quadrature, understates it
+by about a factor of two**, because quadrature addition of full widths is a
+Gaussian rule and this line is roughly two thirds Lorentzian. That composition
+stood in this paragraph and is the reason the sourced cells
+are quoted here.
+
+On a line of about 5.3 MHz that signal is a part in some 800,
 far below the width budget's own systematics. No width measurement of any
 precision reaches this signal. The asymmetry channel is not a refinement of the
 width channel but the only channel there is. Calculated 2026-07-30, requoted

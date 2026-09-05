@@ -56,7 +56,7 @@ it assumes, what it gives, and when to skip it. Every page ends with a
 
 Nine of these pages record a value that has moved since it was first
 published. Eight carry a short "Values that moved" section naming what
-changed and why, and linking to [HISTORY.md](../HISTORY.md), which is the
+changed and why, and linking to the private correction record, which is the
 single home of every retired number. The ninth is the digital twin, which
 carries its correction in full, because being wrong twice is part of what
 the twin is for. No page here prints a retired figure.
@@ -243,7 +243,7 @@ then the [methods chapters](../methods.md), then these pages, then the
 front-door orientation. A wiki page can never override an authoritative
 result, and the mechanism enforcing that is the guard suite documented in
 [tests/README.md](../../tests/README.md). Dated preregistrations are prospective commitments and
-[HISTORY.md](../HISTORY.md) is the historical record, and neither is edited
+the private correction record is the historical record, and neither is edited
 for navigation. For general theory the authority is the cited literature and
 established mathematics: these pages explain, they are not sources, and a
 claim is only as good as the reference it carries. The general section of a

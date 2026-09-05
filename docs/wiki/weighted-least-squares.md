@@ -212,11 +212,11 @@ before trusting either answer.
 ## Values that moved
 The collisional-slope parameter $\beta_\text{self}$ carries one entry
 relevant to this page. Its interval was once built from between-block
-scatter with a hard-coded multiplier, and [HISTORY.md](../HISTORY.md)
+scatter with a hard-coded multiplier, and the private correction record
 records what moved it: the multiplier hid its own assumption about degrees
 of freedom. The replacement read the same scatter off the Student-t
 quantile for the single residual degree of freedom the data had, and
-HISTORY.md labels the change interval construction, not new data.
+the private correction record labels the change interval construction, not new data.
 
 ## Further reading
 

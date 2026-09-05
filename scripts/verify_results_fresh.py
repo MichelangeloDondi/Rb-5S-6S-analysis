@@ -159,6 +159,15 @@ EXPENSIVE = {
     # fifteen configurations at a thousand law-weighted trials each on
     # eight workers, about forty minutes. Leg 2 of the twin validation.
     "run_coverage_grid": ["coverage_grid.csv"],
+    # 432 cells at 2000 traces per S0 rung through the forecast path, about
+    # twenty-nine minutes on eight workers, measured by timing ONE cell before
+    # the grid was launched rather than guessed. Deterministic: every task is
+    # seeded from its own cell coordinates and the cells are collected in
+    # order, planted one worker against eight (`--plant`). The trace count is
+    # capped by re-runnability, not by ambition: twenty thousand traces would
+    # make the archive's own rung measurable and put this producer at five
+    # hours, and a freshness entry nobody can afford to re-run is a dead check.
+    "run_moment_power_map": ["moment_power_map.csv"],
     # 2000 multi-condition fits at ~1.05 s each, about five minutes on eight
     # lanes. Deterministic despite being Monte-Carlo: every trial's seed is its
     # index, so the CSV reproduces exactly and IS checkable rather than merely

@@ -41,7 +41,7 @@ over the same span passes with margin. The constant is now 90, which is what
 PLAN section 10a states, and the record length this script derives follows from
 it rather than from the round number it used to be floored at. The pedestal
 significance printed below rises with the record for the same reason. What
-these values replaced is recorded in docs/HISTORY.md.
+these values replaced is recorded in the private correction record.
 """
 from __future__ import annotations
 
@@ -85,7 +85,7 @@ def background_degeneracy_factor(reach_in_sigma: float, ped_sigma: float,
     the span edge answers a question about VISIBILITY, and the design needs one
     about INFORMATION. The two differ by a factor of five at one sigma of
     reach. Protocol rule 19.29 states the general form, and the earlier
-    assumption is recorded in docs/HISTORY.md.
+    assumption is recorded in the private correction record.
     """
     half = reach_in_sigma * ped_sigma
     nu = np.linspace(-half, half, 20001)

@@ -209,7 +209,7 @@ is entry three of the next section, because the atom does not appear in it.
 
 Each entry reads the same way: a number was believed, an instrument was
 pointed at it, and here is what came back. The full audit trail is in
-[HISTORY.md](../HISTORY.md).
+the private correction record.
 
 * **The factor-two optimisation alarm.** Independent optimisations appeared
   to disagree about the light-shift bound by a factor of two. Diagnosed as

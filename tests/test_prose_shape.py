@@ -50,7 +50,7 @@ POPULATION = (
 )
 RAIL_MIN_WORDS = 1500
 RAIL_EXCLUDE = ("docs/methods/", "docs/lit/", "docs/notes/",
-                "docs/history/", "docs/apparatus/")
+                "private/history/", "docs/apparatus/")
 RAIL_BLOCK = "**Skip if.**"
 
 

@@ -4,7 +4,7 @@ M14: injection-recovery COVERAGE of the AC-Stark power-lever 95% bound.
 
 WHY THIS EXISTS. `rb5s6s/stark.py` retires the Wald bound in its own docstring
 with the words "its 'sigma' is a finite-difference artifact and carries no 95%
-coverage", and `docs/HISTORY.md` records the 3.1 MHz Wald value being replaced
+coverage", and the private correction record records the 3.1 MHz Wald value being replaced
 for exactly that reason. The replacement is a profile-chi2 bound at the
 over-dispersion-scaled threshold 2.706 x max(chi2_red, 1). Whether THAT
 construction covers 95 per cent has never been measured. `results/coverage.csv`

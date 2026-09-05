@@ -89,7 +89,10 @@ def main() -> int:
          "cascade.py" if have["cascade"] else "MISSING",
          "stated: deliberately absent (same T1 clause as saturation)",
          "inspected: cascade layer in build_world_trace"),
-        ("blackbody", yes("bbr" in world), yes("bbr" in ex),
+        # forecast_path is measured on synthetic_traces's OWN signature; the
+        # first form read the world builder's layer set here, which mislabelled
+        # the column and licensed a wiki sentence
+        ("blackbody", yes(any("bbr" in k or "blackbody" in k for k in gen)), yes("bbr" in ex),
          "blackbody.py, two-platform rule in twin.py"
          if have["bbr"] else "MISSING", "no",
          "inspected: bbr layer in build_world_trace. Negligible at MHz "
@@ -112,9 +115,49 @@ def main() -> int:
          yes("randomise" in ex), "-", "-",
          "stated: the rung order is a design choice of the caller, not a "
          "physics term, and run_world draws it"),
-        ("detection_channel", "no", "no",
+        ("radiation_trapping",
+         yes("halo_fraction" in gen),
+         yes("halo_fraction" in _params(forecast.build_world_trace)),
          "detection.py" if have["channel"] else "MISSING", "-",
-         "open: wiring unverified, on the verification queue"),
+         "measured: the trapped-light halo reaches BOTH generator paths since "
+         "2026-09-05, opt-in at zero by default so every committed CSV is "
+         "unchanged. It raises the collected amplitude and does not reshape "
+         "the line: the trapped photon is the D-line cascade photon, whose "
+         "frequency is unrelated to the 993 nm two-photon detuning. The "
+         "per-temperature fraction is supplied by the caller from "
+         "results/trapping_channels.csv, so the number keeps its provenance"),
+        ("hyperfine_F_statistics",
+         "n/a, single-line generator",
+         yes("shares" in _params(forecast.build_world_trace)),
+         "amplitudes.predicted_shares", "-",
+         "measured: build_world_trace takes shares and the closed loop and the "
+         "campaign example both pass predicted_shares(), abundance times "
+         "(2F+1)/G_iso. synthetic_traces generates one line, so shares do not "
+         "apply to it"),
+        ("background_scattering",
+         ("flat only, as offset" if "offset" in gen else "no"),
+         ("flat only, as offset" if "offset" in _params(forecast.build_world_trace) else "no"),
+         "-", "absorbed by the per-trace linear baseline",
+         "measured: a flat pedestal is in both generators as the offset parameter, "
+         "and a scan-dependent background is in neither. That is the correct state "
+         "and not a gap. Detection is the 795 nm D1 cascade photon behind 50 dB "
+         "of 795 nm filtering, the drive is at 993 nm, so scattered drive light "
+         "is rejected. What reaches the detector unrejected is the dark rate, "
+         "the wall's thermal emission in the passband, and trapped D1 light off "
+         "the walls, which scales with the signal and is the halo term. Both "
+         "generators already carry a flat pedestal, named offset, which the "
+         "fitter's own b0 and b1 absorb exactly. What is absent is a term "
+         "varying across the scan on the line's own scale, and whether "
+         "anything does is an open apparatus item in docs/plan/12"),
+        ("laser_kernel_lorentzian_component",
+         yes("gamma_l" in gen),
+         yes("gamma_l" in _params(forecast.build_world_trace)),
+         "lineshape.model_profile", "-",
+         "measured: gamma_l and laser_kind reach BOTH paths since 2026-09-05. "
+         "Until then the world builder had the instrument layers and no "
+         "kernel forms while the forecast generator had the kernel forms and "
+         "no layers, so no single path could vary the laser wing and the "
+         "oscilloscope at once"),
         ("onf_guided_geometry", "no scenario yet (T2)", "no",
          "fibre.py" if have["he11"] else "MISSING", "-",
          "inspected: solved HE11 machinery present. The scenario layer "

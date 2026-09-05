@@ -88,7 +88,7 @@ $\sim(2/\pi)\gamma\delta W$ ($\gamma$ the half-width). Drift immunity
 therefore belongs to self-centred readouts, the fit's free per-scan centre
 first among them. Derivation and numbers are on
 [the concept page](../wiki/third-cumulant.md), the dated account in
-[the history](../history/02_the-lineshape-and-its-kernel.md). The mean
+the history. The mean
 pull is the primary fixed-lock-session observable
 ([where this can go](08_assumptions_and_outlook.md)).
 (The dataset's centre channel supplies no bound of its own. A peak position is
@@ -322,7 +322,7 @@ in the top 6 per cent of the shift range. Three consequences:
    above which the width-channel correction reverses. The 2025 geometry sits
    inside both by factors of four and six. The transit kernel, which varies as
    the inverse local beam radius, has a signal-weighted rms spread of
-   [0.97(../../results/prediction_band.csv "ref:prediction_band:collection_window:transit_kernel_rms_spread_pct")
+   [0.97](../../results/prediction_band.csv "ref:prediction_band:collection_window:transit_kernel_rms_spread_pct")
    per cent over the same window, which is the size of the non-convolution
    the composite of [chapter 4](04_the_composite_model.md) neglects.
 3. **The proposed flip is near the best the geometry allows**: $+0.56$ at 64 µm

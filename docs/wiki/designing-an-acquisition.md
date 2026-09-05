@@ -118,7 +118,7 @@ times the figure the requirement carried before it was tested, giving about
 simulation produced is corroborated, not contradicted, by
 [the wide-scan block design note](../notes/widescan_block_design.md), which
 records the same 90-points-across target as what its own B5 and B6
-simulations support. [HISTORY.md](../HISTORY.md) carries the dates behind
+simulations support. the private correction record carries the dates behind
 this revision.
 
 The raw-storage question is written down for the ramp channel specifically.

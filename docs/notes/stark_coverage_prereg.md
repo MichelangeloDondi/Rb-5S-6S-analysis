@@ -13,7 +13,7 @@ ladder and the two arms as module constants, and the two are committed together.
 `rb5s6s/stark.py` retires the Wald bound in its own docstring: the fit rails at
 $\kappa = 0$, where the width handle broadens as $S_0^2$ and therefore has zero
 gradient, so the linearised error "is a finite-difference artifact and carries
-no 95% coverage". `docs/HISTORY.md` records the consequence, the AC-Stark row
+no 95% coverage". the private correction record records the consequence, the AC-Stark row
 moving from 3.1 MHz on 2026-07-16, and marks the change "interval construction,
 not new data".
 

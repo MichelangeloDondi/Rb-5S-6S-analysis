@@ -169,6 +169,16 @@ def _scan() -> list[dict]:
         if not path.exists():
             continue
         text = path.read_text(encoding="utf-8")
+        # THE SAME BLINDNESS AS main()'s, and it was left here when that one was
+        # fixed. --graph writes a graph missing the tag and --fix reports "0
+        # flagged for a human" while leaving the malformed reference in place: a
+        # false "nothing needs you" from the tool whose job is saying otherwise.
+        _raw, _seen = text.count('"ref:'), len(LINK.findall(text))
+        if _raw > _seen:
+            raise SystemExit(
+                f"check_references: {rel} carries {_raw - _seen} ref: tag(s) "
+                "outside a well-formed link. Run without --graph/--fix to see "
+                "them; neither mode may write while a tag is unreadable.")
         for m in LINK.finditer(text):
             key = m.group("title")[len("ref:"):]
             parts = key.split(":")
@@ -264,6 +274,31 @@ def main() -> int:
         if not path.exists():
             continue
         text = path.read_text(encoding="utf-8")
+        # A MALFORMED LINK DOES NOT FAIL THIS CHECKER, IT VANISHES FROM IT.
+        # `[0.97(` for `[0.97](` shipped on 2026-09-05: the file's tag count
+        # fell from 9 to 8 and the run still printed "0 findings", so a
+        # one-character typo silently removed a provenance check from a number
+        # and every guard stayed green. Comparing the raw tags
+        # against the parsed ones turns that silence into a finding.
+        #
+        # THE COMPARISON IS OVER THE WHOLE TEXT AND NEVER PER LINE. `\s`
+        # matches a newline, so a link may wrap between its target and its
+        # title and still resolve; four in the correction record's first
+        # chapter do. The line-based
+        # draft of this check reported all four as defects, an exemption list
+        # four times its findings, which is the failure the quotation guard's
+        # first design already taught this record.
+        _raw, _seen = text.count('"ref:'), len(LINK.findall(text))
+        if _raw > _seen:
+            _rest = LINK.sub("", text)
+            _at = [str(_i) for _i, _ln in enumerate(text.splitlines(), 1)
+                   if '"ref:' in _ln and _ln.strip() and _ln.strip() in _rest]
+            bad.append(
+                f"{rel}: UNPARSEABLE, {_raw - _seen} ref: tag(s) not inside a "
+                f"well-formed [text](target \"ref:...\") link "
+                f"(line(s) {', '.join(_at) or 'not located'}). Such a tag "
+                f"resolves nothing and is invisible to this checker, so the "
+                f"number it should certify goes unchecked.")
         for m in LINK.finditer(text):
             n_refs += 1
             key = m.group("title")[len("ref:"):]
