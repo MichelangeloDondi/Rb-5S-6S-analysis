@@ -282,14 +282,49 @@ $f=18$ mm one and nothing else, with $M$ estimated at 2.5–3 (recollection,
 a ruler).
 That gives $Z_c = 6/M = 2.0$ to $2.4$ mm, and it hangs together: $1/u+1/v=1/f$ with
 $M=2.5$–3 puts the lens 24–25 mm from the beam and the photocathode 63–72 mm
-behind it, an ordinary side-viewing layout. Three consequences:
+behind it, an ordinary side-viewing layout.
 
-1. **The $Z_c = 2$ mm placeholder this chapter has been carrying was right.**
-   The estimate lands at 2.0–2.4 mm, so the record's numbers computed with it
-   stand rather than needing revision.
-2. **The dataset's configuration sits at $\zeta = 0.15$ to $0.19$**, i.e. well
-   inside the transverse-only regime, with $g_1 = +0.563$ to $+0.565$ and mean
-   $0.659$ to $0.661$ $S_0$, within 1.5% of the pure-triangle values.
+**A second recollection, 2026-09-04, states the distances with tolerances**:
+$f = 18 \pm 1$ mm and the photocathode in focus at $v = 50 \pm 10$ mm with no
+second element, so $M = (v-f)/f = 1.8$, the lens 28 mm from the beam and
+$Z_c = 3.4$ mm. The two recollections overlap at one sigma, the July one
+sitting at the upper edge of the September tolerance. Propagating $f$, $v$
+and the waist band together, since $z_R$ carries the waist squared, the
+window is $Z_c/z_R =$
+[0.26](../../results/prediction_band.csv "ref:prediction_band:collection_window:z_ratio")
+$\pm\ 0.14$, the uncertainty spanning the stated errors, and that is the
+value `constants.collection_z_ratio()` now carries into
+`results/prediction_band.csv`. Below $u_c = 1/(1+(Z_c/z_R)^2) = 0.94$ the
+window binds and the density is exactly the triangle, so the departure lives
+in the top 6 per cent of the shift range. Three consequences:
+
+1. **The $Z_c = 2$ mm placeholder this chapter has been carrying sits at the
+   lower edge of the September tolerance.** The table rows at $\zeta = 0.15$
+   to $0.19$ stand as that edge, and the producer's central value is 0.26.
+2. **The dataset's configuration sits at $\zeta = 0.26 \pm 0.14$**, inside
+   the transverse-only regime, where the departure from the triangle is a
+   signed correction and not a model error: $\kappa_2$ is
+   [0.9610](../../results/prediction_band.csv "ref:prediction_band:collection_window:kappa2_ratio")
+   of the triangle's and $\kappa_3$ is
+   [0.9279](../../results/prediction_band.csv "ref:prediction_band:collection_window:kappa3_ratio"),
+   so a fit that assumes the triangle recovers $S_0$ low by
+   [-1.97](../../results/prediction_band.csv "ref:prediction_band:collection_window:shift_bias_width_pct")
+   per cent through the width channel, which is the channel the 2025 bound
+   came through, and by
+   [-2.46](../../results/prediction_band.csv "ref:prediction_band:collection_window:shift_bias_k3_pct")
+   per cent through the third cumulant. Correcting for the window raises the
+   bound. **That sign is conditional and the condition is emitted beside it**:
+   $\kappa_3$ falls monotonically through zero at
+   [1.117](../../results/prediction_band.csv "ref:prediction_band:collection_window:skew_null_z_ratio"),
+   but $\kappa_2$ reaches a minimum near 0.79 and returns to the triangle's
+   value at
+   [1.691](../../results/prediction_band.csv "ref:prediction_band:collection_window:width_bias_sign_flip_z_ratio"),
+   above which the width-channel correction reverses. The 2025 geometry sits
+   inside both by factors of four and six. The transit kernel, which varies as
+   the inverse local beam radius, has a signal-weighted rms spread of
+   [0.97(../../results/prediction_band.csv "ref:prediction_band:collection_window:transit_kernel_rms_spread_pct")
+   per cent over the same window, which is the size of the non-convolution
+   the composite of [chapter 4](04_the_composite_model.md) neglects.
 3. **The proposed flip is near the best the geometry allows**: $+0.56$ at 64 µm
    against $-0.35$ to $-0.39$ at 16 µm, a swing of $\approx0.92$ to $0.95$ in a
    quantity whose full range is $\pm0.57$.

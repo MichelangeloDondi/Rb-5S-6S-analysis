@@ -614,6 +614,74 @@ RHO_RETRO_ERR = 0.04
 with W0_BAND_M: the band corners are (w0_hi, rho - err) and (w0_lo,
 rho + err), so the widest credible prediction interval is quoted."""
 
+# --------------------------------------------------------------------------
+# Fluorescence collection optics
+# --------------------------------------------------------------------------
+# These set the AXIAL WINDOW of the interaction volume, which is the z_ratio
+# argument of lineshape.stark_ramp_axial. That function has carried the closed
+# form since 2026-07-12 with its window flagged OPEN ("replace with the
+# measured collection profile ... before quoting coefficients"). These
+# constants close it. Owner-stated 2026-09-04; the detector and cathode are
+# docs/APPARATUS.md.
+COLLECTION_LENS_F_M = 18e-3
+"""Collection lens focal length, 18 mm. APPARATUS ("f = 18 mm lens and the
+795 nm filter, mounted in a tube fastened to the PMT holder"), tolerance
+owner-stated 2026-09-04. Enters the magnification and hence the axial window."""
+
+COLLECTION_LENS_F_ERR_M = 1e-3
+"""One-sigma on COLLECTION_LENS_F_M. Owner-stated."""
+
+COLLECTION_IMAGE_DIST_M = 50e-3
+"""Lens-to-cathode distance, 50 mm, the detector in focus with no second lens.
+Owner-stated 2026-09-04.
+
+READ AS THE IMAGE DISTANCE, which is the load-bearing choice: with f = 18 mm it
+puts the object plane at 28 mm, consistent with APPARATUS recording that the
+waist was placed close to the collection lens to raise the solid angle. Read
+instead as the OBJECT distance it would give z_ratio 0.823 rather than 0.262
+and a twelvefold larger bias, so the reading is named here rather than
+implied."""
+
+COLLECTION_IMAGE_DIST_ERR_M = 10e-3
+"""One-sigma on COLLECTION_IMAGE_DIST_M. Owner-stated."""
+
+PMT_CATHODE_ALONG_BEAM_M = 12e-3
+"""The R636-10 cathode's long dimension, 12 mm, which APPARATUS records as
+lying ALONG the beam in 2025 (datasheet TPMS1016E gives 3 x 12 mm).
+
+Side-on collection makes z a transverse direction for the lens, so this
+dimension over the magnification is the accepted range in z. The 3 mm
+dimension maps to millimetres across a 64 um beam and collects the transverse
+direction whole, which is why the optics are a PURE AXIAL WINDOW and leave the
+radial integral -- the ramp itself -- untouched."""
+
+
+def collection_z_ratio(f_m: float = COLLECTION_LENS_F_M,
+                       image_dist_m: float = COLLECTION_IMAGE_DIST_M,
+                       cathode_m: float = PMT_CATHODE_ALONG_BEAM_M,
+                       w0_m: float = W0_MEASURED_M,
+                       lambda_m: float = LAMBDA_LASER_M) -> float:
+    """Half of the imaged axial extent, in Rayleigh ranges: the ``z_ratio`` of
+    lineshape.stark_ramp_axial.
+
+    Thin lens, detector in focus, no second element: ``M = (s' - f)/f`` and the
+    object-space half-window is ``(cathode/2)/M``, divided by
+    ``z_R = pi w0^2 / lambda``. The beam axis lies IN the object plane, so every
+    point of the imaged length is in focus at once and there is no depth-of-field
+    term.
+
+    FAILS LOUDLY if ``image_dist_m <= f_m``: no real image forms and the
+    magnification would come back negative, which would silently invert the
+    window rather than raise."""
+    if image_dist_m <= f_m:
+        raise ValueError(
+            f"image distance {image_dist_m} m is not beyond the focal length "
+            f"{f_m} m, so no real image forms and there is no axial window")
+    magnification = (image_dist_m - f_m) / f_m
+    half_window_m = 0.5 * cathode_m / magnification
+    rayleigh_m = math.pi * w0_m ** 2 / lambda_m
+    return half_window_m / rayleigh_m
+
 
 def transit_fwhm_from_w0(w0_m: float, T_C: float, isotope: int = 87,
                          mass_kg: float | None = None) -> float:

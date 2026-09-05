@@ -1716,6 +1716,151 @@
   "source_file": "results/paired_reference_forecast.csv",
   "source_value": "clears"
  },
+ "prediction_band:collection_window:kappa2_ratio": {
+  "producer": "run_prediction_band.py",
+  "quoting_sites": [
+   {
+    "file": "docs/methods/03_the_ac_stark_ramp.md",
+    "line": 307,
+    "writes": "0.9610"
+   }
+  ],
+  "source_file": "results/prediction_band.csv",
+  "source_value": "0.9610"
+ },
+ "prediction_band:collection_window:kappa3_ratio": {
+  "producer": "run_prediction_band.py",
+  "quoting_sites": [
+   {
+    "file": "docs/methods/03_the_ac_stark_ramp.md",
+    "line": 309,
+    "writes": "0.9279"
+   }
+  ],
+  "source_file": "results/prediction_band.csv",
+  "source_value": "0.9279"
+ },
+ "prediction_band:collection_window:shift_bias_k3_pct": {
+  "producer": "run_prediction_band.py",
+  "quoting_sites": [
+   {
+    "file": "docs/methods/03_the_ac_stark_ramp.md",
+    "line": 314,
+    "writes": "-2.46"
+   }
+  ],
+  "source_file": "results/prediction_band.csv",
+  "source_value": "-2.46"
+ },
+ "prediction_band:collection_window:shift_bias_width_pct": {
+  "producer": "run_prediction_band.py",
+  "quoting_sites": [
+   {
+    "file": "docs/big_picture/07_limitations-and-identifiability.md",
+    "line": 74,
+    "writes": "-1.97"
+   },
+   {
+    "file": "docs/methods/03_the_ac_stark_ramp.md",
+    "line": 311,
+    "writes": "-1.97"
+   },
+   {
+    "file": "docs/plan/12_open-apparatus-items.md",
+    "line": 67,
+    "writes": "-1.97"
+   }
+  ],
+  "source_file": "results/prediction_band.csv",
+  "source_value": "-1.97"
+ },
+ "prediction_band:collection_window:skew_null_z_ratio": {
+  "producer": "run_prediction_band.py",
+  "quoting_sites": [
+   {
+    "file": "docs/methods/03_the_ac_stark_ramp.md",
+    "line": 318,
+    "writes": "1.117"
+   },
+   {
+    "file": "docs/plan/12_open-apparatus-items.md",
+    "line": 71,
+    "writes": "1.117"
+   }
+  ],
+  "source_file": "results/prediction_band.csv",
+  "source_value": "1.117"
+ },
+ "prediction_band:collection_window:transit_kernel_rms_spread_pct": {
+  "producer": "run_prediction_band.py",
+  "quoting_sites": [
+   {
+    "file": "docs/methods/10_the_odd_moments.md",
+    "line": 50,
+    "writes": "0.97"
+   }
+  ],
+  "source_file": "results/prediction_band.csv",
+  "source_value": "0.97"
+ },
+ "prediction_band:collection_window:width_bias_sign_flip_z_ratio": {
+  "producer": "run_prediction_band.py",
+  "quoting_sites": [
+   {
+    "file": "docs/methods/03_the_ac_stark_ramp.md",
+    "line": 321,
+    "writes": "1.691"
+   },
+   {
+    "file": "docs/plan/12_open-apparatus-items.md",
+    "line": 69,
+    "writes": "1.691"
+   }
+  ],
+  "source_file": "results/prediction_band.csv",
+  "source_value": "1.691"
+ },
+ "prediction_band:collection_window:z_ratio": {
+  "producer": "run_prediction_band.py",
+  "quoting_sites": [
+   {
+    "file": "docs/methods/03_the_ac_stark_ramp.md",
+    "line": 294,
+    "writes": "0.26"
+   },
+   {
+    "file": "docs/plan/12_open-apparatus-items.md",
+    "line": 64,
+    "writes": "0.26"
+   }
+  ],
+  "source_file": "results/prediction_band.csv",
+  "source_value": "0.26"
+ },
+ "prediction_band:verdict:worst_band_spans_bound": {
+  "producer": "run_prediction_band.py",
+  "quoting_sites": [
+   {
+    "file": "docs/big_picture/07_limitations-and-identifiability.md",
+    "line": 67,
+    "writes": "False"
+   }
+  ],
+  "source_file": "results/prediction_band.csv",
+  "source_value": "False"
+ },
+ "prediction_band:waist_at_bound:w0_um": {
+  "producer": "run_prediction_band.py",
+  "quoting_sites": [
+   {
+    "file": "docs/big_picture/07_limitations-and-identifiability.md",
+    "line": 70,
+    "writes": "76.0"
+   }
+  ],
+  "source_file": "results/prediction_band.csv",
+  "source_value": "76.0"
+ },
  "saturation_companion:C3d:factor_with_saturation_ratio_-1p2362": {
   "producer": null,
   "quoting_sites": [
@@ -2236,7 +2381,7 @@
    },
    {
     "file": "results/README.md",
-    "line": 270,
+    "line": 271,
     "writes": "0.396"
    }
   ],
@@ -2253,7 +2398,7 @@
    },
    {
     "file": "results/README.md",
-    "line": 270,
+    "line": 271,
     "writes": "0.316"
    }
   ],

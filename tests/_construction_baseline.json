@@ -99,13 +99,14 @@
  "docs/methods.md": 7,
  "docs/methods/01_the_measurement.md": 2,
  "docs/methods/02_the_lineshape.md": 13,
- "docs/methods/03_the_ac_stark_ramp.md": 8,
+ "docs/methods/03_the_ac_stark_ramp.md": 7,
  "docs/methods/04_the_composite_model.md": 12,
  "docs/methods/05_the_frequency_ruler.md": 6,
  "docs/methods/06_the_statistics.md": 19,
  "docs/methods/07_what_we_found.md": 17,
  "docs/methods/08_assumptions_and_outlook.md": 2,
  "docs/methods/09_the_guided_geometry.md": 3,
+ "docs/methods/10_the_odd_moments.md": 3,
  "docs/notes/README.md": 7,
  "docs/notes/amplitude_departure_from_p2.md": 5,
  "docs/notes/band_excess_is_model_form.md": 3,
@@ -155,5 +156,6 @@
  "results/ENVIRONMENT_OF_RECORD.md": 7,
  "results/README.md": 28,
  "scripts/README.md": 19,
- "tests/README.md": 7
+ "tests/README.md": 7,
+ "tests/_ratchet_history.md": 1
 }

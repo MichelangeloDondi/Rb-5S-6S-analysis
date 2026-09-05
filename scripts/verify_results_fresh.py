@@ -70,6 +70,9 @@ CHEAP = {
     # committed stark_joint.csv; milliseconds. Cheap on purpose: every row it
     # writes used to be a digit typed into prose, and four of them were wrong.
     "run_collisional_shift_bound": ["collisional_shift_bound.csv"],
+    # Gate A: propagation only, no fitting, so it is milliseconds and belongs
+    # here rather than in EXPENSIVE.
+    "run_prediction_band": ["prediction_band.csv"],
     # inverts the committed kappa profile against the stated geometry
     # priors; seconds. Cheap on purpose: the number it emits was headed
     # for eight reader-facing surfaces with no row behind it.

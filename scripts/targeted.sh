@@ -19,14 +19,24 @@ cd "$(dirname "$(git rev-parse --git-common-dir)")"
 PY=.venv/bin/python; [ -x "$PY" ] || PY=python3
 # untracked files cannot reach the map: the refusal below sends them to
 # git add first, so CHANGED reads only tracked changes against HEAD
-# WHAT THIS MAP STRUCTURALLY CANNOT SEE, stated because a green stamp
-# that never looked is worse than a red one. `private/` is gitignored,
-# so a private-only edit never appears in CHANGED and no branch below
-# can fire on it - the rule at the private/checks/ branch has been dead
-# since it was written, and tests/test_tqm_report.py inherited the same
-# gap on arrival. A change confined to private/ therefore takes the FULL
-# gate, which runs everything regardless, and not this fast path.
+# `private/` is gitignored, so a private-only edit never appears in the
+# ARCHIVE's diff. That hole was documented here and left open, with the
+# full gate named as the mitigation. It is not one: the gate is sixteen
+# to thirty minutes, and on 2026-09-05 it spent two of those runs finding
+# three prose defects and then a fourth in private/THESIS_CHAPTER.md that
+# the ratchets catch in seven seconds. A thirty-minute feedback loop on a
+# seven-second check is a hole, not a mitigation.
+#
+# private/ IS ITS OWN GIT REPOSITORY, so its diff is readable. PRIVCHANGED
+# below is the governance-side change set, and the prose branch fires on
+# it exactly as it fires on docs/. Nothing else about the stamp changes:
+# the stamp remains the ARCHIVE's index tree, because that is what the
+# gate and the ledger key on, and a private edit does not move it.
 CHANGED=$(git diff --name-only HEAD | sort -u)
+PRIVCHANGED=$( { git -C private diff --name-only HEAD 2>/dev/null || true; \
+                 git -C private diff --cached --name-only 2>/dev/null || true; \
+                 git -C private ls-files -o --exclude-standard 2>/dev/null || true; \
+               } | sort -u )
 # THE STAMP IS THE INDEX TREE (git write-tree), so an unstaged edit would be
 # tested here and then stamped as if it were not there -- the first live run
 # did exactly that: 1201 tests green, stamp naming HEAD's own tree. Stage
@@ -55,6 +65,13 @@ grep -q '^tests/' <<<"$CHANGED" && while read -r f; do
 # docstrings, in this map and the pre-commit hook alike; the first
 # tests-only wave stamped a red tree green through the hole (an audit
 # finding, its own commit)
+# GOVERNED PRIVATE PROSE: the gate's prose banks read private/*.md, so a
+# governance edit must bring the same modules here. Without this the floor
+# stamps green and the gate goes red half an hour later, which is what it
+# did four times on 2026-09-05.
+grep -qE '\.md$' <<<"$PRIVCHANGED" && add \
+  tests/test_prose_style_ratchet.py tests/test_repo_hygiene.py \
+  tests/test_agonistic_ratchet.py tests/test_history_tense.py || true
 grep -qE '^(docs/|README|START_HERE)' <<<"$CHANGED" && add \
   tests/test_prose_style_ratchet.py tests/test_repo_hygiene.py \
   tests/test_open_apparatus_items.py tests/test_docs_platform_lane.py \

@@ -167,6 +167,7 @@ def _correlate(x: np.ndarray, tau_int: float,
 
 
 def acquire(platform: Platform, acq: Acquisition, *,
+            detection_channel=None, halo_fraction: float = 0.0,
             kind: str = "one_peak",
             peak: str = "4154",
             amp_v: Optional[float] = None,
@@ -179,6 +180,13 @@ def acquire(platform: Platform, acq: Acquisition, *,
             rng: Optional[np.random.Generator] = None,
             ) -> Tuple[List[np.ndarray], List[np.ndarray], Dict]:
     """Produce the traces this instrument would store, in fitter form.
+
+    ``detection_channel`` is None by default, which leaves the four peaks at
+    equal shares and every existing output byte-identical. Passed a
+    ``detection.DetectionChannel`` it applies the scalar-operator population
+    law, abundance times (2F+1)/G_iso, and ``halo_fraction`` adds the
+    trapped-light re-excitation the caller reads from
+    ``results/trapping_channels.csv`` for its temperature.
 
     ``kind`` is "one_peak", the quantitative ladder's trace, or "four_peak",
     all four lines on ONE vertical range in a single acquisition, which is
@@ -207,9 +215,33 @@ def acquire(platform: Platform, acq: Acquisition, *,
         lo, hi = min(pos.values()) - acq.span_mhz, max(pos.values()) + acq.span_mhz
         nu = np.linspace(lo, hi, n_points)
         centres = dict(pos)
-        # equal shares unless the caller supplies its own brightness model:
-        # the twin must not invent a branching ratio it does not have
-        shares = {k: 1.0 for k in pos}
+        if detection_channel is None:
+            # equal shares unless the caller supplies its own brightness model:
+            # the twin must not invent a branching ratio it does not have
+            shares = {k: 1.0 for k in pos}
+        else:
+            # THE DETECTION CHANNEL, wired 2026-09-05 (register A56, A57).
+            #
+            # NOT exp(-tau). The first draft of this wiring attenuated each peak
+            # by its own optical depth and would have generated BLANK traces:
+            # tau runs 2.3 at 70 C to 319 at 130 C over 2 cm, and exp(-319) is
+            # zero. Two reasons that model is wrong here, and the record already
+            # carried both. At tau >> 1 the photon is RE-EMITTED rather than
+            # lost, so trapping is transport and not Beer-Lambert. And inside the
+            # driven volume the medium is INVERTED, 4.81 and 5.26 to one
+            # (results/trapping_channels.csv), because 5P empties in 27 ns while
+            # the drive refills 6S, so there is no reabsorption where the signal
+            # is made at all.
+            #
+            # What survives is a 5P HALO fed by trapped D-line photons, which
+            # re-excites at a fraction of the primary two-photon rate: 0 at
+            # 70 C, 0.0027 at 90 C, 0.080 at 110 C, and 1.07 +- 0.58 per cent at
+            # 130 C. The CALLER supplies that fraction from the committed cells,
+            # so the number keeps its provenance and this module does not read
+            # results/.
+            from . import amplitudes as _amp
+            base = _amp.predicted_shares()
+            shares = {k: base[k] * (1.0 + halo_fraction) for k in pos}
     else:
         raise ValueError(f"kind must be one_peak or four_peak, got {kind!r}")
 

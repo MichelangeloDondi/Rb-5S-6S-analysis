@@ -247,6 +247,22 @@ FILE_STATUS = {
 # (exact match, then longest-prefix). Unmapped -> hard error, so no row is
 # silently left un-tagged.
 QUANTITY_STATUS = {
+    # Gate A, added 2026-09-04 in the commit that creates the file. The status
+    # varies by quantity and never within one, which is why this file is here
+    # rather than in the per-row set above: the prediction and its band are
+    # ENVELOPEs on the adopted waist, the archive's own limit is the BOUND it
+    # was published as, and the window correction, the verdicts, the waist that
+    # would close the gap and the sign are all statements about the record
+    # rather than measurements of the atom.
+    "prediction_band.csv": {
+        "kappa_pred": "ENVELOPE", "kappa_pred_band": "ENVELOPE",
+        "bound": "BOUND",
+        # the collection window is propagated from apparatus constants, so it
+        # calibrates an existing bound rather than measuring anything new.
+        "collection_window": "CALIB",
+        "verdict": "DIAGNOSTIC", "waist_at_bound": "DIAGNOSTIC",
+        "sign": "DIAGNOSTIC",
+    },
     # M24: the wing check -- a NULL that closes C3f's open structure. The
     # per-condition and mean f_wing rows are bounds on a wing fraction; the
     # verdict row is the closure statement itself.

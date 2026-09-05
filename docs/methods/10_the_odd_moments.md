@@ -40,6 +40,17 @@ symmetric about its own centre:
 
     P(nu) = (f * L)(nu)
 
+**That equality is conditional.** Written as a volume integral, the line is
+`f * L` exactly only when the kernel `L` is the same at every volume element,
+and it is not: the transit width goes as the inverse local beam radius. What
+makes the convolution usable is that the collected volume is short. Over the
+axial window the collection optics set
+([chapter 3](03_the_ac_stark_ramp.md), diverging-beam collection), the
+signal-weighted transit width has an rms spread of
+[0.97](../../results/prediction_band.csv "ref:prediction_band:collection_window:transit_kernel_rms_spread_pct")
+per cent, so the statement below holds to that level and the residual is a
+symmetric broadening to which the odd cumulants are blind at leading order.
+
 **Cumulants add under convolution.** So for every order,
 
     k_n(P) = k_n(f) + k_n(L)

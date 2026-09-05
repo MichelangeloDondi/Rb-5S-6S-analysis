@@ -60,6 +60,21 @@ comparison lives on
 that this row's purchase is a factor between two and three and a half rather
 than a single number.
 
+**Whether the prediction's own band reaches the bound.** It is a producer row, and not a
+comparison made by eye. Carrying the waist band, the retro-ratio
+error, the polarizability spread and a spanned power calibration,
+`results/prediction_band.csv` reads
+[False](../../results/prediction_band.csv "ref:prediction_band:verdict:worst_band_spans_bound")
+for the worst case, and the waist at which the prediction would meet the bound
+is
+[76.0](../../results/prediction_band.csv "ref:prediction_band:waist_at_bound:w0_um")
+um against the 64 this record carries. The tension is therefore conditional on the waist,
+which no measurement of this beam has fixed. The fluorescence collection
+window corrects the bound in the same file, by
+[-1.97](../../results/prediction_band.csv "ref:prediction_band:collection_window:shift_bias_width_pct")
+per cent and in the direction that eases the tension, which is far too small to
+remove it.
+
 **Whether a design change could do it instead.** It cannot, and this was
 tested rather than assumed. Varying the span by a factor of five and the trace
 count by a factor of ten moves the correlation by 0.0075 and 0.0000

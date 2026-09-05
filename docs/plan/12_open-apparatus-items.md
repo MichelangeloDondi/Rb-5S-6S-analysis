@@ -34,6 +34,46 @@ line in [RESULTS.md](../RESULTS.md) points at that section, and the
 forecast proceeds unchanged because every per-window indicative slope is
 consistent with zero.
 
+### The 225 mW point's power calibration
+
+The predicted light shift and its coefficient scale as the power at the atoms,
+and the record carries the 225 mW operating point without a calibration
+uncertainty: the sweep's envelope (`rb5s6s/stark.py`) propagates the waist band
+and the retro-ratio error and nothing for the power. Nobody holds the figure,
+so it is a measurement here and not a question. It needs the meter's calibration
+certificate, the loss budget between meter and cell, and the window
+transmission at 993 nm. Until it exists the prediction band spans it at 5 per
+cent, which moves $\kappa_\mathrm{pred}$ by the same 5 per cent, and
+`results/prediction_band.csv` carries that span in its worst-case edges.
+
+What it would change: whether the prediction band reaches the bound, and the
+guided arm's per-run power ruler, since a calibrated power at the fibre is the
+same measurement.
+
+### The collection lens and its image distance
+
+The fluorescence collection optics set the axial window of the interaction
+volume, which is the `z_ratio` of `stark_ramp_axial`. That function has carried
+the closed form since July with its window flagged open, and
+`constants.collection_z_ratio()` now closes it from the focal length, the
+image distance and the cathode's 12 mm dimension along the beam. Two of the
+three are stated to a tolerance and not yet measured: $f = 18 \pm 1$ mm and an
+image distance of $50 \pm 10$ mm.
+
+They close with a ruler and no atoms. What they change: the window is
+[0.26](../../results/prediction_band.csv "ref:prediction_band:collection_window:z_ratio")
+Rayleigh ranges, where the ramp is exact over most of the shift range and the
+recovered shift is biased low by
+[-1.97](../../results/prediction_band.csv "ref:prediction_band:collection_window:shift_bias_width_pct")
+per cent. That correction stays conservative only while the window is below
+[1.691](../../results/prediction_band.csv "ref:prediction_band:collection_window:width_bias_sign_flip_z_ratio"),
+and the third cumulant's own null sits at
+[1.117](../../results/prediction_band.csv "ref:prediction_band:collection_window:skew_null_z_ratio").
+**The largest of the three uncertainties is how the 50 mm is read**: as the
+image distance it gives the window above, and as the object distance it would
+give one about three times wider, a twelvefold larger bias with the null within
+reach. `constants.COLLECTION_IMAGE_DIST_M` names the reading it takes.
+
 ### What each item costs to close
 
 **The lock residual is the cheapest and the highest leverage.** It needs no
@@ -44,6 +84,10 @@ reported across a span instead of at a value.
 
 **The waist closes in an afternoon with no atoms at all**, and it is the one
 measurement that sharpens every existing bound at once.
+
+**The collection distances close in a minute with a ruler**, and they are the
+only items on this page already carried into a committed result instead of
+being spanned around it.
 
 ### The guided-platform items
 

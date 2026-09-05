@@ -60,6 +60,13 @@ ROOT = Path(__file__).resolve().parents[1]
 #
 # checker path (relative to the repo root) -> why it is not wired
 NOT_WIRED = {
+    "private/checks/apply_helper.py":
+        "a library imported by the private/cache apply scripts, not a checker "
+        "anything runs on its own. Its _self_test reinstates the bug it was "
+        "written for, where edits to one file overwrote each other, and is "
+        "executed by instrument_msa.py, which "
+        "tests/test_governance_instruments.py runs in this suite, so the code "
+        "is exercised even though nothing calls this file as a command.",
     # Added 2026-09-04. Neither is a checker; both were swept in because the
     # population is "*.py under private/checks", which is a path rule rather
     # than a kind rule. The other two orphans of that sweep WERE checkers and
@@ -169,6 +176,15 @@ def _checkers() -> list[str]:
                 # without a sound.
                 "scripts/compute_*.py"):
         for p in sorted(ROOT.glob(pat)):
+            # A PLANT IS A TEST OF A CHECKER, NOT A CHECKER. plant_*.py files
+            # exist to break a guard and prove it fires, and they are run by
+            # private/checks/instrument_msa.py, which tests/test_governance_
+            # instruments.py runs in this suite. Counting them here would ask
+            # which gate calls the test, which is the wrong question and the
+            # same distinction instrument_msa.py already draws when it excludes
+            # plants from its own denominator.
+            if p.name.startswith("plant_"):
+                continue
             rel = p.relative_to(ROOT).as_posix()
             if p.name == "__init__.py" or rel.startswith(EXCLUDED_DIRS):
                 continue
