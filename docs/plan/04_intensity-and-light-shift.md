@@ -226,8 +226,35 @@ this section, which has to be in place before any of them runs.
    systematic found, and it is reported as a bound on the pull channel and
    never folded into the shift. **Record.** The fitted centre per depth, the
    tooth heights, the depth achieved, and the slope with its scatter. The
-   twin measures the test's resolution with the forecast's file, whose
-   depletion now follows each tooth's own rate.
+   twin has now measured the test's resolution
+   ([`results/three_channel_forecast.csv`](../../results/three_channel_forecast.csv)),
+   **and it is available at one spacing and not the other**. On the 40 MHz comb
+   the fitted centre's slope against depth comes back at the expected null,
+   [-0.0084](../../results/three_channel_forecast.csv "ref:three_channel_forecast:depth_ladder_40MHz::kappa_pull")
+   against its own scatter of
+   [0.0262](../../results/three_channel_forecast.csv "ref:three_channel_forecast:depth_ladder_40MHz::sd_pull"),
+   which is a third of a standard error from zero. On the 25 MHz comb the same
+   test reads
+   [12.5109](../../results/three_channel_forecast.csv "ref:three_channel_forecast:depth_ladder_25MHz::kappa_pull")
+   against a scatter of
+   [51.2719](../../results/three_channel_forecast.csv "ref:three_channel_forecast:depth_ladder_25MHz::sd_pull"),
+   which is no measurement. The window is the reason and it is arithmetic: the
+   centre is fitted inside 12 MHz at both spacings, so at 25 MHz the first
+   teeth stand only 13 MHz clear of the window edge and their tails reach in,
+   while at 40 MHz they stand 28 clear and do not. **The depth lever is
+   specified at 40 MHz**, and the drive's available spacings are an open
+   apparatus item ([chapter 12](12_open-apparatus-items.md)).
+
+   **The summed tooth area is not quoted as a sum-rule test at this waist**,
+   and the reason is what the file can support. The twin
+   carries saturation as a width and not as a limit on the rate, so a broadened
+   line integrates to more signal where a real one integrates to less. With the
+   term switched off the power ladder's area follows the two-photon square law
+   at a log-log slope of 1.978 and the depth ladder stands still to seven per
+   cent. With the term on, the slope reads 2.209 and the depth ladder falls by
+   nineteen. The gap is an open item with that measurement attached, and the
+   area null is a test for the archive's saturation regime and not the
+   campaign's.
 3c. **The waist ladder through an adjustable expander, and the absolute axis it
    buys.** Section 5 of this chapter says the collapse across configurations
    catches only relative waist errors and that a common scale error passes

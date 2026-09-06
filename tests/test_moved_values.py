@@ -192,12 +192,23 @@ def test_the_history_now_column_is_graded_and_the_was_column_is_not(mv):
 
 
 def test_the_hub_index_is_graded_by_its_now_cell_like_the_chapter_tables(mv, repo, capsys):
-    """docs/HISTORY.md is the same table as the chapter tables and joined the
+    """The correction hub is the same table as the chapter tables and joined the
     now-cell rule on 2026-09-04, when two of its rows carried a retired literal
-    in their title and was cells at a board's open."""
+    in their title and was cells when it was found.
+
+    IT IS ADDRESSED AT `private/HISTORY.md`, AND THIS TEST NAMED THE PATH THE
+    FILE LEFT. The hub and its chapters moved under `private/` on 2026-09-05.
+    The selector in the checker followed the chapter DIRECTORY and not the hub
+    FILE, and this test built its fixture at the old path, so the test went on
+    passing against the wrong half of the rename and certified it. Found on
+    2026-09-06 by reading `c4c995ce` back. The fixture is at the
+    live path now, and the second half below is the negative case the first
+    version never had: a table at some OTHER path is graded whole, so a
+    permissive selector cannot pass this test either."""
     _point_at(mv, repo)
     base = _run(repo, "rev-parse", "HEAD~1").strip()  # the fixture's first commit, before the values moved
-    hub = repo / "docs" / "HISTORY.md"
+    hub = repo / "private" / "HISTORY.md"
+    hub.parent.mkdir(parents=True, exist_ok=True)
     hub.write_text("| quantity | was | now | live value in |\n|---|---|---|---|\n"
                    "| the mode area (0.611 in the title) | 0.611 | 0.615 | `results/m.csv` |\n")
     (repo / "docs" / "note.md").write_text("Quoting `results/m.csv`: the area is 0.615 um^2.\n")
@@ -211,7 +222,20 @@ def test_the_hub_index_is_graded_by_its_now_cell_like_the_chapter_tables(mv, rep
     _run(repo, "commit", "-q", "-m", "a stale now cell")
     rc = mv.main(["check_moved_values.py", base])
     out = capsys.readouterr().out
-    assert rc == 1 and "docs/HISTORY.md" in out, out
+    assert rc == 1 and "private/HISTORY.md" in out, out
+    # THE NEGATIVE CASE. The exemption is for the hub and the chapters, and a
+    # was-column anywhere else is a stale copy like any other. A selector that
+    # exempted every table would pass the half above and fail here.
+    hub.write_text("| quantity | was | now | live value in |\n|---|---|---|---|\n"
+                   "| the mode area | 0.615 | 0.615 | `results/m.csv` |\n")
+    other = repo / "docs" / "elsewhere.md"
+    other.write_text("| quantity | was | now | live value in |\n|---|---|---|---|\n"
+                     "| the mode area | 0.611 | 0.615 | `results/m.csv` |\n")
+    _run(repo, "add", "-A")
+    _run(repo, "commit", "-q", "-m", "the same table somewhere it is not exempt")
+    rc = mv.main(["check_moved_values.py", base])
+    out = capsys.readouterr().out
+    assert rc == 1 and "docs/elsewhere.md" in out, out
 
 
 def test_a_csv_with_no_value_column_is_reported_as_unchecked(mv, repo, capsys):
@@ -309,3 +333,42 @@ def test_a_base_that_is_not_a_commit_is_refused_with_the_reason(mv, repo, capsys
     assert rc == 1, "the fixture's moved value is a finding, so the scan exits 1 after the fallback"
     assert "0.611" in out, "after the fallback the scan must still find the fixture's moved value"
     assert "as a commit" in out and "falling back" in out
+
+
+def test_the_correction_records_chapters_reach_the_scan_and_their_was_cells_do_not(mv):
+    """The private population globbed `*.md`, which matches only the files
+    directly under `private/`, so the nine correction-record chapters under
+    `private/history/` were never discovered. That made `history_now_columns`
+    dead code, because it is selected by `rel.startswith("private/history/")`
+    and no such path ever arrived, while the hub beside them WAS reached, which
+    is why the gap read as working (2026-09-06).
+
+    Planted in both directions rather than asserting the glob's text. The
+    population must CONTAIN a chapter, and the exemption must still exempt a
+    `was` cell while grading the `now` cell beside it, since a record quoting
+    the value it retired is doing its job and a record quoting a value that has
+    since moved is not.
+    """
+    mod = mv
+    root = Path(mod.ROOT)
+    if not (root / "private" / "history").is_dir():
+        pytest.skip("the correction record is private and absent from this clone")
+    rel = {str(p.relative_to(root)) for p in mod.scannable()}
+    chapters = {p for p in rel if p.startswith("private/history/")}
+    assert chapters, "no chapter reaches the scan, so the now-cell rule is dead code"
+    assert "private/HISTORY.md" in rel, "the hub was always reached and must stay"
+
+    # the exemption itself, on a table of the shape the chapters carry
+    lines = ["| quantity | was | now | live value in |",
+             "|---|---|---|---|",
+             "| the mode area | 0.611 | 0.615 | `results/m.csv` |"]
+    # keyed by the 0-based LINE index, valued by the 0-based COLUMN indices
+    # the scan may grade. The table row is the third line and the `now` cell
+    # the third column.
+    cols = mod.history_now_columns(lines)
+    graded = cols.get(2)
+    assert graded is not None, "the row must be graded by SOME column set"
+    row = [c.strip() for c in lines[2].strip("|").split("|")]
+    kept = {row[i] for i in graded}
+    assert "0.615" in kept, "the now cell is what the scan must grade"
+    assert "0.611" not in kept, "the was cell is the account and must be exempt"

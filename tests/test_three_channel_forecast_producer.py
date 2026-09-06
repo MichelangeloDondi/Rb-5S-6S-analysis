@@ -74,7 +74,9 @@ def test_every_lever_varies_one_field_from_the_base_except_the_named_depth_cells
     assert mod.BASE["f_mod"] is None
     for name, cfg in cells[1:]:
         changed = sorted(k for k in mod.BASE if cfg[k] != mod.BASE[k] and not (k == "two_beta" and mod.BASE[k] is None and cfg[k] == mod._two_beta_default()))
-        if "depth" in name:
+        if "depth_ladder" in name:
+            assert changed == ["f_mod", "ladder"], (name, changed)
+        elif "depth" in name:
             assert changed == ["f_mod", "two_beta"], (name, changed)
         else:
             assert len(changed) == 1, (name, changed)
@@ -286,10 +288,28 @@ def test_the_light_shift_does_not_move_with_the_modulation_depth():
     b = trace({"4192": 0.05}, {"4192": 0.0})
     assert np.allclose(b, a * (0.05 / 0.22), rtol=0, atol=1e-12 + 1e-9 * np.max(a))
 
-    carrier = trace({"4192": 0.22}, {"4192": 0.0})
-    side = trace({"4192@+1": 0.05}, {"4192@+1": 25.0}, {"4192@+1": "4192"})
-    both = trace({"4192": 0.22, "4192@+1": 0.05}, {"4192": 0.0, "4192@+1": 25.0},
-                 {"4192@+1": "4192"})
+    # SUPERPOSITION NEEDS EVERY RATE-KEYED TERM OFF, and this half of the test
+    # left one on. The docstring above names depletion as "the one rate-keyed
+    # term" and switches it off; the companion WIDTH is a second, because power
+    # broadening follows a tooth's own Rabi frequency, which is the root of its
+    # share. It was inert here until 2026-09-06 only because the producer never
+    # set `stark.COMPANIONS`, so the layer was declared and did nothing. With it
+    # wired, a tooth built ALONE is normalised against itself and carries the
+    # whole drive, while the same tooth inside a comb carries its share, so the
+    # two constructions are broadened differently and cannot sum. That is the
+    # physics working, not a defect, and the switch goes off to match the
+    # sentence that was already written about depletion.
+    Lw = {**L, "saturation": False}
+
+    def trace_w(shares, positions, tooth_of=None):
+        kw = {**_kw(), **quiet, "positions": positions, "shares": shares}
+        return build_world_trace(1.0, 0.364, 130.0, 0, 1, np.random.default_rng(7), Lw,
+                                 tooth_of=tooth_of, grid_span=(-60.0, 60.0), **kw)[1]
+
+    carrier = trace_w({"4192": 0.22}, {"4192": 0.0})
+    side = trace_w({"4192@+1": 0.05}, {"4192@+1": 25.0}, {"4192@+1": "4192"})
+    both = trace_w({"4192": 0.22, "4192@+1": 0.05}, {"4192": 0.0, "4192@+1": 25.0},
+                   {"4192@+1": "4192"})
     assert np.allclose(both, carrier + side, rtol=0, atol=1e-9 * np.max(both))
 
 
@@ -336,3 +356,157 @@ def test_a_dim_tooth_is_broadened_less_because_its_rabi_frequency_is_smaller(mon
     dim = w["on"][1] - w["off"][1]
     assert carrier > 0.5, w                      # the model is doing something
     assert dim < carrier / 3.0, (carrier, dim)   # and it does far less to the dim tooth
+
+
+def test_the_depth_ladder_holds_the_power_and_climbs_the_depth():
+    mod = _load()
+    cells = dict(mod.levers())
+    cfg = cells["depth_ladder_40MHz"]
+    assert cfg["ladder"] == "depth" and cfg["f_mod"] == 40.0
+    for i, d in enumerate(mod.DEPTHS_2BETA):
+        rcfg, p = mod._rung_cfg(cfg, i)
+        assert rcfg["two_beta"] == d and p == cfg["p_top"]
+    pcfg, p0 = mod._rung_cfg(cells["base"], 0)
+    assert pcfg is cells["base"] and p0 == pytest.approx(mod.POWERS_W[0])
+
+
+def test_the_area_sum_rule_is_flat_in_depth_and_quadratic_in_power():
+    """The depth ladder's second null, on the producer's own helper.
+
+    The tooth weights sum to one, so with the depletion off the summed area
+    over a comb does not depend on the depth, while along a power ladder the
+    two-photon area follows P squared. Both are checked on `_area` directly,
+    which is what the producer accumulates per rung, so a change to the
+    baseline or the clipping fails here.
+    """
+    import numpy as np
+    from rb5s6s.forecast import build_world_trace
+    from rb5s6s.ruler import bessel_tooth_weights
+    mod = _load()
+    L = {"cascade": False, "saturation": False, "stark": True, "bbr": False,
+         "drift": False, "quantise": False, "randomise": False}
+    kw = {**_kw(), "noise_frac_bright": 0.0, "offset": 0.0, "power_max_w": 0.225}
+
+    def area_at(two_beta, power):
+        w = bessel_tooth_weights(two_beta, slots=(0, 1, -1))
+        tot = float(w[0] + w[1] + w[2])
+        pos = {"4192": 0.0, "4192@+1": 40.0, "4192@-1": -40.0}
+        sh = {k: 0.44 * float(w[i]) / tot for i, k in enumerate(pos)}
+        kwr = {**kw, "positions": pos, "shares": sh}
+        nu, y, _ = build_world_trace(power, 1.618, 130.0, 0, 1, np.random.default_rng(5), L,
+                                     tooth_of={"4192@+1": "4192", "4192@-1": "4192"},
+                                     grid_span=(-140.0, 140.0), **kwr)
+        return mod._area(nu, y)
+
+    flat = [area_at(tb, 0.225) for tb in (0.6, 1.2, 2.0)]
+    assert max(flat) / min(flat) < 1.01, flat
+    a1, a2 = area_at(1.2, 0.1125), area_at(1.2, 0.225)
+    assert a2 / a1 == pytest.approx(4.0, rel=0.02)
+
+
+def test_the_saturation_layer_is_wired_and_not_only_declared():
+    """The layer table said saturation was on and
+    `stark.COMPANIONS` was never set, so `companion_gamma_mhz` returned zero
+    in every cell of the published file. A flag is not a term.
+
+    Planted at both ends. With the parameters absent the width is exactly
+    zero at a shift that should broaden the line by megahertz, which is the
+    state that shipped; with them present it is large. A test asserting only
+    that the module sets the attribute would pass against a value of None.
+    """
+    mod = _load()
+    from rb5s6s import stark
+    assert mod.LAYERS["saturation"] is True
+    assert stark.COMPANIONS is not None, "the layer is declared and unwired"
+    s0 = mod.stark_shift_S0_mhz(0.225, 16e-6, rho=0.94)
+    assert s0 > 5.0, "the base cell's own shift, so the term has something to do"
+    on = stark.companion_gamma_mhz(s0, "4192")
+    assert on > 5.0, "power broadening at this shift is megahertz, not a rounding"
+    saved = stark.COMPANIONS
+    try:
+        stark.COMPANIONS = None
+        assert stark.companion_gamma_mhz(s0, "4192") == 0.0, (
+            "the negative case: this is what the published file computed")
+    finally:
+        stark.COMPANIONS = saved
+    assert stark.companion_gamma_mhz(0.0, "4192") == 0.0, "and zero at zero shift"
+
+
+def test_a_monotone_acquisition_order_cannot_separate_the_drift_from_the_pull():
+    """Eight of four hundred draws carried the
+    channel's whole published scatter.
+
+    The campaign's power ladder is equally spaced, so an acquisition order
+    that ascends or descends with power is an exact affine function of it and
+    the design is singular. Probed on BOTH sides of the refusal and at the
+    threshold's own neighbourhood: a monotone order is far above the cut, a
+    drawn one far below, and the gap is wide enough that the cut's value is
+    not a tuning parameter."""
+    mod = _load()
+    P = np.asarray([p * 0.225 / 0.225 for p in mod.POWERS_W])
+    assert np.allclose(np.diff(P), np.diff(P)[0]), "the ladder is equally spaced"
+
+    def cond(order):
+        return float(np.linalg.cond(np.column_stack([np.ones_like(P), P, np.asarray(order)])))
+
+    up, down = cond(range(len(P))), cond(range(len(P) - 1, -1, -1))
+    assert up > 1e12 and down > 1e12, "a monotone order is singular in both directions"
+    drawn = cond([2, 0, 4, 1, 3])
+    assert drawn < 1e3, "a genuinely drawn order is well conditioned"
+    assert drawn < mod.COND_MAX < up, "the cut sits inside the empty gap"
+    assert cond([0, 1, 2, 4, 3]) < mod.COND_MAX, (
+        "one transposition away from monotone is already admitted")
+    src = SCRIPT.read_text(encoding="utf-8")
+    assert "np.linalg.cond(A)) > COND_MAX" in src, "the producer must apply it"
+
+
+def test_a_skew_channel_that_falls_with_power_is_not_reported():
+    """The third admission statistic. The ramp's third cumulant rises with
+    power because the shift does, so a cell whose sets fit a NEGATIVE
+    exponent is reading noise, however settled the sign of k3 happens to be.
+    The base cell did exactly that once the saturation term was present:
+    -1.0 against a quiet curve of +1.9.
+
+    Planted either side of the refusal, since a one-sided probe would pass
+    against a rule that refuses everything."""
+    src = SCRIPT.read_text(encoding="utf-8")
+    assert "if np.isfinite(_e) and _e <= 0.0:" in src, "the refusal must be live"
+    assert "ok = np.isfinite(row) & (row != 0) & usable" in src, (
+        "and taken over the ADMITTED rungs: fitted over every finite rung the "
+        "slope reads about -1 in every configuration, because a windowed "
+        "cumulant of pure noise is largest where the signal is smallest")
+
+    def refuses(expo):
+        e = np.asarray(expo, dtype=float)
+        _e = float(np.nanmedian(e)) if np.isfinite(e).any() else float("nan")
+        return bool(np.isfinite(_e) and _e <= 0.0)
+
+    # Either side of the bar, and the two ends that decide its shape: a cell
+    # with no exponent at all must NOT be refused, since fewer than three
+    # admitted rungs is an absence and not a measured negative, and exactly
+    # zero must be, since a channel that does not respond to power is not
+    # reading the shift.
+    for expo, want in (([-1.0, -0.9, -1.2], True), ([2.9, 3.1, 2.8], False),
+                       ([0.4, 0.6, 0.5], False), ([-0.1, 0.0, 0.05], True),
+                       ([0.0, 0.0, 0.0], True),
+                       ([np.nan, np.nan, np.nan], False)):
+        assert refuses(expo) is want, (expo, want)
+
+
+def test_the_ladders_own_abscissa_is_what_every_slope_is_fitted_against():
+    """Seven diagnostic columns on the two depth
+    cells were regressed against log power, which those cells hold fixed at
+    the top rung. The regressor now follows the ladder."""
+    mod = _load()
+    src = SCRIPT.read_text(encoding="utf-8")
+    assert "lp = np.log(_x)" in src, "the abscissa follows the ladder"
+    assert "P = np.asarray(powers); lp = np.log(P)" not in src, "and not the power ladder"
+    for name, cfg in mod.levers():
+        if cfg.get("ladder") == "depth":
+            _, p_first = mod._rung_cfg(cfg, 0)
+            _, p_last = mod._rung_cfg(cfg, len(mod.DEPTHS_2BETA) - 1)
+            assert p_first == p_last == cfg["p_top"], (
+                f"{name}: a depth cell holds the power, so log power is no axis")
+            break
+    else:
+        raise AssertionError("no depth cell to check")

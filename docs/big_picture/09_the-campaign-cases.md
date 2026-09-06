@@ -56,15 +56,53 @@ the 2025 shift up
 finds the 2025 rung a coin flip in every configuration and the channel opening
 only between one and two megahertz of shift. What raises the shift is the
 power and the tighter waist. What the repaired lock buys is the pull channel
-that does not need it. The campaign therefore reads the coefficient three
-ways, and the forecast measures every lever for all three: the higher moments
-alone, on the RF-off science trace, since a comb on the trace leaks its teeth's
-tails into the window and cancels the ramp's own asymmetry at the tight waist.
-The second is the centre against power under the repaired lock, a fit with
-its own background that survives a comb from a spacing of 25 MHz up. The
-third is the two combined with the covariance measured between them over the same trace sets.
-The producer is `scripts/run_three_channel_forecast.py` and its file lands
-with its first run. Raising the
+that does not need it. **The forecast now exists and it reads three ways at once**
+([`results/three_channel_forecast.csv`](../../results/three_channel_forecast.csv)),
+one campaign lever at a time, each cell injecting a known coefficient and
+reporting what each channel recovers with its scatter over four hundred trace
+sets.
+
+**The fitted centre is the campaign's channel.** It recovers the coefficient
+the configuration implies to better than one per cent at every waist the
+campaign proposes, **in a world the twin builds without the axial collection
+window** ([chapter 12](../plan/12_open-apparatus-items.md)), which the same
+commit's waist ladder shows reverses the third cumulant's sign at the tight
+end. The comparison between levers is unaffected, since the omission is common
+to every cell. The absolute recoveries are not, and they are read as such, and it is untouched by the term that decides the other
+channel, because power broadening is symmetric and does not move a centre.
+
+| waist | injected | the centre recovers |
+|---|---|---|
+| 64 microns | [1.618](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_64um::kappa_true") | [1.627](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_64um::kappa_pull") plus or minus [0.1041](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_64um::sd_pull") |
+| 40 microns | [4.143](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_40um::kappa_true") | [4.148](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_40um::kappa_pull") plus or minus [0.1114](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_40um::sd_pull") |
+| 24 microns | [11.507](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_24um::kappa_true") | [11.523](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_24um::kappa_pull") plus or minus [0.1253](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_24um::sd_pull") |
+| 16 microns | [25.891](../../results/three_channel_forecast.csv "ref:three_channel_forecast:base::kappa_true") | [26.091](../../results/three_channel_forecast.csv "ref:three_channel_forecast:base::kappa_pull") plus or minus [0.1921](../../results/three_channel_forecast.csv "ref:three_channel_forecast:base::sd_pull") |
+
+**The higher moments alone work only where the comb is on the trace.** At
+the tight waist the light
+shift is large enough that the transition saturates, and saturation broadens
+the line in proportion to the power while the ramp's asymmetry grows as its
+cube, so the third cumulant's own law flattens and the channel reads noise. A
+phase-modulated comb holds the intensity constant, and with it the light
+shift, while splitting the two-photon drive among the teeth. Each tooth's Rabi
+frequency is then the root of its share, its saturation broadening falls with
+it, and the asymmetry survives. On the 40 MHz comb the moments recover
+[25.612](../../results/three_channel_forecast.csv "ref:three_channel_forecast:eom_comb_40MHz::kappa_skew") plus or
+minus [2.364](../../results/three_channel_forecast.csv "ref:three_channel_forecast:eom_comb_40MHz::sd_skew"), and on
+the 25 MHz comb [25.962](../../results/three_channel_forecast.csv "ref:three_channel_forecast:eom_comb_25MHz::kappa_skew")
+plus or minus [2.833](../../results/three_channel_forecast.csv "ref:three_channel_forecast:eom_comb_25MHz::sd_skew"),
+against the same injected coefficient the centre reads. **Without a comb the
+channel is not refused, it is unreliable**: six comb-free cells recover a
+coefficient and every one reads high, by 5.3 to 33.3 per cent, because the
+sign gate that admits a rung is one-sided. The comb is what makes the
+channel accurate, not what makes it exist.
+
+**The two combined are a check and not a result**, by the rule the campaign
+wrote before the file existed. The combination gains under a tenth over the
+better single channel in every cell that carries both, because the centre is
+an order of magnitude the tighter wherever the moments are alive at all. It
+confirms and it does not sharpen.
+The producer is `scripts/run_three_channel_forecast.py`. Raising the
 shift is what opens the channel, and raising it is what the higher power and
 the repaired lock do.
 

@@ -638,7 +638,9 @@ above is analytic here and is owed to a producer before any forecast quotes it.
 
 **Where the numbers live.** Modules M16, M19 · producers
 `scripts/run_ramp_geometry.py`, `scripts/run_polarizability.py`,
-`scripts/run_cumulant_window_check.py` · results
+`scripts/run_cumulant_window_check.py`, and `scripts/run_waist_ladder.py`
+for the waist axis of the subsection above · results
+`results/waist_ladder.csv` ·
 `results/polarizability.csv` · figures: `fig24_weak_field_limit.png` for the
 regime this law holds in and `fig25_retro_combination.png` for the intensity
 convention behind $S_0$. Library code:

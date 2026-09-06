@@ -57,6 +57,8 @@ CHEAP = {
     # pure quadrature over the model line, a few seconds, no traces
     "run_cumulant_window_check": ["cumulant_window_check.csv"],
     "make_twin_term_census": ["twin_term_census.csv"],
+    # closed forms over the package's own geometry functions, under a second
+    "run_waist_ladder": ["waist_ladder.csv"],
     "run_kernel_identifiability": ["kernel_identifiability.csv"],
     # a Fisher forecast over five rungs per lever, milliseconds, no traces.
     "run_onf_lever_ranking": ["onf_lever_ranking.csv"],
@@ -118,6 +120,10 @@ CHEAP = {
 # Minutes each, or needing data_raw/ traces, or both - everything the
 # per-pass cheap set must not pay for.
 EXPENSIVE = {
+    # about nine minutes on eight workers, twenty-three cells of four hundred
+    # trace sets each through every physics layer, so it is re-run only under
+    # --all. Synthetic throughout: it reads no raw trace.
+    "run_three_channel_forecast": ["three_channel_forecast.csv"],
     # 1.7 s, but it refits 16 conditions from the raw traces, so it belongs
     # with the producers a clone without data_raw cannot run.
     "run_band_excess": ["band_excess.csv"],
@@ -699,7 +705,8 @@ def verify(producers: dict) -> list[str]:
 # EXPENSIVE producers that read no raw trace: `--all` covers them on a checkout
 # without data_raw/, which is every public clone. Membership is declared per
 # producer, never inferred; the others in EXPENSIVE are audited one by one.
-SYNTHETIC_ONLY = {"run_moment_power_map", "run_moment_power_map_deep"}
+SYNTHETIC_ONLY = {"run_moment_power_map", "run_moment_power_map_deep",
+                  "run_three_channel_forecast"}
 
 
 def main() -> int:

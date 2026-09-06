@@ -224,7 +224,7 @@ archive's own: at its shift, noise and scope a single trace's cumulant has a
 signal-to-scatter of a few hundredths, so five traces reach a few tenths of
 that and a usable channel needs of order thirty thousand. The consequence for this repository is stated
 in [the campaign cases](../big_picture/09_the-campaign-cases.md): the third
-cumulant is the campaign's channel and not the archive's, and the map is why.
+cumulant is a campaign channel and not an archive one, and the map is why. **Which channel leads is settled elsewhere and it is not this one**: the three-channel forecast reads the fitted centre against the third cumulant lever by lever and the centre is the tighter everywhere ([the campaign cases](../big_picture/09_the-campaign-cases.md)).
 
 Two implementation traps follow from that. Subtracting a baseline that is
 itself slightly asymmetric injects a third cumulant directly. And at finite

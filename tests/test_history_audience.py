@@ -1,7 +1,7 @@
 """Every history entry declares who it is for, and internal ones stay private.
 
-WHY THIS EXISTS. `docs/history/` is PUBLIC: it ports to the mirror, so a PI
-assessing this work can read it. Measured 2026-09-05, **4,305 of its 11,550
+WHY THIS EXISTS. The correction record WAS public and ported to the mirror,
+so a PI assessing this work met it. Measured 2026-09-05, **4,305 of its 11,550
 words, 37 per cent, are the correction history of our own machinery** --
 provenance guards, documentation counts, status columns, producers disagreeing
 in a fourth decimal. None of it changes a number either reader would quote, and
@@ -162,9 +162,10 @@ def test_every_entry_declares_its_audience(fname, head, body):
         f"{fname}: the entry '{head}' declares no audience. Add one of\n"
         "    <!-- audience: reader -->    a number or claim a reader could have quoted\n"
         "    <!-- audience: internal -->  the correction history of our own machinery\n"
-        "on the line beneath the heading. docs/history/ is public and ports to "
-        "the mirror, so an entry that speaks only to our tooling costs a "
-        "five-minute reader and buys nothing.")
+        "on the line beneath the heading. The declaration is what lets a later "
+        "judgement about disclosure separate the machinery mechanically, "
+        "instead of re-reading the whole record.")
     assert m.group(1).lower() == "reader", (
-        f"{fname}: the entry '{head}' declares itself internal, and the public "
-        "hub does not carry internal history. Move it to private/.")
+        f"{fname}: the entry '{head}' declares itself internal, and this hub "
+        "carries the reader-facing account. The machinery's own correction "
+        "history belongs in the register, not here.")

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Every literal a results/ cell has EVER held is grepped for in the tree.
 
-    python scripts/check_moved_values.py [--history N]   # default N = 40
+    python scripts/check_moved_values.py [--history N]   # default: since origin/main
 
 WHY THIS EXISTS. `check_references.py` resolves numbers carrying a `ref:`
 tag, so its population is the MARKED set. On 2026-08-28 a wave corrected
@@ -314,9 +314,12 @@ def retired_literals(base: str) -> tuple[
 
 
 def history_now_columns(lines: list[str]) -> dict[int, set[int]]:
-    """For docs/history/ tables and the hub index docs/HISTORY.md, the cell
-    indices carrying the NEW value (the hub joined 2026-09-04: its rows carry
-    retired values in their title and was cells by design).
+    """For `private/history/` tables and the hub index `private/HISTORY.md`,
+    the cell indices carrying the NEW value (the hub joined 2026-09-04: its
+    rows carry retired values in their title and was cells by design; both
+    moved under `private/` on 2026-09-05 and this docstring named the old
+    paths until 2026-09-06, one line above a selector that named one of
+    them too).
 
     Those tables are `| quantity | was | now | file |`. Grading the whole row
     reports the `was` cell, which is the account and is what the old wholesale
@@ -389,7 +392,16 @@ def scannable() -> list[Path]:
         # ESCAPE_LEDGER.md, whose entries quote retired values as their job and
         # were reported as stale copies. Wrong in both directions at once, and
         # the two errors masked each other. A file now declares what it is.
-        for pat in ("*.md", "checks/*.py"):
+        # `history/*.md` JOINED 2026-09-06, and its absence made half of this
+        # file's own mechanism dead code. `history_now_columns` is selected by
+        # `rel.startswith("private/history/")`, and a bare `*.md` glob matches
+        # only the files directly under `private/`, so that branch had no
+        # population from the day the correction record moved there. The hub
+        # beside it WAS reached, which is why the gap read as working. The
+        # chapters are records, and the now-cell exemption is exactly how a
+        # record is graded without reporting the retired values it exists to
+        # carry.
+        for pat in ("*.md", "history/*.md", "checks/*.py"):
             out += [q for q in sorted(priv.glob(pat))
                     if q.is_file() and not _declares_record(q)]
     return out
@@ -539,7 +551,7 @@ def scan(stale: dict[str, dict[str, tuple[str, str]]],
             continue
         lines = text.splitlines()
         hist_cols = (history_now_columns(lines)
-                     if rel.startswith("private/history/") or rel == "docs/HISTORY.md"
+                     if rel.startswith("private/history/") or rel == "private/HISTORY.md"
                      else None)
         for n, line in enumerate(lines, 1):
             if any(m in line.lower() for m in ACCOUNT_MARKERS):
@@ -663,7 +675,33 @@ def _rounded_forms(retired: dict) -> dict:
 
 
 def main(argv: list[str]) -> int:
-    base = argv[1] if len(argv) > 1 else DEFAULT_BASE
+    # `--history N` WAS DOCUMENTED IN THE DOCSTRING AND READ AS A BASE REF, so
+    # it failed to resolve, fell back to HEAD~1, and quietly graded a window
+    # one commit wide while printing that it had. Retired 2026-09-06 by
+    # implementing the flag and by refusing any other
+    # one: an option a script accepts and ignores is worse than an option it
+    # does not have, because the caller believes the window they asked for.
+    args = argv[1:]
+    base = DEFAULT_BASE
+    if args and args[0] == "--history":
+        if len(args) < 2 or not args[1].isdigit() or int(args[1]) < 1:
+            print("check_moved_values: --history needs a positive integer, "
+                  "the number of commits of history to grade.")
+            return 2
+        n = int(args[1])
+        have = len([s for s in _git("rev-list", "HEAD").splitlines() if s])
+        if n >= have:
+            print(f"check_moved_values: --history {n} exceeds the {have} "
+                  f"commit(s) this checkout has; grading all of them.")
+            n = have - 1
+        base = f"HEAD~{n}"
+        args = args[2:]
+    if args and args[0].startswith("--"):
+        print(f"check_moved_values: unknown option {args[0]!r}. The only "
+              "option is --history N; a bare argument is the base ref.")
+        return 2
+    if args:
+        base = args[0]
     if not _git("rev-parse", "--verify", "--quiet", f"{base}^{{commit}}").strip():
         fallback = "HEAD~1"
         print(f"check_moved_values: cannot resolve {base!r} as a commit (a tree hash cannot bound git log); falling back to "

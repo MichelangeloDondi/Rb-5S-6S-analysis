@@ -258,7 +258,7 @@ for each cumulant, against the fraction of the kernel that is Lorentzian:
 **One cell of fifteen recovers the fifth power, and it is the one with no
 Lorentzian at all and the widest window.** A Lorentzian fraction of 0.15 is
 already enough to return the fifth cumulant to the third power. The third
-cumulant's own power is stable at 3.00 everywhere, which is what makes it the
+cumulant's own power is 3.00 on the noiseless model at a wide window, and it falls to 1.94 once the saturation companion broadens the line inside a fixed 6 MHz half-width (`results/three_channel_forecast.csv`), returning to 3 as the window widens. That stability at a wide window is what makes it the
 usable channel.
 
 **This transition cannot reach that cell, and the reason is a constant.** The
@@ -447,5 +447,4 @@ edges is a second contraction term, and twenty passes read the rung high by
 a few per cent at the top of the ladder and by tens at the bottom.
 `results/cumulant_window_check.csv` is analytic on the noiseless model at
 unit amplitude and keeps its own iteration. The joint fit against power and
-the three-channel forecast are produced through the package estimator, and
-their files land with their first runs.
+the three-channel forecast are produced through the package estimator.

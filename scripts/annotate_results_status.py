@@ -97,6 +97,18 @@ SKIP = {"laser_epoch.csv", "qc_metrics.csv",
         # booleans, tagged by the producer.
         "coverage_grid.csv",
         "moment_power_map.csv",
+        # the waist ladder and the three-channel forecast, same reason, and
+        # NOT the FILE_STATUS mapping their uniformity makes them look like.
+        # Both files read DIAGNOSTIC in every row today, which is what invites
+        # the mapping, but each PRODUCER writes its own status cell and the
+        # forecast keys its cell on whether the pull channel returned a spread
+        # at all, so a row can turn NULL on the next run. A mapped entry would
+        # then overwrite a status the producer meant.
+        # `test_producer_written_statuses_use_the_controlled_vocab` is what
+        # holds the vocabulary here, verified by planting a bogus status and
+        # watching it fire.
+        "waist_ladder.csv",
+        "three_channel_forecast.csv",
         "moment_power_map_rungs.csv",
         "moment_power_map_deep.csv",
         "moment_power_map_deep_rungs.csv",
