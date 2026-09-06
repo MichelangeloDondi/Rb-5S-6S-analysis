@@ -436,7 +436,7 @@ leads this note.
 * The species and temperature of the MOT, carried as Rb at 150 uK.
 * Transmission of the existing pigtails at 993 nm.
 * A Casimir-Polder sum for C3 of the 6S state, replacing the 3 to 6 band.
-* A per-run calibration of the electrostatic surface-charge term, which
+* A per-run calibration of the Casimir-Polder surface term, which
   [Pennetta 2026](../lit/pennetta2026.md) shows is a component of the
   potential rather than an external nuisance.
 * Which fibre. The cold-atom 5S-6S measurement of

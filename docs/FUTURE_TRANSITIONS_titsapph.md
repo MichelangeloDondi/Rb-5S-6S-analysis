@@ -445,7 +445,7 @@ repository can speak to do not look alike.
 | pair | crossings found | character |
 |---|---|---|
 | 5S–6S | 1203.9 nm (α = +547 a.u.), 1287.9, 1339.6 nm | 1204 is far from every 6S resonance and traps both states, the other two sit among the 6S–5P and 6S–7P lines |
-| 5S–6S, inside the Ti:Sapph band | 790.1 nm (α = −244 a.u.) | between the 5S D lines, 0.1 nm from the ground-state tune-out, so a ground-state vapour absorbs it hard |
+| 5S–6S, inside the Ti:Sapph band | 790.1 nm (α = −244 a.u.), **not quotable** | between the 5S D lines, 0.1 nm from the ground-state tune-out, so a ground-state vapour absorbs it hard. **And the 6S sum is truncated at 8P, whose line lies at 1028.7 nm, so this crossing sits between the omitted 13P near 797.9 and 14P near 787.1 nm and is computed without the states that dominate there.** `magic_wavelengths` is scoped to 950 nm and above for this reason |
 | 5S–7S | 742.6 nm (α = −2667 a.u.), 790.2 nm (α = −410 a.u.) | 742.6 sits 1.6 nm from the 5P₃/₂–7S pole at 741.0 nm, an *excited*-state transition that a ground-state vapour does not absorb, but Δα is steep there and the crossing position is correspondingly sensitive. 790.2 carries the D-line problem above |
 | 5S–5D₅/₂ | 776.179(5) nm, measured | 0.2 nm from the 5P₃/₂–5D₅/₂ resonance, also an excited-state transition, and 1.9 nm from the 778.104 nm two-photon wavelength |
 

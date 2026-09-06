@@ -279,14 +279,22 @@ none has been run.
 **The instrumentation.** This register is where the fibre scenario is
 strongest, because what it leaves behind is a set of working tools, not a
 result. The first of them is conditional, and its condition is stated below
-instead of promised here: the surface-charge calibration reaches 6S only if
+instead of promised here: the Casimir-Polder surface calibration reaches 6S only if
 the repaired lock's residual drift is small enough, and at the 2025 archive's
 rate it is not a calibration at all.
 
-* A per-run calibration of the electrostatic surface-charge term at 6S
+* A per-run calibration of the **Casimir-Polder** surface term at 6S
   sensitivity, on the same class of fibre that Rydberg-near-fibre
   experiments probe at far higher sensitivity, where that term is a known
-  limiter ([Pennetta 2026](../lit/pennetta2026.md)).
+  limiter ([Pennetta 2026](../lit/pennetta2026.md)). **It is not a
+  measurement of the electrostatic surface charge**, and the distinction is
+  worth stating to a group that has just published on the latter
+  ([Raj 2026](../lit/raj2026.md)): at the 1.5 V/cm those authors recover at
+  400 nm, the electrostatic shift of this transition is 0.32 Hz, against the
+  72.5 kHz Casimir-Polder term the lever ranking computes. **The transition is
+  blind to the systematic that limits their Rydberg work**, which is what
+  makes it a clean probe of the dispersion term and not a rival
+  electrometer.
 * A real-time, atom-based monitor of surface adsorbate dynamics, which is
   the community-wide fibre-degradation problem, watched through the line
   while it happens.
@@ -314,7 +322,7 @@ near a nanofibre and not spectroscopy.
 
 | | cell alone | cell plus nanofibre |
 |---|---|---|
-| **what the host group keeps afterwards** | nothing on their platform. The results are ours | a per-run calibration of the surface-charge term at 6S sensitivity, an atom-based monitor of adsorbate dynamics on the fibre, the two-colour trap's magic power ratio for this transition, a quadratic-Zeeman line shifter, a depth-ladder null test of the light shift demonstrated on their own modulator, and a laser characterised through their own guided path |
+| **what the host group keeps afterwards** | nothing on their platform. The results are ours | a per-run calibration of the Casimir-Polder surface term at 6S sensitivity, the transition being blind to the electrostatic charge that limits their Rydberg probe, an atom-based monitor of adsorbate dynamics on the fibre, the two-colour trap's magic power ratio for this transition, a quadratic-Zeeman line shifter, a depth-ladder null test of the light shift demonstrated on their own modulator, and a laser characterised through their own guided path |
 | **what it measures about the fibre** | nothing | the **fibre diameter**, the tolerance no held paper states and which every guided quantity depends on, to between [30.73](../../results/onf_lever_ranking.csv "ref:onf_lever_ranking:lock_span_0.04:sigma_diameter_nm") nm at the 2025 drifting lock and [0.67](../../results/onf_lever_ranking.csv "ref:onf_lever_ranking:lock_span_0.0:sigma_diameter_nm") nm at the photon floor, marginalised over the drive amplitude the scan cannot know. The repaired lock decides where in that span the campaign sits, and its residual is unmeasured. Also the light-shift coefficient, and the surface coefficient $C_3$ which is the weakest of the three (`results/onf_lever_ranking.csv`). **The diameter is not only obtainable this way**: the group's own scanning electron microscope gives it without atoms, and the published proximity to the 352 nm mode cutoff is a sharp independent diagnostic. What the atoms add is the quantity that actually enters the physics, measured in situ under the conditions of use, rather than a fibre characterised before it was installed ([chapter 6](06_next-nanofibre.md)) |
 | **fibre time** | none | **acquisition only**, about [0.23](../../results/onf_lever_ranking.csv "ref:onf_lever_ranking:temperature_ladder:hours") hours per lever across three levers. Alignment, setup and the trap settling the distance scan needs between rungs are **not costed**, and the producer says so. The interval the host group would actually be asked to grant is an open item, not this number |
 | **fibre exposure** | none | what can be quoted is integration time: about [2.78](../../results/campaign_twin_forecast.csv "ref:campaign_twin_forecast:onf:minutes_per_trace_0.02") minutes per trace at the working precision, and [69](../../results/campaign_twin_forecast.csv "ref:campaign_twin_forecast:onf:minutes_per_trace_0.004") +- [16](../../results/campaign_twin_forecast.csv "ref:campaign_twin_forecast:onf:minutes_per_trace_0.004_err") at cell-matching precision, the half-span of the committed 25 to 40 counts per ms band. **The degradation that time causes is a different quantity and is an open item**: rubidium adsorption against exposure bounds the whole arm and nothing here converts one into the other ([chapter 6](06_next-nanofibre.md)) |
@@ -323,7 +331,7 @@ near a nanofibre and not spectroscopy.
 **The cell campaign is scheduled and the fibre arm is not yet.** The cell side is eight days, D1 to D8, each with its content and its deliverable, ordered so a truncation at any point leaves the higher-priority conversions done ([the plan](../PLAN.md), section 9). The fibre side has its acquisition hours from the lever ranking and no day plan, so the interval it would occupy is not yet a stated number. That is an open item and not an omission from this table.
 
 **The row that decides it is the first one, and it carries a condition that
-belongs beside it.** The surface-charge calibration is available at
+belongs beside it.** The Casimir-Polder calibration is available at
 [4 to 9](../../results/onf_lever_ranking.csv "ref:onf_lever_ranking:lock_requirement_4kHz:surface_shift_significance_at_400nm_band")
 sigma once residual lock drift is at or below 4 kHz per minute, and at
 [0 to 1](../../results/onf_lever_ranking.csv "ref:onf_lever_ranking:lock_requirement_40kHz:surface_shift_significance_at_400nm_band")

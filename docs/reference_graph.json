@@ -113,7 +113,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 130,
+    "line": 164,
     "writes": "0.433"
    }
   ],
@@ -125,7 +125,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 320,
+    "line": 328,
     "writes": "69"
    }
   ],
@@ -137,7 +137,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 320,
+    "line": 328,
     "writes": "16"
    }
   ],
@@ -149,7 +149,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 320,
+    "line": 328,
     "writes": "2.78"
    }
   ],
@@ -605,7 +605,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 291,
+    "line": 325,
     "writes": "0.9640"
    },
    {
@@ -622,7 +622,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 293,
+    "line": 327,
     "writes": "0.4040"
    },
    {
@@ -639,7 +639,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 291,
+    "line": 325,
     "writes": "0.9580"
    },
    {
@@ -656,7 +656,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 293,
+    "line": 327,
     "writes": "0.3760"
    },
    {
@@ -798,7 +798,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 150,
+    "line": 184,
     "writes": "984"
    }
   ],
@@ -810,7 +810,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 150,
+    "line": 184,
     "writes": "1.01283"
    }
   ],
@@ -822,7 +822,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 151,
+    "line": 185,
     "writes": "802"
    }
   ],
@@ -834,7 +834,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 151,
+    "line": 185,
     "writes": "1.01927"
    }
   ],
@@ -846,7 +846,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 159,
+    "line": 193,
     "writes": "0.231"
    }
   ],
@@ -858,7 +858,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 152,
+    "line": 186,
     "writes": "624"
    }
   ],
@@ -870,7 +870,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 162,
+    "line": 196,
     "writes": "0.615"
    },
    {
@@ -887,7 +887,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 163,
+    "line": 197,
     "writes": "0.489"
    },
    {
@@ -904,7 +904,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 152,
+    "line": 186,
     "writes": "1.03164"
    },
    {
@@ -1398,7 +1398,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 134,
+    "line": 168,
     "writes": "0.2895"
    },
    {
@@ -1415,7 +1415,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 329,
+    "line": 337,
     "writes": "0 to 1"
    }
   ],
@@ -1427,7 +1427,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 327,
+    "line": 335,
     "writes": "4 to 9"
    }
   ],
@@ -1439,12 +1439,12 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 183,
+    "line": 217,
     "writes": "30.73"
    },
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 318,
+    "line": 326,
     "writes": "30.73"
    }
   ],
@@ -1456,12 +1456,12 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 185,
+    "line": 219,
     "writes": "0.67"
    },
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 318,
+    "line": 326,
     "writes": "0.67"
    },
    {
@@ -1478,7 +1478,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 319,
+    "line": 327,
     "writes": "0.23"
    }
   ],

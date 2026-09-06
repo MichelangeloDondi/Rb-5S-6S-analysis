@@ -184,11 +184,24 @@ def main() -> int:
         f"tolerance of +-{DIAMETER_TOL_NM:.0f} nm. The band is now the "
         "DIAMETER's ignorance carried through the solve, not an assumed index "
         "range. The convention is amplitude and was labelled intensity until "
-        "2026-08-27")
+        "2026-08-27. CANONICAL HOME results/guided_mode_tables.csv, which "
+        "carries both conventions at 350, 370 and 400 nm from the same solver. "
+        "THIS BAND IS NOT THE DOMINANT UNCERTAINTY. It spans the stated "
+        "tolerance about ONE committed diameter, while the diameter itself is "
+        "cited and not measured: at 350 nm the amplitude length is 984 nm "
+        "against 624 here, so the choice of diameter moves it by more than "
+        "half again, which is far outside this band")
     add("evanescent_decay_length_intensity", f"{mode.intensity_decay_nm:.0f}",
         "nm", "computed_mode_solution",
         "1/(2q), HALF the amplitude length. Stated separately because "
-        "conflating the two is a factor of two in every intensity below")
+        "conflating the two is a factor of two in every intensity below. This "
+        "is the convention a two-photon coupling needs, since the coupling "
+        "follows I. An external reading quoted 517 nm here on 2026-09-06 and "
+        "was accused of using an amplitude length under an intensity label. "
+        "THAT ACCUSATION IS WITHDRAWN: solved at ITS radius of 175 nm this "
+        "record gives 492 nm, so the convention matched and the DIAMETER "
+        "differed, theirs inferred from the 352 nm mode cutoff which this "
+        "record treats as a diagnostic and not a measurement")
     # THE EFFECTIVE MODE AREA, SETTLED 2026-08-28 BY A VALIDATED FIELD SOLVE.
     #
     # A shell formula pi[(a+1/q)^2 - a^2] was committed here and gave 1.98

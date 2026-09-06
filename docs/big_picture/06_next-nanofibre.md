@@ -118,6 +118,40 @@ of the beam split, the comb is common to both arms, so a setting that suits the
 moment channel in one arm is forced on the other. Either the arms take turns, or
 a second modulator goes in one of them.
 
+### Two things the host group's own recent papers settle (2026-09-06)
+
+**Their current fibre is thinner than the one this record commits.**
+`results/onf_candidate.csv` carries a diameter of 400 nm, cited to the 2020
+cold-atom measurement. The group's 2025 fictitious-field paper states a radius
+of 175 nm, so a diameter of 350 nm, and the 2026 surface-charge paper works on
+the same platform. Solved at each, the intensity decay length at 993.4 nm is
+312 nm at 400 and **492 nm at 350**, a factor of 1.58. **Every guided intensity,
+shift and rate in this chapter is keyed on the committed diameter**, and the
+band those rows advertise spans a plus or minus 20 nm tolerance about it, which
+is four times smaller than the gap between the two candidate fibres. The
+diameter is cited and not measured, so this is a discrepancy to settle and not
+an error to correct, and it is now the largest single lever on every guided
+number here.
+
+**Their trap wavelength lands where this record cannot compute.** The
+fictitious-field trap is built at 790 nm, the ground-state tune-out where the
+scalar shift on 5S vanishes and only the vector term, which is the trap itself,
+survives. Whether 790 nm is also near a differential zero for 5S to 6S is a
+natural question and **this repository cannot answer it**. The 6S line list
+stops at 8P, whose transition lies at 1028.7 nm, while the 6S to nP series
+continues through 13P near 797.9 nm and 14P near 787.1 nm to the ionisation
+limit at 737.6 nm. **A trap at 790 nm sits between those two omitted states, a
+few nanometres from each**, where their neglected denominators are far smaller
+than any term the sum retains. `polarizability.magic_wavelengths` is scoped to
+950 to 1500 nm for exactly this reason, and evaluating the differential below
+that range returns a number the inputs do not support. The Ti:Sapph chapter's
+790.1 nm entry carries the same limitation and now says so.
+
+**What would answer it** is the 6S to 9P through 14P reduced matrix elements,
+which no held paper carries. Until then the statement to the group is that
+their trap wavelength is interesting for this transition and that its
+differential shift there is not yet computable here.
+
 ### The guided-platform open items
 
 Listed here and not in [the plan's open-items chapter](../plan/12_open-apparatus-items.md),
