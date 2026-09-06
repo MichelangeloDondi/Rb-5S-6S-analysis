@@ -201,13 +201,71 @@ and the resulting rate per block, because the rate is what converts the time
 axis to frequency and the archive had to reconstruct it from EOM combs after
 the fact.
 
-**Piezo scan speed and shape.** Two independent asks. Prefer a sawtooth or a
-one-direction export over a symmetric triangle, which removes the retrace
-mirror entirely and returns the excluded band. If the triangle must stay,
-centre the line in the sweep so its mirror lands on top of it rather than at
-a resolvable offset, and record which it is. Keep the per-point dwell no
+**Piezo scan speed and shape.** Two independent asks, and the preference
+below is reversed for the campaign by the arithmetic that follows it. Prefer a
+sawtooth or a one-direction export over a symmetric triangle, which removes the
+retrace mirror entirely and returns the excluded band. If the triangle must
+stay, centre the line in the sweep so its mirror lands on top of it rather than
+at a resolvable offset, and record which it is. Keep the per-point dwell no
 shorter than 2025's 0.5 ms unless the detection bandwidth is checked against
 it, since the cusp is a time-domain feature and a fast scan can smear it.
+
+**The deep trace, and what it does and does not settle** (owner design
+question, 2026-09-06. The first form of this block was struck the same day,
+see the correction record). The bench records 2000 points in a 1.000 s window
+at a 0.5 ms dwell, so half a million points is a real setting. What it buys is
+set by the span above: **2400 MHz reaches three sigma of the pedestal and holds
+two of the four components**, not all four, and chapter 10c.5 names the pairs.
+A budget in triangles therefore rests on the two-pair span and on a sampling
+rule, and neither the budget nor the sawtooth-against-triangle preference is
+re-stated here until a producer owns it. Chapter 12 carries it as an open item.
+
+**The rate ladder is a scope fact and it stands.** Half a million points is
+reached at three very different dwells:
+
+| setting | dwell | trace | rate |
+|---|---|---|---|
+| keep the 2025 dwell | 500 us | 250 s | 24 MHz/s |
+| a middle | 20 us | 10 s | 600 MHz/s |
+| keep the 1 s window | 2 us | 1 s | 6000 MHz/s |
+
+**What the fast end buys is drift immunity, and the rate that would justify it is not
+measured.** The repaired lock's residual is an open item and the record spans
+it instead of valuing it, from zero to 0.04 MHz per minute, which across a
+250 s trace is a total drift anywhere between nothing and 0.167 MHz. That is a
+factor of forty of ignorance, so no single smear figure belongs in this
+chapter. Chapter 9's own argument, that a 0.090 MHz smear "is what made fast
+sweeps necessary", rests on reading the 2025 record as a 0.19 MHz per minute
+straight line, and [chapter 1](01_aim-and-failure-modes.md) retires exactly
+that reading. The root cause there was cavity-lock dropouts across a two-hour
+etalon thermal transient, not a drift rate. **The two chapters disagree and
+neither cites the other**. The lock residual is the open item that settles it,
+and until it exists the sweep timing is argued from structure and not from a
+smear.
+
+**The structural argument does not need the rate.** A single crossing cannot
+separate a drift from the peak spacings it displaces. Two crossings determine a
+centre and a slope with no degree of freedom left to check them. With `2n`
+crossings the drift is a fitted trend in acquisition order carrying `2n - 2`
+degrees of freedom to test it, so what many crossings buy is identifiability
+and the order of drift removable. They buy no precision: the photons are fixed,
+so each crossing's uncertainty grows as the root of the count and averaging
+removes exactly that much again.
+
+**The ladder is not free, and the earlier claim that it was is withdrawn.** A
+scanned width integrates laser noise from one over the crossing time up to the
+per-point sampling rate, so **the observed width moves with the rate**
+(`docs/wiki/laser-frequency-noise-and-the-linewidth.md`, and chapter 6 uses exactly
+this to make the fast comb block a laser-width instrument). Chapter 9 measures
+a 24.6 per cent width inflation at 0.94 MHz per ms and concludes that the fast
+segment belongs between the lines and never across them. A rate ladder is
+therefore an instrument for the laser width and for the drift's shape, bought
+at a known cost in width, and not a free axis.
+
+**What binds the fast end** is the piezo's own response and, under lock, the
+servo's ability to follow. Both are apparatus items in chapter 12. The finite
+6S and 5P lifetimes bind far above any of these settings. The record carries no
+defended coefficient for either ceiling, so none is quoted here.
 
 **Oscilloscope.** The archive is Agilent/Keysight InfiniiVision exports, two
 header lines then time and volts, with the empty-voltage quirk

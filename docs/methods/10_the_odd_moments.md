@@ -258,8 +258,8 @@ for each cumulant, against the fraction of the kernel that is Lorentzian:
 **One cell of fifteen recovers the fifth power, and it is the one with no
 Lorentzian at all and the widest window.** A Lorentzian fraction of 0.15 is
 already enough to return the fifth cumulant to the third power. The third
-cumulant's own power is 3.00 on the noiseless model at a wide window, and it falls to 1.94 once the saturation companion broadens the line inside a fixed 6 MHz half-width (`results/three_channel_forecast.csv`), returning to 3 as the window widens. That stability at a wide window is what makes it the
-usable channel.
+cumulant's own power is 3.00 on the noiseless model at a wide window, and it falls to 1.94 once the saturation companion broadens the line inside a fixed 6 MHz half-width (`results/three_channel_forecast.csv`). It climbs as the window widens, 2.19 at 8 MHz, 2.62 at 16 and 2.94 between 40 and 55. **Whether it returns exactly to three is not established here**, because the producer's grid spans 60 MHz either side and a window reaching that edge leaves the trace, which the estimator refuses. What makes it the usable channel is that the loss is
+truncation, recoverable by a wider window or by a comb, and not a failure of the law.
 
 **This transition cannot reach that cell, and the reason is a constant.** The
 natural width of the upper state is 3.493 MHz and is Lorentzian. The Gaussian

@@ -227,6 +227,20 @@ share, and the laser's own width is read from what remains. No forecast in
 this repository rests on the angle: the forecast spans the term by treating
 it as absent and naming it here.
 
+### The piezo's first resonance, and the lock's servo bandwidth
+
+**The piezo's first mechanical resonance, and the lock's servo bandwidth if the
+scan runs under lock**, both bench facts and both newly load-bearing. The scan
+rate is the cleanest degeneracy-breaking knob in the record, leaving every
+spectral width exactly untouched while every drift term goes as its reciprocal
+([chapter 7](07_acquisition-settings.md)). **What it changes**: how far a rate
+ladder can be pushed, and therefore whether the drift's shape can be measured
+instead of assumed linear. **How the forecast proceeds**: the two computed
+ceilings are known and neither binds, rapid passage at 2.9e7 MHz/s and the
+detection chain at 8.1e6 against a fastest proposed setting of 6000 MHz/s, so
+the forecast spans the rate between the 2025 setting's 24 MHz/s and that
+6000 and states that the piezo, not the physics, sets the upper end.
+
 ### The EOM drive's available resonances and depths
 
 The new RF drive reaches a higher modulation depth without residual
@@ -251,6 +265,40 @@ scatter of 51.3, which is no measurement. At 40 MHz they stand 28 MHz clear and
 the null reads -0.0084 against 0.0262, a third of a standard error from zero.
 **So the lever is specified at 40 MHz**, and which resonances the tank offers is
 the apparatus number this item still wants.
+
+### The RF gate's optical-power invariance, and its switching transient
+
+The RF can be switched on and off inside a single triangular scan, which puts
+the saturated and the de-saturated line in the same sweep under the same atoms,
+the same density and the same moment of the lock (owner statement, 2026-09-06).
+The design rests entirely on one property: a pure phase modulation holds the
+total intensity, so the light shift is the same with the drive on and off, and
+only the rate-driven terms move. At the campaign's 16 micron base point that is
+a saturation-companion width running from 9.09 MHz with the drive off to 0.087
+MHz at the third tooth, a hundredfold ladder in the one width, while the shift,
+the transit width and the natural width stand still.
+
+**What is not recorded is whether the transmitted optical power is actually
+invariant across the switch.** A drive-dependent insertion loss changes the
+power, hence the shift, and the on-minus-off difference would then contain the
+quantity the design exists to isolate. **This is the item that decides whether
+the lever works at all**, and it fails in the flattering direction: a power
+change that tracks the drive produces a clean, repeatable, entirely spurious
+difference. It needs a power meter after the modulator and no atoms.
+
+The same measurement carries a second number, the settling time of the drive
+and of the crystal's thermal state after a switch, which sets how much of the
+sweep either side of a transition is unusable and must be excluded.
+
+The instrument for the first number is already derived, not assumed. A
+residual amplitude modulation of index `m` tilts the tooth pattern as
+`d ln W_s / dm = 2 s / beta`, so the plus-k against minus-k asymmetry is
+`4 k m / beta` and grows with the tooth index: one per cent of amplitude
+modulation shows as fifteen per cent of asymmetry at the third tooth. The
+blind region is stated with it, since quadrature amplitude modulation is a pure
+phase to first order and does not appear in the tooth heights at all, so the
+tooth pattern bounds one quadrature and the power meter is what bounds the
+other.
 
 ### The adjustable expander's magnification, and what is known about it
 

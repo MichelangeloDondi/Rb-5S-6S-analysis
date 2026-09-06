@@ -139,6 +139,24 @@ def windowed_cumulants(grid: np.ndarray, y: np.ndarray, half_width: float, order
     converged = False
     passes = 0
     nan = {o: float("nan") for o in orders}
+
+    def _outside(centre: float) -> bool:
+        """True when the window would reach past the trace.
+
+        WHY THIS REFUSES RATHER THAN CLAMPING. `np.interp` holds the end value
+        for any abscissa outside the grid, so a window wider than the trace is
+        filled with a constant equal to the last sample. That is not a tail: it
+        is a rectangular pedestal whose third moment grows without bound, and
+        the estimator previously returned it with `converged` set to one. On a
+        +-60 MHz grid an asymmetric line gave k3 = 0.855 at a 50 MHz
+        half-width, -26.7 at 62 and -2778 at 120, converged at every step.
+        The corruption begins BEFORE the edge, because `wing_baseline` reads a
+        region the clamp has already flattened."""
+        return (centre - w) < grid[0] or (centre + w) > grid[-1]
+
+    if _outside(c):
+        return nan, {"centre": c, "passes": 0.0, "converged": 0.0,
+                     "baseline": b, "in_span": 0.0}
     for passes in range(1, max_passes + 1):
         g = np.linspace(c - w, c + w, n_points)
         yy = np.interp(g, grid, y)
@@ -148,6 +166,10 @@ def windowed_cumulants(grid: np.ndarray, y: np.ndarray, half_width: float, order
         c_new = trapezoid(g * yy, g) / s
         moved = abs(c_new - c)
         c = c_new
+        if _outside(c):
+            # the centring wandered until the window left the trace
+            return nan, {"centre": c, "passes": float(passes),
+                         "converged": 0.0, "baseline": b, "in_span": 0.0}
         if moved < tol:
             converged = True
             break
@@ -162,7 +184,9 @@ def windowed_cumulants(grid: np.ndarray, y: np.ndarray, half_width: float, order
     mu = np.array([trapezoid((g - m1) ** k * yy, g) for k in range(1, top + 1)])
     kappa = cumulants_from_central_moments(mu)
     values = {o: float(kappa[o - 1]) for o in orders}
-    return values, {"centre": c, "passes": float(passes), "converged": 1.0 if converged else 0.0, "baseline": b}
+    return values, {"centre": c, "passes": float(passes),
+                    "converged": 1.0 if converged else 0.0, "baseline": b,
+                    "in_span": 1.0}
 
 
 def windowed_cumulant(grid: np.ndarray, y: np.ndarray, half_width: float, order: int = 3, *,

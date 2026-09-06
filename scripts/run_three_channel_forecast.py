@@ -213,6 +213,59 @@ def _rung_cfg(cfg: dict, rung: int):
     return cfg, tuple(p * cfg["p_top"] / 0.225 for p in POWERS_W)[rung]
 
 
+# The committed halo cells, `results/trapping_channels.csv`, per cent of the
+# primary two-photon rate at a 2 mm standoff, tagged ENVELOPE because the
+# standoff is a geometric unknown and the quoted spread is a range over it.
+# 150 AND 170 C RUN 2026-09-06 on the owner's instruction: 8.94 and 30.57 per
+# cent. Two corrections ride with them, both to earlier drafts of this comment.
+#
+# FIRST, the extrapolation it carried was wrong by six times. It read the last
+# measured step as multiplying the halo by 13.3 per 20 degrees and so predicted
+# 14 per cent at 150 and 189 at 170, the second exceeding the primary rate
+# outright. The channel SATURATES: the step factors are 30.3, 13.3, 8.4 and 3.4
+# across the committed intervals, falling steadily as the escape path saturates
+# with optical depth. Extrapolating a saturating quantity geometrically
+# overstates it, and here by six times at the top rung the campaign proposes.
+#
+# SECOND, AND THE ONE WORTH REMEMBERING: it said "the record stops at 130 C".
+# It does not. `docs/plan/02:148` has carried "8.9 at 150 and 30.6 at 170"
+# since 2026-08-10. The values were grepped for only after being re-derived,
+# which is the standing rule read backwards. AND THE AGREEMENT IS NOT A
+# CROSS-CHECK: `run_campaign_conditions.py:84` imports this module and calls
+# this same `halo_reexcitation`, so the two surfaces are one computation shown
+# twice. What this extension actually buys is provenance, a committed row with
+# a status in `results/trapping_channels.csv` for temperatures that previously
+# lived only in prose citing another script -- not a second route.
+_HALO_PER_CENT = {70.0: 0.0, 90.0: 0.00265292, 110.0: 0.0802985,
+                  130.0: 1.06867, 150.0: 8.94394, 170.0: 30.5661}
+
+
+def _halo_fraction(t_c: float) -> float:
+    """The 5P halo's re-excitation as a FRACTION, interpolated between the
+    committed cells and refused beyond the last one.
+
+    Failure mode this prevents: a temperature cell above the top committed
+    rung silently carrying that rung's halo, or an extrapolation of a
+    quantity whose step factor is still changing. The refusal stays even
+    though the table now reaches the campaign's own top temperature, because
+    the reason for it was never the particular ceiling: it is that this
+    channel saturates, so no extrapolation of it is safe in either direction.
+    """
+    ts = sorted(_HALO_PER_CENT)
+    if t_c > ts[-1] + 1e-9:
+        raise ValueError(
+            f"no committed halo cell above {ts[-1]:g} C and this one is {t_c:g}. "
+            "results/trapping_channels.csv stops there. The channel saturates, "
+            "with step factors 30.3, 13.3, 8.4 and 3.4 across the committed "
+            "intervals, so extrapolating it is unsafe in both directions: the "
+            "geometric reading this file once carried overstated 170 C by six "
+            "times. Run the producer for this temperature or drop the cell.")
+    if t_c < ts[0]:
+        return 0.0
+    import numpy as _np
+    return float(_np.interp(t_c, ts, [_HALO_PER_CENT[t] for t in ts])) / 100.0
+
+
 def _trace(cfg: dict, power_w: float, order_idx: int, seed: int, noise: float = NOISE):
     w0 = cfg["w0_um"] * 1e-6
     kappa = stark_shift_S0_mhz(1.0, w0, rho=cfg["rho"])          # MHz per W at this waist and retro
@@ -220,6 +273,15 @@ def _trace(cfg: dict, power_w: float, order_idx: int, seed: int, noise: float = 
     transit = K.transit_fwhm_from_w0(w0, cfg["t_c"])
     powers = tuple(p * cfg["p_top"] / 0.225 for p in POWERS_W)
     positions, shares, tooth_of = _comb(cfg["f_mod"], cfg["two_beta"])
+    # THE TRAPPED-LIGHT HALO, threaded 2026-09-06 the way `rb5s6s/twin.py`
+    # threads it: the caller scales the shares, so the number keeps the
+    # provenance of the committed cell and this file reads no results/.
+    # It is NOT an attenuation. At an optical depth far above one the photon is
+    # re-emitted, and inside the driven volume the medium is inverted, so there
+    # is no reabsorption where the signal is made. What survives is a 5P halo
+    # that re-excites at a fraction of the primary two-photon rate.
+    halo = _halo_fraction(cfg["t_c"])
+    shares = {k: v * (1.0 + halo) for k, v in shares.items()}
     drift_total = cfg["drift_per_min"] * MIN_PER_TRACE * len(powers)
     nu, v, _ = build_world_trace(
         power_w, kappa, cfg["t_c"], order_idx, len(powers), np.random.default_rng(seed), LAYERS,

@@ -241,7 +241,13 @@ def main() -> int:
     print(f"  {'T':>4} {'tau':>9} {'1/g':>7} {'n5P halo':>11} "
           f"{'n5P beam':>11} {'halo/beam':>10} {'re-exc':>8} {'band':>16}")
     band = {}
-    for t_c in (70.0, 90.0, 110.0, 130.0):
+    # 150 and 170 C ADDED 2026-09-06 on the owner's instruction. The campaign's
+    # temperature lever runs to 170 C (docs/plan/05 item 7c), and the halo was
+    # computed only to 130, so the two rungs the lever actually proposes had no
+    # row. The channel grows steeply with density, so extrapolating the 130 C
+    # value was not an option: it saturates, and a linear reading of the four
+    # committed rows overstates 170 C by about a factor of six.
+    for t_c in (70.0, 90.0, 110.0, 130.0, 150.0, 170.0):
         tau = d1_optical_depth_per_cm(t_c, 85) * STANDOFF_CM
         n_halo, n_beam, pct = halo_reexcitation(t_c, STANDOFF_CM, f_ex, b12,
                                                 s12, v_beam)
@@ -272,7 +278,8 @@ def main() -> int:
     print("  amplitude-against-density comparisons, not the widths.")
     rows = [
         ("ir_branching", "5P1/2", b12, "", "",
-         "fraction of 6S decays through the 1324 nm leg", "DIAGNOSTIC"),
+         "fraction of 6S decays through the 1324 nm leg. THEORY-ONLY: no published measurement of this branching exists, checked twice "
+         "externally on 2026-09-06, so this is a calculated split and not a measured one", "DIAGNOSTIC"),
         ("ir_branching", "5P3/2", 1.0 - b12, "", "",
          "fraction of 6S decays through the 1367 nm leg", "DIAGNOSTIC"),
         ("line_data_closure", "sum_A_times_tau6S", closure, "", "",
@@ -298,7 +305,7 @@ def main() -> int:
         rows.append(("halo_reexcitation", f"T{int(t_c)}C", pct,
                      "", "geometry",
                      "per cent of the primary two-photon rate, at a 2 mm "
-                     f"standoff; err_lo and err_hi are the distances to the "
+                     f"standoff. err_lo and err_hi are the distances to the "
                      f"ends of the {STANDOFF_BAND_CM[0]*10:.0f} to "
                      f"{STANDOFF_BAND_CM[1]*10:.0f} mm standoff band, which is "
                      "a range over a geometric unknown and not a sigma",

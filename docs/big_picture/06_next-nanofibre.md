@@ -84,6 +84,40 @@ the beam, and it transfers to whatever line the programme drives next, which
 is the property that makes it worth more to a group than a number about
 rubidium.
 
+### What the cell arm gives the fibre arm, on one sweep
+
+The plan's lever table already carries the cell and the fibre on one scan and
+refuses it as a drift architecture, because the correlation between the laser
+and collisional widths is the same in both arms and differencing cancels
+nothing. That verdict is about breaking a degeneracy and it stands. **The same
+wiring buys something the record has not weighed: calibration transfer.**
+
+A sweep wide enough to hold all four hyperfine components gives the cell arm
+three quantities at once. The pair at 2318.537 MHz is fixed by the 85Rb
+hyperfine constants alone, so it is an absolute frequency ruler that needs no
+piezo calibration and no wavemeter. The co-propagating Doppler pedestal, about
+942 MHz wide at 130 C, is a thermometer of the atoms themselves, and the two
+isotopes' pedestals have a width ratio fixed by their masses at every
+temperature, which makes that thermometer self-checking. The ratio of the
+narrow line's area to the pedestal's measures the retro power ratio, which the
+analysis otherwise carries as a fixed assumption informed by no data.
+
+**The fibre arm inherits all three for nothing**, because it is the same sweep,
+the same laser and the same instant. None of the three can be produced by a
+guided measurement on its own: there is no second isotope pair to rule the axis
+with, and the trapped sample's velocity distribution is not the cell's. That is
+the argument for the shared sweep, and it is stronger than the drift argument
+the plan already refused.
+
+**Two things bound it, and both are stated here instead of being discovered on
+the bench.** The pedestal is roughly three parts in a thousand of the narrow line's
+height in the cell, and the guided arm has orders of magnitude fewer atoms, so
+the pedestal is almost certainly not measurable in the fibre arm itself. It is
+the cell arm's instrument, lent to the fibre. And if the modulator sits upstream
+of the beam split, the comb is common to both arms, so a setting that suits the
+moment channel in one arm is forced on the other. Either the arms take turns, or
+a second modulator goes in one of them.
+
 ### The guided-platform open items
 
 Listed here and not in [the plan's open-items chapter](../plan/12_open-apparatus-items.md),
@@ -98,6 +132,8 @@ on it.
 | **Rb adsorption against exposure time** | how long the fibre runs before its transmission degrades, which bounds the whole arm and is what the campaign costs the fibre itself | no forecast rests on it. `results/campaign_twin_forecast.csv` reports the integration time so the exposure is visible, but nothing converts exposure into degradation |
 | **the trap's azimuth around the fibre** | which field magnitude an atom sees, and so every guided light shift. The field varies by about a third between the polarisation axis and perpendicular to it | spanned by a committed pair in `results/guided_mode_tables.csv`, the azimuthally averaged `stark_fraction` beside the on-axis one. The tensor term vanishes for this transition, both states having $J=1/2$, but the vector term does not, and a guided mode is strongly elliptically polarised near the surface. So the committed pair is a lower bound on how much the azimuth matters |
 | **trap position and its thermal spread** | the intensity at the atom, and the atom-surface distance the surface term depends on | the distance-scan lever reaches a fractional [0.2895](../../results/onf_lever_ranking.csv "ref:onf_lever_ranking:distance_scan:sigma_lambda_frac") on the decay length at the 2025 lock, and under a hundredth at the photon floor. The spread itself is unmodelled and no forecast rests on it |
+| **the Doppler pedestal's detectability in the guided arm** | whether the shared-sweep thermometer can be read at the fibre as well as lent to it | no forecast rests on it. The cell arm supplies the temperature either way, and the guided pedestal would measure the trapped sample instead of the vapour, which is a different and more valuable quantity if it is reachable at all |
+| **whether the modulator is upstream of the beam split** | whether the comb state can differ between the cell and fibre arms in one sweep | no forecast rests on it. Every committed cell is single-arm. It decides only whether the two arms can hold different comb settings at once, or must take turns |
 
 ### The mode is now solved, and the assumption it replaces was wrong
 

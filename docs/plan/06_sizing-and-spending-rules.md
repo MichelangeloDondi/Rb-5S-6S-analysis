@@ -168,10 +168,11 @@ re-thermalizing per power point multiplies dead time for nothing.
 
 Strict on-off alternation halves science time for monitor information that
 saturates within a few brackets. With the matched-PM ruler an RF-on trace is
-no longer dead time, but tooth overlap still contaminates the moment
-observables, so skew and centered moments come from RF-off traces only, a
-rule the twin now measures ([chapter 4](04_intensity-and-light-shift.md),
-item 3) and no longer only argues.
+no longer dead time. **Tooth overlap contaminates the moment observables at
+the 2025 spacing and helps them at a wide one**, which is what the twin now
+measures ([chapter 4](04_intensity-and-light-shift.md), item 3): the skew
+channel reads high on a comb-free trace and recovers the coefficient at 25
+and 40 MHz. Take the moment traces on a wide comb, not with the RF off.
 Spend the first ~30–45 min of D1, while the oven settles, alternating on and
 off at one fixed condition. Compute the Allan deviation of tooth width and
 sweep rate against lag, set the bracket cadence where drift crosses the

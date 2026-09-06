@@ -112,8 +112,10 @@ what the spacing costs each channel at the tight waist
 the lower first-order tooth's tail cancels the ramp's third cumulant inside a
 6 MHz window and the centre fit, confined to just under half the spacing,
 reads the same leakage as a centre. From 25 MHz up the centre channel
-survives with its own background, and the moment channel's science trace is
-taken with the RF off at any spacing.
+survives with its own background, and **the moment channel wants the comb
+there too**: measured on the twin, it recovers the coefficient on the 25 and
+40 MHz spacings and reads high without one, since the comb lowers each
+tooth's saturation width while holding the shift.
 
 **Why the two spacings differ, stated because an earlier version of this
 section ran them together and halved every RF figure below.** The sidebands

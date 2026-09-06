@@ -65,8 +65,10 @@ What is worth carrying here is the delineation from the nearest prior art, a
 one-photon, fringe-resolved method giving a uniform distribution: the
 dependence on the signal exponent $n$ separates this channel from it. The
 asymmetry is measured through [the third cumulant](third-cumulant.md), a
-channel that opens only above about a megahertz of shift and on the RF-off
-science trace. The first-order pull of the centre against power, which the
+channel that opens only above about a megahertz of shift, and that the
+forecast finds accurate on a 25 or 40 MHz comb and biased high on the
+comb-free trace, because splitting the drive among teeth lowers each
+tooth's saturation width while leaving the shift alone. The first-order pull of the centre against power, which the
 repaired lock makes readable, is the standard channel, and the campaign
 forecast combines the two with their measured covariance. The standard
 channel gains a null test from the modulation depth: a phase modulation

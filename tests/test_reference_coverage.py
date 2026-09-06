@@ -125,7 +125,18 @@ _STRIP = re.compile(
     r"|\b[\w/.-]+\.(?:md|csv|py|png|jpg|jpeg|json|sh|txt|pdf|yml|toml)\b"
     r"|^\s{4,}\S[^\n]*$",
     re.S | re.M)
-_DECIMAL = re.compile(r"\b\d+\.\d+\b")
+_DECIMAL = re.compile(r"\b\d+\.\d+(?:[eE][+-]?\d+)?\b")
+"""A decimal in prose, INCLUDING scientific notation.
+
+THE EXPONENT FORM JOINED 2026-09-06, and its absence was a real hole. A
+word boundary does not exist between the `9` and the `e` of `2.9e7`, both
+being word characters, so the old pattern matched nothing at all in
+`2.9e7`, `8.1e6` or `3.5e8`. A check found `docs/plan/12` gaining two
+headline ceiling figures in that form while its unreferenced-decimal count
+did not move: the ratchet reported compliance because it could not see
+them. The docstring recorded a blind region and exponent notation was not
+in it, which is how the gap survived a reading of this file.
+"""
 
 
 def _tracked_markdown() -> list[str]:

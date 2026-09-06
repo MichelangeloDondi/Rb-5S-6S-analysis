@@ -449,6 +449,22 @@ repository can speak to do not look alike.
 | 5S–7S | 742.6 nm (α = −2667 a.u.), 790.2 nm (α = −410 a.u.) | 742.6 sits 1.6 nm from the 5P₃/₂–7S pole at 741.0 nm, an *excited*-state transition that a ground-state vapour does not absorb, but Δα is steep there and the crossing position is correspondingly sensitive. 790.2 carries the D-line problem above |
 | 5S–5D₅/₂ | 776.179(5) nm, measured | 0.2 nm from the 5P₃/₂–5D₅/₂ resonance, also an excited-state transition, and 1.9 nm from the 778.104 nm two-photon wavelength |
 
+**Why a crossing is worth locating and not only computing.** A zero crossing is
+measurable without an intensity calibration, which is the difficulty that
+dominates every direct polarizability measurement. Multiplicative systematics,
+the optical power calibration and the beam or trap geometry, rescale every
+measured slope by one common factor, so they cannot move the wavelength at
+which the slope passes through zero. The error budget collapses to the fit. That
+argument is established in trapped-ion and optical-lattice-clock work, and its
+closest neutral-rubidium realisation is the 5S-5D row of the table above, whose
+776.179(5) nm was found by exactly this procedure. So the technique needs
+adapting and not defending.
+
+**Two independent external literature searches on 2026-09-06 found no published
+magic wavelength for the 5S-6S pair**, in theory or in experiment, and none for
+any alkali nS to n-prime-S two-photon transition. That is a stronger statement
+than the search depth this repository could claim on its own.
+
 So the family runs from far-infrared and isolated at 6S, to in-band but pressed
 against steep excited-state resonances at 7S, to in-band and already measured at
 5D. What the ladder would map is not one number but where each crossing sits

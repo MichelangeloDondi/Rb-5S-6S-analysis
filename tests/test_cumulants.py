@@ -143,3 +143,53 @@ def test_a_tilted_pedestal_is_a_fake_third_moment_that_the_linear_baseline_remov
     b = linear_baseline(GRID, y, (-28.0, -12.0), (12.0, 28.0))
     assert np.allclose(b, tilt, atol=1e-6)
 
+
+
+def test_a_window_wider_than_the_trace_is_refused_not_clamped():
+    """FAILS IF the estimator fabricates a cumulant past the end of the trace.
+
+    `np.interp` holds the end value outside the grid, so an over-wide window is
+    filled with a constant equal to the last sample: a rectangular pedestal
+    whose third moment grows without bound. Before this guard the estimator
+    returned that number with `converged` set to one. Found by a board's
+    prior-commit seat, 2026-09-06, on code shipped in bf07e359.
+
+    NEGATIVE case: windows past the edge must be NaN and must say why.
+    """
+    import numpy as np
+    from rb5s6s.cumulants import windowed_cumulants
+    from rb5s6s.lineshape import model_profile
+    from rb5s6s import constants as K
+
+    nu = np.linspace(-60.0, 60.0, 32001)
+    y = model_profile(nu, gamma_coll=2.0, sigma_laser_fwhm=2.0,
+                      transit_fwhm=0.93, s0=5.0,
+                      gamma_nat_mhz=K.GAMMA_NAT_HZ / 1e6)
+    for half in (62.0, 80.0, 120.0):
+        k, info = windowed_cumulants(nu, y, half_width=half)
+        assert np.isnan(k[3]), f"half_width {half} past the grid returned a number"
+        assert info["in_span"] == 0.0
+        assert info["converged"] == 0.0
+
+
+def test_windows_inside_the_trace_are_untouched_by_that_guard():
+    """POSITIVE and TOLERANCE case for the guard above.
+
+    Every window a committed producer uses sits well inside its grid, and the
+    guard must not disturb them: it adds no arithmetic, so these must remain
+    finite, converged, and flagged in-span. A guard that refused here would be
+    worse than the defect it closes.
+    """
+    import numpy as np
+    from rb5s6s.cumulants import windowed_cumulants
+    from rb5s6s.lineshape import model_profile
+    from rb5s6s import constants as K
+
+    nu = np.linspace(-40.0, 40.0, 32001)
+    y = model_profile(nu, gamma_coll=2.0, sigma_laser_fwhm=2.0,
+                      transit_fwhm=0.93, s0=2.0,
+                      gamma_nat_mhz=K.GAMMA_NAT_HZ / 1e6)
+    for half in (3.25, 4.0, 6.0, 8.0, 12.0, 16.0):
+        k, info = windowed_cumulants(nu, y, half_width=half)
+        assert np.isfinite(k[3]), f"half_width {half} inside the grid was refused"
+        assert info["in_span"] == 1.0

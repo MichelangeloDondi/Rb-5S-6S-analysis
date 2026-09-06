@@ -401,10 +401,48 @@ def scannable() -> list[Path]:
         # chapters are records, and the now-cell exemption is exactly how a
         # record is graded without reporting the retired values it exists to
         # carry.
-        for pat in ("*.md", "history/*.md", "checks/*.py"):
-            out += [q for q in sorted(priv.glob(pat))
-                    if q.is_file() and not _declares_record(q)]
+        # REPAIRED BY FAMILY 2026-09-06, the THIRD time a member was found
+        # missing from this population and the second repaired by widening it
+        # instead of naming the file last found absent. A check of the two
+        # preceding commits found the retired 5.0452 still standing in
+        # `private/thesis/chapters/Chapter_Rb5S6S/body.tex`: the patterns below
+        # listed `*.md`, `history/*.md` and `checks/*.py`, and `.tex` appeared
+        # in none of them, so the LaTeX chapter -- the same chapter the wave
+        # had just swept in its markdown form -- was never in the population at
+        # all. Listing a fourth pattern would have set up the fourth instance.
+        # So the population is now DERIVED: walk `private/`, take every
+        # text-bearing extension, and exclude only the trees that exist to
+        # quote retired values or to hold scratch.
+        _skip = _unscanned_dirs(priv)
+        for q in sorted(priv.rglob("*")):
+            if not q.is_file() or q.suffix not in _SCANNED_SUFFIXES:
+                continue
+            rel_parts = q.relative_to(priv).parts
+            if rel_parts and rel_parts[0] in _skip:
+                continue
+            if _declares_record(q):
+                continue
+            out.append(q)
     return out
+
+
+_SCANNED_SUFFIXES = {".md", ".tex", ".py"}
+"""Extensions that can carry a quoted value. `.tex` joined 2026-09-06."""
+
+_UNSCANNED_MARK = ".unscanned"
+"""A directory under `private/` is skipped when it contains this marker file.
+
+DECLARED BY THE DIRECTORY, NOT GUESSED FROM ITS NAME, which is the same
+principle `_declares_record` already applies to files and for the same reason:
+a hardcoded list of names goes stale the moment a directory is added or
+renamed, and it silently narrows the population without anything failing. The
+marker is a file, so a new scratch directory declares itself and a governed one
+cannot be excluded by accident of naming."""
+
+
+def _unscanned_dirs(priv) -> set:
+    """The directories that have declared themselves outside the scan."""
+    return {q.parent.name for q in priv.glob("*/" + _UNSCANNED_MARK)}
 
 
 _RECORD_MARK = "<!-- kind: record -->"

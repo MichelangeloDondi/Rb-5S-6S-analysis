@@ -113,7 +113,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 96,
+    "line": 130,
     "writes": "0.433"
    }
   ],
@@ -166,7 +166,7 @@
    },
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 1285,
+    "line": 1343,
     "writes": "7.3"
    }
   ],
@@ -178,7 +178,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 1285,
+    "line": 1343,
     "writes": "7.2"
    }
   ],
@@ -190,7 +190,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 1285,
+    "line": 1343,
     "writes": "2.1"
    }
   ],
@@ -207,7 +207,7 @@
    },
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 1285,
+    "line": 1343,
     "writes": "3.48"
    }
   ],
@@ -224,7 +224,7 @@
    },
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 1285,
+    "line": 1343,
     "writes": "0.48"
    }
   ],
@@ -236,7 +236,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 1285,
+    "line": 1343,
     "writes": "0.025"
    }
   ],
@@ -248,7 +248,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 1285,
+    "line": 1343,
     "writes": "0.065"
    }
   ],
@@ -605,7 +605,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 255,
+    "line": 291,
     "writes": "0.9640"
    },
    {
@@ -622,7 +622,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 257,
+    "line": 293,
     "writes": "0.4040"
    },
    {
@@ -639,7 +639,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 255,
+    "line": 291,
     "writes": "0.9580"
    },
    {
@@ -656,7 +656,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 257,
+    "line": 293,
     "writes": "0.3760"
    },
    {
@@ -798,7 +798,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 114,
+    "line": 150,
     "writes": "984"
    }
   ],
@@ -810,7 +810,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 114,
+    "line": 150,
     "writes": "1.01283"
    }
   ],
@@ -822,7 +822,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 115,
+    "line": 151,
     "writes": "802"
    }
   ],
@@ -834,7 +834,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 115,
+    "line": 151,
     "writes": "1.01927"
    }
   ],
@@ -846,7 +846,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 123,
+    "line": 159,
     "writes": "0.231"
    }
   ],
@@ -858,7 +858,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 116,
+    "line": 152,
     "writes": "624"
    }
   ],
@@ -870,7 +870,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 126,
+    "line": 162,
     "writes": "0.615"
    },
    {
@@ -887,7 +887,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 127,
+    "line": 163,
     "writes": "0.489"
    },
    {
@@ -904,7 +904,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 116,
+    "line": 152,
     "writes": "1.03164"
    },
    {
@@ -1398,7 +1398,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 100,
+    "line": 134,
     "writes": "0.2895"
    },
    {
@@ -1439,7 +1439,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 147,
+    "line": 183,
     "writes": "30.73"
    },
    {
@@ -1456,7 +1456,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 149,
+    "line": 185,
     "writes": "0.67"
    },
    {
@@ -1909,12 +1909,12 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 526,
+    "line": 584,
     "writes": "2.0"
    },
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 551,
+    "line": 609,
     "writes": "2.0"
    }
   ],
@@ -1926,7 +1926,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 515,
+    "line": 573,
     "writes": "0.85"
    }
   ],
@@ -1938,7 +1938,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 515,
+    "line": 573,
     "writes": "0.11"
    }
   ],
@@ -1950,7 +1950,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 532,
+    "line": 590,
     "writes": "0.102"
    }
   ],
@@ -1962,7 +1962,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 532,
+    "line": 590,
     "writes": "0.014"
    }
   ],
@@ -1974,7 +1974,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 531,
+    "line": 589,
     "writes": "0.118"
    }
   ],
@@ -1986,7 +1986,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 531,
+    "line": 589,
     "writes": "0.017"
    }
   ],
@@ -1998,12 +1998,12 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 530,
+    "line": 588,
     "writes": "0.428"
    },
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 557,
+    "line": 615,
     "writes": "0.428"
    }
   ],
@@ -2015,7 +2015,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 530,
+    "line": 588,
     "writes": "0.032"
    }
   ],
@@ -2027,7 +2027,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 533,
+    "line": 591,
     "writes": "0.0485"
    }
   ],
@@ -2039,7 +2039,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 533,
+    "line": 591,
     "writes": "0.0068"
    }
   ],
@@ -2051,7 +2051,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 534,
+    "line": 592,
     "writes": "0.0285"
    }
   ],
@@ -2063,7 +2063,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 534,
+    "line": 592,
     "writes": "0.0040"
    }
   ],
@@ -2075,12 +2075,12 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 532,
+    "line": 590,
     "writes": "0.223"
    },
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 1492,
+    "line": 1550,
     "writes": "0.223"
    }
   ],
@@ -2092,7 +2092,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 532,
+    "line": 590,
     "writes": "0.012"
    }
   ],
@@ -2104,12 +2104,12 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 531,
+    "line": 589,
     "writes": "0.253"
    },
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 1491,
+    "line": 1549,
     "writes": "0.253"
    }
   ],
@@ -2121,7 +2121,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 531,
+    "line": 589,
     "writes": "0.014"
    }
   ],
@@ -2133,17 +2133,17 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 530,
+    "line": 588,
     "writes": "0.653"
    },
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 604,
+    "line": 662,
     "writes": "0.653"
    },
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 1490,
+    "line": 1548,
     "writes": "0.653"
    }
   ],
@@ -2155,7 +2155,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 530,
+    "line": 588,
     "writes": "0.049"
    }
   ],
@@ -2167,17 +2167,17 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 533,
+    "line": 591,
     "writes": "0.1140"
    },
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 605,
+    "line": 663,
     "writes": "0.1140"
    },
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 1493,
+    "line": 1551,
     "writes": "0.1140"
    }
   ],
@@ -2189,7 +2189,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 533,
+    "line": 591,
     "writes": "0.0063"
    }
   ],
@@ -2201,7 +2201,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 534,
+    "line": 592,
     "writes": "0.0688"
    }
   ],
@@ -2213,7 +2213,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 534,
+    "line": 592,
     "writes": "0.0038"
    }
   ],
@@ -2225,7 +2225,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 538,
+    "line": 596,
     "writes": "0.2750"
    }
   ],
@@ -2237,7 +2237,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 538,
+    "line": 596,
     "writes": "0.0099"
    }
   ],
@@ -2249,7 +2249,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 537,
+    "line": 595,
     "writes": "0.7250"
    }
   ],
@@ -2261,7 +2261,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 537,
+    "line": 595,
     "writes": "0.0099"
    }
   ],
@@ -2434,11 +2434,11 @@
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
     "line": 79,
-    "writes": "26.091"
+    "writes": "26.0903"
    }
   ],
   "source_file": "results/three_channel_forecast.csv",
-  "source_value": "26.0911"
+  "source_value": "26.0903"
  },
  "three_channel_forecast:base::kappa_true": {
   "producer": "run_three_channel_forecast.py",
@@ -2458,59 +2458,59 @@
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
     "line": 79,
-    "writes": "0.1921"
+    "writes": "0.1908"
    }
   ],
   "source_file": "results/three_channel_forecast.csv",
-  "source_value": "0.1921"
+  "source_value": "0.1908"
  },
  "three_channel_forecast:depth_ladder_25MHz::kappa_pull": {
   "producer": "run_three_channel_forecast.py",
   "quoting_sites": [
    {
     "file": "docs/plan/04_intensity-and-light-shift.md",
-    "line": 238,
-    "writes": "12.5109"
+    "line": 239,
+    "writes": "12.5091"
    }
   ],
   "source_file": "results/three_channel_forecast.csv",
-  "source_value": "12.5109"
+  "source_value": "12.5091"
  },
  "three_channel_forecast:depth_ladder_25MHz::sd_pull": {
   "producer": "run_three_channel_forecast.py",
   "quoting_sites": [
    {
     "file": "docs/plan/04_intensity-and-light-shift.md",
-    "line": 240,
-    "writes": "51.2719"
+    "line": 241,
+    "writes": "51.2683"
    }
   ],
   "source_file": "results/three_channel_forecast.csv",
-  "source_value": "51.2719"
+  "source_value": "51.2683"
  },
  "three_channel_forecast:depth_ladder_40MHz::kappa_pull": {
   "producer": "run_three_channel_forecast.py",
   "quoting_sites": [
    {
     "file": "docs/plan/04_intensity-and-light-shift.md",
-    "line": 233,
-    "writes": "-0.0084"
+    "line": 234,
+    "writes": "-0.0085"
    }
   ],
   "source_file": "results/three_channel_forecast.csv",
-  "source_value": "-0.0084"
+  "source_value": "-0.0085"
  },
  "three_channel_forecast:depth_ladder_40MHz::sd_pull": {
   "producer": "run_three_channel_forecast.py",
   "quoting_sites": [
    {
     "file": "docs/plan/04_intensity-and-light-shift.md",
-    "line": 235,
-    "writes": "0.0262"
+    "line": 236,
+    "writes": "0.0261"
    }
   ],
   "source_file": "results/three_channel_forecast.csv",
-  "source_value": "0.0262"
+  "source_value": "0.0261"
  },
  "three_channel_forecast:eom_comb_25MHz::kappa_skew": {
   "producer": "run_three_channel_forecast.py",
@@ -2530,11 +2530,11 @@
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
     "line": 93,
-    "writes": "2.833"
+    "writes": "2.8227"
    }
   ],
   "source_file": "results/three_channel_forecast.csv",
-  "source_value": "2.8333"
+  "source_value": "2.8227"
  },
  "three_channel_forecast:eom_comb_40MHz::kappa_skew": {
   "producer": "run_three_channel_forecast.py",
@@ -2542,11 +2542,11 @@
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
     "line": 90,
-    "writes": "25.612"
+    "writes": "25.6158"
    }
   ],
   "source_file": "results/three_channel_forecast.csv",
-  "source_value": "25.6122"
+  "source_value": "25.6158"
  },
  "three_channel_forecast:eom_comb_40MHz::sd_skew": {
   "producer": "run_three_channel_forecast.py",
@@ -2554,11 +2554,11 @@
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
     "line": 91,
-    "writes": "2.364"
+    "writes": "2.3599"
    }
   ],
   "source_file": "results/three_channel_forecast.csv",
-  "source_value": "2.3641"
+  "source_value": "2.3599"
  },
  "three_channel_forecast:waist_24um::kappa_pull": {
   "producer": "run_three_channel_forecast.py",
@@ -2570,7 +2570,7 @@
    }
   ],
   "source_file": "results/three_channel_forecast.csv",
-  "source_value": "11.5231"
+  "source_value": "11.5229"
  },
  "three_channel_forecast:waist_24um::kappa_true": {
   "producer": "run_three_channel_forecast.py",
@@ -2590,11 +2590,11 @@
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
     "line": 78,
-    "writes": "0.1253"
+    "writes": "0.1249"
    }
   ],
   "source_file": "results/three_channel_forecast.csv",
-  "source_value": "0.1253"
+  "source_value": "0.1249"
  },
  "three_channel_forecast:waist_40um::kappa_pull": {
   "producer": "run_three_channel_forecast.py",
@@ -2602,11 +2602,11 @@
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
     "line": 77,
-    "writes": "4.148"
+    "writes": "4.1491"
    }
   ],
   "source_file": "results/three_channel_forecast.csv",
-  "source_value": "4.1480"
+  "source_value": "4.1491"
  },
  "three_channel_forecast:waist_40um::kappa_true": {
   "producer": "run_three_channel_forecast.py",
@@ -2626,11 +2626,11 @@
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
     "line": 77,
-    "writes": "0.1114"
+    "writes": "0.1113"
    }
   ],
   "source_file": "results/three_channel_forecast.csv",
-  "source_value": "0.1114"
+  "source_value": "0.1113"
  },
  "three_channel_forecast:waist_64um::kappa_pull": {
   "producer": "run_three_channel_forecast.py",
@@ -2638,11 +2638,11 @@
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
     "line": 76,
-    "writes": "1.627"
+    "writes": "1.6259"
    }
   ],
   "source_file": "results/three_channel_forecast.csv",
-  "source_value": "1.6265"
+  "source_value": "1.6259"
  },
  "three_channel_forecast:waist_64um::kappa_true": {
   "producer": "run_three_channel_forecast.py",
@@ -2662,11 +2662,11 @@
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
     "line": 76,
-    "writes": "0.1041"
+    "writes": "0.1035"
    }
   ],
   "source_file": "results/three_channel_forecast.csv",
-  "source_value": "0.1041"
+  "source_value": "0.1035"
  },
  "transit_additivity:spanned:added_fraction_170uK_band": {
   "producer": "run_transit_additivity.py",
