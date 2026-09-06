@@ -161,3 +161,102 @@ def test_the_default_generator_path_is_unchanged_by_the_new_switch():
 
     assert np.array_equal(trace(), trace(resolve_shift=False))
     assert not np.array_equal(trace(), trace(resolve_shift=True))
+
+
+def test_the_rung_status_reads_the_sign_against_the_true_sign_and_never_against_zero():
+    """The defect the deep-producer board found (two seats): the first status
+    rule tagged every settled fifth-order rung NULL because it keyed on the
+    fraction NEGATIVE while the fifth cumulant's true sign is negative. The
+    rule now keys on the fraction with the WRONG sign, published to three
+    decimals, and is re-derived from the file's own columns below."""
+    mod = _load()
+    assert mod.TRUE_SIGN == {3: 1.0, 5: -1.0, 7: 1.0}
+    assert mod.rung_status(0.004) == "DIAGNOSTIC"          # a settled sign
+    assert mod.rung_status(0.349) == "DIAGNOSTIC"
+    assert mod.rung_status(0.35) == "NULL"                 # the bar itself is not admitted
+    assert mod.rung_status(0.5) == "NULL"                  # a coin flip
+    assert mod.rung_status(0.996) == "NULL"                # settled on the WRONG side is not a measurement
+    assert mod.rung_status(float("nan")) == "NULL"
+    # the published value decides, not the unrounded one: 0.3494 rounds to 0.349
+    assert mod.rung_status(0.3494) == "DIAGNOSTIC" and mod.rung_status(0.3496) == "NULL"
+
+
+def test_the_true_signs_are_the_ramps_own():
+    """Failure: the sign table drifts from the physics it encodes. The ramp's
+    density 2|s|/S0^2 on [-S0, 0] gives kappa_3 positive, kappa_5 negative,
+    kappa_7 positive (docs/methods/03)."""
+    from rb5s6s.cumulants import cumulants_from_central_moments
+    from rb5s6s._compat import trapezoid          # the seam, never the numpy name
+    mod = _load()
+    x = np.linspace(0.0, 1.0, 200001); f = 2.0 * x; f /= trapezoid(f, x); s = -x
+    m1 = trapezoid(s * f, x)
+    mu = [trapezoid((s - m1) ** k * f, x) for k in range(1, 8)]
+    kap = cumulants_from_central_moments(mu)
+    for order, sign in mod.TRUE_SIGN.items():
+        assert np.sign(kap[order - 1]) == sign, (order, kap[order - 1])
+
+
+def test_every_committed_rung_status_is_re_derivable_from_its_own_columns():
+    """The prevention two seats asked for: a producer-written status that
+    nothing re-derives is a claim nobody grades. For both committed per-rung
+    files, the status must equal the rule applied to the published
+    frac_wrong_sign, and a settled fifth-order rung must not read NULL."""
+    import csv
+    mod = _load()
+    for name in ("moment_power_map_rungs.csv", "moment_power_map_deep_rungs.csv"):
+        path = ROOT / "results" / name
+        # NOT `continue`: a guard whose subject is absent passes on nothing,
+        # which is the commonest class in this record and was named inside
+        # this very test by a round-two seat.
+        assert path.exists(), f"{path.name} is missing, so this guard would grade nothing"
+        rows = list(csv.DictReader(open(path)))
+        assert rows and "frac_wrong_sign" in rows[0], name
+        bad = [r for r in rows if mod.rung_status(float(r["frac_wrong_sign"])) != r["status"]]
+        assert not bad, (name, bad[:3])
+        settled5 = [r for r in rows if r["order"] == "5" and float(r["frac_wrong_sign"]) < 0.05]
+        assert all(r["status"] == "DIAGNOSTIC" for r in settled5), name
+
+
+def test_the_deep_wrapper_is_guarded_and_sets_its_trace_count():
+    """Failure: importing the wrapper launches a ninety-minute grid, or an
+    inherited environment silently changes the file it writes."""
+    src = (ROOT / "scripts" / "run_moment_power_map_deep.py").read_text()
+    assert 'if __name__ == "__main__":' in src
+    assert 'os.environ["RB5S6S_MPM_TRACES"] = "40000"' in src
+    assert "os.environ.setdefault" not in src
+
+
+def test_the_deep_grid_starts_at_the_2025_rung_and_has_twenty_four_cells(monkeypatch):
+    """Failure: the deep arm drifts while only the shallow arm is graded (a
+    three-point plant passed against the old suite)."""
+    monkeypatch.setenv("RB5S6S_MPM_DEEP", "1")
+    spec = importlib.util.spec_from_file_location("_mpm_deep", SCRIPT)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    assert mod.S0_LADDER[0] == 0.364 and len(mod.S0_LADDER) == 5
+    cells = mod._grid()
+    assert len(cells) == 24
+    assert {c[1] for c in cells} == {0.004} and {c[4] for c in cells} == {True}
+    assert {c[2][0] for c in cells} == {"rtm3004"}
+
+
+def test_the_rung_notes_typed_threshold_still_matches_the_constant_that_governs_it():
+    """The note in every rung row types 0.35 and two sigma distances.
+
+    Nothing computed them, so moving `WRONG_SIGN_MAX` or `N_TRACES` would leave
+    thousands of published cells asserting a retired bar. Computing the note
+    instead would change every row and cost a regeneration of both maps for a
+    sentence, so the note stays typed and this guard ties it to the constants:
+    it fails the moment they diverge, and the fix is the regeneration the
+    change would need anyway.
+    """
+    import math
+    import re
+    src = SCRIPT.read_text(encoding="utf-8")
+    mod = _load()
+    m = re.search(r"frac_sign_sign is below|frac_wrong_sign is below ([0-9.]+)", src)
+    assert m and float(m.group(1)) == mod.WRONG_SIGN_MAX, (m and m.group(1), mod.WRONG_SIGN_MAX)
+    for n, typed in ((2000, 13), (40000, 60)):
+        want = (0.5 - mod.WRONG_SIGN_MAX) / (0.5 / math.sqrt(n))
+        assert round(want) == typed, (n, want, typed)
+    assert mod.N_TRACES == 2000, "the shallow arm's own trace count is the first figure the note names"

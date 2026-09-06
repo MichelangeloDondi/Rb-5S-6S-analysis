@@ -164,10 +164,15 @@ EXPENSIVE = {
     # the grid was launched rather than guessed. Deterministic: every task is
     # seeded from its own cell coordinates and the cells are collected in
     # order, planted one worker against eight (`--plant`). The trace count is
-    # capped by re-runnability, not by ambition: twenty thousand traces would
-    # make the archive's own rung measurable and put this producer at five
-    # hours, and a freshness entry nobody can afford to re-run is a dead check.
-    "run_moment_power_map": ["moment_power_map.csv"],
+    # capped by re-runnability, not by ambition: the deep configuration
+    # measured that forty thousand traces leave the archive's own rung a
+    # per-trace coin flip, so no affordable count makes it one here, and a
+    # freshness entry nobody can afford to re-run is a dead check.
+    "run_moment_power_map": ["moment_power_map.csv", "moment_power_map_rungs.csv"],
+    # the deep configuration: 24 cells at forty thousand traces from the
+    # archive's rung up, about ninety minutes on six workers, measured on
+    # 2026-09-05; its wrapper sets the environment the map reads
+    "run_moment_power_map_deep": ["moment_power_map_deep.csv", "moment_power_map_deep_rungs.csv"],
     # 2000 multi-condition fits at ~1.05 s each, about five minutes on eight
     # lanes. Deterministic despite being Monte-Carlo: every trial's seed is its
     # index, so the CSV reproduces exactly and IS checkable rather than merely
@@ -691,6 +696,12 @@ def verify(producers: dict) -> list[str]:
     return problems
 
 
+# EXPENSIVE producers that read no raw trace: `--all` covers them on a checkout
+# without data_raw/, which is every public clone. Membership is declared per
+# producer, never inferred; the others in EXPENSIVE are audited one by one.
+SYNTHETIC_ONLY = {"run_moment_power_map", "run_moment_power_map_deep"}
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--all", action="store_true",
@@ -699,10 +710,13 @@ def main() -> int:
 
     producers = dict(CHEAP)
     if args.all:
-        if not (ROOT / "data_raw" / "p_sweep").is_dir():
-            print("--all needs the raw traces, which this checkout does not have")
-            return 2
-        producers.update(EXPENSIVE)
+        if (ROOT / "data_raw" / "p_sweep").is_dir():
+            producers.update(EXPENSIVE)
+        else:
+            synthetic = {k: v for k, v in EXPENSIVE.items() if k in SYNTHETIC_ONLY}
+            print("--all without the raw traces covers only the producers declared "
+                  f"synthetic-only: {', '.join(sorted(synthetic))}")
+            producers.update(synthetic)
 
     problems = verify(producers)
     n = sum(len(v) for v in producers.values())

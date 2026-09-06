@@ -1317,6 +1317,18 @@ of 2.2 to 3.0, where the width contribution still joins the fit at 0.4 to
 other way, $2\beta$ near 1.0 to 1.3, keeping 0.65 of a science trace's
 widths while still carrying its own ladder. Two depths, one joint fit.
 
+**And a third purpose, which is physics and not statistics.** The depth is
+the one knob that changes the excitation rate while leaving the intensity
+alone, so a ladder in depth at one power holds the light shift fixed and
+moves everything that rides on the rate. That makes the fitted centre
+against depth a null test of the light shift, and the summed tooth area
+against depth a measurement of the pumping depletion with the shift held
+still. The derivation is in
+[the ramp chapter](../methods/03_the_ac_stark_ramp.md) and the block that
+runs it is [chapter 4](04_intensity-and-light-shift.md), item 3b. It wants
+a spacing where the standard channel survives the tails, so it rides the
+wider comb of the same menu and not the 2025 spacing.
+
 **The teeth also clean the amplitude channel, which may be worth more than
 the widths.** Within one RF-on trace every tooth and every line shares one
 detector gain. The tooth pattern is RF-predicted, so intra-trace deviations

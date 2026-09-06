@@ -106,7 +106,14 @@ the crystal temperature is touched, since beta drifts with it.
 
 The 2025 drive was 12.5 MHz. The teeth it produces sit 12.5 MHz apart on the
 transition axis and 6.25 MHz apart on the laser axis, against a line 5.4 MHz
-wide, which is the 2.3 linewidths this section is about.
+wide, which is the 2.3 linewidths this section is about. The twin measures
+what the spacing costs each channel at the tight waist
+([chapter 4](04_intensity-and-light-shift.md), item 3): at the 2025 spacing
+the lower first-order tooth's tail cancels the ramp's third cumulant inside a
+6 MHz window and the centre fit, confined to just under half the spacing,
+reads the same leakage as a centre. From 25 MHz up the centre channel
+survives with its own background, and the moment channel's science trace is
+taken with the RF off at any spacing.
 
 **Why the two spacings differ, stated because an earlier version of this
 section ran them together and halved every RF figure below.** The sidebands

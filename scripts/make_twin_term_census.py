@@ -28,6 +28,22 @@ sys.path.insert(0, str(ROOT))
 from rb5s6s import blackbody, cascade, detection, fibre, forecast, stark  # noqa: E402
 
 
+def _per_tooth_depletion() -> bool:
+    """Is a comb tooth depleted at its OWN rate, read from the builder's source?
+
+    INSPECTED, never recalled, which is this file's whole contract. A plant on
+    a scratch copy removed the per-tooth rate and this returns False, where the
+    hand-typed clause it replaces came out byte-identical with the feature
+    removed.
+    """
+    import inspect
+
+    from rb5s6s import forecast
+    src = inspect.getsource(forecast.build_world_trace)
+    return ("tooth_of" in inspect.signature(forecast.build_world_trace).parameters
+            and "cycles_at_max * p_rel * rate" in src)
+
+
 def _params(fn) -> set:
     return set(inspect.signature(fn).parameters)
 
@@ -88,7 +104,9 @@ def main() -> int:
         ("cascade_depletion", yes("cascade" in world), yes("cascade" in ex),
          "cascade.py" if have["cascade"] else "MISSING",
          "stated: deliberately absent (same T1 clause as saturation)",
-         "inspected: cascade layer in build_world_trace"),
+         "inspected: cascade layer in build_world_trace"
+         + (", and a tooth of an EOM comb is depleted at its own share of "
+            "the line's rate" if _per_tooth_depletion() else "")),
         # forecast_path is measured on synthetic_traces's OWN signature; the
         # first form read the world builder's layer set here, which mislabelled
         # the column and licensed a wiki sentence

@@ -36,6 +36,7 @@ fails to diverge is not a channel.
 from __future__ import annotations
 
 import csv
+import hashlib
 import math
 import os
 import sys
@@ -51,11 +52,13 @@ sys.path.insert(0, str(ROOT))
 
 from rb5s6s import config as C                                    # noqa: E402
 from rb5s6s.forecast import build_world_trace                      # noqa: E402
-from rb5s6s._compat import trapezoid as tz                        # noqa: E402
+from rb5s6s.cumulants import windowed_cumulants                     # noqa: E402
+from rb5s6s.qc import median_standard_error                        # noqa: E402
 
-OUT = C.RESULTS_DIR / "moment_power_map.csv"
+OUT = C.RESULTS_DIR / ("moment_power_map_deep.csv" if os.environ.get("RB5S6S_MPM_DEEP")
+                       else "moment_power_map.csv")
 
-# ---- the grid, per the plan's section 4e ---------------------------------
+# ---- the grid, the full factorial the study asked for ---------------------
 GAMMA_L = (0.0, 0.1, 0.3, 0.45)      # 0.45 tops kernel_k3.csv's measured range
 NOISE_LEVEL = (0.002, 0.004, 0.012)  # the archive's level and a rung either side
 # THE FIFTH AXIS, and it is the one this producer found rather than planned.
@@ -97,7 +100,12 @@ SCOPES = (("lecroy_ws3104z", "raw", 8.0),
 # while the shot-like sigma does, so the three depths span that contrast on
 # the production path instead of beside it.
 WINDOW = (3.25, 4.0, 6.0, 8.0, 12.0, 16.0)   # 3.25 is the measured optimum
-S0_LADDER = (0.18, 0.364, 0.73, 1.0, 2.0)    # archive 0.364, campaign 1.0
+S0_LADDER = ((0.364, 0.5, 0.73, 1.0, 2.0) if os.environ.get("RB5S6S_MPM_DEEP")
+             else (0.18, 0.364, 0.73, 1.0, 2.0))    # archive 0.364, campaign 1.0
+# THE DEEP LADDER STARTS AT THE ARCHIVE. The 0.18 rung's signal-to-scatter was
+# 0.05 at four thousand traces, so no affordable budget makes it a
+# measurement, and the deep run answers what the 2025 shift itself can carry.
+# A rung at 0.5 brackets the boundary between the archive and the campaign.
 ORDERS = (3, 5, 7)
 
 GAMMA_COLL, SIGMA_LASER, TRANSIT = 0.55, 1.6, 0.9575
@@ -117,52 +125,48 @@ GAMMA_COLL, SIGMA_LASER, TRANSIT = 0.55, 1.6, 0.9575
 # ran at the full size it thought it had reduced. Anything a worker needs
 # travels in the task or the environment, never on the parent's module.
 N_TRACES = int(os.environ.get("RB5S6S_MPM_TRACES", "2000"))
-M_WINDOW = 4001
 FINE = np.linspace(-40.0, 40.0, 32001)
-PASSES = 20
+# THE TRUE SIGN OF EACH ORDER, from the ramp's own cumulants (docs/methods/03):
+# kappa_3 = +S0^3/135, kappa_5 = -S0^5/567, kappa_7 positive again. A statistic
+# built on the sign of a windowed cumulant is read against these, never
+# against zero: the first form of the per-rung status keyed on the fraction
+# NEGATIVE for every order and tagged every settled fifth-order rung NULL.
+TRUE_SIGN = {3: 1.0, 5: -1.0, 7: 1.0}
+# The rung-admission bar, and the null it is read against: under a coin flip
+# the fraction's standard deviation is 0.5/sqrt(n), 0.011 at two thousand
+# traces and 0.0025 at forty thousand, so 0.35 sits 13 and 60 standard
+# deviations below one half. It is a settled-sign bar, not a significance bar.
+WRONG_SIGN_MAX = 0.35
 
 
-def _central(g, yy, m1, n):
-    return float(tz((g - m1) ** n * yy, g))
+def windowed_orders(y, w, grid, orders=ORDERS):
+    """Every order from ONE centring through the package estimator
+    (`rb5s6s.cumulants.windowed_cumulants`): the window recentred until it
+    stops moving, the pedestal removed from the trace's own far wings, the
+    window started at the line's position rather than the trace's maximum.
+    An unconverged fixed point returns NaN for every order. The copy this
+    replaced recentred a fixed twenty times with the trace clipped at zero,
+    which converged at this producer's bright fixed power on the wide windows
+    and not on the narrow ones (the top rung at a 3.25 MHz half-window moved by
+    two of its own standard errors between twenty and eighty passes)."""
+    v, info = windowed_cumulants(grid, y, w, orders, centre0=0.0)
+    if not info["converged"]:
+        return {o: float("nan") for o in orders}
+    return v
 
 
-def selfcentred_cumulant(y, w, order, *, grid=None, m_pts=M_WINDOW, passes=PASSES):
-    """Windowed cumulant of the given odd order about the self-centre.
+def selfcentred_cumulant(y, w, order, *, grid=None):
+    """One order, the form the tests call."""
+    return windowed_orders(y, w, FINE if grid is None else grid, (order,))[order]
 
-    The window is RESAMPLED onto its own uniform grid rather than masked on the
-    ambient one: a mask snaps both edges to grid points, and for a small
-    windowed moment that edge noise swamped the physics badly enough to flip a
-    committed sign. Twenty fixed-point passes, because four left an earlier
-    row wrong by a factor of two.
-    """
-    amb = FINE if grid is None else grid
-    c = 0.0
-    for _ in range(passes):
-        g = np.linspace(c - w, c + w, m_pts)
-        yy = np.clip(np.interp(g, amb, y), 0, None)
-        s = tz(yy, g)
-        if s <= 0:
-            return float("nan")
-        yy = yy / s
-        c = tz(g * yy, g)
-    g = np.linspace(c - w, c + w, m_pts)
-    yy = np.clip(np.interp(g, amb, y), 0, None)
-    s = tz(yy, g)
-    if s <= 0:
-        return float("nan")
-    yy = yy / s
-    m1 = tz(g * yy, g)
-    mu = {n: _central(g, yy, m1, n) for n in range(2, order + 1)}
-    # cumulants from central moments, written out rather than recursed so the
-    # cancellation structure is visible to a reader checking the algebra
-    if order == 3:
-        return mu[3]
-    if order == 5:
-        return mu[5] - 10.0 * mu[3] * mu[2]
-    if order == 7:
-        return (mu[7] - 21.0 * mu[5] * mu[2] - 35.0 * mu[4] * mu[3]
-                + 210.0 * mu[3] * mu[2] ** 2)
-    raise ValueError(f"order {order} not supported")
+
+def rung_status(frac_wrong_sign):
+    """DIAGNOSTIC when the rung's sign is settled against the order's true
+    sign, NULL when it is a coin flip; keyed on the PUBLISHED three-decimal
+    value so a reader re-derives it from the file's own columns."""
+    if not np.isfinite(frac_wrong_sign):
+        return "NULL"
+    return "DIAGNOSTIC" if round(float(frac_wrong_sign), 3) < WRONG_SIGN_MAX else "NULL"
 
 
 def _trace(s0, gamma_l, level, adc_levels, seed, resolve):
@@ -201,7 +205,7 @@ def _cell(spec):
     adc = int(round(2.0 ** bits))
     key = f"mpm:{gamma_l}:{level}:{name}:{mode}:{window}:{resolve}"
     base = zlib.crc32(key.encode()) % (2 ** 31)
-    rows = []
+    rows, rung_rows = [], []
     # ONE TRACE SET PER RUNG, SHARED BY EVERY ORDER, and it matters twice. The
     # first version keyed the seed on the order too, so k3, k5 and k7 were
     # measured on different traces: that makes them independent BY
@@ -213,15 +217,23 @@ def _cell(spec):
     # it 1.2 ms, so the generation this change removes is not the dominant
     # cost. The figure was corrected by measuring it rather than by reasoning
     # about which step ought to dominate.
-    per_rung = []
+    per_rung, quiet = [], []
     for i, s0 in enumerate(S0_LADDER):
         vals = {o: [] for o in ORDERS}
         for t_i in range(N_TRACES):
             seed = (base + 7919 * i + 104729 * t_i) % (2 ** 31)
             nu, y = _trace(s0, gamma_l, level, adc, seed, resolve)
+            got = windowed_orders(y, window, nu)
             for o in ORDERS:
-                vals[o].append(selfcentred_cumulant(y, window, o, grid=nu))
+                vals[o].append(got[o])
         per_rung.append(vals)
+        # THE QUIET REFERENCE: the same rung with the noise off and the ADC
+        # deep, every physics layer on, so the signal-to-scatter against the
+        # injected truth and the wrong-sign fraction are read against what the
+        # estimator returns for this rung and not against the ramp's own value,
+        # which the window truncates
+        nu_q, y_q = _trace(s0, gamma_l, 1e-9, 2 ** 30, 12345, resolve)
+        quiet.append(windowed_orders(y_q, window, nu_q))
 
     for order in ORDERS:
         xs, ys, snr, ok = [], [], [], True
@@ -231,7 +243,24 @@ def _cell(spec):
                 ok = False
                 break
             k = float(np.median(arr))
-            sem = float(np.std(arr, ddof=1) / math.sqrt(arr.size))
+            # THE PER-RUNG EVIDENCE IS KEPT: a reading of the first file found that min() over the
+            # ladder hid the one fact the campaign case rests on, that the low
+            # rungs are sign-degenerate (half the traces negative) while the
+            # upper ones reach a signal-to-scatter in the tens and hundreds.
+            sem = median_standard_error(arr)              # the median's own, one helper
+            k_q = quiet[i][order]
+            sign_q = float(np.sign(k_q)) if np.isfinite(k_q) and k_q != 0 else TRUE_SIGN[order]
+            frac_wrong = float(np.mean(np.sign(arr) != sign_q))
+            snr_true = abs(k_q) / sem if (np.isfinite(k_q) and sem > 0) else float("nan")
+            # THE COUNT THAT STOPS A COIN FLIP BEING ONE: the median's standard
+            # error falls as one over the root of the trace count, so the count
+            # at which the quiet value stands three standard errors from zero
+            # is n (3 sem / |k_q|)^2. A per-trace sign fraction says nothing a
+            # reader can budget; this column is the campaign's own quantity.
+            n_3sigma = arr.size * (3.0 * sem / abs(k_q)) ** 2 if (np.isfinite(k_q) and k_q != 0 and sem > 0) else float("nan")
+            rung_rows.append((gamma_l, level, name, mode, window, resolve, order, s0,
+                              k, sem, float(np.mean(arr < 0)), int(arr.size),
+                              k_q, frac_wrong, snr_true, n_3sigma))
             snr.append(abs(k) / sem if sem > 0 else float("inf"))
             if not np.isfinite(k) or k == 0.0:
                 ok = False
@@ -251,10 +280,15 @@ def _cell(spec):
         se = float(np.sqrt((resid @ resid) / dof / max(np.sum((x - x.mean()) ** 2), 1e-30)))
         rows.append((gamma_l, level, name, mode, window, resolve, order,
                      float(slope), se, n, float(min(snr))))
-    return rows
+    return rows, rung_rows
 
 
 def _grid():
+    if os.environ.get("RB5S6S_MPM_DEEP"):
+        # THE DEEP RUN: the archive's own noise level, the deepest scope, the
+        # shift resolved, and only the two axes that decide whether the
+        # channel is usable at the 2025 shift; sized by traces, not cells
+        return list(product(GAMMA_L, (0.004,), (SCOPES[2],), WINDOW, (True,)))
     return list(product(GAMMA_L, NOISE_LEVEL, SCOPES, WINDOW, RESOLVE))
 
 
@@ -269,7 +303,7 @@ def main() -> int:
     if "--one-cell" in sys.argv:
         import time
         t0 = time.time()
-        rows = _cell(cells[len(cells) // 2])
+        rows, _ = _cell(cells[len(cells) // 2])
         dt = time.time() - t0
         print(f"one cell: {dt:.1f} s")
         print(f"grid is {len(cells)} cells -> {len(cells) * dt / 60:.0f} core-min, "
@@ -298,13 +332,15 @@ def main() -> int:
         if not ok:
             for x, y in zip(a, b):
                 if repr(x) != repr(y):
-                    print("   first divergence:", x[0], "|", y[0]); break
+                    print("   first divergence:", x[0][0] if x[0] else x, "|", y[0][0] if y[0] else y); break
             return 1
         return 0
 
     # a half-hour eight-worker job into a shared results/ takes a lock, as
     # run_coverage_grid.py does; the lock belongs to the job
-    lock = Path("/tmp/rb5s6s_moment_power_map.lock")
+    # keyed on the checkout, so a scratch clone's run and this checkout's do
+    # not refuse each other; the lock belongs to the job AND its tree
+    lock = Path("/tmp") / f"rb5s6s_moment_power_map_{hashlib.sha1(str(ROOT).encode()).hexdigest()[:8]}.lock"
     try:
         lock.mkdir()
     except FileExistsError:
@@ -321,9 +357,9 @@ def _run(cells, workers) -> int:
         # COLLECTED IN ORDER, so the CSV bytes do not depend on completion
         # order. The progress line is ordered too and says nothing about which
         # cell finished when, so it cannot be mistaken for a timing.
-        out = []
-        for i, rows in enumerate(ex.map(_cell, cells), 1):
-            out.append(rows)
+        out, out_rungs = [], []
+        for i, (rows, rung_rows) in enumerate(ex.map(_cell, cells), 1):
+            out.append(rows); out_rungs.append(rung_rows)
             if i % 24 == 0 or i == len(cells):
                 print(f"    {i}/{len(cells)} cells collected", flush=True)
 
@@ -354,6 +390,29 @@ def _run(cells, workers) -> int:
                             str(r[5]).lower(), r[6], f"{r[7]:.4f}",
                             f"{r[8]:.4f}", r[9], f"{r[10]:.3f}", status, note])
     print(f"wrote {OUT} with {sum(len(r) for r in out)} rows")
+    RUNGS = OUT.with_name(OUT.stem + "_rungs.csv")
+    with RUNGS.open("w", newline="", encoding="utf-8") as fh:
+        w = csv.writer(fh)
+        w.writerow(["gamma_l_mhz", "noise_level", "scope", "scope_mode", "window_mhz",
+                    "resolve_shift", "order", "s0_mhz", "k_median", "k_se_median",
+                    "frac_negative", "n_traces", "k_quiet", "frac_wrong_sign", "snr_true",
+                    "traces_to_3sigma", "status", "note"])
+        for rr in out_rungs:
+            for r in rr:
+                w.writerow([f"{r[0]:g}", f"{r[1]:g}", r[2], r[3], f"{r[4]:g}", str(r[5]).lower(),
+                            r[6], f"{r[7]:g}", f"{r[8]:.6e}", f"{r[9]:.3e}", f"{r[10]:.3f}", r[11],
+                            f"{r[12]:.6e}", f"{r[13]:.3f}", f"{r[14]:.3f}", f"{r[15]:.3e}",
+                            rung_status(round(r[13], 3)),
+                            "one rung of the ladder: the median windowed cumulant of this order over "
+                            "n_traces twin traces, its standard error as a median, the fraction of "
+                            "traces returning a negative value, the same estimator's value on a "
+                            "noiseless trace of this rung (k_quiet), the fraction of traces whose sign "
+                            "differs from k_quiet's (the fifth order's true sign is negative), and "
+                            "the quiet value over the standard error, and the trace count at which the "
+                            "median would stand three standard errors from zero, n (3 se / k_quiet)^2. The status is DIAGNOSTIC when "
+                            "frac_wrong_sign is below 0.35, which under a coin flip sits 13 standard "
+                            "deviations below one half at two thousand traces and 60 at forty thousand"])
+    print(f"wrote {RUNGS} with {sum(len(r) for r in out_rungs)} rows")
     return 0
 
 

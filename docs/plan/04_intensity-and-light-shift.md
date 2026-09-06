@@ -169,10 +169,13 @@ this section, which has to be in place before any of them runs.
    ladder of synthetic traces across the laser kernel, the noise, the
    oscilloscope and the analysis window
    ([the map](../../results/moment_power_map.csv)), the third cumulant's
-   cubic law is not recovered at shifts at or below the 2025 one, and on the
-   campaign's own power ladder with every layer on its top rung is
-   sign-degenerate at the predicted coefficient, opening only as the shift
-   nears a megahertz. Sized for the pessimistic end
+   cubic law is not recovered at shifts at or below the 2025 one, and the
+   per-rung table of the deep map
+   ([`results/moment_power_map_deep_rungs.csv`](../../results/moment_power_map_deep_rungs.csv))
+   finds the 2025 rung sign-degenerate in every configuration, the channel
+   opening between one and two megahertz of shift at the 2025 noise level.
+   The joint fit against power on the campaign's own ladder lands in its own
+   commit. Sized for the pessimistic end
    (≥ 15× the 2025-equivalent trace count at one condition), which turns even
    the worst-case per-block significance into ≥ 3σ, detection or meaningful
    bound either way. The fringe-resolved tail suppresses the small-waist skew
@@ -180,12 +183,87 @@ this section, which has to be in place before any of them runs.
    `constants.py`.
    **Needs.** Configuration S with its metrology done, the collection rebuild,
    and RF-off traces only, since tooth overlap contaminates the centered moments
-   (§10.5). **Shots.** The deep-integration day, §9 D5, at one condition.
+   (§10.5). Measured on the twin at configuration S, the 2025 comb's lower
+   first-order tooth leaks into a 6 MHz window enough to cancel the ramp's
+   third cumulant to a few per cent of itself, a 40 MHz spacing still leaves a
+   tilt term of the ramp's own order at the dim rungs, and at the measured
+   depth the first-order teeth stand higher than the carrier. The centre
+   channel, a fit with its own background, survives a comb from a 25 MHz
+   spacing up and dies at the 2025 spacing, where the fit window stops just
+   short of half the spacing. The forecast measures every lever of this chapter
+   three ways, the moments alone, the centre against power, and the two
+   combined with their measured covariance, in
+   `scripts/run_three_channel_forecast.py`, whose file lands with its first
+   run. **Shots.** The deep-integration day, §9 D5, at one condition.
    **Go/no-go.** Convergence of the bounded wing amplitude from a spread of
    starting values, checked before any outlier is interpreted. **Empty.** A bound
    rather than a detection is the designed-for outcome, and the sizing above is
    what makes that bound meaningful. **Record.** The third cumulant with its
    floor, the starting-value spread, and the trace count actually achieved.
+3b. **The depth ladder at fixed power, the null test of the light shift.**
+   A phase modulation leaves the intensity constant, so the 993 nm field
+   dresses 5S and 6S by the same amount at every modulation depth while the
+   two-photon rate per tooth goes as the square of the Bessel weight
+   (chapter 5's ruler block). Along a depth ladder at the top power the light
+   shift stands still while every rate-driven term moves over more than an
+   order of magnitude, the amplitude, the depletion, the trapping and any pull
+   that rides on the excitation rate, and the power broadening moves between
+   the two, as the square root of the rate share, since a Rabi frequency is an
+   amplitude. On a power ladder those
+   families grow together and cannot be told apart, which is the assumption
+   the mean-pull channel of item 1 has always rested on. The fitted centre
+   against depth at fixed power turns it into a measurement: a slope is
+   amplitude-modulation admixture or a rate-dependent pull and not the
+   AC-Stark effect. What the ladder does not touch is the three-width
+   degeneracy, whose widths are not rate-driven. **Needs.** The new drive on
+   the 25 or 40 MHz comb, free of residual amplitude modulation, and the
+   depth read from the tooth heights on the trace it is taken from. **Shots.** Five
+   depths at the top rung of each power grid, minutes inside the D4 and D5
+   blocks. **Go/no-go.** The tooth heights follow the Bessel law and the
+   positive and negative orders agree, which is the modulation-purity
+   monitor. **Empty.** A slope on the twin's forecast within its own scatter
+   is the expected null and is reported as such. A slope on the bench is a
+   systematic found, and it is reported as a bound on the pull channel and
+   never folded into the shift. **Record.** The fitted centre per depth, the
+   tooth heights, the depth achieved, and the slope with its scatter. The
+   twin measures the test's resolution with the forecast's file, whose
+   depletion now follows each tooth's own rate.
+3c. **The waist ladder through an adjustable expander, and the absolute axis it
+   buys.** Section 5 of this chapter says the collapse across configurations
+   catches only relative waist errors and that a common scale error passes
+   silently. An expander of magnification $M$ ahead of the cell scales the
+   waist at fixed power and fixed retro ratio, so the abscissa is known from a
+   ratio of focal lengths even when the absolute waist is not, and every term
+   carries a different power of it: the collisional and laser widths none, the
+   transit $M^{-1}$, the light shift and the two-photon Rabi frequency
+   $M^{-2}$, the excitation cycles of a crossing $M^{-3}$ and the rate per atom
+   $M^{-4}$. Five exponents against a power ladder's two.
+   [The ramp chapter](../methods/03_the_ac_stark_ramp.md) derives them and
+   names the code that carries each. The fit then measures the reference waist
+   twice, through the transit's $1/M$ and the shift's $1/M^2$, and their
+   agreement tests the transit law where the present one-setting anchor has to
+   assume it. **Needs.** The expander, its magnification known and stated, and
+   the retro ratio measured at every setting, since the shift takes
+   $(1+\rho)$ and the coupling $2\sqrt{\rho}$ and an unmodelled $\rho(M)$
+   reads as a waist error. **Shots.** The power ladder of item 1 repeated at
+   three or four settings spanning the expander's range, with the
+   knife-edge or camera measurement taken at each. **Go/no-go.** The transit
+   width scales as $1/M$ across the settings within its own error. If it does
+   not, the geometry is not what the magnification says and nothing further is
+   quoted from the ladder. **Empty.** The reference waist comes back with a
+   band no tighter than the record already carries, which would say the
+   settings were too few or too close. **Record.** Per setting: the
+   magnification, the measured waist, the retro ratio, the fitted transit and
+   the fitted centre against power. Two cautions carry into the analysis. The
+   Rayleigh range goes as the waist squared, so the collection ratio moves as
+   $M^{-2}$ and the ramp's own shape moves with it through the sign reversal
+   the ramp chapter derives, which the settings are chosen around. And the
+   collected signal goes as $\arctan(L/z_R)$ with the axial window fixed, so
+   tightening the beam fourfold buys about five in integrated signal and about
+   three in peak height, the line broadening by well under a factor of two
+   because the transit is a small part of it. The peak height turns over inside
+   the proposed range, where the light shift's own width overtakes the
+   collection gain, so the settings are chosen with that in view.
 4. **The geometry sign flip, the cleanest test in the program.** The z-average
    over the collection window has the closed form
    f(s) ∝ |s|^(n−1)·[ζₘ + ζₘ³/3] with ζₘ = min(Z_c/z_R, √(S₀/|s|−1))

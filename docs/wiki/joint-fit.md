@@ -174,3 +174,18 @@ print(f"fitted jointly: {joint:.3f}   truth: {w_true}")
 ---
 
 [← Weighted least squares](weighted-least-squares.md) · *Statistical inference, 2 of 9* · [Pooling across groups →](pooling-across-groups.md)
+
+## The joint fit against power, on the twin
+
+The newest joint fit in this record is not on the 2025 data. The campaign's
+five-rung power ladder is generated through the world builder with every
+physics layer on, and the windowed third cumulant is fitted against power with
+one coefficient shared: the cubic law is the validity test and the intercept
+is the coefficient. Its first run, on a ladder starting at 50 mW and with the
+estimator's fixed pass count, read the top rung sign-degenerate at the
+predicted coefficient. The regenerated file, on the campaign's own ladder and
+under the converged estimator of `rb5s6s.cumulants`, lands in its own
+commit. The three-channel forecast (`scripts/run_three_channel_forecast.py`)
+runs the same ladder three ways, the moments alone, the centre against power
+under the repaired lock, and the two combined with their measured covariance,
+one campaign lever at a time.

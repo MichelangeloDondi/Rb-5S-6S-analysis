@@ -154,19 +154,24 @@ configurations, in [`results/moment_power_map.csv`](../../results/moment_power_m
 The map generates traces through the production world builder at five
 light-shift rungs spanning the archive's 0.364 MHz and 1.0 MHz, a round figure inside the campaign's range (the plan's chapter 4 gives 1.42 MHz at a 40 um waist and 500 mW),
 at 2,000 traces a rung, and fits the power of $S_0$ that the windowed cumulant
-carries. In the noiseless limit, with the model's grid resolving the shift,
-that power is 3.00 at half-windows of 8 MHz and above and 2.86 at the 3.25 MHz
-optimum ([the map](../../results/moment_power_map.csv) states its grid), because the ladder's lowest rung sits below the region where the
+carries. In the noiseless limit, with the model's grid resolving the shift
+and the physics layers off, that power is three: `tests/test_moment_power_map_producer.py`
+pins the slope at an 8 MHz half-window within five per cent, and that test is
+the re-derivation route, since the map itself carries no noiseless arm. With
+the layers on the noiseless power falls below three at every window, and
+under noise the ladder's lowest rung sits below the region where the
 windowed cumulant is cubic. The windowed cumulant is positive at every rung.
-It is not the ramp's own $-S_0^3/135$ from the derivation above but the
+It is not the ramp's own $+S_0^3/135$ from the derivation above but the
 truncated estimator's reading of it. Under the archive's own noise and
 quantisation **no configuration on the grid recovers it**: over all three
-orders the file's `min_snr_over_rungs` reaches 2.9 at best and 0.45 at the
+orders the file's `min_snr_over_rungs` reaches 2.3 at best and 0.37 at the
 median, and the median fitted power of the third cumulant is 1.8. That column
 is a median over its own standard error and is inflated wherever the true
-cumulant lies below the noise, so 2.9 is not a signal-to-scatter but the
-noise's own reading of one. The rung it belongs to has a signal-to-scatter
-against the injected truth of 0.45.
+cumulant lies below the noise, so 2.3 is not a signal-to-scatter but the
+noise's own reading of one. At the rung it belongs to, the same estimator's
+noiseless value stands below the median's own standard error (the per-rung
+table's `snr_true` column carries that ratio for every rung), and per trace
+the signal is under a hundredth of the scatter.
 
 **The failure is not that the answer is noisy. It is that the answer is
 confidently wrong**, and the mechanism is worth stating because it is generic.
@@ -187,8 +192,32 @@ python -c "import csv,math,statistics as s; r=list(csv.DictReader(open('results/
 ```
 
 
-The map's ladder is the twin's, five shifts at constant amplitude and two
-thousand traces a rung. The 2025 archive took five traces a rung over shifts
+A second map at forty thousand traces on a ladder that starts at the
+archive's rung
+([`results/moment_power_map_deep_rungs.csv`](../../results/moment_power_map_deep_rungs.csv))
+recovers the cubic law and shows the archive's rung sign-degenerate in every
+cell. The same question on the campaign's own power ladder under every layer
+is the joint-fit producer's, which lands with its regenerated file under the
+package's estimator (`rb5s6s.cumulants`, the window recentred to a tolerance
+and the detector pedestal removed first, since a fixed pass count does not
+converge on the dim rungs of a power ladder).
+
+The deep map's `frac_negative` column is a sign statistic and is read against
+each order's own sign, which for the fifth cumulant is negative
+([the ramp chapter](../methods/03_the_ac_stark_ramp.md)). Read that way, the
+fifth settles its sign in every configuration at two megahertz of shift and
+the seventh in sixteen of the twenty-four, and neither adds a channel: their
+windowed forms do not converge on the ramp's own cumulants as the window
+widens, and their ratios to the third carry no power dependence, so they
+read the third's shift information again through a heavier truncation
+weight. Two rules of the estimator follow from the same study and are now the
+package's. The window is recentred until the centre stops moving, because the
+detector pedestal's share of the window sets the contraction per pass and a
+centring residual on a pedestal is a fake third moment growing as the window
+cubed. And the window starts at the carrier, the line the ruler identifies,
+never at the trace's maximum, which at the measured modulation depth is a
+first-order tooth. The map's ladder is the twin's,
+five shifts at constant amplitude and two thousand traces a rung. The 2025 archive took five traces a rung over shifts
 of 0.04 to 0.364 MHz with amplitude rising as the power squared, so the map's
 exponent is not the archive's number. What is derivable from one cell is the
 archive's own: at its shift, noise and scope a single trace's cumulant has a

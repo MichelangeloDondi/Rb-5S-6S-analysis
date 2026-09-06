@@ -63,6 +63,27 @@ its own authors call qualitative only. The 5S-6S line is already driven on the
 platform and is a low-lying state, so it probes the same environment without
 the Rydberg population that complicates it.
 
+### One method the guided programme keeps, and it needs no hardware
+
+The modulation depth is a knob every phase-modulated experiment already has,
+and it separates what a power ladder cannot. A phase modulation changes the
+spectrum without changing the intensity, so the light shift is the same at
+every depth while the excitation rate per tooth follows the Bessel weights and
+the power broadening follows their square root. A fitted centre that moves
+with depth is therefore not a light shift, and a summed tooth area that moves
+with depth is pumping.
+[The ramp chapter](../methods/03_the_ac_stark_ramp.md) derives it.
+
+**Why it matters more in a guided geometry than in a cell.** The light shift
+near a surface is what a guided programme has to control, and it sits on top
+of a surface potential, adsorbate charging and a trap whose depth is itself
+set by the light. Those all move with the drive, so a power ladder moves them
+together with the shift and a depth ladder does not move them at all. The
+method transfers with no new optics, since the ruler's modulator is already in
+the beam, and it transfers to whatever line the programme drives next, which
+is the property that makes it worth more to a group than a number about
+rubidium.
+
 ### The guided-platform open items
 
 Listed here and not in [the plan's open-items chapter](../plan/12_open-apparatus-items.md),
@@ -152,7 +173,8 @@ highest, so its shift distribution has no hard edge and carries the opposite
 sign of skewness (section 1.2 of the design note, which computes both).
 Carrying the ramp over unchanged would get the sign of the line's asymmetry
 wrong, and the self-centred third cumulant is the drift-immune channel this programme
-relies on.
+relies on, where the shift is large against the line, as it is in the
+evanescent field and is not at the 2025 cell's waist.
 
 ![the third cumulant as an observable: the two-photon asymmetry, the cumulant ladder, what each mechanism reaches, and the ceiling the record's bound puts on it](../../figures/fig30_third_cumulant.png)
 

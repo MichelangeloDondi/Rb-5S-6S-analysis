@@ -214,6 +214,31 @@ of the doublet reads the hyperfine separation against the synthesiser,
 drift-free and light-shift-free, at whatever precision the line centres
 support.
 
+## The depth as an axis of the experiment
+
+The identity above has a second reading, and it is the one a campaign uses.
+A phase modulation leaves the intensity of the light untouched at every
+depth, so the light shift and its ramp stand still while the depth is turned
+([the AC-Stark shift](ac-stark-shift.md)). What the depth moves is the
+excitation, and it moves two things by different powers: a tooth's rate goes
+as $J_k(2\beta)^2$, which carries the amplitude and the pumping, while a
+tooth's Rabi frequency goes as $J_k(2\beta)$, which carries the power
+broadening. So a ladder in depth at one power gives the shift, the width and
+the rate three different dependences on one knob, and a ladder in power
+cannot, because there they rise together and only their exponents tell them
+apart.
+
+The three readings a depth ladder gives are a fitted centre that must not
+move with depth, a summed tooth area that must not move either while the
+excitation lasts in the linear regime, and a carrier null where the rate
+vanishes and the intensity does not. Each of them is a null, so each fails
+loudly. The derivation and the blind regions are in
+[the ramp chapter](../methods/03_the_ac_stark_ramp.md), under one dressing
+and many teeth, and the
+first two of them are what
+[the cascade](the-cascade-and-f-depletion.md) is measured against, since
+depletion counts a tooth's own cycles and not the whole line's.
+
 ## What can go wrong
 
 The first failure is a model one: reading the rate identity as a shape

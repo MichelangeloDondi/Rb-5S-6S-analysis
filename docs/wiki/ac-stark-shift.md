@@ -64,7 +64,17 @@ intensity weighting, from the closed form with no fitted data.*
 What is worth carrying here is the delineation from the nearest prior art, a
 one-photon, fringe-resolved method giving a uniform distribution: the
 dependence on the signal exponent $n$ separates this channel from it. The
-asymmetry is measured through [the third cumulant](third-cumulant.md). The
+asymmetry is measured through [the third cumulant](third-cumulant.md), a
+channel that opens only above about a megahertz of shift and on the RF-off
+science trace. The first-order pull of the centre against power, which the
+repaired lock makes readable, is the standard channel, and the campaign
+forecast combines the two with their measured covariance. The standard
+channel gains a null test from the modulation depth: a phase modulation
+leaves the intensity, and so the shift, the same for every tooth at any
+depth while the rate per tooth goes as the Bessel weight squared, so the
+fitted centre against depth at fixed power moves only through rate-driven
+pulls and not through the AC-Stark effect
+([the plan hub](../plan/04_intensity-and-light-shift.md), item 3b). The
 current light-shift parameter is a bound, not a measurement, in
 [RESULTS.md](../RESULTS.md).
 

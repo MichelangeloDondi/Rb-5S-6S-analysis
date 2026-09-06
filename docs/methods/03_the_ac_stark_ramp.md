@@ -70,7 +70,13 @@ $\kappa_2\equiv\mathrm{Var}$ and $\kappa_3$ are the second and third
 *cumulants*. The ramp's own **standardized** skewness, the scale-free shape
 number, is $\kappa_3/\kappa_2^{3/2}=18^{3/2}/135\approx0.566$, independent
 of $S_0$ (a property of the triangle, not of the power). That fixed number is
-the target of the form test below. What varies with power is the
+the target of the form test below. The ramp's cumulants continue
+$\kappa_4 = -S_0^4/540$ and $\kappa_5 = -S_0^5/567$, with the seventh
+positive again (`rb5s6s.cumulants.cumulants_from_central_moments` on the
+density's moments, and `tests/test_cumulants.py` pins the third), so the odd
+orders alternate in sign, and a statistic built on the sign of a windowed
+cumulant is read against each order's own sign and never against zero. The
+signs are the coded red side's, and on the blue side every odd one flips. What varies with power is the
 *observed line's* asymmetry, which we get by folding the ramp into the rest
 of the line.
 
@@ -440,6 +446,193 @@ repository is unaffected, because the asymmetry null is symmetric and both the
 $S_0$ bound and its prediction band use $|\Delta\alpha|$. *Code:* `lineshape.stark_shift_S0_mhz()`. The full
 theorist-facing derivation, novelty position, and the open diverging-beam
 question are in [`docs/THEORY_NOTE.md`](../THEORY_NOTE.md).
+
+#### One dressing, many teeth: what the modulation depth can and cannot move
+
+The ramp above is set by the intensity, and an electro-optic phase modulator
+changes the spectrum of the light without changing its intensity. That is one
+sentence of physics with a campaign design inside it, so the derivation
+follows.
+
+**The dressing is common to every tooth and independent of the depth.** Write
+the modulated field as $E(t)=E_0e^{i(\omega t+\beta\sin\Omega t)}$. Its modulus
+is $E_0$ at every instant, so the intensity is constant in time and constant in
+$\beta$, and a shift proportional to intensity cannot move when only $\beta$
+moves. In the frequency picture the same fact is a sum rule. The sidebands
+carry fractions $J_k(\beta)^2$ of the intensity, these sum to one, and the
+level shift is the sum over components
+
+$$\Delta = -\tfrac{1}{4}\sum_k \alpha(\omega+k\Omega)|E_k|^2 = -\tfrac{1}{4}|E_0|^2\left[\alpha(\omega)+\tfrac{1}{4}\alpha''(\omega)\beta^2\Omega^2\right],$$
+
+because $\sum_k J_k(\beta)^2 k = 0$ kills the first-order term and
+$\sum_k J_k(\beta)^2 k^2 = \beta^2/2$ sets the second. The correction is
+relative $(\beta\Omega/\Delta_{\rm res})^2/2$ with $\Delta_{\rm res}$ the
+detuning from the nearest resonance, which for this line and drive is of order
+$10^{-14}$: the depth-independence of the light shift is exact for any purpose
+this record has.
+
+**What the depth does move is the excitation rate, tooth by tooth.** The
+two-photon amplitude into the tooth at sum order $k$ is the coherent sum over
+sideband pairs, $\sum_n J_n(\beta)J_{k-n}(\beta) = J_k(2\beta)$ by the addition
+theorem, so the rate follows $J_k(2\beta)^2$
+([the ruler](05_the_frequency_ruler.md), and
+[EOM sidebands](../wiki/eom-sidebands.md) for the theorem). Those weights sum
+to one as well, which gives the second sum rule: **in the linear regime the
+summed signal over all teeth is the same at every depth**, and the distribution
+over teeth is what the depth chooses.
+
+**So the depth axis splits the model into families with three different
+scalings, and that is more than it first appears.** The light shift and its
+ramp shape are set by the whole spectrum, so they do not move with depth at
+all. The tooth amplitude, the cascade depletion of
+[the cascade](../wiki/the-cascade-and-f-depletion.md) and radiation trapping
+follow the tooth's excitation rate, so they move as $J_k(2\beta)^2$. **Power
+broadening sits between them**: the resonant two-photon Rabi frequency of the
+tooth at order $k$ is $J_k(2\beta)$ of the line's, being an amplitude and not a
+rate, so the companion width the saturation adds moves as the square root of
+the rate share. The transit, laser and collisional widths follow none of the
+three. **On a ladder in power the shift and the power broadening move together and
+not apart**: a
+two-photon Rabi frequency goes as the intensity, the same power of $P$ as the
+shift, so the power broadening is proportional to the shift along the whole
+ladder and no exponent separates them. The rate is the only one with a
+different power, $P^2$. **A ladder in depth at fixed power gives each of the
+three a different and known dependence on one knob, $1$, $J_k(2\beta)$ and
+$J_k(2\beta)^2$, with the shift exactly fixed.** That is the degeneracy the
+lever breaks, and it is a different degeneracy from the three-width one, which
+no rate-driven knob can touch because none of those widths is rate-driven.
+
+Three tests follow, and each of them is a null.
+
+1. **The fitted centre against depth, at fixed power, is flat.** A slope is not
+   a light shift, since the light shift cannot depend on depth. It is residual
+   amplitude modulation or a rate-dependent pull, and it is reported as a bound
+   on that channel.
+2. **The summed tooth areas are the same at every depth.** A deficit is
+   depletion and trapping, measured with the dressing held fixed, which no
+   power ladder can arrange.
+3. **The carrier null.** Where $2\beta$ reaches the first zero of $J_0$ the
+   carrier's rate vanishes while the intensity is untouched. Signal left at the
+   carrier position is residual amplitude modulation or the retro-delay
+   smearing of the weights, both of which
+   [the two-photon comb](../wiki/the-two-photon-comb.md) already quantifies.
+
+**The blind regions, named.** Residual amplitude modulation breaks the premise
+outright, because an amplitude-modulated field does not have constant
+intensity, which is why test 1 returns a measurement of that admixture and
+never an assumption about it. The depth is read from the tooth heights on the same
+trace, so the abscissa is self-calibrating under pure phase modulation and
+wrong by the same admixture when it is not. And with the modulator in the
+common path the weights follow an effective depth $2\beta\cos(\pi f\tau)$ over
+the cell's spread of retro delays $\tau$, so the depth a comb reports is a cell
+average whose spread grows as $(\pi f\tau)^2$ with the drive frequency.
+
+This section is physics and mathematics, the first two rungs. What each test
+buys in coefficient units is a twin question, and the campaign case takes it
+there.
+
+#### The waist as the second axis, and what a known magnification buys
+
+The depth moves the spectrum of the light. The other knob moves its geometry,
+and the two are complementary because they separate different terms.
+
+**The problem it attacks is the one this record calls its largest.** Every
+absolute quantity here is conditional on $w_0$, which was never measured on
+this bench, and a scan across configurations catches only relative waist
+errors while a common scale error passes silently
+([the plan's light-shift chapter](../plan/04_intensity-and-light-shift.md)
+section 5 states it in those words).
+
+**The knob.** An adjustable beam expander ahead of the cell scales the waist by
+its magnification $M$ at fixed power and fixed retro ratio, so
+$w_0(M) = Mw_0^{\rm ref}$. **The abscissa is then known even though its scale is
+not**, because a telescope's magnification is a ratio of focal lengths and can
+be checked by imaging, while the absolute waist needs a knife edge and carries
+its own systematics.
+
+**Every term of the model scales with a different power of that knob.** With
+the temperature and the power held, and $v_{\rm th}$ fixed by the first:
+
+| term | law | power of $w_0$ |
+|---|---|---|
+| collisional and laser widths | independent of the beam | $0$ |
+| transit FWHM | $\ln 2 v_{\rm th}/\pi w_0$ | $-1$ |
+| the peak light shift $S_0$ | $\propto I \propto P/w_0^2$ | $-2$ |
+| the two-photon Rabi frequency, and the power broadening that follows it | $\propto I$ | $-2$ |
+| the axial collection ratio $L/z_R$, since $z_R=\pi w_0^2/\lambda$ | $\propto 1/w_0^2$ | $-2$ |
+| excitation cycles in one crossing | rate $\times$ crossing time $\propto I^2w_0$ | $-3$ |
+| the two-photon rate per atom | $\propto I^2$ | $-4$ |
+
+Five distinct exponents. A ladder in power has only two, since every term there
+is $P$ or $P^2$, so the geometry axis is strictly the richer one, and each row
+above is a check of the code that carries it
+(`constants.transit_fwhm_from_w0`, `stark.stark_shift_S0_mhz`,
+`hyperpolarizability.two_photon_rabi_hz`, `constants.collection_z_ratio`).
+
+**What the known magnification buys, precisely.** Each term becomes a known
+function of one unknown, $w_0^{\rm ref}$, so a joint fit across settings
+measures it, and measures it twice: the transit width scales as $1/M$ and the
+light shift as $1/M^2$, and the two must agree. Their agreement is a test of
+the transit law where the record's present anchor, a differential transit width
+at one setting, has to assume it.
+
+**And the collected signal does not scale the way the naive count says.** The
+two-photon signal collected through an axial half-window $L$ is
+
+$$S \propto \int_{-L}^{L} \int I^2 dA dz = \frac{2P^2}{\lambda}\arctan\left(\frac{L}{z_R}\right),$$
+
+because $\int I^2 dA = P^2/\pi w(z)^2$ and $z_R=\pi w_0^2/\lambda$. The window
+is fixed by the detector and the Rayleigh range shrinks as $M^2$, so tightening
+the beam gains far less than $M^{-2}$: over the record's own span of waists a
+fourfold tightening multiplies the integrated signal by about five, and it
+saturates from there, since a window that already swallows the beam cannot
+swallow more of it.
+
+**The peak height is the interesting one, and it turns over.** The line does not
+broaden with the transit alone, and at these conditions the transit is about a
+fifth of the composite width, so quadrupling it widens the line by well under a
+factor of two and the peak height rises, by about three over the same span.
+What turns it over is the ramp itself: the light shift grows as $M^{-2}$, so
+below a waist near a third of the record's it broadens the line faster than the
+collection gains photons, and the peak height falls again. The maximum sits
+inside the range the campaign proposes while the integrated signal is still
+climbing, so **a tight waist is a shift lever and a signal lever both**, and the
+two do not want quite the same waist. Computed through the record's own
+composite profile at its measured collisional and laser widths, which is the
+correction a first draft of this section needed: it divided the collected
+signal by the transit width instead of the line's, and concluded that the peak
+height fell.
+
+**What it does not do.** It does not separate the light shift from the power
+broadening: both follow the intensity, so both scale as $M^{-2}$ and their
+ratio is fixed along the whole ladder, exactly as it is along a power ladder.
+The depth ladder above is the knob for that pair. And it does not touch the
+collisional-against-laser split, which no beam geometry moves.
+
+**The blind regions, named.**
+
+1. **The retro ratio.** The shift takes $(1+\rho)$ and the two-photon coupling
+   $2\sqrt{\rho}$, so an unmodelled $\rho(M)$ moves them differently and would
+   be read as a waist error. Expanding the beam changes the returning mode's
+   overlap unless the retro is re-matched, so $\rho$ is measured at each
+   setting or the setting is not usable.
+2. **The collection window moves with the knob.** $L/z_R$ scales as $M^{-2}$,
+   so the ramp's own shape changes along the ladder, and this chapter's axial
+   analysis has the third cumulant reversing sign above a ratio near one. A
+   fourfold tightening from the 2025 bench crosses that boundary. For a joint
+   fit that is a second computable function of the same knob. For the skew
+   channel alone it is a trap.
+3. **The expander itself.** Its magnification accuracy, its thermal behaviour
+   under the beam and whether it preserves the mode quality are apparatus
+   facts, and [the open items](../plan/12_open-apparatus-items.md) carries
+   them.
+4. **The rate-driven terms are largest where the shift is largest**, since
+   depletion grows as $M^{-3}$ against the shift's $M^{-2}$. The depth ladder
+   at the tightest setting is what separates those two.
+
+This section is the first two rungs as well. The twin's amplitudes are
+caller-owned and carry no waist dependence of their own, so the signal law
+above is analytic here and is owed to a producer before any forecast quotes it.
 
 ---
 

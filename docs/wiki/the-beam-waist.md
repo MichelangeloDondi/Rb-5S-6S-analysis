@@ -117,6 +117,33 @@ validated against Lehmann's worked example. Then a stand-in used in three
 documents before the waist was stated as measured. the private correction record
 carries each with its date.
 
+## A ratio you can know, and a scale you cannot
+
+The waist is hard to measure absolutely and easy to move by a known factor.
+An adjustable expander scales it by its magnification, a ratio of focal
+lengths, so a ladder of settings has a calibrated abscissa while the absolute
+scale stays open. That is worth more than it sounds, because every term of the
+model carries a different power of the waist: the collisional and laser widths
+none at all, the transit its inverse, the light shift and the two-photon Rabi
+frequency its inverse square, and the excitation rate its inverse fourth power.
+A fit across settings therefore measures the absolute scale from the line
+itself, twice over and by two different powers, where a single setting has to
+take it from a knife edge.
+
+Two things move with the knob that are easy to forget. The Rayleigh range goes
+as the waist squared, so the detector's fixed axial window covers a different
+fraction of the beam at every setting, which changes the shape the light shift
+imprints and can reverse the sign of its asymmetry
+([the AC-Stark shift](ac-stark-shift.md)). And the collected signal follows the
+arctangent of that same ratio, so tightening the beam buys far less signal than
+the inverse square suggests, about five for a fourfold tightening rather than
+sixteen. The peak height rises too, by about three over the same span, because
+the line broadens by well under a factor of two: the transit is only about a
+fifth of the composite width at these conditions. It is the light shift's own
+growth that eventually turns the peak height over, at a waist inside the range
+the campaign proposes.
+[The ramp chapter](../methods/03_the_ac_stark_ramp.md) derives both.
+
 ## What can go wrong
 
 The commonest error is a convention trap, not a measurement error: a bare

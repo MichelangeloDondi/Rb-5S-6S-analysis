@@ -185,8 +185,10 @@ def build_world_trace(power_w: float, kappa: float, t_c: float,
                      gamma_l: float = 0.0,
                      laser_kind: str = "gaussian",
                      resolve_shift: bool = False,
+                     tooth_of: Optional[Dict[str, str]] = None,
                      offset: float = 0.01,
                      range_anchor: str = "global",
+                     grid_span: Optional[Tuple[float, float]] = None,
                      ) -> Tuple[np.ndarray, np.ndarray, Dict]:
     """One campaign trace: every peak in `positions`, one vertical range.
 
@@ -212,7 +214,7 @@ def build_world_trace(power_w: float, kappa: float, t_c: float,
     `shares`; positions and shares stay caller-owned so their provenance
     stays beside their values, in the example or the scenario layer.
 
-    Four keywords are opt-in and off by default, so a call written before
+    Five keywords are opt-in and off by default, so a call written before
     them is byte-identical. ``gamma_l`` and ``laser_kind`` give the laser
     kernel a Lorentzian component or form. ``halo_fraction`` adds the
     trapped-light re-excitation as a flat amplitude factor. ``resolve_shift``
@@ -221,12 +223,24 @@ def build_world_trace(power_w: float, kappa: float, t_c: float,
     one grid cell, which overstates the third cumulant by 68 per cent at
     0.18 MHz and misreads it by a few per cent at 0.364, while at 1.0 MHz
     and above the two settings agree to every printed digit. Set it for any
-    small-shift moment study.
+    small-shift moment study. ``tooth_of`` maps a position key to the physical
+    peak it is a tooth of, for an EOM comb; None is the identity.
 
     Returns (nu, volts, truth_amps): the frequency axis (MHz, transition
     axis), the one recorded trace, and each peak's injected amplitude.
     """
-    nu = np.linspace(min(positions.values()) - 60.0, 60.0, 6000)
+    if grid_span is None:
+        nu = np.linspace(min(positions.values()) - 60.0, 60.0, 6000)
+    else:
+        # OPT-IN: the default grid runs from 60 MHz below the lowest line to
+        # +60 and is asymmetric under a comb, so a wing that a baseline is read
+        # from can sit on a tooth. A caller with a comb names a span that clears
+        # every tooth, and the step is the default's at a SINGLE line on zero,
+        # 120/5999 MHz. The default's own step is (120 - min(positions))/5999,
+        # so under a comb the default is coarser than this one rather than equal
+        # to it, which an earlier comment here got wrong.
+        lo, hi = float(grid_span[0]), float(grid_span[1])
+        nu = np.linspace(lo, hi, int(round((hi - lo) / (120.0 / 5999))) + 1)
     s0 = kappa * power_w
     p_rel = (power_w / power_max_w)
 
@@ -235,11 +249,43 @@ def build_world_trace(power_w: float, kappa: float, t_c: float,
     for peak, share in shares.items():
         amp = share * p_rel ** 2                      # two-photon: signal ~ P^2
         amp *= (1.0 + halo_fraction)                  # trapped-light halo, flat in nu
+        # an EOM comb's teeth are the SAME physical line excited through
+        # different photon pairs, so a tooth keyed "4192@+12.5" looks up its
+        # cascade and saturation under "4192"; identity when no map is given
+        phys = (tooth_of or {}).get(peak, peak)
+        # A TOOTH IS DRIVEN AT ITS OWN RATE, AND BROADENED AT ITS OWN RABI
+        # FREQUENCY (2026-09-06, A83 and A86). A phase modulation redistributes
+        # a line's two-photon excitation among its teeth while leaving the
+        # intensity, and so the light shift, untouched. The two-photon
+        # AMPLITUDE into the tooth at order k is J_k(2 beta), so the tooth's
+        # rate is J_k(2 beta)^2 of the line's and its Rabi frequency is
+        # J_k(2 beta) of it: the rate scale below is that fraction, because
+        # the weights sum to one, and the Rabi scale is its square root. The
+        # scale needs no Bessel call and no lookup outside the caller's own
+        # shares. Applied only under a tooth_of map: without one both scales
+        # are exactly one and every existing output is byte-identical.
+        rate = 1.0
+        if tooth_of is not None:
+            own = sum(s for q, s in shares.items()
+                      if (tooth_of or {}).get(q, q) == phys)
+            if own > 0.0:
+                rate = share / own
         if layers["cascade"]:
-            amp *= cascade.amplitude_factor(peak, cycles_at_max * p_rel)
+            # depletion counts cycles, so a dim tooth accumulates fewer of
+            # them; before this it was depleted as if driven at the whole
+            # line's rate, which made depletion look depth-independent.
+            amp *= cascade.amplitude_factor(phys, cycles_at_max * p_rel * rate)
         gamma = gamma_coll
         if layers["saturation"]:
-            gamma = gamma + stark.companion_gamma_mhz(s0, peak)
+            # the companion width is power broadening, which follows the
+            # tooth's RABI frequency and not the intensity: the model keys it
+            # on s0 as the proxy for that Rabi frequency, so a tooth's proxy
+            # is s0 times J_k(2 beta), the square root of its rate share. The
+            # light shift itself does not carry this factor, since it is set
+            # by the whole spectrum. Before this every tooth was broadened as
+            # if it carried the line's whole drive, which is the one term that
+            # would have made a depth ladder read a false constant width.
+            gamma = gamma + stark.companion_gamma_mhz(s0 * float(np.sqrt(rate)), phys)
         centre = positions[peak]
         if layers["bbr"]:
             centre += -blackbody.shift_hz(273.15 + t_c) / 1e6

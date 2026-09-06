@@ -63,11 +63,23 @@ conversions done.
 | D1 | Setup and metrology at configuration L, in the order given below the table, because the first item selects which protocol the rest of the session runs under. | the held-drift record and the protocol it selects, a time axis independent of the scope knob, the outer-loop characterisation, the measured w₀ and ρ at L, and a frozen bracket cadence |
 | D2 | Temperature grid day A at L, ascending, four peaks interleaved plus a mini-P excursion per dwell, sentinel three times, 150/170 °C if the oven allows. | the ascending grid |
 | D3 | Temperature grid day B at L, descending, sentinel three times. | with D2: β_self or a tighter bound, the fixed-lock σ_laser, and the measured drift residual |
-| D4 | Power grid at L, randomized, about 8 powers, morning. Reconfigure to S, an afternoon: knife-edge, camera, ρ. | the mean pull and the excess variance, the four-line common slope, and the measured w₀ and ρ at S |
-| D5 | Skew deep-integration at S. The slit scan g₁(Z_c) at four or five settings, the sign walk of §6 item 4. Power grid at S. Overnight, cool for the cusp. | S₀ at the small waist, the third cumulant or its bound, and the geometry sign flip |
+| D4 | Power grid at L, randomized, about 8 powers, morning, with a depth ladder at the top power on the wide comb (five depths, minutes, the null test of the light shift, chapter 4 item 3b). Reconfigure to S, an afternoon: knife-edge, camera, ρ, and if the expander is available the intermediate settings of chapter 4 item 3c with ρ at each. | the mean pull and the excess variance, the four-line common slope, and the measured w₀ and ρ at S |
+| D5 | Skew deep-integration at S. The slit scan g₁(Z_c) at four or five settings, the sign walk of §6 item 4. Power grid at S, with the same depth ladder at its top power. Overnight, cool for the cusp. | S₀ at the small waist, the third cumulant or its bound, and the geometry sign flip |
 | D6 | The cold, low-power blocks at S and L specified in §5: the transit kernel of Lehmann 2021 against a Voigt, on the same data that anchor the differential-transit intensity calibration. | the model-form closure and the absolute intensity axis, hence Δα in physical units |
 | D7 | Configuration M spot check, half a day: knife-edge, camera, power grid, one 130 °C point. Wavemeter GHz-linearity shots (§11). | the 2025-epoch bridge, and the wavemeter's own frequency scale |
 | D8 | Contingency: re-run whatever the bracket veto excluded. | the recovered blocks, or unused |
+
+**If the adjustable expander of chapter 4 item 3c is on the bench, D4's
+reconfiguration becomes a ladder and not a move.** Two configurations, L
+and S, give one relative comparison and leave the absolute scale open. Three
+or four expander settings at fixed power give a scaling law with a calibrated
+abscissa, because the magnification is a ratio of focal lengths, and the
+transit's inverse-M law and the shift's inverse-M-squared law then measure the
+reference waist twice over. The cost is the same afternoon, since the
+knife-edge, camera and retro-ratio measurements are already scheduled at each
+configuration and a setting is a turn of the expander, not a realignment. The retro ratio is measured at every setting or the setting does
+not enter the fit. What is not yet known about the instrument itself is an
+open item in chapter 12.
 
 **D1 in order.** The sequence matters, so it is a list rather than a cell:
 
@@ -157,7 +169,9 @@ re-thermalizing per power point multiplies dead time for nothing.
 Strict on-off alternation halves science time for monitor information that
 saturates within a few brackets. With the matched-PM ruler an RF-on trace is
 no longer dead time, but tooth overlap still contaminates the moment
-observables, so skew and centered moments come from RF-off traces only.
+observables, so skew and centered moments come from RF-off traces only, a
+rule the twin now measures ([chapter 4](04_intensity-and-light-shift.md),
+item 3) and no longer only argues.
 Spend the first ~30–45 min of D1, while the oven settles, alternating on and
 off at one fixed condition. Compute the Allan deviation of tooth width and
 sweep rate against lag, set the bracket cadence where drift crosses the

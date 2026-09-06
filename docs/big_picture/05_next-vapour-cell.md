@@ -53,6 +53,31 @@ physics:
    a scan series, needing only minutes-scale lock stability. That would be the
    first measured AC-Stark coefficient of the line, and it would validate the
    shape-based method against the same data.
+
+   **And the modulation depth is the control the pull has never had.** A phase
+   modulation changes the spectrum of the light without changing its intensity,
+   so the light shift is the same at every depth while the excitation rate per
+   tooth follows the Bessel weights. Turning the depth at one power therefore
+   moves everything driven by the rate, the amplitude and the pumping
+   depletion, and holds the shift still. A centre that moves with depth is not
+   a light shift, and that null is what separates the pull from the systematics
+   that ride on it. The derivation and its blind regions are in
+   [the ramp chapter](../methods/03_the_ac_stark_ramp.md), and the campaign
+   plan schedules the ladder inside the power blocks it already runs.
+
+   **And the beam's own geometry is the second lever.** An adjustable expander
+   moves the waist at fixed power with an abscissa that is a ratio of focal
+   lengths, so the ladder is calibrated even though the absolute waist is not.
+   Every term carries a different power of the magnification, none for the
+   collisional and laser widths, the inverse for the transit, the inverse
+   square for the light shift, and steeper still for the rate-driven terms, so
+   a fit across settings measures the reference waist twice and tests the
+   transit law instead of assuming it. That is the record's largest open input,
+   and this is the cheapest attack on it that does not depend on one knife-edge
+   measurement being right.
+   [The ramp chapter](../methods/03_the_ac_stark_ramp.md) derives the
+   exponents and names the two cautions: the retro ratio has to be measured at
+   each setting, and the axial collection window moves with the knob.
 4. **Same-session high-density points (150–170 °C).**
    Converts reach on the density lever, rather than combinability, which the
    record has already settled. It rides the temperature-grid days if the oven

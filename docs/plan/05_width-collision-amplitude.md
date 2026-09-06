@@ -176,7 +176,20 @@ this block prescribes. `APPARATUS.md` §6 places the campaign drive at 54 to 60
 per cent of full modulation, with the index scaling as 1/λ from the 780 nm
 certificates, and it records that the generator's 25 MHz ceiling constrains any
 higher-frequency tank. Whether the 12.5 MHz tank reaches β ≈ 1.2 is therefore an
-open item for this block and is the first thing to test on the bench. Second,
+open item for this block and is the first thing to test on the bench. The
+new RF drive reaches a higher depth without residual amplitude modulation
+and can sit at another resonance (owner statement, 2026-09-06). Which
+resonances and depths it offers is the apparatus item
+[chapter 12](12_open-apparatus-items.md) carries, and the forecast measures
+the spacing's cost before it is chosen. The depth is a lever in its own right: a
+phase modulation leaves the intensity, and so the light shift, the same for
+every tooth at any depth, while the rate per tooth goes as the square of the
+Bessel weight, so a depth ladder at fixed power moves the rate-driven terms
+(amplitude, depletion, trapping, any rate-dependent pull) and not the shift.
+The fitted centre against depth at fixed power is a null test of the light
+shift that a power ladder cannot give, and one comb trace carries the ladder
+tooth by tooth. The twin measures it with the forecast's file, whose
+depletion now follows each tooth's own rate. Second,
 the ramp is too short: no recorded ruler covers both outer tooth windows, the
 k = −3 window is clipped on 52 of the 104 fitted combs and the k = +3 window on
 36, and at the measured depth a fully covered third-order tooth still stands at

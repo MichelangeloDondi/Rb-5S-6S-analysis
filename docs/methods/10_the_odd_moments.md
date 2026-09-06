@@ -386,8 +386,66 @@ The noiseless exponent is three at wide windows with the shift resolved. Under
 the archive's noise the fitted exponent of the third cumulant sits near two,
 because a cumulant smaller than its own noise has its magnitude inflated by
 that noise and the rungs at and below the archive's shift are that case. The
-same estimator on the campaign's power ladder, with the drift and the drawn
-rung order on, is sign-degenerate on its top rung at the predicted coefficient
-and becomes a measurement only where the shift approaches a megahertz. That is
+joint fit against power on the campaign's ladder, with the drift and the drawn
+rung order on, is regenerated under the package estimator and lands in its
+own commit. Until its file is in the tree the reading rests on the deep map's
+per-rung table, which is. The deep map's
+per-rung table ([`results/moment_power_map_deep_rungs.csv`](../../results/moment_power_map_deep_rungs.csv))
+puts that boundary between one and two megahertz. That is
 the measured reason the campaign reads the mean pull first and the skew
 second.
+
+## 13. The estimator, as the package carries it
+
+The windowed cumulant is computed by `rb5s6s.cumulants.windowed_cumulant`
+(tests in `tests/test_cumulants.py`). A window of half-width $W$ is recentred
+on its own first moment until the centre moves by less than a tolerance, the
+pass count and a converged flag are returned beside the value, the detector
+pedestal is subtracted first as the median of the trace's own far wings, the
+trace is not clipped at zero, and the cumulants of any order follow from the
+central moments by the standard recursion.
+
+Three producers had carried a copy of the recentring with a fixed twenty
+passes, the trace clipped and no baseline removed. On a power ladder that copy
+is not converged. With a flat pedestal $b$ under a line of area $A$ inside the
+window, one recentring pass moves the centre to $(A\mu + 2bWc)/(A + 2bW)$: the
+fixed point is the line's centroid $\mu$, but the residual shrinks per pass
+only by the pedestal's share $2bW/(A+2bW)$ of the window's mass. A bright line
+converges in a few passes. The lowest rung of a power ladder, whose amplitude
+falls as the power squared while the offset does not, converges slowly, and a
+residual centring error $\delta$ on a pedestal is a fake third moment of order
+$-\delta W^2$ per unit pedestal mass, so the artefact grows as the window
+cubed. On the twin's noiseless dim rungs it read tens to tens of thousands of
+times the converged value, growing with the window and flipping its sign, while the centre itself had
+converged to four decimals. The
+pedestal also dilutes the normalisation by the line's share of the window,
+which is constant across the maps' fixed-power shift ladder and varies along a
+power ladder, where it bends a fitted exponent.
+
+**The odd cumulants of the ramp alternate in sign**, from its density
+$2|s|/S_0^2$ on $[-S_0, 0]$: $\kappa_3 = +S_0^3/135$, $\kappa_5 = -S_0^5/567$,
+$\kappa_7 = +S_0^7/1215$ (the recursion of `cumulants_from_central_moments`
+on the density's central moments, and `tests/test_cumulants.py` pins the third).
+A usability statistic built on the sign of a windowed cumulant, such as the
+fraction of traces returning a negative value in
+`results/moment_power_map_deep_rungs.csv`, is therefore read against each
+order's own sign: for the fifth order a fraction near one is a settled
+measurement and a fraction near one half is the coin flip, and the reading
+that struck the fifth order as never settling had read the convention. The
+signs are those of the coded side of the ramp, the red one. On the blue side,
+which the polarizability this record uses implies and the record holds open, every odd
+sign flips and the reading inverts with it.
+
+`results/moment_power_map*.csv` are produced through the same package
+estimator, and their per-rung tables carry the quiet reference beside every
+noisy median, the fraction of traces with the wrong sign against it, the
+quiet value over the standard error, and the trace count at which the median
+would stand three standard errors from zero. The copy they replaced
+converged at the maps' fixed bright power on the wide windows and not on the
+narrowest: at the narrowest half-width the truncated line's mass at the window
+edges is a second contraction term, and twenty passes read the rung high by
+a few per cent at the top of the ladder and by tens at the bottom.
+`results/cumulant_window_check.csv` is analytic on the noiseless model at
+unit amplitude and keeps its own iteration. The joint fit against power and
+the three-channel forecast are produced through the package estimator, and
+their files land with their first runs.

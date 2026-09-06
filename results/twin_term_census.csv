@@ -4,7 +4,7 @@ laser_kernel_both_forms,yes,yes,lineshape.py,"yes, form assumed","inspected: las
 transit_cusp,yes,yes,lineshape.py,yes,inspected: transit_fwhm in both signatures,DIAGNOSTIC
 ac_stark_ramp,yes,yes,lineshape.stark_ramp,optional,inspected: s0 in synthetic_traces since 2026-08-30 and the stark layer in build_world_trace. The side stays open per tests/test_ramp_side_matches_the_polarizability,DIAGNOSTIC
 saturation_companions,yes,yes,stark.companion_gamma_mhz,"stated: deliberately absent (science plan T1: truth carries it, the fitter keeps the committed model, the gap is measured in T3)",inspected: saturation layer in build_world_trace,DIAGNOSTIC
-cascade_depletion,yes,yes,cascade.py,stated: deliberately absent (same T1 clause as saturation),inspected: cascade layer in build_world_trace,DIAGNOSTIC
+cascade_depletion,yes,yes,cascade.py,stated: deliberately absent (same T1 clause as saturation),"inspected: cascade layer in build_world_trace, and a tooth of an EOM comb is depleted at its own share of the line's rate",DIAGNOSTIC
 blackbody,no,yes,"blackbody.py, two-platform rule in twin.py",no,inspected: bbr layer in build_world_trace. Negligible at MHz widths per the example's CHECK 3,DIAGNOSTIC
 lock_drift,yes,yes,-,absorbed by free per-scan centres,inspected: drift layer in build_world_trace,DIAGNOSTIC
 noise,flat fraction or measured law,shot-like anchored,"noise.py, per-point law in twin.acquire",weights by the law,"inspected: noise accepts a law dict in synthetic_traces, and build_world_trace anchors shot-like noise at the bright rung",DIAGNOSTIC

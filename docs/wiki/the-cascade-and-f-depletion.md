@@ -105,6 +105,25 @@ ellipticity in the drive, or a treatment of the standing wave that resolves
 its polarisation structure. None is present in the model of record, and
 each is a reason to revisit.
 
+## A sideband is depleted at its own rate
+
+Depletion counts excitation cycles, so a line driven through a modulated
+comb depletes tooth by tooth and not as one line. A tooth carrying a
+twentieth of its line's excitation accumulates a twentieth of the cycles in
+a crossing, and it therefore keeps a larger fraction of what it starts
+with. The share of the line's rate a tooth carries is
+$J_k(2\beta)^2$ ([the two-photon comb](the-two-photon-comb.md)), which is
+exactly the tooth's share of the line's total, so the rate scale needs no
+new constant.
+
+This is worth stating because the digital twin had it wrong until
+2026-09-06: it counted the whole line's cycles for every tooth, which made
+depletion look independent of the modulation depth and would have hidden
+the one term a depth ladder is meant to expose. The correction is in
+`rb5s6s.forecast.build_world_trace`, applies only when the caller maps
+teeth to their physical line, and leaves every single-line output
+unchanged.
+
 ## What can go wrong
 
 - A branching read as a degeneracy weight. The blocked paths are the point,

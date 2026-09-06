@@ -128,6 +128,75 @@ background does not, so the discriminator exists and is already in the design.
 Until the measurement is made the forecast spans the term by treating it as
 absent and naming it here.
 
+### The angle between the counter-propagating beams
+
+Doppler cancellation in the two-photon line is exact only for exactly
+anti-parallel beams. An angle $\theta$ between them leaves a first-order
+residual $k v_\perp \theta$, a Gaussian in the line whose width goes as the
+rms of one velocity component, $\sqrt{k_B T/m}$: at 130 C that is about
+200 m/s, so the residual Gaussian has an rms width of **about a fifth of a
+megahertz per milliradian** at 993 nm (near half a megahertz full width), and a
+one to two milliradian misalignment adds a few hundredths to a few tenths of a
+megahertz in quadrature under a Gaussian the fits put near two. (The first
+form of this item quoted the three-dimensional mean speed, which is neither
+width.)
+Nobody has recorded the angle, and the retro path is set by a flat mirror
+behind the cell, so this is an apparatus number and not a derivation.
+
+The record already bounds its effect. Any speed-borne term must grow as the
+square root of the temperature, about eight per cent from 70 to 130 C and monotone,
+and the fitted Gaussian across the ladder
+(`results/global_dataset_fit.csv`, `sigma_laser` by session) is
+non-monotonic and smallest at 130 C across the campaign sessions, which reads
+as a small residual, though those rows carry no stated error and a
+session-to-session spread near a few tenths of a megahertz, so the reading is
+a bound and not a resolution. What closes it is a measurement without atoms at the line: the
+angle from the beam positions at two distances along the return path, or the
+width of a Doppler-broadened single-photon line under the same alignment. What
+it would change: the Gaussian nuisance gains a derived, temperature-scaling
+share, and the laser's own width is read from what remains. No forecast in
+this repository rests on the angle: the forecast spans the term by treating
+it as absent and naming it here.
+
+### The EOM drive's available resonances and depths
+
+The new RF drive reaches a higher modulation depth without residual
+amplitude modulation and can sit at a resonance other than the 2025 spacing
+(owner statement, 2026-09-06). What is not recorded is which resonances the
+tank or its replacement offers and what depth each reaches, and both are
+apparatus numbers. What they change: the centre channel's fit window stops
+just short of half the spacing, so a spacing of 25 MHz or more opens the full
+window the tight-waist line needs, while the moment channel's science trace is
+taken with the RF off whatever the spacing, since the teeth's tails enter the
+window at any spacing the record has tried. **No committed forecast rests on
+this item today**: the producer that spans the spacings of 8, 25 and 40 MHz
+beside the 2025 one, and two depths, is written and its run is the next
+commit's, so until its file is in `results/` this item carries no number and
+neither does anything quoting it.
+
+### The adjustable expander's magnification, and what is known about it
+
+The campaign wants a waist ladder taken at fixed power and fixed retro ratio
+through an adjustable beam expander (owner design, 2026-09-06), because the
+magnification is a ratio of focal lengths and can be known far better than the
+absolute waist, which makes the ladder's abscissa calibrated. What the record
+does not have is the instrument's own numbers: the magnification range, the
+accuracy with which the magnification is known at each setting, whether the
+mode quality survives at the extremes, and how the assembly behaves thermally
+under the beam, which matters because the record already carries a
+power-dependent thermal lens in the modulator. What they change: the ladder
+measures the reference waist through two different powers of the
+magnification, the transit's inverse and the shift's inverse square, so the
+accuracy of the abscissa sets how tightly the two agree and therefore how much
+the largest open systematic in this record shrinks. **No committed forecast rests
+on this item either.** The analytic ladder that spans it is drafted and its
+exponents check against the package functions that own them, and until its file
+is committed the campaign case quotes nothing from it. A second number rides with
+it, the retro ratio at each setting, since expanding the beam changes the
+returning mode's overlap unless the retro is re-matched, and the light shift
+takes one combination of the two arms while the two-photon coupling takes
+another.
+
 ### What each item costs to close
 
 **The lock residual is the cheapest and the highest leverage.** It needs no

@@ -167,6 +167,16 @@ explains the 2025 design compromise and prescribes its fix:
   is why the carrier height settles nothing about the labelling. A fixed-lock
   session could monitor modulation purity live from the tooth asymmetry alone.
 
+**The same law makes the comb a lever and not only a ruler.** The weights sum
+to one, so the signal summed over teeth is the same at every depth while its
+distribution over them is not, and the intensity is the same at every depth so
+the light shift is too. A ladder in depth at one power therefore moves the
+excitation rate with the dressing held still, which is the one thing a ladder
+in power cannot do. [The ramp chapter](03_the_ac_stark_ramp.md) derives it and
+states the three tests it buys, and the depth for each rung is read from the
+tooth heights of the same trace it is taken from, which makes the abscissa
+self-calibrating exactly as far as the modulation is pure.
+
 ---
 
 **Where the numbers live.** Modules M2 · producers `scripts/run_ruler.py` ·

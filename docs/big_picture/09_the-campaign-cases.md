@@ -46,12 +46,25 @@ why: across 432 configurations of the laser kernel, the noise level, the
 oscilloscope, the analysis window and the model's own grid, at two thousand
 traces on each of five shifts from 0.18 to 2.0 MHz, **the cubic law is not
 recovered on a ladder that starts below the 2025 shift**. The fitted exponent
-of the third cumulant comes back at 1.8 with a spread of about 0.5 across the
-grid where the physics gives 3, because the magnitude of a cumulant smaller
+of the third cumulant comes back at 1.8 with a standard deviation of 0.7 across
+the grid where the physics gives 3, because the magnitude of a cumulant smaller
 than its own noise is inflated by that noise, and the rungs at and below the
 archive's shift are that case. The archive took five traces a rung against the
-map's two thousand. What raises the shift is the power and the tighter waist.
-What the repaired lock buys is the pull channel that does not need it. Raising the
+map's two thousand, and a second map at forty thousand traces on a ladder from
+the 2025 shift up
+([`results/moment_power_map_deep_rungs.csv`](../../results/moment_power_map_deep_rungs.csv))
+finds the 2025 rung a coin flip in every configuration and the channel opening
+only between one and two megahertz of shift. What raises the shift is the
+power and the tighter waist. What the repaired lock buys is the pull channel
+that does not need it. The campaign therefore reads the coefficient three
+ways, and the forecast measures every lever for all three: the higher moments
+alone, on the RF-off science trace, since a comb on the trace leaks its teeth's
+tails into the window and cancels the ramp's own asymmetry at the tight waist.
+The second is the centre against power under the repaired lock, a fit with
+its own background that survives a comb from a spacing of 25 MHz up. The
+third is the two combined with the covariance measured between them over the same trace sets.
+The producer is `scripts/run_three_channel_forecast.py` and its file lands
+with its first run. Raising the
 shift is what opens the channel, and raising it is what the higher power and
 the repaired lock do.
 
@@ -263,7 +276,7 @@ near a nanofibre and not spectroscopy.
 
 | | cell alone | cell plus nanofibre |
 |---|---|---|
-| **what the host group keeps afterwards** | nothing on their platform. The results are ours | a per-run calibration of the surface-charge term at 6S sensitivity, an atom-based monitor of adsorbate dynamics on the fibre, the two-colour trap's magic power ratio for this transition, a quadratic-Zeeman line shifter, and a laser characterised through their own guided path |
+| **what the host group keeps afterwards** | nothing on their platform. The results are ours | a per-run calibration of the surface-charge term at 6S sensitivity, an atom-based monitor of adsorbate dynamics on the fibre, the two-colour trap's magic power ratio for this transition, a quadratic-Zeeman line shifter, a depth-ladder null test of the light shift demonstrated on their own modulator, and a laser characterised through their own guided path |
 | **what it measures about the fibre** | nothing | the **fibre diameter**, the tolerance no held paper states and which every guided quantity depends on, to between [30.73](../../results/onf_lever_ranking.csv "ref:onf_lever_ranking:lock_span_0.04:sigma_diameter_nm") nm at the 2025 drifting lock and [0.67](../../results/onf_lever_ranking.csv "ref:onf_lever_ranking:lock_span_0.0:sigma_diameter_nm") nm at the photon floor, marginalised over the drive amplitude the scan cannot know. The repaired lock decides where in that span the campaign sits, and its residual is unmeasured. Also the light-shift coefficient, and the surface coefficient $C_3$ which is the weakest of the three (`results/onf_lever_ranking.csv`). **The diameter is not only obtainable this way**: the group's own scanning electron microscope gives it without atoms, and the published proximity to the 352 nm mode cutoff is a sharp independent diagnostic. What the atoms add is the quantity that actually enters the physics, measured in situ under the conditions of use, rather than a fibre characterised before it was installed ([chapter 6](06_next-nanofibre.md)) |
 | **fibre time** | none | **acquisition only**, about [0.23](../../results/onf_lever_ranking.csv "ref:onf_lever_ranking:temperature_ladder:hours") hours per lever across three levers. Alignment, setup and the trap settling the distance scan needs between rungs are **not costed**, and the producer says so. The interval the host group would actually be asked to grant is an open item, not this number |
 | **fibre exposure** | none | what can be quoted is integration time: about [2.78](../../results/campaign_twin_forecast.csv "ref:campaign_twin_forecast:onf:minutes_per_trace_0.02") minutes per trace at the working precision, and [69](../../results/campaign_twin_forecast.csv "ref:campaign_twin_forecast:onf:minutes_per_trace_0.004") +- [16](../../results/campaign_twin_forecast.csv "ref:campaign_twin_forecast:onf:minutes_per_trace_0.004_err") at cell-matching precision, the half-span of the committed 25 to 40 counts per ms band. **The degradation that time causes is a different quantity and is an open item**: rubidium adsorption against exposure bounds the whole arm and nothing here converts one into the other ([chapter 6](06_next-nanofibre.md)) |
@@ -296,6 +309,18 @@ precision, left the cost rows standing, and moved nothing the host group
 keeps, because that row is a set of calibrations and instruments and not a
 precision. The corrections themselves are in the
 private correction record.
+
+**One more item joined the keep row on 2026-09-06, and it costs no beam time
+at all.** The modulation depth separates the light shift from everything
+driven by the excitation rate, because a phase modulation changes the spectrum
+without changing the intensity, so the shift is the same at every depth while
+the rate per tooth follows the Bessel weights and the power broadening follows
+their square root
+([the ramp chapter](../methods/03_the_ac_stark_ramp.md) derives it). It is a
+null test, it uses the modulator the ruler already needs, and it transfers to
+whatever line the host group drives next. It joins the keep row only in the
+fibre scenario, where it is demonstrated on their own bench: in the cell
+scenario it is a method in a paper, which is not the same currency.
 
 **And the surface characterisation is not a by-product.** The near-fibre field
 is what limits Rydberg spectroscopy on this platform, and the published state

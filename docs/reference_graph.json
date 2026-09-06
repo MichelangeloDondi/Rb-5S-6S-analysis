@@ -113,7 +113,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 75,
+    "line": 96,
     "writes": "0.433"
    }
   ],
@@ -125,7 +125,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 269,
+    "line": 282,
     "writes": "69"
    }
   ],
@@ -137,7 +137,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 269,
+    "line": 282,
     "writes": "16"
    }
   ],
@@ -149,7 +149,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 269,
+    "line": 282,
     "writes": "2.78"
    }
   ],
@@ -344,7 +344,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 192,
+    "line": 198,
     "writes": "0.051"
    },
    {
@@ -605,7 +605,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 233,
+    "line": 255,
     "writes": "0.9640"
    },
    {
@@ -622,7 +622,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 235,
+    "line": 257,
     "writes": "0.4040"
    },
    {
@@ -639,7 +639,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 233,
+    "line": 255,
     "writes": "0.9580"
    },
    {
@@ -656,7 +656,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 235,
+    "line": 257,
     "writes": "0.3760"
    },
    {
@@ -798,7 +798,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 93,
+    "line": 114,
     "writes": "984"
    }
   ],
@@ -810,7 +810,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 93,
+    "line": 114,
     "writes": "1.01283"
    }
   ],
@@ -822,7 +822,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 94,
+    "line": 115,
     "writes": "802"
    }
   ],
@@ -834,7 +834,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 94,
+    "line": 115,
     "writes": "1.01927"
    }
   ],
@@ -846,7 +846,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 102,
+    "line": 123,
     "writes": "0.231"
    }
   ],
@@ -858,7 +858,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 95,
+    "line": 116,
     "writes": "624"
    }
   ],
@@ -870,7 +870,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 105,
+    "line": 126,
     "writes": "0.615"
    },
    {
@@ -887,7 +887,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 106,
+    "line": 127,
     "writes": "0.489"
    },
    {
@@ -904,7 +904,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 95,
+    "line": 116,
     "writes": "1.03164"
    },
    {
@@ -1398,7 +1398,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 79,
+    "line": 100,
     "writes": "0.2895"
    },
    {
@@ -1415,7 +1415,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 278,
+    "line": 291,
     "writes": "0 to 1"
    }
   ],
@@ -1427,7 +1427,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 276,
+    "line": 289,
     "writes": "4 to 9"
    }
   ],
@@ -1439,12 +1439,12 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 126,
+    "line": 147,
     "writes": "30.73"
    },
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 267,
+    "line": 280,
     "writes": "30.73"
    }
   ],
@@ -1456,12 +1456,12 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 128,
+    "line": 149,
     "writes": "0.67"
    },
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 267,
+    "line": 280,
     "writes": "0.67"
    },
    {
@@ -1478,7 +1478,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 268,
+    "line": 281,
     "writes": "0.23"
    }
   ],
@@ -1507,7 +1507,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 164,
+    "line": 177,
     "writes": "0.029"
    }
   ],
@@ -1519,7 +1519,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 185,
+    "line": 198,
     "writes": "0.96"
    }
   ],
@@ -1531,7 +1531,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 187,
+    "line": 200,
     "writes": "0.94"
    }
   ],
@@ -1543,7 +1543,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 200,
+    "line": 213,
     "writes": "29"
    }
   ],
@@ -1555,7 +1555,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 202,
+    "line": 215,
     "writes": "32"
    }
   ],
@@ -1567,7 +1567,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 192,
+    "line": 205,
     "writes": "conditional"
    }
   ],
@@ -1579,7 +1579,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 153,
+    "line": 166,
     "writes": "6"
    }
   ],
@@ -1591,7 +1591,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 151,
+    "line": 164,
     "writes": "0.7"
    }
   ],
@@ -1603,7 +1603,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 178,
+    "line": 191,
     "writes": "0.997"
    }
   ],
@@ -1615,7 +1615,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 179,
+    "line": 192,
     "writes": "0.021"
    }
   ],
@@ -1627,7 +1627,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 181,
+    "line": 194,
     "writes": "0.960"
    }
   ],
@@ -1639,7 +1639,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 182,
+    "line": 195,
     "writes": "0.020"
    }
   ],
@@ -1651,7 +1651,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 189,
+    "line": 202,
     "writes": "fails"
    }
   ],
@@ -1663,7 +1663,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 159,
+    "line": 172,
     "writes": "unresolved"
    }
   ],
@@ -1675,7 +1675,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 156,
+    "line": 169,
     "writes": "0.705"
    }
   ],
@@ -1687,7 +1687,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 157,
+    "line": 170,
     "writes": "0.015"
    }
   ],
@@ -1699,7 +1699,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 169,
+    "line": 182,
     "writes": "clears"
    }
   ],
@@ -1711,7 +1711,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 170,
+    "line": 183,
     "writes": "0.4727"
    }
   ],
@@ -1723,7 +1723,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 171,
+    "line": 184,
     "writes": "0.0097"
    }
   ],
@@ -1735,7 +1735,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 173,
+    "line": 186,
     "writes": "clears"
    }
   ],
@@ -1747,7 +1747,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 307,
+    "line": 313,
     "writes": "0.9610"
    }
   ],
@@ -1759,7 +1759,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 309,
+    "line": 315,
     "writes": "0.9279"
    }
   ],
@@ -1771,7 +1771,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 314,
+    "line": 320,
     "writes": "-2.46"
    }
   ],
@@ -1788,7 +1788,7 @@
    },
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 311,
+    "line": 317,
     "writes": "-1.97"
    },
    {
@@ -1805,7 +1805,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 318,
+    "line": 324,
     "writes": "1.117"
    },
    {
@@ -1822,7 +1822,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 325,
+    "line": 331,
     "writes": "0.97"
    },
    {
@@ -1839,7 +1839,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 321,
+    "line": 327,
     "writes": "1.691"
    },
    {
@@ -1856,7 +1856,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 294,
+    "line": 300,
     "writes": "0.26"
    },
    {
@@ -2080,7 +2080,7 @@
    },
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 1480,
+    "line": 1492,
     "writes": "0.223"
    }
   ],
@@ -2109,7 +2109,7 @@
    },
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 1479,
+    "line": 1491,
     "writes": "0.253"
    }
   ],
@@ -2143,7 +2143,7 @@
    },
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 1478,
+    "line": 1490,
     "writes": "0.653"
    }
   ],
@@ -2177,7 +2177,7 @@
    },
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 1481,
+    "line": 1493,
     "writes": "0.1140"
    }
   ],
@@ -2392,7 +2392,7 @@
    },
    {
     "file": "results/README.md",
-    "line": 272,
+    "line": 275,
     "writes": "0.396"
    }
   ],
@@ -2409,7 +2409,7 @@
    },
    {
     "file": "results/README.md",
-    "line": 272,
+    "line": 275,
     "writes": "0.316"
    }
   ],

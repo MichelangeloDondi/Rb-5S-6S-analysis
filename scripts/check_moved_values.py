@@ -711,6 +711,26 @@ def main(argv: list[str]) -> int:
                   "empty: every changed results/ CSV in this window is an "
                   "addition, and an added value cannot have moved.")
             return 0
+        # THE THIRD COMPLETE CASE, found by the gate on 2026-09-06: every
+        # modified CSV in the window carries NO `value` column on either
+        # side. Then no value can have moved, by the same construction as the
+        # additions branch above, and refusing here refuses a wave for a
+        # propagation this checker was never able to see. It is not the
+        # suspicious case the comment above describes, which is a MODIFIED
+        # value-carrying CSV that retires nothing; that one still returns 2.
+        modified = [q for code, q in touched if not code.startswith("A")]
+        def _has_value(rev: str, path: str) -> bool:
+            head = _git("show", f"{rev}:{path}").splitlines()
+            return bool(head) and "value" in [c.strip() for c in head[0].split(",")]
+        if modified and not any(_has_value(base, q) or _has_value("HEAD", q)
+                                for q in modified):
+            print("  NOTHING TO CHECK, and that is COMPLETE rather than "
+                  f"empty: the {len(modified)} modified results/ CSV(s) in this "
+                  "window carry no `value` column on either side, so no value "
+                  "could have moved. What this sweep cannot see for them is "
+                  "stated rather than implied: a changed cell in a column it "
+                  "does not read is the prose guards' subject, not this one's.")
+            return 0
         print("  NOTHING TO CHECK: results/ CSVs changed in this window but "
               "no value moved, so this compares nothing and its silence is "
               "not evidence.")

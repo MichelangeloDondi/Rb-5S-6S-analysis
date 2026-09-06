@@ -57,7 +57,7 @@ Three separate labels recur throughout the repo and are easy to conflate:
   $\beta_\text{self}$, C2 the 2025 laser-epoch width $\sigma_\text{laser}$, and
   C3 the power sweep (ramp-law predictions), with C3d its AC-Stark coefficient
   bound $S_0$. Each is a **bound or null** in the 2025 dataset.
-- **M0 … M38, the analysis *modules* (pipeline stages)**, one `rb5s6s/*.py`
+- **M0 … M39, the analysis *modules* (pipeline stages)**, one `rb5s6s/*.py`
   file and one `scripts/run_*.py` driver each, where the fitting core has
   lettered sub-stages (M4b–M4e). The C-results are the *what*, the M-modules the *how*:
 
@@ -74,6 +74,7 @@ Three separate labels recur throughout the repo and are easy to conflate:
   | M28 full dataset in one likelihood | M29 trap-design corrections at the magic crossings | M30 cavity-scan photograph, integrated |  |
   | M31 cascade populations and ground-F depletion | M32 blackbody as a campaign temperature boundary | M33 model comparison as an evidence vector | M34 the digital twin: forecast a design before building it |
   | M35 the detection channel: which decay branch is collected, and its trapping | M36 polarisation: what ellipticity and a beam mismatch open | M37 the two-atom channel: what a pair accepts that one atom must refuse | M38 the fibre twin's forward model: a transit kernel entering at second order, contributing a few per cent of its own width and growing as T not sqrt(T), so a temperature ladder reads it weakly |
+| M39 the windowed self-centred cumulants: recentred to a tolerance with the flag returned, the pedestal taken from the trace's own far wings, any order through the moment recursion |  |  |  |
 
 - **CI, Continuous Integration** (*not* C1): the GitHub Actions workflow that
   runs the full `pytest` battery on every push, on the minimum *and* latest
@@ -113,7 +114,7 @@ it. The frequency-axis convention above (§0) is assumed by all of them.
 |---|---|---|
 | **1** | [The measurement](methods/01_the_measurement.md) | the apparatus, the cascade we detect, and why two counter-propagating photons cancel the Doppler width |
 | **2** | [The lineshape, kernel by kernel](methods/02_the_lineshape.md) | natural, collisional, laser and transit-time broadening, each derived, and why the transit kernel is a cusp rather than a Gaussian |
-| **3** | [The AC-Stark ramp](methods/03_the_ac_stark_ramp.md) | the analysis's novel core: a focused beam makes the light shift a *distribution*, closed-form and triangular for a two-photon rate, with a self-centred drift-immune skew |
+| **3** | [The AC-Stark ramp](methods/03_the_ac_stark_ramp.md) | the analysis's novel core: a focused beam makes the light shift a *distribution*, closed-form and triangular for a two-photon rate, with a self-centred drift-immune skew, and the modulation depth that changes the excitation rate while leaving the shift alone |
 | **4** | [The composite model](methods/04_the_composite_model.md) | the assembled profile in code, and radiation trapping, the mechanism that moves amplitudes but not shapes |
 | **5** | [From volts to a frequency axis](methods/05_the_frequency_ruler.md) | the EOM sideband ruler that calibrates every scan |
 | **6** | [The statistics](methods/06_the_statistics.md) | measured weights, hierarchical sharing, the σ_laser↔γ_coll degeneracy, the pre-registered measurement-vs-bound rule, and the fit-against-moments comparison the twin measured (§4.14) |
@@ -151,6 +152,10 @@ rb5s6s/   api(the supported entry point: a trace in, a linewidth out)
           amplitudes(M10) model_ladder(M11) identifiability(M12) coverage(M13)
           sharing_bic(M14) fringe_tail(M15) polarizability(M16) resolving(M17)
           vanderwaals(M18) ramp_transit(M19) hyperpolarizability(M29)
+          cumulants(M39: the windowed self-centred cumulants of a line, recentred to
+                    a tolerance with the converged flag returned, the pedestal
+                    removed from the trace's own far wings, any order by the
+                    moment recursion)
           cavity_scan(M30: the 2025-06-12 cavity-scan photograph, integrated)
           cascade(M31: hyperfine populations under repeated excitation, and the
                   ground-F depletion that separates transition strength from

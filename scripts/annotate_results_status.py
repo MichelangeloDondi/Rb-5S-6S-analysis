@@ -97,6 +97,9 @@ SKIP = {"laser_epoch.csv", "qc_metrics.csv",
         # booleans, tagged by the producer.
         "coverage_grid.csv",
         "moment_power_map.csv",
+        "moment_power_map_rungs.csv",
+        "moment_power_map_deep.csv",
+        "moment_power_map_deep_rungs.csv",
         # the lever ranking: every row is a Fisher forecast about a DESIGN, and
         # its inputs split measured from estimated, so the producer tags them.
         "onf_lever_ranking.csv",

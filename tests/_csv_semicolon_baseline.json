@@ -19,6 +19,7 @@
  "results/lever_crosscheck.csv": 15,
  "results/model_ladder.csv": 6,
  "results/moment_power_map.csv": 1296,
+ "results/moment_power_map_deep.csv": 72,
  "results/morning_ruler.csv": 21,
  "results/onf_candidate.csv": 2,
  "results/orthogonal_levers.csv": 5,

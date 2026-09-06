@@ -297,7 +297,14 @@ producing a measurement.
 
 **Recipe.** Measure the beam waist on the day, at several powers, with the EOM
 in the beam and thermalised at each, and measure the retro ratio against power
-in the same session. Repeat the existing power ladder in randomised order.
+in the same session. Repeat the existing power ladder in randomised order. If an
+adjustable expander is available, take the ladder at three or four
+magnifications as well, with the retro ratio measured at each: the
+magnification is known from the optics, every term carries a different power
+of it, and the fit then returns the reference waist instead of taking it from
+one knife-edge measurement
+([the ramp chapter](../methods/03_the_ac_stark_ramp.md) derives the
+exponents).
 Nothing else changes: same cell, same temperatures, same detection.
 
 **Success criterion, all six parts.** Precision: the waist known to better than
@@ -332,11 +339,22 @@ rather than of width on power. This is
 [chapter 10](../plan/10_the-fixed-lock-instrument.md), and the lock is now
 available rather than proposed.
 
+**And the recipe now carries its own null.** The modulation depth changes the
+excitation rate without changing the intensity, so the light shift cannot
+depend on it. A short ladder in depth at the top power, taken inside the power
+block, gives a centre against depth whose expected slope is zero, and a slope
+found there is a rate-dependent pull or an amplitude-modulation admixture and
+not this quantity. It costs minutes and it converts the recipe's main
+assumption into a measurement.
+[The ramp chapter](../methods/03_the_ac_stark_ramp.md) derives it and
+[plan chapter 4](../plan/04_intensity-and-light-shift.md) item 3b runs it.
+
 **Success criterion.** Precision: a centre pull resolved at better than three
 standard deviations, which the 40-to-1 moment ratio makes reachable where the
 width channel is not. Identifiability: the light shift separated from
 saturation and pumping, which move the width but not the centre, so this level
-breaks the degeneracy that the width channel cannot. Coverage: verified by
+breaks the degeneracy that the width channel cannot, and any residual
+rate-driven pull on the centre bounded by the depth ladder above. Coverage: verified by
 injection and recovery at the achieved noise. Convergence: independent starts
 agree, tested rather than assumed. Model validity: the drift model checked
 against a zero-signal control epoch, since a control epoch has already been

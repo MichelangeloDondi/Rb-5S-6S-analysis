@@ -33,10 +33,22 @@ PY=.venv/bin/python; [ -x "$PY" ] || PY=python3
 # the stamp remains the ARCHIVE's index tree, because that is what the
 # gate and the ledger key on, and a private edit does not move it.
 CHANGED=$(git diff --name-only HEAD | sort -u)
+# AND THE COMMITTED GOVERNANCE EDITS OF THIS WAVE COUNT TOO (2026-09-06).
+# The three sources below all read the governance WORKING state, so they go
+# empty the moment the governance repository is committed -- which the
+# standing durability rule says to do at every wave boundary. The floor then
+# saw no governance change while the gate's prose banks still read those
+# files, which is the same blindness this block was written to close, coming
+# back through the commit. The fourth source is every governance file touched
+# since the archive's own HEAD, which is exactly the wave's governance diff
+# whether it is committed or not.
+_ARCH_HEAD_AT=$(git log -1 --format=%cI HEAD 2>/dev/null)
 PRIVCHANGED=$( { git -C private diff --name-only HEAD 2>/dev/null || true; \
                  git -C private diff --cached --name-only 2>/dev/null || true; \
                  git -C private ls-files -o --exclude-standard 2>/dev/null || true; \
-               } | sort -u )
+                 [ -n "$_ARCH_HEAD_AT" ] && git -C private log --since="$_ARCH_HEAD_AT" \
+                     --pretty=format: --name-only 2>/dev/null || true; \
+               } | sed '/^$/d' | sort -u )
 # THE STAMP IS THE INDEX TREE (git write-tree), so an unstaged edit would be
 # tested here and then stamped as if it were not there -- the first live run
 # did exactly that: 1201 tests green, stamp naming HEAD's own tree. Stage

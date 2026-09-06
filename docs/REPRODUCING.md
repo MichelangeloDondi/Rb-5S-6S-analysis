@@ -55,7 +55,7 @@ under moving dependencies is a property of the environment until the pinned
 comparison disagrees, and that the pinned comparison is the one that speaks
 for the record.
 
-The runner's stages write the core subset of the 91 committed CSVs. The
+The runner's stages write the core subset of the 94 committed CSVs. The
 rest each have their own script, held out for one of two reasons.
 
 ### Seven need trees that stay outside the repository
@@ -95,7 +95,11 @@ from a tracked photograph), `run_laser_history.py` (`laser_history.csv` and
 free tooth centres, held out because nothing downstream reads its bound),
 `run_transit_additivity.py` (`transit_additivity.csv`, the guided transit
 kernel's second-order entry computed two independent ways, a few minutes
-over a 600,000-point grid), `run_fibre_twin.py` (`fibre_twin.csv`) and
+over a 600,000-point grid), `run_fibre_twin.py` (`fibre_twin.csv`),
+`run_moment_power_map.py` (`moment_power_map.csv` and its per-rung table,
+about half an hour on eight workers), `run_moment_power_map_deep.py`
+(`moment_power_map_deep.csv` and its per-rung table, about ninety minutes on
+six workers) and
 `run_paired_reference_forecast.py` (`paired_reference_forecast.csv`,
 Monte-Carlo comparing the paired cell-plus-fibre acquisition against
 unreferenced sweeps, with no traces needed. It draws six
