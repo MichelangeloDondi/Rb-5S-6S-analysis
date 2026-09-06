@@ -99,8 +99,13 @@ piezo calibration and no wavemeter. The co-propagating Doppler pedestal, about
 942 MHz wide at 130 C, is a thermometer of the atoms themselves, and the two
 isotopes' pedestals have a width ratio fixed by their masses at every
 temperature, which makes that thermometer self-checking. The ratio of the
-narrow line's area to the pedestal's measures the retro power ratio, which the
-analysis otherwise carries as a fixed assumption informed by no data.
+narrow line's area to the pedestal's is nearly stationary in the retro power
+ratio near unity, its slope there a fifteenth of the ratio's own since the
+narrow line goes as the product of the two beams and the pedestal as the sum
+of their squares, so it reads that ratio only slowly, which the hours the
+projections put on it carry. A calibrated attenuator in the retro path
+does, and [the plan's open-items chapter](../plan/12_open-apparatus-items.md)
+carries the law and the run.
 
 **The fibre arm inherits all three for nothing**, because it is the same sweep,
 the same laser and the same instant. None of the three can be produced by a
@@ -123,8 +128,9 @@ a second modulator goes in one of them.
 **Their current fibre is thinner than the one this record commits.**
 `results/onf_candidate.csv` carries a diameter of 400 nm, cited to the 2020
 cold-atom measurement. The group's 2025 fictitious-field paper states a radius
-of 175 nm, so a diameter of 350 nm, and the 2026 surface-charge paper works on
-the same platform. Solved at each, the intensity decay length at 993.4 nm is
+of 175 nm, so a diameter of 350 nm, and the 2026 surface-charge paper's fibre is
+370 nm, the middle value the guided-mode tables already carry, so the committed
+400 is the thickest of three. Solved at each, the intensity decay length at 993.4 nm is
 312 nm at 400 and **492 nm at 350**, a factor of 1.58. **Every guided intensity,
 shift and rate in this chapter is keyed on the committed diameter**, and the
 band those rows advertise spans a plus or minus 20 nm tolerance about it, which
@@ -152,6 +158,91 @@ which no held paper carries. Until then the statement to the group is that
 their trap wavelength is interesting for this transition and that its
 differential shift there is not yet computable here.
 
+### The platform in print
+
+The group's platform is read here from this record's own notes on three of
+their papers. The 2023 paper is a magneto-optical trap overlapped with a bare
+fibre, its guided 1064 nm light a surface heater at 300 microwatts, with
+detection by trap loss on a photomultiplier
+([the note](../lit/vylegzhanin2023.md)). The 2026 surface-charge paper runs
+the two-colour trap's light on a 370 nm fibre, counter-propagating 1064 nm
+beams and one 762 nm beam with a minimum near 400 nm from the surface about a
+sixth of a millikelvin deep, and measures on the MOT's atoms beside it without
+reporting a loaded trap ([the note](../lit/raj2026.md)). The 2025
+fictitious-field trap is a proposal ([the note](../lit/vylegzhanin2025.md)).
+So the red beam this chapter's next section moves exists on the bench, a
+loaded trap does not yet, and every row and section of this chapter that
+depends on atoms held in the trap is conditional on that loading. What the proposed trap's design then
+offers is the cleanest handle on the disputed polarizability this record knows
+of: at the ground-state tune-out where it would operate, the trap light shifts
+the 5S state by nothing and the 6S state by its own polarizability alone, so
+the differential shift of the line under that light is a direct reading of the
+upper state's polarizability at that wavelength, a quantity no experiment has
+measured at any wavelength. This record cannot compute its value there, since
+its 6S line list stops at 8P, so the offer is the measurement and not a
+prediction, conditional on that trap being built. Two things the platform can
+do with no loaded trap are in the table below, the single guided beam and the
+heating beam's power, and a third, the molasses temperature as a knob on the
+sampled intensity, waits on the near-surface density model the twin lacks.
+
+### A red beam at 1204 nm would make the trap magic for this transition
+
+An external analysis proposed moving the two-colour trap's red beam from 1064
+nm to the record's own 1203.9 nm crossing, and its inputs reproduce from this
+repository's modules: the ground-state polarizability is 687.4 a.u. at 1064 nm
+and 546.7 at 1203.9, so about 1.26 times the red power restores the depth, and
+at the group's 175 nm radius the fibre stays single-mode there, with a
+V-number near 0.95. At that wavelength the differential scalar shift from the
+red beam vanishes by construction, which removes the trap-light shift and the
+need to gate the trap off during the probe, turning a gated snapshot into a
+trapped, static line. **The blue beam still shifts the line**, by about 1.9 MHz
+at 762 nm against the 7.4 MHz the 1064 nm red now contributes, and no blue-side
+crossing is available because that window lies inside the 6S to nP forest.
+**Check 1204 nm against the 5S to nP series before adopting it**, since a
+trap wavelength sitting near an excited-state resonance is the error the same
+analysis made once before with a 685 nm blue beam.
+
+**One number in the same analysis is refused.** It infers an effective mode
+area of 1.4 square microns backwards from the group's published trap depth,
+and builds a table on it in which one milliwatt guided gives a 1.74 MHz shift.
+This record's validated field solve gives 0.62 square microns on the
+azimuthal-mean convention and 0.49 on the peak convention at the committed
+400 nm, and
+[0.826](../../results/guided_mode_tables.csv "ref:guided_mode_tables:mode_solve_350nm:mode_area_azimuthal_mean")
+and
+[0.642](../../results/guided_mode_tables.csv "ref:guided_mode_tables:mode_solve_350nm:mode_area_peak")
+at the group's 350, with a shift of 1.253 MHz per milliwatt at the trap site
+on the 370 nm fibre of `results/onf_lever_ranking.csv`, so the refusal is a
+factor under two at the group's own diameter and over two at the committed
+one. The later briefing from the
+same source withdrew the 1.4 itself. And the table's claim that the shift
+scales as the inverse square of the area is wrong on its face: a shift follows
+intensity, which is power over area, so it scales as the inverse first power.
+
+Scanning that red beam's wavelength across the crossing while watching the
+line is the magic-wavelength measurement itself, a null that needs no intensity
+calibration, and the fibre reaches the shift at a thousandth of the cell's
+power, so the trap the fibre programme wants and the crossing the sign dispute
+turns on are one experiment.
+
+### What the guided arm measures that no cell can, and the observable that survives the radius
+
+The guided light shift is a translation of the whole line and not an asymmetry
+of a per cent, so at the record's 1.253 MHz per milliwatt
+(`results/onf_lever_ranking.csv`) a few milliwatts move the line by a
+linewidth, in a direction the two published signs of the differential
+polarizability predict oppositely. The record settles that sign from the
+measured 6S lifetime, and the guided arm reads it by inspection in a day, on an
+apparatus that exists, and that is the confirmation to lead with. **The
+observable that survives the fibre's own open item is a ratio.** The absolute
+shift carries the mode area, hence the radius nobody has measured. The ratio of
+the probe's shift to the trap light's shift at the same site carries the ratio
+of two polarizabilities and the ratio of two intensities on one mode, and a
+five-nanometre radius error moves that intensity ratio by under a per cent. On
+the record's polarizabilities the ratio at 993 to 1064 nm is 1.42. It is the
+trapped-ion light-shift-ratio method, whose lit note this record owes, and it
+is the first determination of a 6S polarizability that does not ride on a beam-waist prior.
+
 ### The guided-platform open items
 
 Listed here and not in [the plan's open-items chapter](../plan/12_open-apparatus-items.md),
@@ -160,6 +251,12 @@ on it.
 
 | item | what it changes | how the forecast proceeds |
 |---|---|---|
+| **the vector light shift of the guided mode** | the m_F structure of every guided line: the mode's longitudinal component makes the field's E* x E non-zero, and for two J = 1/2 states the tensor term vanishes while the vector term does not, so each hyperfine line is a set of m_F components under one fitted width | measured to exist on this transition at this laboratory's fibre, where polarisation alone does not extinguish the guided two-photon signal ([Ray 2020](../lit/ray2020.md)). Optical pumping into one m_F, a bias field, or the m_F-weighted lineshape in the model before the first guided fit |
+| **the 6S decay rate at the trap site** | the guided line's natural width, which at the fibre is nearly the whole width once transit, collisions and Doppler are gone: a modification of a fifth would move it by 0.7 MHz | unmodelled in this record, which carries the free-space lifetime. Expected small, since the 6S decays at 1.3 microns where the fibre is a fifth of a wavelength across and the atom sits near three radii out, and in that limit the quasistatic term dominates with the guided contribution exponentially small ([Klimov and Ducloy 2004](../lit/klimovducloy2004.md), held). Computed with the Green's function of a dielectric cylinder before the first guided fit, and measured, it is a nanofibre-QED result on a lifetime known to 0.4 per cent |
+| **the cloud's temperature against its density at the probe radius** | one potential sets both, so a temperature change is a density change and the guided transit's ensemble factor moves with it. A modelled correlation and no free lever | the trap potential, once the radius and the two powers are known, and clean in the sense that the coupling is computed and not read from a vapour-pressure curve |
+| **the guided beam geometry, one beam or two** | whether the guided line is one component or two, whether the retro ratio and the comb's path-delay factor enter, and whether frozen fringes raise the rate-weighted mean shift by five thirds and spread it to four times the forward shift | at 150 uK the co-propagating Doppler width is a sixth of the natural width, so a single guided beam costs under three per cent of width and removes all three, a twin question once the guided world builder carries both geometries (2026-09-06) |
+| **the 1064 nm heating beam as a potential** | on cold atoms the host's 300 microwatt guided 1064 nm light is an attractive potential on the ground state, computed with this record's mode solver on the azimuthal-mean convention (the guided power over the mode's effective area at the surface, then the solved flux profile) at 20, 10 and 2 microkelvin at 200, 400 and 1000 nm from the 2026 paper's 370 nm fibre, beside a van der Waals term from the committed coefficient of 5 microkelvin at 200 nm and under one at 400 | nothing at the 140 uK of the MOT, half of the thermal energy in a 20 uK molasses, where its power becomes a lever on the sampled intensity distribution with no loaded trap, conditional on a near-surface density model the twin does not carry. That beam also shifts the line itself, by about 0.4 MHz at 200 nm from the surface on the record's polarizabilities, an eighth of the natural width. And it is the adsorption heater the group runs it for, so turning it down costs the fibre what the adsorption row weighs (2026-09-06) |
+| **the thermal near field of the fibre** | the blackbody shift at the atom's position, which the record takes as free space | the atom sits within a twentieth of the thermal wavelength of a warm dielectric with phonon resonances in the thermal band, so the free-space shift is a lower bound and the near-field value is unevaluated (2026-09-06) |
 | **fibre diameter tolerance** | the mode area, and through it every guided intensity, shift and rate | a stated tolerance propagated through the mode solve in `results/onf_candidate.csv`, worked out with its two cited precisions in the open item further down this page  |
 | **two-photon ionisation rate from 6S** | whether the probe perturbs the surface charge it reads | no forecast rests on it. Single-photon ionisation is excluded by [0.433](../../results/campaign_twin_forecast.csv "ref:campaign_twin_forecast:model:photoionisation_margin_from_6S") eV, and the surviving claim is narrower: a 5S-6S probe populates no Rydberg state, so the Rydberg-ground mechanism is absent by construction |
 | **the evanescent envelope the transit kernel is built on** | [methods chapter 9](../methods/09_the_guided_geometry.md) section 9.1 states that the exponential approximation is not available at these radii, since $qa$ runs 0.18 to 0.32, and section 9.2 then builds the whole transit kernel on a plain exponential decay in time | **no forecast spans it, and it is the largest known error on the temperature ladder's value.** Carrying the chapter's own solved profile through shortens the effective decay length against the nominal 401 nm, and the kernel enters at second order so the width a ladder reads moves by the square of that factor. **The size depends on which effective length is meant and the definition has to be named.** Matched on the second moment, the quantity the added width depends on, the solved profile gives about 270 nm against the nominal, and about 2.2 on the width. A second evaluation of the same integral, written independently, lands a few nanometres shorter, so the length is good to about the nearest ten and the width factor to the first decimal. A log-linear fit over the first 600 nm gives about 218 nm and 3.3. **The second-moment length must exceed the fitted one**, because the profile's local decay length rises outward, 183 nm at 50 nm from the surface to 340 nm at two microns. **The direction is conservative under every definition**: the fibre lever is stronger than this chapter currently claims, so closing it is a gain and not a retraction. It is derivable and needs no apparatus fact, so it is mathematics and not a question for the group |

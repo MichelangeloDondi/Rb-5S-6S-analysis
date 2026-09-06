@@ -133,7 +133,7 @@
  "docs/plan/06_sizing-and-spending-rules.md": 9,
  "docs/plan/07_acquisition-settings.md": 62,
  "docs/plan/08_the-acquisition-record.md": 18,
- "docs/plan/09_the-fixed-lock.md": 12,
+ "docs/plan/09_the-fixed-lock.md": 11,
  "docs/plan/10_the-fixed-lock-instrument.md": 13,
  "docs/plan/11_beyond-993.md": 2,
  "docs/plan/12_open-apparatus-items.md": 1,
@@ -152,5 +152,5 @@
  "results/README.md": 28,
  "scripts/README.md": 19,
  "tests/README.md": 7,
- "tests/_ratchet_history.md": 1
+ "tests/_ratchet_history.md": 2
 }

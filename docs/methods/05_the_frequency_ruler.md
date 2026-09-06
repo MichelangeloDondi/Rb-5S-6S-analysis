@@ -142,8 +142,16 @@ showing itself in the evidence.*
 For *pure* phase modulation the two-photon tooth amplitudes follow the exact
 closed law $A_k \propto J_k(2\beta)^2$, derived from Neumann's addition
 theorem in [EOM sidebands](../wiki/eom-sidebands.md) and resting on the
-[Bessel functions](../wiki/bessel-functions.md) that carry it. That law
-explains the 2025 design compromise and prescribes its fix:
+[Bessel functions](../wiki/bessel-functions.md) that carry it. The law takes
+the two beams as modulated in step. The retro beam's modulation lags the
+forward beam's by the round trip to the mirror, $2d/c$, and the same theorem
+then gives $J_k(2\beta\cos(2\pi f d/c))^2$, so the depth the teeth report is
+that effective one. At 12.5 MHz it sits 0.3 per cent below the drive's for a
+0.3 m path and 3.4 per cent for 1 m, and it vanishes at $f = c/4d$, where every
+tooth collapses into the carrier however hard the modulator is driven. The
+fitted depth needs no correction, since it is the effective one by
+construction, and the path length is an apparatus item in the plan hub. That
+law explains the 2025 design compromise and prescribes its fix:
 
 - **At small $\beta$ the sidebands are buried**: $J_k(2\beta)^2$ gives
   $1 : 0.10 : 0.002$ at $\beta=0.3$, so the outer teeth drown in the central

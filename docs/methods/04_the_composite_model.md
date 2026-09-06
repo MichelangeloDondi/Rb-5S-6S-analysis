@@ -238,7 +238,11 @@ Lorentzians combined analytically, the rest convolved numerically), returns an
 area-normalized profile, and `fit_condition()` fits it to data with the
 per-trace nuisances of [§4.2](06_the_statistics.md). It uses the pure triangular ramp
 (`stark_ramp()`), and the 2025 fits keep it because $S_0$ is fixed per power
-and the geometry correction sits far below the 2025 noise. A proposed fixed-lock session's
+and the geometry correction sits far below the 2025 noise. The convolution
+itself was tested on 2026-09-06 against the two-time correlation spectrum of a
+chirped chord with the homogeneous dephasing carried, on rung 3, and the plan
+hub's intensity chapter carries what it found at the archive's waist and at
+the campaign's, together with the producer it still owes. A proposed fixed-lock session's
 center-fits would swap in `stark_ramp_axial()` (the diverging-beam kernel of
 [§2.6](03_the_ac_stark_ramp.md))
 once the collection profile is measured. The no-Stark composite shared by the

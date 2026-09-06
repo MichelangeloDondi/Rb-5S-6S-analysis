@@ -305,3 +305,44 @@ second, and the twin distinguishes them in seconds.
 ---
 
 *[Width, collisions and amplitude](05_width-collision-amplitude.md) · [Acquisition settings](07_acquisition-settings.md)*
+
+
+## The order the calibrations run in, and why it is not free
+
+**The dependencies bind, and getting them wrong voids the measurement that
+came first.** Raised from outside the record on 2026-09-07 and checked here
+against the chapters that own each step.
+
+1. **Null the retro angle before anything else is calibrated.** A tilt changes
+   the linewidth, so every width and waist calibration taken before the null
+   describes a geometry the campaign will not run in. Chapter 12's
+   misalignment item gives the size, about a fifth of a megahertz of rms width
+   per milliradian, and chapter 1's own leading candidate for the
+   unaccounted megahertz of Gaussian width is a tilt of about three and a half
+   milliradians. The null itself is a card and a shear plate, not an
+   instrument: the return beam walks by twice the angle times the path, more than four
+   millimetres at the record's retro distance for the tilt the record suspects.
+   Nulling to half a milliradian puts the residual
+   near two tenths of a megahertz.
+2. **Then the go/no-go, and it is four traces.** If the line does not narrow
+   after the null, the unaccounted Gaussian was never the angle, and the
+   laser-width lever of chapter 2 moves ahead of the geometry in the queue.
+3. **Profile the beam after the null, and calibrate the expander's
+   magnification in the same camera setup**. The magnification is a ratio on
+   that camera. A profile taken before the realignment describes a mode the
+   campaign has changed.
+4. **Pin the collisional width before fitting the waist.** The Gaussian and
+   Lorentzian of one line correlate at about minus 0.95 in this record's own
+   width block, so a free Lorentzian inflates the Gaussian's error by about
+   three and spends the calibration that step exists to buy.
+5. **Anchor the density at the bottom of the temperature lever**, where the
+   absorption is weakest, before the lever is run.
+
+**And the analysis that needs no bench runs first**, because three of its
+answers change what is built. Whether per-trace centres are recoverable at
+all, which gates the whole centre channel. Whether a single record's width
+matches the co-added one. Whether the four-line gaps reproduce the hyperfine
+constants, which tests the frequency axis itself and therefore everything
+downstream. And the composition test of chapter 4. **The axis test goes
+first**, because if the gaps do not reproduce, what follows measures the
+piezo.

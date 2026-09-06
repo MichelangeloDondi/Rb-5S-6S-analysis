@@ -55,9 +55,16 @@ attributes it needs an independent lever on each slot. Density separates the
 collisional slope from the intercept and nothing more. The laser slot is the
 identifying one, and the kernel window established that the cell data
 constrain its shape only at one end-member. The platform this note sizes is an
-optical nanofibre with a two-colour evanescent trap, the configuration of the
-published lineage above, operated with the trap dark where the spectroscopy
-wants it. One apparatus provides three distinct instruments, sized below in
+optical nanofibre with a loaded two-colour evanescent trap, the configuration
+of the published lineage above. The host's own papers carry less than that:
+the 2023 platform is a magneto-optical trap overlapped with a bare fibre with
+the guided 1064 nm light as a surface heater ([2023](../lit/vylegzhanin2023.md)),
+the 2026 paper runs the two-colour trap's light on the fibre and measures on
+the MOT's atoms beside it without reporting a loaded trap
+([2026](../lit/raj2026.md)), and the 2025 fictitious-field trap is a proposal
+([2025](../lit/vylegzhanin2025.md)). So every row below that depends on atoms
+held in the trap is conditional on that loading. Where the trap is loaded, it
+is operated dark where the spectroscopy wants it. One apparatus provides three distinct instruments, sized below in
 the order of what they remove from this record's uncertainty.
 
 ## A. Cold atoms at the fibre: a laser-width instrument once the distance is fixed
@@ -82,7 +89,7 @@ reappearing in the fibre.**
 
 **With the distance held fixed it becomes tractable**: at 200 nm the term falls to
 [0.21 to 0.53](../../results/onf_candidate.csv "ref:onf_candidate:cp_shift_at_200nm:") MHz
-and is largely common-mode, so the two-colour trap is a precondition of the
+and is largely common-mode, so a loaded two-colour trap is a precondition of the
 measurement and not an enhancement of it. Under that condition the laser
 contribution, 1.5 to 1.9 MHz FWHM in the cell fits, is a large and resolvable
 fraction of the line. That is a direct measurement of the laser's width including its
@@ -392,6 +399,23 @@ at 150 uK and 208 kHz in a 20 uK molasses, both comparable to or larger than
 the transit term they would sit beside. The counter-propagating configuration
 cancels it to first order, so a teeth measurement in the fibre wants the
 standing-wave geometry rather than a running wave.
+
+**The cost side of that geometry, added 2026-09-06.** That sentence weighed the
+Doppler term against the transit term and neither against the line. At 150 uK
+the co-propagating two-photon Doppler width is a sixth of the 6S natural
+width and adds under three per cent to a Voigt of the two, while the standing
+wave costs three things a running wave does not have. At equal guided powers a
+third of the two-photon rate comes from co-propagating pairs, since the two
+cross pathways add in amplitude, and their line is the Doppler-broadened one,
+so the guided line is two components a fit carries together. The retro ratio and the comb's path-delay factor enter. And an atom
+at a tenth of a metre per second moves five nanometres in a 6S lifetime against
+a fringe of half a guided wavelength, so the fringes are frozen and the
+rate-weighted light shift, which goes as the intensity squared, has a mean
+five thirds of the running-wave mean and no weight at zero, where the cell's
+fast atoms average it to the mean. A single guided beam has
+none of the three and carries a thermometer in its own Doppler width. Which
+geometry the arm runs is a twin question once the guided world builder carries
+both, and the sentence above stands as the default until then.
 
 ## What each instrument here rests on
 

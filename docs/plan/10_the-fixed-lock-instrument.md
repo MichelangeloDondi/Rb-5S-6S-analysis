@@ -247,9 +247,35 @@ choice.
 A second substitution from the same source is worth revisiting while the optics
 are OPEN. [Nieddu 2019](../lit/nieddu2019.md) collects both cascade legs, 780 and
 795 nm, through Nieddu's 800 nm short-pass. This bench collects 795 only,
-through its own passband stack. Both legs is close to twice the signal for
-every shape observable in this section, at the cost of the filtering argument
-that currently rests on the photocathode red edge.
+through its own passband stack. Both legs is close to three times the signal
+for every shape observable in this section, since the record's own branching, a
+theory-only value with no measurement behind it, puts 34 per cent of the
+cascade through the D1 leg this bench collects
+(`results/trapping_channels.csv`), at the cost of the filtering argument that
+currently rests on the photocathode red edge. Collected separately, the two
+legs also give a trapping monitor for nothing: their ratio is a fixed atomic
+branching absent reabsorption, and the D1 photon is about half as reabsorbed as
+the D2 photon, so the ratio drifts across the density sweep if and only if
+trapping is live, while a detector nonlinearity, which acts on the count rate
+both legs share, leaves it alone. **The trade-off, on the record's own
+cells.** The 795 nm passband was chosen to collect the less-reabsorbed leg
+without a 1.3 micron detector (owner, 2026-09-06). A 780 nm passband in its
+place collects two thirds of the cascade instead of one third, but the D2
+photon's cross-section is about twice D1's on line strength, and on
+`rb5s6s/detection.py`'s envelope depth the vapour is thick at every
+temperature of the sweep (3 per centimetre for 85Rb at 70 C, 160 at 130), so
+the extra photons are trapped harder. Trapping does not destroy them, it
+blurs where they come from and it doubles the density rollover of M7 on every
+amplitude observable, so 780 alone gives nearly twice the photons and a
+doubled trapping term. The move is therefore both legs on two detectors and no swap of one
+passband for the other, which costs a second scope channel and a dichroic, buys close
+to three times the photons, and makes the trapping correctable through the
+ratio monitor above. Calibrated against the D1 and D2 lines driven directly,
+the same ratio is the 6S to 5P branching, which the record carries as theory
+only (`results/trapping_channels.csv`), and with the measured 6S lifetime fixing
+the sum of the two decay rates it fixes both matrix elements and so the 5P half
+of the disputed 6S polarizability, +624 a.u. of the two groups whose balance
+sets the sign.
 
 ### 10c.10 the comb as a statistical instrument, not only a ruler
 

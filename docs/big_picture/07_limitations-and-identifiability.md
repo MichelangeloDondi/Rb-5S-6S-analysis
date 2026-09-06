@@ -69,7 +69,10 @@ for the worst case, and the waist at which the prediction would meet the bound
 is
 [76.0](../../results/prediction_band.csv "ref:prediction_band:waist_at_bound:w0_um")
 um against the 64 this record carries. The tension is therefore conditional on the waist,
-which no measurement of this beam has fixed. The fluorescence collection
+which no measurement of this beam has fixed, and on the retro power ratio, an
+assumption the record labels as one with a deliberately modest spread: at the
+uncoated-window end of its physical range the prediction falls by about twelve
+per cent and still clears the bound. The fluorescence collection
 window corrects the bound in the same file, by
 [-1.97](../../results/prediction_band.csv "ref:prediction_band:collection_window:shift_bias_width_pct")
 per cent and in the direction that eases the tension, which is far too small to

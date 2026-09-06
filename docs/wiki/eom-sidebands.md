@@ -42,6 +42,20 @@ $m+m'=k$, and by Neumann's addition theorem the sum collapses:
 
 $$A_k \propto \Big|\sum_m J_m(\beta) J_{k-m}(\beta)\Big|^2 = J_k(2\beta)^2$$
 
+That collapse assumes the retro beam's modulation is in step with the forward
+beam's. It is not: it lags by the round trip $2d/c$ to the mirror, so each
+term in the pair sum carries a phase $e^{-i(k-m)\Omega\cdot 2d/c}$, and the
+addition theorem then gives $A_k \propto J_k(2\beta\cos(\pi f\cdot 2d/c))^2$. The
+depth the teeth report is that effective one, 0.3 per cent below the drive's at
+12.5 MHz for a 0.3 m path, and at $f = c/4d$ every tooth collapses into the
+carrier. Checked against the explicit delayed pair sum to $10^{-16}$ at five
+geometries on 2026-09-06. The pathways that feed a tooth from unequal sideband
+orders are resonant with velocity classes spread by the order difference times
+the modulation frequency times the speed over that of light, about 14 Hz per
+unit of order difference at 12.5 MHz and the vapour's rms speed, three parts
+in a million of the line, so the pair sum holds to that precision and nothing
+in a trace can tell a crossover pathway from a diagonal one.
+
 So a two-photon comb has the same form as a one-photon comb at twice the
 modulation depth, with teeth one full drive step apart on the transition
 axis and therefore half a step apart on the scanned laser axis: moving to

@@ -85,10 +85,13 @@ a scan rate is chosen.
 ## Where this repository uses it
 
 [Section 10c.3 of the fixed-lock chapter](../plan/09_the-fixed-lock.md)
-specifies a two-speed sweep, slow across each line and fast between them:
-the slow segment is required because a detection lag degrades the
-standardised skew faster than the width, the channel the light-shift
-measurement reads, as [the third cumulant](third-cumulant.md) sets out.
+specifies a two-speed sweep, slow across each line and fast between them.
+The slow segment was once justified by a lag figure the tree never held, and
+that chapter now says no lag the record holds requires it: the chain's
+bound, measured in chapter 10, puts the lag at two parts in a thousand of the width at the
+2025 rate, so the slow segment stands on the drift's shape and on the triangle
+count, as [the third cumulant](third-cumulant.md) and the plan's open-items
+chapter set out.
 [Section 10c.10 of the following
 chapter](../plan/10_the-fixed-lock-instrument.md) makes the regression a
 design requirement: the two sweep rates run interleaved within each
@@ -207,7 +210,7 @@ true_fwhm = fwhm(x, true_line)
 print(f"true line: FWHM = {true_fwhm:.3f} MHz, skew = "
       f"{skewness(x, true_line):+.4f} (symmetric)")
 
-tau_ms = 0.25                                    # a fixed detector time constant
+tau_ms = 0.25                                    # an ASSUMED time constant, 25 times slower than plan chapter 10's bound on the real chain
 results = []
 for rate in (1.0, 5.0):                          # MHz per ms
     lag_mhz = tau_ms * rate                      # the fixed lag, read on this axis

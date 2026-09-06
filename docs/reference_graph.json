@@ -48,7 +48,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 162,
+    "line": 190,
     "writes": "2994.39"
    },
    {
@@ -113,7 +113,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 164,
+    "line": 261,
     "writes": "0.433"
    }
   ],
@@ -125,7 +125,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 328,
+    "line": 346,
     "writes": "69"
    }
   ],
@@ -137,7 +137,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 328,
+    "line": 346,
     "writes": "16"
    }
   ],
@@ -149,7 +149,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 328,
+    "line": 346,
     "writes": "2.78"
    }
   ],
@@ -166,7 +166,7 @@
    },
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 1343,
+    "line": 1373,
     "writes": "7.3"
    }
   ],
@@ -178,7 +178,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 1343,
+    "line": 1373,
     "writes": "7.2"
    }
   ],
@@ -190,7 +190,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 1343,
+    "line": 1373,
     "writes": "2.1"
    }
   ],
@@ -207,7 +207,7 @@
    },
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 1343,
+    "line": 1373,
     "writes": "3.48"
    }
   ],
@@ -224,7 +224,7 @@
    },
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 1343,
+    "line": 1373,
     "writes": "0.48"
    }
   ],
@@ -236,7 +236,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 1343,
+    "line": 1373,
     "writes": "0.025"
    }
   ],
@@ -248,7 +248,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 1343,
+    "line": 1373,
     "writes": "0.065"
    }
   ],
@@ -605,7 +605,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 325,
+    "line": 422,
     "writes": "0.9640"
    },
    {
@@ -622,7 +622,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 327,
+    "line": 424,
     "writes": "0.4040"
    },
    {
@@ -639,7 +639,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 325,
+    "line": 422,
     "writes": "0.9580"
    },
    {
@@ -656,7 +656,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 327,
+    "line": 424,
     "writes": "0.3760"
    },
    {
@@ -798,19 +798,43 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 184,
+    "line": 281,
     "writes": "984"
    }
   ],
   "source_file": "results/guided_mode_tables.csv",
   "source_value": "984"
  },
+ "guided_mode_tables:mode_solve_350nm:mode_area_azimuthal_mean": {
+  "producer": "run_guided_mode_tables.py",
+  "quoting_sites": [
+   {
+    "file": "docs/big_picture/06_next-nanofibre.md",
+    "line": 211,
+    "writes": "0.826"
+   }
+  ],
+  "source_file": "results/guided_mode_tables.csv",
+  "source_value": "0.826"
+ },
+ "guided_mode_tables:mode_solve_350nm:mode_area_peak": {
+  "producer": "run_guided_mode_tables.py",
+  "quoting_sites": [
+   {
+    "file": "docs/big_picture/06_next-nanofibre.md",
+    "line": 213,
+    "writes": "0.642"
+   }
+  ],
+  "source_file": "results/guided_mode_tables.csv",
+  "source_value": "0.642"
+ },
  "guided_mode_tables:mode_solve_350nm:neff": {
   "producer": "run_guided_mode_tables.py",
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 184,
+    "line": 281,
     "writes": "1.01283"
    }
   ],
@@ -822,7 +846,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 185,
+    "line": 282,
     "writes": "802"
    }
   ],
@@ -834,7 +858,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 185,
+    "line": 282,
     "writes": "1.01927"
    }
   ],
@@ -846,7 +870,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 193,
+    "line": 290,
     "writes": "0.231"
    }
   ],
@@ -858,7 +882,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 186,
+    "line": 283,
     "writes": "624"
    }
   ],
@@ -870,7 +894,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 196,
+    "line": 293,
     "writes": "0.615"
    },
    {
@@ -887,7 +911,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 197,
+    "line": 294,
     "writes": "0.489"
    },
    {
@@ -904,7 +928,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 186,
+    "line": 283,
     "writes": "1.03164"
    },
    {
@@ -1244,7 +1268,7 @@
   "quoting_sites": [
    {
     "file": "docs/notes/onf_candidate.md",
-    "line": 114,
+    "line": 121,
     "writes": "0.57"
    }
   ],
@@ -1256,7 +1280,7 @@
   "quoting_sites": [
    {
     "file": "docs/notes/onf_candidate.md",
-    "line": 84,
+    "line": 91,
     "writes": "0.21 to 0.53"
    }
   ],
@@ -1268,7 +1292,7 @@
   "quoting_sites": [
    {
     "file": "docs/notes/onf_candidate.md",
-    "line": 77,
+    "line": 84,
     "writes": "13.52 to 33.80"
    }
   ],
@@ -1280,12 +1304,12 @@
   "quoting_sites": [
    {
     "file": "docs/notes/onf_candidate.md",
-    "line": 312,
+    "line": 319,
     "writes": "358.6 to 483.4"
    },
    {
     "file": "docs/notes/onf_candidate.md",
-    "line": 339,
+    "line": 346,
     "writes": "358.6 to 483.4"
    }
   ],
@@ -1297,7 +1321,7 @@
   "quoting_sites": [
    {
     "file": "docs/notes/onf_candidate.md",
-    "line": 303,
+    "line": 310,
     "writes": "13.06"
    }
   ],
@@ -1309,7 +1333,7 @@
   "quoting_sites": [
    {
     "file": "docs/notes/onf_candidate.md",
-    "line": 304,
+    "line": 311,
     "writes": "127.18 to 171.45"
    }
   ],
@@ -1321,7 +1345,7 @@
   "quoting_sites": [
    {
     "file": "docs/notes/onf_candidate.md",
-    "line": 305,
+    "line": 312,
     "writes": "0.08 to 0.10"
    }
   ],
@@ -1333,7 +1357,7 @@
   "quoting_sites": [
    {
     "file": "docs/notes/onf_candidate.md",
-    "line": 303,
+    "line": 310,
     "writes": "0.958"
    }
   ],
@@ -1350,7 +1374,7 @@
    },
    {
     "file": "docs/notes/onf_candidate.md",
-    "line": 304,
+    "line": 311,
     "writes": "73 to 98"
    }
   ],
@@ -1362,7 +1386,7 @@
   "quoting_sites": [
    {
     "file": "docs/notes/onf_candidate.md",
-    "line": 305,
+    "line": 312,
     "writes": "140.3"
    }
   ],
@@ -1398,7 +1422,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 168,
+    "line": 265,
     "writes": "0.2895"
    },
    {
@@ -1415,7 +1439,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 337,
+    "line": 355,
     "writes": "0 to 1"
    }
   ],
@@ -1427,7 +1451,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 335,
+    "line": 353,
     "writes": "4 to 9"
    }
   ],
@@ -1439,12 +1463,12 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 217,
+    "line": 314,
     "writes": "30.73"
    },
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 326,
+    "line": 344,
     "writes": "30.73"
    }
   ],
@@ -1456,12 +1480,12 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 219,
+    "line": 316,
     "writes": "0.67"
    },
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 326,
+    "line": 344,
     "writes": "0.67"
    },
    {
@@ -1478,7 +1502,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 327,
+    "line": 345,
     "writes": "0.23"
    }
   ],
@@ -1507,7 +1531,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 215,
+    "line": 226,
     "writes": "0.029"
    }
   ],
@@ -1519,7 +1543,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 236,
+    "line": 247,
     "writes": "0.96"
    }
   ],
@@ -1531,7 +1555,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 238,
+    "line": 249,
     "writes": "0.94"
    }
   ],
@@ -1543,7 +1567,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 251,
+    "line": 262,
     "writes": "29"
    }
   ],
@@ -1555,7 +1579,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 253,
+    "line": 264,
     "writes": "32"
    }
   ],
@@ -1567,7 +1591,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 243,
+    "line": 254,
     "writes": "conditional"
    }
   ],
@@ -1579,7 +1603,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 204,
+    "line": 215,
     "writes": "6"
    }
   ],
@@ -1591,7 +1615,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 202,
+    "line": 213,
     "writes": "0.7"
    }
   ],
@@ -1603,7 +1627,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 229,
+    "line": 240,
     "writes": "0.997"
    }
   ],
@@ -1615,7 +1639,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 230,
+    "line": 241,
     "writes": "0.021"
    }
   ],
@@ -1627,7 +1651,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 232,
+    "line": 243,
     "writes": "0.960"
    }
   ],
@@ -1639,7 +1663,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 233,
+    "line": 244,
     "writes": "0.020"
    }
   ],
@@ -1651,7 +1675,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 240,
+    "line": 251,
     "writes": "fails"
    }
   ],
@@ -1663,7 +1687,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 210,
+    "line": 221,
     "writes": "unresolved"
    }
   ],
@@ -1675,7 +1699,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 207,
+    "line": 218,
     "writes": "0.705"
    }
   ],
@@ -1687,7 +1711,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 208,
+    "line": 219,
     "writes": "0.015"
    }
   ],
@@ -1699,7 +1723,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 220,
+    "line": 231,
     "writes": "clears"
    }
   ],
@@ -1711,7 +1735,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 221,
+    "line": 232,
     "writes": "0.4727"
    }
   ],
@@ -1723,7 +1747,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 222,
+    "line": 233,
     "writes": "0.0097"
    }
   ],
@@ -1735,7 +1759,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 224,
+    "line": 235,
     "writes": "clears"
    }
   ],
@@ -1747,7 +1771,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 313,
+    "line": 314,
     "writes": "0.9610"
    }
   ],
@@ -1759,7 +1783,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 315,
+    "line": 316,
     "writes": "0.9279"
    }
   ],
@@ -1771,7 +1795,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 320,
+    "line": 321,
     "writes": "-2.46"
    }
   ],
@@ -1783,17 +1807,17 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/07_limitations-and-identifiability.md",
-    "line": 74,
+    "line": 77,
     "writes": "-1.97"
    },
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 317,
+    "line": 318,
     "writes": "-1.97"
    },
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 141,
+    "line": 169,
     "writes": "-1.97"
    }
   ],
@@ -1805,12 +1829,12 @@
   "quoting_sites": [
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 324,
+    "line": 325,
     "writes": "1.117"
    },
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 145,
+    "line": 173,
     "writes": "1.117"
    }
   ],
@@ -1822,7 +1846,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 331,
+    "line": 332,
     "writes": "0.97"
    },
    {
@@ -1839,12 +1863,12 @@
   "quoting_sites": [
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 327,
+    "line": 328,
     "writes": "1.691"
    },
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 143,
+    "line": 171,
     "writes": "1.691"
    }
   ],
@@ -1856,12 +1880,12 @@
   "quoting_sites": [
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 300,
+    "line": 301,
     "writes": "0.26"
    },
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 138,
+    "line": 166,
     "writes": "0.26"
    }
   ],
@@ -1909,12 +1933,12 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 584,
+    "line": 611,
     "writes": "2.0"
    },
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 609,
+    "line": 636,
     "writes": "2.0"
    }
   ],
@@ -1926,7 +1950,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 573,
+    "line": 600,
     "writes": "0.85"
    }
   ],
@@ -1938,7 +1962,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 573,
+    "line": 600,
     "writes": "0.11"
    }
   ],
@@ -1950,7 +1974,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 590,
+    "line": 617,
     "writes": "0.102"
    }
   ],
@@ -1962,7 +1986,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 590,
+    "line": 617,
     "writes": "0.014"
    }
   ],
@@ -1974,7 +1998,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 589,
+    "line": 616,
     "writes": "0.118"
    }
   ],
@@ -1986,7 +2010,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 589,
+    "line": 616,
     "writes": "0.017"
    }
   ],
@@ -1998,12 +2022,12 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 588,
+    "line": 615,
     "writes": "0.428"
    },
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 615,
+    "line": 642,
     "writes": "0.428"
    }
   ],
@@ -2015,7 +2039,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 588,
+    "line": 615,
     "writes": "0.032"
    }
   ],
@@ -2027,7 +2051,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 591,
+    "line": 618,
     "writes": "0.0485"
    }
   ],
@@ -2039,7 +2063,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 591,
+    "line": 618,
     "writes": "0.0068"
    }
   ],
@@ -2051,7 +2075,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 592,
+    "line": 619,
     "writes": "0.0285"
    }
   ],
@@ -2063,7 +2087,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 592,
+    "line": 619,
     "writes": "0.0040"
    }
   ],
@@ -2075,12 +2099,12 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 590,
+    "line": 617,
     "writes": "0.223"
    },
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 1550,
+    "line": 1580,
     "writes": "0.223"
    }
   ],
@@ -2092,7 +2116,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 590,
+    "line": 617,
     "writes": "0.012"
    }
   ],
@@ -2104,12 +2128,12 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 589,
+    "line": 616,
     "writes": "0.253"
    },
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 1549,
+    "line": 1579,
     "writes": "0.253"
    }
   ],
@@ -2121,7 +2145,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 589,
+    "line": 616,
     "writes": "0.014"
    }
   ],
@@ -2133,17 +2157,17 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 588,
+    "line": 615,
     "writes": "0.653"
    },
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 662,
+    "line": 689,
     "writes": "0.653"
    },
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 1548,
+    "line": 1578,
     "writes": "0.653"
    }
   ],
@@ -2155,7 +2179,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 588,
+    "line": 615,
     "writes": "0.049"
    }
   ],
@@ -2167,17 +2191,17 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 591,
+    "line": 618,
     "writes": "0.1140"
    },
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 663,
+    "line": 690,
     "writes": "0.1140"
    },
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 1551,
+    "line": 1581,
     "writes": "0.1140"
    }
   ],
@@ -2189,7 +2213,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 591,
+    "line": 618,
     "writes": "0.0063"
    }
   ],
@@ -2201,7 +2225,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 592,
+    "line": 619,
     "writes": "0.0688"
    }
   ],
@@ -2213,7 +2237,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 592,
+    "line": 619,
     "writes": "0.0038"
    }
   ],
@@ -2225,7 +2249,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 596,
+    "line": 623,
     "writes": "0.2750"
    }
   ],
@@ -2237,7 +2261,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 596,
+    "line": 623,
     "writes": "0.0099"
    }
   ],
@@ -2249,7 +2273,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 595,
+    "line": 622,
     "writes": "0.7250"
    }
   ],
@@ -2261,7 +2285,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 595,
+    "line": 622,
     "writes": "0.0099"
    }
   ],
@@ -2433,7 +2457,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 79,
+    "line": 83,
     "writes": "26.0903"
    }
   ],
@@ -2445,7 +2469,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 79,
+    "line": 83,
     "writes": "25.891"
    }
   ],
@@ -2457,7 +2481,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 79,
+    "line": 83,
     "writes": "0.1908"
    }
   ],
@@ -2469,7 +2493,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/04_intensity-and-light-shift.md",
-    "line": 239,
+    "line": 249,
     "writes": "12.5091"
    }
   ],
@@ -2481,7 +2505,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/04_intensity-and-light-shift.md",
-    "line": 241,
+    "line": 251,
     "writes": "51.2683"
    }
   ],
@@ -2493,7 +2517,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/04_intensity-and-light-shift.md",
-    "line": 234,
+    "line": 244,
     "writes": "-0.0085"
    }
   ],
@@ -2505,7 +2529,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/04_intensity-and-light-shift.md",
-    "line": 236,
+    "line": 246,
     "writes": "0.0261"
    }
   ],
@@ -2517,7 +2541,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 92,
+    "line": 102,
     "writes": "25.962"
    }
   ],
@@ -2529,7 +2553,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 93,
+    "line": 103,
     "writes": "2.8227"
    }
   ],
@@ -2541,7 +2565,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 90,
+    "line": 100,
     "writes": "25.6158"
    }
   ],
@@ -2553,7 +2577,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 91,
+    "line": 101,
     "writes": "2.3599"
    }
   ],
@@ -2565,7 +2589,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 78,
+    "line": 82,
     "writes": "11.523"
    }
   ],
@@ -2577,7 +2601,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 78,
+    "line": 82,
     "writes": "11.507"
    }
   ],
@@ -2589,7 +2613,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 78,
+    "line": 82,
     "writes": "0.1249"
    }
   ],
@@ -2601,7 +2625,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 77,
+    "line": 81,
     "writes": "4.1491"
    }
   ],
@@ -2613,7 +2637,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 77,
+    "line": 81,
     "writes": "4.143"
    }
   ],
@@ -2625,7 +2649,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 77,
+    "line": 81,
     "writes": "0.1113"
    }
   ],
@@ -2637,7 +2661,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 76,
+    "line": 80,
     "writes": "1.6259"
    }
   ],
@@ -2649,7 +2673,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 76,
+    "line": 80,
     "writes": "1.618"
    }
   ],
@@ -2661,7 +2685,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 76,
+    "line": 80,
     "writes": "0.1035"
    }
   ],
@@ -2673,7 +2697,7 @@
   "quoting_sites": [
    {
     "file": "docs/notes/onf_candidate.md",
-    "line": 265,
+    "line": 272,
     "writes": "0.083 to 0.171"
    }
   ],

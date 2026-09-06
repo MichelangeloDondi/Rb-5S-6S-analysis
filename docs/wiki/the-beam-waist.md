@@ -136,8 +136,8 @@ fraction of the beam at every setting, which changes the shape the light shift
 imprints and can reverse the sign of its asymmetry
 ([the AC-Stark shift](ac-stark-shift.md)). And the collected signal follows the
 arctangent of that same ratio, so tightening the beam buys far less signal than
-the inverse square suggests, about five for a fourfold tightening rather than
-sixteen. The peak height rises too, by about three over the same span, because
+the inverse square suggests, about five for a fourfold tightening where the
+inverse square would give sixteen. The peak height rises too, by about three over the same span, because
 the line broadens by well under a factor of two: the transit is only about a
 fifth of the composite width at these conditions. It is the light shift's own
 growth that eventually turns the peak height over, at a waist inside the range

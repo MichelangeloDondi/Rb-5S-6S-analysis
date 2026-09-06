@@ -460,6 +460,28 @@ closest neutral-rubidium realisation is the 5S-5D row of the table above, whose
 776.179(5) nm was found by exactly this procedure. So the technique needs
 adapting and not defending.
 
+**The 1204 nm crossing of 5S-6S, computed on this record's own polarizability
+(2026-09-06).** At 993 nm the 6S polarizability is a near cancellation between
+its 5P group, +624 a.u., and its 6P group, -847, with the 7P and 8P terms adding
+-102 and the tail and core +12.5 (`rb5s6s.polarizability`, term by term), and
+the sign dispute in the literature is a dispute about that balance. The crossing
+at 1203.9 nm is set by the same balance and is correspondingly sensitive: scaling
+both 6S to 6P elements by 0.95 moves it to 1192.7 nm and by 1.05 to 1214.4, about
+11 nm for five per cent, where the slope of the differential polarizability
+through the crossing is +12.3 a.u. per nanometre in the record's convention,
+the upper state's polarizability less the ground state's. Because a null needs no
+intensity calibration, the measurement runs at the probe power already on the
+bench: a dressing beam near 1.2 microns at tens of milliwatts, modulated on and
+off between triangles so the probe and everything riding on its power are
+identical in both states, shifts all four lines equally while the hyperfine gaps
+stay exact, and the common shift against dressing power, in arbitrary units, is
+the observable. At 225 mW and 64 microns the probe's own shift is 318 Hz per
+atomic unit, so ten wavelength points read to 10 kHz locate the crossing to
+about a nanometre and the 6P group to a few tenths of a per cent, which decides
+the sign by a measurement that has no crossing at all under the other one. What
+it needs is the tunable source, and it is outside the Ti:Sapph band this note is
+about. Raised by an external reading, checked and recomputed here.
+
 **Two independent external literature searches on 2026-09-06 found no published
 magic wavelength for the 5S-6S pair**, in theory or in experiment, and none for
 any alkali nS to n-prime-S two-photon transition. That is a stronger statement
@@ -760,7 +782,7 @@ the assumption set behind each figure carried in
 | 7S rung, 760 nm | a laser retune, and no new detection path if two datasheet questions answer favourably (§3.2) | a self-broadening rate that adjudicates two published values differing by 2.6 | a bound rather than a rate, and a blue detection build if the filter answer goes the other way | about 8 kHz per mTorr at the dataset's own drive power, a fourfold margin over what the adjudication needs, and about 18 at the light-shift ceiling where the adjudication keeps a ceiling margin of 2.0 | an extended-cavity diode laser with a tapered amplifier clears the 760 nm ceiling of 87 mW, so the Ti:Sapph is unnecessary. No note in `lit/` states that amplifier's output at 760 nm, so the class is established practice rather than a held citation |
 | 778 nm rung | a detection change plus a second source for the scan (§3.1) | the method tested against coefficients published to better than 2% | no new coefficient by design, and the scan needs two mode-matched beams | about 8 kHz per mTorr at the dataset's own drive power, which is 20 percent of the published coefficient, and about 108 at the light-shift ceiling where the factor-two test drops to a ceiling margin of 0.12 | a 1556 nm fibre amplifier with second-harmonic generation, the compact-clock architecture of [feng2026](lit/feng2026.md) and [li2024b](lit/li2024b.md), at 2.3 times the 778 nm ceiling on that demonstration's own 30 mW, so the Ti:Sapph is unnecessary |
 | O-band null at 1297.5 nm | one telecom-band diode and its wavemeter, no Ti:Sapph time, riding any cell session (§5.1, Paper D) | the 6S to 7P matrix element by frequency metrology where no measurement exists, a sign-reversal test of the asymmetry channel, and a calibrated shift injector | the delivered perturber intensity at the cell could undershoot, stretching the localization beyond the useful range | root located to about 26 pm at the projected 92 kHz shift precision, reading the 7P residue near 3% | a commodity O-band diode, no ceiling issue at these powers |
-| wide-scan Doppler pedestal | an acquisition setting on any session that runs at all, no hardware and no lock quality | an in-situ gas thermometer and an in-situ retro ratio, on the same traces | the pedestal may not separate from the scattered-light background, and the area ratio is flat in ρ near one | the design reaches both in about two hours each, and section 8 gives the arithmetic and the assumptions | the drive itself, swept wide. The pedestal is 942 MHz wide on the transition axis at 130 °C, so no new source and no lock is involved |
+| wide-scan Doppler pedestal | an acquisition setting on any session that runs at all, no hardware and no lock quality | an in-situ gas thermometer, and the retro ratio only under an attenuator scan, on the same traces | the pedestal may not separate from the scattered-light background, and the area ratio is flat in ρ near one | the design reaches both in about two hours each, and section 8 gives the arithmetic and the assumptions | the drive itself, swept wide. The pedestal is 942 MHz wide on the transition axis at 130 °C, so no new source and no lock is involved |
 | doubling stage | new hardware, none on the bench, unpriced | a resonant 420 nm source and an independent density read (§3.4) | nothing publishable on its own | not projected, since nothing here models its rates | the doubling stage is its own source, and a one-photon line carries no two-photon light-shift ceiling |
 
 **How long the pedestal row takes, since the cell above only gives the total.**
@@ -1440,3 +1462,22 @@ measurement.
 *References for §4 are collected in
 [`docs/LITERATURE.md` §8](LITERATURE.md#8-the-20242026-field), which is where
 the 2024–2026 field is held and is the citable source for every claim above.*
+
+**The 6P manifold from 5P by quadrupole excitation, a possible programme
+(2026-09-06).** The polarizability of 6S at 993 nm is a near cancellation
+between its 5P and 6P groups, and the 6P group is the one no measurement in
+this record reaches. The 6P lifetime is measured to one per cent, and the
+reading attributes to the group that measured the 5S to 6P elements the
+statement that the branching ratios, and not the lifetime, are what stopped
+matrix elements being extracted from it, which this record has not verified
+against the paper. With the 5S to 6P elements measured, a measured 6P
+branching gives the 6S to 6P element and with it the group that sets the sign.
+An external reading reports the rest of the route
+from papers this record does not hold, so none of it is argued from here: the
+5P to 6P quadrupole lines near 911 and 918 nm are established and sub-Doppler
+in a room-temperature cell by double resonance, the 6P manifold's spectroscopy
+is complete, 5P to 8P is established, and the multi-exponential cascade fit
+the branching needs is described as hard by the group that ran the 420 nm
+channel for the 5D lifetimes. Those four papers are listed in the private
+reading report as PDFs to obtain before any of this is designed. A programme,
+not a campaign item.

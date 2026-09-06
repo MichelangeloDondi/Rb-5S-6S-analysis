@@ -121,8 +121,9 @@ null the same-beam term, since that would break the wide scan's purpose,
 and confirms the two channels share one Bessel law.
 [§10c.7](../plan/10_the-fixed-lock-instrument.md) and
 [`scripts/run_widescan_design.py`](../../scripts/run_widescan_design.py)
-carry the area ratio forward into an in-situ monitor of the retro ratio
-on the same traces as the line itself, without a separate power meter.
+carry the area ratio forward on the same traces as the line itself. That
+ratio is stationary in the retro ratio near unity, so it reads the ratio only
+under a retro attenuator scan, which the plan's open-items chapter carries.
 
 ## What can go wrong
 

@@ -98,9 +98,6 @@ Two dated notes name both tests explicitly.
 predicts which of several stated comparisons a change of selection
 criterion can and cannot flip, before recomputing anything, and commits
 to reporting a null outcome as plainly as a flip.
-[`docs/plan/09_the-fixed-lock.md`](../plan/09_the-fixed-lock.md)
-preregisters a detection-lag simulation with a named null test and
-ceiling test, and
 [`docs/big_picture/07_limitations-and-identifiability.md`](../big_picture/07_limitations-and-identifiability.md)
 excludes a candidate mechanism for a residual excess by a ceiling test at
 many times its predicted size, leaving the excess unexplained.

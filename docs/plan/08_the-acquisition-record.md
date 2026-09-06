@@ -473,6 +473,7 @@ answers, so an operator can check completeness without reading the chapter.
 | the comb bracket, before and after | the axis is only as good as the ruler that brackets it |
 | a content checksum and a line count, written at the bench | three of fifty files in one session were corrupt and nobody knew for a year |
 | the wall clock, from the instrument | the record's own timing had to be reconstructed from file metadata afterwards |
+| the oven setpoint, and whether the last change was a rise or a fall | a density that lags the oven differs at one nominal temperature by the approach, which reads as block scatter. The archive carries no column to sort on, its sixteen temperature blocks show no within-block climb at a power that could not see a few per cent, and the campaign approaches every temperature from both directions once |
 
 **The rule this table encodes: a setting that is not written is a setting
 that did not happen.** Every one of these rows exists because its absence

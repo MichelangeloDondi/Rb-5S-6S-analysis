@@ -229,6 +229,19 @@ reached at three very different dwells:
 | a middle | 20 us | 10 s | 600 MHz/s |
 | keep the 1 s window | 2 us | 1 s | 6000 MHz/s |
 
+**What a rate ladder separates, by the power of the rate and the symmetry of
+the two ramps.** Read the up and down sweeps against the rate: the terms
+constant in rate and equal on both ramps are the physics, the terms linear in
+rate and opposite on the two ramps are the lag, the detection chain's and the
+cascade's together, the terms linear in rate and equal on both ramps are the
+sampling rectangle, a known convolution of one point's dwell, and the terms
+quadratic in rate and equal on both ramps are rapid passage, absent below the
+ceilings chapter 10 computes. The intercept of the antisymmetric term at zero
+rate is the piezo's hysteresis, which does not depend on the rate at all. With
+the cascade's share of the lag fixed by the two lifetimes, one ladder
+separates the chain from the hysteresis from the sampling. From an external
+reading of 2026-09-06, on rung 1.
+
 **What the fast end buys is drift immunity, and the rate that would justify it is not
 measured.** The repaired lock's residual is an open item and the record spans
 it instead of valuing it, from zero to 0.04 MHz per minute, which across a
@@ -252,15 +265,29 @@ and the order of drift removable. They buy no precision: the photons are fixed,
 so each crossing's uncertainty grows as the root of the count and averaging
 removes exactly that much again.
 
+**And the same record contrasts two powers inside one display epoch, which is
+the obstruction the 2025 centre channel could not clear.** The record's own
+[revival note](../notes/centre_channel_cannot_be_revived.md) locates that
+channel's failure in the power order: every multi-power epoch ran monotone in
+power, so the drift and the pull were one regression column. Alternating the
+power between consecutive triangles of one deep record puts the contrast
+inside a single epoch with every line in view, which is the scrambled order
+the campaign morning had without the frame move that ate it there. The
+centre channel's precision at that design is the pull channel of the
+three-channel forecast, and it needs no absolute frequency reference.
+
 **The ladder is not free, and the earlier claim that it was is withdrawn.** A
 scanned width integrates laser noise from one over the crossing time up to the
 per-point sampling rate, so **the observed width moves with the rate**
 (`docs/wiki/laser-frequency-noise-and-the-linewidth.md`, and chapter 6 uses exactly
-this to make the fast comb block a laser-width instrument). Chapter 9 measures
-a 24.6 per cent width inflation at 0.94 MHz per ms and concludes that the fast
-segment belongs between the lines and never across them. A rate ladder is
+this to make the fast comb block a laser-width instrument). The detection lag
+is not that cost: chapter 9 once quoted a 24.6 per cent inflation at 0.94 MHz
+per ms, which no lag model in the tree reproduces (the wiki illustration gives
+three per cent as its snippet prints on its own 2.3 MHz Gaussian at its
+assumed 0.25 ms, about one per cent on the record's line), and on the chain bound chapter 10 holds
+the lag costs a hundredth of a per cent at that rate. A rate ladder is
 therefore an instrument for the laser width and for the drift's shape, bought
-at a known cost in width, and not a free axis.
+at the laser-noise cost above, and not a free axis.
 
 **What binds the fast end** is the piezo's own response and, under lock, the
 servo's ability to follow. Both are apparatus items in chapter 12. The finite
@@ -712,26 +739,29 @@ MHz line is crossed in **63 ms**, giving 126 samples across it at the
 campaign's 0.5 ms sampling, of which only about **33 are independent** once
 the measured correlation length of 3.8 samples is taken into account.
 
-  * **The slow limit** is set by drift moving the line during one trace. At
-    the held-lock drift of order 0.02 MHz per minute, keeping the movement
-    under a tenth of the linewidth allows a trace of **27 minutes**, and under
-    two per cent allows **5 minutes**.
+  * **The slow limit** is set by drift moving the line during one trace. The
+    repaired lock's residual is unmeasured and spanned from zero to 0.04 MHz
+    per minute (chapter 12), so at the span's top, keeping the movement under
+    a tenth of the linewidth allows a trace of **13 minutes**, and under two
+    per cent allows **2.7 minutes**, and at the span's bottom there is no slow
+    limit at all.
   * **The fast limit** is set by the detection chain's time constant, which
     distorts and shifts the line once it approaches the line-crossing time.
-    **It is genuinely unknown, and an earlier version of this chapter got it
-    wrong.** The committed noise law's integrated autocorrelation is a median
+    **Its value is unknown, and an earlier version of this chapter got it
+    wrong, while chapter 10 bounds it from above.** The committed noise law's integrated autocorrelation is a median
     of 3.79 samples at the campaign's 0.5 ms sampling, about **1.9 ms**, and
     that was read here as the chain's response time. **It has
     since been confirmed that the archive was acquired in the oscilloscope's
     high-resolution mode**, which averages adjacent samples in hardware, so
     the 1.9 ms is a smoothing window rather than any property of the detector
-    or the amplifier. The chain itself may be orders of magnitude faster and
-    nothing in the archive says. The campaign's 63 ms line crossing sits 33
+    or the amplifier. Chapter 10 bounds the chain itself faster than 10
+    microseconds from the rehearsal's LeCroy traces. The campaign's 63 ms line crossing sits 33
     smoothing windows inside the processing limit, so the acquisition as run
     was safe whatever the chain's own limit turns out to be.
 
-**The campaign's 1 second trace therefore sits about 1600 times inside the
-slow limit and at least 63 times inside the fast one.** Scan rate is not where
+**The campaign's 1 second trace therefore sits about 800 times inside the
+slow limit at the span's top and, on chapter 10's chain bound, five orders of
+magnitude inside the fast one.** Scan rate is not where
 this experiment loses anything, and the knob people reach for first is the one
 with the least to give. What the record's own
 [sweep rate and detection lag](../wiki/sweep-rate-and-detection-lag.md) page
@@ -1339,7 +1369,7 @@ and the evidence column names what it rests on rather than asserting authority.
 | smoothing | **on**, and verify it reached the file | acquisition mode on the Agilent, math function on the LeCroy, and only one of those exports smoothed |
 | record length | more points across the line, **not** for resolution | the CSV export caps at 64k and its Length control was low, but points buy time resolution rather than bits |
 | peaks per trace | **all four, one range, EOM on and off** | 5.57 per cent duty measured, and it is the direct test of the brightness ordering |
-| scan shape | triangular, keep both halves | two crossings per trace, and on a causal filter the splitting measures the lag |
+| scan shape | triangular, keep both halves | two crossings per trace, and on a causal filter the splitting measures the lag. The transmitted power is logged on each half, because a driver's up and down brightness can differ and the up-down mean cancels a lag only when the drive is symmetric |
 | ladder order | **cycle the power several times inside a single display epoch**, not merely randomise across the session | power and elapsed time were collinear by construction in 2025, and the cost is measured in [`centre_fisher.csv`](../../results/centre_fisher.csv) (`run_centre_fisher.py`). Letting each display epoch carry a free linear drift instead of a level alone inflates the error on the light-shift amplitude by [7.3](../../results/centre_fisher.csv "ref:centre_fisher:inflation_linear_over_constant:measured")x, because a single power step and a line differ only through the arrangement of points around the change. The mechanism is sharper than collinearity: each epoch took every repeat of one power back to back, so its traces sit in two tight time clusters with one power in each. A line through two clusters is fixed by the difference of their means, and so is a one-time step. Cycling the power through the epoch separates them, since a line cannot follow a zig-zag. On the campaign's own traces and times, with nothing changed but the order, the re-ordering is forecast to be worth [7.2](../../results/centre_fisher.csv "ref:centre_fisher:ladder_order_gain:cycled_over_as_taken")x, and the rows carry that label: the light-shift error would fall from the measured [3.48](../../results/centre_fisher.csv "ref:centre_fisher:sigma_amplitude:linear_per_epoch") to [0.48](../../results/centre_fisher.csv "ref:centre_fisher:sigma_amplitude_forecast:linear_drift_cycled"), crossing the threshold at which this channel says anything at all. It is the cheapest design change in this chapter, because it costs only the order the powers are written down in. The scatter is not what limits this: it runs [0.025](../../results/centre_fisher.csv "ref:centre_fisher:sigma_per_trace_mhz:epoch_28") to [0.065](../../results/centre_fisher.csv "ref:centre_fisher:sigma_per_trace_mhz:epoch_33") MHz per trace, and with the drift pinned to a level the three multi-power epochs together separate the predicted shift from no shift at [2.1](../../results/centre_fisher.csv "ref:centre_fisher:prediction_significance_sigma:constant_per_epoch") sigma. **An earlier version of this row said a factor of 48 and a three-sigma effect per epoch, and both were wrong**: the 48 divided by a fixed-lock baseline this archive cannot evaluate, since a centre here already has its per-epoch mean removed, and the significance was quoted across a 100 mW power change that no single epoch contains. The design conclusion is unchanged, which is why the numbers moved and the recommendation did not |
 | where to spend | **power first** | signal-to-noise is linear in power and square-root in everything else |
 | chopping | no | the noise is 83 to 97 per cent white, and a chopper costs half the photons |

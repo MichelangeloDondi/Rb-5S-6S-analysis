@@ -607,7 +607,14 @@ value, covering a few per cent of loss per surface. The exposure is bounded
 either way: S0 ~ (1 + rho) confines the prediction to within a factor 2 of
 the rho = 1 value for ANY rho, so no plausible error here changes an
 order of magnitude. A fixed-lock session measures rho in situ (PLAN sec 8),
-which is what turns this assumption into a number."""
+which is what turns this assumption into a number.
+
+The physical range is set by the coatings: with every extra surface the retro
+beam crosses uncoated, at four per cent each, rho falls to about 0.7 before
+mirror loss, and with all of them coated it sits near 0.97, so 0.94 +/- 0.04 is
+the coated case and not the range. An external reading raised this on
+2026-09-06 and the plan's open-items chapter carries the attenuator scan that
+measures it."""
 
 RHO_RETRO_ERR = 0.04
 """One-sigma uncertainty on RHO_RETRO. Enters the S0 prediction band together

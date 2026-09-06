@@ -14,7 +14,8 @@ reference-free magic-wavelength determination, through the asymmetry sign
 reversal across Hamilton 2023's 776 nm magic wavelength.
 
 **The nanofiber beside the cells, three instruments in one apparatus.** The
-lab's ONF with its two-colour trap, run trap-dark, is sized in
+lab's ONF, whose two-colour trap light is on the fibre in print and whose
+loaded trap is not yet, is sized trap-dark in
 [`onf_candidate.md`](../notes/onf_candidate.md) with every number produced by
 `run_onf_candidate.py` and labelled by basis. The cold trap-off mode measures
 the laser's width independently, which is the identifying rung of the width

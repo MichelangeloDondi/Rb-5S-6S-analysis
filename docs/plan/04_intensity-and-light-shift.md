@@ -218,7 +218,17 @@ this section, which has to be in place before any of them runs.
    AC-Stark effect. What the ladder does not touch is the three-width
    degeneracy, whose widths are not rate-driven. **Needs.** The new drive on
    the 25 or 40 MHz comb, free of residual amplitude modulation, and the
-   depth read from the tooth heights on the trace it is taken from. **Shots.** Five
+   depth read from the tooth heights on the trace it is taken from. The
+   complementary diagonal, raised by an external reading on 2026-09-06 and
+   not yet costed by the twin: hold the carrier's amplitude share, the root of its rate share, times the
+   power constant, J_0 of the depth times the power, so the carrier's rate
+   and every rate-driven term stand still
+   while the shift runs with the power, an eightfold ladder between a bare
+   carrier at 25 mW and a depth just short of the carrier's null at about
+   200 mW. It needs a spacing where the first teeth's tails stay out of the
+   carrier's window, which the comb study above puts at 25 MHz and beyond,
+   and it is the one ladder on which the shift moves and the saturation
+   companion does not. **Shots.** Five
    depths at the top rung of each power grid, minutes inside the D4 and D5
    blocks. **Go/no-go.** The tooth heights follow the Bessel law and the
    positive and negative orders agree, which is the modulation-purity
@@ -312,6 +322,20 @@ this section, which has to be in place before any of them runs.
    | portrait (3 mm) | 2.8 | 0.54 mm | +0.566 | +0.367 | no |
 
    The upright mounting removes the test at every plausible M. Keep the long axis along the beam.
+   **The same window seen from the model's side (owner statement, 2026-09-06).** The
+   flip is the collection window's, and the window is also what breaks the
+   convolution the twin's line rests on: the transit kernel's spread over the
+   collected length is one per cent at 64 microns and 47 at 16 at the committed
+   conjugates' magnification of 1.8 (36 at 16 at the bench's estimated 2.5,
+   from which the ladder below is counted), so at configuration S the line is
+   the volume integral or it is not modelled.
+   The alternative is a magnification near 40 that holds the collected length
+   at the archive's fraction of the Rayleigh range, which restores the convolution, removes the
+   flip, and costs about seven in collected light on the collected fraction's
+   arctangent law, a factor 2.6 in signal-to-noise on a peak that is already
+   shot-limited. One
+   choice, two faces, and chapter 12 carries it as open, with the volume model
+   the route that costs no light.
 
    **Needs.** The two-lens relay and its slit, configuration S, and the cathode
    with the long axis along the beam (`APPARATUS.md`). **Shots.** The slit scan at four or
@@ -556,6 +580,26 @@ width, since neither the Lorentzian nor the Gaussian beside it can imitate a cus
 The order matters: if the unexplained power dependence turns out to live in the
 transit kernel, freeing its reference first would let a power systematic
 contaminate the waist.
+
+**The composition the twin's line rests on, tested on 2026-09-06.** The
+world builder composes the transit kernel with the ramp as a convolution,
+which assumes the light shift an atom accumulates along its chord is
+independent of the chord's own Fourier width. Two things are settled. On rung
+2, the first moment of the two-time correlation spectrum of a chirped chord is
+the rate-weighted mean of the instantaneous shift at every dephasing, which is
+the static composition's mean exactly, so the mean pull the standard channel
+reads is untouched by the chirp at every waist and the collection window of
+chapter 12 is the composition failure that matters there. On rung 3, a chord
+harness with the dephasing carried, checked at zero shift against the record's
+own kernel to half a per cent at its own grid, puts the chirp's effect in the
+shape alone: at the archive's waist the line's width is unchanged and the
+interior residual is under a fifth of a per cent of peak, so nothing in the
+2025 bounds moves, and at the campaign's tightest waist the line is about two
+per cent narrower, with the collection window's reversal of the third cumulant
+standing and the chirp adding of order ten to twenty per cent to it. The
+harness is held outside the tracked tree, and it lands as a producer with its
+own table and a convergence arm under chapter 12's open item before any of
+these figures is quoted as the record's own and not the harness's.
 
 ---
 

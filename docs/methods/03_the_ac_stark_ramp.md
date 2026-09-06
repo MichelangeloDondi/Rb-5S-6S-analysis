@@ -279,7 +279,8 @@ the whole plausible range of magnification:
 | 6.0 | 1.0 | $+0.566$ | $-0.071$ | yes |
 
 So the sign-flip test does not require $M$ to be known: it holds for every $M$
-from 0.5 to 6. Portrait would have forfeited it, because $Z_c = 1.5/M$ mm sits
+from 0.5 to 6, and a magnification near forty, which the plan hub now offers
+as one route at the tight waist, removes it with the window that makes it. Portrait would have forfeited it, because $Z_c = 1.5/M$ mm sits
 below the 0.90 mm flip threshold for any $M$ above 1.7 (PLAN §6 #4).
 
 **The magnification is roughly known too.** The collection lens was the

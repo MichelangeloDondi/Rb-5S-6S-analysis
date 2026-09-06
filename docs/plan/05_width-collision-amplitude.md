@@ -200,7 +200,10 @@ is what would give every calibration trace seven standing teeth instead of six.
 inside its own frequency ceiling, and a ramp about one tooth spacing wider per
 side. **Shots.** Ruler blocks interleaved with science blocks at the cadence
 §10.5 measures, at science polarization and power. **Go/no-go.** Monitor
-modulation purity live through the A₊ₖ = A₋ₖ symmetry. Fit the comb to ±3 orders
+modulation purity live through the A₊ₖ = A₋ₖ symmetry, and through the summed
+height of every tooth, which is exact in the depth and in the spacing and so
+must hold constant across ruler blocks: it draws on the whole peak where the
+pair asymmetry draws on two teeth, and nothing atomic can move it. Fit the comb to ±3 orders
 where the scan covers them, since truncating at five biased the 2025 rate by
 0.1% ([audit addendum 19](../PREREGISTRATION_RESULTS.md)), and record the coverage
 per trace rather than assuming it. Calibrate any control-variate coefficient on
@@ -293,7 +296,17 @@ grid, with centres retained. **Go/no-go.** The centre channel must survive the
 §10.6 sentinel at the densities in question. **Empty.** The pressure shift may
 stay under the block scatter across the whole grid, leaving the ratio a bound.
 **Record.** Width and shift against density, and their ratio against the
-predicted 2.75.
+predicted 2.75, with the blackbody shift subtracted from every centre before
+the ratio is formed: it runs from minus 80 Hz at 70 C to minus 161 at 130
+(`results/blackbody_channels.csv`), moves with the same temperature the density
+does, and is a quarter of a per cent of the self-shift differential the record
+expects across the grid, so it is subtracted and never fitted. The second-order
+Doppler shift is subtracted beside it: minus the transition frequency times
+the mean squared speed over twice the speed of light squared, about 330 Hz at
+70 C and 390 at 130 for rubidium-87, ten hertz more for 85, so 60 Hz across
+the lever, a fifth of a per cent of the
+same differential, a shift term the methods chapter had rightly called
+negligible for the width.
 
 ## 8. The amplitude program
 

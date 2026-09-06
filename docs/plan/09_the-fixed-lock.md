@@ -108,13 +108,23 @@ Sweeping one way discards the return, so the duty cycle halves and the flyback
 needs a settle segment whose length the bench must measure, by comparing tooth
 spacing early and late in a comb block.
 
-The slow segment is required and not merely convenient, and the reason is
-measured rather than argued. A simulation of the detection lag across five
-sweep rates, preregistered with a null test and a ceiling test, finds that at
-0.94 MHz per ms the fitted width inflates by 24.6 per cent while the
-standardised skew rises from 0.055 to 0.083. The observable the light shift is
-read from therefore degrades at twice the fractional rate of the width, so the
-fast segment belongs between the lines and never across them.
+The slow segment is not required by any lag the record holds, and an earlier
+version of this paragraph said the opposite on a number that has no producer.
+It quoted a width inflation of 24.6 per cent at 0.94 MHz per ms from a
+preregistered simulation that exists nowhere in the tree. The only lag model
+the record carries is the illustration on the
+[sweep-rate page](../wiki/sweep-rate-and-detection-lag.md), which assumes a
+detector time constant of 0.25 ms and prints three per cent at that rate on its own 2.3 MHz Gaussian, about one
+per cent on the record's line, and
+[chapter 10](10_the-fixed-lock-instrument.md) bounds the real chain faster
+than 10 microseconds at 10^6 V/A from the rehearsal's own LeCroy traces. On
+that bound the lag at 0.94 MHz per ms is under 10 kHz, two parts in a thousand
+of the 5.37 MHz line, and the atomic cascade lag, about 72 ns, is 68 Hz. What
+the illustration does establish survives as a qualitative reading: a causal
+lag forges skew faster than it inflates width, so the measured time constant
+chapter 10 asks for is what admits any fast rate for the asymmetry channel.
+What binds the fast segment is the piezo and the servo, which are
+[chapter 12](12_open-apparatus-items.md) items, and not the detection chain.
 
 ### 10c.3a the scan axis, and what to do about its nonlinearity
 
@@ -132,6 +142,27 @@ measurement error, so it is an upper bound rather than an estimate. The
 2025 sweep nonlinearity is also mapped empirically in
 `results/ruler_nlmap.csv`. Both were earned before the lock repair, so they
 bound the repaired configuration rather than describing it.
+
+DESIGN option, the atom as the reference (raised by an external reading,
+2026-09-06). The held 778 nm two-photon clocks lock their laser to the
+two-photon fluorescence itself, by modulating the laser current at tens of
+kilohertz and demodulating the detected signal into a dispersive error signal
+whose zero sits on the line ([Beard 2024](../lit/beard2024.md), [Callejo 2025](../lit/callejo2025.md), both held, the method
+stated in each). The same lock on this line is feasible with the existing
+detection, and what it buys is the drift item of this chapter and chapter 12 by
+construction, since the reference becomes the line. Three things bound it. The
+derivative's zero is the mode of an asymmetric profile and not its centroid, and
+on this record's ramp-broadened line the mode sits at -0.67 to -0.68 of the
+shift against a mean of exactly two thirds, so a locked centre channel reads the pull
+coefficient to within a tenth and the lineshape channels still need scans. The
+lock point is the perturbed line, so every shift is read by modulating its cause
+and reading the correction, which is the interleaved design the forecast
+already carries. And a locked laser scans only through an offset, so the natural
+axis is a double-passed acousto-optic modulator at plus or minus 50 to 80 MHz,
+synthesiser-exact and free of every nonlinearity this section maps, on one line
+at a time, with the four-line ruler still riding the piezo and the comb kept as
+the check on the offset axis. Weighed against this chapter's drift span, 0 to
+0.04 MHz per minute, and not against any rate the record does not hold.
 
 DESIGN rule, fixed waveform. Nonlinearity that repeats is calibration and only
 its sweep-to-sweep variation is noise, so every science sweep uses the same

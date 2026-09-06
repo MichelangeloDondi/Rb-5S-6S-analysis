@@ -65,9 +65,13 @@ sets.
 **The fitted centre is the campaign's channel.** It recovers the coefficient
 the configuration implies to better than one per cent at every waist the
 campaign proposes, **in a world the twin builds without the axial collection
-window** ([chapter 12](../plan/12_open-apparatus-items.md)), which the same
+window and with the transit kernel and the ramp composed as a convolution** ([chapter 12](../plan/12_open-apparatus-items.md)), which the same
 commit's waist ladder shows reverses the third cumulant's sign at the tight
-end. The comparison between levers is unaffected, since the omission is common
+end. The two-time computation in [the plan's intensity
+chapter](../plan/04_intensity-and-light-shift.md) narrows the line by about
+two per cent at the tightest waist and leaves the mean pull exactly the
+composition's by the first moment of that spectrum, so the window and not the
+chirp is what the coefficient there waits on. The comparison between levers is unaffected, since the omission is common
 to every cell. The absolute recoveries are not, and they are read as such, and it is untouched by the term that decides the other
 channel, because power broadening is symmetric and does not move a centre.
 
@@ -86,7 +90,13 @@ cube, so the third cumulant's own law flattens and the channel reads noise. A
 phase-modulated comb holds the intensity constant, and with it the light
 shift, while splitting the two-photon drive among the teeth. Each tooth's Rabi
 frequency is then the root of its share, its saturation broadening falls with
-it, and the asymmetry survives. On the 40 MHz comb the moments recover
+it, and the asymmetry survives. Those cells are the twin's own world, whose
+line composes the transit kernel and the ramp as a convolution, and the
+two-time computation in [the plan's intensity
+chapter](../plan/04_intensity-and-light-shift.md) puts this channel's
+calibration sign at the tight waist on the collection window, with the chirp
+adding ten to twenty per cent to it, so the comb cells read accurate against the
+world that built them and are not yet quoted against the bench. On the 40 MHz comb the moments recover
 [25.6158](../../results/three_channel_forecast.csv "ref:three_channel_forecast:eom_comb_40MHz::kappa_skew") plus or
 minus [2.3599](../../results/three_channel_forecast.csv "ref:three_channel_forecast:eom_comb_40MHz::sd_skew"), and on
 the 25 MHz comb [25.962](../../results/three_channel_forecast.csv "ref:three_channel_forecast:eom_comb_25MHz::kappa_skew")
@@ -115,7 +125,7 @@ the repaired lock do.
 * The light-shift coefficient: one morning of randomised power cycling under
   the repaired lock detects the predicted shift at 3.8 sigma and separates
   the two disputed polarizability signs at 8 sigma if the shift is the
-  predicted size, conditional on the lock holding 0.02 MHz per minute
+  predicted size, conditional on the lock's residual, which the plan spans from zero to 0.04 MHz per minute
   ([CLAIMS](../CLAIMS.md) section 3, `results/projections.csv`).
 * The collisional coefficient: same-session 150 to 170 C points with the
   block noise cut fourfold resolve the expected rate near 10 sigma. Both
@@ -151,8 +161,9 @@ Everything in scenario one, plus five additions no cell can provide.
   fibre is the known natural width plus the laser contribution, a
   73 to 98 kHz transit, and the atom-surface term, and the molasses
   temperature sweep turns the transit term into its own sqrt(T) ladder.
-  **The atom-surface term makes the trap a precondition, not an
-  enhancement**: untrapped, atoms sampling 50 to 300 nm carry an
+  **The atom-surface term makes a loaded trap a precondition, not an
+  enhancement**, and the group's papers carry the trap's light without
+  reporting a loading: untrapped, atoms sampling 50 to 300 nm carry an
   inhomogeneous red tail that is degenerate with the laser width, and at a
   fixed 200 nm it falls to 0.21 to 0.53 MHz and is largely common-mode
   (`results/onf_candidate.csv`). Fed back as a prior, it recovers
@@ -298,7 +309,14 @@ rate it is not a calibration at all.
 * A real-time, atom-based monitor of surface adsorbate dynamics, which is
   the community-wide fibre-degradation problem, watched through the line
   while it happens.
-* The two-colour trap's magic power ratio for this transition, computed from
+* The upper state's polarizability at their proposed trap's tune-out
+  wavelength, read directly from the line's shift under that light, since the
+  ground state is unshifted there: a quantity no experiment has measured at any
+  wavelength, conditional on the fictitious-field trap being built
+  ([chapter 6](06_next-nanofibre.md)).
+* The two-colour trap's magic power ratio for this transition, conditional on
+  a loaded trap, which the group's papers carry as light without loading,
+  computed from
   the committed polarizability engine (the differential polarizability
   changes sign between the trap colours, +3086 atomic units at 750 nm
   against -804 at 1064 nm, `rb5s6s/polarizability.py`), so the trap can be

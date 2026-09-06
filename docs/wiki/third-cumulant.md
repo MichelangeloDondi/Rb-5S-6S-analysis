@@ -161,6 +161,10 @@ the re-derivation route, since the map itself carries no noiseless arm. With
 the layers on the noiseless power falls below three at every window, and
 under noise the ladder's lowest rung sits below the region where the
 windowed cumulant is cubic. The windowed cumulant is positive at every rung.
+That sign is the static composition's. A rung 3 computation of the chirped
+chord with its dephasing carried, whose producer is owed, puts the campaign's
+calibration of this channel on the collection window and the chirp together,
+as the plan hub's intensity chapter sets out.
 It is not the ramp's own $+S_0^3/135$ from the derivation above but the
 truncated estimator's reading of it. Under the archive's own noise and
 quantisation **no configuration on the grid recovers it**: over all three
