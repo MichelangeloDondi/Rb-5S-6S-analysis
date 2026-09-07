@@ -317,7 +317,7 @@ against the chapters that own each step.
    the linewidth, so every width and waist calibration taken before the null
    describes a geometry the campaign will not run in. Chapter 12's
    misalignment item gives the size, about a fifth of a megahertz of rms width
-   per milliradian, and chapter 1's own leading candidate for the
+   per milliradian, and the case chapter's own leading candidate for the
    unaccounted megahertz of Gaussian width is a tilt of about three and a half
    milliradians. The null itself is a card and a shear plate, not an
    instrument: the return beam walks by twice the angle times the path, more than four

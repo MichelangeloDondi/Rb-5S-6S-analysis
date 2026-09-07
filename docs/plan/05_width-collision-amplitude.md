@@ -295,6 +295,38 @@ dataset has no route to at all.
 grid, with centres retained. **Go/no-go.** The centre channel must survive the
 §10.6 sentinel at the densities in question. **Empty.** The pressure shift may
 stay under the block scatter across the whole grid, leaving the ratio a bound.
+7k. **A separation that needs no lineshape model, and it runs on traces
+already taken.** A Lorentzian has no finite variance, so its second moment truncated
+at a half-window grows linearly in that window while every bounded kernel
+saturates. The second moment plotted against the window therefore has a slope
+that measures the homogeneous width alone, with the Gaussian and the ramp in
+the intercept. On the record's own kernels the slope returns the
+homogeneous half-width to a few tenths of a per cent once the profile is
+evaluated on a grid wider than the window. The same estimator on the model's
+own internal grid reads several per cent low, because that grid truncates the
+wings inside the window, which is a property of the call and not of the
+method. Two conditions before it is
+quoted. The intercept is not the Gaussian's variance by itself, since the
+asymptotic form carries a Lorentzian constant beside the linear term, and that
+expansion is owed. And a window wide enough for the slope reaches the
+modulation comb's own teeth at their spacing and the Doppler pedestal long
+before it reaches the neighbouring hyperfine component, which sits some
+hundreds of megahertz away, so the teeth and the pedestal are what is
+subtracted first. The residual baseline matters more than either: a flat
+offset of a per cent of peak enters the second moment through the cube of the
+window and moves the slope severalfold, so the baseline is the accuracy
+limit and the wings are not. It pins the
+collisional width for the waist ladder of chapter 4 item 3c, which needs it
+from outside its own fit. **Needs.** Nothing on the bench: the archived
+traces, with the comb's teeth, the Doppler pedestal and the residual baseline
+subtracted first. **Shots.** None. **Go/no-go.** The slope must return the homogeneous
+width the composite fits already carry, within the accuracy the owed
+asymptotic expansion establishes. **Empty.** The residual baseline may dominate the second
+moment at every window wide enough to matter, which would leave the slope a
+bound. **Record.** The second moment at each window, the fitted slope
+and intercept, and the subtraction applied. **Cost.** Analysis days, and the
+asymptotic expansion is owed before the intercept is read.
+
 **Record.** Width and shift against density, and their ratio against the
 predicted 2.75, with the blackbody shift subtracted from every centre before
 the ratio is formed: it runs from minus 80 Hz at 70 C to minus 161 at 130

@@ -214,9 +214,10 @@ once broke that exactness by accident.
 ![Lever map for the collisional and laser width components](../../figures/fig35_orthogonal_information.png)
 
 *Which lever moves which width component: density resolves the collisional
-width, an independent laser diagnostic is the only lever on the laser
-width, and without that diagnostic the two currently add to a single
-measured sum.*
+width, and an independent laser diagnostic is the lever this record has
+costed on the laser width. Without it the two add to a single measured sum,
+and a waist ladder carrying different powers of the magnification into each is
+the proposed second route.*
 
 Lorentzians add: convolving one of FWHM $a$ with one of FWHM $b$ gives a
 Lorentzian of FWHM $a+b$, exactly. If the laser's contribution is modelled

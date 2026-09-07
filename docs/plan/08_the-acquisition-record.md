@@ -268,8 +268,9 @@ valid at any frequency. The cost is one more optic in the retro path and its
 feels a laboratory field, first order doubly cancelled to under 140 Hz at
 50 uT and second order under 3 kHz per state. The pair separation is less
 lucky: it inherits the difference of the quadratic Zeeman terms, dominated
-by the smaller 6S splitting, near 0.9 kHz for the 87 pair and 2.1 kHz for
-the 85 pair at Earth field, against this block's 0.3 kHz target. The term
+by the smaller 6S splitting, near 0.9 and 2.1 kilohertz per gauss squared on the laser axis for the 87
+and 85 pairs, which is half the transition-axis figure the campaign-cases
+chapter quotes and about a kilohertz at a laboratory field of one gauss, against this block's 0.3 kHz target. The term
 scales as the field squared, so nulling to about 15 uT with a coil pair buys
 a factor of ten, and the fluxgate column of section 10b.4b supplies the
 correction either way. No other block in this plan carries a magnetic term
@@ -281,7 +282,26 @@ pure atomic structure, so reading the doublet at two coil settings returns
 the field inside the cell, at the atoms, where no external probe sits: near
 3.6 uT per hundred crossings on the 85 pair, with the 87 pair's coefficient
 smaller by the known factor near 2.25 as an internal consistency check. The
-correction the block needs is therefore supplied by the block. Per-peak
+correction the block needs is therefore supplied by the block. **And the
+four lines give three determinations of the field squared, not one, whose
+signature separates a real field from an axis error.** Each level carries the Breit-Rabi
+second-order term, proportional to one minus four times the magnetic quantum
+number squared over the square of twice the nuclear spin plus one, positive
+for the upper hyperfine level and negative for the lower, and inversely
+proportional to the hyperfine splitting. The transition takes the 6S term less
+the 5S one, and the record's own `A_6S_RB87_HZ` and `A_6S_RB85_HZ` put the 6S
+splittings 4.23 times below the ground state's in both isotopes. The
+construction is gauged against the published 87 clock coefficient of 575.15
+hertz per gauss squared, which it reproduces to three decimals. Averaged over
+the magnetic sublevels of each line, the three gaps go as minus 0.85, plus
+2.79 and minus 0.70 kilohertz per gauss squared, which normalise to minus
+0.31, plus one and minus 0.25: the outer two take the opposite sign to the
+middle, and the 0.9 and 2.1 above are the same physics read as the two
+hyperfine pairs at zero projection. A scale error in the frequency axis, linear or
+quadratic, moves all three the same way, so the sign opposition is the
+discriminator and a fit returning a negative field squared indicts the axis
+and not the field. The three agree or the axis is wrong, and that test is
+free on any trace carrying all four lines. Per-peak
 coefficient differences enter this budget too and are computed from the
 record's own polarizability model at 4 to 16 Hz at full power, twenty to
 seventy times below the Zeeman term. The complementary null-seeker, zeroing

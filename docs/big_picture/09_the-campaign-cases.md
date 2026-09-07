@@ -325,7 +325,15 @@ rate it is not a calibration at all.
 * The quadratic Zeeman injector: the hyperfine mismatch between 5S and 6S
   makes a bias field a calculable line shifter at 1.9 and 4.2 kHz per gauss
   squared for the two isotopes, from committed constants, a free calibration
-  channel for any line-centre instrument on this bench.
+  channel for any line-centre instrument on this bench. **With one condition
+  that matters on her platform.** Those coefficients carry the Breit-Rabi
+  bracket, one minus four times the magnetic quantum number squared over the
+  nuclear factor squared, which is zero at the stretched state. A trap holding
+  atoms in the maximum projection, as the fictitious-field proposals do by
+  construction, therefore feels no quadratic Zeeman shift at all and the
+  channel is not available on those atoms. It is available on an unpolarised
+  or optically pumped low-projection sample, and its own vanishing at the
+  stretched state is the reason a trap built there is magic in the field.
 * A characterised laser, as in scenario one, but now characterised through
   the same guided path that fibre experiments use, under the shared-path
   condition the candidate note states.

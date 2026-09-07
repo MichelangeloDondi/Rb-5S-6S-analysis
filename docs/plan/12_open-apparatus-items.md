@@ -357,7 +357,8 @@ reading can be trusted. Both are apparatus facts and both are one line each.
 
 The campaign wants a waist ladder taken at fixed power and fixed retro ratio
 through an adjustable beam expander (owner design, 2026-09-06), because the
-magnification is a ratio of focal lengths and can be known far better than the
+magnification is a ratio, of focal lengths where the optics are ideal and of
+spot sizes on a camera where they are not, and can be known far better than the
 absolute waist, which makes the ladder's abscissa calibrated. What the record
 does not have is the instrument's own numbers: the magnification range, the
 accuracy with which the magnification is known at each setting, whether the
@@ -376,9 +377,29 @@ returning mode's overlap unless the retro is re-matched, and the light shift
 takes one combination of the two arms while the two-photon coupling takes
 another.
 
+### The beam's mode at the cell, and the collection aperture
+
+Two bench facts the analysis assumes and no measurement in the record fixes.
+**The mode at the atoms.** The ramp's shape, and with it the minus two thirds
+pull coefficient and the 0.566 skewness, is a property of a Gaussian beam. The
+source is a single-frequency titanium-sapphire laser, so the beam leaves TEM00,
+but an electro-optic modulator, the lenses and the cell windows sit between the
+laser and the atoms, and a mode that is no longer Gaussian changes the ramp's
+shape and not merely its scale. **What settles it.** One camera image at a
+plane equivalent to the interaction volume, the same image the waist ladder of
+chapter 4 already needs. **The collection aperture.** The solid angle sets what a count-rate forecast
+for a geometry this bench has not run is worth, the tighter-waist relay above all, where the
+record's present rate is inverted from the committed noise law and already
+carries the aperture it was taken with, and the record does not state the
+collection lens's clear aperture, and at the object distance the
+stated conjugates give, near 28 mm, a half-inch against a one-inch lens moves
+the collected fraction by a factor of about three and a half, rising toward
+four in the small-angle limit. **What settles
+it.** A ruler. **Cost.** Both close inside the optics day.
+
 ### The expander's pointing stability across its zoom range
 
-The waist ladder of chapter 6 is interleavable only if changing the
+The waist ladder of chapter 4 item 3c is interleavable only if changing the
 magnification does not move the beam. A realignment between settings acts as a
 new block, so the ladder would carry block scatter along its own axis. **What it decides.** A factor of three on the waist's
 share of the error budget: under a per cent with a pointing-stable zoom,
@@ -537,6 +558,10 @@ and it is a check on the first route and not its replacement.
 **The chain's time constant closes in an hour with a step response on the
 3104z's deep fast record and no atoms**, chapter 10's second item, and it is
 what decides how fast the deep trace of chapter 7 may run.
+
+**The beam's mode at the cell closes with one camera image**, taken at a plane
+equivalent to the interaction volume, and the aperture closes with the same
+ruler as the distances below.
 
 **The collection distances close in a minute with a ruler**, and they are the
 only items on this page already carried into a committed result instead of

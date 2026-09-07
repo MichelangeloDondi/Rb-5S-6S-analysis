@@ -271,7 +271,8 @@ this section, which has to be in place before any of them runs.
    catches only relative waist errors and that a common scale error passes
    silently. An expander of magnification $M$ ahead of the cell scales the
    waist at fixed power and fixed retro ratio, so the abscissa is known from a
-   ratio of focal lengths even when the absolute waist is not, and every term
+   ratio, of focal lengths in the ideal case and of spot sizes on a camera
+   where the optics are not ideal, even when the absolute waist is not, and every term
    carries a different power of it: the collisional and laser widths none, the
    transit $M^{-1}$, the light shift and the two-photon Rabi frequency
    $M^{-2}$, the excitation cycles of a crossing $M^{-3}$ and the rate per atom
@@ -280,7 +281,31 @@ this section, which has to be in place before any of them runs.
    names the code that carries each. The fit then measures the reference waist
    twice, through the transit's $1/M$ and the shift's $1/M^2$, and their
    agreement tests the transit law where the present one-setting anchor has to
-   assume it. **Needs.** The expander, its magnification known and stated, and
+   assume it. **Where the abscissa's precision comes from.** A ratio of focal lengths
+   assumes the optics are ideal. A ratio of spot sizes on one camera does not,
+   and the pixel scale cancels from it, so the magnification is good to about
+   half a per cent where the waist band this record commits spans about five:
+   the scaling is known about ten times better than the band, and better than
+   the systematic the band does not cover, and the image is the one the needs
+   line already asks for. **And the fit that uses it attacks the width
+   degeneracy.** Variances add under convolution for any kernel that has one,
+   so the total Gaussian variance is the laser's plus the transit's and the
+   transit's goes as the inverse square of the magnification: a regression of
+   that variance against the magnification returns a constant that is the
+   laser and a coefficient that is the transit, which is the degeneracy no
+   amount of data at one setting breaks, and the reference waist follows from
+   the coefficient through the transit law. **The estimator is the moment and
+   not a Voigt width.** This record's transit kernel is a two-sided
+   exponential, so a Voigt fit's Gaussian parameter is not that variance and a
+   ladder regressed through it returns both terms high by of order seventy per
+   cent. The variance the fit needs is the one the window-moment scan of
+   chapter 5 measures, which is why the two are one proposal. It needs the collisional width pinned
+   independently, which the same scan of
+   [chapter 5](05_width-collision-amplitude.md) supplies. **What the twin still owes**: the conditioning of that
+   two-parameter fit at three or four settings under this record's own block
+   scatter, which the twin owes before either the half per cent or the
+   sub-per-cent waist is quoted as a result and not as the fit's design.
+   **Needs.** The expander, its magnification known and stated, and
    the retro ratio measured at every setting, since the shift takes
    $(1+\rho)$ and the coupling $2\sqrt{\rho}$ and an unmodelled $\rho(M)$
    reads as a waist error. **Shots.** The power ladder of item 1 repeated at

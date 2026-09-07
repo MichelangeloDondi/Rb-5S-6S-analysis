@@ -125,7 +125,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 346,
+    "line": 354,
     "writes": "69"
    }
   ],
@@ -137,7 +137,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 346,
+    "line": 354,
     "writes": "16"
    }
   ],
@@ -149,7 +149,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 346,
+    "line": 354,
     "writes": "2.78"
    }
   ],
@@ -1439,7 +1439,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 355,
+    "line": 363,
     "writes": "0 to 1"
    }
   ],
@@ -1451,7 +1451,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 353,
+    "line": 361,
     "writes": "4 to 9"
    }
   ],
@@ -1468,7 +1468,7 @@
    },
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 344,
+    "line": 352,
     "writes": "30.73"
    }
   ],
@@ -1485,7 +1485,7 @@
    },
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 344,
+    "line": 352,
     "writes": "0.67"
    },
    {
@@ -1502,7 +1502,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 345,
+    "line": 353,
     "writes": "0.23"
    }
   ],

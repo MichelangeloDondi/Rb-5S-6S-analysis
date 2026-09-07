@@ -82,8 +82,11 @@ remove it.
 tested rather than assumed. Varying the span by a factor of five and the trace
 count by a factor of ten moves the correlation by 0.0075 and 0.0000
 (`results/twin_span_sweep.csv`), which is no movement at all. The degeneracy belongs to the lineshape
-rather than to the sample size, so the external measurement is not the
-cheapest route to this limitation. It is the only one.
+rather than to the sample size, so no amount of archive data reaches it, and an
+external laser-width measurement is the route this record has costed. A waist
+ladder through a calibrated expander is proposed as a second, because the
+laser and transit variances carry different powers of the magnification. The
+plan hub's intensity chapter states it with the conditioning it still owes.
 
 **A second limitation hides inside this one: the laser kernel is an
 assumption, and its failure mode is a bias rather than an error bar.** Every
