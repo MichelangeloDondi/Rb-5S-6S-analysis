@@ -118,7 +118,9 @@ signal-to-noise at 16 microns on the collected fraction's arctangent law, so
 the volume model is the route that costs no
 light. The volume model costs analysis days and no beam time, the
 magnification a relay redesign and a bench day without atoms before the light
-cost, and neither sits on a campaign day until one is chosen. The light cost
+cost. **The owner chose on 2026-09-07: the volume model, and the light stays**
+([chapter 4](04_intensity-and-light-shift.md) carries the numbers), so what
+this item now waits on is the analysis and not a decision. The light cost
 follows the collected fraction's arctangent law and not the collected length,
 so it is a factor of seven at 16 microns and 2.6 in signal-to-noise, five and
 2.2 at 24, 2.4 and 1.5 at 40.
@@ -353,6 +355,34 @@ two logged offsets of 119.6 and 133.4 MHz is a scatter of averages and not of
 single readings, and the settle time bounds how early in a session any absolute
 reading can be trusted. Both are apparatus facts and both are one line each.
 
+**And the readout's own step is the larger term, which nobody had separated.**
+The peak labels are logged to four decimal places in nanometres. At 993.4 nm a
+step of one part in ten thousand of a nanometre is 30.4 MHz on the laser axis
+and 60.8 on the transition axis, so a single logged reading carries a uniform
+error of standard deviation 8.8 and 17.5 MHz on those axes. **The two logged
+offsets differ by 13.8 MHz, which sits inside that**, so the observed scatter is
+consistent with the step alone and is not evidence of drift. Every figure of
+order sixty megahertz this record has quoted for its absolute axis is this step
+and not the instrument, which is a class better. **What settles it costs
+nothing**: log the digits the instrument already supplies, and check on any
+logged sequence whether the last digit ever moves, because averaging beats
+quantisation only when the jitter dithers across the step. Under that condition
+the campaign's own ten-sample average would give 5.5 MHz on the transition
+axis, and nothing at all without it.
+
+### The piezo's triangle frequency, which now binds the acquisition
+
+[Chapter 7](07_acquisition-settings.md) section 9 shows that the memory of a
+modern instrument allows of order a hundred triangles in one record while
+keeping each crossing fittable alone, and that the count is what buys the drift
+and hysteresis diagnostics. **What limits it is then the scan piezo and its
+servo, and the record has no statement of either.** What settles it: a
+frequency response taken by driving the ramp and reading the transmitted
+fringe, an afternoon with no atoms. **What it changes**: whether the campaign
+takes one triangle per record, as 2025 did, or the hundred the analysis wants,
+which is the difference between having the drift diagnostic and assuming the
+drift away. **Cost.** Half a day inside the optics day.
+
 ### The adjustable expander's magnification, and what is known about it
 
 The campaign wants a waist ladder taken at fixed power and fixed retro ratio
@@ -542,6 +572,50 @@ for the chain rests on an assumed constant, and this bound replaces it.
 [Chapter 7](07_acquisition-settings.md) and
 [chapter 9](09_the-fixed-lock.md) carry the consequence.
 
+### Whether the radio-frequency gate can be synchronised to the sweep trigger
+
+The oscilloscope records four channels and the campaign has five things worth
+recording. Three supply information nothing else does: the cell fluorescence,
+the ramp monitor and the cavity error signal. The fourth is contended between a
+marker for the modulator state and a second detector. If the modulator's
+radio-frequency drive can be gated from the same trigger that starts the
+sweep, its state is a known function of the sample index, the marker records
+something already known, and the channel is freed for a second platform's
+detector on paired blocks or for the retro-reflected power on cell-only ones.
+If it cannot, the marker is mandatory and a second detector needs a second
+instrument. **What the record can say without it is nothing**: it is a
+property of the drive electronics and the trigger distribution on this bench.
+**Cost.** One afternoon with the drive and the trigger, no atoms, and the answer
+is a yes or a no.
+
+### The piezo's sweep nonlinearity and its hysteresis, as fractions of its travel
+
+The rate variation across an analysis window that forges the whole light-shift
+signal in the third cumulant is computed in
+[chapter 7](07_acquisition-settings.md): about three parts in ten thousand
+at the campaign's tightest licensed waist and two parts in a hundred thousand
+at the 2025 configuration. The nonlinearity that matters is the actuator's own over its
+travel, and the span scanned does not enter it, so what is needed is the
+piezo's departure from linearity as a fraction of its full travel and the
+hysteresis between the two halves of a triangle. A bow of two per cent clears
+the 40 micron tolerance by 1.2 and ten per cent fails it by four, so an
+open-loop actuator needs its bow measured from the anchors the sweep crosses
+and taken out. A ripple of fifty cycles at a tenth of a per cent exceeds the
+tolerance three hundredfold and is what the ramp monitor is for. **Cost.**
+The bow from the anchors is free once the ramp is recorded. A linearised
+actuator is a purchase the answer decides.
+
+### Whether the R&S RTM3004 can be borrowed for the campaign
+
+Chapter 7 names it the instrument the design wants, on three documented
+counts: disjoint high resolution at sixteen-bit words, a record-length menu,
+and history segments that capture a whole ladder without touching the
+horizontal control. Whether it is available to this bench for the campaign's
+weeks is a fact the record does not hold. If it is not, the four-peak traces
+go to the LeCroy run raw, as chapter 7 already provides. **Cost.** A question
+to whoever holds it. The design works either way and the difference is the
+LeCroy's two lost bits.
+
 ### What each item costs to close
 
 **The lock residual is the cheapest and the highest leverage.** It needs no
@@ -573,6 +647,7 @@ The nanofibre arm has open items of its own, and they are listed in the fibre
 thread rather than here so that a reader with no fibre keeps the skip promise
 of [BIG_PICTURE](../BIG_PICTURE.md):
 [chapter 6](../big_picture/06_next-nanofibre.md).
+
 
 ---
 

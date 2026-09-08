@@ -302,10 +302,6 @@ a measurement, run the twin and ask whether the quantity you want is limited
 by noise or by identifiability. More data fixes the first and never the
 second, and the twin distinguishes them in seconds.
 
----
-
-*[Width, collisions and amplitude](05_width-collision-amplitude.md) · [Acquisition settings](07_acquisition-settings.md)*
-
 
 ## The order the calibrations run in, and why it is not free
 
@@ -346,3 +342,7 @@ constants, which tests the frequency axis itself and therefore everything
 downstream. And the composition test of chapter 4. **The axis test goes
 first**, because if the gaps do not reproduce, what follows measures the
 piezo.
+
+---
+
+*[Width, collisions and amplitude](05_width-collision-amplitude.md) · [Acquisition settings](07_acquisition-settings.md)*

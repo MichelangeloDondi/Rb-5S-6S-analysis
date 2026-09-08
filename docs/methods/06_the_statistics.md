@@ -159,7 +159,14 @@ flank contributes nothing) while having unit response to white noise, so for
 white noise of standard deviation $\sigma$, $e_i$ also has standard deviation
 $\sigma$. Binning $e_i$ by local signal level and fitting the variance law
 $\sigma^2=a^2+bV$ then gives $a$ (a floor by construction of the model, though measured on this dataset it rises with power, so it is shot noise on an optical background rather than electronics or dark current, and the law unifies as $\sigma^2=b(V+V_{\rm bg})$) and $b$ (the
-shot-noise, "Fano", term). Wing-noise **correlation** is measured separately
+shot-noise, "Fano", term). **The digitiser is not in this budget and the
+measurement is not quantisation-limited**: the committed files carry 11.86
+effective bits across their own swing, so the step at the median peak is about
+150 microvolts and its standard deviation about 43, against a fitted floor
+between 1.3 and 15.5 millivolts. That is thirty to three hundred and sixty times
+below the floor, a hundred-thousandth to a thousandth of the variance, and the
+moment study found the same from the other side, the instrument axis moving the
+fitted exponent least of the four it varied. Wing-noise **correlation** is measured separately
 by the blocking method and summarized as an integrated correlation time
 $\tau_\text{int}$, which inflates the fit errors as above. We found $b$ flat in
 $T$ (the trapping test of [§2.7](04_the_composite_model.md)) and $\tau_\text{int}$ small. *Code:*

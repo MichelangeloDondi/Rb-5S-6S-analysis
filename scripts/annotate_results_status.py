@@ -112,6 +112,10 @@ SKIP = {"laser_epoch.csv", "qc_metrics.csv",
         "moment_power_map_rungs.csv",
         "moment_power_map_deep.csv",
         "moment_power_map_deep_rungs.csv",
+        # the producer writes per-row statuses, DIAGNOSTIC for the checks and
+        # the sweep-shape rows and ENVELOPE for the tolerances, so only it knows
+        # which is which
+        "sweep_linearity.csv",
         # the lever ranking: every row is a Fisher forecast about a DESIGN, and
         # its inputs split measured from estimated, so the producer tags them.
         "onf_lever_ranking.csv",
@@ -153,6 +157,10 @@ SKIP = {"laser_epoch.csv", "qc_metrics.csv",
 
 # wide CSVs: one status for the whole file (its rows are homogeneous)
 FILE_STATUS = {
+    # the observable taxonomy: every row is a forecast about a design over a
+    # pooled inventory, so ENVELOPE; registered before the file lands so a
+    # stranger who runs the committed producer does not die on this map
+    "observable_taxonomy.csv": "ENVELOPE",
     # Every row is a count of the repository's own provenance declarations,
     # not a measurement of the atom, so the whole file is DIAGNOSTIC. It
     # measures how much of the record no producer regenerates, and a row

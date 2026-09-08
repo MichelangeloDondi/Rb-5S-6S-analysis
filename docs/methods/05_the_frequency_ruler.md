@@ -1,5 +1,7 @@
 *Chapter 5 of 8 · [methods index](../methods.md)*
 
+> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+
 **The question.** How does a record of volts against time become a frequency
 axis, and how well is that axis known?
 **Takes.** The measurement chapter, for the sweep and the apparatus. It needs
@@ -195,6 +197,61 @@ locked by a permanent test in `tests/test_constants.py`. The validity and
 trimming rules are pre-registered in
 [the ruler specification](../notes/ruler_validity_and_trim_prereg.md), and the
 provenance of the combs themselves is [`DATA.md`](../DATA.md) §7.
+
+### How linear the axis must be, and which observable sets the bar
+
+The ruler above fixes the scale of the frequency axis. How linear it is
+between anchors is a separate requirement, and the observable that sets it is the third
+cumulant, because a sweep whose rate varies stretches one side of the line
+against the other and so forges the very asymmetry that channel reads.
+
+**Derivation.** Write the true frequency against the assumed axis as
+$\nu = \hat\nu + \alpha\hat\nu^{2}$, keeping the leading departure. The rate
+$d\nu/d\hat\nu = 1 + 2\alpha\hat\nu$ varies across a window of half-width $W$
+by a fraction $\epsilon$ equal to $2\alpha W$, and since the distortion enters
+the profile at first order in the curvature, the induced third cumulant is
+linear in that fraction. **Rung two for the form, rung three for the coefficient**, which is
+measured on the production estimator and not expanded analytically, because
+the window truncation has no closed form against this kernel.
+
+| configuration | window | the ramp's own windowed third cumulant | rate variation that fakes it |
+|---|---|---|---|
+| 2025, waist 64 microns | 6 MHz | [0.00011901](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:k3_light_shift") MHz cubed | [0.00223](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:rate_variation_tolerance") per cent |
+| campaign, waist 40 microns, the tightest licensed | 6 MHz | [0.00153465](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:k3_light_shift") MHz cubed | [0.0290](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:rate_variation_tolerance") per cent |
+
+**Uncertainty and its blind region.** The tolerance is a property of the
+composed line, so the line's own width uncertainty is its own: scanned over
+both extremes of the collisional and the laser width bands it is
+[0.00223](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:rate_variation_tolerance") plus or minus
+[0.00018](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:rate_variation_tolerance_err") per cent at the 2025
+configuration and [0.0290](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:rate_variation_tolerance") plus or minus
+[0.0022](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:rate_variation_tolerance_err") at the campaign's tightest
+licensed waist of 40 microns. The tolerance falls as the line widens, because a
+wider line leaves less of its asymmetry inside a fixed window, which is the
+direction of that band. The result is first order in the curvature, confirmed
+by the induced cumulant rising [10.0006](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:artefact_linearity_ratio") times for a
+tenfold rate variation, so it understates the damage from a departure large
+enough for the next term to matter. **The 16 micron configuration the campaign
+proposes is outside this model's licence**: the composition carries neither
+the axial collection window nor the saturation companion, which the record
+puts at the factor-of-three level on this cumulant there, so its
+[1.238](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_16um:rate_variation_tolerance") plus or minus
+[0.034](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_16um:rate_variation_tolerance_err") per cent carries that factor
+and not only its width band.
+
+**The nonlinearity is the actuator's and not the scan's.** With the best-fit
+line removed, a quadratic bow whose maximum departure is a fraction of the
+actuator's travel gives a rate variation across a window of half-width W of
+exactly twelve times that fraction times W over the travel, on rung two. The
+scanned span does not enter, and a sub-scan of the same actuator reads the
+same number. A ripple of N cycles across the travel replaces the twelve by the
+square of two pi N, which is why a short-scale departure does not dilute, and
+above a small amplitude it reverses the sweep and no rate variation exists.
+
+**Route to re-derive.** `rb5s6s.lineshape.model_profile` evaluated on the
+stretched axis $\hat\nu + \alpha\hat\nu^{2}$, read with
+`rb5s6s.cumulants.windowed_cumulants` at the same window, against the
+unstretched profile at the injected shift.
 
 **What would falsify this.** A comb whose teeth were spaced $\Omega$ rather
 than $\Omega/2$. Every frequency in this repository would then be a factor of

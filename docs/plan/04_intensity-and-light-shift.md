@@ -362,6 +362,47 @@ this section, which has to be in place before any of them runs.
    choice, two faces, and chapter 12 carries it as open, with the volume model
    the route that costs no light.
 
+   **Read 2026-09-07 from a run whose file is not yet committed, and it resolves
+   differently for the two observable families.** No committed forecast rests on
+   the numbers in this block: they are read from `run_observable_taxonomy.py`'s
+   first run, whose file lands with the next wave, and until it is committed
+   they carry no tag and the campaign case quotes nothing from them. The
+   observable taxonomy forecasts the fitted centre's precision
+   at every waist, and the magnification's cost falls entirely on it, since a
+   symmetric spread does not move a centre but shot noise does. The fractional
+   precision on the coefficient runs 2.7 per cent at 64 microns, 1.2 at 40,
+   0.52 at 24 and 0.27 at 16. Paying the factor 2.6 that the restoring
+   magnification costs takes 16 microns to 0.70 per cent, which still beats 64
+   microns by 3.8 times and 40 microns, the tightest waist inside the licence
+   as it stands, by 1.7. **So for the fitted centre the magnification route survives its own
+   cost**: it buys a factor of sixteen in the coefficient and
+   pays a factor of 2.6 in the noise.
+
+   **It rescues nothing for the shape channel, and that is the other half.** At
+   16 microns the third cumulant's injected value is 0.88 of its own pooled
+   standard error over the inventory's seventy-two traces per rung, so the
+   channel is already refused on counts, and 2.6 times worse noise takes it to
+   0.34 at best, since 2.6 is the peak's shot-noise cost and the cumulant reads
+   the wings, where the light-linked floor dominates and a sevenfold cut in
+   light costs up to seven. Below 40 microns it is refused twice over, once because the line is
+   not a convolution there and once because the counts do not reach, and the
+   two refusals are independent. The volume model is therefore worth building
+   for what it lets the fitted centre claim at a tight waist without buying
+   optics, and not for opening a shape channel, which it does not.
+
+   **Owner ruling, 2026-09-07: take the volume model and keep the light.** The
+   choice is settled on the side that does not throw signal away. The two faces
+   turn out to be the same decision seen twice, because the magnification that
+   restores the convolution is the one that costs about seven in collected
+   light, and the dominant noise term on the line is shot noise, whose sigma
+   falls as the root of the photon count. So declining the magnification keeps
+   a factor 2.6 in signal-to-noise that the model repair would have spent, and
+   the model repair is a package change that costs no beam time at all. What
+   this record owes as a consequence is the volume integral in place of the
+   convolution below 40 microns, which chapter 12 carries as the open analysis
+   item it already was, now with a decision behind it instead of a pair of
+   options.
+
    **Needs.** The two-lens relay and its slit, configuration S, and the cathode
    with the long axis along the beam (`APPARATUS.md`). **Shots.** The slit scan at four or
    five settings inside §9 D5, with atoms, power, lock and waist all held fixed.

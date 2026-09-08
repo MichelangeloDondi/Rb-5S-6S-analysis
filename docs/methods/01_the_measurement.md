@@ -52,7 +52,7 @@ is drawn on every arrow of fig13 and computed there from the line data rather
 than quoted. The 5P fine-structure
 splitting is enlarged for legibility rather than drawn to scale. Right: the four
 hyperfine components measured, two per isotope, all F → F, labelled by
-uncalibrated wavemeter reading. Each is crossed once per sweep direction, so the
+uncalibrated wavemeter reading, logged to four decimals in nanometres. That logging step is 60.8 MHz on the transition axis, larger than the instrument's own accuracy. Each is crossed once per sweep direction, so the
 down-sweep repeats the same four mirrored about the ramp apex. Their relative
 strengths follow the ground-state populations, abundance × (2F+1)/G_iso, which
 predicts ⁸⁵Rb F = 3 at 7/5 = 1.40 times F = 2 against 1.42 integrated from the

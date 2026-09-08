@@ -62,6 +62,7 @@ CHEAP = {
     "run_kernel_identifiability": ["kernel_identifiability.csv"],
     # a Fisher forecast over five rungs per lever, milliseconds, no traces.
     "run_onf_lever_ranking": ["onf_lever_ranking.csv"],
+    "run_sweep_linearity": ["sweep_linearity.csv"],
     # three closed-form tables: a root of the HE11 characteristic equation at
     # three diameters, one quadrature of the Poynting flux, and a lookup of
     # the transit kernel factors. Well under a second and it reads no traces.

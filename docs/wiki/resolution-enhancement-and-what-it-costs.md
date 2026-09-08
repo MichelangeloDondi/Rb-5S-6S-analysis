@@ -132,6 +132,28 @@ running at gigasamples per second, this cost is unreachable. Bandwidth is not
 the scarce resource in this experiment and it is not a reason to leave
 smoothing off.
 
+**But the filter is also a kernel, and whether that matters depends on the rate
+it runs at.** Where the average is disjoint, one output per group of input
+samples, the kernel is exactly one stored sample wide, which is the sampling
+the model already carries, and the cost is nil. Where it is a moving average
+across stored samples, the kernel is wider than the sampling and adds a
+broadening the model does not carry. On this bench that is the difference
+between the Agilent's and the RTM3004's High Resolution, which are disjoint,
+and the LeCroy's enhanced resolution, which is not.
+
+| filter length in stored samples, convolved onto the composed line | broadening at 32 points per linewidth | at 148 points |
+|---|---|---|
+| 5, about half a bit gained | 0.99 per cent | 0.06 per cent |
+| 10 | 3.9 per cent | 0.19 per cent |
+| 24 | 21.6 per cent | 1.1 per cent |
+
+**Twenty per cent is larger than every width signal the light shift produces**,
+and the 2025 analysis failed on a degeneracy between three widths, so a fourth
+that is not in the model is the one cost of smoothing that binds here. It is
+avoidable in two ways: take the disjoint mode where the instrument offers one,
+or record raw and smooth offline, where the kernel is known and can be put into
+the fit.
+
 ## Phase response
 
 A filter with a constant zero phase does not move features in time, and

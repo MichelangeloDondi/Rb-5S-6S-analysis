@@ -644,6 +644,15 @@ def main() -> int:
       "P^3$ growth). So the excursion is real but identified: `resid_skew` is a "
       "shot-noise-dominated diagnostic, not a ramp signal, and it is why the "
       "dataset's skew cannot serve as a ramp measurement. "
+      # A third cause, and it is not about counts. Added 2026-09-07 IN THIS
+      # GENERATOR because docs/RESULTS.md is written by it: a hand edit to the
+      # page survives until the next regeneration and no further, which is how
+      # the first version of this sentence was lost the same day it was made.
+      "A third constraint is not statistical: the channel needs a sweep-rate "
+      "variation under "
+      "[0.00223](../results/sweep_linearity.csv \"ref:sweep_linearity:archive:rate_variation_tolerance\") "
+      "per cent across the window "
+      "([methods 5](methods/05_the_frequency_ruler.md)). "
       f"({_skew_scaling_clause()}) "
       "A fixed-lock session would lift the real observable two ways: the "
       "fixed lock "

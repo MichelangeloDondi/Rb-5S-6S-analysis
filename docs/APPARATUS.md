@@ -460,8 +460,14 @@ masking the retrace region. A recorded ramp would make the apex position a
 measured per-trace quantity instead of an inference, and would retire
 assumption A1 outright rather than leaving it as a stated assumption.
 
-That is worth one spare channel and nothing more. If channels are contended,
-this is the first thing to drop.
+That is worth one spare channel, and the ranking this paragraph once carried
+is withdrawn. It said the ramp channel is the first thing to drop when channels
+are contended. The sweep-linearity tolerance computed in
+[`plan/07`](plan/07_acquisition-settings.md) puts the third cumulant's tolerance
+on the rate variation across an analysis window at three parts in ten
+thousand at the campaign's tightest licensed waist and at two parts in a
+hundred thousand at the 2025 one, which makes the ramp a witness for the novelty channel, not a
+convenience. What is dropped first is stated there, with its condition.
 
 <img src="apparatus/2025-07-15_eom_comb_five_teeth.jpg" width="80%" alt="Five-tooth EOM comb on the scope: carrier, two sidebands, two faint outer teeth">
 

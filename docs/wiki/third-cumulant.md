@@ -287,6 +287,31 @@ rate and reverses with sweep direction. Measuring the same line at several
 rates therefore separates them, and neither a better model nor more averaging
 at one rate can.
 
+**The frequency axis forges one too, and it is the tighter constraint.** A
+sweep whose rate is not constant stretches one side of the line against the
+other, which is an asymmetry with no physical or electronic cause at all.
+Writing the true frequency against the assumed axis as
+$\nu = \hat\nu + \alpha\hat\nu^2$, the rate varies across a window of
+half-width $W$ by a fraction $\epsilon$ equal to $2\alpha W$, and the induced
+cumulant is linear in that fraction. The
+rate variation that fakes the whole light-shift signal is **[0.0290](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:rate_variation_tolerance") per
+cent at the campaign's tightest licensed waist and [0.00223](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:rate_variation_tolerance") at the 2025 one**, and about one per cent at the 16 micron configuration the
+model does not license, so this channel demands an axis two to three orders
+better than a centre fit does.
+
+It does not separate by sweep rate, because it is not a response, and it
+does not separate by direction either: an actuator's bow is the same function
+of position on both halves of a triangle, so the skew it forges has the same
+sign both ways and the midpoint of the two crossings does not cancel it. Only a
+departure that is a function of time symmetric about the apex reverses, which
+hysteresis is and a bow is not. What separates it is a recorded ramp and the
+anchors the sweep crosses, from which the bow is measured. A bow of two per
+cent of the actuator's travel gives [0.0240](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:eps_bow_eta2") per cent across a
+6 MHz window, eleven times the 2025 tolerance, and a ripple of fifty cycles at a
+tenth of a per cent gives [10.0664](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:eps_ripple50_eta0.1_p95_over_phase"), which is why
+[the frequency axis](the-wavemeter-and-the-frequency-axis.md) treats the ramp
+monitor as a requirement of this channel and not a convenience.
+
 ## Further reading
 
 - M. G. Kendall and A. Stuart, *The Advanced Theory of Statistics*,

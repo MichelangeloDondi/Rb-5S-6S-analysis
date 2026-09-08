@@ -114,8 +114,11 @@ with, and the trapped sample's velocity distribution is not the cell's. That is
 the argument for the shared sweep, and it is stronger than the drift argument
 the plan already refused.
 
-**Two things bound it, and both are stated here instead of being discovered on
-the bench.** The pedestal is roughly three parts in a thousand of the narrow line's
+**Three things bound it, and all are stated here instead of being discovered on
+the bench.** The third is an instrument: the fibre's detector shares the
+cell's oscilloscope only if the modulator's radio-frequency gate can be
+triggered from the sweep, and otherwise it needs an instrument of its own
+([plan 7](../plan/07_acquisition-settings.md)). The pedestal is roughly three parts in a thousand of the narrow line's
 height in the cell, and the guided arm has orders of magnitude fewer atoms, so
 the pedestal is almost certainly not measurable in the fibre arm itself. It is
 the cell arm's instrument, lent to the fibre. And if the modulator sits upstream

@@ -16,10 +16,13 @@ traces were taken on a 2000-point record while these sat beside the experiment.
 
 The deep record removes the sampling constraint entirely rather than merely
 satisfying it, so the information budget becomes time-limited through the
-correlation time above and never sample-limited. Four channels every block,
-the ramp, the fluorescence, the cavity error signal and a marker for the
-modulator state, with the sweep synchronisation on the external trigger input
-so no signal channel is spent on it. The cavity error channel is the in-situ
+correlation time above and never sample-limited. Four channels every block, and there are now five things
+worth recording, so the allocation is a decision and chapter 7 makes it. The
+three that no other measurement supplies are the fluorescence, the ramp monitor
+and the cavity error signal. The fourth is contended between a marker for the
+modulator state and a second detector, either a second platform's or a monitor
+of the retro-reflected power. The sweep synchronisation is on the
+external trigger input, so no signal channel is spent on it. The cavity error channel is the in-situ
 laser-noise witness the 2025 session had to reconstruct afterwards from rulers.
 
 Sequence mode, one segment per sweep, never on-scope averaging. Averaging in

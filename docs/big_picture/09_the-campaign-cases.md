@@ -126,7 +126,12 @@ the repaired lock do.
   the repaired lock detects the predicted shift at 3.8 sigma and separates
   the two disputed polarizability signs at 8 sigma if the shift is the
   predicted size, conditional on the lock's residual, which the plan spans from zero to 0.04 MHz per minute
-  ([CLAIMS](../CLAIMS.md) section 3, `results/projections.csv`).
+  ([CLAIMS](../CLAIMS.md) section 3, `results/projections.csv`). That span
+  is narrowed at no cost in beam time: the oscilloscope records four channels,
+  the cavity error signal on one of them flags every in-loop excursion and
+  dropout in the trace it happened in, and the hyperfine intervals the same
+  sweep crosses measure the reference's own drift out of loop
+  ([plan 7](../plan/07_acquisition-settings.md)).
 * The collisional coefficient: same-session 150 to 170 C points with the
   block noise cut fourfold resolve the expected rate near 10 sigma. Both
   halves are needed, and with the noise floor uncut the reach is 3 sigma.
@@ -337,6 +342,14 @@ rate it is not a calibration at all.
 * A characterised laser, as in scenario one, but now characterised through
   the same guided path that fibre experiments use, under the shared-path
   condition the candidate note states.
+
+**One hardware line the table below does not carry, stated here so it is not
+discovered on the bench.** The fibre's detector shares the cell's oscilloscope
+only if the modulator's radio-frequency gate can be triggered from the sweep,
+and otherwise it needs an instrument of its own, a cost the fibre case carries and
+the cell case does not. What the fibre keeps from the same wave is the scan
+actuator's bow measured in situ from the hyperfine and comb anchors the shared
+sweep crosses, a calibration her programme reuses on any line.
 
 ### The comparison for the group whose fibre it is
 

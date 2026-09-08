@@ -479,7 +479,7 @@ noise law's $a$ term is nominally the zero-signal noise, and across the power
 sweep it rises with power on every line, by 4.1 to 9.9 times from 25 to 225
 mW. Two checks say what it is. It sits 6 to 485 times above the digitiser's
 own quantisation noise, so it is not the ADC. And its log-log exponent against
-power is **0.85 plus or minus 0.10**, where shot noise on a background linear
+power is **0.85 plus or minus 0.11**, where shot noise on a background linear
 in power would give 0.5 and shot noise on a background going as the square of
 the power would give 1.0. So the floor is **shot noise on a power-dependent
 optical background**, dominated at the top of the range by a background that
@@ -1366,7 +1366,7 @@ and the evidence column names what it rests on rather than asserting authority.
 | setting | do this | why, and on what evidence |
 |---|---|---|
 | vertical range | **one range for the whole ladder**, set tight to the brightest rung | the step spans a factor of 347 across the 2025 ladder, which is the range switching written into the samples |
-| smoothing | **on**, and verify it reached the file | acquisition mode on the Agilent, math function on the LeCroy, and only one of those exports smoothed |
+| smoothing | **on** where it is disjoint, **off** where it is a filter | High Resolution on the Agilent and the RTM3004, which decimate disjointly and cost nothing. The LeCroy raw at eight bits, since its enhanced resolution filters across stored samples and adds a kernel the model does not carry (the smoothing-mode section below) |
 | record length | more points across the line, **not** for resolution | the CSV export caps at 64k and its Length control was low, but points buy time resolution rather than bits |
 | peaks per trace | **all four, one range, EOM on and off** | 5.57 per cent duty measured, and it is the direct test of the brightness ordering |
 | scan shape | triangular, keep both halves | two crossings per trace, and on a causal filter the splitting measures the lag. The transmitted power is logged on each half, because a driver's up and down brightness can differ and the up-down mean cancels a lag only when the drive is symmetric |
@@ -1619,6 +1619,419 @@ Record per trace, in the filename or an accompanying line:
 
 None of this costs bench time. All of it decides whether a future analysis can
 separate a physical effect from an instrument setting.
+
+### 9. Which instrument, and the three settings that follow from it
+
+**The instrument choice is not close, and the campaign's own scope settles it.**
+Three are named in the record and they differ in the two things that matter,
+how deep the stored word is and whether resolution enhancement correlates
+neighbouring samples.
+
+| instrument | depth in its enhanced mode | stored points | neighbours |
+|---|---|---|---|
+| Agilent dso-x 3054a, the 2025 instrument | 12 bits, boxcar | 64,000 at the export cap | independent |
+| LeCroy WaveSurfer 3104z | 9.5 to 11 bits, filter | 500,001 | **correlated by construction** |
+| R&S RTM3004 | 16-bit words, boxcar | 80 million | independent |
+
+**The export cap is what disqualifies the 2025 instrument.** Sixty-four
+thousand points across the four-peak span leaves about sixty-six samples per
+linewidth in a single crossing, so at eight per crossing the record holds at
+most four triangles. The LeCroy holds thirty-two, and its enhanced mode is a
+filter across stored samples that correlates neighbours, so a likelihood built
+on independent samples is wrong for its traces. Run it raw at eight bits and
+the depth advantage is gone. **The R&S is the instrument this design wants**, and
+whether it can be borrowed is already an open decision in
+[chapter 12](12_open-apparatus-items.md).
+
+**Setting one, the resolution mode.** Take the disjoint boxcar where it exists,
+because each stored point averages its own block and adjacent points share
+none, so it raises the depth and leaves the noise white. Never the filter.
+
+**Setting two, the vertical range, and it is section 1 of this chapter
+restated as a rule.** Hold it across a ladder. The 2025 campaign reset it at
+every rung, a factor of 347 in step, so a power ladder taken that way is five
+measurements on five instrument settings, and no averaging touches a
+per-condition systematic. If a ladder must span more than the range allows,
+repeat one rung at both ranges so the difference is measured.
+
+**Setting three, the triangle count, and it beats binning for a reason that is
+not statistical.** Total time on the line is fixed by the sweep rate and the
+span and does not depend on the count, so binning within one crossing and
+co-adding across many are the same operation against white noise. What the
+count buys is what binning cannot: twice the count of independent up-minus-down
+lag estimates in one record, and hysteresis appearing as a trend through the
+series. The ceiling is that a single crossing must still be fittable alone,
+which needs of order eight samples per linewidth: about a hundred and thirty
+triangles at two megasamples. **The binding limit is the piezo's own triangle
+frequency and not the memory**, and that is an open apparatus item.
+
+### 10. The RF gate, and why the two states are taken in a palindrome
+
+**The gate is the one knob that moves the saturation while the light shift
+stands still**, because a phase modulation splits the drive among the teeth
+without changing the intensity. It is also the ruler: the comb calibrates the
+axis, and the record's own forecast shows the teeth's tails contaminating the
+skew channel at the 2025 spacing, so the clean science trace is the one with
+the gate off.
+
+**Take the two states as a four-block palindrome, off-on-on-off, and not as
+an alternating pair.**
+Under a drift linear in time, an alternating order leaves the two states'
+mean times one block apart, so their difference carries the drift rate times
+the block time. In the palindrome both means fall at the same instant and the
+difference carries none of it. The cost is nothing: the same four blocks either way.
+
+### 11. What actually reduces the noise, ranked by the record's own law
+
+The committed law is a floor in quadrature with a term proportional to the
+signal, and the two are equal at 8.8 mV, **1.60 per cent of the median peak**.
+That number decides which action helps where.
+
+**Above about two per cent of peak the measurement is shot-limited, and only
+photons help.** Collecting both cascade legs is close to three times the
+signal, and the collection aperture, which the record does not state, is worth
+up to about three and a half in solid angle. Both multiply the signal, so the
+ratio improves as their square root.
+
+**Below that level the floor dominates, and that is where every open question
+lives**: the wings, the Doppler pedestal, the band excess. There, counting
+beats the analogue chain by about 1.7 times at one per cent of peak and 2.7 at
+three parts in a thousand, and two oscilloscopes let both chains see the same
+photons at once so the disagreement measures the detection systematic.
+
+**Binning and co-adding reduce every white term together as the square root of
+the count**, including quantisation, which is already 30 to 360 times below the
+floor and is not what limits anything here.
+
+**And what no averaging touches**: the vertical-range changes above, the drift,
+and the block-to-block scatter of the temperature axis. Those are answered by
+the acquisition order of sections 9 and 10 and by the reference conditions of
+chapter 6, not by more samples.
+
+## The triangle count, the point budget and the bit depth, settled together
+
+Three questions arrive as one, because each answer changes what the other two
+may spend. The record's earlier reading of them was wrong in one place and is
+corrected here.
+
+**The memory figure was never the export figure, and the plan quoted it as if
+it were.** The R&S RTM3004 selects a record length up to 80 MSample, which is
+what the acquisition memory holds. What the instrument transfers over its
+interface is a different quantity, and this record holds no measurement of it.
+The 80 MSample row therefore states a capability the campaign cannot use
+without knowing the transfer rate, and the open item below asks for it. The
+correction matters less than it looks, because the budget below shows the
+constraint does not bind at any setting the campaign wants.
+
+**The point budget, at the settings the physics asks for.** Reading the light
+shift directly off a trace, without a fit, needs the shift resolved
+to about a tenth of itself. The shift is 0.067 of a linewidth at the archive's
+waist and 0.329 at the campaign's tightest, so the requirement runs from 148
+points per linewidth at the archive to 30 at 16 microns. Thirty-two points per
+linewidth covers every configuration the campaign proposes, and it is ten times
+the floor a fit needs, the deep-trace study having measured the centre's
+information flat from three points per linewidth upward.
+
+| span | points per crossing | one acquisition of three triangles | five repeats |
+|---|---|---|---|
+| four peaks, 6 GHz | 35,556 | 213,333 | 1.07 MSample |
+| one peak, 200 MHz | 1,185 | 7,111 | 0.04 MSample |
+
+**So the budget does not bind and the memory question is moot.** A full
+four-peak campaign block at the resolution the tight waist wants costs about a
+megasample in total, which every instrument on the bench holds and transfers.
+The single-peak zoom costs forty kilosamples, which is nothing.
+
+**Three triangles, and the reason is identifiability, not photons.** A
+triangle crosses each line twice, so n triangles give 2n crossings and 2n - 2
+degrees of freedom against a drift model. One triangle removes a linear drift
+and cannot test it. Two remove it and test it. Three remove a quadratic drift
+and test the linear part, which is the first count that survives a lock whose
+residual is unmeasured. Beyond three the return falls, and the precision does
+not move at all, since the photons are fixed by the sweep time and dividing
+them among more crossings buys no counts.
+
+**Five repeats of the block, interleaved through the session and never taken
+back to back.**
+The repeats exist for the error bar the fit cannot supply, and their scatter
+carries the slow systematics a single acquisition cannot see. The interleaving
+is not a preference: this chapter's own sizing section measures the
+condition-common scatter flooring the root-n gain beyond three or four
+back-to-back repeats, so five taken consecutively buy little more than three,
+while five spread through the session average a term consecutive ones share.
+Five give four degrees of freedom on an empirical variance. That variance is the quantity every forecast in this
+record quotes, the scatter over trace sets, so measuring it on the bench in the
+same form is what makes the forecast checkable.
+
+**Eight bits is more than the measurement can use, and the record has already
+measured it on the traces themselves.** `results/quantisation.csv` reads the
+baseline noise of the committed 2025 traces in units of the true quantisation
+step: it runs from 6.1 to 73.2 steps, and the quantiser adds between 0.001 and
+0.112 per cent to the analogue noise. **Those are the numbers. A hand-constructed table on a nominal vertical range
+is not.** An earlier version
+of this section quoted 0.38 per cent from such a table, which is three times
+the measured worst case and describes a range setting no block used.
+
+**The condition that would bind, if any did, is dither and not depth.**
+Quantisation behaves as additive noise only while the noise spans at least one
+step. The measured blocks span at least 6.1, so the bench has never been near
+that boundary and the committed cells say the digitiser binds nothing. What
+reaches it is a coarse vertical range: at an 8-bit 500 mV range the quietest
+2025 trace would span about 0.7 of a step, where the error stops being random
+and becomes a deterministic function of the signal that no averaging removes
+and a lineshape fit reads as structure. That is a hypothetical about a setting
+to avoid, not a description of any block taken. The rule it gives is about the
+range: set it so the trace fills the screen, keep the noise above a few steps,
+and the bit depth stops mattering.
+
+**And the smoothing mode's cost depends on which mechanism it is, which this
+chapter's own instrument table states four hundred lines above and the first
+version of this section blurred.** The two are not variants of one thing. The
+LeCroy's enhanced resolution is a moving-average finite impulse response
+across stored samples: it correlates them and its kernel is wider than the
+sampling, so both costs below apply to it. The Agilent's and the RTM3004's High
+Resolution is disjoint decimation, the average of the samples behind each
+stored point, so its output samples are independent for white input and its
+kernel is exactly one stored sample wide, which is the sampling already in the
+model. **Disjoint high resolution is free and should be taken. A stored-rate filter
+is the one to decline.** The paragraphs below are about the second.
+
+**On the enhanced-resolution mode, the first version of this section named the
+wrong mechanism.** It said the enhanced mode costs
+sample independence and that a pooled likelihood is optimistic by an amount set
+by that correlation. Both halves are weaker than they sounded, and the chapter
+above already carried the measurement that says so.
+
+**The correlation is not the objection.** This chapter measured the LeCroy's own
+baseline autocorrelation across 47 traces at a 10 microsecond sample interval
+and found a 1 over e decay of one single sample, so the correlation is already
+gone at the instrument's resolution limit. The 2.34-sample integrated
+autocorrelation this chapter reports is a property of the campaign data and is
+attributed there to a smoothing filter, not to this instrument and not to its
+enhanced mode. Pinning it on enhanced resolution contradicted a measurement
+sitting four sections above.
+
+**And its cost, when it is present, is a factor on an error bar and not a
+bias.** A correlated series carries n over tau_int independent samples, so a
+likelihood written for independent ones under-reports the uncertainty by the
+square root of tau_int and reports the parameter itself correctly. At the
+measured 2.34 that is 1.53, and it is recoverable for nothing, since every
+trace carries its own baseline and the integrated autocorrelation is read off
+it directly.
+
+**Filtering destroys no information at all.** Fisher information is invariant
+under an invertible linear map of the data, and a boxcar of n samples has its
+first zero at one over n in normalised frequency. At 32 points per linewidth
+the line occupies about a thirtieth of the sample rate, which sits a factor of
+6.4 below the zero of a five-sample filter and 1.3 below a twenty-four-sample
+one, so the signal band is passed intact at every enhanced-resolution setting
+the instrument offers.
+
+**What is a real cost is the filter as a kernel, and that is the objection
+that survives.** A boxcar of n samples convolved onto the record's own composed line, two
+thirds Lorentzian, broadens it by (the first version of this table used the
+Gaussian quadrature rule this record has already withdrawn once, and
+understated every entry by about two):
+
+| filter | at 32 points per linewidth | at 148 points |
+|---|---|---|
+| 5 samples, about +1 bit | 0.99 % | 0.06 % |
+| 10 samples, about +1.5 bits | 3.9 % | 0.19 % |
+| 24 samples, about +2 bits | 21.6 % | 1.1 % |
+
+**That matters here more than the number suggests, because kernel separation is
+the whole difficulty of this measurement.** The 2025 analysis failed on a
+degeneracy between three widths, so adding a fourth that is not in the model is
+the last thing this line needs, and a 12 per cent instrumental broadening at
++2 bits is larger than every width signal the light shift produces. The filter
+is a known finite impulse response, so it can be put into the convolution and
+the objection then disappears. What cannot be defended is applying it and not
+modelling it.
+
+**So the recommendation narrows and its reason changes.** On the LeCroy, use
+the raw 8-bit mode with the vertical range set for dither, because its
+enhanced resolution filters across stored samples and so adds an unmodelled
+kernel to a kernel-separation problem while buying depth the noise floor has
+already made irrelevant. On the Agilent and the RTM3004, take High Resolution:
+it is disjoint, its samples stay independent, its kernel is the sampling, and
+the bits cost nothing. The earlier form of this sentence declined the mode
+across all three instruments and would have thrown away free resolution on two
+of them. At 148 points per linewidth even the LeCroy objection is small, which
+is worth knowing if that mode is ever wanted for another reason.
+
+**The open item this leaves.** The transfer rate of each instrument over its
+own interface, in samples per second, which sets how long an acquisition block
+occupies the bench and therefore how many blocks a day holds. It is an
+apparatus fact the bench has and this record does not.
+
+## The four channels, and the sweep-linearity tolerance that ranks them
+
+The oscilloscope records four channels at once, and the campaign has five
+things worth putting on them. The allocation is decided here and not left
+to the bench, because one of the five turns out to be a precondition for a
+result and not a convenience.
+
+**The sweep-linearity tolerance, computed and not assumed.** A sweep whose
+rate is not constant maps a symmetric line onto a skewed one. Writing the true
+frequency against the assumed axis as $\nu = \hat\nu + \alpha\hat\nu^2$, the
+rate varies across an analysis window of half-width $W$ by a fraction
+$\epsilon = 2\alpha W$, and the distortion enters the third cumulant linearly
+in $\epsilon$. Measured on the production estimator against the same line the
+campaign forecasts:
+
+| configuration | window | the light shift's own third cumulant | rate variation that fakes it |
+|---|---|---|---|
+| 2025, 64 microns | 6 MHz | [0.00011901](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:k3_light_shift") MHz cubed | [0.00223](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:rate_variation_tolerance") per cent |
+| campaign, 40 microns, the tightest licensed waist | 6 MHz | [0.00153465](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:k3_light_shift") MHz cubed | [0.0290](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:rate_variation_tolerance") per cent |
+| campaign, 16 microns, outside the licence | 12 MHz | [0.574892](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_16um:k3_light_shift") MHz cubed | [1.238](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_16um:rate_variation_tolerance") per cent |
+
+**That is a second and independent reason the 2025 third cumulant was never
+available.** The first is signal to noise, and it is severe enough on its own.
+This one is worse, because a bow of two parts in a thousand of the actuator's
+travel already reaches two parts in a hundred thousand across the window, so
+the channel was unavailable on the axis as well as in the counts. The
+campaign's tightest licensed waist asks for three parts in ten thousand, which
+a bow of about two per cent of the travel reaches, and that is a measurable
+requirement.
+
+**The nonlinearity is the actuator's, and the first version of this section
+made it the scan's.** It defined the departure as a fraction of the span
+scanned, so a 200 MHz zoom of the same piezo read thirty times worse than a
+6 GHz sweep and this chapter refused the zoom on that ground. A piezo's bow is
+a fraction of its travel: the same actuator scanned over a sub-span at the same
+position has the same curvature and the same rate variation across the same
+window, which the producer now carries as a row, [0.0240](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:eps_bow_eta2_subscan_200MHz_same_actuator") per
+cent on the sub-scan against [0.0240](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:eps_bow_eta2") on the full travel. The
+zoom is not refused. What the wide sweep buys is anchors, the four hyperfine
+lines and the comb's teeth, from which the bow can be measured and corrected.
+
+**The law, on rung two.** With the best-fit line removed, a quadratic bow of
+maximum departure a fraction of the travel gives a rate that varies linearly
+along it, and across a window of half-width W about the travel's centre the
+fractional variation is exactly twelve times the departure times W over the
+travel. Read against a 6 GHz travel and this chapter's windows:
+
+| bow, as a fraction of the travel | over a 6 MHz window | against 64 microns | against 40 microns |
+|---|---|---|---|
+| 0.2 per cent | [0.0024](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:eps_bow_eta0.2") per cent | fails by 1.1 | clears by 12 |
+| 2 per cent | [0.0240](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:eps_bow_eta2") per cent | fails by 11 | clears by 1.2 |
+| 10 per cent | [0.1199](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:eps_bow_eta10") per cent | fails by 54 | fails by 4.1 |
+
+**So the moment channel at the campaign's tightest licensed waist needs the
+actuator's bow under about two per cent of its travel, or measured and taken
+out.** An open-loop piezo is of order ten per cent, which fails by four. A
+linearised one or an anchored correction of the bow reaches it. At 64 microns a
+bow of two parts in a thousand already reaches the tolerance, which is why the
+2025 channel was unavailable on its axis.
+
+**A short-scale departure does not dilute, and its number is smaller than the
+first version said because a larger one reverses the sweep.** A ripple of N
+cycles across the travel replaces the twelve by the square of two pi N, so at
+fifty cycles the coefficient is about a hundred thousand and a ripple of a
+tenth of a per cent gives [10.0664](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:eps_ripple50_eta0.1_p95_over_phase") per cent across a 6 MHz window,
+three hundred and fifty times the 40 micron tolerance. Above about a third of
+a per cent the sweep reverses inside the window and no rate variation exists,
+which is what the first version of this paragraph reported as one. Piezo
+resonances, creep and stick-slip
+are of the short-scale class, and this is what the ramp monitor is for and why
+no bow measurement replaces it.
+
+**The allocation.**
+
+| channel | signal | what it supplies that nothing else does |
+|---|---|---|
+| 1 | cell fluorescence | the measurement |
+| 2 | ramp monitor | the non-smooth sweep error, and the apex position per trace |
+| 3 | cavity error | the lock residual, in situ, per trace |
+| 4 | contended | see below |
+
+**The cavity error channel witnesses the lock and not the reference.** An
+in-loop error signal reads the laser against the cavity, so a slow drift of the
+locked laser at the 0 to 0.04 MHz per minute the forecast spans is the
+cavity's own and the error signal is blind to it by construction. What it does
+see is every in-loop excursion and dropout, which is what severed the 2025
+record, so a glitched trace is flagged on evidence instead of being caught by
+its residual. The reference's drift is measured out of loop, by the hyperfine
+intervals crossed in the same trace, which is the ruler's job and not the
+servo's.
+
+**The fourth channel, and the decision is conditional on one apparatus fact.**
+The candidates are a marker for the modulator state, a second platform's
+detector, and a monitor of the retro-reflected power. The modulator marker
+is the weakest of the three, because the modulator state is commanded rather
+than discovered: if the radio-frequency gate is synchronous with the sweep
+trigger, the state follows from the sample index and the marker records
+something already known. Whether it can be so synchronised is an apparatus fact
+this record does not hold, and it is an open item.
+
+**If it can, the fourth channel goes to a second detector.** On paired blocks
+that is the second platform's, and what riding one sweep buys it is stated
+where that platform's thread lives, in
+[the nanofibre chapter](../big_picture/06_next-nanofibre.md). On cell-only
+blocks it goes to the retro-reflected power, which is worth having because the retro
+ratio is an assumption today and enters the coefficient as one plus itself: a
+five per cent error there is 2.6 per cent on the coefficient, which is the same
+size as the margin the prediction band is arguing over.
+
+## What cooling the detector would buy, and it is nothing
+
+The question follows from the noise decomposition above and the answer is
+already in those cells, so it is arithmetic and not a new measurement.
+
+**The signal-independent term is not a dark term.** Fitted across the
+committed conditions it goes as the laser power to the 0.85, from 1.34 mV at
+the dimmest 25 mW condition to about 8 mV at 225 on the fitted law. A dark and electronic floor does not depend on the
+laser at all, so what this term measures is light reaching the detector that
+is not the line. Extrapolating it to zero power returns a negative intercept,
+which is unphysical and says the dark contribution sits below what the
+extrapolation can resolve. The bound that survives is the dimmest rung's whole
+value, 1.34 mV, and most of that is itself light-linked.
+
+**Bounding the gain by that whole value, which is generous by construction,
+at two conditions that must be named because the answer depends on them.** At
+the median condition, floor 3.6 mV, and at the dimmest rung, whose floor is the
+bound itself and whose peak is of order 7 mV since the signal goes as the
+square of the power:
+
+| condition | signal | total sigma | with the whole bound removed | gain |
+|---|---|---|---|---|
+| median | 20 mV | 5.7 mV | 5.6 mV | 2.8 per cent |
+| median | 100 mV | 10.6 mV | 10.5 mV | 0.8 per cent |
+| median | 500 mV | 22.4 mV | 22.4 mV | 0.2 per cent |
+| dimmest rung | 5 mV, the wings | 2.6 mV | 2.2 mV | 14 per cent |
+| dimmest rung | 7 mV, the peak | 2.9 mV | 2.6 mV | 11 per cent |
+
+**So a cooled housing buys under a per cent at any working power, and up to
+fourteen in the dimmest rung's wings**, which is a real number and not the
+nothing the first version of this section said. The reason it stays small at
+working power is structural: the term cooling attacks is the one term in this budget
+that the laser does not drive, and every other term does.
+
+**What does move the noise, in order of leverage.**
+
+1. **More collected photons.** The line's own noise is shot noise above the
+   crossing of the signal-independent and shot terms, which sits at 8.8 mV of
+   signal at the median condition and at 65 mV at 225 mW, where the light-linked
+   term is largest. Both say the same thing, that above the dimmest rung the
+   line is shot-limited, and its sigma falls as the root of the count. Twice the photons is 29 per cent
+   less noise, three times is 42 and six times is 59.
+2. **Quantum efficiency, which is the largest single lever and costs no beam
+   time.** The detected leg is the 795 nm D1 cascade and the tube is a GaAs
+   side-on photomultiplier, whose response there is a small fraction of what a
+   modern detector at that wavelength reaches. The factor is an apparatus
+   question and chapter 12 carries it. The arithmetic above says what any
+   factor is worth.
+3. **The light-linked background itself**, which is what limits the wings, and
+   the wings are where every open question of this record lives. Spatial
+   filtering at the image plane, baffling and the existing passband are the
+   levers. **Which repair is the right one is not yet decided**, because the
+   record has not separated shot noise on that background from intensity noise
+   on it, the two being degenerate in this term. The discriminator is item 9a
+   of the day-one list, a coherence measurement against a monitor photodiode,
+   and it should run before anything is bought.
+4. **Amplitude stabilisation of the laser buys nothing on the line**, since the
+   multiplicative term was needed in only one of the thirty-two committed
+   conditions. It may buy something on the background, which is item 9a again.
 
 ---
 

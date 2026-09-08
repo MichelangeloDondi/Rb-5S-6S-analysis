@@ -87,7 +87,8 @@ the protocol selected. Runs first in §9 D1, ahead of the export below.
    centre record.
    **Needs.** One spare scope channel, and the ramp monitor already available on
    the bench. `APPARATUS.md` §4.2 records that channel as present and costs it
-   low, calling it the first thing to drop if channels are contended, and this
+   low and once called it the first thing to drop if channels are contended, a
+   ranking chapter 7's sweep-linearity tolerance has since withdrawn, and this
    plan disagrees with that priority rather than with the hardware fact. The
    verdict there was written before the window-reference retraction and weighs
    the ramp against the EOM comb, which is the wrong comparison: the comb fixes

@@ -191,6 +191,64 @@ own anchors. A comb also reaches only a couple of islands of teeth per
 line, so a wide span needs the ramp channel and atomic separations to
 carry the scale between them.
 
+## How linear the axis must be, for the moment channel
+
+This page's calibration practices say how to correct a nonlinear scan. This
+section says how well, and the tolerance is far tighter than a centre fit
+needs, because the third cumulant of the line reads an asymmetry and a
+nonlinear sweep manufactures one.
+
+Write the true frequency against the assumed axis as
+$\nu = \hat\nu + \alpha\hat\nu^2$. The rate then varies across an analysis
+window of half-width $W$ by a fraction $\epsilon$ equal to $2\alpha W$, and the
+induced third cumulant is linear in that fraction. Measured on the production estimator against the same
+composed line the campaign forecasts:
+
+| configuration | window | the light shift's own third cumulant | rate variation that fakes it |
+|---|---|---|---|
+| 2025, 64 microns | 6 MHz | [0.00011901](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:k3_light_shift") MHz cubed | [0.00223](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:rate_variation_tolerance") per cent |
+| campaign, 40 microns, the tightest licensed | 6 MHz | [0.00153465](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:k3_light_shift") MHz cubed | [0.0290](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:rate_variation_tolerance") per cent |
+| campaign, 16 microns, outside the model's licence | 12 MHz | [0.574892](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_16um:k3_light_shift") MHz cubed | [1.238](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_16um:rate_variation_tolerance") per cent |
+
+**A bow of two parts in a thousand of the actuator's travel already reaches
+two parts in a hundred thousand across a 6 MHz window**, so the 2025 third
+cumulant was unavailable on its frequency axis whatever its counts had been. The
+campaign's licensed waist asks for a bow under about two per cent, which is a
+different matter and a measurable one.
+
+**The nonlinearity is the actuator's and not the scan's**, which the first
+version of this section had backwards. A piezo's bow is a fraction of its
+travel, so the same actuator scanned over a narrow sub-span at the same
+position has the same rate variation across the same window: the producer's
+sub-scan row reads [0.0240](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:eps_bow_eta2_subscan_200MHz_same_actuator") per cent against
+[0.0240](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:eps_bow_eta2") on the full travel. Zooming costs nothing here. What the
+wide sweep buys is anchors from which the bow is measured and corrected, and
+that is the argument for it.
+
+**The law, and what it asks of the actuator.** With the best-fit line removed
+a quadratic bow gives a rate variation across a window of half-width W of
+exactly twelve times the departure times W over the travel, on rung two. Over
+a 6 GHz travel a bow of two per cent gives [0.0240](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:eps_bow_eta2") per cent across a
+6 MHz window, which fails the 64 micron tolerance by eleven and clears the
+40 micron one by 1.2, and a ten per cent bow fails 40 microns by four. So the
+moment channel at the campaign's licensed waist needs an actuator linear to
+about two per cent of its travel, or the bow taken out from the anchors.
+
+**A short-scale departure does not dilute, and above a small amplitude it
+reverses the sweep.** A ripple of N cycles across the travel replaces the
+twelve by the square of two pi N. At fifty cycles a tenth of a per cent gives
+[10.0664](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:eps_ripple50_eta0.1_p95_over_phase") per cent, and above about a third of a per cent the
+sweep runs backwards inside the window and no rate variation exists. The cubic
+bow and the ripple of the worked example below are therefore not two
+illustrations of one thing: the anchored polynomial recovers the first and
+cannot see the second, and the second is what the moment channel reads.
+
+**The design consequences.** The actuator's curvature, and not the span
+scanned, sets whether the moment channel can be read. A wide sweep is worth
+having for the anchors that measure it, and the ramp monitor earns a permanent
+channel because ripple, creep and stick-slip are exactly what no anchor set
+recovers.
+
 ## Try it
 
 A synthetic scan with a cubic bow and a ripple, recovered from five

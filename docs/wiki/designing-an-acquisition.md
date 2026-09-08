@@ -171,6 +171,36 @@ background, interleave repeats in time so their scatter averages, spend
 sweep time and repeat count, not sample rate, and increase collection
 solid angle for the shot-limited peak.
 
+## Which channels, when the instrument has four
+
+A design decision this page's levers do not reach, because it is about what is
+recorded and not how long for. The campaign has five things worth putting
+on four channels, and three of them supply information nothing else does.
+
+| channel | signal | why it cannot be reconstructed |
+|---|---|---|
+| 1 | cell fluorescence | it is the measurement |
+| 2 | ramp monitor | ripple, creep and hysteresis leave no other trace |
+| 3 | cavity error | in-loop excursions and dropouts, flagged in the trace they happened in |
+| 4 | contended | modulator marker, a second detector, or retro-reflected power |
+
+The ramp channel is a requirement of the moment channel and not a
+convenience, because a nonlinear sweep manufactures exactly the asymmetry that
+channel reads: see
+[the wavemeter and the frequency axis](the-wavemeter-and-the-frequency-axis.md)
+for the tolerance and how it dilutes with the span. The cavity error channel is
+worth its place for a different reason: an in-loop error signal is blind to
+the cavity's own slow drift, which the forecasts span, but it sees every
+excursion and dropout of the servo, the class that severed the 2025 record,
+and flags it in the trace it happened in. The reference's drift is read out of
+loop from the hyperfine intervals the sweep crosses.
+
+The fourth is decided by one apparatus fact. If the radio-frequency gate can be
+triggered from the sweep, the modulator state follows from the sample index and
+a marker records something already known, which frees the channel for a second
+detector. Otherwise the marker is mandatory and a second detector needs a
+second instrument.
+
 ## What can go wrong
 
 The first failure is a model one, mistaking a record's ability to draw a

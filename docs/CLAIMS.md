@@ -105,7 +105,10 @@ two-photon sum frequency, twice the laser frequency.
   as a result.
 - The ramp asymmetry: the skew channel sits below the noise floor at the
   campaign maximum of 225 mW, so what the record carries is an upper
-  bound consistent with zero rather than a quoted interval. The centroid
+  bound consistent with zero, not a quoted interval. A second cause is not about
+  noise: the channel needs sweep-rate variation under 0.00223 per cent across
+  the window, a bow of two parts in a thousand of the actuator's travel
+  ([methods 5](methods/05_the_frequency_ruler.md)). The centroid
   pull is a separate channel, and every scan carrying a free centre
   absorbs the first-order shift, which leaves the pull uninformative
   about S₀ in the 2025 data by construction.

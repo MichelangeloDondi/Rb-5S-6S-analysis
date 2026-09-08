@@ -1481,3 +1481,19 @@ the branching needs is described as hard by the group that ran the 420 nm
 channel for the 5D lifetimes. Those four papers are listed in the private
 reading report as PDFs to obtain before any of this is designed. A programme,
 not a campaign item.
+
+
+**The two-photon family this laser reaches, computed 2026-09-07.** A two-photon
+transition connects states of one parity, so the same titanium-sapphire source
+that drives 5S to 6S at 993.4 nm reaches three further ground-state lines inside
+750 to 1050 nm, 7S at 760.1, 5D at 778.1 and 4D at 1033.3, and, from a 5P state
+held by a 780 or 795 nm pump, the whole nP series. Fitting a Rydberg-Ritz form
+to the 6P, 7P and 8P term energies this record already carries, which it
+reproduces to about a quarter of a wavenumber, that series enters the band at
+n = 10 from the lower fine-structure level, at 1048.5 nm, and runs to a limit at
+947.3. From the upper level it enters at n = 11 and runs to 958.1. **The
+n = 13 member sits at 995.7 nm, about two nanometres from this record's own
+line**, so one laser tuned across one narrow region drives a ground-state
+two-photon transition and a Rydberg P series, and what selects between them is
+whether the pump is on. The upper half of that is the state manifold the high-lying
+series reaches.
