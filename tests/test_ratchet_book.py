@@ -100,7 +100,69 @@ def test_record_writes_one_row_on_movement_and_none_otherwise(tmp_path, monkeypa
     monkeypatch.setattr(book, "BOOK", fake)
     assert book.record("plant", "reseed 1 -> 1", {"a": 1}, {"a": 1}, "nothing moved") is False
     assert fake.read_text().count("\n") == 1
-    assert book.record("plant", "reseed 1 -> 2", {"a": 1}, {"a": 2}, "a | moved") is True
+    assert book.record("plant", "reseed 1 -> 2", {"a": 1}, {"a": 2}, "it moved") is True
     lines = fake.read_text().splitlines()
-    assert len(lines) == 2 and lines[1].endswith("| a / moved |") and "| plant | reseed 1 -> 2 |" in lines[1]
+    assert len(lines) == 2 and lines[1].endswith("| it moved |")
+    assert "| plant | reseed 1 -> 2; a 1 -> 2 |" in lines[1]
     assert book.record("plant", "reseed", 5, 5, "totals equal") is False
+
+
+def test_the_row_carries_the_files_that_moved_and_counts_the_tail(tmp_path, monkeypatch):
+    """The movement cell is derived from the baselines, never from the reason.
+
+    A reseed's only per-file account was the free text a caller wrote, so a
+    reason could credit a file whose count never moved. The cell now names the
+    movers, largest first, and counts the rest rather than listing a hundred."""
+    fake = tmp_path / "book.md"
+    fake.write_text("| date | tool | action | reason |\n")
+    monkeypatch.setattr(book, "BOOK", fake)
+    before = {f"docs/f{i}.md": i for i in range(20)}
+    after = dict(before, **{f"docs/f{i}.md": i + i for i in range(1, 12)})
+    assert book.record("plant", "reseed", before, after, "eleven files") is True
+    cell = fake.read_text().splitlines()[1].split("|")[3]
+    assert "docs/f11.md 11 -> 22" in cell            # the largest mover leads
+    assert cell.index("docs/f11.md") < cell.index("docs/f10.md")
+    assert "and 5 more" in cell                      # eleven moved, six listed
+    assert "docs/f0.md" not in cell and "docs/f19.md" not in cell
+    # a total-comparing tool has no per-file account and says so
+    assert book.record("plant", "relax", 28835, 28836, "one word") is True
+    assert "28835 -> 28836" in fake.read_text().splitlines()[2]
+
+
+def test_a_reason_crediting_a_file_that_did_not_move_is_refused(tmp_path, monkeypatch):
+    """The exact instance: a reseed reason naming a page whose count stood.
+
+    Prose about a chapter is untouched, because the refusal is keyed on the
+    baseline's own keys, which are paths."""
+    fake = tmp_path / "book.md"
+    fake.write_text("| date | tool | action | reason |\n")
+    monkeypatch.setattr(book, "BOOK", fake)
+    before = {"docs/moved.md": 1, "docs/still.md": 7}
+    after = {"docs/moved.md": 2, "docs/still.md": 7}
+    with pytest.raises(SystemExit) as e:
+        book.record("plant", "reseed", before, after,
+                    "docs/still.md gained a tag")
+    assert "docs/still.md" in str(e.value)
+    assert fake.read_text().count("\n") == 1, "the refused row must not be written"
+    # a reason that names what moved books, and so does prose naming no key
+    assert book.record("plant", "reseed", before, after,
+                       "the chapter that still stands gained nothing") is True
+
+
+def test_a_tool_that_nests_its_counts_still_names_the_file(tmp_path, monkeypatch):
+    """One instrument wraps its map in a `files` key and the others do not.
+
+    Read at the top level that row would have said `files` changed, which is
+    the shape of an account that is present and says nothing. The leaf name is
+    what the reason has to be checkable against, so the movement cell carries
+    it and the refusal grades it."""
+    fake = tmp_path / "book.md"
+    fake.write_text("| date | tool | action | reason |\n")
+    monkeypatch.setattr(book, "BOOK", fake)
+    before = {"files": {"results/a.csv": 1, "results/b.csv": 2}}
+    after = {"files": {"results/a.csv": 3, "results/b.csv": 2}}
+    assert book.record("plant", "reseed 3 -> 5", before, after, "a gained two") is True
+    cell = fake.read_text().splitlines()[1].split("|")[3]
+    assert "results/a.csv 1 -> 3" in cell and "files" not in cell
+    with pytest.raises(SystemExit):
+        book.record("plant", "reseed", before, after, "results/b.csv moved")

@@ -1,6 +1,6 @@
 # Per-paper notes
 
-One Markdown file per reference, named for its citekey, 122 of them. Start at
+One Markdown file per reference, named for its citekey. Start at
 [`../LITERATURE_INDEX.md`](../LITERATURE_INDEX.md), which lists every one with its status, routing and locus and
 links each row to its note, or at [`../LITERATURE.md`](../LITERATURE.md), the prose ledger over the same set.
 

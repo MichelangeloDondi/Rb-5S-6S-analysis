@@ -335,6 +335,116 @@ def stark_ramp_axial(nu: np.ndarray, s0: float, z_ratio: float,
     return w / total / dnu
 
 
+def local_ramp_density(x: np.ndarray, n_photon: int = 2) -> np.ndarray:
+    """The transverse law on the dimensionless shift x = s/S: n |x|^(n-1) on
+    [-1, 0], area one; the local density every axial mixture starts from."""
+    x = np.asarray(x, float)
+    inside = (x <= 0.0) & (x >= -1.0)
+    return np.where(inside, n_photon * np.abs(x) ** (n_photon - 1), 0.0)
+
+
+def _require_density_grid(x_grid: np.ndarray, g_x: np.ndarray) -> None:
+    """Refuse a local-density grid this routine would silently misread.
+
+    `ramp_mixture` takes the support's lower edge as `x_grid[0]` and
+    interpolates with zero outside, so a DESCENDING grid returns a delta at
+    the origin rather than a line, with no error: mean 0.00 against the
+    correct -0.65 (found 2026-09-08 on the exported surface the
+    same wave added to ADAPTING.md). A grid that stops short of the support
+    renormalises to one and reads as a narrower ramp. Both are the class the
+    record names, a plausible-looking table where an error belonged.
+
+    ITS BLIND REGION, stated: a grid from -0.5 to 0 carrying a density whose
+    true support reaches -1 is indistinguishable here from a genuine density
+    of support 0.5, since the support is what the caller declares. What is
+    checkable is the upper edge, which the physics fixes at zero shift, and
+    that is checked.
+    """
+    x = np.asarray(x_grid, dtype=float)
+    g = np.asarray(g_x, dtype=float)
+    if x.ndim != 1 or g.shape != x.shape or x.size < 2:
+        raise ValueError("ramp_mixture: x_grid and g_x must be one-dimensional and the same length")
+    if not (np.all(np.isfinite(x)) and np.all(np.isfinite(g))):
+        raise ValueError("ramp_mixture: x_grid and g_x must be finite")
+    if not np.all(np.diff(x) > 0):
+        raise ValueError(
+            "ramp_mixture: x_grid must ascend; the support's lower edge is read "
+            "as x_grid[0], so a descending grid returns a delta at the origin")
+    # the upper edge is zero shift, to within one grid step: the fringe
+    # density is a histogram whose last BIN CENTRE sits half a step below zero
+    # (its grid ends at -0.0015 with a step of 0.0031), which this refused on
+    # its first run, so the tolerance is the grid's own step and not an
+    # absolute epsilon
+    step = float(np.max(np.diff(x)))
+    if x[-1] > 1e-9 or x[-1] < -1.5 * step or x[0] >= 0.0:
+        raise ValueError(
+            f"ramp_mixture: x_grid must run from the support's negative edge up to 0 "
+            f"(within one grid step), got [{x[0]:.4g}, {x[-1]:.4g}] with step {step:.4g}")
+    if np.any(g < 0):
+        raise ValueError("ramp_mixture: a density may not be negative")
+
+
+def ramp_mixture(nu: np.ndarray, s0: float, z_ratio: float,
+                 x_grid: np.ndarray, g_x: np.ndarray,
+                 n_photon: int = 2, n_zeta: int = 1000) -> np.ndarray:
+    """The axial mixture of a LOCAL shift density (docs/methods/03, the ramp's
+    third generalisation, 2026-09-08). The collection window spans |z| <= Z
+    about the focus, the local edge is S(zeta) = s0 / (1 + zeta^2) at
+    zeta = z / z_R, and the per-z signal weight (1 + zeta^2)^(1-n) cancels
+    the local normalisation S(zeta)^(-1) up to (1 + zeta^2)^(2-n), so for any
+    local density g(x) on x = s/S,
+
+        f(s) = (1/s0) * int_0^{Z/z_R} (1 + zeta^2)^(2-n) g( s (1 + zeta^2) / s0 ) dzeta,
+
+    area-normalised. With g the transverse law this IS stark_ramp_axial, whose
+    closed form zeta_m + zeta_m^3 / 3 is this integral done by hand (the
+    test); with g the fringe-resolved density of
+    rb5s6s.fringe_tail.fringe_shift_density it carries both terms the world
+    builder lacked; z_ratio = 0 is the local density itself, so the fringe
+    alone goes through here too. Cell-integrated with 8 sub-samples as the
+    axial form is, evaluated only on the cells the support reaches (about
+    2 s0 / dnu of them), and a delta at zero for s0 <= 0. The integrand in
+    zeta is bounded and smooth except at the local edge, where it jumps, so
+    the midpoint rule converges as 1/n_zeta: 4.6e-3 of the peak at 200,
+    6.5e-4 at 1000 (the default; about 20 ms a call, and build_world_trace
+    memoises per rung) at the widest window in the record, 4.17. At
+    z_ratio = 0 it reproduces stark_ramp_axial's cell integration to
+    rounding and differs from stark_ramp in the edge cell alone, by that
+    function's one-node first-moment transfer (4 per cent of the peak in
+    that cell, 2e-5 of the peak on a convolved trace)."""
+    _require_density_grid(x_grid, g_x)
+    dnu = nu[1] - nu[0]
+    out = np.zeros_like(nu, dtype=float)
+    if s0 <= 0:
+        out[np.argmin(np.abs(nu))] = 1.0 / dnu
+        return out
+    x_lo = float(x_grid[0])                          # the support's lower edge in x
+    lo_s, hi_s = x_lo * s0, 0.0
+    cells = np.nonzero((nu + 0.5 * dnu > lo_s) & (nu - 0.5 * dnu < hi_s))[0]
+    if cells.size == 0:
+        out[np.argmin(np.abs(nu))] = 1.0 / dnu
+        return out
+    lo = np.clip(nu[cells] - 0.5 * dnu, lo_s, hi_s)
+    hi = np.clip(nu[cells] + 0.5 * dnu, lo_s, hi_s)
+    sub = (np.arange(8) + 0.5) / 8.0
+    s_sub = lo[:, None] + (hi - lo)[:, None] * sub[None, :]            # (ncell, 8)
+    if z_ratio > 0:
+        zeta = (np.arange(n_zeta) + 0.5) / n_zeta * z_ratio             # midpoints
+    else:
+        zeta = np.zeros(1)
+    fac = 1.0 + zeta ** 2
+    x = s_sub[:, :, None] * fac[None, None, :] / s0                       # (ncell, 8, nz)
+    g = np.interp(x.ravel(), x_grid, g_x, left=0.0, right=0.0).reshape(x.shape)
+    dens = (g * fac[None, None, :] ** (2 - n_photon)).mean(axis=2)        # the zeta integral / Z
+    w = dens.mean(axis=1) * (hi - lo)
+    total = w.sum()
+    if total <= 0:
+        out[np.argmin(np.abs(nu))] = 1.0 / dnu
+        return out
+    out[cells] = w / total / dnu
+    return out
+
+
 def stark_ramp_axial_moments(s0: float, z_ratio: float, n_photon: int = 2,
                              n_grid: int = 200_001) -> dict:
     """Moments of stark_ramp_axial on a fine internal grid: mean, variance,

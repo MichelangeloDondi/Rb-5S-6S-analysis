@@ -1007,6 +1007,59 @@ def test_the_advertised_counts_agree_with_each_other():
           "percentage tolerance against the real count cannot enforce.")
 
 
+_TENS = r"(?:twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety)"
+_UNITS = r"(?:one|two|three|four|five|six|seven|eight|nine)"
+# a spelled number big enough to be a suite total: a tens word, optionally
+# hyphenated to a unit (fifty-seven), or any hundred/thousand phrase
+_BIG = rf"(?:{_TENS}(?:-{_UNITS})?|(?:\w+[ -])?(?:hundred|thousand))"
+
+
+def spelled_suite_counts(text: str) -> list:
+    """Spelled numbers that advertise how big the suite is.
+
+    Magnitude is the line: a count of twenty or more against `tests` or
+    `modules` is advertising a total, and `collected cases` is a total at any
+    number. Smaller counts describe a subset and are left alone.
+
+    THE FIRST DRAFT MATCHED NEITHER HALF OF THE SENTENCE IT WAS BUILT FOR.
+    It read a hyphenated number as `[a-z]+-` plus a tens word, so `fifty-seven`
+    failed on its second half, and the case that was supposed to prove it fired
+    passed on the `collected cases` clause beside it instead. The plant is
+    parametrised one clause per case for that reason."""
+    import re as _re
+    pats = [
+        _re.compile(rf"\b{_BIG}[ -](?:collected |fast |slow )?(?:tests?|modules?)\b", _re.I),
+        _re.compile(r"\b(?:[a-z]+[ -])*[a-z]+[ -]collected cases\b", _re.I),
+    ]
+    return [m.group(0) for p in pats for m in p.finditer(text)]
+
+
+@pytest.mark.parametrize("text,fires", [
+    # the exact sentence that drifted, and the two halves of it
+    ("Fifty-seven modules, a little over sixteen hundred collected cases,", True),
+    ("Fifty-seven modules and most are not unit tests", True),
+    ("a little over sixteen hundred collected cases", True),
+    ("the suite runs twenty tests", True),
+    ("ninety modules", True),
+    ("two thousand tests", True),
+    # correct prose the first draft of this guard refused
+    ("nothing failing. Two modules close that.", False),
+    ("Every module keeps at least one fast case, so no code path", False),
+    ("three modules read the held PDFs", False),
+    # the tolerance, from each side of the magnitude line
+    ("nineteen modules", False),
+    ("twenty modules", True),
+])
+def test_the_spelled_count_guard_draws_its_line_by_magnitude(text, fires):
+    """Both directions, and the line probed from each side.
+
+    The class is a count that ADVERTISES the suite's size. A subset count and a
+    policy sentence are correct prose, and refusing them was the first draft's
+    defect, so the guard is keyed on magnitude: twenty or more against tests or
+    modules is a total, and collected cases is a total at any number."""
+    assert bool(spelled_suite_counts(text)) is fires, text
+
+
 def test_advertised_test_counts_match_the_real_suite():
     """The counts in README and methods.md drifted to 803/779 while the suite had
     grown past a thousand, and a reader who runs the command sees the mismatch
@@ -1038,7 +1091,13 @@ def test_advertised_test_counts_match_the_real_suite():
     slow = collected(["-m", "slow"])
     if total is None or slow is None:
         _p.skip("could not collect")
-    txt = (ROOT / "docs" / "methods.md").read_text() + (ROOT / "README.md").read_text()
+    # THE POPULATION IS THREE FILES AND WAS TWO (2026-09-09). The test suite's
+    # own front door, tests/README.md, advertised its module and case counts
+    # and was graded by nothing, so both drifted to about a third of the real
+    # numbers while this guard passed on the two files it did read. Repair the
+    # population, not the name last found missing.
+    graded = ["docs/methods.md", "README.md", "tests/README.md"]
+    txt = "".join((ROOT / g).read_text() for g in graded)
     # 5% tolerance: the point is to catch DRIFT (803 documented against 1092
     # real, a 26% gap that had gone unnoticed), not to force a docs edit with
     # every test added.
@@ -1056,9 +1115,28 @@ def test_advertised_test_counts_match_the_real_suite():
     stale += [n for line in txt.splitlines() if "pytest" in line
               for n in re.findall(r"\b(\d{3,5})\b", line)
               if abs(int(n) - total) / total > 0.05]
+    # AND A COUNT SPELLED IN WORDS EVADES EVERY PATTERN ABOVE, which is how the
+    # drift survived: the sentence read "fifty-seven modules, a little over
+    # sixteen hundred collected cases", and the guard matches digits. The rule
+    # this serves is the standing one, that a count of tests is never written
+    # in prose but measured where it is needed.
+    #
+    # THE LINE IS MAGNITUDE, and it is drawn on purpose. "Two modules close
+    # that" and "every module keeps at least one fast case" are descriptions of
+    # a subset and a policy; both are correct prose and the first draft of this
+    # guard refused them. A spelled number of twenty or more attached to
+    # modules or tests can only be advertising the suite's size, and "collected
+    # cases" is a suite total whatever number precedes it. Probed both ways in
+    # test_the_spelled_count_guard_draws_its_line_by_magnitude.
     assert not stale, (
-        f"documented test counts {sorted(set(stale))} are more than 5% from the "
-        f"real {total} ({slow} slow). Update docs/methods.md and README.md.")
+        f"documented test counts {sorted(set(stale))} are more than 5% from "
+        f"the real {total} ({slow} slow). Update {', '.join(graded)}.")
+    spelled = [(g, m) for g in graded
+               for m in spelled_suite_counts((ROOT / g).read_text())]
+    assert not spelled, (
+        f"these spell a suite count in words: {spelled}. Measure it with "
+        f"pytest --collect-only -q instead of writing it into "
+        f"{', '.join(graded)}.")
 
 
 def test_peak_labels_are_not_presented_as_measured_wavelengths():

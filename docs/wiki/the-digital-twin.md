@@ -126,6 +126,15 @@ carry a Gaussian laser component, a Lorentzian one, or both at once, and
 scalings measured by re-running the study at scaled designs, not
 asserted from exponents.
 
+`build_world_trace` is the other generator, and since 2026-09-08 it takes the
+two axial terms of the light shift as opt-in arguments, the collection
+window's divergence and the standing wave's fringe-resolved tail, both through
+one axial mixture of a local shift density. The defaults are off and every
+earlier trace is byte-identical. It matters because a world and an estimator
+that share an omission recover what they inject: until those terms reached it
+the forecast's centre recovery was a statement about a pure transverse ramp
+and not about this bench.
+
 ![Archive bounds against a projected campaign, channel by channel](../../figures/fig34_campaign_projection.png)
 
 *What the 2025 archive bounds today against what one designed campaign is

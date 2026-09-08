@@ -40,7 +40,8 @@ import numpy as np
 from scipy.special import jv
 
 from . import blackbody, cascade, stark
-from .lineshape import composite_profile, model_profile
+from .lineshape import (composite_profile, local_ramp_density, model_profile,
+                        ramp_mixture, stark_ramp)
 from .linefit import fit_condition
 from .noise import sigma_of_v
 
@@ -189,6 +190,8 @@ def build_world_trace(power_w: float, kappa: float, t_c: float,
                      offset: float = 0.01,
                      range_anchor: str = "global",
                      grid_span: Optional[Tuple[float, float]] = None,
+                     z_ratio: Optional[float] = None,
+                     fringe_density: Optional[Tuple[np.ndarray, np.ndarray]] = None,
                      ) -> Tuple[np.ndarray, np.ndarray, Dict]:
     """One campaign trace: every peak in `positions`, one vertical range.
 
@@ -242,6 +245,33 @@ def build_world_trace(power_w: float, kappa: float, t_c: float,
         lo, hi = float(grid_span[0]), float(grid_span[1])
         nu = np.linspace(lo, hi, int(round((hi - lo) / (120.0 / 5999))) + 1)
     s0 = kappa * power_w
+    # THE TWO AXIAL TERMS (2026-09-08), both off by default so every committed
+    # CSV made through this path is unchanged: the collection window's
+    # divergence (`z_ratio`, from constants.collection_z_ratio at the cell's
+    # waist) and the standing wave's fringe-resolved tail (`fringe_density`,
+    # from fringe_tail.fringe_shift_density once per cell, since it is
+    # S0-independent). Either alone or both together are one mixture,
+    # lineshape.ramp_mixture; the pure transverse ramp is model_profile's own
+    # default, so the default path is byte-identical (tests/test_ramp_threading).
+    if z_ratio is None and fringe_density is None:
+        profile = stark_ramp
+    else:
+        if fringe_density is None:
+            _xg = np.linspace(-1.0, 0.0, 4001)
+            _gx = local_ramp_density(_xg)
+        else:
+            _xg, _gx = fringe_density
+        _zr = 0.0 if z_ratio is None else float(z_ratio)
+
+        _memo: Dict = {}
+
+        def profile(nu_, s0_, _xg=_xg, _gx=_gx, _zr=_zr, _memo=_memo):
+            # one evaluation per (shift, grid): the peaks of a trace share
+            # the shift and the convolution grid, so the mixture is paid once
+            key = (float(s0_), nu_.shape[0], float(nu_[0]), float(nu_[1] - nu_[0]))
+            if key not in _memo:
+                _memo[key] = ramp_mixture(nu_, s0_, _zr, _xg, _gx)
+            return _memo[key]
     p_rel = (power_w / power_max_w)
 
     v = np.zeros_like(nu)
@@ -305,6 +335,7 @@ def build_world_trace(power_w: float, kappa: float, t_c: float,
                               transit_fwhm=transit_fwhm,
                               gamma_l=gamma_l,
                               laser_kind=laser_kind,
+                              profile=profile,
                               # A33: the internal convolution grid is sized by
                               # the narrowest KERNEL and never by the shift, so
                               # a small shift can sit inside one cell. Opt-in

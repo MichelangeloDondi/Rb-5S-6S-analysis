@@ -1679,9 +1679,12 @@ frequency and not the memory**, and that is an open apparatus item.
 **The gate is the one knob that moves the saturation while the light shift
 stands still**, because a phase modulation splits the drive among the teeth
 without changing the intensity. It is also the ruler: the comb calibrates the
-axis, and the record's own forecast shows the teeth's tails contaminating the
-skew channel at the 2025 spacing, so the clean science trace is the one with
-the gate off.
+axis, and the forecast reads the moment channel accurately on a wide comb and
+high without one, so the science trace for that channel is taken with the gate
+on at a 25 or 40 MHz spacing (chapter 6's spending rule, chapter 4 item 3).
+At the 2025 spacing of 12.5 MHz the teeth's tails contaminate the window, and
+the forecast recovers the coefficient there only since the world carried the
+collection window and the fringe tail, at about twice the wide combs' scatter.
 
 **Take the two states as a four-block palindrome, off-on-on-off, and not as
 an alternating pair.**
@@ -1890,16 +1893,17 @@ campaign forecasts:
 
 | configuration | window | the light shift's own third cumulant | rate variation that fakes it |
 |---|---|---|---|
-| 2025, 64 microns | 6 MHz | [0.00011901](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:k3_light_shift") MHz cubed | [0.00223](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:rate_variation_tolerance") per cent |
-| campaign, 40 microns, the tightest licensed waist | 6 MHz | [0.00153465](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:k3_light_shift") MHz cubed | [0.0290](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:rate_variation_tolerance") per cent |
-| campaign, 16 microns, outside the licence | 12 MHz | [0.574892](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_16um:k3_light_shift") MHz cubed | [1.238](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_16um:rate_variation_tolerance") per cent |
+| 2025, 64 microns | 6 MHz | [0.00010822](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:k3_light_shift") MHz cubed | [0.00203](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:rate_variation_tolerance") per cent |
+| campaign, 40 microns, the tightest licensed waist | 6 MHz | [0.00071772](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:k3_light_shift") MHz cubed | [0.0136](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:rate_variation_tolerance") per cent |
+| campaign, 16 microns, outside the licence | 12 MHz | [-0.689176](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_16um:k3_light_shift") MHz cubed | [1.48](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_16um:rate_variation_tolerance") per cent |
 
 **That is a second and independent reason the 2025 third cumulant was never
 available.** The first is signal to noise, and it is severe enough on its own.
 This one is worse, because a bow of two parts in a thousand of the actuator's
 travel already reaches two parts in a hundred thousand across the window, so
 the channel was unavailable on the axis as well as in the counts. The
-campaign's tightest licensed waist asks for three parts in ten thousand, which
+campaign's tightest licensed waist asks for about one and a half parts in ten
+thousand, which
 a bow of about two per cent of the travel reaches, and that is a measurable
 requirement.
 

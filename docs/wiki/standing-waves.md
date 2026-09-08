@@ -114,6 +114,29 @@ independent of the quasi-static assumption. The fringe-resolved tail left
 over from near-transverse atoms does not move that mean, but it suppresses
 the line's third moment, a smaller effect documented in the same note.
 
+That tail is in the twin's world since 2026-09-08.
+[`fringe_tail.fringe_shift_density`](../../rb5s6s/fringe_tail.py) returns the
+fringe-resolved shift density from the same draws the moment calculation
+pools, and [`lineshape.ramp_mixture`](../../rb5s6s/lineshape.py) convolves it
+as an axial mixture, so a forecast trace carries the line this bench would
+produce and not the pure transverse ramp's. Measured on the quiet curve, the
+ramp's mean pull falls to
+[0.9775](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_64um::pull_factor_quiet")
+of the pure form at the measured waist and
+[0.5752](../../results/three_channel_forecast.csv "ref:three_channel_forecast:base::pull_factor_quiet")
+at the 16 micron configuration, the collection window carrying most of that
+movement and the fringe tail the rest.
+
+The one open modelling choice travels with the density. The window over which
+the excitation amplitude stays coherent is bracketed between the
+transit-limited cap and the 6S lifetime and never corrected for, a factor of
+eleven in the fraction of atoms slow enough to freeze a fringe, so the density
+refuses to be called without naming which end it takes. The sweep-rate
+producer carries both ends as end-members of its envelope: at the campaign's
+tightest licensed waist that excursion is
+[0.0021](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:rate_variation_tolerance_coherence_err")
+per cent of rate variation, most of that case's whole band.
+
 The wide-scan design in the fixed-lock proposal uses the same physics as a
 diagnostic. [The fixed cavity lock chapter](../plan/09_the-fixed-lock.md)
 checks that the drive depth chosen to null the sideband comb does not also

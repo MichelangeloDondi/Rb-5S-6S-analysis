@@ -94,6 +94,17 @@ the kernel, shifted the composite line width by about 0.1 percent with the
 rest of the test suite still green, a change nothing else in the suite was
 positioned to catch.
 
+A second self-built grid arrived with the axial mixture of 2026-09-08.
+[`lineshape.ramp_mixture`](../../rb5s6s/lineshape.py) reads the support's edge
+from the density grid it is handed, so a grid that descends, or that stops
+short of the shift range, becomes a delta at the wrong place instead of an
+error. It now refuses a grid that is not ascending, one whose length disagrees
+with its density's, and any non-finite or negative weight. The upper edge is
+tolerated to one and a half grid steps, because the fringe histogram's last
+bin centre sits half a step below zero, and that tolerance is the guard's
+stated blind region: a density truncated by less than one step is accepted and
+read as reaching the edge.
+
 ## Try it
 
 A Lorentzian sampled at several densities relative to its own width, its

@@ -349,6 +349,33 @@ the old 32 µm nominal, and the wider waist only strengthens the
 approximation). *Code:*
 `stark_ramp_axial()`, table from `scripts/run_ramp_geometry.py`.
 
+#### The axial mixture: one form carries the window and the fringes together
+
+The closed form above is one member of a family. Write the local shift density
+on the dimensionless shift $x = s/S(\zeta)$ as $g(x)$, area one on $[-1, 0]$,
+equal to $n|x|^{n-1}$ for the transverse law. The window's mixture over the
+axial coordinate, with the same signal weight and the same local edge, is
+
+$$f(s) = \frac{1}{S_0}\int_0^{Z_c/z_R} (1+\zeta^2)^{2-n}  g\left(\frac{s (1+\zeta^2)}{S_0}\right) d\zeta ,$$
+
+normalised over $s$. With $g$ the transverse law the integrand is
+$n|s|^{n-1}(1+\zeta^2)/S_0^{n}$ below the local edge and zero above it, and the
+integral over $\zeta$ is $\zeta_m + \zeta_m^3/3$: the closed form is this
+integral done by hand. With $g$ the fringe-resolved density of the next
+subsection, the signal-weighted histogram of the standing wave's effective
+shift, which reaches $x = -2$ at a perfect retro because a slow atom at an
+antinode sees twice the fringe-averaged intensity, the same integral carries
+both terms at once, and $Z_c \to 0$ leaves the fringe density alone.
+*Code:* `lineshape.ramp_mixture` (the integral, cell-integrated, converging as
+one over the number of axial samples at the local edge),
+`fringe_tail.fringe_shift_density` (the density, one Monte Carlo per waist,
+retro ratio and temperature, independent of $S_0$, with the path factor
+divided out so its no-contrast limit is the transverse law), and
+`forecast.build_world_trace(z_ratio=..., fringe_density=...)`, off by default
+so every committed trace is unchanged. `tests/test_ramp_threading.py` holds
+the mixture against `stark_ramp_axial` at the four bench windows and the
+density against the pooled moments of the same draws.
+
 #### Standing-wave fringes: why the shift follows the envelope
 
 ![the standing wave, its mean and its fringe amplitude, and the gap between them](../../figures/fig25_retro_combination.png)

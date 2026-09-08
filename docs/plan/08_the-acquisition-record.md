@@ -109,9 +109,12 @@ transition axis and 6.25 MHz apart on the laser axis, against a line 5.4 MHz
 wide, which is the 2.3 linewidths this section is about. The twin measures
 what the spacing costs each channel at the tight waist
 ([chapter 4](04_intensity-and-light-shift.md), item 3): at the 2025 spacing
-the lower first-order tooth's tail cancels the ramp's third cumulant inside a
-6 MHz window and the centre fit, confined to just under half the spacing,
-reads the same leakage as a centre. From 25 MHz up the centre channel
+the lower first-order tooth's tail cancelled the ramp's third cumulant inside
+a 6 MHz window and the centre fit, confined to just under half the spacing,
+read the leakage as a centre, in the world without the collection window. With
+the window and the fringe tail in it (2026-09-08) both channels recover the
+coefficient there, at two to four times the wide combs' scatter. From 25 MHz
+up the centre channel
 survives with its own background, and **the moment channel wants the comb
 there too**: measured on the twin, it recovers the coefficient on the 25 and
 40 MHz spacings and reads high without one, since the comb lowers each

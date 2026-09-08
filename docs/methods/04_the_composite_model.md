@@ -244,7 +244,9 @@ chirped chord with the homogeneous dephasing carried, on rung 3, and the plan
 hub's intensity chapter carries what it found at the archive's waist and at
 the campaign's, together with the producer it still owes. A proposed fixed-lock session's
 center-fits would swap in `stark_ramp_axial()` (the diverging-beam kernel of
-[§2.6](03_the_ac_stark_ramp.md))
+[§2.6](03_the_ac_stark_ramp.md)), and the twin's world builder carries that kernel together with the
+standing wave's fringe-resolved tail through `lineshape.ramp_mixture`
+(2026-09-08, off by default)
 once the collection profile is measured. The no-Stark composite shared by the
 $\beta_\text{self}$ and global fits is `composite_profile()` in the same
 module.

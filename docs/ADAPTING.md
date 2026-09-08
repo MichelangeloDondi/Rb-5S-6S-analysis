@@ -381,7 +381,7 @@ reads from disk.
 from rb5s6s import (
     # the lineshape and the light-shift distribution
     model_profile, composite_profile, stark_ramp, stark_ramp_axial_moments,
-    stark_shift_S0_mhz,
+    ramp_mixture, local_ramp_density, stark_shift_S0_mhz,
     # the atomic inputs, recomputed rather than tabulated
     delta_alpha, alpha_5s, alpha_6s, two_photon_matrix_element,
     two_photon_rabi_hz,

@@ -107,6 +107,15 @@ the geometric relation $z_R = \pi w_0^2/\lambda$. The fourth-power
 saturation dependence is in [`docs/GLOSSARY.md`](../GLOSSARY.md) and [the
 saturation companion](../notes/two_photon_saturation_companion.md).
 
+## What a band on the waist has to be paired with
+
+The record's widest credible interval pairs the tight-waist edge with the high
+retro ratio, since the shift rises with both, and a band that moves the waist
+alone at a fixed ratio is a second convention for one quantity. The sweep-rate
+producer carried that second convention until 2026-09-08, where it read nine
+per cent of the shift against the record's eleven, in the direction that reads
+as licence.
+
 ## Values that moved
 The 64 µm value of record replaced a chain of earlier estimates. First a
 design figure, retracted once a missing crossing-flux weighting in the

@@ -67,7 +67,10 @@ OTHERS = {("40", "0.54"),        # Cao 2025, 5S-5D3/2 self-broadening
           ("1.53", "0.08"),      # Zang 2012, quoted as published
           ("0.69", "0.04")}      # Lee et al. 2010, quoted as published
 # The connector may be spelled out, may cross a line break, may sit in a math
-# span as backslash-pm, and either number may sit inside a reference link. The
+# span as backslash-pm, or be written out as "against its own scatter of",
+# which is how plan chapter 4's depth-ladder nulls escaped this guard while
+# carrying three-digit uncertainties (the register seat, 2026-09-08). Either
+# number may sit inside a reference link. The
 # first form matched only the glyph on one line; a wrapped one-digit
 # uncertainty in plan chapter 7 and the tagged, wrapped pairs of methods
 # chapter 5 passed it (2026-09-07,
@@ -76,7 +79,9 @@ OTHERS = {("40", "0.54"),        # Cao 2025, 5S-5D3/2 self-broadening
 # runs, reports the line the pair starts on, and
 # `test_the_pair_guard_reads_wrapped_and_tagged_pairs` feeds it every shape,
 # the math span's backslash-pm among them.
-PAIR = re.compile(r"(-?\d+\.?\d*)\s*(?:±|\+/-|plus\s+or\s+minus|\\pm)\s*(\d+\.?\d*)")
+PAIR = re.compile(
+    r"(-?\d+\.?\d*)\s*(?:±|\+/-|plus\s+or\s+minus|\\pm"
+    r"|against (?:its own |a )?scatter of|against a scatter of)\s*(\d+\.?\d*)")
 
 
 def _sig(text: str) -> int:
@@ -195,12 +200,18 @@ def test_the_pair_guard_reads_wrapped_and_tagged_pairs():
     pairs = _pairs_in(wrapped)
     assert [(n, m.group(1), m.group(2)) for n, m in pairs] == [(1, "-0.14", "0.07")]
     assert _sig(pairs[0][1].group(2)) == 1
-    tagged = ("it is [0.00223](../results/sweep_linearity.csv \"ref:x:a:b\") plus or minus\n"
-              "[0.00018](../results/sweep_linearity.csv \"ref:x:a:c\") per cent\n"
+    # THE FIXTURE'S NUMBERS ARE DELIBERATELY NOT ANY COMMITTED CELL
+    # (2026-09-09). It used the sweep producer's own tolerances, so when those
+    # moved the moved-value scan read this parser fixture as three stale
+    # copies of a retired literal and the gate went red on a test that had
+    # nothing to do with the physics. A fixture that borrows a live value
+    # turns every regeneration of that value into a false positive here.
+    tagged = ("it is [0.07771](../results/sweep_linearity.csv \"ref:x:a:b\") plus or minus\n"
+              "[0.00092](../results/sweep_linearity.csv \"ref:x:a:c\") per cent\n"
               "\n"
-              "and 6.744 ± 2.9 on one line, then 1.238 +/-\n0.034 wrapped at the glyph.\n")
+              "and 6.744 ± 2.9 on one line, then 3.917 +/-\n0.0637 wrapped at the glyph.\n")
     got = [(n, m.group(1), m.group(2)) for n, m in _pairs_in(tagged)]
-    assert got == [(1, "0.00223", "0.00018"), (4, "6.744", "2.9"), (4, "1.238", "0.034")]
+    assert got == [(1, "0.07771", "0.00092"), (4, "6.744", "2.9"), (4, "3.917", "0.0637")]
     math = "text\n\nthe fit gives $-1.833 \\pm 1.214$ here\nand $3.4 \\pm 0.3$ there.\n"
     got = [(n, m.group(1), m.group(2)) for n, m in _pairs_in(math)]
     assert got == [(3, "-1.833", "1.214"), (4, "3.4", "0.3")]

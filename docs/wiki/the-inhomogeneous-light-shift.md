@@ -83,8 +83,15 @@ live handle in the 2025 data since the pull channel is dead in the drift.
 The joint three-session bound and its prediction are constructed in
 [the AC-Stark dossier](../quantities/ac-stark-light-shift.md), and the
 fringe-resolved treatment of the slow tail is in
-[standing waves](standing-waves.md). The digital twin propagates the same
-distribution into its forecasts, and the guided-platform outlook carries
+[standing waves](standing-waves.md). The digital twin convolves that
+distribution itself since 2026-09-08, through
+[`lineshape.ramp_mixture`](../../rb5s6s/lineshape.py), so its forecasts carry
+the axial collection window and the fringe-resolved tail and not the
+transverse ramp alone: the ramp's mean pull reads
+[0.9775](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_64um::pull_factor_quiet")
+of the pure form at the measured waist and
+[0.5752](../../results/three_channel_forecast.csv "ref:three_channel_forecast:base::pull_factor_quiet")
+at 16 microns. The guided-platform outlook carries
 it for a mode profile in
 [chapter 6 of the big picture](../big_picture/06_next-nanofibre.md) and
 [the guided-atoms page](guided-atoms-and-nanofibres.md).

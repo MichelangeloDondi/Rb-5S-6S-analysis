@@ -55,6 +55,22 @@ def _example_layers() -> set:
     return set(re.findall(r'"(\w+)"', m.group(1))) if m else set()
 
 
+def _example_calls() -> str:
+    """The example's own build_world_trace call, read from its source.
+
+    A row must not choose what to inspect: the two rows added on 2026-09-08
+    asked whether a keyword exists in `build_world_trace`'s SIGNATURE and
+    printed the answer in the example's column, so the census said the exhibit
+    carries the collection window and the fringe tail when the example names
+    neither, and emptying the example would not have changed the cell.
+    This file had already recorded the same mistake corrected once in the
+    neighbouring column.
+    """
+    src = (ROOT / "examples" / "campaign_twin.py").read_text(encoding="utf-8")
+    i = src.find("build_world_trace(")
+    return src[i:src.find("\n\n", i)] if i >= 0 else ""
+
+
 def _builder_layers() -> set:
     """The layer keys the public builder consults, read from its source."""
     src = inspect.getsource(forecast.build_world_trace)
@@ -95,6 +111,18 @@ def main() -> int:
          "inspected: s0 in synthetic_traces since 2026-08-30 and the stark "
          "layer in build_world_trace. The side stays open per "
          "tests/test_ramp_side_matches_the_polarizability"),
+        ("axial_collection_window", yes("z_ratio" in _params(forecast.build_world_trace)),
+         yes("z_ratio" in _example_calls()),
+         "lineshape.ramp_mixture", "no",
+         "inspected: z_ratio in build_world_trace since 2026-09-08, None by "
+         "default. The producers pass constants.collection_z_ratio at the "
+         "cell's waist. The fitter has no window parameter"),
+        ("standing_wave_fringe_tail", yes("fringe_density" in _params(forecast.build_world_trace)),
+         yes("fringe_density" in _example_calls()),
+         "fringe_tail.fringe_shift_density", "no",
+         "inspected: fringe_density in build_world_trace since 2026-09-08, None "
+         "by default. One Monte Carlo per waist, retro ratio and temperature, "
+         "independent of the shift"),
         ("saturation_companions", yes("saturation" in world),
          yes("saturation" in ex), "stark.companion_gamma_mhz"
          if have["companion"] else "MISSING",

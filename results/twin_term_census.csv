@@ -3,6 +3,8 @@ lorentzian_core_collisional,yes,yes,lineshape.py,yes,inspected: gamma_coll in sy
 laser_kernel_both_forms,yes,yes,lineshape.py,"yes, form assumed","inspected: laser_kind in synthetic_traces. The form choice was audited 2026-08-20, the switch never thrown before then",DIAGNOSTIC
 transit_cusp,yes,yes,lineshape.py,yes,inspected: transit_fwhm in both signatures,DIAGNOSTIC
 ac_stark_ramp,yes,yes,lineshape.stark_ramp,optional,inspected: s0 in synthetic_traces since 2026-08-30 and the stark layer in build_world_trace. The side stays open per tests/test_ramp_side_matches_the_polarizability,DIAGNOSTIC
+axial_collection_window,yes,no,lineshape.ramp_mixture,no,"inspected: z_ratio in build_world_trace since 2026-09-08, None by default. The producers pass constants.collection_z_ratio at the cell's waist. The fitter has no window parameter",DIAGNOSTIC
+standing_wave_fringe_tail,yes,no,fringe_tail.fringe_shift_density,no,"inspected: fringe_density in build_world_trace since 2026-09-08, None by default. One Monte Carlo per waist, retro ratio and temperature, independent of the shift",DIAGNOSTIC
 saturation_companions,yes,yes,stark.companion_gamma_mhz,"stated: deliberately absent (science plan T1: truth carries it, the fitter keeps the committed model, the gap is measured in T3)",inspected: saturation layer in build_world_trace,DIAGNOSTIC
 cascade_depletion,yes,yes,cascade.py,stated: deliberately absent (same T1 clause as saturation),"inspected: cascade layer in build_world_trace, and a tooth of an EOM comb is depleted at its own share of the line's rate",DIAGNOSTIC
 blackbody,no,yes,"blackbody.py, two-platform rule in twin.py",no,inspected: bbr layer in build_world_trace. Negligible at MHz widths per the example's CHECK 3,DIAGNOSTIC

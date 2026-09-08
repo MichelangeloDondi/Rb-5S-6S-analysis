@@ -110,6 +110,40 @@ from .constants import K_B_J_PER_K, LAMBDA_LASER_M, M_RB87_KG
 
 _K_WAVE = 2.0 * pi / LAMBDA_LASER_M          # laser wavenumber (rad/m)
 
+COHERENCE_TRANSIT = "transit"
+"""The transit-limited end of the coherence bracket, tau_c -> inf: the atom
+stays coherent for the whole crossing and the fringe survives as far as its
+axial speed allows. The other end is a finite tau_c, TAU_6S_S being the one
+the docstring's bracket names."""
+
+
+def _inv_two_tau_squared(coherence_s) -> float:
+    """The 1/(2 tau_c^2) a named end of the coherence bracket contributes.
+
+    THE END IS NAMED BY THE CALLER AND NEVER DEFAULTED (2026-09-08). tau_c is
+    this module's one open modelling choice, worth a factor of eleven in the
+    frozen-fringe fraction, and the module reports a bracket over it rather
+    than a correction. A default silently picked one end: the sweep producer
+    took the transit-limited end for a published tolerance whose other end
+    lies outside the half-span it printed. So `None` is refused by name, with
+    both ends in the message, rather than read as the cap it used to mean."""
+    if isinstance(coherence_s, str):
+        if coherence_s == COHERENCE_TRANSIT:
+            return 0.0
+        raise ValueError(f"coherence_s: unknown end {coherence_s!r}; "
+                         f"{COHERENCE_TRANSIT!r} or a coherence window in seconds")
+    if coherence_s is None:
+        raise ValueError("coherence_s is required and names the end of the "
+                         "coherence bracket: COHERENCE_TRANSIT for the "
+                         "transit-limited cap, or a window in seconds such as "
+                         "constants.TAU_6S_S. None used to mean the cap; it is "
+                         "refused so a threaded number says which end it took")
+    tau = float(coherence_s)
+    if not np.isfinite(tau) or tau <= 0.0:
+        raise ValueError(f"coherence_s must be positive and finite, got {tau!r}")
+    return 1.0 / (2.0 * tau ** 2)
+
+
 
 def _sigma_v1d(T_C: float, mass_kg: float = M_RB87_KG) -> float:
     """1D Maxwell-Boltzmann speed scale sqrt(k T / m) (m/s)."""
@@ -136,7 +170,8 @@ def _moments_from_sums(p: np.ndarray) -> tuple:
 
 def _one_block(w0_m: float, s0_mhz: float, rho: float, T_C: float,
                inv2tau: float, contrast: float, n_atoms: int,
-               b_cut: float, rng: np.random.Generator) -> Dict:
+               b_cut: float, rng: np.random.Generator,
+               x_edges: Optional[np.ndarray] = None) -> Dict:
     """Sample one independent block and return its pooled power sums (fringe and
     no-fringe), fringe-resolved weight, fringe-variance weight, and total weight,
     plus the block's own skew change for a Monte-Carlo error estimate."""
@@ -182,6 +217,10 @@ def _one_block(w0_m: float, s0_mhz: float, rho: float, T_C: float,
         "block_excess_var_frac": (var_f - var_n) / var_f if var_f > 0 else 0.0,
         "block_frac_resolved": w_res_blk / w_tot_blk if w_tot_blk > 0 else 0.0,
         "sigma_v": sv,
+        # the signal-weighted histogram of the fringe-resolved shift on
+        # x = s/S0, for fringe_shift_density (2026-09-08); None unless asked
+        "hist": (np.histogram(s_signed / s0_mhz, bins=x_edges, weights=W)[0]
+                 if x_edges is not None else None),
     }
 
 
@@ -292,4 +331,61 @@ def fringe_tail_mc(*, w0_m: float, s0_mhz: float, rho: float = 1.0,
         "frac_resolved": w_res / w_tot,
         "frac_resolved_mc_err": frac_resolved_mc_err,
         "window_frac": window_frac,
+    }
+
+
+def fringe_shift_density(*, w0_m: float, coherence_s, rho: float = 1.0,
+                         T_C: float = 130.0,
+                         n_atoms: int = 300_000, n_blocks: int = 1,
+                         b_cut: float = 3.0, seed: int = None,
+                         n_bins: int = 800) -> Dict:
+    """The fringe-resolved shift DENSITY the world builder convolves in place of
+    the transverse ramp (2026-09-08), from the same draws fringe_tail_mc pools
+    into moments.
+
+    coherence_s names the end of the coherence bracket and has no default:
+    COHERENCE_TRANSIT for the transit-limited cap, or a window in seconds.
+
+    On x = s / (S0 kappa_bar), with kappa_bar the signal-weighted path factor
+    (exactly sqrt(2/3) when transit-limited), the density is independent of
+    S0, so one Monte Carlo per (w0, rho, T, coherence) serves every rung of a
+    power ladder and the caller rescales by S0. Dividing kappa_bar out makes
+    the no-contrast limit (rho = 0) the record's own |x| ramp on [-1, 0] rather
+    than that ramp shrunk by the path factor, so what the density adds to the
+    world is the fringe's imprint and nothing else; the support with contrast
+    reaches x = -2 kappa_bar / kappa_bar = -2 at a perfect retro, where a slow
+    atom at an antinode sees twice the fringe-averaged intensity.
+
+    Returns x_grid (bin centres, ascending, on [-2/kappa_bar, 0]), density
+    (area one on that grid), kappa_bar, and the SAME draws' raw moments of
+    x_raw = s / S0 (mean_raw, var_raw, kappa3_raw) so a test can hold the
+    binned density against the pooled power sums and against fringe_tail_mc
+    at the same seed. Every histogram bin is a signal-weighted count; the
+    binning error on the third cumulant is below a part in a thousand at the
+    default 800 bins over [-2, 0]."""
+    rng = np.random.default_rng(C.RNG_SEED if seed is None else seed)
+    inv2tau = _inv_two_tau_squared(coherence_s)
+    contrast = 2.0 * sqrt(rho) / (1.0 + rho)
+    edges = np.linspace(-2.0, 0.0, n_bins + 1)
+    hist = np.zeros(n_bins)
+    p_f = np.zeros(4)
+    w_tot = w_kappa = 0.0
+    for _ in range(n_blocks):
+        blk = _one_block(w0_m, 1.0, rho, T_C, inv2tau, contrast, n_atoms,
+                         b_cut, rng, x_edges=edges)
+        hist += blk["hist"]
+        p_f += blk["p_f"]
+        w_tot += blk["w_tot"]
+        w_kappa += blk["w_kappa"]
+    kappa_bar = w_kappa / w_tot
+    mean_raw, var_raw, mu3_raw, _ = _moments_from_sums(p_f)
+    centres = 0.5 * (edges[:-1] + edges[1:]) / kappa_bar
+    dx = (edges[1] - edges[0]) / kappa_bar
+    density = hist / hist.sum() / dx
+    return {
+        "x_grid": centres, "density": density, "kappa_bar": float(kappa_bar),
+        "mean_raw": float(mean_raw), "var_raw": float(var_raw),
+        "kappa3_raw": float(mu3_raw),
+        "w0_um": w0_m * 1e6, "rho": rho, "T_C": T_C, "contrast": contrast,
+        "n_atoms": n_atoms, "n_blocks": n_blocks, "n_bins": n_bins,
     }

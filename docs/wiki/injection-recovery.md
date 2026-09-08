@@ -59,6 +59,17 @@ the data reject a component, a noise law that is measured instead of
 assumed, and residual audits that look for structure no fitted component
 absorbs.
 
+**The sharpest instance in this repository is dated 2026-09-08.** The
+forecast's world builder and its centre estimator both omitted the axial
+collection window, so the study recovered the coefficient it injected to
+better than a per cent and would not have recovered this bench's, where the
+window puts the windowed third cumulant at about nine tenths of the pure
+ramp's at the measured waist and reverses its sign at 16 microns. Nothing inside the closure
+test could see it, because the omission was common to both halves. What found
+it was reading the world builder against the record's own derivation of the
+term, and the fix was to give the world the term, not to widen a
+bar.
+
 ## Where this repository uses it
 
 No fitter is allowed near real data here until it recovers known injected

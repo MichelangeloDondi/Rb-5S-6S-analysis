@@ -650,7 +650,7 @@ def main() -> int:
       # the first version of this sentence was lost the same day it was made.
       "A third constraint is not statistical: the channel needs a sweep-rate "
       "variation under "
-      "[0.00223](../results/sweep_linearity.csv \"ref:sweep_linearity:archive:rate_variation_tolerance\") "
+      "[0.00203](../results/sweep_linearity.csv \"ref:sweep_linearity:archive:rate_variation_tolerance\") "
       "per cent across the window "
       "([methods 5](methods/05_the_frequency_ruler.md)). "
       f"({_skew_scaling_clause()}) "

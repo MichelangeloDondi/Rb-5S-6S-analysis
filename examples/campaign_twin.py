@@ -132,6 +132,14 @@ def build_rung(power_w: float, kappa: float, t_c: float, order_idx: int,
     physics stays in the library. The ramp-convolution account (why a rigid
     shift was wrong twice over, corrected 2026-08-30) lives on the function's
     own docstring and docs/wiki/third-cumulant.md.
+
+    IT KEEPS THE PURE TRANSVERSE RAMP. `build_world_trace` gained the axial
+    collection window and the standing wave's fringe-resolved tail on
+    2026-09-08 as two opt-in arguments, and this example passes neither, so
+    the exhibit's traces are unchanged and the forecast producers are where
+    those terms are read. At the archive's 64 microns both are a few per cent
+    (docs/plan/12); at a tight waist they are not, which is why the campaign
+    forecast carries them and this example does not.
     """
     return build_world_trace(
         power_w, kappa, t_c, order_idx, n_rungs, rng, layers,

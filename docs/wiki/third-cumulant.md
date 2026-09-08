@@ -165,6 +165,9 @@ That sign is the static composition's. A rung 3 computation of the chirped
 chord with its dephasing carried, whose producer is owed, puts the campaign's
 calibration of this channel on the collection window and the chirp together,
 as the plan hub's intensity chapter sets out.
+Since 2026-09-08 the three-channel forecast's world carries the window and
+the fringe tail, and its windowed cumulant at the tight waist is negative, the
+window's reversal. The map keeps the pure ramp, and the chirp is still owed.
 It is not the ramp's own $+S_0^3/135$ from the derivation above but the
 truncated estimator's reading of it. Under the archive's own noise and
 quantisation **no configuration on the grid recovers it**: over all three
@@ -294,10 +297,15 @@ Writing the true frequency against the assumed axis as
 $\nu = \hat\nu + \alpha\hat\nu^2$, the rate varies across a window of
 half-width $W$ by a fraction $\epsilon$ equal to $2\alpha W$, and the induced
 cumulant is linear in that fraction. The
-rate variation that fakes the whole light-shift signal is **[0.0290](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:rate_variation_tolerance") per
-cent at the campaign's tightest licensed waist and [0.00223](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:rate_variation_tolerance") at the 2025 one**, and about one per cent at the 16 micron configuration the
+rate variation that fakes the whole light-shift signal is **[0.0136](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:rate_variation_tolerance") per
+cent at the campaign's tightest licensed waist and [0.00203](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:rate_variation_tolerance") at the 2025 one**, and about 1.5 per cent at the 16 micron configuration the
 model does not license, so this channel demands an axis two to three orders
-better than a centre fit does.
+better than a centre fit does. Each carries a band over the two width bands,
+the waist band paired with the retro-ratio error, and the two ends of the
+coherence window the fringe density leaves open, largest excursion reported:
+[0.0022](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:rate_variation_tolerance_err")
+and [0.00064](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:rate_variation_tolerance_err")
+per cent for the first two.
 
 It does not separate by sweep rate, because it is not a response, and it
 does not separate by direction either: an actuator's bow is the same function

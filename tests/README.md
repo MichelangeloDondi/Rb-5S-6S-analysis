@@ -1,8 +1,11 @@
 # The test suite
 
-Fifty-seven modules, a little over sixteen hundred collected cases, and most of
-them are not unit tests. The suite exists to certify three different things at
-once: that each analysis stage recovers an answer that was injected into
+Most of what is here is not a unit test. The module and case counts are not
+written on this page: `pytest --collect-only -q` measures both, and a count
+typed here drifts the moment a module lands, which is what happened between
+2026-08 and 2026-09, when the counts this sentence used to carry had drifted
+to about a third of the real ones. The suite exists to certify
+three different things at once: that each analysis stage recovers an answer that was injected into
 synthetic data before it is trusted on real data, that every committed CSV and
 figure still matches the code that produced it, and that the published
 documents still quote the numbers the code computes. The third group is why

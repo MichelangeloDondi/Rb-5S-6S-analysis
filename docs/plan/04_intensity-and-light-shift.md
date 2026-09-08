@@ -186,12 +186,17 @@ this section, which has to be in place before any of them runs.
    centered moments at the 2025 spacing and de-saturates the line at 25 and
    40 MHz, where the twin recovers the coefficient (§10.5). Measured on the twin at configuration S, the 2025 comb's lower
    first-order tooth leaks into a 6 MHz window enough to cancel the ramp's
-   third cumulant to a few per cent of itself, a 40 MHz spacing still leaves a
+   third cumulant to a few per cent of itself in the world without the
+   collection window, a 40 MHz spacing still leaves a
    tilt term of the ramp's own order at the dim rungs, and at the measured
    depth the first-order teeth stand higher than the carrier. The centre
    channel, a fit with its own background, survives a comb from a 25 MHz
-   spacing up and dies at the 2025 spacing, where the fit window stops just
-   short of half the spacing. The forecast measures every lever of this chapter
+   spacing up. At the 2025 spacing, where the fit window stops just short of
+   half the spacing, it died in that world and recovers the coefficient in the
+   world that carries the window and the fringe tail (2026-09-08), at four
+   times the wide combs' scatter, since the window shrinks the ramp's pull
+   inside the fit window, and the moments recover it there too at twice the
+   wide combs' scatter. The forecast measures every lever of this chapter
    three ways, the moments alone, the centre against power, and the two
    combined with their measured covariance, in
    `scripts/run_three_channel_forecast.py`, whose file lands with its first
@@ -241,14 +246,14 @@ this section, which has to be in place before any of them runs.
    ([`results/three_channel_forecast.csv`](../../results/three_channel_forecast.csv)),
    **and it is available at one spacing and not the other**. On the 40 MHz comb
    the fitted centre's slope against depth comes back at the expected null,
-   [-0.0085](../../results/three_channel_forecast.csv "ref:three_channel_forecast:depth_ladder_40MHz::kappa_pull")
+   [0.009](../../results/three_channel_forecast.csv "ref:three_channel_forecast:depth_ladder_40MHz::kappa_pull")
    against its own scatter of
-   [0.0261](../../results/three_channel_forecast.csv "ref:three_channel_forecast:depth_ladder_40MHz::sd_pull"),
-   which is a third of a standard error from zero. On the 25 MHz comb the same
+   [0.024](../../results/three_channel_forecast.csv "ref:three_channel_forecast:depth_ladder_40MHz::sd_pull"),
+   which is under half a standard error from zero. On the 25 MHz comb the same
    test reads
-   [12.5091](../../results/three_channel_forecast.csv "ref:three_channel_forecast:depth_ladder_25MHz::kappa_pull")
+   [13](../../results/three_channel_forecast.csv "ref:three_channel_forecast:depth_ladder_25MHz::kappa_pull")
    against a scatter of
-   [51.2683](../../results/three_channel_forecast.csv "ref:three_channel_forecast:depth_ladder_25MHz::sd_pull"),
+   [52](../../results/three_channel_forecast.csv "ref:three_channel_forecast:depth_ladder_25MHz::sd_pull"),
    which is no measurement. The window is the reason and it is arithmetic: the
    centre is fitted inside 12 MHz at both spacings, so at 25 MHz the first
    teeth stand only 13 MHz clear of the window edge and their tails reach in,

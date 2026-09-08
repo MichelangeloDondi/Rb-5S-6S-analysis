@@ -89,7 +89,8 @@ grep -qE '^checks/.*\.py$' <<<"$PRIVCHANGED" && add \
   tests/test_make_prompts.py tests/test_collect_findings.py || true
 grep -qE '\.md$' <<<"$PRIVCHANGED" && add \
   tests/test_prose_style_ratchet.py tests/test_repo_hygiene.py \
-  tests/test_agonistic_ratchet.py tests/test_history_tense.py || true
+  tests/test_agonistic_ratchet.py tests/test_history_tense.py \
+  tests/test_history_form.py tests/test_history_audience.py || true
 grep -qE '^(docs/|README|START_HERE)' <<<"$CHANGED" && add \
   tests/test_prose_style_ratchet.py tests/test_repo_hygiene.py \
   tests/test_open_apparatus_items.py tests/test_docs_platform_lane.py \

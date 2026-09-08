@@ -34,16 +34,25 @@ and does not retype it. Everything downstream, the estimators, the
 windows, the pooling -- is identical, which is the point: the machinery
 transfers, and the file measures what that transfer costs.
 
-TWO TERMS THE WORLD BUILDER DOES NOT CARRY, AND BOTH CUT THE SHAPE FAMILY.
-The retro-reflected drive is a standing wave; atoms slow enough to resolve its
-fringes suppress the skew by about a quarter at 16 microns and seven per cent
-at the archive (`rb5s6s.fringe_tail.fringe_tail_mc`, which takes the retro
-ratio), and `build_world_trace` does not call it, so every shape-family number
-here is an upper bound. And the twin integrates the beam radially, which is
-exact at fixed axial position, then assumes the axial coordinate invariant;
-`rb5s6s.lineshape.stark_ramp_axial` exists and is not threaded. The centres
-family is untouched by both to leading order, since neither moves the mean
-intensity. Threading both is owed before the shape family's rows are quoted.
+TWO AXIAL TERMS THE WORLD CARRIES SINCE 2026-09-08, in the cell arm through
+`run_three_channel_forecast._trace`: the collection window's divergence
+(`lineshape.ramp_mixture` at `constants.collection_z_ratio` of the cell's
+waist) and the standing wave's fringe-resolved tail
+(`fringe_tail.fringe_shift_density` at the cell's retro ratio), which
+suppresses the skew by about a quarter at 16 microns and seven per cent at the
+archive. The guided arm carries neither: an evanescent field has no focus, and
+the record holds no fringe model for a retro-reflected guided mode, so that
+item belongs to the fibre thread. The centres family keeps its mean
+intensity under both, which is why the CENTRE is recovered at every waist; its
+PRECISION is not untouched, see below. **THIS PRODUCER'S OWN
+`build_world_trace` CALL PASSES NEITHER**, so the shape family it computes is
+still the pure transverse ramp's and is an upper bound at a tight waist; the
+terms reach the three-channel forecast and not this file. No CSV of this
+producer is committed, and nothing quotes rows from it. Threading them here is
+owed before its shape rows are quoted, and the centres family is NOT untouched
+by them either: the forecast's own `pull_factor_quiet` puts the fitted centre's
+response at 0.98, 0.89, 0.69 and 0.58 of the pure ramp's mean pull at 64, 40,
+24 and 16 microns, and its scatter grows by the reciprocal.
 
 THE ABSOLUTE-FREQUENCY LETTERS ARE CELL-ONLY BY PHYSICS, NOT BY EFFORT. An
 interval between two hyperfine lines is fixed by hyperfine constants alone, so
@@ -66,6 +75,8 @@ from __future__ import annotations
 import csv
 import importlib.util
 import os
+for _v in ("OPENBLAS_NUM_THREADS", "OMP_NUM_THREADS", "MKL_NUM_THREADS"):
+    os.environ.setdefault(_v, "1")   # one thread per pooled worker (2026-09-08)
 import sys
 import time
 import warnings

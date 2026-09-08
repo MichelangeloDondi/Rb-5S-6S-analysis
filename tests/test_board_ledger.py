@@ -282,11 +282,34 @@ def test_begin_refuses_while_a_blocking_finding_stands(bl, repo):
         _regate(bl)
         bl.begin(seats, expect=0)
     assert "REFUSING to open a round" in str(e.value)
-    # and resolution with evidence clears it
-    bl.resolve("planted defect", "the fix that closed it")
+    # and resolution with evidence AND a checked anchor clears it
+    bl.resolve("planted defect", "the fix that closed it", anchor="a.txt::three")
     _regate(bl)
     bl.begin(seats, expect=0)
     assert bl.OPEN.exists()
+
+
+def test_resolve_without_an_anchor_or_a_deferral_is_refused(bl, repo):
+    """Round one of 2026-09-08 closed 29 findings with neither, so the checked
+    path ran zero times and every resolution was prose nobody could grade.
+
+    Both doors and both directions: a bare resolution refuses, an anchor that
+    holds admits, a deferral into a file the wave deletes refuses. The
+    eleven-case account is private/checks/plant_resolution_doors.py."""
+    _point_at(bl, repo)
+    (repo / "a.txt").write_text("three\n")
+    _run(repo, "add", "-A")
+    seats = sorted(bl.REQUIRED_SEATS)
+    _regate(bl)
+    bl.begin(FULL, expect=0)
+    bl.record(seats, ["REFUTE"] * len(seats), blocking=["the planted defect"])
+    with pytest.raises(SystemExit) as e:
+        bl.resolve("planted defect", "I fixed it")
+    assert "unchecked resolution" in str(e.value)
+    with pytest.raises(SystemExit) as e:
+        bl.resolve("planted defect", "deferred", defer="a.txt::three")
+    assert "not a debt" in str(e.value)
+    bl.resolve("planted defect", "landed", anchor="a.txt::three")
 
 
 def test_resolve_without_a_reason_is_refused(bl, repo):

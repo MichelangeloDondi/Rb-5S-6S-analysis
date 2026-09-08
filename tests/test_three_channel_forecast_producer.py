@@ -121,15 +121,15 @@ def test_a_rung_is_admitted_on_two_statistics_and_a_loud_coin_flip_is_not():
     loud = 50.0 * np.where(i % 2 == 0, 1.0, -1.0) * (1 + 0.01 * i)   # half negative, huge: refused
     quarter = np.where(i % 4 == 0, -1.0, 1.0) * (0.5 + 4.5 * (i % 97) / 96)  # 25 per cent negative, median well above its SE: admitted
     k3_sets = np.column_stack([settled, loud, quarter])
-    usable, frac_neg = mod.admit_rungs(k3_sets)
+    usable, frac_neg = mod.admit_rungs(k3_sets, np.ones(3))
     assert usable[0] and not usable[1] and usable[2]
     assert frac_neg[0] == 0.0 and frac_neg[1] == 0.5 and frac_neg[2] == 0.25
     # the second statistic is what refuses the case that actually happened: at
     # EIGHT sets a symmetric noise rung with two negatives clears the fraction
     # bar by chance, and its median sits inside its own standard error
     eight = np.array([-3.0, -1.0, 0.5, 1.0, 1.5, 2.0, 2.5, 4.0])[:, None]
-    one_bar, fn = mod.admit_rungs(eight, sigma_min=0.0)
-    two_bars, _ = mod.admit_rungs(eight)
+    one_bar, fn = mod.admit_rungs(eight, np.ones(1), sigma_min=0.0)
+    two_bars, _ = mod.admit_rungs(eight, np.ones(1))
     assert fn[0] == 0.25 and one_bar[0], "the fraction bar alone admits it"
     assert not two_bars[0], "the significance bar refuses it, which is the whole point"
 
@@ -510,3 +510,40 @@ def test_the_ladders_own_abscissa_is_what_every_slope_is_fitted_against():
             break
     else:
         raise AssertionError("no depth cell to check")
+
+
+def test_admission_reads_the_sign_of_the_quiet_curve_not_positive():
+    """A77 on the skew channel: with the collection window threaded the true
+    third cumulant is reversed below 24 microns, and a gate on the fraction
+    NEGATIVE refused every rung there. The sign is the quiet curve's."""
+    mod = _load()
+    rng = np.random.default_rng(3)
+    sets = -np.abs(rng.normal(1.0, 0.05, size=(400, 3)))        # all negative, tight
+    usable, frac = mod.admit_rungs(sets, k3_quiet=np.array([-1.0, -1.0, -1.0]))
+    assert usable.all() and frac.max() == 0.0
+    usable, frac = mod.admit_rungs(sets, k3_quiet=np.array([1.0, 1.0, 1.0]))
+    assert not usable.any() and frac.min() == 1.0
+
+
+def test_the_row_length_self_check_fires_on_a_ragged_file_and_passes_a_square_one(tmp_path):
+    """The plant this check shipped without on 2026-09-08.
+
+    A column added on one side of a positional writer shifts every later
+    column, which is how the pull factor's header entered without its value
+    and the correlation beside it was read as the factor. Both directions,
+    through the producer's own function: a square file passes, a row short by
+    one and a row long by one each refuse, and a file whose HEADER is the odd
+    row refuses too, since the check reads the first row as the width."""
+    mod = _load()
+    good = tmp_path / "square.csv"
+    good.write_text("a,b,c\n1,2,3\n4,5,6\n", encoding="utf-8")
+    mod._refuse_ragged_rows(good)          # the negative case: no refusal
+
+    for name, text in (("short", "a,b,c\n1,2,3\n4,5\n"),
+                       ("long", "a,b,c\n1,2,3\n4,5,6,7\n"),
+                       ("header", "a,b\n1,2,3\n4,5,6\n")):
+        bad = tmp_path / f"{name}.csv"
+        bad.write_text(text, encoding="utf-8")
+        with pytest.raises(SystemExit) as e:
+            mod._refuse_ragged_rows(bad)
+        assert "column was added on one side" in str(e.value), name

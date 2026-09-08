@@ -62,20 +62,30 @@ lowest depth and 0.997587 at the highest over the seven modelled teeth, and so i
 wing baseline, which moves by three per cent across the ladder while the raw integral
 falls by fourteen.
 
-**The world builder carries no axial collection window**, and it is the largest open
-defect in the tree. `rb5s6s/forecast.py` names neither `collection_z_ratio` nor
-`ramp_moment_contributions`, so every trace it builds carries the pure transverse ramp.
-`results/waist_ladder.csv`, committed beside it, reports the ratio of the windowed third
-cumulant to the pure ramp's as -1.035831 at 16 microns, a reversed sign, and the mean
-pull at 0.585 of the pure ramp. **What it changes**: the world and the estimator share
-the omission, so the forecast recovers the coefficient it injects and would not recover
-this bench's. Reading the window's own correction against the pure ramp, a centre
-estimator built on the pure form would sit low by about 2, 11, 31 and 42 per cent at
-64, 40, 24 and 16 microns. **How the forecast proceeds**: every absolute recovery figure
-in `results/three_channel_forecast.csv` is a statement about a world without collection
-optics, and the surfaces that quote one say so until the window is threaded through the
-builder. The relative comparisons between levers are unaffected, since the omission is
-common to every cell.
+**The world builder carries the axial collection window and the standing wave's
+fringe-resolved tail since 2026-09-08**, through `forecast.build_world_trace(z_ratio,
+fringe_density)` and `lineshape.ramp_mixture`, and both forecast producers pass them
+from the cell's waist and retro ratio. What stays open is narrower and is an apparatus
+item: the mixture weights the window uniformly along the beam, where the measured
+collection profile (the lens, the image distance and the cathode's 12 mm axis, the item
+below) sets the true weight, so the window's correction is exact in form and stated to
+the tolerance of that profile, which is 8 to 16 per cent on the coefficient at
+16 microns: integrating the mixture's mean over a uniform weight, a linear
+taper, a Gaussian at half at the edge and a window half again as long gives
+0.585, 0.677, 0.615 and 0.555, against 0.818 to 0.942 at 40 microns. **And the
+realised factor is not that geometric ratio**: `pull_factor_quiet` at a fixed
+16 micron geometry reads [0.5752](../../results/three_channel_forecast.csv "ref:three_channel_forecast:base::pull_factor_quiet"), 0.5578, [0.4802](../../results/three_channel_forecast.csv "ref:three_channel_forecast:eom_comb_8MHz::pull_factor_quiet") and [0.5542](../../results/three_channel_forecast.csv "ref:three_channel_forecast:eom_comb_12.5MHz::pull_factor_quiet") across the base,
+the 0.5 W ladder and two comb spacings, because the centre is fitted in a
+window that moves with the comb, so a campaign supplying the geometric number
+reads 1.7 to 18 per cent low. The two quantities are named apart: the
+mixture's centroid ratio is geometry, `pull_factor_quiet` is what the
+estimator realises. `results/waist_ladder.csv` reports what the window does
+against the pure ramp (the windowed third cumulant at -1.035831 of it at 16 microns, a
+reversed sign, and the mean pull at 0.585), which is now what the world builds. The
+exhibit twin (`examples/campaign_twin.py`, at the archive's 64 microns, where both terms
+are a few per cent) keeps the default until its regeneration, and says so. The guided
+arm carries neither: an evanescent field has no focus, and the record holds no fringe
+model for a retro-reflected guided mode, so that item is the fibre thread's.
 
 **The single-waist kernel at a tight waist**, an analysis unknown and the third of
 this kind. The forward model gives the interaction volume a single beam radius, and the
@@ -86,15 +96,21 @@ cent at 128 microns, 1.0 at 64, 5.5 at 40, 23 at 24 and 47 at 16, where the beam
 radius at the edge of the collected region is 4.3 times the waist. **The one per
 cent that licenses treating the model as a convolution was measured at the
 archive's waist**, and the campaign's tightest configuration is a factor of forty
-outside it. **What it changes**: any reading that depends on the line shape at a
+outside it. **A campaign waist has no measured band of its own**, so the
+tolerance producer applies the archive's 62 to 68 micron band as the same
+fraction of each proposed waist, paired with the retro-ratio error as the
+record's convention pairs them. That is a borrowed uncertainty, not a spanned
+one, and it is an open item: a knife-edge at each proposed waist is what
+replaces it. **What it changes**: any reading that depends on the line shape at a
 tight waist, the third cumulant above all. The width's spread does not threaten the fitted
 centre, because it is symmetric in the axial coordinate and a symmetric
 broadening does not move a centre. The shift's own integral over the collected
 length does move it, by the 2, 11, 31 and 42 per cent the collection-window
-item above puts on a pure-form centre estimator, which is why the forecast's
-centre channel stands at 16 microns only in a world without the window, while
-its shape channel is refused there. **How the forecast proceeds**: the
-centre channel is read at every waist. **The shape channels are the conflict**:
+item above puts on a pure-form centre estimator, which is why the forecast
+carries the window and the fringe tail in its world since 2026-09-08 and
+inverts its centre through the quiet curve's own pull factor and no longer
+through the pure ramp's. **How the forecast proceeds**: the centre channel is read at
+every waist. **The shape channels are the conflict**:
 the single-waist description is good at 40 microns and wider, and the third
 cumulant only carries signal at 24 and below, where the shift approaches the
 line. The forecast reads the shape channel exactly where this item says the
@@ -290,9 +306,9 @@ accurate, and the 25 and 40 MHz combs are where it recovers the coefficient.
 The fit window is 12 MHz of half-width at 25 MHz and at 40, so truncation is
 not what separates them, and the reasoning above stopped at truncation. What
 separates them is the teeth's tails: at 25 MHz the first teeth stand 13 MHz
-beyond the window edge and reach in, and the depth null reads 12.5 against a
-scatter of 51.3, which is no measurement. At 40 MHz they stand 28 MHz clear and
-the null reads -0.0084 against 0.0262, a third of a standard error from zero.
+beyond the window edge and reach in, and the depth null reads 13 against a
+scatter of 52, which is no measurement. At 40 MHz they stand 28 MHz clear and
+the null reads 0.009 against 0.024, under half a standard error from zero.
 **So the lever is specified at 40 MHz**, and which resonances the tank offers is
 the apparatus number this item still wants.
 
@@ -592,7 +608,7 @@ is a yes or a no.
 
 The rate variation across an analysis window that forges the whole light-shift
 signal in the third cumulant is computed in
-[chapter 7](07_acquisition-settings.md): about three parts in ten thousand
+[chapter 7](07_acquisition-settings.md): about one and a half parts in ten thousand
 at the campaign's tightest licensed waist and two parts in a hundred thousand
 at the 2025 configuration. The nonlinearity that matters is the actuator's own over its
 travel, and the span scanned does not enter it, so what is needed is the
