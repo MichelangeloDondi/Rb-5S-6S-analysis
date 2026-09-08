@@ -185,4 +185,4 @@ with its cause ([`PREREGISTRATION_RESULTS.md`](../PREREGISTRATION_RESULTS.md)).
 
 ---
 
-*[the plan](../PLAN.md) · [Priorities if the budget shrinks](02_priorities.md)*
+*[The case in ten minutes](00_the-case.md) · [Priorities if the budget shrinks](02_priorities.md)*

@@ -509,6 +509,12 @@ QUANTITY_STATUS = {
         # this entry over the generic `proj_`.
         "proj_source_": "CALIB",
     },
+    # the density exponents of the noise floor, log-log slopes over the noise
+    # law's own cells, so a diagnostic of a diagnostic, rung 2 (2026-09-08)
+    "noise_floor_scaling.csv": {
+        "floor_exponent": "DIAGNOSTIC",
+        "floor_over_sqrt_height_exponent": "DIAGNOSTIC",
+    },
     "fringe_tail.csv": {
         # fringe-tail leverage on the Stark ramp: the sign and magnitude at the
         # small (16 um, config S) waist ride on the OPEN coherence window and collection

@@ -171,10 +171,6 @@ print(f"fitted jointly: {joint:.3f}   truth: {w_true}")
   sample size of correlated repeats affects a criterion built from the same
   fit.
 
----
-
-[← Weighted least squares](weighted-least-squares.md) · *Statistical inference, 2 of 9* · [Pooling across groups →](pooling-across-groups.md)
-
 ## The joint fit against power, on the twin
 
 The newest joint fit in this record is not on the 2025 data. The campaign's
@@ -189,3 +185,7 @@ commit. The three-channel forecast (`scripts/run_three_channel_forecast.py`)
 runs the same ladder three ways, the moments alone, the centre against power
 under the repaired lock, and the two combined with their measured covariance,
 one campaign lever at a time.
+
+---
+
+[← Weighted least squares](weighted-least-squares.md) · *Statistical inference, 2 of 9* · [Pooling across groups →](pooling-across-groups.md)

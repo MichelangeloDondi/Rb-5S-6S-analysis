@@ -140,8 +140,13 @@ in it, which is how the gap survived a reading of this file.
 
 
 def _tracked_markdown() -> list[str]:
+    # THE REGISTRIES ARE CLAIM SURFACES TOO. results/README.md and
+    # scripts/README.md carry a row per file with the file's headline numbers,
+    # and both sat outside this population until a stale value survived a fix
+    # pass there on 2026-09-07; the count ratchet licenses no growth of untagged
+    # decimals, and a stale value is caught only by a tag.
     out = subprocess.run(["git", "-C", str(ROOT), "ls-files",
-                          "docs/*.md", "README.md"],
+                          "docs/*.md", "README.md", "results/README.md", "scripts/README.md"],
                          capture_output=True, text=True)
     return out.stdout.split()
 
@@ -231,8 +236,7 @@ def _counts() -> dict[str, int]:
             continue
         text = _STRIP.sub(" ", path.read_text(encoding="utf-8"))
         n = len(_DECIMAL.findall(text))
-        if n:
-            counts[rel] = n
+        counts[rel] = n                  # a zero is recorded, as every counter does since 2026-09-08
     return counts
 
 
@@ -250,13 +254,16 @@ def test_unreferenced_decimals_only_fall():
 
 
 def _print_movement(old: dict, new: dict) -> None:
-    """Emit the measured per-key movement of a baseline write.
-
-    Three reseed notes in one wave described their movement from intention
-    and were each wrong against the disk. The account of what a reseed did
-    is pasted from this output, never composed."""
-    moved = [f"  {k}: {old.get(k, 0)} -> {new.get(k, 0)}"
-             for k in sorted(set(old) | set(new)) if old.get(k) != new.get(k)]
+    """Emit the measured per-key movement of a baseline write and say whether
+    anything moved; a key on one side only prints ADDED or REMOVED (the
+    prose-style twin carries the same contract)."""
+    moved = []
+    for k in sorted(set(old) | set(new)):
+        if old.get(k) == new.get(k):
+            continue
+        a = "ADDED" if k not in old else old[k]
+        b = "REMOVED" if k not in new else new[k]
+        moved.append(f"  {k}: {a} -> {b}")
     print("movement (paste this into the dated note):")
     print("\n".join(moved) if moved else "  (no key moved)")
 
@@ -269,15 +276,18 @@ if __name__ == "__main__":
             raise SystemExit("reseed refuses without --reason (the "
                              "ratchet history book records it)")
         new = _counts()
-        from datetime import date as _date
         _old_total = sum(json.loads(BASELINE.read_text()).values()) \
             if BASELINE.exists() else 0
-        with (Path(__file__).with_name("_ratchet_history.md")).open("a") as _fh:
-            _fh.write(f"| {_date.today()} | reference_coverage | reseed "
-                      f"{_old_total} -> {sum(new.values())} | "
-                      f"{sys.argv[_ri + 1].replace(chr(124), chr(47))} |\n")
+        _old_map = json.loads(BASELINE.read_text()) if BASELINE.exists() else {}
         old = json.loads(BASELINE.read_text()) if BASELINE.exists() else {}
+        if _old_map == new:
+            print("  (no key moved, no row written)")
+            raise SystemExit(0)
         BASELINE.write_text(json.dumps(new, indent=1, sort_keys=True) + "\n")
+        # the row lands AFTER the baseline, so a write that dies leaves no row
+        # for a movement that never happened (the audit finding, kept)
+        from _ratchet_book import record as _record
+        _record("reference_coverage", f"reseed {_old_total} -> {sum(new.values())}", _old_map, new, sys.argv[_ri + 1])
         print(f"reseeded {BASELINE.name} over {len(new)} files")
         _print_movement(old, new)
 

@@ -118,7 +118,7 @@ check an exclusion as well as a null. Separating shot noise from a
 fixed-amplitude systematic turns on the exponent of skew against amplitude,
 and a first pass read the exclusion straight off the fit's own covariance,
 returning 6.6 sigma. Injecting the excluded hypothesis into the dataset's
-own amplitudes and errors and refitting recovered $-1.833 \pm 1.214$ against
+own amplitudes and errors and refitting recovered $-1.8 \pm 1.2$ against
 an injected $-1.0$, a scatter roughly twenty times the covariance's stated
 error, because the amplitude lever carries almost no information about the
 exponent out at the excluded hypothesis. A fit covariance describes the

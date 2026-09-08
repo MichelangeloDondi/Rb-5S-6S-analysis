@@ -290,7 +290,7 @@ if [ -f private/checks/enforcement_report.py ]; then
   "$PY" private/checks/enforcement_report.py || true
 fi
 # The thesis chapter's two checkers, ADVISORY and three-valued, placed below
-# the parse gate where the E13 comment says advisory calls live. Exit 2 means
+# the parse gate where the register-entry comment says advisory calls live. Exit 2 means
 # the chapter is absent (a clone, the mirror) and prints a skip; exit 1 is a
 # divergence and FAILS the gate outright, with no register or PASS_MODULO
 # path for these two checkers; exit 0 passes. Each call's name, exit code and

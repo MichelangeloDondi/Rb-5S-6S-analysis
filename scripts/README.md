@@ -69,6 +69,7 @@ committed table holds. The `M` codes below are the pipeline stage labels of
 | `run_width_pinning.py` | what pinning the laser width buys the collisional width, the committed producer for the pinning comparison four documents quote, writing only to `private/run_logs/` |
 | `run_extended_lever.py` | what the 150 and 170 C blocks would buy the collisional bound, at the committed coverage construction with the temperature grid as a parameter, writing only to `private/run_logs/` |
 | `run_noise.py` (M1) | the variance law per condition into `noise_model.csv`, which is where every later fit takes its weights from |
+| `run_noise_floor_scaling.py` | the density exponents of the noise floor and of the floor over the root of the line height, pooled and per peak, into `noise_floor_scaling.csv` |
 | `run_ruler.py` (M2) | the frequency axis from the EOM ruler blocks into `ruler_blocks.csv`, `ruler_traces.csv`, `ruler_nlmap.csv`, `ruler_campaign.csv` and the time-resolved `ruler_rate_model.csv` |
 | `run_linefit.py` (M3) | the joint lineshape fit of every canonical radio-frequency-off condition into `linefit_conditions.csv` |
 | `run_trim_report.py` | every trim and every removal the earlier stages made, gathered from their own tables, into `trim_report.csv` |

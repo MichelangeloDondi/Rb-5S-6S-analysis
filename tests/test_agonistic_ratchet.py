@@ -27,7 +27,6 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 BASELINE = Path(__file__).with_name("_agonistic_baseline.json")
-BOOK = Path(__file__).with_name("_ratchet_history.md")
 
 WORDS = re.compile(
     r"\b(?:win|wins|winning|winners?|lose|loses|losing|"
@@ -49,9 +48,8 @@ def _counts() -> dict[str, int]:
         if rel.startswith(SKIP) or rel in SKIP_EXACT:
             continue
         text = (ROOT / rel).read_text(encoding="utf-8", errors="replace")
-        n = len(WORDS.findall(text))
-        if n:
-            out[rel] = n
+        # a zero is recorded, so a page zeroed by a fix cannot re-enter as new
+        out[rel] = len(WORDS.findall(text))
     return out
 
 
@@ -82,10 +80,12 @@ if __name__ == "__main__":
                              "(the history book records it)")
         reason = sys.argv[i + 1]
         new = {"files": _counts()}
+        old = json.loads(BASELINE.read_text()) if BASELINE.exists() else {}
+        if old == new:
+            print("  (no key moved, no row written)")
+            raise SystemExit(0)
         BASELINE.write_text(json.dumps(new, indent=1, sort_keys=True) + "\n")
-        from datetime import date
-        with BOOK.open("a") as fh:
-            fh.write(f"| {date.today()} | agonistic | reseed | "
-                     f"{reason.replace(chr(124), chr(47))} |\n")
+        from _ratchet_book import record as _record   # the row lands after the baseline
+        _record("agonistic", "reseed", old, new, reason)
         print(f"reseeded over {len(new['files'])} files, "
               f"total {sum(new['files'].values())}")

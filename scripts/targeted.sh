@@ -81,6 +81,12 @@ grep -q '^tests/' <<<"$CHANGED" && while read -r f; do
 # governance edit must bring the same modules here. Without this the floor
 # stamps green and the gate goes red half an hour later, which is what it
 # did four times on 2026-09-05.
+# a governance checker changed: the wiring guard and the tracked tests that load
+# private/checks run (gate one of the governance wave went red on a green floor
+# over an orphan checker, 2026-09-08)
+grep -qE '^checks/.*\.py$' <<<"$PRIVCHANGED" && add \
+  tests/test_checkers_are_wired.py tests/test_board_ledger.py \
+  tests/test_make_prompts.py tests/test_collect_findings.py || true
 grep -qE '\.md$' <<<"$PRIVCHANGED" && add \
   tests/test_prose_style_ratchet.py tests/test_repo_hygiene.py \
   tests/test_agonistic_ratchet.py tests/test_history_tense.py || true
@@ -95,13 +101,18 @@ grep -qE '^(docs/|README|START_HERE)' <<<"$CHANGED" && add \
   tests/test_docs_links.py tests/test_reference_coverage.py \
   tests/test_reader_surface_budget.py tests/test_history_form.py \
   tests/test_docs_canonical.py tests/test_prose_shape.py \
-  tests/test_ramp_geometry_docs.py
+  tests/test_ramp_geometry_docs.py tests/test_navigation_footer_is_last.py \
+  tests/test_navigation_chain_is_coherent.py tests/test_uncertainty_formatting.py
+# the two registries are claim surfaces in the reference-coverage population
+grep -qE '^(results|scripts)/README\.md$' <<<"$CHANGED" && add \
+  tests/test_reference_coverage.py tests/test_navigation_footer_is_last.py \
+  tests/test_uncertainty_formatting.py || true
 grep -q '^results/' <<<"$CHANGED" && add \
   tests/test_results_status.py tests/test_freshness_covers_every_result.py \
   tests/test_distribution_ratchet.py tests/test_results_err_format.py \
   tests/test_results_index_is_complete.py tests/test_references.py \
   tests/test_figures_fresh.py tests/test_every_claim_carries_an_uncertainty.py \
-  tests/test_docs_canonical.py
+  tests/test_docs_canonical.py tests/test_uncertainty_formatting.py
 grep -qE '^scripts/run_|^scripts/make_' <<<"$CHANGED" && add \
   tests/test_results_index_is_complete.py tests/test_pipeline_order.py \
   tests/test_checkers_are_wired.py tests/test_repo_hygiene.py \

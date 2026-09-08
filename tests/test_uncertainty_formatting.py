@@ -53,17 +53,30 @@ SKIP = ("PREREGISTRATION", "/lit/")
 # An uncertainty a PERSON CHOSE keeps the precision they chose (protocol
 # 8a.5). RHO_RETRO_ERR = 0.04 is a declared one-sigma on an assumed retro
 # return fraction, so printing 0.040 would claim the assumption is known to
-# two digits. The test is provenance, not size. `check_carriers.py` holds
-# the same exemption, and the two lists must agree or the repository and its
-# outbound documents disagree about the same number.
-DECLARED = {("0.94", "0.04")}
+# two digits. The test is provenance, not size.
+DECLARED = {("0.94", "0.04"),
+            ("18", "1"), ("50", "10")}   # the owner's stated optics tolerances (2026-09-04)
 
 # Another author's published value, quoted as they published it (8a.5). Not
 # ours to reformat: tidying someone else's paper is a different fault from
 # the one this guard exists to catch.
 OTHERS = {("40", "0.54"),        # Cao 2025, 5S-5D3/2 self-broadening
-          ("588", "387")}        # Lee et al. 2010, Cs 6S-8S pressure shift
-PAIR = re.compile(r"(-?\d+\.?\d*)\s*(?:±|\+/-)\s*(\d+\.?\d*)")
+          ("588", "387"),        # Lee et al. 2010, Cs 6S-8S pressure shift
+          ("3.4", "0.3"),        # Zameroski 2014, quoted as published
+          ("0.32", "0.01"),      # the published 5S-6S self-broadening, as published
+          ("1.53", "0.08"),      # Zang 2012, quoted as published
+          ("0.69", "0.04")}      # Lee et al. 2010, quoted as published
+# The connector may be spelled out, may cross a line break, may sit in a math
+# span as backslash-pm, and either number may sit inside a reference link. The
+# first form matched only the glyph on one line; a wrapped one-digit
+# uncertainty in plan chapter 7 and the tagged, wrapped pairs of methods
+# chapter 5 passed it (2026-09-07,
+# and again when a widened pattern shipped with the same per-line caller).
+# `_pairs_in` joins each paragraph and strips link markup before this pattern
+# runs, reports the line the pair starts on, and
+# `test_the_pair_guard_reads_wrapped_and_tagged_pairs` feeds it every shape,
+# the math span's backslash-pm among them.
+PAIR = re.compile(r"(-?\d+\.?\d*)\s*(?:±|\+/-|plus\s+or\s+minus|\\pm)\s*(\d+\.?\d*)")
 
 
 def _sig(text: str) -> int:
@@ -79,6 +92,42 @@ def _sig(text: str) -> int:
 
 def _dec(text: str) -> int:
     return len(text.split(".")[1]) if "." in text else 0
+
+
+LINK = re.compile(r"\[([^\]]+)\]\([^)]*\)")
+
+
+def _pairs_in(text: str):
+    """(first line number, match) for every value-uncertainty pair, paragraph
+    by paragraph: the lines of a paragraph are joined with spaces and link
+    markup is reduced to its text, so a pair wrapped across a line break or
+    tagged with a reference link is read as the reader reads it."""
+    lines = text.split("\n")
+    i, out = 0, []
+    while i < len(lines):
+        if not lines[i].strip():
+            i += 1
+            continue
+        j = i
+        while j < len(lines) and lines[j].strip():
+            j += 1
+        # the joined paragraph keeps a map from its offsets to source lines,
+        # so a pair is reported on the line it starts on and not the
+        # paragraph's first (the attention seat measured 114 of 116 wrong)
+        pieces, starts, pos = [], [], 0
+        for k in range(i, j):
+            piece = lines[k].strip()
+            starts.append((pos, k + 1)); pieces.append(piece); pos += len(piece) + 1
+        joined = " ".join(pieces)
+        para = LINK.sub(r"\1", joined)
+        # link markup shortens the text; map through the unstripped string
+        for m in PAIR.finditer(para):
+            raw_pos = joined.find(m.group(1) + joined[0:0])  # first number's text
+            raw_pos = joined.find(m.group(0)) if joined.find(m.group(0)) != -1 else raw_pos
+            line_no = max(n for s, n in starts if s <= max(raw_pos, 0))
+            out.append((line_no, m))
+        i = j
+    return out
 
 
 def _violations() -> list[str]:
@@ -99,18 +148,17 @@ def _violations() -> list[str]:
         path = ROOT / rel
         if not path.exists():
             continue
-        for n, line in enumerate(path.read_text().splitlines(), 1):
-            for m in PAIR.finditer(line):
-                value, unc = m.group(1), m.group(2)
-                if (value, unc) in DECLARED or (value, unc) in OTHERS:
-                    continue
-                if _sig(unc) != 2:
-                    bad.append(f"{rel}:{n} {m.group(0)!r} uncertainty has "
-                               f"{_sig(unc)} significant digits, not 2")
-                elif _dec(value) != _dec(unc):
-                    bad.append(f"{rel}:{n} {m.group(0)!r} value has "
-                               f"{_dec(value)} decimals against the "
-                               f"uncertainty's {_dec(unc)}")
+        for n, m in _pairs_in(path.read_text()):
+            value, unc = m.group(1), m.group(2)
+            if (value, unc) in DECLARED or (value, unc) in OTHERS:
+                continue
+            if _sig(unc) != 2:
+                bad.append(f"{rel}:{n} {m.group(0)!r} uncertainty has "
+                           f"{_sig(unc)} significant digits, not 2")
+            elif _dec(value) != _dec(unc):
+                bad.append(f"{rel}:{n} {m.group(0)!r} value has "
+                           f"{_dec(value)} decimals against the "
+                           f"uncertainty's {_dec(unc)}")
     return bad
 
 
@@ -136,3 +184,23 @@ def test_the_guard_actually_finds_the_known_shapes():
     """
     assert _sig("2.9") == 2 and _sig("0.03") == 1 and _sig("24") == 2
     assert _dec("6.744") == 3 and _dec("40") == 0
+
+
+def test_the_pair_guard_reads_wrapped_and_tagged_pairs():
+    """The shapes that passed a per-line caller: a pair wrapped at the
+    connector, a pair whose numbers sit inside reference links, and a pair
+    written in a math span; the reported line is the pair's own."""
+    wrapped = ("scales as density to the power **-0.14 plus or minus\n"
+               "0.07**, consistent with flat.\n")
+    pairs = _pairs_in(wrapped)
+    assert [(n, m.group(1), m.group(2)) for n, m in pairs] == [(1, "-0.14", "0.07")]
+    assert _sig(pairs[0][1].group(2)) == 1
+    tagged = ("it is [0.00223](../results/sweep_linearity.csv \"ref:x:a:b\") plus or minus\n"
+              "[0.00018](../results/sweep_linearity.csv \"ref:x:a:c\") per cent\n"
+              "\n"
+              "and 6.744 ± 2.9 on one line, then 1.238 +/-\n0.034 wrapped at the glyph.\n")
+    got = [(n, m.group(1), m.group(2)) for n, m in _pairs_in(tagged)]
+    assert got == [(1, "0.00223", "0.00018"), (4, "6.744", "2.9"), (4, "1.238", "0.034")]
+    math = "text\n\nthe fit gives $-1.833 \\pm 1.214$ here\nand $3.4 \\pm 0.3$ there.\n"
+    got = [(n, m.group(1), m.group(2)) for n, m in _pairs_in(math)]
+    assert got == [(3, "-1.833", "1.214"), (4, "3.4", "0.3")]

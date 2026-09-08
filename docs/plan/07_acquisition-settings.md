@@ -498,12 +498,21 @@ times larger**. The pedestal is present and it is not what sets the floor.
 **Radiation trapping was the next candidate and it is refuted too.** Trapping
 is set by the optical depth, which grows with density, while the excitation is
 not, so the temperature sweep separates them. Across 70, 90 and 110 C at fixed
-power the floor scales as density to the power **0.42 plus or minus 0.10**,
-which is the square-root scaling of shot noise on a background simply
-proportional to the number of atoms, and the floor divided by the square root
-of the line amplitude scales as density to the power **-0.14 plus or minus
-0.07**, consistent with flat. Trapping requires that second quantity to rise
-with density as the cell becomes optically thick. It does not.
+power the floor rises with density as a power of
+[0.421](../../results/noise_floor_scaling.csv "ref:noise_floor_scaling:pooled:floor_exponent") ±
+[0.063](../../results/noise_floor_scaling.csv "ref:noise_floor_scaling:pooled:floor_exponent:err")
+of it, near the square root that shot noise on a background proportional to
+the number of atoms would give, and the floor divided by the square root of
+the line amplitude follows a power of
+[-0.143](../../results/noise_floor_scaling.csv "ref:noise_floor_scaling:pooled:floor_over_sqrt_height_exponent") ±
+[0.055](../../results/noise_floor_scaling.csv "ref:noise_floor_scaling:pooled:floor_over_sqrt_height_exponent:err"),
+consistent with flat. Trapping requires that second quantity to rise with
+density as the cell becomes optically thick. It does not. The pooled floor
+exponent hides a per-peak spread, from
+[0.17](../../results/noise_floor_scaling.csv "ref:noise_floor_scaling:peak_4121:floor_exponent") to
+[0.66](../../results/noise_floor_scaling.csv "ref:noise_floor_scaling:peak_4192:floor_exponent")
+ordered by line height, which `scripts/run_noise_floor_scaling.py` carries
+beside the pooled value.
 
 **The floor is a directly measured quantity, not an artefact of the fit.**
 The producer already computes the noise in the off-line region with no fitting

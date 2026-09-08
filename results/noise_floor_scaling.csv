@@ -1,0 +1,11 @@
+scope,quantity,value,err,temperatures_C,note,status
+peak_4121,floor_exponent,0.169,0.014,"70,90,110",log-log slope of the signal-independent noise term against density,DIAGNOSTIC
+peak_4121,floor_over_sqrt_height_exponent,-0.290,0.097,"70,90,110",the same for the floor divided by the square root of the line height,DIAGNOSTIC
+peak_4154,floor_exponent,0.467,0.070,"70,90,110",log-log slope of the signal-independent noise term against density,DIAGNOSTIC
+peak_4154,floor_over_sqrt_height_exponent,-0.12,0.14,"70,90,110",the same for the floor divided by the square root of the line height,DIAGNOSTIC
+peak_4192,floor_exponent,0.66,0.14,"70,90,110",log-log slope of the signal-independent noise term against density,DIAGNOSTIC
+peak_4192,floor_over_sqrt_height_exponent,0.05,0.15,"70,90,110",the same for the floor divided by the square root of the line height,DIAGNOSTIC
+peak_4207,floor_exponent,0.39,0.11,"70,90,110",log-log slope of the signal-independent noise term against density,DIAGNOSTIC
+peak_4207,floor_over_sqrt_height_exponent,-0.211,0.092,"70,90,110",the same for the floor divided by the square root of the line height,DIAGNOSTIC
+pooled,floor_exponent,0.421,0.063,all,"one exponent shared across the peaks, each centred on its own mean. The per-peak values run 0.17 to 0.66",DIAGNOSTIC
+pooled,floor_over_sqrt_height_exponent,-0.143,0.055,all,one exponent shared across the peaks. The per-peak values run -0.29 to 0.05. Flat means trapping does not set the floor,DIAGNOSTIC

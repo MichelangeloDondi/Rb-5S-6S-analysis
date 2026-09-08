@@ -896,3 +896,25 @@ def test_no_measured_bias_means_no_refusal(bl, repo):
         text=True, check=True).stdout.strip())
     _seed_biased_history(bl, n_pairs=20, under=2)       # 10 per cent under
     bl.begin(sorted(bl.REQUIRED_SEATS), expect=1)      # must not raise
+
+
+def test_begin_refuses_an_expect_far_above_the_base_without_a_reason(bl, repo, capsys):
+    """The convener of 2026-09-08 opened a board at expect 53 against a base
+    of 22.3, having parsed a round count as the base; the ledger now prints
+    the base on its own line and refuses an expect above twice it, as it
+    refuses one below it, unless a reason is given."""
+    import json
+    _point_at(bl, repo)
+    (repo / "docs").mkdir()
+    (repo / "docs" / "f.md").write_text("three\n")
+    _run(repo, "add", "-A")
+    _regate(bl)
+    rows = [{"seats": FULL, "verdicts": ["REFUTE"] * len(FULL), "tree": f"t{i}",
+             "expected_blocking": 20, "actual_blocking": 20,
+             "blocking": [f"x{k}" for k in range(20)], "resolved": [f"x{k}" for k in range(20)]}
+            for i in range(12)]
+    bl.LEDGER.write_text("".join(json.dumps(r) + "\n" for r in rows))
+    with pytest.raises(SystemExit, match="above twice the base"):
+        bl.begin(FULL, expect=60)
+    assert "BASE_RATE 20.0" in capsys.readouterr().out
+    bl.begin(FULL, expect=60, expect_reason="a plant of the upper bound")

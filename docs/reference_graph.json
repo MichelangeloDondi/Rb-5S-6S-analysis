@@ -166,7 +166,7 @@
    },
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 1373,
+    "line": 1382,
     "writes": "7.3"
    }
   ],
@@ -178,7 +178,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 1373,
+    "line": 1382,
     "writes": "7.2"
    }
   ],
@@ -190,7 +190,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 1373,
+    "line": 1382,
     "writes": "2.1"
    }
   ],
@@ -207,7 +207,7 @@
    },
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 1373,
+    "line": 1382,
     "writes": "3.48"
    }
   ],
@@ -224,7 +224,7 @@
    },
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 1373,
+    "line": 1382,
     "writes": "0.48"
    }
   ],
@@ -236,7 +236,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 1373,
+    "line": 1382,
     "writes": "0.025"
    }
   ],
@@ -248,7 +248,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 1373,
+    "line": 1382,
     "writes": "0.065"
    }
   ],
@@ -349,7 +349,7 @@
    },
    {
     "file": "results/README.md",
-    "line": 50,
+    "line": 51,
     "writes": "0.051"
    }
   ],
@@ -1263,6 +1263,78 @@
   "source_file": "docs/lit/orson2021.md",
   "source_value": "18"
  },
+ "noise_floor_scaling:peak_4121:floor_exponent": {
+  "producer": "run_noise_floor_scaling.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/07_acquisition-settings.md",
+    "line": 512,
+    "writes": "0.17"
+   }
+  ],
+  "source_file": "results/noise_floor_scaling.csv",
+  "source_value": "0.169"
+ },
+ "noise_floor_scaling:peak_4192:floor_exponent": {
+  "producer": "run_noise_floor_scaling.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/07_acquisition-settings.md",
+    "line": 513,
+    "writes": "0.66"
+   }
+  ],
+  "source_file": "results/noise_floor_scaling.csv",
+  "source_value": "0.66"
+ },
+ "noise_floor_scaling:pooled:floor_exponent": {
+  "producer": "run_noise_floor_scaling.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/07_acquisition-settings.md",
+    "line": 502,
+    "writes": "0.421"
+   }
+  ],
+  "source_file": "results/noise_floor_scaling.csv",
+  "source_value": "0.421"
+ },
+ "noise_floor_scaling:pooled:floor_exponent:err": {
+  "producer": "run_noise_floor_scaling.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/07_acquisition-settings.md",
+    "line": 503,
+    "writes": "0.063"
+   }
+  ],
+  "source_file": "results/noise_floor_scaling.csv",
+  "source_value": "0.063"
+ },
+ "noise_floor_scaling:pooled:floor_over_sqrt_height_exponent": {
+  "producer": "run_noise_floor_scaling.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/07_acquisition-settings.md",
+    "line": 507,
+    "writes": "-0.143"
+   }
+  ],
+  "source_file": "results/noise_floor_scaling.csv",
+  "source_value": "-0.143"
+ },
+ "noise_floor_scaling:pooled:floor_over_sqrt_height_exponent:err": {
+  "producer": "run_noise_floor_scaling.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/07_acquisition-settings.md",
+    "line": 508,
+    "writes": "0.055"
+   }
+  ],
+  "source_file": "results/noise_floor_scaling.csv",
+  "source_value": "0.055"
+ },
  "onf_candidate:S0_onf_50uW:": {
   "producer": "run_onf_candidate.py",
   "quoting_sites": [
@@ -1933,12 +2005,12 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 611,
+    "line": 620,
     "writes": "2.0"
    },
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 636,
+    "line": 645,
     "writes": "2.0"
    }
   ],
@@ -1950,7 +2022,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 600,
+    "line": 609,
     "writes": "0.85"
    }
   ],
@@ -1962,7 +2034,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 600,
+    "line": 609,
     "writes": "0.11"
    }
   ],
@@ -1974,7 +2046,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 617,
+    "line": 626,
     "writes": "0.102"
    }
   ],
@@ -1986,7 +2058,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 617,
+    "line": 626,
     "writes": "0.014"
    }
   ],
@@ -1998,7 +2070,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 616,
+    "line": 625,
     "writes": "0.118"
    }
   ],
@@ -2010,7 +2082,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 616,
+    "line": 625,
     "writes": "0.017"
    }
   ],
@@ -2022,12 +2094,12 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 615,
+    "line": 624,
     "writes": "0.428"
    },
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 642,
+    "line": 651,
     "writes": "0.428"
    }
   ],
@@ -2039,7 +2111,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 615,
+    "line": 624,
     "writes": "0.032"
    }
   ],
@@ -2051,7 +2123,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 618,
+    "line": 627,
     "writes": "0.0485"
    }
   ],
@@ -2063,7 +2135,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 618,
+    "line": 627,
     "writes": "0.0068"
    }
   ],
@@ -2075,7 +2147,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 619,
+    "line": 628,
     "writes": "0.0285"
    }
   ],
@@ -2087,7 +2159,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 619,
+    "line": 628,
     "writes": "0.0040"
    }
   ],
@@ -2099,12 +2171,12 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 617,
+    "line": 626,
     "writes": "0.223"
    },
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 1580,
+    "line": 1589,
     "writes": "0.223"
    }
   ],
@@ -2116,7 +2188,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 617,
+    "line": 626,
     "writes": "0.012"
    }
   ],
@@ -2128,12 +2200,12 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 616,
+    "line": 625,
     "writes": "0.253"
    },
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 1579,
+    "line": 1588,
     "writes": "0.253"
    }
   ],
@@ -2145,7 +2217,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 616,
+    "line": 625,
     "writes": "0.014"
    }
   ],
@@ -2157,17 +2229,17 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 615,
+    "line": 624,
     "writes": "0.653"
    },
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 689,
+    "line": 698,
     "writes": "0.653"
    },
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 1578,
+    "line": 1587,
     "writes": "0.653"
    }
   ],
@@ -2179,7 +2251,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 615,
+    "line": 624,
     "writes": "0.049"
    }
   ],
@@ -2191,17 +2263,17 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 618,
+    "line": 627,
     "writes": "0.1140"
    },
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 690,
+    "line": 699,
     "writes": "0.1140"
    },
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 1581,
+    "line": 1590,
     "writes": "0.1140"
    }
   ],
@@ -2213,7 +2285,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 618,
+    "line": 627,
     "writes": "0.0063"
    }
   ],
@@ -2225,7 +2297,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 619,
+    "line": 628,
     "writes": "0.0688"
    }
   ],
@@ -2237,7 +2309,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 619,
+    "line": 628,
     "writes": "0.0038"
    }
   ],
@@ -2249,7 +2321,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 623,
+    "line": 632,
     "writes": "0.2750"
    }
   ],
@@ -2261,7 +2333,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 623,
+    "line": 632,
     "writes": "0.0099"
    }
   ],
@@ -2273,7 +2345,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 622,
+    "line": 631,
     "writes": "0.7250"
    }
   ],
@@ -2285,7 +2357,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 622,
+    "line": 631,
     "writes": "0.0099"
    }
   ],
@@ -2416,7 +2488,7 @@
    },
    {
     "file": "results/README.md",
-    "line": 278,
+    "line": 279,
     "writes": "0.396"
    }
   ],
@@ -2433,7 +2505,7 @@
    },
    {
     "file": "results/README.md",
-    "line": 278,
+    "line": 279,
     "writes": "0.316"
    }
   ],
@@ -2469,7 +2541,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 1916,
+    "line": 1925,
     "writes": "0.0024"
    }
   ],
@@ -2481,7 +2553,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 1918,
+    "line": 1927,
     "writes": "0.1199"
    }
   ],
@@ -2493,12 +2565,12 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 1904,
+    "line": 1913,
     "writes": "0.0240"
    },
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 1917,
+    "line": 1926,
     "writes": "0.0240"
    },
    {
@@ -2525,7 +2597,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 1903,
+    "line": 1912,
     "writes": "0.0240"
    },
    {
@@ -2542,7 +2614,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 1931,
+    "line": 1940,
     "writes": "10.0664"
    },
    {
@@ -2569,7 +2641,7 @@
    },
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 1884,
+    "line": 1893,
     "writes": "0.00011901"
    },
    {
@@ -2601,7 +2673,7 @@
    },
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 1884,
+    "line": 1893,
     "writes": "0.00223"
    },
    {
@@ -2612,6 +2684,11 @@
    {
     "file": "docs/wiki/third-cumulant.md",
     "line": 298,
+    "writes": "0.00223"
+   },
+   {
+    "file": "results/README.md",
+    "line": 76,
     "writes": "0.00223"
    }
   ],
@@ -2635,7 +2712,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 1886,
+    "line": 1895,
     "writes": "0.574892"
    },
    {
@@ -2657,12 +2734,17 @@
    },
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 1886,
+    "line": 1895,
     "writes": "1.238"
    },
    {
     "file": "docs/wiki/the-wavemeter-and-the-frequency-axis.md",
     "line": 211,
+    "writes": "1.238"
+   },
+   {
+    "file": "results/README.md",
+    "line": 76,
     "writes": "1.238"
    }
   ],
@@ -2691,7 +2773,7 @@
    },
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 1885,
+    "line": 1894,
     "writes": "0.00153465"
    },
    {
@@ -2718,7 +2800,7 @@
    },
    {
     "file": "docs/plan/07_acquisition-settings.md",
-    "line": 1885,
+    "line": 1894,
     "writes": "0.0290"
    },
    {
@@ -2729,6 +2811,11 @@
    {
     "file": "docs/wiki/third-cumulant.md",
     "line": 297,
+    "writes": "0.0290"
+   },
+   {
+    "file": "results/README.md",
+    "line": 76,
     "writes": "0.0290"
    }
   ],
@@ -2753,7 +2840,7 @@
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
     "line": 83,
-    "writes": "26.0903"
+    "writes": "26.09"
    }
   ],
   "source_file": "results/three_channel_forecast.csv",
@@ -2777,7 +2864,7 @@
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
     "line": 83,
-    "writes": "0.1908"
+    "writes": "0.19"
    }
   ],
   "source_file": "results/three_channel_forecast.csv",
@@ -2837,7 +2924,7 @@
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
     "line": 102,
-    "writes": "25.962"
+    "writes": "26.0"
    }
   ],
   "source_file": "results/three_channel_forecast.csv",
@@ -2849,7 +2936,7 @@
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
     "line": 103,
-    "writes": "2.8227"
+    "writes": "2.8"
    }
   ],
   "source_file": "results/three_channel_forecast.csv",
@@ -2861,7 +2948,7 @@
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
     "line": 100,
-    "writes": "25.6158"
+    "writes": "25.6"
    }
   ],
   "source_file": "results/three_channel_forecast.csv",
@@ -2873,7 +2960,7 @@
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
     "line": 101,
-    "writes": "2.3599"
+    "writes": "2.4"
    }
   ],
   "source_file": "results/three_channel_forecast.csv",
@@ -2885,7 +2972,7 @@
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
     "line": 82,
-    "writes": "11.523"
+    "writes": "11.52"
    }
   ],
   "source_file": "results/three_channel_forecast.csv",
@@ -2909,7 +2996,7 @@
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
     "line": 82,
-    "writes": "0.1249"
+    "writes": "0.12"
    }
   ],
   "source_file": "results/three_channel_forecast.csv",
@@ -2921,7 +3008,7 @@
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
     "line": 81,
-    "writes": "4.1491"
+    "writes": "4.15"
    }
   ],
   "source_file": "results/three_channel_forecast.csv",
@@ -2945,7 +3032,7 @@
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
     "line": 81,
-    "writes": "0.1113"
+    "writes": "0.11"
    }
   ],
   "source_file": "results/three_channel_forecast.csv",
@@ -2957,7 +3044,7 @@
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
     "line": 80,
-    "writes": "1.6259"
+    "writes": "1.63"
    }
   ],
   "source_file": "results/three_channel_forecast.csv",
@@ -2981,7 +3068,7 @@
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
     "line": 80,
-    "writes": "0.1035"
+    "writes": "0.10"
    }
   ],
   "source_file": "results/three_channel_forecast.csv",

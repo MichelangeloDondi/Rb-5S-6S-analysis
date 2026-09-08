@@ -30,7 +30,6 @@ from rb5s6s.pmfmt import fmt_err, in_plain_band
 
 ROOT = Path(__file__).resolve().parents[1]
 BASELINE = Path(__file__).with_name("_results_err_format_baseline.json")
-BOOK = Path(__file__).with_name("_ratchet_history.md")
 
 
 def _conforms(value: str, err: str) -> bool:
@@ -75,8 +74,7 @@ def _counts() -> dict[str, int]:
                     if (row.get("err") or "").strip()
                     and not _conforms((row.get(vfield) or "").strip(),
                                       row["err"].strip()))
-        if n:
-            out[rel] = n
+        out[rel] = n     # a zero is recorded, as every counter does since 2026-09-08
     return out
 
 
@@ -139,15 +137,13 @@ if __name__ == "__main__":
         if i < 0 or i + 1 >= len(sys.argv):
             raise SystemExit('reseed refuses without --reason "..."')
         new = {"files": _counts()}
-        old_total = 0
-        if BASELINE.exists():
-            old_total = sum(json.loads(
-                BASELINE.read_text())["files"].values())
+        old = json.loads(BASELINE.read_text()) if BASELINE.exists() else {}
+        old_total = sum(old["files"].values()) if old else 0
+        if old == new:
+            print("  (no key moved, no row written)")
+            raise SystemExit(0)
         BASELINE.write_text(json.dumps(new, indent=1, sort_keys=True) + "\n")
-        from datetime import date
-        with BOOK.open("a") as fh:
-            fh.write(f"| {date.today()} | results_err_format | reseed "
-                     f"{old_total} -> {sum(new['files'].values())} | "
-                     f"{sys.argv[i + 1].replace(chr(124), chr(47))} |\n")
+        from _ratchet_book import record as _record   # the row lands after the baseline
+        _record("results_err_format", f"reseed {old_total} -> {sum(new['files'].values())}", old, new, sys.argv[i + 1])
         print(f"seeded {len(new['files'])} files, "
               f"total {sum(new['files'].values())}")

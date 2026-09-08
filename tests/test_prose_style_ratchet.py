@@ -167,9 +167,7 @@ def _current() -> dict[str, int]:
         p = ROOT / rel
         if not p.exists():          # staged deletion
             continue
-        n = _count(p)
-        if n:
-            counts[rel] = n
+        counts[rel] = _count(p)          # a zero is recorded, as every counter here does
     return counts
 
 
@@ -181,10 +179,10 @@ def test_no_file_gains_splice_punctuation():
     worse = []
     for rel, now in sorted(current.items()):
         was = baseline.get(rel)
-        if was is None:
+        if was is None and now:      # a new file with nothing to count is not a rise
             worse.append(f"{rel}: NEW file with {now} (write it without them, "
                          f"or add it to the baseline with --relax)")
-        elif now > was:
+        elif was is not None and now > was:
             worse.append(f"{rel}: {was} -> {now} (+{now - was})")
 
     assert not worse, (
@@ -408,13 +406,16 @@ RATHER_THAN = re.compile(r"\brather than\b")
 
 
 def _rather_than_counts() -> dict[str, int]:
+    # A ZERO IS RECORDED, NOT DROPPED. The first form omitted files at zero,
+    # so a file whose constructions were removed left the baseline entirely
+    # and re-entered as "new", where the guard tolerates three before firing.
+    # Two wiki pages zeroed by the 2026-09-07 fix pass could each have regrown
+    # three constructions in silence (the rules seat, round two).
     out = {}
     for rel in _tracked_markdown():
         if not (ROOT / rel).exists():
             continue
-        n = len(RATHER_THAN.findall((ROOT / rel).read_text(encoding="utf-8")))
-        if n:
-            out[rel] = n
+        out[rel] = len(RATHER_THAN.findall((ROOT / rel).read_text(encoding="utf-8")))
     return out
 
 
@@ -505,9 +506,7 @@ def _vague_counts() -> dict[str, int]:
     for rel in _tracked_markdown():
         if not (ROOT / rel).exists():
             continue
-        n = len(VAGUE_JUDGEMENT.findall((ROOT / rel).read_text(encoding="utf-8")))
-        if n:
-            out[rel] = n
+        out[rel] = len(VAGUE_JUDGEMENT.findall((ROOT / rel).read_text(encoding="utf-8")))
     return out
 
 
@@ -571,9 +570,7 @@ CSV_SEMICOLON_BASELINE = Path(__file__).parent / "_csv_semicolon_baseline.json"
 def _csv_semicolon_counts() -> dict[str, int]:
     out = {}
     for f in sorted((ROOT / "results").glob("*.csv")):
-        n = f.read_text(encoding="utf-8").count(";")
-        if n:
-            out[f"results/{f.name}"] = n
+        out[f"results/{f.name}"] = f.read_text(encoding="utf-8").count(";")
     return out
 
 
@@ -593,9 +590,9 @@ def test_no_results_csv_gains_semicolons():
     worse = []
     for rel, now in sorted(current.items()):
         was = baseline.get(rel)
-        if was is None:
+        if was is None and now:      # a new file with nothing to count is not a rise
             worse.append(f"{rel}: NEW file with {now}")
-        elif now > was:
+        elif was is not None and now > was:
             worse.append(f"{rel}: {was} -> {now} (+{now - was})")
     assert not worse, (
         "a results CSV gained semicolons in its note prose. Split the "
@@ -825,51 +822,66 @@ def test_shaped_bans_stay_at_zero():
     assert not hits, ("a shaped ban regressed:\n  " + "\n  ".join(hits[:12]))
 
 
-def _print_movement(old: dict, new: dict) -> None:
-    """Emit the measured per-key movement of a baseline write.
+def _print_movement(old: dict, new: dict) -> bool:
+    """Emit the measured per-key movement of a baseline write and say whether
+    anything moved; a key on one side only prints ADDED or REMOVED, since a
+    baseline that now records zeros would otherwise print 0 -> 0 for a file
+    that left the population (the protocols seat, 2026-09-08).
 
     Same contract as the reference-coverage twin: the dated note beside a
     baseline is pasted from this output, never composed from intention."""
-    moved = [f"  {k}: {old.get(k, 0)} -> {new.get(k, 0)}"
-             for k in sorted(set(old) | set(new)) if old.get(k) != new.get(k)]
+    moved = []
+    for k in sorted(set(old) | set(new)):
+        if old.get(k) == new.get(k):
+            continue
+        a = "ADDED" if k not in old else old[k]
+        b = "REMOVED" if k not in new else new[k]
+        moved.append(f"  {k}: {a} -> {b}")
     print("movement (paste this into the dated note):")
     print("\n".join(moved) if moved else "  (no key moved)")
+    return old != new
 
 
-def _rewrite(path, counts_fn, label):
+def _rewrite(path, counts_fn, label) -> tuple:
+    """Write the baseline when its content moved, keys included, and return
+    (old, new) so the caller records exactly what was compared."""
     new = counts_fn()
     old = json.loads(path.read_text()) if path.exists() else {}
-    path.write_text(json.dumps(new, indent=1, sort_keys=True) + "\n")
-    print(f"re-recorded {path.name} ({label}: "
-          f"{sum(old.values())} -> {sum(new.values())})")
+    if old != new:
+        path.write_text(json.dumps(new, indent=1, sort_keys=True) + "\n")
+        print(f"re-recorded {path.name} ({label}: "
+              f"{sum(old.values())} -> {sum(new.values())})")
+    else:
+        print(f"{path.name} unchanged ({label}: {sum(new.values())})")
     _print_movement(old, new)
+    return old, new
 
 
 if __name__ == "__main__":  # `python tests/test_prose_style_ratchet.py --relax`
     import sys
     _did_relax = None
+    moved = False
     if any(a.startswith("--relax") for a in sys.argv):
         _ri = sys.argv.index("--reason") if "--reason" in sys.argv else -1
         if _ri < 0 or _ri + 1 >= len(sys.argv):
             raise SystemExit("a relax refuses without --reason (the ratchet "
                              "history book records it)")
     if "--relax-csv-semicolons" in sys.argv:
-        _rewrite(CSV_SEMICOLON_BASELINE, _csv_semicolon_counts,
+        moved = _rewrite(CSV_SEMICOLON_BASELINE, _csv_semicolon_counts,
                  "csv semicolons")
         _did_relax = "csv semicolons"
     elif "--relax-constructions" in sys.argv:
-        _rewrite(CONSTRUCTION_BASELINE, _rather_than_counts, "constructions")
+        moved = _rewrite(CONSTRUCTION_BASELINE, _rather_than_counts, "constructions")
         _did_relax = "constructions"
     elif "--relax" in sys.argv:
-        _rewrite(BASELINE, _current, "splice punctuation")
+        moved = _rewrite(BASELINE, _current, "splice punctuation")
         _did_relax = "splice punctuation"
     if _did_relax:
-        # the row lands AFTER the rewrite, so a relax that dies leaves no
-        # row for a movement that never happened (an audit finding)
-        from datetime import date as _date
-        with (Path(__file__).with_name("_ratchet_history.md")).open("a") as _fh:
-            _fh.write(f"| {_date.today()} | prose_style | relax {_did_relax} | "
-                      f"{sys.argv[_ri + 1].replace(chr(124), chr(47))} |\n")
+        # the row lands AFTER the rewrite, so a relax that dies leaves no row
+        # for a movement that never happened, and the book's one writer
+        # writes nothing when nothing moved (tests/_ratchet_book.py)
+        from _ratchet_book import record as _record
+        _record("prose_style", f"relax {_did_relax}", moved[0], moved[1], sys.argv[_ri + 1])
     else:
         print(f"total splice punctuation in prose: {sum(_current().values())}")
 

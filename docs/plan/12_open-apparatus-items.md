@@ -651,4 +651,4 @@ of [BIG_PICTURE](../BIG_PICTURE.md):
 
 ---
 
-*[Beyond 993 nm](11_beyond-993.md) - [The plan](../PLAN.md)*
+*[Beyond 993 nm](11_beyond-993.md) · [the plan](../PLAN.md)*

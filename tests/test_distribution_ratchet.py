@@ -178,9 +178,7 @@ def _current() -> dict[str, int]:
         p = ROOT / rel
         if not p.exists():          # staged deletion
             continue
-        bad, _ = _undeclared(p)
-        if bad:
-            counts[rel] = bad
+        counts[rel] = _undeclared(p)[0]   # a zero is recorded, as every counter does since 2026-09-08
     return counts
 
 
@@ -192,9 +190,9 @@ def test_no_producer_gains_an_undeclared_worst_case():
     worse = []
     for rel, now in sorted(current.items()):
         was = baseline.get(rel)
-        if was is None:
+        if was is None and now:      # a new file with nothing undeclared is not a rise
             worse.append(f"{rel}: NEW file with {now}")
-        elif now > was:
+        elif was is not None and now > was:
             worse.append(f"{rel}: {was} -> {now} (+{now - was})")
 
     assert not worse, (

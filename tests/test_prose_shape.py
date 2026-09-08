@@ -34,9 +34,10 @@ import re
 import subprocess
 from pathlib import Path
 
+from _ratchet_book import BOOK   # the book has one writer and one path
+
 ROOT = Path(__file__).resolve().parents[1]
 BASELINE = Path(__file__).with_name("_prose_shape_baseline.json")
-BOOK = Path(__file__).with_name("_ratchet_history.md")
 
 POPULATION = (
     "README.md", "START_HERE.md", "docs/BIG_PICTURE.md",
@@ -162,10 +163,12 @@ if __name__ == "__main__":
                              "(the history book records it)")
         reason = sys.argv[i + 1]
         new = {"files": _counts(), "rail_debt": len(_rail_debt())}
+        old = json.loads(BASELINE.read_text()) if BASELINE.exists() else {}
+        if old == new:
+            print("  (no key moved, no row written)")
+            raise SystemExit(0)
         BASELINE.write_text(json.dumps(new, indent=1, sort_keys=True) + "\n")
-        from datetime import date
-        with BOOK.open("a") as fh:
-            fh.write(f"| {date.today()} | prose_shape | reseed | "
-                     f"{reason.replace(chr(124), chr(47))} |\n")
+        from _ratchet_book import record as _record   # the row lands after the baseline
+        _record("prose_shape", "reseed", old, new, reason)
         print(f"reseeded over {len(new['files'])} files, "
               f"rail debt {new['rail_debt']}")

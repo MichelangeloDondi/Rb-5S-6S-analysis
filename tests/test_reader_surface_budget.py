@@ -405,14 +405,14 @@ if __name__ == "__main__":   # python tests/test_reader_surface_budget.py --rela
                              "history book records it)")
         before = _budget() if BUDGET_FILE.is_file() else {}
         now = _counts()
+        b, a = sum(before.values()), sum(now.values())
+        if before == now:
+            print("  (no key moved, no row written)")
+            raise SystemExit(0)
         BUDGET_FILE.write_text(json.dumps(now, indent=1, sort_keys=True) + "\n",
                                encoding="utf-8")
-        b, a = sum(before.values()), sum(now.values())
-        from datetime import date as _date
-        with (Path(__file__).with_name("_ratchet_history.md")).open("a") as _fh:
-            _fh.write(f"| {_date.today()} | reader_surface | relax "
-                      f"{b} -> {a} | "
-                      f"{sys.argv[_ri + 1].replace(chr(124), chr(47))} |\n")
+        from _ratchet_book import record as _record   # the row lands after the baseline
+        _record("reader_surface", f"relax {b} -> {a}", before, now, sys.argv[_ri + 1])
         print(f"reader surface re-recorded: {b} -> {a} ({a - b:+d})")
         moved = [f"  {k}: {before.get(k, 0)} -> {now.get(k, 0)}"
                  for k in sorted(set(before) | set(now))

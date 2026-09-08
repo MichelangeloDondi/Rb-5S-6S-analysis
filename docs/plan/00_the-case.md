@@ -358,3 +358,7 @@ commitments made before looking, and
 
 This page opens [the plan](../PLAN.md), whose chapters carry the
 designs behind sections 4 and 5.
+
+---
+
+*[the plan](../PLAN.md) · [The aim and the objections](01_aim-and-failure-modes.md)*

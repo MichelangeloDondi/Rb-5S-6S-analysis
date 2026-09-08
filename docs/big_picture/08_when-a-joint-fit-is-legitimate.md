@@ -381,3 +381,7 @@ open systematic.
     the six chains from a limitation to the measurement that removes it.
   * [RESEARCH_DECISIONS.md](../RESEARCH_DECISIONS.md), for the decision record
     rather than the argument.
+
+---
+
+*[Limitations and identifiability](07_limitations-and-identifiability.md) · [The campaign cases](09_the-campaign-cases.md)*

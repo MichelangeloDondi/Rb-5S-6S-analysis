@@ -244,7 +244,7 @@ def test_no_document_repeats_a_block_of_another(capsys):
 # for and the wrong one for the class that actually bit: on 2026-09-02 a
 # patch script re-run from the top appended two lines twice, and the
 # duplicate sat IMMEDIATELY after its original inside one blockquote,
-# nine lines under the ratchet's reach (escape E14).
+# nine lines under the ratchet's reach (the duplicated-block escape).
 #
 # An immediately adjacent repeat is a different animal from a long one.
 # Prose repeats a paragraph at distance for emphasis or structure; it
@@ -277,7 +277,7 @@ def test_no_document_repeats_a_block_immediately_after_itself(rel, lines):
     assert hit is None, (
         f"docs/{rel} line {hit[0]}: {hit[1]} lines are repeated "
         "immediately after themselves. That is the copy-paste shape "
-        "escape E14 recorded, which the long-block ratchet is nine "
+        "the duplicated-block escape recorded, which the long-block ratchet is nine "
         "lines too coarse to see. Delete the duplicate.")
 
 

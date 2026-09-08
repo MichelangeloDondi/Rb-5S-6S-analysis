@@ -532,4 +532,4 @@ generalises it into six questions to ask of any pooled fit.
 
 ---
 
-*[The next nanofibre session](06_next-nanofibre.md) · [When a joint fit is legitimate](08_when-a-joint-fit-is-legitimate.md) · [the big picture](../BIG_PICTURE.md)*
+*[The next nanofibre session](06_next-nanofibre.md) · [When a joint fit is legitimate](08_when-a-joint-fit-is-legitimate.md)*

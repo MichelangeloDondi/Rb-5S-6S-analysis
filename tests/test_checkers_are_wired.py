@@ -60,6 +60,18 @@ ROOT = Path(__file__).resolve().parents[1]
 #
 # checker path (relative to the repo root) -> why it is not wired
 NOT_WIRED = {
+    "private/checks/reader_brief.py":
+        "TRANSPORT, not a guard: it carries the rule text verbatim and each "
+        "source's hash to a reader who did not do the work, and it decides "
+        "nothing. There is no property for a gate to assert, because a brief "
+        "cannot pass or fail -- what it produces is an input to a human "
+        "judgement, and wiring it into the suite would be asserting that the "
+        "reader read it, which no test can see. It is invoked by the convener "
+        "when briefing the enforcement reader, per LOGIC 0b.2, and by "
+        "make_prompts.py when a seat's prompt is emitted, which "
+        "tests/test_make_prompts.py drives against a stub of this file; its own "
+        "docstring says that if it ever returns a conclusion it has become "
+        "the checker-of-the-checker the ceiling rule refuses",
     "private/checks/apply_helper.py":
         "a library imported by the private/cache apply scripts, not a checker "
         "anything runs on its own. Its _self_test reinstates the bug it was "
@@ -104,16 +116,6 @@ NOT_WIRED = {
         "cross-checks the untracked application drafts against each other, "
         "and which drafts are in flight changes between sessions, so its "
         "input set is not a property of any commit",
-    "private/checks/reader_brief.py":
-        "TRANSPORT, not a guard: it carries the rule text verbatim and each "
-        "source's hash to a reader who did not do the work, and it decides "
-        "nothing. There is no property for a gate to assert, because a brief "
-        "cannot pass or fail -- what it produces is an input to a human "
-        "judgement, and wiring it into the suite would be asserting that the "
-        "reader read it, which no test can see. It is invoked by the convener "
-        "when briefing the enforcement reader, per LOGIC 0b.2, and its own "
-        "docstring says that if it ever returns a conclusion it has become "
-        "the checker-of-the-checker the ceiling rule refuses",
     "private/checks/check_prose_numbers.py":
         "grades an UNTRACKED prose file -- the thesis chapter, the application "
         "drafts -- against the committed results CSVs, and which of those "
@@ -242,6 +244,10 @@ def _caller_sources() -> list[tuple[Path, str]]:
     if hooks.is_dir():
         paths.extend(p for p in sorted(hooks.iterdir())
                      if p.is_file() and not p.name.endswith(".sample"))
+    # the local hooks are not cloned, so a checker wired only there reads as
+    # an orphan in every clone; the durable copies under private/hooks are
+    # what a clone can read (2026-09-08, the protocols seat)
+    paths.extend(p for p in sorted(ROOT.glob("private/hooks/*")) if p.is_file())
     out = []
     for p in paths:
         if p.resolve() == here:
@@ -267,6 +273,51 @@ def _caller_sources() -> list[tuple[Path, str]]:
 _RUNNERS = ("subprocess", "runpy", "importlib", "os.system")
 
 
+_WRITERS = ("write_text", "write_bytes", "write")
+
+
+def _statement_writes(stmt) -> bool:
+    return any(isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute)
+               and n.func.attr in _WRITERS for n in ast.walk(stmt))
+
+
+def _names_as_a_call(rel: str, raw: str) -> bool:
+    """A checker's filename WRITTEN by a caller is a stub, not a call. A test
+    that builds a throwaway repository and writes a two-line file under a
+    checker's name made this guard read that checker as wired, and the
+    allowlist entry saying why it cannot be wired was deleted to clear the
+    red (2026-09-08, the integration seat). Read by statement, since the
+    stub's name sat in a `for` line and the write two lines below it: a
+    string naming the checker counts only when the statement it sits in
+    writes nothing, a docstring is not a statement about the checker, and
+    the literal must be path-shaped (the name, a path ending in it, or the
+    repository path), since an assertion about a stub's printed marker also
+    carries the name."""
+    name = Path(rel).name
+    try:
+        tree = ast.parse(raw)
+    except SyntaxError:
+        return True
+    parents = {}
+    for node in ast.walk(tree):
+        for child in ast.iter_child_nodes(node):
+            parents[child] = node
+    for node in ast.walk(tree):
+        if not (isinstance(node, ast.Constant) and isinstance(node.value, str)):
+            continue
+        v = node.value.strip()
+        if not (v == name or v.endswith("/" + name) or rel in v):
+            continue
+        stmt = node
+        while stmt in parents and not isinstance(stmt, ast.stmt):
+            stmt = parents[stmt]
+        if isinstance(stmt, ast.Expr) and stmt.value is node:
+            continue                      # a docstring or a bare string
+        if not _statement_writes(stmt):
+            return True
+    return False
+
+
 def _is_called(rel: str, sources) -> bool:
     name = Path(rel).name
     for p, code, raw in sources:
@@ -274,8 +325,33 @@ def _is_called(rel: str, sources) -> bool:
             continue
         if p.suffix == ".py" and not any(r in raw for r in _RUNNERS):
             continue
+        if p.suffix == ".py" and not _names_as_a_call(rel, raw):
+            continue
         return True
     return False
+
+
+def test_a_written_stub_is_not_a_call(tmp_path):
+    """The third category, both sides: a caller that writes a file under a
+    checker's name is building a stub; one that runs the path is a call."""
+    stub = tmp_path / "stub_writer.py"
+    # the checker path is built without the private/ segment on purpose: the
+    # hygiene guard reads a private/ literal beside a loader as a clone-hostile
+    # load, and this test loads only its own temporary files
+    rel = "checks/reader_brief.py"
+    stub.write_text('import subprocess\n'
+                    '"""checks/reader_brief.py is mentioned here."""\n'
+                    'for name in ("seat_brief.py", "reader_brief.py"):\n'
+                    '    (tmp / "checks" / name).write_text("x")\n'
+                    'assert "STUB reader_brief.py" in out\n')
+    runner = tmp_path / "runner.py"
+    runner.write_text('import subprocess\n'
+                      'SRC = ROOT / "checks" / "reader_brief.py"\n'
+                      'subprocess.run(["python", str(SRC)])\n')
+    as_stub = [(stub, _code_text(stub), stub.read_text())]
+    as_call = [(runner, _code_text(runner), runner.read_text())]
+    assert not _is_called(rel, as_stub)
+    assert _is_called(rel, as_call)
 
 
 def test_every_checker_is_called_by_something_or_says_why_not():
