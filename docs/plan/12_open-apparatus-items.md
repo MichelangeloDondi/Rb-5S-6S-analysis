@@ -29,6 +29,7 @@ next session inventing a value, or asking for one nobody has.
 |---|---|---|---|
 | **repaired lock, residual drift** | not measured. The lock was repaired 2026-08-16 and no longer drifts. Its rate is unknown, and [chapter 9](09_the-fixed-lock.md) section 10c.2 already calls for measuring it | every centre-channel measurement on either platform. Absolute line centres become available with a stable lock, which is what the 2025 campaign could not do | spanned from 0 to 40 kHz per minute, with the recovered precision reported at each point, in `results/projections.csv` and its guided-platform counterpart |
 | **repaired lock, per-sweep excursion** | not measured. The same characterisation run [chapter 9](09_the-fixed-lock.md) calls for reads it beside the drift | every centre measurement on either platform rides it, as the drift row above | spanned in the fibre thread ([the campaign chapter](../big_picture/09_the-campaign-cases.md)): its paired-acquisition forecast covers the comb best-fit class to the wavemeter ceiling and the acquisition-geometry verdict there turns on exactly this item. The cell-side three-channel forecast now spans the drift over a tenfold range and finds the pull channel's spread unmoved, because the twin generates the drift as strictly linear in acquisition order and the fit carries that order as a free nuisance, so the term is a column of the design matrix and costs nothing. **The lever's worth cannot be established until the world's drift has structure**, which is the modelling item below |
+| **the cell's own dimensions** | owner-stated 2026-09-09 as about 25 mm bore and 100 mm long, a standard size not measured precisely, with the beam about 2.0 plus or minus 1.0 mm from the wall; carried in [the apparatus chapter](../APPARATUS.md) | they set how often an atom returns to the beam against how often it reaches a wall, which decides whether the vapour around the beam is hyperfine-pumped in steady state; the cascade model assumes each atom arrives unpumped | no forecast rests on it, and the span is why: over every plausible cell an atom reaches a wall many hundreds of times between beam crossings, and an uncoated glass wall relaxes the hyperfine state on adsorption, so atoms arrive reset whatever the dimensions are. The item is recorded because the argument for that needs a number the record does not carry, not because a result does |
 | **beam waist in the interaction volume** | not measured in this cell. The working 64 um is a same-conditions measurement from an earlier thesis on this apparatus lineage | the largest open systematic in the record. Every intensity-denominated number rides it | spanned across the band the data allow in `results/transit_mc.csv`, and [chapter 5](05_width-collision-amplitude.md) specifies the profile measurement that closes it. A second, atom-based route in the cell itself: a 778 nm diode driving 5S to 5D through the same optics reads the waist from the measured light-shift coefficient of that line, 2.5(2) e-13 per mW per square millimetre ([Martin 2019](../lit/martin2019.md), held), a twenty-linewidth shift at this bench's power on a 330 kHz line, so the waist follows to about four per cent from a number that imports none of the disputed theory, with the waist at 778 nm scaling as the wavelength for the same optics |
 | **cell temperature against the cold spot** | instrumented but the gradient is not resolved | the density lever, and through it the collisional coefficient. And the meaning of any Doppler thermometer: with the record's densities the mean free path exceeds the cell below about 110 C and falls to millimetres at 130, so the vapour is a flux-weighted mixture of the walls' Maxwellians at the cold end and a local temperature at the hot end, and a pedestal fitted as one Gaussian reads a temperature that moves against the thermocouple across the lever by up to the gradient itself | carried as a stated systematic in `results/beta_self_probe.csv`, and the thermometer's regime dependence is an item for the deep-trace producer's landing |
 | **retro-reflection intensity ratio** | not measured. The working value is a stated prior, carried with its spread in `results/delta_alpha_posterior.csv`'s notes, and [chapter 7](07_acquisition-settings.md) records one in-record reading that contradicts it outright | the effective intensity, and through it every light-shift prediction. [Chapter 6](06_sizing-and-spending-rules.md) already schedules turning the assumption into a measurement | carried as the prior in `results/delta_alpha_posterior.csv`, whose limit row states how far the priors move it, and inside the predicted envelope of `results/stark_joint.csv` |
@@ -93,10 +94,24 @@ collected region is fixed by the optics, so the description holds only while the
 Rayleigh range is long against that region. Measured over the collected length at
 the campaign's own optics, the transit width's spread about its mean runs 0.1 per
 cent at 128 microns, 1.0 at 64, 5.5 at 40, 23 at 24 and 47 at 16, where the beam
-radius at the edge of the collected region is 4.3 times the waist. **The one per
-cent that licenses treating the model as a convolution was measured at the
-archive's waist**, and the campaign's tightest configuration is a factor of forty
-outside it. **A campaign waist has no measured band of its own**, so the
+radius at the edge of the collected region is 4.3 times the waist. **That one
+per cent licenses nothing for the shape channels, and this item said it
+licensed the convolution until 2026-09-09.** It is the axial spread of the
+transit kernel alone, and the second mechanism is radial. The saturation
+companion follows the local light shift, the ramp's own variable, so the broad
+elements are the shifted ones and shortening the collected region cannot reach
+it. Measured element by element
+(`scripts/run_kernel_inhomogeneity.py`), the windowed third cumulant is wrong
+by [106.911](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w64um:k3_error") per cent at the
+archive's own waist, [96.452](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w24um:k3_error") at
+24 microns and [89.701](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w16um:k3_error") at 16:
+**the archive is the worst of the four and not the licensed one.** The centre
+channel splits. The centroid is exactly immune at every waist
+([0.000](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w64um:centroid_pull_error") per cent),
+while the fitted centre the campaign actually inverts moves by
+[-0.265](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w64um:fitted_centre_error") per cent at
+64 microns and [-56.972](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w16um:fitted_centre_error")
+at 16. **A campaign waist has no measured band of its own**, so the
 tolerance producer applies the archive's 62 to 68 micron band as the same
 fraction of each proposed waist, paired with the retro-ratio error as the
 record's convention pairs them. That is a borrowed uncertainty, not a spanned

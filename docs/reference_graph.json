@@ -48,7 +48,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 208,
+    "line": 223,
     "writes": "2994.39"
    },
    {
@@ -125,7 +125,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 377,
+    "line": 419,
     "writes": "69"
    }
   ],
@@ -137,7 +137,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 377,
+    "line": 419,
     "writes": "16"
    }
   ],
@@ -149,7 +149,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 377,
+    "line": 419,
     "writes": "2.78"
    }
   ],
@@ -1181,6 +1181,289 @@
   "source_file": "results/identifiability.csv",
   "source_value": "0.0588"
  },
+ "kernel_inhomogeneity:w16um:centroid_pull_error": {
+  "producer": "run_kernel_inhomogeneity.py",
+  "quoting_sites": [
+   {
+    "file": "docs/big_picture/09_the-campaign-cases.md",
+    "line": 105,
+    "writes": "0.000"
+   },
+   {
+    "file": "results/README.md",
+    "line": 77,
+    "writes": "0.000"
+   }
+  ],
+  "source_file": "results/kernel_inhomogeneity.csv",
+  "source_value": "0.000"
+ },
+ "kernel_inhomogeneity:w16um:fitted_centre_error": {
+  "producer": "run_kernel_inhomogeneity.py",
+  "quoting_sites": [
+   {
+    "file": "docs/big_picture/09_the-campaign-cases.md",
+    "line": 106,
+    "writes": "-56.972"
+   },
+   {
+    "file": "docs/big_picture/09_the-campaign-cases.md",
+    "line": 119,
+    "writes": "-56.972"
+   },
+   {
+    "file": "docs/methods/04_the_composite_model.md",
+    "line": 252,
+    "writes": "-56.972"
+   },
+   {
+    "file": "docs/plan/12_open-apparatus-items.md",
+    "line": 113,
+    "writes": "-56.972"
+   },
+   {
+    "file": "results/README.md",
+    "line": 77,
+    "writes": "-56.972"
+   }
+  ],
+  "source_file": "results/kernel_inhomogeneity.csv",
+  "source_value": "-56.972"
+ },
+ "kernel_inhomogeneity:w16um:homogeneous_width_span": {
+  "producer": "run_kernel_inhomogeneity.py",
+  "quoting_sites": [
+   {
+    "file": "docs/big_picture/09_the-campaign-cases.md",
+    "line": 97,
+    "writes": "3.247"
+   },
+   {
+    "file": "results/README.md",
+    "line": 77,
+    "writes": "3.247"
+   }
+  ],
+  "source_file": "results/kernel_inhomogeneity.csv",
+  "source_value": "3.247"
+ },
+ "kernel_inhomogeneity:w16um:k3_error": {
+  "producer": "run_kernel_inhomogeneity.py",
+  "quoting_sites": [
+   {
+    "file": "docs/big_picture/09_the-campaign-cases.md",
+    "line": 107,
+    "writes": "89.701"
+   },
+   {
+    "file": "docs/methods/10_the_odd_moments.md",
+    "line": 65,
+    "writes": "89.701"
+   },
+   {
+    "file": "docs/plan/12_open-apparatus-items.md",
+    "line": 107,
+    "writes": "89.701"
+   },
+   {
+    "file": "results/README.md",
+    "line": 77,
+    "writes": "89.701"
+   }
+  ],
+  "source_file": "results/kernel_inhomogeneity.csv",
+  "source_value": "89.701"
+ },
+ "kernel_inhomogeneity:w16um:k3_error_forecast_kernel": {
+  "producer": "run_kernel_inhomogeneity.py",
+  "quoting_sites": [
+   {
+    "file": "docs/big_picture/09_the-campaign-cases.md",
+    "line": 128,
+    "writes": "95.350"
+   }
+  ],
+  "source_file": "results/kernel_inhomogeneity.csv",
+  "source_value": "95.350"
+ },
+ "kernel_inhomogeneity:w24um:centroid_pull_error": {
+  "producer": "run_kernel_inhomogeneity.py",
+  "quoting_sites": [
+   {
+    "file": "docs/big_picture/09_the-campaign-cases.md",
+    "line": 105,
+    "writes": "0.000"
+   }
+  ],
+  "source_file": "results/kernel_inhomogeneity.csv",
+  "source_value": "0.000"
+ },
+ "kernel_inhomogeneity:w24um:fitted_centre_error": {
+  "producer": "run_kernel_inhomogeneity.py",
+  "quoting_sites": [
+   {
+    "file": "docs/big_picture/09_the-campaign-cases.md",
+    "line": 106,
+    "writes": "-17.247"
+   }
+  ],
+  "source_file": "results/kernel_inhomogeneity.csv",
+  "source_value": "-17.247"
+ },
+ "kernel_inhomogeneity:w24um:k3_error": {
+  "producer": "run_kernel_inhomogeneity.py",
+  "quoting_sites": [
+   {
+    "file": "docs/big_picture/09_the-campaign-cases.md",
+    "line": 107,
+    "writes": "96.452"
+   },
+   {
+    "file": "docs/methods/10_the_odd_moments.md",
+    "line": 64,
+    "writes": "96.452"
+   },
+   {
+    "file": "docs/plan/12_open-apparatus-items.md",
+    "line": 106,
+    "writes": "96.452"
+   }
+  ],
+  "source_file": "results/kernel_inhomogeneity.csv",
+  "source_value": "96.452"
+ },
+ "kernel_inhomogeneity:w40um:centroid_pull_error": {
+  "producer": "run_kernel_inhomogeneity.py",
+  "quoting_sites": [
+   {
+    "file": "docs/big_picture/09_the-campaign-cases.md",
+    "line": 105,
+    "writes": "0.000"
+   }
+  ],
+  "source_file": "results/kernel_inhomogeneity.csv",
+  "source_value": "0.000"
+ },
+ "kernel_inhomogeneity:w40um:fitted_centre_error": {
+  "producer": "run_kernel_inhomogeneity.py",
+  "quoting_sites": [
+   {
+    "file": "docs/big_picture/09_the-campaign-cases.md",
+    "line": 106,
+    "writes": "-1.906"
+   }
+  ],
+  "source_file": "results/kernel_inhomogeneity.csv",
+  "source_value": "-1.906"
+ },
+ "kernel_inhomogeneity:w40um:k3_error": {
+  "producer": "run_kernel_inhomogeneity.py",
+  "quoting_sites": [
+   {
+    "file": "docs/big_picture/09_the-campaign-cases.md",
+    "line": 107,
+    "writes": "103.337"
+   },
+   {
+    "file": "docs/methods/10_the_odd_moments.md",
+    "line": 63,
+    "writes": "103.337"
+   }
+  ],
+  "source_file": "results/kernel_inhomogeneity.csv",
+  "source_value": "103.337"
+ },
+ "kernel_inhomogeneity:w64um:centroid_pull_error": {
+  "producer": "run_kernel_inhomogeneity.py",
+  "quoting_sites": [
+   {
+    "file": "docs/big_picture/09_the-campaign-cases.md",
+    "line": 105,
+    "writes": "0.000"
+   },
+   {
+    "file": "docs/methods/04_the_composite_model.md",
+    "line": 249,
+    "writes": "0.000"
+   },
+   {
+    "file": "docs/methods/10_the_odd_moments.md",
+    "line": 70,
+    "writes": "0.000"
+   },
+   {
+    "file": "docs/plan/12_open-apparatus-items.md",
+    "line": 110,
+    "writes": "0.000"
+   }
+  ],
+  "source_file": "results/kernel_inhomogeneity.csv",
+  "source_value": "0.000"
+ },
+ "kernel_inhomogeneity:w64um:fitted_centre_error": {
+  "producer": "run_kernel_inhomogeneity.py",
+  "quoting_sites": [
+   {
+    "file": "docs/big_picture/09_the-campaign-cases.md",
+    "line": 106,
+    "writes": "-0.265"
+   },
+   {
+    "file": "docs/plan/12_open-apparatus-items.md",
+    "line": 112,
+    "writes": "-0.265"
+   },
+   {
+    "file": "results/README.md",
+    "line": 77,
+    "writes": "-0.265"
+   }
+  ],
+  "source_file": "results/kernel_inhomogeneity.csv",
+  "source_value": "-0.265"
+ },
+ "kernel_inhomogeneity:w64um:k3_error": {
+  "producer": "run_kernel_inhomogeneity.py",
+  "quoting_sites": [
+   {
+    "file": "docs/big_picture/09_the-campaign-cases.md",
+    "line": 107,
+    "writes": "106.911"
+   },
+   {
+    "file": "docs/methods/04_the_composite_model.md",
+    "line": 254,
+    "writes": "106.911"
+   },
+   {
+    "file": "docs/methods/10_the_odd_moments.md",
+    "line": 61,
+    "writes": "106.911"
+   },
+   {
+    "file": "docs/methods/10_the_odd_moments.md",
+    "line": 403,
+    "writes": "106.911"
+   },
+   {
+    "file": "docs/plan/04_intensity-and-light-shift.md",
+    "line": 372,
+    "writes": "106.911"
+   },
+   {
+    "file": "docs/plan/12_open-apparatus-items.md",
+    "line": 105,
+    "writes": "106.911"
+   },
+   {
+    "file": "results/README.md",
+    "line": 77,
+    "writes": "106.911"
+   }
+  ],
+  "source_file": "results/kernel_inhomogeneity.csv",
+  "source_value": "106.911"
+ },
  "laser_epoch:sigma_laser_bound:over_w0_band": {
   "producer": "run_laser_epoch.py",
   "quoting_sites": [
@@ -1511,7 +1794,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 386,
+    "line": 428,
     "writes": "0 to 1"
    }
   ],
@@ -1523,7 +1806,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 384,
+    "line": 426,
     "writes": "4 to 9"
    }
   ],
@@ -1540,7 +1823,7 @@
    },
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 375,
+    "line": 417,
     "writes": "30.73"
    }
   ],
@@ -1557,7 +1840,7 @@
    },
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 375,
+    "line": 417,
     "writes": "0.67"
    },
    {
@@ -1574,7 +1857,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 376,
+    "line": 418,
     "writes": "0.23"
    }
   ],
@@ -1603,7 +1886,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 241,
+    "line": 283,
     "writes": "0.029"
    }
   ],
@@ -1615,7 +1898,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 262,
+    "line": 304,
     "writes": "0.96"
    }
   ],
@@ -1627,7 +1910,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 264,
+    "line": 306,
     "writes": "0.94"
    }
   ],
@@ -1639,7 +1922,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 277,
+    "line": 319,
     "writes": "29"
    }
   ],
@@ -1651,7 +1934,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 279,
+    "line": 321,
     "writes": "32"
    }
   ],
@@ -1663,7 +1946,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 269,
+    "line": 311,
     "writes": "conditional"
    }
   ],
@@ -1675,7 +1958,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 230,
+    "line": 272,
     "writes": "6"
    }
   ],
@@ -1687,7 +1970,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 228,
+    "line": 270,
     "writes": "0.7"
    }
   ],
@@ -1699,7 +1982,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 255,
+    "line": 297,
     "writes": "0.997"
    }
   ],
@@ -1711,7 +1994,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 256,
+    "line": 298,
     "writes": "0.021"
    }
   ],
@@ -1723,7 +2006,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 258,
+    "line": 300,
     "writes": "0.960"
    }
   ],
@@ -1735,7 +2018,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 259,
+    "line": 301,
     "writes": "0.020"
    }
   ],
@@ -1747,7 +2030,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 266,
+    "line": 308,
     "writes": "fails"
    }
   ],
@@ -1759,7 +2042,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 236,
+    "line": 278,
     "writes": "unresolved"
    }
   ],
@@ -1771,7 +2054,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 233,
+    "line": 275,
     "writes": "0.705"
    }
   ],
@@ -1783,7 +2066,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 234,
+    "line": 276,
     "writes": "0.015"
    }
   ],
@@ -1795,7 +2078,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 246,
+    "line": 288,
     "writes": "clears"
    }
   ],
@@ -1807,7 +2090,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 247,
+    "line": 289,
     "writes": "0.4727"
    }
   ],
@@ -1819,7 +2102,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 248,
+    "line": 290,
     "writes": "0.0097"
    }
   ],
@@ -1831,7 +2114,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 250,
+    "line": 292,
     "writes": "clears"
    }
   ],
@@ -1889,7 +2172,7 @@
    },
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 187,
+    "line": 202,
     "writes": "-1.97"
    }
   ],
@@ -1906,7 +2189,7 @@
    },
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 191,
+    "line": 206,
     "writes": "1.117"
    }
   ],
@@ -1940,7 +2223,7 @@
    },
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 189,
+    "line": 204,
     "writes": "1.691"
    }
   ],
@@ -1957,7 +2240,7 @@
    },
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 184,
+    "line": 199,
     "writes": "0.26"
    }
   ],
@@ -2488,7 +2771,7 @@
    },
    {
     "file": "results/README.md",
-    "line": 279,
+    "line": 280,
     "writes": "0.396"
    }
   ],
@@ -2505,7 +2788,7 @@
    },
    {
     "file": "results/README.md",
-    "line": 279,
+    "line": 280,
     "writes": "0.316"
    }
   ],
@@ -2893,7 +3176,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/10_the_odd_moments.md",
-    "line": 261,
+    "line": 289,
     "writes": "1.90"
    }
   ],
@@ -2934,7 +3217,7 @@
    },
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 77,
+    "line": 78,
     "writes": "0.5752"
    },
    {
@@ -3016,7 +3299,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 109,
+    "line": 151,
     "writes": "26.3"
    }
   ],
@@ -3028,7 +3311,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 77,
+    "line": 78,
     "writes": "0.5542"
    }
   ],
@@ -3040,7 +3323,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 110,
+    "line": 152,
     "writes": "4.4"
    }
   ],
@@ -3052,7 +3335,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 106,
+    "line": 148,
     "writes": "25.6"
    }
   ],
@@ -3064,7 +3347,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 107,
+    "line": 149,
     "writes": "2.4"
    }
   ],
@@ -3076,7 +3359,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 104,
+    "line": 146,
     "writes": "25.8"
    }
   ],
@@ -3088,7 +3371,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
-    "line": 105,
+    "line": 147,
     "writes": "2.1"
    }
   ],
@@ -3100,7 +3383,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 77,
+    "line": 78,
     "writes": "0.4802"
    }
   ],
@@ -3266,7 +3549,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/10_the_odd_moments.md",
-    "line": 261,
+    "line": 289,
     "writes": "2.60"
    }
   ],
@@ -3278,7 +3561,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/10_the_odd_moments.md",
-    "line": 261,
+    "line": 289,
     "writes": "2.89"
    }
   ],
@@ -3290,7 +3573,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/10_the_odd_moments.md",
-    "line": 261,
+    "line": 289,
     "writes": "2.93"
    }
   ],
@@ -3302,7 +3585,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/10_the_odd_moments.md",
-    "line": 261,
+    "line": 289,
     "writes": "2.15"
    }
   ],

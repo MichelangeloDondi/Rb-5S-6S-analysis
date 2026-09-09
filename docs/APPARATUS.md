@@ -515,7 +515,8 @@ campaign has only fat mtimes at 2 s granularity.
 
 | item | value | provenance |
 |---|---|---|
-| Cell | glass vapour cell in a copper block, Kapton-taped, foil-wrapped in operation | PHOTO 2025-07-01, 07-18 |
+| Cell | glass vapour cell in a copper block, Kapton-taped, foil-wrapped in operation. A cylinder of about 25 mm bore and 100 mm length, a standard size, owner-stated and not measured precisely | PHOTO 2025-07-01, 07-18 |
+| Beam position in the cell | about 2.0 plus or minus 1.0 mm from the wall, owner-stated. Placed there for two reasons: a short escape path for the decay photons, which cuts the optical density that drives radiation trapping, and a larger collected solid angle | owner, 2026-09-09 |
 | Cell dimensions | about **25 mm diameter, 100 mm long**. Approximate and recalled, not read off a datasheet or a purchase record, so treat both figures as ±10% until the primary record surfaces | RECOLLECTION 2026-08-09 |
 | Temperature controller | 2-channel. The 4 July evening session's filenames pair the thermocouple reading with the variac set point, `130C(90C-0.65A)` (results report addendum 15). Which positions each channel drives is not established here, and the term "two-zone oven" is retired (2026-08-03: not recognised from recollection) | PHOTO 2025-07-18 |
 | Operating range | 70–130 °C across the campaign's condition grid | DATA (manifest) |

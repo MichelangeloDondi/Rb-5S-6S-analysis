@@ -116,6 +116,14 @@ SKIP = {"laser_epoch.csv", "qc_metrics.csv",
         # the sweep-shape rows and ENVELOPE for the tolerances, so only it knows
         # which is which
         "sweep_linearity.csv",
+        # the kernel-inhomogeneity study. THE WORDS HERE ARE THIS FILE'S OWN
+        # VOCAB and not the prose provenance tags (2026-09-09: a check caught
+        # this comment naming CALCULATED and MEASURED-HERE, neither of which is
+        # in VOCAB, while omitting DIAGNOSTIC entirely). CALIB for the spans and
+        # for each model's own observables, since the producer reads no trace
+        # and every number is a model computation; DIAGNOSTIC for the grid
+        # movements; ENVELOPE for the costs and the uncertainty rows
+        "kernel_inhomogeneity.csv",
         # the lever ranking: every row is a Fisher forecast about a DESIGN, and
         # its inputs split measured from estimated, so the producer tags them.
         "onf_lever_ranking.csv",

@@ -807,6 +807,44 @@ def main(argv: list[str]) -> int:
                   "stated rather than implied: a changed cell in a column it "
                   "does not read is the prose guards' subject, not this one's.")
             return 0
+        # THE FOURTH COMPLETE CASE, found by the gate on 2026-09-09: every
+        # modified value-carrying CSV kept every value cell it had. The
+        # suspicious case the branch below exists for is a modification whose
+        # OLD value is gone, since that is a retirement this sweep must chase
+        # into the prose. A modification that changes only a note, a unit or a
+        # status retires nothing, and refusing it refuses a wave for a
+        # propagation there was none of.
+        #
+        # FALSE-PASS DIRECTION FIRST. The test is containment and not equality:
+        # every value present at the base must still be present at HEAD. A row
+        # ADDED is not a retirement and does not block; a row REMOVED or a cell
+        # REWRITTEN takes its old literal out of the set and falls through to
+        # the refusal, which is the whole point. Reading it the other way round,
+        # as "the files differ so something moved", is what made this branch
+        # refuse a note-only edit.
+        def _values(rev: str, path: str) -> set:
+            rows = _git("show", f"{rev}:{path}").splitlines()
+            if not rows:
+                return set()
+            cols = [c.strip() for c in rows[0].split(",")]
+            if "value" not in cols:
+                return set()
+            i = cols.index("value")
+            out = set()
+            for ln in rows[1:]:
+                cells = ln.split(",")
+                if len(cells) > i:
+                    out.add(cells[i].strip())
+            return out
+        kept = all(_values(base, q) <= _values("HEAD", q) for q in modified)
+        if modified and kept:
+            print("  NOTHING TO CHECK, and that is COMPLETE rather than "
+                  f"empty: the {len(modified)} modified results/ CSV(s) in this "
+                  "window kept every value cell they carried, so nothing was "
+                  "retired and there is no stale copy to hunt. A note, a unit "
+                  "or a status may have changed; those are the prose guards' "
+                  "subject, not this one's.")
+            return 0
         print("  NOTHING TO CHECK: results/ CSVs changed in this window but "
               "no value moved, so this compares nothing and its silence is "
               "not evidence.")

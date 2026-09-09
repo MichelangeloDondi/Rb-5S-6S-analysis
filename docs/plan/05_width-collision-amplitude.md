@@ -452,6 +452,26 @@ independently, so the test is on the order and on the spacing pattern rather
 than on the absolute depletion, which the transit time and the excitation
 probability jointly set.
 
+**The 2025 archive cannot lift that second condition, and what stops it is the
+acquisition structure and not the statistics.** Each trace carries one
+peak, so four peaks are four separate acquisitions and whatever drifts between
+them does not cancel in a ratio. `results/amplitude_ratios.csv` measures that
+drift as a between-block systematic worth about half the ratio's own value.
+The power rungs are then nested one per block, lowest in the first and highest
+in the last, and the temperatures one per block likewise, so the power dependence and
+the block dependence are the same column. The ratio does move across the
+ladder, and it moves by about the size of the systematic it is aliased with,
+while the second isotope's pair stays flat where the same mechanism requires it
+to move. **So the archive gives the ordering test and nothing beyond it.**
+
+**Putting all four peaks in a single trace is what lifts it**, which the campaign
+already plans for its hysteresis diagnostic and its shift-immune ruler pairs.
+With the four sharing an acquisition the inter-trace drift cancels by
+construction, and with the power rungs crossed against the blocks instead of
+nested in them the ratio against power measures the cycle count itself. That
+count sets a power-dependent transit broadening, so the measurement reaches the
+width channel and not only the amplitude one.
+
 If the amplitudes follow the pumping order the effect is atomic and the model
 already predicts it. If they follow brightness the effect belongs to the
 detection chain, and the dual-chain recording of chapter 7 is what localises

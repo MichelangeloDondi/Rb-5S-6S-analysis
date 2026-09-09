@@ -71,6 +71,34 @@ requires_raw_traces = _pytest.mark.skipif(
 )
 
 
+@pytest.fixture(autouse=True)
+def _restore_stark_companions():
+    """Give every test back the `stark.COMPANIONS` it started with.
+
+    IMPORTING A PRODUCER CAN SWITCH A PACKAGE-WIDE LAYER ON.
+    `scripts/run_three_channel_forecast.py` assigns `stark.COMPANIONS` at
+    MODULE level, deliberately and for a good reason: its pool spawns, a
+    worker re-imports the file, and an assignment made in the parent's frame
+    reaches no child. The cost is that any test which loads that producer, or
+    loads anything that imports it, turns the saturation companion on for
+    every test that runs after it in the same process.
+
+    That went unseen because collection order hid it, until a new test module
+    for the taxonomy producer sorted before `test_stark.py` on 2026-09-09 and
+    three stark tests began disagreeing with their own committed CSV, kappa
+    reading 0.449 against a committed 0.0. The producer is right and the suite
+    was fragile, so the repair is here rather than there: snapshot the global
+    and put it back, whatever the test did to it.
+
+    Planted in `tests/test_conftest_companions.py`, both directions."""
+    from rb5s6s import stark
+    before = stark.COMPANIONS
+    try:
+        yield
+    finally:
+        stark.COMPANIONS = before
+
+
 def load_script_module(name: str, path):
     """Load a script by path under `name`, returning THE ONE object
     registered under that name.

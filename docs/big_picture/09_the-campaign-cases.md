@@ -87,6 +87,48 @@ one, because power broadening is symmetric and does not move a centre.
 | 24 microns | [11.507](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_24um::kappa_true") | [11.49](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_24um::kappa_pull") plus or minus [0.18](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_24um::sd_pull") |
 | 16 microns | [25.891](../../results/three_channel_forecast.csv "ref:three_channel_forecast:base::kappa_true") | [25.89](../../results/three_channel_forecast.csv "ref:three_channel_forecast:base::kappa_pull") plus or minus [0.34](../../results/three_channel_forecast.csv "ref:three_channel_forecast:base::sd_pull") |
 
+**Every number in this section carries one model-form caveat, the centre
+numbers included, and at the tight waist it is the centre numbers that carry it
+hardest.** The forecast composes each rung with a single homogeneous kernel,
+which is exact only where that kernel is the same at every collected volume
+element. It is not: the saturation companion is set by the light shift at each
+element, and the light shift is what the ramp distributes, so the broad
+elements are the shifted ones. The homogeneous width runs over a factor of
+[3.247](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w16um:homogeneous_width_span") across the collected volume at
+16 microns.
+
+Measured element by element against the same mixture with the kernel held
+fixed, at 64, 40, 24 and 16 microns:
+
+| what is read | 64 um | 40 um | 24 um | 16 um |
+|---|---|---|---|---|
+| the centroid, per cent | [0.000](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w64um:centroid_pull_error") | [0.000](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w40um:centroid_pull_error") | [0.000](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w24um:centroid_pull_error") | [0.000](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w16um:centroid_pull_error") |
+| the fitted centre, per cent | [-0.265](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w64um:fitted_centre_error") | [-1.906](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w40um:fitted_centre_error") | [-17.247](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w24um:fitted_centre_error") | [-56.972](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w16um:fitted_centre_error") |
+| the third cumulant, per cent | [106.911](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w64um:k3_error") | [103.337](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w40um:k3_error") | [96.452](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w24um:k3_error") | [89.701](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w16um:k3_error") |
+
+**The centroid is exactly immune and the estimator is not, and reading the
+first as covering the second is the error this table replaces.** The first
+moment of a mixture of symmetric kernels is the density's own mean, so a
+broadening symmetric about each element's own centre cannot move it, at any
+waist, exactly. A least-squares fit with a single width is a different quantity. It
+sits on the mode, the mode is set by the narrow unshifted elements, and the
+shifted elements are the broad ones. The pull rows above are that fit, through
+`fit_condition` with the shift held at zero. So at the archive's waist both
+channels are safe to a quarter of a per cent, and at the campaign's own 16
+microns the standard channel reads the pull it inverts wrong by
+[-56.972](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w16um:fitted_centre_error") per cent,
+which is larger than anything the moment channel's caveat carries.
+
+**So neither family is quotable at 24 microns or below until the kernel follows
+the shift inside the forecast's own mixture**, and the tight-waist rows above
+are an upper bound on their own accuracy and not a result. The
+cumulant figures are quoted against the most charitable single kernel there
+is, the volume's own weighted mean. Against the kernel the twin actually
+composes with, the companion at the on-axis shift, the cost at 16 microns is
+[95.350](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w16um:k3_error_forecast_kernel") per cent. The
+uncertainties are the saturation companion's own, which the record carries at
+the factor-of-three level, not a grid.
+
 **The higher moments alone work only where the comb is on the trace.** At
 the tight waist the light
 shift is large enough that the transition saturates, and saturation broadens

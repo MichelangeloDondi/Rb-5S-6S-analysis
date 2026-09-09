@@ -267,7 +267,7 @@ this section, which has to be in place before any of them runs.
    line integrates to more signal where a real one integrates to less. With the
    term switched off the power ladder's area follows the two-photon square law
    at a log-log slope of 1.978 and the depth ladder stands still to seven per
-   cent. With the term on, the slope reads 2.209 and the depth ladder falls by
+   cent. With the term on, the slope reads 2.212 and the depth ladder falls by
    nineteen. The gap is an open item with that measurement attached, and the
    area null is a test for the archive's saturation regime and not the
    campaign's.
@@ -360,10 +360,16 @@ this section, which has to be in place before any of them runs.
    from which the ladder below is counted), so at configuration S the line is
    the volume integral or it is not modelled.
    The alternative is a magnification near 40 that holds the collected length
-   at the archive's fraction of the Rayleigh range, which restores the convolution, removes the
-   flip, and costs about seven in collected light on the collected fraction's
+   at the archive's fraction of the Rayleigh range, which removes the
+   flip and costs about seven in collected light on the collected fraction's
    arctangent law, a factor 2.6 in signal-to-noise on a peak that is already
-   shot-limited. One
+   shot-limited. **It does not restore the convolution, and this page said it
+   did until 2026-09-09.** A magnification shortens the collected axial length,
+   and the mechanism that breaks the convolution for the shape channels is
+   radial: the saturation companion follows the local light shift. The
+   archive's own waist, which is the geometry this remedy reproduces, is where
+   the measured cost is largest, at
+   [106.911](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w64um:k3_error") per cent. One
    choice, two faces, and chapter 12 carries it as open, with the volume model
    the route that costs no light.
 
@@ -398,7 +404,7 @@ this section, which has to be in place before any of them runs.
    **Owner ruling, 2026-09-07: take the volume model and keep the light.** The
    choice is settled on the side that does not throw signal away. The two faces
    turn out to be the same decision seen twice, because the magnification that
-   restores the convolution is the one that costs about seven in collected
+   removes the sign flip is the one that costs about seven in collected
    light, and the dominant noise term on the line is shot noise, whose sigma
    falls as the root of the photon count. So declining the magnification keeps
    a factor 2.6 in signal-to-noise that the model repair would have spent, and

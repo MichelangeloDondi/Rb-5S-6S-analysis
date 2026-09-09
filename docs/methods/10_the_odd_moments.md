@@ -40,16 +40,44 @@ symmetric about its own centre:
 
     P(nu) = (f * L)(nu)
 
-**That equality is conditional.** Written as a volume integral, the line is
-`f * L` exactly only when the kernel `L` is the same at every volume element,
-and it is not: the transit width goes as the inverse local beam radius. What
-makes the convolution usable is that the collected volume is short. Over the
-axial window the collection optics set
-([chapter 3](03_the_ac_stark_ramp.md), diverging-beam collection), the
-signal-weighted transit width has an rms spread of
+**That equality is conditional, and for the odd cumulants the condition
+fails at every waist this apparatus can reach.** Written as a volume integral,
+the line is `f * L` exactly only when the kernel `L` is the same at every
+volume element. Two independent things break it. The transit width goes as the
+inverse local beam radius, which is geometric: over the axial window the
+collection optics set ([chapter 3](03_the_ac_stark_ramp.md), diverging-beam
+collection) the signal-weighted transit width has an rms spread of
 [0.97](../../results/prediction_band.csv "ref:prediction_band:collection_window:transit_kernel_rms_spread_pct")
-per cent, so the statement below holds to that level and the residual is a
-symmetric broadening to which the odd cumulants are blind at leading order.
+per cent. **And the saturation companion is keyed on the local light shift, the ramp's
+own variable**, so the broad elements are exactly the shifted ones and no
+axial shortening touches it.
+
+**The one per cent does not license the statement below, and this sentence
+said it did until 2026-09-09.** A small correlated variation of the kernel is
+not small against a small cumulant: `scripts/run_kernel_inhomogeneity.py`
+builds the collected volume as a mixture with one kernel per element and
+measures the windowed third cumulant against the same mixture with the kernel
+held fixed at the volume's own weighted mean. The error is
+[106.911](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w64um:k3_error") per cent at the
+archive's own 64 microns,
+[103.337](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w40um:k3_error") at 40,
+[96.452](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w24um:k3_error") at 24 and
+[89.701](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w16um:k3_error") at 16, and at the
+archive's waist it inverts the sign. **The archive is the worst of the four,
+and not the licensed one.** What the transit's one per cent does license is the
+even part. A broadening symmetric about each element's own centre cannot move
+the mixture's first moment, and the centroid's error is
+[0.000](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w64um:centroid_pull_error") per cent at
+every waist, exactly.
+
+**So sections 3 to 10 below are a derivation of what the odd cumulants would
+be under a uniform kernel, and they are read as that.** They are quantitatively
+right for a line whose homogeneous width does not follow the shift, which is
+the weak-field limit this apparatus leaves at the powers the campaign proposes.
+They are not a licence to invert a measured cumulant into a shift on this
+bench. What replaces them is the mixture itself, one kernel per element keyed
+on that element's own shift, and `results/kernel_inhomogeneity.csv` carries
+what the difference costs.
 
 **Cumulants add under convolution.** So for every order,
 
@@ -353,17 +381,28 @@ property of the model.
 | 2.0 | 3.5e-1 | **1.1e-3** | -1.3333 | -1.3333 |
 | 4.0 | 6.5e-1 | **1.1e-3** | -2.6667 | -2.6667 |
 
-One part in a thousand of the peak is rounding. **The composite is a
-convolution of a fixed kernel with a shift distribution**, the recovered mean
+One part in a thousand of the peak is rounding. **The composite as built here
+is a convolution of a fixed kernel with a shift distribution**, which is what
+this check injected and therefore what it recovers, the recovered mean
 is exactly the two thirds of the shift the AC-Stark chapter derives, and the
 recovered distribution's own third cumulant runs 0.00732, 0.05940 and 0.47439
 at those three shifts, ratios of 8.11 and 7.99 against the 8 that a cube
 demands. The ramp scales as designed.
 
-**So sections 1 to 10 stand.** The ladder of three, five and seven is the right
-prediction for this model, the measured cube at every windowed order is a real
-property of the windowed estimator, and the higher-moment programme is closed
-again.
+**So sections 1 to 10 stand as a statement about this model.** The ladder of
+three, five and seven is the right prediction for a fixed kernel convolved
+with the ramp, the measured cube at every windowed order is a real property of
+the windowed estimator, and the higher-moment programme is closed again on
+that model.
+
+**What section 1 now bars is reading them as a statement about the bench.**
+The verification above composes one kernel with the ramp and recovers what it
+injected, which is the check it is. It cannot see a kernel that follows the
+shift, because it does not have one. Against the mixture that does, the
+windowed third cumulant is wrong by
+[106.911](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w64um:k3_error") per cent at the
+archive's waist. A self-consistent model verified against itself is evidence
+about the arithmetic and not about the licence.
 
 **With one correction that is independent of all this.** Section 10 argued the
 closure by placing the archive at a Lorentzian fraction of 0.68 against a

@@ -60,6 +60,19 @@ ROOT = Path(__file__).resolve().parents[1]
 #
 # checker path (relative to the repo root) -> why it is not wired
 NOT_WIRED = {
+    "private/checks/claim_finding.py":
+        "AN INSTRUMENT FOR A READER, not for the gate. It is invoked by each "
+        "seat of a board, from the line make_prompts.py emits into every "
+        "prompt, to claim a finding before spending budget reproducing it, and "
+        "it answers FIRST or CONFIRMS. There is no property the suite can "
+        "assert: the file it writes belongs to one round and is gone with it, "
+        "and whether a seat obeyed the answer is a judgement no test can see. "
+        "Its behaviour IS planted, in private/checks/plant_claim_finding.py, "
+        "which instrument_msa.py runs and which caught the first cut being "
+        "weaker than its docstring claimed. It exists because the instruction "
+        "it replaces did not work: on 2026-09-09 the read-and-append-in-one-"
+        "command pattern let 36 per cent of a round's budget go on findings "
+        "another seat had already filed, one of them found six times over.",
     "private/checks/reader_brief.py":
         "TRANSPORT, not a guard: it carries the rule text verbatim and each "
         "source's hash to a reader who did not do the work, and it decides "

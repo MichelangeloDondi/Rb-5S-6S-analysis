@@ -677,7 +677,18 @@ def _summarise(blocks: list) -> list:
                 iv = np.linalg.inv(Cv)
                 w = iv @ np.ones(2)
                 sd_comb = float(np.sqrt(1.0 / (np.ones(2) @ iv @ np.ones(2))))
-                k_comb = float((w @ np.vstack([lin[both], cen[both]])) / w.sum())
+                # THE COMBINATION IS OF THE TWO CHANNELS' ESTIMATES, not of
+                # every trace set (2026-09-09). `w @ vstack(...)` returns one
+                # combined value PER SET, an array, and float() of it raised
+                # TypeError and killed the whole run after all 56 tasks had
+                # finished. The branch needs three sets carrying both channels
+                # to be reached at all, which is why it had never executed.
+                # Weighting the two channel means is the same number the
+                # per-set form would average to, since the weights are
+                # constant, and it is the inverse-variance combination this
+                # line is named for.
+                mu = np.array([float(np.mean(lin[both])), float(np.mean(cen[both]))])
+                k_comb = float((w @ mu) / w.sum())
                 rho = float(Cv[0, 1] / np.sqrt(Cv[0, 0] * Cv[1, 1]))
             except np.linalg.LinAlgError:
                 pass

@@ -110,6 +110,18 @@ measured-to-predicted ratio as a probe of radiation trapping, the emitted
 795 nm decay photons being reabsorbed on the way out, a density-dependent
 effect the pure counting law above does not include.
 
+**Two mechanisms write into this one observable and the 2025 data separates
+neither.** Beside trapping, hyperfine pumping depletes each line by its own
+branching fraction, so it moves the ratios too, and it grows with power where
+trapping grows with density. They would separate on those two axes if the axes
+were crossed with the acquisition blocks. They are not: each power sits in its
+own block and each temperature in its own, and the between-block systematic
+this page already carries on the 4207 over 4121 ratio is itself about half
+that ratio's value. That is why the pulls above are read with it included, and
+why this figure supports the order of the four amplitudes and not the size of
+any departure from the prediction. Putting the four peaks in one trace, which
+the campaign plans for other reasons, is what would make the size readable.
+
 The branching side is not a single shared number. Because it is a two-step
 cascade through the intermediate $5P$ levels, instead of a degeneracy count,
 the branching fraction that lands a decaying atom in the ground level the

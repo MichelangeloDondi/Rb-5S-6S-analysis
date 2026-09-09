@@ -121,6 +121,18 @@ CHEAP = {
 # Minutes each, or needing data_raw/ traces, or both - everything the
 # per-pass cheap set must not pay for.
 EXPENSIVE = {
+    # the kernel-inhomogeneity study: about two and a half minutes, measured,
+    # not asserted. THIS COMMENT SAID "minutes rather than seconds" WHEN THE
+    # PRODUCER TOOK TEN (2026-09-09): it was timed twice independently in
+    # isolated clones, both at 9.9 s, while the wave's own brief said ten
+    # seconds on the same page. It is minutes NOW only because the physics
+    # findings of that day widened the frequency span fourfold and doubled the
+    # axial grid, so the classification became true by accident after being
+    # written false. It enters this map on the day it lands, because a results
+    # file registered for annotation and absent from freshness is invisible
+    # when it is MISSING, which is how a chapter came to cite a file nobody had
+    # produced (A128).
+    "run_kernel_inhomogeneity": ["kernel_inhomogeneity.csv"],
     # about nine minutes on eight workers, twenty-three cells of four hundred
     # trace sets each through every physics layer, so it is re-run only under
     # --all. Synthetic throughout: it reads no raw trace.

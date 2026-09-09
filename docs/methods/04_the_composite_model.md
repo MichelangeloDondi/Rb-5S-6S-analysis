@@ -238,8 +238,27 @@ Lorentzians combined analytically, the rest convolved numerically), returns an
 area-normalized profile, and `fit_condition()` fits it to data with the
 per-trace nuisances of [§4.2](06_the_statistics.md). It uses the pure triangular ramp
 (`stark_ramp()`), and the 2025 fits keep it because $S_0$ is fixed per power
-and the geometry correction sits far below the 2025 noise. The convolution
-itself was tested on 2026-09-06 against the two-time correlation spectrum of a
+and the geometry correction sits far below the 2025 noise. **The convolution is a condition and it is measured, not assumed.** `S = f * L`
+holds only where the kernel is the same at every collected volume element, and
+on this bench two things break it: the transit width follows the local beam
+radius, and the saturation companion is keyed on the local light shift, the ramp's
+own variable, so the broad elements are the shifted ones.
+`scripts/run_kernel_inhomogeneity.py` builds the volume as a mixture with one
+kernel per element and measures what the difference costs. The centroid is exactly
+immune at
+every waist ([0.000](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w64um:centroid_pull_error")
+per cent, the first moment of a mixture of symmetric kernels being the density's
+own mean), and nothing else is. The fitted centre moves by
+[-56.972](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w16um:fitted_centre_error") per cent at
+16 microns and the windowed third cumulant by
+[106.911](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w64um:k3_error") per cent at the
+archive's own 64. So `model_profile` is the right object for the centroid at
+every waist and for the shape channels at none of them, and
+[the odd-moments chapter](10_the_odd_moments.md) section 1 carries the
+boundary.
+
+The convolution's numerical evaluation
+was separately tested on 2026-09-06 against the two-time correlation spectrum of a
 chirped chord with the homogeneous dephasing carried, on rung 3, and the plan
 hub's intensity chapter carries what it found at the archive's waist and at
 the campaign's, together with the producer it still owes. A proposed fixed-lock session's
