@@ -64,6 +64,33 @@ PREDICTED = {"transit_fwhm_mhz": -1.0, "s0_mhz": -2.0, "rabi_hz": -2.0,
              "z_ratio": -2.0, "cycles_rel": -3.0, "rate_rel": -4.0}
 
 
+
+def _k3_axial(z_ratio: float, n_photon: int, n_grid: int = 600_001) -> float:
+    """Third cumulant of the axially windowed ramp at photon order n, in units
+    of the on-axis shift cubed.
+
+    Emitted so the one-photon comparison below is a computed cell and not a
+    remembered fact. At `z_ratio` zero it returns 0 for n = 1 and +1/135 for
+    n = 2, which are the closed forms `docs/methods/03` derives."""
+    import numpy as np
+    from rb5s6s._compat import trapezoid
+    from rb5s6s.lineshape import stark_ramp_axial
+    nu = np.linspace(-1.0000001, 0.0, n_grid)
+    f = stark_ramp_axial(nu, 1.0, z_ratio, n_photon=n_photon)
+    a = trapezoid(f, nu)
+    if not a:
+        return float("nan")
+    f = f / a
+    m = trapezoid(nu * f, nu)
+    return float(trapezoid((nu - m) ** 3 * f, nu))
+
+
+def _one_over_two(z_ratio: float) -> float:
+    """|kappa3| of a one-photon ramp over a two-photon one at the same window."""
+    a, b = abs(_k3_axial(z_ratio, 1)), abs(_k3_axial(z_ratio, 2))
+    return a / b if b else float("nan")
+
+
 def _line_fwhm(w0_m: float) -> float:
     """The COMPOSITE line's full width at this waist, in MHz.
 
@@ -100,6 +127,14 @@ def _rows() -> list[dict]:
             z_ratio=z_ratio,
             k2_over_pure=(ramp["excess_var"] / pure["excess_var"]) if pure["excess_var"] else float("nan"),
             k3_over_pure=(ramp.get("kappa3", float("nan")) / pure["kappa3"]) if pure.get("kappa3") else float("nan"),
+            # THE ONE-PHOTON NULL IS A THIN-WINDOW STATEMENT (owner, 2026-09-09).
+            # The transverse law is uniform at n = 1 and a uniform density is
+            # symmetric about its own mean, so its third cumulant vanishes. The
+            # OBSERVED density is the axial mixture of uniforms with different
+            # upper limits, which is not uniform and not symmetric. It is
+            # recovered only as z_ratio goes to zero, which is a wide waist and
+            # a large collection magnification.
+            k3_one_photon_over_two=_one_over_two(z_ratio),
             rate_rel=(two_photon_rabi_hz(POWER_W, w0, RHO) / RABI_ANCHOR_HZ) ** 2,
             cycles_rel=((two_photon_rabi_hz(POWER_W, w0, RHO) / RABI_ANCHOR_HZ) ** 2
                         * TRANSIT_ANCHOR_MHZ / C.transit_fwhm_from_w0(w0, T_C)),
@@ -159,24 +194,30 @@ def main(out_path: Path | None = None) -> Path:
             "k2_over_pure and k3_over_pure are the ramp's cumulants through the axial collection window "
             "against the pure ramp, and the third reverses sign where the window passes about one Rayleigh "
             "range. The exponent rows fit d ln term / d ln magnification across the ladder and compare it "
-            "against the derivation of docs/methods/03.")
+            "against the derivation of docs/methods/03. k3_one_photon_over_two is the same "
+            "window applied to a one-photon ramp against the two-photon one: the one-photon "
+            "null holds only as the window shrinks, since the transverse law is uniform at "
+            "each slice and the axial mixture of uniforms with different upper limits is not.")
     with dest.open("w", newline="", encoding="utf-8") as fh:
         w = csv.writer(fh)
         w.writerow(["row_kind", "magnification", "w0_um", "transit_fwhm_mhz", "s0_mhz", "rabi_hz",
-                    "z_ratio", "k2_over_pure", "k3_over_pure", "cycles_rel", "rate_rel",
+                    "z_ratio", "k2_over_pure", "k3_over_pure", "k3_one_photon_over_two",
+                    "cycles_rel", "rate_rel",
                     "signal_rel", "line_fwhm_mhz", "peak_rel", "term", "fitted_exponent",
                     "predicted_exponent", "status", "note"])
         for r in rows:
             w.writerow(["rung", f"{r['magnification']:.6f}", f"{r['w0_um']:.3f}",
                         f"{r['transit_fwhm_mhz']:.6f}", f"{r['s0_mhz']:.6f}", f"{r['rabi_hz']:.3f}",
                         f"{r['z_ratio']:.6f}", f"{r['k2_over_pure']:.6f}", f"{r['k3_over_pure']:.6f}",
+                        f"{r['k3_one_photon_over_two']:.6f}",
                         f"{r['cycles_rel']:.6f}", f"{r['rate_rel']:.6f}", f"{r['signal_rel']:.6f}",
                         f"{r['line_fwhm_mhz']:.4f}", f"{r['peak_rel']:.6f}", "", "", "", "DIAGNOSTIC", note])
         for e in exps:
-            w.writerow(["exponent", "", "", "", "", "", "", "", "", "", "", "", "", "",
+            w.writerow(["exponent", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
                         e["term"], f"{e['fitted_exponent']:.6f}", f"{e['predicted_exponent']:.1f}", "DIAGNOSTIC", note])
         w.writerow(["peak_optimum", f"{m_opt:.6f}", f"{w_opt:.3f}", "", "", "",
-                    f"{z_opt:.6f}", "", "", "", "", "", "", "", "peak_height_max", "", "", "DIAGNOSTIC", note])
+                    f"{z_opt:.6f}", "", "", "", "", "", "", "", "",
+                    "peak_height_max", "", "", "DIAGNOSTIC", note])
     return dest
 
 

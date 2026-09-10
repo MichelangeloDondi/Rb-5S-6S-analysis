@@ -451,8 +451,13 @@ def stark_ramp_axial_moments(s0: float, z_ratio: float, n_photon: int = 2,
     and the dimensionless standardized skewness g1 = mu3 / var^(3/2).
     Pure-transverse (z_ratio -> 0) benchmarks: n=2 triangle gives
     mean = -(2/3) s0, var/mean^2 = 1/8, g1 = 18^1.5/135 ~ +0.5657;
-    n=1 uniform gives mean = -s0/2, g1 = 0 — the skew exists at all only
-    because the two-photon signal goes as I^2."""
+    n=1 uniform gives mean = -s0/2, g1 = 0. THAT NULL IS THE z_ratio -> 0
+    LIMIT AND NOT A PROPERTY OF ONE-PHOTON EXCITATION (2026-09-09): the
+    transverse law is uniform at each slice, and the axial mixture of uniforms
+    with a common lower endpoint and falling upper endpoints is not uniform and
+    not symmetric. Call this function with n_photon=1 at a finite z_ratio and
+    g1 runs to -1.92 at the 16 micron configuration. results/waist_ladder.csv
+    carries the one-photon cumulant against the two-photon one per rung."""
     if s0 <= 0:
         # No ramp, so the shift distribution is a delta at zero: its mean and
         # variance are exactly zero and its standardized skew is 0/0. The two

@@ -50,7 +50,7 @@ two-color, magic-wavelength locking). **Nobody uses a passive lineshape-asymmetr
 observable there.** A tunable Ti:Sapph lets us carry our reference-free method onto
 that hot transition, so wavelength scans across the magic point become the measurement.
 
-## 2. The transition menu the Ti:Sapph opens (verified)
+## 2. The transition menu the Ti:Sapph opens
 
 Two-photon from 5S₁/₂, with wavelength = 2×10⁷ / E_upper[cm⁻¹]. "Intermediate detuning"
 = how far the virtual one-photon level sits from the nearest real 5P (the physics
@@ -62,12 +62,68 @@ lists discrete sets 670–710 / 725–875 / 725–975 / 700–1000 / 950–1050 
 
 | upper | 2-photon λ | intermediate Δ | character | detection | SolsTiS optics set | competition |
 |---|---|---|---|---|---|---|
-| **5D₅/₂** | **778 nm** | **1.1 THz** | **near-resonant** (5P₃/₂) | 420 nm (6P→5S) | 725–875 / 725–975 / **700–1000** | **hot** (clock frontier) |
-| **7S₁/₂** | **760 nm** | 10 THz | intermediate | 420 nm (6P→5S) | 725–875 / 725–975 / **700–1000** | light (Morzyński, Chui) |
-| 8S₁/₂ | 697 nm | 46 THz | ~clean | 420 nm (6P→5S) | **670–710 only** (blue set) | none |
-| 9S₁/₂ | 660 nm | 70 THz | clean | 420 nm (6P→5S) | custom <700 nm | none |
-| **6S₁/₂** | **993 nm** | 75 THz | **clean** | 795 nm (5P₁/₂→5S) | **700–1000** (edge) or 950–1050 ← *current* | none (us + USAFA) |
-| 4D_J | 1033 nm | 87 THz | clean | (5D→…) | 950–1050 / custom >1000 | 4D_J clock (2024) |
+| **5D₅/₂** | **778.10 nm** | 1.1 THz | **near-resonant** (5P₃/₂) | 420 nm (6P→5S) | 725–875 / 725–975 / **700–1000** | **hot** (clock frontier) |
+| **7S₁/₂** | **760.13 nm** | 10.2 THz | intermediate | 420 nm (6P→5S) | 725–875 / 725–975 / **700–1000** | light (Morzyński, Chui) |
+| 6D_J | 697.45 nm | 45.6 THz | ~clean | 420 nm (6P→5S) | **670–710 only** (blue set) | none |
+| 8S₁/₂ | 688.56 nm | 51.2 THz | ~clean | 420 nm (6P→5S) | **670–710 only** (blue set) | none |
+| 7D_J | 660.77 nm | 69.5 THz | clean | 420 nm (6P→5S) | custom <700 nm | none |
+| 9S₁/₂ | 655.78 nm | 72.9 THz | clean | 420 nm (6P→5S) | custom <700 nm | none |
+| **6S₁/₂** | **993.42 nm** | 75.3 THz | **clean** | 795 nm (5P₁/₂→5S) | **700–1000** (edge) or 950–1050 ← *current* | none (us + USAFA) |
+| 4D_J | **1033.30 nm** | 86.9 THz | clean | 1.48/1.53 µm (4D→5P), then 795 | 950–1050 / custom >1000 | 4D_J clock (2024) |
+
+
+**Two rows of this table were wrong until 2026-09-09 and two rungs were
+missing.** It read "8S₁/₂ at 697 nm" and "9S₁/₂ at 660 nm". Those wavelengths,
+and the intermediate detunings and thermal gaps computed from them, belong to
+**6D and 7D**. The true 8S sits at 688.56 nm and the true 9S at 655.78 nm.
+Every column of the two rows was internally consistent, which is why it read as
+verified: they were consistently the D state's. The ladder that settles it is
+built from this package's own held levels and lands in
+[`results/transition_ladder.csv`](../results/transition_ladder.csv). Each
+extrapolated **S** rung carries plus or minus about 0.045 nm, which is the Ritz
+form's own error measured by predicting nP states it was not fitted to, against
+a discrepancy of 8.4 nm. **The extrapolated D rungs carry 0.35 nm**, seven
+times that, and the number is not the nP analogue but the miss against an
+independent route: the held 5P₃/₂ level plus the 5P₃/₂→nD line puts 6D at
+697.12 nm against this ladder's 697.45. Those two line wavelengths are not held
+here, so both D rungs are owed a NIST lookup and neither is quotable to better
+than a few tenths of a nanometre. **The D rungs are the weaker half**: only two D anchors
+are held, so their form error cannot be tested by leaving one out, and an
+independent value for 6D sits 0.35 nm from this ladder. The S rungs are settled
+and the D wavelengths above are the ladder's, owed to a NIST lookup. Register
+A139 carries the working. **The energies here should still be
+replaced by NIST values before any of them is quoted as a measurement**, which
+is a literature lookup and not a bench question.
+
+
+### What the held literature supplies for these rungs, and what it does not
+
+*Added 2026-09-10.* The polarizability column of this menu was empty for five
+rungs, and the values were in a paper this repository already held. Safronova
+and Safronova, Phys. Rev. A 83, 052508 (2011), its sixth table carries the scalar
+static polarizability of every rung here except 7D, with its own uncertainties,
+and its second carries the reduced E1 matrix elements behind them. The reading was
+cross-checked against this record's own sums where both exist, agreeing to
+0.04 per cent on 6S and 0.7 on 7S.
+
+| rung | drive (nm) | static alpha(upper), a.u. | differential at the drive |
+|---|---|---|---|
+| 4D | 1033.30 | 541(26) | owed |
+| 6S | 993.42 | 5169(21) | -1144.62 |
+| 5D | 778.10 | 17500(150) | 28648.70 |
+| 7S | 760.13 | 32630(140) | 4371.66 |
+| 6D | 697.45 | 91580(620) | owed |
+| 8S | 688.56 | 133200(650) | owed |
+| 7D | 660.77 | not in the table | owed |
+| 9S | 655.78 | 417200(2200) | owed |
+
+**The table is static and the campaign's differential is not.** Equation 8 of
+that paper carries no frequency. At 688.6 nm the 8S to 5P denominator is
+-16467 cm-1 against a photon of 14523, so the dynamic value is nowhere near the
+static one. What the static column does is rank the rungs and close a dynamic
+sum at zero frequency. The differential column stays owed, and its route is
+that paper's matrix elements summed on NIST energies. Register A143 carries the working,
+including a Coulomb-approximation build this retired.
 
 ### A selection criterion the menu was choosing without: the thermal field
 
@@ -80,16 +136,19 @@ factor of two in drive wavelength:
 
 | upper | 2-photon | nearest nP gap | hν/kT at 130 °C | occupation number | verdict |
 |---|---|---|---|---|---|
-| 4D_J | 1033 nm | 2.30 µm | 15.5 | 1.8e−7 | negligible |
+| 4D_J | 1033.3 nm | 2.30 µm | 15.5 | 1.8e−7 | negligible |
 | **6S₁/₂** | **993 nm** | **2.79 µm** | **12.8** | **2.8e−6** | **negligible** |
-| 5D₅/₂ | 778 nm | 5.22 µm | 6.8 | 1.1e−3 | watch |
-| 7S₁/₂ | 760 nm | 6.58 µm | 5.4 | 4.4e−3 | watch |
-| 8S₁/₂ | 697 nm | 12.13 µm | 2.9 | 5.6e−2 | **matters** |
-| 9S₁/₂ | 660 nm | 22.26 µm | 1.6 | 2.5e−1 | **matters** |
+| 5D₅/₂ | 778 nm | 5.23 µm | 6.8 | 1.1e−3 | watch |
+| 7S₁/₂ | 760 nm | 6.56 µm | 5.4 | 4.4e−3 | watch |
+| 6D_J | 697 nm | 12.42 µm | 2.9 | 6.0e−2 | **matters** |
+| 8S₁/₂ | 689 nm | 12.68 µm | 2.8 | 6.4e−2 | **matters** |
+| 7D_J | 661 nm | 24.19 µm | 1.5 | 3.0e−1 | **matters** |
+| 9S₁/₂ | 656 nm | 21.69 µm | 1.6 | 2.4e−1 | **matters** |
 
-Upper-state energies are the verified two-photon wavelengths of the table above,
-and the nP ladder is this package's own `LINES_5S`
-(`scripts/run_campaign_conditions.py`). A quarter of a photon per mode at 9S
+Upper-state energies and the nP ladder both come from
+[`results/transition_ladder.csv`](../results/transition_ladder.csv) now, which
+is why two rows moved on 2026-09-09: this table declared it took its energies
+from the menu above, and it did, including the two the menu had mislabelled. A quarter of a photon per mode at 9S
 means blackbody transfer out of the upper state at a fair fraction of its own
 decay rate, which is a systematic rather than a footnote, and it grows with cell
 temperature exactly where the collisional programme wants to go. On 6S it is two
@@ -105,8 +164,9 @@ The blunt consequence: **no single set covers everything.** The question is
 which set is in *your* SolsTiS. If it is **700–1000 nm**, then 6S (993, near the red
 edge), 5D (778) and 7S (760) are all reachable with **the same optics**, so the whole
 near-IR program needs no laser-optics swap, only the 420 nm detection change. If it
-is **950–1050 nm**, 993 and 4D (1033) are easy but 5D/7S require an optics-set swap.
-8S needs the dedicated 670–710 blue set. 9S (660) and any >1000 work are custom.
+is **950–1050 nm**, 993 and 4D (1033.3) are easy but 5D/7S require an optics-set swap.
+8S (688.6) needs the dedicated 670–710 blue set. 6D (697.5) sits in that same
+set, while 7D (660.8), 9S (655.8) and any >1000 work are custom.
 
 ### Your laser (M-Squared SolsTiS + Coherent Verdi V18 @ 18.5 A)
 
@@ -135,6 +195,8 @@ is **950–1050 nm**, 993 and 4D (1033) are easy but 5D/7S require an optics-set
 Three things fall out. (i) **5D and 7S sit in the Ti:Sapph sweet spot** (more power,
 easier lock than the 993 nm red edge). (ii) **The whole upper ladder shares one
 detection channel**, 420 nm (6P→5S blue fluorescence), which serves 5D, 7S, 8S *and* 9S,
+and, on the same cascade, the 6D and 7D rungs the corrected table adds, an
+assignment made here from the level structure and not yet from a held source,
 because they all cascade through 6P. Only 6S is the near-IR (795 nm) outlier. So
 the detection swap noted above (the 795 nm filters → a 420 nm bandpass + a
 blue-sensitive PMT) is a **prerequisite for every upper-ladder transition**, and one
@@ -166,7 +228,7 @@ the current near-IR path does not pass. So:
   question of the same kind asked in the other direction just below: whether the
   installed 795 nm passband passes those lines, and whether it blocks a 760 nm
   drive.
-- The payoff is broad: **one 420 nm path serves 5D, 7S, 8S and 9S together** (all
+- The payoff is broad: **one 420 nm path serves 5D, 6D, 7S, 7D, 8S and 9S together** (all
   via 6P→5S), so a single detection upgrade reaches the whole upper program.
 - Caveat on signal: the 420 nm branching ratio is favourable for 5D and 7S but
   **dilutes for 8S/9S** (more open decay channels), compounding their blue-edge
@@ -422,21 +484,38 @@ assumption set in [results/projections.csv](../results/projections.csv).
 **What the three differentials cost in drive power.** They span a factor of
 twenty-five, and the light shift is what limits the drive long before the
 available power does. Fixing the ceiling at the power where the on-axis shift
-reaches one tenth of the width the dataset measures, at the dataset's own 64 µm
-waist and 0.94 retro ratio, gives the 993 nm ceiling of 332 mW, the 760 nm
-ceiling of 87 mW and the 778 nm ceiling of 13 mW. The 993 nm figure sits above
-the campaign's own 225 mW maximum, so that rung is not capped at all. The other
-two are, and because the two-photon rate goes as the square of the intensity, a
-width precision measured at the dataset's power degrades in proportion when the
-drive is capped. On the 760 nm rung the projected self-broadening precision goes
-from about 8 to about 18 kHz per mTorr and the adjudication keeps a ceiling
-margin of 2.0, so it still holds and 6.7 repeats of the design would buy the
-uncapped precision back. On the 778 nm rung it goes from about 8 to about
-108 kHz per mTorr and the factor-two test drops to a ceiling margin of 0.12,
-which is the one result in this file the ceiling takes away. About 66 repeats would
-restore its power. The ceiling goes as the square of the waist, so a looser
-focus raises it, at the cost of transit width and of the density lever, and this
-file does not cost that exchange.
+reaches one tenth of the width the dataset measures, at 0.94 retro ratio and at
+**each rung's own achievable waist**, gives the 993 nm ceiling of 332 mW, the
+760 nm ceiling of 50 mW and the 778 nm ceiling of 8 mW. The 993 nm
+figure sits above the campaign's own 225 mW maximum, so that rung is not capped
+at all.
+
+**The waist is per rung and not per bench, and this paragraph said otherwise
+until 2026-09-09.** A drive of wavelength λ focused by the same f = 150 mm lens
+with the same input beam reaches `w0 = λf/(πw_in)`, so the measured 64 µm at
+993.4 nm becomes [48.59](../results/projections.csv "ref:projections:input_rung_waist_at_drive:760 nm, 5S to 7S") µm at 760.1 nm and [49.78](../results/projections.csv "ref:projections:input_rung_waist_at_drive:778 nm, 5S to 5D5/2") µm at 778.1 nm, and the
+on-axis shift, going as the inverse square of the waist, is larger than a
+common-waist reading gives by 1.74 and 1.65. The earlier ceilings of 87 and
+13 mW held all three rungs at the 993 nm waist, which no single lens reaches
+away from that wavelength. `results/projections.csv` now carries both readings:
+`proj_light_shift_ceiling` holds the geometry so the rungs differ only by their
+polarizability, and `proj_light_shift_ceiling_at_drive_waist` is what a bench
+runs at. The residual uncertainty is the input beam, which the record does not
+pin: an unclipped resonator mode in place of an aperture-limited one raises the
+two capped ceilings to 65 and 10 mW, so the correction is bounded and one-signed.
+
+Because the two-photon rate goes as the square of the intensity, a width
+precision measured at the dataset's power degrades in proportion when the drive
+is capped. On the 760 nm rung the projected self-broadening precision goes from
+about 8 to about **31** kHz per mTorr and the adjudication keeps a ceiling
+margin of **1.2**, so it still holds, by less than the earlier reading of 2.0
+suggested, and **20** repeats of the design would buy the uncapped precision
+back. On the 778 nm rung it goes from about 8 to about **179** kHz per mTorr and
+the factor-two test drops to a ceiling margin of **0.07**, which is the one
+result in this file the ceiling takes away. About **181** repeats would restore
+its power. The ceiling goes as the square of the waist, so a looser focus raises
+it, at the cost of transit width and of the density lever, and this file does not
+cost that exchange.
 
 **Magic wavelengths: a family that moves along the ladder.** The way the zero
 crossings of Δα move with n is a map in its own right, and the three rungs this
@@ -779,8 +858,8 @@ the assumption set behind each figure carried in
 |---|---|---|---|---|---|
 | beam profile w₀ | about an afternoon, no physics run (`PLAN.md` §9 D4, §4.1) | measured geometry under every absolute number in the record, applied retroactively | nothing, but the number may not carry back to the 2025 bench | an intensity axis good to about 15 percent once the differential transit width is folded in | no line is driven, so no source question |
 | fixed-lock cell session | about eight days at the cell, ordered so any prefix is useful (`PLAN.md` §9) | three bounds converted into measured coefficients (`PLAN.md` §1) | β_self may stay a bound, and the shape channel may stay below noise | 0.09 MHz on S₀(225 mW) from one morning of power cycling, and the expected β_self resolved at about 10 sigma | the Ti:Sapph on the bench, at 0.68 of the 993 nm ceiling of 332 mW, so this is the one rung the ceiling does not make it unnecessary. A diode-seeded ytterbium fibre amplifier would be at its band edge and that reach is unconfirmed here |
-| 7S rung, 760 nm | a laser retune, and no new detection path if two datasheet questions answer favourably (§3.2) | a self-broadening rate that adjudicates two published values differing by 2.6 | a bound rather than a rate, and a blue detection build if the filter answer goes the other way | about 8 kHz per mTorr at the dataset's own drive power, a fourfold margin over what the adjudication needs, and about 18 at the light-shift ceiling where the adjudication keeps a ceiling margin of 2.0 | an extended-cavity diode laser with a tapered amplifier clears the 760 nm ceiling of 87 mW, so the Ti:Sapph is unnecessary. No note in `lit/` states that amplifier's output at 760 nm, so the class is established practice rather than a held citation |
-| 778 nm rung | a detection change plus a second source for the scan (§3.1) | the method tested against coefficients published to better than 2% | no new coefficient by design, and the scan needs two mode-matched beams | about 8 kHz per mTorr at the dataset's own drive power, which is 20 percent of the published coefficient, and about 108 at the light-shift ceiling where the factor-two test drops to a ceiling margin of 0.12 | a 1556 nm fibre amplifier with second-harmonic generation, the compact-clock architecture of [feng2026](lit/feng2026.md) and [li2024b](lit/li2024b.md), at 2.3 times the 778 nm ceiling on that demonstration's own 30 mW, so the Ti:Sapph is unnecessary |
+| 7S rung, 760 nm | a laser retune, and no new detection path if two datasheet questions answer favourably (§3.2) | a self-broadening rate that adjudicates two published values differing by 2.6 | a bound rather than a rate, and a blue detection build if the filter answer goes the other way | about 8 kHz per mTorr at the dataset's own drive power, a fourfold margin over what the adjudication needs, and about 31 at the light-shift ceiling where the adjudication keeps a ceiling margin of 1.2 | an extended-cavity diode laser with a tapered amplifier clears the 760 nm ceiling of 50 mW, so the Ti:Sapph is unnecessary. No note in `lit/` states that amplifier's output at 760 nm, so the class is established practice rather than a held citation |
+| 778 nm rung | a detection change plus a second source for the scan (§3.1) | the method tested against coefficients published to better than 2% | no new coefficient by design, and the scan needs two mode-matched beams | about 8 kHz per mTorr at the dataset's own drive power, which is 20 percent of the published coefficient, and about 179 at the light-shift ceiling where the factor-two test drops to a ceiling margin of 0.07 | a 1556 nm fibre amplifier with second-harmonic generation, the compact-clock architecture of [feng2026](lit/feng2026.md) and [li2024b](lit/li2024b.md), at 3.7 times the 778 nm ceiling on that demonstration's own 30 mW, so the Ti:Sapph is unnecessary |
 | O-band null at 1297.5 nm | one telecom-band diode and its wavemeter, no Ti:Sapph time, riding any cell session (§5.1, Paper D) | the 6S to 7P matrix element by frequency metrology where no measurement exists, a sign-reversal test of the asymmetry channel, and a calibrated shift injector | the delivered perturber intensity at the cell could undershoot, stretching the localization beyond the useful range | root located to about 26 pm at the projected 92 kHz shift precision, reading the 7P residue near 3% | a commodity O-band diode, no ceiling issue at these powers |
 | wide-scan Doppler pedestal | an acquisition setting on any session that runs at all, no hardware and no lock quality | an in-situ gas thermometer, and the retro ratio only under an attenuator scan, on the same traces | the pedestal may not separate from the scattered-light background, and the area ratio is flat in ρ near one | the design reaches both in about two hours each, and section 8 gives the arithmetic and the assumptions | the drive itself, swept wide. The pedestal is 942 MHz wide on the transition axis at 130 °C, so no new source and no lock is involved |
 | doubling stage | new hardware, none on the bench, unpriced | a resonant 420 nm source and an independent density read (§3.4) | nothing publishable on its own | not projected, since nothing here models its rates | the doubling stage is its own source, and a one-photon line carries no two-photon light-shift ceiling |
@@ -1089,7 +1168,7 @@ cm⁻³ and could stay a bound, which would still separate the two published 7S
 values if the bound landed below the higher of them. The 778 nm rung is the
 exposed one, because its light-shift ceiling leaves the factor-two test short
 and [CLAIMS.md](CLAIMS.md) §4 states the consequence, that at this waist the
-calibration would need about seventy times the session length before it could
+calibration would need about a hundred and eighty times the session length before it could
 catch even a convention error.
 
 **Rank and reason.** Second. The 6S and 7S core is a laser retune away from a
@@ -1205,7 +1284,7 @@ per-point precision on the shift observable rather than the wavelength axis.
 
 **How it could come back empty.** The most exposed of the four. The light-shift
 ceiling at this rung leaves the factor-two test short, so on the design as it
-stands the calibration would need about seventy times the session length before
+stands the calibration would need about a hundred and eighty times the session length before
 it could catch even a convention error, and [CLAIMS.md](CLAIMS.md) §4 states
 that the audience is served by a longer session or a looser focus rather than by
 this design. The skew is contamination-prone, from shot noise and from

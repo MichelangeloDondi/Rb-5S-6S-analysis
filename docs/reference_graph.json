@@ -344,7 +344,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 198,
+    "line": 225,
     "writes": "0.051"
    },
    {
@@ -1191,7 +1191,7 @@
    },
    {
     "file": "results/README.md",
-    "line": 77,
+    "line": 78,
     "writes": "0.000"
    }
   ],
@@ -1212,6 +1212,11 @@
     "writes": "-56.972"
    },
    {
+    "file": "docs/methods/03_the_ac_stark_ramp.md",
+    "line": 397,
+    "writes": "-56.972"
+   },
+   {
     "file": "docs/methods/04_the_composite_model.md",
     "line": 252,
     "writes": "-56.972"
@@ -1223,7 +1228,7 @@
    },
    {
     "file": "results/README.md",
-    "line": 77,
+    "line": 78,
     "writes": "-56.972"
    }
   ],
@@ -1240,7 +1245,7 @@
    },
    {
     "file": "results/README.md",
-    "line": 77,
+    "line": 78,
     "writes": "3.247"
    }
   ],
@@ -1266,8 +1271,13 @@
     "writes": "89.701"
    },
    {
+    "file": "docs/wiki/third-cumulant.md",
+    "line": 297,
+    "writes": "89.701"
+   },
+   {
     "file": "results/README.md",
-    "line": 77,
+    "line": 78,
     "writes": "89.701"
    }
   ],
@@ -1382,6 +1392,11 @@
     "writes": "0.000"
    },
    {
+    "file": "docs/methods/03_the_ac_stark_ramp.md",
+    "line": 393,
+    "writes": "0.000"
+   },
+   {
     "file": "docs/methods/04_the_composite_model.md",
     "line": 249,
     "writes": "0.000"
@@ -1394,6 +1409,11 @@
    {
     "file": "docs/plan/12_open-apparatus-items.md",
     "line": 110,
+    "writes": "0.000"
+   },
+   {
+    "file": "docs/wiki/third-cumulant.md",
+    "line": 299,
     "writes": "0.000"
    }
   ],
@@ -1409,13 +1429,18 @@
     "writes": "-0.265"
    },
    {
+    "file": "docs/methods/03_the_ac_stark_ramp.md",
+    "line": 396,
+    "writes": "-0.265"
+   },
+   {
     "file": "docs/plan/12_open-apparatus-items.md",
     "line": 112,
     "writes": "-0.265"
    },
    {
     "file": "results/README.md",
-    "line": 77,
+    "line": 78,
     "writes": "-0.265"
    }
   ],
@@ -1428,6 +1453,11 @@
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
     "line": 107,
+    "writes": "106.911"
+   },
+   {
+    "file": "docs/methods/03_the_ac_stark_ramp.md",
+    "line": 399,
     "writes": "106.911"
    },
    {
@@ -1456,8 +1486,13 @@
     "writes": "106.911"
    },
    {
+    "file": "docs/wiki/third-cumulant.md",
+    "line": 296,
+    "writes": "106.911"
+   },
+   {
     "file": "results/README.md",
-    "line": 77,
+    "line": 78,
     "writes": "106.911"
    }
   ],
@@ -2126,7 +2161,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 314,
+    "line": 341,
     "writes": "0.9610"
    }
   ],
@@ -2138,7 +2173,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 316,
+    "line": 343,
     "writes": "0.9279"
    }
   ],
@@ -2150,7 +2185,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 321,
+    "line": 348,
     "writes": "-2.46"
    }
   ],
@@ -2167,7 +2202,7 @@
    },
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 318,
+    "line": 345,
     "writes": "-1.97"
    },
    {
@@ -2184,7 +2219,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 325,
+    "line": 352,
     "writes": "1.117"
    },
    {
@@ -2201,7 +2236,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 332,
+    "line": 359,
     "writes": "0.97"
    },
    {
@@ -2218,7 +2253,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 328,
+    "line": 355,
     "writes": "1.691"
    },
    {
@@ -2235,7 +2270,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 301,
+    "line": 328,
     "writes": "0.26"
    },
    {
@@ -2270,6 +2305,30 @@
   ],
   "source_file": "results/prediction_band.csv",
   "source_value": "76.0"
+ },
+ "projections:input_rung_waist_at_drive:760 nm, 5S to 7S": {
+  "producer": "run_projections.py",
+  "quoting_sites": [
+   {
+    "file": "docs/FUTURE_TRANSITIONS_titsapph.md",
+    "line": 496,
+    "writes": "48.59"
+   }
+  ],
+  "source_file": "results/projections.csv",
+  "source_value": "48.5895"
+ },
+ "projections:input_rung_waist_at_drive:778 nm, 5S to 5D5/2": {
+  "producer": "run_projections.py",
+  "quoting_sites": [
+   {
+    "file": "docs/FUTURE_TRANSITIONS_titsapph.md",
+    "line": 496,
+    "writes": "49.78"
+   }
+  ],
+  "source_file": "results/projections.csv",
+  "source_value": "49.7754"
  },
  "saturation_companion:C3d:factor_with_saturation_ratio_-1p2362": {
   "producer": null,
@@ -2771,7 +2830,7 @@
    },
    {
     "file": "results/README.md",
-    "line": 280,
+    "line": 281,
     "writes": "0.396"
    }
   ],
@@ -2788,7 +2847,7 @@
    },
    {
     "file": "results/README.md",
-    "line": 280,
+    "line": 281,
     "writes": "0.316"
    }
   ],
@@ -2868,7 +2927,7 @@
    },
    {
     "file": "docs/wiki/third-cumulant.md",
-    "line": 317,
+    "line": 369,
     "writes": "0.0240"
    }
   ],
@@ -2907,7 +2966,7 @@
    },
    {
     "file": "docs/wiki/third-cumulant.md",
-    "line": 319,
+    "line": 371,
     "writes": "10.0664"
    }
   ],
@@ -2966,7 +3025,7 @@
    },
    {
     "file": "docs/wiki/third-cumulant.md",
-    "line": 301,
+    "line": 353,
     "writes": "0.00203"
    },
    {
@@ -3005,7 +3064,7 @@
    },
    {
     "file": "docs/wiki/third-cumulant.md",
-    "line": 307,
+    "line": 359,
     "writes": "0.00064"
    }
   ],
@@ -3120,7 +3179,7 @@
    },
    {
     "file": "docs/wiki/third-cumulant.md",
-    "line": 300,
+    "line": 352,
     "writes": "0.0136"
    },
    {
@@ -3164,7 +3223,7 @@
    },
    {
     "file": "docs/wiki/third-cumulant.md",
-    "line": 306,
+    "line": 358,
     "writes": "0.0022"
    }
   ],
@@ -3627,6 +3686,196 @@
   ],
   "source_file": "results/transit_additivity.csv",
   "source_value": "0.973 to 0.980"
+ },
+ "transition_ladder:4D:waist_aperture_limited": {
+  "producer": "run_transition_ladder.py",
+  "quoting_sites": [
+   {
+    "file": "results/README.md",
+    "line": 77,
+    "writes": "66.644"
+   }
+  ],
+  "source_file": "results/transition_ladder.csv",
+  "source_value": "66.644"
+ },
+ "transition_ladder:6D:drive_wavelength_err": {
+  "producer": "run_transition_ladder.py",
+  "quoting_sites": [
+   {
+    "file": "results/README.md",
+    "line": 77,
+    "writes": "0.35"
+   }
+  ],
+  "source_file": "results/transition_ladder.csv",
+  "source_value": "0.35"
+ },
+ "transition_ladder:6D:waist_aperture_limited": {
+  "producer": "run_transition_ladder.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/03_optics-protocol.md",
+    "line": 112,
+    "writes": "44.455"
+   }
+  ],
+  "source_file": "results/transition_ladder.csv",
+  "source_value": "44.455"
+ },
+ "transition_ladder:6S:collection_z_ratio": {
+  "producer": "run_transition_ladder.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/03_optics-protocol.md",
+    "line": 136,
+    "writes": "0.2605"
+   },
+   {
+    "file": "results/README.md",
+    "line": 77,
+    "writes": "0.2605"
+   }
+  ],
+  "source_file": "results/transition_ladder.csv",
+  "source_value": "0.2605"
+ },
+ "transition_ladder:6S:transit_fwhm": {
+  "producer": "run_transition_ladder.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/03_optics-protocol.md",
+    "line": 153,
+    "writes": "0.958"
+   }
+  ],
+  "source_file": "results/transition_ladder.csv",
+  "source_value": "0.9575"
+ },
+ "transition_ladder:7S:collection_z_ratio": {
+  "producer": "run_transition_ladder.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/03_optics-protocol.md",
+    "line": 137,
+    "writes": "0.3459"
+   }
+  ],
+  "source_file": "results/transition_ladder.csv",
+  "source_value": "0.3459"
+ },
+ "transition_ladder:7S:transit_fwhm": {
+  "producer": "run_transition_ladder.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/03_optics-protocol.md",
+    "line": 152,
+    "writes": "1.261"
+   }
+  ],
+  "source_file": "results/transition_ladder.csv",
+  "source_value": "1.2611"
+ },
+ "transition_ladder:7S:waist_aperture_limited": {
+  "producer": "run_transition_ladder.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/03_optics-protocol.md",
+    "line": 111,
+    "writes": "48.589"
+   }
+  ],
+  "source_file": "results/transition_ladder.csv",
+  "source_value": "48.589"
+ },
+ "transition_ladder:8S:drive_wavelength_err": {
+  "producer": "run_transition_ladder.py",
+  "quoting_sites": [
+   {
+    "file": "results/README.md",
+    "line": 77,
+    "writes": "0.0454"
+   }
+  ],
+  "source_file": "results/transition_ladder.csv",
+  "source_value": "0.0454"
+ },
+ "transition_ladder:9S:collection_z_ratio": {
+  "producer": "run_transition_ladder.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/03_optics-protocol.md",
+    "line": 138,
+    "writes": "0.4051"
+   },
+   {
+    "file": "results/README.md",
+    "line": 77,
+    "writes": "0.4051"
+   }
+  ],
+  "source_file": "results/transition_ladder.csv",
+  "source_value": "0.4051"
+ },
+ "transition_ladder:9S:waist_aperture_limited": {
+  "producer": "run_transition_ladder.py",
+  "quoting_sites": [
+   {
+    "file": "results/README.md",
+    "line": 77,
+    "writes": "41.705"
+   }
+  ],
+  "source_file": "results/transition_ladder.csv",
+  "source_value": "41.705"
+ },
+ "waist_ladder:rung:0.250000:k3_one_photon_over_two": {
+  "producer": "run_waist_ladder.py",
+  "quoting_sites": [
+   {
+    "file": "docs/methods/03_the_ac_stark_ramp.md",
+    "line": 170,
+    "writes": "1.7626"
+   }
+  ],
+  "source_file": "results/waist_ladder.csv",
+  "source_value": "1.762622"
+ },
+ "waist_ladder:rung:0.390625:k3_one_photon_over_two": {
+  "producer": "run_waist_ladder.py",
+  "quoting_sites": [
+   {
+    "file": "docs/methods/03_the_ac_stark_ramp.md",
+    "line": 169,
+    "writes": "3.0818"
+   }
+  ],
+  "source_file": "results/waist_ladder.csv",
+  "source_value": "3.081768"
+ },
+ "waist_ladder:rung:0.625000:k3_one_photon_over_two": {
+  "producer": "run_waist_ladder.py",
+  "quoting_sites": [
+   {
+    "file": "docs/methods/03_the_ac_stark_ramp.md",
+    "line": 168,
+    "writes": "0.5005"
+   }
+  ],
+  "source_file": "results/waist_ladder.csv",
+  "source_value": "0.500548"
+ },
+ "waist_ladder:rung:1.000000:k3_one_photon_over_two": {
+  "producer": "run_waist_ladder.py",
+  "quoting_sites": [
+   {
+    "file": "docs/methods/03_the_ac_stark_ramp.md",
+    "line": 167,
+    "writes": "0.0129"
+   }
+  ],
+  "source_file": "results/waist_ladder.csv",
+  "source_value": "0.012866"
  },
  "window_attribution:window_attributed_pct:peak_power": {
   "producer": "run_window_attribution.py",

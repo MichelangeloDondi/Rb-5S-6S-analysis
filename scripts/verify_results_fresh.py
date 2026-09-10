@@ -116,6 +116,11 @@ CHEAP = {
     "run_fringe_tail": ["fringe_tail.csv"],
     "run_window_attribution": ["window_attribution.csv"],
     "run_centre_fisher": ["centre_fisher.csv"],
+    # seconds: one least-squares fit and closed forms, no raw trace and no
+    # simulation. IT SAT IN EXPENSIVE FOR ONE GATE with this same comment
+    # beside it saying it belonged here, which is a note contradicting its own
+    # code and is why the gate of 2026-09-09 never checked it.
+    "run_transition_ladder": ["transition_ladder.csv"],
 }
 
 # Minutes each, or needing data_raw/ traces, or both - everything the

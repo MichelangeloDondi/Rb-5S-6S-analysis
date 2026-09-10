@@ -249,47 +249,13 @@ def rung_wavelength_nm(e_upper_cm: float) -> float:
     return 2e7 / e_upper_cm
 
 
-def delta_alpha_5d_anchored(lam_nm: float) -> float:
-    """alpha(5D5/2) - alpha(5S) at lam_nm, a.u., by the Hamilton-anchored
-    construction of docs/FUTURE_TRANSITIONS_titsapph.md section 3.3.
-
-    5D5/2 is not recomputed from scratch anywhere in this repository, for the
-    reasons the Ti:Sapph block header of rb5s6s.polarizability gives: it is a
-    J = 5/2 state with a tensor term and nF couplings this repository holds no
-    matrix elements for. What that header does license is the shape of the
-    differential near 776 nm from the one verified near-resonant pole, anchored
-    on Hamilton's measured magic wavelength.
-
-    So the construction is two statements and no free parameter. The measured
-    magic wavelength is where the differential crosses zero. Away from it the
-    differential moves by the near-resonant 5P3/2 to 5D5/2 term, evaluated with
-    Hamilton's own measured reduced matrix element and the module's J = 5/2
-    prefactor, minus the motion of alpha(5S), which the module computes from
-    its own line list and which is itself steep here because 778 nm sits close
-    to the D2 line. Everything else in alpha(5D5/2) is slowly varying across
-    the 1.9 nm between the magic wavelength and the drive, and it cancels
-    between the two evaluations, so it never has to be known.
-
-    SCALAR ONLY, and the number is an envelope rather than a calculation. The
-    tensor term and the hyperfine state dependence Hamilton measures are not
-    carried, so this states the size of the differential at the drive and not
-    the shift of any one hyperfine component."""
-    def pole_term(lam):
-        line = ((pol.E_5P32_CM, pol.RME_5P32_5D52, 0.0),)
-        return pol._alpha(line, lam, pol.E_5D52_CM, prefactor=1.0 / 18.0)
-
-    mag = pol.MAGIC_5S5D52_EXP_NM
-    return ((pole_term(lam_nm) - pole_term(mag))
-            - (pol.alpha_5s(lam_nm) - pol.alpha_5s(mag)))
-
-
 # The three rungs, each with the differential polarizability it is entitled to.
 RUNGS = (
     ("993 nm, 5S to 6S", pol.E_6S_CM, pol.delta_alpha,
      "rb5s6s.polarizability.delta_alpha"),
     ("760 nm, 5S to 7S", pol.E_7S_CM, pol.delta_alpha_7s,
      "rb5s6s.polarizability.delta_alpha_7s"),
-    ("778 nm, 5S to 5D5/2", pol.E_5D52_CM, delta_alpha_5d_anchored,
+    ("778 nm, 5S to 5D5/2", pol.E_5D52_CM, pol.delta_alpha_5d,
      "docs/FUTURE_TRANSITIONS_titsapph.md 3.3, docs/lit/hamilton2023.md"),
 )
 
@@ -524,9 +490,14 @@ def project_ceilings(rows, inp) -> dict:
          "measured on the 993 nm line and carried unchanged to the other two "
          "rungs, because at this waist the transit and laser terms that "
          "dominate it are set by the geometry and the instrument rather than "
-         "by the rung. The upper-state natural widths do differ, and this "
-         "repository holds no 7S lifetime, so the carry is an assumption and "
-         "not a derivation. It runs against the 778 nm rung: that upper state "
+         "by the rung. The upper-state natural widths do differ, and the "
+         "carry is an assumption and not a derivation. THIS SENTENCE SAID THE "
+         "REPOSITORY HOLDS NO 7S LIFETIME until 2026-09-10: it holds 88.07(40) "
+         "ns as constants.TAU_7S_S, from the Safronova 2011 table this record "
+         "already reads, and the transition ladder now carries the width in "
+         "its ceiling rows. What stays an assumption here is the TOTAL "
+         "homogeneous width, which the transit and laser terms dominate at "
+         "this waist. It runs against the 778 nm rung: that upper state "
          "is narrower than 6S, so its true width is smaller and its true "
          "ceiling lower than the row below",
          "results/linefit_conditions.csv")
@@ -535,9 +506,22 @@ def project_ceilings(rows, inp) -> dict:
     for label, e_upper_cm, d_alpha_fn, source in RUNGS:
         lam = rung_wavelength_nm(e_upper_cm)
         d_alpha = abs(float(d_alpha_fn(lam)))
-        s0_per_w = lineshape.stark_shift_S0_mhz(
+        # The waist is a function of the drive wavelength, not a property of
+        # the bench alone: w0 = lambda f / (pi w_in). Until 2026-09-09 every
+        # rung here was evaluated at K.W0_MEASURED_M, the waist measured at
+        # 993 nm, so two of the three ceilings described a focus no single
+        # lens reaches (A137). Both readings are emitted: the common-waist one
+        # isolates the polarizability, the drive-waist one is what this bench
+        # would actually run at, and the latter is what feeds the margins.
+        w0_drive = K.waist_at_drive(lam, input_beam="aperture")
+        w0_drive_alt = K.waist_at_drive(lam, input_beam="resonator")
+        s0_per_w_common = lineshape.stark_shift_S0_mhz(
             1.0, K.W0_MEASURED_M, K.RHO_RETRO, d_alpha)
-        ceiling_w = CEILING_WIDTH_FRACTION * width / s0_per_w
+        ceiling_common_w = CEILING_WIDTH_FRACTION * width / s0_per_w_common
+        ceiling_w = CEILING_WIDTH_FRACTION * width / lineshape.stark_shift_S0_mhz(
+            1.0, w0_drive, K.RHO_RETRO, d_alpha)
+        ceiling_alt_w = CEILING_WIDTH_FRACTION * width / lineshape.stark_shift_S0_mhz(
+            1.0, w0_drive_alt, K.RHO_RETRO, d_alpha)
         derate = max(1.0, QUOTE_P_W / ceiling_w)
         geometry = (f"free space at the dataset geometry, waist "
                     f"{K.W0_MEASURED_M * 1e6:.0f} um and retro ratio "
@@ -553,13 +537,42 @@ def project_ceilings(rows, inp) -> dict:
              "5 percent low if the pinned value is right. The 778 nm value is "
              "scalar only",
              source)
-        _add(rows, "proj_light_shift_ceiling", label, ceiling_w * 1e3, None, "mW",
+        _add(rows, "proj_light_shift_ceiling", label, ceiling_common_w * 1e3,
+             None, "mW",
              f"{CEILING_WIDTH_FRACTION:.2f} x the line width divided by the "
-             "on-axis shift per watt",
+             "on-axis shift per watt, every rung held at the reference waist",
              geometry + f", and the preregistered fraction of "
              f"{CEILING_WIDTH_FRACTION:.2f} fixed in the producer before any "
-             "rung was evaluated",
+             "rung was evaluated. The common waist is a comparison and not a "
+             "configuration: it holds the geometry so the rungs differ only by "
+             "their polarizability, and no single lens reaches it away from "
+             f"{K.W0_REFERENCE_LAMBDA_NM:.1f} nm. The row below is the one a "
+             "bench runs at",
              "rb5s6s.lineshape.stark_shift_S0_mhz, results/linefit_conditions.csv")
+        _add(rows, "input_rung_waist_at_drive", label, w0_drive * 1e6, None, "um",
+             "the reference waist scaled to this rung's own drive wavelength "
+             "through the same lens and the same input beam",
+             f"rb5s6s.constants.waist_at_drive, aperture-limited input beam, "
+             f"the f = {K.DRIVE_LENS_F_M * 1e3:.0f} mm plano-convex L1 with its "
+             f"own dispersion, focal length {K.drive_lens_focal_m(lam) * 1e3:.2f} "
+             f"mm here. The unclipped-resonator reading is "
+             f"{w0_drive_alt * 1e6:.2f} um and the pair brackets the input-beam "
+             "regime the record does not pin (A136)",
+             "rb5s6s.constants.waist_at_drive, docs/APPARATUS.md 1.2")
+        _add(rows, "proj_light_shift_ceiling_at_drive_waist", label,
+             ceiling_w * 1e3, None, "mW",
+             f"{CEILING_WIDTH_FRACTION:.2f} x the line width divided by the "
+             "on-axis shift per watt at this rung's own achievable waist",
+             "the bench-facing ceiling, and the one the derating and the "
+             "margins below are computed from. It is never above the "
+             "common-waist row away from the reference wavelength, because a "
+             "shorter drive focuses tighter through the same lens and the "
+             "shift goes as the inverse square of the waist. The "
+             "unclipped-resonator bracket gives "
+             f"{ceiling_alt_w * 1e3:.2f} mW, so the regime the record does not "
+             "pin moves this row by "
+             f"{abs(ceiling_alt_w / ceiling_w - 1.0) * 100:.0f} per cent",
+             "rb5s6s.constants.waist_at_drive, rb5s6s.lineshape.stark_shift_S0_mhz")
         _add(rows, "proj_ceiling_signal_derating", label, derate, None,
              "dimensionless",
              "the dataset's quoted drive power divided by the ceiling, floored "
@@ -583,7 +596,9 @@ def project_ceilings(rows, inp) -> dict:
              "results/projections.csv proj_ceiling_signal_derating")
 
         out[label] = dict(lam=lam, d_alpha=d_alpha, ceiling_w=ceiling_w,
-                          derate=derate)
+                          ceiling_common_w=ceiling_common_w,
+                          ceiling_alt_w=ceiling_alt_w,
+                          w0_drive=w0_drive, derate=derate)
     return out
 
 

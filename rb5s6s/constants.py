@@ -50,6 +50,29 @@ natural width's error with this package. A number a reader is told but cannot
 reproduce fails the standing rule that every model term carries a derivation
 or a reference, an uncertainty, and a route to re-derive it here."""
 
+# The 7S_1/2 upper state, for the transition ladder's own ceiling
+# --------------------------------------------------------------------------
+TAU_7S_S = 88.07e-9
+"""7S1/2 lifetime, 88.07(40) ns. ESTABLISHED (Safronova & Safronova, PRA 83,
+052508 (2011), Table IV, the held PDF; that table cites Gomez 45.57(17) for 6s
+on the same row set, which is the value TAU_6S_S already carries).
+
+WHY IT IS HERE (2026-09-10). `run_transition_ladder.py` computes the shift at
+which the two-photon Rabi frequency reaches a fixed fraction of the NATURAL
+WIDTH, and held that width common across the rungs, on a producer comment
+saying this repository holds no 7S lifetime. The repository holds the paper.
+With the width carried, the 7S ceiling falls from 2.715 to 1.405, the rate at
+a fixed shift rises from 0.136 to 0.262, and the rate at each rung's own
+ceiling stops being one: it IS the width ratio, so the invariance the ladder
+published was an artefact of the omission and not a result."""
+
+TAU_7S_ERR_S = 0.40e-9
+"""One sigma on TAU_7S_S, the (40) of 88.07(40) ns. ESTABLISHED, same table."""
+
+GAMMA_NAT_7S_HZ = 1.0 / (2.0 * math.pi * TAU_7S_S)
+"""Natural Lorentzian FWHM of the 5S->7S two-photon line, on the TRANSITION
+axis. CALCULATED from TAU_7S_S, the same construction as GAMMA_NAT_HZ."""
+
 GAMMA_NAT_HZ = 1.0 / (2.0 * math.pi * TAU_6S_S)
 """Natural Lorentzian FWHM of the two-photon line, 3.4925 MHz on the
 TRANSITION axis (1.746 MHz if read on the laser axis). CALCULATED from
@@ -620,6 +643,139 @@ RHO_RETRO_ERR = 0.04
 """One-sigma uncertainty on RHO_RETRO. Enters the S0 prediction band together
 with W0_BAND_M: the band corners are (w0_hi, rho - err) and (w0_lo,
 rho + err), so the widest credible prediction interval is quoted."""
+
+# --------------------------------------------------------------------------
+# The drive-path focusing lens, and the waist it makes at a given wavelength
+# --------------------------------------------------------------------------
+# A campaign that changes the drive wavelength changes the waist with it, and
+# until 2026-09-09 this repository had that relation only as prose inside
+# W0_MEASURED_M's own docstring. Register A136 and A137 record what its absence
+# cost: three drive-power ceilings computed at a waist only the 993 nm rung can
+# reach. Rung 2, closed form, no simulation.
+
+W0_REFERENCE_LAMBDA_NM = 993.4
+"""Wavelength at which W0_MEASURED_M was measured, nm.
+
+Nieddu 2019 profiled the focused cell beam on the 993 nm line through the
+f = 150 mm lens (see W0_MEASURED_M). The waist is a property of the beam AND
+the wavelength, so the measurement carries this label and does not transfer to
+another drive without `waist_at_drive` below.
+
+This is the LABEL wavelength, the one the profiling paper states. The 5S-6S
+two-photon drive derived from the NIST term energy is 993.418 nm, 0.018 nm
+away, which moves the waist by two parts in a hundred thousand and every
+ceiling built on it by four parts in a hundred thousand. The label is kept
+because it is what the measurement carries, and the residual is far below the
+measurement's own precision; a consumer that needs the two to coincide should
+pass `lam_ref_nm` explicitly."""
+
+DRIVE_LENS_F_M = 150e-3
+"""Focal length of the cell's focusing lens L1, 150 mm, at
+W0_REFERENCE_LAMBDA_NM. ESTABLISHED: stated by Nieddu 2019 for the profiled
+configuration and by APPARATUS section 1.2 for this bench's numbered component
+(4), whose twin (8) re-collimates toward the retro mirror."""
+
+DRIVE_LENS_IS_SINGLET = True
+"""Whether L1 is treated as a single element, so its focal length disperses.
+
+APPARATUS section 1.2 quotes the source describing L1 as "a plano-convex
+lens", which is a singlet, and no page records an achromat. The consequence is
+small and glass-independent (150.00 mm at 993.4 nm against 148.83 at 760.1 for
+fused silica and 148.82 for N-BK7), so a wrong reading here moves a waist by
+0.8 per cent, not by the factor the wavelength itself carries. Set False to
+model an achromat instead."""
+
+_FUSED_SILICA_SELLMEIER = ((0.6961663, 0.0684043),
+                           (0.4079426, 0.1162414),
+                           (0.8974794, 9.896161))
+"""Malitson's Sellmeier coefficients for fused silica, (B_i, C_i^0.5) with the
+wavelength in micrometres. Used only for the singlet's dispersion, where the
+answer is insensitive to the glass."""
+
+
+def refractive_index_fused_silica(lam_nm: float) -> float:
+    """Refractive index of fused silica at `lam_nm`, from the Sellmeier form.
+
+    Fails loudly outside the Sellmeier fit's range rather than returning a
+    complex or negative index from a pole.
+    """
+    if not 210.0 <= lam_nm <= 6700.0:
+        raise ValueError(
+            f"wavelength {lam_nm} nm is outside the fused-silica Sellmeier "
+            "range 210 to 6700 nm")
+    l2 = (lam_nm / 1e3) ** 2
+    return math.sqrt(1.0 + sum(B * l2 / (l2 - C ** 2)
+                               for B, C in _FUSED_SILICA_SELLMEIER))
+
+
+def drive_lens_focal_m(lam_nm: float,
+                       f_ref_m: float = DRIVE_LENS_F_M,
+                       lam_ref_nm: float = W0_REFERENCE_LAMBDA_NM,
+                       singlet: bool = DRIVE_LENS_IS_SINGLET) -> float:
+    """Focal length of L1 at `lam_nm`, m.
+
+    A singlet in air obeys the lens-maker's equation ``1/f = (n-1) dK`` with
+    the curvature term dK fixed by the glass surfaces, so ``f`` goes as
+    ``1/(n-1)`` and the reference focal length fixes dK. An achromat is
+    designed to hold f, so `singlet=False` returns `f_ref_m` unchanged.
+    """
+    if not singlet:
+        return f_ref_m
+    n_ref = refractive_index_fused_silica(lam_ref_nm)
+    return f_ref_m * (n_ref - 1.0) / (refractive_index_fused_silica(lam_nm) - 1.0)
+
+
+def waist_at_drive(lam_nm: float,
+                   w0_ref_m: float = W0_MEASURED_M,
+                   lam_ref_nm: float = W0_REFERENCE_LAMBDA_NM,
+                   *,
+                   input_beam: str,
+                   singlet: bool = DRIVE_LENS_IS_SINGLET) -> float:
+    """Focused waist at drive wavelength `lam_nm`, m, given the waist measured
+    at `lam_ref_nm` through the same lens and the same delivery.
+
+    ``w0 = lambda f / (pi w_in)``, so at a fixed lens and a fixed input beam
+    the waist is LINEAR in the drive wavelength and the on-axis light shift,
+    going as ``1/w0**2``, is quadratic in it the other way. Two things move
+    with the wavelength and this function carries both:
+
+    * ``f``, through `drive_lens_focal_m`, which is a 0.8 per cent effect;
+    * ``w_in``, the input beam radius at the lens, which the record does NOT
+      pin and which is the dominant uncertainty here (A136).
+
+    `input_beam` IS REQUIRED AND CARRIES NO DEFAULT, which is the point. The
+    record does not pin the regime, the two branches differ by 31 per cent in
+    the light shift, and a caller who did not choose must not be handed one
+    silently. It carried `= "aperture"` for one wave while this docstring and
+    the wave's own claims table both said it did not.
+
+    `input_beam` names the regime rather than hiding it:
+
+    * ``"aperture"`` -- the input beam is clipped by a fixed stop, so `w_in`
+      is common to every drive. APPARATUS section 1.2 supports this: the beam
+      is free-space from the laser through the EOM's 3 mm clear aperture and
+      an IR card recalls clipping there. The waist then goes as `lam_nm`.
+    * ``"resonator"`` -- the input beam is an unclipped fixed-geometry cavity
+      mode, whose radius goes as the root of the wavelength, so the waist goes
+      as the root of `lam_nm`.
+
+    The two bracket the truth and differ by 14 per cent in the waist between
+    993.4 and 760.1 nm. The bracket is the result until the input beam is
+    profiled, and one branch alone is not quotable. The transit width measures
+    the
+    same geometry in situ to the first power, which is how the campaign
+    decides between them (`transit_fwhm_from_w0`).
+    """
+    scale = drive_lens_focal_m(lam_nm, lam_ref_nm=lam_ref_nm,
+                               singlet=singlet) / drive_lens_focal_m(
+        lam_ref_nm, lam_ref_nm=lam_ref_nm, singlet=singlet)
+    if input_beam == "aperture":
+        return w0_ref_m * (lam_nm / lam_ref_nm) * scale
+    if input_beam == "resonator":
+        return w0_ref_m * math.sqrt(lam_nm / lam_ref_nm) * scale
+    raise ValueError(
+        f"input_beam {input_beam!r} is not one of 'aperture', 'resonator'")
+
 
 # --------------------------------------------------------------------------
 # Fluorescence collection optics

@@ -2046,6 +2046,71 @@ that the laser does not drive, and every other term does.
    multiplicative term was needed in only one of the thirty-two committed
    conditions. It may buy something on the background, which is item 9a again.
 
+### 7k. The four channels, allocated, and the band each one witnesses
+
+*Added 2026-09-10.* [Chapter 10](10_the-fixed-lock-instrument.md) states that
+four channels carry five candidates and says the allocation is made here. It
+was not, and this section makes it. The sweep synchronisation sits on the
+external trigger input, so no signal channel is spent on it.
+
+| channel | what it carries | what it is the only source of | Fourier band it witnesses |
+|---|---|---|---|
+| 1 | the cell fluorescence | the measurement | the line itself |
+| 2 | the piezo ramp monitor | a time axis independent of the scope's own knob, and the drift's coordinate | DC to about a hertz |
+| 3 | the cavity error signal | the lock's residual, per block | above the servo bandwidth |
+| 4 | contended, decided per block below | | |
+
+**Why the ramp monitor is not optional.** The archive's blocks were dated to
+each other only by file order, and the recovered clock later put peaks 54 to 76
+minutes apart where the analysis had assumed minutes. A recorded ramp gives
+every sweep its own time coordinate, which is what makes the drift a nuisance
+regressor and not an assumption.
+
+**What the cavity error channel does and does not measure, which chapter 10
+overstated.** It called this channel the in-situ laser-noise witness. It is a
+witness of part of the band and it is structurally blind over the rest. A servo
+suppresses in-loop noise below its bandwidth, so below that frequency the laser
+follows the cavity: the atoms then see the cavity's own noise, which is common
+mode to the error signal and invisible in it. The error signal reports the
+residual the loop failed to suppress and not the noise the loop imposed.
+
+That matters because of where the answer lives.
+[`kernel_k7.csv`](../../results/kernel_k7.csv) puts the band a scanned block's
+width integrates at **24 Hz to 1.5 MHz**, from one over the line-crossing time
+up to the per-point sampling rate, and laser frequency noise falls as roughly
+one over the frequency, so the low end dominates. **Which part of that band the
+error channel covers is set by the servo bandwidth, and that is an open item**
+([chapter 12](12_open-apparatus-items.md)). One transfer-function sweep closes
+it, and until it is closed this channel is a lock-health record and a partial
+noise witness, and not an independent width measurement.
+
+**The three-way stitch, which is free and which no single channel gives.**
+
+* the slow end, below about a hertz: channel 2's ramp against the fitted
+  centres, out of loop because the atoms are the discriminator.
+* the middle, 0.17 to 17 kHz: the scan-rate ladder of section 7 above, where
+  the rate sets the Fourier frequency the atoms sample and the 0.5 MHz drive
+  reaches 1.70 kHz at ten times the campaign rate and 17.0 at a hundred.
+* the fast end, above the servo bandwidth: channel 3.
+
+Stitched, that bounds the laser width across most of the band with no new
+hardware. **It does not reach the per-cent level** that
+[chapter 6](06_sizing-and-spending-rules.md) sets as the threshold for the
+width instrument to be worth its beam time, where the gain over floating the
+widths is a factor of two. A delay-line self-heterodyne is out of loop across
+the whole band by construction and is the only one of the three routes that is.
+
+**Channel 4, decided by which block is running.**
+
+| block | channel 4 | why |
+|---|---|---|
+| the comb-on ruler blocks | a marker for the modulator state | the depth is fitted from the tooth heights, and the marker is what makes the fit's abscissa a setting and not an inference |
+| the power ladder | the retro-reflected power | `rho` enters the shift as one plus itself and is never measured in the archive, and a per-sweep monitor makes a per-configuration assumption into a per-sweep one |
+| the paired guided blocks | the fibre arm's own detector | the two arms then share a sweep, a trigger and a clock, which is what makes the lock drop out of their difference |
+
+**The rule when they contend**: the retro monitor takes the channel on any
+block whose result is quoted in absolute units, because it is the only one of the three
+that enters a published number directly.
 ---
 
 *[Session sizing and spending rules](06_sizing-and-spending-rules.md) · [The acquisition record](08_the-acquisition-record.md)*

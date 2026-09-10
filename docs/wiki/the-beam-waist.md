@@ -153,6 +153,48 @@ growth that eventually turns the peak height over, at a waist inside the range
 the campaign proposes.
 [The ramp chapter](../methods/03_the_ac_stark_ramp.md) derives both.
 
+## And the drive wavelength is a knob on it, not a setting beside it
+
+The expander's magnification is not the only ratio you can know. The focused
+waist through a lens is
+
+$$w_0 = \frac{\lambda f}{\pi w_{\rm in}}$$
+
+with $w_{\rm in}$ the beam radius arriving at the lens, so **the waist is
+linear in the drive wavelength** at a fixed lens and a fixed input beam. A
+campaign that retunes the laser to another two-photon line moves the waist
+whether or not anyone touches the optics: through this bench's f = 150 mm lens
+the 64 µm measured at 993.4 nm becomes 48.59 µm at 760.1 nm and 49.78 µm at
+778.1 nm, and the light shift, going as the inverse square, is larger by 1.74
+and 1.65 at the same power. `rb5s6s.constants.waist_at_drive` computes it and
+`tests/test_drive_waist.py` guards it.
+
+Two smaller terms ride along and one open question dominates. The lens is a
+singlet, so its own focal length disperses as $1/(n-1)$, worth 150.00 mm at
+993.4 nm against 148.83 at 760.1, under a per cent. It is the same to within
+0.02 mm whether the glass is fused silica or N-BK7, so the reading does not
+turn on a fact the record lacks. The focus also moves 1.17 mm toward the lens,
+which is an eighth of a Rayleigh range and harmless for the waist but a
+third of the collection window, so the collection optics are refocused per
+wavelength or the axial-window correction is wrong by that much. **That
+fraction read a fourteenth until 2026-09-10**, which is what 1.17 mm is
+against the 993.4 nm waist's 16.93 mm Rayleigh range, and this page is the one
+that says the waist does not stay put: at the 760 nm rung's own 48.589 um the
+range is 9.758 mm. The mixed geometry the page exists to correct had survived
+inside it.
+
+**What is not known is $w_{\rm in}$**, and it is the term that decides how big
+the effect is. If the input beam is clipped by a fixed stop it is common to
+every drive and the waist follows $\lambda$. If it is an unclipped
+fixed-geometry resonator mode its radius follows $\sqrt{\lambda}$ and the
+waist does too. The two bracket the 760 nm waist at 48.59 and 55.55 µm, a
+31 per cent spread in the light shift. **The line itself settles it**: the
+transit width carries the same geometry to the first power, so the transit
+ratio between two drives is 1.317 in one regime and 1.152 in the other, a
+14 per cent separation the width precision resolves. A cross-transition ratio
+quoted without that measurement carries an unstated beam assumption, which is
+what happened here until 2026-09-09.
+
 ## What can go wrong
 
 The commonest error is a convention trap, not a measurement error: a bare

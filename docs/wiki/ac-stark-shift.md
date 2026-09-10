@@ -106,6 +106,20 @@ the record's polarizability model puts them.
 
 ## What can go wrong
 
+**The density is exact and its composition was not** (2026-09-09). Everything
+above is about the distribution of shifts. The pipeline then convolved that
+distribution with one homogeneous kernel, which is a condition and not a
+form: it holds only where the kernel is the same at every collected volume
+element. The saturation companion is keyed on the local shift, this page's own
+variable, so the broad elements are the shifted ones and the two are
+correlated where a convolution assumes them independent. The centroid survives
+that exactly, the first moment of a mixture of symmetric kernels being the
+density's own mean. The fitted centre and the third cumulant do not.
+[The AC-Stark ramp chapter](../methods/03_the_ac_stark_ramp.md) carries the
+measurement and [the composite chapter](../methods/04_the_composite_model.md)
+carries the boundary.
+
+
 The dominant failure is treating the shift as a single number. "The light
 shift" for a focused beam can mean the peak axial shift, the mean over the
 illuminated atoms, or the mean weighted by the signal, and not saying which

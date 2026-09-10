@@ -91,8 +91,14 @@ def main() -> int:
                 f"reach_rate_x{rate_mult}_eom_{f_mhz}MHz",
                 f"{band/1e3:.3f}", "kHz",
                 f"Fourier frequency sampled at {rate_mult} times the campaign "
-                f"scan rate with {f_mhz} MHz teeth. Compare with the "
-                f"{gamma_l_hz/1e3:.0f} kHz band that carries the answer")
+                f"scan rate with {f_mhz} MHz teeth. COMPARE WITH THE 24 Hz TO "
+                "1.5 MHz BAND, which is the one a scanned block's width "
+                "integrates. These notes cited the "
+                f"{gamma_l_hz/1e3:.0f} kHz free-running-lineshape band until "
+                "2026-09-10, which this file's own reach_band row already retired "
+                "as the wrong band for a scanned measurement: the file "
+                "corrected its band row and left every reach row pointing at "
+                "the retired one")
     reach_x10 = (rate_now * 10) / spacing_now
     add("comb_clock", "reach_at_x10_rate", f"{reach_x10:.1f}", "Hz",
         "a block at ten times the campaign rate. This sits INSIDE the 24 Hz to "

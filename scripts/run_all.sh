@@ -43,7 +43,7 @@ for s in run_qc run_noise run_ruler run_linefit run_trim_report \
          run_sobol_acquisition \
          run_trapping_channels run_blackbody_channels run_skew_scaling \
          run_polarisation_bound run_collisional_shift_bound run_delta_alpha_posterior \
-         run_guided_mode_tables run_onf_lever_ranking; do
+         run_guided_mode_tables run_onf_lever_ranking run_transition_ladder; do
     echo "== scripts/$s.py =="
     python scripts/$s.py
 done

@@ -148,14 +148,41 @@ $$dS  \propto  u^n\frac{du}{u}  =  u^{n-1}du
 f(s) \propto |s|^{n-1}\ \ \text{on}\ [-S_0,0]$$
 
 For a **one-photon** transition ($n=1$, for instance the Stark-induced
-forbidden lines of the parity-violation literature) the distribution is
-**uniform**: mean $-S_0/2$ and, being symmetric about its mean, $\kappa_3=0$,
-which is **zero skew**. The skewness observable exists at all *only because the two-photon
-signal goes as $I^2$*. This one line is the delineation from the nearest
-prior art ([Stalnaker *et al.*](../lit/stalnaker2006.md), PRA **73**, 043416 (2006), who extracted an
-AC-Stark parameter from asymmetric standing-wave lineshapes numerically, in
-the $n=1$, fringe-resolved regime, with the full delineation in
-`docs/LITERATURE.md`).
+forbidden lines of the parity-violation literature) the transverse
+distribution is **uniform**: mean $-S_0/2$ and, being symmetric about its own
+mean, $\kappa_3=0$, which is **zero skew**.
+
+**That null is a thin-window statement and not a property of one-photon
+excitation** (owner, 2026-09-09). The uniform density above is the law at a
+single axial slice. What a detector collects is the mixture over slices, and
+those uniforms share a lower endpoint at zero while their upper endpoints
+$S(\zeta)$ fall as the beam expands, so the mixture is neither uniform nor
+symmetric and its third cumulant is not zero. The closed form of the previous
+subsection carries it: at $n=1$ the density is $\propto \zeta_m + \zeta_m^3/3$,
+constant only below $u_c = S_0/(1+(L/z_R)^2)$ and rolling to zero above it.
+The null is recovered as $L/z_R \to 0$, which is a wide waist and a large
+collection magnification, and the record's own configurations do not all sit
+there. Measured through the same window, the one-photon third cumulant against
+the two-photon one runs
+[0.0129](../../results/waist_ladder.csv "ref:waist_ladder:rung:1.000000:k3_one_photon_over_two"),
+[0.5005](../../results/waist_ladder.csv "ref:waist_ladder:rung:0.625000:k3_one_photon_over_two"),
+[3.0818](../../results/waist_ladder.csv "ref:waist_ladder:rung:0.390625:k3_one_photon_over_two") and
+[1.7626](../../results/waist_ladder.csv "ref:waist_ladder:rung:0.250000:k3_one_photon_over_two")
+at 64, 40, 25 and 16 microns, crossing unity near $L/z_R = 0.78$.
+
+**So the delineation from the nearest prior art holds at this bench and not at
+every geometry.** ([Stalnaker *et al.*](../lit/stalnaker2006.md), PRA **73**,
+043416 (2006), extracted an AC-Stark parameter from asymmetric standing-wave
+lineshapes numerically, in the $n=1$, fringe-resolved regime, with the full
+delineation in `docs/LITERATURE.md`.) At the 2025 waist the one-photon
+asymmetry is about one per cent of the two-photon one and the separation is
+clean. At the tighter waists the campaign proposes it is not: the axial window
+gives a one-photon line a third cumulant of its own, larger than the
+two-photon line's beyond $L/z_R = 0.78$, and the two-photon cumulant is itself
+passing through zero near 1.117. **A campaign that tightens the waist moves
+toward the prior art's regime and not away from it**, and what continues to
+separate the two is the power law, cubic in the drive for the ramp and not for
+a geometric asymmetry, and not the existence of the asymmetry.
 
 #### $n=2$ is a weak-field statement, and the dataset sits near its edge
 
@@ -348,6 +375,136 @@ pure-triangle $Z_c\to0$ limit at $g_1\approx+0.56$, where it was 10 to 40% at
 the old 32 µm nominal, and the wider waist only strengthens the
 approximation). *Code:*
 `stark_ramp_axial()`, table from `scripts/run_ramp_geometry.py`.
+
+#### The density is right and the composition was not
+
+*Added 2026-09-09.* Everything above derives the shift density, and none of it
+is disturbed by what follows. What the pipeline then did with that density was
+to convolve it with one homogeneous kernel, and a convolution is a condition:
+it holds only where the kernel is the same at every collected volume element.
+On this bench it is not, twice over. The transit width follows the local beam
+radius, and the saturation companion is keyed on the local light shift, this
+chapter's own variable. So the broad elements are the shifted ones, and
+the density and the kernel are correlated where the convolution assumes them
+independent.
+
+`scripts/run_kernel_inhomogeneity.py` measures the cost.
+The centroid is untouched at every waist,
+[0.000](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w64um:centroid_pull_error") per cent, because the first
+moment of a mixture of symmetric kernels is the density's own mean whatever
+the kernels are. Nothing else is: the fitted centre moves by
+[-0.265](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w64um:fitted_centre_error") per cent here and
+[-56.972](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w16um:fitted_centre_error") at 16 microns, and the
+windowed third cumulant by
+[106.911](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w64um:k3_error") per cent at this bench's own waist,
+where it also inverts the sign.
+[The composite chapter](04_the_composite_model.md) carries the boundary and
+[the odd-moments chapter](10_the_odd_moments.md) carries what it costs the
+ladder.
+
+**The one-atom reading of the same fact, which is the intuition.** An atom
+does not sit at one shift. It crosses the beam, so its shift rises and falls
+during the crossing, and what it contributes is the excitation-rate-weighted
+average along its own trajectory. That single trajectory sets its shift and
+its transit width together. Treating the ramp as a distribution to be
+convolved with a separate kernel is exactly the step that forgets they came
+from the same path.
+
+#### What the mixture costs, in closed form
+
+*Added 2026-09-09.* The section above says the composition fails and the
+producer measures what it costs. Both are now derivable, and the derivation
+says which channel pays and which does not.
+
+**The ramp's shape does not vary along the beam. Its range does.** At axial
+position $z$ write $\zeta = z/z_R$ and substitute $t = 2r^2/w(z)^2$, so that
+$2\pi r dr = (\pi w^2/2) dt$. With $u = S(\zeta)e^{-t}$ and
+$S(\zeta) = S_0/(1+\zeta^2)$ this gives $dt = -du/u$, and an $n$-photon signal
+weight $u^n$ leaves
+
+$$\frac{dW}{du}\Big|_{\zeta} = \frac{\pi w(z)^2}{2} u^{n-1}$$
+
+at every $\zeta$. The power law is the same on every slice. What the axial
+coordinate changes is the upper limit $S(\zeta)$ and the prefactor $w(z)^2$,
+and integrating the prefactor over the collected window returns the closed form
+of the previous subsection. The distinction matters because it says where the
+inhomogeneity enters: not in the density's shape, but in which slices reach a
+given shift.
+
+**So the kernel's spread at a given shift is fixed by that same geometry.**
+A shift $u$ is reached only where $S(\zeta) \ge u$, that is
+$|\zeta| \le \zeta_m = \sqrt{S_0/u - 1}$, truncated by the collection window at
+$\zeta_m \le L/z_R$. The transit width goes as the inverse local beam radius,
+so across the slices that reach $u$ it spans a factor
+
+$$\sqrt{\min\left(1 + (L/z_R)^2, S_0/u\right)}$$
+
+from the focal plane outward. At this bench's own collection ratio that is
+1.033 at a 64 µm waist and 4.287 at 16 µm, which is where the measured
+"the beam radius at the edge is 4.3 times the waist" comes from. **The spread
+is keyed on $u/S_0$, which is the ramp's own variable, and that is the
+correlation a convolution cannot represent.**
+
+**The cost is then a covariance, exactly.** Let the observed frequency be
+$X = -u + K$, with the kernel $K$ conditional on $u$, symmetric about zero and
+of variance $V(u)$. Expanding the third central moment,
+
+$$\mu_3(X) = -\mu_3(u) - 3 \mathrm{Cov}\big(u, V(u)\big),$$
+
+since the cross terms in $K$ and $K^3$ vanish by symmetry, and
+$\kappa_3 = \mu_3$ for any distribution. Two consequences follow immediately,
+both of them read on a self-centred window, which is the condition under which
+the symmetric part cancels at all. A kernel that does not vary with the shift
+contributes nothing at all to the third cumulant however wide it is. And the first moment is untouched at any
+$V(u)$, which is why the centroid is exactly immune while the skew is not, and
+why the producer's own centroid comparison reads zero to five decimals at every
+waist it tries.
+
+Applied to this bench with the windowed second moment standing in for $V$, the
+covariance tracks the measured contamination with a single constant. The
+identity predicts that $k_3^{\rm fixed} - k_3^{\rm exact}$ is exactly
+$3\mathrm{Cov}$, since a fixed kernel carries a constant $V$ and so no
+covariance term at all. Measured, the ratio is $0.386$ with a spread of 4.0 per
+cent across a factor of sixteen in $L/z_R$ and three orders of magnitude in the
+cumulant itself. **The shortfall is the analysis window truncating a
+Lorentzian**, whose second moment does not exist, so the windowed stand-in for
+$V$ over-states the covariance by the reciprocal factor $2.594$. That factor
+belongs to the estimator and not to the physics.
+`scripts/run_kernel_inhomogeneity.py` measures it: `covariance_identity_ratio`
+in [`results/kernel_inhomogeneity.csv`](../../results/kernel_inhomogeneity.csv)
+carries it at each waist beside the covariance itself, with nothing fitted, and
+the identity above is what the column divides by. Its constancy is what makes it useful: a new waist or a new drive
+wavelength can be computed from geometry alone, without rebuilding the
+mixture.
+
+#### The drive wavelength moves the waist, and everything the waist carries
+
+*Added 2026-09-09.* Every law above takes $w_0$ as given. It is not a property
+of the bench alone. A collimated input of radius $w_{\rm in}$ through a lens of
+focal length $f$ focuses to
+
+$$w_0 = \frac{\lambda f}{\pi w_{\rm in}},$$
+
+so at a fixed lens and a fixed input beam **the waist is linear in the drive
+wavelength**, and the on-axis shift, going as $1/w_0^2$, is quadratic in it the
+other way. Retuning a laser from one two-photon line to another therefore
+changes the geometry with nothing touched. Through this bench's f = 150 mm
+singlet the 64 µm measured at 993.4 nm becomes 48.59 µm at 760.1 nm, a factor
+of 1.74 in the light shift at equal power. The lens itself disperses as
+$1/(n-1)$, worth under a per cent and the same to 0.02 mm for fused silica or
+N-BK7, so the wavelength and not the glass does the work.
+
+The load-bearing unknown is $w_{\rm in}$. A beam clipped by a fixed stop
+presents the same radius at every drive, and the waist follows $\lambda$. An
+unclipped mode of a fixed-geometry resonator has
+$w_{\rm in} \propto \sqrt{\lambda}$, and the waist follows it. The two bracket the
+760 nm waist at 48.59 and 55.55 µm, which is 31 per cent in the light shift.
+**The line settles it without a beam profiler.** The transit width carries the
+same geometry to the first power while the shift carries it to the second, so
+the transit ratio between two drives is 1.317 in the first regime and 1.152 in
+the second, a separation the width precision resolves. A ratio of light shifts
+quoted across two drives without that measurement carries an unstated
+assumption about the beam.
 
 #### The axial mixture: one form carries the window and the fringes together
 

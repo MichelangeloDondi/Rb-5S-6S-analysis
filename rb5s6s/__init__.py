@@ -29,6 +29,7 @@ from .constants import (                                    # noqa: F401
     TAU_6S_S,
     W0_MEASURED_M,
     transit_fwhm_from_w0,
+    waist_at_drive,
 )
 from .hyperpolarizability import (                          # noqa: F401
     two_photon_matrix_element,
@@ -59,19 +60,20 @@ from .polarizability import (                               # noqa: F401
     alpha_5s,
     alpha_6s,
     delta_alpha,
+    delta_alpha_5d,
 )
 
 __all__ = [
     "__version__",
     # constants and the geometry that follows from them
     "DELTA_ALPHA_AU", "GAMMA_NAT_HZ", "LAMBDA_LASER_M", "RHO_RETRO",
-    "TAU_6S_S", "W0_MEASURED_M", "transit_fwhm_from_w0",
+    "TAU_6S_S", "W0_MEASURED_M", "transit_fwhm_from_w0", "waist_at_drive",
     # the deep seam: the shift distribution and the line model
     "local_ramp_density", "ramp_mixture",
     "stark_ramp", "stark_ramp_axial_moments", "stark_shift_S0_mhz",
     "composite_profile", "model_profile",
     # what predicts the shift, and what couples to the light
-    "alpha_5s", "alpha_6s", "delta_alpha",
+    "alpha_5s", "alpha_6s", "delta_alpha", "delta_alpha_5d",
     "two_photon_matrix_element", "two_photon_rabi_hz",
     # the analysis path: a measured trace in, a linewidth out
     "fit_linewidth", "LinewidthResult", "fit_condition",

@@ -13,8 +13,21 @@ that stamp back and checks it still matches the current results. It is therefore
 matplotlib-version-independent: it compares a hash in a text chunk, never pixels.
 A stale figure fails with a clear instruction to re-run make_figures.py.
 
-fig0_spectrum is intentionally exempt: it is a representative raw-trace
-illustration (frozen data_raw + fit), not an artifact of the mutable results/.
+TWO FIGURES CARRY NO FINGERPRINT AND SO SIT OUTSIDE THIS GUARD. Both are
+named here, because a figure that is absent from the population without a
+stated reason is indistinguishable from one that was forgotten, and one of
+them was: fig9 was found outside every freshness guard on 2026-09-10 with
+nothing anywhere saying so.
+
+fig0_spectrum is a representative raw-trace illustration (frozen data_raw plus
+a fit), not an artifact of the mutable results/.
+
+fig9_polarizability_ladder is drawn by scripts/run_polarizability_ladder.py
+from rb5s6s/polarizability.py's own sum over states, and it reads no committed
+CSV at all. Stamping it with a results fingerprint would make it stale on every
+unrelated CSV that moves, which is a false dependency and not a check. What
+guards it is the package's own test set, since its inputs are module constants;
+if it ever comes to read a results row, it joins this population that day.
 """
 
 from __future__ import annotations

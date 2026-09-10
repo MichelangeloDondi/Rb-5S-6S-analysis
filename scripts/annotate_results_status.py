@@ -124,6 +124,21 @@ SKIP = {"laser_epoch.csv", "qc_metrics.csv",
         # and every number is a model computation; DIAGNOSTIC for the grid
         # movements; ENVELOPE for the costs and the uncertainty rows
         "kernel_inhomogeneity.csv",
+        # the Ti:Sapph rung ladder. THIS NOTE NAMED ESTABLISHED, CALCULATED and
+        # OPEN until 2026-09-10; those are the prose provenance tags of the
+        # repository's own rule file and none is a results-CSV status, so it
+        # described a file that could not exist and no guard read it, the file
+        # being in SKIP. Recounted from the artefact on 2026-09-10, after the
+        # ceiling rows moved: DIAGNOSTIC 179, CALIB 118, NULL 10, PRELIM 8,
+        # ENVELOPE 1. CALIB is the held levels, the literature polarizabilities,
+        # the natural widths and the geometry; PRELIM the Rydberg-Ritz
+        # extrapolated rungs; DIAGNOSTIC the fit rows, the error siblings and
+        # the quantities this repository holds no sum for; NULL the rows a rung
+        # cannot have at all; ENVELOPE the one order-of-magnitude cell. THE
+        # FIRST VERSION OF THIS RECOUNT OMITTED NULL, which 28 rows then
+        # carried, so a note written to replace an invented vocabulary
+        # under-counted the real one on its first day.
+        "transition_ladder.csv",
         # the lever ranking: every row is a Fisher forecast about a DESIGN, and
         # its inputs split measured from estimated, so the producer tags them.
         "onf_lever_ranking.csv",

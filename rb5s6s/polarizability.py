@@ -347,6 +347,99 @@ def delta_alpha_7s(lam_nm: float) -> float:
     return alpha_7s(lam_nm) - alpha_5s(lam_nm)
 
 
+
+
+# ---------------------------------------------------------------------------
+# STATIC scalar polarizabilities of the excited states, from a held table.
+#
+# Safronova & Safronova, Phys. Rev. A 83, 052508 (2011), Table VI, in units of
+# a0^3, which are the same atomic units this module returns. Read from the held
+# PDF on 2026-09-10 and cross-checked against this module's own sums where both
+# exist: alpha_6s(0) here gives 5166.95 against the table's 5169(21), 0.04 per
+# cent, and alpha_7s(0) gives 32410.97 against 32630(140), 0.7 per cent. That
+# agreement is what licenses reading the table for the states this module has
+# no line list for.
+#
+# THEY ARE STATIC AND THE CAMPAIGN NEEDS THEM AT A DRIVE WAVELENGTH. Equation
+# (8) of that paper carries no omega, so these cannot be used as the light
+# shift's differential at 993, 778, 760 or 688 nm: at 688.6 nm the 8S-5P
+# denominator is -16467 cm^-1 against a photon of 14523, so the dynamic value
+# is nowhere near the static one. What they ARE good for is ranking the rungs,
+# and as the omega -> 0 closure test on the dynamic sum that is owed.
+#
+# 7D IS ABSENT FROM THAT TABLE, which is why it has no entry here.
+STATIC_ALPHA_A011 = {
+    "6S1/2": (5169.0, 21.0),
+    "7S1/2": (32630.0, 140.0),
+    "8S1/2": (133200.0, 650.0),
+    "9S1/2": (417200.0, 2200.0),
+    "10S1/2": (1094000.0, 6000.0),
+    "5P1/2": (814.0, 8.0),
+    "5P3/2": (875.0, 7.0),
+    "6P1/2": (12420.0, 120.0),
+    "6P3/2": (13440.0, 70.0),
+    "7P1/2": (83270.0, 300.0),
+    "7P3/2": (90350.0, 270.0),
+    "4D3/2": (574.0, 25.0),
+    "4D5/2": (541.0, 26.0),
+    "5D3/2": (17880.0, 160.0),
+    "5D5/2": (17500.0, 150.0),
+    "6D3/2": (93900.0, 600.0),
+    "6D5/2": (91580.0, 620.0),
+}
+"""Static scalar polarizability (a.u.) and its uncertainty, per state.
+
+Safronova & Safronova 2011 Table VI. STATIC ONLY: see the block comment above
+for why that is not the campaign's differential and what it is good for."""
+
+STATIC_ALPHA_5S_A011 = (322.0, 4.0)
+"""alpha(5S1/2) static, a.u., from Table V of the same paper, whose own
+comparison row gives measured 319(6) and 329(23). This module's own sum returns
+318.28, 1.2 per cent below and inside the measured spread."""
+
+
+def delta_alpha_5d(lam_nm: float) -> float:
+    """alpha(5D5/2) - alpha(5S) at `lam_nm`, a.u., Hamilton-anchored.
+
+    PROMOTED FROM scripts/run_projections.py ON 2026-09-09, under the standing
+    rule that a numerical routine wanted by a second producer belongs in the
+    package with a test. The second caller is scripts/run_transition_ladder.py,
+    which needs this rung's differential for the ladder's saturation
+    ceiling, and a copy there would have been the shape A76 already cost this
+    record once. The construction itself is the one
+    docs/FUTURE_TRANSITIONS_titsapph.md section 3.3 states, unchanged by the
+    move.
+
+    5D5/2 is not recomputed from scratch anywhere in this repository, for the
+    reasons the Ti:Sapph block header of rb5s6s.polarizability gives: it is a
+    J = 5/2 state with a tensor term and nF couplings this repository holds no
+    matrix elements for. What that header does license is the shape of the
+    differential near 776 nm from the one verified near-resonant pole, anchored
+    on Hamilton's measured magic wavelength.
+
+    So the construction is two statements and no free parameter. The measured
+    magic wavelength is where the differential crosses zero. Away from it the
+    differential moves by the near-resonant 5P3/2 to 5D5/2 term, evaluated with
+    Hamilton's own measured reduced matrix element and the module's J = 5/2
+    prefactor, minus the motion of alpha(5S), which the module computes from
+    its own line list and which is itself steep here because 778 nm sits close
+    to the D2 line. Everything else in alpha(5D5/2) is slowly varying across
+    the 1.9 nm between the magic wavelength and the drive, and it cancels
+    between the two evaluations, so it never has to be known.
+
+    SCALAR ONLY, and the number is an envelope rather than a calculation. The
+    tensor term and the hyperfine state dependence Hamilton measures are not
+    carried, so this states the size of the differential at the drive and not
+    the shift of any one hyperfine component.
+    """
+    def pole_term(lam):
+        line = ((E_5P32_CM, RME_5P32_5D52, 0.0),)
+        return _alpha(line, lam, E_5D52_CM, prefactor=1.0 / 18.0)
+
+    mag = MAGIC_5S5D52_EXP_NM
+    return ((pole_term(lam_nm) - pole_term(mag))
+            - (alpha_5s(lam_nm) - alpha_5s(mag)))
+
 def magic_5s7s(lo: float = 700.0, hi: float = 1000.0):
     """5S-7S magic wavelengths (= sign-flips of the 5S->7S light shift) in
     [lo, hi] nm: alpha_7S = alpha_5S crossings. Returns (lambda_nm, alpha_au)."""

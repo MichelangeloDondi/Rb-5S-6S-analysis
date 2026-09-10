@@ -519,8 +519,57 @@ comb-spacing lever of [chapter 4](04_intensity-and-light-shift.md) needs: at
 12.5 MHz the factor is 0.997 for 0.3 m and 0.966 for 1 m, at 25 MHz 0.988 for
 0.3 m, at 40 MHz 0.969. It also sets a zero-parameter check of the geometry,
 since at $f = c/4d$ every tooth collapses into the carrier whatever the drive
-(250 MHz for 0.3 m, 125 for 0.6 m). **It closes with a tape measure**, and the
-same distance enters the misalignment item above.
+(250 MHz for 0.3 m, 125 for 0.6 m).
+
+**It decides a second thing, found 2026-09-09, and this one rides on the retro
+ratio.** Lens (8) and the flat mirror form a retro whose returning mode matches
+the forward one exactly when the mirror sits one focal length beyond the lens,
+and not otherwise: the round trip returns the waist onto itself with a power
+overlap of 1.000000 at that distance, 0.9967 at 50 mm and 0.9610 at 500 mm.
+So the `rho = 0.94` of record may be carrying an unmeasured mode-mismatch factor
+beside the surface losses it is meant to describe, and the item below on the
+retro power ratio cannot separate the two without this length. The same
+geometry is what makes `rho` non-transferable across drive wavelengths, since a
+retro aligned at 993 nm returns the 760 nm mode with an overlap of 0.9859 at
+the design distance.
+
+**It closes with a tape measure**, and the
+same distance enters the misalignment item above and the mode-overlap reading
+here.
+
+### The input beam at the focusing lens, and whether L1 is a single element
+
+**What is known.** The beam reaches L1 free-space from the laser through the
+EOM's 3 mm clear aperture, which an infrared card recalls clipping
+([APPARATUS](../APPARATUS.md) 1.2), and nothing records how much of the beam
+that aperture removes. L1 itself is quoted from the source as "a plano-convex
+lens", which is a single element, and no page states an achromat.
+
+**What it decides.** Nothing at all while the campaign drives one line, and the
+whole cross-transition programme once it drives two. The focused waist is
+`lambda f / (pi w_in)`, so a retune moves the waist even with no optic touched,
+and the ratio of light shifts between two drives carries `(w_in at one / w_in
+at the other)` squared. If the aperture fixes the input radius the factor is
+one and the waist follows the wavelength. If the beam is an unclipped
+fixed-geometry resonator mode the radius follows the root of the wavelength and
+so does the waist. Between 993.4 and 760.1 nm that is 48.59 um against
+55.55 um, and 31 per cent on every shift ratio built from them (register A136).
+The element type is the small term, worth 0.8 per cent through `1/(n-1)` and
+insensitive to the glass, but it is not free: an achromat holds the focal
+length and a singlet also moves the focus 1.17 mm, which is a third of the
+collection half-window.
+
+**What closes it.** A beam profile at the lens, on the same afternoon and the
+same stage as the waist measurement the plan already schedules, with no atoms
+and no lock, with one look at the lens mount for a cemented doublet. Until then
+the campaign's own line closes it in situ, since the transit width carries the
+same geometry to the first power and separates the two regimes by 14 per cent.
+
+**How the forecast handles it.** `rb5s6s.constants.waist_at_drive` takes the
+regime as a required argument with no default, and
+`results/projections.csv` carries the aperture reading in its cells with the
+resonator reading quoted beside it in the note, so every multi-drive number is
+a bracket until the profile exists.
 
 ### The composition of the transit kernel and the light shift, an analysis unknown
 
@@ -666,7 +715,9 @@ what decides how fast the deep trace of chapter 7 may run.
 
 **The beam's mode at the cell closes with one camera image**, taken at a plane
 equivalent to the interaction volume, and the aperture closes with the same
-ruler as the distances below.
+ruler as the distances below. **The input beam at the lens closes with the same
+camera on the same afternoon**, and it is the item that decides whether a
+cross-transition ratio is quotable at all.
 
 **The collection distances close in a minute with a ruler**, and they are the
 only items on this page already carried into a committed result instead of

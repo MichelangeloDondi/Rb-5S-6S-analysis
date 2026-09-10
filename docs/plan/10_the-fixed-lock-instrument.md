@@ -23,7 +23,13 @@ and the cavity error signal. The fourth is contended between a marker for the
 modulator state and a second detector, either a second platform's or a monitor
 of the retro-reflected power. The sweep synchronisation is on the
 external trigger input, so no signal channel is spent on it. The cavity error channel is the in-situ
-laser-noise witness the 2025 session had to reconstruct afterwards from rulers.
+laser-noise witness the 2025 session had to reconstruct afterwards from rulers,
+**over part of the band and not all of it**: a servo suppresses in-loop noise
+below its bandwidth, so beneath that frequency the laser follows the cavity and
+the atoms see the cavity's own noise, which is common mode to the error signal.
+[Chapter 7](07_acquisition-settings.md) section 7k allocates the four channels,
+gives the band each one witnesses, and states the three-way stitch that covers
+the rest.
 
 Sequence mode, one segment per sweep, never on-scope averaging. Averaging in
 the instrument destroys the per-sweep centres the joint fit needs and the

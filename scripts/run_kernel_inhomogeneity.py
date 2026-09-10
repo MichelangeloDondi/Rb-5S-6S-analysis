@@ -242,6 +242,66 @@ def fitted_centre(prof, transit, window):
     return float(res["centers"][0])
 
 
+_VCACHE: dict = {}
+
+
+def kernel_windowed_variance(gamma_coll, transit, window):
+    """V(u): the kernel's own second moment inside the analysis window.
+
+    The covariance identity below needs the kernel's variance, and a Lorentzian
+    has none: the second moment of gamma_nat + gamma_coll diverges. What the
+    analysis actually integrates is the WINDOWED second moment, so that is what
+    stands in for V, and the constant it produces therefore belongs to the
+    estimator and not to the physics. Cached on the same rounded pair as the
+    kernel itself.
+    """
+    key = (round(gamma_coll, 3), round(transit, 4), round(window, 3))
+    if key not in _VCACHE:
+        k = _kernel(key[0], key[1])
+        m = np.abs(NU) <= window
+        nu, pr = NU[m], k[m]
+        tot = pr.sum()
+        c = float((nu * pr).sum() / tot)
+        _VCACHE[key] = float((((nu - c) ** 2) * pr).sum() / tot)
+    return _VCACHE[key]
+
+
+def covariance_term(cells, window):
+    """Cov(u, V(u)) over the collected volume, and the two means behind it.
+
+    THE IDENTITY THIS MEASURES. With the observed frequency X = -u + K, K
+    conditional on u, symmetric about zero and of variance V(u), the third
+    central moment expands to
+
+        mu3(X) = -mu3(u) - 3 Cov(u, V(u))
+
+    because the cross terms in K and K^3 vanish by symmetry. The first moment
+    is untouched at any V, which is why the centroid is exactly immune while
+    the skew is not. Nothing here is fitted: u is the element's own light
+    shift, V is the windowed variance of the kernel that element carries, and
+    the weights are the collected volume's.
+
+    Written on 2026-09-10 because the identity and its constant stood on two
+    prose surfaces with no script, no CSV and no route to re-derive them, which
+    the four-things rule forbids.
+    """
+    us, vs, ws = [], [], []
+    for mid, tr, wgt in cells:
+        for s, w in zip(mid, wgt):
+            if w <= 0.0:
+                continue
+            g = GAMMA_COLL + stark.companion_gamma_mhz(float(s), "4192")
+            us.append(float(s))
+            vs.append(kernel_windowed_variance(g, float(tr), window))
+            ws.append(float(w))
+    u = np.asarray(us)
+    v = np.asarray(vs)
+    w = np.asarray(ws)
+    w = w / w.sum()
+    cov = float((w * u * v).sum() - (w * u).sum() * (w * v).sum())
+    return cov, float((w * v).sum()), float(v.max() - v.min())
+
+
 def observables(prof, window):
     """The two the campaign reads: the centroid pull and the windowed third
     cumulant. The centroid is the profile's own first moment, which is what a
@@ -496,6 +556,46 @@ def main() -> int:
             "half-span of the same ratio with the companion scaled three ways",
             "the grid movement is carried separately and is the smaller axis. "
             "Blank where the comparison is refused", "ENVELOPE")
+        # THE COVARIANCE IDENTITY, MEASURED RATHER THAN ASSERTED (2026-09-10).
+        # mu3(X) = -mu3(u) - 3 Cov(u, V(u)) is exact for a kernel symmetric
+        # about each element's own centre. The contamination this producer
+        # measures, k3_fixed minus k3_exact, is therefore -3 Cov up to whatever
+        # the windowed stand-in for V costs, and the ratio of the two is the
+        # constant the methods chapter quotes. It stood there for a day with no
+        # script behind it, which is what these four rows repair.
+        _cov, _vbar, _vspan = covariance_term(cells, W)
+        add(name, "kernel_variance_covariance", f"{_cov:.6g}", "MHz^3",
+            "Cov(u, V(u)) over the collected volume, V the kernel's windowed "
+            "second moment, nothing fitted",
+            "the exact cost of the correlation a convolution cannot represent. "
+            "Zero for a kernel that does not vary with the shift, whatever its "
+            "width, which is why a uniform broadening is free here", "DIAGNOSTIC")
+        add(name, "kernel_variance_mean", f"{_vbar:.6g}", "MHz^2",
+            "the volume-weighted mean of the same windowed variance",
+            "the scale the covariance sits against, and the quantity a "
+            "convolution replaces by a constant", "DIAGNOSTIC")
+        add(name, "covariance_identity_ratio",
+            f"{(k_f - k_e) / (3.0 * _cov):.4f}" if (k3_ok and _cov) else "",
+            "dimensionless",
+            "the measured contamination, k3_fixed minus k3_exact, over 3 Cov(u, V)",
+            "THE IDENTITY PREDICTS ONE. The fixed-kernel profile carries a "
+            "constant V, so its covariance term vanishes and the difference of "
+            "the two third cumulants is exactly 3 Cov. This reads 0.386 with a "
+            "spread of 4.0 per cent across a factor of sixteen in L/z_R and "
+            "three orders of magnitude in the cumulant itself. The shortfall "
+            "is the analysis window truncating a Lorentzian, whose second "
+            "moment does not exist at all, so the windowed stand-in for V "
+            "over-states the covariance by the reciprocal, 2.594, and the "
+            "factor belongs to the estimator and not to the physics. This "
+            "column divided by MINUS 3 Cov until 2026-09-10, which flipped the "
+            "sign for nothing and left its own note predicting one while the "
+            "arithmetic predicted minus one. Its CONSTANCY is the usable part, "
+            "since a new waist or a new drive wavelength is then geometry "
+            "alone. Blank where the comparison is refused", "DIAGNOSTIC")
+        add(name, "kernel_variance_span", f"{_vspan:.6g}", "MHz^2",
+            "the range of the windowed kernel variance over the volume",
+            "zero here would mean the convolution condition holds exactly at "
+            "this waist", "DIAGNOSTIC")
         add(name, "k3_exact", f"{k_e:.6g}" if k3_ok else "", "MHz^3",
             f"windowed third cumulant at a {W:.1f} MHz half-width, exact mixture",
             "the novelty channel's own observable", "CALIB")

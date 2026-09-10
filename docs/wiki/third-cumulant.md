@@ -134,6 +134,47 @@ mean exponent comes out at $-0.404 \pm 0.091$ with a line-to-line scatter of
 fixed-size candidate had been expected to survive this test. The data
 instead favour the null.
 
+## Why a kernel can move it at all, and by exactly how much
+
+A symmetric broadening does not move a symmetric line's asymmetry. That is the
+usual reason for treating widths as nuisances and the skew as the signal, and
+on this bench it is not quite true. Write the observed frequency as
+$X = -u + K$, with $u$ the shift drawn from the ramp and $K$ the homogeneous
+kernel, symmetric about zero and of variance $V(u)$. Expanding the third
+central moment, the terms in $K$ and $K^3$ vanish by symmetry and what survives
+is
+
+$$\mu_3(X) = -\mu_3(u) - 3 \mathrm{Cov}(u, V(u)),$$
+
+with $\kappa_3 = \mu_3$ for any distribution. Read on a self-centred window,
+two things follow at once. **A kernel that does not vary with the shift
+contributes nothing at all, however wide it is.** And **a kernel that does
+contributes exactly three times its covariance with the shift**, which is a
+number, not a worry.
+
+That is why this bench pays. The transit width follows the local beam radius
+and the saturation companion follows the local light shift, so the broad
+elements are the shifted ones and the covariance is not zero. The same algebra
+says the centroid is untouched at any $V(u)$, which is the immunity
+[the AC-Stark shift](ac-stark-shift.md) page describes and the one the
+measured comparison confirms to five decimals at every waist tried.
+
+Against this bench's own mixture the covariance term tracks the measured
+contamination with a single constant. The identity says the two third cumulants
+differ by exactly three times the covariance, since the fixed kernel carries no
+covariance term at all. Measured, the ratio is $0.386$ with a spread of 4.0 per
+cent across a factor of sixteen in the collection ratio and three orders of
+magnitude in the cumulant itself. The shortfall is the analysis window
+truncating a Lorentzian, whose second moment does not exist, so the windowed
+stand-in over-states the covariance by the reciprocal factor $2.594$ and that
+factor belongs to the estimator. It is measured by
+`scripts/run_kernel_inhomogeneity.py` and carried as
+`covariance_identity_ratio` in
+[`results/kernel_inhomogeneity.csv`](../../results/kernel_inhomogeneity.csv),
+with the covariance itself and the kernel variance's own span beside it. Its
+constancy is the useful part: **a new waist, or a new drive wavelength, can be
+computed from geometry alone without rebuilding the mixture.**
+
 ## What can go wrong
 
 The assumption doing all the work is that every other kernel is symmetric,
@@ -247,6 +288,17 @@ Every symmetric kernel contributes zero to a self-centred odd moment (the
 Lorentzian only up to the truncation fraction the layers above quantify). The skew
 that survives belongs to the shift distribution, and it exists only because
 the signal goes as the square of the intensity.
+
+**And the kernel is not the same at every element, which this observable pays
+for hardest.** The saturation companion follows the local light shift, so the
+broad elements are the shifted ones and the composition is a mixture and not a
+convolution. Measured element by element, the windowed third cumulant is wrong
+by [106.911](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w64um:k3_error") per cent at the archive's own
+waist and [89.701](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w16um:k3_error") at 16 microns, against
+a centroid that is untouched at
+[0.000](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w64um:centroid_pull_error") per cent everywhere.
+The zero-contribution statement above is exact per kernel and says nothing
+about a kernel that varies with the shift.
 
 ```python
 from rb5s6s import stark_ramp_axial_moments

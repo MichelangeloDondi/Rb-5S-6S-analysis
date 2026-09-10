@@ -12,7 +12,7 @@ which is what this page is for.
 
 ## The runner, and the scripts outside it
 
-`bash scripts/run_all.sh` executes 34 analysis stages in dependency order,
+`bash scripts/run_all.sh` executes 35 analysis stages in dependency order,
 then the reference graph, the figures, `docs/RESULTS.md`, and the CSV status
 column.
 
@@ -55,7 +55,7 @@ under moving dependencies is a property of the environment until the pinned
 comparison disagrees, and that the pinned comparison is the one that speaks
 for the record.
 
-The runner's stages write the core subset of the 99 committed CSVs. The
+The runner's stages write the core subset of the 100 committed CSVs. The
 rest each have their own script, held out for one of two reasons.
 
 ### Seven need trees that stay outside the repository
@@ -93,7 +93,7 @@ from a tracked photograph), `run_laser_history.py` (`laser_history.csv` and
 (`cavity_scan_integrals.csv`) and `run_tooth_scatter.py`
 (`ruler_tooth_scatter.csv`, about a minute refitting every RF-on comb with
 free tooth centres, held out because nothing downstream reads its bound),
-`run_transit_additivity.py` (`transit_additivity.csv`, the guided transit
+`run_kernel_inhomogeneity.py` (`kernel_inhomogeneity.csv`, about three and a half minutes building the collected volume element by element, held out for runtime. It landed in d5bc11aa routed by neither this page nor the runner, which is escape E44), `run_transit_additivity.py` (`transit_additivity.csv`, the guided transit
 kernel's second-order entry computed two independent ways, a few minutes
 over a 600,000-point grid), `run_fibre_twin.py` (`fibre_twin.csv`),
 `run_moment_power_map.py` (`moment_power_map.csv` and its per-rung table,
