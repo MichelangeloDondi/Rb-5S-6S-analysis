@@ -156,7 +156,7 @@ removed, and could come back empty if the cascade photon rate sits under the
 detector's own floor ([`PLAN.md`](../PLAN.md) §8 item 5). The suppression is
 population, not wavelength. The 1.3 µm legs carry the same Doppler-broadened
 cross-section as D1, but inside the driven column both are population-inverted
-at 4.81 and 5.26 to one and cannot reabsorb, while a 5P halo outside it, fed
+at 4.81 and 5.25 to one and cannot reabsorb, while a 5P halo outside it, fed
 by trapped D-line photons, re-excites at 1.07 per cent of the primary
 two-photon rate at 130 °C, a band of 0.49 to 1.85 per cent over the unmeasured
 detector standoff and nothing at 70 °C

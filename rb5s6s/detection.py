@@ -29,7 +29,7 @@ THE THREE BRANCHES, and the physics that separates them.
   and saying it was is the error this module shipped with. Its
   Doppler-broadened cross-sections are 1.41 and 1.50e-11 cm^2, the same as
   D1's, so what separates the channels is POPULATION rather than wavelength.
-  Inside the driven volume both legs are INVERTED, 4.81 and 5.26 to one,
+  Inside the driven volume both legs are INVERTED, 4.81 and 5.25 to one,
   because 5P empties in 27 ns while the drive refills 6S, so there is no
   re-absorption where the signal is made. Outside it a 5P halo fed by trapped
   D-line photons re-excites at 1.07 per cent of the primary two-photon rate
@@ -52,7 +52,12 @@ from dataclasses import dataclass
 from typing import Optional
 
 __all__ = ["DetectionChannel", "CHANNEL_795_D1", "CHANNEL_780_D2",
-           "CHANNEL_1300_CASCADE", "default_channel"]
+           "CHANNEL_1300_CASCADE", "default_channel",
+           # the cascade's first leg, promoted here 2026-09-11; the three
+           # names were left out of this list on the day they were added, so a
+           # star-import of the module returned none of them while the package
+           # surface test calls this list the package's own promise
+           "einstein_a_per_s", "ir_branching_5p12", "mean_5p_lifetime_s"]
 
 
 @dataclass(frozen=True)
@@ -162,3 +167,68 @@ def default_channel() -> DetectionChannel:
     who changes this gets their own.
     """
     return CHANNEL_795_D1
+
+
+# ---------------------------------------------------------------------------
+# THE CASCADE'S FIRST LEG, PROMOTED OUT OF A PRODUCER (2026-09-11)
+# ---------------------------------------------------------------------------
+# `scripts/run_trapping_channels.py` computed this branching from the package's
+# own matrix elements and wrote it into `results/trapping_channels.csv`, and it
+# was the only place that knew it. Then the platform twin needed it twice: the
+# cascade's saturation renormalisation weights the 5P lifetime by it, and the
+# fluorescence rows must multiply by the 795 nm share, which they did not. A
+# numerical routine wanted at a second call site belongs in the package, so it
+# is here.
+#
+# **THE PRODUCER STILL OWNS ITS COPY** (2026-09-11). The first form of this
+# comment ended "and the producer calls this rather than its own copy", which
+# was false when it was written: `scripts/run_trapping_channels.py` was not in
+# that wave's staged set and still computes the branching from its own `_leg`
+# and its own four SI literals. The two agree to 4e-7 by retyping, not by
+# wiring. Migrating the producer is its own change, because it also owns the
+# halo and the escape-factor arms that read those literals, and it is owed in
+# `docs/plan/12`; until then this module is the second copy and says so.
+
+def einstein_a_per_s(upper_cm: float, lower_cm: float, d_au: float) -> float:
+    """Einstein A for one electric-dipole leg, from its energies and element.
+
+    `d_au` is the reduced dipole matrix element in atomic units, as
+    `polarizability.LINES_6S` carries it; the 2 in the denominator is the
+    upper-state degeneracy factor for the 6S (J = 1/2) initial level.
+    """
+    import math
+
+    from . import constants as _C
+    lam = 1e7 / (upper_cm - lower_cm) * 1e-9
+    omega = 2.0 * math.pi * _C.C_M_PER_S / lam
+    d = d_au * _C.E_CHARGE_C * _C.A0_M
+    return float(omega ** 3 * d ** 2
+                 / (3.0 * math.pi * _C.EPS0 * _C.HBAR_JS * _C.C_M_PER_S ** 3 * 2))
+
+
+def ir_branching_5p12() -> float:
+    """The fraction of 6S decays taking the 5P1/2 leg, about 0.3409.
+
+    THEORY-ONLY, and the results file says so: no published measurement of this
+    branching exists (checked twice externally, 2026-09-06). 6S has no allowed
+    decay to 5S, so the two infrared legs are the whole decay and their ratio
+    is the branching.
+    """
+    from .polarizability import E_6S_CM, LINES_6S
+    a12 = einstein_a_per_s(E_6S_CM, LINES_6S[0][0], LINES_6S[0][1])
+    a32 = einstein_a_per_s(E_6S_CM, LINES_6S[1][0], LINES_6S[1][1])
+    return float(a12 / (a12 + a32))
+
+
+def mean_5p_lifetime_s() -> float:
+    """The 5P lifetime a 6S atom actually waits out, weighted by the branching.
+
+    The cascade's dead time and its saturation renormalisation both ask how
+    long the atom is away, and it takes the 5P3/2 leg twice out of three. Using
+    `TAU_5P12_S` alone, which every consumer did until 2026-09-11, overstates
+    that wait by 3.6 per cent and the saturation factor by 0.8 per cent.
+    Both lifetimes are Volz and Schmoranzer 1996, the same measurement.
+    """
+    from . import constants as _C
+    b12 = ir_branching_5p12()
+    return float(b12 * _C.TAU_5P12_S + (1.0 - b12) * _C.TAU_5P32_S)

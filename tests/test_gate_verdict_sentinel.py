@@ -81,12 +81,50 @@ def _run(cmd: str, tmp_path: Path, caller: str = "{probe}",
             + (_final_block() if with_final else ""))
     probe.write_text(body)
     invocation = caller.format(probe=f"bash {probe}")
+    # CWD, AND IT IS LOAD-BEARING (2026-09-11). The extracted block computes
+    # GATE_ROOT from `git rev-parse --git-common-dir`, which resolves in the
+    # CALLER's directory, so a probe run from the checkout resolved it to the
+    # checkout and the trap copied an empty GATE_PYLOG over the real
+    # `.ci_gate_fail.log`. Four tests here did that on every floor run, and
+    # the gate's own failure log went to zero bytes minutes after the gate
+    # wrote it, which reads as "no test failed" to every instrument that
+    # parses it. Running the probe where it writes is the fix.
     subprocess.run(["bash", "-c", invocation], capture_output=True,
+                   cwd=tmp_path,
                    env={"CI_GATE_VERDICT_FILE": str(verdict),
                         "PATH": "/usr/bin:/bin"})
     if not verdict.exists():
         return "<absent>"
     return verdict.read_text().splitlines()[0].strip()
+
+
+def test_no_probe_here_writes_into_the_checkout_it_grades(tmp_path):
+    """The guard on the guard, and it caught a live defect (2026-09-11).
+
+    The probes in this module run extracted shell from `scripts/ci_gate.sh`,
+    and that shell resolves `GATE_ROOT` from the CALLER's directory. Run
+    without a `cwd` they resolved it to this checkout, so the trap's
+    `cp "$GATE_PYLOG" "$GATE_ROOT/.ci_gate_fail.log"` overwrote the gate's own
+    failure log with an empty temporary file. Nothing failed: the log simply
+    became zero bytes, and every reader of it -- the board ledger's
+    acknowledgement door and the enforcement report's gate row -- then found no
+    failed test and refused a reading the register licenses. A guard whose
+    population silently goes empty is the invariant this repository keeps
+    meeting, and here a TEST emptied it.
+
+    So this test runs the same harness and asserts the checkout is untouched.
+    It is deliberately written against the real root, because the defect was
+    that the real root was reachable at all.
+    """
+    root = GATE.parents[1]
+    log = root / ".ci_gate_fail.log"
+    before = log.read_bytes() if log.is_file() else None
+    assert _run("exit 3", tmp_path) == "FAIL 3"
+    after = log.read_bytes() if log.is_file() else None
+    assert after == before, (
+        "a probe in this module wrote into the checkout's .ci_gate_fail.log; "
+        "every subprocess here runs with cwd set to its own tmp_path so that "
+        "GATE_ROOT cannot resolve to this repository")
 
 
 def test_the_extracted_blocks_are_the_real_ones():
@@ -160,7 +198,7 @@ def test_the_verdict_carries_the_tree_it_graded(tmp_path):
                      "export CI_GATE_SKIP_TARGETED='sentinel harness'\n"
                      + _sentinel_block()
                      + 'PMOD=""\n' + _final_block())
-    subprocess.run(["bash", str(probe)], capture_output=True,
+    subprocess.run(["bash", str(probe)], capture_output=True, cwd=tmp_path,
                    env={"CI_GATE_VERDICT_FILE": str(verdict),
                         "PATH": "/usr/bin:/bin"})
     lines = verdict.read_text().splitlines()

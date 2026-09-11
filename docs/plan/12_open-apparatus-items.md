@@ -723,6 +723,62 @@ cross-transition ratio is quotable at all.
 only items on this page already carried into a committed result instead of
 being spanned around it.
 
+### The collection solid angle, which the record has never measured
+
+**What is missing.** The platform table's fluorescence rows multiply the
+emitted rate by 0.162, and that number is the fraction of the emission inside
+the axial collection window, `2 arctan(z_ratio) / pi`, derived in
+`results/prediction_band.csv` from the lens and the cathode. It is not a solid
+angle, and no solid angle enters anywhere. So every absolute fluorescence rate
+in that table is an upper bound by whatever fraction of the emitted sphere the
+collection optics actually subtend.
+
+**What closing it needs.** The collection lens's clear aperture and its
+distance from the beam, which together give the subtended fraction. The
+transmission of the filter stack at 795 nm. And whether a second element or a
+condenser sits in the path. All are bench facts.
+
+**What it changes.** The absolute fluorescence signal-to-noise of the cell, the
+trap and the molasses rows, by one common factor, so it does not move any
+comparison between those rows, and it moves every comparison against an
+absorption row. The axial window's own weighting is a second, smaller question:
+0.162 is computed on the ramp's axial weight, and the table now integrates the
+saturated rate, whose weight is different.
+
+### The saturation parameter's linewidth, a modelling item and not a bench one
+
+**What is wrong.** `platforms.excitation_rate_per_atom` takes
+`s = 2 (Omega / Gamma_nat)^2`, so the resonant rate goes as one over the
+natural width alone, while the same row carries a transit width of 3.83 MHz
+beside a natural 3.49. The detuning-integrated weak-drive rate is fixed by the
+Rabi frequency alone, so the peak rate scales as one over the total homogeneous
+width. On the record's own kernel the composite width over the natural runs
+1.62 at 64 microns, 2.58 at 19 and 2.92 at 16, and every rate, saturation
+parameter and absorbed fraction in the platform table is overstated by that
+factor at its own waist.
+
+**Why it is listed and not fixed.** It predates the wave that found it
+(2026-09-11), it moves every cell of a committed table and the three pages that
+cite it, and `scripts/run_waist_ladder.py` already carries the right
+construction, so the repair is a migration and not a derivation. It is the
+next wave's first item.
+
+**And the regime beneath it.** The three-level steady state those rates assume
+needs the atom back from 5P and driven again while it is still in the beam. At
+the tight-waist row the chord time is about 102 ns against a 72.3 ns cascade
+dead time, a ratio of 1.4, so the atom leaves in under two cycles. The table's
+note says the row sits outside the approximations and does not say which. This
+is which.
+
+### The trapping producer's own copy of the cascade's first leg
+
+`rb5s6s/detection.ir_branching_5p12` computes the 6S branching from the
+package's matrix elements and reproduces the committed cell to four parts in
+ten million. `scripts/run_trapping_channels.py` still computes the same
+quantity from its own `_leg` and its own copies of four SI constants. The two
+agree by retyping and not by wiring. Migrating the producer also moves the
+halo and escape-factor arms that read those literals, so it is its own change.
+
 ### The guided-platform items
 
 The nanofibre arm has open items of its own, and they are listed in the fibre

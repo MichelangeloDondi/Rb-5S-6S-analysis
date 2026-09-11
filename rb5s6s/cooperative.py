@@ -124,6 +124,8 @@ from __future__ import annotations
 import itertools
 import math
 
+from . import constants as _C
+
 __all__ = ["pair_final_states", "TRANSFER_DEFECT_CM", "suppression_volume_m3",
            "amplitude_ratio", "rate_ratio", "satellite_mhz",
            "perturbative_floor_nm", "weisskopf_radius_nm", "GF_5S",
@@ -264,8 +266,8 @@ def weisskopf_radius_nm(T_C: float = 130.0) -> float:
     time as a new coherent channel.
     """
     from .vanderwaals import c6_5s5s, c6_5s6s, mean_relative_speed
-    hartree_j = 4.3597447222071e-18
-    a0 = 5.29177210903e-11
+    hartree_j = _C.HARTREE_J  # constants.py, since 2026-09-11
+    a0 = _C.A0_M  # constants.py, since 2026-09-11
     delta_c6 = abs(c6_5s6s() - c6_5s5s()) * hartree_j * a0 ** 6
     v = mean_relative_speed(T_C + 273.15)
     return (delta_c6 / (_HBAR * v)) ** 0.2 * 1e9

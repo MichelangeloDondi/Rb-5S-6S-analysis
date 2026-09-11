@@ -228,7 +228,7 @@ def acquire(platform: Platform, acq: Acquisition, *,
             # zero. Two reasons that model is wrong here, and the record already
             # carried both. At tau >> 1 the photon is RE-EMITTED rather than
             # lost, so trapping is transport and not Beer-Lambert. And inside the
-            # driven volume the medium is INVERTED, 4.81 and 5.26 to one
+            # driven volume the medium is INVERTED, 4.81 and 5.25 to one
             # (results/trapping_channels.csv), because 5P empties in 27 ns while
             # the drive refills 6S, so there is no reabsorption where the signal
             # is made at all.

@@ -2174,21 +2174,21 @@
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
     "line": 247,
-    "writes": "8.04573e-07"
+    "writes": "2.05542e-07"
    },
    {
     "file": "docs/methods/09_the_guided_geometry.md",
     "line": 418,
-    "writes": "8.04573e-07"
+    "writes": "2.05542e-07"
    },
    {
     "file": "docs/wiki/guided-atoms-and-nanofibres.md",
     "line": 109,
-    "writes": "8.04573e-07"
+    "writes": "2.05542e-07"
    }
   ],
   "source_file": "results/platform_twins.csv",
-  "source_value": "8.04573e-07"
+  "source_value": "2.05542e-07"
  },
  "platform_twins:hcpcf_warm:hcpcf:absorbed_fraction": {
   "producer": "run_platform_twins.py",
@@ -2196,21 +2196,21 @@
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
     "line": 245,
-    "writes": "0.0236545"
+    "writes": "0.00604294"
    },
    {
     "file": "docs/methods/09_the_guided_geometry.md",
     "line": 416,
-    "writes": "0.0236545"
+    "writes": "0.00604294"
    },
    {
     "file": "docs/wiki/guided-atoms-and-nanofibres.md",
     "line": 107,
-    "writes": "0.0236545"
+    "writes": "0.00604294"
    }
   ],
   "source_file": "results/platform_twins.csv",
-  "source_value": "0.0236545"
+  "source_value": "0.00604294"
  },
  "platform_twins:hcpcf_warm:hcpcf:length_eff_mm": {
   "producer": "run_platform_twins.py",

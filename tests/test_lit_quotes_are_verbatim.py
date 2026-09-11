@@ -59,7 +59,17 @@ PDF_DIR = ROOT / "PDF_papers"
 
 MIN_WORDS = 6
 
-_PDFS_PRESENT = any(PDF_DIR.glob("*.pdf"))
+# ONE NAMED PREDICATE FOR THIS QUESTION, IMPORTED AND NOT REDEFINED
+# (2026-09-11, escape E52's fourth site). This was
+# `any(PDF_DIR.glob("*.pdf"))`, non-recursive, and it gates a MODULE-WIDE
+# skipif: reading False wrongly here disables the verbatim-quote guard for every
+# literature note at once, where the sites already repaired only skip one
+# assertion inside a module that keeps running. E52's sweep read every
+# reference in the other module and stopped at that module's edge, which is
+# the population failure this record keeps meeting.
+from test_lit_consistency import _the_shelf_is_here  # noqa: E402
+
+_PDFS_PRESENT = _the_shelf_is_here()
 
 pytestmark = pytest.mark.skipif(
     not _PDFS_PRESENT,

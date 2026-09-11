@@ -2174,3 +2174,79 @@ def test_no_tracked_path_is_a_symlink():
         f"{len(links)} tracked path(s) are symlinks: {links}. A tracked link "
         "is copied by the porter and by every guard that walks the tree; if "
         "one is genuinely wanted, it is declared here with its reason.")
+
+
+def test_a_docstring_names_no_test_the_suite_lacks():
+    """A backquoted `test_...` in a docstring claims that test exists.
+
+    THE SIBLING GUARD ABOVE CHECKS ONLY THE CALL FORM, `name()`, and that
+    narrowing is deliberate: a bare backquoted word is as often a CSV column or
+    a status label as an identifier, and checking those returned 39 false
+    positives. A word beginning `test_` has no such ambiguity, so it is
+    checkable on its own.
+
+    It was owed on measurement (2026-09-11, the physics seat). The cascade
+    commit deleted `min` from `excitation_rate_per_atom` and the test that
+    asserted the ceiling could not bind; the function's docstring went on
+    naming that test, and a later commit edited two lines INSIDE that same
+    paragraph without noticing, because every guard that reads test names reads
+    the `tests/` directory and no guard reads `rb5s6s/` prose for them.
+
+    FAILURE MODE GUARDED: a docstring citing a test as its evidence after the
+    test has been renamed or deleted, which reads to a stranger as an assertion
+    the suite makes and does not.
+    """
+    import re
+    import ast
+
+    defined: set[str] = set()
+    for path in (ROOT / "tests").rglob("*.py"):
+        try:
+            tree = ast.parse(path.read_text(encoding="utf-8", errors="replace"))
+        except SyntaxError:
+            continue
+        for node in ast.walk(tree):
+            if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                defined.add(node.name)
+    # MODULE BASENAMES COUNT TOO: `test_docs_links` names a file as often as a
+    # function here, and a citation of a module is as checkable as one of a
+    # function. Thirteen of the first run's hits were modules.
+    defined |= {p.stem for p in (ROOT / "tests").rglob("test_*.py")}
+    assert len(defined) > 200, (
+        f"only {len(defined)} test functions found; this guard is grading an "
+        "empty population and would pass over any number of stale citations")
+
+    # ONE HATCH, AND IT IS SCOPED TO THE LINE. A record of a test that was
+    # REPLACED or deleted is legitimate history and must stay writable; what is
+    # not legitimate is citing a missing test as live evidence. So a citation
+    # whose own line carries a retirement word is skipped, and nothing else is.
+    # The scope is the line rather than the docstring, so a single "retired"
+    # somewhere in a long docstring cannot cover every other citation in it.
+    retired = re.compile(r"replace[ds]?|retire[ds]?|delete[ds]?|renamed|removed",
+                         re.I)
+    pat = re.compile(r"`(test_[A-Za-z0-9_]+)`")
+    missing: list[str] = []
+    for root in ("rb5s6s", "scripts", "tests"):
+        for path in (ROOT / root).rglob("*.py"):
+            try:
+                tree = ast.parse(path.read_text(encoding="utf-8", errors="replace"))
+            except SyntaxError:
+                continue
+            for node in ast.walk(tree):
+                if not isinstance(node, (ast.Module, ast.FunctionDef,
+                                         ast.AsyncFunctionDef, ast.ClassDef)):
+                    continue
+                doc = ast.get_docstring(node)
+                if not doc:
+                    continue
+                for line in doc.splitlines():
+                    if retired.search(line):
+                        continue
+                    for name in pat.findall(line):
+                        if name not in defined:
+                            missing.append(f"{path.relative_to(ROOT)}: {name}")
+    assert not missing, (
+        "these docstrings cite a test the suite does not define: "
+        + "; ".join(sorted(set(missing)))
+        + ". Name a test that exists, or describe the assertion without "
+          "quoting an identifier.")

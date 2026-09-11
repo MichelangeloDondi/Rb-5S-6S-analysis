@@ -61,8 +61,27 @@ def _the_shelf_is_here() -> bool:
     reported every held note as pointing at a missing file. That is the
     empty-population class arriving from the other side, a guard whose inputs
     are deliberately absent and whose skip condition tests the wrong thing.
+
+    **AND THE RECURSIVE FORM MADE IT NEARLY A CONSTANT**, which a board seat
+    found the same day. `any(PDF_DIR.rglob("*.pdf"))` reads True off
+    `_discard/` alone, which holds sixty-three files, so every one of the held
+    papers could vanish and this would still say the shelf is here. The name
+    would then overstate what it verifies by the whole of its subject.
+
+    So it asks the question the guards below actually gate: does any HELD note's
+    own `pdf:` path resolve to a file? That population is the one they check, it
+    excludes the discard directories by construction rather than by a list of
+    names that would go stale, and it discriminates, since the papers going
+    turns it False and the guards skip, which is a clone's intended behaviour.
     """
-    return PDF_DIR.is_dir() and any(PDF_DIR.rglob("*.pdf"))
+    if not PDF_DIR.is_dir():
+        return False
+    for key in _lit_keys():
+        fm = _fm(key)
+        rel = str(fm.get("pdf") or "").strip()
+        if fm.get("held") and rel and (ROOT / rel).is_file():
+            return True
+    return False
 
 # load the generator (scripts/ is not a package) so parser + emitters have one source
 _spec = importlib.util.spec_from_file_location(
@@ -157,14 +176,6 @@ _STATUS_OK = {"VERIFIED", "REPORTED"}
 _ROUTING_OK = {"CITE", "FEED"}
 _LOCI_RE = re.compile(r"^(P1|P2|THEORY|constants|methods/\d{2}|M\d+[a-z]?)(:.+)?$")
 
-# THE THIRD SITE ASKING THE SAME QUESTION, routed through the same predicate
-# on 2026-09-11 (escape E52). It was `any(PDF_DIR.glob("*.pdf"))`, a
-# NON-RECURSIVE glob, while 117 of the 274 held papers, 43 per cent, live only
-# in subdirectories it cannot see. It read True anyway, because 157 sit in the
-# root, so nothing broke and nothing would have until the last root-level paper
-# moved. The commit that replaced the directory test with a shelf test in the
-# two guards below left this one, one function away, asking the older question.
-_PDFS_PRESENT = _the_shelf_is_here()  # True locally, False on CI (gitignored)
 
 
 def _lit_notes(d):
@@ -224,6 +235,24 @@ def _cited_keys():
 def _fm(key):
     return bli._parse_frontmatter((LIT_DIR / f"{key}.md").read_text())
 
+
+
+# THE THIRD SITE ASKING THE SAME QUESTION, routed through the same predicate
+# on 2026-09-11 (escape E52). It was `any(PDF_DIR.glob("*.pdf"))`, a
+# NON-RECURSIVE glob, so it could not see the FOUR held papers that live in
+# `theses/`, out of the 135 notes declaring `held: true`. It read True anyway,
+# because 157 files sit in the root, so nothing broke and nothing would have
+# until the last root-level paper moved. The commit that replaced the directory
+# test with a shelf test in the two guards below left this one, one function
+# away, asking the older question.
+#
+# THE FIRST FORM OF THIS COMMENT SAID "117 of the 274 held papers, 43 per
+# cent", which is a FILE census and not a holdings one: 76 of those 117 sit in
+# `_discard`, `_duplicates` and `_not-relevant`, whose names say they are the
+# opposite of held. "Held" is a defined term in this very file, asserted below
+# as a boolean on each note, and the prose used the colloquial sense inside the
+# one module whose purpose is stopping literature terminology drifting.
+_PDFS_PRESENT = _the_shelf_is_here()  # True locally, False on CI (gitignored)
 
 def _digest(word: str) -> str:
     return hashlib.sha256(word.lower().encode()).hexdigest()[:16]

@@ -97,6 +97,10 @@ GRID_CELLS = (("exp", "per_T"), ("gaussian", "per_T"), ("exp", "per_block"))
 # across the whole fitted range, so no value inside that range is
 # distinguishable from another (A193). The mean is where the axis is sampled,
 # not what the kernel is claimed to be, and nothing downstream reports it.
+# The name keeps MEASURED because the kernel chain does FIT this component
+# and the value is its weighted mean. What the comment above withdraws is
+# any claim that the width fit MEASURES it: that likelihood is flat, and
+# its own minimum sits nearer 0.375 (A193).
 GAMMA_L_MEASURED_MHZ = 0.398
 KERNEL_CELL = ("exp", "per_T", GAMMA_L_MEASURED_MHZ)
 # w0 confound band: transit_ref values from the CORRECTED transit<->w0 law at

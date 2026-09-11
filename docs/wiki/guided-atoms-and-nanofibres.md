@@ -104,9 +104,9 @@ is reached from 6S only by blackbody excitation. A fibre is
 read in transmission, so what is measured is a dip in a large transmitted
 power and the noise is the shot noise of the whole beam and not of the
 signal. Those scale differently, and the dip is what decides feasibility:
-[0.0236545](../../results/platform_twins.csv "ref:platform_twins:hcpcf_warm:hcpcf:absorbed_fraction") with
+[0.00604294](../../results/platform_twins.csv "ref:platform_twins:hcpcf_warm:hcpcf:absorbed_fraction") with
 vapour in the mode is resolved by any photodiode, while
-[8.04573e-07](../../results/platform_twins.csv "ref:platform_twins:hcpcf_cold:hcpcf:absorbed_fraction") for
+[2.05542e-07](../../results/platform_twins.csv "ref:platform_twins:hcpcf_cold:hcpcf:absorbed_fraction") for
 a cold loaded column is a part-per-million measurement and needs a
 correspondingly quiet laser.
 

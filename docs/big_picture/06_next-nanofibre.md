@@ -242,9 +242,9 @@ small factor of one.
 **For a host group the practical consequence is the observable.** A cell hands
 you fluorescence against a dark background. A fibre hands you a transmission
 dip, which an ideal shot-noise-limited photodiode would resolve at
-[0.0236545](../../results/platform_twins.csv "ref:platform_twins:hcpcf_warm:hcpcf:absorbed_fraction")
+[0.00604294](../../results/platform_twins.csv "ref:platform_twins:hcpcf_warm:hcpcf:absorbed_fraction")
 with vapour in the mode and a part-per-million measurement at
-[8.04573e-07](../../results/platform_twins.csv "ref:platform_twins:hcpcf_cold:hcpcf:absorbed_fraction")
+[2.05542e-07](../../results/platform_twins.csv "ref:platform_twins:hcpcf_cold:hcpcf:absorbed_fraction")
 once the vapour is replaced by a cold loaded column. The second number is the
 one that decides whether a cold guided experiment is a measurement or a
 proposal, and it rests on a shot-noise-limited detector this record has not

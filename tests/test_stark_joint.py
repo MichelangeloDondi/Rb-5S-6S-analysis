@@ -85,7 +85,7 @@ def test_the_two_full_subsets_lie_below_the_nominal_prediction():
     """The primary and campaign-only bounds sit below the predicted S0.
 
     RENAMED AND RESCOPED 2026-08-27. This test was called
-    `test_every_subset_lies_below_the_nominal_prediction` and its docstring
+    `test_the_two_full_subsets_lie_below_the_nominal_prediction` and its docstring
     called that "the load-bearing claim of C3f: ... whichever subset carries
     the weight". **The record retracts exactly that**:
     `docs/PREREGISTRATION_RESULTS.md` says the statement that every subset

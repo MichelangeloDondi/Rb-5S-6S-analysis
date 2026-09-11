@@ -68,6 +68,8 @@ def rows():
         sat = 2.0 * (omega / C.GAMMA_NAT_HZ) ** 2
         uncapped = PL.GAMMA_POP_PER_S * PL.excited_fraction(pw, p, RHO)
         capped = PL.excitation_rate_per_atom(pw, p, RHO)
+        prof_casc = PL.events_per_s_profile(pw, p, RHO)
+        prof_two = PL.events_per_s_profile(pw, p, RHO, cascade=False)
         out.append(dict(
             platform=key, kind=p.kind, detection=p.detection,
             guided=int(p.guided),
@@ -88,10 +90,30 @@ def rows():
             # two-level one and so never selected it, while results/README.md
             # sold the pair as "with and without the cascade dead-time
             # ceiling". The cascade is a saturation renormalisation: it lowers
-            # every rate, by one to two per cent at weak drive and by thirty at
-            # the saturated rows, and this column is that fraction.
-            cascade_reduction=f"{1.0 - capped / uncapped:.4f}",
+            # every rate, and these two columns are that fraction ON AXIS and
+            # over the whole mode.
+            #
+            # THE PROSE HERE SAID "by thirty at the saturated rows" AND THEN
+            # QUOTED A COLUMN THAT HAD MOVED (2026-09-11, twice). Thirty is
+            # `1.304 - 1`, the two-level rate over the three-level one, which
+            # is the reciprocal of a "lowers by" statement: a producer emitted
+            # a sentence it had not computed. Its replacement then quoted
+            # 0.2138 for the tight row, which is the reduction under the
+            # SINGLE 5P lifetime this same change retired, against the 0.2079
+            # the column actually holds; and it quoted a range that dropped
+            # the nanofibre row. So no range is retyped here at all: the two
+            # columns below carry 0.25 to 19.41 per cent integrated and
+            # 0.93 to 22.64 on axis over every row, and this comment
+            # states the mechanism rather than the numbers, since the numbers
+            # are what the file is for.
+            cascade_reduction_on_axis=f"{1.0 - capped / uncapped:.4f}",
+            cascade_reduction=f"{1.0 - prof_casc / prof_two:.4f}",
             events_per_s=f"{sn['events_per_s']:.6g}",
+            # THE RETIRED CONVENTION, kept beside the integral so the move is
+            # legible in the file rather than being a silent change of a
+            # number, and so the ratio is readable per row.
+            events_per_s_on_axis_convention=f"{PL.events_per_s_on_axis(pw, p, RHO):.6g}",
+            events_profile_over_on_axis=f"{sn['events_per_s'] / PL.events_per_s_on_axis(pw, p, RHO):.4f}",
             absorbed_fraction=("" if sn["absorbed_fraction"] != sn["absorbed_fraction"]
                                else f"{sn['absorbed_fraction']:.6g}"),
             snr_per_s=f"{sn['snr']:.6g}",

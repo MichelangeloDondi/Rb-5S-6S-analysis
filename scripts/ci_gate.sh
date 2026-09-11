@@ -124,8 +124,27 @@ printf 'RUNNING\ntree %s\n' "$GATE_TREE" > "$GATE_VERDICT"
 # gate verdict at all. Measured 2026-09-02: a FAIL stood on disk whose
 # cause could only be recovered by spending another sixteen minutes.
 # On failure the log is kept and its path is the verdict file's THIRD
-# line; the ledger reads only the first two, so the line is free.
-trap 'rc=$?; if [ "$(head -n1 "$GATE_VERDICT" 2>/dev/null)" = "RUNNING" ]; then kept=""; if [ -n "${GATE_PYLOG:-}" ] && [ -f "$GATE_PYLOG" ]; then kept="$GATE_ROOT/.ci_gate_fail.log"; cp "$GATE_PYLOG" "$kept" 2>/dev/null || kept=""; fi; printf "FAIL %s\ntree %s\nlog=%s\n" "$rc" "$GATE_TREE" "${kept:-not captured}" > "$GATE_VERDICT"; fi; rm -rf "$GATE_LOCK"; { [ -n "${GATE_PYLOG:-}" ] && rm -f "$GATE_PYLOG"; } || true' EXIT
+# line, and the FOURTH names the stage that failed.
+#
+# THE FOURTH LINE EXISTS BECAUSE THE LOG CANNOT SAY (2026-09-11).
+# `.ci_gate_fail.log` is a copy of
+# GATE_PYLOG and nothing else, so a failure in any stage after pytest leaves a
+# log with no FAILED line in it, and a reader asking "did a test fail?" gets
+# the same answer whether the ledger's verify, the citation checker, the
+# moved-value scan, the parse gate or the tree-moved check was what exited.
+# A door built on that question could not tell them apart. `GATE_STAGE` is set
+# before every stage that can exit non-zero and the trap prints it.
+#
+# AND IT IS CLEARED THE MOMENT A STAGE PASSES (2026-09-11). The first form
+# assigned and never reset, so the parse gate, the two
+# chapter advisories and the tree-moved check all inherited
+# `board_ledger_verify` from the stage above them and the verdict named a
+# stage that had passed. The ledger's own door keys on exactly that name, so a
+# failure it was never written to excuse could open it. A name is now either
+# the stage that failed or `unnamed`, never a stage that succeeded, and
+# `tests/test_gate_stage_is_never_stale.py` walks every exit-capable line of
+# this file against the assignment that dominates it.
+trap 'rc=$?; if [ "$(head -n1 "$GATE_VERDICT" 2>/dev/null)" = "RUNNING" ]; then kept=""; if [ -n "${GATE_PYLOG:-}" ] && [ -f "$GATE_PYLOG" ]; then kept="$GATE_ROOT/.ci_gate_fail.log"; cp "$GATE_PYLOG" "$kept" 2>/dev/null || kept=""; fi; printf "FAIL %s\ntree %s\nlog=%s\nstage=%s\n" "$rc" "$GATE_TREE" "${kept:-not captured}" "${GATE_STAGE:-unnamed}" > "$GATE_VERDICT"; fi; rm -rf "$GATE_LOCK"; { [ -n "${GATE_PYLOG:-}" ] && rm -f "$GATE_PYLOG"; } || true' EXIT
 # Computed AFTER the trap is armed: a git failure inside the digest
 # aborts through the trap and writes FAIL, instead of dying with the
 # previous gate's verdict still on disk.
@@ -161,12 +180,15 @@ if git rev-parse --git-dir >/dev/null 2>&1; then
       echo "    git for-each-ref --format='%(refname)' | while read r; do" >&2
       echo "      git ls-tree -r --name-only \$r | grep -q data_raw/p_sweep/ && echo \$r; done" >&2
       echo "  Then drop it and run: git reflog expire --expire=now --all && git gc --prune=now" >&2
+      GATE_STAGE="raw_traces"
       exit 1
     fi
     echo "ci_gate: no raw-trace path reachable from any ref"
   fi
 fi
+GATE_STAGE="ruff"
 "$PY" -m ruff check rb5s6s scripts tests
+GATE_STAGE=""
 # THE REGISTER-AWARE VERDICT (LOGIC 0e.1). The decision lives in
 # scripts/compute_gate_verdict.py - a tested python module, because a
 # shell implementation of this decision is unreviewable by reading and
@@ -175,6 +197,7 @@ fi
 # end of the script, so the register can never excuse the checkers.
 GATE_PYLOG="$(mktemp)"
 set +e
+GATE_STAGE="pytest"
 "$PY" -m pytest -q --runslow 2>&1 | tee "$GATE_PYLOG"
 PYRC=${PIPESTATUS[0]:-$?}
 set -e
@@ -197,10 +220,12 @@ case "$GVWORD" in
     # skipped and the shell status green. The sentinel plants exactly
     # that input.
     if [ "$PYRC" -ne 0 ]; then exit "$PYRC"; fi
+    GATE_STAGE="verdict_module"
     echo "ci_gate: the verdict module is unusable on a green suite" >&2
     exit 1
     ;;
 esac
+GATE_STAGE=""
 # The protocol citation checker was written to catch the one propagation
 # failure a grep of a claim cannot see, because the claim IS a pointer, and
 # it had never been wired into the gate: it ran when someone remembered to
@@ -214,10 +239,13 @@ esac
 if [ -d "$GATE_ROOT/private/checks" ] && [ ! -f private/checks/protocol_citations.py ]; then
   echo "ci_gate: FAIL. The governance layer exists at $GATE_ROOT but this" >&2
   echo "  checkout cannot reach it; a gate here would skip four stages." >&2
+  GATE_STAGE="governance_layer"
   exit 1
 fi
 if [ -f private/checks/protocol_citations.py ]; then
+  GATE_STAGE="protocol_citations"
   "$PY" private/checks/protocol_citations.py || exit 1
+  GATE_STAGE=""
 fi
 # Every literal a results/ cell held anywhere in the unpushed range is
 # grepped for, which is the complement of check_references.py's population:
@@ -238,6 +266,7 @@ fi
 # usage error and a gate that found a defect should not read alike.
 if [ -f scripts/check_moved_values.py ]; then
   _mv=0
+  GATE_STAGE="check_moved_values"
   "$PY" scripts/check_moved_values.py "origin/main" || _mv=$?
   if [ "$_mv" = 2 ]; then
     echo "ci_gate: check_moved_values could not run (exit 2). That is not a"
@@ -246,6 +275,7 @@ if [ -f scripts/check_moved_values.py ]; then
   elif [ "$_mv" != 0 ]; then
     exit 1
   fi
+  GATE_STAGE=""
 fi
 # The commit-coverage ledger, wired for the same reason and after the same
 # finding. LOGIC 0c says the staged diff is read (REQUIRED_SEATS sizes the
@@ -256,7 +286,9 @@ fi
 # because nothing ever called it. Two dead guards, twenty-five lines apart.
 # A guard that nothing calls is not a guard, so it is called here.
 if [ -f private/checks/board_ledger.py ]; then
+  GATE_STAGE="board_ledger_verify"
   "$PY" private/checks/board_ledger.py --verify || exit 1
+  GATE_STAGE=""
 fi
 # The enforcement report is a REPORT and not a gate: it prints one line per
 # standing owner rule and does not decide anything, so its exit code is not
@@ -283,8 +315,10 @@ fi
 # other ten (confirmation round, 2026-09-01). Recursive so a future
 # subdirectory stays in the population.
 if [ -d private/checks ]; then
+  GATE_STAGE="private_checks_parse"
   "$PY" -c "import ast,glob; [ast.parse(open(f,encoding='utf-8').read(),f) for f in glob.glob('private/checks/**/*.py',recursive=True)]" \
     || { echo "ci_gate: a private/checks file does not parse"; exit 1; }
+  GATE_STAGE=""
 fi
 if [ -f private/checks/enforcement_report.py ]; then
   "$PY" private/checks/enforcement_report.py || true
@@ -315,7 +349,7 @@ advisory_chapter_check() {
   case "$rc" in
     0) ;;
     2) echo "ci_gate: $(basename "$1" .py) skipped, the chapter is not in this tree" ;;
-    *) sed 's/^/ci_gate: advisory: /' "$ADVISORY_SINK"; echo "ci_gate: FAIL. $(basename "$1" .py) exit $rc:" >&2; printf '%s\n' "$out" | tail -n 6 >&2; exit 1 ;;
+    *) sed 's/^/ci_gate: advisory: /' "$ADVISORY_SINK"; echo "ci_gate: FAIL. $(basename "$1" .py) exit $rc:" >&2; printf '%s\n' "$out" | tail -n 6 >&2; GATE_STAGE="advisory_$(basename "$1" .py)"; exit 1 ;;
   esac
 }
 advisory_chapter_check private/checks/check_chapter_bibliography_sync.py
@@ -331,6 +365,7 @@ GATE_DIRTY_END="$(gate_dirty_digest)"
 if [ "$GATE_DIRTY_START" != "$GATE_DIRTY_END" ]; then
   echo "ci_gate: FAIL. The working tree moved while the gate ran; this" >&2
   echo "  verdict would grade a chimera. Re-run on a still tree." >&2
+  GATE_STAGE="tree_moved"
   exit 1
 fi
 echo "ci_gate: clean"

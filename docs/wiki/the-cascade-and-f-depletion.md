@@ -153,7 +153,7 @@ The infrared channel is not exempt from absorption, and the reason it helps
 is more specific than the wavelength alone. Its cross-sections are 1.41 and
 1.50e-11 cm², the same as the D1 line's, so it absorbs just as strongly per
 lower-state atom, and what separates the two channels is population. Inside
-the driven volume both infrared lines are inverted, 4.81 and 5.26 to one,
+the driven volume both infrared lines are inverted, 4.81 and 5.25 to one,
 because 5P empties in 27 ns while the drive refills 6S, so trapped infrared
 stimulates 6S downward instead of pumping 5P upward. Outside it, trapped
 D-line photons build a 5P halo where there is no 6S, and there the infrared

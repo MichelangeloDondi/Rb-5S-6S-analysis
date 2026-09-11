@@ -65,10 +65,15 @@ import numpy as np
 
 from ._compat import trapezoid
 from .polarizability import LINES_5S, LINES_6S, E_6S_CM, CM_PER_HARTREE
+from . import constants as _C
 
-HARTREE_J = 4.3597447e-18
-BOHR_M = 5.29177211e-11
-HBAR = 1.054571817e-34
+HARTREE_J = _C.HARTREE_J  # the same, and it differed from cooperative's
+                          # copy in its eighth digit
+BOHR_M = _C.A0_M  # constants.py, since 2026-09-11: this was a fifth
+                  # copy of the Bohr radius, and the promotion that
+                  # named four missed it, which is repairing the name
+                  # last found missing rather than the population
+HBAR = _C.HBAR_JS  # one home for the trio, constants.py, since 2026-09-11
 KB = 1.380649e-23
 M_RB87 = 86.909180527 * 1.66053907e-27
 

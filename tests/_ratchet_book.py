@@ -23,6 +23,21 @@ BOOK = Path(__file__).with_name("_ratchet_history.md")
 MAX_KEYS = 6
 
 
+def _names(key: str, reason: str) -> bool:
+    """Does `reason` name `key`, as a key and not as the tail of another one?
+
+    A BARE SUBSTRING TEST REFUSES A CORRECT REASON (2026-09-11). The baseline
+    holds both `README.md` and `results/README.md`; a reason naming the second
+    contains the first, so a movement in `results/README.md` was refused for
+    crediting a `README.md` that had not moved, and the refusal's own advice
+    ("name a key that actually moved") could not be followed. A key is named
+    only where it starts at a path boundary: the start of the string, or after
+    a character that is neither a path separator nor part of a name.
+    """
+    import re as _re
+    return bool(_re.search(r"(?<![\w./-])" + _re.escape(key), reason))
+
+
 def _leaves(d: dict) -> dict:
     """The per-file counts, whatever depth the tool nests them at.
 
@@ -99,7 +114,7 @@ def record(tool: str, action: str, before, after, reason: str,
     if isinstance(before, dict) and isinstance(after, dict):
         b_leaf, a_leaf = _leaves(before), _leaves(after)
         credited = sorted(k for k in set(b_leaf) & set(a_leaf)
-                          if b_leaf[k] == a_leaf[k] and str(k) in reason)
+                          if b_leaf[k] == a_leaf[k] and _names(str(k), reason))
         if credited:
             raise SystemExit(
                 f"REFUSING to book a reason crediting {credited}, whose "

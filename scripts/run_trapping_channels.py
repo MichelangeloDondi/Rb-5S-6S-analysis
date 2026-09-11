@@ -91,6 +91,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from rb5s6s import config as C  # noqa: E402
+from rb5s6s import constants as C_CONST  # noqa: E402
 from rb5s6s.constants import (ABUNDANCE_RB85, K_B_J_PER_K,  # noqa: E402
                               M_RB87_KG, SIGMA_D1_CM2, TAU_5P12_S, TAU_6S_S)
 from rb5s6s.density import d1_optical_depth_per_cm, number_density_cm3  # noqa: E402
@@ -105,7 +106,10 @@ HBAR = 1.054571817e-34
 EPS0 = 8.8541878128e-12
 CL = 2.99792458e8
 T_C = 130.0
-TAU_5P32_S = 26.2e-9          # ESTABLISHED, the D2 lifetime
+# ONE HOME, constants.py, since 2026-09-11: this line carried 26.2e-9 while
+# the package carries the measurement's own 26.24e-9, which is the same name
+# at two values inside one wave that promoted constants to stop exactly that.
+TAU_5P32_S = C_CONST.TAU_5P32_S
 # ONE length does two jobs here and they were conflated once, so both are
 # named. The escape path is the distance from the source to the nearest way
 # out, which the owner's 2026-08-09 statement makes the STANDOFF from the near

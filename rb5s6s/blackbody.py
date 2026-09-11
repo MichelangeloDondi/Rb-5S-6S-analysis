@@ -28,6 +28,8 @@ from __future__ import annotations
 import math
 from dataclasses import dataclass
 
+from . import constants as C
+
 __all__ = [
     "Transition",
     "occupation",
@@ -43,8 +45,10 @@ _C = 299792458.0
 _KB = 1.380649e-23
 _HBAR = _H / (2.0 * math.pi)
 _EPS0 = 8.8541878128e-12
-_E_C = 1.602176634e-19
-_A0 = 5.29177210903e-11
+# the atomic-unit trio lives in constants since 2026-09-11; these names stay
+# so the formulas below read unchanged
+_E_C = C.E_CHARGE_C
+_A0 = C.A0_M
 
 
 @dataclass(frozen=True)

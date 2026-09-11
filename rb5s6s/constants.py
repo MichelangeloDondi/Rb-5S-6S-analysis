@@ -34,6 +34,37 @@ C_M_PER_S = 299_792_458.0  # m/s, exact. ESTABLISHED.
 H_PLANCK_JS = 6.626_070_15e-34    # J*s, exact. ESTABLISHED (CODATA).
 EPS0_F_PER_M = 8.854_187_8128e-12  # vacuum permittivity, F/m. ESTABLISHED (CODATA).
 
+# THE ATOMIC-UNIT TRIO, PROMOTED HERE 2026-09-11. Each of these already sat as
+# a private literal in three or four modules -- `blackbody._E_C`, `_A0`,
+# `vanderwaals.HBAR`, a local `a0` inside `cooperative` -- and a fifth consumer
+# (`detection.einstein_a_per_s`) would have made five. A constant with four
+# copies is four places a revision has to reach, so the copies import these.
+E_CHARGE_C = 1.602176634e-19
+"""Elementary charge, C. ESTABLISHED (CODATA, exact by the 2019 SI)."""
+
+A0_M = 5.29177210903e-11
+"""Bohr radius, m. ESTABLISHED (CODATA 2018)."""
+
+HBAR_JS = 1.054571817e-34
+"""Reduced Planck constant, J s. ESTABLISHED (CODATA, exact by the 2019 SI)."""
+
+HARTREE_J = 4.3597447222071e-18
+"""Hartree energy, J. ESTABLISHED (CODATA 2018). Two copies existed, differing
+in the eighth digit (`vanderwaals` at 4.3597447e-18, `cooperative` at the full
+value); the shorter one was the one a van der Waals coefficient rode on."""
+
+EPS0 = EPS0_F_PER_M
+"""Alias for `EPS0_F_PER_M`, so a formula written in the textbook's symbols
+reads as the textbook writes it."""
+
+TAU_5P32_S = 26.24e-9
+"""5P3/2 lifetime. ESTABLISHED, Volz and Schmoranzer 1996, the SAME measurement
+that gives `TAU_5P12_S` (docs/lit/volz1996.md, 26.24(4) ns against 27.70(4)).
+
+It is here because the cascade takes this leg two times in three and every
+consumer used the 5P1/2 value for both, which overstates the wait by 3.6 per
+cent; `detection.mean_5p_lifetime_s` is the weighted quantity."""
+
 # --------------------------------------------------------------------------
 # The 6S_1/2 upper state
 # --------------------------------------------------------------------------

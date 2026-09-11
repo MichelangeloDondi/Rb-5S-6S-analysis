@@ -210,7 +210,25 @@ echo "targeted: $UNIQ"
 # the defect and nothing on the ones that cannot.
 if grep -q '^results/.*\.csv$' <<<"$CHANGED"; then
   echo "targeted: a results CSV is staged, so the moved-value scan runs here too"
-  "$PY" scripts/check_moved_values.py "origin/main"
+  # THE CODE IS 2 AND THE CAPTURE IS `|| var=$?` (2026-09-11).
+  # The first form of this block wrote `if ! CMD; then _mvrc=$?` and keyed on
+  # 77. Both halves were wrong and each alone killed it. `!` collapses the
+  # status to a boolean before `$?` is read inside the branch, so `_mvrc` was
+  # always 0 and `exit "$_mvrc"` was `exit 0`, silently passing a real stale
+  # literal and never reaching the stamp; and 77 appears nowhere in
+  # `check_moved_values.py`, whose could-not-run code is 2 and whose defect
+  # code is 1 -- which `ci_gate.sh` already keys on, thirty lines away in the
+  # same script set. The capture below is the gate's own idiom, so the two
+  # callers of one checker now read it the same way.
+  _mvrc=0
+  "$PY" scripts/check_moved_values.py "origin/main" || _mvrc=$?
+  if [ "$_mvrc" = 2 ]; then
+    echo "targeted: the moved-value scan COULD NOT RUN (exit 2), which is not"
+    echo "targeted: a clean result: it compared nothing. The full gate is the"
+    echo "targeted: instrument here, and it refuses on the same code."
+  elif [ "$_mvrc" != 0 ]; then
+    exit "$_mvrc"
+  fi
 fi
 printf 'TARGETED\ntree %s\n' "$(git write-tree)" > .targeted_ok
 echo "targeted: stamped $(git write-tree | cut -c1-12)"

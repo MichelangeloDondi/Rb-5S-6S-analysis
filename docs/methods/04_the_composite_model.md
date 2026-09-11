@@ -73,7 +73,7 @@ infrared is usually set aside on the grounds of its wavelength.
 **Inside the driven volume the re-excitation cannot happen, because both
 infrared lines are inverted.** 5P empties in 27 ns while the drive keeps
 refilling 6S, so the degeneracy-weighted populations run 4.81 to 1 on the
-1324 nm line and 5.26 to 1 on 1367 nm. Trapped infrared there stimulates 6S
+1324 nm line and 5.25 to 1 on 1367 nm. Trapped infrared there stimulates 6S
 downward instead of pumping 5P upward.
 
 **Outside it can, and it is about one per cent.** Trapped 795 nm photons
