@@ -49,6 +49,21 @@ BIB = ROOT / "docs" / "references.bib"
 PDF_DIR = ROOT / "PDF_papers"
 PDF_README = PDF_DIR / "README.md"
 
+
+def _the_shelf_is_here() -> bool:
+    """True only where the held PDFs themselves are on disk.
+
+    **The directory existing is not the shelf being here**, and the difference
+    cost a red mirror battery on 2026-09-11. `PDF_papers/` is gitignored in both
+    repositories, but the public checkout carried a leftover `README.md` inside
+    it from before the folder was untracked, so `PDF_DIR.is_dir()` was True with
+    not one PDF beside it: the two guards below ran against an empty shelf and
+    reported every held note as pointing at a missing file. That is the
+    empty-population class arriving from the other side, a guard whose inputs
+    are deliberately absent and whose skip condition tests the wrong thing.
+    """
+    return PDF_DIR.is_dir() and any(PDF_DIR.rglob("*.pdf"))
+
 # load the generator (scripts/ is not a package) so parser + emitters have one source
 _spec = importlib.util.spec_from_file_location(
     "build_lit_index", ROOT / "scripts" / "build_lit_index.py")
@@ -307,6 +322,9 @@ def test_generated_local_readme_is_fresh_when_present():
     distributed). Gate it only where it exists."""
     if not PDF_README.exists():
         pytest.skip("local holdings index absent (untracked; fine in CI)")
+    if not _the_shelf_is_here():
+        pytest.skip("PDF_papers/ holds no PDFs, so a stale local index here is "
+                    "a leftover and not a defect (the public checkout's case)")
     entries = bli.load_lit()
     fresh = bli.emit_readme(entries)
     assert PDF_README.read_text() == fresh, (
@@ -330,8 +348,9 @@ def test_every_held_note_points_at_a_pdf_that_is_actually_there():
     ad-hoc version of this check written the same day stripped the directory
     and reported four correct paths as missing.
     """
-    if not PDF_DIR.is_dir():
-        pytest.skip("PDF_papers/ is gitignored and absent (CI)")
+    if not _the_shelf_is_here():
+        pytest.skip("PDF_papers/ holds no PDFs (gitignored; CI's situation, "
+                    "and a bare directory is not a shelf)")
     missing = []
     for key in sorted(_lit_keys()):
         fm = _fm(key)
