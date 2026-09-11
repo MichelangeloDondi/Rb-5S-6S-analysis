@@ -413,9 +413,9 @@ blackbody excitation, at a branch of two parts per million. A fibre measures the
 a large number and the noise is the shot noise of the whole beam. The two modes
 scale differently in atom number and in power, and a platform comparison that
 does not say which is meant is not a comparison. The absorbed fraction is
-[0.0238892](../../results/platform_twins.csv "ref:platform_twins:hcpcf_warm:hcpcf:absorbed_fraction") for
+[0.0236545](../../results/platform_twins.csv "ref:platform_twins:hcpcf_warm:hcpcf:absorbed_fraction") for
 the vapour-filled mode, which a photodiode resolves easily, and
-[8.12559e-07](../../results/platform_twins.csv "ref:platform_twins:hcpcf_cold:hcpcf:absorbed_fraction") once
+[8.04573e-07](../../results/platform_twins.csv "ref:platform_twins:hcpcf_cold:hcpcf:absorbed_fraction") once
 the vapour is replaced by a loaded cold column, which is not.
 
 **What this does not say.** The trapped densities and temperatures behind those

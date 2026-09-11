@@ -87,6 +87,16 @@ GRID_CELLS = (("exp", "per_T"), ("gaussian", "per_T"), ("exp", "per_block"))
 # component"; whether it is instrumental or collisional is the K5 transfer
 # triangle's question. The axis is an uncertainty either way, which is why it
 # belongs in an error budget rather than in the central value.
+# AND THE MEAN IS QUOTED HERE UNDER A CAVEAT TWO SURFACES STATE.
+# docs/RESULTS.md and docs/BIG_PICTURE.md both say this inverse-variance mean
+# is never written on its own, because the four per-peak values span 0.315 to
+# 0.449 and a common scalar is neither rejected nor established, at a
+# heterogeneity p of 0.097. What justifies a single value HERE is that this is
+# a SCAN COORDINATE and not a reported quantity: the axis is walked from zero,
+# the coefficient is linear along it, and the whitened chi-squared moves by 1.1
+# across the whole fitted range, so no value inside that range is
+# distinguishable from another (A193). The mean is where the axis is sampled,
+# not what the kernel is claimed to be, and nothing downstream reports it.
 GAMMA_L_MEASURED_MHZ = 0.398
 KERNEL_CELL = ("exp", "per_T", GAMMA_L_MEASURED_MHZ)
 # w0 confound band: transit_ref values from the CORRECTED transit<->w0 law at

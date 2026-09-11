@@ -45,29 +45,55 @@ def test_the_guided_length_is_not_reachable_by_the_free_formula():
     assert PL.effective_length_m(f) > free_would_give * 10.0
 
 
-def test_the_cascade_ceiling_cannot_bind_because_the_cascade_is_short():
-    """The ceiling exists and is unreachable, which is the corrected physics.
+def test_the_cascade_renormalises_the_saturation_and_lowers_every_rate():
+    """The cascade is a saturation renormalisation, and both limits are pinned.
 
-    THIS TEST ASSERTED THE OPPOSITE until 2026-09-11 and encoded the same
-    error as the module: it required the ceiling to bind at the tight waist.
-    The dead time was `TAU_6S + 120.7 ns + TAU_5P12`, a cascade "through 6P",
-    and 6P lies 3581 cm^-1 ABOVE 6S, so it is not a decay route. The real
-    cascade is 6S to 5P1/2 to 5S at 73.27 ns, whose reciprocal sits above the
-    two-level steady state's own ceiling, so no platform at any power reaches
-    it. A test that asserts a cap binds is not a check on the cap; it is a
-    check that nobody shortens the dead time, which is exactly backwards.
+    **THIS TEST HAS NOW BEEN WRONG TWICE IN OPPOSITE DIRECTIONS, and the second
+    form is why it is written like this.** The first required the ceiling to
+    BIND, encoding the module's own error. The second required the rate to equal
+    the uncapped one at a megawatt, which is satisfied by any code that never
+    caps: with the cascade DELETED from the module entirely, all eleven tests in
+    this file passed. A test that a term is absent is not a test of the term.
+
+    So this one pins the two LIMITS of the three-level steady state, each
+    computed from the constants and not from the code under test:
+
+        weak drive   ->  Gamma_pop s / 2, the cascade invisible
+        strong drive ->  1 / (2 tau_6S + tau_5P), BELOW the two-level ceiling
+
+    Deleting the cascade fails the strong-drive limit by 30 per cent, which is
+    the plant, and is stated in the commit message with it.
     """
     assert PL.CASCADE_DEAD_TIME_S == pytest.approx(C.TAU_6S_S + C.TAU_5P12_S)
-    ceiling = PL.cycle_limited_rate_per_s()
-    # the two-level steady state can never exceed Gamma_pop / 2
-    assert PL.GAMMA_POP_PER_S * 0.5 < ceiling, (
-        "the cascade ceiling has fallen below the two-level ceiling, so it "
-        "would bind; check the dead time's legs against the level ordering")
-    for name in PL.PLATFORMS:
-        p = PL.PLATFORMS[name]
-        unc = PL.GAMMA_POP_PER_S * PL.excited_fraction(1e6, p)
-        assert PL.excitation_rate_per_atom(1e6, p) == pytest.approx(unc), (
-            f"{name}: the cap bound at a megawatt, which it cannot")
+
+    # the renormalisation factor, from the lifetimes alone
+    factor = 1.0 + C.TAU_5P12_S / (2.0 * C.TAU_6S_S)
+    assert PL.cascade_saturation_factor() == pytest.approx(factor)
+
+    # STRONG DRIVE. The ceiling is below the two-level one, which is the whole
+    # sign of the correction: a cascade properly modelled lowers every rate.
+    ceiling = 1.0 / (2.0 * C.TAU_6S_S + C.TAU_5P12_S)
+    assert PL.cascade_ceiling_per_s() == pytest.approx(ceiling)
+    assert ceiling < PL.GAMMA_POP_PER_S * 0.5, (
+        "the three-level ceiling must lie BELOW the two-level one; if it does "
+        "not, the saturation factor has lost the 5P leg")
+    for name, p in PL.PLATFORMS.items():
+        got = PL.excitation_rate_per_atom(1e9, p)
+        assert got == pytest.approx(ceiling, rel=1e-6), (
+            f"{name}: the strong-drive rate is {got:.4e} against the "
+            f"three-level ceiling {ceiling:.4e}. Deleting the cascade gives "
+            f"{PL.GAMMA_POP_PER_S * 0.5:.4e}, which is what this catches")
+
+    # WEAK DRIVE. The cascade is invisible at first order in s, so the two
+    # forms must agree there; this is the limit the renormalisation must not
+    # break, and it is what the old two-level expression got right.
+    for name, p in PL.PLATFORMS.items():
+        tiny = 1e-12
+        s_tiny = 2.0 * (PL.two_photon_rabi_hz(tiny, p.w0_m, 0.94)
+                        / C.GAMMA_NAT_HZ) ** 2
+        assert PL.excitation_rate_per_atom(tiny, p) == pytest.approx(
+            PL.GAMMA_POP_PER_S * 0.5 * s_tiny, rel=1e-6), (
+            f"{name}: the weak-drive limit lost its first-order form")
 
 
 def test_every_cascade_leg_descends():

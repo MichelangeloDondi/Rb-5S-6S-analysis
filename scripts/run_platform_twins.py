@@ -80,9 +80,17 @@ def rows():
             transit_fwhm_mhz=f"{PL.transit_fwhm_mhz(p):.6g}",
             s0_mhz=f"{stark_shift_S0_mhz(pw, p.w0_m, rho=RHO):.6g}",
             saturation_s=f"{sat:.6g}",
-            rate_per_atom_uncapped=f"{uncapped:.6g}",
+            rate_per_atom_two_level=f"{uncapped:.6g}",
             rate_per_atom=f"{capped:.6g}",
-            cascade_cap_binds=int(capped < uncapped * 0.999),
+            # WHAT THE CASCADE DOES, not whether a cap fired. The retired
+            # column was `cascade_cap_binds` and read ZERO on every row, because
+            # the model took a minimum against a ceiling that sat ABOVE the
+            # two-level one and so never selected it, while results/README.md
+            # sold the pair as "with and without the cascade dead-time
+            # ceiling". The cascade is a saturation renormalisation: it lowers
+            # every rate, by one to two per cent at weak drive and by thirty at
+            # the saturated rows, and this column is that fraction.
+            cascade_reduction=f"{1.0 - capped / uncapped:.4f}",
             events_per_s=f"{sn['events_per_s']:.6g}",
             absorbed_fraction=("" if sn["absorbed_fraction"] != sn["absorbed_fraction"]
                                else f"{sn['absorbed_fraction']:.6g}"),

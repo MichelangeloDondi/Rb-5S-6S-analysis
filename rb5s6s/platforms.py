@@ -141,14 +141,51 @@ def excited_fraction(power_w: float, p: Platform, rho: float = 0.94) -> float:
 #: It is the branch and not the level ordering that keeps the leg out of a
 #: cycle time: a route taken two millionths of the time cannot set one.
 #:
-#: The consequence is that the ceiling this constant sets **cannot bind**. At
-#: 73.27 ns the cycle-limited rate is 1.365e7 per atom per second, above the
-#: two-level steady state's own ceiling at every power, so `cascade_cap_binds`
-#: is False everywhere and the capped and uncapped rates agree. The first
-#: form's error was one-sided, a dead time too long lowering a rate, so every
-#: affected row read conservative and no comparison against the archive's own
-#: row could have caught it.
+#: **AND THE CONSTANT IS NOT A CEILING AT ALL**, which is the correction of
+#: 2026-09-11 and the second one this constant has needed. Its reciprocal,
+#: 1.365e7 per atom per second, is the cycle rate of an atom re-excited the
+#: instant it returns, and no drive achieves it; the model took a MINIMUM
+#: against it, which never selected, so `cascade_cap_binds` read False on every
+#: row while the index sold the column pair as "with and without the cascade
+#: dead-time ceiling". What the cascade actually does is renormalise the
+#: saturation parameter, `s -> 1.304 s`, and its strong-drive ceiling is
+#: `1 / (2 tau_6S + tau_5P)` = 8.415e6, twenty-three per cent BELOW the
+#: two-level one rather than twenty-four above. So a cascade properly modelled
+#: LOWERS every rate. See `cascade_saturation_factor` and
+#: `cascade_ceiling_per_s`; this constant survives only as the time an atom is
+#: away, which is what its name says and all it is good for.
 CASCADE_DEAD_TIME_S = C.TAU_6S_S + C.TAU_5P12_S
+
+
+def cascade_saturation_factor() -> float:
+    """How much the cascade multiplies the saturation parameter, `1 + t5/2t6`.
+
+    **THE CASCADE IS A RENORMALISATION AND NOT A CAP** (2026-09-11, escape E50
+    re-opened). Solve the three-level steady state rather than capping a
+    two-level one: the ground-to-excited coherence decays at half the 6S rate
+    and the 5P level does not touch it, so with `e -> p` at the 6S rate and
+    `p -> g` at the 5P rate the excited population is
+
+        rho_ee = (s/2) / (1 + s (1 + tau_5P / 2 tau_6S))
+
+    which is the two-level form with `s` scaled by this factor. It reduces to
+    the two-level expression as `tau_5P -> 0` and to the weak-field limit as
+    `s -> 0`, and it takes no minimum of anything.
+    """
+    return float(1.0 + C.TAU_5P12_S / (2.0 * C.TAU_6S_S))
+
+
+def cascade_ceiling_per_s() -> float:
+    """The strong-drive ceiling of the three-level steady state.
+
+    `Gamma_pop / 2` divided by the saturation factor, which is
+    `1 / (2 tau_6S + tau_5P)`. **It lies BELOW the two-level ceiling**, by 23
+    per cent on this bench's constants, where the retired `1/(tau_6S+tau_5P)`
+    sat 24 per cent ABOVE it. That sign is the whole of the correction: a
+    cascade properly modelled lowers every rate, and the retired form lowered
+    none.
+    """
+    return float(1.0 / (2.0 * C.TAU_6S_S + C.TAU_5P12_S))
 
 
 def cycle_limited_rate_per_s() -> float:
@@ -162,16 +199,26 @@ def excitation_rate_per_atom(power_w: float, p: Platform,
 
     The two-level steady state gives `Gamma_pop rho_ee`, which tends to half
     the 6S decay rate under strong driving. **That limit is not reachable**,
-    because a 6S atom does not return to 5S when it decays: it cascades
-    through the 6P manifold or 5D and then 5P, and is unavailable for the whole
-    journey. The cascade dead time caps the rate, and the cap BINDS at this
-    record's tight-waist configurations, where the saturation parameter is of
-    order ten and the uncapped form overstates the rate by about a factor of
-    two. It does not bind at the archive's own waist, where the saturation
-    parameter is 0.033 and the uncapped rate is thirty times below the cap.
+    because a 6S atom does not return to 5S when it decays: it goes to 5P and
+    the 5P lifetime follows, so the atom is unavailable for the whole journey.
+    The ceiling is therefore `CASCADE_DEAD_TIME_S`, the 6S lifetime plus the
+    5P lifetime.
+
+    **AND THE CEILING CANNOT BIND, which this paragraph said the opposite of
+    until 2026-09-11** (escape E50). It described the cascade as running
+    "through the 6P manifold or 5D and then 5P" and said the cap BINDS at the
+    tight-waist configurations. Both legs are impossible: 6P lies 3581
+    wavenumbers ABOVE 6S, and 6S to 5D is E1-forbidden. And the corrected
+    ceiling sits above the two-level ceiling, so `min` never selects it
+    anywhere, which is what `test_the_cascade_ceiling_cannot_bind_because_the_cascade_is_short`
+    asserts. The constant was corrected forty lines above and this paragraph was
+    not, in the same commit, which is how a reader of the function met the
+    retired reading first.
     """
-    uncapped = GAMMA_POP_PER_S * excited_fraction(power_w, p, rho)
-    return float(min(uncapped, cycle_limited_rate_per_s()))
+    omega_hz = two_photon_rabi_hz(power_w, p.w0_m, rho)
+    s = 2.0 * (omega_hz / C.GAMMA_NAT_HZ) ** 2
+    rho_ee = 0.5 * s / (1.0 + s * cascade_saturation_factor())
+    return float(GAMMA_POP_PER_S * rho_ee)
 
 
 def signal_and_noise(power_w: float, p: Platform, integration_s: float,

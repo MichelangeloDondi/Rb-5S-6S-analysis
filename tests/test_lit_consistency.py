@@ -157,7 +157,14 @@ _STATUS_OK = {"VERIFIED", "REPORTED"}
 _ROUTING_OK = {"CITE", "FEED"}
 _LOCI_RE = re.compile(r"^(P1|P2|THEORY|constants|methods/\d{2}|M\d+[a-z]?)(:.+)?$")
 
-_PDFS_PRESENT = any(PDF_DIR.glob("*.pdf"))  # True locally, False on CI (gitignored)
+# THE THIRD SITE ASKING THE SAME QUESTION, routed through the same predicate
+# on 2026-09-11 (escape E52). It was `any(PDF_DIR.glob("*.pdf"))`, a
+# NON-RECURSIVE glob, while 117 of the 274 held papers, 43 per cent, live only
+# in subdirectories it cannot see. It read True anyway, because 157 sit in the
+# root, so nothing broke and nothing would have until the last root-level paper
+# moved. The commit that replaced the directory test with a shelf test in the
+# two guards below left this one, one function away, asking the older question.
+_PDFS_PRESENT = _the_shelf_is_here()  # True locally, False on CI (gitignored)
 
 
 def _lit_notes(d):
