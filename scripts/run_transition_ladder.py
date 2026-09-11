@@ -743,8 +743,13 @@ def main() -> int:
             "already serves. A cascade identification is not a measured value",
             "DIAGNOSTIC")
 
-    dest = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-                        "results", "transition_ladder.csv")
+    # RESOLVED THROUGH THE CONFIG, never built from __file__. Until 2026-09-11
+    # this line joined the repository root to "results" by hand, so it ignored
+    # RB5S6S_RESULTS_DIR and wrote into the live tree even when the caller had
+    # redirected it. The freshness verifier then compared a committed file
+    # against itself and passed.
+    from rb5s6s import config as _CFG
+    dest = os.path.join(str(_CFG.RESULTS_DIR), "transition_ladder.csv")
     with open(dest, "w", newline="", encoding="utf-8") as fh:
         w = csv.DictWriter(fh, fieldnames=list(rows[0]))
         w.writeheader()

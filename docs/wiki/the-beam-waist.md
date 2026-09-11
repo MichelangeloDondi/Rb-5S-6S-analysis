@@ -280,4 +280,56 @@ print("intensity and the light shift both run as 1/w0^2: the same band "
 
 ---
 
+## The waist is a self-calibrated quantity too, and it is the worst-conditioned one
+
+**Added 2026-09-11 on the owner's reading.** Every other nuisance on this bench
+is read from the trace that carries the signal: the frequency axis and the
+scan's own non-linearity from the comb, the temperature from the Doppler
+pedestal, the density from the collisional width, and the depth and the drift
+from the centres and their order. **Two more are designed and not yet taken**,
+and they belong on this page as designs: a field read from the Zeeman splitting
+in the same scan, and the laser's own noise read from a ladder of scan rates,
+which the acquisition chapter proposes and the archive does not carry.
+
+**The geometry joins the list as a design too.** The same architecture can be
+applied to the last input still taken on trust, by scanning the waist and
+refitting the archive at each value instead of importing a lineage number.
+**That producer is not in this repository**: it was written and withdrawn on
+2026-09-11, because the composite it scans carries no light shift and its
+default sharing lets a free laser width absorb the temperature lever, so a
+profile from it would have had to be retracted.
+
+**And it is graded, because the grade is the useful part.** The other
+calibrations are well conditioned. This one is read through kernel shape, and
+three things make that weak here:
+
+* the kernel is the record's own known defect, a measured Lorentzian laser
+  component the archive's fits do not carry,
+* three width terms depend on the waist and are missing from the model: the
+  ramp's own width and the saturation companion, which both add and both go as
+  the inverse fourth power of the waist, and the transit's axial average over
+  the collected window, which subtracts because the fit passes the value at the
+  waist while the collected line averages a wider beam. Their net is a partial
+  cancellation and not a bias,
+* the one channel a shared laser width cannot absorb is the isotope
+  differential, and it is read by comparing peaks, which is exactly what was
+  taken at different vertical zoom.
+
+**The model also assumes a perfect Gaussian, which the apparatus note denies in
+the same paragraph that states the waist**: the lineage value was measured with
+a 3 mm aperture truncating the input beam, and a truncated Gaussian carries
+ring structure and does not obey `w0 = lam f / (pi w_in)`. Beam quality above
+one, astigmatism and the retro overlap are absent from every model here. The
+transit reads an effective radius and the light shift reads a peak intensity,
+so for a non-Gaussian beam the two are not related by one waist at all.
+
+**So the claim is the architecture and not the number.** This apparatus carries
+its own metrology for every nuisance including the geometry, and the geometry
+is the one where the conditioning is poor. That says which calibration to
+improve and by how much: a knife edge good to a few per cent, one afternoon,
+no atoms and no lock. **For a new campaign it is a design instruction**, since
+several measured waists, the acquisition factorial that already separates
+drift, laser noise and the axis, and a vertical zoom held constant across the
+peaks would turn the worst-conditioned self-calibration into an ordinary one.
+
 [← Transit-time broadening](transit-time-broadening.md) · *Experimental spectroscopy, 5 of 11* · [The AC-Stark shift →](ac-stark-shift.md)

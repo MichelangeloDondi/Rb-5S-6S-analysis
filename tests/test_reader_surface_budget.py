@@ -409,10 +409,13 @@ if __name__ == "__main__":   # python tests/test_reader_surface_budget.py --rela
         if before == now:
             print("  (no key moved, no row written)")
             raise SystemExit(0)
-        BUDGET_FILE.write_text(json.dumps(now, indent=1, sort_keys=True) + "\n",
-                               encoding="utf-8")
-        from _ratchet_book import record as _record   # the row lands after the baseline
-        _record("reader_surface", f"relax {b} -> {a}", before, now, sys.argv[_ri + 1])
+        # THE BASELINE IS WRITTEN BY `record`, after its refusals (E43).
+        from _ratchet_book import record as _record
+        _record("reader_surface", f"relax {b} -> {a}", before, now,
+                sys.argv[_ri + 1],
+                commit=lambda: BUDGET_FILE.write_text(
+                    json.dumps(now, indent=1, sort_keys=True) + "\n",
+                    encoding="utf-8"))
         print(f"reader surface re-recorded: {b} -> {a} ({a - b:+d})")
         moved = [f"  {k}: {before.get(k, 0)} -> {now.get(k, 0)}"
                  for k in sorted(set(before) | set(now))

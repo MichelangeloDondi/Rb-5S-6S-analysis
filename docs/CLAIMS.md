@@ -571,11 +571,16 @@ one hyperfine component's pedestal is fitted rather than the comb of
 four. For everyone using the light-shift prediction, the same design
 reaches the assumed retro ratio in about 2.1 hours on the comb and about
 33 hours on one component, which converts an accepted prior into a
-same-trace measurement rather than improving on one. Two conditions
+same-trace measurement rather than improving on one. Three conditions
 travel with both. The pedestal has to be separated from the
 scattered-light background, which the projection does not model, and the
 area ratio peaks at ρ equal to one where its slope vanishes, so it is a
-weak lever on exactly the quantity it measures. The thermometer measures
+weak lever on exactly the quantity it measures. The third arrived with the
+literature and the projection does not carry it either: transit-induced
+optical pumping distorts the lineshape a Doppler thermometer reads, and it is
+named in the alkali Doppler-thermometry literature as the dominant systematic
+temperature shift, so a pedestal width read as a temperature inherits a bias
+this record has not sized. The thermometer measures
 the temperature of the atoms in the beam and not the cold spot, so it
 pins the temperature the density curve is evaluated at and leaves the
 cold-spot lag to the absorption channel. The 2025 dataset cannot do

@@ -19,6 +19,9 @@ import importlib.util
 from pathlib import Path
 
 import numpy as np
+import pathlib
+import re
+
 import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -44,6 +47,30 @@ def _block(mod, arm, axis, n=12, seed=7):
             "ivs": {}, "n_sets": n, "arm": arm, "axis": axis,
             "fwhm_mhz": 5.4, "guided_power_mw": 0.3, "kappa_true": 25.9,
             "n_cond": 5, "seconds": 12.0}
+
+
+def test_the_real_block_carries_every_key_the_summariser_reads():
+    """The fixture above hand-types `n_cond`, so it cannot prove the producer
+    writes it.
+
+    That is exactly how the KeyError of 2026-09-10 survived a green suite: the
+    block dict was built without `n_cond`, `_summarise` read `b0["n_cond"]`,
+    and the only test that exercised the read supplied the key itself. This
+    test closes the loop by asking the producer's OWN block builder, through
+    `--smoke`, for a real block and checking it against the keys the
+    summariser dereferences.
+    """
+    mod = _load()
+    fixture = set(_block(mod, "cell", 40.0))
+    src = (mod.__file__ and pathlib.Path(mod.__file__).read_text()) or ""
+    # ONLY the block dereferences. `res[...]` is the per-SET dict that
+    # `_one_set` returns and this fixture does not stand in for it, so
+    # including it here would fail for the right reason on the wrong object.
+    reads = set(re.findall(r'b0\["([a-z_0-9]+)"\]', src))
+    missing = sorted(k for k in reads if k not in fixture)
+    assert not missing, (
+        "the summariser dereferences keys the fixture never supplies, so a "
+        f"green run proves nothing about them: {missing}")
 
 
 @pytest.mark.parametrize("arm,axis,finite", [

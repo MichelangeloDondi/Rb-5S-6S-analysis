@@ -30,7 +30,23 @@ from .constants import (  # noqa: F401
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DATA_RAW_DIR = REPO_ROOT / "data_raw"        # frozen dataset, committed to git
 MANIFEST_CSV = DATA_RAW_DIR / "MANIFEST.csv" # one row per unique trace
-RESULTS_DIR = REPO_ROOT / "results"          # all generated outputs, tracked in git
+#: All generated outputs, tracked in git.
+#:
+#: **OVERRIDABLE BY ENVIRONMENT, added 2026-09-11, and the reason is a
+#: correctness fix before it is a speed one.** `verify_results_fresh` re-runs
+#: every producer into this directory one after another, and 37 of the ~47
+#: cheap producers READ a results CSV. So a producer run late in that loop
+#: reads its inputs as the loop has just REGENERATED them, not as they are
+#: committed, and the verdict depends on iteration order. Pointing each
+#: producer at a private directory seeded with the committed files removes
+#: that order dependence, and it is what makes running them in parallel safe
+#: at all: without it, one producer reads a file another is mid-write.
+#:
+#: The variable is read ONCE at import. Every consumer resolves it through
+#: this module, so a subprocess launched with the variable set writes and
+#: reads entirely inside its own directory, and a process without it is
+#: byte-identical to the behaviour before this line existed.
+RESULTS_DIR = Path(os.environ.get("RB5S6S_RESULTS_DIR") or (REPO_ROOT / "results"))
 
 
 class RepoDataMissing(RuntimeError):

@@ -211,7 +211,24 @@ that established two-sided exponential,
 
 $$K_\text{transit}(\nu)\propto e^{-|\nu|/b},\qquad \text{FWHM}=2b\ln 2$$
 
-and module **M9** (`transit_mc.py`) computes the kernel for *our* exact
+**And the derivation states a condition on the geometry, which this chapter
+carried only implicitly until the source was read (2026-09-10).**
+[Biraben, Bassini and Cagnac](../lit/biraben1979.md) observe the atoms "over a
+length L which is small compared to the Rayleigh length", so the analytic form
+is a thin-slice result. `constants.collection_z_ratio` returns that ratio, and
+`results/waist_ladder.csv` carries it per rung:
+[0.260548](../../results/waist_ladder.csv "ref:waist_ladder:rung:1.000000:z_ratio")
+at the archive's 64 um, where it holds, rising through
+[0.667003](../../results/waist_ladder.csv "ref:waist_ladder:rung:0.625000:z_ratio")
+at 40 um and
+[1.707529](../../results/waist_ladder.csv "ref:waist_ladder:rung:0.390625:z_ratio")
+at 25 um to
+[4.168772](../../results/waist_ladder.csv "ref:waist_ladder:rung:0.250000:z_ratio")
+at the campaign's 16 um, where it does not. The same ratio
+already governs the collection window's effect on the ramp moments, so one
+geometric number decides both questions.
+
+Module **M9** (`transit_mc.py`) computes the kernel for *our* exact
 conditions, a Monte-Carlo of 3D Maxwell–Boltzmann atoms crossing the full
 $w(z)$ with $I^2$ weighting and the collection profile, i.e. it *builds in*
 the two idealizations the analytic forms make. The first is a beam of constant
@@ -232,16 +249,26 @@ natural⊗transit already exceeds the observed $\sim5.25$ MHz line, which
 is why **$w_0=32$ µm is excluded** and why transit and the laser are degenerate
 through $w_0$ ([what we found](07_what_we_found.md)).
 
-**A direct beam measurement, and whose it is matters.** The waist authority is
-the [Rajasree-KP](../lit/rajasree2020.md) 2020 OIST thesis, which reports the
+**A direct beam measurement, and whose it is matters. The owner retired this
+paragraph's claim on 2026-09-10, and the retirement is stated here instead of
+being edited away.** The waist authority was taken to be the
+[Rajasree-KP](../lit/rajasree2020.md) 2020 OIST thesis, which reports the
 $1/e^2$ beam diameter as 128 µm with the same $f=150$ mm focusing lens, so
 $w_0=64$ µm, and with the same 3 mm EOM aperture truncating the input beam
 that the naive (untruncated) estimate misses.
 [Nieddu](../lit/nieddu2019.md) (2019, Opt. Express 27, 6528, page 6530) states
-the same figure, and the thesis credits the underlying data collection to
-T. Nieddu, **but that paper's bench carried an earlier laser generation than
-this campaign**. That is why the thesis and not the paper is this record's
-source for the waist. `docs/lit/nieddu2019.md` has said so. This page did not.
+the same figure, and this page preferred the thesis to the paper on the ground
+that the paper's bench carried an earlier laser generation.
+
+**That preference was empty, because the thesis credits its underlying data
+collection to T. Nieddu.** The two reports are one measurement, taken on the
+older laser, and choosing between them cannot recover a beam this campaign
+ever had. The 2019 path ran a Coherent MBR 110 where the 2025 campaign ran an
+M-Squared SolsTiS, and it carried no EOM where this one carries a 3 mm
+aperture. **A focused waist is $w_0 = \lambda f/(\pi w_\text{in})$, a property
+of the input beam and not of the lens, and the input beam is exactly what
+changed.** So the record has no measurement of this bench's waist at all, and
+what stood in its place was a transfer of somebody else's.
 
 **A correction to a correction, 2026-08-27, on the owner's own
 statement.** This paragraph previously credited the measurement to Nieddu and
@@ -251,10 +278,14 @@ measurements". Collapsing the two reports into one removed the distinction
 that actually matters, which is not how many measurements there were but
 which laser each was taken on. That
 direct measurement lands at the top of the transit-inferred band and
-independently excludes 32 µm, agreeing with the corrected transit physics. The accepted prior
+independently excludes 32 µm, agreeing with the corrected transit physics. The working prior
 is $w_0=64$ µm with a 62–68 µm band (`constants.W0_BAND_M`, narrowed from
 60 and 70 on 2026-08-10), and the wider ranges this section reached on the way
 there, 45 to 70 and then 50 to 64 µm, are replaced by it for that purpose.
+**The band's width is now the weakest part of the statement**: 62 to 68 µm
+expresses confidence in a transfer whose lineage the paragraph above retires,
+so it is a working convention and not a measured interval, and every absolute
+result that rides on it stays BOUND.
 Those ranges are a different quantity and are left standing where they are
 stated as such: they are what this dataset's own line can accommodate with no
 external input, while the band here expresses confidence in transferring a

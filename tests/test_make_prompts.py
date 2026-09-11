@@ -120,6 +120,48 @@ def test_it_emits_the_model_first_and_files_the_prompt(tmp_path):
         assert filed.is_file() and filed.read_text().startswith(f"MODEL: {model}\n")
 
 
+def test_it_refuses_a_brief_whose_commit_or_count_contradicts_git(tmp_path):
+    """Two findings from one round, and both were typed by the convener.
+
+    A wave brief named a prior commit the round did not read, and gave a file
+    count that was not the delta. Eleven seats were briefed on both. The
+    emitter already computes the prior pair and the staged count for the
+    prompt, so a typed fact that disagrees with them is always the wrong one
+    and the prompt refuses instead of printing it.
+    """
+    repo = _repo(tmp_path)
+    tree = _tree(repo)
+    _marker(repo, tree, ["physics", "rules", "concision"], opus=["rules"])
+    brief = repo / "private" / "cache" / "WAVE_BRIEF.md"
+    good = brief.read_text()
+
+    # a real-looking sha that is not one of this round's prior commits
+    brief.write_text(good + "\nPrior commit: deadbeef\n")
+    r = _run(repo, "physics")
+    assert r.returncode == 1, "a brief naming a foreign commit was emitted"
+    assert "deadbeef" in r.stderr and "REFUSING" in r.stderr
+
+    # AND A FILE COUNT THAT IS NOT THE STAGED DELTA. The count check is
+    # conditional on something being staged, which is right: an on-head round
+    # stages nothing and has no delta to contradict. So the fixture stages one
+    # file before this half, and the marker is re-stamped because staging
+    # moves the tree the board opened on.
+    import subprocess
+    (repo / "staged_for_the_count.txt").write_text("x\n")
+    subprocess.run(["git", "add", "staged_for_the_count.txt"], cwd=repo, check=True)
+    tree2 = _tree(repo)
+    _marker(repo, tree2, ["physics", "rules", "concision"], opus=["rules"])
+    brief.write_text(good + "\nThis wave moves 4321 files.\n")
+    r = _run(repo, "physics")
+    assert r.returncode == 1, "a brief with a wrong file count was emitted"
+    assert "4321" in r.stderr and "staged set is 1" in r.stderr
+
+    # the unmodified brief still emits, so the guard is not simply refusing
+    brief.write_text(good)
+    r = _run(repo, "physics")
+    assert r.returncode == 0, r.stderr
+
+
 def test_it_refuses_a_brief_carrying_the_retired_seat_model_wording(tmp_path):
     """Three surfaces described the retired catch-up form on 2026-09-08 while
     the ledger ran the convenings rule; a brief is what the seats are told."""

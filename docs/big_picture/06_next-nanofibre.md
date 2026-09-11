@@ -228,6 +228,28 @@ calibration, and the fibre reaches the shift at a thousandth of the cell's
 power, so the trap the fibre programme wants and the crossing the sign dispute
 turns on are one experiment.
 
+### The hollow-core case is stronger than the nanofibre one, and for a reason neither shares with the cell
+
+A nanofibre puts atoms in an evanescent tail outside the glass. A hollow-core
+fibre puts them inside a mode that does not diverge, and that second fact is
+worth more than anything in the sections above. The interaction length stops
+being a beam property and becomes a length of fibre:
+[100.0000](../../results/platform_twins.csv "ref:platform_twins:hcpcf_warm:hcpcf:length_eff_mm")
+mm of vapour-filled kagome mode holds more atoms in the probe than a tightly
+focused beam reaches in a cell, and reads out at a signal-to-noise within a
+small factor of one.
+
+**For a host group the practical consequence is the observable.** A cell hands
+you fluorescence against a dark background. A fibre hands you a transmission
+dip, which an ideal shot-noise-limited photodiode would resolve at
+[0.0238892](../../results/platform_twins.csv "ref:platform_twins:hcpcf_warm:hcpcf:absorbed_fraction")
+with vapour in the mode and a part-per-million measurement at
+[8.12559e-07](../../results/platform_twins.csv "ref:platform_twins:hcpcf_cold:hcpcf:absorbed_fraction")
+once the vapour is replaced by a cold loaded column. The second number is the
+one that decides whether a cold guided experiment is a measurement or a
+proposal, and it rests on a shot-noise-limited detector this record has not
+demonstrated.
+
 ### What the guided arm measures that no cell can, and the observable that survives the radius
 
 The guided light shift is a translation of the whole line and not an asymmetry

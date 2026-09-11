@@ -56,6 +56,25 @@ $$K_\text{transit}(\nu)\propto e^{-|\nu|/b},\qquad \text{FWHM}=2b\ln 2$$
 Its excess kurtosis is close to the two-sided exponential's, the
 quantitative statement of "more cusped than a Gaussian".
 
+**The derivation is a thin-slice result, and that is a condition on the
+geometry and not a detail.**
+[Biraben, Bassini and Cagnac](../lit/biraben1979.md) observe the atoms over a
+length small compared with the Rayleigh range, so the beam is one waist
+crossed in a plane. `constants.collection_z_ratio` returns that ratio for this
+bench, and `results/waist_ladder.csv` carries it per rung: it holds
+at the archive's waist by a factor of about four, is marginal near forty
+microns, and is
+violated by a factor of four at the tightest configuration the campaign
+proposes, where the collected length exceeds the Rayleigh range several times
+over.
+
+The consequence is bounded and named. The analytic form above is what
+`composite_profile` uses by default, so a forecast at a tight waist is using a
+kernel outside the regime its source derived. The instrument for that case
+already exists in this repository, the Monte Carlo below, which crosses the
+full `w(z)` instead of one waist. It is not on the forecast path, and
+connecting the two is owed.
+
 ## What problem it solves
 
 It sets the floor on how narrow a line can be made in a beam of finite size,

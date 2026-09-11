@@ -39,6 +39,7 @@ import argparse
 import csv
 import re
 import shutil
+import os
 import subprocess
 import sys
 import tempfile
@@ -49,6 +50,8 @@ RESULTS = ROOT / "results"
 
 # Producer -> the CSVs it writes. Cheap enough to re-run in a test.
 CHEAP = {
+    # Closed form throughout, no traces and no RNG, so it reproduces exactly.
+    "run_platform_twins": ["platform_twins.csv"],
     "run_sobol_acquisition": ["sobol_acquisition.csv"],  # <1 s, exact
     # reads only the provenance declarations in docs/notes/ and counts them;
     # milliseconds, no traces, and deliberately checkable because the whole
@@ -138,6 +141,9 @@ EXPENSIVE = {
     # when it is MISSING, which is how a chapter came to cite a file nobody had
     # produced (A128).
     "run_kernel_inhomogeneity": ["kernel_inhomogeneity.csv"],
+    # the digitiser scale: reads thirty-two raw traces and returns in seconds,
+    # but it READS RAW TRACES so a public clone cannot regenerate it.
+    "run_digitiser_scale": ["digitiser_scale.csv"],
     # about nine minutes on eight workers, twenty-three cells of four hundred
     # trace sets each through every physics layer, so it is re-run only under
     # --all. Synthetic throughout: it reads no raw trace.
@@ -679,23 +685,116 @@ def _committed(name: str, dest: Path) -> bool:
     return True
 
 
-def verify(producers: dict) -> list[str]:
-    """Re-run each producer and report CSVs that no longer match what is
-    COMMITTED. The working copies are restored unconditionally -- this must
-    never leave the tree dirty."""
+def _one(job):
+    """Run ONE producer in a private results directory and report its drift.
+
+    The directory is seeded with the COMMITTED CSVs, so a producer that reads
+    another producer's output reads it as git holds it and never as this loop
+    has just regenerated it. That removes an order dependence the serial
+    version carried silently, and it is what makes the pool safe: no two
+    producers share a file.
+    """
+    script, outputs, stash, root = job
+    priv = Path(root) / script.split()[0]
+    priv.mkdir(parents=True, exist_ok=True)
+    for f in Path(stash).glob("*.csv"):
+        shutil.copy2(f, priv / f.name)
+    # ONE BLAS THREAD PER WORKER. Every other pooled producer here sets these,
+    # and the rule file states the reason unconditionally: eleven threads per
+    # worker read as a load of forty on ten cores on 2026-09-08. The first
+    # version of this pool set none of them (2026-09-11).
+    env = dict(os.environ, RB5S6S_RESULTS_DIR=str(priv),
+               OPENBLAS_NUM_THREADS="1", MKL_NUM_THREADS="1",
+               VECLIB_MAXIMUM_THREADS="1", NUMEXPR_NUM_THREADS="1",
+               OMP_NUM_THREADS="1")
+    # THE SEED'S FINGERPRINT, so a producer that ignores the override is caught
+    # LOUDLY. Without this the private copy stays as seeded, the comparison
+    # measures the committed file against itself, and the check passes while
+    # verifying nothing. The plant of 2026-09-11 found exactly that on its
+    # first run, from a producer that built its path with os.path.join instead
+    # of resolving it through the config.
+    seeded = {o: (priv / o).read_bytes() if (priv / o).is_file() else None
+              for o in outputs}
+    # a registry key may carry CLI arguments after the script name
+    # ("run_saturation_probe --emit"); the first full --all of 2026-08-31
+    # found the join producing a filename with a flag inside it, unrunnable
+    # for the whole life of the entry
+    name_and_args = script.split()
+    proc = subprocess.run(
+        [sys.executable, f"scripts/{name_and_args[0]}.py", *name_and_args[1:]],
+        cwd=ROOT, capture_output=True, text=True, env=env)
+    problems = []
+    if proc.returncode != 0:
+        tail = (proc.stderr or "").strip().splitlines()[-1:] or ["(no stderr)"]
+        return [f"{script.split()[0]}.py exited {proc.returncode}: {tail[0]}"]
+    for name in outputs:
+        fresh, committed = priv / name, Path(stash) / name
+        if not committed.is_file():
+            problems.append(f"{name}: produced but not committed at HEAD")
+            continue
+        if not fresh.is_file():
+            problems.append(f"{name}: producer wrote nothing")
+            continue
+        if seeded.get(name) is not None and fresh.read_bytes() == seeded[name]:
+            problems.append(
+                f"{name}: {script.split()[0]}.py did not write into "
+                f"RB5S6S_RESULTS_DIR, so this check verified nothing. Resolve "
+                f"the output path through rb5s6s.config.RESULTS_DIR.")
+            continue
+        d = _differs(_rows(committed), _rows(fresh), csv_name=name)
+        if d:
+            problems.append(f"{name} drifted from {script}.py -- {d}")
+    return problems
+
+
+#: Producers that must still run the OLD way, serially against the live
+#: `results/`, because they do not resolve their output through
+#: `rb5s6s.config.RESULTS_DIR`.
+#:
+#: **It is empty, and the earlier prose around it claimed more than that.** It
+#: said sixteen of the forty-seven bypassed and "All sixteen were migrated",
+#: presented as a defended invariant. A count of the migration on 2026-09-11
+#: gave: ten producers gained a resolved path and five gained only the
+#: relpath repair, which is fifteen, and `run_kernel_inhomogeneity.py` still
+#: builds its path by hand and was in neither group. **There was also an
+#: `ISOLATED` set here whose docstring called itself the mechanism while
+#: nothing consulted it**; it is deleted rather than wired, because what
+#: actually protects the pool is the per-output seed-byte check and the
+#: per-run live-tree fingerprint below, and those are detectors rather than
+#: admission gates. A declared list that gates nothing is worse than none.
+LEGACY_SERIAL: set[str] = set()
+
+
+
+#: Producers PROVEN to resolve their output through `rb5s6s.config.RESULTS_DIR`
+#: and therefore safe to run isolated and pooled. Membership is declared, never
+#: inferred, and it is earned one producer at a time.
+#:
+#: **The other 16 of the 47 do not honour it** (2026-09-11, found by the plant's
+#: own first full run): eleven build the path by hand and write into the live
+#: tree whatever the environment says, and five call `relative_to(REPO_ROOT)` on
+#: an output that is no longer under the repository and die. Migrating them is
+#: mechanical and it is a wave of its own; until a producer is migrated it runs
+#: the old way, serially, against the live directory.
+
+
+def _serial_legacy(producers: dict) -> list[str]:
+    """The pre-2026-09-11 path, for producers that still write the live tree.
+
+    Kept verbatim in behaviour: stash the working copies, run each producer
+    into `results/`, compare against the committed copies, restore. Its two
+    known hazards are why the isolated path exists: a hard kill skips the
+    restore, and a producer late in the loop reads its inputs as this loop has
+    just regenerated them.
+    """
     stash = Path(tempfile.mkdtemp(prefix="results_committed_"))
     working = Path(tempfile.mkdtemp(prefix="results_working_"))
     problems: list[str] = []
     try:
         for f in RESULTS.glob("*.csv"):
-            shutil.copy2(f, working / f.name)        # to put back afterwards
-            _committed(f.name, stash / f.name)       # to compare against
-
+            shutil.copy2(f, working / f.name)
+            _committed(f.name, stash / f.name)
         for script, outputs in producers.items():
-            # a registry key may carry CLI arguments after the script
-            # name ("run_saturation_probe --emit"); the first full --all
-            # of 2026-08-31 found the join producing a filename with a
-            # flag inside it, unrunnable for the whole life of the entry
             name_and_args = script.split()
             proc = subprocess.run(
                 [sys.executable, f"scripts/{name_and_args[0]}.py",
@@ -721,6 +820,149 @@ def verify(producers: dict) -> list[str]:
     return problems
 
 
+def verify(producers: dict, workers: int | None = None) -> list[str]:
+    """Re-run each producer and report CSVs that no longer match what is
+    COMMITTED.
+
+    **THIS NO LONGER TOUCHES `results/`.** Every producer runs against a
+    private directory through `RB5S6S_RESULTS_DIR`, so the working tree is
+    never written and never needs restoring. The stash-and-restore the serial
+    version used had a standing hazard, that a hard kill skipped its `finally`
+    and left the tree dirty, and that hazard is gone by construction rather
+    than by remembering to check `git status` afterwards.
+
+    Producers are independent once isolated, so they run in a pool. `workers`
+    of 1 forces the serial path, which `--plant` uses to prove the two agree.
+    """
+    stash = Path(tempfile.mkdtemp(prefix="results_committed_"))
+    root = Path(tempfile.mkdtemp(prefix="results_private_"))
+    problems: list[str] = []
+    # THE LIVE TREE'S FINGERPRINT BEFORE ANYTHING RUNS. The isolated path has
+    # no stash-and-restore by design, so a producer that ignores the override
+    # writes the real `results/` and nothing puts it back. On 2026-09-11 four
+    # of them did exactly that and left five CSVs modified, which the per-output
+    # guard reported but only AFTER the damage. This makes the damage itself a
+    # reported problem, so a bypass can never be discovered by a later test
+    # failing forty-two ways.
+    live = {f.name: f.stat().st_mtime_ns for f in RESULTS.glob("*.csv")}
+    try:
+        for f in RESULTS.glob("*.csv"):
+            _committed(f.name, stash / f.name)       # to compare against
+        legacy = {k: v for k, v in producers.items()
+                  if k.split()[0] in LEGACY_SERIAL}
+        jobs = [(script, outputs, str(stash), str(root))
+                for script, outputs in producers.items()
+                if script.split()[0] not in LEGACY_SERIAL]
+        if legacy:
+            problems.extend(_serial_legacy(legacy))
+        # THROUGH THE SEAM, never a fresh reading of the environment.
+        # `rb5s6s.workers` exists because a contract stated in four places
+        # drifts in three and is enforced in none, and the first version of
+        # this pool was the fourth place (2026-09-11). An operator
+        # setting RB5S6S_WORKERS=1 beside a gate now gets one.
+        from rb5s6s.workers import n_workers
+        n = workers if workers is not None else min(n_workers(), len(jobs))
+        if n <= 1:
+            for j in jobs:
+                problems.extend(_one(j))
+        else:
+            from concurrent.futures import ProcessPoolExecutor
+            with ProcessPoolExecutor(max_workers=n) as ex:
+                for out in ex.map(_one, jobs):
+                    problems.extend(out)
+        now = {f.name: f.stat().st_mtime_ns for f in RESULTS.glob("*.csv")}
+        touched = sorted(k for k in set(live) | set(now)
+                         if live.get(k) != now.get(k))
+        if touched:
+            problems.append(
+                "THE LIVE results/ WAS WRITTEN during an isolated verify, so a "
+                f"producer ignored RB5S6S_RESULTS_DIR: {', '.join(touched)}. "
+                "Restore them with `git restore results/` AND remove any new "
+                "stray file with `git clean -f results/`, because `git restore` "
+                "reverts tracked files and does not delete untracked ones, "
+                "which it was proved on a planted bypassing producer. Then "
+                "resolve those producers' output paths through "
+                "rb5s6s.config.RESULTS_DIR.")
+    finally:
+        shutil.rmtree(stash, ignore_errors=True)
+        shutil.rmtree(root, ignore_errors=True)
+    return problems
+
+
+def plant(subset=("run_waist_ladder", "run_platform_twins",
+                  "run_transition_ladder")) -> int:
+    """Probe the isolation, the pool and the detector, on the real path.
+
+    Three claims and a negative, because a pooled verifier that silently stops
+    detecting drift is worse than a slow one.
+    """
+    fails = []
+    prod = {k: v for k, v in dict(CHEAP, **EXPENSIVE).items() if k in subset}
+    if len(prod) < 2:
+        print("plant: subset not in the registry", file=sys.stderr)
+        return 1
+
+    # 1. RESULTS/ IS NOT TOUCHED. The whole point of the override.
+    before = {f.name: (f.stat().st_mtime_ns, f.stat().st_size)
+              for f in RESULTS.glob("*.csv")}
+    ser = verify(prod, workers=1)
+    after = {f.name: (f.stat().st_mtime_ns, f.stat().st_size)
+             for f in RESULTS.glob("*.csv")}
+    if before != after:
+        moved = sorted(k for k in before if before.get(k) != after.get(k))
+        fails.append(f"results/ was written during a verify: {moved}")
+
+    # 2. THE POOL AGREES WITH THE SERIAL PATH, exactly.
+    par = verify(prod, workers=min(4, len(prod)))
+    if sorted(ser) != sorted(par):
+        fails.append(f"pool disagrees with serial: serial={sorted(ser)} "
+                     f"pool={sorted(par)}")
+
+    # 3. THE DETECTOR STILL FIRES. A stash whose committed copy has been
+    #    altered must be reported as drift, or this verifier has become a
+    #    green light that means nothing.
+    import tempfile as _tf
+    stash = Path(_tf.mkdtemp(prefix="plant_stash_"))
+    root = Path(_tf.mkdtemp(prefix="plant_priv_"))
+    try:
+        for f in RESULTS.glob("*.csv"):
+            _committed(f.name, stash / f.name)
+        # a producer whose CSV is NEW in this commit has no committed copy to
+        # stale, which the plant's own first run found; pick one that has.
+        cand = [(k, o) for k in sorted(prod) for o in prod[k]
+                if (stash / o).is_file()]
+        if not cand:
+            fails.append("no producer in the subset has a committed CSV to stale")
+            cand = [(sorted(prod)[0], prod[sorted(prod)[0]][0])]
+        script, target = cand[0]
+        rows = (stash / target).read_text().splitlines()
+        if len(rows) < 2:
+            fails.append(f"{target} too short to stale")
+        else:
+            cells = rows[1].split(",")
+            for k, c in enumerate(cells):
+                try:
+                    cells[k] = repr(float(c) * 2.0 + 1.0)
+                    break
+                except ValueError:
+                    continue
+            else:
+                fails.append(f"{target} row 1 carries no numeric cell to stale")
+            rows[1] = ",".join(cells)
+            (stash / target).write_text("\n".join(rows) + "\n")
+            got = _one((script, [target], str(stash), str(root)))
+            if not any("drifted from" in g for g in got):
+                fails.append(f"a deliberately staled {target} was NOT reported: {got}")
+    finally:
+        shutil.rmtree(stash, ignore_errors=True)
+        shutil.rmtree(root, ignore_errors=True)
+
+    for f in fails:
+        print(f"PLANT FAIL: {f}", file=sys.stderr)
+    print(f"plant: {len(prod)} producers, 3 claims probed, {len(fails)} failure(s)")
+    return 1 if fails else 0
+
+
 # EXPENSIVE producers that read no raw trace: `--all` covers them on a checkout
 # without data_raw/, which is every public clone. Membership is declared per
 # producer, never inferred; the others in EXPENSIVE are audited one by one.
@@ -732,7 +974,11 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--all", action="store_true",
                     help="include the heavy fitting producers (needs data_raw/)")
+    ap.add_argument("--plant", action="store_true",
+                    help="probe the isolation, the pool and the detector")
     args = ap.parse_args()
+    if args.plant:
+        return plant()
 
     producers = dict(CHEAP)
     if args.all:

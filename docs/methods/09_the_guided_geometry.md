@@ -385,4 +385,45 @@ this chapter changes that.
 
 ---
 
+### 9.7 The length is the fibre, and the observable is transmission
+
+The sections above derive the same four terms in an evanescent field and
+compare a cell against a nanofibre. Two facts that decide a guided measurement
+are not in that comparison at all, and both are structural.
+
+**A guided mode has no Rayleigh range.** A free Gaussian beam concentrates a
+two-photon rate, which goes as the intensity squared, within about one
+Rayleigh range of its focus, so the interaction length is whichever of the
+Rayleigh range, the cell and the cloud is shortest. A guided mode does not
+diverge. Its interaction length is the fibre. For the kagome mode of
+[`platform_twins.csv`](../../results/platform_twins.csv) that is
+[100.0000](../../results/platform_twins.csv "ref:platform_twins:hcpcf_warm:hcpcf:length_eff_mm") mm against
+a Rayleigh range near one millimetre for the same waist in free space, and the
+consequence is that a vapour-filled fibre holds
+[3.3343e+09](../../results/platform_twins.csv "ref:platform_twins:hcpcf_warm:hcpcf:n_atoms_probe") atoms in
+the probe against
+[1.91427e+07](../../results/platform_twins.csv "ref:platform_twins:cell_130C_tight:cell:n_atoms_probe") for
+the tight-waist cell it would replace.
+
+**And a fibre is read in transmission.** A cell collects 795 nm photons against
+a dark background, so the signal is the count and the noise is its own shot
+noise. The wavelength is the D1 leg of the 6S to 5P to 5S cascade and not the
+420 nm blue line, which belongs to 6P and is reached from 6S only by
+blackbody excitation, at a branch of two parts per million. A fibre measures the transmitted probe, so the signal is a small dip in
+a large number and the noise is the shot noise of the whole beam. The two modes
+scale differently in atom number and in power, and a platform comparison that
+does not say which is meant is not a comparison. The absorbed fraction is
+[0.0238892](../../results/platform_twins.csv "ref:platform_twins:hcpcf_warm:hcpcf:absorbed_fraction") for
+the vapour-filled mode, which a photodiode resolves easily, and
+[8.12559e-07](../../results/platform_twins.csv "ref:platform_twins:hcpcf_cold:hcpcf:absorbed_fraction") once
+the vapour is replaced by a loaded cold column, which is not.
+
+**What this does not say.** The trapped densities and temperatures behind those
+rows are design figures and the CSV tags them ENVELOPE. The absorption arm
+assumes a shot-noise-limited detector with no technical intensity noise, which
+is the optimistic end: a real transmission measurement is usually limited by
+laser intensity noise long before shot noise, and adding that term is the first
+correction this table needs. Nothing here models loading, trap lifetime, or the
+radial heating that a fibre's own cooling scheme has to survive.
+
 *[Assumptions and outlook](08_assumptions_and_outlook.md) · [The nanofibre campaign case](../big_picture/06_next-nanofibre.md)*

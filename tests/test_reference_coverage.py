@@ -283,11 +283,15 @@ if __name__ == "__main__":
         if _old_map == new:
             print("  (no key moved, no row written)")
             raise SystemExit(0)
-        BASELINE.write_text(json.dumps(new, indent=1, sort_keys=True) + "\n")
-        # the row lands AFTER the baseline, so a write that dies leaves no row
-        # for a movement that never happened (the audit finding, kept)
+        # THE BASELINE IS WRITTEN BY `record`, after its refusals (E43).
+        # A write that dies still leaves no row, which is what the comment here
+        # used to defend; what it missed is that a REFUSAL is not a dying write.
         from _ratchet_book import record as _record
-        _record("reference_coverage", f"reseed {_old_total} -> {sum(new.values())}", _old_map, new, sys.argv[_ri + 1])
+        _record("reference_coverage",
+                f"reseed {_old_total} -> {sum(new.values())}",
+                _old_map, new, sys.argv[_ri + 1],
+                commit=lambda: BASELINE.write_text(
+                    json.dumps(new, indent=1, sort_keys=True) + "\n"))
         print(f"reseeded {BASELINE.name} over {len(new)} files")
         _print_movement(old, new)
 

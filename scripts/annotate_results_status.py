@@ -108,6 +108,10 @@ SKIP = {"laser_epoch.csv", "qc_metrics.csv",
         # holds the vocabulary here, verified by planting a bogus status and
         # watching it fire.
         "waist_ladder.csv",
+        # the digitiser scale: the step and the span are MEASURED from the
+        # traces, the window rests on the owner's 5/95 convention and is an
+        # assumption, so the producer writes the status per row.
+        "digitiser_scale.csv",
         "three_channel_forecast.csv",
         "moment_power_map_rungs.csv",
         "moment_power_map_deep.csv",
@@ -182,8 +186,20 @@ SKIP = {"laser_epoch.csv", "qc_metrics.csv",
 FILE_STATUS = {
     # the observable taxonomy: every row is a forecast about a design over a
     # pooled inventory, so ENVELOPE; registered before the file lands so a
-    # stranger who runs the committed producer does not die on this map
+    # stranger who runs the committed producer does not die on this map.
+    # **THE FILE IS NOT PRODUCED YET (2026-09-10, A170), and this entry is the
+    # ONLY member of this map with no file on disk.** That was found by trying
+    # to cite it from a literature note: the numbers being cited lived in a
+    # private plan and not in `results/`, and the registration alone made the
+    # file look produced. It is deliberately kept, because the pre-registration
+    # serves its stated purpose, but the state is written here so the next
+    # reader is not misled the same way. Producing it is owed, together with
+    # the freshness and README entries an annotation entry should never
+    # travel without.
     "observable_taxonomy.csv": "ENVELOPE",
+    # Trapped-platform densities and temperatures are design figures, and
+    # only the two cell rows use conditions this record has measured.
+    "platform_twins.csv": "ENVELOPE",
     # Every row is a count of the repository's own provenance declarations,
     # not a measurement of the atom, so the whole file is DIAGNOSTIC. It
     # measures how much of the record no producer regenerates, and a row

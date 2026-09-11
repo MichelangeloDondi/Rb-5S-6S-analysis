@@ -114,7 +114,7 @@ it. The frequency-axis convention above (§0) is assumed by all of them.
 |---|---|---|
 | **1** | [The measurement](methods/01_the_measurement.md) | the apparatus, the cascade we detect, and why two counter-propagating photons cancel the Doppler width |
 | **2** | [The lineshape, kernel by kernel](methods/02_the_lineshape.md) | natural, collisional, laser and transit-time broadening, each derived, and why the transit kernel is a cusp rather than a Gaussian |
-| **3** | [The AC-Stark ramp](methods/03_the_ac_stark_ramp.md) | the analysis's novel core: a focused beam makes the light shift a *distribution*, closed-form and triangular for a two-photon rate, with a self-centred drift-immune skew, and the modulation depth that changes the excitation rate while leaving the shift alone |
+| **3** | [The AC-Stark ramp](methods/03_the_ac_stark_ramp.md) | a focused beam makes the light shift a *distribution*; the map frame is [delone1980](lit/delone1980.md)'s, so what is claimed here is the closed triangular form and its analytic cumulants, with a self-centred drift-immune skew, and the modulation depth that changes the excitation rate while leaving the shift alone |
 | **4** | [The composite model](methods/04_the_composite_model.md) | the assembled profile in code, and radiation trapping, the mechanism that moves amplitudes but not shapes |
 | **5** | [From volts to a frequency axis](methods/05_the_frequency_ruler.md) | the EOM sideband ruler that calibrates every scan |
 | **6** | [The statistics](methods/06_the_statistics.md) | measured weights, hierarchical sharing, the σ_laser↔γ_coll degeneracy, the pre-registered measurement-vs-bound rule, and the fit-against-moments comparison the twin measured (§4.14) |
@@ -197,6 +197,15 @@ rb5s6s/   api(the supported entry point: a trace in, a linewidth out)
                       rank-2 closure. A pair accepts one unit each, putting a
                       satellite at the Delta m_F = +-2 position, at 1.5e-10
                       of the single-atom rate)
+          platforms(M39: where the atoms are and how the signal leaves,
+                    PROSPECTIVE. Supplies what a cell, a magneto-optical
+                    trap, a molasses and a hollow-core mode each present to
+                    the same forward model. Two branches carry it: a guided
+                    mode has no Rayleigh range, so its interaction length is
+                    the fibre and not z_R, and a fibre is read in
+                    transmission, so the observable is a small dip in a large
+                    number whose noise is the shot noise of the full beam.
+                    Trapped densities and temperatures are design figures)
           fibre(M38: the fibre twin's forward model, PROSPECTIVE. The
                 transit kernel is a Maxwell-averaged SQUARED Lorentzian,
                 FWHM f*vbar/(pi*Lambda) with f spanned 0.24 to 0.44. Its
@@ -221,7 +230,7 @@ scripts/  import_data (+ annotate_manifest_qc: qc_reason provenance)
           run_geometry_design (the running-wave and waist designs, whose
           weak-field branch reproduces lineshape.stark_ramp_axial_moments)
 data_raw/ MANIFEST.csv, and the 297 traces where the copy carries them
-tests/    3890-test battery (3844 fast ~5 min + 46 `slow` high-statistics
+tests/    4061-test battery (4013 fast ~5 min + 48 `slow` high-statistics
           closure tests via --runslow, incl. the M4d synthetic-β and M4e
           synthetic-κ closures, the MANIFEST qc_reason guards, and the
           docs-consistency gates: canonical numbers, links+anchors, math
@@ -245,8 +254,8 @@ The first six scripts form the pipeline (each reads the previous ones'
 
 ```bash
 python3 -m venv .venv && source .venv/bin/activate
-pip install -e ".[dev]" && pytest -q          # 3844 fast tests (~5 min)
-pytest -q --runslow                           # full 3890 incl. slow closures (what CI runs)
+pip install -e ".[dev]" && pytest -q          # 4013 fast tests (~5 min)
+pytest -q --runslow                           # full 4061 incl. slow closures (what CI runs)
 # reproduce every committed CSV, figure, and docs/RESULTS.md from data_raw/
 # (already in git; import_data.py only re-imports from the original tree):
 bash scripts/run_all.sh

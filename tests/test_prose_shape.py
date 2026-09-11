@@ -167,8 +167,10 @@ if __name__ == "__main__":
         if old == new:
             print("  (no key moved, no row written)")
             raise SystemExit(0)
-        BASELINE.write_text(json.dumps(new, indent=1, sort_keys=True) + "\n")
-        from _ratchet_book import record as _record   # the row lands after the baseline
-        _record("prose_shape", "reseed", old, new, reason)
+        # THE BASELINE IS WRITTEN BY `record`, after its refusals (E43).
+        from _ratchet_book import record as _record
+        _record("prose_shape", "reseed", old, new, reason,
+                commit=lambda: BASELINE.write_text(
+                    json.dumps(new, indent=1, sort_keys=True) + "\n"))
         print(f"reseeded over {len(new['files'])} files, "
               f"rail debt {new['rail_debt']}")

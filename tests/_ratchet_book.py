@@ -74,8 +74,25 @@ def _cell(before, after) -> str:
     return (shown + f"; and {rest} more") if rest > 0 else shown
 
 
-def record(tool: str, action: str, before, after, reason: str) -> bool:
-    """Append one row when something moved; print and write nothing otherwise."""
+def record(tool: str, action: str, before, after, reason: str,
+           commit=None) -> bool:
+    """Append one row when something moved; print and write nothing otherwise.
+
+    `commit`, when given, is the caller's own baseline write, and this function
+    performs it. IT IS CALLED HERE AND ONLY AFTER EVERY REFUSAL HAS CLEARED,
+    which is the whole point of the argument.
+
+    Until 2026-09-10 every caller wrote its baseline first and then called this
+    (escape E43). The credited-key refusal below raises SystemExit, so on a
+    refused reason the movement was already on disk and the row explaining it
+    was never written: the check that exists to force a reason was the thing
+    that produced a movement without one. Two call sites even carried a comment
+    defending the order, that a dying write should leave no row. That still
+    holds here, because a `commit` that raises does so before the row is
+    appended, and now a REFUSAL leaves the baseline untouched as well.
+
+    A caller with no baseline to write passes nothing and is unaffected.
+    """
     if before == after:
         print("  (no key moved, no row written)")
         return False
@@ -86,8 +103,14 @@ def record(tool: str, action: str, before, after, reason: str) -> bool:
         if credited:
             raise SystemExit(
                 f"REFUSING to book a reason crediting {credited}, whose "
-                f"count did not move; name what moved, which this row now "
-                f"carries beside it")
+                f"count did not move. Name what moved, which this row now "
+                f"carries beside it.\n"
+                f"  THE BASELINE WAS NOT WRITTEN. This refusal happens "
+                f"before the caller's commit, so nothing moved on disk and "
+                f"there is nothing to undo. Re-run with a reason naming a "
+                f"key that actually moved.")
+    if commit is not None:
+        commit()
     moved = _cell(before, after).replace("|", "/")
     row = (f"| {date.today()} | {tool} | {action}; {moved} | "
            f"{reason.replace('|', '/')} |\n")

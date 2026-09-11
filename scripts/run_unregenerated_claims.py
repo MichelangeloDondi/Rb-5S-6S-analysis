@@ -34,10 +34,16 @@ from __future__ import annotations
 import csv
 import re
 from pathlib import Path
+# The results directory resolved through the config, so that
+# RB5S6S_RESULTS_DIR redirects this producer. Until 2026-09-11 this path
+# was built by hand from the repository root, so the freshness verifier
+# could not isolate it and compared a committed file against itself.
+from rb5s6s import config as _CFG  # noqa: E402
+_CFG_RESULTS = _CFG.RESULTS_DIR
 
 ROOT = Path(__file__).resolve().parents[1]
 NOTES = ROOT / "docs" / "notes"
-OUT = ROOT / "results" / "unregenerated_claims.csv"
+OUT = _CFG_RESULTS / "unregenerated_claims.csv"
 
 DECL = re.compile(
     r"provenance:\s*(?P<kind>`?results/[A-Za-z0-9_./-]+\.csv`?"

@@ -73,6 +73,20 @@ known to a couple of kilohertz, established by
 [Ayachitula and co-workers](../lit/ayachitula2024.md), carried in
 `A_6S_RB87_HZ` and `A_6S_RB85_HZ` in `rb5s6s/constants.py`.
 
+**Each ruler is a difference, so it has two ends, and the other one is an
+atomic constant.** A pair's separation is the ground-state hyperfine splitting
+minus the excited-state splitting for that isotope. The ground-state side
+comes from [Steck's D-line data](../lit/steck_rb.md), held for both isotopes,
+whose magnetic dipole constants multiplied by `(I + 1/2)` give the two 5S
+splittings the record carries to the digit. Subtracting the 6S splittings
+above reproduces both ruler separations to better than a kilohertz.
+
+**So the axis is sourced end to end**, a sub-hertz atomic constant on one side
+and a kilohertz-level measurement on the other, and the "couple of kilohertz"
+above is the excited-state measurement's error and nothing else. That is why
+the axis is an anchor and not a fit: neither end of it comes from this
+bench.
+
 ![A wavemeter photograph record reconstructed into a laser-detuning time series](../../figures/fig14_wavemeter_reconstruction.png)
 
 *The 2025-06-11 photographed wavemeter record reconstructed into a

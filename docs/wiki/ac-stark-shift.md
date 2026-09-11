@@ -104,6 +104,36 @@ components either: the differential polarizability holds its full value
 across the whole span, with genuine zeros hundreds of nanometres away, where
 the record's polarizability model puts them.
 
+## The geometry factor, tested at a very different operating point
+
+The coefficient here is the polarizability times a geometry factor,
+`I_eff = (1 + rho) 2P / (pi w0^2)`, and a reader is entitled to ask whether
+that factor and its conversion to a frequency are right, separately from
+whether the polarizability is.
+
+[Ayachitula and co-workers](../lit/ayachitula2024.md) measure this very
+transition with unfocused beams a few millimetres across and calculate their
+own AC Stark shift at a fraction of a kilohertz, entering the differential as
+zero in their budget. Evaluated at their stated geometry, this repository's
+`stark_shift_S0_mhz` brackets their number, the residual ambiguity being which
+side of their beam splitter their quoted power refers to. That is the same
+chain evaluated some fifteen hundred times lower than the archive sits.
+
+**What it tests and what it does not.** Both sides take a differential
+polarizability of similar magnitude from similar sum-over-states
+calculations, so the agreement is common-mode in that input and is evidence
+about the geometry factor, the factor of two and the frequency conversion. It
+says nothing about the polarizability's magnitude and nothing at all about its
+sign, which remains the open dispute.
+
+**And it shows the two programmes are not competing.** They reached kilohertz
+line centres by making this shift negligible through geometry, which is the
+design rule [Zhang and co-workers](../lit/zhang2026.md) measure at two orders
+of magnitude for a collimated beam against a tight focus. This repository
+makes the shift large and reads its distribution. A symmetric fit is correct
+at their waist, and what it costs at a focused one is the subject of this
+page.
+
 ## What can go wrong
 
 **The density is exact and its composition was not** (2026-09-09). Everything

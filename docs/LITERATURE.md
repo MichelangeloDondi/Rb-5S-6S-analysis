@@ -309,6 +309,23 @@ A number here is an identifier, not a position.
    *What is conceded.* Delone frame the lineshape as a read-out channel,
    twice, explicitly: "one can reconstruct the distribution P(F) from this
    relationship". Using a lineshape to read a shift distribution is theirs.
+   *And a second concession, added 2026-09-10, which is sharper than
+   Delone's because it is not a formal remark but a working instrument.*
+   [mcdonald2015](lit/mcdonald2015.md) map an ensemble's energy distribution
+   onto a line through a *differential* light shift, in an optical lattice, and
+   invert the resulting asymmetric broadening for the temperature: "a
+   differential spectroscopic light shift can map temperature onto the line
+   shape with a low sensitivity to trap anharmonicity". So neither the idea
+   (Delone, 1980) nor its execution as metrology (Zelevinsky's group, 2015) is
+   available to claim. What is left, and it is what this record actually does,
+   is the *geometric* distribution: theirs is thermal and its parameter is the
+   unknown, while a focused beam's is fixed by optics and known in form, which
+   is what closes Delone's integral, yields the analytic cumulants of (b)
+   above, and lets the shape be inverted for a parameter of the apparatus
+   and not of the ensemble. Their anharmonicity remark is also this
+   record's centroid argument in another setting: one moment is protected from
+   a perturbation the neighbouring moment feels.
+
    *What is claimed, and it is two separate properties.* **(i) Translation
    immunity:** the ramp's first-order effect is a centroid pull, which a
    per-scan free centre absorbs, so in a drifted dataset the pull is degenerate
@@ -1116,6 +1133,11 @@ force/density dynamics.
   experimental analogue of extracting a surface shift from the line. **[CITE]**
 - **[Piotrowski, Bach, Vera Paz, Schneeweiss & Rauschenbeutel 2026](lit/piotrowski2026.md)**
   sets a nanofibre feasibility bound on the probe window and power. **[CITE]**
+- **[Pache et al. 2025](lit/pache2025.md)**, a magic-wavelength nanofibre
+  two-colour dipole trap with sub-half-wavelength spacing. **Caesium, D2, one
+  photon**, so neither this programme's species nor its transition, and the
+  note exists to say so: what transfers is the trap geometry and the magic
+  condition, not any number. **[CITE]**
 
 **Still to verify.** Sargsyan/Sarkisyan 2026 (arXiv:2601.04661, a second nanocell
 surface-shift paper) and Obaze et al. 2025 (Photonics **12**, 513, a second 778 nm

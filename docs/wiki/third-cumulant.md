@@ -76,6 +76,27 @@ the private correction record). Three layers:
 Every windowed-moment number therefore names its centring, its kernel set,
 its window and its convergence, or it is not yet a claim.
 
+## What is new here, and what is not
+
+Using a lineshape to read back a distribution of light shifts is not new, and
+this page would mislead if it implied otherwise.
+[Delone and Krainov](../lit/delone1980.md), writing in 1980, already state
+the shift-dominated multiphoton line as the intensity distribution rescaled by
+the polarizability and say in terms that one can reconstruct that distribution
+from it. [McDonald and co-workers](../lit/mcdonald2015.md) then did it as
+working metrology: a differential light shift between two states writes a
+trapped ensemble's energy distribution onto the line, and inverting the
+resulting asymmetric broadening gives the temperature.
+
+**What is left is the distribution's origin, and it changes what can be
+computed.** In both of those the distribution is the unknown, a fluctuating
+field in one and a thermal population in the other. Here it is fixed by
+optics: a focused Gaussian beam with an `I^2` excitation weight gives the ramp
+in closed form, so Delone's integral closes, the cumulants are analytic rather
+than fitted, and the shape can be inverted for a parameter of the APPARATUS
+instead of the ensemble. The third cumulant's cubic law in the shift, and the
+drift immunity below, are properties of that closed form.
+
 ## What problem it solves
 
 It isolates one mechanism from a crowd. Where several effects broaden a line

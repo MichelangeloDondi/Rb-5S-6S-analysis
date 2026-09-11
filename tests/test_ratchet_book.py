@@ -69,6 +69,63 @@ def test_no_module_writes_the_book_itself():
     assert not offenders, f"these open or write tests/_ratchet_history.md; go through _ratchet_book.record: {offenders}"
 
 
+RATCHET_TOOLS = (
+    "test_agonistic_ratchet.py", "test_prose_shape.py",
+    "test_prose_style_ratchet.py", "test_reader_surface_budget.py",
+    "test_reference_coverage.py", "test_results_err_format.py",
+)
+
+
+def test_every_ratchet_tool_hands_record_its_own_baseline_write():
+    """`commit` defaults to None, so a caller can forget it and still pass.
+
+    The ordering guarantee this module exists for is that the baseline is
+    written and THEN the row is booked, so a refused reason leaves neither.
+    A caller that writes its own baseline separately and calls `record`
+    without `commit` gets no such ordering, and nothing detected that: the
+    default made the omission silent. This walks the tool population and
+    requires the keyword at every call site.
+
+    Repairing the POPULATION and not the last name found missing: the tuple
+    above is checked against the tools that actually own a baseline, so a new
+    ratchet cannot join by being forgotten here.
+    """
+    import re
+    missing, unseen = [], []
+    for name in RATCHET_TOOLS:
+        p = ROOT / "tests" / name
+        if not p.is_file():
+            unseen.append(name)
+            continue
+        src = p.read_text(encoding="utf-8")
+        # NO WORD BOUNDARY. Every tool imports it as `record as _record`, and
+        # `_` is a word character, so `\brecord` matched none of them and this
+        # guard's population was empty on its first run. That is the failure
+        # mode it exists to catch, met in its own implementation.
+        pat = r"(?<![A-Za-z0-9])_?record\s*\("
+        if not re.findall(pat, src):
+            missing.append(f"{name}: never calls record()")
+            continue
+        for m in re.finditer(pat, src):
+            seg = src[m.end():m.end() + 600]
+            depth, end = 1, 0
+            for i, ch in enumerate(seg):
+                if ch == "(":
+                    depth += 1
+                elif ch == ")":
+                    depth -= 1
+                    if depth == 0:
+                        end = i
+                        break
+            if "commit=" not in seg[:end]:
+                missing.append(f"{name}: a record() call omits commit=")
+    assert not unseen, f"named ratchet tools that do not exist: {unseen}"
+    assert not missing, (
+        "a ratchet tool calls record() without handing it the baseline "
+        "write, so the write-then-book ordering is not enforced for it:\n  "
+        + "\n  ".join(missing))
+
+
 REFUSED = [
     'from pathlib import Path\nBOOK = Path("x").with_name("_ratchet_history.md")\nBOOK.open("a").write("row")\n',
     'from pathlib import Path\nHIST = Path("tests/_ratchet_history.md")\nopen(HIST, "a")\n',
@@ -166,3 +223,149 @@ def test_a_tool_that_nests_its_counts_still_names_the_file(tmp_path, monkeypatch
     assert "results/a.csv 1 -> 3" in cell and "files" not in cell
     with pytest.raises(SystemExit):
         book.record("plant", "reseed", before, after, "results/b.csv moved")
+
+
+# --------------------------------------------------------------------------
+# E43: the baseline write belongs INSIDE record, after its refusals
+# --------------------------------------------------------------------------
+# Every ratchet writer wrote its baseline and then called `record`, so a reason
+# the credited-key check refused left the movement on disk with no row to
+# explain it: the check that exists to force a reason was what produced a
+# movement without one. `record` performs the write now, through `commit`, and
+# these three cases pin the ordering in both directions. The first fails
+# against the retired arrangement, which is what makes it evidence.
+
+
+def test_a_refused_reason_leaves_the_baseline_untouched(tmp_path, monkeypatch):
+    """The negative case, and the whole reason `commit` exists.
+
+    Under the retired order the caller had already written the baseline when
+    the refusal fired, so the movement shipped with no row. Here the write is
+    handed to `record` and must not happen at all.
+    """
+    fake = tmp_path / "book.md"
+    fake.write_text("# book\n", encoding="utf-8")
+    monkeypatch.setattr(book, "BOOK", fake)
+    baseline = tmp_path / "baseline.json"
+    baseline.write_text("ORIGINAL", encoding="utf-8")
+
+    before = {"moved.md": 1, "still.md": 7}
+    after = {"moved.md": 2, "still.md": 7}
+    written = []
+
+    def commit():
+        written.append(True)
+        baseline.write_text("MOVED", encoding="utf-8")
+
+    with pytest.raises(SystemExit) as exc:
+        # the reason credits still.md, whose count did not move
+        book.record("t", "reseed", before, after, "still.md carried it",
+                    commit=commit)
+
+    # THE MESSAGE MUST SAY THE BASELINE IS UNTOUCHED. Until 2026-09-10 it said
+    # only what was wrong with the reason, so a reader who had just been
+    # refused could not tell from it whether the movement had already landed
+    # on disk and needed undoing. The behaviour was right and the message did
+    # not describe it.
+    said = str(exc.value)
+    assert "BASELINE WAS NOT WRITTEN" in said, (
+        "the refusal does not tell the caller the baseline is untouched, so "
+        f"it cannot be acted on without reading this module: {said}")
+
+    assert not written, "the baseline write ran despite the refusal"
+    assert baseline.read_text() == "ORIGINAL", (
+        "a refused reason moved the baseline, which is escape E43")
+    assert "reseed" not in fake.read_text(), "a refused reason booked a row"
+
+
+def test_the_retired_caller_order_is_what_loses_the_row(tmp_path, monkeypatch):
+    """The escape reproduced, so the repair is measured against it.
+
+    E43 is not a property of `record` alone: it is the CALLER writing first.
+    This runs both arrangements against the same refusal and asserts they
+    differ, which is the only way to show the new one fixes anything. Under
+    the retired order the baseline moves and the book stays empty, which is a
+    ratchet movement with no reason -- exactly what the refusal exists to
+    prevent.
+    """
+    fake = tmp_path / "book.md"
+    fake.write_text("# book\n", encoding="utf-8")
+    monkeypatch.setattr(book, "BOOK", fake)
+    before = {"moved.md": 1, "still.md": 7}
+    after = {"moved.md": 2, "still.md": 7}
+    reason = "still.md carried it"          # credits a file that did not move
+
+    # THE RETIRED ARRANGEMENT, EXPRESSED AS THE CALLER THAT PRODUCED IT. Its
+    # write is unconditional, so asserting afterwards that the baseline moved
+    # would be a tautology: the line above guarantees it. The first draft of
+    # this test did exactly that, which is the row-that-cannot-fail pattern
+    # this record retired from the transition ladder the same morning. What is
+    # asserted instead is the thing that can fail, that `record` REFUSED and
+    # booked nothing, so the movement stands with no row explaining it.
+    # AND THE FILE IS GONE, 2026-09-10. The arm used to write a `retired.json`
+    # twice and never read it: an inert write that made the arm look like it
+    # tested something it did not. What the retired ORDER can actually be held
+    # to is that `record`, called with no commit after the caller has already
+    # moved, still refuses and still books nothing. The baseline's state under
+    # that order is guaranteed by the caller's own line and is not evidence.
+    retired_refused = False
+    try:
+        book.record("t", "reseed", before, after, reason)   # caller moved first
+    except SystemExit:
+        retired_refused = True
+    assert retired_refused, "the retired arrangement did not reach the refusal"
+    assert "reseed" not in fake.read_text(), (
+        "the retired arrangement booked a row, so it is not the escape")
+
+    repaired = tmp_path / "repaired.json"
+    repaired.write_text("ORIGINAL", encoding="utf-8")
+    with pytest.raises(SystemExit):
+        book.record("t", "reseed", before, after, reason,
+                    commit=lambda: repaired.write_text("MOVED", encoding="utf-8"))
+    assert repaired.read_text() == "ORIGINAL", (
+        "the repaired arrangement moved the baseline on a refused reason")
+
+    assert "reseed" not in fake.read_text(), "neither arrangement books a row"
+
+
+def test_an_accepted_reason_writes_the_baseline_then_the_row(tmp_path,
+                                                             monkeypatch):
+    """The positive case, and the order is asserted, not just the outcome."""
+    fake = tmp_path / "book.md"
+    fake.write_text("# book\n", encoding="utf-8")
+    monkeypatch.setattr(book, "BOOK", fake)
+    order = []
+
+    def commit():
+        order.append("baseline")
+
+    assert book.record("t", "reseed", {"a.md": 1}, {"a.md": 2},
+                       "a.md gained one", commit=commit) is True
+    order.append("row")
+    assert order == ["baseline", "row"]
+    rows = [r for r in fake.read_text().splitlines() if r.startswith("| ")]
+    assert len(rows) == 1, f"expected exactly one row, got {rows}"
+    assert "a.md 1 -> 2" in rows[0]
+
+
+def test_no_movement_writes_neither_the_baseline_nor_a_row(tmp_path,
+                                                           monkeypatch):
+    """`commit` must not fire when there is nothing to book."""
+    fake = tmp_path / "book.md"
+    fake.write_text("# book\n", encoding="utf-8")
+    monkeypatch.setattr(book, "BOOK", fake)
+    written = []
+    assert book.record("t", "reseed", {"a.md": 1}, {"a.md": 1}, "nothing moved",
+                       commit=lambda: written.append(True)) is False
+    assert not written, "the baseline was written for a movement that is not one"
+    assert fake.read_text() == "# book\n"
+
+
+def test_a_caller_with_no_baseline_still_works(tmp_path, monkeypatch):
+    """`commit` is optional, so callers that write nothing are unaffected."""
+    fake = tmp_path / "book.md"
+    fake.write_text("# book\n", encoding="utf-8")
+    monkeypatch.setattr(book, "BOOK", fake)
+    assert book.record("t", "reseed", {"a.md": 1}, {"a.md": 2},
+                       "a.md gained one") is True
+    assert "a.md 1 -> 2" in fake.read_text()

@@ -15,6 +15,7 @@ Output: results/twin_term_census.csv. Re-run after touching
 rb5s6s/forecast.py, examples/campaign_twin.py or the physics modules.
 """
 from __future__ import annotations
+import os
 
 import csv
 import inspect
@@ -26,6 +27,12 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from rb5s6s import blackbody, cascade, detection, fibre, forecast, stark  # noqa: E402
+
+# resolved through the config so RB5S6S_RESULTS_DIR redirects this producer;
+# a hand-built path is not redirected, so the freshness verifier compares a
+# committed file against itself (2026-09-11).
+from rb5s6s import config as _CFG  # noqa: E402
+_CFG_RESULTS = _CFG.RESULTS_DIR
 
 
 def _per_tooth_depletion() -> bool:
@@ -90,7 +97,7 @@ def main() -> int:
         "he11": all(hasattr(fibre, f) for f in
                     ("solve_he11", "evanescent_intensity", "transit_fwhm",
                      "homogeneous_width")),
-        "noise_law": (ROOT / "results" / "noise_model.csv").is_file(),
+        "noise_law": (_CFG_RESULTS / "noise_model.csv").is_file(),
     }
 
     def yes(b): return "yes" if b else "no"
@@ -210,7 +217,7 @@ def main() -> int:
          "lands with the configuration work"),
     ]
 
-    out = ROOT / "results" / "twin_term_census.csv"
+    out = _CFG_RESULTS / "twin_term_census.csv"
     with out.open("w", newline="", encoding="utf-8") as fh:
         w = csv.writer(fh)
         w.writerow(["term", "forecast_path", "example_world", "module",
@@ -219,7 +226,7 @@ def main() -> int:
             if any(str(c).strip() == "" for c in r):
                 raise SystemExit(f"census refuses an empty cell in {r[0]}")
             w.writerow(r)
-    print(f"wrote {out.relative_to(ROOT)} ({len(rows)} terms)")
+    print(f"wrote {os.path.relpath(out, ROOT)} ({len(rows)} terms)")
     return 0
 
 

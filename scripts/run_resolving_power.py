@@ -58,6 +58,7 @@ experiment's sensitivity, not the atom.
 from __future__ import annotations
 
 import csv
+import os
 import sys
 from pathlib import Path
 
@@ -178,7 +179,7 @@ def main() -> int:
         wtr.writerow(["assumption", "s0_block_scatter_averages_down",
                       f"{obs:.6g}", f"{at['null_median']:.6g}", f"{p_common:.6g}",
                       "variance_reduction_vs_permutation_null", "UNTESTABLE_HERE"])
-    print(f"\nwrote {out.relative_to(ROOT)}")
+    print(f"\nwrote {os.path.relpath(out, ROOT)}")
     return 0
 
 

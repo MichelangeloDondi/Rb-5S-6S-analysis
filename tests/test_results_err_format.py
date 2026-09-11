@@ -142,8 +142,12 @@ if __name__ == "__main__":
         if old == new:
             print("  (no key moved, no row written)")
             raise SystemExit(0)
-        BASELINE.write_text(json.dumps(new, indent=1, sort_keys=True) + "\n")
-        from _ratchet_book import record as _record   # the row lands after the baseline
-        _record("results_err_format", f"reseed {old_total} -> {sum(new['files'].values())}", old, new, sys.argv[i + 1])
+        # THE BASELINE IS WRITTEN BY `record`, after its refusals (E43).
+        from _ratchet_book import record as _record
+        _record("results_err_format",
+                f"reseed {old_total} -> {sum(new['files'].values())}",
+                old, new, sys.argv[i + 1],
+                commit=lambda: BASELINE.write_text(
+                    json.dumps(new, indent=1, sort_keys=True) + "\n"))
         print(f"seeded {len(new['files'])} files, "
               f"total {sum(new['files'].values())}")

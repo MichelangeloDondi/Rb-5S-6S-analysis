@@ -2111,6 +2111,7 @@ the whole band by construction and is the only one of the three routes that is.
 **The rule when they contend**: the retro monitor takes the channel on any
 block whose result is quoted in absolute units, because it is the only one of the three
 that enters a published number directly.
+
 ---
 
 *[Session sizing and spending rules](06_sizing-and-spending-rules.md) · [The acquisition record](08_the-acquisition-record.md)*

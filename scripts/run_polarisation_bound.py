@@ -41,6 +41,7 @@ term at all.
 """
 
 from __future__ import annotations
+import os
 
 import csv
 import sys
@@ -55,6 +56,12 @@ from rb5s6s.cascade import DRIVEN_F                       # noqa: E402
 from rb5s6s.polarisation import (GF_S_HALF, extra_width_mhz,  # noqa: E402
                                  vector_ratio,
                                  vector_spread_mhz)
+
+# resolved through the config so RB5S6S_RESULTS_DIR redirects this producer;
+# a hand-built path is not redirected, so the freshness verifier compares a
+# committed file against itself (2026-09-11).
+from rb5s6s import config as _CFG  # noqa: E402
+_CFG_RESULTS = _CFG.RESULTS_DIR
 
 FWHM_NOMINAL = 5.37
 
@@ -84,7 +91,7 @@ def _s0_225():
     """
     import csv as _csv
     def _row(fname, key):
-        src = REPO / "results" / fname
+        src = _CFG_RESULTS / fname
         with open(src) as fh:
             for r in _csv.DictReader(fh):
                 if r["quantity"] == key:
@@ -100,7 +107,7 @@ def _weighted(vals, errs):
 
 
 def main() -> int:
-    src = REPO / "results" / "linefit_conditions.csv"
+    src = _CFG_RESULTS / "linefit_conditions.csv"
     rows = [r for r in csv.DictReader(open(src))
             if r.get("total_fwhm") and r.get("total_fwhm_err")
             and r["peak"] in DRIVEN_F]
@@ -204,10 +211,10 @@ def main() -> int:
                 "since the per-unit shift differs by the ratio of 2F",
                 "DIAGNOSTIC"])
 
-    dst = REPO / "results" / "polarisation_bound.csv"
+    dst = _CFG_RESULTS / "polarisation_bound.csv"
     with open(dst, "w", newline="") as fh:
         csv.writer(fh).writerows(out)
-    print(f"\nwrote {dst.relative_to(REPO)}")
+    print(f"\nwrote {os.path.relpath(dst, REPO)}")
     return 0
 
 

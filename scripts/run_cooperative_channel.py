@@ -51,6 +51,7 @@ implied.
 from __future__ import annotations
 
 import csv
+import os
 import sys
 from pathlib import Path
 
@@ -59,8 +60,14 @@ sys.path.insert(0, str(REPO))
 
 from rb5s6s import cooperative as co                          # noqa: E402
 from rb5s6s.polarisation import zeeman_satellite_mhz          # noqa: E402
+# The results directory resolved through the config, so that
+# RB5S6S_RESULTS_DIR redirects this producer. Until 2026-09-11 this path
+# was built by hand from the repository root, so the freshness verifier
+# could not isolate it and compared a committed file against itself.
+from rb5s6s import config as _CFG  # noqa: E402
+_CFG_RESULTS = _CFG.RESULTS_DIR
 
-OUT = REPO / "results" / "cooperative_channel.csv"
+OUT = _CFG_RESULTS / "cooperative_channel.csv"
 B_FIELD_UT = 50.0
 TEMPS_C = (70.0, 100.0, 130.0)
 PAIRS = ((("87Rb", 2), ("87Rb", 2)), (("87Rb", 2), ("87Rb", 1)),
@@ -163,7 +170,7 @@ def main() -> None:
         w.writeheader()
         w.writerows(rows)
 
-    print(f"wrote {OUT.relative_to(REPO)}  ({len(rows)} rows)")
+    print(f"wrote {os.path.relpath(OUT, REPO)}  ({len(rows)} rows)")
     print(f"  pair resonance is unique, runner-up "
           f"{co.pair_final_states()[1][3]:+.1f} THz away")
     print(f"  aligned satellite, matched 87Rb pair: "

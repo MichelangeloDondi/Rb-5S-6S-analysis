@@ -382,7 +382,21 @@ this section, which has to be in place before any of them runs.
    at every waist, and the magnification's cost falls entirely on it, since a
    symmetric spread does not move a centre but shot noise does. The fractional
    precision on the coefficient runs 2.7 per cent at 64 microns, 1.2 at 40,
-   0.52 at 24 and 0.27 at 16. Paying the factor 2.6 that the restoring
+   0.52 at 24 and 0.27 at 16. **These four carry an owed correction that bites
+   hardest exactly where the argument turns.** The producer's
+   `build_world_trace` call passes neither the collection window nor the
+   fringe-resolved tail, and the forecast's own `pull_factor_quiet` puts the
+   fitted centre's response at
+   [0.9775](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_64um::pull_factor_quiet"),
+   [0.8913](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_40um::pull_factor_quiet"),
+   [0.6918](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_24um::pull_factor_quiet")
+   and [0.5752](../../results/three_channel_forecast.csv "ref:three_channel_forecast:base::pull_factor_quiet")
+   of the pure ramp's mean pull at these four waists, with the scatter growing
+   by the reciprocal.
+   So the tight-waist rows are the optimistic ones and the ratios below are
+   upper bounds on the advantage. The ranking is not re-stated here from a
+   correction made by eye: it is re-read when the producer runs with those
+   terms threaded. Paying the factor 2.6 that the restoring
    magnification costs takes 16 microns to 0.70 per cent, which still beats 64
    microns by 3.8 times and 40 microns, the tightest waist inside the licence
    as it stands, by 1.7. **So for the fitted centre the magnification route survives its own

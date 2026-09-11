@@ -843,18 +843,25 @@ def _print_movement(old: dict, new: dict) -> bool:
 
 
 def _rewrite(path, counts_fn, label) -> tuple:
-    """Write the baseline when its content moved, keys included, and return
-    (old, new) so the caller records exactly what was compared."""
+    """Compare the baseline against the tree and return (old, new, commit).
+
+    IT NO LONGER WRITES (E43). The write is returned as `commit`, a callable
+    the book's `record` performs after its refusals have cleared, so a refused
+    reason cannot leave a moved baseline with no row explaining it. `commit` is
+    None when nothing moved, which is also what `record` refuses to book.
+    """
     new = counts_fn()
     old = json.loads(path.read_text()) if path.exists() else {}
     if old != new:
-        path.write_text(json.dumps(new, indent=1, sort_keys=True) + "\n")
-        print(f"re-recorded {path.name} ({label}: "
-              f"{sum(old.values())} -> {sum(new.values())})")
+        def commit(_p=path, _n=new, _o=old, _l=label):
+            _p.write_text(json.dumps(_n, indent=1, sort_keys=True) + "\n")
+            print(f"re-recorded {_p.name} ({_l}: "
+                  f"{sum(_o.values())} -> {sum(_n.values())})")
     else:
+        commit = None
         print(f"{path.name} unchanged ({label}: {sum(new.values())})")
     _print_movement(old, new)
-    return old, new
+    return old, new, commit
 
 
 if __name__ == "__main__":  # `python tests/test_prose_style_ratchet.py --relax`
@@ -877,11 +884,14 @@ if __name__ == "__main__":  # `python tests/test_prose_style_ratchet.py --relax`
         moved = _rewrite(BASELINE, _current, "splice punctuation")
         _did_relax = "splice punctuation"
     if _did_relax:
-        # the row lands AFTER the rewrite, so a relax that dies leaves no row
-        # for a movement that never happened, and the book's one writer
-        # writes nothing when nothing moved (tests/_ratchet_book.py)
+        # THE REWRITE IS PERFORMED BY `record`, after its refusals (E43).
+        # A rewrite that dies still leaves no row, which is what this comment
+        # used to defend; what it missed is that a REFUSAL is not a dying
+        # write, and until 2026-09-10 a refused reason left the baseline moved
+        # with nothing in the book to explain it.
         from _ratchet_book import record as _record
-        _record("prose_style", f"relax {_did_relax}", moved[0], moved[1], sys.argv[_ri + 1])
+        _record("prose_style", f"relax {_did_relax}", moved[0], moved[1],
+                sys.argv[_ri + 1], commit=moved[2])
     else:
         print(f"total splice punctuation in prose: {sum(_current().values())}")
 

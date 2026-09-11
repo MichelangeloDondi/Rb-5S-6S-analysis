@@ -104,10 +104,16 @@ import tempfile
 from pathlib import Path
 
 import numpy as np
+# The results directory resolved through the config, so that
+# RB5S6S_RESULTS_DIR redirects this producer. Until 2026-09-11 this path
+# was built by hand from the repository root, so the freshness verifier
+# could not isolate it and compared a committed file against itself.
+from rb5s6s import config as _CFG  # noqa: E402
+_CFG_RESULTS = _CFG.RESULTS_DIR
 
 ROOT = Path(__file__).resolve().parents[1]
-NOISE_CSV = ROOT / "results" / "noise_model.csv"
-OUT = ROOT / "results" / "sobol_acquisition.csv"
+NOISE_CSV = _CFG_RESULTS / "noise_model.csv"
+OUT = _CFG_RESULTS / "sobol_acquisition.csv"
 
 INPUTS = ("power", "n_line", "eta", "repeats", "tau")
 N_BASE = 8192
@@ -293,7 +299,7 @@ def main() -> int:
         w.writerow(["quantity", "key", "value", "err", "unit", "note"])
         w.writerows(rows)
     os.replace(tmp, OUT)
-    print(f"wrote {OUT.relative_to(ROOT)}")
+    print(f"wrote {os.path.relpath(OUT, ROOT)}")
     for i, name in enumerate(INPUTS):
         print(f"  {name:8s} S1 {s1[i]:.4f}+-{e1[i]:.4f}  "
               f"ST {st[i]:.4f}+-{et[i]:.4f}")

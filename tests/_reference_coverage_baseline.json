@@ -8,7 +8,7 @@
  "docs/FUTURE_TRANSITIONS_titsapph.md": 377,
  "docs/GLOSSARY.md": 8,
  "docs/LITERATURE.md": 133,
- "docs/LITERATURE_INDEX.md": 158,
+ "docs/LITERATURE_INDEX.md": 154,
  "docs/PLAN.md": 17,
  "docs/PREREGISTRATION_RESULTS.md": 848,
  "docs/PREREGISTRATION_timestamps.md": 35,
@@ -42,7 +42,7 @@
  "docs/methods/06_the_statistics.md": 81,
  "docs/methods/07_what_we_found.md": 70,
  "docs/methods/08_assumptions_and_outlook.md": 7,
- "docs/methods/09_the_guided_geometry.md": 45,
+ "docs/methods/09_the_guided_geometry.md": 46,
  "docs/methods/10_the_odd_moments.md": 144,
  "docs/notes/README.md": 3,
  "docs/notes/amplitude_departure_from_p2.md": 31,
@@ -141,6 +141,6 @@
  "docs/wiki/vapour-density-and-temperature.md": 4,
  "docs/wiki/voigt-profile.md": 5,
  "docs/wiki/weighted-least-squares.md": 2,
- "results/README.md": 109,
+ "results/README.md": 110,
  "scripts/README.md": 0
 }

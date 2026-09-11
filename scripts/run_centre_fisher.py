@@ -63,6 +63,7 @@ Writes `results/centre_fisher.csv`.
 from __future__ import annotations
 
 import csv
+import os
 import sys
 from pathlib import Path
 
@@ -333,7 +334,7 @@ def main() -> int:
         w = csv.DictWriter(f, fieldnames=cols)
         w.writeheader()
         w.writerows(out_rows)
-    print(f"\n  Wrote {OUT_CSV.relative_to(ROOT)}: {len(out_rows)} rows.")
+    print(f"\n  Wrote {os.path.relpath(OUT_CSV, ROOT)}: {len(out_rows)} rows.")
     return 0
 
 

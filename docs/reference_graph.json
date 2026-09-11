@@ -113,7 +113,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 264,
+    "line": 286,
     "writes": "0.433"
    }
   ],
@@ -605,7 +605,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 425,
+    "line": 447,
     "writes": "0.9640"
    },
    {
@@ -622,7 +622,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 427,
+    "line": 449,
     "writes": "0.4040"
    },
    {
@@ -639,7 +639,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 425,
+    "line": 447,
     "writes": "0.9580"
    },
    {
@@ -656,7 +656,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 427,
+    "line": 449,
     "writes": "0.3760"
    },
    {
@@ -798,7 +798,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 284,
+    "line": 306,
     "writes": "984"
    }
   ],
@@ -834,7 +834,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 284,
+    "line": 306,
     "writes": "1.01283"
    }
   ],
@@ -846,7 +846,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 285,
+    "line": 307,
     "writes": "802"
    }
   ],
@@ -858,7 +858,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 285,
+    "line": 307,
     "writes": "1.01927"
    }
   ],
@@ -870,7 +870,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 293,
+    "line": 315,
     "writes": "0.231"
    }
   ],
@@ -882,7 +882,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 286,
+    "line": 308,
     "writes": "624"
    }
   ],
@@ -894,7 +894,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 296,
+    "line": 318,
     "writes": "0.615"
    },
    {
@@ -911,7 +911,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 297,
+    "line": 319,
     "writes": "0.489"
    },
    {
@@ -928,7 +928,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 286,
+    "line": 308,
     "writes": "1.03164"
    },
    {
@@ -1082,7 +1082,7 @@
   "quoting_sites": [
    {
     "file": "docs/LITERATURE.md",
-    "line": 334,
+    "line": 351,
     "writes": "7.23"
    },
    {
@@ -1104,7 +1104,7 @@
   "quoting_sites": [
    {
     "file": "docs/LITERATURE.md",
-    "line": 333,
+    "line": 350,
     "writes": "6.48"
    },
    {
@@ -1191,7 +1191,7 @@
    },
    {
     "file": "results/README.md",
-    "line": 78,
+    "line": 80,
     "writes": "0.000"
    }
   ],
@@ -1228,7 +1228,7 @@
    },
    {
     "file": "results/README.md",
-    "line": 78,
+    "line": 80,
     "writes": "-56.972"
    }
   ],
@@ -1245,7 +1245,7 @@
    },
    {
     "file": "results/README.md",
-    "line": 78,
+    "line": 80,
     "writes": "3.247"
    }
   ],
@@ -1272,12 +1272,12 @@
    },
    {
     "file": "docs/wiki/third-cumulant.md",
-    "line": 297,
+    "line": 318,
     "writes": "89.701"
    },
    {
     "file": "results/README.md",
-    "line": 78,
+    "line": 80,
     "writes": "89.701"
    }
   ],
@@ -1413,7 +1413,7 @@
    },
    {
     "file": "docs/wiki/third-cumulant.md",
-    "line": 299,
+    "line": 320,
     "writes": "0.000"
    }
   ],
@@ -1440,7 +1440,7 @@
    },
    {
     "file": "results/README.md",
-    "line": 78,
+    "line": 80,
     "writes": "-0.265"
    }
   ],
@@ -1487,12 +1487,12 @@
    },
    {
     "file": "docs/wiki/third-cumulant.md",
-    "line": 296,
+    "line": 317,
     "writes": "106.911"
    },
    {
     "file": "results/README.md",
-    "line": 78,
+    "line": 80,
     "writes": "106.911"
    }
   ],
@@ -1812,7 +1812,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 268,
+    "line": 290,
     "writes": "0.2895"
    },
    {
@@ -1853,7 +1853,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 317,
+    "line": 339,
     "writes": "30.73"
    },
    {
@@ -1870,7 +1870,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
-    "line": 319,
+    "line": 341,
     "writes": "0.67"
    },
    {
@@ -2155,6 +2155,137 @@
   ],
   "source_file": "results/paired_reference_forecast.csv",
   "source_value": "clears"
+ },
+ "platform_twins:cell_130C_tight:cell:n_atoms_probe": {
+  "producer": "run_platform_twins.py",
+  "quoting_sites": [
+   {
+    "file": "docs/methods/09_the_guided_geometry.md",
+    "line": 405,
+    "writes": "1.91427e+07"
+   }
+  ],
+  "source_file": "results/platform_twins.csv",
+  "source_value": "1.91427e+07"
+ },
+ "platform_twins:hcpcf_cold:hcpcf:absorbed_fraction": {
+  "producer": "run_platform_twins.py",
+  "quoting_sites": [
+   {
+    "file": "docs/big_picture/06_next-nanofibre.md",
+    "line": 247,
+    "writes": "8.12559e-07"
+   },
+   {
+    "file": "docs/methods/09_the_guided_geometry.md",
+    "line": 418,
+    "writes": "8.12559e-07"
+   },
+   {
+    "file": "docs/wiki/guided-atoms-and-nanofibres.md",
+    "line": 109,
+    "writes": "8.12559e-07"
+   }
+  ],
+  "source_file": "results/platform_twins.csv",
+  "source_value": "8.12559e-07"
+ },
+ "platform_twins:hcpcf_warm:hcpcf:absorbed_fraction": {
+  "producer": "run_platform_twins.py",
+  "quoting_sites": [
+   {
+    "file": "docs/big_picture/06_next-nanofibre.md",
+    "line": 245,
+    "writes": "0.0238892"
+   },
+   {
+    "file": "docs/methods/09_the_guided_geometry.md",
+    "line": 416,
+    "writes": "0.0238892"
+   },
+   {
+    "file": "docs/wiki/guided-atoms-and-nanofibres.md",
+    "line": 107,
+    "writes": "0.0238892"
+   }
+  ],
+  "source_file": "results/platform_twins.csv",
+  "source_value": "0.0238892"
+ },
+ "platform_twins:hcpcf_warm:hcpcf:length_eff_mm": {
+  "producer": "run_platform_twins.py",
+  "quoting_sites": [
+   {
+    "file": "docs/big_picture/06_next-nanofibre.md",
+    "line": 237,
+    "writes": "100.0000"
+   },
+   {
+    "file": "docs/methods/09_the_guided_geometry.md",
+    "line": 400,
+    "writes": "100.0000"
+   },
+   {
+    "file": "docs/wiki/guided-atoms-and-nanofibres.md",
+    "line": 95,
+    "writes": "100.0000"
+   }
+  ],
+  "source_file": "results/platform_twins.csv",
+  "source_value": "100.0000"
+ },
+ "platform_twins:hcpcf_warm:hcpcf:n_atoms_probe": {
+  "producer": "run_platform_twins.py",
+  "quoting_sites": [
+   {
+    "file": "docs/methods/09_the_guided_geometry.md",
+    "line": 403,
+    "writes": "3.3343e+09"
+   },
+   {
+    "file": "docs/wiki/guided-atoms-and-nanofibres.md",
+    "line": 97,
+    "writes": "3.3343e+09"
+   }
+  ],
+  "source_file": "results/platform_twins.csv",
+  "source_value": "3.3343e+09"
+ },
+ "platform_twins:onf:onf:n_atoms_probe": {
+  "producer": "run_platform_twins.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/guided-atoms-and-nanofibres.md",
+    "line": 120,
+    "writes": "2.51327"
+   }
+  ],
+  "source_file": "results/platform_twins.csv",
+  "source_value": "2.51327"
+ },
+ "platform_twins:onf:onf:s0_mhz": {
+  "producer": "run_platform_twins.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/guided-atoms-and-nanofibres.md",
+    "line": 116,
+    "writes": "41.426"
+   }
+  ],
+  "source_file": "results/platform_twins.csv",
+  "source_value": "41.426"
+ },
+ "platform_twins:onf:onf:saturation_s": {
+  "producer": "run_platform_twins.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/guided-atoms-and-nanofibres.md",
+    "line": 118,
+    "writes": "429.623"
+   }
+  ],
+  "source_file": "results/platform_twins.csv",
+  "source_value": "429.623"
  },
  "prediction_band:collection_window:kappa2_ratio": {
   "producer": "run_prediction_band.py",
@@ -2830,7 +2961,7 @@
    },
    {
     "file": "results/README.md",
-    "line": 281,
+    "line": 283,
     "writes": "0.396"
    }
   ],
@@ -2847,7 +2978,7 @@
    },
    {
     "file": "results/README.md",
-    "line": 281,
+    "line": 283,
     "writes": "0.316"
    }
   ],
@@ -2917,17 +3048,17 @@
    },
    {
     "file": "docs/wiki/the-wavemeter-and-the-frequency-axis.md",
-    "line": 233,
+    "line": 247,
     "writes": "0.0240"
    },
    {
     "file": "docs/wiki/the-wavemeter-and-the-frequency-axis.md",
-    "line": 240,
+    "line": 254,
     "writes": "0.0240"
    },
    {
     "file": "docs/wiki/third-cumulant.md",
-    "line": 369,
+    "line": 390,
     "writes": "0.0240"
    }
   ],
@@ -2944,7 +3075,7 @@
    },
    {
     "file": "docs/wiki/the-wavemeter-and-the-frequency-axis.md",
-    "line": 232,
+    "line": 246,
     "writes": "0.0240"
    }
   ],
@@ -2961,12 +3092,12 @@
    },
    {
     "file": "docs/wiki/the-wavemeter-and-the-frequency-axis.md",
-    "line": 249,
+    "line": 263,
     "writes": "10.0664"
    },
    {
     "file": "docs/wiki/third-cumulant.md",
-    "line": 371,
+    "line": 392,
     "writes": "10.0664"
    }
   ],
@@ -2988,7 +3119,7 @@
    },
    {
     "file": "docs/wiki/the-wavemeter-and-the-frequency-axis.md",
-    "line": 209,
+    "line": 223,
     "writes": "0.00010822"
    }
   ],
@@ -3020,17 +3151,17 @@
    },
    {
     "file": "docs/wiki/the-wavemeter-and-the-frequency-axis.md",
-    "line": 209,
+    "line": 223,
     "writes": "0.00203"
    },
    {
     "file": "docs/wiki/third-cumulant.md",
-    "line": 353,
+    "line": 374,
     "writes": "0.00203"
    },
    {
     "file": "results/README.md",
-    "line": 76,
+    "line": 78,
     "writes": "0.00203"
    }
   ],
@@ -3059,12 +3190,12 @@
    },
    {
     "file": "docs/wiki/the-wavemeter-and-the-frequency-axis.md",
-    "line": 217,
+    "line": 231,
     "writes": "0.00064"
    },
    {
     "file": "docs/wiki/third-cumulant.md",
-    "line": 359,
+    "line": 380,
     "writes": "0.00064"
    }
   ],
@@ -3081,7 +3212,7 @@
    },
    {
     "file": "docs/wiki/the-wavemeter-and-the-frequency-axis.md",
-    "line": 211,
+    "line": 225,
     "writes": "-0.689176"
    }
   ],
@@ -3103,12 +3234,12 @@
    },
    {
     "file": "docs/wiki/the-wavemeter-and-the-frequency-axis.md",
-    "line": 211,
+    "line": 225,
     "writes": "1.48"
    },
    {
     "file": "results/README.md",
-    "line": 76,
+    "line": 78,
     "writes": "1.48"
    }
   ],
@@ -3125,7 +3256,7 @@
    },
    {
     "file": "docs/wiki/the-wavemeter-and-the-frequency-axis.md",
-    "line": 219,
+    "line": 233,
     "writes": "0.50"
    }
   ],
@@ -3147,7 +3278,7 @@
    },
    {
     "file": "docs/wiki/the-wavemeter-and-the-frequency-axis.md",
-    "line": 210,
+    "line": 224,
     "writes": "0.00071772"
    }
   ],
@@ -3174,17 +3305,17 @@
    },
    {
     "file": "docs/wiki/the-wavemeter-and-the-frequency-axis.md",
-    "line": 210,
+    "line": 224,
     "writes": "0.0136"
    },
    {
     "file": "docs/wiki/third-cumulant.md",
-    "line": 352,
+    "line": 373,
     "writes": "0.0136"
    },
    {
     "file": "results/README.md",
-    "line": 76,
+    "line": 78,
     "writes": "0.0136"
    }
   ],
@@ -3218,12 +3349,12 @@
    },
    {
     "file": "docs/wiki/the-wavemeter-and-the-frequency-axis.md",
-    "line": 218,
+    "line": 232,
     "writes": "0.0022"
    },
    {
     "file": "docs/wiki/third-cumulant.md",
-    "line": 358,
+    "line": 379,
     "writes": "0.0022"
    }
   ],
@@ -3273,6 +3404,11 @@
     "file": "docs/big_picture/09_the-campaign-cases.md",
     "line": 74,
     "writes": "0.58"
+   },
+   {
+    "file": "docs/plan/04_intensity-and-light-shift.md",
+    "line": 393,
+    "writes": "0.5752"
    },
    {
     "file": "docs/plan/12_open-apparatus-items.md",
@@ -3480,6 +3616,11 @@
     "file": "docs/big_picture/09_the-campaign-cases.md",
     "line": 73,
     "writes": "0.69"
+   },
+   {
+    "file": "docs/plan/04_intensity-and-light-shift.md",
+    "line": 392,
+    "writes": "0.6918"
    }
   ],
   "source_file": "results/three_channel_forecast.csv",
@@ -3528,6 +3669,11 @@
     "file": "docs/big_picture/09_the-campaign-cases.md",
     "line": 73,
     "writes": "0.89"
+   },
+   {
+    "file": "docs/plan/04_intensity-and-light-shift.md",
+    "line": 391,
+    "writes": "0.8913"
    }
   ],
   "source_file": "results/three_channel_forecast.csv",
@@ -3576,6 +3722,11 @@
     "file": "docs/big_picture/09_the-campaign-cases.md",
     "line": 72,
     "writes": "0.98"
+   },
+   {
+    "file": "docs/plan/04_intensity-and-light-shift.md",
+    "line": 390,
+    "writes": "0.9775"
    },
    {
     "file": "docs/wiki/standing-waves.md",
@@ -3692,7 +3843,7 @@
   "quoting_sites": [
    {
     "file": "results/README.md",
-    "line": 77,
+    "line": 79,
     "writes": "66.644"
    }
   ],
@@ -3704,7 +3855,7 @@
   "quoting_sites": [
    {
     "file": "results/README.md",
-    "line": 77,
+    "line": 79,
     "writes": "0.35"
    }
   ],
@@ -3733,7 +3884,7 @@
    },
    {
     "file": "results/README.md",
-    "line": 77,
+    "line": 79,
     "writes": "0.2605"
    }
   ],
@@ -3793,7 +3944,7 @@
   "quoting_sites": [
    {
     "file": "results/README.md",
-    "line": 77,
+    "line": 79,
     "writes": "0.0454"
    }
   ],
@@ -3810,7 +3961,7 @@
    },
    {
     "file": "results/README.md",
-    "line": 77,
+    "line": 79,
     "writes": "0.4051"
    }
   ],
@@ -3822,7 +3973,7 @@
   "quoting_sites": [
    {
     "file": "results/README.md",
-    "line": 77,
+    "line": 79,
     "writes": "41.705"
    }
   ],
@@ -3841,6 +3992,18 @@
   "source_file": "results/waist_ladder.csv",
   "source_value": "1.762622"
  },
+ "waist_ladder:rung:0.250000:z_ratio": {
+  "producer": "run_waist_ladder.py",
+  "quoting_sites": [
+   {
+    "file": "docs/methods/02_the_lineshape.md",
+    "line": 226,
+    "writes": "4.168772"
+   }
+  ],
+  "source_file": "results/waist_ladder.csv",
+  "source_value": "4.168772"
+ },
  "waist_ladder:rung:0.390625:k3_one_photon_over_two": {
   "producer": "run_waist_ladder.py",
   "quoting_sites": [
@@ -3852,6 +4015,18 @@
   ],
   "source_file": "results/waist_ladder.csv",
   "source_value": "3.081768"
+ },
+ "waist_ladder:rung:0.390625:z_ratio": {
+  "producer": "run_waist_ladder.py",
+  "quoting_sites": [
+   {
+    "file": "docs/methods/02_the_lineshape.md",
+    "line": 224,
+    "writes": "1.707529"
+   }
+  ],
+  "source_file": "results/waist_ladder.csv",
+  "source_value": "1.707529"
  },
  "waist_ladder:rung:0.625000:k3_one_photon_over_two": {
   "producer": "run_waist_ladder.py",
@@ -3865,6 +4040,18 @@
   "source_file": "results/waist_ladder.csv",
   "source_value": "0.500548"
  },
+ "waist_ladder:rung:0.625000:z_ratio": {
+  "producer": "run_waist_ladder.py",
+  "quoting_sites": [
+   {
+    "file": "docs/methods/02_the_lineshape.md",
+    "line": 222,
+    "writes": "0.667003"
+   }
+  ],
+  "source_file": "results/waist_ladder.csv",
+  "source_value": "0.667003"
+ },
  "waist_ladder:rung:1.000000:k3_one_photon_over_two": {
   "producer": "run_waist_ladder.py",
   "quoting_sites": [
@@ -3876,6 +4063,18 @@
   ],
   "source_file": "results/waist_ladder.csv",
   "source_value": "0.012866"
+ },
+ "waist_ladder:rung:1.000000:z_ratio": {
+  "producer": "run_waist_ladder.py",
+  "quoting_sites": [
+   {
+    "file": "docs/methods/02_the_lineshape.md",
+    "line": 220,
+    "writes": "0.260548"
+   }
+  ],
+  "source_file": "results/waist_ladder.csv",
+  "source_value": "0.260548"
  },
  "window_attribution:window_attributed_pct:peak_power": {
   "producer": "run_window_attribution.py",

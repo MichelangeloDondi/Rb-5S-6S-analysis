@@ -48,7 +48,10 @@ PRECISION is not untouched, see below. **THIS PRODUCER'S OWN
 `build_world_trace` CALL PASSES NEITHER**, so the shape family it computes is
 still the pure transverse ramp's and is an upper bound at a tight waist; the
 terms reach the three-channel forecast and not this file. No CSV of this
-producer is committed, and nothing quotes rows from it. Threading them here is
+producer is committed. `docs/plan/04` DOES quote four of its centre-precision
+rows from the uncommitted first run, naming them as such, so the older form of
+this sentence ("nothing quotes rows from it") was false, and that plan block
+now carries the pull-factor debt explicitly. Threading them here is
 owed before its shape rows are quoted, and the centres family is NOT untouched
 by them either: the forecast's own `pull_factor_quiet` puts the fitted centre's
 response at 0.98, 0.89, 0.69 and 0.58 of the pure ramp's mean pull at 64, 40,
@@ -520,7 +523,8 @@ def _lineshape_kappa(res: dict, betas: dict) -> dict:
     powers = np.asarray(sorted(set(res["powers"].tolist())), float)
     ncond, npow = res["n_cond"], res["npow"]
     for W in WINDOW_RATIOS:
-        obs = np.asarray(res["k3"][W], float).reshape(ncond, npow)
+        # PLACED BY THE RECORDED RUNG, NEVER BY ARRIVAL (44ab3911).
+        obs = _by_rung(res, res["k3"][W], powers, ncond, npow)
         qc = np.vstack([res["quiet"][ci]["k3"][W] for ci in range(ncond)])
         with np.errstate(invalid="ignore"):
             obs_p = np.nanmean(obs, axis=0)
@@ -571,15 +575,80 @@ def _centre_kappa(res: dict) -> float:
     the ramp's mean pull is -2 S0 / 3. The blocks are then averaged, every one
     of them being an estimate of the same coefficient.
     """
-    slopes = []
+    # INVERSE-VARIANCE, NOT EQUAL WEIGHT (2026-09-10). The inventory crosses
+    # two voltage zooms whose noise differs by a factor of four and three
+    # oscilloscopes of 16, 12 and 8 bits, so the per-condition slopes are
+    # estimates of the same coefficient with VERY different precisions.
+    # Averaging them equally throws that away: on the zoom axis alone the
+    # variance ratio against optimal weighting is about four and a half, which
+    # is that many times the traces for the same error.
+    #
+    # The weight is each block's OWN fitted standard error on the power slope,
+    # not an assumed noise model, because the assumed model is exactly what a
+    # reader would have to trust. A block whose fit is degenerate is dropped
+    # as before.
+    slopes, weights = [], []
     for ci in range(res["n_cond"]):
         m = res["block"] == ci
         X = np.column_stack([np.ones(m.sum()), res["powers"][m], res["order"][m]])
         if np.linalg.cond(X) > 1e12:
             continue
         beta, *_ = np.linalg.lstsq(X, res["centres"][m], rcond=None)
+        resid = res["centres"][m] - X @ beta
+        dof = max(int(m.sum()) - X.shape[1], 1)
+        s2 = float(resid @ resid) / dof
+        try:
+            var_slope = s2 * float(np.linalg.inv(X.T @ X)[1, 1])
+        except np.linalg.LinAlgError:
+            var_slope = float("nan")
+        weights.append(1.0 / var_slope if np.isfinite(var_slope) and var_slope > 0
+                       else 0.0)
+        # THE PURE RAMP'S -3/2, AND THE WINDOWED PULL IS NOT IN IT.
+        # The forecast this producer imports measures what the window
+        # costs: pull_factor_quiet runs 0.9775 at 64 um to 0.5752 at 16,
+        # so at the campaign's own waist this reports about 0.575 of the
+        # coefficient. Applying it needs a quiet CENTROID, which
+        # _quiet_curve does not yet carry, so the factor is owed and this
+        # column is a lower bound on the coefficient until it lands.
         slopes.append(-1.5 * beta[1])
-    return float(np.mean(slopes)) if slopes else float("nan")
+    if not slopes:
+        return float("nan")
+    w = np.asarray(weights, float)
+    s = np.asarray(slopes, float)
+    if not np.any(w > 0):
+        # every block degenerate in its own error: fall back to the equal
+        # weight this replaced, and it is a fallback rather than the method
+        return float(np.mean(s))
+    return float(np.sum(w * s) / np.sum(w))
+
+
+def _by_rung(res: dict, flat, powers, ncond: int, npow: int):
+    """Place one per-trace column into (condition, rung), BY THE RUNG.
+
+    The rung is the rank of the trace's own recorded power, so nothing new has
+    to be stored. A plain reshape reads the j-th acquisition SLOT as the j-th
+    rung, and the order is drawn per condition, so every column was a mixture
+    of rungs while the quiet curve divided into it was one rung (44ab3911).
+    A cell written twice, or left unwritten, means the draw and the record
+    disagree, and is refused rather than averaged.
+    """
+    out = np.full((ncond, npow), np.nan)
+    seen = np.zeros((ncond, npow), bool)
+    r = np.searchsorted(powers, np.asarray(res["powers"], float))
+    c = np.asarray(res["block"], int)
+    v = np.asarray(flat, float)
+    for ci, ri, x in zip(c, r, v):
+        if seen[ci, ri]:
+            raise SystemExit(
+                f"REFUSING a second trace for condition {ci} rung {ri}: the "
+                "recorded powers do not map one to one onto the rungs")
+        seen[ci, ri] = True
+        out[ci, ri] = x
+    if not seen.all():
+        raise SystemExit(
+            f"REFUSING an incomplete placement: {int((~seen).sum())} of "
+            f"{ncond * npow} condition-rung cells carry no trace")
+    return out
 
 
 def _interval_scatter(res: dict) -> dict:
@@ -644,7 +713,12 @@ def _block(item):
         centre.append(_centre_kappa(res))
         for k, v in _interval_scatter(res).items():
             ivs.setdefault(k, []).append(v)
-    return dict(axis=axis, arm=arm, block=block, n_sets=n_sets,
+    # `n_cond` RIDES ON THE BLOCK because _summarise needs it and reads it
+    # from a block, not from a set. It was on the per-set dict alone until
+    # 2026-09-10, so `b0["n_cond"]` raised KeyError in the producer's last
+    # function and an eight-hour run wrote nothing (A150). The value is a
+    # property of the configuration, identical across the sets of one block.
+    return dict(axis=axis, arm=arm, block=block, n_sets=n_sets, n_cond=len(conds),
                 kappa_true=kappa_true, fwhm_mhz=fwhm, snr=snr, line=line, line_n=line_n, k2s=k2s,
                 centre=centre, ivs=ivs, seconds=time.time() - t0,
                 guided_power_mw=(1e3 * max(powers)) if arm == "onf" else float("nan"))
@@ -856,6 +930,78 @@ def main() -> int:
     print(_where(), flush=True)
     if "--plant" in sys.argv:
         return _plant()
+    if "--smoke" in sys.argv:
+        # THE ASSEMBLY STEP RUNS OR NOTHING ELSE IS TRUSTED (A150). --time-one
+        # calls _block and stops, so _summarise and the CSV write were the one
+        # stretch of this producer no cheap mode ever reached, and a KeyError
+        # there cost an eight-hour run that wrote nothing. This drives the
+        # WHOLE path at two blocks and one set, into a scratch file, in about
+        # a minute, and it is what runs before any grid is launched.
+        import tempfile
+        # THREE CORRECTIONS, 2026-09-10, from the round that read this.
+        #
+        # (1) The cell block sat at WAISTS_UM[-1], which is 16 um and OUTSIDE
+        #     the convolution licence, so `kappa_combined` was refused and the
+        #     combined-channel branch -- the one whose KeyError killed an
+        #     eight-hour run -- was never reached by the mode written to reach
+        #     it. A licensed waist is added and the tight one KEPT, so the
+        #     smoke now drives the finite branch and the refusal both.
+        # (2) `assert` vanishes under `python -O`, which would leave this mode
+        #     printing success while checking nothing. The checks raise.
+        # (3) `delete=False` left a scratch CSV behind on every run.
+        licensed = next(w for w in WAISTS_UM if w >= 40.0)
+        blocks = [_block((licensed, "cell", 900000, 1, 0)),
+                  _block((WAISTS_UM[-1], "cell", 900002, 1, 0)),
+                  _block((ONF_TRAP_SCAN_NM[len(ONF_TRAP_SCAN_NM) // 2],
+                          "onf", 900001, 1, 0))]
+        rows = []
+        for b in blocks:
+            rows.extend(_summarise([b]))
+        if not rows:
+            raise SystemExit("smoke: the summariser returned no rows")
+        missing = [c for c in COLUMNS if any(c not in r for r in rows)]
+        if missing:
+            raise SystemExit(f"smoke: the summariser omits columns: {missing}")
+        # WHAT THIS MODE CAN AND CANNOT COVER, established by running it.
+        # A first draft of this check demanded a finite `kappa_combined` and
+        # fired at every waist. The cause is not a defect: at smoke scale the
+        # SHAPE channel admits no rung (`rungs_admitted` 0.0), which is this
+        # record's own result that the third cumulant opens only between one
+        # and two megahertz of shift, so the combined value is correctly NaN
+        # and forcing it would mean faking admission. The centre channel is
+        # finite, so the arithmetic below it does run.
+        #
+        # What killed the eight-hour run was a KeyError in `_summarise`'s
+        # ASSEMBLY, which this mode does reach. The combined VALUE branch is
+        # covered by the fixture in tests/test_observable_taxonomy_producer.py,
+        # where admissible statistics can be supplied on purpose.
+        centres = [r for r in rows if r["kappa_centres"] == r["kappa_centres"]]
+        if not centres:
+            raise SystemExit(
+                "smoke: no row carries a finite kappa_centres, so the "
+                "per-rung arithmetic did not run at all")
+        lic = {int(r["lineshape_within_convolution_licence"]) for r in rows
+               if r["arm"] == "cell"}
+        if lic != {0, 1}:
+            raise SystemExit(
+                "smoke: the convolution licence gate was not exercised in "
+                f"both directions (saw {sorted(lic)}), so a regression that "
+                "always licensed or always refused would pass here")
+        fh = tempfile.NamedTemporaryFile("w", suffix=".csv", newline="",
+                                         delete=False)
+        try:
+            w = csv.DictWriter(fh, fieldnames=COLUMNS)
+            w.writeheader()
+            for r in rows:
+                w.writerow({k: r[k] for k in COLUMNS})
+            dest = fh.name
+        finally:
+            fh.close()
+        os.unlink(dest)
+        print(f"smoke: {len(rows)} rows through the full path, "
+              f"{len(centres)} with a finite centre channel, the licence gate "
+              f"seen both ways, CSV written and removed")
+        return 0
     if "--time-one" in sys.argv:
         for axis, arm in ((WAISTS_UM[-1], "cell"), (ONF_TRAP_SCAN_NM[len(ONF_TRAP_SCAN_NM) // 2], "onf")):
             t0 = time.time()

@@ -84,6 +84,53 @@ ratio scanning the atom-surface distance, a red beam run as travelling or
 standing wave, the MOT on or off, and molasses temperature stepped along a
 ladder. Each moves a different term in the width budget.
 
+## Two structural facts a free-space intuition gets wrong
+
+**A guided mode has no Rayleigh range.** A focused beam concentrates a
+two-photon rate within about one Rayleigh range of its waist, so its useful
+length is a millimetre or so and tightening the focus shortens it. A guided
+mode keeps its waist for the whole fibre. That turns the interaction length
+from a beam property into a hardware choice, and it is the single reason
+hollow-core spectroscopy competes with a whole vapour cell: at
+[100.0000](../../results/platform_twins.csv "ref:platform_twins:hcpcf_warm:hcpcf:length_eff_mm") mm of
+vapour-filled mode the probe sees
+[3.3343e+09](../../results/platform_twins.csv "ref:platform_twins:hcpcf_warm:hcpcf:n_atoms_probe") atoms,
+which is more than a tightly focused beam reaches in a centimetre-scale cell.
+
+**And the observable changes with the geometry.** A cell is read in
+fluorescence, counting 795 nm photons against a dark background: the D1 leg
+of the 6S to 5P to 5S cascade, not the 420 nm blue line, which leaves 6P and
+is reached from 6S only by blackbody excitation. A fibre is
+read in transmission, so what is measured is a dip in a large transmitted
+power and the noise is the shot noise of the whole beam and not of the
+signal. Those scale differently, and the dip is what decides feasibility:
+[0.0238892](../../results/platform_twins.csv "ref:platform_twins:hcpcf_warm:hcpcf:absorbed_fraction") with
+vapour in the mode is resolved by any photodiode, while
+[8.12559e-07](../../results/platform_twins.csv "ref:platform_twins:hcpcf_cold:hcpcf:absorbed_fraction") for
+a cold loaded column is a part-per-million measurement and needs a
+correspondingly quiet laser.
+
+**And the nanofibre runs out of power headroom before it runs out of
+atoms.** The evanescent mode is tight enough that one milliwatt through a
+400 nm fibre reaches a peak light shift of
+[41.426](../../results/platform_twins.csv "ref:platform_twins:onf:onf:s0_mhz") MHz
+and a saturation parameter of
+[429.623](../../results/platform_twins.csv "ref:platform_twins:onf:onf:saturation_s"),
+with only
+[2.51327](../../results/platform_twins.csv "ref:platform_twins:onf:onf:n_atoms_probe") atoms
+in the probe at a tenth of the cell's density. Both are `ENVELOPE` rows and the
+file says so in the row itself. The atoms sit in the evanescent tail and not in
+a mode with a flat transverse profile, so anything quantitative goes through
+`rb5s6s.fibre` and not through this table. The direction is what matters here,
+and it reverses the free-space intuition twice over. In a cell the shift is
+raised by spending power. At a nanofibre the shift is the thing that has to be
+kept down, and the design question becomes how little power still gives a
+readable signal.
+
+`results/platform_twins.csv` carries both geometries beside a cell, a
+magneto-optical trap and a molasses on one page. Its trapped rows are design
+figures, not measurements.
+
 ## New systematics
 
 The surface introduces a new systematic: at a few hundred nanometres the van

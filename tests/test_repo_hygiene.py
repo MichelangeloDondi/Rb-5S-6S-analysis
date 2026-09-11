@@ -2140,3 +2140,37 @@ def test_the_could_not_run_code_agrees_across_the_scripts_that_use_it():
         "guard is grading a population too small to disagree")
     assert len(set(seen.values())) == 1, (
         f"the could-not-run code differs between scripts: {seen}")
+
+
+def tracked_symlinks(root) -> list[str]:
+    """Tracked paths git records with the symlink mode, 120000.
+
+    Lifted out of the test so the plant can drive it against a synthetic
+    repository, which is the only way to exercise it without putting a symlink
+    into this one.
+    """
+    import subprocess
+    out = subprocess.run(["git", "-C", str(root), "ls-files", "-s"],
+                         capture_output=True, text=True).stdout
+    return sorted(line.split("\t", 1)[1] for line in out.splitlines()
+                  if line.startswith("120000 "))
+
+
+def test_no_tracked_path_is_a_symlink():
+    """A symlink inside the tree breaks the copying guards and ships.
+
+    On 2026-09-11 a plant left `rb5s6s/rb5s6s` pointing at its own parent and a
+    broad `git add` STAGED it with mode 120000. Two gate tests that walk the
+    package with `shutil.copytree` died on the recursion, and nothing in the
+    suite objected to the link itself, so the port would have carried a
+    self-referential loop into the public mirror.
+
+    The population is git's own index and not a filesystem walk, because an
+    untracked symlink is a local convenience and a tracked one is a
+    publication.
+    """
+    links = tracked_symlinks(ROOT)
+    assert not links, (
+        f"{len(links)} tracked path(s) are symlinks: {links}. A tracked link "
+        "is copied by the porter and by every guard that walks the tree; if "
+        "one is genuinely wanted, it is declared here with its reason.")

@@ -84,6 +84,7 @@ quoted in CLAIMS and in methods chapter 4.
 from __future__ import annotations
 
 import csv
+import os
 import math
 import sys
 from pathlib import Path
@@ -322,7 +323,7 @@ def main() -> int:
                         (f"{lo:.4g}" if lo != "" else ""),
                         (f"{hi:.4g}" if hi != "" else ""), ek, u, st])
     print()
-    print(f"  wrote {out.relative_to(C.REPO_ROOT)} ({len(rows)} rows), which is")
+    print(f"  wrote {os.path.relpath(out, C.REPO_ROOT)} ({len(rows)} rows), which is")
     print("  what lets the prose quote these numbers instead of restating them.")
     print()
     print("=" * 78)

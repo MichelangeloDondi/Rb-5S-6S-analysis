@@ -58,6 +58,11 @@ from rb5s6s import config as C                                    # noqa: E402
 from rb5s6s import constants as K                                 # noqa: E402
 from rb5s6s.linefit import _shared_profile_grid                   # noqa: E402
 
+# resolved through the config; the slash-inside-the-string spelling was
+# missed by the 2026-09-11 migration, which keyed on the separated form.
+from rb5s6s import config as _CFG  # noqa: E402
+_CFG_RESULTS = _CFG.RESULTS_DIR
+
 REPO = Path(__file__).resolve().parents[1]
 T_C = 130.0
 POINTS_PER_LINE_FWHM = 90        # the shape requirement, stated before sizing
@@ -95,7 +100,7 @@ def background_degeneracy_factor(reach_in_sigma: float, ped_sigma: float,
 
 def committed(peak: str = "4154"):
     """Line parameters and the 2025 acquisition, read from the record."""
-    for r in csv.DictReader(open(REPO / "results/linefit_conditions.csv")):
+    for r in csv.DictReader(open(_CFG_RESULTS / "linefit_conditions.csv")):
         if r["peak"] == peak and r["T"] == "130" and r["P"] == "225":
             return (float(r["gamma_coll"]), float(r["sigma_laser"]),
                     float(r["total_fwhm"]), float(r["rate_t"]))
@@ -182,7 +187,7 @@ def main() -> int:
     print()
     noise_frac = 0.0039        # measured, single point, as a fraction of peak
     taus = sorted(float(r["tau_int"]) for r in
-                  csv.DictReader(open(REPO / "results/noise_model.csv"))
+                  csv.DictReader(open(_CFG_RESULTS / "noise_model.csv"))
                   if r.get("tau_int"))
     tau = taus[len(taus) // 2]                 # the record's MEDIAN, read live
     degen = background_degeneracy_factor(REACH_IN_SIGMA, ped_sigma)

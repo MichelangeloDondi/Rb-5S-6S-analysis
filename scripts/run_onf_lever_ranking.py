@@ -35,7 +35,12 @@ import numpy as np
 from rb5s6s.fibre import HE11Field, solve_he11, transit_fwhm
 
 ROOT = Path(__file__).resolve().parents[1]
-RESULTS = ROOT / "results"
+# resolved through the config so RB5S6S_RESULTS_DIR redirects this
+# producer; a hand-built path is not redirected and verifies nothing.
+from rb5s6s import config as _CFG  # noqa: E402
+_CFG_RESULTS = _CFG.RESULTS_DIR
+
+RESULTS = _CFG_RESULTS
 
 DIAMETER_NM = 370.0            # raj2026's fibre
 TRAP_DISTANCE_NM = 400.0       # the trap distance the lock_requirement rows use

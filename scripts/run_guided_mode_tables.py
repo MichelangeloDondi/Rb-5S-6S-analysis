@@ -52,7 +52,13 @@ from _producer_lock import take_producer_lock                    # noqa: E402
 from rb5s6s.fibre import (HE11Field, TRANSIT_KERNEL_FACTOR,      # noqa: E402
                           solve_he11, transit_fwhm)
 
-OUT = ROOT / "results" / "guided_mode_tables.csv"
+# resolved through the config so RB5S6S_RESULTS_DIR redirects this producer;
+# a hand-built path is not redirected, so the freshness verifier compares a
+# committed file against itself (2026-09-11).
+from rb5s6s import config as _CFG  # noqa: E402
+_CFG_RESULTS = _CFG.RESULTS_DIR
+
+OUT = _CFG_RESULTS / "guided_mode_tables.csv"
 
 LINE_NM = 993.4181          # the LITERATURE line, never the wavemeter label
 # THE DIAMETER TOLERANCE IS THE ONLY UNCERTAINTY THESE ROWS HAVE.

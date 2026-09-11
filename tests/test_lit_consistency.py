@@ -314,6 +314,73 @@ def test_generated_local_readme_is_fresh_when_present():
         "scripts/build_lit_index.py.")
 
 
+def test_every_held_note_points_at_a_pdf_that_is_actually_there():
+    """The holdings table is generated from the NOTES, not from the folder.
+
+    `build_lit_index.emit_readme` builds each row from `docs/lit/*.md`, so a
+    note that says `held: true` and names a `pdf:` produces a row saying yes
+    whether or not the file exists, and the freshness guard above compares the
+    table against that same generated text. The loop is self-consistent and
+    blind: seven PDFs were moved into `_duplicates/` on 2026-09-10 and nothing
+    in the suite could have noticed.
+
+    This is the guard against the FOLDER. It skips where PDF_papers is absent,
+    which is CI's situation, and it resolves the path as written, so a note
+    naming `PDF_papers/theses/x.pdf` is checked there and not in the root. An
+    ad-hoc version of this check written the same day stripped the directory
+    and reported four correct paths as missing.
+    """
+    if not PDF_DIR.is_dir():
+        pytest.skip("PDF_papers/ is gitignored and absent (CI)")
+    missing = []
+    for key in sorted(_lit_keys()):
+        fm = _fm(key)
+        if not fm.get("held"):
+            continue
+        rel = str(fm.get("pdf") or "").strip()
+        if rel in ("", "null", "None"):
+            missing.append(f"{key}: held: true but names no pdf")
+            continue
+        if not (ROOT / rel).is_file():
+            missing.append(f"{key}: names {rel}, which is not on disk")
+    assert not missing, (
+        "notes claim to hold PDFs that are not there, and the holdings table "
+        "cannot see it because it is generated from these same notes:\n  "
+        + "\n  ".join(missing))
+
+
+#: Frontmatter keys the notes are allowed to carry. Anything else is an orphan:
+#: `axis_resolved` sat in one note with no schema entry and no consumer until
+#: 2026-09-10, carrying a real reading that was already stated twice elsewhere.
+#: A key nothing reads is a claim nothing checks.
+KNOWN_FRONTMATTER_KEYS = {
+    "citekey", "type", "authors", "title", "journal", "volume", "number",
+    "pages", "year", "doi", "arxiv", "pdf", "held", "status", "routing",
+    "verify_flags", "verified_date", "summary", "loci", "section",
+    "qa_flags", "publisher", "editor", "booktitle", "institution", "url",
+    "note", "school", "series", "edition", "isbn", "eprint", "primaryclass",
+    "month", "address", "chapter", "howpublished", "organization",
+    # `relevance` is a real convention, not an orphan: two notes use it for
+    # why-this-paper-matters-here, which is distinct from `summary` (what the
+    # paper says) and from `routing` (where it goes). Recognised on that
+    # basis, with the reason recorded here rather than in a commit message.
+    "relevance",
+}
+
+
+def test_no_note_carries_a_frontmatter_key_nothing_reads():
+    orphans = {}
+    for key in sorted(_lit_keys()):
+        extra = sorted(set(_fm(key)) - KNOWN_FRONTMATTER_KEYS)
+        if extra:
+            orphans[key] = extra
+    assert not orphans, (
+        "frontmatter keys with no schema entry and no consumer. Either add "
+        "the key to KNOWN_FRONTMATTER_KEYS with a reason and give it a "
+        "reader, or move its content into the body where it will be read:\n  "
+        + "\n  ".join(f"{k}: {v}" for k, v in orphans.items()))
+
+
 # --------------------------------------------------------------------------- #
 # (E) accidental prefix-collision guard                                        #
 # --------------------------------------------------------------------------- #

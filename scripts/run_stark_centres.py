@@ -133,6 +133,12 @@ sys.path.insert(0, str(REPO))
 
 from rb5s6s import config as C  # noqa: E402
 from rb5s6s.lineshape import stark_shift_S0_mhz  # noqa: E402
+# The results directory resolved through the config, so that
+# RB5S6S_RESULTS_DIR redirects this producer. Until 2026-09-11 this path
+# was built by hand from the repository root, so the freshness verifier
+# could not isolate it and compared a committed file against itself.
+from rb5s6s import config as _CFG  # noqa: E402
+_CFG_RESULTS = _CFG.RESULTS_DIR
 
 MEAN_OVER_S0 = -0.653               # archival ramp geometry, methods/03
 # All three READ from the pipeline rather than hand-typed (v3.0.0, extended
@@ -140,13 +146,13 @@ MEAN_OVER_S0 = -0.653               # archival ramp geometry, methods/03
 # the prediction from the constants. They used to be literals and went stale
 # together whenever the priors (or the rate) moved.
 RATE = float(next(csv.DictReader(
-    open(REPO / "results/ruler_campaign.csv")))["rate_laser"])  # MHz/ms, laser
+    open(_CFG_RESULTS / "ruler_campaign.csv")))["rate_laser"])  # MHz/ms, laser
 WIDTH_BOUND = float(next(
-    r["value"] for r in csv.DictReader(open(REPO / "results/stark_sweep.csv"))
+    r["value"] for r in csv.DictReader(open(_CFG_RESULTS / "stark_sweep.csv"))
     if r["quantity"] == "S0_225mW_ub95_profile"))   # MHz, width channel 95%
 PREDICTED = stark_shift_S0_mhz(0.225, C.W0_MEASURED_M, rho=C.RHO_RETRO)  # MHz
 
-rows = [r for r in csv.DictReader(open(REPO / "results/laser_history.csv"))]
+rows = [r for r in csv.DictReader(open(_CFG_RESULTS / "laser_history.csv"))]
 sci = [r for r in rows if r["role"] == "p_sweep" and r["flag"] == "canonical"]
 eps = sorted({r["display_epoch"] for r in sci}, key=int)
 ei = {e: i for i, e in enumerate(eps)}
@@ -322,7 +328,7 @@ out_rows.append({"drift_model": "knob_immune_linearity", "n_traces": nrow,
                  "S0_drop_lowest_rung": round(float(s0_drop), 4),
                  "S0_drop_lowest_rung_err": round(float(s0_drop_e), 4)})
 
-RES = REPO / "results" / "stark_centres.csv"
+RES = _CFG_RESULTS / "stark_centres.csv"
 with open(RES, "w", newline="") as f:
     cols = list(out_rows[-1].keys())
     w = csv.DictWriter(f, fieldnames=cols, extrasaction="ignore")

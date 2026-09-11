@@ -4,6 +4,10 @@ What runs from a clone, what needs data that is not in it, and how the
 committed numbers are held to the files that produce them. The short version
 is on the front page under Reproduce. This is the detail behind it.
 
+**Skip if.** You want one number and not the whole pipeline, in which case
+[`results/README.md`](../results/README.md) names the producer beside each
+committed file, and running that one script is the shortest path.
+
 **Cutting a release** follows
 [the release checklist](RELEASE_CHECKLIST.md), whose form is stated publicly in
 [the release-note style](RELEASE_NOTE_STYLE.md) so a reader can check the rules
@@ -12,7 +16,7 @@ which is what this page is for.
 
 ## The runner, and the scripts outside it
 
-`bash scripts/run_all.sh` executes 35 analysis stages in dependency order,
+`bash scripts/run_all.sh` executes 37 analysis stages in dependency order,
 then the reference graph, the figures, `docs/RESULTS.md`, and the CSV status
 column.
 
@@ -31,6 +35,20 @@ simulate-and-fit and takes about forty-six minutes, measured
 four-minute claim that understated it elevenfold. Re-running any
 stage reproduces its committed CSV in `results/` within the tolerance
 `scripts/verify_results_fresh.py` states.
+
+**Thirty-two producers of a committed CSV are named by neither this page nor
+the runner, and that is a debt.** The runner holds them
+out for runtime, the kernel series and the twin's closed loop and span
+sweep among them, with the coverage grid, the three-channel forecast, the
+quantisation pair and the waist ladder beside them, and this page has not
+caught up with them, so a reader
+reaches them only through `results/README.md`, which does index all 102
+committed files with the producer that writes each one. The number is
+measured: `tests/test_reproduction_routes.py` reads the
+index, the runner's stage loop and this page, and holds the unrouted set as a
+list that may shrink and may not grow. A thirty-third fails the suite, and
+routing one of the thirty-two fails it too until the list is reseeded, so the
+debt cannot be paid quietly or enlarged silently.
 
 That comparison is a stated tolerance rather than byte equality because the
 arithmetic depends on the numerical environment. The committed digits were
@@ -55,7 +73,7 @@ under moving dependencies is a property of the environment until the pinned
 comparison disagrees, and that the pinned comparison is the one that speaks
 for the record.
 
-The runner's stages write the core subset of the 100 committed CSVs. The
+The runner's stages write the core subset of the 102 committed CSVs. The
 rest each have their own script, held out for one of two reasons.
 
 ### Seven need trees that stay outside the repository
@@ -109,6 +127,18 @@ byte-identical at every worker count. Measured on a ten-core machine on
 sequential, about 240 s at three workers, 153 to 170 s at six and 142 s
 at eight, the spread being other load. The replication multiplied the
 cost by about five, and the figures before it are not comparable).
+
+**What that curve says once the machine is described, added 2026-09-10.** It
+was measured on an Apple M4, `hw.perflevel0.physicalcpu` 4 and
+`hw.perflevel1.physicalcpu` 6: **four performance cores and six efficiency
+ones, not ten equal ones.** Read as speed-up against the sequential mean, the
+rows give about three times at three workers, four and a half at six and five
+at eight, so the return per worker falls by a third across that span. The
+near-linear stretch is the performance cores, and the flattening is the
+efficiency cores joining, which is why eight workers buy only a few per cent
+over six. **So "up to ten workers" is a ceiling on the count and not a promise
+of ten times**, and a budget computed as serial seconds over the worker count
+is optimistic by roughly a factor of two on this part.
 
 **`run_fibre_twin.py` was absent from this page as a standing omission**, the
 same defect the paragraph above records. `run_transit_additivity.py` was

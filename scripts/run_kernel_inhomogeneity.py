@@ -610,8 +610,14 @@ def main() -> int:
               f"({100*(k_f-k_e)/abs(k_e):+.2f}%)", flush=True)
 
 
-    dest = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-                        "results", "kernel_inhomogeneity.csv")
+    # RESOLVED THROUGH THE CONFIG. Until 2026-09-11 this joined the repository
+    # root to "results" by hand, so it ignored RB5S6S_RESULTS_DIR and wrote the
+    # live tree even under a redirect, and the freshness verifier then compared
+    # a committed file against itself. The migration of sixteen producers that
+    # day missed this one, and it was found by grepping for the RETIRED
+    # construction rather than the new one.
+    from rb5s6s import config as _CFG
+    dest = os.path.join(str(_CFG.RESULTS_DIR), "kernel_inhomogeneity.csv")
     with open(dest, "w", newline="", encoding="utf-8") as fh:
         wtr = csv.DictWriter(fh, fieldnames=list(rows[0]))
         wtr.writeheader()

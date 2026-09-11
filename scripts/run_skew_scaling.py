@@ -47,6 +47,7 @@ hypothesis from the fit covariance. Read this way it is p = 0.01, about
 """
 
 from __future__ import annotations
+import os
 
 import argparse
 import csv
@@ -55,6 +56,12 @@ from pathlib import Path
 
 import numpy as np
 from scipy.optimize import curve_fit
+
+# resolved through the config so RB5S6S_RESULTS_DIR redirects this producer;
+# a hand-built path is not redirected, so the freshness verifier compares a
+# committed file against itself (2026-09-11).
+from rb5s6s import config as _CFG  # noqa: E402
+_CFG_RESULTS = _CFG.RESULTS_DIR
 
 REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO))
@@ -123,7 +130,7 @@ def main() -> int:
     ap.add_argument("--seed", type=int, default=0)
     args = ap.parse_args()
 
-    src = REPO / "results" / "power_sweep.csv"
+    src = _CFG_RESULTS / "power_sweep.csv"
     rows = list(csv.DictReader(open(src)))
     peaks = sorted({r["peak"] for r in rows})
     rng = np.random.default_rng(args.seed)
@@ -190,12 +197,12 @@ def main() -> int:
         print(f"hypothesis {injected}: recovered {draws.mean():+.3f} +/- "
               f"{draws.std(ddof=1):.3f}, p = {p_value:.3f}")
 
-    dst = REPO / "results" / "skew_scaling.csv"
+    dst = _CFG_RESULTS / "skew_scaling.csv"
     with open(dst, "w", newline="") as fh:
         csv.writer(fh).writerows(out)
     print(f"\nmeasured exponent {mean:+.3f} +/- {sem:.3f} "
           f"(line scatter {scatter:.3f})")
-    print(f"wrote {dst.relative_to(REPO)}")
+    print(f"wrote {os.path.relpath(dst, REPO)}")
     return 0
 
 

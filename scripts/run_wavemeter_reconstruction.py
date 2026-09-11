@@ -139,6 +139,7 @@ excursion across 8.5 minutes, reported by the instrument itself.
 from __future__ import annotations
 
 import csv
+import os
 from pathlib import Path
 
 import functools
@@ -148,7 +149,11 @@ from scipy.optimize import lsq_linear, minimize
 
 ROOT = Path(__file__).resolve().parents[1]
 PHOTO = ROOT / "docs" / "apparatus" / "2025-06-11_wavemeter_drift_53min.jpg"
-OUT_CSV = ROOT / "results" / "wavemeter_reconstruction.csv"
+# resolved through the config so RB5S6S_RESULTS_DIR redirects this producer;
+# a hand-built path is not redirected and verifies nothing.
+from rb5s6s import config as _CFG  # noqa: E402
+_CFG_RESULTS = _CFG.RESULTS_DIR
+OUT_CSV = _CFG_RESULTS / "wavemeter_reconstruction.csv"
 
 MHZ_PER_TICK = 2.0        # the y labels step by 2e-6 THz
 MIN_PER_TICK = 1.0        # the x labels step by 1 minute
@@ -625,4 +630,4 @@ if __name__ == "__main__":
               "rise_min", "n_up", "n_down", "n_null", "pull_width",
               "resid_rms", "resid_acf1", "resid_runs_z", "nll"):
         print(f"  {k:22} {r[k]}")
-    print(f"\n  Wrote {OUT_CSV.relative_to(ROOT)}.")
+    print(f"\n  Wrote {os.path.relpath(OUT_CSV, ROOT)}.")

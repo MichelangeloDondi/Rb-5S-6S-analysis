@@ -22,11 +22,15 @@ routing: []
 verify_flags: []
 verified_date: null
 summary: >
-  OIST apparatus lineage with the previous laser generation, and the record's waist authority is rajasree2020thesis: page 6530 states
+  OIST apparatus lineage with the previous laser generation. Page 6530 states
   "The 1/e^2 beam diameter is 128 um" (w0=64 um, f=150 mm). Rajasree-KP 2020
   section 5.2 quotes the same number but is the SAME data (its footnote: the
   section 5.2 data "were collected by T. Nieddu"), so this is one measurement,
-  not two.
+  not two. RETIRED AS THE WAIST AUTHORITY on the owner's ruling, 2026-09-10:
+  choosing between two reports of one measurement taken on the earlier laser
+  cannot recover a beam this campaign ever had, and a focused waist is a
+  property of the INPUT beam, which is what changed. The 64 um that the record
+  carries is a working convention and every absolute result stays BOUND on it.
 loci:
   - M7
   - P1

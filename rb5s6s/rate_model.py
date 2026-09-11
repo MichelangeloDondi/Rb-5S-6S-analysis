@@ -157,7 +157,12 @@ def fit_rate_models(trace_rows: list[dict], clock: dict[str, float]) -> list[dic
 
 def write_models(rows: list[dict], root: Path | None = None) -> Path:
     root = root or C.REPO_ROOT
-    path = root / "results" / MODEL_CSV
+    # C.RESULTS_DIR, not root/"results": the results directory is redirectable
+    # through RB5S6S_RESULTS_DIR, and joining it to a root by hand made this
+    # module write the live tree under the freshness verifier's isolation, so
+    # the check compared a committed file against itself (2026-09-11).
+    path = (C.RESULTS_DIR if root is None or root == C.REPO_ROOT
+            else root / "results") / MODEL_CSV
     with open(path, "w", newline="") as fh:
         w = csv.DictWriter(fh, fieldnames=list(rows[0].keys()))
         w.writeheader()
@@ -167,7 +172,12 @@ def write_models(rows: list[dict], root: Path | None = None) -> Path:
 
 def read_models(root: Path | None = None) -> dict[tuple[str, str], dict]:
     root = root or C.REPO_ROOT
-    path = root / "results" / MODEL_CSV
+    # C.RESULTS_DIR, not root/"results": the results directory is redirectable
+    # through RB5S6S_RESULTS_DIR, and joining it to a root by hand made this
+    # module write the live tree under the freshness verifier's isolation, so
+    # the check compared a committed file against itself (2026-09-11).
+    path = (C.RESULTS_DIR if root is None or root == C.REPO_ROOT
+            else root / "results") / MODEL_CSV
     if not path.exists():
         return {}
     models = {}

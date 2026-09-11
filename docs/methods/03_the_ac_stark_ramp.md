@@ -632,6 +632,32 @@ $S_0$ bound and its prediction band use $|\Delta\alpha|$. *Code:* `lineshape.sta
 theorist-facing derivation, novelty position, and the open diverging-beam
 question are in [`docs/THEORY_NOTE.md`](../THEORY_NOTE.md).
 
+#### What the sum's matrix elements rest on, and why the two sides differ
+
+The elements entering that sum are tabulated atomic data, so a reader is
+entitled to ask what fixes them. They are not free, and the answer is
+different on the two sides of $\Delta\alpha$.
+
+Run backwards through the Einstein coefficient
+$A = \omega^3 d^2 / 3\pi\varepsilon_0\hbar c^3(2J'+1)$, this package's own
+5S elements return the two rubidium D-line lifetimes measured by
+[Volz and Schmoranzer](../lit/volz1996.md), each within a fraction of its own
+uncertainty, and their ratio matches the tune-out measurement of
+[Leonard and co-workers](../lit/leonard2015.md) at under one sigma while being
+some 146 times less precise than it. **So the 5S side is over-determined**:
+two lifetimes and one ratio constrain two elements, and they agree.
+
+The 6S side is anchored differently. Those elements return the 6S lifetime
+measured by [Gomez and co-workers](../lit/gomez2005.md) at well under one
+sigma, but $6S$ decays only to the two $5P$ levels, so there is one lifetime
+for two elements. The $\omega^3$-weighted **sum** is fixed to a fraction of a
+per cent and the **ratio** is not. That ratio is the $6S$ branching, no
+measurement of it exists, and any quantity in this repository needing the
+branching instead of the sum is tagged as theory for exactly this reason.
+
+None of this bears on the sign, which the $6S$ lifetime settles by a route
+passing through none of these elements.
+
 #### One dressing, many teeth: what the modulation depth can and cannot move
 
 The ramp above is set by the intensity, and an electro-optic phase modulator

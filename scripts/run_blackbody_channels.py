@@ -88,6 +88,7 @@ run_polarizability.py in run_all.sh.
 from __future__ import annotations
 
 import csv
+import os
 import math
 import sys
 from pathlib import Path
@@ -391,7 +392,7 @@ def main() -> int:
             w.writerow([q, k, f"{v:.6g}", (f"{e:.4g}" if e != "" else ""),
                         ek, u, st])
     print()
-    print(f"  wrote {out.relative_to(C.REPO_ROOT)} ({len(rows)} rows)")
+    print(f"  wrote {os.path.relpath(out, C.REPO_ROOT)} ({len(rows)} rows)")
     print()
     print("=" * 78)
     print("The CSV carries its own status column.")

@@ -5,47 +5,85 @@ authors:
   - Fendel, P.
   - Bergeson, S. D.
   - Udem, Th.
-  - Hänsch, T. W.
+  - Haensch, T. W.
 title: 'Two-photon frequency comb spectroscopy of the 6s-8s transition in cesium'
 journal: Opt. Lett.
 volume: 32
-number: 6
-pages: 701
 year: 2007
 doi: null
 arxiv: null
 pdf: PDF_papers/Fendel_2007_Cs-6s-8s-two-photon-comb-average-not-peak-AC-Stark.pdf
 held: true
 status: VERIFIED
-routing: []
+routing:
+  - CITE
 verify_flags: []
-verified_date: 2026-07-29
+verified_date: 2026-09-10
 summary: >
-  Cs 6s-8s single-colour two-photon in a hot vapour cell -- the same experiment
-  as this programme, one element to the left, driven by a frequency COMB. The
-  AC-Stark shift follows the AVERAGE rather than the much larger PEAK intensity
-  (-0.21 Hz/(mW/cm^2) against average single-beam intensity) -- and that
-  peak-vs-average is the comb's TEMPORAL pulse train, ns spacing against a
-  ~50 ns atomic response: the fast-modulation limit of Camparo 1992, realised.
-  The SPATIAL distribution was engineered away with an unfocused 0.72 mm waist.
+  The nearest published analogue of this record's transition driven by a
+  comb and not a single-frequency laser. An alkali S-to-S two-photon
+  line, in cesium, excited directly by a picosecond frequency comb from
+  the Haensch group, with the comb both driving the transition and
+  calibrating its own axis.
 loci: []
 section: prior-art
 ---
-
 # fendel2007
 
-Held. Key figures verified against the PDF. Single-colour two-photon 6s-8s spectroscopy of caesium in a hot vapour cell, driven by a frequency comb, with fluorescence detection.
+Held, three pages, checked against the PDF.
 
-## The measurement
+## What they do
 
-The AC-Stark shift is evaluated against the beam's average intensity rather than its peak intensity, giving -0.21 Hz/(mW/cm^2) against average single-beam intensity, cross-checked against independent cw measurements and theory. The paper concludes that "the average, rather than the peak power must be used for its evaluation." The beam was unfocused, with a Gaussian waist of 0.72 mm, chosen to keep the spatial intensity distribution narrow.
+Direct two-photon excitation of the cesium 6s-8s line by a picosecond
+frequency comb. The comb drives the transition and rules the frequency axis at
+once, which is the property that makes it interesting here: the axis needs no
+separate reference.
 
-The comb's pulse spacing is nanoseconds, short compared with the ~50 ns atomic response time, so the atom integrates the pulse train and shifts with the average and not the instantaneous intensity, the fast-modulation limit described by [Camparo (1992)](camparo1992.md). At 225 mW incident power the measured shift is 2.9 kHz.
+Their stability figures, from the text: a low-bandwidth feedback loop on the
+repetition rate, a long-term drift "measured with the fs comb to be less than
+50 Hz/s", and the frequency instability of a single comb mode "less than 10
+kHz in a 1 s measurement time".
 
-## Validity
+## Where it sits against this record
 
-The average-intensity result holds for a near-collimated beam, where the spatial intensity distribution is narrow. It does not address a tightly focused beam, where the distribution is broad and the shift scales with the square of intensity. The paper does not test that regime.
+The cesium 6s-8s transition is the closest structural analogue to rubidium
+5S-6S that the literature drives: both are alkali S-to-S two-photon lines with
+a scalar two-photon operator and no fine structure in the upper state. That is
+also why [lee2010](lee2010.md), on the same cesium transition, is this
+record's worked example of a symmetric Voigt fitted to a light-shifted line.
 
-## Use in this record
+**What differs is the drive.** A comb spreads the power over many teeth, so
+the peak intensity per tooth is low and the light shift with it, while the
+pulse structure introduces its own effects. This record drives with a
+single-frequency laser and wants the shift large. The two approaches sit at
+opposite ends of the same axis the EOM comb lever explores, where the drive is
+divided among teeth at fixed total intensity.
 
-The reported 2.9 kHz shift at 225 mW incident power is directly comparable, at the same incident power, with this record's own bound S_0(225 mW) < 0.64 MHz.
+## The AC Stark statement, which is the reason to hold this paper
+
+From the abstract, verbatim: "it is shown that the AC Stark shift of the
+transition is determined by the average rather than the much larger peak
+intensity." The body puts it again: "the AC Stark effect derives from the
+average laser intensity rather than the peak intensity."
+
+**That is this record's own question asked on the time axis instead of the
+space axis.** A pulse train presents an atom with an intensity that varies
+enormously and fast. The shift follows the MEAN because the modulation is fast
+against the atomic response, which is exactly the criterion
+[camparo1992](camparo1992.md) draws between fast fluctuations, which average
+to a symmetric line at the mean shift, and slow ones, which skew it. This
+record lives deliberately at the opposite end: the intensity varies in space,
+an atom samples it slowly as it crosses, the distribution does NOT collapse to
+its mean, and the residual asymmetry is the signal.
+
+**And it is concordant with the comb lever's own derivation here.** A pure
+phase modulation holds the total intensity constant in time, so the light
+shift is the same for the carrier and every sideband at any depth, which is
+the record's statement that `S0 = kappa P` with `P` the total power. Fendel's
+"average intensity" is that statement for a pulse train. The two agree, and
+the agreement is a check on the comb model and not a new input.
+
+## What it does not settle
+
+No light-shift distribution or lineshape asymmetry is extracted. The comb is a
+metrology tool here, not a probe of the intensity distribution.

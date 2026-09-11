@@ -50,6 +50,7 @@ Writes `results/window_attribution.csv`.
 from __future__ import annotations
 
 import csv
+import os
 import itertools
 import sys
 from pathlib import Path
@@ -212,7 +213,7 @@ def main() -> int:
         w = csv.DictWriter(f, fieldnames=cols)
         w.writeheader()
         w.writerows(out_rows)
-    print(f"  Wrote {OUT_CSV.relative_to(ROOT)}: {len(out_rows)} rows.")
+    print(f"  Wrote {os.path.relpath(OUT_CSV, ROOT)}: {len(out_rows)} rows.")
     return 0
 
 
