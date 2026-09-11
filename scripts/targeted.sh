@@ -197,5 +197,20 @@ fi
 UNIQ=$(printf '%s\n' "${MODS[@]}" | sort -u | tr '\n' ' ')
 echo "targeted: $UNIQ"
 "$PY" -m pytest -q -p no:randomly $UNIQ
+# THE FLOOR RUNS THE GATE'S PROSE-AGAINST-CELLS CHECKER WHENEVER A RESULTS CSV
+# IS STAGED (2026-09-11). The floor and the gate were grading different
+# populations, which is the map hole this repairs.
+# `check_moved_values.py` is a gate stage and
+# not a pytest module, so no `add` line above can reach it, and a regenerated
+# CSV that moves a cell in its last digit leaves every prose copy of the old
+# one stale. That is exactly what happened on tree ee2558446bc1: the floor
+# stamped green at 2835 passed and the gate returned FAIL on thirteen stale
+# literals over six surfaces, twenty-one minutes later. The staged results set
+# is the precise trigger, so this costs seconds on the diffs that can produce
+# the defect and nothing on the ones that cannot.
+if grep -q '^results/.*\.csv$' <<<"$CHANGED"; then
+  echo "targeted: a results CSV is staged, so the moved-value scan runs here too"
+  "$PY" scripts/check_moved_values.py "origin/main"
+fi
 printf 'TARGETED\ntree %s\n' "$(git write-tree)" > .targeted_ok
 echo "targeted: stamped $(git write-tree | cut -c1-12)"
