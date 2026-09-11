@@ -34,7 +34,7 @@ with their directions, the veto census, and the difference.
 ![the 2025 dataset's width-vs-density floor](../../figures/fig6_gamma_floor.png)
 
 *The floor in the 2025 dataset that this program upgrades: the mean of
-the four fitted collisional widths rises only ×1.47 while the density
+the four fitted collisional widths rises only ×1.48 while the density
 rises ×52.5, so the 2025 slope is a bound. A binary-collision width
 would be proportional to density, so these four points bound the
 coefficient rather than measure it, and the bound
@@ -71,7 +71,7 @@ shows the joint β collapses 0.0534 → 0.0198 for ⁸⁵Rb and 0.0219 for ⁸�
 the ×53 anchor (the 130 °C block) is folded in
 ([`lever_crosscheck.csv`](../../results/lever_crosscheck.csv)). That collapse is not a session artifact. It is the correct
 least-squares response to a line that barely moves across a 52.5× density span
-(gamma_coll rises only ×1.47–1.9), which is what makes "residual floor, not
+(gamma_coll rises only ×1.48–1.9), which is what makes "residual floor, not
 resolved collisions" a demonstrated conclusion rather than an assumption. The
 2026-08-02 decision that promoted the four-point fold-in to the record's
 headline, and the reasoning behind it, are recorded in

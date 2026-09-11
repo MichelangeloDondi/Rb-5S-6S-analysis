@@ -449,6 +449,9 @@ QUANTITY_STATUS = {
     "lever_crosscheck.csv": {
         "beta_crosscheck": "BOUND", "beta_err_modelform": "BOUND",
         "beta_err_transit": "BOUND", "beta_err_sharing": "BOUND",
+        # the third model-form axis, 2026-09-11: BOUND like its two siblings,
+        # because it bounds the same coefficient and is read the same way.
+        "beta_err_kernel": "BOUND",
         "beta_w0_band": "BOUND", "beta_lever_probe_130": "BOUND",
         "beta_loo_peak": "DIAGNOSTIC", "beta_loo_temp": "DIAGNOSTIC",
         "beta_loo_drop": "DIAGNOSTIC", "sigma_loo_drop": "DIAGNOSTIC",

@@ -66,10 +66,12 @@ a *model-based* value, and it sits **above** both the per-peak model fits
 (0.03–0.05). The three estimators of the same quantity therefore span about
 a factor of four, and that spread across $\sigma_\text{laser}$ treatments is
 the uncertainty on this deliverable, larger than any single fit's error
-bar. This $0.053$ carries **four separate error bars**, and the systematics
+bar. This $0.053$ carries **five separate error bars**, and the systematics
 dominate the statistical one: statistical
-$\pm0.004$ (joint-fit covariance), **transit model-form $\pm0.014$**, the
-largest of the four (the
+$\pm0.004$ (joint-fit covariance), **the kernel axis $0.048$**, the largest of
+the five, and the one that says the central value is a floor fitted through the
+origin and not a measurement with a wide bar. **Transit model-form
+$\pm0.014$** is the largest of the other four (the
 $|\text{Voigt}-\text{Lehmann}|$ shift, [§4.7](06_the_statistics.md), `run_global_fit`: the Gaussian-transit
 Voigt gives the *higher* $\beta\approx0.068$ because a narrower transit core forces
 more width onto collisions), **density scale $\pm0.011$** ($\beta\propto1/N$, the
@@ -98,7 +100,7 @@ cooling-sweep $\beta$ with its stacked error bars and a leave-one-peak and
 leave-one-temperature scan, and adds the lever test: folding in the
 130 °C anchor ([§4.2](06_the_statistics.md)) pulls $\beta$ down
 to $0.020$, a shift of $-0.034$, because $\gamma_\text{coll}$
-rises only ${\sim}1.47\times$ across a ${\times}52.5$ density span. That is a
+rises only ${\sim}1.48\times$ across a ${\times}52.5$ density span. That is a
 residual floor rather than resolved collisions, so $\beta$ is a lever-dependent
 bound. The full audited
 budget is in the results ledger (`docs/RESULTS.md`).

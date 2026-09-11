@@ -48,7 +48,8 @@ from rb5s6s.noise import condition_noise_model  # noqa: E402
 from rb5s6s.qc import trace_metrics, hard_flags, ingest_flags  # noqa: E402
 from rb5s6s.linefit import to_frequency  # noqa: E402
 from rb5s6s.global_fit import fit_global  # noqa: E402
-from rb5s6s.lever_crosscheck import lever_crosscheck_beta, GRID_CELLS  # noqa: E402
+from rb5s6s.lever_crosscheck import (lever_crosscheck_beta, GRID_CELLS,  # noqa: E402
+                                     KERNEL_CELL)
 
 PEAKS = ("4121", "4154", "4192", "4207")
 TSWEEP = ("70", "90", "110")
@@ -190,6 +191,11 @@ def _report(res, blocks):
         key = f"{cell[0]}|{cell[1]}"
         vals = "  ".join(f"{iso}Rb={res['grid'][key][iso][0]:.4f}" for iso in isos)
         print(f"    {cell[0]:>8s}/{cell[1]:<9s} ({tags[cell]:>12s}): {vals}  chi2={res['chi2_red'][key]:.3f}")
+    kvals = "  ".join(f"{iso}Rb={res['kernel_beta'][iso][0]:.4f}" for iso in isos)
+    print(f"    {KERNEL_CELL[0]:>8s}/{KERNEL_CELL[1]:<9s} (  kernel axis): {kvals}"
+          f"  chi2={res['kernel_chi2_red']:.3f}  at gamma_l={KERNEL_CELL[2]}")
+    print(f"    whitened chi2: primary {res['primary_chi2_whitened']:.1f} against "
+          f"kernel cell {res['kernel_chi2_whitened']:.1f}")
 
 
 def main() -> int:
@@ -273,6 +279,23 @@ def main() -> int:
                 bval, berr = res["grid"][key][iso]
                 w.writerow([f"beta_grid_{cell[0]}_{cell[1]}", f"{iso}Rb",
                             f"{bval:.4f}", f"{berr:.4f}", f"chi2_red={res['chi2_red'][key]:.3f}"])
+        for iso in res["isotopes"]:
+            bval, berr = res["kernel_beta"][iso]
+            w.writerow([f"beta_grid_{KERNEL_CELL[0]}_{KERNEL_CELL[1]}"
+                        f"_gamma_l{KERNEL_CELL[2]}", f"{iso}Rb",
+                        f"{bval:.4f}", f"{berr:.4f}",
+                        f"the primary corner with the extra homogeneous component at the "
+                        f"weighted mean kernel_k3.csv fits, {KERNEL_CELL[2]} MHz. "
+                        f"chi2_red={res['kernel_chi2_red']:.3f}"])
+            w.writerow(["beta_err_kernel", f"{iso}Rb",
+                        f"{res['err_kernel'][iso]:.4f}", "",
+                        "extra-homogeneous-component axis alone (|primary - kernel cell|). "
+                        "NOT inside beta_err_modelform, which is defined over the three "
+                        "transit-and-sharing cells. docs/quantities/self-broadening.md "
+                        "section 4 carries the account. "
+                        + ("no parameter is at a bound in this cell"
+                           if not res["kernel_params_at_bound"] else
+                           "AT A BOUND: " + ", ".join(res["kernel_params_at_bound"]))])
         # per-drop LOO detail (audit): beta and sigma_laser(T)
         # with each peak removed -- the committed record that the 4207 suspect
         # drives neither the coefficient nor the sigma_laser(T) trend.

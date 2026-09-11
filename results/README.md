@@ -211,11 +211,11 @@ precision and its systematic budget broken out.
 Reading the columns: `beta_crosscheck` carries the value and a statistical
 error, and that error is this estimator's precision rather than β's, because
 the lever test below moves the central value by about 8σ.
-`beta_err_transit`, `beta_err_sharing` and `beta_err_modelform` are the
+`beta_err_transit`, `beta_err_sharing`, `beta_err_kernel` and `beta_err_modelform` are the
 model-form grid. `beta_w0_band` carries the low value and the high value over
 the waist measurement band. `beta_loo_peak` and `beta_loo_temp` separate
 drop-a-peak robustness from drop-a-temperature lever leverage, which are
-different questions. `beta_grid_*` are the three model cells.
+different questions. `beta_grid_*` are the four model cells. The fourth holds the extra homogeneous component at what the kernel chain fits, and `beta_err_kernel` is its distance from the headline cell. That distance is reported beside `beta_err_modelform` and not inside it, because `beta_err_modelform` is a published number defined over the other three.
 
 **The lever test is `beta_lever_probe_130` with `gamma_coll_mean_vs_T` and
 `gamma_rise_factor`.** The joint β collapses from 0.036 to 0.014 when the

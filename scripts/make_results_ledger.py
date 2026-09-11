@@ -241,27 +241,25 @@ def main() -> int:
       "contradiction): it is not a pooling of them. Sharing one "
       "$\\sigma_\\text{laser}(T)$ across the four peaks pins the laser width lower "
       "at high density (110 °C), so more width is assigned to collisions than when "
-      "each peak floats its own $\\sigma_\\text{laser}$. But that per-temperature "
+      "each peak floats its own $\\sigma_\\text{laser}$. **The gap also closes "
+      "once the extra homogeneous component is restored**, which the "
+      "[self-broadening dossier](quantities/self-broadening.md) sizes, since "
+      "neither estimator at that component has a committed cell on this page. "
+      "And that per-temperature "
       "sharing "
       "**assumes the four peaks at a given temperature saw the same laser "
       "width**. Its usual "
       "justification, that they were acquired close in time, is measurably "
       "false. The recovered clock (`data_recovered/CLOCK.csv`) dates the four "
       "peak-blocks of each dwell **54–76 minutes apart** (76 min at 70 °C, "
-      "54 min at 90 °C, 65 min at 110 °C), not minutes apart. What the clock "
-      "also shows is "
-      "that the widths do not track that elapsed time. The pooled dwell-centred "
-      "correlation of block FWHM with acquisition time is $r=+0.18$ ($p=0.6$, "
-      "n=12), and of the position jitter $r=+0.19$ ($p=0.6$), so sharing is not "
-      "*refuted* either. It is simply **untested by a design that spread the "
-      "peaks over an hour**, on 12 points with no power to resolve a slow width "
-      f"wander. So the hierarchical {hb:.3F} stays conditional on an "
-      "**acquisition-timing assumption the record can now date but not "
-      "validate**, which is the real reason it is a cross-check while the "
-      "pooled bound heads the table with the per-peak floor beside it, rather than merely "
-      "that it "
-      "is optimistic. (A fixed-lock session's fix is cheap and already in the "
-      "plan: interleave the four peaks within minutes, not across an hour.) "
+      "54 min at 90 °C, 65 min at 110 °C), not minutes apart. The widths do not "
+      "track that elapsed time either ($r=+0.18$, $p=0.6$, n=12, and the "
+      "position jitter $r=+0.19$), so sharing is **untested** on 12 points "
+      f"rather than refuted. The hierarchical {hb:.3F} therefore stays "
+      "conditional on an **acquisition-timing assumption the record can date "
+      "but not validate**, which is why it is a cross-check while the pooled "
+      "bound heads the table. (The fix is in the plan: interleave the four "
+      "peaks within minutes.) "
       "All fit errors are marginal (full "
       "covariance), folding in the $\\beta \\leftrightarrow \\sigma_\\text{laser}$ "
       "anticorrelation, and the estimator spread is the additional model "
@@ -291,16 +289,23 @@ def main() -> int:
           "in sample. "
           "Its statistical precision and audited systematics per isotope:\n")
         W("| isotope | $\\beta$ | statistical | model-form (transit / sharing) | "
-          "$w_0$-band | drop-a-peak |")
-        W("|---|---|---|---|---|---|")
+          "kernel axis | $w_0$-band | drop-a-peak |")
+        W("|---|---|---|---|---|---|---|")
         for iso in isos:
             bd, mf = _dv("beta_crosscheck", iso), _dv("beta_err_modelform", iso)
             trx, shx = _dv("beta_err_transit", iso), _dv("beta_err_sharing", iso)
             wb, lp = _dv("beta_w0_band", iso), _dv("beta_loo_peak", iso)
+            # THE THIRD MODEL-FORM AXIS (2026-09-11). The account is in the
+            # private correction record and in the self-broadening dossier.
+            # Read from the file rather than typed, and reported OUTSIDE
+            # `beta_err_modelform`, whose definition over three cells is a pushed
+            # number this change deliberately leaves alone.
+            kx = _dv("beta_err_kernel", iso)
             who = (lp["unit"].split("(")[-1].rstrip(")") if lp and "(" in lp["unit"] else "")
             W(f"| {iso} | {float(bd['value']):.4F} | ±{float(bd['err']):.4F} | "
               f"±{float(mf['value']):.3F} ({float(trx['value']):.3F} / "
-              f"{float(shx['value']):.3F}) | [{float(wb['value']):.3F}, "
+              f"{float(shx['value']):.3F}) | **{float(kx['value']):.3F}** | "
+              f"[{float(wb['value']):.3F}, "
               f"{float(wb['err']):.3F}] | {float(lp['value']):.4F} ({who}) |")
         W(f"> **Read the $\\pm{bemax:.3F}$ as this estimator's precision, not $\\beta$'s.** It "
           "is the cooling-sweep joint-fit covariance, but $\\beta$ rides on only "
@@ -334,11 +339,34 @@ def main() -> int:
         lt = _dv("beta_loo_temp", isos[0]) if isos else None
         pb87 = _dv("beta_grid_exp_per_block", "87Rb")
         sh87 = _dv("beta_err_sharing", "87Rb")
-        W("\n> The **$w_0$-band is the largest systematic** (the waist band, "
-          "which the "
-          "beam-profile measurement collapses), then the transit model-form (Lehmann cusp "
-          "against Voigt). The $\\sigma_\\text{laser}$ A-against-B *sharing* choice is "
-          "minor: "
+        # THE RANKING IS COMPUTED FROM THE ROWS THIS PAGE JUST PRINTED, never
+        # typed (escape E51, 2026-09-11). Two sentences here ranked by a
+        # hand-written comparative and both were wrong: the w0 band was called
+        # the largest at a span of 0.0044 against the transit's 0.0142, and it
+        # had been published that way since 2026-07-13. A typed superlative
+        # passes every numeric guard, because the numbers beside it are read
+        # from the file and only the ordering word is not.
+        _wbr = _dv("beta_w0_band", isos[0])
+        _ranked = sorted(
+            [("the kernel axis", float(_dv("beta_err_kernel", isos[0])["value"])),
+             ("the transit model-form", float(_dv("beta_err_transit", isos[0])["value"])),
+             ("the $w_0$-band", abs(float(_wbr["err"]) - float(_wbr["value"]))),
+             ("the $\\sigma_\\text{laser}$ sharing choice",
+              float(_dv("beta_err_sharing", isos[0])["value"]))],
+            key=lambda t: -t[1])
+        W(f"\n> **{_ranked[0][0].capitalize()} is the largest systematic**, at "
+          f"{_ranked[0][1]:.3F}: zeroing the "
+          "composite's extra homogeneous component, against what "
+          "`kernel_k3.csv` fits, moves $\\beta$ by that much "
+          "([the dossier](quantities/self-broadening.md)), and it is not an "
+          "error bar on a good central value. The fit at zero puts a "
+          "density-independent floor through the origin, which is the same "
+          "floor this page's own lever test reports. "
+          + "Then ".join([""] + [f"{n} at {v:.3F}. " for n, v in _ranked[1:]])
+          + "The waist band is what the "
+          "beam-profile measurement collapses, and the transit axis is the Lehmann cusp "
+          "against Voigt. The $\\sigma_\\text{laser}$ A-against-B *sharing* choice is "
+          "minor, and the lever test below does NOT rest on it: "
           f"per-block (Model B) gives $\\beta_{{87}}={float(pb87['value']):.3F}$ against "
           f"per-temperature {bcv['87Rb']:.3F}, agreeing to "
           f"~{float(sh87['value']):.3F}, so the per-temperature headline (the "
@@ -353,7 +381,12 @@ def main() -> int:
           "synthetic-injection closure (`tests/test_lever_crosscheck`) confirms the "
           "20-trace machinery recovers a known $\\beta$.\n"
           if lt else
-          "\n> The $w_0$-band is the largest systematic. Drop-a-peak is small (no "
+          # THE FALLBACK RANKS FROM THE SAME COMPUTED ORDER (escape E51). It was
+          # a second hand-typed copy of the superlative, dead today because
+          # beta_loo_temp is always populated, and it survived the correction of
+          # its live twin for exactly that reason.
+          f"\n> {_ranked[0][0].capitalize()} is the largest systematic, at "
+          f"{_ranked[0][1]:.3F}. Drop-a-peak is small (no "
           "anomalous peak). Synthetic-injection closure validates the machinery.\n")
         pb = [_dv("beta_lever_probe_130", i) for i in isos]
         grf = _dv("gamma_rise_factor", "70to130")
@@ -1196,14 +1229,21 @@ def main() -> int:
         mf, sh = _iso("beta_err_modelform"), _iso("beta_err_sharing")
         lp, lt = _iso("beta_loo_peak"), _iso("beta_loo_temp")
         pv = _iso("beta_lever_probe_130", "err")
+        # THE ROW ORDER AND ITS READINGS ARE THE COMPUTED RANKING (escape E51):
+        # this table called the waist row dominant while the row beneath it moved
+        # beta three times further, and the page promises above that it "cannot go
+        # stale". It also had no row for the axis that moves beta furthest of all.
+        kx = _iso("beta_err_kernel")
         W("| vary this | β_self moves by (85Rb · 87Rb) | reading |")
         W("|---|---|---|")
+        W(f"| the extra homogeneous component (0 ↔ what `kernel_k3.csv` fits) | "
+          f"{kx[0]:.3F} · {kx[1]:.3F} | **the largest by a factor of three**, and "
+          f"a floor fitted through the origin, not a bar |")
         W(f"| the unmeasured w₀ (transit band, ~65→40 µm) | spans "
           f"{w0lo[0]:.3F}–{w0hi[0]:.3F} · {w0lo[1]:.3F}–{w0hi[1]:.3F} | "
-          f"the dominant systematic, which a beam-profile measurement collapses |")
+          f"a span of {abs(w0hi[0]-w0lo[0]):.3F}, which a beam-profile measurement collapses |")
         W(f"| transit model-form (Lehmann cusp ↔ Voigt) | {mf[0]:.3F} · "
-          f"{mf[1]:.3F} | comparable to β_self itself, part of why the "
-          f"headline is a bound |")
+          f"{mf[1]:.3F} | comparable to β_self itself, and the second largest |")
         W(f"| σ_laser sharing (per-temperature ↔ per-block) | {sh[0]:.3F} · "
           f"{sh[1]:.3F} "
           f"| negligible next to the other two rows |")

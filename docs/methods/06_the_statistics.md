@@ -113,7 +113,7 @@ session, monotonic cooling), fit across a model-form grid of transit cusp
 (Model A) vs per-block (Model B). The spread of $\beta$ across those cells *is*
 the model-form error bar. With the $w_0$-band and a leave-one-**peak** or
 leave-one-**temperature** robustness scan it returns **one $\beta$ per isotope
-carrying three separately-sourced error bars** (statistical, model-form,
+carrying four separately-sourced error bars** (statistical, model-form, kernel,
 $\text{confound}/w_0$). A synthetic-injection closure test (`tests/test_lever_crosscheck`)
 recovers a known $\beta$ through the whole 20-trace machinery, so the pipeline
 itself is validated by that recovery, not assumed.
@@ -122,7 +122,7 @@ The dataset's curated 130 °C anchor (the `serves_t130` traces, 225 mW) would
 triple the density lever ($N{\times}16.2\to{\times}52.5$), and the lever cross-check
 uses it as a **lever test**: adding it pulls the joint $\beta$ far below the
 cooling-sweep value. The lesson is not "bad block". It is that
-$\gamma_\text{coll}$ **barely grows with density**: it rises only ${\sim}1.47\times$
+$\gamma_\text{coll}$ **barely grows with density**: it rises only ${\sim}1.48\times$
 across a ${\times}52.5$ density span (70→130 °C), and the 130 °C widths sit *on*
 that near-flat trend, whereas a real binary-collision width is *linear* in $N$.
 So the fitted $\gamma_\text{coll}$ is a residual floor, not resolved collisions,

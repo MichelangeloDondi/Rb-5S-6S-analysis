@@ -106,9 +106,9 @@ cent.
 | $\kappa$ and $\beta_{\rm self}$ both free | 0.0183, interval 0.0177 to 0.0187 | PRELIM | [`global_dataset_fit.csv`](../../results/global_dataset_fit.csv) |
 
 **The measurement that turns the value into a bound.** The fitted collisional
-width across the temperature ladder is 0.404, 0.390, 0.444 and 0.594 MHz at 70,
+width across the temperature ladder is 0.401, 0.391, 0.444 and 0.594 MHz at 70,
 90, 110 and 130 C, against densities of 0.56, 2.45, 9.10 and 29.43 in units of
-1e12 per cubic centimetre. That is a factor of 1.47 in width across a factor of 52.5
+1e12 per cubic centimetre. That is a factor of 1.48 in width across a factor of 52.5
 in density. A genuine collisional width would rise linearly. **A width that
 rises by 1.5 while the density rises by 52 is a floor with a small collisional
 component on top, not a resolved collision rate**, so the quantity the data
@@ -142,6 +142,58 @@ peak by a nested likelihood ratio, and it moves $\beta_\text{self}$ by 42 to
 $U_\text{kernel} = 0.004530$ MHz per density unit, exceeds the statistical
 error $U_\text{statistical} = 0.001398$ by a factor
 $R_\text{kernel} = 3.24$ (`results/kernel_k3.csv`).
+
+**And the hierarchical arm had not carried it until 2026-09-11.** The paragraph
+above is a per-peak result, from `kernel_k3.csv`, which fits the extra component
+free in each peak. The hierarchical fit that `docs/RESULTS.md` heads its table
+with publishes a model-form bar built from a grid of transit form and sharing
+only, and holds the component at zero. Set instead to the weighted mean that
+same file fits, 0.398 MHz, the hierarchical coefficient reads
+[0.0057](../../results/lever_crosscheck.csv) against 0.0534, a move of
+[0.0477](../../results/lever_crosscheck.csv) where the published bar is 0.0142,
+and the whitened $\chi^2$ prefers the fitted component on all four
+transit-and-sharing forms by 28 to 46. `beta_err_kernel` carries the axis in
+that file now, beside `beta_err_transit` and `beta_err_sharing`, and outside
+`beta_err_modelform`, whose definition over three cells is left where a reader
+found it.
+
+**And the reason it moves is the shape of the fit, not a wide bar on a good
+number.** The homogeneous width is $\Gamma_\text{nat} + \beta N + \gamma_l$.
+Holding $\gamma_l$ at zero forces the density line through the origin against a
+floor this same file reports: `gamma_coll_mean_vs_T` reads
+[0.401](../../results/lever_crosscheck.csv) MHz at the lowest density, where
+$\beta N$ would be 0.030. A line through the origin fitted to a floor $c$ has
+slope offset by $c \sum wN / \sum wN^2$, so the fitted coefficient is *linear*
+in $\gamma_l$. It is, to half a per cent, until it reaches its lower bound.
+The two ladders predict $-0.136$ and $-0.0435$ per MHz and measure $-0.120$ and
+$-0.035$, the per-temperature Gaussian taking the remaining fifth.
+
+**Three things follow.** The floor and the fitted component are the same
+quantity by two constructions, 0.401 from the density intercept against the
+weighted mean the kernel chain fits. The lever dependence that makes this
+coefficient a BOUND, the width rising only
+[1.48](../../results/lever_crosscheck.csv)-fold across a 52.5-fold density span,
+is that floor forced through the origin, so modelling it removes the lever
+dependence instead of explaining it. And the dip in $\sigma_\text{laser}(T)$ at
+110 °C, which `docs/RESULTS.md` attributes to the
+$\beta\leftrightarrow\sigma_\text{laser}$ degeneracy, disappears at the fitted
+component.
+
+**What it leaves open, and the first draft of this section got it backwards.**
+That draft said that if the extra width were atomic the coefficient would be
+smaller. **Attribution does not enter**: a density-independent width lowers the
+fitted slope whatever its origin, and the kernel chain defines this component as
+density-independent. What attribution decides is whether the floor is a property
+of the apparatus or of the vapour, which is the K5 transfer triangle's question
+and is not settled here. The central value is left where a reader found it for
+that reason and for no other.
+
+**Owed before any of this is quoted further.** The per-peak and hierarchical
+coefficients at the fitted component have no committed producer: they exist in
+this repository's private correction record and in a replay beside it, not in
+`results/`. The van der Waals prediction of 3.383(289) kHz is crossed somewhere
+above the fitted component, and locating that crossing needs a third grid point
+and not a line drawn through two.
 
 **So the answer to "why can the experiment not do better" has changed.** It is
 no longer the density lever or the statistics. **More repetitions of the

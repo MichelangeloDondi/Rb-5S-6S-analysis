@@ -100,7 +100,7 @@ in
 dropping the single peak whose absence moves the fit most shifts
 $\beta_\text{self}$ by at most 0.0070 MHz per $10^{12} \text{cm}^{-3}$ for
 $^{85}\text{Rb}$ and 0.0040 for $^{87}\text{Rb}$, while dropping the 110 C
-block moves it by up to 0.1338 and 0.0745 respectively, because a
+block moves it by up to 0.1340 and 0.0748 respectively, because a
 temperature block is also a density point that shortens the fit's density
 lever when removed.
 
