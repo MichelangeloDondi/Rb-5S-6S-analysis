@@ -11,7 +11,7 @@ pages: 751
 year: 1976
 doi: 10.1103/PhysRevA.14.751
 arxiv: null
-pdf: PDF_papers/bjorkholm1976.pdf
+pdf: PDF_papers/Bjorkholm_1976_two-photon-absorption-lineshape-strength.pdf
 held: true
 status: VERIFIED
 routing:

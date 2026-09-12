@@ -289,3 +289,64 @@ def test_every_fluorescence_row_carries_the_branch_it_collects():
     assert seen >= 3, (
         f"only {seen} fluorescence platforms found; this guard is grading an "
         "almost empty population")
+
+
+def test_the_trap_depth_owns_its_intensity_convention():
+    """A trapped atom's depth has one owner, and the two standing-wave factors
+    do not compose.
+
+    THE DEFECT THIS PINS (2026-09-11). The
+    trapped-sample derivation computed a depth in prose: it took the
+    time-and-space average `(1+rho)` that `stark_shift_S0_mhz` carries and then
+    multiplied by the antinode's four, publishing 594 uK where the convention
+    gives 297. Because no function owned the quantity, no producer, no
+    committed cell and no reference tag could see it, and the error propagated
+    to two reader surfaces as a factor of eight in every cumulant statement
+    (kappa3 goes as eta^-3).
+
+    FAILURE MODE IF THIS TEST IS DELETED: the same compound factor returns and
+    nothing in the gate stack grades a microkelvin written in prose.
+    """
+    import pytest
+    from rb5s6s.platforms import trap_depth_uk, trap_eta
+
+    # the three readings of one standing wave, at the record's own convention
+    running = trap_depth_uk(0.225, 19e-6)
+    averaged = trap_depth_uk(0.225, 19e-6, rho=1.0)
+    antinode = trap_depth_uk(0.225, 19e-6, at_antinode=True)
+    assert running == pytest.approx(74.30, rel=1e-3)
+    assert averaged == pytest.approx(2.0 * running, rel=1e-12)
+    assert antinode == pytest.approx(4.0 * running, rel=1e-12)
+    # THE POINT: the antinode is four times the TRAVELLING wave, not four
+    # times the average. 8x the travelling wave is the shipped error.
+    assert antinode != pytest.approx(4.0 * averaged, rel=0.1)
+
+    # and the compound is refused rather than merely discouraged
+    with pytest.raises(ValueError, match="never both"):
+        trap_depth_uk(0.225, 19e-6, rho=1.0, at_antinode=True)
+
+    # the depth scales as power and as the inverse square of the RADIUS
+    assert trap_depth_uk(0.450, 19e-6) == pytest.approx(2.0 * running, rel=1e-12)
+    assert trap_depth_uk(0.225, 38e-6) == pytest.approx(running / 4.0, rel=1e-12)
+
+    # eta is the depth over the RADIAL temperature, and the guided row's own
+    # power does not trap a radially warm sample at all
+    assert trap_eta(0.020, 19e-6, 150e-6, at_antinode=True) < 1.0
+
+
+def test_the_trap_depth_tracks_the_polarizability_it_is_built_on():
+    """The depth follows alpha_5s, so a wavelength where the ground state is
+    repulsive returns a negative depth rather than a silently positive one.
+
+    FAILURE MODE IF THIS TEST IS DELETED: a magic-wavelength trap is sized at a
+    wavelength that cannot hold atoms and nothing says so.
+    """
+    from rb5s6s.platforms import trap_depth_uk
+    from rb5s6s.polarizability import alpha_5s
+    # 821 nm traps, and the near-790 crossing does not
+    assert alpha_5s(821.0) > 0 and trap_depth_uk(0.5, 19e-6, lam_nm=821.0) > 0
+    assert alpha_5s(790.25) < 0 and trap_depth_uk(0.5, 19e-6, lam_nm=790.25) < 0
+    # the ratio of depths is the ratio of polarizabilities at fixed geometry
+    import pytest
+    r = trap_depth_uk(0.5, 19e-6, lam_nm=821.0) / trap_depth_uk(0.5, 19e-6, lam_nm=1297.5)
+    assert r == pytest.approx(alpha_5s(821.0) / alpha_5s(1297.5), rel=1e-12)

@@ -110,6 +110,16 @@ vapour in the mode is resolved by any photodiode, while
 a cold loaded column is a part-per-million measurement and needs a
 correspondingly quiet laser.
 
+**That cold number rests on an atom count the host group's own measurement
+scales down.** The row puts about a hundred and thirteen thousand atoms in the
+mode. [Xin and co-workers](../lit/xin2018.md) load a hollow-core fibre and use
+about ten thousand, read in transmission. The dip counts the atoms the mode
+drives and not their spacing along the fibre, so the row is optimistic by
+eleven, or by five against the larger count their own optical depth implies.
+The arm survives it slowly: the dip falls to about two parts in a hundred
+million and a signal-to-noise of ten takes about half an hour, against
+sixteen seconds at the row's own assumed number.
+
 **And the nanofibre runs out of power headroom before it runs out of
 atoms.** The evanescent mode is tight enough that one milliwatt through a
 400 nm fibre reaches a peak light shift of

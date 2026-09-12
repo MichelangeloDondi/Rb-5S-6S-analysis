@@ -1140,6 +1140,41 @@ def test_advertised_test_counts_match_the_real_suite():
     assert not stale, (
         f"documented test counts {sorted(set(stale))} are more than 5% from "
         f"the real {total} ({slow} slow). Update {', '.join(graded)}.")
+    # THE SPLIT IS GRADED SEPARATELY, AND WAS NOT GRADED AT ALL (2026-09-11).
+    # Everything above compares against `total`, and the slow count is two
+    # digits, so `\d{3,5}` never saw it: it read 48 against a real 57, a
+    # docs-only wave moved it to 62 against a real 75, and the guard passed
+    # both times. A tolerance sized for a number near five thousand is also
+    # meaningless for one near fifty, so the slow count is held exactly and
+    # the fast count to the same 5 per cent the total gets.
+    fast_real = total - slow
+    # THE SLOW POPULATION DEPENDS ON AN UNTRACKED DIRECTORY, and the first cut
+    # of this arm held it EXACTLY (2026-09-11). `PDF_papers/` is gitignored, so
+    # it exists in no other checkout: the documented 84 meets a real 46 in the
+    # public mirror and on both CI runners, and the arm fired where the
+    # document was correct. `port_to_mirror.sh` copies docs/methods.md
+    # wholesale, so the mirror receives the author's number and goes red at the
+    # post-port suite, which is step 10 of the wave-close standard. The
+    # paragraph above already says only the full working checkout can be held
+    # to these figures; the slow arm now says it too, instead of being the one
+    # number with no tolerance at all.
+    if not (ROOT / "PDF_papers").is_dir():
+        _p.skip("the slow population needs the untracked PDF_papers/; "
+                "only the full working checkout can be held to the documented split")
+    split = []
+    # The gap may hold no other digits, or the match starts at the leftmost
+    # number on the line and the guard names the wrong one: "4385 fast ~5 min + 62 `slow`" reported
+    # 4385 as the slow count on this guard's first run.
+    for m in re.finditer(r"\b(\d{1,5})\b[^.\n\d]{0,24}?\bslow\b", txt):
+        if int(m.group(1)) != slow:
+            split.append(f"{m.group(1)} documented as the slow count against {slow}")
+    for m in re.finditer(r"\b(\d{3,5})\b[^.\n\d]{0,20}?\bfast\b", txt):
+        if abs(int(m.group(1)) - fast_real) / fast_real > 0.05:
+            split.append(f"{m.group(1)} documented as the fast count against {fast_real}")
+    assert not split, (
+        "the advertised fast/slow SPLIT is wrong, which the total-only check "
+        f"cannot see: {sorted(set(split))}. Real split {fast_real} fast + "
+        f"{slow} slow = {total}. Update {', '.join(graded)}.")
     spelled = [(g, m) for g in graded
                for m in spelled_suite_counts((ROOT / g).read_text())]
     assert not spelled, (

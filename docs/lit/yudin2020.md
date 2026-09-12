@@ -20,7 +20,7 @@ pages: '024001'
 year: 2020
 doi: 10.1103/PhysRevApplied.14.024001
 arxiv: null
-pdf: PDF_papers/yudin2020.pdf
+pdf: PDF_papers/Yudin_2020_general-methods-suppressing-light-shift-clocks.pdf
 held: true
 status: VERIFIED
 routing:

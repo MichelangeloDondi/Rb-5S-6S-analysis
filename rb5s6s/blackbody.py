@@ -160,6 +160,38 @@ def is_extrapolated(t_k: float) -> bool:
     return not (_FITTED_RANGE[0] <= t_k <= _FITTED_RANGE[1])
 
 
+#: The low-temperature limit of the exponent. A pure quadratic Stark shift in a
+#: thermal field goes as T^4 exactly; the fitted 4.35 is larger because the
+#: near-resonant 6S-6P term gains weight with temperature, so BELOW the fitted
+#: range the true exponent falls back toward 4 and the fitted value is the
+#: wrong end of the bracket. Quoting 4.35 alone at room temperature understates
+#: the shift, which is the direction that flatters a cold platform.
+_SHIFT_EXPONENT_LOW_T = 4.0
+
+
+def shift_envelope_hz(t_k: float) -> tuple[float, float]:
+    """(low, high) Hz bracketing the differential blackbody shift at ``t_k``.
+
+    Inside the fitted range the bracket is the committed point's own error bar.
+    Below it the two ends are the fitted exponent and the pure-quadratic limit,
+    because the exponent itself drifts and a single power law cannot be trusted
+    outside the points. At 293.15 K this returns about 40.3 to 45.0 Hz against
+    the cell's 161.0 at 403.15 K, so a cell-against-cold comparison carries a
+    differential of about 118 Hz that neither platform's own error covers.
+
+    FAILURE MODE: quoting `shift_hz` alone below 343 K reports the low end of
+    this bracket as if it were the value.
+    """
+    if t_k <= 0.0:
+        raise ValueError(f"temperature must be positive: {t_k}")
+    if not is_extrapolated(t_k):
+        v, e = shift_hz(t_k, with_error=True)
+        return (v - e, v + e)
+    ends = sorted(_SHIFT_ANCHOR_HZ * (t_k / _SHIFT_ANCHOR_T) ** n
+                  for n in (_SHIFT_EXPONENT, _SHIFT_EXPONENT_LOW_T))
+    return (ends[0], ends[1])
+
+
 def t_max(target_hz: float, corrected: bool = False) -> float:
     """The temperature at which blackbody enters the budget, in kelvin.
 

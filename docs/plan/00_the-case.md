@@ -73,9 +73,11 @@ at about 5.25. The axis matters and the natural width settles it: at
 natural and therefore impossible, so the comparison only closes when both
 numbers are read on the same axis. **A laser two orders of magnitude
 narrower than this bound reproduces the observed line**, and about a
-megahertz of Gaussian width is unaccounted for. The record's leading
-candidate is residual Doppler from a retro tilt of 3.2 to 3.5 mrad, about
-0.19 degrees, which section 4 measures directly. The waist enters here too,
+megahertz of Gaussian width is unaccounted for. A retro tilt of 3.2 to
+3.5 mrad was the record's leading candidate until 2026-09-12 and is now
+disfavoured as the whole answer: with the mirror's own lever arm that tilt puts
+the return beam fifteen waists off the forward one, where there would be no
+Doppler-free peak to measure. The width stays unexplained. The waist enters here too,
 and it is the record's largest open systematic (its own standing is in the
 next block).
 

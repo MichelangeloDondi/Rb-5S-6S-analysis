@@ -674,10 +674,45 @@ def _differs(committed: list[dict], fresh: list[dict], rtol: float = NUMERIC_RTO
 
 
 def _committed(name: str, dest: Path) -> bool:
-    """Write results/<name> AS COMMITTED AT HEAD into dest. Reading the working
-    copy instead would compare a dirty tree against itself and pass -- which is
-    exactly the blind spot this script exists to close, so it must not have it."""
-    proc = subprocess.run(["git", "show", f"HEAD:results/{name}"],
+    """Write results/<name> AS STAGED into dest: the git INDEX, not the working
+    tree and not HEAD.
+
+    NOT THE WORKING TREE, which is what this docstring used to defend: reading
+    the working copy would compare a dirty tree against itself and pass, the
+    blind spot this script exists to close.
+
+    **AND AN UNSTAGED HAND EDIT IS NOT CAUGHT HERE, which this docstring and
+    the rule file both claimed until 2026-09-12.** Reproduced in an isolated
+    clone: `_one` compares the producer's output against the
+    INDEX blob, and the working tree's `results/` is read only for the mtime
+    fingerprint, so a CSV edited by hand and left unstaged returns no drift.
+    The only arm that ever used the working copy as an operand is
+    `_serial_legacy`, and `LEGACY_SERIAL` is empty. What catches an unstaged
+    edit is `targeted.sh`, which refuses to stamp while anything is unstaged,
+    and the gate, which refuses to start without that stamp -- not this
+    script. Its own `plant()` has no arm for the case, which is why the claim
+    stood: arm 3 stales the INDEX side and asserts drift, and nothing ever
+    hand-edited the working tree.
+
+    NOT HEAD, which is where that defence went one step too far. A producer
+    changed TOGETHER WITH its CSV cannot match HEAD's CSV by construction,
+    because the change is the point, so grading against HEAD made the ordinary
+    shape of a wave a guaranteed red at every gate until the commit landed.
+    That is common-cause register entry 2, and it was eleven of the twelve gate
+    failures measured across 7.7 hours of gate on 2026-09-11, none of them a
+    defect. The index is what will BECOME the commit, and the commit is this
+    repository's certification boundary.
+
+    Conservative by construction: where nothing is staged for a path the index
+    equals HEAD, so this differs from the old behaviour only in the case it
+    exists to fix. It also closes a second hole -- a new CSV `git add`ed before
+    the redraw, as the standing rule requires, is in the index and not at HEAD,
+    and the old code called that "produced but not committed".
+
+    FAILURE MODE: returns False when the path is in neither the index nor HEAD,
+    which is an untracked new CSV that was never staged.
+    """
+    proc = subprocess.run(["git", "show", f":results/{name}"],
                           cwd=ROOT, capture_output=True, text=True)
     if proc.returncode != 0:
         return False
@@ -730,7 +765,8 @@ def _one(job):
     for name in outputs:
         fresh, committed = priv / name, Path(stash) / name
         if not committed.is_file():
-            problems.append(f"{name}: produced but not committed at HEAD")
+            problems.append(f"{name}: produced but not staged (neither in the "
+                            f"index nor at HEAD -- git add it)")
             continue
         if not fresh.is_file():
             problems.append(f"{name}: producer wrote nothing")
@@ -807,7 +843,8 @@ def _serial_legacy(producers: dict) -> list[str]:
             for name in outputs:
                 fresh, committed = RESULTS / name, stash / name
                 if not committed.is_file():
-                    problems.append(f"{name}: produced but not committed at HEAD")
+                    problems.append(f"{name}: produced but not staged (neither "
+                                    f"in the index nor at HEAD -- git add it)")
                     continue
                 d = _differs(_rows(committed), _rows(fresh), csv_name=name)
                 if d:

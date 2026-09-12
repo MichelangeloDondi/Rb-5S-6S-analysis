@@ -26,6 +26,18 @@ rubidium degrades fiber transmission, and the Stark geometry seam in
 `model_profile` gets its first second geometry for free. None of it replaces
 the cell campaign, because nothing at the fiber carries a density ladder.
 
+**And the guided platform is somebody's working apparatus, not only a
+proposal.** The group this work is addressed to runs cold atoms in a
+hollow-core fibre and reads them in transmission, and their published atom
+numbers, loading efficiencies and in-fibre cooling are read paper by paper in
+[section 10 of the literature hub](../LITERATURE.md#10-the-host-groups-own-platforms).
+No number from that reading enters this chapter, whose subject is the vapour
+cell.
+What it changes is the standing of the guided arm: its inputs can now be
+argued against a measurement instead of against an assumption, and the place
+that argument is carried out is the fibre lane declared in
+[BIG_PICTURE.md](../BIG_PICTURE.md).
+
 **The O-band null at 1297.5 nm, an optional rider on any cell session.** The
 computed differential polarizability of the 5S and 6S clock states has a steep
 zero crossing at 1297.5 nm, useless as a trap and precise as a lever. One

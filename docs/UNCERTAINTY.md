@@ -319,6 +319,53 @@ Uncertainty handling is guarded, not merely documented.
 
 ## 6. What is not covered, stated rather than implied
 
+
+**No function here takes a beam-quality argument, so every waist-dependent
+number assumes a diffraction-limited beam.** `M^2` appears in no signature in
+`rb5s6s/`, and it enters the physics in one place, the Rayleigh range
+`z_R = pi w0^2 / (M^2 lambda)`, and therefore in everything axial. That is the
+collection window's ratio, the fringe Monte Carlo, and the spread that licenses
+the convolution. The bench has a sourced reason not to be diffraction-limited,
+since the drive passes a 3 mm clear aperture with a 1.5 mm input radius, which
+puts the aperture at the beam's own 1/e^2 radius. The direction of the error is
+stated here instead of left to be inferred: a real beam has `M^2 > 1`, so the true
+Rayleigh range is *shorter* than every number in this record assumes, the window
+ratio *larger*, and the collection-window correction on the second and third
+cumulants bigger than the signed rows the record carries. Nothing quantifies it,
+because nothing has measured `M^2` on this bench.
+
+**The light-shift convention describes free atoms, and a trapped sample is not
+one.** `stark_shift_S0_mhz` uses an effective intensity
+$(1+\rho) 2P/\pi w_0^2$, the time and space average of the standing wave,
+because $\langle\cos^2\rangle = 1/2$. An atom held in that standing wave sits
+at an *antinode*, where the intensity is four times the running wave and twice
+that average, and the ramp mean it samples moves from two thirds of the scale
+to essentially all of it. The two multiply to about three. So a number computed
+with this convention and applied to a trapped arm is low by that factor, and
+nothing in the code says so, because the guided rows in
+`results/platform_twins.csv` are ENVELOPE design figures that no trapped
+measurement has yet been made against. The derivation and its check against the
+record's own closed form are in
+[the ramp chapter](methods/03_the_ac_stark_ramp.md).
+
+**The transit width of a trapped row is computed by a function that does not
+apply to it.** `constants.transit_fwhm_from_w0` is the Maxwell-Boltzmann
+flux-weighted crossing of a Gaussian beam. Trapped atoms do not cross, and the
+cold rows of the platform table carry its output anyway. The number is small
+there, so nothing downstream is visibly wrong, which is exactly why it is
+written here: it is an unflagged use of a formula outside its regime, and the
+replacement is the trap's motional structure.
+
+**And a delta-kick cooled sample has no temperature to put in either formula.**
+The cooling that reaches a microkelvin inside a fibre
+([wang2022](lit/wang2022.md)) ends in a collimated, non-thermal phase-space
+distribution. The $k_BT/U_0$ spread of the trapped ramp is an equipartition
+result and presumes a thermal sample, so for a cloud probed during its
+collimated window the right statistic is the distribution's own sampled
+intensity spread. Which of the two applies depends on whether the cloud is
+recaptured and rethermalised or probed ballistically, and the record has no
+measurement either way.
+
 **The collisional (pressure) shift is not in the model, and this is the
 number that says why.** The lineshape carries a collisional width,
 `gamma_coll`, and no collisional shift term. Collisions do both. The

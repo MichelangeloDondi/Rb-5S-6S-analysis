@@ -74,8 +74,7 @@ trapped sample is the volume measure. It assumes the emitting atoms are spread
 over the beam with **uniform spatial density**. Trapped atoms are not. Their
 density is `n(r) ∝ exp(+U0 I(r) / (I_0 k_B T))`, concentrated where the
 intensity is highest, and the resulting shift distribution is a different
-function with a different mean, a different width and the opposite sign of
-skewness.
+function with a different mean and a different width.
 
 Working it through in the harmonic limit. Write the shift deficit of an atom as
 `d = S0 · U_rel/U0`, where `U_rel` is its potential energy measured from the
@@ -89,15 +88,24 @@ verified numerically against `lineshape.stark_ramp` itself):
 |---|---|---|
 | mean deficit | `(2/3) S0` | `(3/2) (k_B T/U0) S0` |
 | sd / mean | 0.3536 (`= 1/sqrt(18) ÷ 2/3`) | 0.8165 (`= sqrt(2/3)`) |
-| skewness | **−0.566** | **+1.633** |
+| skewness, in the deficit `d` | **+0.566** | **+1.633** |
 | support | hard edge at `S0`, zero beyond | no edge, exponential tail |
 
-The signs of the skewness are opposite. The ramp piles its weight at the
-maximum shift and tails off toward zero, because the beam's high-intensity core
-is where the `I²` weight lives. The trapped distribution piles its weight at
-**zero** deficit, because a cold sample sits at the bottom of the well, and
-tails off toward large deficits. Any analysis that carries the ramp over
-unchanged would therefore get the sign of the line's asymmetry wrong, which
+**The signs are the same, and the table above was relabelled on 2026-09-11 to
+say so.** The row above is quoted in the positive deficit `d`,
+as its heading says. In that variable the ramp's skewness is **+0.566** and the
+trapped sample's is **+1.633**: both distributions pile their weight at small
+deficit, which is large shift, and tail off toward large deficit. The −0.566
+the table used to carry is the same quantity in the *shift* variable `u = 1 − d`,
+where a reflection flips the sign, so the two rows were being read in opposite
+variables and the difference was reported as physics. The record's own class
+for this is a statistic that assumes a sign being a statistic about the
+convention.
+
+What is true is that the trapped distribution is nearly three times as skewed
+and has no hard edge, where the ramp's support stops dead at `S0`. Any analysis
+that carries the ramp over unchanged gets the magnitude and the tail of the
+line's asymmetry wrong, which
 matters because the self-centred third cumulant is the drift-immune channel this programme
 already relies on.
 

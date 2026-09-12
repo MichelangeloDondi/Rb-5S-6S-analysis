@@ -330,12 +330,22 @@ supplies the missing Gaussian. Two beams at angle theta to antiparallel carry
 pedestal already carries `k_eff = 2k`. Closing the budget in quadrature needs
 **3.2 to 3.5 mrad**, about 0.19 degrees.
 
-That is large enough to notice on the bench and small enough that the signal
-survives it: at 64 micron waist the Rayleigh range is 13.0 mm, a 3.2 mrad tilt
-walks the return beam 41 microns over one Rayleigh range, which is 0.64 of a
-waist, and the beams stay overlapped over 4.1 cm. So the existence of a
-Doppler-free peak does not refute this candidate. Measure the tilt, or
-deliberately scan it, and the hypothesis is settled either way.
+**That paragraph assumed the pivot sits at the atoms, and it does not.** It read:
+a 3.2 mrad tilt walks the return beam 41 microns over one Rayleigh range, which
+is 0.64 of a waist, so the beams stay overlapped and the Doppler-free peak does
+not refute the candidate. The retro mirror sits about 50 mm from an f = 150 lens
+(`docs/plan/12_open-apparatus-items.md`), so a mirror tilt reaches the atoms as
+an offset with a 300 mm per radian lever arm, not as a walk along the beam:
+3.2 mrad puts the return beam **960 microns** off, fifteen waists, where the
+overlap integral is nil and there is no Doppler-free peak at all. And the
+residual width is set by the crossing angle at the atoms, `2 theta (1 - d/f)`,
+four thirds of the mirror tilt, so 3.2 to 3.5 mrad would give 1.94 to 2.12 MHz
+and not the 1.5 to 1.7 the budget wants.
+
+So the existence of the peak does bound the tilt, and the candidate is
+disfavoured as the whole answer: `docs/plan/12` carries the derivation and the
+self-limiting argument. It is not excluded as a contributor. Measuring the tilt
+is still worth an afternoon, and the missing width stays open.
 
 **Third, and it is cheaper than either: the wing-noise discriminator.**
 Half an hour, no atoms needed on the line. Detune far off resonance and

@@ -50,6 +50,7 @@ SECTION_ORDER = [
     ("method-anchors",   "Method anchors and reference standards"),
     ("landscape-24-26",  "The 2024-2026 field and future transitions"),
     ("deep-search",      "ONF community map and near-surface physics (the nanofibre extension)"),
+    ("lan-platforms",    "The host group's own platforms: guided fibre, MOT, molasses and lattice"),
     ("unsorted",         "Unsorted"),
 ]
 SECTION_TITLES = dict(SECTION_ORDER)

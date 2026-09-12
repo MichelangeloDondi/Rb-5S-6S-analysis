@@ -597,7 +597,8 @@ the guided mode rather than by a Gaussian focus. The budget note is
 mostly a record of what does not carry over. The closed-form ramp
 weight is derived for atoms crossing a focused beam and does not
 describe trapped atoms, whose shift distribution is set by their
-vibrational energies and carries the opposite skewness. Fluorescence
+vibrational energies and is about three times as skewed, with no hard edge at
+the maximum shift. Fluorescence
 cannot leave along the fibre at any density that gives signal. The
 light shift rather than the available power sets the usable drive. What
 does carry over is the operation the record is built on, mapping a

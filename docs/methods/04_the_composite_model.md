@@ -281,8 +281,17 @@ power. Which of the three is smallest varies by line, since hyperfine pumping
 runs from below the ramp on 993.4207 and 993.4192 nm to above it on the other
 two, so no fixed ordering holds and the share is what transports.*
 
-**Two broadeners with the ramp's own power signature are deliberately absent
-from it.** Both grow as the square of the drive power, which is the ramp's
+**Two broadeners with the ramp's own power signature are absent from
+`model_profile` and carried by `fullmodel.full_profile` (M40), which is
+where a fit that wants them goes.** The composite below is unchanged and
+byte-identical at its defaults. What changed on 2026-09-12 is that both
+terms now have a parameter, `omega_mhz` for the saturation companion and
+the hyperfine `pump_scale`. The census computes from the model's own tables
+which terms a fit may free. `pump_scale` is not among them, being exactly
+degenerate with `omega_mhz` at a fixed peak, and it carries no census row. Absent from the
+composite, then, and no longer absent from the record.
+
+**Why they are absent from the composite itself.** Both grow as the square of the drive power, which is the ramp's
 signature, so a fit that omits them lets the ramp absorb what they would have
 taken and the light-shift bound comes out too loose. The first is atomic
 saturation, which widens the homogeneous core by $\sqrt{1+s}$ and is the

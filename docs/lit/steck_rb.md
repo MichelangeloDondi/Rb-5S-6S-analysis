@@ -8,7 +8,7 @@ journal: null
 year: 2021
 doi: null
 arxiv: null
-pdf: PDF_papers/Steck_Rb85_D-line-data.pdf
+pdf: PDF_papers/Steck_2021_Rb85-D-line-data.pdf
 held: true
 status: VERIFIED
 routing:
@@ -30,17 +30,21 @@ section: method-anchors
 ---
 # steck_rb
 
-Held for both isotopes, `Steck_Rb85_D-line-data.pdf` and
-`Steck_Rb87_D-line-data.pdf`, and checked against both.
+Steck publishes the data as two documents, one per isotope. **The 85Rb
+document is the one named in the frontmatter above**. The 87Rb document is
+[steck_rb87](steck_rb87.md). Quantities that stand in both, the vapour-pressure
+model, the natural linewidths and the D-line branching ratios, are cited from
+here as the D-line reference.
 
 ## What is taken
 
-The ground-state magnetic dipole constants, verbatim from the data tables:
+The 85Rb ground-state magnetic dipole constant, verbatim from the data table:
+"Magnetic Dipole Constant, 5 2S1/2 A5 2S1/2 h · 1.011 910 813 0(20) GHz".
 
-    Magnetic Dipole Constant, 5 2S1/2   A 5 2S1/2   h . 1.011 910 813 0(20) GHz
-    Magnetic Dipole Constant, 5 2S1/2   A 5 2S1/2   h . 3.417 341 305 452 145(45) GHz
-
-the first for 85Rb and the second for 87Rb.
+The 87Rb constant stands in [steck_rb87](steck_rb87.md), beside the document
+that carries it, and is not restated here: a passage marked verbatim is read
+against the held file named above, and would be asserted of the wrong
+document.
 
 ## The chain this closes
 

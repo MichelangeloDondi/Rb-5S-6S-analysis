@@ -56,6 +56,7 @@ been done to a paper, never about how good it is.
 | [7. Method anchors](#7-method-anchors) | the ruler, the trapping, the detection channels, the reference standards |
 | [8. The 2024–2026 field](#8-the-20242026-field) | where a vapour-cell paper from here sits among the 778 nm clocks |
 | [9. The nanofibre extension](#9-the-nanofibre-extension-and-the-onf-community-map) | the literature of the proposed extension, for which no data exist |
+| [10. The host group's own platforms](#10-the-host-groups-own-platforms) | guided fibre, trap and lattice as Lan's group has built them, and what they price here |
 
 ## 1. Nearest prior art
 
@@ -1153,3 +1154,78 @@ apparatus and the platform the extension would use). They
 co-organise the ONNA (Optical Nanofibre Applications) conference series. So the newest
 nearest-platform work is from the nanofibre community, and engaging it well is both good
 scholarship and the natural way this program is read by that community.
+
+## 10. The host group's own platforms
+
+Twenty-four papers from Shau-Yu Lan's group and its lineage, read in full on
+2026-09-11. The section exists because this record proposes guided extensions
+the group has already built, so its own published numbers are the first
+external constraint any guided row here has ever had. Every note names the
+held PDF it was read against.
+
+### 10a. The hollow-core fibre, which is the one that prices a row
+
+- [xin2018](lit/xin2018.md), *Sci. Adv.* **4**, e1701723. Cold 85Rb in a
+  hollow-core photonic crystal fibre, read in transmission, the optical depth
+  giving the column density directly. Two things transfer. The observable is
+  the one this record's guided rows already assume, so the detection branch
+  has a source instead of an assumption. And their atom number, about ten
+  thousand in a four-centimetre fibre, is the first measurement
+  `results/platform_twins.csv`'s cold guided row can be held against: the row
+  puts eleven times as many atoms in the mode. The dip counts atoms in the
+  mode and not their spacing along the fibre, so the comparison is those two
+  numbers and not a linear density. **[CITE] [FEED]**
+- [wang2020](lit/wang2020.md), *Fibers* **8**, 28. How atoms get from a
+  free-space trap into that mode, which nothing here modelled: a loading
+  efficiency of a fifth of a per cent to three per cent. Its table holds two
+  experiments and they are not interchangeable. The 3.2 per cent is a
+  45-micron core over ten centimetres and belongs beside the warm guided row.
+  The 3 per cent is a 7-micron core over three centimetres from a
+  40-microkelvin trap and is the cold comparison. **[CITE] [FEED]**
+- [wang2022](lit/wang2022.md), in-fibre gray molasses. Cooling inside the
+  fibre, which is what makes the transit width collapse: at one microkelvin it
+  is a twenty-thousandth of the warm value, the square root of the temperature
+  ratio with the waist and the isotope cancelling. That is the term this
+  record's own fits cannot separate from the collisional one, so a cold guided
+  arm removes one of the two. **[CITE] [FEED]**
+- [xin2019](lit/xin2019.md), spin coherence in the guided mode. The limit is
+  dephasing from the trap's residual differential light shift. Theirs is the
+  ground-state hyperfine shift and is kilohertz-scale, so the number does not
+  transfer to a 5S-6S line. What transfers is that the trap depth is a
+  line-shape parameter and not only a loading parameter. **[CITE] [FEED]**
+
+### 10b. The cooling and trapping the guided arms stand on
+
+- [huang2018](lit/huang2018.md), 85Rb to the recoil limit, and
+  [huang2021](lit/huang2021.md), dark-state sideband cooling in an ensemble.
+  These are the temperatures the cold rows assume, achieved by this group in
+  this species. **[CITE] [FEED]**
+- [xin2024](lit/xin2024.md), fast quantum gas formation by EIT cooling, and
+  [xin2021](lit/xin2021.md), squeezing by jumping the trap frequency. The
+  lattice platform, which this record does not propose and which sets what the
+  group can do to a sample once it holds one. **[CITE]**
+- [li2023](lit/li2023.md), a bi-color beam slower with field compensation:
+  apparatus engineering, cited for the group's own practice. **[CITE]**
+
+### 10c. What the group uses the platforms for, which is not spectroscopy
+
+The interferometry and quantum-memory thread explains why the guided platform
+exists at all, and it is the reason a proposal to them must say what it adds
+and not what it repeats: [xin2025](lit/xin2025.md),
+[lan2013](lit/lan2013.md), [lan2012](lit/lan2012.md),
+[estey2015](lit/estey2015.md), [hohensee2011](lit/hohensee2011.md) and
+[abdalla2025](lit/abdalla2025.md) on interferometers and their systematics.
+On storage, memory and mechanical squeezing,
+[leong2020storage](lit/leong2020storage.md),
+[leong2020fock](lit/leong2020fock.md), [leong2023](lit/leong2023.md),
+[lan2007](lit/lan2007.md), [lan2009](lit/lan2009.md) and
+[chaneliere2005](lit/chaneliere2005.md). On EIT slow light and velocimetry,
+[kuan2016](lit/kuan2016.md), [kuan2020](lit/kuan2020.md) and
+[chen2020](lit/chen2020.md). **[CITE]**
+
+### 10d. What this section does not license
+
+No paper here measures a two-photon 5S-6S line, in a fibre or out of one, so
+nothing below section 10a's atom number is evidence about this transition. The
+guided rows remain ENVELOPE design figures. What changed is that one of their
+inputs now has a measurement against it, where before there was none.

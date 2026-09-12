@@ -147,7 +147,8 @@ grep -q '^rb5s6s/' <<<"$CHANGED" && while read -r f; do
 # (the pre-commit hook already covers these by name; this map inherits
 # rather than diverges -- a second, narrower map was an audit finding)
 grep -qE '^scripts/(ci_gate|targeted)\.sh$' <<<"$CHANGED" && add \
-  tests/test_gate_verdict_sentinel.py tests/test_repo_hygiene.py
+  tests/test_gate_verdict_sentinel.py tests/test_repo_hygiene.py \
+  tests/test_gate_stage_is_never_stale.py
 grep -qE '^scripts/check_' <<<"$CHANGED" && add \
   tests/test_checkers_are_wired.py tests/test_repo_hygiene.py
 # THE GOVERNANCE MODULES RUN ALWAYS. This line used to read

@@ -40,6 +40,7 @@ import numpy as np
 from scipy.special import jv
 
 from . import blackbody, cascade, stark
+from .fullmodel import full_profile
 from .lineshape import (composite_profile, local_ramp_density, model_profile,
                         ramp_mixture, stark_ramp)
 from .linefit import fit_condition
@@ -192,6 +193,12 @@ def build_world_trace(power_w: float, kappa: float, t_c: float,
                      grid_span: Optional[Tuple[float, float]] = None,
                      z_ratio: Optional[float] = None,
                      fringe_density: Optional[Tuple[np.ndarray, np.ndarray]] = None,
+                     t_bbr_k: Optional[float] = None,
+                     pedestal_height_frac: float = 0.0,
+                     retro_tilt_rad: float = 0.0,
+                     m2: float = 1.0,
+                     w0_m: Optional[float] = None,
+                     omega_mhz: Optional[float] = None,
                      ) -> Tuple[np.ndarray, np.ndarray, Dict]:
     """One campaign trace: every peak in `positions`, one vertical range.
 
@@ -253,6 +260,18 @@ def build_world_trace(power_w: float, kappa: float, t_c: float,
     # S0-independent). Either alone or both together are one mixture,
     # lineshape.ramp_mixture; the pure transverse ramp is model_profile's own
     # default, so the default path is byte-identical (tests/test_ramp_threading).
+    # BEAM QUALITY ENTERS THROUGH THE COLLECTION RATIO AND NOWHERE ELSE, so it
+    # is folded into z_ratio here. Without this the builder passes its own
+    # `profile` closure to full_profile, whose own m2 branch then stands down,
+    # and m2 is accepted and ignored -- a no-op switch found by checking both
+    # halves rather than by reading the code (2026-09-12).
+    if float(m2) != 1.0:
+        if w0_m is None:
+            raise ValueError("m2 != 1 needs w0_m: beam quality reaches the line "
+                             "only through the collection ratio, which needs a waist")
+        from . import constants as _K
+        z_ratio = float(m2) * (_K.collection_z_ratio(w0_m=float(w0_m))
+                               if z_ratio is None else z_ratio)
     if z_ratio is None and fringe_density is None:
         profile = stark_ramp
     else:
@@ -318,7 +337,14 @@ def build_world_trace(power_w: float, kappa: float, t_c: float,
             gamma = gamma + stark.companion_gamma_mhz(s0 * float(np.sqrt(rate)), phys)
         centre = positions[peak]
         if layers["bbr"]:
-            centre += -blackbody.shift_hz(273.15 + t_c) / 1e6
+            # THE RADIATION TEMPERATURE IS THE WALLS', NOT THE ATOMS'. They
+            # coincide in a heated cell and they do not in a MOT or a cold
+            # hollow-core fibre, where atoms at microkelvin sit inside a
+            # chamber at room temperature; passing the kinetic temperature
+            # there computes the blackbody shift of a sample at absolute zero.
+            # Default None keeps the cell's behaviour byte-identical.
+            t_rad_k = 273.15 + t_c if t_bbr_k is None else float(t_bbr_k)
+            centre += -blackbody.shift_hz(t_rad_k) / 1e6
         if layers["drift"]:
             centre += drift_mhz_total * (order_idx / max(n_rungs - 1, 1) - 0.5)
         # THE RAMP IS CONVOLVED, NOT APPLIED AS A SHIFT (corrected
@@ -329,7 +355,40 @@ def build_world_trace(power_w: float, kappa: float, t_c: float,
         # pull and the skew both come from the library, and the ramp's coded
         # SIDE is inherited rather than re-chosen (it is an open question:
         # tests/test_ramp_side_matches_the_polarizability).
-        shape = model_profile(nu - centre,
+        # THE TWO CAMPAIGN TERMS (2026-09-12), both off by default so every
+        # committed CSV through this path is unchanged: the co-propagating
+        # Doppler pedestal, and the residual Doppler width an imperfectly
+        # retro-reflected beam leaves. The second broadens WITHOUT shifting,
+        # which no other term here does, so it is the one a Sobol scan should
+        # rank against the waist.
+        # THE FULL-MODEL PATH, taken only when a term outside model_profile is
+        # asked for, so the default stays byte-identical. `omega_mhz` is the one
+        # that changes a PARAMETERISATION rather than adding a term: the
+        # saturation below is tied to the fitted shift, and passing Omega
+        # frees it from that, which is what lets it survive the zero this
+        # archive drives the shift to.
+        _fm = (pedestal_height_frac > 0.0 or retro_tilt_rad > 0.0
+               or float(m2) != 1.0 or omega_mhz is not None)
+        _prof = full_profile if _fm else model_profile
+        _extra = dict(pedestal_height_frac=pedestal_height_frac,
+                      retro_tilt_rad=retro_tilt_rad, T_C=t_c,
+                      peak=peak, m2=m2, w0_m=w0_m) if _fm else {}
+        if _fm and omega_mhz is not None:
+            # REFUSE THE DOUBLE COUNT (2026-09-12). The
+            # `saturation` layer already adds `companion_gamma_mhz` above,
+            # and `full_profile` would add `saturation_companion_mhz` here:
+            # with both the built line ran 5.4809 MHz against 5.4209 for
+            # either alone. They are two spellings of one term, so asking
+            # for both is a caller error and not a configuration.
+            if layers.get("saturation"):
+                raise ValueError(
+                    "omega_mhz and layers['saturation'] both add the "
+                    "saturation companion, which double counts it. Pass "
+                    "omega_mhz with the layer OFF to parameterise the "
+                    "companion by the Rabi frequency, or leave omega_mhz "
+                    "None and let the layer key it on the light shift.")
+            _extra["omega_mhz"] = float(omega_mhz) * float(np.sqrt(rate))
+        shape = _prof(nu - centre,
                               gamma_coll=gamma,
                               sigma_laser_fwhm=sigma_laser_fwhm,
                               transit_fwhm=transit_fwhm,
@@ -345,7 +404,7 @@ def build_world_trace(power_w: float, kappa: float, t_c: float,
                               # asserted: results/moment_power_map.csv carries
                               # the windowed third-cumulant power both ways.
                               resolve_shift=resolve_shift,
-                              s0=(s0 if layers["stark"] else 0.0))
+                              s0=(s0 if layers["stark"] else 0.0), **_extra)
         v += amp * (shape / shape.max())
         truth_amps[peak] = amp
     v += offset                                        # detector offset

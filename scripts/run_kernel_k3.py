@@ -69,6 +69,22 @@ def main() -> int:
         out.append(dict(scope=scope, quantity=quantity, value=value,
                         unit=unit, note=note, status="DIAGNOSTIC"))
 
+    # THE WHOLE FILE IS CONDITIONAL ON A WAIST, AND SAID SO NOWHERE UNTIL
+    # 2026-09-11. fit_beta_self is called below without transit_ref_mhz and
+    # without fit_transit, so its defaults hold and every gamma_l here is
+    # measured with the transit PINNED at the adopted waist. A consumer that
+    # then feeds these widths back into a waist inference is reasoning in a
+    # circle; the row below is what makes that visible at the artefact.
+    add("all", "transit_assumed", f"{C.TRANSIT_FWHM_PLACEHOLDER_MHZ:.7f}", "MHz",
+        "PINNED, not fitted: fit_beta_self runs with fit_transit=False at this "
+        "transit, which is transit_fwhm_from_w0 at the adopted waist. Every "
+        "gamma_l in this file is conditional on it, so these widths are not an "
+        "independent constraint on the waist and a fit that holds them fixed "
+        "while profiling the transit is circular")
+    add("all", "waist_assumed_um", f"{C.W0_MEASURED_M*1e6:.1f}", "um",
+        "the waist the pinned transit corresponds to, carried here so the "
+        "conditioning travels with the widths")
+
     per_peak = {}
     for peak in PEAKS:
         conds = load_conditions(rows, peak, trates, prates)
@@ -95,8 +111,9 @@ def main() -> int:
         add(peak, "n_conditions", f"{len(conds)}", "count",
             "rungs of the density ladder this peak contributes")
         add(peak, "gamma_l_equiv", f"{gl['gamma_l']:.6f}", "MHz",
-            "Gamma_L,equiv: a Lorentzian-EQUIVALENT width. Not f_L, and not "
-            "attributed to the laser by this fit")
+            "Gamma_L,equiv: a Lorentzian-EQUIVALENT width. Not f_L, not "
+            "attributed to the laser by this fit, and CONDITIONAL on the "
+            "pinned transit in the all/transit_assumed row")
         add(peak, "gamma_l_equiv_err", f"{gl['gamma_l_err']:.6f}", "MHz",
             "one-sigma from the covariance; OVER-covering by K2 world B's "
             "measured 0.7460 against a nominal 0.68")

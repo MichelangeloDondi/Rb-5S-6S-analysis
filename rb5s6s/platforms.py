@@ -40,7 +40,7 @@ and that is the first thing to add.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Dict
+from typing import Dict, Optional
 
 import numpy as np
 
@@ -91,7 +91,44 @@ class Platform:
     # limits the collection at all.
     collection_eff: float = 0.162
     detector_qe: float = 0.15
+    #: The temperature of the RADIATION the atoms sit in, which is the walls'
+    #: and not the atoms' own. They coincide in a heated cell, where the oven
+    #: is the enclosure, and they do not in a MOT or a cold hollow-core fibre,
+    #: where atoms at microkelvin sit inside a chamber at room temperature.
+    #: None means "take the atoms' own", which `bbr_temperature_k` allows only
+    #: where that temperature could plausibly BE an enclosure.
+    t_bbr_k: Optional[float] = None
     note: str = ""
+
+
+#: No enclosure this experiment sits in is colder than this. A `temperature_k`
+#: below it is a KINETIC temperature, so using it as the radiation temperature
+#: is the conflation `bbr_temperature_k` exists to refuse. The bound is physical
+#: rather than a list of platform kinds, so a cold kind added later inherits the
+#: refusal instead of inheriting the defect.
+ENCLOSURE_FLOOR_K = 200.0
+
+
+def bbr_temperature_k(p: "Platform") -> float:
+    """The temperature of the blackbody field ``p``'s atoms sit in, in kelvin.
+
+    Falls back to the atoms' own temperature only where that could be an
+    enclosure. A MOT at 150 microkelvin has its blackbody field set by the
+    chamber walls at room temperature, and a twin that passes the kinetic
+    temperature computes the blackbody shift of a sample at absolute zero.
+
+    FAILURE MODE: raises rather than returning a microkelvin radiation
+    temperature, because the wrong answer here is small, plausible and silent.
+    """
+    if p.t_bbr_k is not None:
+        return float(p.t_bbr_k)
+    if p.temperature_k < ENCLOSURE_FLOOR_K:
+        raise ValueError(
+            f"{p.name}: temperature_k = {p.temperature_k:g} K is a kinetic "
+            f"temperature, not an enclosure's. Set t_bbr_k to the temperature "
+            f"of the walls the atoms actually radiate against (293.15 K for a "
+            f"room-temperature chamber or fibre).")
+    return float(p.temperature_k)
 
 
 def rayleigh_range_m(w0_m: float, lam_m: float = 993.4e-9) -> float:
@@ -183,6 +220,78 @@ def excited_fraction(power_w: float, p: Platform, rho: float = 0.94) -> float:
 #: moved the factor from 1.3039, the ceiling from 8.415e6 and this dead time
 #: from 73.3 ns to 72.3.
 CASCADE_DEAD_TIME_S = C.TAU_6S_S + mean_5p_lifetime_s()
+
+
+def trap_depth_uk(power_w: float, w0_m: float, lam_nm: float = 993.4,
+                  rho: float = 0.0, at_antinode: bool = False) -> float:
+    """Depth of the ground-state dipole potential, in microkelvin.
+
+    THIS FUNCTION EXISTS BECAUSE A HAND-COMPUTED DEPTH WAS WRONG BY EIGHT
+    (2026-09-11). The record had
+    `stark_shift_S0_mhz` for the DIFFERENTIAL shift and nothing for a single
+    level's depth, so the trapped-sample derivation of `docs/methods/03`
+    computed one in prose, applied the retro's (1+rho) and the standing wave's
+    antinode factor of four on top of each other, and published 594 uK where
+    the convention gives 297. No producer, no cell and no reference tag could
+    see it. One owner of the field convention makes that impossible.
+
+    THE CONVENTION IS THE RECORD'S OWN, shared with `stark_shift_S0_mhz`:
+
+        dE = -(1/4) alpha E0^2 = -alpha I / (2 eps0 c)      [<E^2> = E0^2/2]
+
+    with `alpha` the GROUND-STATE polarizability in atomic units, so the depth
+    is positive wherever alpha is (a red-detuned, attractive trap).
+
+    THE INTENSITY ARGUMENT IS WHERE THE FACTORS LIVE, and they do not compose:
+
+    * `rho = 0`, `at_antinode=False`: a single travelling wave, peak intensity
+      `2P / (pi w0^2)`. This is the base case.
+    * `rho > 0`, `at_antinode=False`: the time-and-space average of the
+      forward and retro beams, `(1+rho)` times the base. This is what
+      `stark_shift_S0_mhz` carries, and it is the right factor for an atom that
+      crosses many fringes within its coherence time.
+    * `at_antinode=True`: a TRAPPED atom sits at a field antinode, where the
+      intensity is FOUR times the travelling wave, not four times the average.
+      Passing both `rho` and `at_antinode` is therefore refused: they are two
+      readings of the same standing wave and multiplying them is the exact
+      error this function was written to prevent.
+
+    w0_m is the 1/e^2 field RADIUS, matching `transit_fwhm_from_w0` and the
+    `w0_um` column of `results/platform_twins.csv`. A diameter here is wrong by
+    four and the chapter that prompted this used the same "19 micron mode" as a
+    radius two sentences earlier and a diameter here.
+    """
+    if at_antinode and rho:
+        raise ValueError(
+            "trap_depth_uk: pass rho for the fringe-averaged depth OR "
+            "at_antinode=True for the trapped one, never both: the antinode is "
+            "4x the travelling wave, not 4x the (1+rho) average.")
+    from .polarizability import alpha_5s    # local: keeps the import graph acyclic
+    alpha_au = alpha_5s(lam_nm)
+    intensity = 2.0 * power_w / (np.pi * w0_m ** 2)
+    if at_antinode:
+        intensity *= 4.0
+    elif rho:
+        intensity *= (1.0 + rho)
+    depth_j = alpha_au * (C.E_CHARGE_C ** 2 * C.A0_M ** 2 / C.HARTREE_J) * intensity / (2.0 * C.EPS0 * C.C_M_PER_S)
+    return depth_j / C.K_B_J_PER_K * 1e6
+
+
+def trap_eta(power_w: float, w0_m: float, t_radial_k: float,
+             lam_nm: float = 993.4, rho: float = 0.0,
+             at_antinode: bool = False) -> float:
+    """U0 / kT, the only parameter of the trapped shift weight.
+
+    THE TEMPERATURE THAT BELONGS HERE IS THE RADIAL ONE, and that is not a
+    detail. The shift an atom samples is set by its RADIAL position through
+    `I(r) = I0 exp(-2 r^2 / w0^2)`; the axial coordinate enters only through a
+    standing-wave fringe. In a hollow-core fibre the published cooling is
+    radial OR axial and not both (the host group's own result), so a sample can
+    be 5 to 10 uK along the fibre and 100 to 200 uK across it, and it is the
+    hot axis that sets the lineshape. Passing an axial or an average
+    temperature here understates the sampled spread by an order of magnitude.
+    """
+    return trap_depth_uk(power_w, w0_m, lam_nm, rho, at_antinode) / (t_radial_k * 1e6)
 
 
 def cascade_saturation_factor() -> float:
@@ -405,20 +514,23 @@ PLATFORMS: Dict[str, Platform] = {
         note="the tight-waist campaign proposal, outside the approximations this model rests on"),
     "mot": Platform(
         "mot", "mot", 150e-6, 3e10, 16e-6, 5e-4, 0.01,
-        "fluorescence", False,
-        note="cloud-limited length. The duty cycle is load against probe window"),
+        "fluorescence", False, t_bbr_k=293.15,
+        note="cloud-limited length. The duty cycle is load against probe window. "
+             "The atoms are at 150 uK and the blackbody field is the CHAMBER's, "
+             "still at room temperature"),
     "molasses": Platform(
         "molasses", "molasses", 20e-6, 1e10, 16e-6, 5e-4, 0.005,
-        "fluorescence", False,
-        note="colder and thinner than the MOT, and a shorter window"),
+        "fluorescence", False, t_bbr_k=293.15,
+        note="colder and thinner than the MOT, and a shorter window. The "
+             "radiation temperature is the chamber's, not the atoms'"),
     "hcpcf_warm": Platform(
         "hcpcf_warm", "hcpcf", 403.15, 2.94e13, 19e-6, 0.10, 1.0,
         "absorption", True,
         note="vapour-filled kagome mode. The length is the fibre and not z_R"),
     "hcpcf_cold": Platform(
         "hcpcf_cold", "hcpcf", 150e-6, 1e10, 19e-6, 0.01, 0.01,
-        "absorption", True,
-        note="atoms loaded into the guided mode. Length is the loaded column"),
+        "absorption", True, t_bbr_k=293.15,
+        note="atoms loaded into the guided mode, and the density is a DESIGN figure the host group's own measurement scales down: Xin 2018 uses about 1e4 atoms in a 4 cm fibre read in transmission, against the 1.13e5 this row puts in the mode. The comparison is the ATOM NUMBER and not the linear density, since absorbed_fraction is twice the excitation rate over the probe flux and the rate counts the atoms the mode drives. Per millimetre the same pair returns 45, which is this ratio times the two fibres' length ratio. So the absorbed fraction and the signal-to-noise are optimistic by 11.3 against the number their interferometer uses, or by 5.2 against the 2.2e4 their own OD-to-atoms conversion implies at the OD they report, which puts SNR 10 at 34 or 7 minutes rather than 16 seconds. The loading mechanism is Wang 2020, whose cold narrow-core comparison is 3 per cent into a 7 um core over 3 cm. Its 3.2 per cent is a 45 um core over 10 cm and belongs to the warm row. Length is the loaded column"),
     # THE NANOFIBRE ROW IS THE CRUDEST HERE AND IS MARKED SO. The atoms sit
     # OUTSIDE the glass in the evanescent tail, so `w0_m` below is an effective
     # mode radius standing in for a field that decays over a few hundred
@@ -428,7 +540,10 @@ PLATFORMS: Dict[str, Platform] = {
     # silent about the geometry, not to evaluate it.
     "onf": Platform(
         "onf", "onf", 150e-6, 1e9, 0.4e-6, 0.005, 0.01,
-        "absorption", True,
+        "absorption", True, t_bbr_k=293.15,
         note="ORDER OF MAGNITUDE ONLY. Atoms sit in the evanescent tail "
-             "outside the glass. Use rb5s6s.fibre for anything quantitative"),
+             "outside the glass. Use rb5s6s.fibre for anything quantitative. "
+             "t_bbr_k is the FAR-FIELD room temperature. A few hundred "
+             "nanometres from warm silica the NEAR field is a different and "
+             "larger term this record does not carry"),
 }

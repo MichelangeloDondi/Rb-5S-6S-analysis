@@ -84,6 +84,110 @@ def _builder_layers() -> set:
     return set(re.findall(r'layers\["(\w+)"\]', src))
 
 
+#: WHICH WAY EACH GAP BIASES A CLOSED LOOP, which is the reading the census was
+#: missing. A term the WORLD carries and the FITTER lacks biases a recovery: the
+#: THE FITTER COLUMN IS COMPUTED, NOT TYPED. `fullmodel.term_coverage`'s own
+#: docstring says the census kept this by hand and that keeping it by hand is
+#: how it went stale within a day; it then stayed hand-typed anyway, and three
+#: of the five rows added on 2026-09-12 said "no" for terms that ARE in
+#: FIT_TERMS and that `fit_full` recovers. One word was carrying two claims --
+#: structurally unfittable, and fittable but not yet used in a committed fit --
+#: for a reader who greps this file to learn which terms a fit can take.
+_CENSUS_TERM_TO_PARAM = {
+    "doppler_pedestal": "pedestal_height_frac",
+    "retro_tilt_residual_doppler": "retro_tilt_rad",
+    "beam_quality_m2": "m2",
+    "radiation_temperature_separate": "t_bbr_k",
+    "saturation_parameterised_by_rabi": "omega_mhz",
+}
+
+
+def _fitter_verdict(term: str) -> str:
+    """`yes, <param>` when the parameter is fittable, `no: <reason>` when the
+    model refuses it, and `-` for a term with no parameter in this model."""
+    from rb5s6s.fullmodel import FIT_TERMS, UNFITTABLE
+    param = _CENSUS_TERM_TO_PARAM.get(term)
+    if param is None:
+        return "-"
+    if param in UNFITTABLE:
+        # THE WHOLE REASON, not a slice. A [:60] cut fell mid-word and dropped
+        # the colon clause carrying the remedy ("fit z_ratio, not M^2 and w0
+        # separately"), which is the only part a reader needed.
+        return f"no: {UNFITTABLE[param]}"
+    if param in FIT_TERMS:
+        return f"yes, fit_full free=('{param}',)"
+    return "-"
+
+
+#: fitter must put that width or that shift somewhere, and where it puts it says
+#: which parameter comes back wrong. A term NEITHER carries is invisible, so the
+#: loop recovers what it injects and says nothing about this bench -- the
+#: failure this record already met once on the collection window.
+_RECOVERY_BIAS = {
+    "lorentzian_core_collisional": "none: both sides carry it",
+    "laser_kernel_both_forms": "none: both sides carry it",
+    "transit_cusp": "none: both sides carry it",
+    "ac_stark_ramp": "fitter optional. With s0 fixed at zero the ramp's width "
+                     "lands in the free Lorentzians, so beta and gamma_l absorb it",
+    "axial_collection_window": "INVISIBLE: neither side carries it, so a loop "
+                               "recovers its injection and would not recover "
+                               "this bench's. Measured at 0.928 of the pure "
+                               "ramp's third cumulant here",
+    "standing_wave_fringe_tail": "INVISIBLE: neither side carries it. Suppresses "
+                                 "the skew by about 7 per cent at this waist, so "
+                                 "a loop over-reads the third cumulant",
+    "saturation_companions": "world only: the fitter must absorb a homogeneous "
+                             "width, which the Lorentzian sum takes one for one, "
+                             "so beta or gamma_l comes back high and the waist "
+                             "does not move",
+    "cascade_depletion": "world only, and a WIDTH and not an amplitude: "
+                         "depletion removes the slow, narrow atoms first, so the "
+                         "surviving transit kernel is 12 per cent wider at three "
+                         "mean cycles. The free amplitude takes the surviving "
+                         "fraction and leaves the widening, so a closed loop that "
+                         "ignores it reads the waist too SMALL, 64 um as 57",
+    "blackbody": "world only: a centre shift the fitter absorbs into the free "
+                 "per-trace centre, so it costs the SHIFT channel and no width",
+    "lock_drift": "absorbed by design: free centres span it, and the oracle "
+                  "arm sizes what that absorption costs",
+    "noise": "none: the weights carry it",
+    "scope_quantisation": "world only: adds a floor the fitter reads as noise",
+    "power_order_randomisation": "caller-side: a monotone order makes the drift "
+                                 "column an exact affine function of the power "
+                                 "column and the pull is not identified at all",
+    "radiation_trapping": "world only, and it scales with N, so the fitter parks "
+                          "it in beta_self and the collisional coefficient reads high",
+    "hyperfine_F_statistics": "world only: the single-line forecast generator "
+                              "cannot vary F, so the one axis that splits the "
+                              "shift family internally is absent from that path",
+    "background_scattering": "absorbed by the per-trace baseline while it is flat. "
+                             "A sloped one is an asymmetry the odd cumulants cannot "
+                             "tell from the ramp except by their sign pattern",
+    "laser_kernel_lorentzian_component": "none: both sides carry it, and it is the "
+                                         "term that takes any missing homogeneous "
+                                         "width one for one",
+    "onf_guided_geometry": "INVISIBLE: no scenario yet on either side",
+    "doppler_pedestal": "world only (2026-09-12). Over a sub-100 MHz trace it is "
+                        "a near-constant offset, degenerate with the detector "
+                        "offset the fitter already floats, so it costs nothing "
+                        "here and bites only on a campaign-width scan",
+    "retro_tilt_residual_doppler": "world only (2026-09-12). A Gaussian width at "
+                                   "fixed intensity, so the fitter puts it in "
+                                   "sigma_laser and the WAIST does not move",
+    "beam_quality_m2": "world only (2026-09-12), through the collection ratio and "
+                       "the axial sampling. Refuses without a waist rather than "
+                       "defaulting to an ideal beam",
+    "radiation_temperature_separate": "world only (2026-09-12). A MOT's atoms sit "
+                                      "at microkelvin inside a room-temperature "
+                                      "chamber, so tying the two costs 118 Hz "
+                                      "between a cell and a cold platform",
+    "saturation_parameterised_by_rabi": "world only (2026-09-12). Frees the "
+                                        "saturation from the fitted shift, so it "
+                                        "survives the zero this archive drives "
+                                        "kappa to",
+}
+
+
 def main() -> int:
     gen = _params(forecast.synthetic_traces)
     world = _builder_layers()
@@ -215,17 +319,52 @@ def main() -> int:
          "fibre.py" if have["he11"] else "MISSING", "-",
          "inspected: solved HE11 machinery present. The scenario layer "
          "lands with the configuration work"),
+        # --- added 2026-09-12 with rb5s6s/fullmodel.py. Every one is in the
+        # WORLD and in none of the fitters, which the recovery_bias column is
+        # there to say out loud rather than leave to be discovered.
+        ("doppler_pedestal",
+         "yes, fullmodel.full_profile", "yes, build_world_trace",
+         "fullmodel.py", _fitter_verdict("doppler_pedestal"),
+         "co-propagating two-photon pedestal, 931 MHz FWHM at 130 C against "
+         "the traces' sub-100 MHz span"),
+        ("retro_tilt_residual_doppler",
+         "yes, fullmodel.full_profile", "yes, build_world_trace",
+         "fullmodel.py", _fitter_verdict("retro_tilt_residual_doppler"),
+         "2 k sin(theta/2) times the thermal speed, 0.45 MHz per mrad at 110 C"),
+        ("beam_quality_m2",
+         "yes, collection ratio and the fringe sampling", "yes, fringe_survival_mc",
+         "fullmodel.py", _fitter_verdict("beam_quality_m2"),
+         "z_R = pi w0^2/(M^2 lambda). The DEFAULT m2=1.0 IS the ideal beam "
+         "and installs no axial window at all. The refusal fires only at "
+         "m2 != 1 without a waist"),
+        ("radiation_temperature_separate",
+         "yes, t_bbr_k", "yes, build_world_trace",
+         "forecast.py, platforms.py", _fitter_verdict("radiation_temperature_separate"),
+         "the walls' temperature and not the atoms'. Refused on a 200 K "
+         "physical floor so a cold kind cannot inherit the conflation"),
+        ("saturation_parameterised_by_rabi",
+         "yes, fullmodel.saturation_companion_mhz", "yes, via full_profile",
+         "fullmodel.py", _fitter_verdict("saturation_parameterised_by_rabi"),
+         "Omega as its own parameter, so the companion survives the zero this "
+         "archive drives the fitted shift to"),
     ]
 
+    _ = _RECOVERY_BIAS  # the writer below reads it
     out = _CFG_RESULTS / "twin_term_census.csv"
     with out.open("w", newline="", encoding="utf-8") as fh:
         w = csv.writer(fh)
         w.writerow(["term", "forecast_path", "example_world", "module",
-                    "fitter", "provenance"])
+                    "fitter", "provenance", "recovery_bias"])
         for r in rows:
             if any(str(c).strip() == "" for c in r):
                 raise SystemExit(f"census refuses an empty cell in {r[0]}")
-            w.writerow(r)
+            bias = _RECOVERY_BIAS.get(r[0])
+            if not bias:
+                raise SystemExit(
+                    f"census refuses {r[0]} with no recovery_bias: a term whose "
+                    f"closed-loop direction is unstated is a term whose "
+                    f"recovery test cannot be read")
+            w.writerow(list(r) + [bias])
     print(f"wrote {os.path.relpath(out, ROOT)} ({len(rows)} terms)")
     return 0
 

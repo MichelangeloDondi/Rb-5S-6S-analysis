@@ -476,6 +476,30 @@ fibre items are exactly the ones
 [chapter 7](07_limitations-and-identifiability.md) names as outside any
 cell's reach.
 
+### Two conditions on the tight-waist case, added 2026-09-12
+
+Both scenarios above assume the model may be written as a convolution, and that
+assumption has a boundary the earlier text did not carry.
+
+**The waist band and the beam quality are one assumption, not two.** The
+convolution holds while the transit width varies little over the collected
+region, and that spread depends on the waist and the beam-quality factor only
+through the collection ratio. A 55 µm waist sits at 1.7 per cent of spread at a
+quality factor of 1 and at 5.8 at a factor of 2, against the 5.5 per cent edge
+this record licenses, so the working band needs `w₀ ≳ 40 µm·√(M²)` and the
+tight-waist configuration is the one that pays for a poor beam first. The
+collection ratio carries its own 54 per cent uncertainty from the optics, so
+near the boundary the case states a probability that its licence holds and not
+a verdict.
+
+**And the kernel form may be selectable, which the earlier text spanned.** On
+the archive's own committed grid the cusp already leads the Voigt in AIC
+(`docs/wiki/identifiability.md` carries the margin), so the data express a
+preference where this case currently carries a spanned bar. Whether that
+preference is strong enough to retire the bar is a measurement this record has
+not committed, and the campaign is what would settle it: fixing the kernel by
+measurement removes a systematic instead of widening an envelope.
+
 ---
 
 *[When a joint fit is legitimate](08_when-a-joint-fit-is-legitimate.md) · [the big picture](../BIG_PICTURE.md)*

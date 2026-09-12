@@ -184,6 +184,76 @@ toward the prior art's regime and not away from it**, and what continues to
 separate the two is the power law, cubic in the drive for the ramp and not for
 a geometric asymmetry, and not the existence of the asymmetry.
 
+#### The trapped limit, and why it is not the limit this bench reaches
+
+**The prior derivation is [`docs/notes/guided_mode_two_photon_design.md`](../notes/guided_mode_two_photon_design.md)
+section 1.2**, which reached the same weight by a different route and whose
+result is reconciled with this one below. What this section adds is the
+regime: the limit that matters here is not the deep-trap one.
+
+Everything above assumes the atoms are spread *uniformly* through the beam, so
+that the transverse measure alone sets how many sample each intensity. A held
+sample is not spread uniformly. Keep $u=I/I_0$ on $(0,1]$, write the trap depth
+as $U_0$ and the sample's *radial* temperature as $T$, and put
+$\eta = U_0/k_BT$. A thermal sample carries $n\propto\mathrm{e}^{\eta u}$, the
+two-photon weight $u^2$ and the transverse measure $\mathrm{d}u/u$ are
+unchanged, so
+
+$$w_\text{trap}(u)\ \propto\ u \mathrm{e}^{\eta u}\qquad\text{on}\ [0,1].$$
+
+`platforms.trap_depth_uk` owns $U_0$ and `platforms.trap_eta` owns $\eta$.
+Neither is computed in prose here, because a hand-computed depth shipped wrong
+by a factor of eight on 2026-09-11 and no guard could see it.
+
+**The *radial* temperature is the one that enters, and in a fibre that is the
+hot axis.** The shift an atom samples is fixed by its radial position through
+$I(r)=I_0\mathrm{e}^{-2r^2/w_0^2}$, and the axial coordinate enters only through a
+standing-wave fringe. In a hollow-core fibre the published cooling is radial
+*or* axial and not both, so a realistic sample is a few microkelvin along the
+fibre and one to two hundred across it. An axial or an averaged temperature
+substituted here understates the sampled spread by more than an order of
+magnitude.
+
+**Reconciling the two derivations, which differ by three halves.** The note
+counts three degrees of freedom, two radial and one axial, and gets a mean
+deficit of $\tfrac32 k_BT/U_0$, and the transverse measure above counts two and
+gets $k_BT/U_0$. Both are right in their own geometry. A guided running-wave
+trap confines radially and leaves the axis free, so two applies. A
+retro-reflected lattice confines all three, so three applies, and any text
+that invokes an antinode has already assumed axial confinement and owes the
+$\tfrac32$.
+
+**And the deep-trap limit is not this bench's.** Quadrature of
+$u \mathrm{e}^{\eta u}$, with the free ramp recovered exactly at $\eta=0$:
+
+| $\eta$ | mean of $u$ | sd | standardized skew | $\kappa_3/\kappa_3^\text{free}$ |
+|---|---|---|---|---|
+| 0 | 0.6667 | 0.2357 | −0.566 | 1 |
+| 1.56 | 0.7436 | 0.2069 | −0.943 | **1.127** |
+| 3.13 | 0.8010 | 0.1753 | −1.266 | **0.920** |
+| 50 | 0.9804 | 0.0196 | −1.997 | 0.002 |
+
+A trap deep enough to hold a sample at one to two hundred microkelvin sits at
+$\eta$ of about one and a half to three, and **there the ramp does not
+collapse**: the third cumulant is within about a tenth of its free value and at
+the shallow end it is *larger*. The $\eta\gg1$ column, where the weight goes to
+$1-1/\eta$, $1/\eta$ and a skew of $-2$, needs a trap of order ten millikelvin.
+So a trapped guided arm keeps the asymmetry channel it was supposed to give
+up, and the statement to carry is the regime and not the limit.
+
+**What the trap costs instead is an inhomogeneous shift of its own, and that is
+the dominant term.** The trap light shifts 5S and 6S by different amounts, so
+at depths that hold the sample the line acquires a mean displacement of several
+megahertz and a spread of one to four, against a natural width of 3.493 MHz.
+That is the term a guided design has to answer, and the answer the record has
+not yet evaluated is a *magic* trap, a wavelength where the two polarizabilities
+are equal so the displacement and its spread vanish together. The open item is in
+[`docs/plan/12`](../plan/12_open-apparatus-items.md).
+
+*Rung.* Everything here is closed form and quadrature, rung 2. The twin builds
+the free ramp only, so none of it is a forecast. Threading $w_\text{trap}$ with
+$\eta$ as its parameter is owed before any of it forecasts a campaign.
+
 #### $n=2$ is a weak-field statement, and the dataset sits near its edge
 
 ![the weak-field limit and what leaving it costs the predicted skewness](../../figures/fig24_weak_field_limit.png)

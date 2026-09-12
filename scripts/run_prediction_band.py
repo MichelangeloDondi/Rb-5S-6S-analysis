@@ -38,7 +38,24 @@ from rb5s6s import config as C
 from rb5s6s import constants as K
 from rb5s6s.lineshape import ramp_moment_contributions, stark_shift_S0_mhz
 
-POWER_CAL_SPAN = 0.05     # OPEN apparatus item, spanned not assumed (docs/plan/12)
+# TWO QUANTITIES UNDER ONE NAME, separated 2026-09-12. The
+# 0.005 is the owner-stated drive STABILITY, repeatability at the meter.
+# The meter-to-atoms CALIBRATION is a different quantity, docs/plan/12
+# says it "is still owed", and it is NOT spanned by this band: nothing
+# here carries it, and the band narrowed from 0.05 when the constant was
+# retyped without the name changing. A forecast that needs the
+# calibration spanned must widen this and say which quantity it used.
+POWER_STABILITY_SPAN = 0.005   # owner-stated drive stability, 2026-09-11
+#: THE CALIBRATION IS STILL OPEN AND IS STILL SPANNED. Replacing this 0.05 with
+#: the stability figure narrowed the band from a half-width of 0.108 to 0.096
+#: and moved worst_lo from 1.273 to 1.333 -- in the direction that STRENGTHENS
+#: this record's published tension against its own bound, which is the direction
+#: a dropped uncertainty always moves a result and the reason it is the one to
+#: check. docs/plan/12 says the meter-to-atoms chain "is still owed", so it is
+#: spanned here and the two quantities are added in quadrature rather than one
+#: being silently substituted for the other (2026-09-12).
+POWER_CAL_OPEN_SPAN = 0.05
+POWER_CAL_SPAN = (POWER_CAL_OPEN_SPAN ** 2 + POWER_STABILITY_SPAN ** 2) ** 0.5
 _REF_Z = 1e-6             # the pure transverse ramp, as the moments helper takes it
 
 

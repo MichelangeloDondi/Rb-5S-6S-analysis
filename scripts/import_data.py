@@ -25,7 +25,10 @@ writes ``data_raw/MANIFEST.csv`` — one row per unique trace with role,
 condition, chronology, flags, hash, and every original path it came from.
 After this runs once, the new repository is fully self-contained.
 
-NOTE: after any regeneration, run ``scripts/annotate_manifest_qc.py`` to
+NOTE: after any regeneration, run BOTH manifest annotators or their
+columns are silently dropped -- ``scripts/annotate_manifest_power.py``
+(``power_mW_inferred`` and ``power_inference_basis``) and
+``scripts/annotate_manifest_qc.py`` to
 restore the ``qc_reason`` provenance column (the recorded per-trace exclusion
 reason for every non-canonical row — audit commission 2026-07-12; the reasons
 are curation facts, deliberately not recomputable from the data alone).

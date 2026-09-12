@@ -145,6 +145,14 @@ QUARANTINE = {
 
 # Legitimate prefix pairs (a base key and a variant of the same lineage).
 INTENTIONAL_PREFIX_PAIRS = {
+    # Steck publishes the D-line data as TWO documents, one per isotope, and a
+    # note names one held file, so both halves are machine-checkable only as
+    # two notes. steck_rb keeps the shorter key because nine surfaces cite it
+    # as the D-line reference for quantities that live in both documents (the
+    # vapour-pressure model, the natural linewidths, the branching ratios);
+    # steck_rb87 carries the 87Rb magnetic dipole constant, which until
+    # 2026-09-11 was quoted in a note whose pdf: line named the 85Rb file.
+    ("steck_rb", "steck_rb87"),
     ("li2024", "li2024b"),  # same year, same 778 nm line, different first authors; cross-referenced in both notes
     # li2024 is a Wang/Li atomic-clock shift-compensation paper. The
     # perspective is Li, Wenfang and the whole OIST unit in J. Phys.
@@ -533,6 +541,28 @@ def test_summary_has_no_inline_math(key):
     )
 
 
+def scan_for_names(line: str, in_front: bool) -> str:
+    """The text of `line` that the name rule actually reads.
+
+    ONE FUNCTION, CALLED BY THE RULE AND BY ITS PLANT (2026-09-11). The first
+    plant for this predicate re-typed the body inside the test, so reverting
+    the production branch to its retracted form left the whole module green:
+    the plant graded a copy of the subject and never the subject. A test whose
+    docstring says it pins a branch has to call that branch.
+
+    A PATH IS A LOCATOR AND NOT PROSE. `PDF_papers/` carries a directory named
+    after a person, so a note whose frontmatter `pdf:` line points into it was
+    flagged for naming someone in a working role unless that person happened to
+    be an author of that paper. The rule is about what a note SAYS, and a file
+    path says nothing. The exemption is therefore scoped twice: only inside the
+    frontmatter, and only over the path token, so prose written after a path on
+    the same line is still read.
+    """
+    if in_front and line.lstrip().startswith("pdf:"):
+        return re.sub(r"\S*PDF_papers\S*", " ", line.split(":", 1)[1])
+    return line
+
+
 @pytest.mark.parametrize("key", sorted(_lit_keys()))
 def test_no_process_language_in_lit_notes(key):
     """docs/lit/ is exempt from the repo-wide phrase guards so that published
@@ -577,11 +607,74 @@ def test_no_process_language_in_lit_notes(key):
             if not in_front:
                 front_done = True
             continue
-        named = any(_digest(w) in watched for w in _WORD.findall(line))
+        # A PATH IS A LOCATOR AND NOT PROSE (2026-09-11). `PDF_papers/` carries
+        # a directory named after a person, so every note whose `pdf:` line
+        # points into it was flagged for naming someone in a working role
+        # unless that person happened to be an author of that paper. The rule
+        # is about what a note SAYS; the frontmatter's file path says nothing.
+        #
+        # NARROWED THE SAME DAY, by three seats of one board (2026-09-11). The
+        # first cut tested the LINE'S OWN TEXT and blanked the whole line, so
+        # any BODY line beginning `pdf:` escaped the name rule outright and
+        # took whatever prose followed the path with it. Both halves are fixed
+        # here: the exemption applies only inside the frontmatter, which is
+        # what the paragraph above already claimed, and it removes the path
+        # TOKEN rather than the line, so a comment written after a path is
+        # still read. The exemption's live population is one line, the group
+        # directory in `abdalla2025`, and `test_the_pdf_exemption_is_scoped`
+        # pins both edges so it cannot widen again unseen.
+        named = any(_digest(w) in watched
+                    for w in _WORD.findall(scan_for_names(line, in_front)))
         body_hit = (not in_front and front_done) and diary.search(line)
         if pat.search(line) or named or body_hit:
             bad.append(f"{key}.md:{i}: {line.strip()[:100]}")
     assert not bad, "process language in a literature note:\n  " + "\n  ".join(bad)
+
+def test_the_pdf_exemption_is_scoped_to_the_frontmatter_path():
+    """The `pdf:` exemption covers a frontmatter PATH and nothing else.
+
+    THE DEFECT IT PINS (2026-09-11, three seats of one board). The first cut
+    read `line.lstrip().startswith("pdf:")` with no reference to `in_front`,
+    so a BODY line beginning `pdf:` was blanked whole and a name written after
+    that prefix escaped the rule permanently and silently.
+
+    FAILURE MODE IF THIS TEST IS DELETED: a note can name someone in a working
+    role by prefixing the sentence with two characters, and no guard sees it.
+
+    The watched token is recovered from the corpus by digest, never typed, so
+    this file names no person.
+    """
+    watched_token = None
+    for key in sorted(_lit_keys()):
+        for line in _lit_lines(key):
+            if not line.lstrip().startswith("pdf:"):
+                continue
+            for w in _WORD.findall(line):
+                if _digest(w) in _NAME_DIGESTS:
+                    watched_token = w
+                    break
+            if watched_token:
+                break
+        if watched_token:
+            break
+    assert watched_token, "no watched token on any pdf: line; the exemption has no subject"
+
+    def names(text, in_front):
+        # THE PRODUCTION FUNCTION, not a copy of it. See scan_for_names.
+        return any(_digest(w) in _NAME_DIGESTS
+                   for w in _WORD.findall(scan_for_names(text, in_front)))
+
+    path = f"pdf: PDF_papers/{watched_token} group/Some_2020_paper.pdf"
+    # POSITIVE: the frontmatter path is exempt, which is why the narrowing exists
+    assert not names(path, in_front=True)
+    # NEGATIVE 1: the same text in the BODY is not exempt
+    assert names(path, in_front=False)
+    # NEGATIVE 2: prose after the path on the frontmatter line is still read
+    assert names(f"{path} and {watched_token} checked the fit", in_front=True)
+    # NEGATIVE 3: an ordinary body sentence is unaffected either way
+    assert names(f"{watched_token} set the threshold", in_front=False)
+    assert names(f"{watched_token} set the threshold", in_front=True)
+
 
 
 def test_narrative_docs_do_not_argue_from_unverified_papers():

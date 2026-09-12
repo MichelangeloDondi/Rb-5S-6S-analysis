@@ -174,8 +174,18 @@ law explains the 2025 design compromise and prescribes its fix:
   $0.360$ to $1.188$ of the first order and on ten of the 41 it stands *taller*
   than the first order, while the second-to-first ratio holds to four per cent.
   That contrast localises the residual amplitude modulation to the carrier and
-  is why the carrier height settles nothing about the labelling. A fixed-lock
-  session could monitor modulation purity live from the tooth asymmetry alone.
+  is why the carrier height settles nothing about the labelling.
+  **And the admixture is a setting and not a defect** (owner, 2026-09-12): the
+  polarisation axis into the modulator was tilted deliberately to give
+  phase-amplitude coupling, so that the carrier would not bury the other teeth
+  even at small depth. The carrier's spread against the second-to-first ratio's
+  four per cent is what that coupling looks like, and a better modulator would
+  not reduce it. So the tooth asymmetry reads out a control that was exercised
+  and not a purity that was hoped for. The depth ladder's premise
+  survives, since the time-averaged total intensity is unchanged and the atoms
+  respond to that average, so what the admixture costs is the prediction of the
+  shares and not the constancy of the total. The shares are read from the tooth
+  heights on the same trace, so the ladder keeps a measured abscissa.
 
 **The same law makes the comb a lever and not only a ruler.** The weights sum
 to one, so the signal summed over teeth is the same at every depth while its

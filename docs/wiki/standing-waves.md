@@ -148,6 +148,44 @@ carry the area ratio forward on the same traces as the line itself. That
 ratio is stationary in the retro ratio near unity, so it reads the ratio only
 under a retro attenuator scan, which the plan's open-items chapter carries.
 
+### A tilt is an offset, and the offset is what the fringes feel
+
+The retro ratio above absorbs "imperfect overlap" into a single number, which is
+right for the channel arithmetic and hides the geometry that produces it. A
+mirror tilt $\theta$ does not simply reduce a ratio. Through a retro lens it
+reaches the atoms as a lateral **offset** as well, and on this bench, a mirror
+about 50 mm from an $f = 150$ mm lens, the conversion is **300 mm of offset per
+radian of tilt**. The beams therefore walk apart in position three hundred times
+faster than they tilt, and it is the walking apart that matters.
+
+Two consequences. The residual two-photon wave-vector $2k\sin(\theta/2)$ returns
+a Doppler width to the narrow line, about 0.45 MHz per milliradian at 110 °C.
+And the standing wave itself stops being clean, by three mechanisms at once: the
+local contrast $2\sqrt{I_1I_2}/(I_1+I_2)$ is unity only on the bisector once the
+beams are offset, the fringe planes rotate by $\theta/2$ and gain a transverse
+period $\lambda/\sin\theta$, and near the focus the two wavefronts no longer
+match.
+
+**The fringe-resolved suppression this page quotes is a contrast-weighted
+quantity, so all three reach it, and the Monte Carlo behind it assumes a perfect
+retro.** A generalised one, `fullmodel.fringe_survival_mc`, carries the beam
+quality, the tilt and the offset, and reduces to the contrast above when all
+three are ideal. It separates them: the tilt angle is negligible, since
+$k\sin\theta$ is four orders below the axial $2k$ and 0.5 mrad moves the mean
+survival by under 2 per cent, while an offset of one waist takes the mean
+contrast from 0.9995 to 0.836, both at the bench's retro ratio `RHO_RETRO`. The function's own default is a perfect retro, where the contrast is one by construction and the pair does not reproduce. Beam quality acts through the axial sampling, the
+mean radius over the collected region rising from 1.011 to 1.083 waists at
+$M^2 = 3$. **A tilt reaches the fringes through the offset it produces and not
+through its angle.** The wavefront mismatch remains unmodelled, so these are an
+upper bound on the fringe effect at non-zero tilt.
+
+**And the retro ratio cannot supply the bound.** The value this repository
+carries is an assumption, recorded as never informed by these data, and the
+area ratio that would measure it needs the Doppler pedestal, which is 931 MHz
+wide against archive traces spanning under 100. What does bound the tilt is the
+narrow line's own presence: at 90 per cent of aligned strength the tilt is under
+0.069 mrad, and even at one per cent it stays under 0.46.
+
 ## What can go wrong
 
 The most common model failure is a factor-of-two slip in the fringe

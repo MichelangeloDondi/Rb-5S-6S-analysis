@@ -14,7 +14,7 @@ pages: 023001
 year: 2015
 doi: 10.1103/PhysRevLett.114.023001
 arxiv: null
-pdf: PDF_papers/mcdonald2015.pdf
+pdf: PDF_papers/McDonald_2015_thermometry-via-light-shifts-optical-lattices.pdf
 held: true
 status: VERIFIED
 routing:

@@ -864,6 +864,46 @@ def _rewrite(path, counts_fn, label) -> tuple:
     return old, new, commit
 
 
+# docs/lit/ QUOTES ITS SOURCES, AND THAT IS WHAT THE EXEMPTION IS FOR.
+# A note carries published titles and abstracts verbatim, so capitals inside a
+# quotation or in a source-written frontmatter field are the source's and not
+# this project's. Until 2026-09-11 the exemption was the DIRECTORY, which let a
+# note write its own shout-capitals under a licence granted to its sources.
+LIT_QUOTE = re.compile(r'"[^"]*"|“[^”]*”')
+# NARROWED 2026-09-11, the same day it was written. The first cut also
+# protected loci, routing, status, section, citekey, type and verify_flags.
+# Those are written by THIS project, not by the source, so the exemption's
+# stated reason did not cover them: of 157 capitals it hid, 138 sat under
+# project keys, and arbitrary prose indented under `loci:` escaped the rule
+# entirely. Only fields whose text is the SOURCE's own are protected here.
+# The enumerated machine vocabulary those project keys carry (THEORY, CITE,
+# FEED and the rest) belongs in the caps allowlist, where a reader can see it,
+# and not inside a regex that also swallows whatever else is indented there.
+LIT_SOURCE_FIELD = re.compile(
+    r"^(?:title|authors|journal|booktitle|publisher|series):.*(?:\n[ \t]+.*)*$", re.M)
+LIT_CAPS_BASELINE = Path(__file__).parent / "_lit_caps_baseline.json"
+
+
+def _lit_emphasis_caps(rel: str) -> list[str]:
+    """_emphasis_caps, with the source's own words protected instead of the file."""
+    text = _plain((ROOT / rel).read_text(encoding="utf-8"))
+    spans = [m.span() for m in CAPS_PROT.finditer(text)]
+    spans += [m.span() for m in LIT_QUOTE.finditer(text)]
+    front = re.match(r"\A---\n.*?\n---\n", text, re.S)
+    if front:
+        spans += [m.span() for m in LIT_SOURCE_FIELD.finditer(text[:front.end()])]
+    out = []
+    for m in CAPS_TOKEN_RE.finditer(text):
+        w = m.group(0)
+        letters = [ch for ch in w if ch.isalpha()]
+        if not letters or not all(ch.isupper() for ch in letters):
+            continue
+        if _caps_ok(w) or any(a <= m.start() < b for a, b in spans):
+            continue
+        out.append(w)
+    return out
+
+
 if __name__ == "__main__":  # `python tests/test_prose_style_ratchet.py --relax`
     import sys
     _did_relax = None
@@ -877,6 +917,19 @@ if __name__ == "__main__":  # `python tests/test_prose_style_ratchet.py --relax`
         moved = _rewrite(CSV_SEMICOLON_BASELINE, _csv_semicolon_counts,
                  "csv semicolons")
         _did_relax = "csv semicolons"
+    elif "--relax-lit-caps" in sys.argv:
+        # THE WRITER THIS RATCHET SHIPPED WITHOUT (2026-09-11). The lit-caps
+        # baseline landed with no relax path at all, so it could only be moved
+        # by hand-editing JSON: no refusal, no reason and no row in the book,
+        # which is the one loosening the book exists to make findable.
+        moved = _rewrite(LIT_CAPS_BASELINE,
+                         lambda: {rel: len(_lit_emphasis_caps(rel))
+                                  for rel in _tracked_markdown()
+                                  if rel.startswith("docs/lit/")
+                                  and (ROOT / rel).exists()
+                                  and _lit_emphasis_caps(rel)},
+                         "lit caps")
+        _did_relax = "lit caps"
     elif "--relax-constructions" in sys.argv:
         moved = _rewrite(CONSTRUCTION_BASELINE, _rather_than_counts, "constructions")
         _did_relax = "constructions"
@@ -985,3 +1038,52 @@ def test_the_caps_allowlist_is_in_its_writers_format():
     import json
     raw = (ROOT / "tests" / "_caps_allowlist.json").read_text(encoding="utf-8")
     assert raw == json.dumps(json.loads(raw), indent=1, sort_keys=True) + "\n"
+
+def test_lit_notes_never_gain_an_emphasis_capital():
+    """A literature note's OWN prose is graded like every other tracked page.
+
+    FAILURE MODE IF THIS TEST IS DELETED: a note writes emphasis capitals under
+    the exemption its sources earned, which is how twenty-four notes shipped
+    eight of them on 2026-09-11.
+
+    The baseline may only fall. A note absent from it is held at zero, which is
+    where every note added since that date enters.
+    """
+    import json
+    baseline = json.loads(LIT_CAPS_BASELINE.read_text(encoding="utf-8"))
+    grew = {}
+    for rel in _tracked_markdown():
+        if not rel.startswith("docs/lit/") or not (ROOT / rel).exists():
+            continue
+        now = len(_lit_emphasis_caps(rel))
+        was = baseline.get(rel, 0)
+        if now > was:
+            grew[rel] = (was, now, sorted(set(_lit_emphasis_caps(rel)))[:6])
+    assert not grew, (
+        "emphasis capitals gained in a literature note (write the word normally, "
+        "or quote the source so the quotation carries its own capitals):\n  "
+        + "\n  ".join(f"{r}: {w} -> {n} {ex}" for r, (w, n, ex) in sorted(grew.items())))
+
+
+def test_the_lit_caps_baseline_is_tight():
+    """No baseline entry may sit above reality, or a regression hides under slack.
+
+    This is the same shape as test_the_baseline_itself_only_ever_shrinks and
+    exists for the same reason: a loose baseline is a guard that has stopped
+    grading without saying so.
+    """
+    import json
+    baseline = json.loads(LIT_CAPS_BASELINE.read_text(encoding="utf-8"))
+    tracked = set(_tracked_markdown())
+    loose = {}
+    for rel, was in baseline.items():
+        if rel not in tracked:
+            loose[rel] = (was, "not tracked")
+            continue
+        now = len(_lit_emphasis_caps(rel))
+        if was > now:
+            loose[rel] = (was, now)
+    assert not loose, (
+        "the lit caps baseline is looser than reality; re-seed it:\n  "
+        + "\n  ".join(f"{r}: baseline {a} against {b}" for r, (a, b) in sorted(loose.items())))
+

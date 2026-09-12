@@ -419,7 +419,13 @@ the vapour-filled mode, which a photodiode resolves easily, and
 the vapour is replaced by a loaded cold column, which is not.
 
 **What this does not say.** The trapped densities and temperatures behind those
-rows are design figures and the CSV tags them ENVELOPE. The absorption arm
+rows are design figures and the CSV tags them ENVELOPE, and for the cold guided
+row that figure is now contradicted by a measurement: the host group reads
+about ten thousand atoms over a four-centimetre fibre in transmission, an
+eleventh of the atoms this row puts in the mode, and the dip follows the atom
+number and not the density along the fibre (see
+[xin2018](../lit/xin2018.md) and the loading efficiencies in
+[wang2020](../lit/wang2020.md)). The absorption arm
 assumes a shot-noise-limited detector with no technical intensity noise, which
 is the optimistic end: a real transmission measurement is usually limited by
 laser intensity noise long before shot noise, and adding that term is the first

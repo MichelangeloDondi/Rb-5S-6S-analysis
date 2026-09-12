@@ -250,6 +250,152 @@ one that decides whether a cold guided experiment is a measurement or a
 proposal, and it rests on a shot-noise-limited detector this record has not
 demonstrated.
 
+**And on an atom number the host group's own measurement does not support.**
+The cold guided row puts about a hundred and thirteen thousand atoms in the
+mode. [Xin and co-workers](../lit/xin2018.md) load a hollow-core fibre and use
+about ten thousand, read in transmission. The dip counts the atoms the mode
+drives, not their spacing along it, so the comparison is those two numbers: the
+row is optimistic by eleven, or by five against the larger count the paper's
+own optical depth implies. **The arm survives that, slowly.** Both the dip and
+the signal-to-noise fall by that same factor, because the probe flux setting
+the shot noise does not move, so the row's committed
+[2.51759](../../results/platform_twins.csv "ref:platform_twins:hcpcf_cold:hcpcf:snr_per_s")
+per second divided by eleven, or by five on the larger count, is what the arm
+delivers: the measurement that took sixteen seconds at the assumed number takes
+about thirty-four minutes on the first reading and seven on the second. The loading efficiency behind it, a fifth of a per cent to three
+per cent from a free-space trap, is [Wang and co-workers](../lit/wang2020.md).
+What the cold platform buys instead is the transit width, which at one
+microkelvin is a twenty-thousandth of the warm value, the square root of the
+temperature ratio with the mass and the waist cancelling out, and that is the
+width this record's own fits cannot separate from the collisional one. The
+cooling that reaches it inside the fibre is
+[Wang and co-workers](../lit/wang2022.md).
+
+### What a guided arm adds to a joint fit, which is not its own signal-to-noise
+
+A fibre arm would be run beside the cell, the trap and the nanofibre, so what
+it is worth is what it does to the joint problem. This record's bound fails on
+four couplings: the collisional width against the transit at
+[-0.958](../../results/identifiability.csv "ref:identifiability:corr:gamma_coll_transit"),
+the laser width against the collisional at
+[-0.9411](../../results/campaign_twin_forecast.csv "ref:campaign_twin_forecast:cell:corr_laser_coll_5traces"),
+a Lorentzian laser component and the collisional width entering only as their
+sum, and a beam waist nobody has measured, which is why every absolute result here is a bound
+and not a value. A guided arm attacks two of the four by geometry alone, and a cold free-space
+arm attacks a third.
+
+**The warm fibre shares its collisional width with the cell and cannot share
+its transit.** Vapour at the same temperature has the same density and the same
+collision physics, so that width is identical in the two arms by construction,
+while the transit differs because the mode is
+[19.000](../../results/platform_twins.csv "ref:platform_twins:hcpcf_warm:hcpcf:w0_um")
+microns against the cell's
+[64.000](../../results/platform_twins.csv "ref:platform_twins:cell_130C:cell:w0_um"),
+giving
+[3.22518](../../results/platform_twins.csv "ref:platform_twins:hcpcf_warm:hcpcf:transit_fwhm_mhz")
+MHz against
+[0.957477](../../results/platform_twins.csv "ref:platform_twins:cell_130C:cell:transit_fwhm_mhz").
+Two arms, one shared nuisance, two different transits, and the fibre's
+transverse scale is a manufactured mode field diameter with a datasheet, not
+an alignment that drifts. So the pair returns the collisional width and
+the cell's own waist, which is the foundational calibration the plan ranks
+first and the reason every absolute number here carries a bound.
+
+**A free beam locks the shift to the interaction length, and a fibre does
+not.** The light shift goes as the inverse square of the waist while the
+Rayleigh range goes as its square, so focusing buys shift and pays it straight
+back. Tightening the cell from 64 to 16 microns multiplies the shift by sixteen
+and divides the interaction length by sixteen, from
+[12.9535](../../results/platform_twins.csv "ref:platform_twins:cell_130C:cell:length_eff_mm")
+mm to
+[0.8096](../../results/platform_twins.csv "ref:platform_twins:cell_130C_tight:cell:length_eff_mm"),
+taking the atom count down with it. A guided mode does not diverge, so its
+length is the length of fibre: the warm row carries
+[100.0000](../../results/platform_twins.csv "ref:platform_twins:hcpcf_warm:hcpcf:length_eff_mm")
+mm. Intensity and length become two knobs where the cell has one, and the
+campaign can reach the shift its third-cumulant channel needs without
+collapsing the interaction region to under a millimetre.
+
+**The trap and the molasses switch off both unseparable widths at once.** In
+the cold rows the transit is
+[0.00233615](../../results/platform_twins.csv "ref:platform_twins:mot:mot:transit_fwhm_mhz")
+MHz and the density three orders below the cell's, so the line is the natural
+width plus the laser plus saturation, and the natural width is established here
+at 210 sigma. At weak drive that line measures the laser width directly,
+through the atoms' own optical path. The plan puts a per-cent laser-width
+instrument at a factor of two on the coefficient's error, and this is that
+instrument without new hardware.
+
+**The convolution condition is exact in a guided mode.** A convolution holds
+only where the homogeneous kernel is the same at every collected element, and
+in a free beam the transit follows the local beam radius, so the kernel varies
+along the axis by one per cent at 64 microns and by nearly half at 16. A guided
+mode has the same transverse profile at every point along it, so the condition
+holds identically. The shape channels, which is to say the asymmetry this whole
+programme reads, are clean in the fibre at every length and contaminated in the
+cell exactly where the campaign wants to work.
+
+**And the observable carries no collection geometry.** A transmission dip is a
+ratio of two powers on one detector. The cell's fluorescence arm carries an
+axial collection window that biases the extracted shift and reverses sign past
+a window-to-Rayleigh ratio this bench sits a factor of four inside. The fibre arm
+has no such term to get wrong.
+
+### What a guided trap costs this line, which is the design problem
+
+The trap light shifts 5S and 6S by different amounts, so a trap deep enough to
+hold a sample displaces the line and, because the atoms sample a range of
+intensities, broadens it. At the wavelengths
+[Wang and co-workers](../lit/wang2020.md) use the ground-state polarizability
+is positive and the 6S one negative, so the two levels move apart and the line
+shift *exceeds* the trap depth, and is not a small residue of it. Re-derive
+with `rb5s6s.polarizability.alpha_5s` and `alpha_6s`, and size the depth with
+`rb5s6s.platforms.trap_depth_uk`, which owns the intensity convention: the
+excess is about seven per cent at 821 nm, one per cent at 797.25 and two and a
+half at 802, so it is a wavelength-by-wavelength number and not a single
+factor.
+
+**The size of it is the problem.** In the 313 microkelvin trap of that paper's
+first column the displacement is about seven megahertz, and the spread over a
+sample at one to two hundred microkelvin across the fibre is one to one and a
+half. Against a natural width of 3.493 MHz that is a dominant inhomogeneous
+term, not a correction, and a ten millikelvin trap exchanges it for a two hundred
+megahertz displacement with a two to four megahertz spread.
+
+**A claim withdrawn, 2026-09-11.** An earlier form of this section argued
+that the same physics made the transition a probe of the differential light
+shift limiting the host group's own interferometer, at a leverage of about two
+thousand. The coefficient ratio is real and the conclusion does not follow: a
+probe resolves a shift against *its own* linewidth, and their ground-state
+coherence gives a line of a few hertz where this one is megahertz wide. Their
+clock transition measures the trap's intensity distribution some three orders
+of magnitude better than this line could. What this line has instead is a
+large and calculable differential polarizability, which suits it to an absolute
+intensity or mode-area calibration and not to out-measuring their clock.
+
+**And the escape is a magic trap, which nothing here has evaluated.** A
+wavelength where the two polarizabilities are equal removes the displacement
+and its spread together. [`docs/plan/11`](../plan/11_beyond-993.md) already
+names the 5S-6S crossing near 1297.5 nm as a shift-injection lever and calls it
+useless as a trap. On depth that verdict holds at a few hundred milliwatts and
+fails at a watt or more, since the ground-state polarizability there is only
+about eight times smaller than at 821 nm. Whether a hollow-core mode guides both that and
+993.4 nm, and whether the crossing survives a sum that currently truncates at
+8P, are open items in
+[`docs/plan/12`](../plan/12_open-apparatus-items.md).
+
+**Which rung these stand on, because it decides what may be claimed.** Every
+argument in this section is physics and closed form: a shared collisional width
+at two known transits, a light shift going as the inverse square of a
+transverse scale against a Rayleigh range going as its square, a kernel that
+does or does not vary along the axis, and two polarizabilities of opposite
+sign. None of it is a twin forecast. **What the twin has not yet run is the joint
+fit**, which is the number a proposal would quote: the error on the
+coefficient from a cell arm and a guided arm fitted together with the
+collisional width shared, against the cell alone. The paired-reference
+forecast covers a cell-plus-nanofibre pair and has no hollow-core arm, so that
+run is owed before any of this becomes a figure instead of an argument.
+
 ### What the guided arm measures that no cell can, and the observable that survives the radius
 
 The guided light shift is a translation of the whole line and not an asymmetry
@@ -362,7 +508,8 @@ intensity geometry onto a shift distribution and reading its cumulants. The
 closed-form ramp weight itself does not. It is derived for atoms **crossing** a
 focused beam, and a trapped sample sits concentrated where the intensity is
 highest, so its shift distribution has no hard edge and carries the opposite
-sign of skewness (section 1.2 of the design note, which computes both).
+a skewness about three times larger with no hard edge (section 1.2 of the
+design note, which computes both).
 Carrying the ramp over unchanged would get the sign of the line's asymmetry
 wrong, and the self-centred third cumulant is the drift-immune channel this programme
 relies on, where the shift is large against the line, as it is in the

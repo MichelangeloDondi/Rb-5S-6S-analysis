@@ -343,6 +343,37 @@ def local_ramp_density(x: np.ndarray, n_photon: int = 2) -> np.ndarray:
     return np.where(inside, n_photon * np.abs(x) ** (n_photon - 1), 0.0)
 
 
+def trapped_ramp_density(x: np.ndarray, eta: float, n_photon: int = 2) -> np.ndarray:
+    """The same law for atoms TRAPPED by the light that shifts them.
+
+    A free atom crosses the beam and samples the intensity geometrically, which
+    is `local_ramp_density`. A trapped atom sits in the potential the same light
+    makes, so it samples the intensity with a Boltzmann weight and the density
+    gains `exp(eta |x|)` with ``eta = U0 / kT`` the trap depth over the sample
+    temperature -- `platforms.trap_eta` returns it. Normalised to area one on
+    [-1, 0], so it drops into `build_world_trace(fringe_density=...)` and into
+    `ramp_mixture` wherever the free law goes.
+
+    ``eta = 0`` returns `local_ramp_density` exactly: an untrapped sample is the
+    limit and not a separate model. At large ``eta`` the atoms sit at the bottom
+    of the well where the intensity is highest, the mean of |x| tends to
+    1 - 1/eta, its spread to 1/eta and its skewness to -2, so a deep trap turns
+    the ramp's broad asymmetric weight into a narrow one near full shift.
+
+    FAILURE MODE: called with a KINETIC temperature that is not the trapped
+    sample's, `eta` is wrong and the whole weight with it; and a check of the
+    eta -> 0 limit that only tests eta = 0 cannot fail, since exp(0) = 1 for any
+    exponent, so the guard probes small non-zero eta as well.
+    """
+    x = np.asarray(x, float)
+    eta = float(eta)
+    inside = (x <= 0.0) & (x >= -1.0)
+    u = np.abs(x)
+    w = np.where(inside, u ** (n_photon - 1) * np.exp(eta * u), 0.0)
+    area = trapezoid(w, x)
+    return w / area if area > 0.0 else w
+
+
 def _require_density_grid(x_grid: np.ndarray, g_x: np.ndarray) -> None:
     """Refuse a local-density grid this routine would silently misread.
 

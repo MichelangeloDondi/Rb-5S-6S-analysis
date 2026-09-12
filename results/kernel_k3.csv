@@ -1,6 +1,8 @@
 scope,quantity,value,unit,note,status
+all,transit_assumed,0.9334247,MHz,"PINNED, not fitted: fit_beta_self runs with fit_transit=False at this transit, which is transit_fwhm_from_w0 at the adopted waist. Every gamma_l in this file is conditional on it, so these widths are not an independent constraint on the waist and a fit that holds them fixed while profiling the transit is circular",DIAGNOSTIC
+all,waist_assumed_um,64.0,um,"the waist the pinned transit corresponds to, carried here so the conditioning travels with the widths",DIAGNOSTIC
 4121,n_conditions,4,count,rungs of the density ladder this peak contributes,DIAGNOSTIC
-4121,gamma_l_equiv,0.403853,MHz,"Gamma_L,equiv: a Lorentzian-EQUIVALENT width. Not f_L, and not attributed to the laser by this fit",DIAGNOSTIC
+4121,gamma_l_equiv,0.403853,MHz,"Gamma_L,equiv: a Lorentzian-EQUIVALENT width. Not f_L, not attributed to the laser by this fit, and CONDITIONAL on the pinned transit in the all/transit_assumed row",DIAGNOSTIC
 4121,gamma_l_equiv_err,0.055541,MHz,one-sigma from the covariance; OVER-covering by K2 world B's measured 0.7460 against a nominal 0.68,DIAGNOSTIC
 4121,delta_chi2_G_minus_GL,176.1479,chi2,"G is nested inside G+L (gamma_l -> 0), one parameter at its boundary",DIAGNOSTIC
 4121,p_boundary,1.681e-40,p-value,"half the naive one-dof tail, because the null sits on the boundary",DIAGNOSTIC
@@ -8,7 +10,7 @@ scope,quantity,value,unit,note,status
 4121,beta_self_GL,0.006175,MHz per density unit,beta_self with the mixed kernel free,DIAGNOSTIC
 4121,beta_self_err_GL,0.001697,MHz per density unit,U_statistical for this peak,DIAGNOSTIC
 4154,n_conditions,4,count,rungs of the density ladder this peak contributes,DIAGNOSTIC
-4154,gamma_l_equiv,0.361552,MHz,"Gamma_L,equiv: a Lorentzian-EQUIVALENT width. Not f_L, and not attributed to the laser by this fit",DIAGNOSTIC
+4154,gamma_l_equiv,0.361552,MHz,"Gamma_L,equiv: a Lorentzian-EQUIVALENT width. Not f_L, not attributed to the laser by this fit, and CONDITIONAL on the pinned transit in the all/transit_assumed row",DIAGNOSTIC
 4154,gamma_l_equiv_err,0.045558,MHz,one-sigma from the covariance; OVER-covering by K2 world B's measured 0.7460 against a nominal 0.68,DIAGNOSTIC
 4154,delta_chi2_G_minus_GL,597.7673,chi2,"G is nested inside G+L (gamma_l -> 0), one parameter at its boundary",DIAGNOSTIC
 4154,p_boundary,2.561e-132,p-value,"half the naive one-dof tail, because the null sits on the boundary",DIAGNOSTIC
@@ -16,7 +18,7 @@ scope,quantity,value,unit,note,status
 4154,beta_self_GL,0.007437,MHz per density unit,beta_self with the mixed kernel free,DIAGNOSTIC
 4154,beta_self_err_GL,0.001484,MHz per density unit,U_statistical for this peak,DIAGNOSTIC
 4192,n_conditions,4,count,rungs of the density ladder this peak contributes,DIAGNOSTIC
-4192,gamma_l_equiv,0.449389,MHz,"Gamma_L,equiv: a Lorentzian-EQUIVALENT width. Not f_L, and not attributed to the laser by this fit",DIAGNOSTIC
+4192,gamma_l_equiv,0.449389,MHz,"Gamma_L,equiv: a Lorentzian-EQUIVALENT width. Not f_L, not attributed to the laser by this fit, and CONDITIONAL on the pinned transit in the all/transit_assumed row",DIAGNOSTIC
 4192,gamma_l_equiv_err,0.031329,MHz,one-sigma from the covariance; OVER-covering by K2 world B's measured 0.7460 against a nominal 0.68,DIAGNOSTIC
 4192,delta_chi2_G_minus_GL,961.1245,chi2,"G is nested inside G+L (gamma_l -> 0), one parameter at its boundary",DIAGNOSTIC
 4192,p_boundary,2.532e-211,p-value,"half the naive one-dof tail, because the null sits on the boundary",DIAGNOSTIC
@@ -24,7 +26,7 @@ scope,quantity,value,unit,note,status
 4192,beta_self_GL,0.004423,MHz per density unit,beta_self with the mixed kernel free,DIAGNOSTIC
 4192,beta_self_err_GL,0.000934,MHz per density unit,U_statistical for this peak,DIAGNOSTIC
 4207,n_conditions,4,count,rungs of the density ladder this peak contributes,DIAGNOSTIC
-4207,gamma_l_equiv,0.314803,MHz,"Gamma_L,equiv: a Lorentzian-EQUIVALENT width. Not f_L, and not attributed to the laser by this fit",DIAGNOSTIC
+4207,gamma_l_equiv,0.314803,MHz,"Gamma_L,equiv: a Lorentzian-EQUIVALENT width. Not f_L, not attributed to the laser by this fit, and CONDITIONAL on the pinned transit in the all/transit_assumed row",DIAGNOSTIC
 4207,gamma_l_equiv_err,0.048140,MHz,one-sigma from the covariance; OVER-covering by K2 world B's measured 0.7460 against a nominal 0.68,DIAGNOSTIC
 4207,delta_chi2_G_minus_GL,229.8217,chi2,"G is nested inside G+L (gamma_l -> 0), one parameter at its boundary",DIAGNOSTIC
 4207,p_boundary,3.260e-52,p-value,"half the naive one-dof tail, because the null sits on the boundary",DIAGNOSTIC

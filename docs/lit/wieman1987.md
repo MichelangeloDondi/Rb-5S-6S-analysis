@@ -13,7 +13,7 @@ pages: 1738
 year: 1987
 doi: 10.1103/PhysRevLett.58.1738
 arxiv: null
-pdf: PDF_papers/wieman1987.pdf
+pdf: PDF_papers/Wieman_1987_asymmetric-lineshapes-weak-transitions-standing-wave.pdf
 held: true
 status: VERIFIED
 routing:

@@ -493,10 +493,22 @@ def main() -> int:
       "TRANSITION axis, 2.4 to 2.6 per photon, where the 2025 line sits at "
       "about 5.25 and where a 2.4 MHz line would be narrower than the "
       "3.49 MHz natural width and so impossible. So roughly a megahertz "
-      "of Gaussian width is unaccounted for, the record's leading candidate "
-      "is residual Doppler from a retro tilt of 3.2 to 3.5 mrad, and the "
-      "independent laser measurement that would separate them is the "
-      "top-ranked lever of the next campaign.\n")
+      "of Gaussian width is unaccounted for. "
+      # THE TILT IS NO LONGER THE LEADING CANDIDATE, corrected 2026-09-12 IN
+      # THIS GENERATOR and not on the page, for the reason the comment two
+      # hundred lines below already gives. The earlier sentence called a retro
+      # tilt of 3.2 to 3.5 mrad the leading candidate, on a geometry that put
+      # the pivot at the atoms. The mirror sits about 50 mm from an f = 150
+      # lens, so its own lever arm is 300 mm per radian and that tilt offsets
+      # the return beam by 960 um, fifteen waists, where no Doppler-free peak
+      # would survive to be measured at all.
+      "A retro tilt of 3.2 to 3.5 mrad was the leading candidate until "
+      "2026-09-12 and is now disfavoured as the whole answer: the retro "
+      "mirror's own lever arm turns that tilt into a 960 um offset at the "
+      "atoms, fifteen waists, where the peak this bound is measured on would "
+      "not exist. The width stays unexplained, and the independent laser "
+      "measurement that would separate the laser from whatever it is remains "
+      "the top-ranked lever of the next campaign.\n")
     lerows = rows("laser_epoch")
     le = {r["quantity"]: r for r in lerows}
     b = le.get("sigma_laser_bound")

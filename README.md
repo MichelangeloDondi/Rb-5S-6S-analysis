@@ -77,7 +77,7 @@ flowchart LR
     CONV{{"convolution"}} --> OBS(["observed line"])
     SAT["saturation<br/>same P2 signature<br/>makes the joint bound conservative"] -.-> OBS
     BBR["blackbody<br/>a temperature ceiling,<br/>not a correction"] -.-> OBS
-    HFP["hyperfine pumping<br/>branching exact,<br/>width cost in prose only"] -.-> OBS
+    HFP["hyperfine pumping<br/>branching exact,<br/>width in fullmodel"] -.-> OBS
     PHI["photoionisation<br/>single-photon excluded by 0.433 eV,<br/>two-photon open, unbounded"] -.- OBS
 ```
 
@@ -124,7 +124,7 @@ each names what would lift it. The calculated rows do not.
 | **σ_laser** | ≤ 2.4 MHz on the transition axis at the lineage waist, half that per photon | bound | a beam profile |
 | **S₀(225 mW)** | < 0.26 MHz, below the predicted 0.36 MHz at the measured waist | bound | fixed lock, tighter focus |
 | power scaling | no width trend, and an amplitude departure from P² | null + a departure | not applicable |
-| **w₀** | 64 µm, measured in the same conditions by an earlier thesis | measured (lineage) | a knife-edge scan here |
+| **w₀** | 64 µm (measured, an earlier thesis); a Gaussian fit of the line returns 42.0 ± 1.7 µm, which the record reads as a model-form signature and not a waist | lineage, OPEN | a knife-edge scan here |
 | **Δα(993 nm)** | −1145 a.u., within 5 % of the cited magnitude but **opposite in sign**. The sign is adjudicated, not measured | calculated | the fixed-lock pull direction, unrun |
 | **magic wavelengths** | ≈ 1203.9 / 1287.9 / 1339.6 nm, where a trap holds both states without pulling the line | calculated (envelope) | a trapped-atom experiment |
 

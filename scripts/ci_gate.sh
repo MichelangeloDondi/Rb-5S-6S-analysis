@@ -198,8 +198,46 @@ GATE_STAGE=""
 GATE_PYLOG="$(mktemp)"
 set +e
 GATE_STAGE="pytest"
-"$PY" -m pytest -q --runslow 2>&1 | tee "$GATE_PYLOG"
-PYRC=${PIPESTATUS[0]:-$?}
+# THE SUITE RUNS IN PARALLEL (owner, 2026-09-11; LOGIC 19.140a). It ran on one
+# core of ten for months with pytest-xdist installed. `gate_split.py` decides
+# the split AT GATE TIME: the serial set from behavioural markers rather than a
+# remembered list of module names, and the worker count from free memory
+# against the performance-core cap, because memory and not cores is the ceiling
+# (A186). --verify asserts the two halves collect exactly the whole suite, and
+# a gate that grades a different population than the serial gate is worse than
+# a slow gate, so a drift here EXITS rather than warning.
+GATE_SPLIT="$GATE_ROOT/private/checks/gate_split.py"
+if [ -f "$GATE_SPLIT" ] && "$PY" -c "import xdist" 2>/dev/null; then
+  GATE_STAGE="pytest-split-verify"
+  : > "$GATE_PYLOG"
+  "$PY" "$GATE_SPLIT" --verify 2>&1 | tee -a "$GATE_PYLOG"
+  # PIPESTATUS HOLDS THE LAST PIPELINE ONLY, so each is read on the very next
+  # line or its status is gone. The first form read it once after three
+  # pipelines and kept the SERIAL half's: a failure in the parallel half, which
+  # is most of the suite, gave rc 0 and an unconditional PASS, and the parallel
+  # run's non-append tee had already erased the verify output from the log.
+  # Reproduced by driving these bytes directly (2026-09-12).
+  GATE_VERRC=${PIPESTATUS[0]}
+  GATE_STAGE="pytest"
+  GATE_NW="$("$PY" "$GATE_SPLIT" --workers)"
+  GATE_SERIAL="$("$PY" "$GATE_SPLIT" --plan | tail -n1 | sed 's/^pytest -q --runslow //')"
+  GATE_IGNORES="$("$PY" "$GATE_SPLIT" --plan | sed -n '2p' | sed 's/^.*--dist loadfile //')"
+  # shellcheck disable=SC2086
+  "$PY" -m pytest -q --runslow -n "$GATE_NW" --dist loadfile $GATE_IGNORES 2>&1 | tee -a "$GATE_PYLOG"
+  GATE_PARRC=${PIPESTATUS[0]}
+  # shellcheck disable=SC2086
+  "$PY" -m pytest -q --runslow $GATE_SERIAL 2>&1 | tee -a "$GATE_PYLOG"
+  GATE_SERRC=${PIPESTATUS[0]}
+  PYRC=0
+  for _rc in "$GATE_VERRC" "$GATE_PARRC" "$GATE_SERRC"; do
+    [ "${_rc:-1}" -eq 0 ] || PYRC=1
+  done
+else
+  "$PY" -m pytest -q --runslow 2>&1 | tee "$GATE_PYLOG"
+  PYRC=${PIPESTATUS[0]:-$?}
+fi
+# the stage that owned the name has finished; an exit below must not inherit it
+GATE_STAGE=""
 set -e
 # The module is invoked on every run, green included, so "rc 0 means
 # PASS" is encoded in exactly one place. Only the first word of its

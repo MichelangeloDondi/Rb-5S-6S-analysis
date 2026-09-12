@@ -171,12 +171,16 @@ consistent with zero.
 The predicted light shift and its coefficient scale as the power at the atoms,
 and the record carries the 225 mW operating point without a calibration
 uncertainty: the sweep's envelope (`rb5s6s/stark.py`) propagates the waist band
-and the retro-ratio error and nothing for the power. Nobody holds the figure,
-so it is a measurement here and not a question. It needs the meter's calibration
-certificate, the loss budget between meter and cell, and the window
-transmission at 993 nm. Until it exists the prediction band spans it at 5 per
-cent, which moves $\kappa_\mathrm{pred}$ by the same 5 per cent, and
-`results/prediction_band.csv` carries that span in its worst-case edges.
+and the retro-ratio error and nothing for the power. The owner holds the
+drive's own figure and states it at 0.5 per cent, so the prediction band spans
+that and `results/prediction_band.csv` carries it in its worst-case edges.
+
+What his number does not cover, and what is still owed here, is the chain
+between the meter and the atoms: the meter's calibration certificate, the loss
+budget from meter to cell, and the window transmission at 993 nm. Those are
+systematic offsets of the power at the atoms and not the drive's stability,
+so they bias $\kappa_\mathrm{pred}$ in one direction where the 0.5 per cent
+merely widens it.
 
 What it would change: whether the prediction band reaches the bound, and the
 guided arm's per-run power ruler, since a calibrated power at the fibre is the
@@ -778,6 +782,210 @@ ten million. `scripts/run_trapping_channels.py` still computes the same
 quantity from its own `_leg` and its own copies of four SI constants. The two
 agree by retyping and not by wiring. Migrating the producer also moves the
 halo and escape-factor arms that read those literals, so it is its own change.
+
+### The drive beam's quality factor, which no number here carries
+
+**What is open.** The beam-quality factor of the drive at the cell. Nothing in
+this record has measured it and no function takes it as an argument, so every
+waist-dependent quantity assumes a diffraction-limited beam.
+
+**Why it matters, and where.** It enters in one place, the Rayleigh range, which
+goes as the waist squared over the quality factor. Everything axial follows: the
+collection window's ratio, which the record carries as a signed correction with
+two sign reversals, the fringe Monte Carlo, and the kernel spread that licenses
+writing the model as a convolution. Because the window ratio goes as the quality
+factor over the waist squared, the strain falls on a *small* waist with a poor
+beam. At 55 microns the third cumulant keeps 86 per cent of its value at a
+quality factor of 1, 48 per cent at 2, and reverses sign past 3.17. At 64
+microns the reversal needs 4.29 and at 85 it needs 7.56.
+
+**Why the bench is not obviously diffraction-limited.** The drive passes a
+modulator whose clear aperture is 3 mm, sourced from the manufacturer's own
+table, with an input radius of 1.5 mm, so the aperture sits at the beam's
+$1/e^2$ radius and transmits 86.5 per cent. A viewer-card observation of
+clipping there is on record as a recollection and not a measurement.
+
+**What would close it.** One afternoon with a commercial beam profiler, on the
+same bench and ideally in the same session as the knife-edge waist measurement,
+since the two answer one question between them and neither needs atoms, a lock
+or a cell to be running.
+
+**What the forecast does until then.** It spans the pair. A working region of 55
+to 85 microns with a quality factor under about two keeps every term inside its
+licence with a factor of two to spare, and that pair, not an interval in the
+waist alone, is what the guided and tight-waist cases are sized against.
+
+**A second route reaches the same bound, 2026-09-12.** The paragraph above sizes
+the pair on the third cumulant's sign reversal. The convolution licence sizes it
+independently, on the rms spread of the transit width over the collected region:
+that spread is 1.73 per cent at 55 microns and a quality factor of 1, 3.61 at
+1.5, 4.70 at 1.75 and 5.84 at 2.0, against the 5.5 per cent edge the record sets
+at 40 microns. **The bottom of the band leaves the licence at a quality factor
+of 1.93**, which is the "about two" above reached through a different term. The
+joint condition is `w0 >= 40 um * sqrt(M^2)`: 49 microns at 1.5, 57 at 2, 69 at
+3. So the waist band and the quality-factor bound are one assumption, not two,
+and writing either alone writes half of it.
+
+**The threshold is a band, not a line.** The collection ratio carries its own
+uncertainty from the optics: `L/z_R = 0.26 +- 0.14` at a quality factor of 1,
+propagated from `f = 18 +- 1` mm, an image distance of `50 +- 5` mm and the 62
+to 68 micron waist band, which is 54 per cent relative. Scaled, `0.52 +- 0.28`
+at 2 and `0.78 +- 0.42` at 3, so at 3 the licence boundary sits inside the error
+bar and no clean yes or no is available there. A fit reports the probability its
+licence holds, never a sharp verdict against a 54 per cent input.
+
+### The retro-reflection's tilt, which nothing here monitors
+
+Two counter-propagating photons cancel the first-order Doppler shift only when
+they are exactly anti-parallel. At a tilt $\theta$ the residual two-photon
+wave-vector is $2k\sin(\theta/2)$, so the Doppler-free line regains a Gaussian
+width of that times the thermal speed. Derived, not simulated, at 110 °C. **The angle in this table is the crossing angle at the atoms**, which is what the residual Doppler width is set by. A mirror tilt reaches it multiplied by `2(1 - d/f)` = 4/3 for the bench's 50 mm and f = 150, so a mirror tilt of 3.2 mrad is a crossing angle of 4.27 and gives 1.94 MHz, not the 1.45 the mirror angle alone would give:
+
+| tilt | residual FWHM | against the transit at 64 µm |
+|---|---|---|
+| 0.5 mrad | 0.23 MHz | 0.24 |
+| 1 mrad | 0.45 MHz | 0.49 |
+| 2 mrad | 0.91 MHz | 0.97 |
+| 5 mrad | 2.27 MHz | 2.43 |
+
+No forecast rests on it: these are the term's size at tilts nobody measured,
+and no committed cell carries a mirror tilt.
+
+**A milliradian is half the transit width and two milliradians double the
+line.** But the tilt this bench can have is bounded far below that, and the
+bound is already measured.
+
+**The offset binds long before the Doppler does.** The retro mirror sits about
+50 mm from an $f = 150$ mm lens, so $d/f = 1/3$ and this is not a cat's eye,
+which would need $d = f$ and turn a tilt into pure displacement. Propagating a
+mirror tilt $\theta$ back to the atoms gives a lateral offset
+$2\theta[d + s(1 - d/f)]$, which is **300 mm per radian**, so the two beams walk
+apart at the atoms 300 times faster in position than they tilt in angle.
+
+| mirror tilt | offset at the atoms, in waists | overlap |
+|---|---|---|
+| 0.1 mrad | 30 µm, 0.47 | 0.80 |
+| 0.5 mrad | 150 µm, 2.34 | 0.004 |
+| 2.36 mrad | 708 µm, 11.1 | $7\times10^{-54}$ |
+
+No forecast rests on it: the offsets are the geometry's own arithmetic, not a
+bench measurement.
+
+**Nothing measures the overlap, and $\rho$ is not a measurement.** The retro
+ratio carried in `constants.RHO_RETRO` is an assumption of 0.94, and the
+epistemic ledger records it as never informed by these data. The area ratio that
+*would* measure it needs the Doppler pedestal, which is 931 MHz wide, and the
+archive's traces span under 100 MHz, so they cover about a tenth of it and see a
+flat offset in their wings. **The wide scan that would measure $\rho$ is the
+same one the pedestal needs, and neither has been run.**
+
+**What does bound the tilt is the line's own presence**, and it needs nothing
+assumed. The only premise is that the Doppler-free signal is there and not
+suppressed beyond some factor:
+
+| narrow line at | offset | tilt | residual width | against the 1.07 MHz gap |
+|---|---|---|---|---|
+| 90 % of aligned | 21 µm | 0.069 mrad | 0.031 MHz | 34× short |
+| 50 % | 53 µm | 0.178 mrad | 0.081 MHz | 13× short |
+| 10 % | 97 µm | 0.324 mrad | 0.147 MHz | 7× short |
+| 1 % | 137 µm | 0.458 mrad | 0.208 MHz | 5× short |
+
+No forecast rests on it: the rows are what the narrow line's own presence
+allows, and no committed cell depends on any of them.
+
+**The term is self-limiting**: the same misalignment that would supply the
+missing width destroys the signal that carries it. Even at one per cent of
+aligned strength the tilt supplies a fifth of the gap. So it is disfavoured as
+the whole answer, not excluded as a contributor, and the gap stays open. No
+forecast rests on it: the 2.36 mrad is the tilt a refuted hypothesis would have
+needed and not a bench number, and nothing in `results/` carries it.
+
+**The standing wave is where this should be tested, and nobody has.**
+The fringe Monte Carlo assumes a perfect retro and has no offset axis. Under a
+tilt the fringe planes rotate by $\theta/2$ and gain a transverse period
+$\lambda/\sin\theta$. With the beams offset the local contrast
+$2\sqrt{I_1I_2}/(I_1+I_2)$ is unity only on the bisector. And near the focus the
+two wavefronts no longer match, which washes fringes out over the interaction
+volume by a third mechanism. The fringe-resolved suppression the record carries,
+about 7 per cent at this waist, is a contrast-weighted quantity, so all three
+reach it.
+
+**Measured, 2026-09-12**, by `fullmodel.fringe_survival_mc`, which carries all
+three and reduces to the ideal contrast at zero tilt, zero offset and unit beam
+quality. **The tilt angle is negligible and the offset is not.** The transverse
+fringe wave-vector $k\sin\theta$ is four orders below the axial $2k$, so at
+0.5 mrad the mean fringe survival moves by under 2 per cent, while an offset of
+one waist takes the mean contrast from 0.9995 to 0.836. Beam quality enters
+through the axial sampling instead, taking the mean radius over the collected
+region from 1.011 to 1.083 waists at $M^2 = 3$ and the survival down by 6 per
+cent. What a tilt does to this bench, it does through the offset it produces.
+The wavefront mismatch is still not modelled, so these are an upper bound on the
+fringe effect at non-zero tilt.
+
+**What the item is for, then.** The tolerance itself, for the campaign. The
+offset per unit tilt does not change with the waist while the waist does, so a
+tighter focus makes the alignment requirement proportionately sharper: at 16 µm
+the same 0.053 mrad costs a quarter of the overlap and not six per cent.
+That is a real constraint on the tight-waist configuration and it was not
+written down.
+
+**What would close it.** A shear-plate or far-field overlap check at the cell,
+minutes, with the residual walk-off recorded. The data alone already bound it
+through $\rho$, which is why this is a tolerance to respect and not an unknown
+to span.
+
+**What the forecast does until then.** `rb5s6s.fullmodel.residual_doppler_fwhm_mhz`
+carries the term and `build_world_trace` takes it as an opt-in argument, off by
+default, so the campaign case and the Sobol ranking can weigh it against the
+waist instead of assuming it away.
+
+### The modulator's amplitude admixture is a setting and not a defect
+
+**Owner-stated, 2026-09-12.** The polarisation axis into the modulator was
+tilted deliberately, to give phase-amplitude coupling, so that the carrier would
+not bury the other teeth even at small modulation depth. The residual amplitude
+modulation this record measures is therefore the intended consequence of a
+control that was exercised, and not an imperfection of the device.
+
+**What that changes.** The ruler chapter localises the admixture to the carrier
+and reports its height running from 0.360 to 1.188 of the first order across the
+clean combs, standing taller than the first order on ten of forty-one, while the
+second-to-first ratio holds to four per cent. Read as a defect that scatter is a
+purity failure to be bounded. Read as a setting it is the signature the tilt was
+introduced to produce, and the contrast between the carrier's spread and the
+second-to-first ratio's tightness is what a deliberate phase-amplitude coupling
+looks like.
+
+**What it does not do is retire the comb as a lever** (owner, correcting a
+first reading of this item the same day). The coupling redistributes power among
+the teeth and modulates it at the drive frequency, but the time-averaged total
+is unchanged and stays at the operating power. The transit is about 260 ns
+against a 12.5 MHz drive, so the atoms respond to that average, and **the light
+shift is the same with the modulator on as off**. What the admixture breaks is
+the prediction of the tooth shares from $J_k^2$, not the constancy of the total.
+
+**And the shares are observable, which is better than predicting them.** A
+two-photon height goes as the share squared, so each tooth's share is read from
+the same trace it is used on. The lever therefore stands with a measured
+abscissa instead of a nominal depth. From the comb the ruler chapter measures,
+heights $0 : 1.00 : 0.69 : 0.15$ at $k = 0, \pm1, \pm2, \pm3$ with the carrier
+at 0.360 to 1.188 of the first order, the tallest tooth carries **0.18 to
+0.20**. At those shares the saturation companion sits **25 to 31 times** below
+the unmodulated line's, at identical light shift, collisional width, laser
+width and transit. Nothing else in this model separates saturation from the
+Lorentzian sum.
+
+[The ramp chapter](../methods/03_the_ac_stark_ramp.md) already designs its first
+test to measure the admixture and never assume it away, which is the correct
+handling and is unchanged by the intent. What the intent adds is that the
+admixture will not be reduced by a better modulator, because it was not the
+modulator.
+
+**What remains open**: the tilt angle itself, which nobody recorded, and
+therefore the size of the coupling as a number and not as a measured
+scatter. No forecast rests on it: the comb enters the analysis as a frequency
+ruler, whose calibration the second-to-first ratio carries and the carrier does
+not.
 
 ### The guided-platform items
 
