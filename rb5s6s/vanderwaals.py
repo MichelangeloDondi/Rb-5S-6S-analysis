@@ -74,7 +74,7 @@ BOHR_M = _C.A0_M  # constants.py, since 2026-09-11: this was a fifth
                   # named four missed it, which is repairing the name
                   # last found missing rather than the population
 HBAR = _C.HBAR_JS  # one home for the trio, constants.py, since 2026-09-11
-KB = 1.380649e-23
+KB = _C.K_B_J_PER_K   # one home: constants.py (2026-09-12)
 M_RB87 = 86.909180527 * 1.66053907e-27
 
 # Literature Rb2 ground-state C6, for the validation path only. SOURCED

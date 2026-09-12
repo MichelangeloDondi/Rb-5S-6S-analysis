@@ -40,7 +40,7 @@ import numpy as np
 from . import blackbody, constants as K, instruments as inst
 from .noise import sigma_of_v
 
-C_M_S = 299_792_458.0
+C_M_S = K.C_M_PER_S                 # one home: constants.py
 
 # Room temperature for a laboratory nanofibre, in kelvin. Not a fitted or
 # adjustable quantity in this twin: it is the environment the atoms radiate

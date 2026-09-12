@@ -141,8 +141,8 @@ IONISATION_LIMIT_CM = 33690.81
 
 # CODATA, and the atomic unit of electric dipole moment.
 _EA0 = 8.4783536255e-30          # C m
-_EPS0 = 8.8541878128e-12         # F/m
-_H = 6.62607015e-34              # J s
+_EPS0 = _C.EPS0_F_PER_M          # F/m, one home: constants.py
+_H = _C.H_PLANCK_JS              # J s
 _HBAR = _H / (2.0 * math.pi)
 _C_CM = 2.99792458e10            # cm/s
 _MU_B_MHZ_PER_UT = 9.2740100783e-24 / _H * 1e-6 / 1e6

@@ -165,9 +165,10 @@ def test_the_staged_patch_id_is_the_forward_diff_not_the_parents(bl, repo):
 
 def test_a_partial_board_is_refused_rather_than_recorded(bl, repo):
     """One seat used to satisfy coverage. It must now be refused outright.
-    The diff stages a docs file so seats_for sizes the need well above
-    one; a diff needing only `rules` makes a one-seat board conformant
-    by design (see test_required_is_sized_by_the_diff)."""
+    The board opens with the required seats and one of them is recorded,
+    which is a partial board whatever the diff (the seat model of
+    2026-09-12 never lets a board fall below the two required seats; see
+    test_required_is_sized_by_the_diff)."""
     _point_at(bl, repo)
     (repo / "docs").mkdir()
     (repo / "docs" / "f.md").write_text("three\n")
@@ -278,6 +279,13 @@ def test_begin_refuses_while_a_blocking_finding_stands(bl, repo):
     _regate(bl)
     bl.begin(seats, expect=1)
     bl.record(seats, ["REFUTE"] * len(seats), blocking=["the planted defect"])
+    # the boarded tree lands (0c.25: the findings are the NEXT commit's first
+    # work), so the refusal probed below is the standing finding's and not
+    # the one-round cap's, whose "rounds since HEAD" reading depends on the
+    # commit's second (it read differently in the floor and in the gate)
+    _run(repo, "commit", "-q", "-m", "the boarded tree, landed with its findings open")
+    (repo / "b.txt").write_text("x\n")
+    _run(repo, "add", "-A")
     with pytest.raises(SystemExit) as e:
         _regate(bl)
         bl.begin(seats, expect=0)
@@ -533,7 +541,7 @@ def test_a_second_record_on_one_reading_is_refused(bl, repo):
     (repo / "a.txt").write_text("five\n")
     _run(repo, "add", "-A")
     with pytest.raises(SystemExit) as e:
-        bl.record(["rules"], ["CONFIRM"])
+        bl.record(FULL, CONFIRMS)
     assert "already carries" not in str(e.value), (
         "the duplicate guard shadowed the seat-list refusal, which is the "
         "defect the first repair introduced")
@@ -670,24 +678,42 @@ def test_begin_refuses_a_running_gate(bl, repo):
 
 
 def test_required_is_sized_by_the_diff(bl, repo):
-    """A focused diff stamps the seats it needed, never the universe, and
-    a seat list below the need is refused at begin. Before seats_for was
-    wired in, a focused board's row was a lie in one direction or the
-    other: ten names nobody fielded, or a non-conformant five."""
+    """A round's row records the seats it summoned, never the universe, and
+    a board without the two required seats is refused at begin (the seat
+    model of 2026-09-12: physics and strategy always, extras by reason).
+    Before seats_for was wired in, a focused board's row was a lie in one
+    direction or the other: ten names nobody fielded, or a non-conformant
+    five; the diff's own reading is now a hint on the row, not a floor."""
     (repo / "notes.txt").write_text("x")
     _run(repo, "add", "-A")
     _point_at(bl, repo)
     with pytest.raises(SystemExit, match="needs seat"):
         bl.begin([], expect=0)
-    bl.begin(["rules"], expect=0)
-    bl.record(["rules"], ["CONFIRM"])
+    # the seat model of 2026-09-12: the two required seats are never omitted,
+    # and a board without them is refused whatever the diff triggers
+    with pytest.raises(SystemExit, match="needs seat"):
+        bl.begin(["rules"], expect=0)
+    required = sorted(bl.REQUIRED_SEATS)
+    bl.begin(required, expect=0)
+    bl.record(required, ["CONFIRM"] * len(required))
     import json as _json
     row = _json.loads(
         (repo / ".board_ledger.jsonl").read_text().splitlines()[-1])
-    assert row["required"] == ["rules"]
-    assert row["seats"] == ["rules"]
+    assert row["required"] == required
+    assert row["seats"] == required
     ok, why = bl.entry_is_conformant(row)
     assert ok, why
+    # an extra convened with the board is REQUIRED of that round: the row's
+    # required set is the summoned set, so a seat summoned and not fielded is
+    # a non-conformant row (the diff's own reading is recorded beside it)
+    _run(repo, "commit", "-q", "-m", "the first round's tree, landed")
+    (repo / "notes.txt").write_text("y")
+    _run(repo, "add", "-A")
+    _point_at(bl, repo)
+    # a commit sits between the two rounds: 0c.25 caps a commit at ONE round
+    bl.begin(required + ["rules"], expect=0)
+    with pytest.raises(SystemExit, match="missing seat"):
+        bl.record(required, ["CONFIRM"] * len(required))
 
 
 def test_a_targeted_stamp_admits_when_the_gate_verdict_is_absent(bl, repo):
@@ -700,8 +726,8 @@ def test_a_targeted_stamp_admits_when_the_gate_verdict_is_absent(bl, repo):
     (repo / ".ci_gate_verdict").unlink()
     (repo / ".targeted_ok").write_text(
         f"TARGETED\ntree {bl.staged_tree()}\n")
-    bl.begin(["rules"], expect=0)
-    bl.record(["rules"], ["CONFIRM"])
+    bl.begin(FULL, expect=0)
+    bl.record(FULL, CONFIRMS)
 
 
 def test_a_stale_green_with_a_matching_stamp_still_admits(bl, repo):
@@ -714,8 +740,8 @@ def test_a_stale_green_with_a_matching_stamp_still_admits(bl, repo):
               tree="0" * 40)
     (repo / ".targeted_ok").write_text(
         f"TARGETED\ntree {bl.staged_tree()}\n")
-    bl.begin(["rules"], expect=0)
-    bl.record(["rules"], ["CONFIRM"])
+    bl.begin(FULL, expect=0)
+    bl.record(FULL, CONFIRMS)
 
 
 def test_a_stamp_for_another_tree_refuses(bl, repo):
@@ -726,7 +752,7 @@ def test_a_stamp_for_another_tree_refuses(bl, repo):
     _point_at(bl, repo, verdict="PASS 0", tree="0" * 40)
     (repo / ".targeted_ok").write_text("TARGETED\ntree " + "1" * 40 + "\n")
     with pytest.raises(SystemExit, match="targeted"):
-        bl.begin(["rules"], expect=0)
+        bl.begin(FULL, expect=0)
 
 
 def test_an_empty_stamp_tree_never_admits(bl, repo):
@@ -739,7 +765,7 @@ def test_an_empty_stamp_tree_never_admits(bl, repo):
     (repo / ".ci_gate_verdict").unlink()
     (repo / ".targeted_ok").write_text("TARGETED\n")
     with pytest.raises(SystemExit):
-        bl.begin(["rules"], expect=0)
+        bl.begin(FULL, expect=0)
     assert bl._targeted_stamp_tree() == ""
 
 
@@ -783,9 +809,9 @@ def test_the_delta_hatch_covers_the_post_round_delta(bl, repo):
         (repo / f"{n}.txt").write_text(n)
     _run(repo, "add", "-A")
     _point_at(bl, repo)
-    bl.begin(["rules"], expect=0)
+    bl.begin(FULL, expect=0)
     round_tree = bl.staged_tree()
-    bl.record(["rules"], ["CONFIRM"])
+    bl.record(FULL, CONFIRMS)
     (repo / "a.txt").write_text("a2")
     # add the one changed file by name: -A would sweep in the ledger and
     # verdict files living in the fixture repo, and the delta means one

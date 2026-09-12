@@ -40,11 +40,11 @@ __all__ = [
     "t_max",
 ]
 
-_H = 6.62607015e-34
-_C = 299792458.0
-_KB = 1.380649e-23
+_H = C.H_PLANCK_JS                  # one home for the SI constants, constants.py (2026-09-12)
+_C = C.C_M_PER_S
+_KB = C.K_B_J_PER_K
 _HBAR = _H / (2.0 * math.pi)
-_EPS0 = 8.8541878128e-12
+_EPS0 = C.EPS0_F_PER_M
 # the atomic-unit trio lives in constants since 2026-09-11; these names stay
 # so the formulas below read unchanged
 _E_C = C.E_CHARGE_C

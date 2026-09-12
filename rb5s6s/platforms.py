@@ -49,9 +49,9 @@ from .hyperpolarizability import two_photon_rabi_hz
 from .detection import ir_branching_5p12, mean_5p_lifetime_s
 from ._compat import trapezoid  # the seam, never the numpy name
 
-H_PLANCK_JS = 6.62607015e-34
-C_M_PER_S = 2.99792458e8
-KB_J_PER_K = 1.380649e-23
+H_PLANCK_JS = C.H_PLANCK_JS         # one home for the SI constants, constants.py (2026-09-12)
+C_M_PER_S = C.C_M_PER_S
+KB_J_PER_K = C.K_B_J_PER_K
 
 #: Population decay rate of 6S, in 1/s. Gamma_nat is a FWHM in Hz, so the
 #: population rate is 2 pi times it. tau = 45.57 ns inverts to the same number.

@@ -58,9 +58,8 @@ from scipy.integrate import quad
 from scipy.optimize import brentq
 from scipy.special import jv, jvp, kv, kvp
 
-from .constants import GAMMA_NAT_HZ  # noqa: F401  (core import; leaf direction)
+from .constants import GAMMA_NAT_HZ, K_B_J_PER_K as K_B  # noqa: F401  (core import; leaf direction; one home for k_B)
 
-K_B = 1.380649e-23
 M_RB87 = 86.909180527 * 1.66053906660e-27
 
 # Fused silica, Malitson, at the wavelengths this record actually uses. Read as

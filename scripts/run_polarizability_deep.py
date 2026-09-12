@@ -22,7 +22,7 @@ sum needs come back at 0.94 to 1.03 (6s-7p, 6s-8p, 7s-7p, 7s-8p), the compact
 tables. The 6s-nP elements for n >= 9 are the computed values times a
 calibration factor c read from the held 6s-8p pair, the class nearest the
 tail (its mean held/computed), with the step from the 6s-7p pair as its
-spread, which the producer computes and writes (0.949 +- 0.040) rather than
+spread, which the producer computes and writes (0.949 +- 0.041) rather than
 types, and the STATIC sum they give is checked against the 4.0 +- 1.3 the
 paper's own table leaves for them, which is the one independent test of the
 calibration in the literature. The tail is summed explicitly to n = 40 and the
