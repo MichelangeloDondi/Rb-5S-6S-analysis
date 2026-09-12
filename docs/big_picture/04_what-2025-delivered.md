@@ -73,7 +73,10 @@ as a bound. Concretely:
   separates the geometry reading from the other two.
 
   The prediction is built on the magnitude of this repository's own
-  recompute, **−1145 a.u.** (§3), the value `DELTA_ALPHA_AU` now carries.
+  recompute, **−1145 a.u.** (§3), the value `DELTA_ALPHA_AU` now carries. The
+  same quantity re-derived with the 6S tail summed dynamically reads
+  [-1133.0](../../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive") ± [5.9](../../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive:err") a.u.
+  (`results/polarizability_deep.csv`), the constant moving in its own wave.
   [Orson
   2021](../lit/orson2021.md)'s computed value is 1093, about five per cent
   smaller and of the other sign, kept beside ours as

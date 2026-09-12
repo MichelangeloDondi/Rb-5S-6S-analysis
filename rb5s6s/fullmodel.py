@@ -71,7 +71,8 @@ from .lineshape import local_ramp_density, model_profile, ramp_mixture
 
 __all__ = ["doppler_pedestal_fwhm_mhz", "residual_doppler_fwhm_mhz",
            "saturation_companion_mhz",
-           "collection_z_ratio_m2", "full_profile"]
+           "collection_z_ratio_m2", "full_profile",
+           "convolution_licence", "ultra_joint_covariance"]
 
 
 def doppler_pedestal_fwhm_mhz(T_C: float, isotope: int = 87,
@@ -157,6 +158,21 @@ def collection_z_ratio_m2(w0_m: float, m2: float = 1.0, **kw) -> float:
     diffraction-limited beam; this is the same quantity with the one place
     `M^2` enters the model put back.
     """
+    # M^2 >= 1 IS PHYSICS AND NOT A FIT BOUND. No real beam is better than
+    # diffraction-limited, and nothing refused an impossible value until
+    # 2026-09-12: this returned 0.1303 at m2 = 0.5 and -0.2605 at m2 = -1, a
+    # NEGATIVE Rayleigh-range ratio, computed through without complaint. An
+    # unbounded optimiser found exactly that, railing to 0.240 against a truth
+    # of 1.000 with a scatter small enough to read as precision (master plan
+    # 17t). The bound belongs here and not in each caller's own hand-written
+    # limit, because the next caller writes its own.
+    if not (float(m2) >= 1.0):
+        raise ValueError(
+            f"m2={m2} is below the diffraction limit: M^2 = 1 IS the ideal "
+            "beam and no real beam is better than one, so a value under it is "
+            "not a beam this model can carry. A fit that reaches here has "
+            "railed through the physics rather than found it; bound the "
+            "parameter at one and read the boundary as a one-sided bound.")
     return float(m2) * K.collection_z_ratio(w0_m=w0_m, **kw)
 
 
@@ -397,7 +413,21 @@ def fringe_survival_mc(*, w0_m: float, rho: float = 1.0, T_C: float = 130.0,
 #: diverges as the window widens and that is a property of the window, not a
 #: defect. Asking them to converge struck two usable channels twice.
 DEFAULT_WINDOWS = (3.25, 6.0, 12.0)
-DEFAULT_ORDERS = (2, 3, 5, 7)
+#: BOTH PARITIES, because the even orders are the ones this archive can read.
+#: Measured on the twin's world under the noise model's own correlation time
+#: (`tau_int = 2.515`), 42 statistics over these orders and windows split
+#: exactly by parity at a per-trace SNR of 3: every even order and even ratio
+#: runs 23.23 [ref:moment_admission:snr_admitted_min:] to
+#: 1832 [ref:moment_admission:snr_admitted_max:] and every odd one runs
+#: 0.0004582 [ref:moment_admission:snr_refused_min:] to
+#: 1.279 [ref:moment_admission:snr_refused_max:]. The tuple was
+#: `(2, 3, 5, 7)` until 2026-09-12, carrying ONE even order and no even ratio,
+#: so the statistic set that holds the width information could not be produced
+#: by this module at all. The odd orders stay in the tuple because they are the
+#: SHIFT channel and a campaign at a larger light shift reads them; on this
+#: archive a caller is expected to drop them on their measured SNR, not on
+#: their name.
+DEFAULT_ORDERS = (2, 3, 4, 5, 6, 7, 8, 9)
 
 
 def ultra_joint_statistics(nu: np.ndarray, *, windows=DEFAULT_WINDOWS,
@@ -420,16 +450,193 @@ def ultra_joint_statistics(nu: np.ndarray, *, windows=DEFAULT_WINDOWS,
     """
     from .cumulants import windowed_cumulants
     y = full_profile(nu, **profile_kw)
+    orders = tuple(orders)
     out: dict = {}
     for w in windows:
-        k, _ = windowed_cumulants(nu, y, w, orders=tuple(orders))
+        k, _ = windowed_cumulants(nu, y, w, orders=orders)
         for n in orders:
             out[f"k{n}@{w:g}"] = k[n]
-        if with_ratios and 3 in orders and 5 in orders and abs(k[3]) > 0:
-            out[f"k5/k3@{w:g}"] = k[5] / k[3]
-        if with_ratios and 5 in orders and 7 in orders and abs(k[5]) > 0:
-            out[f"k7/k5@{w:g}"] = k[7] / k[5]
+        if not with_ratios:
+            continue
+        # EVERY ADJACENT SAME-PARITY PAIR, not two hard-coded odd ones. The
+        # ratio is formed within a parity because that is what makes it
+        # shift-free: both members carry the same power of the asymmetry, so
+        # it divides out. Pairing across parities would not.
+        for lo in orders:
+            hi = lo + 2                      # by VALUE, never by tuple position
+            if hi in orders and abs(k[lo]) > 0:
+                out[f"k{hi}/k{lo}@{w:g}"] = k[hi] / k[lo]
     return out
+
+
+def convolution_licence(w0_m: float, m2: float = 1.0, **kw) -> dict:
+    """Whether `S = f * L` is licensed at this waist and beam quality.
+
+    A convolution holds only where the homogeneous kernel is the same at every
+    collected volume element. The rms spread of the transit width over the
+    collected region depends on `w0` and `M^2` ONLY through
+    `z_ratio = M^2 lambda L / (pi w0^2)`, so the condition is a bound on
+    `z_ratio` and not on the waist -- which matters, because the waist band the
+    record works in is licensed at `M^2 = 1` and is not at `M^2 = 2`.
+
+    THE THRESHOLD IS 0.667 AND IT IS NOT SHARP. It is the `z_ratio` at which
+    the transit spread reaches the record's own 5.5 per cent edge, which is
+    where that number comes from and is the only evidence for it.
+
+    **A 720-cell Monte Carlo is NOT a second measurement of this threshold.**
+    An earlier draft of this docstring said it was "confirmed from the other
+    side" by that run. It was not: the run ASSERTED `z_ratio > 0.667` per cell
+    and reported which cells it refused, so the threshold was its input. Citing
+    it back is the record's own "a confirmation that is the same computation
+    twice", and it is withdrawn here rather than restated.
+
+    The licence edges below are inverted from THIS function by bisection, so
+    they are arithmetic on the line above and are not offered as independent:
+    55 microns leaves the licence at `M^2 = 1.891`, 64 at `2.560`, 70 at
+    `3.062` and 85 at `4.516`. An earlier draft put 64 microns at 3.0, which is
+    17 per cent past where the function itself refuses it, and the guard never
+    probed 64 between 1.9 and 3.0 so the wrong number survived.
+    Equivalently `w0 >= 40 microns * sqrt(M^2)`. But the
+    committed prediction band gives `z_ratio = 0.26 +- 0.14` at `M^2 = 1`, a 54
+    per cent relative uncertainty propagated from `f = 18 +- 1 mm`, an image
+    distance of `50 +- 5 mm` and the waist band, so at `M^2 = 3` the boundary
+    sits INSIDE the error bar. `licensed` is therefore the reading of the
+    central value and `margin` is what a caller must weigh against its own
+    uncertainty: a sharp yes or no quoted against a +-54 per cent input would be
+    invented precision.
+
+    FAILURE MODE: a caller that reads `licensed` and ignores `z_ratio` learns
+    nothing about how far outside it is, and the interesting cases are the near
+    ones.
+    """
+    zr = collection_z_ratio_m2(float(w0_m), float(m2), **kw)
+    return {"z_ratio": float(zr), "threshold": 0.667,
+            "licensed": bool(zr <= 0.667),
+            "margin": float(0.667 - zr),
+            "w0_min_m": 40e-6 * math.sqrt(float(m2))}
+
+
+def ultra_joint_covariance(nu: np.ndarray, *, n_real: int = 400,
+                           noise_frac: float = 0.004, tau_int: float = 1.0,
+                           snr_floor: float = 3.0, seed: int = 0,
+                           windows=DEFAULT_WINDOWS, orders=DEFAULT_ORDERS,
+                           with_ratios: bool = True, **profile_kw) -> dict:
+    """The statistic vector's empirical covariance, and which statistics survive.
+
+    `ultra_joint_nll` says a diagonal sigma understates the uncertainty and
+    names this function as the thing that did not exist. It does now, and what
+    it returned when first run (2026-09-12) is why a caller must read
+    `admitted` rather than averaging the whole vector:
+
+    **THE ADMISSION FLOOR SPLITS THE LADDER BY PARITY.** Over 42 statistics at
+    the archive's parameters, the 21 even ones carry a per-trace SNR of
+    23.23 [ref:moment_admission:snr_admitted_min:] to
+    1832 [ref:moment_admission:snr_admitted_max:] and the 21 odd ones reach
+    only 1.279 [ref:moment_admission:snr_refused_max:], so at any sensible floor the odd
+    ladder is refused entirely. A windowed cumulant of pure noise is largest
+    exactly where the signal is smallest (A74), so averaging a refused
+    statistic into a result does not dilute it, it inverts it.
+
+    **AND THE COVARIANCE IS NEARLY SINGULAR ON PURPOSE.** Its condition number
+    at the archive's parameters is about 1e20 and the admitted set carries about
+    three independent numbers, not twenty-one. So an interval taken through a
+    pseudo-inverse of this matrix is only quotable where it is STABLE against
+    the cutoff: `sigma(ln transit)` holds to about fourteen per cent of itself
+    across rcond 1e-6 to 1e-14 while `sigma(ln s0)` moves three orders of
+    magnitude, which means the moment ladder determines the width and does not
+    determine the shift. `cond` is returned so the caller cannot not know.
+
+    `tau_int` is the noise's integrated correlation time in samples, from
+    `results/noise_model.csv`; the default 1.0 is white noise and OVERSTATES the
+    information. The committed law's `tau_int` and `rho1` are not mutually
+    consistent under an AR(1) -- 2.515 against a first lag implying 1.217 -- and
+    matching `tau_int` is the conservative branch, because a statistic's
+    variance is set by the integrated time and not by the first lag.
+
+    FAILURE MODE: `n_real` below the statistic count returns a singular
+    covariance that a pseudo-inverse will happily invert into a confident
+    interval. It raises instead.
+    """
+    keys = list(ultra_joint_statistics(nu, windows=windows, orders=orders,
+                                       with_ratios=with_ratios, **profile_kw))
+    if n_real <= len(keys):
+        raise ValueError(
+            f"n_real={n_real} is not above the {len(keys)} statistics, so the "
+            "covariance is singular by construction and any interval taken "
+            "through it is an artefact of the pseudo-inverse, not a result")
+    y0 = full_profile(nu, **profile_kw)
+    peak = float(np.max(y0))
+    a = 0.0 if tau_int <= 1.0 else (tau_int - 1.0) / (tau_int + 1.0)
+    root = math.sqrt(1.0 - a * a)
+    rows = []
+    for r in range(n_real):
+        rng = np.random.default_rng(seed + r)
+        w = rng.standard_normal(y0.size)
+        if a > 0.0:
+            x = np.empty_like(w)
+            x[0] = w[0]
+            for i in range(1, w.size):
+                x[i] = a * x[i - 1] + root * w[i]
+        else:
+            x = w
+        yn = y0 + noise_frac * np.sqrt(np.clip(y0, 0.0, None) * peak) * x
+        from .cumulants import windowed_cumulants
+        # KEYED, NEVER POSITIONAL. `keys` comes from a function that emits a
+        # ratio only when its denominator is non-zero, while this loop always
+        # appended, so at a light shift of zero the odd cumulants vanish, three
+        # ratio keys disappear and `zip(keys, snr)` silently truncated 42
+        # columns onto 39 names: every statistic after the first dropped ratio
+        # was mislabelled, and nothing raised. Building a dict per realisation
+        # and intersecting the names makes the alignment structural.
+        row = {}
+        for half_width in windows:
+            kk, _ = windowed_cumulants(nu, yn, half_width, orders=tuple(orders))
+            for n in orders:
+                row[f"k{n}@{half_width:g}"] = kk[n]
+            if with_ratios:
+                for lo in orders:
+                    hi = lo + 2
+                    if hi in orders and abs(kk[lo]) > 0:
+                        row[f"k{hi}/k{lo}@{half_width:g}"] = kk[hi] / kk[lo]
+        rows.append(row)
+    # the names every realisation produced, in the reference order
+    common = [k for k in keys if all(k in r for r in rows)]
+    dropped = [k for k in keys if k not in common]
+    if dropped:
+        keys = common
+    X = np.array([[r[k] for k in keys] for r in rows], float)
+    mean = np.nanmean(X, axis=0)
+    sd = np.nanstd(X, axis=0, ddof=1)
+    with np.errstate(divide="ignore", invalid="ignore"):
+        snr = np.abs(mean) / np.where(sd > 0, sd, np.nan)
+    admitted = [k for k, s in zip(keys, snr)
+                if np.isfinite(s) and s >= snr_floor]
+    refused = [k for k in keys if k not in admitted]
+    cov = np.cov(X, rowvar=False)
+    corr = np.corrcoef(X, rowvar=False)
+
+    def _eff_rank(m):
+        e = np.sort(np.linalg.eigvalsh(m))[::-1]
+        return float(e.sum() ** 2 / (e ** 2).sum())
+
+    # THE EFFECTIVE RANK THAT MEANS ANYTHING IS THE ADMITTED SET'S. Over all
+    # 42 it reads about 8, because the refused odd statistics are nearly pure
+    # noise and pure noise is nearly full rank: counting them measures the
+    # noise's independence, not the information's. Over the admitted set it
+    # reads about 3. Both are returned so the difference cannot be mistaken
+    # for a disagreement between this function and its own docstring.
+    ai = [keys.index(k) for k in admitted]
+    return {
+        "keys": keys, "mean": mean, "sd": sd, "snr": snr,
+        "admitted": admitted, "refused": refused,
+        "cov": cov, "corr": corr,
+        "cov_admitted": cov[np.ix_(ai, ai)] if ai else np.zeros((0, 0)),
+        "cond": float(np.linalg.cond(cov[np.ix_(ai, ai)])) if ai else float("nan"),
+        "cond_all": float(np.linalg.cond(cov)),
+        "effective_rank": _eff_rank(corr[np.ix_(ai, ai)]) if len(ai) > 1 else float("nan"),
+        "effective_rank_all": _eff_rank(corr),
+        "n_real": int(n_real), "tau_int": float(tau_int),
+    }
 
 
 def ultra_joint_nll(observed: dict, sigma: dict, nu: np.ndarray,
@@ -441,10 +648,12 @@ def ultra_joint_nll(observed: dict, sigma: dict, nu: np.ndarray,
     which is the failure a sum over a shrinking population hides.
 
     THIS IS A LIKELIHOOD OVER SUMMARY STATISTICS AND NOT OVER THE TRACE. Its
-    statistics are correlated, strongly so between orders at one window, and a
-    DIAGONAL sigma therefore understates the uncertainty. The covariance is owed
-    and `ultra_joint_covariance` is where it goes; until it exists this returns
-    a number that ranks models and does not calibrate an interval.
+    statistics are correlated, strongly so between orders at one window, so a
+    DIAGONAL sigma understates the uncertainty and this function still takes
+    one. `ultra_joint_covariance` exists now and returns the real thing, with
+    the admitted set and the condition number a caller needs to read before
+    quoting an interval from it. Until a caller threads that covariance through
+    here, what this returns ranks models and does not calibrate an interval.
     """
     model = ultra_joint_statistics(nu, **profile_kw)
     chi2, used = 0.0, 0

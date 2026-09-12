@@ -109,6 +109,7 @@ grep -qE '^(results|scripts)/README\.md$' <<<"$CHANGED" && add \
   tests/test_reference_coverage.py tests/test_navigation_footer_is_last.py \
   tests/test_uncertainty_formatting.py || true
 grep -q '^results/' <<<"$CHANGED" && add \
+  tests/test_reproduction_routes.py \
   tests/test_results_status.py tests/test_freshness_covers_every_result.py \
   tests/test_distribution_ratchet.py tests/test_results_err_format.py \
   tests/test_results_index_is_complete.py tests/test_references.py \
@@ -117,7 +118,14 @@ grep -q '^results/' <<<"$CHANGED" && add \
 grep -qE '^scripts/run_|^scripts/make_' <<<"$CHANGED" && add \
   tests/test_results_index_is_complete.py tests/test_pipeline_order.py \
   tests/test_checkers_are_wired.py tests/test_repo_hygiene.py \
-  tests/test_docs_canonical.py
+  tests/test_docs_canonical.py tests/test_reproduction_routes.py
+# A GUARD WHOSE POPULATION IS A DISCOVERY FUNCTION RE-GRADES A WAVE WITHOUT
+# APPEARING IN IT. `test_reproduction_routes.py` computes its own population by
+# walking scripts/run_* and results/*.csv, so it is red for a new producer that
+# no map entry names, and it appears in no wave's changed-file list. It was
+# routed by NEITHER branch until 2026-09-12, so it ran zero times on the only
+# two path classes that can make it red, and a floor green at 3137 passed
+# stamped a tree carrying it hard red. Both branches route it now.
 # AND THE TEST FILES THAT LOAD THAT PRODUCER BY PATH. The branch above
 # adds a fixed generic set and stops, while the rb5s6s branch below maps
 # a changed module to its own test file by name. A changed producer had
@@ -143,6 +151,13 @@ grep -q '^rb5s6s/' <<<"$CHANGED" && while read -r f; do
   case "$f" in rb5s6s/*.py)
     t="tests/test_$(basename "${f%.py}").py"; add "$t";; esac
   done <<<"$CHANGED" && add tests/test_constants.py
+# A MODULE'S GUARDS ARE NOT ALL NAMED AFTER IT. The derivation above maps
+# rb5s6s/<m>.py to tests/test_<m>.py and reaches nothing else, so a guard given
+# its own descriptive file is invisible to the floor on the very edit it
+# grades. The twin's noise correlation is the instance: it guards
+# rb5s6s/forecast.py and is named for what it checks.
+grep -q '^rb5s6s/forecast\.py$' <<<"$CHANGED" && add \
+  tests/test_twin_noise_correlation.py tests/test_campaign_twin_reproduction.py
 # the gate scripts, the checkers and the ledger have owning modules too
 # (the pre-commit hook already covers these by name; this map inherits
 # rather than diverges -- a second, narrower map was an audit finding)

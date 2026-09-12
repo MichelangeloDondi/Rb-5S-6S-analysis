@@ -57,7 +57,7 @@ Three separate labels recur throughout the repo and are easy to conflate:
   $\beta_\text{self}$, C2 the 2025 laser-epoch width $\sigma_\text{laser}$, and
   C3 the power sweep (ramp-law predictions), with C3d its AC-Stark coefficient
   bound $S_0$. Each is a **bound or null** in the 2025 dataset.
-- **M0 … M40, the analysis *modules* (pipeline stages)**, one `rb5s6s/*.py`
+- **M0 … M41, the analysis *modules* (pipeline stages)**, one `rb5s6s/*.py`
   file and one `scripts/run_*.py` driver each, where the fitting core has
   lettered sub-stages (M4b–M4e). The C-results are the *what*, the M-modules the *how*:
 
@@ -75,7 +75,7 @@ Three separate labels recur throughout the repo and are easy to conflate:
   | M31 cascade populations and ground-F depletion | M32 blackbody as a campaign temperature boundary | M33 model comparison as an evidence vector | M34 the digital twin: forecast a design before building it |
   | M35 the detection channel: which decay branch is collected, and its trapping | M36 polarisation: what ellipticity and a beam mismatch open | M37 the two-atom channel: what a pair accepts that one atom must refuse | M38 the fibre twin's forward model: a transit kernel entering at second order, contributing a few per cent of its own width and growing as T not sqrt(T), so a temperature ladder reads it weakly |
 | M39 the windowed self-centred cumulants: recentred to a tolerance with the flag returned, the pedestal taken from the trace's own far wings, any order through the moment recursion |  |  |  |
-| M40 full model (pedestal, saturation, pumping, beam quality) |  |  |  |
+| M40 full model (pedestal, saturation, pumping, beam quality) | M41 the deep polarizability: the 6S–nP elements above 8P by the Coulomb approximation, calibrated on the held 6S–8P pair, the step from the 6S–7P pair setting its spread |  |  |
 
 - **CI, Continuous Integration** (*not* C1): the GitHub Actions workflow that
   runs the full `pytest` battery on every push, on the minimum *and* latest
@@ -153,6 +153,8 @@ rb5s6s/   api(the supported entry point: a trace in, a linewidth out)
           amplitudes(M10) model_ladder(M11) identifiability(M12) coverage(M13)
           sharing_bic(M14) fringe_tail(M15) polarizability(M16) resolving(M17)
           vanderwaals(M18) ramp_transit(M19) hyperpolarizability(M29)
+          coulomb_approx(M41: Bates-Damgaard radial functions for the 6s-nP elements
+                    above 8P, calibrated on the held 6S-8P pair with the 6S-7P step as its spread)
           cumulants(M39: the windowed self-centred cumulants of a line, recentred to
                     a tolerance with the converged flag returned, the pedestal
                     removed from the trace's own far wings, any order by the

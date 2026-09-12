@@ -1,0 +1,57 @@
+quantity,window_mhz,value,err,note,status
+snr_k2,3.25,1832,53,"ADMITTED at a floor of 3. Mean 2.75259, per-trace sd 0.001502. Pooled over 101 traces it reaches 1.841e+04.",DIAGNOSTIC
+snr_k3,3.25,0.0711,0.0021,"REFUSED at a floor of 3. Mean 0.000176663, per-trace sd 0.002485. Pooled over 101 traces it reaches 0.7146.",DIAGNOSTIC
+snr_k4,3.25,528,15,"ADMITTED at a floor of 3. Mean -7.00658, per-trace sd 0.01328. Pooled over 101 traces it reaches 5304.",DIAGNOSTIC
+snr_k5,3.25,0.0728,0.0021,"REFUSED at a floor of 3. Mean -0.00302827, per-trace sd 0.04158. Pooled over 101 traces it reaches 0.7319.",DIAGNOSTIC
+snr_k6,3.25,305.8,8.8,"ADMITTED at a floor of 3. Mean 88.6973, per-trace sd 0.29. Pooled over 101 traces it reaches 3074.",DIAGNOSTIC
+snr_k7,3.25,0.0733,0.0021,"REFUSED at a floor of 3. Mean 0.0950872, per-trace sd 1.298. Pooled over 101 traces it reaches 0.7364.",DIAGNOSTIC
+snr_k8,3.25,219.1,6.3,"ADMITTED at a floor of 3. Mean -2542.52, per-trace sd 11.6. Pooled over 101 traces it reaches 2202.",DIAGNOSTIC
+snr_k9,3.25,0.0735,0.0021,"REFUSED at a floor of 3. Mean -4.92912, per-trace sd 67.1. Pooled over 101 traces it reaches 0.7382.",DIAGNOSTIC
+snr_k4/k2,3.25,721,21,"ADMITTED at a floor of 3. Mean -2.54544, per-trace sd 0.00353. Pooled over 101 traces it reaches 7246.",DIAGNOSTIC
+snr_k5/k3,3.25,0.802,0.023,"REFUSED at a floor of 3. Mean -18.6796, per-trace sd 23.29. Pooled over 101 traces it reaches 8.06.",DIAGNOSTIC
+snr_k6/k4,3.25,717,21,"ADMITTED at a floor of 3. Mean -12.6591, per-trace sd 0.01766. Pooled over 101 traces it reaches 7203.",DIAGNOSTIC
+snr_k7/k5,3.25,1.279,0.037,"REFUSED at a floor of 3. Mean -31.3128, per-trace sd 24.49. Pooled over 101 traces it reaches 12.85.",DIAGNOSTIC
+snr_k8/k6,3.25,769,22,"ADMITTED at a floor of 3. Mean -28.665, per-trace sd 0.03729. Pooled over 101 traces it reaches 7725.",DIAGNOSTIC
+snr_k9/k7,3.25,0.435,0.013,"REFUSED at a floor of 3. Mean -46.9458, per-trace sd 108. Pooled over 101 traces it reaches 4.369.",DIAGNOSTIC
+snr_k2,6,1667,48,"ADMITTED at a floor of 3. Mean 6.60176, per-trace sd 0.00396. Pooled over 101 traces it reaches 1.675e+04.",DIAGNOSTIC
+snr_k3,6,0.00543,0.00016,"REFUSED at a floor of 3. Mean 7.1202e-05, per-trace sd 0.01311. Pooled over 101 traces it reaches 0.05457.",DIAGNOSTIC
+snr_k4,6,294.8,8.5,"ADMITTED at a floor of 3. Mean -18.722, per-trace sd 0.0635. Pooled over 101 traces it reaches 2963.",DIAGNOSTIC
+snr_k5,6,0.000458,,"REFUSED at a floor of 3. Mean -0.000190704, per-trace sd 0.4162. Pooled over 101 traces it reaches 0.004605. Its standard error is 1.3e-05, outside the plain-decimal band.",DIAGNOSTIC
+snr_k6,6,38.8,1.1,"ADMITTED at a floor of 3. Mean 95.2139, per-trace sd 2.455. Pooled over 101 traces it reaches 389.8.",DIAGNOSTIC
+snr_k7,6,0.001426,0.000041,"REFUSED at a floor of 3. Mean 0.0301113, per-trace sd 21.11. Pooled over 101 traces it reaches 0.01433.",DIAGNOSTIC
+snr_k8,6,57.0,1.6,"ADMITTED at a floor of 3. Mean 8888.65, per-trace sd 156. Pooled over 101 traces it reaches 572.8.",DIAGNOSTIC
+snr_k9,6,0.00394,0.00011,"REFUSED at a floor of 3. Mean -5.92588, per-trace sd 1503. Pooled over 101 traces it reaches 0.03963.",DIAGNOSTIC
+snr_k4/k2,6,341.4,9.9,"ADMITTED at a floor of 3. Mean -2.83591, per-trace sd 0.008307. Pooled over 101 traces it reaches 3431.",DIAGNOSTIC
+snr_k5/k3,6,0.2307,0.0067,"REFUSED at a floor of 3. Mean -24.3347, per-trace sd 105.5. Pooled over 101 traces it reaches 2.318.",DIAGNOSTIC
+snr_k6/k4,6,44.1,1.3,"ADMITTED at a floor of 3. Mean -5.08531, per-trace sd 0.1154. Pooled over 101 traces it reaches 442.7.",DIAGNOSTIC
+snr_k7/k5,6,0.645,0.019,"REFUSED at a floor of 3. Mean -49.4157, per-trace sd 76.63. Pooled over 101 traces it reaches 6.481.",DIAGNOSTIC
+snr_k8/k6,6,23.23,0.67,"ADMITTED at a floor of 3. Mean 93.4572, per-trace sd 4.023. Pooled over 101 traces it reaches 233.5.",DIAGNOSTIC
+snr_k9/k7,6,0.414,0.012,"REFUSED at a floor of 3. Mean -68.9666, per-trace sd 166.6. Pooled over 101 traces it reaches 4.16.",DIAGNOSTIC
+snr_k2,12,914,26,"ADMITTED at a floor of 3. Mean 14.0553, per-trace sd 0.01538. Pooled over 101 traces it reaches 9184.",DIAGNOSTIC
+snr_k3,12,0.00421,0.00012,"REFUSED at a floor of 3. Mean -0.000358961, per-trace sd 0.08536. Pooled over 101 traces it reaches 0.04226.",DIAGNOSTIC
+snr_k4,12,385,11,"ADMITTED at a floor of 3. Mean 179.797, per-trace sd 0.4675. Pooled over 101 traces it reaches 3865.",DIAGNOSTIC
+snr_k5,12,0.01073,0.00031,"REFUSED at a floor of 3. Mean 0.0316676, per-trace sd 2.95. Pooled over 101 traces it reaches 0.1079.",DIAGNOSTIC
+snr_k6,12,211.6,6.1,"ADMITTED at a floor of 3. Mean -14286.5, per-trace sd 67.52. Pooled over 101 traces it reaches 2126.",DIAGNOSTIC
+snr_k7,12,0.00384,0.00011,"REFUSED at a floor of 3. Mean 2.79347, per-trace sd 727.5. Pooled over 101 traces it reaches 0.03859.",DIAGNOSTIC
+snr_k8,12,66.6,1.9,"ADMITTED at a floor of 3. Mean -483150, per-trace sd 7259. Pooled over 101 traces it reaches 668.9.",DIAGNOSTIC
+snr_k9,12,0.01111,0.00032,"REFUSED at a floor of 3. Mean -1674, per-trace sd 1.507e+05. Pooled over 101 traces it reaches 0.1116.",DIAGNOSTIC
+snr_k4/k2,12,429,12,"ADMITTED at a floor of 3. Mean 12.7921, per-trace sd 0.02984. Pooled over 101 traces it reaches 4308.",DIAGNOSTIC
+snr_k5/k3,12,0.02138,0.00062,"REFUSED at a floor of 3. Mean -17.7175, per-trace sd 828.7. Pooled over 101 traces it reaches 0.2149.",DIAGNOSTIC
+snr_k6/k4,12,273.4,7.9,"ADMITTED at a floor of 3. Mean -79.4588, per-trace sd 0.2907. Pooled over 101 traces it reaches 2747.",DIAGNOSTIC
+snr_k7/k5,12,0.01310,0.00038,"REFUSED at a floor of 3. Mean -46.5815, per-trace sd 3556. Pooled over 101 traces it reaches 0.1316.",DIAGNOSTIC
+snr_k8/k6,12,58.3,1.7,"ADMITTED at a floor of 3. Mean 33.8202, per-trace sd 0.5799. Pooled over 101 traces it reaches 586.1.",DIAGNOSTIC
+snr_k9/k7,12,0.0474,0.0014,"REFUSED at a floor of 3. Mean -152.055, per-trace sd 3210. Pooled over 101 traces it reaches 0.4761.",DIAGNOSTIC
+admitted_orders,,"2,4,6,8",,the orders clearing the floor at every window,DIAGNOSTIC
+refused_orders,,"3,5,7,9",,the orders below it at every window. The split is exactly by parity and that is the result,DIAGNOSTIC
+snr_admitted_min,single_valued,23.23,,single_valued because it is one end of a span and an extreme has no spread of its own. The per-statistic rows above carry the distribution. Written as a cell so a docstring or a page cites it instead of restating it,DIAGNOSTIC
+snr_admitted_max,single_valued,1832,,single_valued because it is one end of a span and an extreme has no spread of its own. The per-statistic rows above carry the distribution. Written as a cell so a docstring or a page cites it instead of restating it,DIAGNOSTIC
+snr_refused_min,single_valued,0.0004582,,single_valued because it is one end of a span and an extreme has no spread of its own. The per-statistic rows above carry the distribution. Written as a cell so a docstring or a page cites it instead of restating it,DIAGNOSTIC
+snr_refused_max,single_valued,1.279,,single_valued because it is one end of a span and an extreme has no spread of its own. The per-statistic rows above carry the distribution. Written as a cell so a docstring or a page cites it instead of restating it,DIAGNOSTIC
+n_admitted,,21,,of 42 statistics over three windows,DIAGNOSTIC
+effective_rank_admitted,,2.847,0.025,"participation ratio of the admitted correlation matrix: the admitted set carries about three independent numbers and not its column count. The uncertainty is the spread over realisation counts of (600, 1200, 4000)",DIAGNOSTIC
+effective_rank_all,,8.424,0.047,"the same over every statistic including the refused ones. It reads higher because pure noise is nearly full rank, and quoting it as the information content is the trap",DIAGNOSTIC
+condition_number_admitted,,4.25e+19,,an interval taken through a pseudo-inverse of a matrix this ill-conditioned is only quotable where it is stable against the cutoff. The width is and the shift is not,DIAGNOSTIC
+tau_int,,2.515,,"integrated correlation time in samples, from noise_model.csv pooled over the p_sweep role",DIAGNOSTIC
+rho1_measured_vs_ar1,,4.40,,"the AR(1) first lag matching tau_int is 0.431 against a measured rho1 of 0.098. The two committed numbers are not mutually consistent, the autocorrelation has a long tail, and matching tau_int is the conservative branch",DIAGNOSTIC
+power_arm_traces,,101,,"counted from the manifest at role=p_sweep, and read back from this row by a clone without raw traces",DIAGNOSTIC
+pooling_divisor,,101,,"POOLING OVER TRACES DIVIDES BY THE TRACE COUNT, not by the count over tau_int. The correlation time is between SAMPLES inside one trace and is already carried by the per-trace covariance these SNRs come from. Dividing again double counts it, which is the error master plan 17u records for the waist figure and which this row exists to stop repeating",DIAGNOSTIC

@@ -113,6 +113,34 @@ SKIP = {"laser_epoch.csv", "qc_metrics.csv",
         # assumption, so the producer writes the status per row.
         "digitiser_scale.csv",
         "three_channel_forecast.csv",
+        # the moment admission test: every row is a twin measurement of what
+        # the archive's data COULD support and not a fit to the 2025 traces,
+        # so the producer writes DIAGNOSTIC on each. It is here rather than in
+        # FILE_STATUS for the reason the waist ladder is: uniformity today is
+        # not a promise, and a row whose statistic clears the floor on a future
+        # noise model is still the producer's cell to write.
+        "moment_admission.csv",
+        # the ruler tooth shares: the share rows are MEASURED, from real
+        # traces, and the fit rows are DIAGNOSTIC readings of a model against
+        # them, so the file carries two classes and the producer tags each.
+        "ruler_tooth_shares.csv",
+        # the fringe channel and the depth ladder: twin measurements of what
+        # an instrument could deliver, tagged DIAGNOSTIC by their producers.
+        "fringe_rho_recovery.csv",
+        "rf_saturation_ladder.csv",
+        # the deep polarizability derivation, each status written by the
+        # producer from THIS FILE'S VOCAB: DIAGNOSTIC for the elements and the
+        # intermediate sums, CALIB for the calibration and its literature
+        # anchors, ENVELOPE for the Monte Carlo spread and the value it bounds,
+        # BOUND for the multipole channels. The first form of this comment
+        # named CALCULATED, ESTABLISHED and ASSUMPTION, the prose provenance
+        # tags, for the third time in this file (measured 2026-09-12); a
+        # test now reads these comments against the vocabulary.
+        "polarizability_deep.csv",
+        # the twin-completeness comparison: the archive rows are MEASURED from
+        # real traces and the twin rows are DIAGNOSTIC readings against them,
+        # so the file carries two classes and the producer tags each.
+        "twin_completeness.csv",
         "moment_power_map_rungs.csv",
         "moment_power_map_deep.csv",
         "moment_power_map_deep_rungs.csv",

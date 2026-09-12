@@ -187,6 +187,79 @@ law explains the 2025 design compromise and prescribes its fix:
   shares and not the constancy of the total. The shares are read from the tooth
   heights on the same trace, so the ladder keeps a measured abscissa.
 
+**Measured against the shares as a whole, the law is rejected, and what fixes
+it is a floor and not a depth.** The asymmetry above is read tooth by
+tooth. The shares themselves had never been tested against
+$J_k(2\beta)^2$ jointly. Over the
+[52](../../results/ruler_tooth_shares.csv "ref:ruler_tooth_shares:n_ruler_traces:")
+combs that pass the verdict, the mean shares give a reduced chi-squared of
+[6.11](../../results/ruler_tooth_shares.csv "ref:ruler_tooth_shares:chi2_red_depth_fixed:")
+± 0.58 on six degrees of freedom at the committed depth, driven by a symmetric
+excess at $k=\pm3$. **Letting the depth float does not fix it**, at
+[6.58](../../results/ruler_tooth_shares.csv "ref:ruler_tooth_shares:chi2_red_depth_free:")
+± [0.63](../../results/ruler_tooth_shares.csv "ref:ruler_tooth_shares:chi2_red_depth_free::err"), so the discrepancy is not a depth's shape. **A flat pedestal does, and
+completely**:
+[0.62](../../results/ruler_tooth_shares.csv "ref:ruler_tooth_shares:chi2_red_depth_and_pedestal:")
+± [0.71](../../results/ruler_tooth_shares.csv "ref:ruler_tooth_shares:chi2_red_depth_and_pedestal::err") with
+[0.0479](../../results/ruler_tooth_shares.csv "ref:ruler_tooth_shares:pedestal_fraction_of_comb:")
+of the comb's power spread flat across the seven slots, the depth moving to
+[1.5298](../../results/ruler_tooth_shares.csv "ref:ruler_tooth_shares:two_beta_with_pedestal:")
+which sits inside the committed value's own scatter over the 41 combs. Its
+symmetry in $k$ rules out a chirp, which would be antisymmetric. The origin is
+not settled here.
+
+**Two of the obvious origins are excluded by the comb's own fit, and saying so
+narrows it.** `ruler.fit_comb` carries `b0 + b1 t` under the teeth, so a flat
+optical background or a detector offset is absorbed by that baseline and cannot
+reappear as a tooth height. Whatever the floor is, it is not something constant
+across the trace.
+
+**The leading explanation is the estimator and not the bench.** Tooth heights
+are fitted non-negative, and at the third orders the height is about 0.4 of the
+fit residual, so those teeth sit below unity signal-to-noise. A bounded
+estimator at that level has a positive expectation under noise alone, of order
+the residual itself, and the fitted floor per slot is about 0.35 of the
+residual: the same size. So the excess at the outer orders is consistent with a
+positivity bias in the fit and not with light that is really there.
+
+**The reading for the depth ladder is unchanged and its reason is not.** The
+third-order teeth are unusable either way, because a height at signal-to-noise
+below one carries no rung whether the excess is optical or statistical. What
+changes is what a bench test would show: blocking the drive would leave a
+positivity bias exactly where it is, so that test separates the two only if it
+is read on the *fitted* heights and not on the raw trace.
+
+**The figure is conditional on a cut made over the same teeth, and by a lot.**
+The combs kept are those whose calibration verdict passes, and that verdict is
+an amplitude verdict on the ordering of the very teeth being fitted. Keeping
+every non-excluded comb instead moves the floor to
+[0.1874](../../results/ruler_tooth_shares.csv "ref:ruler_tooth_shares:pedestal_under_selection:all_not_excluded")
+of the comb at a reduced chi-squared near twenty-seven. What makes the cut
+defensible, and not merely convenient, is that the dropped combs are not a shifted
+population: fitted one at a time,
+[0.942](../../results/ruler_tooth_shares.csv "ref:ruler_tooth_shares:pedestal_per_trace_railed_fraction:verdict_FAIL")
+of them rail against the fit's own bound, so the law does not describe them at
+all and averaging them in would average a fitted number with a railed one. The
+floor is also heterogeneous: the per-trace median is
+[0.022](../../results/ruler_tooth_shares.csv "ref:ruler_tooth_shares:pedestal_per_trace_median:verdict_not_FAIL"),
+half the pooled value. A spread in modulation depth was the obvious alternative
+explanation and is refuted: pure phase modulation drawn at the measured
+per-trace depths, with no floor at all, returns well under one per cent when
+the same pooled fit is applied to it.
+
+**The consequence falls on the faint teeth and therefore on the depth ladder.**
+A floor at that level puts about 0.68 per cent under every slot against a
+$k=3$ tooth standing at [0.58](../../results/ruler_tooth_shares.csv "ref:ruler_tooth_shares:signal_over_pedestal:-3") of that floor, so the third-order teeth sit *below* their own
+pedestal and cannot carry a rung. The usable orders are
+[0,1,2](../../results/ruler_tooth_shares.csv "ref:ruler_tooth_shares:usable_ladder_orders:"),
+a rate span of
+[5.51](../../results/ruler_tooth_shares.csv "ref:ruler_tooth_shares:usable_rate_ladder:")
+and a Rabi span of
+[2.35](../../results/ruler_tooth_shares.csv "ref:ruler_tooth_shares:usable_rabi_ladder:")
+against the seventy-fold span the full comb suggests. The ladder still
+works at that span, and what it buys is worked out in the ramp chapter. But a design
+that assumes the third orders is designing on a floor.
+
 **The same law makes the comb a lever and not only a ruler.** The weights sum
 to one, so the signal summed over teeth is the same at every depth while its
 distribution over them is not, and the intensity is the same at every depth so
@@ -199,9 +272,11 @@ self-calibrating exactly as far as the modulation is pure.
 
 ---
 
-**Where the numbers live.** Modules M2 · producers `scripts/run_ruler.py` ·
+**Where the numbers live.** Modules M2 · producers `scripts/run_ruler.py`,
+`scripts/run_ruler_tooth_shares.py` ·
 results `results/ruler_campaign.csv`, `results/ruler_blocks.csv`,
-`results/ruler_traces.csv`, `results/ruler_nlmap.csv` · figures
+`results/ruler_traces.csv`, `results/ruler_nlmap.csv`,
+`results/ruler_tooth_shares.csv` · figures
 `figures/fig8_ruler.png`. Library code: `rb5s6s/ruler.py`, with $\Omega/2$
 locked by a permanent test in `tests/test_constants.py`. The validity and
 trimming rules are pre-registered in

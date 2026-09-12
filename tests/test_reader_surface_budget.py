@@ -238,6 +238,18 @@ the assistant disclosure, which stayed.
 The prose is now 728 words, under three minutes. The rest of the page is three
 figures, two display equations, a mermaid diagram and nine tables, on his
 instruction that visual information saves attention where prose spends it.
+
+2026-09-12, README 1335 -> 1341, CLAIMS 7276 -> 7321, RESULTS 9686 -> 9782, a
+raise for a new result: the differential polarizability re-derived with the
+6S sum carried to 12P and beyond, one tagged bullet on RESULTS beside the
+static one, its claim on CLAIMS, its cell in the README mechanism row. The
+static bullet's open-defect sentence was shortened in the same edit, since
+the new bullet closes it, which is the offsetting cut.
+
+2026-09-12, the same night, README 1341 -> 1345, RESULTS 9782 -> 9810, plan/00
+3328 -> 3352, from the board's fix pass: the deep value reaches the reader walk
+(plan/00) with its tags, the RESULTS bullet gains its Reproducible footer and
+names the calibration pair, and the README row says whose bar its sigma is.
 """
 
 # RE-RECORDED 2026-08-28. The moves were README +18, docs/RESULTS.md +12 and

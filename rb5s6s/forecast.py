@@ -50,6 +50,75 @@ __all__ = ["synthetic_traces", "build_world_trace", "forecast_precision",
            "n_eff", "external_constraint_gain"]
 
 
+def _correlate(w: np.ndarray, tau_int: float) -> np.ndarray:
+    """Filter unit-variance white noise to a measured integrated correlation time.
+
+    THE TWIN DREW INDEPENDENT SAMPLES UNTIL 2026-09-12 AND THE CHARTER SAYS IT
+    MUST NOT. The repository's standing rules bind the exhibit to a twin that
+    injects the measured noise correlation, and all three generator sites called
+    `rng.standard_normal` directly. `synthetic_traces` is the sharp case: it
+    accepts the committed noise model as a dict and reads its amplitude
+    coefficients through `sigma_of_v`, while `tau_int` sat unused in the same
+    dictionary `load_noise_model` returned. `n_eff` below divided sample counts
+    by a correlation the generator never produced.
+
+    An AR(1) with coefficient `a` has autocorrelation `a**k` and integrated
+    time `(1+a)/(1-a)`, so `a = (tau_int-1)/(tau_int+1)` hits the measured
+    time, and the `sqrt(1-a*a)` factor holds the marginal variance at one so
+    the amplitude law is untouched.
+
+    AT `tau_int = 1.0` THIS RETURNS ITS INPUT UNCHANGED, which is what keeps
+    every existing caller and every committed CSV byte-identical: white is the
+    default and a caller opts in.
+
+    THE DEFAULT IS WHITE AND ON THIS ARCHIVE THAT IS CORRECT, which is the
+    opposite of what this function was written to fix and is why the paragraph
+    stands. `run_twin_completeness.py` compares real and twin wings under ONE
+    estimator: the archive reads 0.960 +- 0.076 after a linear detrend, the
+    twin white 0.823 +- 0.061, and the twin driven at the committed `tau_int`
+    2.09 +- 0.14. So white reproduces the archive's detrended residual and the
+    law's time, fed to an AR(1), overstates it.
+
+    WHAT THE LAW'S `tau_int` MEASURES IS A TILT, NOT A BROADBAND CORRELATION.
+    The same archive wings read 1.88 +- 0.13 with only the mean removed, and a
+    straight line takes that back to 0.96, while an AR(1) survives both
+    removals. So the committed 2.515 is dominated by a slow baseline tilt
+    within each trace, and synthesising it here as an AR(1) models the wrong
+    process. The missing twin term is that per-trace tilt, which this builder
+    does not generate: its `drift` layer moves the common CENTRE across the
+    rung order and leaves the baseline flat.
+
+    AN AR(1) COSTS 1.59 TIMES ON A FITTED WIDTH and that number is an upper
+    bound on what correlation can do here, not the archive's penalty. A free
+    linear baseline in the fit does NOT absorb it, measured both ways, because
+    a broadband correlation is not a trend. Pass `tau_int` when a broadband
+    process is what you mean; do not pass the law's value expecting the
+    archive's noise.
+
+    THE COMMITTED LAW IS NOT SELF-CONSISTENT AND THIS TAKES THE CONSERVATIVE
+    BRANCH. `results/noise_model.csv` gives `tau_int = 2.515` beside
+    `rho1 = 0.098`, and an AR(1) at that first lag has an integrated time of
+    1.217, so the measured integral is 2.07 times what its own first lag
+    implies: a small first lag with a long tail, which one AR(1) cannot be both
+    of. A statistic's variance is set by the INTEGRATED time, so that is what
+    is matched; the synthesised first lag is then 0.431 against a measured
+    0.098, and saying so here is the point. Matching `rho1` instead would
+    understate the correlation and overstate the information.
+    """
+    if not (tau_int > 1.0):
+        if tau_int < 1.0:
+            raise ValueError(
+                f"tau_int below one sample is not a correlation time: {tau_int}")
+        return w
+    a = (tau_int - 1.0) / (tau_int + 1.0)
+    root = math.sqrt(1.0 - a * a)
+    x = np.empty_like(w)
+    x[0] = w[0]
+    for i in range(1, w.size):
+        x[i] = a * x[i - 1] + root * w[i]
+    return x
+
+
 def n_eff(n: int, tau_int: float) -> float:
     """Effective number of independent samples: n over the correlation time.
 
@@ -73,6 +142,7 @@ def synthetic_traces(gamma_coll: float, sigma_laser: float, transit_fwhm: float,
                      offset: float = 0.010, offset_spread: float = 0.002,
                      centre_mhz: float = 0.0,
                      laser_kind: str = "gaussian", gamma_l: float = 0.0,
+                     tau_int: Optional[float] = None,
                      s0: float = 0.0, halo_fraction: float = 0.0,
                      rng: Optional[np.random.Generator] = None,
                      ) -> Tuple[List[np.ndarray], List[np.ndarray]]:
@@ -164,11 +234,22 @@ def synthetic_traces(gamma_coll: float, sigma_laser: float, transit_fwhm: float,
         a = amp * (1.0 + amp_spread * i) * (1.0 + halo_fraction)
         base = offset + offset_spread * i
         clean = a * shape + base
+        # THE CORRELATION COMES FROM THE LAW THE CALLER ALREADY PASSED.
+        # `noise` as a dict is the committed model, and its `tau_int` sat
+        # unused here while its amplitude coefficients were read one line
+        # below. A caller who hands over the measured law now gets the
+        # measured correlation without asking for it, which is the charter
+        # sentence; an explicit `tau_int` overrides, and a float `noise`
+        # carries no law so it stays white unless told otherwise.
+        _tau = (tau_int if tau_int is not None
+                else (float(noise.get("tau_int", 1.0))
+                      if isinstance(noise, dict) else 1.0))
+        _w = _correlate(rng.standard_normal(nu.size), _tau)
         if isinstance(noise, dict):
             sig = np.asarray([sigma_of_v(v, noise) for v in clean])
-            v = clean + sig * rng.standard_normal(nu.size)
+            v = clean + sig * _w
         else:
-            v = clean + float(noise) * a * rng.standard_normal(nu.size)
+            v = clean + float(noise) * a * _w
         freqs.append(nu.copy())
         volts.append(v)
     return freqs, volts
@@ -197,6 +278,9 @@ def build_world_trace(power_w: float, kappa: float, t_c: float,
                      pedestal_height_frac: float = 0.0,
                      retro_tilt_rad: float = 0.0,
                      m2: float = 1.0,
+                     tau_int: float = 1.0,
+                     baseline_tilt_sigma: float = 0.0,
+                     noise_floor_v: float = 0.0,
                      w0_m: Optional[float] = None,
                      omega_mhz: Optional[float] = None,
                      ) -> Tuple[np.ndarray, np.ndarray, Dict]:
@@ -427,8 +511,43 @@ def build_world_trace(power_w: float, kappa: float, t_c: float,
         bright_peak = max(shares.values()) + offset
     else:
         raise ValueError(f"unknown range_anchor {range_anchor!r}")
-    sigma = noise_frac_bright * np.sqrt(np.clip(v, 0.0, None) * bright_peak)
-    v = v + sigma * rng.standard_normal(nu.size)
+    # THE SIGNAL-INDEPENDENT FLOOR, which this builder did not carry and the
+    # committed law does. `noise.sigma_of_v` floors every weight at the law's
+    # `a`, its own docstring calling it "the fitted dark floor... the noise at
+    # any signal level cannot be below the zero-signal noise", and at the
+    # p_sweep role that is 3.64 mV. The shot-like term below goes to ZERO where
+    # the signal does, so in the wings the twin had essentially no noise at all
+    # while the real traces sit on the floor: measured scale-free at matched
+    # peak amplitude, the archive's wing noise is 3.17 times the twin's.
+    #
+    # It is added in quadrature because the two are independent, and defaults
+    # to zero so every trace this builder made before 2026-09-12 is unchanged.
+    # A caller with the committed law passes `law["a"]`.
+    sigma = np.hypot(
+        noise_frac_bright * np.sqrt(np.clip(v, 0.0, None) * bright_peak),
+        float(noise_floor_v))
+    # `tau_int` defaults to 1.0, which is white and byte-identical to every
+    # trace this builder made before 2026-09-12. See `_correlate` for what the
+    # default costs and why the committed law's own two numbers disagree.
+    v = v + sigma * _correlate(rng.standard_normal(nu.size), tau_int)
+    # THE PER-TRACE BASELINE TILT, which the real traces carry and this builder
+    # did not. `run_twin_completeness.py` compares wing statistics on real and
+    # simulated traces and finds the correlation time 1.88 with the mean
+    # removed against 0.96 once a straight line is taken out: a broadband
+    # correlation survives both removals and a slow tilt does not, so what the
+    # real wings hold is a tilt. Measured over forty canonical traces it is
+    # 0.49 +- 0.04 of the residual sigma across a 400-sample wing, and its mean
+    # is 5.7 sigma from zero, so it is systematic and not scatter.
+    #
+    # `drift` is a DIFFERENT term and does not cover this: it moves the common
+    # centre across the rung order and leaves each baseline flat.
+    #
+    # The rise is stated across the FULL grid in units of the noise sigma at
+    # the brightest peak, and the default of zero leaves every trace this
+    # builder has ever made byte-identical.
+    if baseline_tilt_sigma:
+        _ramp = np.linspace(-0.5, 0.5, nu.size)
+        v = v + baseline_tilt_sigma * noise_frac_bright * bright_peak * _ramp
     if layers["quantise"]:
         step = range_headroom * bright_peak / adc_levels
         v = np.round(v / step) * step

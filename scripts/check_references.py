@@ -58,10 +58,62 @@ LINK = re.compile(
     r"\[(?P<text>[^\]]+)\]\(\s*(?P<target>[^)\s]+)\s+\"(?P<title>ref:[^\"]+)\"\s*\)")
 
 
+#: The SAME tag in a python docstring, where a markdown link cannot go:
+#: `2.85 [ref:moment_admission:effective_rank_admitted:]`. The number is the
+#: token immediately before the bracket, which is what the link text is in the
+#: markdown form.
+PYLINK = re.compile(
+    r"(?P<text>[-+]?\d[\d.eE+-]*)\s*\[(?P<title>ref:[^\]]+)\]")
+
+
 def _tracked_markdown() -> list[str]:
     out = subprocess.run(["git", "-C", str(ROOT), "ls-files", "*.md"],
                          capture_output=True, text=True)
     return out.stdout.split()
+
+
+def _tracked_python() -> list[str]:
+    """THE POPULATION WAS MARKDOWN ONLY, AND THAT IS WHERE FOUR NUMBERS HID.
+
+    On 2026-09-12 an SNR range quoted in two `fullmodel.py` docstrings and a
+    licence boundary in a third turned out to match no cell of the CSV they
+    described, while this checker printed 458 references resolved and zero
+    findings. It was not wrong: those numbers were outside its population.
+    An exported docstring ports to the public mirror and is read as the
+    module's own statement about a committed cell, so it belongs in the same
+    population as the prose. This is the record's own rule about repairing the
+    POPULATION rather than the name last found missing.
+    """
+    out = subprocess.run(["git", "-C", str(ROOT), "ls-files", "*.py"],
+                         capture_output=True, text=True)
+    # THIS FILE IS THE ONE EXEMPTION AND IT IS STRUCTURAL, not a convenience:
+    # the checker's own source must contain the marker it searches for, in its
+    # regex and in its examples, so including it reports the instrument as a
+    # defect in every run. Nothing else is exempt, and a second entry here
+    # would need its own reason on this line.
+    return [r for r in out.stdout.split()
+            if r != "scripts/check_references.py"]
+
+
+#: The raw-mark counts are regexes and not substrings: in python the marker is
+#: also a string literal this file carries, and counting the bare text made the
+#: checker report itself. A tag immediately preceded by a quote is code.
+_MD_MARK = re.compile(r'"ref:')
+_PY_MARK = re.compile(r'(?<!["\'])\[ref:')
+
+
+def _reference_population() -> list[tuple[str, "re.Pattern", "re.Pattern"]]:
+    """Every surface a reference may live on, with its link form and its mark.
+
+    ONE BUILDER, because the checker and the graph emitter each had their own
+    loop and the graph's was left on markdown when the checker's population
+    grew. The comment at that site already said "THE SAME BLINDNESS AS
+    main()'s, and it was left here when that one was fixed" -- about a previous
+    divergence of exactly these two loops. This makes the divergence
+    impossible rather than noting it a third time.
+    """
+    return ([(r, LINK, _MD_MARK) for r in _tracked_markdown()]
+            + [(r, PYLINK, _PY_MARK) for r in _tracked_python()])
 
 
 def _csv_cell(stem: str, a: str, b: str, col: str | None = None) -> str | None:
@@ -164,22 +216,28 @@ def _producers() -> dict[str, str]:
 def _scan() -> list[dict]:
     """Every reference in the corpus, resolved, one record each."""
     records = []
-    for rel in _tracked_markdown():
+    # THE GRAPH'S POPULATION FOLLOWS THE CHECKER'S. When the checker gained
+    # tracked python, a graph still walking markdown alone would have produced
+    # a dependents map missing every docstring edge, which the enforcement
+    # report then reads as the whole truth.
+    for rel, _RE, _MARK in _reference_population():
         path = ROOT / rel
         if not path.exists():
             continue
         text = path.read_text(encoding="utf-8")
+        if not _MARK.search(text):
+            continue
         # THE SAME BLINDNESS AS main()'s, and it was left here when that one was
         # fixed. --graph writes a graph missing the tag and --fix reports "0
         # flagged for a human" while leaving the malformed reference in place: a
         # false "nothing needs you" from the tool whose job is saying otherwise.
-        _raw, _seen = text.count('"ref:'), len(LINK.findall(text))
+        _raw, _seen = len(_MARK.findall(text)), len(_RE.findall(text))
         if _raw > _seen:
             raise SystemExit(
                 f"check_references: {rel} carries {_raw - _seen} ref: tag(s) "
                 "outside a well-formed link. Run without --graph/--fix to see "
                 "them; neither mode may write while a tag is unreadable.")
-        for m in LINK.finditer(text):
+        for m in _RE.finditer(text):
             key = m.group("title")[len("ref:"):]
             parts = key.split(":")
             line = text[: m.start()].count("\n") + 1
@@ -269,11 +327,18 @@ def main() -> int:
         return _fix()
     bad: list[str] = []
     n_refs = 0
-    for rel in _tracked_markdown():
+    # THE RAW-MARK COUNT IS A REGEX AND NOT A SUBSTRING, because in python the
+    # marker is also a string literal this very file carries: counting the bare
+    # text made the checker report itself as holding an unparseable tag. A tag
+    # immediately preceded by a quote is code, not prose.
+    _pop = _reference_population()
+    for rel, _RE, _MARK in _pop:
         path = ROOT / rel
         if not path.exists():
             continue
         text = path.read_text(encoding="utf-8")
+        if not _MARK.search(text):
+            continue
         # A MALFORMED LINK DOES NOT FAIL THIS CHECKER, IT VANISHES FROM IT.
         # `[0.97(` for `[0.97](` shipped on 2026-09-05: the file's tag count
         # fell from 9 to 8 and the run still printed "0 findings", so a
@@ -288,18 +353,18 @@ def main() -> int:
         # draft of this check reported all four as defects, an exemption list
         # four times its findings, which is the failure the quotation guard's
         # first design already taught this record.
-        _raw, _seen = text.count('"ref:'), len(LINK.findall(text))
+        _raw, _seen = len(_MARK.findall(text)), len(_RE.findall(text))
         if _raw > _seen:
-            _rest = LINK.sub("", text)
+            _rest = _RE.sub("", text)
             _at = [str(_i) for _i, _ln in enumerate(text.splitlines(), 1)
-                   if '"ref:' in _ln and _ln.strip() and _ln.strip() in _rest]
+                   if _MARK.search(_ln) and _ln.strip() and _ln.strip() in _rest]
             bad.append(
                 f"{rel}: UNPARSEABLE, {_raw - _seen} ref: tag(s) not inside a "
                 f"well-formed [text](target \"ref:...\") link "
                 f"(line(s) {', '.join(_at) or 'not located'}). Such a tag "
                 f"resolves nothing and is invisible to this checker, so the "
                 f"number it should certify goes unchecked.")
-        for m in LINK.finditer(text):
+        for m in _RE.finditer(text):
             n_refs += 1
             key = m.group("title")[len("ref:"):]
             parts = key.split(":")

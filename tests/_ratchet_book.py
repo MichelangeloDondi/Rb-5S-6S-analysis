@@ -33,9 +33,45 @@ def _names(key: str, reason: str) -> bool:
     ("name a key that actually moved") could not be followed. A key is named
     only where it starts at a path boundary: the start of the string, or after
     a character that is neither a path separator nor part of a name.
+
+    AND A NESTED BASELINE FLATTENS TO A DOTTED FULL PATH, WHICH KILLED THE
+    REFUSAL OUTRIGHT (2026-09-12). `_leaves` joins the branches, so a key from
+    a nested tool reads `files.docs/GLOSSARY.md.longest_para.longest_para`, and
+    no reason a person writes contains that string. Every nested-baseline
+    reason therefore passed whatever it credited, which is the guard passing on
+    a population it could not match rather than on a clean diff. The key's
+    FILE-LIKE segments are what a reason names, so they are what is tested, and
+    the whole key is still accepted for the flat tools.
     """
     import re as _re
-    return bool(_re.search(r"(?<![\w./-])" + _re.escape(key), reason))
+
+    def _hit(k: str) -> bool:
+        # A RIGHT BOUNDARY AS WELL AS A LEFT ONE. Without it `_hit("py")`
+        # matches inside "pytest", so "reran pytest after the widening"
+        # credited 337 of 488 keys across the live baselines.
+        return bool(_re.search(r"(?<![\w./-])" + _re.escape(k) + r"(?![\w-])",
+                               reason))
+
+    if _hit(key):
+        return True
+    # A file-like token inside the dotted key, and every suffix of it that
+    # still starts at a path boundary: a reason naming `GLOSSARY.md` must
+    # match a key reading `files.docs/GLOSSARY.md.longest_para.longest_para`,
+    # and naming `results/README.md` must still not match a bare `README.md`.
+    # STRIP THE STRUCTURAL WRAPPER, NEVER A DIRECTORY. `_leaves` prefixes one
+    # tool's keys with `files.`, which is bookkeeping and not part of the path,
+    # so it comes off. The directory does NOT: a key stored as
+    # `results/README.md` is credited by a reason naming `results/README.md`
+    # and not by one naming a bare `README.md`, because the baseline holds
+    # three README.md keys and a bare mention cannot say which moved. That is
+    # the same separation the 2026-09-11 repair was written for, read in the
+    # other direction, and walking the token down to its basename broke it.
+    for m in _re.finditer(r"[\w./-]+\.(?:md|py|json|csv|txt|sh|ipynb)\b", key):
+        tok = _re.sub(r"^files\.", "", m.group(0))
+        if "/" in tok or "." in tok:
+            if _hit(tok):
+                return True
+    return False
 
 
 def _leaves(d: dict) -> dict:
@@ -45,21 +81,27 @@ def _leaves(d: dict) -> dict:
     read of the top level would have written one row saying that `files`
     changed. Leaf names collide only if two branches carry the same file, and
     then both keep their branch so the row stays unambiguous."""
-    flat, seen = {}, set()
-    stack = [("", d)]
+    # EVERY NESTED LEAF KEEPS ITS FULL PATH (2026-09-12). The first form kept
+    # a leaf bare until a second branch carried the same name and then renamed
+    # the earlier leaf under the CURRENT branch's path, so whichever file was
+    # walked second absorbed the first file's value under a doubled key, and
+    # three book rows credited docs/plan/00's 366 and 94 to GLOSSARY.md and
+    # big_picture/01 (replayed 2026-09-12, and tests/test_ratchet_book.py
+    # carries the two-file case). A top-level leaf stays bare, which is what the
+    # flat tools' rows already read.
+    # A leaf directly under one wrapper level (the `files` map of a flat tool)
+    # stays bare, which is what those tools' rows already read; a leaf two or
+    # more levels down keeps its whole path.
+    flat = {}
+    stack = [((), d)]
     while stack:
-        prefix, node = stack.pop()
+        path, node = stack.pop()
         for k, v in node.items():
-            key = f"{prefix}{k}"
+            full = path + (k,)
             if isinstance(v, dict):
-                stack.append((f"{key}.", v))
-            elif k in seen:
-                flat = {(f"{key}." + kk if kk == k else kk): vv
-                        for kk, vv in flat.items()}
-                flat[key] = v
+                stack.append((full, v))
             else:
-                seen.add(k)
-                flat[k] = v
+                flat[full[-1] if len(full) <= 2 else ".".join(full)] = v
     return flat
 
 

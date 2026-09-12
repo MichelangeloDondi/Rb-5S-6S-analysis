@@ -666,8 +666,7 @@ is *fixed by* that value (`TAIL_6S` in `rb5s6s/polarizability.py`, and
 `results/polarizability.csv` records the row as tail-calibrated), so the
 agreement there is arithmetic rather than a test. It **confirms the
 magnitude**,
-$|\Delta\alpha(993)| = 1145$ a.u., within 5% of Orson's 1093, **but finds the
-opposite sign**: $\alpha_{6S}(993)\approx-312$ a.u., because the dominant 6S
+$|\Delta\alpha(993)| = 1145$ a.u. with the 6S sum above 8P carried as a static tail, and [-1133.0](../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive") ± [5.9](../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive:err") a.u. once that group is summed dynamically to 12P and beyond (`results/polarizability_deep.csv`: the 9P-and-above group is [15.0](../results/polarizability_deep.csv "ref:polarizability_deep:dynamic_6s_9p_and_above:at_drive") ± [1.3](../results/polarizability_deep.csv "ref:polarizability_deep:dynamic_6s_9p_and_above:at_drive:err") a.u. at the drive against the module's static tail of a fifth of that, its static size checks against Safronova and Safronova 2011's own residual at [-0.81](../results/polarizability_deep.csv "ref:polarizability_deep:static_tail_pull:computed_vs_SS2011") sigma, the quadrupole channel enters at [1e-04](../results/polarizability_deep.csv "ref:polarizability_deep:E2_over_E1_shift:at_drive") and the magnetic-dipole one at [6e-06](../results/polarizability_deep.csv "ref:polarizability_deep:M1_over_E1_shift:at_drive") of the dipole shift). The magnitude then stands [+6.7](../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha_vs_orson:at_drive") sigma of this derivation's bar from Orson's 1093, which is one bar of two: Orson's own uncertainty is not held here, and at one per cent of 1093 the separation would read about 3 sigma, so the two are apart on this derivation's bar and unresolved on the pair, **and the derivation finds the opposite sign**: $\alpha_{6S}(993)\approx-312$ a.u., because the dominant 6S
 couplings, 6S–6P at 2.73 and 2.79 µm, are driven far blue-detuned at 993 nm and
 push 6S *up* while 5S is pushed *down*.
 
@@ -713,7 +712,7 @@ explicitly before anything is compared:
 | symbol | definition here | value at 993 nm |
 |---|---|---|
 | $\alpha_{5S}$, $\alpha_{6S}$ | scalar polarizability of each level | $+834$, $-312$ a.u. |
-| $\Delta\alpha$ | $\alpha_{6S}-\alpha_{5S}$ (**excited minus ground**) | $-1145$ a.u. |
+| $\Delta\alpha$ | $\alpha_{6S}-\alpha_{5S}$ (**excited minus ground**) | $-1145$ a.u. static tail; [-1133.0](../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive") ± [5.9](../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive:err") dynamic tail |
 | $\alpha_{56}$ (Orson's) | $\alpha_{5S}-\alpha_{6S}$ (**ground minus excited**) | $=-\Delta\alpha$ |
 | level shift | $\delta E = -\tfrac{1}{2}\alpha E^2$ | — |
 | transition shift | $-\tfrac{1}{2}\Delta\alpha E^2 \equiv +\tfrac{1}{2}\alpha_{56}E^2$ | — |

@@ -453,7 +453,7 @@ asymptotically sit well below 7.
 
 | rung | drive λ | Δα = α_upper − α_5S | note |
 |---|---|---|---|
-| 5S→6S | 993.418 nm | −1145 a.u. | sign under dispute, THEORY_NOTE §5 |
+| 5S→6S | 993.418 nm | −1145 a.u. static tail, [-1133.0](../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive") ± [5.9](../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive:err") dynamic | sign under dispute, THEORY_NOTE §5; the dynamic tail in `results/polarizability_deep.csv` |
 | 5S→7S | 760.126 nm | +4372 a.u. | independent line list, Safronova 2004 |
 | 5S→5D₅/₂ | 778.104 nm | ≈ +28600 a.u., anchored not recomputed | J = 5/2, tensor term dropped, magnitude only |
 

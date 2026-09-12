@@ -51,7 +51,7 @@ BAND_NM = (650.0, 1050.0)
 _SAFRONOVA_KEY = {"6S": "6S1/2", "7S": "7S1/2", "8S": "8S1/2", "9S": "9S1/2",
                   "4D": "4D5/2", "5D": "5D5/2", "6D": "6D5/2"}
 T_C = 130.0
-R_ACCEPTED = 109736.605          # Rb Rydberg constant, for the second fit only
+R_ACCEPTED = K.RYD_RB_CM         # Rb Rydberg constant, for the second fit only; one copy in constants
 # The D series' lower anchor. It was 2e7/1033.0, the menu's own rounded
 # row, until 2026-09-10: rb5s6s.hyperpolarizability holds 4D
 # exactly, the two differ by 0.31 nm in the drive, and the row published

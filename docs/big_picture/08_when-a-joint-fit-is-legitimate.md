@@ -334,6 +334,17 @@ therefore says what a fixed-lock session buys, which is why the plan carries
 one.
 [The identifiability page](../wiki/identifiability.md) carries the general form.
 
+**A seventh question, from the joint fits of 2026-09-12.** *Is any parameter
+the data cannot see left free to absorb what the fixed ones predict?* Four
+fits over the whole archive tied the transit to the waist and the light shift
+to the polarizability from theory, profiled a centre per trace, and each
+returned the waist at the floor of its allowed band with the retro ratio driven
+to a tenth, a value no bench reaches. The free centre had removed the shift's
+first-order signature, so the widths outvoted it and the retro ratio paid. A
+parameter held to its physical range with its prior turns that into a
+chi-squared cost the fit has to show, and the shift is then read where a
+drifting centre cannot reach it, on the self-centred moments and their ratios.
+
 ## 6. What the record does about all of this
 
 **A converged construction is not automatically the better-supported one, and

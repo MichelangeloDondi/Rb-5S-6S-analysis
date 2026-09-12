@@ -369,3 +369,72 @@ def test_a_caller_with_no_baseline_still_works(tmp_path, monkeypatch):
     assert book.record("t", "reseed", {"a.md": 1}, {"a.md": 2},
                        "a.md gained one") is True
     assert "a.md 1 -> 2" in fake.read_text()
+
+
+def test_the_credited_key_refusal_reaches_a_nested_baseline():
+    """PLANT for the matcher, in all three directions it has failed in.
+
+    The history is the point. It began as a bare substring test, which REFUSED
+    a correct reason naming `results/README.md` because that string contains
+    `README.md`. The 2026-09-11 repair added a left path boundary. The
+    2026-09-12 repair widened it again to reach nested baselines, where
+    `_leaves` flattens a key to `files.docs/GLOSSARY.md.longest_para` and no
+    reason contains that string, and overshot twice in one change: the suffix
+    loop walked every token down to its bare extension, so "tidied some md
+    files" credited any `.md` key, and `_hit` had no right boundary, so
+    `_hit("py")` matched inside "pytest" and one reason credited 337 of 488
+    live keys.
+
+    The rule that survives all three: strip the STRUCTURAL wrapper `files.`,
+    which is bookkeeping, and never a directory, which is identity.
+    """
+    import sys
+    from pathlib import Path
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from _ratchet_book import _names
+
+    nested = "files.docs/GLOSSARY.md.longest_para.longest_para"
+    # reaches a nested key when the reason names the path as stored
+    assert _names(nested, "docs/GLOSSARY.md gained a paragraph")
+    assert _names("files.results/README.md.rowcount", "results/README.md moved")
+    assert _names("files.docs/big_picture/01_why-this-line.md.to_first_anchor",
+                  "docs/big_picture/01_why-this-line.md was cut")
+    # the flat tools are untouched
+    assert _names("README.md", "README.md moved")
+    # ...and the separation that started all of this holds in BOTH directions
+    assert not _names("README.md", "results/README.md moved")
+    assert not _names("files.results/README.md.rowcount", "bumped README.md baseline")
+    assert not _names("files.scripts/README.md.count", "results/README.md moved")
+    # a bare extension names no file
+    assert not _names(nested, "tidied some md files")
+    assert not _names("tests/test_a.py", "refactored a py helper")
+    # and a right boundary, or "py" matches inside "pytest"
+    assert not _names("scripts/run_moment_admission.py",
+                      "reran pytest after the widening")
+    assert not _names("tests/test_a.py", "I edited tests/test_b.py")
+
+
+def test_leaves_keeps_every_nested_leaf_under_its_own_file():
+    """A leaf name shared by several files stays under each file's own path.
+
+    The first form kept a leaf bare until a second branch carried the same
+    name and then renamed the earlier leaf under the CURRENT branch, so the
+    second file absorbed the first file's value under a doubled key. Three
+    history rows credited docs/plan/00's numbers to two other files that way
+    (replayed on 2026-09-12). The failure mode this pins: a
+    value read back under any file but its own, or under a doubled key.
+    """
+    from _ratchet_book import _leaves
+    nested = {"files": {"a.md": {"longest_para": 1, "to_first_anchor": 2},
+                        "b.md": {"longest_para": 3, "to_first_anchor": 4},
+                        "c/d.md": {"longest_para": 5, "to_first_anchor": 6}}}
+    flat = _leaves(nested)
+    assert flat == {"files.a.md.longest_para": 1, "files.a.md.to_first_anchor": 2,
+                    "files.b.md.longest_para": 3, "files.b.md.to_first_anchor": 4,
+                    "files.c/d.md.longest_para": 5, "files.c/d.md.to_first_anchor": 6}
+    assert not any(k.endswith(".longest_para.longest_para") for k in flat)
+    # a flat tool's map stays bare, which its rows already read, and so does a
+    # leaf directly under one wrapper level
+    assert _leaves({"README.md": 10, "total": 11}) == {"README.md": 10, "total": 11}
+    assert _leaves({"files": {"results/a.csv": 1, "results/b.csv": 2}, "total": 3}) == {
+        "results/a.csv": 1, "results/b.csv": 2, "total": 3}

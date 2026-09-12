@@ -1,0 +1,7 @@
+quantity,arm,value,err,note,status
+ladder_rate_span,,5.50,,"over the orders 0,1,2 the archive's rulers admit, at a depth of 1.5298. At ONE light shift, which is what no power ladder can do",DIAGNOSTIC
+ladder_companion_span,,5.49,,the span in the saturation companion's own width across those teeth,DIAGNOSTIC
+transit_bias_pct,one_tooth_waist_only,1.378,0.027,"the dangerous condition: one tooth, the waist alone free, the companion not modelled. This is the bias the ladder exists to remove. Per-trace scatter 0.4755 per cent over 300 trials",DIAGNOSTIC
+transit_bias_pct,ladder_waist_only_omega_free,-0.034,0.061,every usable tooth jointly with one shared Rabi frequency free. The bias is gone. Per-trace scatter 1.0488 per cent over 300 trials,DIAGNOSTIC
+transit_bias_pct,ladder_waist_only_omega_pinned,-0.019,0.018,"the floor, with the Rabi frequency held at the truth. Matching the free arm says the ladder is not limited by its own precision on that term. Per-trace scatter 0.3144 per cent over 300 trials",DIAGNOSTIC
+transit_bias_pct,one_tooth_gamma_l_free,-0.17,0.13,why an arm with the Lorentzian width free measures nothing here: it absorbs the companion one for one and returns a bias consistent with zero whatever the truth is. Per-trace scatter 2.3008 per cent over 300 trials,DIAGNOSTIC

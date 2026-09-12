@@ -1,0 +1,30 @@
+quantity,key,value,err,unit,note,status
+calibration_6s_7p,held/computed,0.989,,ratio,Coulomb approximation against the portal's 6s-7p pair. the class the 9P+ elements belong to,CALIB
+calibration_6s_8p,held/computed,0.949,,ratio,"against the 6s-8p pair. the factor applied to 9P and above is this pair's mean, 0.949, with the step from the 7p pair, 0.041, as its spread",CALIB
+calibration_factor,applied,0.949,0.041,ratio,"held over computed on the 6s-8p pair, the class nearest the tail. the spread is the step from the 6s-7p pair, the trend. applied to every computed 6s-nP element with n >= 9",CALIB
+rme_6s_9p1/2,computed,0.2312,0.0099,a.u.,"Coulomb approximation times the calibration factor. level at 30958.9 cm^-1 from the fitted quantum defect, enhancement 7.38 at the drive",DIAGNOSTIC
+rme_6s_9p3/2,computed,0.371,0.016,a.u.,"Coulomb approximation times the calibration factor. level at 30970.2 cm^-1 from the fitted quantum defect, enhancement 7.28 at the drive",DIAGNOSTIC
+rme_6s_10p1/2,computed,0.1580,0.0068,a.u.,"Coulomb approximation times the calibration factor. level at 31653.9 cm^-1 from the fitted quantum defect, enhancement 4.23 at the drive",DIAGNOSTIC
+rme_6s_10p3/2,computed,0.257,0.011,a.u.,"Coulomb approximation times the calibration factor. level at 31661.2 cm^-1 from the fitted quantum defect, enhancement 4.21 at the drive",DIAGNOSTIC
+rme_6s_11p1/2,computed,0.1178,0.0051,a.u.,"Coulomb approximation times the calibration factor. level at 32113.6 cm^-1 from the fitted quantum defect, enhancement 3.40 at the drive",DIAGNOSTIC
+rme_6s_11p3/2,computed,0.1926,0.0083,a.u.,"Coulomb approximation times the calibration factor. level at 32118.6 cm^-1 from the fitted quantum defect, enhancement 3.39 at the drive",DIAGNOSTIC
+rme_6s_12p1/2,computed,0.0927,0.0040,a.u.,"Coulomb approximation times the calibration factor. level at 32433.5 cm^-1 from the fitted quantum defect, enhancement 3.03 at the drive",DIAGNOSTIC
+rme_6s_12p3/2,computed,0.1524,0.0065,a.u.,"Coulomb approximation times the calibration factor. level at 32437.0 cm^-1 from the fitted quantum defect, enhancement 3.02 at the drive",DIAGNOSTIC
+static_6s_9p_and_above,computed,2.95,0.25,a.u.,explicit to 40P plus the n*^-3 continuum estimate 0.03,DIAGNOSTIC
+static_6s_9p_and_above,SS2011_residual,4.0,1.3,a.u.,"the paper's sixth table, its 'Other' row, 49.0(1) minus the tabulated 7P and 8P (35.91) and the core (9.076). the one literature test of the calibration",CALIB
+static_tail_pull,computed_vs_SS2011,-0.81,,sigma,the computed static tail against the paper's residual. a pull inside one says the calibration holds where it is used,DIAGNOSTIC
+dynamic_6s_9p_and_above,at_drive,15.0,1.3,a.u.,the same group at 993.4181 nm. the module carried +3.4 static for it,DIAGNOSTIC
+alpha_6s_explicit_5p_8p,at_drive,-324.71,,a.u.,the four tabulated pairs at the drive,DIAGNOSTIC
+alpha_6s,at_drive,-300.6,,a.u.,explicit + core + the computed 9P-and-above group,DIAGNOSTIC
+alpha_5s,at_drive,832.4,,a.u.,"polarizability.alpha_5s: the D lines, 6P, 7P-12P tabulated, tail and core (Leonard 2015)",DIAGNOSTIC
+delta_alpha_module,at_drive,-1144.6,,a.u.,"polarizability.delta_alpha, the value constants.DELTA_ALPHA_AU carries",DIAGNOSTIC
+alpha_E2_5s,SS2011,6525,37,a0^5,"the ground-state quadrupole polarizability, the paper's fifth table. The anchor the 6s bound is scaled from",CALIB
+alpha_E2_6s_bound,scaled,1.0e+06,,a0^5,order of magnitude: 5s value times (n*_6s/n*_5s)^4 = 6.2 for the radial moment and 19356/777 = 25 for the 6s-4d denominator. the Coulomb approximation cannot compute 4d and is not used,BOUND
+E2_over_E1_shift,at_drive,1e-04,,ratio,"the quadrupole light shift relative to the dipole one: alpha_E2 (k a0)^2 / |Delta_alpha| with (k a0)^2 = 1.12e-07. below the second significant digit of the uncertainty, so bounded and not carried",BOUND
+M1_over_E1_shift,at_drive,6e-06,,ratio,"mu_B^2 over the Rb85 6s hyperfine interval 3A = 717 MHz in the wave's magnetic field B0 = E0/c: alpha_M/(alpha_E c^2), a STATIC bound. at the drive the magnetic polarizability is smaller by (dE_hf/omega)^2",BOUND
+delta_alpha_sigma_independent,MC,4.6,,a.u.,every element drawn independently,ENVELOPE
+delta_alpha_sigma_pairs,MC,5.9,,a.u.,fine-structure pairs drawn fully correlated,ENVELOPE
+delta_alpha_sigma_all,MC,5.4,,a.u.,"every element of a state moved together, the envelope of an unknown correlation. the largest of the three is quoted",ENVELOPE
+delta_alpha,at_drive,-1133.0,5.9,a.u.,alpha_6s - alpha_5s at 993.4181 nm with the 9P-and-above group summed dynamically. the package constant -1145 differs by +12. Orson 2021 carries 1093 in magnitude,ENVELOPE
+delta_alpha_shift_from_module,at_drive,+11.6,,a.u.,against the module's own value (delta_alpha_module above). the whole move is the 9P-and-above group read dynamically instead of statically. the constant -1145.0 sits 0.4 further,DIAGNOSTIC
+delta_alpha_vs_orson,at_drive,+6.7,,sigma,"magnitude against Orson 2021's, over this derivation's sigma alone (Orson's own uncertainty is not carried by the record)",DIAGNOSTIC

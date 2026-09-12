@@ -125,7 +125,7 @@ each names what would lift it. The calculated rows do not.
 | **S₀(225 mW)** | < 0.26 MHz, below the predicted 0.36 MHz at the measured waist | bound | fixed lock, tighter focus |
 | power scaling | no width trend, and an amplitude departure from P² | null + a departure | not applicable |
 | **w₀** | 64 µm (measured, an earlier thesis); a Gaussian fit of the line returns 42.0 ± 1.7 µm, which the record reads as a model-form signature and not a waist | lineage, OPEN | a knife-edge scan here |
-| **Δα(993 nm)** | −1145 a.u., within 5 % of the cited magnitude but **opposite in sign**. The sign is adjudicated, not measured | calculated | the fixed-lock pull direction, unrun |
+| **Δα(993 nm)** | −1145 a.u. static tail, [−1133.0](results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive") ± [5.9](results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive:err") a.u. dynamic tail, [+6.7](results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha_vs_orson:at_drive") σ of this derivation's bar from the cited magnitude, **opposite in sign**, adjudicated not measured | calculated | the fixed-lock pull direction, unrun |
 | **magic wavelengths** | ≈ 1203.9 / 1287.9 / 1339.6 nm, where a trap holds both states without pulling the line | calculated (envelope) | a trapped-atom experiment |
 
 <p align="center">

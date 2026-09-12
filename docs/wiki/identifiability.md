@@ -603,6 +603,72 @@ forty, so the pair discriminates an instrumental asymmetry from the ramp's.
 The earlier reading that no ratio among the odd orders can see a common
 asymmetry holds only for their magnitudes and not for their signs.
 
+### But on this archive's noise the odd ladder is not a channel at all
+
+Everything above is about the signal and is silent about the noise, and the
+noise settles it. Measured on the twin's world under the correlation time
+`results/noise_model.csv` reports, over the eight orders and three windows, the
+statistics split exactly by parity at a per-trace signal-to-noise of three:
+[21](../../results/moment_admission.csv "ref:moment_admission:n_admitted:") of
+42 are admitted and they are precisely the even orders and the even ratios. The
+second cumulant at the six-megahertz window carries
+[1667](../../results/moment_admission.csv "ref:moment_admission:snr_k2:6") per
+trace. The third carries
+[0.00543](../../results/moment_admission.csv "ref:moment_admission:snr_k3:6"),
+and `k5/k3`, `k7/k5` and `k9/k7` are refused at every window. A windowed
+cumulant of pure noise is largest exactly where the signal is smallest, so a
+refused statistic averaged into a joint fit does not dilute the answer, it
+inverts it.
+
+Two things follow that a rank count hides. The admitted set carries about
+[2.85](../../results/moment_admission.csv "ref:moment_admission:effective_rank_admitted:")
+independent numbers and not twenty-one, so "three equations or one equation
+three times" is answered, and the answer is nearer three. And the same measure
+over every statistic including the refused ones reads
+[8.42](../../results/moment_admission.csv "ref:moment_admission:effective_rank_all:")
+which is higher, because pure noise is nearly full rank. Quoting that one as the
+information content is the trap this page would otherwise set.
+
+The odd orders stay in the model's order tuple because they are the shift
+channel and a campaign at a larger light shift reads them. On the 2025 archive
+a fit drops them on their measured signal-to-noise, never on their name.
+
+### rho and Delta-alpha are exactly degenerate in the shift, and only one channel breaks it
+
+The light shift enters as $S_0 \propto (1+\rho) \Delta\alpha P/w_0^2$, so
+every observable built on the shift constrains the product $(1+\rho)\Delta\alpha$
+and no amount of shift data separates the retro's power ratio from the
+differential polarizability. The fringe contrast, $2\sqrt{\rho}/(1+\rho)$,
+carries $\rho$ alone, and it is the only observable in this archive that does.
+So the fringe channel is not a correction to a lineshape: it is what makes
+$\Delta\alpha$ reachable at all.
+
+It has one structural virtue and one structural defect. The virtue: the
+contrast is a ratio in which the local beam radius cancels when the two beams
+are concentric, so $M^2$, the largest open geometric unknown on this bench,
+does not enter it at all, at any waist. **That is an algebraic identity and not
+a simulation result**, and it is worth saying which: with the beams concentric
+the return intensity is $\rho$ times the forward one at every point, so the
+ratio is $2\sqrt{\rho}/(1+\rho)$ everywhere and the local radius has already
+cancelled before any atom is drawn. The Monte Carlo returns it across the whole licensed grid, which tests the
+implementation: the cell grid's
+[2.98e-08](../../results/fringe_rho_recovery.csv "ref:fringe_rho_recovery:max_rho_bias_clean:")
+residual is floating-point noise. What the grid does measure is everything that
+breaks the identity: the retro offset a tilt implies, and the polarisation. The defect: the contrast is
+**stationary at $\rho = 1$**, its derivative vanishing identically there, and
+this bench sits near that point. At $\rho = 0.94$ a ten per cent determination
+of $\rho$ needs the contrast measured to about $1.5\times10^{-3}$. At
+$\rho = 0.5$ the same determination needs only $1.6\times10^{-2}$.
+
+**The design consequence is concrete, and it costs signal: unbalance the retro on
+purpose.** Attenuating the return beam moves the contrast's derivative by an
+order of magnitude and turns a stationary channel into an informative one,
+and it costs signal, since the Doppler-free rate goes as the ratio itself
+([methods 3](../methods/03_the_ac_stark_ramp.md)), a factor 1.9 at one half,
+and the shift being measured, which goes as one plus the ratio, a factor 1.3. It
+belongs to a campaign and not to the 2025 data, which is why the archive's
+$\Delta\alpha$ stays where the record puts it.
+
 ### Matching the summary statistic to the perturbation
 
 A one-sided perturbation moves the line's centre and asymmetry strongly
@@ -698,6 +764,21 @@ saturation only through its width, where it is degenerate. Its identifying
 power is in the **amplitude against power**, which no moment carries and which
 goes as the inverse fourth power of the waist, the steepest dependence in the
 model. A joint fit over moments alone gives that lever up.
+
+**The ruler's teeth are the lever that isolates it, and the ladder puts a number on it.** A phase
+modulation holds the total intensity, so the light shift and every width are
+the same on every tooth while the two-photon rate follows the tooth's share of
+the drive: across the orders the archive's rulers admit the rate spans [5.50](../../results/rf_saturation_ladder.csv "ref:rf_saturation_ladder:ladder_rate_span:")
+at one light shift, which no power ladder can do. Fitting one tooth with the
+waist alone free and the companion unmodelled biases the transit by
+[1.378](../../results/rf_saturation_ladder.csv "ref:rf_saturation_ladder:transit_bias_pct:one_tooth_waist_only") ± [0.027](../../results/rf_saturation_ladder.csv "ref:rf_saturation_ladder:transit_bias_pct:one_tooth_waist_only:err") per cent.
+Fitting every usable tooth jointly with one shared Rabi frequency free returns
+[-0.034](../../results/rf_saturation_ladder.csv "ref:rf_saturation_ladder:transit_bias_pct:ladder_waist_only_omega_free") ± [0.061](../../results/rf_saturation_ladder.csv "ref:rf_saturation_ladder:transit_bias_pct:ladder_waist_only_omega_free:err"), the bias gone, and holding
+that frequency at the truth gives [-0.019](../../results/rf_saturation_ladder.csv "ref:rf_saturation_ladder:transit_bias_pct:ladder_waist_only_omega_pinned") ± [0.018](../../results/rf_saturation_ladder.csv "ref:rf_saturation_ladder:transit_bias_pct:ladder_waist_only_omega_pinned:err"), so the
+ladder is not limited by the extra parameter. An arm with the Lorentzian width
+free instead measures nothing here, [-0.17](../../results/rf_saturation_ladder.csv "ref:rf_saturation_ladder:transit_bias_pct:one_tooth_gamma_l_free") ± [0.13](../../results/rf_saturation_ladder.csv "ref:rf_saturation_ladder:transit_bias_pct:one_tooth_gamma_l_free:err"), because
+it absorbs the companion one for one, which is this section's degeneracy read
+the other way round.
 
 Every other case here is a degeneracy the data cannot resolve well. This
 one is different: the mathematics makes it exact, and the implementation

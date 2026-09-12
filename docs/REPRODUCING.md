@@ -16,7 +16,7 @@ which is what this page is for.
 
 ## The runner, and the scripts outside it
 
-`bash scripts/run_all.sh` executes 37 analysis stages in dependency order,
+`bash scripts/run_all.sh` executes 43 analysis stages in dependency order,
 then the reference graph, the figures, `docs/RESULTS.md`, and the CSV status
 column.
 
@@ -42,7 +42,7 @@ out for runtime, the kernel series and the twin's closed loop and span
 sweep among them, with the coverage grid, the three-channel forecast, the
 quantisation pair and the waist ladder beside them, and this page has not
 caught up with them, so a reader
-reaches them only through `results/README.md`, which does index all 102
+reaches them only through `results/README.md`, which does index all 108
 committed files with the producer that writes each one. The number is
 measured: `tests/test_reproduction_routes.py` reads the
 index, the runner's stage loop and this page, and holds the unrouted set as a
@@ -73,7 +73,7 @@ under moving dependencies is a property of the environment until the pinned
 comparison disagrees, and that the pinned comparison is the one that speaks
 for the record.
 
-The runner's stages write the core subset of the 102 committed CSVs. The
+The runner's stages write the core subset of the 108 committed CSVs. The
 rest each have their own script, held out for one of two reasons.
 
 ### Seven need trees that stay outside the repository

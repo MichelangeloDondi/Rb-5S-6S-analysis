@@ -1,0 +1,28 @@
+quantity,order_k,value,err,note,status
+n_ruler_traces,,52,,"of 104 committed, keeping those not excluded and not FAIL",MEASURED
+tooth_share_observed,-3,0.0107,0.0021,"mean over the passing traces. J_k(2 beta)^2 at 2 beta = 1.569 predicts 0.00474, a pull of +2.8",MEASURED
+tooth_share_observed,-2,0.0596,0.0023,"mean over the passing traces. J_k(2 beta)^2 at 2 beta = 1.569 predicts 0.06215, a pull of -1.1",MEASURED
+tooth_share_observed,-1,0.3068,0.0074,"mean over the passing traces. J_k(2 beta)^2 at 2 beta = 1.569 predicts 0.32119, a pull of -1.9",MEASURED
+tooth_share_observed,0,0.235,0.010,"mean over the passing traces. J_k(2 beta)^2 at 2 beta = 1.569 predicts 0.22384, a pull of +1.1",MEASURED
+tooth_share_observed,1,0.3067,0.0048,"mean over the passing traces. J_k(2 beta)^2 at 2 beta = 1.569 predicts 0.32119, a pull of -3.0",MEASURED
+tooth_share_observed,2,0.0699,0.0068,"mean over the passing traces. J_k(2 beta)^2 at 2 beta = 1.569 predicts 0.06215, a pull of +1.1",MEASURED
+tooth_share_observed,3,0.0108,0.0018,"mean over the passing traces. J_k(2 beta)^2 at 2 beta = 1.569 predicts 0.00474, a pull of +3.4",MEASURED
+signal_over_pedestal,-3,0.58,,the fitted tooth share over the fitted flat pedestal in that slot. Below one the tooth is not measurable,DIAGNOSTIC
+signal_over_pedestal,-2,7.99,,the fitted tooth share over the fitted flat pedestal in that slot. Below one the tooth is not measurable,DIAGNOSTIC
+signal_over_pedestal,-1,43.98,,the fitted tooth share over the fitted flat pedestal in that slot. Below one the tooth is not measurable,DIAGNOSTIC
+signal_over_pedestal,0,34.15,,the fitted tooth share over the fitted flat pedestal in that slot. Below one the tooth is not measurable,DIAGNOSTIC
+signal_over_pedestal,1,43.98,,the fitted tooth share over the fitted flat pedestal in that slot. Below one the tooth is not measurable,DIAGNOSTIC
+signal_over_pedestal,2,7.99,,the fitted tooth share over the fitted flat pedestal in that slot. Below one the tooth is not measurable,DIAGNOSTIC
+signal_over_pedestal,3,0.58,,the fitted tooth share over the fitted flat pedestal in that slot. Below one the tooth is not measurable,DIAGNOSTIC
+chi2_red_depth_fixed,,6.11,0.58,"chi2 36.6 on nu 6, at the committed depth 1.569. The pure phase-modulation law is rejected",DIAGNOSTIC
+chi2_red_depth_free,,6.58,0.63,"chi2 32.9 on nu 5, best depth 1.5457. A free depth does not fix it, so the discrepancy is not a depth's shape",DIAGNOSTIC
+chi2_red_depth_and_pedestal,,0.62,0.71,chi2 2.5 on nu 4. A flat pedestal fixes it completely,DIAGNOSTIC
+two_beta_with_pedestal,,1.5298,,"against the committed 1.569, whose own sd over 41 combs is 0.058, so this sits inside it",DIAGNOSTIC
+pedestal_fraction_of_comb,,0.0479,,"4.79 per cent of the comb's power, flat over 7 slots, so 0.684 per cent under each. Symmetric in k, which rules out a chirp. The origin is not settled here",DIAGNOSTIC
+usable_ladder_orders,,"0,1,2",,the orders whose share clears their own pedestal,DIAGNOSTIC
+usable_rate_ladder,,5.51,,"the span in two-photon rate across the usable teeth, at one light shift. The Rabi span is its square root",DIAGNOSTIC
+usable_rabi_ladder,,2.35,,what the saturation companion's own ladder follows,DIAGNOSTIC
+pedestal_under_selection,verdict_not_FAIL,0.0479,,"n = 52, reduced chi-squared 0.62. The cut is made on an amplitude verdict over the same teeth, so every figure in this file is conditional on it and this row is what says by how much",DIAGNOSTIC
+pedestal_under_selection,all_not_excluded,0.1874,,"n = 104, reduced chi-squared 27.04. The cut is made on an amplitude verdict over the same teeth, so every figure in this file is conditional on it and this row is what says by how much",DIAGNOSTIC
+pedestal_per_trace_median,verdict_not_FAIL,0.022,0.016,"fitted trace by trace with its own depth. It sits below the pooled value, so the floor is heterogeneous across traces and one number understates that",DIAGNOSTIC
+pedestal_per_trace_railed_fraction,verdict_FAIL,0.942,,"the dropped traces rail against the fit's own bound, so the law does not describe them at all. They are a different population and not a shifted one, which is why the cut is defensible and still has to be stated",DIAGNOSTIC

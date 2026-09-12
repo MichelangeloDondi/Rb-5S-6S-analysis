@@ -50,6 +50,11 @@ RESULTS = ROOT / "results"
 
 # Producer -> the CSVs it writes. Cheap enough to re-run in a test.
 CHEAP = {
+    # measured 1.8 s and 0.5 s, needing no raw trace: they belong in the
+    # every-pass set, and entering EXPENSIVE with no comment removed them from
+    # the freshness canary that runs without --all.
+    "run_moment_admission": ["moment_admission.csv"],
+    "run_ruler_tooth_shares": ["ruler_tooth_shares.csv"],
     # Closed form throughout, no traces and no RNG, so it reproduces exactly.
     "run_platform_twins": ["platform_twins.csv"],
     "run_sobol_acquisition": ["sobol_acquisition.csv"],  # <1 s, exact
@@ -141,6 +146,18 @@ EXPENSIVE = {
     # when it is MISSING, which is how a chapter came to cite a file nobody had
     # produced (A128).
     "run_kernel_inhomogeneity": ["kernel_inhomogeneity.csv"],
+    # measured 43 s and 39 s, which is why these two stay here; two of the
+    # producers registered beside them (moment_admission, ruler_tooth_shares)
+    # went to CHEAP on their own measured cost and the twin-completeness one
+    # is a first registration below.
+    "run_fringe_rho_recovery": ["fringe_rho_recovery.csv"],
+    "run_rf_saturation_ladder": ["rf_saturation_ladder.csv"],
+    # measured 56 s through the producer alone and 61 s through verify()
+    # (measured 2026-09-12), above the bar the two rows above set
+    "run_polarizability_deep": ["polarizability_deep.csv"],
+    # reads raw traces, so it cannot run on a clone without data_raw/ and is
+    # not SYNTHETIC_ONLY; measured 3 s.
+    "run_twin_completeness": ["twin_completeness.csv"],
     # the digitiser scale: reads thirty-two raw traces and returns in seconds,
     # but it READS RAW TRACES so a public clone cannot regenerate it.
     "run_digitiser_scale": ["digitiser_scale.csv"],
@@ -742,14 +759,31 @@ def _one(job):
                OPENBLAS_NUM_THREADS="1", MKL_NUM_THREADS="1",
                VECLIB_MAXIMUM_THREADS="1", NUMEXPR_NUM_THREADS="1",
                OMP_NUM_THREADS="1")
-    # THE SEED'S FINGERPRINT, so a producer that ignores the override is caught
+    # THE SEED'S TIMESTAMP, so a producer that ignores the override is caught
     # LOUDLY. Without this the private copy stays as seeded, the comparison
     # measures the committed file against itself, and the check passes while
     # verifying nothing. The plant of 2026-09-11 found exactly that on its
     # first run, from a producer that built its path with os.path.join instead
     # of resolving it through the config.
-    seeded = {o: (priv / o).read_bytes() if (priv / o).is_file() else None
-              for o in outputs}
+    #
+    # THE TEST IS THE MTIME AND NOT THE BYTES, and the difference is a false
+    # positive this check carried against two producers. Comparing CONTENT
+    # cannot separate "did not write" from "wrote correctly and
+    # deterministically", because a producer that reproduces its committed CSV
+    # byte for byte is doing exactly what this whole script exists to verify.
+    # `moment_admission` and `ruler_tooth_shares` carry no timestamp and no
+    # last-digit jitter, so they reproduced themselves exactly and were
+    # accused of never having run. Stamping each seeded output to the epoch
+    # and asking afterwards whether it moved tests the failure mode itself:
+    # any real write updates the mtime whatever it writes, and a producer that
+    # ignores the override leaves the sentinel untouched. The 2026-09-11 plant
+    # still fires, because a producer writing elsewhere still never touches
+    # this file.
+    SENTINEL_MTIME = 0
+    for o in outputs:
+        if (priv / o).is_file():
+            os.utime(priv / o, (SENTINEL_MTIME, SENTINEL_MTIME))
+    seeded = {o: (priv / o).is_file() for o in outputs}
     # a registry key may carry CLI arguments after the script name
     # ("run_saturation_probe --emit"); the first full --all of 2026-08-31
     # found the join producing a filename with a flag inside it, unrunnable
@@ -771,7 +805,7 @@ def _one(job):
         if not fresh.is_file():
             problems.append(f"{name}: producer wrote nothing")
             continue
-        if seeded.get(name) is not None and fresh.read_bytes() == seeded[name]:
+        if seeded.get(name) and fresh.stat().st_mtime == SENTINEL_MTIME:
             problems.append(
                 f"{name}: {script.split()[0]}.py did not write into "
                 f"RB5S6S_RESULTS_DIR, so this check verified nothing. Resolve "
@@ -928,10 +962,14 @@ def verify(producers: dict, workers: int | None = None) -> list[str]:
 
 def plant(subset=("run_waist_ladder", "run_platform_twins",
                   "run_transition_ladder")) -> int:
-    """Probe the isolation, the pool and the detector, on the real path.
+    """Probe the isolation, the pool, the detector and the write sentinel, on
+    the real path.
 
-    Three claims and a negative, because a pooled verifier that silently stops
-    detecting drift is worse than a slow one.
+    Four claims, two of them negatives, because a pooled verifier that
+    silently stops detecting drift, or that accuses a deterministic producer
+    of never running, is worse than a slow one. The fourth claim is the mtime
+    sentinel of 2026-09-12: with that arm deleted the three older claims
+    stayed green.
     """
     fails = []
     prod = {k: v for k, v in dict(CHEAP, **EXPENSIVE).items() if k in subset}
@@ -994,16 +1032,43 @@ def plant(subset=("run_waist_ladder", "run_platform_twins",
         shutil.rmtree(stash, ignore_errors=True)
         shutil.rmtree(root, ignore_errors=True)
 
+    # 4. THE WRITE SENTINEL, BOTH WAYS. A byte-deterministic producer that
+    #    rewrites its committed CSV must PASS (the false positive the byte
+    #    comparison carried), and a seeded file the producer never writes
+    #    must be reported as "did not write" (the negative the sentinel exists
+    #    for). One call carries both: the real cheap producer plus a decoy
+    #    output seeded from a committed copy under a name it does not write.
+    stash = Path(_tf.mkdtemp(prefix="plant_stash4_"))
+    root = Path(_tf.mkdtemp(prefix="plant_priv4_"))
+    try:
+        for f in RESULTS.glob("*.csv"):
+            _committed(f.name, stash / f.name)
+        det, out = "run_moment_admission", "moment_admission.csv"
+        decoy = "moment_admission_decoy.csv"
+        if not (stash / out).is_file():
+            fails.append(f"{out} has no committed copy, the sentinel claim did not run")
+        else:
+            shutil.copy2(stash / out, stash / decoy)
+            got = _one((det, [out, decoy], str(stash), str(root)))
+            if any(g.startswith(out) and "did not write" in g for g in got):
+                fails.append(f"a deterministic producer was accused of not writing: {got}")
+            if not any(g.startswith(decoy) and "did not write" in g for g in got):
+                fails.append(f"an unwritten seeded output was NOT reported: {got}")
+    finally:
+        shutil.rmtree(stash, ignore_errors=True)
+        shutil.rmtree(root, ignore_errors=True)
+
     for f in fails:
         print(f"PLANT FAIL: {f}", file=sys.stderr)
-    print(f"plant: {len(prod)} producers, 3 claims probed, {len(fails)} failure(s)")
+    print(f"plant: {len(prod)} producers, 4 claims probed, {len(fails)} failure(s)")
     return 1 if fails else 0
 
 
 # EXPENSIVE producers that read no raw trace: `--all` covers them on a checkout
 # without data_raw/, which is every public clone. Membership is declared per
 # producer, never inferred; the others in EXPENSIVE are audited one by one.
-SYNTHETIC_ONLY = {"run_moment_power_map", "run_moment_power_map_deep",
+SYNTHETIC_ONLY = {"run_fringe_rho_recovery", "run_rf_saturation_ladder",
+                  "run_moment_power_map", "run_moment_power_map_deep",
                   "run_three_channel_forecast"}
 
 

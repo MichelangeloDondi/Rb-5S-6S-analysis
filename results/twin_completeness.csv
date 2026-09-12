@@ -1,0 +1,23 @@
+quantity,arm,value,err,note,status
+n_real_traces,,40,,"canonical p_sweep traces, first 40 by filename, wings of 400 samples. This sets the resolution of every verdict below and is why none of them proves completeness",MEASURED
+measured_sigma,,0.00287,0.00020,measured on the real traces' wings.,MEASURED
+twin_white_sigma,,0.00301,0.00022,twin at tau_int=1.0. Pull against the measured value +0.5 sigma.,DIAGNOSTIC
+twin_at_measured_tau_sigma,,0.00300,0.00022,twin at tau_int=2.515. Pull against the measured value +0.5 sigma.,DIAGNOSTIC
+measured_rho1,,0.0011,0.0077,measured on the real traces' wings.,MEASURED
+twin_white_rho1,,-0.0033,0.0087,twin at tau_int=1.0. Pull against the measured value -0.4 sigma.,DIAGNOSTIC
+twin_at_measured_tau_rho1,,0.4260,0.0071,twin at tau_int=2.515. Pull against the measured value +40.6 sigma.,DIAGNOSTIC
+measured_tau_int,,0.960,0.076,measured on the real traces' wings.,MEASURED
+twin_white_tau_int,,0.823,0.062,twin at tau_int=1.0. Pull against the measured value -1.4 sigma.,DIAGNOSTIC
+twin_at_measured_tau_tau_int,,2.09,0.14,twin at tau_int=2.515. Pull against the measured value +7.0 sigma.,DIAGNOSTIC
+measured_excess_kurtosis,,0.90,0.17,measured on the real traces' wings.,MEASURED
+twin_white_excess_kurtosis,,-0.057,0.037,twin at tau_int=1.0. Pull against the measured value -5.6 sigma.,DIAGNOSTIC
+twin_at_measured_tau_excess_kurtosis,,-0.064,0.038,twin at tau_int=2.515. Pull against the measured value -5.6 sigma.,DIAGNOSTIC
+twin_with_baseline_tilt_tau_int,,0.930,0.063,"the twin carrying a per-trace baseline tilt of 2.46 sigma across the grid, solved for over the measured from the real wings and not fitted, read the same way as the row below. This is the term the comparison found missing, now generated",DIAGNOSTIC
+twin_baseline_tilt_sigma_measured,,2.46,,"the rise across the full grid in units of the wing residual sigma, averaged over the real wings' own least-squares slopes. MEASURED, never fitted to a correlation time: an earlier cut solved for it and needed about seven times this, which is the evidence that a tilt alone does not account for the archive's correlation",DIAGNOSTIC
+measured_tau_int_not_detrended,,1.88,0.13,"the same wings with only the mean removed. Against the detrended value, the gap is a slow baseline tilt within each trace, which the twin does not generate",MEASURED
+verdict_white_reproduces_measured_correlation,,yes,,"archive 0.96, twin white 0.82, 1.4 sigma apart. This is the term the charter binds the twin to and it is the one an information criterion cannot grade",DIAGNOSTIC
+residual_gap_tilt_correlation_sigma,,6.6,,"sigma between the twin's correlation time at the MEASURED tilt and the real one. Nothing here was fitted, so this is a real gap: the measured tilt does not close the correlation time, and what else contributes is open",DIAGNOSTIC
+heldout_noise_level_pull_sigma,,0.5,,"HELD OUT: the tilt was calibrated on the correlation time and not on this. Real 0.0028694, twin 0.0030167. The twin reproduces it",DIAGNOSTIC
+heldout_first_lag_pull_sigma,,0.1,,"HELD OUT: the tilt was calibrated on the correlation time and not on this. Real 0.0010773, twin -0.0002154. The twin reproduces it",DIAGNOSTIC
+heldout_tail_shape_pull_sigma,,5.6,,"HELD OUT: the tilt was calibrated on the correlation time and not on this. Real 0.89949, twin -0.055875. THE TWIN DOES NOT REPRODUCE IT, so a term is still missing",DIAGNOSTIC
+verdict_law_tau_reproduces_measured_correlation,,no,,"archive 0.96, twin at the law's tau_int 2.09, 7.0 sigma apart",DIAGNOSTIC

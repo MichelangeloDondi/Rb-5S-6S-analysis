@@ -288,3 +288,39 @@ def test_producer_written_statuses_use_the_controlled_vocab():
                 f"{name}: its producer wrote status {r['status']!r}, which is "
                 f"not in {sorted(VOCAB)}. The vocabulary is the annotator's "
                 f"docstring and it binds producers too.")
+
+
+def test_the_annotators_own_comments_name_only_its_vocabulary():
+    """A status word in the annotator's SKIP and FILE_STATUS comments is a
+    member of VOCAB.
+
+    Three times (2026-09-09, 2026-09-10, 2026-09-12) a comment beside a
+    registration named CALCULATED, ESTABLISHED, MEASURED-HERE, ASSUMPTION or
+    OPEN, the prose provenance tags, for a file whose cells carry the CSV
+    vocabulary. The cells were always right, so the cell guard stayed green
+    while the comment described a file that could not exist. This reads the
+    comments: every ALL-CAPS token that looks like a status word is in the
+    vocabulary or on the short allow-list of capitalised names the file uses.
+    """
+    import re
+    src = Path(_spec.origin).read_text()
+    suspects = {"CALCULATED", "ESTABLISHED", "ASSUMPTION", "OPEN", "DESCOPED", "MEASURED-HERE"}
+    # the population is the SKIP registration block, where the three
+    # instances sat; a line that narrates a past instance ("naming", "NAMED",
+    # "caught", "until 20xx") is the record of the class and not an instance
+    lines = src.splitlines()
+    start = next(i for i, l in enumerate(lines) if l.startswith("SKIP = {"))
+    end = next(i for i in range(start, len(lines)) if lines[i].startswith("FILE_STATUS = {")) - 1
+    bad = []
+    for n in range(start, end + 1):
+        line = lines[n]
+        if "#" not in line:
+            continue
+        comment = line.split("#", 1)[1]
+        if re.search(r"naming|NAMED|named|caught|until 20\d\d|provenance tags", comment):
+            continue
+        for tok in re.findall(r"\b[A-Z][A-Z_-]{2,}\b", comment):
+            if tok in suspects:
+                bad.append(f"{n + 1}: {tok}")
+    assert not bad, ("a comment in annotate_results_status.py names a status word outside VOCAB "
+                     "(the prose provenance tags are not this file's vocabulary): " + "; ".join(bad))

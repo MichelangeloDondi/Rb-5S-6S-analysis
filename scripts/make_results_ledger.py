@@ -1517,14 +1517,13 @@ def main() -> int:
           f"matrix-element sigmas, and the 52 a.u. between this value and "
           f"Orson's is nine times its half-width, which is what an "
           f"independent all-order calculation costs and what the band "
-          f"cannot see. **A nearer qualification: one known open defect spans "
-          f"0.8 to 3.9 band half-widths on its own.** The 6S line list stops "
+          f"cannot see. **One known defect spanned 0.8 to 3.9 band half-widths "
+          f"on its own, and the next bullet closes it.** The 6S line list stops "
           f"at 8P where the 5S list runs to 12P, and the tail standing in for "
-          f"the omitted states is calibrated at the static limit while the "
-          f"drive falls between 8P and 9P, where the first omitted term is "
-          f"enhanced sevenfold. It is `delta_alpha_993_tail_dispersion`, 4.2 "
-          f"to 21.7 a.u., not applied because that needs matrix elements no "
-          f"held paper carries. The "
+          f"the omitted states was calibrated at the static limit while the "
+          f"drive falls between 8P and 9P. `delta_alpha_993_tail_dispersion` "
+          f"spanned 4.2 to 21.7 a.u. for want of the matrix elements the deep "
+          f"derivation now computes. The "
           f"sign was fixed by decision on 2026-08-24 and this "
           f"value is now the package default, a decision on the theory "
           f"and not a measurement, since the sign remains unset by "
@@ -1537,7 +1536,8 @@ def main() -> int:
           f"reproduced at {to:.4F} nm (≈1.6 pm), "
           f"the measured static $\\alpha_{{5S}}$ 318.79(1.42) at {a5:.2F}, and the "
           f"static $\\alpha_{{6S}}$ tail is calibrated to Safronova's 5167(22) "
-          f"({a6:.0f}). The same model gives the **first 5S–6S magic wavelengths** "
+          f"({a6:.0f}). The same model, its 6S tail still the static one, gives the "
+          f"**first 5S–6S magic wavelengths** "
           f"(scalar, an envelope estimate): $\\lambda_m \\approx$ {mtxt} nm, and a "
           f"trap at any of "
           f"them would hold both states without pulling the 993 nm line. Scalar "
@@ -1553,6 +1553,29 @@ def main() -> int:
           f"5S–6S. A "
           f"trapped-atom platform is the follow-up. Reproducible: "
           f"`run_polarizability.py`.")
+        # The deep derivation, 2026-09-12: every displayed number is the CSV's
+        # own cell string, so the tags resolve after any regeneration of that
+        # producer, and the bullet is absent while the file is.
+        deep = {(r["quantity"], r["key"]): r for r in rows("polarizability_deep")}
+        if deep:
+            def _t(q, k, err=False):
+                cell = deep[(q, k)]["err" if err else "value"]
+                return (f"[{cell}](../results/polarizability_deep.csv "
+                        f"\"ref:polarizability_deep:{q}:{k}{':err' if err else ''}\")")
+            W(f"- **The same quantity re-derived to 12P and beyond:** "
+              f"{_t('delta_alpha', 'at_drive')} ± {_t('delta_alpha', 'at_drive', True)} a.u. "
+              f"(`results/polarizability_deep.csv`), the whole move from −1145 being "
+              f"the 9P-and-above group, {_t('dynamic_6s_9p_and_above', 'at_drive')} ± "
+              f"{_t('dynamic_6s_9p_and_above', 'at_drive', True)} a.u. at the drive where "
+              f"the module's static tail carried a fifth of that. The elements above 8P "
+              f"come from the Coulomb approximation calibrated on the held 6S–8P pair, "
+              f"the step from the 6S–7P pair setting its spread and every other held "
+              f"element a check on the class, the static tail checks against the literature's own residual at "
+              f"{_t('static_tail_pull', 'computed_vs_SS2011')} sigma, and the quadrupole "
+              f"and magnetic-dipole channels are bounded at "
+              f"{_t('E2_over_E1_shift', 'at_drive')} and {_t('M1_over_E1_shift', 'at_drive')}. "
+              f"The package constant stays at −1145 until every producer that reads it "
+              f"is regenerated in one wave. Reproducible: `run_polarizability_deep.py`.")
     rp = rows("resolving_power")
     if rp:
         obs = {r["observable"]: r for r in rp if r["kind"] == "observable"}

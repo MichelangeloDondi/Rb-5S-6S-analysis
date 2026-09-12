@@ -220,6 +220,38 @@ print(f"  Bayesian: {d_bic:+.1f}  -> prefers the "
 - [Methods chapter 6](../methods/06_the_statistics.md) for this repository's
   panel and the one case where its members disagree.
 
+## What a criterion cannot grade at all, and it is not a matter of degree
+
+A criterion compares two models over one dataset with different parameter
+counts. It therefore says nothing about a term the fit cannot free: there is no
+"with" and no "without" to difference, so the quantity is **undefined and not
+merely small**. That is not a limitation to be noted and worked around. It is a
+boundary on the question the tool answers.
+
+It matters here because the simulation this repository forecasts through
+generates seven terms its own fitter refuses, each for a stated reason: a beam
+quality degenerate with the waist at fixed collection, a polarisation the
+profile model does not carry, a blackbody shift a free centre absorbs exactly,
+a depletion that is a width and not an amplitude, a digitiser step read as
+noise, a lock drift the free centre absorbs, and a pumping scale exactly
+degenerate with the saturation companion. **A census over the fittable terms
+grades the model's own term list and is silent about the world.**
+
+And the silence is not conservative. In the layer study behind
+`run_twin_completeness.py` the quiet layers move the fitted waist by under
+0.05 per cent each on their own, and a criterion scores no preference on any
+of them, giving the same answer whether the simulation has them right or
+wrong. The loud ones are not spared either: the saturation companion moves
+the fitted transit by [1.378](../../results/rf_saturation_ladder.csv "ref:rf_saturation_ladder:transit_bias_pct:one_tooth_waist_only") per cent and is
+just as invisible to a criterion, because it is a world term with no fitted
+twin. A term invisible to the likelihood is invisible to AIC by
+construction.
+
+**The test that does work is a residual comparison**, because a missing term
+cannot hide in what a fit leaves behind whether or not the fit could have freed
+it. [The digital twin](the-digital-twin.md) carries what that comparison found,
+and it found something an information criterion could not have.
+
 ## See also
 
 - [Identifiability](identifiability.md), for the question of whether a

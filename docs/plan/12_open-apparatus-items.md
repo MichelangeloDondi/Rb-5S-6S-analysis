@@ -508,6 +508,24 @@ nearly stationary in it. **Cost.** Two blocks in one session with the wide windo
 since the pedestal must be fitted. Raised by an external reading on 2026-09-06
 and derived here on rung 1.
 
+**And the attenuator is worth more than a calibration: unbalance the retro on
+purpose.** The fringe contrast, the one lineshape channel that separates the
+retro ratio from the polarisability, goes as twice the root of the ratio over
+one plus the ratio, and that expression is stationary at a ratio of one. Its
+logarithmic slope reads [0.01546](../../results/fringe_rho_recovery.csv "ref:fringe_rho_recovery:dcontrast_dlnrho:rho=0.94") at the working value against
+[0.15713](../../results/fringe_rho_recovery.csv "ref:fringe_rho_recovery:dcontrast_dlnrho:rho=0.5") at one half, ten times larger, and it costs the Doppler-free rate, which
+goes as the ratio itself ([methods 3](../methods/03_the_ac_stark_ramp.md)), a factor
+1.9 in signal at one half, and of the shift under measurement, which goes as one
+plus the ratio, a factor 1.3, with
+[0.08685](../../results/fringe_rho_recovery.csv "ref:fringe_rho_recovery:dcontrast_dlnrho:rho=0.7") between them, so a return beam deliberately
+attenuated to half turns a channel this bench cannot read into one it can,
+and the same run supplies the calibration above. Where the contrast is
+measured with the polarisation axis known and the two beams superimposed it
+returns the ratio to [2.98e-08](../../results/fringe_rho_recovery.csv "ref:fringe_rho_recovery:max_rho_bias_clean:single_valued") over the admitted grid. Assuming the axis
+instead costs up to [0.9671](../../results/fringe_rho_recovery.csv "ref:fringe_rho_recovery:worst_rho_bias_polarisation_assumed:single_valued") in the ratio and an unthreaded tilt up to
+[0.8314](../../results/fringe_rho_recovery.csv "ref:fringe_rho_recovery:worst_rho_bias_tilt_and_offset:single_valued"), so the run records the axis and the retro alignment beside the
+attenuation. The ratio it returns is exactly immune to the beam quality.
+
 ### The retro path length, which sets the comb's effective depth
 
 **What is known.** Nothing. The retro mirror is a flat behind the cell
@@ -821,7 +839,10 @@ independently, on the rms spread of the transit width over the collected region:
 that spread is 1.73 per cent at 55 microns and a quality factor of 1, 3.61 at
 1.5, 4.70 at 1.75 and 5.84 at 2.0, against the 5.5 per cent edge the record sets
 at 40 microns. **The bottom of the band leaves the licence at a quality factor
-of 1.93**, which is the "about two" above reached through a different term. The
+of 1.93**, which is the "about two" above reached through a different term.
+(The convolution licence inverted directly from `collection_z_ratio_m2` puts the
+same edge at 1.891 for this waist: the two routes agree to three per cent and
+the difference is the spread model, not a disagreement about the bound.) The
 joint condition is `w0 >= 40 um * sqrt(M^2)`: 49 microns at 1.5, 57 at 2, 69 at
 3. So the waist band and the quality-factor bound are one assumption, not two,
 and writing either alone writes half of it.
@@ -986,6 +1007,50 @@ therefore the size of the coupling as a number and not as a measured
 scatter. No forecast rests on it: the comb enters the analysis as a frequency
 ruler, whose calibration the second-to-first ratio carries and the carrier does
 not.
+
+### The flat floor under the comb, which no measurement here identifies
+
+The comb's measured tooth shares reject the pure phase-modulation law
+$J_k(2\beta)^2$ at a reduced chi-squared of
+[6.11](../../results/ruler_tooth_shares.csv "ref:ruler_tooth_shares:chi2_red_depth_fixed:")
+± 0.58, and a *flat pedestal* carrying
+[0.0479](../../results/ruler_tooth_shares.csv "ref:ruler_tooth_shares:pedestal_fraction_of_comb:")
+of the comb's power fixes it completely
+([the ruler chapter](../methods/05_the_frequency_ruler.md)). Letting the
+modulation depth float does not. What that floor is was not determined: it is
+symmetric in tooth order, which rules out a chirp, and scattered light, a
+detector offset and an unresolved broad background all reproduce it equally
+well from the shares alone.
+
+**Why it matters beyond bookkeeping.** The floor puts about 0.68 per cent under
+every tooth slot, against a third-order tooth standing at [0.58](../../results/ruler_tooth_shares.csv "ref:ruler_tooth_shares:signal_over_pedestal:-3") of that floor, so the
+$k=\pm3$ teeth sit below it and cannot carry a rung of a depth ladder. That
+cuts the ladder's usable span from about seventy-fold to
+[5.51](../../results/ruler_tooth_shares.csv "ref:ruler_tooth_shares:usable_rate_ladder:"),
+which is still enough for the saturation measurement the ramp chapter sets out,
+but a design that assumes the third orders is designing on a floor.
+
+**Read it as conditional on a cut over the same teeth.** The combs kept are
+those whose calibration verdict passes, which is an amplitude verdict on the
+teeth being fitted, and keeping every non-excluded comb moves the floor to about
+nineteen per cent. The dropped combs rail against the fit's own bound rather
+than sitting at a different value, so the cut separates a population the law
+describes from one it does not, and the number above belongs to the first.
+
+**Two origins are already excluded, and the leading one is not optical.** The
+comb fit carries a linear baseline under the teeth, so a flat background or a
+detector offset is absorbed by it. The third-order heights sit at about 0.4 of
+the fit residual, below unity signal-to-noise, where a non-negative height
+estimator has a positive expectation under noise alone of about the residual
+size, against a fitted floor per slot of about 0.35 of it. So this may be an
+estimator artefact and not an apparatus fact, which changes what the test
+below can settle.
+
+**What would close it, and it is cheap.** Block the modulator drive and record
+the same trace: a floor that survives is scattered light or a detector offset,
+one that vanishes is optical. Then repeat at two detector gains, since an
+offset scales with gain and scattered light does not. Neither needs atoms, a
+lock, or more than an hour.
 
 ### The guided-platform items
 

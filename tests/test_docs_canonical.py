@@ -1238,7 +1238,9 @@ def test_pipeline_bookkeeping_counts_match_the_tree():
             if int(m.group(1)) != stages:
                 bad.append(f"{rel}: says {m.group(1)} analysis stages, "
                            f"run_all.sh loops over {stages}")
-        for m in re.finditer(r"of the (\d+) committed CSVs", text):
+        # the paraphrase "index all N committed files" drifted past the first
+        # form on 2026-09-12 (107 beside a correct 108 in one file)
+        for m in re.finditer(r"(?:of the|index all) (\d+)\s+committed (?:CSVs|files)", text):
             if int(m.group(1)) != n_csv:
                 bad.append(f"{rel}: says {m.group(1)} committed CSVs, "
                            f"results/ holds {n_csv}")

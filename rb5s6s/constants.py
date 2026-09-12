@@ -328,11 +328,24 @@ et al., Phys. Rev. A 110, 022803 (2024); SWAPPED IN 2026-07-13, replacing Perez
 Galvan et al. 2008's 239.18(3) MHz). 6S splitting F=3-F=2 = 3A = 717.195(3) MHz
 (I=5/2)."""
 
+RYD_RB_CM = 109736.605
+"""Rydberg constant for Rb with the reduced-mass correction, cm^-1. One copy:
+`coulomb_approx` and `scripts/run_transition_ladder.py` read it here (the
+script carried its own literal until 2026-09-12)."""
+
 # --------------------------------------------------------------------------
 # AC-Stark / polarizability (fixed-lock physics; 2025 *prediction* only)
 # --------------------------------------------------------------------------
 DELTA_ALPHA_AU = -1145.0
-"""alpha(6S) - alpha(5S) at 993 nm, atomic units. THIS RECORD'S OWN
+"""RE-DERIVED 2026-09-12 (scripts/run_polarizability_deep.py, M41): with the
+6S-nP sum carried explicitly to 12P and beyond at the drive, where the 9P and
+higher terms are enhanced three to seven times over their static size, the
+value is -1133.0 +- 5.9 a.u.; the whole move is that group read dynamically. The
+constant is NOT moved here, because every light-shift prediction in results/
+reads it and moves together in one wave; results/polarizability_deep.csv
+carries the derived value beside it until then.
+
+alpha(6S) - alpha(5S) at 993 nm, atomic units. THIS RECORD'S OWN
 value, matching results/polarizability.csv's delta_alpha_993 row
 (-1145, band -1151 to -1140) and reproducible as delta_alpha(993.4) =
 -1144.6 from alpha_6s - alpha_5s. Adopted as the package value by the 2026-08-24 adjudication of the sign dispute below.

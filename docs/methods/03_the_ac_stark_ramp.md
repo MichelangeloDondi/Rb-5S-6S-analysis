@@ -235,8 +235,9 @@ $u \mathrm{e}^{\eta u}$, with the free ramp recovered exactly at $\eta=0$:
 
 A trap deep enough to hold a sample at one to two hundred microkelvin sits at
 $\eta$ of about one and a half to three, and **there the ramp does not
-collapse**: the third cumulant is within about a tenth of its free value and at
-the shallow end it is *larger*. The $\eta\gg1$ column, where the weight goes to
+collapse**: at $\eta = 1.56$ the third cumulant is 1.127 of its free value,
+12.7 per cent above it and not within a tenth of it, and at the shallow end it
+is larger still. The $\eta\gg1$ column, where the weight goes to
 $1-1/\eta$, $1/\eta$ and a skew of $-2$, needs a trap of order ten millikelvin.
 So a trapped guided arm keeps the asymmetry channel it was supposed to give
 up, and the statement to carry is the regime and not the limit.

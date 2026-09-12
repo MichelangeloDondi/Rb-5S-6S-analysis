@@ -361,7 +361,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 295,
+    "line": 296,
     "writes": "0.051"
    },
    {
@@ -684,6 +684,90 @@
   ],
   "source_file": "results/fibre_twin.csv",
   "source_value": "0.3760"
+ },
+ "fringe_rho_recovery:dcontrast_dlnrho:rho=0.5": {
+  "producer": "run_fringe_rho_recovery.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/12_open-apparatus-items.md",
+    "line": 516,
+    "writes": "0.15713"
+   }
+  ],
+  "source_file": "results/fringe_rho_recovery.csv",
+  "source_value": "0.15713"
+ },
+ "fringe_rho_recovery:dcontrast_dlnrho:rho=0.7": {
+  "producer": "run_fringe_rho_recovery.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/12_open-apparatus-items.md",
+    "line": 520,
+    "writes": "0.08685"
+   }
+  ],
+  "source_file": "results/fringe_rho_recovery.csv",
+  "source_value": "0.08685"
+ },
+ "fringe_rho_recovery:dcontrast_dlnrho:rho=0.94": {
+  "producer": "run_fringe_rho_recovery.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/12_open-apparatus-items.md",
+    "line": 515,
+    "writes": "0.01546"
+   }
+  ],
+  "source_file": "results/fringe_rho_recovery.csv",
+  "source_value": "0.01546"
+ },
+ "fringe_rho_recovery:max_rho_bias_clean:": {
+  "producer": "run_fringe_rho_recovery.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/identifiability.md",
+    "line": 655,
+    "writes": "2.98e-08"
+   }
+  ],
+  "source_file": "results/fringe_rho_recovery.csv",
+  "source_value": "2.98e-08"
+ },
+ "fringe_rho_recovery:max_rho_bias_clean:single_valued": {
+  "producer": "run_fringe_rho_recovery.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/12_open-apparatus-items.md",
+    "line": 524,
+    "writes": "2.98e-08"
+   }
+  ],
+  "source_file": "results/fringe_rho_recovery.csv",
+  "source_value": "2.98e-08"
+ },
+ "fringe_rho_recovery:worst_rho_bias_polarisation_assumed:single_valued": {
+  "producer": "run_fringe_rho_recovery.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/12_open-apparatus-items.md",
+    "line": 525,
+    "writes": "0.9671"
+   }
+  ],
+  "source_file": "results/fringe_rho_recovery.csv",
+  "source_value": "0.9671"
+ },
+ "fringe_rho_recovery:worst_rho_bias_tilt_and_offset:single_valued": {
+  "producer": "run_fringe_rho_recovery.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/12_open-apparatus-items.md",
+    "line": 526,
+    "writes": "0.8314"
+   }
+  ],
+  "source_file": "results/fringe_rho_recovery.csv",
+  "source_value": "0.8314"
  },
  "full_dataset_fit:kappa_ub95:primary": {
   "producer": "run_full_dataset_fit.py",
@@ -1070,12 +1154,12 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 685,
+    "line": 751,
     "writes": "18.6"
    },
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 685,
+    "line": 751,
     "writes": "18.6"
    }
   ],
@@ -1087,7 +1171,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 685,
+    "line": 751,
     "writes": "0.0032"
    }
   ],
@@ -1126,7 +1210,7 @@
    },
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 633,
+    "line": 699,
     "writes": "7.23"
    }
   ],
@@ -1148,7 +1232,7 @@
    },
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 633,
+    "line": 699,
     "writes": "6.48"
    }
   ],
@@ -1160,7 +1244,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 633,
+    "line": 699,
     "writes": "33.6"
    }
   ],
@@ -1172,7 +1256,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 633,
+    "line": 699,
     "writes": "37.4"
    }
   ],
@@ -1184,7 +1268,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 633,
+    "line": 699,
     "writes": "5.3179"
    }
   ],
@@ -1196,7 +1280,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 633,
+    "line": 699,
     "writes": "5.4036"
    }
   ],
@@ -1208,7 +1292,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 685,
+    "line": 751,
     "writes": "0.0588"
    }
   ],
@@ -1247,7 +1331,7 @@
    },
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 467,
+    "line": 468,
     "writes": "-56.972"
    },
    {
@@ -1306,7 +1390,7 @@
    },
    {
     "file": "docs/wiki/third-cumulant.md",
-    "line": 318,
+    "line": 330,
     "writes": "89.701"
    },
    {
@@ -1427,7 +1511,7 @@
    },
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 463,
+    "line": 464,
     "writes": "0.000"
    },
    {
@@ -1447,7 +1531,7 @@
    },
    {
     "file": "docs/wiki/third-cumulant.md",
-    "line": 320,
+    "line": 332,
     "writes": "0.000"
    }
   ],
@@ -1464,7 +1548,7 @@
    },
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 466,
+    "line": 467,
     "writes": "-0.265"
    },
    {
@@ -1491,7 +1575,7 @@
    },
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 469,
+    "line": 470,
     "writes": "106.911"
    },
    {
@@ -1521,7 +1605,7 @@
    },
    {
     "file": "docs/wiki/third-cumulant.md",
-    "line": 317,
+    "line": 329,
     "writes": "106.911"
    },
    {
@@ -1555,7 +1639,7 @@
   "quoting_sites": [
    {
     "file": "docs/THEORY_NOTE.md",
-    "line": 786,
+    "line": 785,
     "writes": "45.57(17)"
    }
   ],
@@ -1567,7 +1651,7 @@
   "quoting_sites": [
    {
     "file": "docs/THEORY_NOTE.md",
-    "line": 746,
+    "line": 745,
     "writes": "790.032326(32)"
    }
   ],
@@ -1579,7 +1663,7 @@
   "quoting_sites": [
    {
     "file": "docs/THEORY_NOTE.md",
-    "line": 722,
+    "line": 721,
     "writes": "-1093"
    }
   ],
@@ -1603,7 +1687,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/04_what-2025-delivered.md",
-    "line": 87,
+    "line": 90,
     "writes": "18"
    },
    {
@@ -1614,6 +1698,154 @@
   ],
   "source_file": "docs/lit/orson2021.md",
   "source_value": "18"
+ },
+ "moment_admission:effective_rank_admitted:": {
+  "producer": "run_moment_admission.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/identifiability.md",
+    "line": 624,
+    "writes": "2.85"
+   }
+  ],
+  "source_file": "results/moment_admission.csv",
+  "source_value": "2.847"
+ },
+ "moment_admission:effective_rank_all:": {
+  "producer": "run_moment_admission.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/identifiability.md",
+    "line": 628,
+    "writes": "8.42"
+   }
+  ],
+  "source_file": "results/moment_admission.csv",
+  "source_value": "8.424"
+ },
+ "moment_admission:n_admitted:": {
+  "producer": "run_moment_admission.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/identifiability.md",
+    "line": 612,
+    "writes": "21"
+   },
+   {
+    "file": "docs/wiki/third-cumulant.md",
+    "line": 289,
+    "writes": "21"
+   }
+  ],
+  "source_file": "results/moment_admission.csv",
+  "source_value": "21"
+ },
+ "moment_admission:snr_admitted_max:": {
+  "producer": "run_moment_admission.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/third-cumulant.md",
+    "line": 287,
+    "writes": "1832"
+   },
+   {
+    "file": "rb5s6s/fullmodel.py",
+    "line": 421,
+    "writes": "1832"
+   },
+   {
+    "file": "rb5s6s/fullmodel.py",
+    "line": 534,
+    "writes": "1832"
+   }
+  ],
+  "source_file": "results/moment_admission.csv",
+  "source_value": "1832"
+ },
+ "moment_admission:snr_admitted_min:": {
+  "producer": "run_moment_admission.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/third-cumulant.md",
+    "line": 287,
+    "writes": "23.23"
+   },
+   {
+    "file": "rb5s6s/fullmodel.py",
+    "line": 420,
+    "writes": "23.23"
+   },
+   {
+    "file": "rb5s6s/fullmodel.py",
+    "line": 533,
+    "writes": "23.23"
+   }
+  ],
+  "source_file": "results/moment_admission.csv",
+  "source_value": "23.23"
+ },
+ "moment_admission:snr_k2:6": {
+  "producer": "run_moment_admission.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/identifiability.md",
+    "line": 615,
+    "writes": "1667"
+   }
+  ],
+  "source_file": "results/moment_admission.csv",
+  "source_value": "1667"
+ },
+ "moment_admission:snr_k3:6": {
+  "producer": "run_moment_admission.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/identifiability.md",
+    "line": 617,
+    "writes": "0.00543"
+   }
+  ],
+  "source_file": "results/moment_admission.csv",
+  "source_value": "0.00543"
+ },
+ "moment_admission:snr_refused_max:": {
+  "producer": "run_moment_admission.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/third-cumulant.md",
+    "line": 287,
+    "writes": "1.279"
+   },
+   {
+    "file": "rb5s6s/fullmodel.py",
+    "line": 423,
+    "writes": "1.279"
+   },
+   {
+    "file": "rb5s6s/fullmodel.py",
+    "line": 535,
+    "writes": "1.279"
+   }
+  ],
+  "source_file": "results/moment_admission.csv",
+  "source_value": "1.279"
+ },
+ "moment_admission:snr_refused_min:": {
+  "producer": "run_moment_admission.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/third-cumulant.md",
+    "line": 287,
+    "writes": "0.0004582"
+   },
+   {
+    "file": "rb5s6s/fullmodel.py",
+    "line": 422,
+    "writes": "0.0004582"
+   }
+  ],
+  "source_file": "results/moment_admission.csv",
+  "source_value": "0.0004582"
  },
  "noise_floor_scaling:peak_4121:floor_exponent": {
   "producer": "run_noise_floor_scaling.py",
@@ -2422,12 +2654,233 @@
   "source_file": "results/platform_twins.csv",
   "source_value": "429.623"
  },
+ "polarizability_deep:E2_over_E1_shift:at_drive": {
+  "producer": "run_polarizability_deep.py",
+  "quoting_sites": [
+   {
+    "file": "docs/RESULTS.md",
+    "line": 141,
+    "writes": "1e-04"
+   },
+   {
+    "file": "docs/THEORY_NOTE.md",
+    "line": 669,
+    "writes": "1e-04"
+   }
+  ],
+  "source_file": "results/polarizability_deep.csv",
+  "source_value": "1e-04"
+ },
+ "polarizability_deep:M1_over_E1_shift:at_drive": {
+  "producer": "run_polarizability_deep.py",
+  "quoting_sites": [
+   {
+    "file": "docs/RESULTS.md",
+    "line": 141,
+    "writes": "6e-06"
+   },
+   {
+    "file": "docs/THEORY_NOTE.md",
+    "line": 669,
+    "writes": "6e-06"
+   }
+  ],
+  "source_file": "results/polarizability_deep.csv",
+  "source_value": "6e-06"
+ },
+ "polarizability_deep:delta_alpha:at_drive": {
+  "producer": "run_polarizability_deep.py",
+  "quoting_sites": [
+   {
+    "file": "README.md",
+    "line": 128,
+    "writes": "\u22121133.0"
+   },
+   {
+    "file": "docs/CLAIMS.md",
+    "line": 214,
+    "writes": "-1133.0"
+   },
+   {
+    "file": "docs/CLAIMS.md",
+    "line": 514,
+    "writes": "-1133.0"
+   },
+   {
+    "file": "docs/FUTURE_TRANSITIONS_titsapph.md",
+    "line": 456,
+    "writes": "-1133.0"
+   },
+   {
+    "file": "docs/LITERATURE.md",
+    "line": 711,
+    "writes": "-1133.0"
+   },
+   {
+    "file": "docs/RESULTS.md",
+    "line": 141,
+    "writes": "-1133.0"
+   },
+   {
+    "file": "docs/THEORY_NOTE.md",
+    "line": 669,
+    "writes": "-1133.0"
+   },
+   {
+    "file": "docs/THEORY_NOTE.md",
+    "line": 715,
+    "writes": "-1133.0"
+   },
+   {
+    "file": "docs/big_picture/04_what-2025-delivered.md",
+    "line": 78,
+    "writes": "-1133.0"
+   },
+   {
+    "file": "docs/plan/00_the-case.md",
+    "line": 135,
+    "writes": "-1133.0"
+   }
+  ],
+  "source_file": "results/polarizability_deep.csv",
+  "source_value": "-1133.0"
+ },
+ "polarizability_deep:delta_alpha:at_drive:err": {
+  "producer": "run_polarizability_deep.py",
+  "quoting_sites": [
+   {
+    "file": "README.md",
+    "line": 128,
+    "writes": "5.9"
+   },
+   {
+    "file": "docs/CLAIMS.md",
+    "line": 214,
+    "writes": "5.9"
+   },
+   {
+    "file": "docs/CLAIMS.md",
+    "line": 514,
+    "writes": "5.9"
+   },
+   {
+    "file": "docs/FUTURE_TRANSITIONS_titsapph.md",
+    "line": 456,
+    "writes": "5.9"
+   },
+   {
+    "file": "docs/LITERATURE.md",
+    "line": 711,
+    "writes": "5.9"
+   },
+   {
+    "file": "docs/RESULTS.md",
+    "line": 141,
+    "writes": "5.9"
+   },
+   {
+    "file": "docs/THEORY_NOTE.md",
+    "line": 669,
+    "writes": "5.9"
+   },
+   {
+    "file": "docs/THEORY_NOTE.md",
+    "line": 715,
+    "writes": "5.9"
+   },
+   {
+    "file": "docs/big_picture/04_what-2025-delivered.md",
+    "line": 78,
+    "writes": "5.9"
+   },
+   {
+    "file": "docs/plan/00_the-case.md",
+    "line": 135,
+    "writes": "5.9"
+   }
+  ],
+  "source_file": "results/polarizability_deep.csv",
+  "source_value": "5.9"
+ },
+ "polarizability_deep:delta_alpha_vs_orson:at_drive": {
+  "producer": "run_polarizability_deep.py",
+  "quoting_sites": [
+   {
+    "file": "README.md",
+    "line": 128,
+    "writes": "+6.7"
+   },
+   {
+    "file": "docs/CLAIMS.md",
+    "line": 217,
+    "writes": "+6.7"
+   },
+   {
+    "file": "docs/THEORY_NOTE.md",
+    "line": 669,
+    "writes": "+6.7"
+   }
+  ],
+  "source_file": "results/polarizability_deep.csv",
+  "source_value": "+6.7"
+ },
+ "polarizability_deep:dynamic_6s_9p_and_above:at_drive": {
+  "producer": "run_polarizability_deep.py",
+  "quoting_sites": [
+   {
+    "file": "docs/RESULTS.md",
+    "line": 141,
+    "writes": "15.0"
+   },
+   {
+    "file": "docs/THEORY_NOTE.md",
+    "line": 669,
+    "writes": "15.0"
+   }
+  ],
+  "source_file": "results/polarizability_deep.csv",
+  "source_value": "15.0"
+ },
+ "polarizability_deep:dynamic_6s_9p_and_above:at_drive:err": {
+  "producer": "run_polarizability_deep.py",
+  "quoting_sites": [
+   {
+    "file": "docs/RESULTS.md",
+    "line": 141,
+    "writes": "1.3"
+   },
+   {
+    "file": "docs/THEORY_NOTE.md",
+    "line": 669,
+    "writes": "1.3"
+   }
+  ],
+  "source_file": "results/polarizability_deep.csv",
+  "source_value": "1.3"
+ },
+ "polarizability_deep:static_tail_pull:computed_vs_SS2011": {
+  "producer": "run_polarizability_deep.py",
+  "quoting_sites": [
+   {
+    "file": "docs/RESULTS.md",
+    "line": 141,
+    "writes": "-0.81"
+   },
+   {
+    "file": "docs/THEORY_NOTE.md",
+    "line": 669,
+    "writes": "-0.81"
+   }
+  ],
+  "source_file": "results/polarizability_deep.csv",
+  "source_value": "-0.81"
+ },
  "prediction_band:collection_window:kappa2_ratio": {
   "producer": "run_prediction_band.py",
   "quoting_sites": [
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 411,
+    "line": 412,
     "writes": "0.9610"
    }
   ],
@@ -2439,7 +2892,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 413,
+    "line": 414,
     "writes": "0.9279"
    }
   ],
@@ -2451,7 +2904,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 418,
+    "line": 419,
     "writes": "-2.46"
    }
   ],
@@ -2468,7 +2921,7 @@
    },
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 415,
+    "line": 416,
     "writes": "-1.97"
    },
    {
@@ -2485,7 +2938,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 422,
+    "line": 423,
     "writes": "1.117"
    },
    {
@@ -2502,7 +2955,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 429,
+    "line": 430,
     "writes": "0.97"
    },
    {
@@ -2519,7 +2972,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 425,
+    "line": 426,
     "writes": "1.691"
    },
    {
@@ -2536,7 +2989,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 398,
+    "line": 399,
     "writes": "0.26"
    },
    {
@@ -2595,6 +3048,319 @@
   ],
   "source_file": "results/projections.csv",
   "source_value": "49.7754"
+ },
+ "rf_saturation_ladder:ladder_rate_span:": {
+  "producer": "run_rf_saturation_ladder.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/identifiability.md",
+    "line": 771,
+    "writes": "5.50"
+   }
+  ],
+  "source_file": "results/rf_saturation_ladder.csv",
+  "source_value": "5.50"
+ },
+ "rf_saturation_ladder:transit_bias_pct:ladder_waist_only_omega_free": {
+  "producer": "run_rf_saturation_ladder.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/identifiability.md",
+    "line": 776,
+    "writes": "-0.034"
+   }
+  ],
+  "source_file": "results/rf_saturation_ladder.csv",
+  "source_value": "-0.034"
+ },
+ "rf_saturation_ladder:transit_bias_pct:ladder_waist_only_omega_free:err": {
+  "producer": "run_rf_saturation_ladder.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/identifiability.md",
+    "line": 776,
+    "writes": "0.061"
+   }
+  ],
+  "source_file": "results/rf_saturation_ladder.csv",
+  "source_value": "0.061"
+ },
+ "rf_saturation_ladder:transit_bias_pct:ladder_waist_only_omega_pinned": {
+  "producer": "run_rf_saturation_ladder.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/identifiability.md",
+    "line": 777,
+    "writes": "-0.019"
+   }
+  ],
+  "source_file": "results/rf_saturation_ladder.csv",
+  "source_value": "-0.019"
+ },
+ "rf_saturation_ladder:transit_bias_pct:ladder_waist_only_omega_pinned:err": {
+  "producer": "run_rf_saturation_ladder.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/identifiability.md",
+    "line": 777,
+    "writes": "0.018"
+   }
+  ],
+  "source_file": "results/rf_saturation_ladder.csv",
+  "source_value": "0.018"
+ },
+ "rf_saturation_ladder:transit_bias_pct:one_tooth_gamma_l_free": {
+  "producer": "run_rf_saturation_ladder.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/identifiability.md",
+    "line": 779,
+    "writes": "-0.17"
+   }
+  ],
+  "source_file": "results/rf_saturation_ladder.csv",
+  "source_value": "-0.17"
+ },
+ "rf_saturation_ladder:transit_bias_pct:one_tooth_gamma_l_free:err": {
+  "producer": "run_rf_saturation_ladder.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/identifiability.md",
+    "line": 779,
+    "writes": "0.13"
+   }
+  ],
+  "source_file": "results/rf_saturation_ladder.csv",
+  "source_value": "0.13"
+ },
+ "rf_saturation_ladder:transit_bias_pct:one_tooth_waist_only": {
+  "producer": "run_rf_saturation_ladder.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/identifiability.md",
+    "line": 774,
+    "writes": "1.378"
+   },
+   {
+    "file": "docs/wiki/information-criteria.md",
+    "line": 245,
+    "writes": "1.378"
+   }
+  ],
+  "source_file": "results/rf_saturation_ladder.csv",
+  "source_value": "1.378"
+ },
+ "rf_saturation_ladder:transit_bias_pct:one_tooth_waist_only:err": {
+  "producer": "run_rf_saturation_ladder.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/identifiability.md",
+    "line": 774,
+    "writes": "0.027"
+   }
+  ],
+  "source_file": "results/rf_saturation_ladder.csv",
+  "source_value": "0.027"
+ },
+ "ruler_tooth_shares:chi2_red_depth_and_pedestal:": {
+  "producer": "run_ruler_tooth_shares.py",
+  "quoting_sites": [
+   {
+    "file": "docs/methods/05_the_frequency_ruler.md",
+    "line": 202,
+    "writes": "0.62"
+   }
+  ],
+  "source_file": "results/ruler_tooth_shares.csv",
+  "source_value": "0.62"
+ },
+ "ruler_tooth_shares:chi2_red_depth_and_pedestal::err": {
+  "producer": "run_ruler_tooth_shares.py",
+  "quoting_sites": [
+   {
+    "file": "docs/methods/05_the_frequency_ruler.md",
+    "line": 203,
+    "writes": "0.71"
+   }
+  ],
+  "source_file": "results/ruler_tooth_shares.csv",
+  "source_value": "0.71"
+ },
+ "ruler_tooth_shares:chi2_red_depth_fixed:": {
+  "producer": "run_ruler_tooth_shares.py",
+  "quoting_sites": [
+   {
+    "file": "docs/methods/05_the_frequency_ruler.md",
+    "line": 196,
+    "writes": "6.11"
+   },
+   {
+    "file": "docs/plan/12_open-apparatus-items.md",
+    "line": 1015,
+    "writes": "6.11"
+   }
+  ],
+  "source_file": "results/ruler_tooth_shares.csv",
+  "source_value": "6.11"
+ },
+ "ruler_tooth_shares:chi2_red_depth_free:": {
+  "producer": "run_ruler_tooth_shares.py",
+  "quoting_sites": [
+   {
+    "file": "docs/methods/05_the_frequency_ruler.md",
+    "line": 199,
+    "writes": "6.58"
+   }
+  ],
+  "source_file": "results/ruler_tooth_shares.csv",
+  "source_value": "6.58"
+ },
+ "ruler_tooth_shares:chi2_red_depth_free::err": {
+  "producer": "run_ruler_tooth_shares.py",
+  "quoting_sites": [
+   {
+    "file": "docs/methods/05_the_frequency_ruler.md",
+    "line": 200,
+    "writes": "0.63"
+   }
+  ],
+  "source_file": "results/ruler_tooth_shares.csv",
+  "source_value": "0.63"
+ },
+ "ruler_tooth_shares:n_ruler_traces:": {
+  "producer": "run_ruler_tooth_shares.py",
+  "quoting_sites": [
+   {
+    "file": "docs/methods/05_the_frequency_ruler.md",
+    "line": 194,
+    "writes": "52"
+   }
+  ],
+  "source_file": "results/ruler_tooth_shares.csv",
+  "source_value": "52"
+ },
+ "ruler_tooth_shares:pedestal_fraction_of_comb:": {
+  "producer": "run_ruler_tooth_shares.py",
+  "quoting_sites": [
+   {
+    "file": "docs/methods/05_the_frequency_ruler.md",
+    "line": 204,
+    "writes": "0.0479"
+   },
+   {
+    "file": "docs/plan/12_open-apparatus-items.md",
+    "line": 1017,
+    "writes": "0.0479"
+   }
+  ],
+  "source_file": "results/ruler_tooth_shares.csv",
+  "source_value": "0.0479"
+ },
+ "ruler_tooth_shares:pedestal_per_trace_median:verdict_not_FAIL": {
+  "producer": "run_ruler_tooth_shares.py",
+  "quoting_sites": [
+   {
+    "file": "docs/methods/05_the_frequency_ruler.md",
+    "line": 244,
+    "writes": "0.022"
+   }
+  ],
+  "source_file": "results/ruler_tooth_shares.csv",
+  "source_value": "0.022"
+ },
+ "ruler_tooth_shares:pedestal_per_trace_railed_fraction:verdict_FAIL": {
+  "producer": "run_ruler_tooth_shares.py",
+  "quoting_sites": [
+   {
+    "file": "docs/methods/05_the_frequency_ruler.md",
+    "line": 240,
+    "writes": "0.942"
+   }
+  ],
+  "source_file": "results/ruler_tooth_shares.csv",
+  "source_value": "0.942"
+ },
+ "ruler_tooth_shares:pedestal_under_selection:all_not_excluded": {
+  "producer": "run_ruler_tooth_shares.py",
+  "quoting_sites": [
+   {
+    "file": "docs/methods/05_the_frequency_ruler.md",
+    "line": 236,
+    "writes": "0.1874"
+   }
+  ],
+  "source_file": "results/ruler_tooth_shares.csv",
+  "source_value": "0.1874"
+ },
+ "ruler_tooth_shares:signal_over_pedestal:-3": {
+  "producer": "run_ruler_tooth_shares.py",
+  "quoting_sites": [
+   {
+    "file": "docs/methods/05_the_frequency_ruler.md",
+    "line": 252,
+    "writes": "0.58"
+   },
+   {
+    "file": "docs/plan/12_open-apparatus-items.md",
+    "line": 1026,
+    "writes": "0.58"
+   }
+  ],
+  "source_file": "results/ruler_tooth_shares.csv",
+  "source_value": "0.58"
+ },
+ "ruler_tooth_shares:two_beta_with_pedestal:": {
+  "producer": "run_ruler_tooth_shares.py",
+  "quoting_sites": [
+   {
+    "file": "docs/methods/05_the_frequency_ruler.md",
+    "line": 206,
+    "writes": "1.5298"
+   }
+  ],
+  "source_file": "results/ruler_tooth_shares.csv",
+  "source_value": "1.5298"
+ },
+ "ruler_tooth_shares:usable_ladder_orders:": {
+  "producer": "run_ruler_tooth_shares.py",
+  "quoting_sites": [
+   {
+    "file": "docs/methods/05_the_frequency_ruler.md",
+    "line": 254,
+    "writes": "0,1,2"
+   }
+  ],
+  "source_file": "results/ruler_tooth_shares.csv",
+  "source_value": "0,1,2"
+ },
+ "ruler_tooth_shares:usable_rabi_ladder:": {
+  "producer": "run_ruler_tooth_shares.py",
+  "quoting_sites": [
+   {
+    "file": "docs/methods/05_the_frequency_ruler.md",
+    "line": 258,
+    "writes": "2.35"
+   }
+  ],
+  "source_file": "results/ruler_tooth_shares.csv",
+  "source_value": "2.35"
+ },
+ "ruler_tooth_shares:usable_rate_ladder:": {
+  "producer": "run_ruler_tooth_shares.py",
+  "quoting_sites": [
+   {
+    "file": "docs/methods/05_the_frequency_ruler.md",
+    "line": 256,
+    "writes": "5.51"
+   },
+   {
+    "file": "docs/plan/12_open-apparatus-items.md",
+    "line": 1029,
+    "writes": "5.51"
+   }
+  ],
+  "source_file": "results/ruler_tooth_shares.csv",
+  "source_value": "5.51"
  },
  "saturation_companion:C3d:factor_with_saturation_ratio_-1p2362": {
   "producer": null,
@@ -3074,7 +3840,7 @@
    },
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 633,
+    "line": 699,
     "writes": "0.364"
    },
    {
@@ -3091,12 +3857,12 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 633,
+    "line": 699,
     "writes": "0.396"
    },
    {
     "file": "results/README.md",
-    "line": 283,
+    "line": 289,
     "writes": "0.396"
    }
   ],
@@ -3108,12 +3874,12 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 633,
+    "line": 699,
     "writes": "0.316"
    },
    {
     "file": "results/README.md",
-    "line": 283,
+    "line": 289,
     "writes": "0.316"
    }
   ],
@@ -3137,7 +3903,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/05_the_frequency_ruler.md",
-    "line": 252,
+    "line": 327,
     "writes": "10.0006"
    }
   ],
@@ -3193,7 +3959,7 @@
    },
    {
     "file": "docs/wiki/third-cumulant.md",
-    "line": 390,
+    "line": 402,
     "writes": "0.0240"
    }
   ],
@@ -3232,7 +3998,7 @@
    },
    {
     "file": "docs/wiki/third-cumulant.md",
-    "line": 392,
+    "line": 404,
     "writes": "10.0664"
    }
   ],
@@ -3244,7 +4010,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/05_the_frequency_ruler.md",
-    "line": 229,
+    "line": 304,
     "writes": "0.00010822"
    },
    {
@@ -3271,12 +4037,12 @@
    },
    {
     "file": "docs/methods/05_the_frequency_ruler.md",
-    "line": 229,
+    "line": 304,
     "writes": "0.00203"
    },
    {
     "file": "docs/methods/05_the_frequency_ruler.md",
-    "line": 237,
+    "line": 312,
     "writes": "0.00203"
    },
    {
@@ -3291,7 +4057,7 @@
    },
    {
     "file": "docs/wiki/third-cumulant.md",
-    "line": 374,
+    "line": 386,
     "writes": "0.00203"
    },
    {
@@ -3308,7 +4074,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/05_the_frequency_ruler.md",
-    "line": 246,
+    "line": 321,
     "writes": "0.00019"
    }
   ],
@@ -3320,7 +4086,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/05_the_frequency_ruler.md",
-    "line": 238,
+    "line": 313,
     "writes": "0.00064"
    },
    {
@@ -3330,7 +4096,7 @@
    },
    {
     "file": "docs/wiki/third-cumulant.md",
-    "line": 380,
+    "line": 392,
     "writes": "0.00064"
    }
   ],
@@ -3359,7 +4125,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/05_the_frequency_ruler.md",
-    "line": 260,
+    "line": 335,
     "writes": "1.48"
    },
    {
@@ -3386,7 +4152,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/05_the_frequency_ruler.md",
-    "line": 261,
+    "line": 336,
     "writes": "0.50"
    },
    {
@@ -3403,7 +4169,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/05_the_frequency_ruler.md",
-    "line": 230,
+    "line": 305,
     "writes": "0.00071772"
    },
    {
@@ -3425,12 +4191,12 @@
   "quoting_sites": [
    {
     "file": "docs/methods/05_the_frequency_ruler.md",
-    "line": 230,
+    "line": 305,
     "writes": "0.0136"
    },
    {
     "file": "docs/methods/05_the_frequency_ruler.md",
-    "line": 239,
+    "line": 314,
     "writes": "0.0136"
    },
    {
@@ -3445,7 +4211,7 @@
    },
    {
     "file": "docs/wiki/third-cumulant.md",
-    "line": 373,
+    "line": 385,
     "writes": "0.0136"
    },
    {
@@ -3462,7 +4228,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/05_the_frequency_ruler.md",
-    "line": 248,
+    "line": 323,
     "writes": "0.0021"
    },
    {
@@ -3479,7 +4245,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/05_the_frequency_ruler.md",
-    "line": 240,
+    "line": 315,
     "writes": "0.0022"
    },
    {
@@ -3489,7 +4255,7 @@
    },
    {
     "file": "docs/wiki/third-cumulant.md",
-    "line": 379,
+    "line": 391,
     "writes": "0.0022"
    }
   ],
@@ -4114,6 +4880,102 @@
   ],
   "source_file": "results/transition_ladder.csv",
   "source_value": "41.705"
+ },
+ "twin_completeness:heldout_first_lag_pull_sigma:": {
+  "producer": "run_twin_completeness.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/the-digital-twin.md",
+    "line": 325,
+    "writes": "0.1"
+   }
+  ],
+  "source_file": "results/twin_completeness.csv",
+  "source_value": "0.1"
+ },
+ "twin_completeness:heldout_noise_level_pull_sigma:": {
+  "producer": "run_twin_completeness.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/the-digital-twin.md",
+    "line": 324,
+    "writes": "0.5"
+   }
+  ],
+  "source_file": "results/twin_completeness.csv",
+  "source_value": "0.5"
+ },
+ "twin_completeness:heldout_tail_shape_pull_sigma:": {
+  "producer": "run_twin_completeness.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/the-digital-twin.md",
+    "line": 326,
+    "writes": "5.6"
+   }
+  ],
+  "source_file": "results/twin_completeness.csv",
+  "source_value": "5.6"
+ },
+ "twin_completeness:measured_tau_int:": {
+  "producer": "run_twin_completeness.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/the-digital-twin.md",
+    "line": 297,
+    "writes": "0.960"
+   }
+  ],
+  "source_file": "results/twin_completeness.csv",
+  "source_value": "0.960"
+ },
+ "twin_completeness:residual_gap_tilt_correlation_sigma:": {
+  "producer": "run_twin_completeness.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/the-digital-twin.md",
+    "line": 327,
+    "writes": "6.6"
+   }
+  ],
+  "source_file": "results/twin_completeness.csv",
+  "source_value": "6.6"
+ },
+ "twin_completeness:twin_at_measured_tau_tau_int:": {
+  "producer": "run_twin_completeness.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/the-digital-twin.md",
+    "line": 303,
+    "writes": "2.09"
+   }
+  ],
+  "source_file": "results/twin_completeness.csv",
+  "source_value": "2.09"
+ },
+ "twin_completeness:twin_baseline_tilt_sigma_measured:": {
+  "producer": "run_twin_completeness.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/the-digital-twin.md",
+    "line": 308,
+    "writes": "2.46"
+   }
+  ],
+  "source_file": "results/twin_completeness.csv",
+  "source_value": "2.46"
+ },
+ "twin_completeness:twin_white_tau_int:": {
+  "producer": "run_twin_completeness.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/the-digital-twin.md",
+    "line": 299,
+    "writes": "0.823"
+   }
+  ],
+  "source_file": "results/twin_completeness.csv",
+  "source_value": "0.823"
  },
  "waist_ladder:rung:0.250000:k3_one_photon_over_two": {
   "producer": "run_waist_ladder.py",

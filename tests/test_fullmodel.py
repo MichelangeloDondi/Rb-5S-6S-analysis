@@ -390,3 +390,163 @@ def test_a_free_centre_absorbs_the_first_order_shift_and_the_fit_says_so():
     # the centre is what changes, not the optimum
     assert freed["start_spread"]["s0"] > 1e4 * pinned["start_spread"]["s0"]
     assert freed["start_dependent"]
+
+
+def test_the_widened_orders_reproduce_the_retired_tuple_exactly():
+    """PLANT, both directions, for the 2026-09-12 widening of DEFAULT_ORDERS.
+
+    The tuple went from (2, 3, 5, 7) to both parities because the even orders
+    are the ones this archive can read. A widening is only safe if the old
+    tuple still returns what it always did, and the first cut of the ratio loop
+    did NOT: it paired by tuple POSITION (`zip(orders, orders[2:])`), which on
+    the sparse (2, 3, 5, 7) put 2 beside 5 and produced no ratio at all. Pairing
+    is by VALUE, and this test is what caught the difference.
+    """
+    from rb5s6s.fullmodel import ultra_joint_statistics, DEFAULT_ORDERS
+    grid = np.linspace(-25.0, 25.0, 1501)
+    B = dict(gamma_coll=0.55, sigma_laser_fwhm=1.6, transit_fwhm=0.9575,
+             gamma_l=0.40, s0=0.364, peak="4192", T_C=110.0)
+    assert set(DEFAULT_ORDERS) == {2, 3, 4, 5, 6, 7, 8, 9}
+    old = ultra_joint_statistics(grid, orders=(2, 3, 5, 7), **B)
+    wide = ultra_joint_statistics(grid, **B)
+    # the retired tuple still yields its two shift-free ratios at every window
+    for w in ("3.25", "6", "12"):
+        assert f"k5/k3@{w}" in old and f"k7/k5@{w}" in old
+    # and every key it returns survives the widening, bit for bit
+    assert set(old) <= set(wide)
+    for k, v in old.items():
+        assert wide[k] == v, k
+    # the widening is not a no-op: the even ratios appear and could not before
+    assert {"k4/k2@6", "k6/k4@6", "k8/k6@6"} <= set(wide)
+    assert len(wide) == 42 and len(old) == 18
+
+
+def test_the_covariance_refuses_the_odd_ladder_on_its_measured_snr():
+    """The parity split is a MEASUREMENT and this is where it is asserted.
+
+    At the archive's parameters the even statistics carry a per-trace SNR in
+    the hundreds and the odd ones about a hundredth, so an SNR floor of 3
+    admits exactly the even ladder. If this ever fails in the other direction
+    -- odd statistics admitted -- the world being generated is not this
+    archive's and every interval taken from the ladder needs re-reading.
+    """
+    from rb5s6s.fullmodel import ultra_joint_covariance
+    grid = np.linspace(-25.0, 25.0, 1501)
+    B = dict(gamma_coll=0.55, sigma_laser_fwhm=1.6, transit_fwhm=0.9575,
+             gamma_l=0.40, s0=0.364, peak="4192", T_C=110.0)
+    r = ultra_joint_covariance(grid, n_real=120, tau_int=2.515, **B)
+    order_of = lambda k: int(k[1:k.index("@")])            # noqa: E731
+    admitted_orders = {order_of(k) for k in r["admitted"] if "/" not in k}
+    refused_orders = {order_of(k) for k in r["refused"] if "/" not in k}
+    assert admitted_orders == {2, 4, 6, 8}, admitted_orders
+    assert refused_orders == {3, 5, 7, 9}, refused_orders
+    # the admitted set is a few numbers, not twenty-one
+    assert 2.0 < r["effective_rank"] < 4.5, r["effective_rank"]
+    # and the full set's rank is HIGHER, because noise is nearly full rank:
+    # reporting that one as the information content is the trap
+    assert r["effective_rank_all"] > r["effective_rank"]
+
+
+def test_the_covariance_refuses_too_few_realisations():
+    """NEGATIVE case: a singular covariance must raise, never be inverted."""
+    from rb5s6s.fullmodel import ultra_joint_covariance
+    grid = np.linspace(-25.0, 25.0, 801)
+    B = dict(gamma_coll=0.55, sigma_laser_fwhm=1.6, transit_fwhm=0.9575,
+             gamma_l=0.40, s0=0.364, peak="4192", T_C=110.0)
+    with pytest.raises(ValueError, match="singular by construction"):
+        ultra_joint_covariance(grid, n_real=10, **B)
+
+
+def test_the_convolution_licence_is_a_bound_on_z_ratio_and_not_on_the_waist():
+    """The licence depends on w0 and M^2 only through z_ratio, so a waist band
+    quoted without a beam quality is half an assumption.
+
+    The three reference cells are the ones a 720-cell Monte Carlo measured
+    independently on 2026-09-12: 55 microns leaves the licence at M^2 = 1.9,
+    64 microns holds there and fails at 3.0, 85 microns holds throughout.
+    """
+    from rb5s6s.fullmodel import convolution_licence
+    assert convolution_licence(64e-6, 1.0)["licensed"] is True
+    assert convolution_licence(55e-6, 1.9)["licensed"] is False
+    assert convolution_licence(64e-6, 1.9)["licensed"] is True
+    assert convolution_licence(85e-6, 3.0)["licensed"] is True
+    # z_ratio is exactly linear in M^2, which is what makes the bound a bound
+    a = convolution_licence(64e-6, 1.0)["z_ratio"]
+    b = convolution_licence(64e-6, 2.0)["z_ratio"]
+    assert b == pytest.approx(2.0 * a, rel=1e-12)
+    # and the joint form w0 >= 40 um sqrt(M^2) reproduces the 55 um edge
+    assert convolution_licence(55e-6, 1.9)["w0_min_m"] == pytest.approx(55.1e-6, rel=2e-3)
+
+    # TWO-SIDED, which this guard was not until 2026-09-12. Moving the
+    # threshold from 0.667 DOWN to 0.55, a 17 per cent weakening, left every
+    # assertion above passing: the smallest margin on the downward side
+    # was 0.172 while the upward side had one case at 0.0033. The evidence rule
+    # is to probe just outside the catch region in EACH direction, so the edge
+    # is bracketed here rather than approached from one side.
+    #
+    # The bracket also covers 64 microns between 1.9 and 3.0, which is exactly
+    # the region the docstring got wrong (it said 3.0; the function refuses at
+    # 2.560) and exactly where nothing looked.
+    assert convolution_licence(64e-6, 2.5)["licensed"] is True
+    assert convolution_licence(64e-6, 2.6)["licensed"] is False
+    assert convolution_licence(55e-6, 1.85)["licensed"] is True
+    assert convolution_licence(70e-6, 3.0)["licensed"] is True
+    assert convolution_licence(70e-6, 3.1)["licensed"] is False
+    # the threshold itself, from both sides, so a move in either direction fails
+    assert convolution_licence(64e-6, 1.0)["z_ratio"] == pytest.approx(0.2605, rel=1e-3)
+    edge = convolution_licence(64e-6, 2.560)
+    assert 0.660 < edge["z_ratio"] < 0.670, edge["z_ratio"]
+
+
+def test_a_beam_better_than_diffraction_limited_is_refused():
+    """M^2 >= 1 is physics, and nothing enforced it until 2026-09-12.
+
+    `collection_z_ratio_m2` returned 0.1303 at m2 = 0.5 and -0.2605 at
+    m2 = -1.0, a negative Rayleigh-range ratio computed through in silence. An
+    unbounded fit found that region and railed to 0.240 against a truth of
+    1.000, with a scatter small enough that a verdict column reading the
+    scatter alone called it measurable (master plan 17t).
+
+    The negative cases are probed on BOTH shapes that matter: just inside the
+    boundary, where a tolerance test must fire, and at a negative value, which
+    is the one that returned a sign-inverted ratio.
+    """
+    from rb5s6s.fullmodel import collection_z_ratio_m2, convolution_licence
+
+    # positive: the physical range is untouched, to the digit
+    assert collection_z_ratio_m2(64e-6, 1.0) == pytest.approx(0.2605, rel=1e-3)
+    assert collection_z_ratio_m2(64e-6, 3.0) == pytest.approx(0.7816, rel=1e-3)
+    # negative: just inside the limit, and the sign-inverting case
+    for bad in (0.999, 0.5, 0.0, -1.0):
+        with pytest.raises(ValueError, match="below the diffraction limit"):
+            collection_z_ratio_m2(64e-6, bad)
+    # and the licence inherits it through the same seam
+    with pytest.raises(ValueError, match="below the diffraction limit"):
+        convolution_licence(64e-6, 0.5)
+
+
+def test_the_covariance_keys_and_columns_cannot_misalign():
+    """PLANT for the 2026-09-12 repair, on the case that exposed it.
+
+    `keys` came from a function that emits a ratio only when its denominator is
+    non-zero; the per-realisation loop appended unconditionally. At a light
+    shift of zero the odd cumulants vanish identically, three ratio keys
+    disappear, and `zip(keys, snr)` truncated 42 columns onto 39 names, so
+    every statistic after the first dropped ratio carried the wrong label and
+    nothing raised. It held at the archive's own shift only because no
+    cumulant happened to be exactly zero there.
+    """
+    from rb5s6s.fullmodel import ultra_joint_covariance
+
+    grid = np.linspace(-25.0, 25.0, 801)
+    base = dict(gamma_coll=0.55, sigma_laser_fwhm=1.6, transit_fwhm=0.9575,
+                gamma_l=0.40, peak="4192", T_C=110.0)
+    for s0 in (0.364, 0.0):
+        r = ultra_joint_covariance(grid, n_real=60, s0=s0, **base)
+        assert len(r["keys"]) == len(r["mean"]) == len(r["sd"]) == len(r["snr"])
+        assert r["cov"].shape[0] == len(r["keys"])
+        assert set(r["admitted"]) <= set(r["keys"])
+    # the zero-shift case really does drop keys, or this guard proves nothing
+    n_full = len(ultra_joint_covariance(grid, n_real=60, s0=0.364, **base)["keys"])
+    n_zero = len(ultra_joint_covariance(grid, n_real=60, s0=0.0, **base)["keys"])
+    assert n_zero < n_full, (n_zero, n_full)

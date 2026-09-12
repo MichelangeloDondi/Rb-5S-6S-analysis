@@ -708,7 +708,7 @@ two-epoch design turns those nulls into measured coefficients.
   C3d and C1 channels) are consistent with, and refined by, our dataset's
   bounds (S₀ < 0.63 MHz by profile likelihood, β_self a bound). They are also
   the source of `DELTA_ALPHA_AU_ORSON2021 = +1093`, kept beside this record's
-  own `DELTA_ALPHA_AU = -1145` instead of pinning it, and
+  own `DELTA_ALPHA_AU = -1145` instead of pinning it (re-derived at [-1133.0](../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive") ± [5.9](../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive:err") with the 6S tail summed dynamically), and
   our `stark_shift_S0_mhz` reproduces their predicted shift to the digit
   (`test_stark_S0_reproduces_orson2021`). Prior groups looked for these
   shifts on this line and saw nulls at ~MHz resolution. The drift-immune

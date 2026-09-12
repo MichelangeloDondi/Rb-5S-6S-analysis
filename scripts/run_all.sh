@@ -39,12 +39,14 @@ for s in run_qc run_noise run_ruler run_linefit run_trim_report \
          run_power_sweep run_stark_sweep run_amplitude_trapping run_modelform \
          run_sigma_laser_sharing run_transit_mc run_amplitude_ratios run_ramp_geometry \
          run_model_ladder run_identifiability run_coverage run_sharing_bic run_fringe_tail \
-         run_polarizability run_resolving_power run_projections \
+         run_polarizability run_polarizability_deep run_resolving_power run_projections \
          run_sobol_acquisition \
          run_trapping_channels run_blackbody_channels run_skew_scaling \
          run_polarisation_bound run_collisional_shift_bound run_delta_alpha_posterior \
          run_guided_mode_tables run_onf_lever_ranking run_transition_ladder \
-         run_platform_twins run_digitiser_scale; do
+         run_platform_twins run_digitiser_scale \
+         run_moment_admission run_ruler_tooth_shares run_rf_saturation_ladder \
+         run_fringe_rho_recovery run_twin_completeness; do
     echo "== scripts/$s.py =="
     python scripts/$s.py
 done

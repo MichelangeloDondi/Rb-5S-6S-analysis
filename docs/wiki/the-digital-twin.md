@@ -283,6 +283,64 @@ the private correction record.
   result for a multivariate normal, in any regression text under partial
   correlation.
 
+## Is it complete? The one test, and what it found
+
+Completeness cannot be settled by an information criterion
+([why](information-criteria.md)), so it is settled by comparing what a fit
+leaves behind on real traces against what it leaves behind on simulated ones.
+The statistics are read off the flat wings, where the line is absent, so no
+frequency calibration enters and no fit has to converge: the noise scale, the
+first lag, the integrated correlation time and the excess kurtosis.
+
+Read under a single estimator, archive against simulation, the correlation time
+comes out
+[0.960](../../results/twin_completeness.csv "ref:twin_completeness:measured_tau_int:")
+on the real wings after a linear baseline is removed and
+[0.823](../../results/twin_completeness.csv "ref:twin_completeness:twin_white_tau_int:")
+on simulated wings with independent samples. **So independent samples reproduce
+the archive's detrended residual**, which is the opposite of what the noise
+law's own integrated time suggests: driving the simulation at that value gives
+[2.09](../../results/twin_completeness.csv "ref:twin_completeness:twin_at_measured_tau_tau_int:"),
+which the archive does not show.
+
+**Two terms were missing and one is now carried.** The real wings hold a slow
+baseline tilt within each trace, measured at
+[2.46](../../results/twin_completeness.csv "ref:twin_completeness:twin_baseline_tilt_sigma_measured:")
+of the wing's own noise across the grid. They also sit on a signal-independent
+dark floor, which the committed noise law carries as its `a` coefficient and
+which the generator did not: its shot-like term goes to zero where the signal
+does, so the simulated wings had almost no noise at all. Both are terms now,
+each defaulting to zero so nothing earlier moves, and the floor is taken per
+condition because `a` runs a factor of three across the power arm.
+
+**The test is held out, and it is not all passing.** The tilt is MEASURED from
+the real wings and never fitted to the statistic it is judged on, so every
+comparison below is a real one. An earlier version solved the tilt amplitude to
+make the correlation times agree and then reported that they agreed, which was
+an interpolation residual wearing the clothes of a test.
+
+| held-out statistic | real against simulated |
+|---|---|
+| noise level | [0.5](../../results/twin_completeness.csv "ref:twin_completeness:heldout_noise_level_pull_sigma:") sigma — reproduced |
+| first lag | [0.1](../../results/twin_completeness.csv "ref:twin_completeness:heldout_first_lag_pull_sigma:") sigma — reproduced |
+| tail shape | [5.6](../../results/twin_completeness.csv "ref:twin_completeness:heldout_tail_shape_pull_sigma:") sigma — **not** reproduced |
+| correlation time, at the measured tilt | [6.6](../../results/twin_completeness.csv "ref:twin_completeness:residual_gap_tilt_correlation_sigma:") sigma — **not** closed |
+
+So the simulation reproduces the real noise level and its first lag, and does
+not reproduce the tail shape or the full correlation time. The real wings are
+heavy-tailed where the simulation is Gaussian, and a tilt at the measured
+amplitude accounts for only part of the correlation. Fitting the tilt would
+close the second row and the amplitude needed is about seven times what the
+wings actually show, which is the evidence that something else contributes.
+**Two terms remain open, named, and not papered over.**
+
+**Two cautions travel with this result.** The wing must be taken where the line
+is absent. Three linewidths out, the statistic reads the line's shoulder and
+returns about ten whatever the noise is set to. And this estimator is not the
+noise law's. Over a short window it recovers 1.33 from a synthetic process whose
+true integrated time is 2.515, so its numbers are read archive-against-simulation
+and never against the committed law.
+
 ## See also
 
 - [Injection-recovery testing](injection-recovery.md), the closure test

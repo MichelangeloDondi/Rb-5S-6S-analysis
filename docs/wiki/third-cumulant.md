@@ -279,7 +279,19 @@ the seventh in sixteen of the twenty-four, and neither adds a channel: their
 windowed forms do not converge on the ramp's own cumulants as the window
 widens, and their ratios to the third carry no power dependence, so they
 read the third's shift information again through a heavier truncation
-weight. Two rules of the estimator follow from the same study and are now the
+weight. **And at the 2025 archive's own noise they are not
+measurable at all**, which is a stronger statement than carrying no extra
+information and was measured separately: under the correlation time
+`results/noise_model.csv` reports, the third, fifth, seventh and ninth
+cumulants and every ratio among them sit at a per-trace signal-to-noise
+between [0.0004582](../../results/moment_admission.csv "ref:moment_admission:snr_refused_min:") and [1.279](../../results/moment_admission.csv "ref:moment_admission:snr_refused_max:"), against [23.23](../../results/moment_admission.csv "ref:moment_admission:snr_admitted_min:") to [1832](../../results/moment_admission.csv "ref:moment_admission:snr_admitted_max:") for the even orders and the even
+ratios, so an admission floor of three refuses
+[21](../../results/moment_admission.csv "ref:moment_admission:n_admitted:")
+of 42 statistics and the refused set is exactly the odd one
+(`results/moment_admission.csv`). That is the reason to read a windowed
+cumulant's measured scatter before its derivation: a cumulant of pure noise is
+largest exactly where the signal is smallest, so the odd ladder does not
+merely fail to add. Averaged in, it subtracts. Two rules of the estimator follow from the same study and are now the
 package's. The window is recentred until the centre stops moving, because the
 detector pedestal's share of the window sets the contraction per pass and a
 centring residual on a pedestal is a fake third moment growing as the window
