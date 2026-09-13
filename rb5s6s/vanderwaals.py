@@ -75,7 +75,7 @@ BOHR_M = _C.A0_M  # constants.py, since 2026-09-11: this was a fifth
                   # last found missing rather than the population
 HBAR = _C.HBAR_JS  # one home for the trio, constants.py, since 2026-09-11
 KB = _C.K_B_J_PER_K   # one home: constants.py (2026-09-12)
-M_RB87 = 86.909180527 * 1.66053907e-27
+M_RB87 = _C.M_RB87_KG   # one home: constants.py (2026-09-13)
 
 # Literature Rb2 ground-state C6, for the validation path only. SOURCED
 # 2026-08-26, having stood uncited while the module's other SOURCED values
@@ -197,7 +197,7 @@ def beta_self_anchored(T_K: float = 403.15, n_cm3: float = 1e12) -> dict:
     c6_6 = c6_coefficient(LINES_5S, 0.0, LINES_6S, E_6S_CM)
     c6_7 = c6_coefficient(LINES_5S, 0.0, LINES_7S, E_7S_CM)
     dc6_6, dc6_7 = c6_6 - c6_5, c6_7 - c6_5
-    n_per_mtorr = (1e-3 * 133.322) / (KB * T_K) * 1e-6      # cm^-3 per mTorr
+    n_per_mtorr = (1e-3 * _C.TORR_PA) / (KB * T_K) * 1e-6      # cm^-3 per mTorr
     beta7_meas = ZAMEROSKI_7S_BROADENING_KHZ_PER_MTORR / (n_per_mtorr / n_cm3)
     err7 = ZAMEROSKI_7S_BROADENING_ERR / (n_per_mtorr / n_cm3)
     scale = (dc6_6 / dc6_7) ** 0.4

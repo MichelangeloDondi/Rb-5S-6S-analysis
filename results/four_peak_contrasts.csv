@@ -1,0 +1,82 @@
+quantity,key,value,err,unit,note,status
+contrast_isotope,p_sweep_T130_P25,0.07,0.15,MHz,measured width contrast. predicted 0.0112 from the record's terms. pull +0.39,DIAGNOSTIC
+contrast_F87,p_sweep_T130_P25,0.11,0.24,MHz,measured width contrast. predicted -0.0001 from the record's terms. pull +0.45,DIAGNOSTIC
+contrast_F85,p_sweep_T130_P25,-0.34,0.18,MHz,measured width contrast. predicted -0.0001 from the record's terms. pull -1.89,DIAGNOSTIC
+contrast_interaction,p_sweep_T130_P25,0.44,0.30,MHz,measured width contrast. predicted -0.0000 from the record's terms. pull +1.50,DIAGNOSTIC
+contrast_isotope,p_sweep_T130_P75,-0.079,0.080,MHz,measured width contrast. predicted 0.0112 from the record's terms. pull -1.14,DIAGNOSTIC
+contrast_F87,p_sweep_T130_P75,-0.04,0.14,MHz,measured width contrast. predicted -0.0010 from the record's terms. pull -0.26,DIAGNOSTIC
+contrast_F85,p_sweep_T130_P75,0.163,0.079,MHz,measured width contrast. predicted -0.0007 from the record's terms. pull +2.07,DIAGNOSTIC
+contrast_interaction,p_sweep_T130_P75,-0.20,0.16,MHz,measured width contrast. predicted -0.0003 from the record's terms. pull -1.25,DIAGNOSTIC
+contrast_isotope,p_sweep_T130_P125,0.021,0.052,MHz,measured width contrast. predicted 0.0112 from the record's terms. pull +0.19,DIAGNOSTIC
+contrast_F87,p_sweep_T130_P125,0.054,0.075,MHz,measured width contrast. predicted -0.0028 from the record's terms. pull +0.76,DIAGNOSTIC
+contrast_F85,p_sweep_T130_P125,-0.029,0.071,MHz,measured width contrast. predicted -0.0019 from the record's terms. pull -0.38,DIAGNOSTIC
+contrast_interaction,p_sweep_T130_P125,0.08,0.10,MHz,measured width contrast. predicted -0.0009 from the record's terms. pull +0.81,DIAGNOSTIC
+contrast_isotope,p_sweep_T130_P175,-0.012,0.040,MHz,measured width contrast. predicted 0.0112 from the record's terms. pull -0.59,DIAGNOSTIC
+contrast_F87,p_sweep_T130_P175,0.116,0.070,MHz,measured width contrast. predicted -0.0055 from the record's terms. pull +1.73,DIAGNOSTIC
+contrast_F85,p_sweep_T130_P175,0.016,0.037,MHz,measured width contrast. predicted -0.0037 from the record's terms. pull +0.52,DIAGNOSTIC
+contrast_interaction,p_sweep_T130_P175,0.101,0.079,MHz,measured width contrast. predicted -0.0018 from the record's terms. pull +1.29,DIAGNOSTIC
+contrast_isotope,p_sweep_T130_P225,-0.063,0.031,MHz,measured width contrast. predicted 0.0112 from the record's terms. pull -2.37,DIAGNOSTIC
+contrast_F87,p_sweep_T130_P225,0.130,0.053,MHz,measured width contrast. predicted -0.0091 from the record's terms. pull +2.61,DIAGNOSTIC
+contrast_F85,p_sweep_T130_P225,-0.017,0.032,MHz,measured width contrast. predicted -0.0061 from the record's terms. pull -0.32,DIAGNOSTIC
+contrast_interaction,p_sweep_T130_P225,0.147,0.062,MHz,measured width contrast. predicted -0.0030 from the record's terms. pull +2.40,DIAGNOSTIC
+contrast_isotope,t_sweep_T70_P225,-0.13,0.16,MHz,measured width contrast. predicted 0.0103 from the record's terms. pull -0.88,DIAGNOSTIC
+contrast_F87,t_sweep_T70_P225,0.01,0.23,MHz,measured width contrast. predicted -0.0091 from the record's terms. pull +0.09,DIAGNOSTIC
+contrast_F85,t_sweep_T70_P225,0.28,0.21,MHz,measured width contrast. predicted -0.0061 from the record's terms. pull +1.37,DIAGNOSTIC
+contrast_interaction,t_sweep_T70_P225,-0.27,0.31,MHz,measured width contrast. predicted -0.0030 from the record's terms. pull -0.87,DIAGNOSTIC
+contrast_isotope,t_sweep_T90_P225,0.216,0.084,MHz,measured width contrast. predicted 0.0106 from the record's terms. pull +2.44,DIAGNOSTIC
+contrast_F87,t_sweep_T90_P225,-0.30,0.14,MHz,measured width contrast. predicted -0.0091 from the record's terms. pull -2.11,DIAGNOSTIC
+contrast_F85,t_sweep_T90_P225,0.023,0.098,MHz,measured width contrast. predicted -0.0061 from the record's terms. pull +0.30,DIAGNOSTIC
+contrast_interaction,t_sweep_T90_P225,-0.32,0.17,MHz,measured width contrast. predicted -0.0030 from the record's terms. pull -1.89,DIAGNOSTIC
+contrast_isotope,t_sweep_T110_P225,-0.040,0.058,MHz,measured width contrast. predicted 0.0109 from the record's terms. pull -0.89,DIAGNOSTIC
+contrast_F87,t_sweep_T110_P225,0.128,0.089,MHz,measured width contrast. predicted -0.0091 from the record's terms. pull +1.54,DIAGNOSTIC
+contrast_F85,t_sweep_T110_P225,0.086,0.074,MHz,measured width contrast. predicted -0.0061 from the record's terms. pull +1.25,DIAGNOSTIC
+contrast_interaction,t_sweep_T110_P225,0.04,0.12,MHz,measured width contrast. predicted -0.0030 from the record's terms. pull +0.38,DIAGNOSTIC
+contrast_isotope,pooled,-0.022,0.019,MHz,"inverse-variance pool over 8 conditions. chi2 of the pool 11.9 for 7 dof (a chi2 far above it says the contrast depends on the condition, which is the P^2 or N signature). predicted mean 0.0110",DIAGNOSTIC
+contrast_F87,pooled,0.079,0.032,MHz,"inverse-variance pool over 8 conditions. chi2 of the pool 10.0 for 7 dof (a chi2 far above it says the contrast depends on the condition, which is the P^2 or N signature). predicted mean -0.0057",DIAGNOSTIC
+contrast_F85,pooled,0.013,0.021,MHz,"inverse-variance pool over 8 conditions. chi2 of the pool 11.3 for 7 dof (a chi2 far above it says the contrast depends on the condition, which is the P^2 or N signature). predicted mean -0.0038",DIAGNOSTIC
+contrast_interaction,pooled,0.070,0.038,MHz,"inverse-variance pool over 8 conditions. chi2 of the pool 12.8 for 7 dof (a chi2 far above it says the contrast depends on the condition, which is the P^2 or N signature). predicted mean -0.0019",DIAGNOSTIC
+contrast_isotope,pooled_power_arm,-0.033,0.021,MHz,"inverse-variance pool over the power arm of the L (5 conditions, the 130 C corner at the maximum power in both arms). chi2 3.1 for 4 dof",DIAGNOSTIC
+contrast_F87,pooled_power_arm,0.098,0.035,MHz,"inverse-variance pool over the power arm of the L (5 conditions, the 130 C corner at the maximum power in both arms). chi2 1.7 for 4 dof",DIAGNOSTIC
+contrast_F85,pooled_power_arm,0.003,0.022,MHz,"inverse-variance pool over the power arm of the L (5 conditions, the 130 C corner at the maximum power in both arms). chi2 8.4 for 4 dof",DIAGNOSTIC
+contrast_interaction,pooled_power_arm,0.105,0.042,MHz,"inverse-variance pool over the power arm of the L (5 conditions, the 130 C corner at the maximum power in both arms). chi2 5.5 for 4 dof",DIAGNOSTIC
+contrast_isotope,pooled_temperature_arm,-0.034,0.026,MHz,"inverse-variance pool over the temperature arm of the L (4 conditions, the 130 C corner at the maximum power in both arms). chi2 10.0 for 3 dof",DIAGNOSTIC
+contrast_F87,pooled_temperature_arm,0.084,0.043,MHz,"inverse-variance pool over the temperature arm of the L (4 conditions, the 130 C corner at the maximum power in both arms). chi2 8.9 for 3 dof",DIAGNOSTIC
+contrast_F85,pooled_temperature_arm,0.007,0.028,MHz,"inverse-variance pool over the temperature arm of the L (4 conditions, the 130 C corner at the maximum power in both arms). chi2 3.4 for 3 dof",DIAGNOSTIC
+contrast_interaction,pooled_temperature_arm,0.071,0.052,MHz,"inverse-variance pool over the temperature arm of the L (4 conditions, the 130 C corner at the maximum power in both arms). chi2 8.2 for 3 dof",DIAGNOSTIC
+cycles_per_crossing_axis,P25_w64,0.0010,,,"excitation cycles on a central chord at 130 C, the record's on-axis rate times sqrt(pi) w0 / 2 v. P^2 / w0^3",DIAGNOSTIC
+amplitude_face_predicted,87Rb_P25_w64,0.00011,,ln,"predicted ln(4207/4121) minus ln(1.667): the higher-branching line (4121, BRANCHING_F 0.372) is depleted more, so the ratio sits ABOVE the thermal law by this much",DIAGNOSTIC
+amplitude_face_predicted,85Rb_P25_w64,0.00007,,ln,"predicted ln(4192/4154) minus ln(1.400): the higher-branching line (4154, BRANCHING_F 0.348) is depleted more, so the ratio sits ABOVE the thermal law by this much",DIAGNOSTIC
+cycles_per_crossing_axis,P75_w64,0.0093,,,"excitation cycles on a central chord at 130 C, the record's on-axis rate times sqrt(pi) w0 / 2 v. P^2 / w0^3",DIAGNOSTIC
+amplitude_face_predicted,87Rb_P75_w64,0.00099,,ln,"predicted ln(4207/4121) minus ln(1.667): the higher-branching line (4121, BRANCHING_F 0.372) is depleted more, so the ratio sits ABOVE the thermal law by this much",DIAGNOSTIC
+amplitude_face_predicted,85Rb_P75_w64,0.00066,,ln,"predicted ln(4192/4154) minus ln(1.400): the higher-branching line (4154, BRANCHING_F 0.348) is depleted more, so the ratio sits ABOVE the thermal law by this much",DIAGNOSTIC
+cycles_per_crossing_axis,P125_w64,0.0256,,,"excitation cycles on a central chord at 130 C, the record's on-axis rate times sqrt(pi) w0 / 2 v. P^2 / w0^3",DIAGNOSTIC
+amplitude_face_predicted,87Rb_P125_w64,0.00272,,ln,"predicted ln(4207/4121) minus ln(1.667): the higher-branching line (4121, BRANCHING_F 0.372) is depleted more, so the ratio sits ABOVE the thermal law by this much",DIAGNOSTIC
+amplitude_face_predicted,85Rb_P125_w64,0.00181,,ln,"predicted ln(4192/4154) minus ln(1.400): the higher-branching line (4154, BRANCHING_F 0.348) is depleted more, so the ratio sits ABOVE the thermal law by this much",DIAGNOSTIC
+cycles_per_crossing_axis,P175_w64,0.0495,,,"excitation cycles on a central chord at 130 C, the record's on-axis rate times sqrt(pi) w0 / 2 v. P^2 / w0^3",DIAGNOSTIC
+amplitude_face_predicted,87Rb_P175_w64,0.00525,,ln,"predicted ln(4207/4121) minus ln(1.667): the higher-branching line (4121, BRANCHING_F 0.372) is depleted more, so the ratio sits ABOVE the thermal law by this much",DIAGNOSTIC
+amplitude_face_predicted,85Rb_P175_w64,0.00350,,ln,"predicted ln(4192/4154) minus ln(1.400): the higher-branching line (4154, BRANCHING_F 0.348) is depleted more, so the ratio sits ABOVE the thermal law by this much",DIAGNOSTIC
+cycles_per_crossing_axis,P225_w64,0.0805,,,"excitation cycles on a central chord at 130 C, the record's on-axis rate times sqrt(pi) w0 / 2 v. P^2 / w0^3",DIAGNOSTIC
+amplitude_face_predicted,87Rb_P225_w64,0.00853,,ln,"predicted ln(4207/4121) minus ln(1.667): the higher-branching line (4121, BRANCHING_F 0.372) is depleted more, so the ratio sits ABOVE the thermal law by this much",DIAGNOSTIC
+amplitude_face_predicted,85Rb_P225_w64,0.00567,,ln,"predicted ln(4192/4154) minus ln(1.400): the higher-branching line (4154, BRANCHING_F 0.348) is depleted more, so the ratio sits ABOVE the thermal law by this much",DIAGNOSTIC
+cycles_per_crossing_axis,P225_w40,0.268,,,"the same at the campaign's waists, 225 mW",DIAGNOSTIC
+amplitude_face_predicted,87Rb_P225_w40,0.0281,,ln,the campaign's reach on this face at that waist,DIAGNOSTIC
+amplitude_face_predicted,85Rb_P225_w40,0.0187,,ln,the campaign's reach on this face at that waist,DIAGNOSTIC
+cycles_per_crossing_axis,P225_w25,0.495,,,"the same at the campaign's waists, 225 mW",DIAGNOSTIC
+amplitude_face_predicted,87Rb_P225_w25,0.0512,,ln,the campaign's reach on this face at that waist,DIAGNOSTIC
+amplitude_face_predicted,85Rb_P225_w25,0.0340,,ln,the campaign's reach on this face at that waist,DIAGNOSTIC
+cycles_per_crossing_axis,P225_w16,0.448,,,"the same at the campaign's waists, 225 mW",DIAGNOSTIC
+amplitude_face_predicted,87Rb_P225_w16,0.0464,,ln,the campaign's reach on this face at that waist,DIAGNOSTIC
+amplitude_face_predicted,85Rb_P225_w16,0.0309,,ln,the campaign's reach on this face at that waist,DIAGNOSTIC
+amplitude_face_measured,87Rb_P25,-0.248,0.050,ln,"ln of the median-free mean of the canonical RF-off peak heights, 4207 over 4121, minus the thermal law, at 130 C. the statistical error only, and amplitude_ratios.csv's between-block systematic on this ratio is 0.44 in the log, which is the bar on the archive",DIAGNOSTIC
+amplitude_face_measured,85Rb_P25,0.145,0.030,ln,"ln of the median-free mean of the canonical RF-off peak heights, 4192 over 4154, minus the thermal law, at 130 C. the statistical error only, and amplitude_ratios.csv's between-block systematic on this ratio is 0.17 in the log, which is the bar on the archive",DIAGNOSTIC
+amplitude_face_measured,87Rb_P75,-0.195,0.021,ln,"ln of the median-free mean of the canonical RF-off peak heights, 4207 over 4121, minus the thermal law, at 130 C. the statistical error only, and amplitude_ratios.csv's between-block systematic on this ratio is 0.44 in the log, which is the bar on the archive",DIAGNOSTIC
+amplitude_face_measured,85Rb_P75,0.110,0.027,ln,"ln of the median-free mean of the canonical RF-off peak heights, 4192 over 4154, minus the thermal law, at 130 C. the statistical error only, and amplitude_ratios.csv's between-block systematic on this ratio is 0.17 in the log, which is the bar on the archive",DIAGNOSTIC
+amplitude_face_measured,87Rb_P125,-0.060,0.022,ln,"ln of the median-free mean of the canonical RF-off peak heights, 4207 over 4121, minus the thermal law, at 130 C. the statistical error only, and amplitude_ratios.csv's between-block systematic on this ratio is 0.44 in the log, which is the bar on the archive",DIAGNOSTIC
+amplitude_face_measured,85Rb_P125,0.118,0.022,ln,"ln of the median-free mean of the canonical RF-off peak heights, 4192 over 4154, minus the thermal law, at 130 C. the statistical error only, and amplitude_ratios.csv's between-block systematic on this ratio is 0.17 in the log, which is the bar on the archive",DIAGNOSTIC
+amplitude_face_measured,87Rb_P175,0.058,0.019,ln,"ln of the median-free mean of the canonical RF-off peak heights, 4207 over 4121, minus the thermal law, at 130 C. the statistical error only, and amplitude_ratios.csv's between-block systematic on this ratio is 0.44 in the log, which is the bar on the archive",DIAGNOSTIC
+amplitude_face_measured,85Rb_P175,0.076,0.013,ln,"ln of the median-free mean of the canonical RF-off peak heights, 4192 over 4154, minus the thermal law, at 130 C. the statistical error only, and amplitude_ratios.csv's between-block systematic on this ratio is 0.17 in the log, which is the bar on the archive",DIAGNOSTIC
+amplitude_face_measured,87Rb_P225,0.1517,0.0055,ln,"ln of the median-free mean of the canonical RF-off peak heights, 4207 over 4121, minus the thermal law, at 130 C. the statistical error only, and amplitude_ratios.csv's between-block systematic on this ratio is 0.44 in the log, which is the bar on the archive",DIAGNOSTIC
+amplitude_face_measured,85Rb_P225,0.1188,0.0084,ln,"ln of the median-free mean of the canonical RF-off peak heights, 4192 over 4154, minus the thermal law, at 130 C. the statistical error only, and amplitude_ratios.csv's between-block systematic on this ratio is 0.17 in the log, which is the bar on the archive",DIAGNOSTIC
+predicted_isotope_contrast,law,0.01169,,,"85Rb transit over 87Rb transit minus one, the root of the mass ratio",DIAGNOSTIC
+branching_difference,87Rb_F2_minus_F1,-0.1490,,,cascade.BRANCHING_F,DIAGNOSTIC
+branching_difference,85Rb_F3_minus_F2,-0.0993,,,cascade.BRANCHING_F,DIAGNOSTIC

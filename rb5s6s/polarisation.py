@@ -123,6 +123,8 @@ from __future__ import annotations
 
 import math
 
+from . import constants as _K
+
 __all__ = ["doppler_photon_split_hz", "rank_one_leak_rate",
            "hyperfine_mixing_rate", "HFS_SPLIT_5P_HZ",
            "vector_ratio", "vector_spread_mhz", "zeeman_satellite_mhz",
@@ -131,7 +133,7 @@ __all__ = ["doppler_photon_split_hz", "rank_one_leak_rate",
 # g_F for an S1/2 state is +-g_J/(2I+1) to the accuracy that matters here.
 GF_S_HALF = {"87Rb": 0.5, "85Rb": 1.0 / 3.0}
 
-MU_B_MHZ_PER_UT = 9.2740100783e-24 / 6.62607015e-34 * 1e-6 / 1e6
+MU_B_MHZ_PER_UT = _K.MU_B_J_PER_T / _K.H_PLANCK_JS * 1e-6 / 1e6   # one home: constants.py
 
 
 # 87Rb 5P hyperfine manifold splittings, lowest F to highest, in Hz. These
@@ -182,8 +184,8 @@ def doppler_photon_split_hz(t_c: float = 130.0, isotope: str = "87Rb") -> float:
 
     `v` here is the one-dimensional rms thermal speed along the beam.
     """
-    kb, c = 1.380649e-23, 2.99792458e8
-    mass = {"87Rb": 86.909180527, "85Rb": 84.911789738}[isotope] * 1.66053906660e-27
+    kb, c = _K.K_B_J_PER_K, _K.C_M_PER_S
+    mass = {"87Rb": _K.M_RB87_KG, "85Rb": _K.M_RB85_KG}[isotope]
     from .polarizability import E_6S_CM
     nu = c / (1e7 / (E_6S_CM / 2.0) * 1e-9)
     return 2.0 * nu * math.sqrt(kb * (t_c + 273.15) / mass) / c

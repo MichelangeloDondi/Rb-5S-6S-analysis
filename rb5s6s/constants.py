@@ -340,7 +340,8 @@ DELTA_ALPHA_AU = -1145.0
 """RE-DERIVED 2026-09-12 (scripts/run_polarizability_deep.py, M41): with the
 6S-nP sum carried explicitly to 12P and beyond at the drive, where the 9P and
 higher terms are enhanced three to seven times over their static size, the
-value is -1133.0 +- 5.9 a.u.; the whole move is that group read dynamically. The
+value is -1131.8 +- 5.9 a.u. with the 6s continuum computed (2026-09-13); the
+whole move is that group read dynamically. The
 constant is NOT moved here, because every light-shift prediction in results/
 reads it and moves together in one wave; results/polarizability_deep.csv
 carries the derived value beside it until then.
@@ -531,6 +532,8 @@ is on the D1 line, so it is resonantly reabsorbed by ground-state atoms
 # --------------------------------------------------------------------------
 _U_KG = 1.660_539_066_60e-27            # atomic mass unit, ESTABLISHED
 K_B_J_PER_K = 1.380_649e-23             # Boltzmann constant, exact. ESTABLISHED.
+TORR_PA = 101_325.0 / 760.0             # one torr in pascal, exact by definition. ESTABLISHED.
+MU_B_J_PER_T = 9.274_010_0783e-24        # Bohr magneton, CODATA 2018. ESTABLISHED.
 M_RB87_KG = 86.909_180_53 * _U_KG      # ESTABLISHED
 M_RB85_KG = 84.911_789_74 * _U_KG      # ESTABLISHED
 LAMBDA_LASER_M = 993.4e-9              # drive wavelength (sets the Rayleigh range). ESTABLISHED.

@@ -57,7 +57,7 @@ Three separate labels recur throughout the repo and are easy to conflate:
   $\beta_\text{self}$, C2 the 2025 laser-epoch width $\sigma_\text{laser}$, and
   C3 the power sweep (ramp-law predictions), with C3d its AC-Stark coefficient
   bound $S_0$. Each is a **bound or null** in the 2025 dataset.
-- **M0 … M41, the analysis *modules* (pipeline stages)**, one `rb5s6s/*.py`
+- **M0 … M46, the analysis *modules* (pipeline stages)**, one `rb5s6s/*.py`
   file and one `scripts/run_*.py` driver each, where the fitting core has
   lettered sub-stages (M4b–M4e). The C-results are the *what*, the M-modules the *how*:
 
@@ -76,6 +76,8 @@ Three separate labels recur throughout the repo and are easy to conflate:
   | M35 the detection channel: which decay branch is collected, and its trapping | M36 polarisation: what ellipticity and a beam mismatch open | M37 the two-atom channel: what a pair accepts that one atom must refuse | M38 the fibre twin's forward model: a transit kernel entering at second order, contributing a few per cent of its own width and growing as T not sqrt(T), so a temperature ladder reads it weakly |
 | M39 the windowed self-centred cumulants: recentred to a tolerance with the flag returned, the pedestal taken from the trace's own far wings, any order through the moment recursion |  |  |  |
 | M40 full model (pedestal, saturation, pumping, beam quality) | M41 the deep polarizability: the 6S–nP elements above 8P by the Coulomb approximation, calibrated on the held 6S–8P pair, the step from the 6S–7P pair setting its spread |  |  |
+| M42 the model potential: bound and continuum radial functions, the 6S continuum's share of the polarizability | M43 the window laws: every term's law in the truncation window, the even ladder's information with the tilt projected out | M44 the four peaks as a two-by-two design | M45 the density laws and the archive's ladder against them |
+| M46 the detection budget: the collected length, the waist power the integrated signal realises, and the archive's photoelectron rate against the chain |  |  |  |
 
 - **CI, Continuous Integration** (*not* C1): the GitHub Actions workflow that
   runs the full `pytest` battery on every push, on the minimum *and* latest
@@ -153,6 +155,8 @@ rb5s6s/   api(the supported entry point: a trace in, a linewidth out)
           amplitudes(M10) model_ladder(M11) identifiability(M12) coverage(M13)
           sharing_bic(M14) fringe_tail(M15) polarizability(M16) resolving(M17)
           vanderwaals(M18) ramp_transit(M19) hyperpolarizability(M29)
+          model_potential(M42: Numerov bound and continuum radial functions in the
+                    Marinescu-Sadeghpour-Dalgarno potential, the 6S continuum's share of the polarizability)
           coulomb_approx(M41: Bates-Damgaard radial functions for the 6s-nP elements
                     above 8P, calibrated on the held 6S-8P pair with the 6S-7P step as its spread)
           cumulants(M39: the windowed self-centred cumulants of a line, recentred to
@@ -240,7 +244,7 @@ scripts/  import_data (+ annotate_manifest_qc: qc_reason provenance)
           run_geometry_design (the running-wave and waist designs, whose
           weak-field branch reproduces lineshape.stark_ramp_axial_moments)
 data_raw/ MANIFEST.csv, and the 297 traces where the copy carries them
-tests/    4479-test battery (4395 fast ~5 min + 84 `slow` high-statistics
+tests/    4636-test battery (4548 fast ~5 min + 88 `slow` high-statistics
           closure tests via --runslow, incl. the M4d synthetic-β and M4e
           synthetic-κ closures, the MANIFEST qc_reason guards, and the
           docs-consistency gates: canonical numbers, links+anchors, math
@@ -264,8 +268,8 @@ The first six scripts form the pipeline (each reads the previous ones'
 
 ```bash
 python3 -m venv .venv && source .venv/bin/activate
-pip install -e ".[dev]" && pytest -q          # 4395 fast tests (~5 min)
-pytest -q --runslow                           # full 4479 incl. slow closures (what CI runs)
+pip install -e ".[dev]" && pytest -q          # 4548 fast tests (~5 min)
+pytest -q --runslow                           # full 4636 incl. slow closures (what CI runs)
 # reproduce every committed CSV, figure, and docs/RESULTS.md from data_raw/
 # (already in git; import_data.py only re-imports from the original tree):
 bash scripts/run_all.sh

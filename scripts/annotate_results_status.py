@@ -259,6 +259,20 @@ FILE_STATUS = {
     # committed shared-slope construction. The whole file is DIAGNOSTIC, and
     # a row of it may never be quoted as a result.
     "fit_window_scan.csv": "DIAGNOSTIC",
+    # THE WINDOW AS A SCAN AXIS (2026-09-13, M43): every term's law in the
+    # window on the package's own profile, twin measurements at one point,
+    # so DIAGNOSTIC throughout.
+    "window_laws.csv": "DIAGNOSTIC",
+    # the four peaks as a two-by-two design (M44): the record's fits read
+    # against its own terms, DIAGNOSTIC until the block systematic is carried.
+    "four_peak_contrasts.csv": "DIAGNOSTIC",
+    # the vapour-pressure laws and the archive's ladder against them (M45):
+    # every row a comparison, none a measurement, so DIAGNOSTIC.
+    "density_laws.csv": "DIAGNOSTIC",
+    # the detection budget (M46): the chain's prediction against the archive's
+    # own photoelectron rate with the aperture, the filter, the excess noise and
+    # the D1 trapping spanned or named open, so DIAGNOSTIC.
+    "detection_budget.csv": "DIAGNOSTIC",
     # A REANALYSIS OF HELD SESSIONS AGAINST A DESIGN QUESTION, not a
     # measurement of the atom: every row is a sign, a slope of a
     # deliberately biased model-independent width, or a model-selection

@@ -10,12 +10,16 @@ rme_6s_11p1/2,computed,0.1178,0.0051,a.u.,"Coulomb approximation times the calib
 rme_6s_11p3/2,computed,0.1926,0.0083,a.u.,"Coulomb approximation times the calibration factor. level at 32118.6 cm^-1 from the fitted quantum defect, enhancement 3.39 at the drive",DIAGNOSTIC
 rme_6s_12p1/2,computed,0.0927,0.0040,a.u.,"Coulomb approximation times the calibration factor. level at 32433.5 cm^-1 from the fitted quantum defect, enhancement 3.03 at the drive",DIAGNOSTIC
 rme_6s_12p3/2,computed,0.1524,0.0065,a.u.,"Coulomb approximation times the calibration factor. level at 32437.0 cm^-1 from the fitted quantum defect, enhancement 3.02 at the drive",DIAGNOSTIC
-static_6s_9p_and_above,computed,2.95,0.25,a.u.,explicit to 40P plus the n*^-3 continuum estimate 0.03,DIAGNOSTIC
+static_6s_9p_and_above,computed,2.95,0.25,a.u.,"explicit to 40P plus the n*^-3 remainder above it, 0.03, which is the DISCRETE Rydberg tail. the positive-energy continuum is its own row below",DIAGNOSTIC
 static_6s_9p_and_above,SS2011_residual,4.0,1.3,a.u.,"the paper's sixth table, its 'Other' row, 49.0(1) minus the tabulated 7P and 8P (35.91) and the core (9.076). the one literature test of the calibration",CALIB
+continuum_6s,model_potential_static,0.75,,a.u.,the 6s -> eps p continuum from rb5s6s.model_potential (energy-normalised p waves continued from the np series by the quantum defect). threshold join against the discrete law f_n n*^3: 0.92. valence TRK sum 1.053,DIAGNOSTIC
+continuum_6s,at_drive,1.21,0.52,a.u.,"the same at the drive (enhancement 1.60. the threshold's is 2.23). sigma is 11% of the value (join, TRK, class scatter) in quadrature with the difference to the residual construction below",DIAGNOSTIC
+continuum_6s,SS2011_residual_construction,1.1,1.3,a.u.,"the paper's 'Other' residual minus the calibrated discrete tail at the static limit: SS2011 groups the discrete np with n <= 26 and its discrete representation of the continuum (pp. 8-9) in one row, so the difference is the continuum's static share. the model-form cross-check of the row above",DIAGNOSTIC
+continuum_enhancement_at_threshold,computed,2.23,,,dE = 13558 cm^-1 above 6S at the drive's 10066 cm^-1,DIAGNOSTIC
 static_tail_pull,computed_vs_SS2011,-0.81,,sigma,the computed static tail against the paper's residual. a pull inside one says the calibration holds where it is used,DIAGNOSTIC
 dynamic_6s_9p_and_above,at_drive,15.0,1.3,a.u.,the same group at 993.4181 nm. the module carried +3.4 static for it,DIAGNOSTIC
 alpha_6s_explicit_5p_8p,at_drive,-324.71,,a.u.,the four tabulated pairs at the drive,DIAGNOSTIC
-alpha_6s,at_drive,-300.6,,a.u.,explicit + core + the computed 9P-and-above group,DIAGNOSTIC
+alpha_6s,at_drive,-299.4,,a.u.,explicit + core + the computed 9P-and-above group + the continuum row,DIAGNOSTIC
 alpha_5s,at_drive,832.4,,a.u.,"polarizability.alpha_5s: the D lines, 6P, 7P-12P tabulated, tail and core (Leonard 2015)",DIAGNOSTIC
 delta_alpha_module,at_drive,-1144.6,,a.u.,"polarizability.delta_alpha, the value constants.DELTA_ALPHA_AU carries",DIAGNOSTIC
 alpha_E2_5s,SS2011,6525,37,a0^5,"the ground-state quadrupole polarizability, the paper's fifth table. The anchor the 6s bound is scaled from",CALIB
@@ -24,7 +28,7 @@ E2_over_E1_shift,at_drive,1e-04,,ratio,"the quadrupole light shift relative to t
 M1_over_E1_shift,at_drive,6e-06,,ratio,"mu_B^2 over the Rb85 6s hyperfine interval 3A = 717 MHz in the wave's magnetic field B0 = E0/c: alpha_M/(alpha_E c^2), a STATIC bound. at the drive the magnetic polarizability is smaller by (dE_hf/omega)^2",BOUND
 delta_alpha_sigma_independent,MC,4.6,,a.u.,every element drawn independently,ENVELOPE
 delta_alpha_sigma_pairs,MC,5.9,,a.u.,fine-structure pairs drawn fully correlated,ENVELOPE
-delta_alpha_sigma_all,MC,5.4,,a.u.,"every element of a state moved together, the envelope of an unknown correlation. the largest of the three is quoted",ENVELOPE
-delta_alpha,at_drive,-1133.0,5.9,a.u.,alpha_6s - alpha_5s at 993.4181 nm with the 9P-and-above group summed dynamically. the package constant -1145 differs by +12. Orson 2021 carries 1093 in magnitude,ENVELOPE
-delta_alpha_shift_from_module,at_drive,+11.6,,a.u.,against the module's own value (delta_alpha_module above). the whole move is the 9P-and-above group read dynamically instead of statically. the constant -1145.0 sits 0.4 further,DIAGNOSTIC
-delta_alpha_vs_orson,at_drive,+6.7,,sigma,"magnitude against Orson 2021's, over this derivation's sigma alone (Orson's own uncertainty is not carried by the record)",DIAGNOSTIC
+delta_alpha_sigma_all,MC,5.5,,a.u.,"every element of a state moved together, the envelope of an unknown correlation. the largest of the three is quoted",ENVELOPE
+delta_alpha,at_drive,-1131.8,5.9,a.u.,alpha_6s - alpha_5s at 993.4181 nm with the 9P-and-above group summed dynamically and the continuum carried as its own term. the package constant -1145 differs by +13. Orson 2021 carries 1093 in magnitude,ENVELOPE
+delta_alpha_shift_from_module,at_drive,+12.8,,a.u.,against the module's own value (delta_alpha_module above). the whole move is the 9P-and-above group read dynamically instead of statically. the constant -1145.0 sits 0.4 further,DIAGNOSTIC
+delta_alpha_vs_orson,at_drive,+6.5,,sigma,"magnitude against Orson 2021's, over this derivation's sigma alone (Orson's own uncertainty is not carried by the record)",DIAGNOSTIC

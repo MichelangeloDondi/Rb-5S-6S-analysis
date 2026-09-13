@@ -132,7 +132,7 @@ a.u. in the record's own construction and below
 a.u. read as a posterior, against the
 [0.35](../../results/delta_alpha_posterior.csv "ref:delta_alpha_posterior:estimator:sigma_from_zero")
 σ that separates the fit from zero. **The gap is real and what is withdrawn is the
-number attached to it**: the computed 1145 a.u. (re-derived at [-1133.0](../../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive") ± [5.9](../../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive:err") with the 6S tail summed dynamically, which sits nearer the cited magnitude and shrinks the tension below) sits in the upper tail
+number attached to it**: the computed 1145 a.u. (re-derived at [-1131.8](../../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive") ± [5.9](../../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive:err") with the 6S tail summed dynamically, which sits nearer the cited magnitude and shrinks the tension below) sits in the upper tail
 at
 [0.0324](../../results/delta_alpha_posterior.csv "ref:delta_alpha_posterior:comparison:posterior_prob_above_computed_here")
 under the posterior and at 0.017 under the crossing, so it is a real tension

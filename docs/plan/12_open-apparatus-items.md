@@ -767,6 +767,71 @@ absorption row. The axial window's own weighting is a second, smaller question:
 0.162 is computed on the ramp's axial weight, and the table now integrates the
 saturated rate, whose weight is different.
 
+### The detection budget from the bench facts, and the waist power it realises
+
+**What is known** (owner, 2026-09-13): the 795 nm photons are collected by
+an f = 18 ± 1 mm lens at 50 ± 5 mm from a 3 × 12 mm cathode whose quantum
+efficiency in the chain is 6 ± 1 per cent. `results/detection_budget.csv`
+(`scripts/run_detection_budget.py`) writes the chain out. The object plane
+sits [28.12](../../results/detection_budget.csv "ref:detection_budget:object_distance:along12") mm from
+the lens and the collected length along the beam is
+[6.75](../../results/detection_budget.csv "ref:detection_budget:collected_length:along12") mm with the 12 mm
+dimension along it (the record's reading) or
+[1.69](../../results/detection_budget.csv "ref:detection_budget:collected_length:along3") mm with the 3 mm
+dimension along it (the owner's 2026-09-12 "portrait"), the two readings still
+open above.
+
+**Which power of the waist the signal carries, derived.** The integrated
+weak-drive two-photon signal in a collected length $L$ is
+$(P^2/\lambda) 2\arctan(L/2z_R)$: the prefactor holds no waist, and the
+whole dependence sits in the arctangent, whose logarithmic slope in the waist
+runs from $-2$ where $L \ll z_R$ to $0$ where the Rayleigh range sits inside the
+window. At 64 µm that slope is
+[-1.914](../../results/detection_budget.csv "ref:detection_budget:exponent_weak_drive:along12_w64um") (12 mm
+along) or [-1.994](../../results/detection_budget.csv "ref:detection_budget:exponent_weak_drive:along3_w64um")
+(3 mm along), and with the archive's own saturation carried on the strong-drive
+integral it is [-1.838](../../results/detection_budget.csv "ref:detection_budget:exponent_saturated:along12_w64um").
+The on-axis rate per atom goes as $w_0^{-4}$. The mode holds $w_0^2 L$ atoms,
+which is where two of the four powers go. Along the campaign's ladder the
+slope weakens to [-0.340](../../results/detection_budget.csv "ref:detection_budget:exponent_weak_drive:along12_w16um")
+at 16 µm in the weak-drive form and changes sign,
+[0.606](../../results/detection_budget.csv "ref:detection_budget:exponent_saturated:along12_w16um"), once
+the centre saturates, so the absolute amplitude is a waist channel at the
+archive's geometry and not at a tight one. A 15 per cent absolute budget at the
+archive's orientation would hold the waist to
+[7.8](../../results/detection_budget.csv "ref:detection_budget:waist_from_a_15pct_budget:along12") per cent.
+
+**Where the measured rate sits.** The noise law's shot term gives the
+photoelectron rate per volt as $2FB/b$ with neither the gain nor the
+transimpedance needed, $B$ the boxcar's 1 kHz and $F$ the excess-noise factor
+at one. At the 4192 line and 225 mW the peak reads
+[8.97](../../results/detection_budget.csv "ref:detection_budget:measured_pe_rate:4192_P225") ±
+[0.90](../../results/detection_budget.csv "ref:detection_budget:measured_pe_rate:4192_P225:err") million
+photoelectrons per second. The chain's prediction (the excitations in the
+collected length at that line's share of the atoms, the branching, the
+aperture's solid angle, the quantum efficiency, with $f$, the image distance and
+the quantum efficiency drawn) exceeds it by
+[2.78](../../results/detection_budget.csv "ref:detection_budget:gap_log10_predicted_over_measured:Steck_along12_D6mm") ±
+[0.22](../../results/detection_budget.csv "ref:detection_budget:gap_log10_predicted_over_measured:Steck_along12_D6mm:err")
+in the log at a 6 mm aperture and
+[3.97](../../results/detection_budget.csv "ref:detection_budget:gap_log10_predicted_over_measured:Steck_along12_D25.4mm") ±
+[0.22](../../results/detection_budget.csv "ref:detection_budget:gap_log10_predicted_over_measured:Steck_along12_D25.4mm:err")
+at the largest aperture spanned, one inch (12 mm along, and [2.18](../../results/detection_budget.csv "ref:detection_budget:gap_log10_predicted_over_measured:Steck_along3_D6mm")
+to [3.38](../../results/detection_budget.csv "ref:detection_budget:gap_log10_predicted_over_measured:Steck_along3_D25.4mm")
+with 3 mm along). **What is not in that gap, by name**: the filter's
+transmission, the excess-noise factor, the retro ratio's span, the density law
+(the Alcock form adds under a tenth of a decade), and the D1 photons' own trapping, whose
+optical depth is [18.59](../../results/detection_budget.csv "ref:detection_budget:D1_optical_depth_per_mm:Steck")
+per millimetre at 130 °C on the envelope cross-section, so the emission the
+lens sees is the cell's and not the beam's, and the collected fraction of a
+trapped emission is unpriced. **What closing it needs**: the clear aperture,
+the filter's transmission and the cathode's orientation (above), the
+excess-noise factor from the datasheet, a photon-transfer gain calibration on
+the campaign, and the trapping cell owed to `trapping_channels`. The image
+distance's one-sigma is 5 mm in the owner's 2026-09-13 statement and 10 mm in
+`constants.COLLECTION_IMAGE_DIST_ERR_M`, which the prediction band's committed
+cells still rest on.
+
 ### The saturation parameter's linewidth, a modelling item and not a bench one
 
 **What is wrong.** `platforms.excitation_rate_per_atom` takes

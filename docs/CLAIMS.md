@@ -211,10 +211,13 @@ systematic as fig1.*
 **Calculated** (anchored, not fitted to this data):
 
 - Differential polarizability Δα(993 nm) recomputed at −1145 a.u. with a
-  static tail above 8P, and at [-1133.0](../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive") ± [5.9](../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive:err") a.u. with that tail
+  static tail above 8P, and at [-1131.8](../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive") ± [5.9](../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive:err") a.u. with that tail
   summed dynamically to 12P and beyond (`results/polarizability_deep.csv`).
+  The twin's trust statistic, the moments' admission floor, the comb teeth's
+  shares, the RF ladder and the fringe recovery are read in the wiki and the
+  methods from their own files, and none is a claim beyond what its file says.
   It is opposite in sign to the published computation it is compared against,
-  and [+6.7](../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha_vs_orson:at_drive") sigma from its magnitude on this derivation's bar. The sign rests on the
+  and [+6.5](../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha_vs_orson:at_drive") sigma from its magnitude on this derivation's bar alone (the cited value states none, at one per cent of it the pair is unresolved). The sign rests on the
   measured 6S lifetime: the published sign would require 9.9 ns against
   the measured 45.57(17) ns, an exclusion at about 210 sigma, with the
   measured static polarizability and tune-out anchoring the 5S side.
@@ -511,7 +514,7 @@ the closed-form shift distribution applies at all.
 
 Those three projections assume the drive can run at the dataset's own
 225 mW, and on two of the three rungs it cannot. The differential
-polarizability is about 1130 atomic units at 993 nm ([-1133.0](../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive") ± [5.9](../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive:err") with the dynamic tail, 1145 with the static one), 4372 at 760 nm and
+polarizability is about 1130 atomic units at 993 nm ([-1131.8](../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive") ± [5.9](../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive:err") with the dynamic tail, 1145 with the static one), 4372 at 760 nm and
 about 28600 at 778 nm, so the power at which the shift stops being a
 correction to the width and becomes a feature of the lineshape differs
 by twenty-five across the ladder. Reading that ceiling as the power

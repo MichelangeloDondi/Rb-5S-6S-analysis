@@ -111,10 +111,13 @@ Depletion counts excitation cycles, so a line driven through a modulated
 comb depletes tooth by tooth and not as one line. A tooth carrying a
 twentieth of its line's excitation accumulates a twentieth of the cycles in
 a crossing, and it therefore keeps a larger fraction of what it starts
-with. The share of the line's rate a tooth carries is
-$J_k(2\beta)^2$ ([the two-photon comb](the-two-photon-comb.md)), which is
-exactly the tooth's share of the line's total, so the rate scale needs no
-new constant.
+with. The share of the line's rate a tooth carries is the tooth's measured
+share of the line's total (`results/ruler_tooth_shares.csv`), so the rate
+scale needs no new constant. $J_k(2\beta)^2$
+([the two-photon comb](the-two-photon-comb.md)) is what that share would be
+under pure phase modulation, and the 2025 modulator was set with a
+phase-and-amplitude admixture, so the measured shares and not the Bessel
+weights are the abscissa.
 
 This is worth stating because the digital twin had it wrong until
 2026-09-06: it counted the whole line's cycles for every tooth, which made

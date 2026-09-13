@@ -43,7 +43,7 @@ __all__ = [
 _H = C.H_PLANCK_JS                  # one home for the SI constants, constants.py (2026-09-12)
 _C = C.C_M_PER_S
 _KB = C.K_B_J_PER_K
-_HBAR = _H / (2.0 * math.pi)
+_HBAR = C.HBAR_JS
 _EPS0 = C.EPS0_F_PER_M
 # the atomic-unit trio lives in constants since 2026-09-11; these names stay
 # so the formulas below read unchanged

@@ -53,14 +53,14 @@ import math
 from dataclasses import dataclass
 
 import numpy as np
-from scipy.constants import c, epsilon_0
+from .constants import C_M_PER_S as c, EPS0_F_PER_M as epsilon_0   # one home: constants.py, CODATA 2018 throughout (scipy carried CODATA 2022 here)
 from scipy.integrate import quad
 from scipy.optimize import brentq
 from scipy.special import jv, jvp, kv, kvp
 
-from .constants import GAMMA_NAT_HZ, K_B_J_PER_K as K_B  # noqa: F401  (core import; leaf direction; one home for k_B)
+from .constants import GAMMA_NAT_HZ, K_B_J_PER_K as K_B, M_RB87_KG  # noqa: F401  (core import; leaf direction; one home for k_B and the mass)
 
-M_RB87 = 86.909180527 * 1.66053906660e-27
+M_RB87 = M_RB87_KG
 
 # Fused silica, Malitson, at the wavelengths this record actually uses. Read as
 # ENVELOPE at four decimals: the fourth digit does not survive the fibre's own

@@ -140,12 +140,12 @@ __all__ = ["pair_final_states", "TRANSFER_DEFECT_CM", "suppression_volume_m3",
 IONISATION_LIMIT_CM = 33690.81
 
 # CODATA, and the atomic unit of electric dipole moment.
-_EA0 = 8.4783536255e-30          # C m
+_EA0 = _C.E_CHARGE_C * _C.A0_M   # C m, one home: constants.py
 _EPS0 = _C.EPS0_F_PER_M          # F/m, one home: constants.py
 _H = _C.H_PLANCK_JS              # J s
-_HBAR = _H / (2.0 * math.pi)
-_C_CM = 2.99792458e10            # cm/s
-_MU_B_MHZ_PER_UT = 9.2740100783e-24 / _H * 1e-6 / 1e6
+_HBAR = _C.HBAR_JS
+_C_CM = _C.C_M_PER_S * 100.0     # cm/s, one home: constants.py
+_MU_B_MHZ_PER_UT = _C.MU_B_J_PER_T / _H * 1e-6 / 1e6   # one home: constants.py
 
 # Lande g_F in the 5S1/2 ground state, by isotope and F. The 6S1/2 values are
 # the same to the g_J difference, which is why the main line's first-order

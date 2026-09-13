@@ -54,6 +54,9 @@ CHEAP = {
     # every-pass set, and entering EXPENSIVE with no comment removed them from
     # the freshness canary that runs without --all.
     "run_moment_admission": ["moment_admission.csv"],
+    "run_density_laws": ["density_laws.csv"],
+    "run_four_peak_contrasts": ["four_peak_contrasts.csv"],
+    "run_detection_budget": ["detection_budget.csv"],
     "run_ruler_tooth_shares": ["ruler_tooth_shares.csv"],
     # Closed form throughout, no traces and no RNG, so it reproduces exactly.
     "run_platform_twins": ["platform_twins.csv"],
@@ -155,6 +158,7 @@ EXPENSIVE = {
     # measured 56 s through the producer alone and 61 s through verify()
     # (measured 2026-09-12), above the bar the two rows above set
     "run_polarizability_deep": ["polarizability_deep.csv"],
+    "run_window_laws": ["window_laws.csv"],
     # reads raw traces, so it cannot run on a clone without data_raw/ and is
     # not SYNTHETIC_ONLY; measured 3 s.
     "run_twin_completeness": ["twin_completeness.csv"],

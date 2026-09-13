@@ -30,14 +30,14 @@ continuum bounded by the same n*^-3 law at the limiting enhancement.
 
 THE MULTIPOLE CHANNELS. E2: the ns-nd quadrupole polarizability enters the
 light shift with the field gradient, (k a0)^2 = 1.1e-7 relative to E1 per unit
-polarizability ratio; it is BOUNDED here, not computed, by scaling the
+polarizability ratio. it is BOUNDED here, not computed, by scaling the
 paper's measured 5s quadrupole polarizability to 6s, because the Coulomb
 approximation is invalid for 4d (a model-potential computation is the next
 wave's). M1: the magnetic-dipole operator connects 6s only within its own
 hyperfine manifold non-relativistically, and the wave's magnetic field enters
 as B0 = E0/c, so the STATIC ratio to E1 is alpha_M / (alpha_E c^2) ~ 5e-6 with
-the Rb85 6S interval 3A = 717 MHz (constants; the smaller interval and so the
-larger bound); at the drive the magnetic polarizability is smaller still by
+the Rb85 6S interval 3A = 717 MHz (constants. the smaller interval and so the
+larger bound). at the drive the magnetic polarizability is smaller still by
 (dE_hf / omega)^2. Both are stated with their size, neither reaches the second
 significant digit of the uncertainty, and that is the result: they are
 bounded, not neglected.
@@ -65,6 +65,7 @@ from rb5s6s.polarizability import (LINES_5S, LINES_6S, E_6S_CM, CM_PER_HARTREE, 
                                    alpha_5s, delta_alpha)
 from rb5s6s.coulomb_approx import (reduced_e1_s_to_p, n_star,   # noqa: E402
                                    E_ION_CM, RYD_RB_CM, calibrate)
+from rb5s6s.model_potential import continuum_polarizability   # noqa: E402
 from rb5s6s.constants import DELTA_ALPHA_AU, DELTA_ALPHA_AU_ORSON2021           # noqa: E402
 
 OUT = C.RESULTS_DIR / "polarizability_deep.csv"
@@ -124,7 +125,7 @@ def main() -> int:
     def add(q, key, v, e, unit, note, status="DIAGNOSTIC"):
         """A row. A value carrying an uncertainty is written through
         rb5s6s.pmfmt.pm_cells, so the uncertainty has two significant digits
-        and the value the decimals to match (protocol 8a.2); an errless value
+        and the value the decimals to match (protocol 8a.2). an errless value
         arrives pre-formatted. Statuses are the annotator's controlled
         vocabulary: DIAGNOSTIC for the intermediate sums and elements, CALIB
         for the calibration and its literature anchors, ENVELOPE for the
@@ -172,7 +173,7 @@ def main() -> int:
                 f"Coulomb approximation times the calibration factor. level at {e:.1f} cm^-1 from the fitted quantum defect, "
                 f"enhancement {enh(e - E_6S_CM):.2f} at the drive")
     add("static_6s_9p_and_above", "computed", stat_hi + stat_cont, (stat_hi + stat_cont) * 2 * C_SIG / C_FAC, "a.u.",
-        f"explicit to {N_MAX}P plus the n*^-3 continuum estimate {stat_cont:.2f}")
+        f"explicit to {N_MAX}P plus the n*^-3 remainder above it, {stat_cont:.2f}, which is the DISCRETE Rydberg tail. the positive-energy continuum is its own row below")
     # the paper's own residual for the same group
     stat_7p8p = sum(term_static(e - E_6S_CM, d) for e, d, _ in LINES_6S[4:])
     other_resid = OTHER_6S_STATIC - stat_7p8p - CORE_6S_SS
@@ -182,6 +183,32 @@ def main() -> int:
     add("static_6s_9p_and_above", "SS2011_residual", other_resid, other_resid_sig, "a.u.",
         f"the paper's sixth table, its 'Other' row, {OTHER_6S_STATIC}({OTHER_6S_STATIC_SIG:.0f}) minus the tabulated 7P and 8P ({stat_7p8p:.2f}) and the core ({CORE_6S_SS}). "
         "the one literature test of the calibration", "CALIB")
+    # ---- 2b. THE CONTINUUM, computed and not bounded (E64, 2026-09-13). The
+    # model potential's energy-normalised p waves (Seaton-continued from the np
+    # series) give the 6s -> eps p share directly; the SS2011 residual minus the
+    # calibrated discrete tail is kept beside it as the model-form cross-check,
+    # and the difference between the two is the row's model-form term.
+    E_ION_6S_CM = E_ION_CM - E_6S_CM          # the 6s threshold above 6S
+    W_DRIVE_CM = 1e7 / LAM_DRIVE_NM           # the drive, half the 6S term energy
+    tail_disc = stat_hi + stat_cont
+    tail_disc_sig = tail_disc * 2 * C_SIG / C_FAC
+    cont_resid_static = other_resid - tail_disc
+    cont_resid_static_sig = float(np.hypot(other_resid_sig, tail_disc_sig))
+    e_thr = (E_ION_6S_CM ** 2) / (E_ION_6S_CM ** 2 - W_DRIVE_CM ** 2)
+    mpc = continuum_polarizability(E_6S_CM, W_DRIVE_CM)
+    cont_dyn = mpc["alpha_at_omega"]
+    join = mpc["threshold_density_continuum"] / mpc["threshold_density_discrete"]
+    trk = mpc["f_bound"] + mpc["f_continuum"]
+    own_frac = float(np.sqrt((1.0 - join) ** 2 + (trk - 1.0) ** 2 + (2 * 0.022) ** 2))   # the threshold join, the TRK excess, the 6S E1 class scatter on R^2
+    resid_dyn_mid = cont_resid_static * (1.0 + e_thr) / 2.0
+    cont_dyn_sig = float(np.hypot(cont_dyn * own_frac, abs(cont_dyn - resid_dyn_mid)))
+    add("continuum_6s", "model_potential_static", f"{mpc['alpha_static']:.2f}", "", "a.u.",
+        f"the 6s -> eps p continuum from rb5s6s.model_potential (energy-normalised p waves continued from the np series by the quantum defect). threshold join against the discrete law f_n n*^3: {join:.2f}. valence TRK sum {trk:.3f}")
+    add("continuum_6s", "at_drive", cont_dyn, cont_dyn_sig, "a.u.",
+        f"the same at the drive (enhancement {cont_dyn / mpc['alpha_static']:.2f}. the threshold's is {e_thr:.2f}). sigma is {own_frac:.0%} of the value (join, TRK, class scatter) in quadrature with the difference to the residual construction below")
+    add("continuum_6s", "SS2011_residual_construction", cont_resid_static, cont_resid_static_sig, "a.u.",
+        "the paper's 'Other' residual minus the calibrated discrete tail at the static limit: SS2011 groups the discrete np with n <= 26 and its discrete representation of the continuum (pp. 8-9) in one row, so the difference is the continuum's static share. the model-form cross-check of the row above")
+    add("continuum_enhancement_at_threshold", "computed", f"{e_thr:.2f}", "", "", f"dE = {E_ION_6S_CM:.0f} cm^-1 above 6S at the drive's {W_DRIVE_CM:.0f} cm^-1")
     pull = ((stat_hi + stat_cont) - other_resid) / np.hypot((stat_hi + stat_cont) * 2 * C_SIG / C_FAC, other_resid_sig)
     add("static_tail_pull", "computed_vs_SS2011", f"{pull:+.2f}", "", "sigma",
         "the computed static tail against the paper's residual. a pull inside one says the calibration holds where it is used")
@@ -190,11 +217,11 @@ def main() -> int:
 
     # ---- 3. the full 6S and 5S sums at the drive, term by term
     a6_expl = sum(term(e - E_6S_CM, d) for e, d, _ in LINES_6S)
-    a6 = a6_expl + CORE_6S_SS + dyn_hi + dyn_cont
+    a6 = a6_expl + CORE_6S_SS + dyn_hi + dyn_cont + cont_dyn
     a5 = alpha_5s(LAM_DRIVE_NM)
     d_alpha = a6 - a5
     add("alpha_6s_explicit_5p_8p", "at_drive", f"{a6_expl:.2f}", "", "a.u.", "the four tabulated pairs at the drive")
-    add("alpha_6s", "at_drive", f"{a6:.1f}", "", "a.u.", "explicit + core + the computed 9P-and-above group")
+    add("alpha_6s", "at_drive", f"{a6:.1f}", "", "a.u.", "explicit + core + the computed 9P-and-above group + the continuum row")
     add("alpha_5s", "at_drive", f"{a5:.1f}", "", "a.u.", "polarizability.alpha_5s: the D lines, 6P, 7P-12P tabulated, tail and core (Leonard 2015)")
     add("delta_alpha_module", "at_drive", f"{delta_alpha(LAM_DRIVE_NM):.1f}", "", "a.u.", "polarizability.delta_alpha, the value constants.DELTA_ALPHA_AU carries")
 
@@ -250,6 +277,7 @@ def main() -> int:
             cfac = C_FAC + C_SIG * rng.normal()
             a6k += (dyn_hi + dyn_cont) * (cfac / C_FAC) ** 2
             a6k += CORE_6S_SS + CORE_6S_SS_SIG * rng.normal()
+            a6k += cont_dyn + cont_dyn_sig * rng.normal()
             # the 5S side: every element at its sigma, pairs treated the same way
             sc = []
             for i in range(0, len(LINES_5S), 2):
@@ -268,7 +296,7 @@ def main() -> int:
     add("delta_alpha_sigma_all", "MC", f"{sa:.1f}", "", "a.u.",
         "every element of a state moved together, the envelope of an unknown correlation. the largest of the three is quoted", "ENVELOPE")
     add("delta_alpha", "at_drive", d_alpha, sig, "a.u.",
-        f"alpha_6s - alpha_5s at {LAM_DRIVE_NM:.4f} nm with the 9P-and-above group summed dynamically. "
+        f"alpha_6s - alpha_5s at {LAM_DRIVE_NM:.4f} nm with the 9P-and-above group summed dynamically and the continuum carried as its own term. "
         f"the package constant {DELTA_ALPHA_AU:.0f} differs by {d_alpha - DELTA_ALPHA_AU:+.0f}. Orson 2021 carries {DELTA_ALPHA_AU_ORSON2021:.0f} in magnitude", "ENVELOPE")
     add("delta_alpha_shift_from_module", "at_drive", f"{d_alpha - delta_alpha(LAM_DRIVE_NM):+.1f}", "", "a.u.",
         "against the module's own value (delta_alpha_module above). the whole move is the 9P-and-above group read dynamically instead of statically. the constant -1145.0 sits 0.4 further")

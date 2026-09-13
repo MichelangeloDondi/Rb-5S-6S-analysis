@@ -39,8 +39,8 @@ summary: >
   carried unsourced: the CRYST3 fibre's "18 um mode field". The
   thesis makes it an injection beam waist -- a radius, settling a
   radius-vs-diameter question worth a factor of two in every transit estimate
-  -- with an 18 um design target, a 13.6 +/- 0.1 um ideal thin-lens value, and
-  a MEASURED 17.1 +/- 0.7 um by 19.3 +/- 0.4 um. Not stated in the thesis but
+  -- with an 18 um design target, a 13.6(1) um ideal thin-lens value, and
+  a MEASURED 17.1(7) um by 19.3(4) um. Not stated in the thesis but
   confirmed separately: that mode belongs to the 1064 nm trapping laser, the
   planned next
   step for the apparatus is 780 nm EIT cooling, and a 778 nm two-photon line in

@@ -1,0 +1,59 @@
+quantity,key,value,err,unit,note,status
+N_Steck,T70,5.6029e+11,,cm^-3,number density from the named law at the set point,DIAGNOSTIC
+N_AIH,T70,7.3971e+11,,cm^-3,number density from the named law at the set point,DIAGNOSTIC
+N_SMI,T70,6.7306e+11,,cm^-3,number density from the named law at the set point,DIAGNOSTIC
+ratio_AIH_over_Steck,T70,1.3202,,,the two laws' ratio at this temperature,DIAGNOSTIC
+ratio_as_kelvin_AIH,T70,3.55,,K,the temperature offset at which Steck's law gives the other's density (ln ratio over d ln N/dT). the laws' disagreement is a thermometry offset of this size between the experiments supporting each,DIAGNOSTIC
+ratio_SMI_over_Steck,T70,1.2013,,,the two laws' ratio at this temperature,DIAGNOSTIC
+ratio_as_kelvin_SMI,T70,2.34,,K,the temperature offset at which Steck's law gives the other's density (ln ratio over d ln N/dT). the laws' disagreement is a thermometry offset of this size between the experiments supporting each,DIAGNOSTIC
+dlnN_dT,T70,7.83,,per cent per K,the density's sensitivity to the temperature at this set point,DIAGNOSTIC
+N_Steck,T90,2.4487e+12,,cm^-3,number density from the named law at the set point,DIAGNOSTIC
+N_AIH,T90,3.1107e+12,,cm^-3,number density from the named law at the set point,DIAGNOSTIC
+N_SMI,T90,2.9283e+12,,cm^-3,number density from the named law at the set point,DIAGNOSTIC
+ratio_AIH_over_Steck,T90,1.2704,,,the two laws' ratio at this temperature,DIAGNOSTIC
+ratio_as_kelvin_AIH,T90,3.45,,K,the temperature offset at which Steck's law gives the other's density (ln ratio over d ln N/dT). the laws' disagreement is a thermometry offset of this size between the experiments supporting each,DIAGNOSTIC
+ratio_SMI_over_Steck,T90,1.1959,,,the two laws' ratio at this temperature,DIAGNOSTIC
+ratio_as_kelvin_SMI,T90,2.58,,K,the temperature offset at which Steck's law gives the other's density (ln ratio over d ln N/dT). the laws' disagreement is a thermometry offset of this size between the experiments supporting each,DIAGNOSTIC
+dlnN_dT,T90,6.94,,per cent per K,the density's sensitivity to the temperature at this set point,DIAGNOSTIC
+N_Steck,T110,9.0953e+12,,cm^-3,number density from the named law at the set point,DIAGNOSTIC
+N_AIH,T110,1.1227e+13,,cm^-3,number density from the named law at the set point,DIAGNOSTIC
+N_SMI,T110,1.0896e+13,,cm^-3,number density from the named law at the set point,DIAGNOSTIC
+ratio_AIH_over_Steck,T110,1.2344,,,the two laws' ratio at this temperature,DIAGNOSTIC
+ratio_as_kelvin_AIH,T110,3.40,,K,the temperature offset at which Steck's law gives the other's density (ln ratio over d ln N/dT). the laws' disagreement is a thermometry offset of this size between the experiments supporting each,DIAGNOSTIC
+ratio_SMI_over_Steck,T110,1.1980,,,the two laws' ratio at this temperature,DIAGNOSTIC
+ratio_as_kelvin_SMI,T110,2.91,,K,the temperature offset at which Steck's law gives the other's density (ln ratio over d ln N/dT). the laws' disagreement is a thermometry offset of this size between the experiments supporting each,DIAGNOSTIC
+dlnN_dT,T110,6.20,,per cent per K,the density's sensitivity to the temperature at this set point,DIAGNOSTIC
+N_Steck,T130,2.9433e+13,,cm^-3,number density from the named law at the set point,DIAGNOSTIC
+N_AIH,T130,3.5585e+13,,cm^-3,number density from the named law at the set point,DIAGNOSTIC
+N_SMI,T130,3.5495e+13,,cm^-3,number density from the named law at the set point,DIAGNOSTIC
+ratio_AIH_over_Steck,T130,1.2090,,,the two laws' ratio at this temperature,DIAGNOSTIC
+ratio_as_kelvin_AIH,T130,3.41,,K,the temperature offset at which Steck's law gives the other's density (ln ratio over d ln N/dT). the laws' disagreement is a thermometry offset of this size between the experiments supporting each,DIAGNOSTIC
+ratio_SMI_over_Steck,T130,1.2059,,,the two laws' ratio at this temperature,DIAGNOSTIC
+ratio_as_kelvin_SMI,T130,3.37,,K,the temperature offset at which Steck's law gives the other's density (ln ratio over d ln N/dT). the laws' disagreement is a thermometry offset of this size between the experiments supporting each,DIAGNOSTIC
+dlnN_dT,T130,5.56,,per cent per K,the density's sensitivity to the temperature at this set point,DIAGNOSTIC
+typed_spread,density_py,20,,per cent,N_SCALE_FRAC_SYST as density.py carries it,DIAGNOSTIC
+support_siddons2008,law,"Nesmeyanov (Steck), their appendix A. absolute D-line absorption at room temperature and above",,,absolute absorption in excellent agreement with theory at the measured temperature. no per cent on the density is stated,DIAGNOSTIC
+support_achar2025,law,"Alcock-Itkin-Horrigan. single-pass absorption in MEMS cells, 293 to 353 K",,,densities follow the relation closely over the range. 2.0 per cent systematic per point. no directional offset reported,DIAGNOSTIC
+support_zameroski2014,law,Alcock-Itkin-Horrigan. the self-broadening anchor's pressure axis at 393 K,,,the anchor's rate per mTorr is on this law. converted with Steck's it is 22 per cent lower,DIAGNOSTIC
+support_alcock1984,law,the law's own claim,,,better than 5 per cent for the practical equations,DIAGNOSTIC
+ladder_fit_Steck,beta_at_dT0,0.0068,,MHz per 1e12 cm^-3,"beta with the cold spot fixed at 0 K and the floor free (0.389 MHz). chi2 5.74 for 14 dof. theory 0.00338 per 1e12, so this reads 2 times theory, the Lorentzian-sum degeneracy the record names (lever_crosscheck.csv)",DIAGNOSTIC
+ladder_fit_Steck,beta_at_dT10,0.0119,,MHz per 1e12 cm^-3,"beta with the cold spot fixed at 10 K and the floor free (0.393 MHz). chi2 5.75 for 14 dof. theory 0.00338 per 1e12, so this reads 4 times theory, the Lorentzian-sum degeneracy the record names (lever_crosscheck.csv)",DIAGNOSTIC
+ladder_fit_Steck,dT_with_beta_pinned,0.0,,K,"the cold spot with beta pinned at theory and the floor free (0.478 MHz). chi2 11.7 for 15 dof: with beta at theory the ladder's slope is almost entirely floor, so dT is unconstrained and the theory value is neither refused nor confirmed by three temperatures",DIAGNOSTIC
+ladder_fit_AIH,beta_at_dT0,0.0057,,MHz per 1e12 cm^-3,"beta with the cold spot fixed at 0 K and the floor free (0.388 MHz). chi2 5.75 for 14 dof. theory 0.00338 per 1e12, so this reads 2 times theory, the Lorentzian-sum degeneracy the record names (lever_crosscheck.csv)",DIAGNOSTIC
+ladder_fit_AIH,beta_at_dT10,0.0098,,MHz per 1e12 cm^-3,"beta with the cold spot fixed at 10 K and the floor free (0.391 MHz). chi2 5.75 for 14 dof. theory 0.00338 per 1e12, so this reads 3 times theory, the Lorentzian-sum degeneracy the record names (lever_crosscheck.csv)",DIAGNOSTIC
+ladder_fit_AIH,dT_with_beta_pinned,0.0,,K,"the cold spot with beta pinned at theory and the floor free (0.460 MHz). chi2 9.6 for 15 dof: with beta at theory the ladder's slope is almost entirely floor, so dT is unconstrained and the theory value is neither refused nor confirmed by three temperatures",DIAGNOSTIC
+ladder_fit_SMI,beta_at_dT0,0.0057,,MHz per 1e12 cm^-3,"beta with the cold spot fixed at 0 K and the floor free (0.389 MHz). chi2 5.74 for 14 dof. theory 0.00338 per 1e12, so this reads 2 times theory, the Lorentzian-sum degeneracy the record names (lever_crosscheck.csv)",DIAGNOSTIC
+ladder_fit_SMI,beta_at_dT10,0.0099,,MHz per 1e12 cm^-3,"beta with the cold spot fixed at 10 K and the floor free (0.393 MHz). chi2 5.75 for 14 dof. theory 0.00338 per 1e12, so this reads 3 times theory, the Lorentzian-sum degeneracy the record names (lever_crosscheck.csv)",DIAGNOSTIC
+ladder_fit_SMI,dT_with_beta_pinned,0.0,,K,"the cold spot with beta pinned at theory and the floor free (0.460 MHz). chi2 9.5 for 15 dof: with beta at theory the ladder's slope is almost entirely floor, so dT is unconstrained and the theory value is neither refused nor confirmed by three temperatures",DIAGNOSTIC
+ladder_fit_Steck,beta,0.0075,,MHz per 1e12 cm^-3,"gamma_coll(T) of the t_sweep (16 rows) fitted as beta N(T - dT) + floor with dT on [0, 30] K. chi2 5.7 for 13 dof",DIAGNOSTIC
+ladder_fit_Steck,dT,1.8,,K,the cold-spot offset the fit prefers under this law (30 is the scan's edge),DIAGNOSTIC
+ladder_fit_Steck,floor,0.3898,,MHz,the density-independent floor the fit prefers,DIAGNOSTIC
+ladder_fit_Steck,chi2,5.74,,,for 13 degrees of freedom,DIAGNOSTIC
+ladder_fit_AIH,beta,0.0075,,MHz per 1e12 cm^-3,"gamma_coll(T) of the t_sweep (16 rows) fitted as beta N(T - dT) + floor with dT on [0, 30] K. chi2 5.7 for 13 dof",DIAGNOSTIC
+ladder_fit_AIH,dT,5.1,,K,the cold-spot offset the fit prefers under this law (30 is the scan's edge),DIAGNOSTIC
+ladder_fit_AIH,floor,0.3897,,MHz,the density-independent floor the fit prefers,DIAGNOSTIC
+ladder_fit_AIH,chi2,5.74,,,for 13 degrees of freedom,DIAGNOSTIC
+ladder_fit_SMI,beta,0.0058,,MHz per 1e12 cm^-3,"gamma_coll(T) of the t_sweep (16 rows) fitted as beta N(T - dT) + floor with dT on [0, 30] K. chi2 5.7 for 13 dof",DIAGNOSTIC
+ladder_fit_SMI,dT,0.5,,K,the cold-spot offset the fit prefers under this law (30 is the scan's edge),DIAGNOSTIC
+ladder_fit_SMI,floor,0.3896,,MHz,the density-independent floor the fit prefers,DIAGNOSTIC
+ladder_fit_SMI,chi2,5.74,,,for 13 degrees of freedom,DIAGNOSTIC

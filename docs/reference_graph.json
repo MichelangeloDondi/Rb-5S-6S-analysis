@@ -14,7 +14,7 @@
    }
   ],
   "source_file": "results/beta_self_probe.csv",
-  "source_value": "0.024859254261601908"
+  "source_value": "0.024859254178555168"
  },
  "beta_self_probe:pooled_slope::bound95_nscale": {
   "producer": "run_beta_self.py",
@@ -41,7 +41,7 @@
    }
   ],
   "source_file": "results/beta_self_probe.csv",
-  "source_value": "0.02983110511392229"
+  "source_value": "0.0298311050142662"
  },
  "blackbody_channels:bbr_detector_background:T70C": {
   "producer": "run_blackbody_channels.py",
@@ -118,7 +118,7 @@
   "quoting_sites": [
    {
     "file": "README.md",
-    "line": 153,
+    "line": 154,
     "writes": "0.015"
    }
   ],
@@ -583,6 +583,247 @@
   "source_file": "results/delta_alpha_posterior.csv",
   "source_value": "837"
  },
+ "detection_budget:D1_optical_depth_per_mm:Steck": {
+  "producer": "run_detection_budget.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/12_open-apparatus-items.md",
+    "line": 824,
+    "writes": "18.59"
+   }
+  ],
+  "source_file": "results/detection_budget.csv",
+  "source_value": "18.59"
+ },
+ "detection_budget:collected_length:along12": {
+  "producer": "run_detection_budget.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/12_open-apparatus-items.md",
+    "line": 778,
+    "writes": "6.75"
+   }
+  ],
+  "source_file": "results/detection_budget.csv",
+  "source_value": "6.75"
+ },
+ "detection_budget:collected_length:along3": {
+  "producer": "run_detection_budget.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/12_open-apparatus-items.md",
+    "line": 780,
+    "writes": "1.69"
+   }
+  ],
+  "source_file": "results/detection_budget.csv",
+  "source_value": "1.69"
+ },
+ "detection_budget:exponent_saturated:along12_w16um": {
+  "producer": "run_detection_budget.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/12_open-apparatus-items.md",
+    "line": 798,
+    "writes": "0.606"
+   },
+   {
+    "file": "docs/wiki/identifiability.md",
+    "line": 765,
+    "writes": "0.606"
+   }
+  ],
+  "source_file": "results/detection_budget.csv",
+  "source_value": "0.606"
+ },
+ "detection_budget:exponent_saturated:along12_w64um": {
+  "producer": "run_detection_budget.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/12_open-apparatus-items.md",
+    "line": 793,
+    "writes": "-1.838"
+   },
+   {
+    "file": "docs/wiki/identifiability.md",
+    "line": 763,
+    "writes": "-1.838"
+   }
+  ],
+  "source_file": "results/detection_budget.csv",
+  "source_value": "-1.838"
+ },
+ "detection_budget:exponent_weak_drive:along12_w16um": {
+  "producer": "run_detection_budget.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/12_open-apparatus-items.md",
+    "line": 796,
+    "writes": "-0.340"
+   }
+  ],
+  "source_file": "results/detection_budget.csv",
+  "source_value": "-0.340"
+ },
+ "detection_budget:exponent_weak_drive:along12_w64um": {
+  "producer": "run_detection_budget.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/12_open-apparatus-items.md",
+    "line": 790,
+    "writes": "-1.914"
+   },
+   {
+    "file": "docs/wiki/identifiability.md",
+    "line": 761,
+    "writes": "-1.914"
+   }
+  ],
+  "source_file": "results/detection_budget.csv",
+  "source_value": "-1.914"
+ },
+ "detection_budget:exponent_weak_drive:along3_w64um": {
+  "producer": "run_detection_budget.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/12_open-apparatus-items.md",
+    "line": 791,
+    "writes": "-1.994"
+   }
+  ],
+  "source_file": "results/detection_budget.csv",
+  "source_value": "-1.994"
+ },
+ "detection_budget:gap_log10_predicted_over_measured:Steck_along12_D25.4mm": {
+  "producer": "run_detection_budget.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/12_open-apparatus-items.md",
+    "line": 817,
+    "writes": "3.97"
+   },
+   {
+    "file": "docs/wiki/identifiability.md",
+    "line": 768,
+    "writes": "3.97"
+   }
+  ],
+  "source_file": "results/detection_budget.csv",
+  "source_value": "3.97"
+ },
+ "detection_budget:gap_log10_predicted_over_measured:Steck_along12_D25.4mm:err": {
+  "producer": "run_detection_budget.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/12_open-apparatus-items.md",
+    "line": 818,
+    "writes": "0.22"
+   }
+  ],
+  "source_file": "results/detection_budget.csv",
+  "source_value": "0.22"
+ },
+ "detection_budget:gap_log10_predicted_over_measured:Steck_along12_D6mm": {
+  "producer": "run_detection_budget.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/12_open-apparatus-items.md",
+    "line": 814,
+    "writes": "2.78"
+   },
+   {
+    "file": "docs/wiki/identifiability.md",
+    "line": 767,
+    "writes": "2.78"
+   }
+  ],
+  "source_file": "results/detection_budget.csv",
+  "source_value": "2.78"
+ },
+ "detection_budget:gap_log10_predicted_over_measured:Steck_along12_D6mm:err": {
+  "producer": "run_detection_budget.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/12_open-apparatus-items.md",
+    "line": 815,
+    "writes": "0.22"
+   }
+  ],
+  "source_file": "results/detection_budget.csv",
+  "source_value": "0.22"
+ },
+ "detection_budget:gap_log10_predicted_over_measured:Steck_along3_D25.4mm": {
+  "producer": "run_detection_budget.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/12_open-apparatus-items.md",
+    "line": 820,
+    "writes": "3.38"
+   }
+  ],
+  "source_file": "results/detection_budget.csv",
+  "source_value": "3.38"
+ },
+ "detection_budget:gap_log10_predicted_over_measured:Steck_along3_D6mm": {
+  "producer": "run_detection_budget.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/12_open-apparatus-items.md",
+    "line": 819,
+    "writes": "2.18"
+   }
+  ],
+  "source_file": "results/detection_budget.csv",
+  "source_value": "2.18"
+ },
+ "detection_budget:measured_pe_rate:4192_P225": {
+  "producer": "run_detection_budget.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/12_open-apparatus-items.md",
+    "line": 808,
+    "writes": "8.97"
+   }
+  ],
+  "source_file": "results/detection_budget.csv",
+  "source_value": "8.97"
+ },
+ "detection_budget:measured_pe_rate:4192_P225:err": {
+  "producer": "run_detection_budget.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/12_open-apparatus-items.md",
+    "line": 809,
+    "writes": "0.90"
+   }
+  ],
+  "source_file": "results/detection_budget.csv",
+  "source_value": "0.90"
+ },
+ "detection_budget:object_distance:along12": {
+  "producer": "run_detection_budget.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/12_open-apparatus-items.md",
+    "line": 776,
+    "writes": "28.12"
+   }
+  ],
+  "source_file": "results/detection_budget.csv",
+  "source_value": "28.12"
+ },
+ "detection_budget:waist_from_a_15pct_budget:along12": {
+  "producer": "run_detection_budget.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/12_open-apparatus-items.md",
+    "line": 802,
+    "writes": "7.8"
+   }
+  ],
+  "source_file": "results/detection_budget.csv",
+  "source_value": "7.8"
+ },
  "estimator_duel:bias_odd_cumulants:S0_0.35_clean:err": {
   "producer": "run_estimator_duel.py",
   "quoting_sites": [
@@ -685,6 +926,138 @@
   "source_file": "results/fibre_twin.csv",
   "source_value": "0.3760"
  },
+ "four_peak_contrasts:amplitude_face_measured:87Rb_P225": {
+  "producer": "run_four_peak_contrasts.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/identifiability.md",
+    "line": 739,
+    "writes": "0.1517"
+   }
+  ],
+  "source_file": "results/four_peak_contrasts.csv",
+  "source_value": "0.1517"
+ },
+ "four_peak_contrasts:amplitude_face_measured:87Rb_P225:err": {
+  "producer": "run_four_peak_contrasts.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/identifiability.md",
+    "line": 740,
+    "writes": "0.0055"
+   }
+  ],
+  "source_file": "results/four_peak_contrasts.csv",
+  "source_value": "0.0055"
+ },
+ "four_peak_contrasts:amplitude_face_measured:87Rb_P25": {
+  "producer": "run_four_peak_contrasts.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/identifiability.md",
+    "line": 741,
+    "writes": "-0.248"
+   }
+  ],
+  "source_file": "results/four_peak_contrasts.csv",
+  "source_value": "-0.248"
+ },
+ "four_peak_contrasts:amplitude_face_measured:87Rb_P25:err": {
+  "producer": "run_four_peak_contrasts.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/identifiability.md",
+    "line": 742,
+    "writes": "0.050"
+   }
+  ],
+  "source_file": "results/four_peak_contrasts.csv",
+  "source_value": "0.050"
+ },
+ "four_peak_contrasts:amplitude_face_predicted:87Rb_P225_w25": {
+  "producer": "run_four_peak_contrasts.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/identifiability.md",
+    "line": 747,
+    "writes": "0.0512"
+   }
+  ],
+  "source_file": "results/four_peak_contrasts.csv",
+  "source_value": "0.0512"
+ },
+ "four_peak_contrasts:amplitude_face_predicted:87Rb_P225_w64": {
+  "producer": "run_four_peak_contrasts.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/identifiability.md",
+    "line": 737,
+    "writes": "0.00853"
+   }
+  ],
+  "source_file": "results/four_peak_contrasts.csv",
+  "source_value": "0.00853"
+ },
+ "four_peak_contrasts:contrast_F87:pooled_power_arm": {
+  "producer": "run_four_peak_contrasts.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/identifiability.md",
+    "line": 751,
+    "writes": "0.098"
+   }
+  ],
+  "source_file": "results/four_peak_contrasts.csv",
+  "source_value": "0.098"
+ },
+ "four_peak_contrasts:contrast_F87:pooled_power_arm:err": {
+  "producer": "run_four_peak_contrasts.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/identifiability.md",
+    "line": 752,
+    "writes": "0.035"
+   }
+  ],
+  "source_file": "results/four_peak_contrasts.csv",
+  "source_value": "0.035"
+ },
+ "four_peak_contrasts:contrast_F87:pooled_temperature_arm": {
+  "producer": "run_four_peak_contrasts.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/identifiability.md",
+    "line": 754,
+    "writes": "0.084"
+   }
+  ],
+  "source_file": "results/four_peak_contrasts.csv",
+  "source_value": "0.084"
+ },
+ "four_peak_contrasts:contrast_F87:pooled_temperature_arm:err": {
+  "producer": "run_four_peak_contrasts.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/identifiability.md",
+    "line": 755,
+    "writes": "0.043"
+   }
+  ],
+  "source_file": "results/four_peak_contrasts.csv",
+  "source_value": "0.043"
+ },
+ "four_peak_contrasts:cycles_per_crossing_axis:P225_w64": {
+  "producer": "run_four_peak_contrasts.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/identifiability.md",
+    "line": 734,
+    "writes": "0.0805"
+   }
+  ],
+  "source_file": "results/four_peak_contrasts.csv",
+  "source_value": "0.0805"
+ },
  "fringe_rho_recovery:dcontrast_dlnrho:rho=0.5": {
   "producer": "run_fringe_rho_recovery.py",
   "quoting_sites": [
@@ -726,7 +1099,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 655,
+    "line": 705,
     "writes": "2.98e-08"
    }
   ],
@@ -1154,12 +1527,12 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 751,
+    "line": 852,
     "writes": "18.6"
    },
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 751,
+    "line": 852,
     "writes": "18.6"
    }
   ],
@@ -1171,7 +1544,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 751,
+    "line": 852,
     "writes": "0.0032"
    }
   ],
@@ -1210,7 +1583,7 @@
    },
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 699,
+    "line": 800,
     "writes": "7.23"
    }
   ],
@@ -1232,7 +1605,7 @@
    },
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 699,
+    "line": 800,
     "writes": "6.48"
    }
   ],
@@ -1244,7 +1617,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 699,
+    "line": 800,
     "writes": "33.6"
    }
   ],
@@ -1256,7 +1629,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 699,
+    "line": 800,
     "writes": "37.4"
    }
   ],
@@ -1268,7 +1641,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 699,
+    "line": 800,
     "writes": "5.3179"
    }
   ],
@@ -1280,7 +1653,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 699,
+    "line": 800,
     "writes": "5.4036"
    }
   ],
@@ -1292,7 +1665,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 751,
+    "line": 852,
     "writes": "0.0588"
    }
   ],
@@ -2688,62 +3061,96 @@
   "source_file": "results/polarizability_deep.csv",
   "source_value": "6e-06"
  },
+ "polarizability_deep:alpha_5s:at_drive": {
+  "producer": "run_polarizability_deep.py",
+  "quoting_sites": [
+   {
+    "file": "docs/THEORY_NOTE.md",
+    "line": 714,
+    "writes": "832.4"
+   }
+  ],
+  "source_file": "results/polarizability_deep.csv",
+  "source_value": "832.4"
+ },
+ "polarizability_deep:alpha_6s:at_drive": {
+  "producer": "run_polarizability_deep.py",
+  "quoting_sites": [
+   {
+    "file": "docs/THEORY_NOTE.md",
+    "line": 714,
+    "writes": "-299.4"
+   },
+   {
+    "file": "docs/THEORY_NOTE.md",
+    "line": 754,
+    "writes": "-299.4"
+   }
+  ],
+  "source_file": "results/polarizability_deep.csv",
+  "source_value": "-299.4"
+ },
  "polarizability_deep:delta_alpha:at_drive": {
   "producer": "run_polarizability_deep.py",
   "quoting_sites": [
    {
     "file": "README.md",
     "line": 128,
-    "writes": "\u22121133.0"
+    "writes": "-1131.8"
    },
    {
     "file": "docs/CLAIMS.md",
     "line": 214,
-    "writes": "-1133.0"
+    "writes": "-1131.8"
    },
    {
     "file": "docs/CLAIMS.md",
-    "line": 514,
-    "writes": "-1133.0"
+    "line": 517,
+    "writes": "-1131.8"
    },
    {
     "file": "docs/FUTURE_TRANSITIONS_titsapph.md",
     "line": 456,
-    "writes": "-1133.0"
+    "writes": "-1131.8"
    },
    {
     "file": "docs/LITERATURE.md",
     "line": 711,
-    "writes": "-1133.0"
+    "writes": "-1131.8"
    },
    {
     "file": "docs/RESULTS.md",
     "line": 141,
-    "writes": "-1133.0"
+    "writes": "-1131.8"
    },
    {
     "file": "docs/THEORY_NOTE.md",
     "line": 669,
-    "writes": "-1133.0"
+    "writes": "-1131.8"
    },
    {
     "file": "docs/THEORY_NOTE.md",
     "line": 715,
-    "writes": "-1133.0"
+    "writes": "-1131.8"
+   },
+   {
+    "file": "docs/big_picture/03_goals-and-prior-art.md",
+    "line": 35,
+    "writes": "-1131.8"
    },
    {
     "file": "docs/big_picture/04_what-2025-delivered.md",
     "line": 78,
-    "writes": "-1133.0"
+    "writes": "-1131.8"
    },
    {
     "file": "docs/plan/00_the-case.md",
     "line": 135,
-    "writes": "-1133.0"
+    "writes": "-1131.8"
    }
   ],
   "source_file": "results/polarizability_deep.csv",
-  "source_value": "-1133.0"
+  "source_value": "-1131.8"
  },
  "polarizability_deep:delta_alpha:at_drive:err": {
   "producer": "run_polarizability_deep.py",
@@ -2760,7 +3167,7 @@
    },
    {
     "file": "docs/CLAIMS.md",
-    "line": 514,
+    "line": 517,
     "writes": "5.9"
    },
    {
@@ -2786,6 +3193,11 @@
    {
     "file": "docs/THEORY_NOTE.md",
     "line": 715,
+    "writes": "5.9"
+   },
+   {
+    "file": "docs/big_picture/03_goals-and-prior-art.md",
+    "line": 35,
     "writes": "5.9"
    },
    {
@@ -2808,21 +3220,21 @@
    {
     "file": "README.md",
     "line": 128,
-    "writes": "+6.7"
+    "writes": "+6.5"
    },
    {
     "file": "docs/CLAIMS.md",
-    "line": 217,
-    "writes": "+6.7"
+    "line": 220,
+    "writes": "+6.5"
    },
    {
     "file": "docs/THEORY_NOTE.md",
     "line": 669,
-    "writes": "+6.7"
+    "writes": "+6.5"
    }
   ],
   "source_file": "results/polarizability_deep.csv",
-  "source_value": "+6.7"
+  "source_value": "+6.5"
  },
  "polarizability_deep:dynamic_6s_9p_and_above:at_drive": {
   "producer": "run_polarizability_deep.py",
@@ -3054,7 +3466,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 771,
+    "line": 872,
     "writes": "5.50"
    }
   ],
@@ -3066,7 +3478,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 776,
+    "line": 877,
     "writes": "-0.034"
    }
   ],
@@ -3078,7 +3490,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 776,
+    "line": 877,
     "writes": "0.061"
    }
   ],
@@ -3090,7 +3502,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 777,
+    "line": 878,
     "writes": "-0.019"
    }
   ],
@@ -3102,7 +3514,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 777,
+    "line": 878,
     "writes": "0.018"
    }
   ],
@@ -3114,7 +3526,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 779,
+    "line": 880,
     "writes": "-0.17"
    }
   ],
@@ -3126,7 +3538,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 779,
+    "line": 880,
     "writes": "0.13"
    }
   ],
@@ -3138,7 +3550,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 774,
+    "line": 875,
     "writes": "1.378"
    },
    {
@@ -3155,7 +3567,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 774,
+    "line": 875,
     "writes": "0.027"
    }
   ],
@@ -3196,7 +3608,7 @@
    },
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 1015,
+    "line": 1080,
     "writes": "6.11"
    }
   ],
@@ -3249,7 +3661,7 @@
    },
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 1017,
+    "line": 1082,
     "writes": "0.0479"
    }
   ],
@@ -3302,7 +3714,7 @@
    },
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 1026,
+    "line": 1091,
     "writes": "0.58"
    }
   ],
@@ -3355,7 +3767,7 @@
    },
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 1029,
+    "line": 1094,
     "writes": "5.51"
    }
   ],
@@ -3840,7 +4252,7 @@
    },
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 699,
+    "line": 800,
     "writes": "0.364"
    },
    {
@@ -3857,12 +4269,12 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 699,
+    "line": 800,
     "writes": "0.396"
    },
    {
     "file": "results/README.md",
-    "line": 289,
+    "line": 293,
     "writes": "0.396"
    }
   ],
@@ -3874,12 +4286,12 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 699,
+    "line": 800,
     "writes": "0.316"
    },
    {
     "file": "results/README.md",
-    "line": 289,
+    "line": 293,
     "writes": "0.316"
    }
   ],
@@ -4917,6 +5329,30 @@
   "source_file": "results/twin_completeness.csv",
   "source_value": "5.6"
  },
+ "twin_completeness:measured_sigma:": {
+  "producer": "run_twin_completeness.py",
+  "quoting_sites": [
+   {
+    "file": "README.md",
+    "line": 129,
+    "writes": "0.00287"
+   }
+  ],
+  "source_file": "results/twin_completeness.csv",
+  "source_value": "0.00287"
+ },
+ "twin_completeness:measured_sigma::err": {
+  "producer": "run_twin_completeness.py",
+  "quoting_sites": [
+   {
+    "file": "README.md",
+    "line": 129,
+    "writes": "0.00020"
+   }
+  ],
+  "source_file": "results/twin_completeness.csv",
+  "source_value": "0.00020"
+ },
  "twin_completeness:measured_tau_int:": {
   "producer": "run_twin_completeness.py",
   "quoting_sites": [
@@ -4940,6 +5376,30 @@
   ],
   "source_file": "results/twin_completeness.csv",
   "source_value": "6.6"
+ },
+ "twin_completeness:twin_at_measured_tau_sigma:": {
+  "producer": "run_twin_completeness.py",
+  "quoting_sites": [
+   {
+    "file": "README.md",
+    "line": 129,
+    "writes": "0.00300"
+   }
+  ],
+  "source_file": "results/twin_completeness.csv",
+  "source_value": "0.00300"
+ },
+ "twin_completeness:twin_at_measured_tau_sigma::err": {
+  "producer": "run_twin_completeness.py",
+  "quoting_sites": [
+   {
+    "file": "README.md",
+    "line": 129,
+    "writes": "0.00022"
+   }
+  ],
+  "source_file": "results/twin_completeness.csv",
+  "source_value": "0.00022"
  },
  "twin_completeness:twin_at_measured_tau_tau_int:": {
   "producer": "run_twin_completeness.py",
@@ -5084,5 +5544,173 @@
   ],
   "source_file": "results/window_attribution.csv",
   "source_value": "99.7680"
+ },
+ "window_laws:bias_k2_white:12": {
+  "producer": "run_window_laws.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/identifiability.md",
+    "line": 681,
+    "writes": "-0.241"
+   }
+  ],
+  "source_file": "results/window_laws.csv",
+  "source_value": "-0.241"
+ },
+ "window_laws:bias_k2_white:6": {
+  "producer": "run_window_laws.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/identifiability.md",
+    "line": 679,
+    "writes": "-0.127"
+   }
+  ],
+  "source_file": "results/window_laws.csv",
+  "source_value": "-0.127"
+ },
+ "window_laws:corr_transit_lorentzian_white:1.5-20": {
+  "producer": "run_window_laws.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/identifiability.md",
+    "line": 675,
+    "writes": "-0.87"
+   }
+  ],
+  "source_file": "results/window_laws.csv",
+  "source_value": "-0.87"
+ },
+ "window_laws:kept_transit_k2:1.5-20": {
+  "producer": "run_window_laws.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/identifiability.md",
+    "line": 655,
+    "writes": "0.62"
+   }
+  ],
+  "source_file": "results/window_laws.csv",
+  "source_value": "0.62"
+ },
+ "window_laws:kept_transit_k6:1.5-20": {
+  "producer": "run_window_laws.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/identifiability.md",
+    "line": 657,
+    "writes": "0.97"
+   }
+  ],
+  "source_file": "results/window_laws.csv",
+  "source_value": "0.97"
+ },
+ "window_laws:law_lorentzian_laser_form_k2:4-20": {
+  "producer": "run_window_laws.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/identifiability.md",
+    "line": 651,
+    "writes": "1.92"
+   }
+  ],
+  "source_file": "results/window_laws.csv",
+  "source_value": "1.92"
+ },
+ "window_laws:law_lorentzian_sum_k2:4-20": {
+  "producer": "run_window_laws.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/identifiability.md",
+    "line": 649,
+    "writes": "1.713"
+   }
+  ],
+  "source_file": "results/window_laws.csv",
+  "source_value": "1.713"
+ },
+ "window_laws:law_tilt_k2:4-20": {
+  "producer": "run_window_laws.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/identifiability.md",
+    "line": 643,
+    "writes": "3.213"
+   }
+  ],
+  "source_file": "results/window_laws.csv",
+  "source_value": "3.213"
+ },
+ "window_laws:law_tilt_k3:4-20": {
+  "producer": "run_window_laws.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/identifiability.md",
+    "line": 645,
+    "writes": "5.559"
+   }
+  ],
+  "source_file": "results/window_laws.csv",
+  "source_value": "5.559"
+ },
+ "window_laws:law_transit_k2:4-20": {
+  "producer": "run_window_laws.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/identifiability.md",
+    "line": 647,
+    "writes": "0.90"
+   }
+  ],
+  "source_file": "results/window_laws.csv",
+  "source_value": "0.90"
+ },
+ "window_laws:sigma_ln_transit_ar1_rho1:1.5-20": {
+  "producer": "run_window_laws.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/identifiability.md",
+    "line": 669,
+    "writes": "0.0447"
+   }
+  ],
+  "source_file": "results/window_laws.csv",
+  "source_value": "0.0447"
+ },
+ "window_laws:sigma_ln_transit_ar1_tau_int:1.5-20": {
+  "producer": "run_window_laws.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/identifiability.md",
+    "line": 671,
+    "writes": "0.0653"
+   }
+  ],
+  "source_file": "results/window_laws.csv",
+  "source_value": "0.0653"
+ },
+ "window_laws:sigma_ln_transit_white:1.5-20": {
+  "producer": "run_window_laws.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/identifiability.md",
+    "line": 661,
+    "writes": "0.0385"
+   }
+  ],
+  "source_file": "results/window_laws.csv",
+  "source_value": "0.0385"
+ },
+ "window_laws:sigma_ln_transit_white_plus_wander:1.5-20": {
+  "producer": "run_window_laws.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/identifiability.md",
+    "line": 673,
+    "writes": "0.1234"
+   }
+  ],
+  "source_file": "results/window_laws.csv",
+  "source_value": "0.1234"
  }
 }

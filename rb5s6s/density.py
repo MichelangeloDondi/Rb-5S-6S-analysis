@@ -47,8 +47,8 @@ from __future__ import annotations
 import numpy as np
 
 # Physical constants (SI). ESTABLISHED; one home, constants.py (2026-09-12).
-from .constants import K_B_J_PER_K  # noqa: E402
-TORR_TO_PA = 133.322368
+from .constants import K_B_J_PER_K
+from .constants import TORR_PA as TORR_TO_PA   # one home: constants.py, 101325/760 exactly
 
 # Nesmeyanov liquid-Rb coefficients (Steck). ESTABLISHED.
 _A, _B, _C, _D = 15.88253, 4529.635, 0.00058663, 2.99138

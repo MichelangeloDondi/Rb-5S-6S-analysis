@@ -633,6 +633,56 @@ The odd orders stay in the model's order tuple because they are the shift
 channel and a campaign at a larger light shift reads them. On the 2025 archive
 a fit drops them on their measured signal-to-noise, never on their name.
 
+### The window is a scan axis, and the even ladder carries the transit
+
+Every statistic above was read at a fixed window. Read across the window it
+is a function, and every term of the line has its own law in it, measured on
+the package's own profile at the archive point
+(`results/window_laws.csv`): the tilt is the one nuisance the wing baseline
+and the self-centring leave, and its signature grows as the window to the
+[3.213](../../results/window_laws.csv "ref:window_laws:law_tilt_k2:4-20") on the
+second cumulant and to the
+[5.559](../../results/window_laws.csv "ref:window_laws:law_tilt_k3:4-20") on the
+third, steeper than any physics term. The transit's second cumulant grows to
+the [0.90](../../results/window_laws.csv "ref:window_laws:law_transit_k2:4-20"),
+the Lorentzian sum's to the
+[1.713](../../results/window_laws.csv "ref:window_laws:law_lorentzian_sum_k2:4-20"),
+and a Lorentzian laser kernel to the
+[1.92](../../results/window_laws.csv "ref:window_laws:law_lorentzian_laser_form_k2:4-20"),
+which is the Lorentzian sum's law and the reason a free Lorentzian component
+absorbs the laser's kernel form for the widths. Projecting the tilt out of
+the twelve-window ladder keeps
+[0.62](../../results/window_laws.csv "ref:window_laws:kept_transit_k2:1.5-20")
+of the transit's sensitivity on the second cumulant and
+[0.97](../../results/window_laws.csv "ref:window_laws:kept_transit_k6:1.5-20")
+on the sixth.
+
+Jointly, the even cumulants at twelve windows measure the transit to
+[0.0385](../../results/window_laws.csv "ref:window_laws:sigma_ln_transit_white:1.5-20")
+of itself per trace under white noise with the tilt free and the covariance
+of the thirty-six statistics taken from realisations, against the profile
+fit's own per-trace figure with the same widths free (the private plan's
+round-one Monte Carlo, of the same size): the same information, as the data-processing
+inequality says it must be, obtained without committing to a kernel form for
+the nuisances. The noise's low-frequency form sets the bar: at the law's
+first-lag correlation the figure is
+[0.0447](../../results/window_laws.csv "ref:window_laws:sigma_ln_transit_ar1_rho1:1.5-20"),
+at the twin's correlation-time form
+[0.0653](../../results/window_laws.csv "ref:window_laws:sigma_ln_transit_ar1_tau_int:1.5-20"),
+and with a slow wander carrying a third of the variance
+[0.1234](../../results/window_laws.csv "ref:window_laws:sigma_ln_transit_white_plus_wander:1.5-20").
+The transit and the Lorentzian sum stay correlated at
+[-0.87](../../results/window_laws.csv "ref:window_laws:corr_transit_lorentzian_white:1.5-20")
+under every form, which is the degeneracy the theory prior on the
+self-broadening coefficient breaks and nothing in one trace does. And the
+estimator's own noise-induced bias, per trace in units of its scatter, is
+[-0.127](../../results/window_laws.csv "ref:window_laws:bias_k2_white:6") at
+6 MHz and
+[-0.241](../../results/window_laws.csv "ref:window_laws:bias_k2_white:12") at
+12 MHz on the second cumulant, so pooled over a condition's hundred traces it
+is a one-to-two-sigma term the twin supplies per condition from that
+condition's measured spectrum, never from a white draw.
+
 ### rho and Delta-alpha are exactly degenerate in the shift, and only one channel breaks it
 
 The light shift enters as $S_0 \propto (1+\rho) \Delta\alpha P/w_0^2$, so
@@ -668,6 +718,57 @@ and it costs signal, since the Doppler-free rate goes as the ratio itself
 and the shift being measured, which goes as one plus the ratio, a factor 1.3. It
 belongs to a campaign and not to the 2025 data, which is why the archive's
 $\Delta\alpha$ stays where the record puts it.
+
+### The four peaks as a two-by-two design, and the two faces of the F-dependent term
+
+The four lines are one isotope contrast and two hyperfine contrasts, and the
+record's own terms predict each: the transit's root-of-mass difference on the
+isotope contrast, and on the hyperfine contrasts the pumping companion's
+branching difference times the saturation width. F is not conserved in the
+cascade, so the same term has an amplitude face: the driven level is depleted
+per crossing ([the cascade and F depletion](the-cascade-and-f-depletion.md)),
+and each isotope's within-isotope ratio sits above the thermal law
+abundance × (2F + 1)/G by the log of the two survival factors, the
+higher-branching line the more depleted. `results/four_peak_contrasts.csv`
+carries both faces. On the archive the cycles per crossing on a central chord
+are [0.0805](../../results/four_peak_contrasts.csv "ref:four_peak_contrasts:cycles_per_crossing_axis:P225_w64")
+at 225 mW and 64 µm (the record's on-axis rate integrated along the chord,
+$P^2/w_0^3$), which predicts a deviation of
+[0.00853](../../results/four_peak_contrasts.csv "ref:four_peak_contrasts:amplitude_face_predicted:87Rb_P225_w64")
+in the log for the 87Rb pair. The measured deviation at that rung is
+[0.1517](../../results/four_peak_contrasts.csv "ref:four_peak_contrasts:amplitude_face_measured:87Rb_P225") ±
+[0.0055](../../results/four_peak_contrasts.csv "ref:four_peak_contrasts:amplitude_face_measured:87Rb_P225:err")
+and at 25 mW [-0.248](../../results/four_peak_contrasts.csv "ref:four_peak_contrasts:amplitude_face_measured:87Rb_P25") ±
+[0.050](../../results/four_peak_contrasts.csv "ref:four_peak_contrasts:amplitude_face_measured:87Rb_P25:err"),
+a movement across the power ladder fifty times the prediction, under a
+between-block systematic on the ratio the record measures at about forty per
+cent (`amplitude_ratios.csv`), so the face is NULL on this archive and the movement
+is an observation the acquisition order confounds (A92). At 25 µm the same
+term predicts [0.0512](../../results/four_peak_contrasts.csv "ref:four_peak_contrasts:amplitude_face_predicted:87Rb_P225_w25"),
+which the campaign's cycled order reads against the width face with the same
+branching coefficients. The width face, pooled over the power arm, gives an
+87Rb contrast of
+[0.098](../../results/four_peak_contrasts.csv "ref:four_peak_contrasts:contrast_F87:pooled_power_arm") ±
+[0.035](../../results/four_peak_contrasts.csv "ref:four_peak_contrasts:contrast_F87:pooled_power_arm:err") MHz
+and over the temperature arm
+[0.084](../../results/four_peak_contrasts.csv "ref:four_peak_contrasts:contrast_F87:pooled_temperature_arm") ±
+[0.043](../../results/four_peak_contrasts.csv "ref:four_peak_contrasts:contrast_F87:pooled_temperature_arm:err") MHz,
+the design an L whose (130 °C, 225 mW) condition belongs to both arms.
+
+**The amplitude channel's own waist power** is derived in
+`results/detection_budget.csv`: the integrated weak-drive signal in a collected
+length $L$ goes as $2\arctan(L/2z_R)$, whose slope in the waist is
+[-1.914](../../results/detection_budget.csv "ref:detection_budget:exponent_weak_drive:along12_w64um") at 64 µm
+with the cathode's 12 mm along the beam and
+[-1.838](../../results/detection_budget.csv "ref:detection_budget:exponent_saturated:along12_w64um") with the
+saturation carried, against the on-axis rate per atom's $-4$. At 16 µm the
+saturated slope is [0.606](../../results/detection_budget.csv "ref:detection_budget:exponent_saturated:along12_w16um"),
+the wrong sign for a waist channel. The chain's prediction sits
+[2.78](../../results/detection_budget.csv "ref:detection_budget:gap_log10_predicted_over_measured:Steck_along12_D6mm") to
+[3.97](../../results/detection_budget.csv "ref:detection_budget:gap_log10_predicted_over_measured:Steck_along12_D25.4mm")
+in the log above the archive's measured rate across the aperture's span, with
+the D1 trapping, the filter and the excess-noise factor named outside it
+([the open apparatus items](../plan/12_open-apparatus-items.md)).
 
 ### Matching the summary statistic to the perturbation
 

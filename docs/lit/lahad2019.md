@@ -31,7 +31,7 @@ summary: >
   the inhomogeneous light shift a coupling field induces on a two-photon
   transition, bringing the whole ensemble into resonance together. Measures
   enhancement of the absorption cross section over the inhomogeneous limit,
-  4.8 +/- 0.4 in an N-type Rb vapor scheme and 4.6 +/- 0.3 in a ladder scheme
+  4.8(4) in an N-type Rb vapor scheme and 4.6(3) in a ladder scheme
   through a Rydberg state.
 loci: []
 section: prior-art
@@ -89,7 +89,7 @@ with a saturation parameter mu^2 that scales linearly with intensity.
 ## The numbers
 
 Two hot 87Rb experiments test the mechanism. An N-type scheme in a 75 mm
-natural-abundance cell at 33-42 C gives beta = 4.8 +/- 0.4, with Omega =
+natural-abundance cell at 33-42 C gives beta = 4.8(4), with Omega =
 29 MHz, Omega_r = 29.6 MHz, Delta = -270 MHz, Delta_r = -300 MHz, a bare
 two-photon width gamma_sg = 0.35 MHz, gamma = 2.875 MHz, gamma_r = 3.033
 MHz, and a 375 um probe waist. A ladder scheme through a Rydberg state

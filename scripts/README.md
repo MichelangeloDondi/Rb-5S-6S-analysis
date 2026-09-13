@@ -101,6 +101,10 @@ committed table holds. The `M` codes below are the pipeline stage labels of
 | `run_fringe_tail.py` (M15) | the fringe-resolved tail of the standing-wave AC-Stark ramp into `fringe_tail.csv` |
 | `run_polarizability.py` (M16) | 5S and 6S dynamic polarizabilities, the independent difference recompute, and the first magic wavelengths, into `polarizability.csv` |
 | `run_polarizability_deep.py` | the differential polarizability at the drive with the 6S sum carried to 12P and beyond dynamically, the elements above 8P computed in the Coulomb approximation and calibrated on the held 6S–8P pair with the 6S–7P step as its spread, the quadrupole and magnetic-dipole channels bounded, three correlation assumptions propagated. Writes `polarizability_deep.csv` |
+| `run_window_laws.py` | every term's law in the truncation window on the package's own profile, the tilt projected out of the even ladder, the ladder's joint information on the three width terms under four noise forms, and the estimator's noise-induced bias. Writes `window_laws.csv` |
+| `run_four_peak_contrasts.py` | the four peaks as a two-by-two design: the isotope, hyperfine and interaction contrasts of the fitted widths per condition and pooled, each against the record's own prediction. Writes `four_peak_contrasts.csv` |
+| `run_density_laws.py` | three vapour-pressure laws at the archive's temperatures, their ratios as thermometry offsets, their literature supports, and the temperature ladder fitted with each. Writes `density_laws.csv` |
+| `run_detection_budget.py` | the detection budget: the collection geometry and the waist power the integrated two-photon signal realises in it, the chain's factors, the archive's photoelectron rate from the noise law, the predicted rate with its inputs drawn, and the gap. Writes `detection_budget.csv` |
 | `run_resolving_power.py` (M17) | each observable's dynamic range over the temperature sweep divided by its scatter at fixed conditions, into `resolving_power.csv` |
 | `run_projections.py` | what a further campaign would buy, computed from the record's own precision, into `projections.csv` |
 
