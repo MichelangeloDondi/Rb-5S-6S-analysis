@@ -9,6 +9,7 @@ keeps it run.
 """
 from __future__ import annotations
 import shutil
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -44,7 +45,15 @@ def _run(tmp_path: Path, md: str) -> int:
     shutil.copy(CHECKER, tree / "private" / "checks" / CHECKER.name)
     (tree / "private" / "THESIS_CHAPTER.md").write_text(md)
     (tree / "private" / "thesis" / "bibliography.bib").write_text(BIB)
-    r = subprocess.run([sys.executable, str(tree / "private" / "checks" / CHECKER.name)], capture_output=True, text=True)
+    # POINT THE CHECKER AT THE FIXTURE, EXPLICITLY. The checker resolves
+    # RB5S6S_CHAPTER FIRST, so inheriting this process's environment made both
+    # tests silently grade the real chapter instead of MD_OK / MD_CAPITALISED —
+    # the env var added to find the moved chapter was hijacking the very tests
+    # that plant the checker (corrected 2026-09-13). Setting it to
+    # the fixture also exercises the env path rather than only the fallback.
+    _env = dict(os.environ, RB5S6S_CHAPTER=str(tree / "private" / "THESIS_CHAPTER.md"))
+    r = subprocess.run([sys.executable, str(tree / "private" / "checks" / CHECKER.name)],
+                       capture_output=True, text=True, env=_env)
     return r.returncode
 
 

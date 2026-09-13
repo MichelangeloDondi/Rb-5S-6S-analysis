@@ -28,6 +28,8 @@ import re
 from pathlib import Path
 import subprocess
 
+import os
+import pathlib
 import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -430,9 +432,19 @@ def test_chapter_filler_count_only_falls():
     it entered at its measured count and the count may only fall. Plant: a
     second banked opener in the chapter fails this; removing it passes.
     """
-    p = ROOT / "private" / "THESIS_CHAPTER.md"
+    # THE CHAPTER MOVED AND THIS SKIPPED ON A FALSE REASON (corrected 2026-09-13). It hardcoded private/THESIS_CHAPTER.md and said
+    # "private/ is absent from this clone" when private/ was right there and
+    # the file had moved to the PhD-Thesis repository, so the ratchet went
+    # silently dead in the canonical checkout while reporting a clone problem.
+    # `RB5S6S_CHAPTER` names it; the message now says which of the two it is.
+    env = os.environ.get("RB5S6S_CHAPTER")
+    p = pathlib.Path(env) if env else ROOT / "private" / "THESIS_CHAPTER.md"
     if not p.is_file():
-        pytest.skip("private/ is absent from this clone; the chapter is not graded here")
+        pytest.skip(
+            f"no chapter at {p} "
+            + ("(RB5S6S_CHAPTER names a file that is not there)" if env else
+               "(RB5S6S_CHAPTER is unset and the chapter is not at the pre-move path)")
+            + "; the chapter is not graded here")
     text = p.read_text(encoding="utf-8").lower()
     n = sum(text.count(phrase) for phrase in FILLER_PHRASES)
     assert n <= CHAPTER_FILLER_BASELINE, (

@@ -61,6 +61,16 @@ electronics and dark current, independent of how much light arrives, plus a
 term that grows with the signal because photon detection is a counting
 process and counting noise scales with the count. In variance,
 
+**On this dataset the floor is not the dark term that form describes.**
+Fitted per condition it rises with the drive, d ln a / d ln P = [0.85](../../results/detection_budget.csv "ref:detection_budget:floor_power_scaling:p_sweep") over the
+power arm's five rungs, so it is light-proportional: scattered drive, or the
+laser's own intensity noise. With its bar the exponent is 8.1 sigma from 0 and
+1.4 from 1, so a dark floor is refused while a purely light-proportional one is
+not. An electronic component is bounded by this and is not excluded. Which of
+the two light terms it is remains unsettled. `docs/methods/06` states
+the same reading, and the detection budget therefore quotes a dark current only
+as an upper bound taken at the lowest rung.
+
 $$\sigma^2(V) = a^2 + bV$$
 
 with $a$ the electronic floor and $b$ the shot-noise coefficient, sometimes

@@ -228,11 +228,29 @@ def main() -> None:
     # even that is an upper bound rather than a measurement.
     _P = np.array([float(r["power_mW"]) for r in _rows])
     _a = np.array([float(r["a_V"]) for r in _rows])
-    a_slope = float(np.polyfit(np.log(_P), np.log(_a), 1)[0])
+    # THE EXPONENT CARRIES ITS ERROR (corrected 2026-09-13). It was fitted
+    # with polyfit and published bare, against LANGUAGE 8a.1, which is what let
+    # three surfaces read it as though it were exact. The bar matters for the
+    # reading: 0 is a pure dark floor and 1 a pure light-proportional term, so
+    # an exponent strictly between them is a MIXTURE, and whether it is
+    # resolved away from 1 is what says the electronic part is bounded rather
+    # than excluded.
+    _coef, _cov = np.polyfit(np.log(_P), np.log(_a), 1, cov=True)
+    a_slope = float(_coef[0])
+    a_slope_err = float(np.sqrt(_cov[0, 0]))
     a_lowest = float(np.median(_a[_P == _P.min()]))
-    add(["floor_power_scaling", "p_sweep", f"{a_slope:.2f}", "", "d ln a / d ln P", "the noise law's floor against laser power over the p_sweep's five rungs. A tube dark current or a digitiser floor gives zero. This is the light-proportional part (scattered drive, or the laser's own intensity noise), so the floor may not be read as a dark current"])
+    add(["floor_power_scaling", "p_sweep", f"{a_slope:.2f}", f"{a_slope_err:.2f}", "d ln a / d ln P", f"the noise law's floor against laser power over the p_sweep's five rungs. A pure tube dark current or digitiser floor gives 0 and a purely light-proportional floor gives 1. Measured, this is {abs(a_slope) / a_slope_err:.1f} sigma from 0 and {abs(a_slope - 1.0) / a_slope_err:.1f} sigma from 1, so a dark floor is REFUSED and a purely light-proportional floor is not: the data do not require an electronic component at all, and bound it rather than resolving one. The light-proportional part is scattered drive or the laser's own intensity noise. Which of the two is not settled here. The floor may not be read as a dark current"])
+    # THE JOHNSON RATIO IS COMPUTED, NOT TYPED (corrected 2026-09-13). The
+    # note carried "1/355" as a literal in its f-string, which no line of this
+    # producer evaluates, so nothing could go stale when a or R or B moved. The
+    # resistor's thermal noise over the boxcar's bandwidth is sqrt(4 kB T R B);
+    # the laboratory temperature is not on record, so it is stated where it is
+    # used and the row names it.
+    T_LAB_K = 293.0                      # docs/plan: the laboratory, not on record to better
+    v_johnson = (4.0 * K.K_B_J_PER_K * T_LAB_K * R_TRANSIMPEDANCE * B_HZ) ** 0.5
+    johnson_ratio = a_lowest / v_johnson
     n_dark = a_lowest ** 2 / ((gain_f * K.E_CHARGE_C * R_TRANSIMPEDANCE) ** 2 * 2.0 * B_HZ)
-    add(["floor_as_dark_equivalent_rate_ub", "chain", f"{n_dark:.2e}", "", "per s times F", f"an UPPER BOUND on a dark photoelectron rate, a^2 F / ((G e R)^2 2 B) at F = 1 evaluated at the LOWEST rung ({_P.min():.0f} mW, a = {1e3 * a_lowest:.2f} mV), not at the median over rungs. The floor grows with power, so every rung above bounds the dark term more weakly and none measures it. The Johnson noise of the transimpedance over B is a thousandth of a, so the resistor is not the floor"])
+    add(["floor_as_dark_equivalent_rate_ub", "chain", f"{n_dark:.2e}", "", "per s times F", f"an UPPER BOUND on a dark photoelectron rate, a^2 F / ((G e R)^2 2 B) at F = 1 evaluated at the LOWEST rung ({_P.min():.0f} mW, a = {1e3 * a_lowest:.2f} mV), not at the median over rungs. The floor grows with power, so every rung above bounds the dark term more weakly and none measures it. The Johnson noise of the transimpedance over B, sqrt(4 kB T R B) at T = {T_LAB_K:.0f} K, is 1/{johnson_ratio:.0f} of a at this rung, so the resistor is not the floor"])
     add(["floor_as_dark_anode_current_ub", "chain", f"{gain_f * K.E_CHARGE_C * n_dark * 1e9:.1f}", "", "nA", "the same bound as an anode current, G e n_dark, independent of F. A bound on the dark current and not a reading of it. The bench measurement with the drive blocked is what would measure one, and it is not on record"])
 
     # 3. the measured photoelectron rate, per p_sweep condition

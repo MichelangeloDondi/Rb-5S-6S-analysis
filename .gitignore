@@ -109,3 +109,6 @@ results/*.annotating
 .ci_gate_fail.log
 .targeted_ok
 .producer_locks/
+# transient stamps, like .targeted_ok: they name the index tree a guard graded
+.prefloor_ok
+.gate_started_for

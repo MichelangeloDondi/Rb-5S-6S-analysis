@@ -31,7 +31,7 @@ def test_alcock_sits_above_steck_across_the_ladder_by_a_few_kelvin():
 
 def test_the_ladder_cannot_pick_a_law():
     """The fit's chi-squared is the same under every law to the precision the
-    three temperatures allow: beta and the cold spot are degenerate."""
+    L design's four temperatures allow: beta and the cold spot are degenerate."""
     rows = _rows()
     chi = [float(x["value"]) for x in rows if x["quantity"].startswith("ladder_fit_") and x["key"] == "chi2"]
     assert len(chi) == 3

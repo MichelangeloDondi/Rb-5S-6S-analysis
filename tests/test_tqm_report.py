@@ -84,10 +84,34 @@ def test_the_round_reader_sees_the_recorded_rounds():
     # not `any(seats)`, which _rounds() already filters for and which
     # would therefore assert nothing: the ledger's rounds carry the
     # required seat set, so check the shape a reader relies on.
-    assert all(len(r["seats"]) >= 5 for r in rows[-5:]), (
-        "a recent round carries fewer seats than any era of this "
-        "ledger required, so the row shape has changed under the "
+    #
+    # THE FLOOR IS READ, NOT TYPED (2026-09-13). This asserted `>= 5`, which
+    # was the seat count of one era and is not a shape at all. The owner has
+    # moved that number twice since: LOGIC 0c.25 made `physics` and `strategy`
+    # the required pair, and CREDIT MODE cut it to `physics` alone plus at most
+    # two Sonnet extras. A three-seat credit-mode round is correct and turned
+    # this test red. The rule file already says the seat count lives in
+    # `REQUIRED_SEATS` and never as a number written elsewhere; that binds a
+    # test as much as it binds prose, so the floor comes from the ledger.
+    import importlib.util as _il
+    _s = _il.spec_from_file_location("_bl", ROOT / "private" / "checks" / "board_ledger.py")
+    _bl = _il.module_from_spec(_s); _s.loader.exec_module(_bl)
+    floor = _bl.MIN_SEATS
+    assert all(len(r["seats"]) >= floor for r in rows[-5:]), (
+        f"a recent round carries fewer than {floor} seats, the current floor "
+        "from board_ledger.MIN_SEATS, so the row shape has changed under the "
         "reader")
+    # AND THE SHAPE THAT IS NOT VACUOUS. With MIN_SEATS down to 1 and _rounds()
+    # already filtering for any(seats), the assertion above cannot fail and
+    # asserts nothing, which is the vacuity the comment above it warns
+    # against (corrected 2026-09-13). What the reader actually depends on is
+    # that a verdict aligns with a seat, which is what record() refuses to
+    # write and what a stale fixture had been seeding wrongly.
+    for r in rows[-5:]:
+        assert len(r["verdicts"]) == len(r["seats"]), (
+            f"round {r.get('tree', '?')[:12]} carries {len(r['seats'])} seats "
+            f"and {len(r['verdicts'])} verdicts; the reader pairs them by "
+            "position and a mismatch silently mislabels every verdict after it")
 
 
 def test_the_report_runs_end_to_end(capsys):

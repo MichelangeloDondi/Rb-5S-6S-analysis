@@ -464,9 +464,60 @@ def ultra_joint_statistics(nu: np.ndarray, *, windows=DEFAULT_WINDOWS,
         # it divides out. Pairing across parities would not.
         for lo in orders:
             hi = lo + 2                      # by VALUE, never by tuple position
-            if hi in orders and abs(k[lo]) > 0:
+            if hi in orders and _ratio_admitted(k, lo, w):
                 out[f"k{hi}/k{lo}@{w:g}"] = k[hi] / k[lo]
     return out
+
+
+# A RATIO IS ADMITTED AGAINST A MEASURED FLOOR, NEVER AGAINST EXACT ZERO (E71).
+# Both emitters below used `abs(k[lo]) > 0`, which is a claim about the
+# PLATFORM and not about the physics: at zero light shift the odd cumulants
+# vanish identically, and whether the quadrature returns them as 0.0 or as
+# 1e-18 decides whether a meaningless ratio of order 1e20 is published. This
+# machine returns exact zeros at two of three windows and the hosted runner
+# returns none, which is the whole of escape E71.
+#
+# The floor is DIMENSIONLESS because a cumulant of order n carries the n-th
+# power of the distribution's width: the scale is sigma = sqrt(k2) when the
+# caller asked for order 2, and the window half-width otherwise, since a
+# distribution confined to the window has sigma <= w.
+#
+# WHAT THIS DOES, AND WHAT IT DOES NOT. At the shift the archive and the
+# campaign actually use, |k_n| / sigma**n runs 4.0e-06 to 3.1e-04, while an
+# EXACTLY symmetric profile returns 0 to 2.8e-14, so five decades separate the
+# live case from the zero case and the floor refuses the zero one. That is
+# escape E71 and the whole of what this constant is for.
+#
+# It is NOT a test of whether a weak-shift cumulant is resolved, and a first
+# draft of this comment claimed it was. Measured across s0 down to 1e-8: the
+# returned cumulants stop following the shift below s0 ~ 1e-3 and plateau on
+# the construction's own numerical floor, and that plateau reaches 1.7e-06
+# across orders and windows while the smallest LEGITIMATE cell in a 540-cell
+# scan is 2.8e-07. **The two populations overlap, so no single dimensionless
+# constant separates them**, and raising the floor does not help: at 1e-8 it
+# still admits 25 of the noise cells and buys nothing. A caller working below
+# s0 ~ 1e-3 needs a per-order convergence test, which this is not.
+#
+# The safe direction is to refuse: a refused ratio drops a key, an admitted one
+# publishes a number with no information in it.
+RATIO_FLOOR_REL = 1e-9
+
+
+def _ratio_scale(k: dict, half_width: float) -> float:
+    """The width whose powers set the size of a cumulant at this window."""
+    k2 = k.get(2)
+    if k2 is not None and np.isfinite(k2) and k2 > 0:
+        return float(k2) ** 0.5
+    return float(half_width)
+
+
+def _ratio_admitted(k: dict, lo: int, half_width: float) -> bool:
+    """Is `k[lo]` resolved above the numerical floor of its own construction?"""
+    v = k.get(lo)
+    if v is None or not np.isfinite(v):
+        return False
+    scale = _ratio_scale(k, half_width)
+    return abs(v) > RATIO_FLOOR_REL * scale ** lo
 
 
 def convolution_licence(w0_m: float, m2: float = 1.0, **kw) -> dict:
@@ -596,7 +647,7 @@ def ultra_joint_covariance(nu: np.ndarray, *, n_real: int = 400,
             if with_ratios:
                 for lo in orders:
                     hi = lo + 2
-                    if hi in orders and abs(kk[lo]) > 0:
+                    if hi in orders and _ratio_admitted(kk, lo, half_width):
                         row[f"k{hi}/k{lo}@{half_width:g}"] = kk[hi] / kk[lo]
         rows.append(row)
     # the names every realisation produced, in the reference order

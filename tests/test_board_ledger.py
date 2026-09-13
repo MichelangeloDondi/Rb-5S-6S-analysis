@@ -127,7 +127,7 @@ def _required_seats():
     spec = importlib.util.spec_from_file_location("_bl_seats", LEDGER_SRC)
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
-    return sorted(mod.REQUIRED_SEATS)
+    return list(mod.MINIMAL_BOARD)
 
 
 # THE SKIPIF ABOVE WAS DEFEATED BY THIS LINE, and only the mirror could show
@@ -261,7 +261,7 @@ def test_a_refute_with_no_blocking_findings_is_refused(bl, repo):
     _point_at(bl, repo)
     (repo / "a.txt").write_text("three\n")
     _run(repo, "add", "-A")
-    seats = sorted(bl.REQUIRED_SEATS)
+    seats = list(bl.MINIMAL_BOARD)
     _regate(bl)
     bl.begin(FULL, expect=0)
     with pytest.raises(SystemExit) as e:
@@ -275,7 +275,7 @@ def test_begin_refuses_while_a_blocking_finding_stands(bl, repo):
     _point_at(bl, repo)
     (repo / "a.txt").write_text("three\n")
     _run(repo, "add", "-A")
-    seats = sorted(bl.REQUIRED_SEATS)
+    seats = list(bl.MINIMAL_BOARD)
     _regate(bl)
     bl.begin(seats, expect=1)
     bl.record(seats, ["REFUTE"] * len(seats), blocking=["the planted defect"])
@@ -307,7 +307,7 @@ def test_resolve_without_an_anchor_or_a_deferral_is_refused(bl, repo):
     _point_at(bl, repo)
     (repo / "a.txt").write_text("three\n")
     _run(repo, "add", "-A")
-    seats = sorted(bl.REQUIRED_SEATS)
+    seats = list(bl.MINIMAL_BOARD)
     _regate(bl)
     bl.begin(FULL, expect=0)
     bl.record(seats, ["REFUTE"] * len(seats), blocking=["the planted defect"])
@@ -325,7 +325,7 @@ def test_resolve_without_a_reason_is_refused(bl, repo):
     _point_at(bl, repo)
     (repo / "a.txt").write_text("three\n")
     _run(repo, "add", "-A")
-    seats = sorted(bl.REQUIRED_SEATS)
+    seats = list(bl.MINIMAL_BOARD)
     _regate(bl)
     bl.begin(FULL, expect=0)
     bl.record(seats, ["REFUTE"] * len(seats), blocking=["the planted defect"])
@@ -349,7 +349,7 @@ def test_a_board_that_stayed_open_across_the_commit_can_still_record(bl, repo):
     _point_at(bl, repo)
     (repo / "a.txt").write_text("three\n")
     _run(repo, "add", "-A")
-    seats = sorted(bl.REQUIRED_SEATS)
+    seats = list(bl.MINIMAL_BOARD)
     _regate(bl)
     bl.begin(seats, expect=0)
     _run(repo, "commit", "-q", "-m", "landed while the board read it")
@@ -381,7 +381,7 @@ def test_begin_on_a_tree_already_head_is_refused(bl, repo):
     assert bl.staged_tree() == _run(repo, "rev-parse", "HEAD^{tree}")
     with pytest.raises(SystemExit) as e:
         _regate(bl)
-        bl.begin(sorted(bl.REQUIRED_SEATS), expect=0)
+        bl.begin(list(bl.MINIMAL_BOARD), expect=0)
     assert "already HEAD" in str(e.value)
     assert not bl.OPEN.exists()
 
@@ -399,7 +399,7 @@ def test_a_post_commit_review_is_admitted_but_recorded_as_one(bl, repo):
     """
     _point_at(bl, repo)
     _regate(bl)
-    tree = bl.begin(sorted(bl.REQUIRED_SEATS),
+    tree = bl.begin(list(bl.MINIMAL_BOARD),
                     "release board on the tagged artifact", expect=0)
     assert tree == _run(repo, "rev-parse", "HEAD^{tree}")
     assert bl.OPEN.exists()
@@ -421,7 +421,7 @@ def test_abandon_records_a_row_and_clears_the_marker(bl, repo):
     _point_at(bl, repo)
     (repo / "a.txt").write_text("three\n")
     _run(repo, "add", "-A")
-    seats = sorted(bl.REQUIRED_SEATS)
+    seats = list(bl.MINIMAL_BOARD)
     _regate(bl)
     tree = bl.begin(seats, expect=0)
     assert bl.OPEN.exists()
@@ -474,7 +474,7 @@ def test_abandon_must_say_what_the_round_found_or_that_it_found_nothing(bl, repo
     _point_at(bl, repo)
     (repo / "a.txt").write_text("three\n")
     _run(repo, "add", "-A")
-    seats = sorted(bl.REQUIRED_SEATS)
+    seats = list(bl.MINIMAL_BOARD)
     _regate(bl)
     bl.begin(seats, expect=0)
     assert bl.abandon("a reason but no account of what was found") == 2, (
@@ -500,7 +500,7 @@ def test_a_row_without_findings_does_not_clear_a_standing_refusal(bl, repo):
     _point_at(bl, repo)
     (repo / "a.txt").write_text("four\n")
     _run(repo, "add", "-A")
-    seats = sorted(bl.REQUIRED_SEATS)
+    seats = list(bl.MINIMAL_BOARD)
     _regate(bl)
     bl.begin(FULL, expect=0)
     bl.record(seats, ["REFUTE"] * len(seats), blocking=["the standing defect"])
@@ -557,11 +557,11 @@ def test_begin_refuses_a_failing_or_absent_gate_verdict(bl, repo):
     _run(repo, "add", "-A")
     with pytest.raises(SystemExit, match="FAIL"):
         _regate(bl)
-        bl.begin(sorted(bl.REQUIRED_SEATS), expect=0)
+        bl.begin(list(bl.MINIMAL_BOARD), expect=0)
     (repo / ".ci_gate_verdict").unlink()
     with pytest.raises(SystemExit, match="ABSENT"):
         _regate(bl)
-        bl.begin(sorted(bl.REQUIRED_SEATS), expect=0)
+        bl.begin(list(bl.MINIMAL_BOARD), expect=0)
 
 
 def test_begin_accepts_pass_modulo_and_records_it(bl, repo):
@@ -570,7 +570,7 @@ def test_begin_accepts_pass_modulo_and_records_it(bl, repo):
     (repo / "a.txt").write_text("three\n")
     _run(repo, "add", "-A")
     _regate(bl)
-    bl.begin(sorted(bl.REQUIRED_SEATS), expect=2)
+    bl.begin(list(bl.MINIMAL_BOARD), expect=2)
     import json as _json
     row = _json.loads((repo / ".board_running").read_text())
     assert row["gate_verdict"] == "PASS_MODULO 1"
@@ -584,7 +584,7 @@ def test_begin_refuses_without_a_prediction(bl, repo):
     _run(repo, "add", "-A")
     with pytest.raises(SystemExit, match="expect"):
         _regate(bl)
-        bl.begin(sorted(bl.REQUIRED_SEATS))
+        bl.begin(list(bl.MINIMAL_BOARD))
 
 
 def test_record_stores_predicted_against_actual(bl, repo):
@@ -593,7 +593,7 @@ def test_record_stores_predicted_against_actual(bl, repo):
     (repo / "a.txt").write_text("three\n")
     _run(repo, "add", "-A")
     _regate(bl)
-    bl.begin(sorted(bl.REQUIRED_SEATS), expect=2)
+    bl.begin(list(bl.MINIMAL_BOARD), expect=2)
     bl.record(FULL, ["REFUTE"] * len(FULL), note="planted",
               blocking=["one finding"])
     import json as _json
@@ -653,14 +653,23 @@ def test_gate_coverage_refuses_fail_ceiling_and_consecutive(bl, repo):
 
 
 def test_sibling_refusals_outrank_the_no_board_one(bl, repo):
-    """The no-board refusal is the LAST resort: with a partial seat list
-    and no open board, the conformance message must win, or one guard
-    replaces its siblings (the first two placements of this refusal both
-    did exactly that)."""
+    """The no-board refusal is the LAST resort: a conformance message must
+    win over it, or one guard replaces its siblings (the first two placements
+    of this refusal both did exactly that).
+
+    THE SIBLING CHANGED WITH THE SEAT MODEL (2026-09-13). This used a PARTIAL
+    seat list, which was non-conformant while `REQUIRED_SEATS` held physics and
+    strategy. No seat is automatic now, so `["rules"]` is a perfectly legal
+    board and the no-board residual is the CORRECT answer for it. The
+    conformance sibling that still has a trigger without an open board is the
+    seat-and-verdict count mismatch, so the ordering is asserted through that."""
     _point_at(bl, repo)
     (repo / "f.txt").write_text("x")
     _run(repo, "add", "f.txt")
-    with pytest.raises(SystemExit, match="held to"):
+    with pytest.raises(SystemExit, match="counts differ"):
+        bl.record(["rules"], ["CONFIRM", "CONFIRM"])
+    # and a conformant list with no begin gets the residual, as it should
+    with pytest.raises(SystemExit, match="no open board"):
         bl.record(["rules"], ["CONFIRM"])
     # with a full, valid board and no begin, the residual fires
     with pytest.raises(SystemExit, match="no open board"):
@@ -678,22 +687,21 @@ def test_begin_refuses_a_running_gate(bl, repo):
 
 
 def test_required_is_sized_by_the_diff(bl, repo):
-    """A round's row records the seats it summoned, never the universe, and
-    a board without the two required seats is refused at begin (the seat
-    model of 2026-09-12: physics and strategy always, extras by reason).
-    Before seats_for was wired in, a focused board's row was a lie in one
-    direction or the other: ten names nobody fielded, or a non-conformant
-    five; the diff's own reading is now a hint on the row, not a floor."""
+    """A round's row records the seats it summoned, never the universe.
+
+    THE SEAT MODEL OF 2026-09-13: no seat is automatic. The owner made physics
+    and strategy argue for themselves like every other seat, so `REQUIRED_SEATS`
+    is empty and a board lacking them is no longer refused -- that was the
+    2026-09-12 model and it is superseded. What still binds is `MIN_SEATS`: a
+    board of NO seats is not a board. The diff's own reading through `seats_for`
+    remains a hint recorded on the row, never a floor enforced at entry, which
+    is what kept a focused board's row from being a lie in either direction."""
     (repo / "notes.txt").write_text("x")
     _run(repo, "add", "-A")
     _point_at(bl, repo)
     with pytest.raises(SystemExit, match="needs seat"):
         bl.begin([], expect=0)
-    # the seat model of 2026-09-12: the two required seats are never omitted,
-    # and a board without them is refused whatever the diff triggers
-    with pytest.raises(SystemExit, match="needs seat"):
-        bl.begin(["rules"], expect=0)
-    required = sorted(bl.REQUIRED_SEATS)
+    required = list(bl.MINIMAL_BOARD)
     bl.begin(required, expect=0)
     bl.record(required, ["CONFIRM"] * len(required))
     import json as _json
@@ -751,8 +759,40 @@ def test_a_stamp_for_another_tree_refuses(bl, repo):
     _run(repo, "add", "-A")
     _point_at(bl, repo, verdict="PASS 0", tree="0" * 40)
     (repo / ".targeted_ok").write_text("TARGETED\ntree " + "1" * 40 + "\n")
-    with pytest.raises(SystemExit, match="targeted"):
+    # Anchored on the BEHAVIOUR, not on the advice. The old pattern matched the
+    # word "targeted" in the refusal's closing suggestion, so it broke when that
+    # advice changed to name the 40-second stamp instead. What this test is
+    # about is that a stamp naming another tree does not admit.
+    with pytest.raises(SystemExit, match="REFUSING to open a round"):
         bl.begin(FULL, expect=0)
+
+
+def test_the_fast_stamp_admits_and_a_stale_slow_one_does_not_shadow_it(bl, repo):
+    """`.prefloor_ok` opens a round, and a stale `.targeted_ok` beside it does
+    not win.
+
+    Only the very fast checks stand in front of a reading stage: that stage
+    READS a tree and does not run one, so the expensive question belongs to the
+    gate running beside it. Both stamps name the index tree they graded and
+    answer the same question.
+
+    THE SHADOWING HALF IS THE ONE THAT BIT. The first cut returned the first
+    stamp file that parsed, so a `.targeted_ok` left by an earlier tree hid a
+    `.prefloor_ok` naming the tree actually being opened, and the refusal then
+    printed advice the operator had already followed.
+    """
+    (repo / "f.txt").write_text("x")
+    _run(repo, "add", "-A")
+    _point_at(bl, repo, verdict="PASS 0", tree="0" * 40)
+    here = _run(repo, "write-tree")
+    # a stale slow stamp beside a fresh fast one naming THIS tree
+    (repo / ".targeted_ok").write_text("TARGETED\ntree " + "1" * 40 + "\n")
+    (repo / ".prefloor_ok").write_text(f"PREFLOOR\ntree {here}\n")
+    assert bl._targeted_stamp_tree(here) == here, (
+        "the stale slow stamp shadowed the fast one naming this tree")
+    # and an unmarked fast stamp still never admits
+    (repo / ".prefloor_ok").write_text(f"{here}\n")
+    assert bl._targeted_stamp_tree(here) != here
 
 
 def test_an_empty_stamp_tree_never_admits(bl, repo):
@@ -878,9 +918,15 @@ def _seed_biased_history(bl, n_pairs=20, under=12):
     for i in range(n_pairs):
         actual = 10 if i >= n_pairs - under else 4
         rows.append({"tree": f"{i:040x}", "at": "2026-09-02T00:00:00+00:00",
-                     "seats": sorted(bl.REQUIRED_SEATS),
-                     "verdicts": ["CONFIRM"] * len(bl.REQUIRED_SEATS),
-                     "required": sorted(bl.REQUIRED_SEATS),
+                     "seats": list(bl.MINIMAL_BOARD),
+                     # ONE VERDICT PER SEAT, keyed on the seats this row
+                     # actually carries. This read len(REQUIRED_SEATS), which
+                     # went EMPTY when no seat became automatic, so every
+                     # seeded row had one seat and zero verdicts -- a shape
+                     # record() itself refuses, seeded by its own test fixture
+                     # (corrected 2026-09-13).
+                     "verdicts": ["CONFIRM"] * len(bl.MINIMAL_BOARD),
+                     "required": list(bl.MINIMAL_BOARD),
                      "expected_blocking": 5, "actual_blocking": actual,
                      "blocking": [], "resolved": [], "note": ""})
     bl.LEDGER.write_text("\n".join(json.dumps(r) for r in rows) + "\n")
@@ -895,7 +941,7 @@ def test_an_under_base_expect_is_refused_only_when_the_bias_is_measured(bl, repo
         text=True, check=True).stdout.strip())
     _seed_biased_history(bl, n_pairs=20, under=12)      # 80 per cent under
     with pytest.raises(SystemExit, match="REFUSING --expect"):
-        bl.begin(sorted(bl.REQUIRED_SEATS), expect=1)
+        bl.begin(list(bl.MINIMAL_BOARD), expect=1)
 
 
 def test_a_stated_reason_admits_the_under_base_expect_and_is_recorded(bl, repo):
@@ -911,10 +957,10 @@ def test_a_stated_reason_admits_the_under_base_expect_and_is_recorded(bl, repo):
         ["git", "-C", str(repo), "write-tree"], capture_output=True,
         text=True, check=True).stdout.strip())
     _seed_biased_history(bl, n_pairs=20, under=12)
-    bl.begin(sorted(bl.REQUIRED_SEATS), expect=1,
+    bl.begin(list(bl.MINIMAL_BOARD), expect=1,
              expect_reason="a one-file comment repair")
-    bl.record(sorted(bl.REQUIRED_SEATS),
-              ["CONFIRM"] * len(bl.REQUIRED_SEATS))
+    bl.record(list(bl.MINIMAL_BOARD),
+              ["CONFIRM"] * len(bl.MINIMAL_BOARD))
     last = json.loads(bl.LEDGER.read_text().splitlines()[-1])
     assert last.get("expect_reason") == "a one-file comment repair", (
         "the reason did not reach the recorded row, so nothing can "
@@ -931,7 +977,7 @@ def test_a_blank_reason_is_not_a_reason(bl, repo):
         text=True, check=True).stdout.strip())
     _seed_biased_history(bl, n_pairs=20, under=12)
     with pytest.raises(SystemExit, match="REFUSING --expect"):
-        bl.begin(sorted(bl.REQUIRED_SEATS), expect=1, expect_reason="   ")
+        bl.begin(list(bl.MINIMAL_BOARD), expect=1, expect_reason="   ")
 
 
 def test_no_measured_bias_means_no_refusal(bl, repo):
@@ -944,7 +990,7 @@ def test_no_measured_bias_means_no_refusal(bl, repo):
         ["git", "-C", str(repo), "write-tree"], capture_output=True,
         text=True, check=True).stdout.strip())
     _seed_biased_history(bl, n_pairs=20, under=2)       # 10 per cent under
-    bl.begin(sorted(bl.REQUIRED_SEATS), expect=1)      # must not raise
+    bl.begin(list(bl.MINIMAL_BOARD), expect=1)      # must not raise
 
 
 def test_begin_refuses_an_expect_far_above_the_base_without_a_reason(bl, repo, capsys):

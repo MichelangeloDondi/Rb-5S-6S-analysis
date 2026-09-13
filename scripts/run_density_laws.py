@@ -41,6 +41,7 @@ import sys
 from pathlib import Path
 
 import numpy as np
+from scipy.stats import chi2 as chi2_dist
 
 REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO))
@@ -155,8 +156,15 @@ def main() -> int:
                      if rising else "is not monotone across the scan")
             out.append([f"ladder_fit_{name}", "dT_with_beta_pinned", f"{best_p[0]:.1f}", "", "K",
                         f"the cold spot with beta pinned at theory and the floor free ({best_p[2]:.3f} MHz). chi2 {best_p[1]:.1f} for {len(g) - 1} dof, and the profile {shape} (chi2 {prof[0]:.1f} at dT = 0 against {prof[-1]:.1f} at 30 K), so the pinned model sits on the dT = 0 rail rather than being unconstrained in dT. Over the L design's {len(set(T.tolist()))} temperatures, {len(g)} rows", ""])
+            # ONE degree of freedom, not two, and a p-value PER ROW. The pinned
+            # fit scans dT and frees the floor; the free fit adds beta and
+            # nothing else, so the nesting differs by a single parameter. The
+            # note this replaces typed one p-value onto three different
+            # statistics and read it at 2 dof (corrected 2026-09-13,
+            # CRITICAL).
+            p_beta = float(chi2_dist.sf(dchi2, 1))
             out.append([f"ladder_fit_{name}", "pinned_vs_free_dchi2", f"{dchi2:.2f}", "", "",
-                        f"the pinned-beta fit's chi2 minus the free fit's ({best_p[1]:.2f} against {chi2_free:.2f}), for the two parameters the free fit adds. The theory value is disfavoured by this much rather than neither refused nor confirmed", ""])
+                        f"the pinned-beta fit's chi2 minus the free fit's ({best_p[1]:.2f} against {chi2_free:.2f}). The free fit adds beta ALONE, since dT is scanned in the pinned fit too, so this is a likelihood ratio on ONE parameter: p = {p_beta:.3f}. The theory value is disfavoured and not refused", ""])
         for name, f in LAWS.items():
             beta, dT, floor, chi2, n = _fit_ladder(f, rows)
             out.append([f"ladder_fit_{name}", "beta", f"{beta:.4f}", "", "MHz per 1e12 cm^-3", f"gamma_coll(T) of the t_sweep ({n} rows) fitted as beta N(T - dT) + floor with dT on [0, 30] K. chi2 {chi2:.1f} for {n - 3} dof", ""])

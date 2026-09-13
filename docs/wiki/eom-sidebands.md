@@ -42,6 +42,32 @@ $m+m'=k$, and by Neumann's addition theorem the sum collapses:
 
 $$A_k \propto \Big|\sum_m J_m(\beta) J_{k-m}(\beta)\Big|^2 = J_k(2\beta)^2$$
 
+**This bench's teeth do not follow that law, and the shares are measured.** The
+pure-phase form is rejected by `results/ruler_tooth_shares.csv` at a reduced
+chi-squared of [6.11](../../results/ruler_tooth_shares.csv "ref:ruler_tooth_shares:chi2_red_depth_fixed:"). A free modulation depth does not
+rescue it. A flat pedestal does, completely, at [0.62](../../results/ruler_tooth_shares.csv "ref:ruler_tooth_shares:chi2_red_depth_and_pedestal:"): the discrepancy is an
+additive floor and not a depth's shape.
+
+**The excess sits in the wings, and its origin is not settled here.** Both third
+teeth sit above the pure-phase prediction by a comparable amount, $+2.8$ at
+$k=-3$ and $+3.4$ at $k=+3$, against observed shares of
+[0.0107](../../results/ruler_tooth_shares.csv "ref:ruler_tooth_shares:tooth_share_observed:-3") and [0.0108](../../results/ruler_tooth_shares.csv "ref:ruler_tooth_shares:tooth_share_observed:3") that agree to 0.04 sigma.
+The first pair agrees to 0.01 sigma. **The second pair does not**: $k=\pm 2$
+differ by 1.4 sigma and 17 per cent, with pulls of opposite sign. That is not
+significant, but it is the one place a $k \to -k$ asymmetry appears, and it is
+not evidence for a pedestal.
+
+**So no mechanism is claimed here.** An additive floor fits the residual
+completely, and an amplitude admixture is not refuted by these shares. The
+absence of a significant asymmetry is weaker evidence than symmetry would be.
+The fitted `signal_over_pedestal` column cannot decide it either, being built
+from $J_k(2\beta)^2$, which is symmetric in $k$ by construction and not by
+measurement. What the record does say is that the admixture is localised to the
+carrier. The origin of the pedestal is an open question, classified as such.
+
+The measured shares are the archive's abscissa. The Bessel form below is the
+pure-modulation limit.
+
 That collapse assumes the retro beam's modulation is in step with the forward
 beam's. It is not: it lags by the round trip $2d/c$ to the mirror, so each
 term in the pair sum carries a phase $e^{-i(k-m)\Omega\cdot 2d/c}$, and the

@@ -51,7 +51,10 @@ exponent is double the intensity's.
 The same law governs a phase-modulated drive: [EOM sidebands](eom-sidebands.md)
 stamp a comb onto the light, and the tooth amplitude at order $k$ follows a
 [Bessel](bessel-functions.md) law, $J_k(2\beta)^2$ in the modulation depth
-$\beta$. That law is a weak-field statement in its own right: it assumes
+$\beta$. **On this bench that law is rejected**: the modulator
+carried a phase-and-amplitude admixture and the measured shares give a reduced
+chi-squared of [6.11](../../results/ruler_tooth_shares.csv "ref:ruler_tooth_shares:chi2_red_depth_fixed:") against the pure-phase form, which a flat pedestal
+repairs at [0.62](../../results/ruler_tooth_shares.csv "ref:ruler_tooth_shares:chi2_red_depth_and_pedestal:"). That law is a weak-field statement in its own right: it assumes
 every pair of sidebands drives the atom independently and additively.
 Saturation compresses it asymmetrically: the strongest teeth sit
 nearest the excited-state ceiling, the weakest barely move it, so a

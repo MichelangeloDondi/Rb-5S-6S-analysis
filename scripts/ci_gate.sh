@@ -76,7 +76,15 @@ GATE_TREE="$(git write-tree 2>/dev/null || echo unknown)"
 # own log line rather than silently accepted.
 if [ -n "${CI_GATE_SKIP_TARGETED:-}" ]; then
   echo "ci_gate: targeted floor SKIPPED, reason: $CI_GATE_SKIP_TARGETED"
-elif [ ! -f "$GATE_ROOT/.targeted_ok" ] || ! grep -q "^tree $GATE_TREE$" "$GATE_ROOT/.targeted_ok"; then
+# EITHER STAMP ADMITS, and this was the THIRD reader of the pair. The fast set
+# and the full floor both stamp, both name the index tree they graded, and this
+# gate grades that tree itself: what it needs is evidence that SOME guard ran on
+# this exact tree, not evidence that a particular one did. Teaching the landing
+# script and the ledger about the fast stamp and not this file left the gate
+# refusing to start beside a reading stage that had opened, which is the whole
+# parallel arrangement failing silently on a third copy of one rule.
+elif ! { { [ -f "$GATE_ROOT/.targeted_ok" ] && grep -q "^tree $GATE_TREE$" "$GATE_ROOT/.targeted_ok"; } \
+      || { [ -f "$GATE_ROOT/.prefloor_ok" ] && grep -q "^tree $GATE_TREE$" "$GATE_ROOT/.prefloor_ok"; }; }; then
   echo "ci_gate: REFUSED, no targeted pass stamped for this tree."
   echo "ci_gate: run scripts/targeted.sh first (seconds; on a fresh port or"
   echo "ci_gate: clean tree: git add -A, then targeted -- an unmapped change"
@@ -219,7 +227,17 @@ if [ -f "$GATE_SPLIT" ] && "$PY" -c "import xdist" 2>/dev/null; then
   # Reproduced by driving these bytes directly (2026-09-12).
   GATE_VERRC=${PIPESTATUS[0]}
   GATE_STAGE="pytest"
-  GATE_NW="$("$PY" "$GATE_SPLIT" --workers)"
+  # THE GATE IS PINNED TO THE EFFICIENCY CORES, so it asks for that cap: six
+  # rather than four, which leaves the four performance cores free for whatever
+  # runs beside it. A collapse to one worker is printed by the splitter on
+  # stderr and reaches this log, because a silent serial gate is the waste A186
+  # and the 2026-09-13 boundary both recorded without anything saying why.
+  # THIS GATE IS NOW REALLY RUNNING, so it records the commit it is grading.
+  # landing.sh reads this to keep one gate per commit; it used to write the
+  # marker itself at launch, which counted gates this script had declined.
+  printf '%s %s %s\n' "$(git -C "$GATE_ROOT" rev-parse HEAD)" "$GATE_TREE" \
+    "$(date -u +%FT%TZ)" >> "$GATE_ROOT/.gate_started_for"
+  GATE_NW="$("$PY" "$GATE_SPLIT" --workers --efficiency 2>>"$GATE_PYLOG")"
   GATE_SERIAL="$("$PY" "$GATE_SPLIT" --plan | tail -n1 | sed 's/^pytest -q --runslow //')"
   GATE_IGNORES="$("$PY" "$GATE_SPLIT" --plan | sed -n '2p' | sed 's/^.*--dist loadfile //')"
   # shellcheck disable=SC2086

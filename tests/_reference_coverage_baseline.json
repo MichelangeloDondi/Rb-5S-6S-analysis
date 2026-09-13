@@ -97,7 +97,7 @@
  "docs/wiki/digitisation-and-dynamic-range.md": 0,
  "docs/wiki/doppler-free-geometries.md": 1,
  "docs/wiki/doppler-free-two-photon.md": 0,
- "docs/wiki/eom-sidebands.md": 7,
+ "docs/wiki/eom-sidebands.md": 10,
  "docs/wiki/grids-and-discretisation.md": 3,
  "docs/wiki/guided-atoms-and-nanofibres.md": 6,
  "docs/wiki/heavy-tailed-models.md": 0,
@@ -113,7 +113,7 @@
  "docs/wiki/monte-carlo-methods.md": 0,
  "docs/wiki/multiphoton-transitions.md": 0,
  "docs/wiki/optimiser-convergence.md": 0,
- "docs/wiki/photon-counting.md": 0,
+ "docs/wiki/photon-counting.md": 1,
  "docs/wiki/pooling-across-groups.md": 6,
  "docs/wiki/preregistration.md": 0,
  "docs/wiki/profile-likelihood.md": 1,
@@ -140,7 +140,7 @@
  "docs/wiki/transit-time-broadening.md": 0,
  "docs/wiki/vapour-density-and-temperature.md": 4,
  "docs/wiki/voigt-profile.md": 5,
- "docs/wiki/weighted-least-squares.md": 2,
+ "docs/wiki/weighted-least-squares.md": 4,
  "results/README.md": 117,
  "scripts/README.md": 2
 }

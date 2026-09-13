@@ -212,7 +212,52 @@ if [ "$MAPPED_COUNT" -eq 0 ]; then
 fi
 UNIQ=$(printf '%s\n' "${MODS[@]}" | sort -u | tr '\n' ' ')
 echo "targeted: $UNIQ"
-"$PY" -m pytest -q -p no:randomly $UNIQ
+# THE FLOOR IS THE ONE ON THE CRITICAL PATH, AND IT WAS THE SERIAL ONE
+# (2026-09-13). The gate has run `-n` through `gate_split.py` since W1b and
+# sizes itself by free memory; this line ran one core while four sat idle, and
+# nothing downstream may start until this stamps the index tree.
+# The worker count and the serial set both come from `gate_split.py` rather
+# than being decided again here: a second copy of that logic is the defect the
+# rule file names for a routine that appears twice. `--dist loadfile` keeps a
+# module's tests on one worker, so module-scoped fixtures behave as they do
+# serially. Below two workers this is byte-identical to the old invocation.
+_SPLIT="$(dirname "$0")/../private/checks/gate_split.py"
+_NW=1
+if [ -f "$_SPLIT" ] && "$PY" -c "import xdist" 2>/dev/null; then
+  _NW="$("$PY" "$_SPLIT" --workers 2>/dev/null || echo 1)"
+fi
+if [ "${_NW:-1}" -gt 1 ]; then
+  _SER="$("$PY" -c "
+import sys, importlib.util as il
+s = il.spec_from_file_location('gs', sys.argv[1]); m = il.module_from_spec(s); s.loader.exec_module(m)
+print(' '.join(m.serial_modules()))" "$_SPLIT" 2>/dev/null)"
+  _P=""; _S=""
+  for _m in $UNIQ; do
+    case " $_SER " in *" $_m "*) _S="$_S $_m";; *) _P="$_P $_m";; esac
+  done
+  # THE POPULATION IS ASSERTED, NOT ASSUMED: a split that grades fewer tests
+  # than the serial run is worse than a slow floor (19.140a).
+  #
+  # THIS USED TO COMPARE A PARTITION OF $UNIQ AGAINST $UNIQ, which cannot fail
+  # by construction, and it compared MODULE NAMES where 19.140a is about the
+  # COLLECTED POPULATION (corrected 2026-09-13). It now collects
+  # over the two halves and over the whole and compares the node-id sets, so a
+  # module that lands in neither half, in both, or that collects differently
+  # when named beside others, is caught. What it still cannot see is a test that
+  # xdist fails to distribute at RUN time; the counts printed by each half are
+  # the check for that and they are read by eye.
+  _COLL() { "$PY" -m pytest -q -p no:randomly --collect-only "$@" 2>/dev/null | grep '::' | sort | md5; }
+  if [ "$(_COLL $_P $_S)" != "$(_COLL $UNIQ)" ]; then
+    echo "targeted: the parallel split does not cover the selected set; running serially"
+    "$PY" -m pytest -q -p no:randomly $UNIQ
+  else
+    echo "targeted: $_NW worker(s) on$_P"
+    [ -n "${_P// /}" ] && "$PY" -m pytest -q -p no:randomly -n "$_NW" --dist loadfile $_P
+    [ -n "${_S// /}" ] && { echo "targeted: serial set$_S"; "$PY" -m pytest -q -p no:randomly $_S; }
+  fi
+else
+  "$PY" -m pytest -q -p no:randomly $UNIQ
+fi
 # THE FLOOR RUNS THE GATE'S PROSE-AGAINST-CELLS CHECKER WHENEVER A RESULTS CSV
 # IS STAGED (2026-09-11). The floor and the gate were grading different
 # populations, which is the map hole this repairs.

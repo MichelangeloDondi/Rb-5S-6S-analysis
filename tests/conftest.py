@@ -99,6 +99,34 @@ def _restore_stark_companions():
         stark.COMPANIONS = before
 
 
+@pytest.fixture(autouse=True, scope="module")
+def _restore_stark_companions_per_module():
+    """The module-scoped half of the restoration above.
+
+    A MODULE-SCOPED LOADER POLLUTES BEFORE THE PER-TEST SNAPSHOT IS TAKEN.
+    `test_taxonomy_rung_placement.py` loads `run_observable_taxonomy.py` in a
+    module-scoped fixture, that producer imports
+    `run_three_channel_forecast.py` at module level, and that sets the global.
+    The function-scoped fixture then snapshots the polluted value as `before`
+    and faithfully puts it back after every test, so the layer stays on for
+    every module that follows on that worker. Under `--dist loadfile` the
+    module order per worker is set by timing, so `test_stark.py` passed one
+    gate and failed the next with no change to either file (2026-09-13, kappa
+    4.63 against an injected 15, the same symptom as 2026-09-09). This
+    snapshot is taken before any of the module's own module-scoped fixtures
+    run, which autouse guarantees, and the restore at module teardown is the
+    one the per-test fixture cannot make.
+
+    Planted in `tests/test_conftest_companions.py` across two modules, in
+    both directions."""
+    from rb5s6s import stark
+    before = stark.COMPANIONS
+    try:
+        yield
+    finally:
+        stark.COMPANIONS = before
+
+
 def load_script_module(name: str, path):
     """Load a script by path under `name`, returning THE ONE object
     registered under that name.

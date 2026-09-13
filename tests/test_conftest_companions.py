@@ -135,3 +135,60 @@ def test_no_test_imports_a_producer_at_module_scope():
 def test_the_module_scope_guard_fires_on_the_shape_it_names(src, fires):
     """Both directions, including the in-body form that must stay allowed."""
     assert bool(_module_scope_script_imports(src)) is fires, src
+
+
+def _run_two_modules(tmp_path, with_module_restore: bool):
+    """Two modules in a fresh pytest: the first switches the layer on inside
+    a MODULE-scoped fixture and the module collected after it asserts it is off. The temp conftest
+    borrows the real fixtures by executing tests/conftest.py from its own
+    path, so what is planted is the shipped code and not a copy of it."""
+    import subprocess
+    import sys
+    import textwrap
+    tmp_path.mkdir(parents=True, exist_ok=True)
+    real = ROOT / "tests" / "conftest.py"
+    names = ["_restore_stark_companions"] + (
+        ["_restore_stark_companions_per_module"] if with_module_restore else [])
+    (tmp_path / "conftest.py").write_text(textwrap.dedent(f"""
+        import importlib.util
+        _spec = importlib.util.spec_from_file_location("real_conftest", {str(real)!r})
+        _m = importlib.util.module_from_spec(_spec); _spec.loader.exec_module(_m)
+        """) + "".join(f"{n} = _m.{n}\n" for n in names))
+    (tmp_path / "test_a_pollutes.py").write_text(textwrap.dedent("""
+        import pytest
+        from rb5s6s import stark
+
+        @pytest.fixture(scope="module")
+        def loader():
+            stark.COMPANIONS = {"ratio": 1.2367, "scale": 1.0}
+            return True
+
+        def test_uses_the_loader(loader):
+            assert stark.COMPANIONS is not None
+        """))
+    (tmp_path / "test_b_reads.py").write_text(textwrap.dedent("""
+        from rb5s6s import stark
+
+        def test_the_layer_is_off_in_the_next_module():
+            assert stark.COMPANIONS is None
+        """))
+    r = subprocess.run([sys.executable, "-m", "pytest", "-q", "-p", "no:cacheprovider",
+                        "--rootdir", str(tmp_path), "test_a_pollutes.py", "test_b_reads.py"],
+                       cwd=tmp_path, capture_output=True, text=True)
+    return r.returncode, r.stdout + r.stderr
+
+
+def test_a_module_scoped_loader_is_undone_at_module_teardown(tmp_path):
+    """The 2026-09-13 gate: the taxonomy module's module-scoped loader left
+    the layer on for `test_stark.py` on the same worker. With the module-scoped
+    restore the next module sees it off."""
+    rc, out = _run_two_modules(tmp_path / "with", True)
+    assert rc == 0, out
+
+
+def test_the_per_test_restore_alone_cannot_undo_a_module_scoped_loader(tmp_path):
+    """The negative direction: the same two modules under only the per-test
+    fixture fail in the second module, which is the defect the module-scoped
+    fixture exists for. If this passes, the plant no longer discriminates."""
+    rc, out = _run_two_modules(tmp_path / "without", False)
+    assert rc != 0 and "test_the_layer_is_off_in_the_next_module" in out, out

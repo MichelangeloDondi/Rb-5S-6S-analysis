@@ -35,7 +35,10 @@ dominant term.*
 
 An analog voltage always carries a fixed electronic noise floor, from
 Johnson noise, amplifier noise, ADC quantization and dark current, present
-even with no light. A counting chain has no such floor: with the light
+even with no light. On this dataset that floor is measured and is not
+fixed: it rises with the drive (d ln a / d ln P = [0.85](../../results/detection_budget.csv "ref:detection_budget:floor_power_scaling:p_sweep"), 8.1 sigma from the 0
+a dark floor would give), so what the variance law returns here is
+light-proportional and bounds the dark term from above instead of measuring it. A counting chain has no such floor: with the light
 off it reports zero on average, and the remaining noise is purely the
 statistics of the count, growing with the count instead of a fixed
 offset.

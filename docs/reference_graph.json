@@ -694,6 +694,23 @@
   "source_file": "results/detection_budget.csv",
   "source_value": "-1.994"
  },
+ "detection_budget:floor_power_scaling:p_sweep": {
+  "producer": "run_detection_budget.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/photon-counting.md",
+    "line": 39,
+    "writes": "0.85"
+   },
+   {
+    "file": "docs/wiki/weighted-least-squares.md",
+    "line": 65,
+    "writes": "0.85"
+   }
+  ],
+  "source_file": "results/detection_budget.csv",
+  "source_value": "0.85"
+ },
  "detection_budget:gap_log10_predicted_over_measured:Steck_along12_D25.4mm": {
   "producer": "run_detection_budget.py",
   "quoting_sites": [
@@ -2128,7 +2145,7 @@
    },
    {
     "file": "rb5s6s/fullmodel.py",
-    "line": 534,
+    "line": 585,
     "writes": "1832"
    }
   ],
@@ -2150,7 +2167,7 @@
    },
    {
     "file": "rb5s6s/fullmodel.py",
-    "line": 533,
+    "line": 584,
     "writes": "23.23"
    }
   ],
@@ -2196,7 +2213,7 @@
    },
    {
     "file": "rb5s6s/fullmodel.py",
-    "line": 535,
+    "line": 586,
     "writes": "1.279"
    }
   ],
@@ -3581,6 +3598,16 @@
     "file": "docs/methods/05_the_frequency_ruler.md",
     "line": 202,
     "writes": "0.62"
+   },
+   {
+    "file": "docs/wiki/eom-sidebands.md",
+    "line": 48,
+    "writes": "0.62"
+   },
+   {
+    "file": "docs/wiki/saturation.md",
+    "line": 57,
+    "writes": "0.62"
    }
   ],
   "source_file": "results/ruler_tooth_shares.csv",
@@ -3609,6 +3636,16 @@
    {
     "file": "docs/plan/12_open-apparatus-items.md",
     "line": 1080,
+    "writes": "6.11"
+   },
+   {
+    "file": "docs/wiki/eom-sidebands.md",
+    "line": 47,
+    "writes": "6.11"
+   },
+   {
+    "file": "docs/wiki/saturation.md",
+    "line": 56,
     "writes": "6.11"
    }
   ],
@@ -3720,6 +3757,30 @@
   ],
   "source_file": "results/ruler_tooth_shares.csv",
   "source_value": "0.58"
+ },
+ "ruler_tooth_shares:tooth_share_observed:-3": {
+  "producer": "run_ruler_tooth_shares.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/eom-sidebands.md",
+    "line": 54,
+    "writes": "0.0107"
+   }
+  ],
+  "source_file": "results/ruler_tooth_shares.csv",
+  "source_value": "0.0107"
+ },
+ "ruler_tooth_shares:tooth_share_observed:3": {
+  "producer": "run_ruler_tooth_shares.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/eom-sidebands.md",
+    "line": 54,
+    "writes": "0.0108"
+   }
+  ],
+  "source_file": "results/ruler_tooth_shares.csv",
+  "source_value": "0.0108"
  },
  "ruler_tooth_shares:two_beta_with_pedestal:": {
   "producer": "run_ruler_tooth_shares.py",

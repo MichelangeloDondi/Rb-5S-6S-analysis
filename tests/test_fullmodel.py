@@ -546,7 +546,48 @@ def test_the_covariance_keys_and_columns_cannot_misalign():
         assert len(r["keys"]) == len(r["mean"]) == len(r["sd"]) == len(r["snr"])
         assert r["cov"].shape[0] == len(r["keys"])
         assert set(r["admitted"]) <= set(r["keys"])
-    # the zero-shift case really does drop keys, or this guard proves nothing
+    # the zero-shift case really does drop keys, or this guard proves nothing.
+    # THIS LICENCE USED TO REST ON EXACT FLOAT ZERO and so was a claim about the
+    # platform: the emitter admitted a ratio on `abs(k[lo]) > 0`, this machine
+    # returned exact zeros at two of three windows and the hosted runner
+    # returned none, so the runner dropped nothing and the licence fired on a
+    # correct tree (escape E71). The emitter now admits against a dimensionless
+    # floor, so every odd-denominator ratio drops here and everywhere.
     n_full = len(ultra_joint_covariance(grid, n_real=60, s0=0.364, **base)["keys"])
     n_zero = len(ultra_joint_covariance(grid, n_real=60, s0=0.0, **base)["keys"])
     assert n_zero < n_full, (n_zero, n_full)
+
+
+def test_a_ratio_is_admitted_against_a_floor_and_not_against_exact_zero():
+    """PLANT for escape E71, on the value that produced it.
+
+    A cumulant ratio is meaningful only where its denominator is resolved. The
+    retired test was `abs(k[lo]) > 0`, which admits a denominator of 1e-18 and
+    publishes a ratio of order 1e20 as a statistic. The floor is dimensionless
+    because a cumulant of order n carries the n-th power of the width: measured
+    on the archive's parameters, |k_n| / sigma**n is 4.0e-06 to 3.1e-04 where
+    the asymmetry is real and 0 to 2.8e-14 where it is not.
+    """
+    from rb5s6s.fullmodel import _ratio_admitted, RATIO_FLOOR_REL
+
+    k2 = 6.6019                     # the w = 6 window on the archive's parameters
+    sigma = k2 ** 0.5
+
+    # refused: exact zero, the runner's 1e-18, the largest numerical zero seen
+    for dead in (0.0, 1e-18, 2.4e-14):
+        assert not _ratio_admitted({2: k2, 3: dead}, 3, 6.0), dead
+    # admitted: the real values, including the smallest one measured
+    for live in (1.012e-4, 1.827e-5):
+        assert _ratio_admitted({2: k2, 3: live}, 3, 6.0), live
+    # a NaN denominator is refused rather than propagated
+    assert not _ratio_admitted({2: k2, 3: float("nan")}, 3, 6.0)
+    # the gap the floor sits in, stated as MEASURED and not as hoped: the
+    # smallest real value is about three decades above the floor and the
+    # largest numerical zero about six below it, so nine decades separate them
+    # and the floor sits nearer the live side. Asserting four decades above
+    # failed here, correctly, because 1.08e-06 over 1e-09 is 1.1e3.
+    assert abs(2.4e-14) / sigma ** 3 < RATIO_FLOOR_REL / 1e4     # >= 4 decades below
+    assert abs(1.827e-5) / sigma ** 3 > RATIO_FLOOR_REL * 1e3    # >= 3 decades above
+    # and without order 2 the window half-width is the scale, never exact zero
+    assert not _ratio_admitted({3: 1e-18}, 3, 6.0)
+    assert _ratio_admitted({3: 1.0}, 3, 6.0)

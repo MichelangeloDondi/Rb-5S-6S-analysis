@@ -98,3 +98,131 @@ def test_the_parallel_budget_refuses_to_oversubscribe_this_machine():
     assert (pb.workers(job_gib=8.0, beside_gate=False)
             <= pb.workers(job_gib=0.001, beside_gate=False))
     assert pb.workers(job_gib=1000.0, beside_gate=False) == 1
+
+# THE TWO 2026-09-13 INSTRUMENTS RUN THEIR OWN PLANTS HERE. Both shipped with a
+# self-test and neither was in the suite, which is the "asserted instrument"
+# row of the enforcement report: the plant ran only when a human ran it. A242
+# and A243 are what they guard, and both of those were found by hand precisely
+# because nothing ran the guard.
+UNBACKED = ROOT / "private" / "checks" / "check_unbacked.py"
+REMOTE_LAG = ROOT / "private" / "checks" / "check_remote_lag.py"
+
+
+@pytest.mark.skipif(not UNBACKED.is_file(),
+                    reason="private/ is absent, as it is in the mirror")
+def test_the_unbacked_sweep_plant_still_discriminates():
+    """`check_unbacked.py --self-test`: the classifier and both verified claims.
+
+    It covers every class on a representative path, and the two
+    TRACKED_ELSEWHERE claims through all their states, including the one that
+    matters: a STALE backup of the rule file must not read as protection. That
+    is A242, where the authority file for three repositories sat on one disk
+    for four days while every `git status` read clean.
+
+    FAILURE MODE IF THIS TEST IS DELETED: the sweep keeps reporting paths as
+    protected on a claim it no longer checks, and the next file to leave a
+    tracked path leaves quietly.
+    """
+    proc = subprocess.run([sys.executable, str(UNBACKED), "--self-test"],
+                          capture_output=True, text=True, timeout=120)
+    assert proc.returncode == 0, (
+        "the unbacked sweep's own plant failed:\n" + proc.stdout + proc.stderr)
+
+
+@pytest.mark.skipif(
+    not REMOTE_LAG.is_file()
+    or not (Path.home() / "Documents/GitHub/Rb-5S-6S-public/.git").exists(),
+    reason="private/ or the mirror checkout is absent; the plant reads both remotes")
+def test_the_remote_lag_plant_still_discriminates():
+    """`check_remote_lag.py --self-test`: four faults and four legal states.
+
+    The subtle case is DIVERGED on CONTENT rather than on names: two published
+    trees can carry identical path lists and different bytes, which a name-only
+    comparison cannot see, so the plant substitutes blob shas. The tolerances
+    matter as much: exactly one commit behind WITH its backup ref is the
+    POLICY, and a mirror level with its main is the normal mid-wave state, so
+    refusing either would be a mechanism refusing forever on a correct tree.
+
+    FAILURE MODE IF THIS TEST IS DELETED: the lag check stops discriminating
+    and the first thing it fails to catch is a remote whose main has reached
+    its tip, after which an amend rewrites pushed history.
+    """
+    proc = subprocess.run([sys.executable, str(REMOTE_LAG), "--self-test"],
+                          capture_output=True, text=True, timeout=180)
+    assert proc.returncode == 0, (
+        "the remote-lag plant failed:\n" + proc.stdout + proc.stderr)
+
+VERIFY_PRUNE = ROOT / "private" / "checks" / "verify_prune.py"
+
+
+@pytest.mark.skipif(not VERIFY_PRUNE.is_file(),
+                    reason="private/ is absent, as it is in the mirror")
+def test_the_prune_verifier_plant_still_discriminates():
+    """`verify_prune.py --self-test`: five ways a bulk edit drops content.
+
+    The repository's rule file requires a bulk edit to be checked against the
+    PRE-EDIT artefact rather than against its own report, and had no instrument
+    for it. The rule was earned when a migration moved 45 blocks, reported every
+    one landed truthfully, and had still deleted five numbered policy steps: the
+    capture ended at a blank line and a numbered list has none between its items.
+
+    The plant covers that case and four others, including the two this file's
+    own prune hit -- a debt moved out of the file whose instrument reads it by
+    name, and a debt hoisted without the prose that makes it readable.
+
+    FAILURE MODE IF THIS TEST IS DELETED: the next bulk edit is graded by its
+    own accounting, which cannot see what it captured too widely.
+    """
+    proc = subprocess.run([sys.executable, str(VERIFY_PRUNE), "--self-test"],
+                          capture_output=True, text=True, timeout=60)
+    assert proc.returncode == 0, (
+        "the prune verifier's own plant failed:\n" + proc.stdout + proc.stderr)
+
+
+def test_every_reader_of_the_floor_stamp_also_reads_the_fast_stamp():
+    """One rule, three files, and it was wired into two of them.
+
+    The fast stamp was taught to the landing script and to the ledger and not
+    to `ci_gate.sh`, so the gate refused to start beside a reading stage that
+    had already opened: the parallel arrangement failed silently because a
+    third copy of one rule was missed. That happened three times in one day
+    with three different rules, so the class gets a guard rather than a third
+    careful edit.
+
+    ANY file that consults `.targeted_ok` must also consult `.prefloor_ok`.
+    Both name the index tree they graded and both answer the same question,
+    which is whether SOME guard ran on this exact tree.
+
+    FAILURE MODE IF THIS TEST IS DELETED: a fourth reader is added, accepts
+    only the slow stamp, and the thing it guards quietly stops happening in
+    the arrangement that was supposed to make it cheap.
+    """
+    # NAMING THE STAMP IS NOT GATING ON IT. These write it, classify it or list
+    # it, and a file that does not decide anything from it cannot fail to decide
+    # the same from the other. Each entry carries why, so adding one is a
+    # deliberate act rather than a way to quiet the guard.
+    NOT_GATES = {
+        "scripts/targeted.sh": "writes the stamp; it is the producer",
+        "private/checks/enforcement_report.py": "names it in an instrument list",
+        "private/checks/plant_begin_record.py": "writes a stamp into its own fixture",
+        "private/checks/plant_targeted_moved_values.py": "writes and reads its own fixture",
+        "tests/test_gate_verdict_sentinel.py": "names it in docstrings describing the gate's own refusals",
+    }
+    roots = [ROOT / "scripts", ROOT / "private" / "checks", ROOT / "tests"]
+    offenders = []
+    for base in roots:
+        if not base.is_dir():
+            continue
+        for f in sorted(base.rglob("*")):
+            if f.suffix not in (".sh", ".py") or not f.is_file():
+                continue
+            if f.name in ("test_governance_instruments.py",):
+                continue
+            txt = f.read_text(errors="ignore")
+            rel = str(f.relative_to(ROOT))
+            if ".targeted_ok" in txt and ".prefloor_ok" not in txt and rel not in NOT_GATES:
+                offenders.append(rel)
+    assert not offenders, (
+        "these read the floor stamp and not the fast stamp, so a tree graded by "
+        "scripts/prefloor.sh reads as ungraded to them:\n  " + "\n  ".join(offenders)
+        + "\nTeach each one both, or the parallel arrangement fails silently here.")
