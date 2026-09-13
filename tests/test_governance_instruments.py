@@ -208,7 +208,11 @@ def test_every_reader_of_the_floor_stamp_also_reads_the_fast_stamp():
         "private/checks/plant_targeted_moved_values.py": "writes and reads its own fixture",
         "tests/test_gate_verdict_sentinel.py": "names it in docstrings describing the gate's own refusals",
     }
-    roots = [ROOT / "scripts", ROOT / "private" / "checks", ROOT / "tests"]
+    # THE POPULATION INCLUDES THE ONE OPERATIONAL SCRIPT THAT READS STAMPS (the
+    # protocols seat, 2026-09-13): landing.sh lives under private/cache and was
+    # invisible to a guard scanning three hand-picked directories.
+    roots = [ROOT / "scripts", ROOT / "private" / "checks", ROOT / "tests",
+             ROOT / "private" / "cache" / "ultra_joint_2026-09-12"]
     offenders = []
     for base in roots:
         if not base.is_dir():
@@ -226,3 +230,35 @@ def test_every_reader_of_the_floor_stamp_also_reads_the_fast_stamp():
         "these read the floor stamp and not the fast stamp, so a tree graded by "
         "scripts/prefloor.sh reads as ungraded to them:\n  " + "\n  ".join(offenders)
         + "\nTeach each one both, or the parallel arrangement fails silently here.")
+
+
+ORDERS = ROOT / "private" / "checks" / "check_orders.py"
+IDLE = ROOT / "private" / "checks" / "idle_audit.py"
+
+
+@pytest.mark.skipif(not ORDERS.is_file(),
+                    reason="private/ is absent, as it is in the mirror")
+def test_the_order_ledger_plant_still_discriminates():
+    """`check_orders.py --self-test`: a stale open order refuses, a deferred
+    one with a reason passes, a landed one passes, a fresh one passes.
+
+    FAILURE MODE IF THIS TEST IS DELETED: an order given in words can
+    sit open for any number of commits with nothing reading it, which is how
+    the ultra-joint fit of 2026-09-12 went unseen for five.
+    """
+    r = subprocess.run([sys.executable, str(ORDERS), "--self-test"], capture_output=True, text=True)
+    assert r.returncode == 0, r.stdout + r.stderr
+
+
+@pytest.mark.skipif(not IDLE.is_file(),
+                    reason="private/ is absent, as it is in the mirror")
+def test_the_idle_audit_plant_still_discriminates():
+    """`idle_audit.py --self-test`: the gate counter, the stamp reader and the
+    under-gate edit detector, each in both directions.
+
+    FAILURE MODE IF THIS TEST IS DELETED: the audit that `landing.sh commit`
+    reads could pass on readers that no longer read, and a commit would land
+    with a gate count, a stamp or an edit-under-gate it never measured.
+    """
+    r = subprocess.run([sys.executable, str(IDLE), "--self-test"], capture_output=True, text=True)
+    assert r.returncode == 0, r.stdout + r.stderr

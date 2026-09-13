@@ -155,7 +155,7 @@ def main() -> int:
             shape = ("rises monotonically to the scan's 30 K edge"
                      if rising else "is not monotone across the scan")
             out.append([f"ladder_fit_{name}", "dT_with_beta_pinned", f"{best_p[0]:.1f}", "", "K",
-                        f"the cold spot with beta pinned at theory and the floor free ({best_p[2]:.3f} MHz). chi2 {best_p[1]:.1f} for {len(g) - 1} dof, and the profile {shape} (chi2 {prof[0]:.1f} at dT = 0 against {prof[-1]:.1f} at 30 K), so the pinned model sits on the dT = 0 rail rather than being unconstrained in dT. Over the L design's {len(set(T.tolist()))} temperatures, {len(g)} rows", ""])
+                        f"the cold spot with beta pinned at theory and the floor free ({best_p[2]:.3f} MHz). chi2 {best_p[1]:.1f} for {len(g) - 2} dof (the floor free and dT scanned, and dT sits on its rail at 0, so the one-parameter test below is approximate at a boundary), and the profile {shape} (chi2 {prof[0]:.1f} at dT = 0 against {prof[-1]:.1f} at 30 K), so the pinned model sits on the dT = 0 rail rather than being unconstrained in dT. Over the L design's {len(set(T.tolist()))} temperatures, {len(g)} rows", ""])
             # ONE degree of freedom, not two, and a p-value PER ROW. The pinned
             # fit scans dT and frees the floor; the free fit adds beta and
             # nothing else, so the nesting differs by a single parameter. The

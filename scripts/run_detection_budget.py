@@ -232,14 +232,30 @@ def main() -> None:
     # with polyfit and published bare, against LANGUAGE 8a.1, which is what let
     # three surfaces read it as though it were exact. The bar matters for the
     # reading: 0 is a pure dark floor and 1 a pure light-proportional term, so
-    # an exponent strictly between them is a MIXTURE, and whether it is
-    # resolved away from 1 is what says the electronic part is bounded rather
-    # than excluded.
+    # an exponent between them, with its bar, says which limit is refused and
+    # which is bounded; on its own it names no mechanism, which the line axis
+    # below is for.
     _coef, _cov = np.polyfit(np.log(_P), np.log(_a), 1, cov=True)
     a_slope = float(_coef[0])
     a_slope_err = float(np.sqrt(_cov[0, 0]))
     a_lowest = float(np.median(_a[_P == _P.min()]))
-    add(["floor_power_scaling", "p_sweep", f"{a_slope:.2f}", f"{a_slope_err:.2f}", "d ln a / d ln P", f"the noise law's floor against laser power over the p_sweep's five rungs. A pure tube dark current or digitiser floor gives 0 and a purely light-proportional floor gives 1. Measured, this is {abs(a_slope) / a_slope_err:.1f} sigma from 0 and {abs(a_slope - 1.0) / a_slope_err:.1f} sigma from 1, so a dark floor is REFUSED and a purely light-proportional floor is not: the data do not require an electronic component at all, and bound it rather than resolving one. The light-proportional part is scattered drive or the laser's own intensity noise. Which of the two is not settled here. The floor may not be read as a dark current"])
+    add(["floor_power_scaling", "p_sweep", f"{a_slope:.2f}", f"{a_slope_err:.2f}", "d ln a / d ln P", f"the noise law's floor against laser power over the p_sweep's five rungs. A pure tube dark current or digitiser floor gives 0 and a purely light-proportional floor gives 1. Measured, this is {abs(a_slope) / a_slope_err:.1f} sigma from 0 and {abs(a_slope - 1.0) / a_slope_err:.1f} sigma from 1, so a dark floor is REFUSED and a purely light-proportional floor is not: the data do not require an electronic component at all, and bound it rather than resolving one. It is not a property of the drive alone either: the per-line rows beside this one spread further than this bar, so the pooled exponent names no mechanism. What the floor is remains unsettled. The floor may not be read as a dark current"])
+    # THE FLOOR TRACKS THE LINE, NOT ONLY THE DRIVE (found 2026-09-13 by
+    # regressing the row's own second axis): fitted line by line the exponent
+    # runs from about 0.6 to 1.0 against a pooled bar of 0.1, and at one power
+    # the floor differs across the four lines by up to a factor of three. A
+    # scattered-drive or laser-intensity term cannot tell the lines apart at one
+    # power, so the pooled exponent's reading as "light-proportional" was
+    # refuted by the table it was fitted on. These rows carry that axis so no
+    # reader has to regress it by hand.
+    _pk = np.array([r["peak"] for r in _rows])
+    for _p in sorted(set(_pk.tolist())):
+        _m = _pk == _p
+        _c, _v = np.polyfit(np.log(_P[_m]), np.log(_a[_m]), 1, cov=True)
+        add(["floor_power_scaling", f"p_sweep_{_p}", f"{float(_c[0]):.2f}", f"{float(np.sqrt(_v[0, 0])):.2f}", "d ln a / d ln P", f"the same exponent fitted on line {_p} alone over its five rungs. The four lines spread further than the pooled bar, so the floor is a property of the line as well as of the drive"])
+    for _pw in sorted(set(_P.tolist())):
+        _m = _P == _pw
+        add(["floor_peak_spread", f"p_sweep_{_pw:.0f}mW", f"{float(_a[_m].max() / _a[_m].min()):.2f}", "", "ratio", f"the noise law's floor at {_pw:.0f} mW, the largest of the four lines over the smallest. A floor set by the drive alone would give 1 at every rung"])
     # THE JOHNSON RATIO IS COMPUTED, NOT TYPED (corrected 2026-09-13). The
     # note carried "1/355" as a literal in its f-string, which no line of this
     # producer evaluates, so nothing could go stale when a or R or B moved. The

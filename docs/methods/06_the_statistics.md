@@ -158,7 +158,7 @@ which annihilate any locally-linear trend exactly (so a bright line's steep
 flank contributes nothing) while having unit response to white noise, so for
 white noise of standard deviation $\sigma$, $e_i$ also has standard deviation
 $\sigma$. Binning $e_i$ by local signal level and fitting the variance law
-$\sigma^2=a^2+bV$ then gives $a$ (a floor by construction of the model, though measured on this dataset it rises with power, so it is shot noise on an optical background rather than electronics or dark current, and the law unifies as $\sigma^2=b(V+V_{\rm bg})$) and $b$ (the
+$\sigma^2=a^2+bV$ then gives $a$ (a floor by construction of the model, though measured on this dataset it is neither a dark term nor a property of the drive alone: it rises with power with a logarithmic slope of [0.85](../../results/detection_budget.csv "ref:detection_budget:floor_power_scaling:p_sweep") and, at one power, differs across the four lines by up to a factor [2.97](../../results/detection_budget.csv "ref:detection_budget:floor_peak_spread:p_sweep_175mW"), so it tracks the line as well as the laser, and an electronic component is bounded rather than excluded) and $b$ (the
 shot-noise, "Fano", term). **The digitiser is not in this budget and the
 measurement is not quantisation-limited**: the committed files carry 11.86
 effective bits across their own swing, so the step at the median peak is about

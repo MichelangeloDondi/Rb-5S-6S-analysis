@@ -13,7 +13,7 @@
 # saved is four performance cores idle while a laptop re-graded a tree that had
 # not changed where the failure was.
 #
-# This is NOT a replacement for the floor and does not stamp anything. It is the
+# This is NOT a replacement for the floor and stamps .prefloor_ok with the index tree. It is the
 # cheap answer to "have I broken the prose or the docs", asked after every edit
 # batch, so the floor is spent once on the tree that is actually finished.
 set -u
@@ -33,9 +33,11 @@ MODULES=(
   tests/test_agonistic_ratchet.py
   tests/test_docs_math_render.py
   tests/test_docs_links.py
+  tests/test_docstring_counts.py
+  tests/test_tqm_report.py
 )
 
-echo "prefloor: ${#MODULES[@]} prose and doc guards on $NW worker(s); this is not a floor and stamps nothing"
+echo "prefloor: ${#MODULES[@]} prose and doc guards on $NW worker(s); this is not a floor and stamps .prefloor_ok with the index tree"
 $PY -m pytest -q -p no:randomly -n "$NW" --dist loadfile "${MODULES[@]}"
 rc=$?
 

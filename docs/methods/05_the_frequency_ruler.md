@@ -205,8 +205,10 @@ completely**:
 of the comb's power spread flat across the seven slots, the depth moving to
 [1.5298](../../results/ruler_tooth_shares.csv "ref:ruler_tooth_shares:two_beta_with_pedestal:")
 which sits inside the committed value's own scatter over the 41 combs. Its
-symmetry in $k$ rules out a chirp, which would be antisymmetric. The origin is
-not settled here.
+symmetry in $k$ is weaker evidence than it looks: the pedestal share is built
+from $J_k(2\beta)^2$, which is symmetric in $k$ by construction, so the absence
+of a significant asymmetry does not rule out a chirp, which would be
+antisymmetric. The origin is not settled here.
 
 **Two of the obvious origins are excluded by the comb's own fit, and saying so
 narrows it.** `ruler.fit_comb` carries `b0 + b1 t` under the teeth, so a flat

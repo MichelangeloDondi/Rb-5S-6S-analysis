@@ -694,9 +694,36 @@
   "source_file": "results/detection_budget.csv",
   "source_value": "-1.994"
  },
+ "detection_budget:floor_peak_spread:p_sweep_175mW": {
+  "producer": "run_detection_budget.py",
+  "quoting_sites": [
+   {
+    "file": "docs/methods/06_the_statistics.md",
+    "line": 161,
+    "writes": "2.97"
+   },
+   {
+    "file": "docs/wiki/photon-counting.md",
+    "line": 42,
+    "writes": "2.97"
+   },
+   {
+    "file": "docs/wiki/weighted-least-squares.md",
+    "line": 71,
+    "writes": "2.97"
+   }
+  ],
+  "source_file": "results/detection_budget.csv",
+  "source_value": "2.97"
+ },
  "detection_budget:floor_power_scaling:p_sweep": {
   "producer": "run_detection_budget.py",
   "quoting_sites": [
+   {
+    "file": "docs/methods/06_the_statistics.md",
+    "line": 161,
+    "writes": "0.85"
+   },
    {
     "file": "docs/wiki/photon-counting.md",
     "line": 39,
@@ -710,6 +737,30 @@
   ],
   "source_file": "results/detection_budget.csv",
   "source_value": "0.85"
+ },
+ "detection_budget:floor_power_scaling:p_sweep_4121": {
+  "producer": "run_detection_budget.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/weighted-least-squares.md",
+    "line": 69,
+    "writes": "0.60"
+   }
+  ],
+  "source_file": "results/detection_budget.csv",
+  "source_value": "0.60"
+ },
+ "detection_budget:floor_power_scaling:p_sweep_4192": {
+  "producer": "run_detection_budget.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/weighted-least-squares.md",
+    "line": 70,
+    "writes": "1.04"
+   }
+  ],
+  "source_file": "results/detection_budget.csv",
+  "source_value": "1.04"
  },
  "detection_budget:gap_log10_predicted_over_measured:Steck_along12_D25.4mm": {
   "producer": "run_detection_budget.py",
@@ -2145,7 +2196,7 @@
    },
    {
     "file": "rb5s6s/fullmodel.py",
-    "line": 585,
+    "line": 596,
     "writes": "1832"
    }
   ],
@@ -2167,7 +2218,7 @@
    },
    {
     "file": "rb5s6s/fullmodel.py",
-    "line": 584,
+    "line": 595,
     "writes": "23.23"
    }
   ],
@@ -2213,7 +2264,7 @@
    },
    {
     "file": "rb5s6s/fullmodel.py",
-    "line": 586,
+    "line": 597,
     "writes": "1.279"
    }
   ],
@@ -3710,7 +3761,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/05_the_frequency_ruler.md",
-    "line": 244,
+    "line": 246,
     "writes": "0.022"
    }
   ],
@@ -3722,7 +3773,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/05_the_frequency_ruler.md",
-    "line": 240,
+    "line": 242,
     "writes": "0.942"
    }
   ],
@@ -3734,7 +3785,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/05_the_frequency_ruler.md",
-    "line": 236,
+    "line": 238,
     "writes": "0.1874"
    }
   ],
@@ -3746,12 +3797,12 @@
   "quoting_sites": [
    {
     "file": "docs/methods/05_the_frequency_ruler.md",
-    "line": 252,
+    "line": 254,
     "writes": "0.58"
    },
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 1091,
+    "line": 1092,
     "writes": "0.58"
    }
   ],
@@ -3799,7 +3850,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/05_the_frequency_ruler.md",
-    "line": 254,
+    "line": 256,
     "writes": "0,1,2"
    }
   ],
@@ -3811,7 +3862,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/05_the_frequency_ruler.md",
-    "line": 258,
+    "line": 260,
     "writes": "2.35"
    }
   ],
@@ -3823,12 +3874,12 @@
   "quoting_sites": [
    {
     "file": "docs/methods/05_the_frequency_ruler.md",
-    "line": 256,
+    "line": 258,
     "writes": "5.51"
    },
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 1094,
+    "line": 1095,
     "writes": "5.51"
    }
   ],
@@ -4376,7 +4427,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/05_the_frequency_ruler.md",
-    "line": 327,
+    "line": 329,
     "writes": "10.0006"
    }
   ],
@@ -4483,7 +4534,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/05_the_frequency_ruler.md",
-    "line": 304,
+    "line": 306,
     "writes": "0.00010822"
    },
    {
@@ -4510,12 +4561,12 @@
    },
    {
     "file": "docs/methods/05_the_frequency_ruler.md",
-    "line": 304,
+    "line": 306,
     "writes": "0.00203"
    },
    {
     "file": "docs/methods/05_the_frequency_ruler.md",
-    "line": 312,
+    "line": 314,
     "writes": "0.00203"
    },
    {
@@ -4547,7 +4598,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/05_the_frequency_ruler.md",
-    "line": 321,
+    "line": 323,
     "writes": "0.00019"
    }
   ],
@@ -4559,7 +4610,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/05_the_frequency_ruler.md",
-    "line": 313,
+    "line": 315,
     "writes": "0.00064"
    },
    {
@@ -4598,7 +4649,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/05_the_frequency_ruler.md",
-    "line": 335,
+    "line": 337,
     "writes": "1.48"
    },
    {
@@ -4625,7 +4676,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/05_the_frequency_ruler.md",
-    "line": 336,
+    "line": 338,
     "writes": "0.50"
    },
    {
@@ -4642,7 +4693,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/05_the_frequency_ruler.md",
-    "line": 305,
+    "line": 307,
     "writes": "0.00071772"
    },
    {
@@ -4664,12 +4715,12 @@
   "quoting_sites": [
    {
     "file": "docs/methods/05_the_frequency_ruler.md",
-    "line": 305,
+    "line": 307,
     "writes": "0.0136"
    },
    {
     "file": "docs/methods/05_the_frequency_ruler.md",
-    "line": 314,
+    "line": 316,
     "writes": "0.0136"
    },
    {
@@ -4701,7 +4752,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/05_the_frequency_ruler.md",
-    "line": 323,
+    "line": 325,
     "writes": "0.0021"
    },
    {
@@ -4718,7 +4769,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/05_the_frequency_ruler.md",
-    "line": 315,
+    "line": 317,
     "writes": "0.0022"
    },
    {

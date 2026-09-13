@@ -237,7 +237,41 @@ if [ -f "$GATE_SPLIT" ] && "$PY" -c "import xdist" 2>/dev/null; then
   # marker itself at launch, which counted gates this script had declined.
   printf '%s %s %s\n' "$(git -C "$GATE_ROOT" rev-parse HEAD)" "$GATE_TREE" \
     "$(date -u +%FT%TZ)" >> "$GATE_ROOT/.gate_started_for"
-  GATE_NW="$("$PY" "$GATE_SPLIT" --workers --efficiency 2>>"$GATE_PYLOG")"
+  # ALL TEN CORES WHEN NOTHING RUNS BESIDE THE GATE (owner, 2026-09-13):
+  # landing.sh sets CI_GATE_ALL_CORES when the p-core queue is empty and drops
+  # the taskpolicy pin, so the cap follows the cores the job really has.
+  if [ -n "${CI_GATE_ALL_CORES:-}" ]; then
+    GATE_NW="$("$PY" "$GATE_SPLIT" --workers --all 2>>"$GATE_PYLOG")"
+  else
+    GATE_NW="$("$PY" "$GATE_SPLIT" --workers --efficiency 2>>"$GATE_PYLOG")"
+  fi
+  # A WORKER'S SIZE IS MEASURED, NOT ASSUMED (2026-09-13: the constants gave two
+  # workers on a rebooted 16 GiB machine while a sampled worker held 0.25 to
+  # 0.60 GiB). Every thirty seconds the descendants of this shell are sampled
+  # into private/cache/gate_rss.tsv, which gate_split.measured_worker_gib reads
+  # for the next gate. Absent private/, the sampler writes nowhere.
+  GATE_RSS="$GATE_ROOT/private/cache/gate_rss.tsv"
+  if [ -d "$GATE_ROOT/private/cache" ]; then
+    "$PY" - "$$" "$GATE_TREE" "$GATE_RSS" <<'PYSAMPLE' &
+import subprocess, sys, time
+root, tree, out = int(sys.argv[1]), sys.argv[2], sys.argv[3]
+while True:
+    ps = subprocess.run(["ps", "-axo", "pid=,ppid=,rss="], capture_output=True, text=True).stdout.split("\n")
+    rows = [l.split() for l in ps if l.strip()]
+    kids = {root}; grew = True
+    while grew:
+        grew = False
+        for pid, ppid, _ in rows:
+            if int(ppid) in kids and int(pid) not in kids:
+                kids.add(int(pid)); grew = True
+    with open(out, "a") as f:
+        for pid, ppid, rss in rows:
+            if int(pid) in kids and int(pid) != root and int(rss) > 102400:
+                f.write(f"{tree}\t{pid}\t{rss}\n")
+    time.sleep(30)
+PYSAMPLE
+    GATE_SAMPLER=$!
+  fi
   GATE_SERIAL="$("$PY" "$GATE_SPLIT" --plan | tail -n1 | sed 's/^pytest -q --runslow //')"
   GATE_IGNORES="$("$PY" "$GATE_SPLIT" --plan | sed -n '2p' | sed 's/^.*--dist loadfile //')"
   # shellcheck disable=SC2086
@@ -246,11 +280,17 @@ if [ -f "$GATE_SPLIT" ] && "$PY" -c "import xdist" 2>/dev/null; then
   # shellcheck disable=SC2086
   "$PY" -m pytest -q --runslow $GATE_SERIAL 2>&1 | tee -a "$GATE_PYLOG"
   GATE_SERRC=${PIPESTATUS[0]}
+  [ -n "${GATE_SAMPLER:-}" ] && kill "$GATE_SAMPLER" 2>/dev/null
   PYRC=0
   for _rc in "$GATE_VERRC" "$GATE_PARRC" "$GATE_SERRC"; do
     [ "${_rc:-1}" -eq 0 ] || PYRC=1
   done
 else
+  # THE SERIAL BRANCH RECORDS ITS START TOO (2026-09-13): only
+  # the split branch wrote the marker, so a serial gate left "one gate per
+  # commit" with nothing to read.
+  printf '%s %s %s\n' "$(git -C "$GATE_ROOT" rev-parse HEAD)" "$GATE_TREE" \
+    "$(date -u +%FT%TZ)" >> "$GATE_ROOT/.gate_started_for"
   "$PY" -m pytest -q --runslow 2>&1 | tee "$GATE_PYLOG"
   PYRC=${PIPESTATUS[0]:-$?}
 fi

@@ -512,7 +512,18 @@ def _ratio_scale(k: dict, half_width: float) -> float:
 
 
 def _ratio_admitted(k: dict, lo: int, half_width: float) -> bool:
-    """Is `k[lo]` resolved above the numerical floor of its own construction?"""
+    """Is `k[lo]` resolved above the numerical floor of its own construction?
+
+    A NUMERICAL-ZERO DETECTOR FOR THE ODD ORDERS, and nothing more. The odd
+    cumulants vanish identically at zero shift and this floor separates that
+    zero from a live value by five decades (E71). The EVEN orders have
+    PHYSICAL zeros the floor admits by design: at the archive's parameters
+    k4 changes sign between windows 6 and 12, so k6/k4 passes through a pole
+    near w = 8, and inside a shipped window the pole sits on the parameter
+    axis instead (k6 at window 6 crosses zero near gamma_coll = 0.28 MHz). A
+    caller forming an even ratio across a scan owes a distance-from-zero test
+    on the denominator's own forward prediction; this function cannot make it.
+    """
     v = k.get(lo)
     if v is None or not np.isfinite(v):
         return False

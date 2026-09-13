@@ -1083,7 +1083,8 @@ $J_k(2\beta)^2$ at a reduced chi-squared of
 of the comb's power fixes it completely
 ([the ruler chapter](../methods/05_the_frequency_ruler.md)). Letting the
 modulation depth float does not. What that floor is was not determined: it is
-symmetric in tooth order, which rules out a chirp, and scattered light, a
+symmetric in tooth order in a fit whose pedestal term is symmetric by
+construction, so a chirp is not ruled out by that alone, and scattered light, a
 detector offset and an unresolved broad background all reproduce it equally
 well from the shares alone.
 
