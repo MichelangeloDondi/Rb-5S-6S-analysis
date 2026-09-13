@@ -43,30 +43,30 @@ contrast_isotope,pooled_temperature_arm,-0.034,0.026,MHz,"inverse-variance pool 
 contrast_F87,pooled_temperature_arm,0.084,0.043,MHz,"inverse-variance pool over the temperature arm of the L (4 conditions, the 130 C corner at the maximum power in both arms). chi2 8.9 for 3 dof",DIAGNOSTIC
 contrast_F85,pooled_temperature_arm,0.007,0.028,MHz,"inverse-variance pool over the temperature arm of the L (4 conditions, the 130 C corner at the maximum power in both arms). chi2 3.4 for 3 dof",DIAGNOSTIC
 contrast_interaction,pooled_temperature_arm,0.071,0.052,MHz,"inverse-variance pool over the temperature arm of the L (4 conditions, the 130 C corner at the maximum power in both arms). chi2 8.2 for 3 dof",DIAGNOSTIC
-cycles_per_crossing_axis,P25_w64,0.0010,,,"excitation cycles on a central chord at 130 C, the record's on-axis rate times sqrt(pi) w0 / 2 v. P^2 / w0^3",DIAGNOSTIC
+cycles_per_crossing_axis,P25_w64,0.0010,,,"excitation cycles on a central chord at 130 C: the saturated rate integrated along the chord, the local drive scaled as P exp(-2 v^2 t^2 / w0^2). P^2 / w0^3 in the weak-drive limit only, the core saturating at a tight waist",DIAGNOSTIC
 amplitude_face_predicted,87Rb_P25_w64,0.00011,,ln,"predicted ln(4207/4121) minus ln(1.667): the higher-branching line (4121, BRANCHING_F 0.372) is depleted more, so the ratio sits ABOVE the thermal law by this much",DIAGNOSTIC
 amplitude_face_predicted,85Rb_P25_w64,0.00007,,ln,"predicted ln(4192/4154) minus ln(1.400): the higher-branching line (4154, BRANCHING_F 0.348) is depleted more, so the ratio sits ABOVE the thermal law by this much",DIAGNOSTIC
-cycles_per_crossing_axis,P75_w64,0.0093,,,"excitation cycles on a central chord at 130 C, the record's on-axis rate times sqrt(pi) w0 / 2 v. P^2 / w0^3",DIAGNOSTIC
+cycles_per_crossing_axis,P75_w64,0.0093,,,"excitation cycles on a central chord at 130 C: the saturated rate integrated along the chord, the local drive scaled as P exp(-2 v^2 t^2 / w0^2). P^2 / w0^3 in the weak-drive limit only, the core saturating at a tight waist",DIAGNOSTIC
 amplitude_face_predicted,87Rb_P75_w64,0.00099,,ln,"predicted ln(4207/4121) minus ln(1.667): the higher-branching line (4121, BRANCHING_F 0.372) is depleted more, so the ratio sits ABOVE the thermal law by this much",DIAGNOSTIC
 amplitude_face_predicted,85Rb_P75_w64,0.00066,,ln,"predicted ln(4192/4154) minus ln(1.400): the higher-branching line (4154, BRANCHING_F 0.348) is depleted more, so the ratio sits ABOVE the thermal law by this much",DIAGNOSTIC
-cycles_per_crossing_axis,P125_w64,0.0256,,,"excitation cycles on a central chord at 130 C, the record's on-axis rate times sqrt(pi) w0 / 2 v. P^2 / w0^3",DIAGNOSTIC
-amplitude_face_predicted,87Rb_P125_w64,0.00272,,ln,"predicted ln(4207/4121) minus ln(1.667): the higher-branching line (4121, BRANCHING_F 0.372) is depleted more, so the ratio sits ABOVE the thermal law by this much",DIAGNOSTIC
-amplitude_face_predicted,85Rb_P125_w64,0.00181,,ln,"predicted ln(4192/4154) minus ln(1.400): the higher-branching line (4154, BRANCHING_F 0.348) is depleted more, so the ratio sits ABOVE the thermal law by this much",DIAGNOSTIC
-cycles_per_crossing_axis,P175_w64,0.0495,,,"excitation cycles on a central chord at 130 C, the record's on-axis rate times sqrt(pi) w0 / 2 v. P^2 / w0^3",DIAGNOSTIC
-amplitude_face_predicted,87Rb_P175_w64,0.00525,,ln,"predicted ln(4207/4121) minus ln(1.667): the higher-branching line (4121, BRANCHING_F 0.372) is depleted more, so the ratio sits ABOVE the thermal law by this much",DIAGNOSTIC
-amplitude_face_predicted,85Rb_P175_w64,0.00350,,ln,"predicted ln(4192/4154) minus ln(1.400): the higher-branching line (4154, BRANCHING_F 0.348) is depleted more, so the ratio sits ABOVE the thermal law by this much",DIAGNOSTIC
-cycles_per_crossing_axis,P225_w64,0.0805,,,"excitation cycles on a central chord at 130 C, the record's on-axis rate times sqrt(pi) w0 / 2 v. P^2 / w0^3",DIAGNOSTIC
-amplitude_face_predicted,87Rb_P225_w64,0.00853,,ln,"predicted ln(4207/4121) minus ln(1.667): the higher-branching line (4121, BRANCHING_F 0.372) is depleted more, so the ratio sits ABOVE the thermal law by this much",DIAGNOSTIC
-amplitude_face_predicted,85Rb_P225_w64,0.00567,,ln,"predicted ln(4192/4154) minus ln(1.400): the higher-branching line (4154, BRANCHING_F 0.348) is depleted more, so the ratio sits ABOVE the thermal law by this much",DIAGNOSTIC
-cycles_per_crossing_axis,P225_w40,0.268,,,"the same at the campaign's waists, 225 mW",DIAGNOSTIC
-amplitude_face_predicted,87Rb_P225_w40,0.0281,,ln,the campaign's reach on this face at that waist,DIAGNOSTIC
-amplitude_face_predicted,85Rb_P225_w40,0.0187,,ln,the campaign's reach on this face at that waist,DIAGNOSTIC
-cycles_per_crossing_axis,P225_w25,0.495,,,"the same at the campaign's waists, 225 mW",DIAGNOSTIC
-amplitude_face_predicted,87Rb_P225_w25,0.0512,,ln,the campaign's reach on this face at that waist,DIAGNOSTIC
-amplitude_face_predicted,85Rb_P225_w25,0.0340,,ln,the campaign's reach on this face at that waist,DIAGNOSTIC
-cycles_per_crossing_axis,P225_w16,0.448,,,"the same at the campaign's waists, 225 mW",DIAGNOSTIC
-amplitude_face_predicted,87Rb_P225_w16,0.0464,,ln,the campaign's reach on this face at that waist,DIAGNOSTIC
-amplitude_face_predicted,85Rb_P225_w16,0.0309,,ln,the campaign's reach on this face at that waist,DIAGNOSTIC
+cycles_per_crossing_axis,P125_w64,0.0257,,,"excitation cycles on a central chord at 130 C: the saturated rate integrated along the chord, the local drive scaled as P exp(-2 v^2 t^2 / w0^2). P^2 / w0^3 in the weak-drive limit only, the core saturating at a tight waist",DIAGNOSTIC
+amplitude_face_predicted,87Rb_P125_w64,0.00273,,ln,"predicted ln(4207/4121) minus ln(1.667): the higher-branching line (4121, BRANCHING_F 0.372) is depleted more, so the ratio sits ABOVE the thermal law by this much",DIAGNOSTIC
+amplitude_face_predicted,85Rb_P125_w64,0.00182,,ln,"predicted ln(4192/4154) minus ln(1.400): the higher-branching line (4154, BRANCHING_F 0.348) is depleted more, so the ratio sits ABOVE the thermal law by this much",DIAGNOSTIC
+cycles_per_crossing_axis,P175_w64,0.0498,,,"excitation cycles on a central chord at 130 C: the saturated rate integrated along the chord, the local drive scaled as P exp(-2 v^2 t^2 / w0^2). P^2 / w0^3 in the weak-drive limit only, the core saturating at a tight waist",DIAGNOSTIC
+amplitude_face_predicted,87Rb_P175_w64,0.00529,,ln,"predicted ln(4207/4121) minus ln(1.667): the higher-branching line (4121, BRANCHING_F 0.372) is depleted more, so the ratio sits ABOVE the thermal law by this much",DIAGNOSTIC
+amplitude_face_predicted,85Rb_P175_w64,0.00352,,ln,"predicted ln(4192/4154) minus ln(1.400): the higher-branching line (4154, BRANCHING_F 0.348) is depleted more, so the ratio sits ABOVE the thermal law by this much",DIAGNOSTIC
+cycles_per_crossing_axis,P225_w64,0.0814,,,"excitation cycles on a central chord at 130 C: the saturated rate integrated along the chord, the local drive scaled as P exp(-2 v^2 t^2 / w0^2). P^2 / w0^3 in the weak-drive limit only, the core saturating at a tight waist",DIAGNOSTIC
+amplitude_face_predicted,87Rb_P225_w64,0.00863,,ln,"predicted ln(4207/4121) minus ln(1.667): the higher-branching line (4121, BRANCHING_F 0.372) is depleted more, so the ratio sits ABOVE the thermal law by this much",DIAGNOSTIC
+amplitude_face_predicted,85Rb_P225_w64,0.00574,,ln,"predicted ln(4192/4154) minus ln(1.400): the higher-branching line (4154, BRANCHING_F 0.348) is depleted more, so the ratio sits ABOVE the thermal law by this much",DIAGNOSTIC
+cycles_per_crossing_axis,P225_w40,0.288,,,"the same at the campaign's waists, 225 mW",DIAGNOSTIC
+amplitude_face_predicted,87Rb_P225_w40,0.0301,,ln,the campaign's reach on this face at that waist,DIAGNOSTIC
+amplitude_face_predicted,85Rb_P225_w40,0.0201,,ln,the campaign's reach on this face at that waist,DIAGNOSTIC
+cycles_per_crossing_axis,P225_w25,0.654,,,"the same at the campaign's waists, 225 mW",DIAGNOSTIC
+amplitude_face_predicted,87Rb_P225_w25,0.0669,,ln,the campaign's reach on this face at that waist,DIAGNOSTIC
+amplitude_face_predicted,85Rb_P225_w25,0.0445,,ln,the campaign's reach on this face at that waist,DIAGNOSTIC
+cycles_per_crossing_axis,P225_w16,0.795,,,"the same at the campaign's waists, 225 mW",DIAGNOSTIC
+amplitude_face_predicted,87Rb_P225_w16,0.0806,,ln,the campaign's reach on this face at that waist,DIAGNOSTIC
+amplitude_face_predicted,85Rb_P225_w16,0.0536,,ln,the campaign's reach on this face at that waist,DIAGNOSTIC
 amplitude_face_measured,87Rb_P25,-0.248,0.050,ln,"ln of the median-free mean of the canonical RF-off peak heights, 4207 over 4121, minus the thermal law, at 130 C. the statistical error only, and amplitude_ratios.csv's between-block systematic on this ratio is 0.44 in the log, which is the bar on the archive",DIAGNOSTIC
 amplitude_face_measured,85Rb_P25,0.145,0.030,ln,"ln of the median-free mean of the canonical RF-off peak heights, 4192 over 4154, minus the thermal law, at 130 C. the statistical error only, and amplitude_ratios.csv's between-block systematic on this ratio is 0.17 in the log, which is the bar on the archive",DIAGNOSTIC
 amplitude_face_measured,87Rb_P75,-0.195,0.021,ln,"ln of the median-free mean of the canonical RF-off peak heights, 4207 over 4121, minus the thermal law, at 130 C. the statistical error only, and amplitude_ratios.csv's between-block systematic on this ratio is 0.44 in the log, which is the bar on the archive",DIAGNOSTIC

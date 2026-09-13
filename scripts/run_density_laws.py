@@ -133,15 +133,30 @@ def main() -> int:
                 chi2f = float(np.sum((A @ coef - g / e) ** 2))
                 out.append([f"ladder_fit_{name}", f"beta_at_dT{dT_fix:g}", f"{coef[0]:.4f}", "", "MHz per 1e12 cm^-3",
                             f"beta with the cold spot fixed at {dT_fix:g} K and the floor free ({coef[1]:.3f} MHz). chi2 {chi2f:.2f} for {len(g) - 2} dof. theory {BETA_THEORY} per 1e12, so this reads {coef[0] / BETA_THEORY:.0f} times theory, the Lorentzian-sum degeneracy the record names (lever_crosscheck.csv)", ""])
-            best_p = None
+            # THE PROFILE IS READ, NOT ASSUMED (corrected 2026-09-13). The
+            # first version of this row called dT "unconstrained" and credited
+            # "three temperatures". Both are wrong: the ladder is the L design's
+            # FOUR temperatures, and the pinned chi2 profile RISES monotonically
+            # from dT = 0 to the scan's edge, so the minimum sits on the dT = 0
+            # rail. A flat profile is unconstrained; a monotone one is railed,
+            # and the two readings differ in what they license.
+            best_p, prof = None, []
             for dT in np.linspace(0.0, 30.0, 301):
                 N = f(T - dT) / 1e12
                 floor = float(np.sum((g - BETA_THEORY * N) / e ** 2) / np.sum(1 / e ** 2))
                 chi2p = float(np.sum(((BETA_THEORY * N + floor - g) / e) ** 2))
+                prof.append(chi2p)
                 if best_p is None or chi2p < best_p[1]:
                     best_p = (dT, chi2p, floor)
+            rising = all(b >= a for a, b in zip(prof, prof[1:]))
+            _, _, _, chi2_free, n_free = _fit_ladder(f, rows)
+            dchi2 = best_p[1] - chi2_free
+            shape = ("rises monotonically to the scan's 30 K edge"
+                     if rising else "is not monotone across the scan")
             out.append([f"ladder_fit_{name}", "dT_with_beta_pinned", f"{best_p[0]:.1f}", "", "K",
-                        f"the cold spot with beta pinned at theory and the floor free ({best_p[2]:.3f} MHz). chi2 {best_p[1]:.1f} for {len(g) - 1} dof: with beta at theory the ladder's slope is almost entirely floor, so dT is unconstrained and the theory value is neither refused nor confirmed by three temperatures", ""])
+                        f"the cold spot with beta pinned at theory and the floor free ({best_p[2]:.3f} MHz). chi2 {best_p[1]:.1f} for {len(g) - 1} dof, and the profile {shape} (chi2 {prof[0]:.1f} at dT = 0 against {prof[-1]:.1f} at 30 K), so the pinned model sits on the dT = 0 rail rather than being unconstrained in dT. Over the L design's {len(set(T.tolist()))} temperatures, {len(g)} rows", ""])
+            out.append([f"ladder_fit_{name}", "pinned_vs_free_dchi2", f"{dchi2:.2f}", "", "",
+                        f"the pinned-beta fit's chi2 minus the free fit's ({best_p[1]:.2f} against {chi2_free:.2f}), for the two parameters the free fit adds. The theory value is disfavoured by this much rather than neither refused nor confirmed", ""])
         for name, f in LAWS.items():
             beta, dT, floor, chi2, n = _fit_ladder(f, rows)
             out.append([f"ladder_fit_{name}", "beta", f"{beta:.4f}", "", "MHz per 1e12 cm^-3", f"gamma_coll(T) of the t_sweep ({n} rows) fitted as beta N(T - dT) + floor with dT on [0, 30] K. chi2 {chi2:.1f} for {n - 3} dof", ""])

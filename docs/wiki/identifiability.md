@@ -269,7 +269,7 @@ derivation of [methods chapter 3](../methods/03_the_ac_stark_ramp.md):
 | light shift $S_0$ | $w_0^{-2}$ | $\Delta\alpha$, and a free centre per trace |
 | two-photon Rabi frequency | $w_0^{-2}$ | the drive calibration |
 | axial collection ratio | $w_0^{-2}$ | the optics |
-| excitation cycles per crossing | $w_0^{-3}$ | the transit time |
+| excitation cycles per crossing | $w_0^{-3}$ in the weak-drive limit only | the transit time, and the saturation of the core at a tight waist |
 | rate per atom | $w_0^{-4}$ | density and detection efficiency |
 | saturation parameter | $w_0^{-4}$ at fixed power | hyperfine pumping, which the temperature ladder separates |
 
@@ -731,10 +731,11 @@ and each isotope's within-isotope ratio sits above the thermal law
 abundance × (2F + 1)/G by the log of the two survival factors, the
 higher-branching line the more depleted. `results/four_peak_contrasts.csv`
 carries both faces. On the archive the cycles per crossing on a central chord
-are [0.0805](../../results/four_peak_contrasts.csv "ref:four_peak_contrasts:cycles_per_crossing_axis:P225_w64")
-at 225 mW and 64 µm (the record's on-axis rate integrated along the chord,
-$P^2/w_0^3$), which predicts a deviation of
-[0.00853](../../results/four_peak_contrasts.csv "ref:four_peak_contrasts:amplitude_face_predicted:87Rb_P225_w64")
+are [0.0814](../../results/four_peak_contrasts.csv "ref:four_peak_contrasts:cycles_per_crossing_axis:P225_w64")
+at 225 mW and 64 µm (the saturated rate integrated along the chord, which is
+$P^2/w_0^3$ only while the core is unsaturated: at 16 µm the saturated integral
+is 1.77 times the weak-drive form), which predicts a deviation of
+[0.00863](../../results/four_peak_contrasts.csv "ref:four_peak_contrasts:amplitude_face_predicted:87Rb_P225_w64")
 in the log for the 87Rb pair. The measured deviation at that rung is
 [0.1517](../../results/four_peak_contrasts.csv "ref:four_peak_contrasts:amplitude_face_measured:87Rb_P225") ±
 [0.0055](../../results/four_peak_contrasts.csv "ref:four_peak_contrasts:amplitude_face_measured:87Rb_P225:err")
@@ -744,7 +745,7 @@ a movement across the power ladder fifty times the prediction, under a
 between-block systematic on the ratio the record measures at about forty per
 cent (`amplitude_ratios.csv`), so the face is NULL on this archive and the movement
 is an observation the acquisition order confounds (A92). At 25 µm the same
-term predicts [0.0512](../../results/four_peak_contrasts.csv "ref:four_peak_contrasts:amplitude_face_predicted:87Rb_P225_w25"),
+term predicts [0.0669](../../results/four_peak_contrasts.csv "ref:four_peak_contrasts:amplitude_face_predicted:87Rb_P225_w25"),
 which the campaign's cycled order reads against the width face with the same
 branching coefficients. The width face, pooled over the power arm, gives an
 87Rb contrast of

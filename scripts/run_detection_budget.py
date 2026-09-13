@@ -194,7 +194,9 @@ def main() -> None:
     add(["branching_795nm", "chain", f"{branching:.4f}", "", "", "the 6S decays that take the 5P1/2 leg, rb5s6s.detection.ir_branching_5p12"])
     add(["quantum_efficiency", "chain", f"{QE:.3f}", f"{QE_ERR:.3f}", "", "owner, 2026-09-13: 6 +- 1 per cent in the chain at 795 nm (8 per cent cathode)"])
     add(["filter_transmission", "chain", "1.00", "", "", "OPEN: not on record. docs/plan/12 spans 0.5 to 1, and the predicted rate below is at 1"])
-    add(["retro_ratio", "chain", f"{RHO:.2f}", "", "", "the two-photon rate goes as 4 rho (the k-sum-zero coupling). the physical span 0.7 to 1 moves the prediction by 0.7 to 1.06 of the row"])
+    _r_at = lambda rho: events_per_s_profile(P_W, PLATFORMS["cell_130C"], rho=rho)
+    _lo, _hi = _r_at(0.7) / _r_at(RHO), _r_at(1.0) / _r_at(RHO)
+    add(["retro_ratio", "chain", f"{RHO:.2f}", "", "", f"the two-photon rate goes as 4 rho (the k-sum-zero coupling). The row sits at rho = {RHO:.2f}, so the physical span 0.7 to 1 moves the prediction by {_lo:.3f} to {_hi:.3f} of the row, computed from the rate at each end rather than from the linearisation: the lower figure is the factor, not the ratio 0.7 itself"])
     add(["noise_bandwidth", "chain", f"{B_HZ:.0f}", "", "Hz", "1 / (2 dt) at the 0.5 ms stored spacing of the boxcar"])
     add(["excess_noise_factor", "chain", "1.00", "", "", "OPEN: the photomultiplier's excess-noise factor is not on record. the measured rate scales with it, and 1.2 to 1.5 is the usual span"])
     add(["density_Steck_130C", "chain", f"{n_steck:.3e}", "", "cm^-3", "rb5s6s.density.number_density_cm3 at the set point"])
@@ -212,13 +214,26 @@ def main() -> None:
     with (_CFG.RESULTS_DIR / "noise_model.csv").open(encoding="utf-8") as fh:
         _rows = [r for r in csv.DictReader(fh) if r["role"] == "p_sweep"]
     b_med = float(np.median([float(r["b_V"]) for r in _rows]))
-    a_med = float(np.median([float(r["a_V"]) for r in _rows]))
     gain_f = b_med / (2.0 * K.E_CHARGE_C * R_TRANSIMPEDANCE * B_HZ)
     add(["transimpedance", "chain", f"{R_TRANSIMPEDANCE:.0e}", "", "V per A", "the current-to-voltage stage, stated on the bench on 2026-09-13"])
     add(["pmt_gain_times_excess_noise", "chain", f"{gain_f:.2e}", "", "", "G F = b / (2 e R B) from the noise law's shot term at the median b of the p_sweep conditions. A bench check of the tube at its high voltage, which is not on record"])
-    n_dark = a_med ** 2 / ((gain_f * K.E_CHARGE_C * R_TRANSIMPEDANCE) ** 2 * 2.0 * B_HZ)
-    add(["floor_as_dark_equivalent_rate", "chain", f"{n_dark:.2e}", "", "per s times F", "the noise law's floor a read as photoelectron shot noise of a dark current, a^2 F / ((G e R)^2 2 B) at F = 1. The Johnson noise of the transimpedance over B is a thousandth of a, so the floor is the tube's dark current or the digitiser, not the resistor"])
-    add(["floor_as_dark_anode_current", "chain", f"{gain_f * K.E_CHARGE_C * n_dark * 1e9:.1f}", "", "nA", "the same floor as an anode dark current, G e n_dark, independent of F"])
+    # THE FLOOR IS NOT A DARK CURRENT, AND THE ROWS SAID IT WAS (corrected
+    # 2026-09-13). A dark term does not know the laser power; this one does.
+    # Measured on the p_sweep's own rows, d ln a / d ln P is quoted below and is
+    # nowhere near zero, and at 4192 the floor runs 1.6 mV at 25 mW to 15.5 at
+    # 225. So the median over every rung is a power-average of a
+    # power-proportional term and has no dark referent at all. What the archive
+    # can honestly say is a BOUND: the true dark current cannot exceed the floor
+    # at the LOWEST rung, where the light-proportional part is smallest, and
+    # even that is an upper bound rather than a measurement.
+    _P = np.array([float(r["power_mW"]) for r in _rows])
+    _a = np.array([float(r["a_V"]) for r in _rows])
+    a_slope = float(np.polyfit(np.log(_P), np.log(_a), 1)[0])
+    a_lowest = float(np.median(_a[_P == _P.min()]))
+    add(["floor_power_scaling", "p_sweep", f"{a_slope:.2f}", "", "d ln a / d ln P", "the noise law's floor against laser power over the p_sweep's five rungs. A tube dark current or a digitiser floor gives zero. This is the light-proportional part (scattered drive, or the laser's own intensity noise), so the floor may not be read as a dark current"])
+    n_dark = a_lowest ** 2 / ((gain_f * K.E_CHARGE_C * R_TRANSIMPEDANCE) ** 2 * 2.0 * B_HZ)
+    add(["floor_as_dark_equivalent_rate_ub", "chain", f"{n_dark:.2e}", "", "per s times F", f"an UPPER BOUND on a dark photoelectron rate, a^2 F / ((G e R)^2 2 B) at F = 1 evaluated at the LOWEST rung ({_P.min():.0f} mW, a = {1e3 * a_lowest:.2f} mV), not at the median over rungs. The floor grows with power, so every rung above bounds the dark term more weakly and none measures it. The Johnson noise of the transimpedance over B is a thousandth of a, so the resistor is not the floor"])
+    add(["floor_as_dark_anode_current_ub", "chain", f"{gain_f * K.E_CHARGE_C * n_dark * 1e9:.1f}", "", "nA", "the same bound as an anode current, G e n_dark, independent of F. A bound on the dark current and not a reading of it. The bench measurement with the drive blocked is what would measure one, and it is not on record"])
 
     # 3. the measured photoelectron rate, per p_sweep condition
     meas = measured_rates()

@@ -62,3 +62,18 @@ def test_the_amplitude_face_is_carried_with_its_sign_and_its_bar():
     vals = [float(r["value"]) for r in cyc]
     assert vals == sorted(vals) and vals[-1] > 10 * vals[0]
     assert all(r["err"].strip() and "between-block systematic" in r["note"] for r in meas)
+
+    # THE WAIST LADDER WAS UNGRADED, AND THAT IS WHERE THE DEFECT LIVED (board
+    # finding, 2026-09-13). The checks above read only the five _w64 power rows,
+    # so a cycles row that FELL from 25 to 16 microns passed: the closed form
+    # multiplied the saturated on-axis rate by the weak-drive profile integral.
+    # Tightening the waist can only raise the count, so the ladder is monotone
+    # in 1/w0 or the chord integral has lost its saturation again.
+    ladder = [r for r in rows if r["quantity"] == "cycles_per_crossing_axis"
+              and r["key"].startswith("P225_w")]
+    by_waist = sorted(ladder, key=lambda r: -float(r["key"].split("_w")[1]))
+    assert len(by_waist) >= 4, f"the waist ladder is {len(by_waist)} rows"
+    vals_w = [float(r["value"]) for r in by_waist]
+    assert vals_w == sorted(vals_w), (
+        "the cycles per crossing fall as the waist tightens: "
+        + ", ".join(f"{r['key']}={r['value']}" for r in by_waist))

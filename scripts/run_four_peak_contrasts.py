@@ -47,6 +47,7 @@ from rb5s6s import config as _CFG                                  # noqa: E402
 from rb5s6s import constants as K                                  # noqa: E402
 from rb5s6s.cascade import BRANCHING_F, amplitude_factor           # noqa: E402
 from rb5s6s.platforms import PLATFORMS, excitation_rate_per_atom   # noqa: E402
+from rb5s6s._compat import trapezoid                              # noqa: E402
 from rb5s6s.pmfmt import pm_cells                                  # noqa: E402
 
 ISO = {p: K.PEAKS[p]["isotope"] for p in K.PEAKS}
@@ -85,18 +86,47 @@ def _cycles_per_crossing(P_W: float, w0_m: float, T_C: float = 130.0) -> float:
     pumping term the width contrasts read, with BRANCHING_F as its coefficient.
     Its size is set by the cycles per crossing: the on-axis rate of the record
     (platforms.excitation_rate_per_atom, the cascade's saturation carried)
-    integrated along a chord through the centre at the mean transverse speed,
-    int R0 exp(-4 v^2 t^2 / w0^2) dt = R0 sqrt(pi) w0 / (2 v), which is the
-    weak-drive I^2 profile and goes as P^2 / w0^3. Off-centre chords accumulate
-    fewer, so this is the largest chord's count and an upper bound on the
-    transit average. The campaign twin's CYCLES_AT_225MW of 3.0 is not derived
-    from this and the master plan carries the reconciliation as owed.
+    integrated along a chord through the centre at the mean transverse speed.
+
+    THE CHORD INTEGRAL CARRIES THE SATURATION AND THE CLOSED FORM DID NOT
+    (corrected 2026-09-13). `excitation_rate_per_atom` is the ON-AXIS
+    rate and its own docstring says the profile average is not that number
+    times a volume, because the wings are unsaturated. The first version here
+    multiplied that saturated on-axis rate by the WEAK-DRIVE profile integral
+    int exp(-4 v^2 t^2 / w0^2) dt = sqrt(pi) w0 / (2 v), which under-counts
+    wherever the drive saturates: measured, by 1.32 at 25 microns and 1.77 at
+    16 at 225 mW, and the committed row FELL from 25 to 16 microns where the
+    physics rises. What runs now is the integral of the saturated rate itself,
+    the local drive scaled as P exp(-2 v^2 t^2 / w0^2) so that the saturation
+    parameter s, which goes as P^2, carries the I^2 profile and the cascade
+    denominator is evaluated at each point. It reduces to the closed form in
+    the weak-drive limit, which is the plant, and it goes as P^2 / w0^3 only
+    there: at a tight waist the exponent is softer because the core saturates.
+    Off-centre chords accumulate fewer, so this is the largest chord's count
+    and an upper bound on the transit average. The campaign twin's
+    CYCLES_AT_225MW of 3.0 is not derived from this and the master plan
+    carries the reconciliation as owed.
+
+    The quadrature states its regime and self-checks by halving: a cell whose
+    answer moves by more than a part in a million on the halved grid raises
+    rather than publishing an unconverged number.
     """
     import dataclasses
     plat = dataclasses.replace(PLATFORMS["cell_130C"], w0_m=w0_m, temperature_k=T_C + 273.15)
-    rate = excitation_rate_per_atom(P_W, plat, rho=0.94)
     v_mean_2d = np.sqrt(np.pi * K.K_B_J_PER_K * (T_C + 273.15) / (2.0 * K.M_RB87_KG))
-    return float(rate * np.sqrt(np.pi) * w0_m / (2.0 * v_mean_2d))
+    t_edge = 3.0 * w0_m / v_mean_2d          # three waists of chord, the wings carried
+    t_grid = np.linspace(-t_edge, t_edge, 4001)
+    local_w = P_W * np.exp(-2.0 * (v_mean_2d * t_grid) ** 2 / w0_m ** 2)
+    rate = np.array([excitation_rate_per_atom(float(p), plat, rho=0.94)
+                     for p in local_w])
+    fine = float(trapezoid(rate, t_grid))
+    half = float(trapezoid(rate[::2], t_grid[::2]))   # the SAME grid, every other point
+    if abs(fine - half) > 1e-6 * abs(fine):
+        raise SystemExit(
+            f"run_four_peak_contrasts: the chord quadrature is unconverged at "
+            f"P = {P_W} W, w0 = {w0_m} m ({fine:.6g} against {half:.6g} on the "
+            "halved grid). Refuse the cell rather than publish it.")
+    return fine
 
 
 def _amplitude_face():
@@ -113,7 +143,7 @@ def _amplitude_face():
     for P in powers:
         cyc = _cycles_per_crossing(P, K.W0_MEASURED_M)
         rows.append(["cycles_per_crossing_axis", f"P{P*1e3:g}_w64", f"{cyc:.4f}", "", "",
-                     "excitation cycles on a central chord at 130 C, the record's on-axis rate times sqrt(pi) w0 / 2 v. P^2 / w0^3", ""])
+                     "excitation cycles on a central chord at 130 C: the saturated rate integrated along the chord, the local drive scaled as P exp(-2 v^2 t^2 / w0^2). P^2 / w0^3 in the weak-drive limit only, the core saturating at a tight waist", ""])
         for iso, (hi, lo, thermal) in pairs.items():
             dev = np.log(amplitude_factor(hi, cyc) / amplitude_factor(lo, cyc))
             rows.append(["amplitude_face_predicted", f"{iso}_P{P*1e3:g}_w64", f"{dev:.5f}", "", "ln",
