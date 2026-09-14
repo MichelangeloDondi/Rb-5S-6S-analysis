@@ -202,11 +202,10 @@ def c6_direct(lines_a, upper_a: float, lines_b, upper_b: float) -> float:
     line), d the reduced E1 matrix element, 1/6 the scalar J = 1/2 angular
     factor (the same 1/6 as `alpha_imaginary`'s prefactor squared times the
     3/pi of the integral, which is how the two agree when every Delta > 0).
-    Exact for a non-degenerate pair; the imaginary-frequency integral is its
-    special case for a ground-state pair. The exchange term of the same order,
-    which couples |6S,5S> to |5S,6S> through |nP,n'P>, splits the pair
-    potential into C6 (1 +- 0.23) branches whose (1 +- 0.23)^(2/5) average is
-    0.994: sized, not carried.
+    The direct term of the pair; the imaginary-frequency integral is its special
+    case for a ground-state pair. The exchange term of the same order, which
+    couples |6S,5S> to |5S,6S> through |nP,n'P>, is `c6_exchange` and splits
+    the pair potential into C6 (1 +- f) branches, f 0.35 to 0.45 for 6S.
     """
     s = 0.0
     for ea, da, _ in lines_a:
@@ -215,6 +214,40 @@ def c6_direct(lines_a, upper_a: float, lines_b, upper_b: float) -> float:
             d_b = (eb - upper_b) / CM_PER_HARTREE
             s += da * da * db * db / (d_a + d_b)
     return s / 6.0
+
+
+def c6_exchange(lines_g, lines_x, e_x: float, sign_6p: float = 1.0) -> float:
+    """The EXCHANGE coefficient (a.u.) of a homonuclear pair with one atom excited:
+    the second-order amplitude that carries the excitation from atom A to atom B
+    through |nP, n'P>, which splits the pair potential into C6 (1 +- f) branches,
+
+        C6_exch = (1/6) sum_k sum_l [d(g,k) d(x,k)] [d(g,l) d(x,l)] / (Delta_k(x) + Delta_l(g)),
+
+    k and l over the nP levels both tables reach (matched by energy), the same
+    angular factor as `c6_direct` because both atoms keep their spin. The reduced
+    matrix elements are tabulated as magnitudes, so the relative sign of the 6P
+    products against the 5P ones is not in the tables: `sign_6p` = +1 and -1
+    bracket it, and the 5P legs dominate either way (W1k physics finding, 2026-09-14:
+    typed by hand as a quarter of Delta C6, it is 0.35 to 0.45 for 6S and 3 to 4.5
+    per cent for 7S, so it does not cancel in the anchor)."""
+    g = {round(e, 2): d for e, d, _ in lines_g}
+    x = {round(e, 2): d for e, d, _ in lines_x}
+    common = sorted(set(g) & set(x))
+    s = 0.0
+    for ek in common:
+        pk = g[ek] * x[ek] * (sign_6p if ek > 20000.0 else 1.0)
+        d_k = (ek - e_x) / CM_PER_HARTREE
+        for el in common:
+            pl = g[el] * x[el] * (sign_6p if el > 20000.0 else 1.0)
+            s += pk * pl / (d_k + el / CM_PER_HARTREE)
+    return s / 6.0
+
+
+def branch_average(f: float) -> float:
+    """The width factor of a pair potential split into C6 (1 +- f) branches sampled
+    with equal weight: the impact width goes as C6^(2/5), so the factor is
+    ((1+f)^(2/5) + (1-f)^(2/5)) / 2, which is 0.974 at f = 0.45 and 0.985 at 0.35."""
+    return 0.5 * ((1.0 + f) ** 0.4 + (1.0 - f) ** 0.4)
 
 
 def c6_5s5s() -> float:
@@ -276,9 +309,9 @@ def beta_self_anchored(T_K: float = 403.15, n_cm3: float = 1e12) -> dict:
     from the same truncated sum and the truncation partly cancels. Using 4691
     instead moves the answer to 3.36, half a per cent, far inside the envelope.
 
-    Returns ~3.40 kHz per 1e12 cm^-3 (3.38 with the integral's pair
-    coefficients, 2026-08-05 to 2026-09-14; 3.53 before the difference
-    correction of 2026-08-05). The quoted error is Zameroski's alone; the
+    Returns ~3.33 kHz per 1e12 cm^-3 with the exchange branches carried (3.40
+    without them; 3.38 with the integral's pair coefficients, 2026-08-05 to
+    2026-09-14; 3.53 before the difference correction of 2026-08-05). The quoted error is Zameroski's alone; the
     error budget of the recipe itself is in docs/wiki/self-broadening.md. Both sit between the raw 5.9 and the ~1 kHz that an older
     n*^7 Rydberg scaling of a MISATTRIBUTED self-shift used to give.
     """
@@ -287,13 +320,24 @@ def beta_self_anchored(T_K: float = 403.15, n_cm3: float = 1e12) -> dict:
     c6_6 = c6_direct(LINES_5S, 0.0, LINES_6S, E_6S_CM)
     c6_7 = c6_direct(LINES_5S, 0.0, LINES_7S, E_7S_CM)
     dc6_6, dc6_7 = c6_6 - c6_5, c6_7 - c6_5
+    # THE EXCHANGE BRANCHES (W1l): each rung's width carries the branch average of its
+    # own split, bracketed over the untabulated sign of the 6P products; the anchor
+    # carries the ratio of the two factors and the first-principles value the 6S one.
+    ex6 = [c6_exchange(LINES_5S, LINES_6S, E_6S_CM, s) / dc6_6 for s in (1.0, -1.0)]
+    ex7 = [c6_exchange(LINES_5S, LINES_7S, E_7S_CM, s) / dc6_7 for s in (1.0, -1.0)]
+    br6 = [branch_average(abs(f)) for f in ex6]
+    br7 = [branch_average(abs(f)) for f in ex7]
+    branch_ratio = sum(b6 / b7 for b6, b7 in zip(br6, br7)) / 2.0     # the two sign cases averaged
     n_per_mtorr = (1e-3 * _C.TORR_PA) / (KB * T_K) * 1e-6      # cm^-3 per mTorr
     beta7_meas = ZAMEROSKI_7S_BROADENING_KHZ_PER_MTORR / (n_per_mtorr / n_cm3)
     err7 = ZAMEROSKI_7S_BROADENING_ERR / (n_per_mtorr / n_cm3)
-    scale = (dc6_6 / dc6_7) ** 0.4
+    scale = (dc6_6 / dc6_7) ** 0.4 * branch_ratio
     return {"beta6_khz": beta7_meas * scale,
             "beta6_err_khz": err7 * scale,
-            "beta6_first_principles_khz": beta_self_vdw(dc6_6, T_K, n_cm3) / 1e3,
+            "beta6_first_principles_khz": beta_self_vdw(dc6_6, T_K, n_cm3) / 1e3 * sum(br6) / 2.0,
+            "exchange_fraction_6s": tuple(ex6), "exchange_fraction_7s": tuple(ex7),
+            "branch_factor_6s": tuple(br6), "branch_factor_7s": tuple(br7),
+            "beta6_khz_no_exchange": beta7_meas * (dc6_6 / dc6_7) ** 0.4,
             "c6_5s5s_au": c6_5, "c6_5s6s_au": c6_6, "c6_5s7s_au": c6_7,
             "beta7_measured_khz": beta7_meas,
             "beta7_predicted_khz": beta_self_vdw(dc6_7, T_K, n_cm3) / 1e3,

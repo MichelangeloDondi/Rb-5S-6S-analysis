@@ -441,9 +441,9 @@ ceiling, and that is what two numbers agreeing in size actually say.**
 shift-to-broadening ratio is -0.33 of the FWHM, a value Zameroski's Rb
 5S-5D5/2 pair independently reproduces. Applied to this record's own
 `beta_self(6S)` it predicts a differential of
-[0.032](../results/collisional_shift_bound.csv "ref:collisional_shift_bound:expectation:shift_expected_differential")
+[0.031](../results/collisional_shift_bound.csv "ref:collisional_shift_bound:expectation:shift_expected_differential")
 MHz across the same grid, which is
-[0.88](../results/collisional_shift_bound.csv "ref:collisional_shift_bound:expectation:expectation_over_bound")
+[0.86](../results/collisional_shift_bound.csv "ref:collisional_shift_bound:expectation:expectation_over_bound")
 of the **uninflated** ceiling, 0.0363 MHz, and **not** of the 0.044 quoted
 above, which would give 0.73. The denominator is named because both figures
 carry the same vapour-density inflation and it cancels in the ratio, so raw

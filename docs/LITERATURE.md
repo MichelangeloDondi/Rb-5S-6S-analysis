@@ -128,8 +128,8 @@ the suspect impact prefactor cancelling in the ratio. Derivation in the lit
 file and in `rb5s6s/vanderwaals.beta_self_anchored`. The ratio is of van der
 Waals *differences*, C₆(5S+nS) − C₆(5S+5S), because the impact phase is set by
 the difference between the two levels' interactions with the perturber. That
-correction landed 2026-08-05 and moved the anchor from 3.53 to an earlier 3.38 (3.40 since the
-integral's excited-state repair of 2026-09-14, A250) kHz per
+correction landed 2026-08-05 and moved the anchor from 3.53 to an earlier 3.38 (3.33 since the
+integral's excited-state repair and the exchange branches of 2026-09-14, A250 and A251) kHz per
 10¹² cm⁻³, inside the quoted error. See
 [the difference-potential note](notes/vdw_difference_potential_and_4d_channel.md).
 

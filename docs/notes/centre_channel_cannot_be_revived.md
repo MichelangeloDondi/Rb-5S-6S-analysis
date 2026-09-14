@@ -46,7 +46,7 @@ All three multi-power display epochs run strictly downward in power with time.
 Drift and pull then occupy one regression column and only their combination is
 identified. M27 extracts what remains by holding to single epochs and importing
 the independently measured drift as a prior, which is the right move, and it lands
-where its own pre-fixed criteria send it: leave-one-out pulls range 1.16 to 3.40
+where its own pre-fixed criteria send it: leave-one-out pulls range 1.16 to 3.4
 sigma, a zero-signal control with a synthetic power label returns a comparable
 2.69 sigma spurious pull, so the verdict is a BOUND of 8.65 MHz/W and not a
 measurement. **That bound is 7.5 times weaker than the width channel's**, which is

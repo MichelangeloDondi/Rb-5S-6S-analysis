@@ -338,11 +338,11 @@
    {
     "file": "docs/UNCERTAINTY.md",
     "line": 446,
-    "writes": "0.88"
+    "writes": "0.86"
    }
   ],
   "source_file": "results/collisional_shift_bound.csv",
-  "source_value": "0.878"
+  "source_value": "0.860"
  },
  "collisional_shift_bound:expectation:shift_expected_differential": {
   "producer": "run_collisional_shift_bound.py",
@@ -350,11 +350,11 @@
    {
     "file": "docs/UNCERTAINTY.md",
     "line": 444,
-    "writes": "0.032"
+    "writes": "0.031"
    }
   ],
   "source_file": "results/collisional_shift_bound.csv",
-  "source_value": "0.03186"
+  "source_value": "0.03120"
  },
  "cumulant_window_check:kappa1_window_excess_pct:gc0.55": {
   "producer": "run_cumulant_window_check.py",
@@ -3229,7 +3229,7 @@
    },
    {
     "file": "docs/FUTURE_TRANSITIONS_titsapph.md",
-    "line": 459,
+    "line": 461,
     "writes": "-1131.8"
    },
    {
@@ -3291,7 +3291,7 @@
    },
    {
     "file": "docs/FUTURE_TRANSITIONS_titsapph.md",
-    "line": 459,
+    "line": 461,
     "writes": "5.9"
    },
    {
@@ -3561,7 +3561,7 @@
   "quoting_sites": [
    {
     "file": "docs/FUTURE_TRANSITIONS_titsapph.md",
-    "line": 499,
+    "line": 501,
     "writes": "48.59"
    }
   ],
@@ -3573,7 +3573,7 @@
   "quoting_sites": [
    {
     "file": "docs/FUTURE_TRANSITIONS_titsapph.md",
-    "line": 499,
+    "line": 501,
     "writes": "49.78"
    }
   ],

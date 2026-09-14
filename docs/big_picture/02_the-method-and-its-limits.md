@@ -274,7 +274,9 @@ The ground-pair subtraction is not that kind of error and does not
 cancel, which is why the assumed ratio is a ratio of differences: with
 ΔC₆(6S) = 49805 and ΔC₆(7S) = 157294 a.u., the ratio 0.3166 enters
 through the (ΔC₆/ħ)^0.4 scaling and scales the *measured* 7S rate of
-5.386 kHz per 10¹² cm⁻³ by 0.3166^0.4 = 0.631, giving
+5.386 kHz per 10¹² cm⁻³ by 0.3166^0.4 = 0.631 (before the exchange branches) and by
+the ratio of the two rungs' exchange-branch factors (0.974 to 0.985 for 6S against 1.000 for 7S, computed on
+2026-09-14, register A251), giving
 
 **β_self(6S) = 3.4 kHz per 10¹² cm⁻³** (±0.29 from the anchor
 measurement alone, envelope ±10–15% overall),

@@ -17,7 +17,7 @@ import pytest
 
 from rb5s6s._compat import trapezoid
 from rb5s6s.polarizability import LINES_5S, LINES_6S, LINES_7S, E_6S_CM, E_7S_CM, alpha_5s
-from rb5s6s.vanderwaals import (C6_RB2_GROUND_LIT_AU, LINDHOLM_FOLEY_PREFACTOR,
+from rb5s6s.vanderwaals import (C6_RB2_GROUND_LIT_AU, LINDHOLM_FOLEY_PREFACTOR, branch_average, c6_exchange,
                                 LINDHOLM_FOLEY_PREFACTOR_QUOTED, alpha_imaginary,
                                 beta_self_anchored, beta_self_vdw, c6_5s5s, c6_5s6s,
                                 c6_5s7s, c6_coefficient, c6_direct, impact_prefactors,
@@ -163,7 +163,7 @@ def test_anchored_and_first_principles_values_agree_and_are_bracketed():
     r = beta_self_anchored()
     assert r["dc6_ratio"] < 1.0
     assert 0.0 < r["beta6_khz"] < r["beta7_measured_khz"]
-    assert r["beta6_khz"] == pytest.approx(3.40, rel=0.03)
+    assert r["beta6_khz"] == pytest.approx(3.33, rel=0.03)
     assert r["beta6_first_principles_khz"] == pytest.approx(r["beta6_khz"], rel=0.05)
 
 
@@ -172,3 +172,21 @@ def test_record_bound_still_sits_well_above_the_anchored_expectation():
     archival bound (tens of kHz per 1e12 cm^-3) is an order above it."""
     b = beta_self_anchored()["beta6_khz"]
     assert 40 < 200.0 / b and 400.0 / b < 200
+
+def test_the_exchange_coefficient_is_computed_and_bracketed_over_the_untabulated_sign():
+    """W1k physics finding F1: typed as a quarter of Delta C6, the exchange term is
+    0.35 to 0.45 for 6S whichever way the 6P products point, because the 5P legs
+    dominate; for 7S it is under 5 per cent. The anchor carries the branch average
+    of each rung and moves from 3.40 to 3.31-3.35, inside the envelope."""
+    from rb5s6s.polarizability import LINES_5S, LINES_6S, LINES_7S, E_6S_CM, E_7S_CM
+    d6 = c6_direct(LINES_5S, 0.0, LINES_6S, E_6S_CM) - c6_direct(LINES_5S, 0.0, LINES_5S, 0.0)
+    d7 = c6_direct(LINES_5S, 0.0, LINES_7S, E_7S_CM) - c6_direct(LINES_5S, 0.0, LINES_5S, 0.0)
+    f6 = [c6_exchange(LINES_5S, LINES_6S, E_6S_CM, s) / d6 for s in (1.0, -1.0)]
+    f7 = [abs(c6_exchange(LINES_5S, LINES_7S, E_7S_CM, s) / d7) for s in (1.0, -1.0)]
+    assert all(0.33 < f < 0.47 for f in f6), f6
+    assert all(f < 0.05 for f in f7), f7
+    assert branch_average(0.0) == 1.0 and 0.97 < branch_average(0.45) < 0.975
+    r = beta_self_anchored()
+    assert 3.30 < r["beta6_khz"] < 3.36, r["beta6_khz"]
+    assert r["beta6_khz"] < r["beta6_khz_no_exchange"] == pytest.approx(3.40, rel=0.01)
+

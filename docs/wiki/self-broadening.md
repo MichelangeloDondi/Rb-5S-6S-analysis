@@ -174,9 +174,13 @@ the difference of the two levels' interactions with the perturber
 (Lewis 1980, eq. 2.39 and 4.13), so what enters is
 $\Delta C_6 = C_6(5S+nS) - C_6(5S+5S)$, 49805 a.u. for $6S$ and 157294 for
 $7S$. The exchange term of the same order, which couples $|6S,5S\rangle$ to
-$|5S,6S\rangle$ through $|nP,n'P\rangle$, splits the potential into two
-branches $C_6(1 \pm f)$ with $f$ near a quarter, and averaged as $(1 \pm f)^{2/5}$ they give 0.994 of
-the single-branch width, so it is sized and not carried.
+$|5S,6S\rangle$ through $|nP,n'P\rangle$, is computed from the same tables
+(`c6_exchange`): 22467 a.u. with every product positive, 17510 with the 6P
+products flipped, 0.35 to 0.45 of $\Delta C_6$ either way because the 5P legs
+dominate, and under 5 per cent on the 7S rung. It splits the potential into
+two branches $C_6(1 \pm f)$ sampled with equal weight, and since the width
+goes as $C_6^{2/5}$ the factor is $((1+f)^{2/5} + (1-f)^{2/5})/2$, 0.974 to
+0.985 for 6S and 1.000 for 7S. It does not cancel in the anchor.
 
 **Step 3, the impact cross-section.** Along a straight path with impact
 parameter $b$ and relative speed $v$ the phase accumulated in one collision
@@ -208,13 +212,14 @@ of the relative speed, $\langle v^{3/5}\rangle/\bar v^{3/5} = 0.9775$
 
 | route | $\beta_\text{self}(6S)$, kHz per $10^{12}$ cm⁻³ | its bar |
 |---|---|---|
-| first principles, steps 1 to 4 | 3.544 | the recipe's, below |
-| anchored on the measured $7S$ rate, $\beta_7 [\Delta C_6(6S)/\Delta C_6(7S)]^{2/5}$ | 3.40 | 0.29, Zameroski's 8.5 per cent alone |
+| first principles, steps 1 to 4, the exchange branches carried | 3.45 to 3.49 | the recipe's, below |
+| anchored on the measured $7S$ rate, $\beta_7 [\Delta C_6(6S)/\Delta C_6(7S)]^{2/5}$ times the ratio of branch factors | 3.31 to 3.35 | 0.29, Zameroski's 8.5 per cent alone |
 | the same recipe run on $7S$ against Zameroski's 5.39 | 5.61, 4 per cent above | inside the measurement's bar |
 
 The two routes agree to 4 per cent, and the recipe reproduces the only
 measured $nS$ self-broadening rate in rubidium within that measurement's own
-error. Before the sign correction the recipe read 18 per cent low on $7S$
+error. The exchange branches, computed on 2026-09-14 in place of the hand
+estimate, lower the 6S value by 1.5 to 2.6 per cent and are written as the span above. Before the sign correction the recipe read 18 per cent low on $7S$
 and the module's docstring blamed the dropped core for the gap, which the
 corrected sum refutes.
 
@@ -222,14 +227,15 @@ corrected sum refutes.
 statistical error scaled. The recipe's own terms, each sized: the core and
 tail polarizabilities dropped from the sums (3 per cent on the pair
 coefficient, 2 per cent on the anchor ratio), the matrix elements (2 per
-cent, Safronova's stated accuracy), the exchange branches (0.6 per cent),
+cent, Safronova's stated accuracy), the exchange branches (1.5 to 2.6 per
+cent, the untabulated sign of the 6P products),
 the speed average (now carried), the cell temperature at which the $7S$ rate
 per millitorr was converted to a density (OPEN: 5 per cent per 20 K, the
 paper's section 2.5 to be re-read for it), and one inelastic channel with
 no size yet, $6S+5S\to4D+5S$ releasing 777 cm⁻¹
 ([the note](../notes/vdw_difference_potential_and_4d_channel.md)). Added in
 quadrature without the last, the coefficient is known to about 11 per cent:
-$3.40 \pm 0.37$ kHz per $10^{12}$ cm⁻³, ENVELOPE.
+$3.33 \pm 0.37$ kHz per $10^{12}$ cm⁻³, ENVELOPE.
 
 **Step 7, what the archive says about it.** Nothing yet. At 130 C the
 collisional width this coefficient predicts is 0.10 MHz, against per-session

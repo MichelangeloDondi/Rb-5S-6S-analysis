@@ -1569,11 +1569,21 @@ def gate_checks(base, summaries, meas, coarse: bool) -> list[tuple[str, bool, st
         # the calibrated sessions and could not see the evening at 0.86; a wrong kernel moves every
         # session together and only a session's own noise law moves its ratio to the pool.
         _cs = best.get("chi2_red_session") or {}
-        _pool = float(best.get("chi2_red", float("nan")))
-        _bad = {s: v for s, v in _cs.items() if not (abs(v / _pool - 1.0) <= SESSION_CHI2_REL_TOL)}
-        chk(f"{form}: every session's chi2_red within {100 * SESSION_CHI2_REL_TOL:.0f} per cent of the pooled value at the best cell", bool(_cs) and not _bad,
-            "no per-session chi2 in this cell" if not _cs else (f"pooled {_pool:.3f}, " + ("all admitted: " if not _bad else "REFUSED sessions: ")
-            + ", ".join(f"{s} {v:.3f} ({v / _pool:.2f} of the pool)" for s, v in sorted(_cs.items()))))
+        _ne0 = best.get("n_eff_session") or {}
+        # THE REFERENCE EXCLUDES THE SESSION IT TESTS (W1k physics finding F2): a session
+        # holding a fraction f of n_eff passed against a pool it dominated while under-costing
+        # by 0.9(1-f)/(1-0.9f); the reference is the n_eff-weighted mean of the OTHER
+        # sessions, and the verdict is named: MISFIT above the tolerance, UNDER-COST below it.
+        def _ref(s):
+            w = {k: _ne0.get(k, 1.0) for k in _cs if k != s}
+            return sum(_cs[k] * w[k] for k in w) / max(sum(w.values()), 1e-12) if w else float("nan")
+        _ratio = {s: (v / _ref(s) if len(_cs) > 1 else 1.0) for s, v in _cs.items()}   # one session has no reference
+        _misfit = {s: r for s, r in _ratio.items() if r > 1.0 + SESSION_CHI2_REL_TOL}
+        _under = {s: r for s, r in _ratio.items() if r < 1.0 - SESSION_CHI2_REL_TOL}
+        chk(f"{form}: every session's chi2_red within {100 * SESSION_CHI2_REL_TOL:.0f} per cent of the other sessions' at the best cell", bool(_cs) and not _misfit and not _under,
+            "no per-session chi2 in this cell" if not _cs else
+            ("all admitted: " if not (_misfit or _under) else "")
+            + ", ".join(f"{s} {_cs[s]:.3f} ({_ratio[s]:.2f} of the others" + (", MISFIT" if s in _misfit else ", UNDER-COST" if s in _under else "") + ")" for s in sorted(_cs)))
         # A SESSION'S VOTE IS ITS EFFECTIVE SAMPLE (W1j finding F4): the evening session held 48 per
         # cent of n_eff with 20 per cent of the traces because its tau_int sat at the white floor, and
         # no other session calibrates that whitening.

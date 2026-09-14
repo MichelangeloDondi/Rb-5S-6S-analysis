@@ -191,7 +191,7 @@ that reason and for no other.
 **Owed before any of this is quoted further.** The per-peak and hierarchical
 coefficients at the fitted component have no committed producer: they exist in
 this repository's private correction record and in a replay beside it, not in
-`results/`. The van der Waals prediction of 3.40(29) kHz is crossed somewhere
+`results/`. The van der Waals prediction of 3.33(29) kHz is crossed somewhere
 above the fitted component, and locating that crossing needs a third grid point
 and not a line drawn through two.
 

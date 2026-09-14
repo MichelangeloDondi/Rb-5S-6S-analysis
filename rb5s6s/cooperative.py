@@ -77,7 +77,7 @@ rate at the Weisskopf cutoff is 0.8e-9 of the single-atom rate, falling to
 2.19 to 2.52 nm on 2026-09-14 with the corrected pair coefficient, A250). The single-atom
 hyperfine-mixing route is computed by M36's `hyperfine_mixing_rate`, which
 squares the intermediate-state admixture on each fine-structure leg and sums
-them, giving 1.5e-10. The pair route is therefore about EIGHT TIMES it. The
+them, giving 1.5e-10. The pair route is therefore about FIVE TIMES it. The
 long-quoted 1.2e-10 is the dominant leg alone and is returned beside it. The pair route does not sit far below
 the single-atom one the way a higher-order process usually would, it dominates
 the forbidden-channel budget, and the owner's instinct that asking about two
