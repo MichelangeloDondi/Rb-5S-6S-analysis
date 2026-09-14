@@ -350,19 +350,19 @@ def project_pull(rows, inp) -> dict:
         _add(rows, "proj_pull_S0_over_prediction", label, s0_pred / sigma, None,
              "sigma",
              "predicted S0(225 mW) divided by the projected uncertainty",
-             common + "; prediction at the committed measured waist",
+             common + ". prediction at the committed measured waist",
              "results/stark_joint.csv S0_225mW_pred")
         _add(rows, "proj_deltaalpha_frac", label, frac_da, None, "fraction, 1 sigma",
              "quadrature sum of the fractional shift uncertainty and the "
              "intensity-axis systematic",
-             common + f"; intensity axis anchored to {PLAN_INTENSITY_AXIS_FRAC:.0%} "
+             common + f". intensity axis anchored to {PLAN_INTENSITY_AXIS_FRAC:.0%} "
              "by the differential transit width of PLAN 5",
              "docs/PLAN.md 5")
         _add(rows, "proj_deltaalpha_sign_separation", label, sign_gap / sigma, None,
              "sigma",
              "|S0(+Delta-alpha) - S0(-Delta-alpha)| divided by the projected "
              "uncertainty, both evaluated at the committed measured waist",
-             common + "; the two signs are the pinned +1093 a.u. and the "
+             common + ". the two signs are the pinned +1093 a.u. and the "
              "recomputed -1145 a.u., both evaluated at the committed waist "
              "prior, so a common intensity-scale error moves the separation "
              "even though it cannot move which sign the pull has",
@@ -455,7 +455,7 @@ def project_beta(rows, inp) -> dict:
                  assumptions, "docs/PLAN.md 7, results/linefit_conditions.csv")
             _add(rows, "proj_beta_self_detection_sigma", key, detect, None, "sigma",
                  "the anchored expectation divided by the projected uncertainty",
-                 assumptions + "; the density-scale systematic does not enter a "
+                 assumptions + ". the density-scale systematic does not enter a "
                  "detection, because a scale error cannot move zero",
                  "rb5s6s.vanderwaals.beta_self_anchored")
             _add(rows, "proj_beta_self_frac", key, frac, None, "fraction, 1 sigma",
@@ -875,7 +875,7 @@ def project_7s(rows, inp, beta_out, ceilings) -> None:
         _add(rows, "proj_7s_margin", label, needed / delivered, None,
              "dimensionless",
              "the required precision divided by the projected precision",
-             assumptions + "; the projection is the same five-block design as "
+             assumptions + ". the projection is the same five-block design as "
              "the 993 nm row, run on the 760 nm line",
              "results/projections.csv proj_7s_precision_delivered")
         _add(rows, "proj_7s_margin_at_ceiling", label, needed / capped, None,
@@ -1043,7 +1043,7 @@ def project_magic(rows, inp) -> None:
              "fraction of the shift at the span edge",
              "target wavelength uncertainty times sqrt(points) divided by the "
              "half span, from the zero-crossing error of a centred linear fit",
-             assumptions + "; quoted as a fraction because this repository "
+             assumptions + ". quoted as a fraction because this repository "
              "computes no independent 5D differential polarizability. The "
              "Hamilton-anchored construction this file uses for the ceiling is "
              "evaluated at the drive wavelength, two nanometres from the "

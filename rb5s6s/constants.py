@@ -899,6 +899,17 @@ def collection_z_ratio(f_m: float = COLLECTION_LENS_F_M,
     return half_window_m / rayleigh_m
 
 
+# THE 2025 LASER-WIDTH BOUND, ON BOTH AXES (2026-09-14, the W1j round's physics
+# finding): the record's bound is 1.2 MHz PER PHOTON (docs/CLAIMS.md, the laser
+# line), which is 2.4 MHz on the TRANSITION axis because the two-photon detuning
+# sums both photons. A fitted width that is a transition-axis FWHM (every sigma_l
+# in run_ultra_joint.py, whose axis is the doubled rate of run_linefit) is read
+# against the TRANSITION constant; the per-photon twin exists so that the two
+# numbers never share one name, which is how a factor of two hid in one word.
+SIGMA_LASER_BOUND_2025_LASER_MHZ = 1.2
+SIGMA_LASER_BOUND_2025_TRANSITION_MHZ = 2.0 * SIGMA_LASER_BOUND_2025_LASER_MHZ
+
+
 def transit_fwhm_from_w0(w0_m: float, T_C: float, isotope: int = 87,
                          mass_kg: float | None = None) -> float:
     """Bare transit-time FWHM (MHz, TRANSITION axis) of the weak-field two-photon

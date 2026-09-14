@@ -178,7 +178,7 @@ denominators are not much worse, so carrying all four leg combinations
 multiplies the amplitude by 2.82 and the rate by 7.97.
 
 The channel is small. Its rate, relative to the ordinary line, is linear
-in density and reaches $1.3\times10^{-9}$ at 130 °C
+in density and reaches $0.8\times10^{-9}$ at 130 °C
 (`results/cooperative_channel.csv`), about eight times the single-atom
 hyperfine-mixing leakage computed the same way in
 `rb5s6s/polarisation.py`. Both sit far below the tightest bound this

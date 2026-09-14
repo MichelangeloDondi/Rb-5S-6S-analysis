@@ -361,24 +361,26 @@ computed ratio. Verified by running `rb5s6s.vanderwaals.beta_self_anchored`
 (2026-08-05):
 
     beta_self(6S) = beta_self(7S)_measured * [DC6(5S+6S) / DC6(5S+7S)]^(2/5)
-                  = 5.386 * 0.3128^0.4
-                  = 3.38 +- 0.29 kHz per 1e12 cm^-3
+                  = 5.386 * 0.3166^0.4
+                  = 3.40 +- 0.29 kHz per 1e12 cm^-3
 
     DC6(5S+nS)    = C6(5S+nS) - C6(5S+5S)
 
-with C₆(5S+6S) = 28908 a.u., C₆(5S+7S) = 83228 a.u. and C₆(5S+5S) = 4180 a.u.
-from the module's own Casimir-Polder integrals, and 5.386 kHz per 10¹² cm⁻³
+with C₆(5S+6S) = 53985 a.u., C₆(5S+7S) = 161474 a.u. and C₆(5S+5S) = 4180 a.u.
+from the module's second-order sums (its Casimir-Polder integrals, used until
+2026-09-14, undercounted both excited pairs by a factor 1.9 through the sign of
+the downward lines' denominators, A250, and the ratio barely moved), and 5.386 kHz per 10¹² cm⁻³
 being Zameroski's measured 129 ± 11 kHz/mTorr converted at 403 K. Exactly one
-number in that chain comes from outside. The recorded bound sits 8.5 to 14.6
+number in that chain comes from outside. The recorded bound sits 8.8 to 14.7
 times above that expectation. The rounded 8 to 14 quoted elsewhere in the
-portfolio predates the correction below and is due to become 8 to 15.
+portfolio predates the corrections below and is due to become 9 to 15.
 
 **Why the subtraction.** The impact phase is set by the difference between the
 upper- and lower-state interactions with the ground-state perturber, not by the
 upper state's coefficient alone, so the ground-pair term enters both rungs and
 does not cancel between them. That was corrected on 2026-08-05 after a referee
-raised it, and it moved the anchor from 3.53 to 3.38, 4.1 per cent and inside
-the quoted error. `rb5s6s/vanderwaals.py` carries the adjudication and its
+raised it, and it moved the anchor from 3.53 to an earlier 3.38, 4.1 per cent
+and inside the quoted error, and the integral's repair of 2026-09-14 moved it to 3.40. `rb5s6s/vanderwaals.py` carries the adjudication and its
 Lewis 1980 sources, and
 [the difference-potential note](notes/vdw_difference_potential_and_4d_channel.md)
 carries the working.
@@ -400,14 +402,15 @@ is the part the van der Waals module does well: the Lindholm-Foley prefactor,
 the mean-speed approximation and the dropped core and tail are common to the two
 states and cancel in it. The module predicts
 
-    beta(6S) / beta(7S) = 0.3128^0.4 = 0.628
+    beta(6S) / beta(7S) = 0.3166^0.4 = 0.631
 
 A measured ratio would test the C₆ machinery. A 6S measurement on its own keeps
 leaning on it. The absolute check already on record is of a different kind and
-is weaker: run on 7S the module predicts 4.40 against the measured 5.39 kHz per
-10¹² cm⁻³, 18% low, just past the 10 to 15% level the dropped core and tail
-plus the mean-speed step account for. That tests the absolute scale at one n. A
-ratio tests the n dependence.
+is weaker: run on 7S the module predicts 5.61 against the measured 5.39 kHz per
+10¹² cm⁻³, 4 per cent high and inside the measurement's bar (the earlier
+reading was 4.40, 18 per cent low, while the pair coefficients came from the
+integral until 2026-09-14, A250). That tests the absolute scale at one n. A ratio tests the n
+dependence.
 
 **7S may also be the cheapest rung on this bench rather than the second
 cheapest.** The Detection subsection above calls a 420 nm path a hard
@@ -431,12 +434,12 @@ separates what this repository can already verify from what it can only map.
 phase-shift cross-section, Lewis 1980 §4.2 eq. (4.15) to (4.17), written out in
 `vanderwaals.beta_self_vdw`. The C₆ side is computed rather than borrowed.
 Between the 6S and 7S rungs the module's own Casimir-Polder integrals give
-C₆(5S+nS) growing as **n\*^3.5** (28908 to 83228 a.u., with n\* = 2.845 and
-3.856 from the nist term energies and the Rb ionization limit, or 3.54 if a
+C₆(5S+nS) growing as **n\*^3.6** (53985 to 161474 a.u., with n\* = 2.845 and
+3.856 from the nist term energies and the Rb ionization limit, or 3.7 if a
 fixed quantum defect of 3.131 is used instead). The quantity the broadening
 law reads is the difference against the ground pair, which grows a little
-faster because the same 4180 a.u. is subtracted from both, **n\*^3.8** (24728
-to 79048 a.u.), so β_self would grow as **n\*^1.5** across the same step. Two points give a local slope. A third
+faster because the same 4180 a.u. is subtracted from both, **n\*^3.8** (49805
+to 157294 a.u.), so β_self would grow as **n\*^1.5** across the same step. Two points give a local slope. A third
 measured rung would turn it into a fitted exponent with an error bar, and that
 is the whole difference.
 
@@ -981,7 +984,7 @@ published values disagreeing by a factor 2.6, Zameroski's 129 ± 11 kHz/mTorr
 against Wang's 0.32 ± 0.01 MHz/mTorr, with no HWHM or FWHM convention stated
 in the second. A rate measured here, with the convention stated, would
 replace the choice between them, and a measured β(6S)/β(7S) would test the
-rate ratio the module predicts at 0.628, the ΔC₆ ratio 0.3128 to the
+rate ratio the module predicts at 0.631, the ΔC₆ ratio 0.3166 to the
 power 0.4, rather than assume it. If 7S returned
 only a bound it would still separate the two published values, provided the
 bound landed below the higher one. If the filter answer goes the other way,

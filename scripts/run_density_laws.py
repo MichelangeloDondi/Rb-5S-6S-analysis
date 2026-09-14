@@ -123,7 +123,7 @@ def main() -> int:
         out.append([f"support_{key}", "law", law, "", "", level, ""])
     rows = _t_sweep()
     if rows:
-        BETA_THEORY = 0.00338     # MHz per 1e12 cm^-3, vanderwaals.beta_self_anchored at 403 K (the record's anchor; the 393 K correction is 2.6 per cent)
+        BETA_THEORY = 0.00340     # MHz per 1e12 cm^-3, vanderwaals.beta_self_anchored at 403 K (the record's anchor, 3.40 since A250; the 393 K correction is 2.6 per cent)
         for name, f in LAWS.items():
             # the trade-off, made explicit: beta at dT fixed at 0 and at 10 K, and dT with beta pinned at theory
             T = np.array([r[0] for r in rows]); g = np.array([r[1] for r in rows]); e = np.array([r[2] for r in rows])

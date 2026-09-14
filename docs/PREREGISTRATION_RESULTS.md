@@ -2366,7 +2366,8 @@ the module docstring was correct throughout.
 **The double-count.** The bug was in applying the convention, not in
 stating it. `LINDHOLM_FOLEY_PREFACTOR = 8.16` is not the bare eq. (4.17)
 HWHM prefactor (4.04) but 2x that value (2 x 4.0414 = 8.083, matching 8.16
-to 0.9%, ordinary literature rounding). The constant was already a FWHM
+to 0.9%, ordinary literature rounding, and since 2026-09-14 the module derives
+the 8.083 in `impact_prefactors` and the quoted 8.16 is retired). The constant was already a FWHM
 angular prefactor. `beta_self_vdw`'s return line then applied a second
 factor of 2 on top of it, converting angular to ordinary units with
 `hwhm_ang / (2*pi) * 2.0` when the trailing `* 2.0` had nothing left to

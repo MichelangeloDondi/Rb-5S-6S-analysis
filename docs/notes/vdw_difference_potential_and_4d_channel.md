@@ -18,7 +18,7 @@ should use the difference of van der Waals coefficients,
 rather than the pair coefficient C₆(5S+nS) alone, on the ground that the impact
 phase is set by the difference between the upper- and lower-state interactions
 with a ground-state perturber. Their numbers: the scale factor moves from 0.6551
-to 0.6282 and the 6S anchor from 3.53 to 3.38 kHz per 10¹² cm⁻³, a 4.1 per cent
+to 0.6282 and the 6S anchor from 3.53 to an earlier 3.38 kHz per 10¹² cm⁻³, a 4.1 per cent
 shift and inside the quoted ±0.30.
 
 ## 2. The referee is right
@@ -69,14 +69,14 @@ All values from `rb5s6s.vanderwaals`, at 403.15 K and 10¹² cm⁻³.
 
 | quantity | before | after |
 |---|---|---|
-| coefficient ratio, 6S over 7S | 0.3473 (pair) | 0.3128 (difference) |
+| coefficient ratio, 6S over 7S | 0.3473 (pair) | 0.3128 (difference, before the 2026-09-14 correction of section 7) |
 | scale factor, ratio to the power 2/5 | 0.6551 | 0.6282 |
-| β_self(6S) anchored on Zameroski | 3.53 ± 0.30 kHz | 3.38 ± 0.29 kHz |
-| β_self(7S) predicted absolutely | 4.50 kHz | 4.40 kHz |
+| β_self(6S) anchored on Zameroski | 3.53 ± 0.30 kHz | 3.38 ± 0.29 kHz (before the 2026-09-14 correction of section 7) |
+| β_self(7S) predicted absolutely | 4.50 kHz | 4.40 kHz (before the 2026-09-14 correction of section 7) |
 | that prediction against the measured 5.39 | 17 per cent low | 18 per cent low |
 
-Inputs: C₆(5S+5S) = 4180, C₆(5S+6S) = 28908, C₆(5S+7S) = 83228 a.u., so
-ΔC₆(6S) = 24728 and ΔC₆(7S) = 79048 a.u.
+Inputs before the 2026-09-14 correction (section 7): C₆(5S+5S) = 4180, C₆(5S+6S) = 28908, C₆(5S+7S) = 83228 a.u., so
+ΔC₆(6S) = 24728 and ΔC₆(7S) = 79048 a.u., both before that correction.
 
 Two consequences worth stating rather than leaving to be rediscovered.
 
@@ -89,7 +89,7 @@ accepted because it is the formula the source derives.
 The ground-pair term is taken from this module's own Casimir-Polder integral,
 4180 a.u., and not from the 4691 a.u. literature Rb₂ value, so that both rungs
 are built from the same truncated sum and the valence-only truncation partly
-cancels. Substituting 4691 gives 3.36 instead of 3.38, half a per cent, far
+cancels. Substituting 4691 gives 3.36 instead of the earlier 3.38, half a per cent, far
 inside the envelope. The choice does not matter at this precision and is
 recorded so that it is not re-litigated.
 
@@ -174,7 +174,7 @@ already reachable with instruments this programme has or plans.
    in the per-isotope consistency check.
 3. *It sits above the elastic anchor, never below.* Any inelastic rate adds to
    the elastic van der Waals rate. So if a measured β_self(6S) came in above the
-   3.38 kHz per 10¹² cm⁻³ elastic anchor by more than the anchor's own envelope,
+   3.40 kHz per 10¹² cm⁻³ elastic anchor by more than the anchor's own envelope,
    this channel would be the first candidate to examine, and the width-to-shift
    ratio of item 1 would be the way to examine it. A measurement at or below the
    anchor would say nothing about it either way.
@@ -186,3 +186,20 @@ repository has not yet run, and which the negative-search record in
 a coupled-channel estimate of the 6S and 4D molecular curves at the crossing
 would say whether the short-range coupling exists. Neither is a pipeline change
 and neither is scheduled.
+
+## 7. Addendum, 2026-09-14: the integral had its own error, and the anchor barely noticed
+
+The pair coefficients above came from the Casimir-Polder integral, whose identity
+$1/(a+b) = (2/\pi)\int ab/((a^2+\omega^2)(b^2+\omega^2)) d\omega$ holds for positive $a$
+and $b$ only. An excited atom has downward lines ($6S\to5P$, and $7S\to5P$ and $6P$) with $a \lt 0$,
+for which the integral returns $-1/(|a|+b)$ where the sum has $1/(b-|a|)$. The direct
+second-order sum with signed denominators (`c6_direct`) gives C₆(5S+6S) = 53985 and
+C₆(5S+7S) = 161474 a.u. against the retired 28908 and 83228 of section 3, factors 1.87 and 1.94, while
+the ground pair is unchanged at 4180 because every one of its lines is upward. The
+anchor ratio moved from the earlier 0.3128 to 0.3166 and β_self(6S) from 3.38 to 3.40 kHz per 10¹²
+cm⁻³, while the absolute recipe on 7S, which was 4.40 (18 per cent low), moved to 5.61 kHz
+(4 per cent high, inside Zameroski's bar), which retires the attribution in section 4
+of that gap to the dropped core and tail (A250, E78). The impact prefactor is derived in
+the same repair (8.083 against the quoted 8.16) and the Maxwell average of $v^{3/5}$
+carried (0.9775), and the first-principles 6S value is 3.54. The step-by-step derivation is
+in `docs/wiki/self-broadening.md`. Section 6's inelastic channel stays open.

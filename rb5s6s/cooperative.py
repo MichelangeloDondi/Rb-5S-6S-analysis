@@ -72,8 +72,9 @@ below the perturbative floor rather than quoting a number from outside its own
 validity, per protocol 19.76.
 
 WHAT COMES OUT. At the campaign's hottest condition, 130 C, the cooperative
-rate at the Weisskopf cutoff is 1.3e-9 of the single-atom rate, falling to
-2.3e-11 at 70 C because the ratio is linear in density. The single-atom
+rate at the Weisskopf cutoff is 0.8e-9 of the single-atom rate, falling to
+1.5e-11 at 70 C because the ratio is linear in density (the cutoff moved from
+2.19 to 2.52 nm on 2026-09-14 with the corrected pair coefficient, A250). The single-atom
 hyperfine-mixing route is computed by M36's `hyperfine_mixing_rate`, which
 squares the intermediate-state admixture on each fine-structure leg and sums
 them, giving 1.5e-10. The pair route is therefore about EIGHT TIMES it. The

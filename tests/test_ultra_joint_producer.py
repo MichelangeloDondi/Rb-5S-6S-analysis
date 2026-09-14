@@ -238,7 +238,7 @@ def test_the_beta_profile_is_read_against_its_own_minimum_and_gives_a_bound():
 def _fake_cell(form="mixed", w0=50.0, chi2=1000.0, moved=0.001, spread=0.1, chi2_red=1.4, preds=None, prof=None):
     return dict(spec=dict(form=form, w0_um=w0), chi2=chi2, chi2_red=chi2_red, centre_moved=moved, outer=[1, 1],
                 spread=spread, errs={"beta_rel": 0.1}, sessions=["P", "T"], preds=preds or {"P": 1.01},
-                params={"beta_rel": 0.0}, chi2_red_session={"P": 1.0},
+                params={"beta_rel": 0.0}, chi2_red_session={"P": chi2_red}, n_eff_session={"P": 1000.0}, n_traces_session={"P": 100},
                 beta_profile=prof if prof is not None else {"0.0": dict(chi2=chi2), "1.0": dict(chi2=chi2 + 1), "5.0": dict(chi2=chi2 + 5), "20.0": dict(chi2=chi2 + 50)})
 
 
@@ -251,7 +251,7 @@ def test_the_rung_gate_passes_a_converged_run_and_refuses_each_defect(tmp_path):
     assert _uj.write_gate(tmp_path / "gate_x.txt", "x", good)
     text = (tmp_path / "gate_x.txt").read_text(encoding="utf-8")
     assert text.splitlines()[-1] == "GATE PASS" and "power-arm verdict for session P" in text
-    for defect in ("moved", "spread", "nan_bar", "no_verdict", "free_above", "chi2_red", "session_starved", "beta_far_from_theory", "laser_over_bound"):
+    for defect in ("moved", "spread", "nan_bar", "no_verdict", "free_above", "chi2_red", "session_starved", "session_overweight", "beta_far_from_theory", "laser_over_bound"):
         cells = [dict(c) for c in base]
         if defect == "moved":
             cells[1]["centre_moved"] = 0.5
@@ -264,11 +264,13 @@ def test_the_rung_gate_passes_a_converged_run_and_refuses_each_defect(tmp_path):
         elif defect == "chi2_red":
             cells[1]["chi2_red"] = 3.0
         elif defect == "session_starved":
-            cells[1]["chi2_red_session"] = {"P": 1.0, "E": 0.21}   # the evening rows costing nothing (2026-09-14)
+            cells[1]["chi2_red_session"] = {"P": 1.4, "E": 0.86}   # the evening at 0.86 against a pool of 1.4: its rows cost too little (the seat's subtraction bound, 2026-09-14)
         elif defect == "beta_far_from_theory":
-            cells[1]["beta_profile"] = {"0.0": dict(chi2=1000.0), "1.0": dict(chi2=1000.0 + 5066.5), "5.0": dict(chi2=1000.0 + 189.5), "20.0": dict(chi2=1000.0 + 97796.9)}   # the committed Gaussian cell
+            cells[1]["beta_profile"] = {"0.0": dict(chi2=1000.0), "1.0": dict(chi2=1000.0 + 4762.1), "5.0": dict(chi2=1000.0 + 90.4), "20.0": dict(chi2=1000.0 + 88085.3)}   # the committed Gaussian cell
+        elif defect == "session_overweight":
+            cells[1]["n_eff_session"] = {"P": 1000.0, "E": 3000.0}; cells[1]["n_traces_session"] = {"P": 100, "E": 20}   # the evening's 48 per cent with 20 per cent of the traces
         elif defect == "laser_over_bound":
-            cells[1]["params"] = {"beta_rel": 0.0, "sigma_l_T": 2.58}   # the Gaussian best cell's T width against the 1.2 MHz bound
+            cells[1]["params"] = {"beta_rel": 0.0, "sigma_l_T": 2.704}   # the Gaussian best cell's T width against the 2.4 MHz transition-axis bound
         m = {} if defect == "no_verdict" else meas
         checks = _uj.gate_checks(cells, {"mixed": (summ, cells[1])}, m, True)
         assert not all(ok for _, ok, _ in checks), defect
@@ -431,7 +433,8 @@ def test_the_file_is_registered_and_its_summary_rows_carry_the_check():
         summ = [r for r in rows if r["row_kind"] == "summary_minimum" and r["form"] == form]
         assert len(summ) == 1, form
         s = summ[0]
-        assert s["bound_kind"] in ("interior_minimum", "one_sided_upper_bound", "one_sided_lower_bound")
+        assert s["bound_kind"] in ("interior_minimum", "one_sided_upper_bound", "one_sided_lower_bound",
+                                   "one_sided_lower_bound_unresolved", "one_sided_upper_bound_unresolved")
         assert s["power_arm_refused"] in ("True", "False") and s["power_ratio_meas"]
         assert s["power_arm_pooled_refused"] in ("True", "False")
         assert s["status"] == "DIAGNOSTIC"
@@ -447,3 +450,21 @@ def test_the_file_is_registered_and_its_summary_rows_carry_the_check():
         assert [r for r in rows if r["row_kind"] == "power_arm_pooled" and r["form"] == form]
     assert [r for r in rows if r["row_kind"] == "width_vs_power_committed"]
     assert all(";" not in v for r in rows for v in r.values())
+
+def test_a_profile_still_falling_at_the_grid_edge_is_unresolved_and_no_bound():
+    """W1j finding F2: the fine_all gaussian and mixed minima sit on the last grid point with
+    a rise of about 30 per 2 um step against the resolve threshold, so the crossing cannot be
+    read and the minimum is off the grid. The kind must say unresolved, the bound stay blank,
+    both estimates and the rise be carried, and the gate must not count it as a bound."""
+    ws = [80.0, 82.0, 84.0, 86.0, 88.0, 90.0]
+    chi2s = [1150.0, 1120.0, 1093.6, 1062.4, 1028.1, 1000.0]
+    s = _uj.profile_summary(ws, chi2s)
+    assert s["kind"] == "one_sided_lower_bound_unresolved", s
+    assert not np.isfinite(s["bound95"])
+    assert s["edge_rise_levels"] > _uj.RESOLVE_LEVELS
+    assert np.isfinite(s["bound95_linear"]) and np.isfinite(s["bound95_parabola"])
+    assert s["bound95_linear"] < 90.0 and s["bound95_parabola"] < 90.0
+    # a resolved edge, the neighbour within the threshold, stays a bound
+    s2 = _uj.profile_summary(ws, [1010.0, 1006.0, 1004.0, 1002.5, 1001.0, 1000.0])
+    assert s2["kind"] == "one_sided_lower_bound" and np.isfinite(s2["bound95"]), s2
+

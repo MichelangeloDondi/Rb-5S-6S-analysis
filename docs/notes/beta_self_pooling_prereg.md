@@ -121,7 +121,7 @@ floors it already shows.
 * The van der Waals anchor bookkeeping: the referee argues the impact phase
   is set by the difference of upper- and lower-state coefficients, so the
   anchor ratio should use Delta C6 = C6(5S+nS) - C6(5S+5S), moving the 6S
-  anchor from 3.53 to 3.38 kHz per 10^12 cm^-3, inside its quoted error.
+  anchor from 3.53 to an earlier 3.38 kHz per 10^12 cm^-3, inside its quoted error (3.40 since 2026-09-14).
   To be adjudicated against `rb5s6s/vanderwaals.py` on its own evidence.
 * The 6S to 4D interval is 777 inverse centimetres, under three thermal
   quanta at 400 K, so collisional transfer is an open inelastic channel and

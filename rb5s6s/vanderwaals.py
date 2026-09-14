@@ -45,10 +45,27 @@ error bound on the Lindholm-Foley approximation (~4%, section 4.3.2) is for a
 J=1 excited-state ANGULAR average that our S-S pair does not have (S states
 carry no such tensor to average over, so the scalar formula is exact in that
 respect); it is quoted here only to note that it is far smaller than the
-~18% gap between this module's corrected 7S prediction and Zameroski's
-measured rate (see `beta_self_anchored` below), and so cannot explain that
-gap either -- the gap is attributed to the dropped core/tail and the mean-
-speed approximation, both already named above.
+gap this module carried until 2026-09-14 between its 7S prediction and
+Zameroski's measured rate; that gap was the integral's sign error on the
+downward lines (next paragraph), and with the direct sum the 7S prediction
+sits 4 per cent above the measurement, inside its bar.
+
+THE INTEGRAL IS EXACT ONLY FOR UPWARD TRANSITIONS (found 2026-09-14, the day the
+owner asked whether this coefficient is trustable). The Casimir-Polder identity
+rests on 1/(a+b) = (2/pi) int ab/((a^2+w^2)(b^2+w^2)) dw, which holds for a, b > 0.
+A 6S or 7S atom has DOWNWARD transitions (6S -> 5P; 7S -> 5P, 6P), whose energy
+denominators are negative, and for a < 0 < b the integral returns -1/(|a|+b)
+where the second-order sum has 1/(b-|a|). The two differ in sign and size, so
+the integral undercounted C6(5S+6S) by a factor 1.87 and C6(5S+7S) by 1.94. The
+pair coefficients now come from `c6_direct`, the second-order sum with signed
+denominators, which is exact for a non-degenerate pair and equals the integral
+to eight digits on the ground pair, where every transition is upward. The
+integral stays as the ground-state validation path. The 18 per cent gap the
+docstring below used to attribute to the dropped core and tail was this sign
+error: with the direct sum the first-principles 7S rate sits 4 per cent ABOVE
+Zameroski's measurement, inside its 8.5 per cent bar. The anchored 6S value
+barely moves (3.38 to 3.40 kHz per 1e12 cm^-3), because the error is common
+to both rungs and cancels in the ratio, which is what the anchor was for.
 
 VALIDATION, which is the point of doing the ground state first: the same
 machinery gives C6(5S+5S) = 4180 a.u. against a literature Rb2 value of
@@ -102,7 +119,48 @@ ZAMEROSKI_7S_BROADENING_ERR = 11.0
 # (2 * 4.04 = 8.08, matching this constant to 0.9%, plausible literature
 # rounding). Quoted from the standard pressure-broadening literature, NOT
 # derived here -- see the module docstring.
-LINDHOLM_FOLEY_PREFACTOR = 8.16
+LINDHOLM_FOLEY_PREFACTOR_QUOTED = 8.16   # the literature rounding this module carried until 2026-09-14
+
+
+def impact_prefactors() -> dict:
+    """The Lindholm-Foley prefactors for a -C6/R^6 potential, DERIVED.
+
+    Straight-line path, impact parameter b, relative speed v: the phase
+    accumulated in one collision is eta(b) = (3 pi / 8) C6 / (hbar v b^5). The
+    width and shift cross-sections are
+
+        sigma_w = 2 pi int_0^inf [1 - cos eta(b)] b db,
+        sigma_d = 2 pi int_0^inf  sin eta(b)      b db,
+
+    and with t = eta the integrals close on the Gamma function:
+    int_0^inf (1 - cos t) t^(-7/5) dt = -Gamma(-2/5) cos(pi/5) and
+    int_0^inf  sin t      t^(-7/5) dt = -Gamma(-2/5) sin(pi/5), each times 1/5
+    from the substitution. So
+
+        HWHM = n v sigma_w = 4.0414 n (C6/hbar)^(2/5) v^(3/5),
+        FWHM = 8.0828 ...,   shift / HWHM = tan(pi/5) = 0.7265.
+
+    The quoted 8.16 was 1.0 per cent high. Returns the three numbers.
+    """
+    g = -math.gamma(-0.4)
+    i_c = g * math.cos(0.2 * math.pi) / 5.0
+    i_s = g * math.sin(0.2 * math.pi) / 5.0
+    a = (3.0 * math.pi / 8.0) ** 0.4
+    hwhm = 2.0 * math.pi * i_c * a
+    return {"hwhm": hwhm, "fwhm": 2.0 * hwhm, "shift_over_hwhm": i_s / i_c}
+
+
+LINDHOLM_FOLEY_PREFACTOR = impact_prefactors()["fwhm"]   # 8.0828, derived above
+
+
+def speed_average_factor(p: float = 0.6) -> float:
+    """<v^p> over the Maxwell distribution of the RELATIVE speed, divided by
+    vbar^p with vbar the mean relative speed: the impact width goes as v^(3/5),
+    and averaging the power of the speed is not the power of the average.
+    <v^p> = (2kT/mu)^(p/2) 2 Gamma((p+3)/2) / sqrt(pi); vbar = sqrt(8kT/(pi mu)).
+    At p = 3/5 the factor is 0.9775, so the mean-speed form is 2.3 per cent high.
+    """
+    return 2.0 * math.gamma((p + 3.0) / 2.0) / math.sqrt(math.pi) / (4.0 / math.pi) ** (p / 2.0)
 
 
 def alpha_imaginary(lines, w_au: float, upper_cm: float = 0.0,
@@ -135,6 +193,30 @@ def c6_coefficient(lines_a, upper_a: float, lines_b, upper_b: float,
     return float(3.0 / math.pi * trapezoid(fa * fb, w))
 
 
+def c6_direct(lines_a, upper_a: float, lines_b, upper_b: float) -> float:
+    """C6 (a.u.) as the second-order sum with SIGNED denominators,
+
+        C6 = (1/6) sum_k sum_l d_k^2 d_l^2 / (Delta_k + Delta_l),
+
+    Delta the transition energy from the state (negative for a downward
+    line), d the reduced E1 matrix element, 1/6 the scalar J = 1/2 angular
+    factor (the same 1/6 as `alpha_imaginary`'s prefactor squared times the
+    3/pi of the integral, which is how the two agree when every Delta > 0).
+    Exact for a non-degenerate pair; the imaginary-frequency integral is its
+    special case for a ground-state pair. The exchange term of the same order,
+    which couples |6S,5S> to |5S,6S> through |nP,n'P>, splits the pair
+    potential into C6 (1 +- 0.23) branches whose (1 +- 0.23)^(2/5) average is
+    0.994: sized, not carried.
+    """
+    s = 0.0
+    for ea, da, _ in lines_a:
+        d_a = (ea - upper_a) / CM_PER_HARTREE
+        for eb, db, _ in lines_b:
+            d_b = (eb - upper_b) / CM_PER_HARTREE
+            s += da * da * db * db / (d_a + d_b)
+    return s / 6.0
+
+
 def c6_5s5s() -> float:
     """Ground-state Rb2 C6 -- the validation number, not a result."""
     return c6_coefficient(LINES_5S, 0.0, LINES_5S, 0.0)
@@ -146,7 +228,13 @@ def c6_5s6s() -> float:
     This is the pair coefficient, not the broadening input: what enters
     `beta_self_vdw` is this minus `c6_5s5s`.
     """
-    return c6_coefficient(LINES_5S, 0.0, LINES_6S, E_6S_CM)
+    return c6_direct(LINES_5S, 0.0, LINES_6S, E_6S_CM)
+
+
+def c6_5s7s() -> float:
+    """C6 for the Rb(5S)+Rb(7S) asymptote, the anchor rung's pair coefficient."""
+    from .polarizability import LINES_7S, E_7S_CM
+    return c6_direct(LINES_5S, 0.0, LINES_7S, E_7S_CM)
 
 
 def mean_relative_speed(T_K: float) -> float:
@@ -159,15 +247,16 @@ def beta_self_anchored(T_K: float = 403.15, n_cm3: float = 1e12) -> dict:
     module only for the RATIO of van der Waals coefficients -- of their
     DIFFERENCES against the ground pair, for the reason set out below.
 
-    Why not just call beta_self_vdw for 6S: run against the one state where a
-    measurement exists, this module gives beta_self(7S) = 4.40 kHz per
-    1e12 cm^-3 where Zameroski measured 5.4 -- 18% low, just past the
-    +-10-15% envelope the dropped core/tail and the mean-speed-vs-full-
-    Boltzmann-average approximation already predict (see module docstring).
-    An earlier version of this module double-applied the HWHM->FWHM
-    conversion in `beta_self_vdw` and reported this as "high by 1.67x";
-    that was a bug in the code, not a physical discrepancy -- see
-    docs/PREREGISTRATION_RESULTS.md Addendum 23. NOT the same thing as
+    Why anchor at all when beta_self_vdw runs on 6S directly: the absolute
+    recipe depends on the matrix-element tables' completeness and on the
+    dropped core, and the anchor takes its scale from an experiment. Run
+    against the one state where a measurement exists, the recipe now gives
+    beta_self(7S) = 5.61 kHz per 1e12 cm^-3 where Zameroski measured 5.39,
+    4 per cent high and inside his bar (it read 4.40, 18 per cent low, while
+    the pair coefficients came from the integral: A250). An earlier version
+    double-applied the HWHM->FWHM conversion in `beta_self_vdw` and reported
+    "high by 1.67x"; that was a bug in the code, not a physical discrepancy
+    (docs/PREREGISTRATION_RESULTS.md Addendum 23). NOT the same thing as
     Lewis 1980's own quoted ~4% Lindholm-Foley error (docs/lit/lewis1980.md):
     that 4% is for a J=1 angular average this S-S pair does not carry.
 
@@ -187,15 +276,16 @@ def beta_self_anchored(T_K: float = 403.15, n_cm3: float = 1e12) -> dict:
     from the same truncated sum and the truncation partly cancels. Using 4691
     instead moves the answer to 3.36, half a per cent, far inside the envelope.
 
-    Returns ~3.38 kHz per 1e12 cm^-3. Before the difference correction of
-    2026-08-05 this read 3.53, a 4.1 per cent shift and inside the +-0.30
-    quoted error. Both sit between the raw 5.9 and the ~1 kHz that an older
+    Returns ~3.40 kHz per 1e12 cm^-3 (3.38 with the integral's pair
+    coefficients, 2026-08-05 to 2026-09-14; 3.53 before the difference
+    correction of 2026-08-05). The quoted error is Zameroski's alone; the
+    error budget of the recipe itself is in docs/wiki/self-broadening.md. Both sit between the raw 5.9 and the ~1 kHz that an older
     n*^7 Rydberg scaling of a MISATTRIBUTED self-shift used to give.
     """
     from .polarizability import LINES_5S, LINES_6S, LINES_7S, E_6S_CM, E_7S_CM
-    c6_5 = c6_coefficient(LINES_5S, 0.0, LINES_5S, 0.0)
-    c6_6 = c6_coefficient(LINES_5S, 0.0, LINES_6S, E_6S_CM)
-    c6_7 = c6_coefficient(LINES_5S, 0.0, LINES_7S, E_7S_CM)
+    c6_5 = c6_direct(LINES_5S, 0.0, LINES_5S, 0.0)
+    c6_6 = c6_direct(LINES_5S, 0.0, LINES_6S, E_6S_CM)
+    c6_7 = c6_direct(LINES_5S, 0.0, LINES_7S, E_7S_CM)
     dc6_6, dc6_7 = c6_6 - c6_5, c6_7 - c6_5
     n_per_mtorr = (1e-3 * _C.TORR_PA) / (KB * T_K) * 1e-6      # cm^-3 per mTorr
     beta7_meas = ZAMEROSKI_7S_BROADENING_KHZ_PER_MTORR / (n_per_mtorr / n_cm3)
@@ -203,6 +293,8 @@ def beta_self_anchored(T_K: float = 403.15, n_cm3: float = 1e12) -> dict:
     scale = (dc6_6 / dc6_7) ** 0.4
     return {"beta6_khz": beta7_meas * scale,
             "beta6_err_khz": err7 * scale,
+            "beta6_first_principles_khz": beta_self_vdw(dc6_6, T_K, n_cm3) / 1e3,
+            "c6_5s5s_au": c6_5, "c6_5s6s_au": c6_6, "c6_5s7s_au": c6_7,
             "beta7_measured_khz": beta7_meas,
             "beta7_predicted_khz": beta_self_vdw(dc6_7, T_K, n_cm3) / 1e3,
             "dc6_ratio": dc6_6 / dc6_7,
@@ -254,5 +346,6 @@ def beta_self_vdw(delta_c6_au: float, T_K: float, n_cm3: float = 1e12,
     c6_rate = c6_si / HBAR                            # rad/s m^6
     v = mean_relative_speed(T_K)
     n = n_cm3 * 1e6                                   # m^-3
-    fwhm_ang = prefactor * c6_rate ** 0.4 * v ** 0.6 * n
+    # <v^(3/5)> over the Maxwell relative-speed distribution, not vbar^(3/5)
+    fwhm_ang = prefactor * c6_rate ** 0.4 * v ** 0.6 * speed_average_factor(0.6) * n
     return fwhm_ang / (2.0 * math.pi)

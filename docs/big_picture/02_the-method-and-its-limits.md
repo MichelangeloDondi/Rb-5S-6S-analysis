@@ -245,15 +245,16 @@ the missing entry. A measured β_self(6S) closes that series.
 dipole-dipole term and the leading interaction is van der Waals, which means
 the coefficient follows from the same matrix elements that produced Δα(993),
 continued to imaginary frequency: C₆ = (3/π)∫α_5S(iω)α_6S(iω)dω. That gives
-**C₆(5S+6S) ≈ 2.9×10⁴ a.u.**
+**C₆(5S+6S) ≈ 5.4×10⁴ a.u.**
 
 That absolute value should not be used on its own, and the reason is worth
 stating. Run on 7S, the one nS state in Rb whose self-broadening has been
-measured at all, the same code returns 4.40 kHz per 10¹² cm⁻³ against
-Zameroski 2014's measured 5.4 (129 ± 11 kHz/mTorr, converted at 403 K), 18%
-low. That is close to (a bit past) the
-±10–15% the valence-only truncation and the mean-speed approximation explain
-(addendum 23 of [PREREGISTRATION_RESULTS.md](../PREREGISTRATION_RESULTS.md)
+measured at all, the same code returns 5.61 kHz per 10¹² cm⁻³ against
+Zameroski 2014's measured 5.4 (129 ± 11 kHz/mTorr, converted at 403 K), 4 per
+cent high and inside that measurement's bar. Before 2026-09-14 it returned 4.40,
+18 per cent low, because the pair coefficients came from an imaginary-frequency
+integral that mishandles an excited atom's downward lines (register A250,
+addendum 23 of [PREREGISTRATION_RESULTS.md](../PREREGISTRATION_RESULTS.md)
 records an earlier, larger gap and the coding error behind it). The
 (C₆/ħ)^0.4 v^0.6 scaling itself is [Lewis 1980](../lit/lewis1980.md)'s
 (*Phys. Rep.* **58**, 1 (1980)) primary phase-shift derivation for an n=6
@@ -271,9 +272,9 @@ The Lindholm-Foley prefactor, the mean-speed step and the dropped core
 and tail are common to the 6S and 7S rungs and divide out of the ratio.
 The ground-pair subtraction is not that kind of error and does not
 cancel, which is why the assumed ratio is a ratio of differences: with
-ΔC₆(6S) = 24728 and ΔC₆(7S) = 79048 a.u., the ratio 0.3128 enters
+ΔC₆(6S) = 49805 and ΔC₆(7S) = 157294 a.u., the ratio 0.3166 enters
 through the (ΔC₆/ħ)^0.4 scaling and scales the *measured* 7S rate of
-5.386 kHz per 10¹² cm⁻³ by 0.3128^0.4 = 0.628, giving
+5.386 kHz per 10¹² cm⁻³ by 0.3166^0.4 = 0.631, giving
 
 **β_self(6S) = 3.4 kHz per 10¹² cm⁻³** (±0.29 from the anchor
 measurement alone, envelope ±10–15% overall),

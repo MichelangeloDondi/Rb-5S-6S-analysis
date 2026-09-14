@@ -301,7 +301,7 @@
   "quoting_sites": [
    {
     "file": "docs/LITERATURE.md",
-    "line": 208,
+    "line": 209,
     "writes": "24"
    }
   ],
@@ -313,7 +313,7 @@
   "quoting_sites": [
    {
     "file": "docs/LITERATURE.md",
-    "line": 208,
+    "line": 209,
     "writes": "0.24"
    }
   ],
@@ -325,7 +325,7 @@
   "quoting_sites": [
    {
     "file": "docs/LITERATURE.md",
-    "line": 208,
+    "line": 209,
     "writes": "0.0098"
    }
   ],
@@ -338,11 +338,11 @@
    {
     "file": "docs/UNCERTAINTY.md",
     "line": 446,
-    "writes": "0.87"
+    "writes": "0.88"
    }
   ],
   "source_file": "results/collisional_shift_bound.csv",
-  "source_value": "0.874"
+  "source_value": "0.878"
  },
  "collisional_shift_bound:expectation:shift_expected_differential": {
   "producer": "run_collisional_shift_bound.py",
@@ -354,7 +354,7 @@
    }
   ],
   "source_file": "results/collisional_shift_bound.csv",
-  "source_value": "0.03170"
+  "source_value": "0.03186"
  },
  "cumulant_window_check:kappa1_window_excess_pct:gc0.55": {
   "producer": "run_cumulant_window_check.py",
@@ -1692,7 +1692,7 @@
   "quoting_sites": [
    {
     "file": "docs/LITERATURE.md",
-    "line": 352,
+    "line": 353,
     "writes": "7.23"
    },
    {
@@ -1714,7 +1714,7 @@
   "quoting_sites": [
    {
     "file": "docs/LITERATURE.md",
-    "line": 351,
+    "line": 352,
     "writes": "6.48"
    },
    {
@@ -3229,12 +3229,12 @@
    },
    {
     "file": "docs/FUTURE_TRANSITIONS_titsapph.md",
-    "line": 456,
+    "line": 459,
     "writes": "-1131.8"
    },
    {
     "file": "docs/LITERATURE.md",
-    "line": 711,
+    "line": 712,
     "writes": "-1131.8"
    },
    {
@@ -3291,12 +3291,12 @@
    },
    {
     "file": "docs/FUTURE_TRANSITIONS_titsapph.md",
-    "line": 456,
+    "line": 459,
     "writes": "5.9"
    },
    {
     "file": "docs/LITERATURE.md",
-    "line": 711,
+    "line": 712,
     "writes": "5.9"
    },
    {
@@ -3561,7 +3561,7 @@
   "quoting_sites": [
    {
     "file": "docs/FUTURE_TRANSITIONS_titsapph.md",
-    "line": 496,
+    "line": 499,
     "writes": "48.59"
    }
   ],
@@ -3573,7 +3573,7 @@
   "quoting_sites": [
    {
     "file": "docs/FUTURE_TRANSITIONS_titsapph.md",
-    "line": 496,
+    "line": 499,
     "writes": "49.78"
    }
   ],

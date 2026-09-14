@@ -174,8 +174,10 @@ TEMPS = (70.0, 90.0, 110.0, 130.0)
 T_SWEEP_POWER_MW = 225.0             # the blank manifest power (docs/DATA.md)
 DCHI2_ONE_SIGMA = 1.0
 BETA_THEORY_DCHI2_MAX = 9.0      # dchi2 at the theory coefficient beyond 3 sigma one-sided: the form fails on beta (W1i finding)
-SIGMA_L_MAX_MHZ = 1.2            # the record's laser-width bound (docs/RESULTS.md, the laser paragraph); a session above it has taken the transit
-SESSION_CHI2_RED_BAND = (0.8, 1.25)   # a session outside it has no vote (2026-09-14)
+SIGMA_L_MAX_MHZ = K.SIGMA_LASER_BOUND_2025_TRANSITION_MHZ   # 2.4 MHz on the TRANSITION axis, the axis of every sigma_l here (W1j finding F1: the per-photon 1.2 was read against a transition-axis width)
+SESSION_CHI2_RED_BAND = (0.8, 1.25)   # the absolute band, kept as the record of W1j; the admission is RELATIVE (below)
+SESSION_CHI2_REL_TOL = 0.10           # a session's chi2_red within 10 per cent of the pooled value (W1j finding F3: model misfit is common-mode, a noise-law error is per session)
+SESSION_VOTE_SHARE_MAX = 2.0          # a session's share of n_eff at most twice its share of the traces (W1j finding F4: the evening's tau_int at the white floor gave 46 traces half the vote)
 RESOLVE_LEVELS = 4.0          # a crossing is read off the grid only within this many levels of rise per step
 DCHI2_ONE_SIDED_95 = 2.71
 POWER_ARM_REFUSAL_BARS = 1.0
@@ -202,8 +204,6 @@ SESSION_LADDER_W = {"P": (0.025, 0.225), "E": (0.09, 0.27), "M": (0.035, 0.21), 
 # timing of the 40 um cell railed there and took 520 s where 64 um took 15.
 # The Omega scale and beta have no wall of their own so that the prior, or
 # the profile, and not a bound is what the reader sees.
-# THE EVENING RATE'S BOX IS WIDENED (2026-09-14): it sat on the old +-25 per cent wall
-# in every admitted cell, and a wall no gate reads makes every bar conditional.
 # THE EVENING RATE'S BOX IS WIDENED (2026-09-14): it sat on the old +-25 per cent wall
 # in every admitted cell, and a wall no gate reads makes every bar conditional.
 BOUNDS = {"beta_rel": (0.0, 40.0), "sigma_l": (0.2, 6.0), "omega_scale": (0.0, 3.0),
@@ -909,6 +909,50 @@ def width_vs_power_rows(widths: dict, meas_committed: dict) -> list[dict]:
 
 
 # ------------------------------------------------------------------ one cell
+def _n_by_session(traces) -> tuple[dict, dict]:
+    """Effective samples and trace counts per session, the vote's own bookkeeping."""
+    ne, nt = {}, {}
+    for t in traces:
+        ne[t["session"]] = ne.get(t["session"], 0.0) + t["n"] / t["tau"]
+        nt[t["session"]] = nt.get(t["session"], 0) + 1
+    return ne, nt
+
+
+def _diag_task(job):
+    """Per-session chi2_red and effective samples for a SAVED cell fitted before
+    they were carried: the cell rebuilt from its spec, the parameters read back,
+    the centres re-profiled at them. No fit, so the cell's numbers do not move."""
+    idx, rec, design_spec = job
+    traces = _load(design_spec)
+    cell = Cell(rec["spec"], traces)
+    p = np.array([float(rec["params"][n]) for n in cell.names], float)
+    centres = np.array([cell.centre(i, p)[0] for i in range(len(traces))])
+    ne, nt = _n_by_session(traces)
+    return dict(idx=idx, chi2_red_session=cell.chi2_by_session(p, centres), n_eff_session=ne, n_traces_session=nt)
+
+
+def fill_session_diagnostics(base, design_spec, workers: int, session_traces=()) -> int:
+    """Fill the per-session diagnostics into every saved cell that lacks them
+    (W1j findings F3 to F5: the committed cells were fitted before the checks
+    existed and the gate refused them for it). Returns the count filled."""
+    todo = [(i, r, design_spec) for i, r in enumerate(base) if not r.get("chi2_red_session") or not r.get("n_eff_session")]
+    if not todo:
+        return 0
+    print(f"  per-session diagnostics for {len(todo)} saved cell(s) that were fitted before they were carried", flush=True)
+    out = {}
+    if workers <= 0:
+        _init_worker(session_traces)
+        for j in todo:
+            r = _diag_task(j); out[r["idx"]] = r
+    else:
+        with ProcessPoolExecutor(max_workers=workers, initializer=_init_worker, initargs=(list(session_traces),)) as ex:
+            for fu in as_completed([ex.submit(_diag_task, j) for j in todo]):
+                r = fu.result(); out[r["idx"]] = r
+    for i, r in out.items():
+        base[i]["chi2_red_session"], base[i]["n_eff_session"], base[i]["n_traces_session"] = r["chi2_red_session"], r["n_eff_session"], r["n_traces_session"]
+    return len(todo)
+
+
 def _cell_task(job):
     """One grid point: everything refit from every start, the conditional
     bars, the beta profile and the power-arm checks at the best start.
@@ -975,7 +1019,7 @@ def _cell_task(job):
                     ref["transit"], ref["omega_ref"], "4192", cell.cycles),
                 z_ratio=cell.z_ratio, licensed=lic["licensed"], w0_edge_um=lic["w0_min_m"] * 1e6,
                 preds=preds, preds_fitted=preds_fitted, seconds=time.time() - t0,
-                chi2_red_session=chi2_red_session,
+                chi2_red_session=chi2_red_session, n_eff_session=_n_by_session(traces)[0], n_traces_session=_n_by_session(traces)[1],
                 delta_alpha=cell.delta_alpha, rho=cell.rho, law=cell.law_name, sessions=cell.sessions,
                 beta_profile={str(k): v for k, v in beta_profile.items()},
                 at_bound=at_bound_of(cell.names, best["p"], bars),
@@ -1113,6 +1157,17 @@ def profile_summary(ws, chi2s, chi2_red=1.0) -> dict:
     else:
         out["kind"] = "one_sided_lower_bound"
         out["bound95"] = cross(DCHI2_ONE_SIDED_95, -1)
+        if not np.isfinite(out["bound95"]) and j >= 1:
+            # THE PROFILE IS STILL FALLING AT THE GRID EDGE (W1j finding F2): the fine_all
+            # gaussian and mixed minima sit on the last point with rises of 31 and 28 per
+            # step against the resolve threshold of 10.8, so the crossing is unresolved and
+            # the minimum is off the grid; the kind says so and both estimates ride beside
+            # the rise, and the gate reads an unresolved edge as no bound at all.
+            _k = (chi2s[j - 1] - cmin) / (ws[j] - ws[j - 1]) ** 2
+            out["kind"] = "one_sided_lower_bound_unresolved"
+            out["edge_rise_levels"] = float((chi2s[j - 1] - cmin) / DCHI2_ONE_SIDED_95)
+            out["bound95_linear"] = float(ws[j] - (ws[j] - ws[j - 1]) * DCHI2_ONE_SIDED_95 / max(chi2s[j - 1] - cmin, 1e-12))
+            out["bound95_parabola"] = float(ws[j] - math.sqrt(DCHI2_ONE_SIDED_95 / _k)) if _k > 0 else float("nan")
     return out
 
 
@@ -1326,9 +1381,10 @@ def summary_rows(base, arms, props, meas, widths, laws_rows, grid_ws, forms_run,
         else:
             if summ["kind"].endswith("_unresolved"):
                 note += (f"the Delta chi2 = {DCHI2_ONE_SIDED_95:g} crossing sits between the best cell and its neighbour, unresolved on this step: "
-                         f"{summ.get('bound95_linear', float('nan')):.1f} um by linear interpolation, {summ.get('bound95_parabola', float('nan')):.1f} um by a parabola through the neighbour; the cell is not the bound. ")
-            note += (f"the bound is the Delta chi2 = {DCHI2_ONE_SIDED_95:g} crossing against the grid's edge, which at "
-                     f"M2 1 is also the convolution licence edge 40 um sqrt(M2). ")
+                         f"{summ.get('bound95_linear', float('nan')):.1f} um by linear interpolation, {summ.get('bound95_parabola', float('nan')):.1f} um by a parabola through the neighbour, and the cell is not the bound. ")
+            else:
+                note += (f"the bound is the Delta chi2 = {DCHI2_ONE_SIDED_95:g} crossing against the grid's edge, which at "
+                         f"M2 1 is also the convolution licence edge 40 um sqrt(M2). ")
         note += ("the parameters and the power-arm checks are those of the best grid cell. the frequency axis carries "
                  "a common 0.5 per cent scale (linefit_conditions rate_relerr), so no bar on w0 below 0.5 per cent is a bar. "
                  "the model-form spread across the forms is the bar between the summary rows")
@@ -1474,7 +1530,7 @@ def gate_checks(base, summaries, meas, coarse: bool) -> list[tuple[str, bool, st
     bad = [n for r in base for n, v in r["errs"].items() if not np.isfinite(v)]
     chk("every Hessian bar finite", not bad, f"non-finite: {sorted(set(bad))}" if bad else "all finite")
     for form, (summ, best) in summaries.items():
-        chk(f"{form}: a shape minimum or bound found", summ["kind"] in ("interior_minimum", "one_sided_upper_bound", "one_sided_lower_bound", "one_sided_lower_bound_unresolved"),
+        chk(f"{form}: a shape minimum or bound found", summ["kind"] in ("interior_minimum", "one_sided_upper_bound", "one_sided_lower_bound"),
             f"{summ['kind']} at w0 = {summ['w0']:.2f} um" + (f" +- {summ['w0_err']:.2f} (parabola)" if np.isfinite(summ["w0_err"]) else "")
             + (f", bound95 {summ['bound95']:.2f}" if np.isfinite(summ["bound95"]) else ""))
         for sess in best["sessions"]:
@@ -1503,15 +1559,30 @@ def gate_checks(base, summaries, meas, coarse: bool) -> list[tuple[str, bool, st
             f"dchi2 at theory {_bt:.1f} against {BETA_THEORY_DCHI2_MAX:g}")
         _sl = {k: v for k, v in best["params"].items() if k.startswith("sigma_l") and np.isfinite(v)}
         _over = {k: v for k, v in _sl.items() if v > SIGMA_L_MAX_MHZ}
-        chk(f"{form}: every laser width under the record's {SIGMA_L_MAX_MHZ:g} MHz bound at the best cell", not _over,
+        chk(f"{form}: every laser width under the record's {SIGMA_L_MAX_MHZ:g} MHz transition-axis bound at the best cell", not _over,
             "all under" if not _over else "over: " + ", ".join(f"{k} {v:.2f}" for k, v in sorted(_over.items())))
         # A SESSION'S NOISE LAW SETS ITS VOTE (2026-09-14): a session whose rows cost
         # nothing has free nuisances, and one whose rows cost too much is misfit;
         # either refuses the cell and names the session.
-        _cs = best.get("chi2_red_session", {})
-        _bad = {s: v for s, v in _cs.items() if not (SESSION_CHI2_RED_BAND[0] <= v <= SESSION_CHI2_RED_BAND[1])}
-        chk(f"{form}: every session's chi2_red inside {list(SESSION_CHI2_RED_BAND)} at the best cell", bool(_cs) and not _bad,
-            "no per-session chi2 in this cell" if not _cs else ("all admitted: " if not _bad else "REFUSED sessions: ") + ", ".join(f"{s} {v:.3f}" for s, v in sorted(_cs.items())))
+        # RELATIVE TO THE POOL (W1j finding F3): on the design without the evening the pooled
+        # chi2_red is 1.36 and every calibrated session sits near it, so an absolute band refused
+        # the calibrated sessions and could not see the evening at 0.86; a wrong kernel moves every
+        # session together and only a session's own noise law moves its ratio to the pool.
+        _cs = best.get("chi2_red_session") or {}
+        _pool = float(best.get("chi2_red", float("nan")))
+        _bad = {s: v for s, v in _cs.items() if not (abs(v / _pool - 1.0) <= SESSION_CHI2_REL_TOL)}
+        chk(f"{form}: every session's chi2_red within {100 * SESSION_CHI2_REL_TOL:.0f} per cent of the pooled value at the best cell", bool(_cs) and not _bad,
+            "no per-session chi2 in this cell" if not _cs else (f"pooled {_pool:.3f}, " + ("all admitted: " if not _bad else "REFUSED sessions: ")
+            + ", ".join(f"{s} {v:.3f} ({v / _pool:.2f} of the pool)" for s, v in sorted(_cs.items()))))
+        # A SESSION'S VOTE IS ITS EFFECTIVE SAMPLE (W1j finding F4): the evening session held 48 per
+        # cent of n_eff with 20 per cent of the traces because its tau_int sat at the white floor, and
+        # no other session calibrates that whitening.
+        _ne, _nt = best.get("n_eff_session") or {}, best.get("n_traces_session") or {}
+        _te, _tt = (sum(_ne.values()) or 1.0), (sum(_nt.values()) or 1.0)
+        _heavy = {s for s in _ne if _nt.get(s) and (_ne[s] / _te) / (_nt[s] / _tt) > SESSION_VOTE_SHARE_MAX}
+        chk(f"{form}: no session's share of n_eff exceeds {SESSION_VOTE_SHARE_MAX:g} times its share of the traces", bool(_ne) and not _heavy,
+            "no per-session n_eff in this cell" if not _ne else ("shares: " + ", ".join(
+                f"{s} {100 * _ne[s] / _te:.0f}% of n_eff with {100 * _nt.get(s, 0) / _tt:.0f}% of traces" + (" REFUSED" if s in _heavy else "") for s in sorted(_ne))))
         chk(f"{form}: no parameter at a wall in the best cell", not best.get("at_bound"), "none" if not best.get("at_bound") else "at a bound: " + " ".join(best["at_bound"]))
         worst = max((beta_profile_read(r)["free_above_profile_min"] for r in base if r["spec"]["form"] == form), default=0.0)
         chk(f"{form}: the free fit is the beta profile's minimum at every waist", worst <= DCHI2_ONE_SIGMA,
@@ -1736,7 +1807,11 @@ def main() -> int:
     # A SESSION WITHOUT A RULER ABSORBS THE KERNEL MISMATCH (2026-09-14, the fine grid):
     # the evening rate and laser width went to opposite walls under the Gaussian and
     # the Lorentzian kernel, so the design is also read with that session dropped.
-    sessions = [s for s in sessions if s not in valued["--drop-session"]]
+    _drop = set(valued["--drop-session"])
+    if _drop - set(sessions):
+        print(f"  REFUSED: --drop-session names {sorted(_drop - set(sessions))}, not among the sessions {sessions}", flush=True)
+        return 2
+    sessions = [s for s in sessions if s not in _drop]
     from _producer_lock import producer_lock
     with producer_lock("run_ultra_joint"):
         workers = n_workers()
@@ -1790,6 +1865,8 @@ def main() -> int:
             return 3
         if STALE_WALLS:
             print(f"  {len(STALE_WALLS)} saved cell(s) read against the live box (--accept-stale-walls): " + args[args.index("--accept-stale-walls") + 1], flush=True)
+        if valued["--arms-only"]:
+            fill_session_diagnostics(base, dspec, workers, session_traces)
         if "--no-stage2" not in args:
             arm_specs, prop_specs = stage2_specs(base, grid_ws, coarse, da, common)
             both = run_cells(arm_specs + prop_specs, dspec, workers, label="stage2 ", session_traces=session_traces)

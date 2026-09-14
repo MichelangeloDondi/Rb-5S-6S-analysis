@@ -530,7 +530,7 @@ CANONICAL = [
     dict(
         name="vdW anchor: the predicted 7S rate",
         value=lambda: f"{_vdw_beta7():.2f}",
-        find=re.compile(r"\b(4\.[0-9]{2})\s+kHz\s+per\s+10"),
+        find=re.compile(r"\b([0-9]\.[0-9]{2})\s+kHz\s+per\s+10"),   # any d.dd, not the 4.xx the guard was written around (it could not see the corrected 5.61, 2026-09-14)
         mode="all",
         # The note is absent here too: it carries the number only in
         # its before/after table, next to the retired 4.50.
