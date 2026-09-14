@@ -167,6 +167,9 @@ def test_every_results_producer_that_takes_minutes_holds_a_lock():
         # likelier and more damaging than for any sequential producer.
         "run_global_dataset_fit", "run_paired_reference_forecast",
         "run_scenario_forecast",
+        # the two windowed diagnostics of 2026-09-14, pooled over the
+        # canonical conditions and locked with the same producer lock
+        "run_cross_arm_ratios", "run_far_wing_level",
     }
     missing = sorted(s for s in slow
                      if "take_producer_lock"

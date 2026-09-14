@@ -542,10 +542,11 @@ LAMBDA_LASER_M = 993.4e-9              # drive wavelength (sets the Rayleigh ran
 # Beam geometry
 # --------------------------------------------------------------------------
 W0_MEASURED_M = 64e-6
-"""Beam waist, 64 um. ESTABLISHED: measured once on this apparatus lineage, in
-this configuration, and stated with its convention in a published paper.
-Enters the transit width (~1/w0) and all Stark magnitudes (~1/w0^2), so it is
-the dominant systematic and is used as measured.
+"""Beam waist, 64 um, A WORKING CONVENTION borrowed from the apparatus lineage
+(owner, 2026-09-10; E76): profiled once on that lineage, in that configuration,
+and stated in a published paper; not measured on this bench. Enters the transit
+width (~1/w0) and all Stark magnitudes (~1/w0^2), so it is the dominant
+systematic and every absolute result is conditional on it.
 
 THE MEASUREMENT, stated first because it is the reason this is not a prior.
 Nieddu et al., Opt. Express 27, 6528 (2019), page 6530, describing the
@@ -640,7 +641,12 @@ remains the way to measure THIS beam; it is now confirmatory rather than the
 sole route to a sane value."""
 
 W0_BAND_M = (62e-6, 68e-6)
-"""Prior band on w0 (m) around the measured 64 um central value.
+"""Working band on w0 (m) around the 64 um convention borrowed from the lineage.
+
+A CONVENTION AND NOT A MEASURED INTERVAL (E77, 2026-09-14): the first instrument
+that scans past it, scripts/run_ultra_joint.py, puts the two forms the power arm
+admits near 82 to 85 um on its coarse grid, conditional on a nuisance rate at
+its wall; the band moves only when the fine grid and the power arm agree.
 
 NOT the old transit-inferred range: since v3.0.0 the central value comes from
 an external lineage measurement (see W0_MEASURED_M), so this band expresses

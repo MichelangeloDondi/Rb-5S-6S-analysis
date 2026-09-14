@@ -266,9 +266,21 @@ FILE_STATUS = {
     # the four peaks as a two-by-two design (M44): the record's fits read
     # against its own terms, DIAGNOSTIC until the block systematic is carried.
     "four_peak_contrasts.csv": "DIAGNOSTIC",
+    # the far wing per condition and its line in N(T): the record's traces
+    # read on a channel the committed fits do not use, against the record's
+    # own widths, so DIAGNOSTIC throughout (2026-09-14).
+    "far_wing_level.csv": "DIAGNOSTIC",
+    # the cross-arm ratios of the windowed second cumulant against the model
+    # at the committed parameters: comparisons, no term measured, DIAGNOSTIC.
+    "cross_arm_ratios.csv": "DIAGNOSTIC",
     # the vapour-pressure laws and the archive's ladder against them (M45):
     # every row a comparison, none a measurement, so DIAGNOSTIC.
     "density_laws.csv": "DIAGNOSTIC",
+    # the waist profile over the archive under three laser-kernel forms, with
+    # the M2, depletion and propagation arms and the power-arm refusal per
+    # row (M48, 2026-09-14): a discrimination between forms conditional on
+    # the pinned terms, so DIAGNOSTIC throughout and never a waist.
+    "ultra_joint_fit.csv": "DIAGNOSTIC",
     # the detection budget (M46): the chain's prediction against the archive's
     # own photoelectron rate with the aperture, the filter, the excess noise and
     # the D1 trapping spanned or named open, so DIAGNOSTIC.

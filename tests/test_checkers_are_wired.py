@@ -60,6 +60,10 @@ ROOT = Path(__file__).resolve().parents[1]
 #
 # checker path (relative to the repo root) -> why it is not wired
 NOT_WIRED = {
+    "private/checks/govedit.py": (
+        "a hand tool, not a guard: the line-bound replacement a convener runs on a "
+        "governance file (A248, a DOTALL regex truncated the escape ledger); its "
+        "self-test runs under instrument_msa.py"),
     "private/checks/half_hour_alarm.py": (
         "run every thirty minutes by a prompt scheduled in the session, not by any "
         "file on disk; it measures the cores and what moved toward results and files "

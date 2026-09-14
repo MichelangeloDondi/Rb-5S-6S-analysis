@@ -10,6 +10,7 @@ gate rather than waiting for someone to think of checking.
 The archive-only skip is deliberate: `private/` is absent from the public
 mirror, and its absence there is correct rather than a failure.
 """
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -18,6 +19,17 @@ import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
 MSA = ROOT / "private" / "checks" / "instrument_msa.py"
+
+
+def _run_or_say_load(args, timeout):
+    """A TIMEOUT IS READ AS LOAD FIRST (2026-09-14): three cells timed out beside a
+    ten-worker producer and each ran in under a minute alone; the message carries the
+    load average at the timeout so the reader does not diagnose the code."""
+    try:
+        return subprocess.run(args, capture_output=True, text=True, timeout=timeout)
+    except subprocess.TimeoutExpired as e:
+        raise AssertionError(f"{args[-1]} timed out after {timeout} s; load average at the timeout "
+                             f"{os.getloadavg()[0]:.1f} on {os.cpu_count()} cores: run it alone and time it before reading a defect") from e
 
 
 @pytest.mark.skipif(not MSA.is_file(),
@@ -29,8 +41,7 @@ def test_every_governance_plant_still_discriminates():
     worse than an unplanted instrument, because the coverage number counts it
     as validated while it validates nothing.
     """
-    proc = subprocess.run([sys.executable, str(MSA)],
-                          capture_output=True, text=True, timeout=600)
+    proc = _run_or_say_load([sys.executable, str(MSA)], 600)
     assert proc.returncode == 0, (
         "a governance plant failed, so a refusal it covers has stopped "
         "firing:\n" + proc.stdout[-3000:] + proc.stderr[-2000:])
@@ -43,8 +54,7 @@ def test_the_coverage_reading_is_present_and_honest():
     Its own failure once printed as a value rather than as NOT MEASURED, which
     is the self-report class the whole exercise is about.
     """
-    proc = subprocess.run([sys.executable, str(MSA)],
-                          capture_output=True, text=True, timeout=600)
+    proc = _run_or_say_load([sys.executable, str(MSA)], 600)
     line = next((ln for ln in proc.stdout.splitlines()
                  if "governance instruments carry" in ln), "")
     assert line, "instrument_msa printed no coverage reading at all"

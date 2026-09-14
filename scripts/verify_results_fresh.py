@@ -275,6 +275,9 @@ EXPENSIVE = {
     "run_centre_stark": ["centre_stark.csv"],
     "run_projections": ["projections.csv"],
     "run_wing_check": ["wing_check.csv"],
+    # both read the canonical traces (seconds each, but data_raw is needed)
+    "run_far_wing_level": ["far_wing_level.csv"],
+    "run_cross_arm_ratios": ["cross_arm_ratios.csv"],
     "run_lever_crosscheck": ["lever_crosscheck.csv"],
     # BOTH of the next two early-return without writing when the
     # excluded session trees are absent, so on a checkout without them
@@ -309,6 +312,15 @@ EXPENSIVE = {
 # decision rather than an omission nobody noticed. Before this registry existed,
 # 19 of 46 committed CSVs were unchecked and nothing said so.
 UNCOVERED = {
+    "ultra_joint_fit.csv": (
+        "run_ultra_joint.py refits the raw traces, 159 canonical and 71 more from two trees "
+        "outside the repository, at every point of the grid the run carries (six waists in the coarse "
+        "pass, twenty-six in the fine) under three kernel forms and then the arm and propagation cells, "
+        "hours on eight workers, and reads data_raw/, which the public mirror "
+        "does not hold; without the traces it prints what is missing and exits "
+        "0 (3 for --plant and --time-cells, which say PLANT NOT RUN), so a freshness comparison would be vacuous. --coarse and --plant are "
+        "the cheap checks of the same code path and tests/test_ultra_joint_producer.py "
+        "runs the plant."),
     "transit_additivity.csv": (
         "run_transit_additivity.py performs fifteen convolutions on a 600,000 "
         "point grid and takes minutes, so it is not in the cheap set. It is "

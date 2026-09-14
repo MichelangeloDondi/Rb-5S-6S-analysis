@@ -65,7 +65,9 @@ trap 'rm -rf "$GATE_LOCK"' EXIT
 GATE_COMMON="$(git rev-parse --git-common-dir 2>/dev/null || echo .git)"
 GATE_ROOT="$(cd "$(dirname "$GATE_COMMON")" && pwd)"
 GATE_VERDICT="${CI_GATE_VERDICT_FILE:-$GATE_ROOT/.ci_gate_verdict}"
-GATE_TREE="$(git write-tree 2>/dev/null || echo unknown)"
+# THE INDEX LOCK IS RETRIED (2026-09-14): a write-tree that met another instrument's
+# lock read "unknown" and this gate refused a stamped tree as unstamped.
+GATE_TREE=unknown; for _try in 1 2 3 4 5 6; do GATE_TREE="$(git write-tree 2>/dev/null)" && break; GATE_TREE=unknown; sleep 1; done
 # THE TARGETED FLOOR (owner redesign 2026-08-31, workflow v2). The gate is
 # the certification instrument, spent once per wave on the final tree; the
 # iteration instrument is scripts/targeted.sh, which stamps .targeted_ok

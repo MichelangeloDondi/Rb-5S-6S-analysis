@@ -74,7 +74,7 @@
    "marker_window": 400
   },
   {
-   "pattern": "gamma\\s*/\\s*W[ -]suppressed|\u03b3\\s*/\\s*W[ -]suppressed",
+   "pattern": "gamma\\s*/\\s*W[ -]suppressed|γ\\s*/\\s*W[ -]suppressed",
    "retired": "2026-08-31",
    "why": "suppression wording implies a ratio below one; the measured quantity is a truncation-limited fraction and the correct wording names the fraction and its rows",
    "marker_window": 400
@@ -95,6 +95,12 @@
    "pattern": "rather than electronics or dark current",
    "retired": "2026-09-14",
    "why": "E72: the floor scales with the peak height, an electronic component is bounded and not excluded",
+   "marker_window": 400
+  },
+  {
+   "pattern": "independent 64 (um|µm|\\\\mu m|micron) waist measurement",
+   "retired": "2026-09-14",
+   "why": "E76: the lineage waist is a working convention (owner, 2026-09-10), and the results ledger's generator still called it an independent measurement",
    "marker_window": 400
   }
  ]
