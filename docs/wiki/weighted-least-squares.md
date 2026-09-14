@@ -67,9 +67,13 @@ power arm's five rungs, 8.1 sigma from the 0 a dark floor gives and 1.4 from
 the 1 a purely light-proportional one gives, so a dark floor is refused and an
 electronic component is bounded, not excluded. Nor is it a property of the drive
 alone: fitted line by line the slope runs from [0.60](../../results/detection_budget.csv "ref:detection_budget:floor_power_scaling:p_sweep_4121") to
-[1.04](../../results/detection_budget.csv "ref:detection_budget:floor_power_scaling:p_sweep_4192"), and at one power the floor differs across the four lines by up to
-a factor [2.97](../../results/detection_budget.csv "ref:detection_budget:floor_peak_spread:p_sweep_175mW"), which no scattered-drive or laser-intensity term that
-cannot tell the lines apart reproduces. What it is remains unsettled, and the
+[1.04](../../results/detection_budget.csv "ref:detection_budget:floor_power_scaling:p_sweep_4192"), a range consistent with one common slope, and at one power the floor
+differs across the four lines by up to a factor [2.97](../../results/detection_budget.csv "ref:detection_budget:floor_peak_spread:p_sweep_175mW"), and the per-line exponents are consistent with one
+common slope. Against the condition's own peak height the pooled slope is
+[0.44](../../results/detection_budget.csv "ref:detection_budget:floor_vs_peak_height:p_sweep"), but by rung the across-line slope runs from
+[0.18](../../results/detection_budget.csv "ref:detection_budget:floor_vs_peak_height:p_sweep_25mW") to [0.795](../../results/detection_budget.csv "ref:detection_budget:floor_vs_peak_height:p_sweep_175mW"), so no single term, constant or
+proportional to the signal, fits every rung, and the pooled slope names no
+mechanism. What it is remains unsettled, and the
 detection budget therefore quotes a dark current only as an upper bound taken
 at the lowest rung.
 

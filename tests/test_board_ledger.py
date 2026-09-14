@@ -1013,3 +1013,32 @@ def test_begin_refuses_an_expect_far_above_the_base_without_a_reason(bl, repo, c
         bl.begin(FULL, expect=60)
     assert "BASE_RATE 20.0" in capsys.readouterr().out
     bl.begin(FULL, expect=60, expect_reason="a plant of the upper bound")
+
+
+def test_a_digest_file_edited_under_the_board_is_named_and_parked(bl, repo, monkeypatch):
+    """`--begin` snapshots the digest; a digest file edited while the seats read
+    is NAMED by the refusal, and `--record --park` restores the state the seats
+    read, records, and puts the edit back.
+
+    FAILURE MODE IF THIS TEST IS DELETED: the refusal names nothing and the
+    recovery is two turns of hand-parking, which is what 2026-09-14 cost.
+    """
+    import sys
+    (repo / "a.txt").write_text("three\n"); _run(repo, "add", "a.txt")
+    _point_at(bl, repo)
+    priv = repo / "private"; priv.mkdir(exist_ok=True)
+    f = priv / "PROTOCOLS_INDEX.md"; f.write_text("read by the seats\n")
+    bl.begin(FULL, expect=0)
+    f.write_text("edited under the board\n")
+    moved, why = bl.private_moved()
+    assert moved and "PROTOCOLS_INDEX.md" in why, why
+    with pytest.raises(SystemExit):
+        bl.record(FULL, CONFIRMS)
+    monkeypatch.setattr(sys, "argv", ["board_ledger.py", "--record", "--park"])
+    parked = bl.park_moved_digest(bl.open_board()["tree"])
+    assert [x.name for x in parked] == ["PROTOCOLS_INDEX.md"]
+    assert f.read_text() == "read by the seats\n"
+    assert not bl.private_moved()[0]
+    bl.record(FULL, CONFIRMS)
+    assert bl.unpark_digest(bl.LEDGER.parent.name and __import__("json").loads(bl.LEDGER.read_text().splitlines()[-1])["tree"]) == 1
+    assert f.read_text() == "edited under the board\n"

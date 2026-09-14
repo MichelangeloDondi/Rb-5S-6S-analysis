@@ -60,6 +60,10 @@ ROOT = Path(__file__).resolve().parents[1]
 #
 # checker path (relative to the repo root) -> why it is not wired
 NOT_WIRED = {
+    "private/checks/half_hour_alarm.py": (
+        "run every thirty minutes by a prompt scheduled in the session, not by any "
+        "file on disk; it measures the cores and what moved toward results and files "
+        "each reading under private/cache/alarms/ (owner, 2026-09-14)"),
     "private/checks/claim_finding.py":
         "AN INSTRUMENT FOR A READER, not for the gate. It is invoked by each "
         "seat of a board, from the line make_prompts.py emits into every "

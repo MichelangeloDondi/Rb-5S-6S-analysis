@@ -520,7 +520,9 @@ def _ratio_admitted(k: dict, lo: int, half_width: float) -> bool:
     PHYSICAL zeros the floor admits by design: at the archive's parameters
     k4 changes sign between windows 6 and 12, so k6/k4 passes through a pole
     near w = 8, and inside a shipped window the pole sits on the parameter
-    axis instead (k6 at window 6 crosses zero near gamma_coll = 0.28 MHz). A
+    axis instead (k6 at window 6 crosses zero between gamma_coll 0.22 and 0.27
+    MHz depending on the grid span, from +-80 to +-30 MHz, because the windowed
+    estimator subtracts a wing baseline). A
     caller forming an even ratio across a scan owes a distance-from-zero test
     on the denominator's own forward prediction; this function cannot make it.
     """

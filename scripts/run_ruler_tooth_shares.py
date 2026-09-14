@@ -15,8 +15,9 @@ SYMMETRIC excess at k = +-3 of about a factor of two. Letting the depth float
 does not improve it: the shape of the discrepancy is not a depth's shape, and
 the fitted depth moves by two per cent while the chi-squared stays where it
 was. Adding a FLAT PEDESTAL under the comb fixes it completely, at a few per
-cent of the comb's power. Symmetry in k is what rules out a chirp, which would
-be antisymmetric.
+cent of the comb's power. The observed shares at k = +-3 differ by
+-0.0001 +- 0.0028, so an antisymmetric excess of that size, which a chirp
+would give, is refused by the data there. At k = +-2 a small one is not.
 
 WHY IT MATTERS BEYOND THE RULER. The teeth are the same physical line driven at
 different Rabi frequencies at the SAME light shift, which makes them the only
@@ -164,10 +165,28 @@ def main() -> int:
     out.append(["two_beta_with_pedestal", "", f"{b_ped:.4f}", "",
                 f"against the committed {TWO_BETA}, whose own sd over 41 "
                 "combs is 0.058, so this sits inside it", "DIAGNOSTIC"])
+    # THE ANTISYMMETRY IS COMPUTED, NEVER TYPED (found
+    # 2026-09-14): the difference of the observed shares at +-k with its
+    # quadrature bar, as rows the prose cites, so a re-run that moves the shares
+    # moves the sentence with it.
+    _ix = {k: i for i, k in enumerate(ORDERS)}
+    _asym = {}
+    for _k in (2, 3):
+        if _k in _ix and -_k in _ix:
+            _d = float(obs[_ix[-_k]] - obs[_ix[_k]]); _e = float(np.hypot(se[_ix[-_k]], se[_ix[_k]]))
+            _asym[_k] = (_d, _e)
+            _dv, _de = pm_cells(_d, _e)
+            out.append(["tooth_share_antisymmetry", f"k{_k}", _dv, _de,
+                        f"the observed share at k = -{_k} minus the share at k = +{_k}, with the two bars in quadrature. "
+                        f"An excess of the observed |k| = {_k} size that were purely antisymmetric would give a difference of "
+                        f"{2 * float(abs(obs[_ix[_k]] - _shares(TWO_BETA)[_ix[_k]])):.4f}", "DIAGNOSTIC"])
+    _d3 = _asym.get(3, (float("nan"), float("nan"))); _d2 = _asym.get(2, (float("nan"), float("nan")))
     out.append(["pedestal_fraction_of_comb", "", f"{f_ped:.4f}", "",
                 f"{100 * f_ped:.2f} per cent of the comb's power, flat over "
                 f"{len(ORDERS)} slots, so {100 * ped_per_slot:.3f} per cent "
-                "under each. Symmetric in k, which rules out a chirp. The "
+                f"under each. The observed shares at k = +-3 differ by {_d3[0]:.4f} +- {_d3[1]:.4f} "
+                f"and at k = +-2 by {_d2[0]:.4f} +- {_d2[1]:.4f} (the tooth_share_antisymmetry rows), so an antisymmetric "
+                "excess of the observed |k| = 3 size is refused there and a small one is open at |k| = 2. The "
                 "origin is not settled here", "DIAGNOSTIC"])
 
     usable = [k for k, p_ in zip(ORDERS, (1.0 - f_ped) * _shares(b_ped))

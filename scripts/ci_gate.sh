@@ -248,13 +248,14 @@ if [ -f "$GATE_SPLIT" ] && "$PY" -c "import xdist" 2>/dev/null; then
   # A WORKER'S SIZE IS MEASURED, NOT ASSUMED (2026-09-13: the constants gave two
   # workers on a rebooted 16 GiB machine while a sampled worker held 0.25 to
   # 0.60 GiB). Every thirty seconds the descendants of this shell are sampled
-  # into private/cache/gate_rss.tsv, which gate_split.measured_worker_gib reads
+  # into private/cache/gate_rss.tsv, which gate_split.measured_worker_profile reads
   # for the next gate. Absent private/, the sampler writes nowhere.
   GATE_RSS="$GATE_ROOT/private/cache/gate_rss.tsv"
   if [ -d "$GATE_ROOT/private/cache" ]; then
     "$PY" - "$$" "$GATE_TREE" "$GATE_RSS" <<'PYSAMPLE' &
 import subprocess, sys, time
 root, tree, out = int(sys.argv[1]), sys.argv[2], sys.argv[3]
+sample = 0
 while True:
     ps = subprocess.run(["ps", "-axo", "pid=,ppid=,rss="], capture_output=True, text=True).stdout.split("\n")
     rows = [l.split() for l in ps if l.strip()]
@@ -267,7 +268,8 @@ while True:
     with open(out, "a") as f:
         for pid, ppid, rss in rows:
             if int(pid) in kids and int(pid) != root and int(rss) > 102400:
-                f.write(f"{tree}\t{pid}\t{rss}\n")
+                f.write(f"{tree}\t{pid}\t{rss}\t{sample}\n")
+    sample += 1
     time.sleep(30)
 PYSAMPLE
     GATE_SAMPLER=$!
@@ -278,7 +280,14 @@ PYSAMPLE
   "$PY" -m pytest -q --runslow -n "$GATE_NW" --dist loadfile $GATE_IGNORES 2>&1 | tee -a "$GATE_PYLOG"
   GATE_PARRC=${PIPESTATUS[0]}
   # shellcheck disable=SC2086
-  "$PY" -m pytest -q --runslow $GATE_SERIAL 2>&1 | tee -a "$GATE_PYLOG"
+  # THE SERIAL STAGE IS ONE POOLED TEST (measured 2026-09-14: 376 of 432 s in
+  # the freshness check, which runs its producers on RB5S6S_WORKERS), so in the
+  # all-cores mode it gets every core rather than the default four.
+  if [ -n "${CI_GATE_ALL_CORES:-}" ]; then
+    RB5S6S_WORKERS="${RB5S6S_WORKERS:-$("$PY" "$GATE_SPLIT" --workers --all 2>/dev/null || echo 4)}" "$PY" -m pytest -q --runslow $GATE_SERIAL 2>&1 | tee -a "$GATE_PYLOG"
+  else
+    "$PY" -m pytest -q --runslow $GATE_SERIAL 2>&1 | tee -a "$GATE_PYLOG"
+  fi
   GATE_SERRC=${PIPESTATUS[0]}
   [ -n "${GATE_SAMPLER:-}" ] && kill "$GATE_SAMPLER" 2>/dev/null
   PYRC=0

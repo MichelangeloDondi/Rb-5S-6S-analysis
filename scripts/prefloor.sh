@@ -35,6 +35,7 @@ MODULES=(
   tests/test_docs_links.py
   tests/test_docstring_counts.py
   tests/test_tqm_report.py
+  tests/test_lit_consistency.py
 )
 
 echo "prefloor: ${#MODULES[@]} prose and doc guards on $NW worker(s); this is not a floor and stamps .prefloor_ok with the index tree"
@@ -44,6 +45,10 @@ rc=$?
 # The seconds floor reads the staged tree and is a different question, so it is
 # asked here too rather than left for the floor to discover.
 $PY private/checks/precheck.py
+PRE_RC=$?
+# THE GENERATED LITERATURE VIEWS ARE CHECKED HERE (2026-09-14: nine notes left the
+# bib and the index stale and only the full gate saw it)
+$PY scripts/build_lit_index.py --check >/dev/null 2>&1 || { echo "prefloor: docs/references.bib or docs/LITERATURE_INDEX.md is stale (run scripts/build_lit_index.py)"; PRE_RC=1; }
 prc=$?
 
 if [ $rc -eq 0 ] && [ $prc -eq 0 ]; then

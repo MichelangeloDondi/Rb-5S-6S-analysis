@@ -45,14 +45,10 @@ import sys
 
 ENV_VAR = "RB5S6S_WORKERS"
 
-# Two cores held back so a gate and a session stay responsive beside a
-# pooled producer. DERIVED, not written: eight is right for the ten-core
-# machine this record is developed on and wrong for a two-core runner,
-# where a fixed eight would give no headroom and invert the reason. The
-# ceiling cannot touch a committed number, because the contract above
-# makes the bytes invariant to the worker count - so deriving it costs
-# nothing and keeps the stated reason true everywhere.
-MAX_WORKERS = max(1, (os.cpu_count() or 4) - 2)
+# EVERY CORE (owner, 2026-09-14): the two-core holdback below was a cap no
+# measurement set; the memory-justified pool is decided per run by the caller,
+# and this ceiling is only what the machine has.
+MAX_WORKERS = max(1, os.cpu_count() or 10)  # every core; the old cores-minus-two was a cap no measurement set (2026-09-14)
 
 
 def n_workers(env: dict[str, str] | None = None) -> int:

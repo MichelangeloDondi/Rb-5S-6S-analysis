@@ -80,7 +80,7 @@ def test_the_producer_reads_the_seam_and_not_its_own_copy():
     try:
         # DERIVED, not written. This asked for three and asserted three,
         # which is only true where the ceiling is at least three: the
-        # module derives MAX_WORKERS as cpu_count minus two, so a
+        # module derives MAX_WORKERS as cpu_count every core, so a
         # four-core runner clamps to two and this line failed on every
         # public CI run from 2026-09-03 while passing on the ten-core
         # machine it was written on. The module's own docstring says the
@@ -116,10 +116,11 @@ def test_the_ceiling_leaves_the_machine_room_to_work():
     moment the ceiling reaches the core count."""
     import os
     cores = os.cpu_count() or 4
-    assert MAX_WORKERS == max(1, cores - 2), (
+    # EVERY CORE, since 2026-09-14 (owner: "use 10 workers each time unless
+    # you have very solid reasons"): the cores-minus-two holdback was a cap no
+    # measurement set. The memory-justified pool is decided per run; this
+    # ceiling is only what the machine has.
+    assert MAX_WORKERS == max(1, cores), (
         f"the ceiling is {MAX_WORKERS} on {cores} cores, which is not the "
-        "derivation rb5s6s/workers.py states. Equality is deliberate: an "
-        "inequality would also pass a hardcoded low value, which looks "
-        "safe and silently wastes the machine. If the holdback policy "
-        "changes on purpose, UPDATE THIS TEST - a deliberate change "
-        "should read as an update, not as a break")
+        "derivation rb5s6s/workers.py states (every core). Equality is "
+        "deliberate: an inequality would also pass a hardcoded low value.")

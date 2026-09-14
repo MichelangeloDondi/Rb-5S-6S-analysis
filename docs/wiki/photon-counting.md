@@ -39,7 +39,7 @@ even with no light. On this dataset that floor is measured and is not
 fixed: it rises with the drive (d ln a / d ln P = [0.85](../../results/detection_budget.csv "ref:detection_budget:floor_power_scaling:p_sweep"), 8.1 sigma from the 0
 a dark floor would give), so what the variance law returns here is
 not a dark term: it bounds one from above instead of measuring it, and across the
-four lines at one power it differs by up to a factor [2.97](../../results/detection_budget.csv "ref:detection_budget:floor_peak_spread:p_sweep_175mW"), so it is a property of the line as much as of the drive. A counting chain has no such floor: with the light
+four lines at one power it differs by up to a factor [2.97](../../results/detection_budget.csv "ref:detection_budget:floor_peak_spread:p_sweep_175mW"), and its slope against the signal's own size changes from rung to rung, so no single term fits it, and what it is remains open. A counting chain has no such floor: with the light
 off it reports zero on average, and the remaining noise is purely the
 statistics of the count, growing with the count instead of a fixed
 offset.

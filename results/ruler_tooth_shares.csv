@@ -18,7 +18,9 @@ chi2_red_depth_fixed,,6.11,0.58,"chi2 36.6 on nu 6, at the committed depth 1.569
 chi2_red_depth_free,,6.58,0.63,"chi2 32.9 on nu 5, best depth 1.5457. A free depth does not fix it, so the discrepancy is not a depth's shape",DIAGNOSTIC
 chi2_red_depth_and_pedestal,,0.62,0.71,chi2 2.5 on nu 4. A flat pedestal fixes it completely,DIAGNOSTIC
 two_beta_with_pedestal,,1.5298,,"against the committed 1.569, whose own sd over 41 combs is 0.058, so this sits inside it",DIAGNOSTIC
-pedestal_fraction_of_comb,,0.0479,,"4.79 per cent of the comb's power, flat over 7 slots, so 0.684 per cent under each. Symmetric in k, which rules out a chirp. The origin is not settled here",DIAGNOSTIC
+tooth_share_antisymmetry,k2,-0.0103,0.0071,"the observed share at k = -2 minus the share at k = +2, with the two bars in quadrature. An excess of the observed |k| = 2 size that were purely antisymmetric would give a difference of 0.0155",DIAGNOSTIC
+tooth_share_antisymmetry,k3,-0.0001,0.0027,"the observed share at k = -3 minus the share at k = +3, with the two bars in quadrature. An excess of the observed |k| = 3 size that were purely antisymmetric would give a difference of 0.0122",DIAGNOSTIC
+pedestal_fraction_of_comb,,0.0479,,"4.79 per cent of the comb's power, flat over 7 slots, so 0.684 per cent under each. The observed shares at k = +-3 differ by -0.0001 +- 0.0027 and at k = +-2 by -0.0103 +- 0.0071 (the tooth_share_antisymmetry rows), so an antisymmetric excess of the observed |k| = 3 size is refused there and a small one is open at |k| = 2. The origin is not settled here",DIAGNOSTIC
 usable_ladder_orders,,"0,1,2",,the orders whose share clears their own pedestal,DIAGNOSTIC
 usable_rate_ladder,,5.51,,"the span in two-photon rate across the usable teeth, at one light shift. The Rabi span is its square root",DIAGNOSTIC
 usable_rabi_ladder,,2.35,,what the saturation companion's own ladder follows,DIAGNOSTIC

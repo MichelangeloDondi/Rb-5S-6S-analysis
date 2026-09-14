@@ -872,7 +872,14 @@ _WORD = re.compile(r"[A-Z][\wÀ-ÿ'’-]{1,20}")
 def test_no_colleagues_named_in_process_roles():
     hits = []
     for rel in _prose_files():
-        txt = (ROOT / rel).read_text(encoding="utf-8", errors="replace")
+        # A FILE THAT VANISHES BETWEEN THE GLOB AND THE READ IS NOT PROSE
+        # (2026-09-14): test_gamma_l_identity writes a snapshot into the
+        # package for the length of one test, and under xdist this scanner
+        # globbed it in that window and died on the read.
+        try:
+            txt = (ROOT / rel).read_text(encoding="utf-8", errors="replace")
+        except FileNotFoundError:
+            continue
         for i, line in enumerate(txt.split("\n"), 1):
             for word in _WORD.findall(line):
                 d = hashlib.sha256(word.lower().encode()).hexdigest()[:16]

@@ -62,6 +62,7 @@ from collections import defaultdict
 from pathlib import Path
 
 import numpy as np
+from scipy.stats import f as f_dist
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
@@ -239,7 +240,7 @@ def main() -> None:
     a_slope = float(_coef[0])
     a_slope_err = float(np.sqrt(_cov[0, 0]))
     a_lowest = float(np.median(_a[_P == _P.min()]))
-    add(["floor_power_scaling", "p_sweep", f"{a_slope:.2f}", f"{a_slope_err:.2f}", "d ln a / d ln P", f"the noise law's floor against laser power over the p_sweep's five rungs. A pure tube dark current or digitiser floor gives 0 and a purely light-proportional floor gives 1. Measured, this is {abs(a_slope) / a_slope_err:.1f} sigma from 0 and {abs(a_slope - 1.0) / a_slope_err:.1f} sigma from 1, so a dark floor is REFUSED and a purely light-proportional floor is not: the data do not require an electronic component at all, and bound it rather than resolving one. It is not a property of the drive alone either: the per-line rows beside this one spread further than this bar, so the pooled exponent names no mechanism. What the floor is remains unsettled. The floor may not be read as a dark current"])
+    add(["floor_power_scaling", "p_sweep", f"{a_slope:.2f}", f"{a_slope_err:.2f}", "d ln a / d ln P", f"the noise law's floor against laser power over the p_sweep's five rungs. A pure tube dark current or digitiser floor gives 0 and a purely light-proportional floor gives 1. Measured, this is {abs(a_slope) / a_slope_err:.1f} sigma from 0 and {abs(a_slope - 1.0) / a_slope_err:.1f} sigma from 1, so a dark floor is REFUSED and a purely light-proportional floor is not: the data do not require an electronic component at all, and bound it rather than resolving one. It is not a property of the drive alone either: the per-line rows beside this one are consistent with one common slope (their nested F test), and the across-line slopes by rung in the floor_vs_peak_height rows disagree with any single term, so the pooled exponent names no mechanism. What the floor is remains unsettled. The floor may not be read as a dark current"])
     # THE FLOOR TRACKS THE LINE, NOT ONLY THE DRIVE (found 2026-09-13 by
     # regressing the row's own second axis): fitted line by line the exponent
     # runs from about 0.6 to 1.0 against a pooled bar of 0.1, and at one power
@@ -249,10 +250,46 @@ def main() -> None:
     # refuted by the table it was fitted on. These rows carry that axis so no
     # reader has to regress it by hand.
     _pk = np.array([r["peak"] for r in _rows])
+    # THE TEST THAT LICENSES A LINE-DEPENDENT EXPONENT IS THE NESTED ONE (2026-09-14): four free slopes against one common slope with
+    # line offsets. Four estimates always spread wider than the bar on their
+    # mean, so the pooled bar was never the comparator.
+    _lines = sorted(set(_pk.tolist())); _X = np.log(_P); _Y = np.log(_a)
+    _D = np.column_stack([(_pk == l).astype(float) for l in _lines])
+    _rss = lambda A: float(np.sum((_Y - A @ np.linalg.lstsq(A, _Y, rcond=None)[0]) ** 2))
+    _r_common = _rss(np.column_stack([_X, _D])); _r_free = _rss(np.column_stack([_X[:, None] * _D, _D]))
+    _F = ((_r_common - _r_free) / 3) / (_r_free / (len(_Y) - 8)); _pF = float(f_dist.sf(_F, 3, len(_Y) - 8))
+    # THE FLOOR TRACKS THE PEAK HEIGHT: line and drive are one variable (2026-09-14). log a against log h over the twenty conditions.
+    _rates = measured_rates()
+    _h = np.array([_rates[(r["peak"], float(r["power_mW"]))][0] for r in _rows])
+    _ch, _cv = np.polyfit(np.log(_h), _Y, 1, cov=True)
+    _both = np.linalg.lstsq(np.column_stack([_X, np.log(_h), np.ones_like(_X)]), _Y, rcond=None)[0]
+    _hv, _he = pm_cells(float(_ch[0]), float(np.sqrt(_cv[0, 0])))
+    # BY RUNG, ALONG THE DESIGN'S OTHER AXIS (2026-09-14): the across-line slope of
+    # log a on log h at each power, with the homogeneity chi-squared against one
+    # common value. A term whose variance is proportional to the signal gives
+    # 0.5 at every rung; the rungs disagree, so no single term fits and the
+    # pooled slope names no mechanism.
+    _rung_rows = []
+    for _pw in sorted(set(_P.tolist())):
+        _m = _P == _pw
+        _rc, _rv = np.polyfit(np.log(_h[_m]), _Y[_m], 1, cov=True)
+        _rung_rows.append((_pw, float(_rc[0]), float(np.sqrt(_rv[0, 0]))))
+    _rs = np.array([r[1] for r in _rung_rows]); _re = np.array([r[2] for r in _rung_rows])
+    _common = float(np.sum(_rs / _re ** 2) / np.sum(1 / _re ** 2)); _chi2_h = float(np.sum(((_rs - _common) / _re) ** 2))
+    _bi = np.column_stack([_X, np.log(_h), np.ones_like(_X)]); _bcoef, _bres, _, _ = np.linalg.lstsq(_bi, _Y, rcond=None)
+    _bcov = np.linalg.inv(_bi.T @ _bi) * (float(_bres[0]) / (len(_Y) - 3) if len(_bres) else 0.0)
+    add(["floor_vs_peak_height", "p_sweep", _hv, _he, "d ln a / d ln h", f"the noise law's floor against the condition's own peak height, pooled over the twenty p_sweep conditions. By rung the across-line slope runs {min(_rs):.2f} to {max(_rs):.2f} (the rows beside this one) against a common value's chi-squared of {_chi2_h:.0f} on {len(_rs) - 1} dof, so the pooled slope is that of a model the design refuses and it names no mechanism. What the floor is remains open"])
+    for _pw, _s, _e in _rung_rows:
+        _sv, _se = pm_cells(_s, _e)
+        add(["floor_vs_peak_height", f"p_sweep_{_pw:.0f}mW", _sv, _se, "d ln a / d ln h", f"the across-line slope of log a on log h at {_pw:.0f} mW over the four lines (bar residual-scaled on two dof). A term whose variance is proportional to the signal gives 0.5 at every rung"])
+    _bv1, _be1 = pm_cells(float(_bcoef[0]), float(np.sqrt(_bcov[0, 0]))); _bv2, _be2 = pm_cells(float(_bcoef[1]), float(np.sqrt(_bcov[1, 1])))
+    add(["floor_both_in", "power", _bv1, _be1, "coefficient of ln P", f"log a on log P and log h together over the twenty conditions. The two regressors are correlated at {float(np.corrcoef(_X, np.log(_h))[0, 1]):.3f}, so this sign is set by the between-line offsets and is resolved to {abs(float(_bcoef[0])) / float(np.sqrt(_bcov[0, 0])):.1f} sigma only"])
+    add(["floor_both_in", "height", _bv2, _be2, "coefficient of ln h", "the height coefficient of the same regression"])
     for _p in sorted(set(_pk.tolist())):
         _m = _pk == _p
         _c, _v = np.polyfit(np.log(_P[_m]), np.log(_a[_m]), 1, cov=True)
-        add(["floor_power_scaling", f"p_sweep_{_p}", f"{float(_c[0]):.2f}", f"{float(np.sqrt(_v[0, 0])):.2f}", "d ln a / d ln P", f"the same exponent fitted on line {_p} alone over its five rungs. The four lines spread further than the pooled bar, so the floor is a property of the line as well as of the drive"])
+        _pv, _pe = pm_cells(float(_c[0]), float(np.sqrt(_v[0, 0])))
+        add(["floor_power_scaling", f"p_sweep_{_p}", _pv, _pe, "d ln a / d ln P", f"the same exponent fitted on line {_p} alone over its five rungs. The four are consistent with one common slope (nested F(3,12) = {_F:.2f}, p = {_pF:.2f}), and what differs between lines is the offset at common slope"])
     for _pw in sorted(set(_P.tolist())):
         _m = _P == _pw
         add(["floor_peak_spread", f"p_sweep_{_pw:.0f}mW", f"{float(_a[_m].max() / _a[_m].min()):.2f}", "", "ratio", f"the noise law's floor at {_pw:.0f} mW, the largest of the four lines over the smallest. A floor set by the drive alone would give 1 at every rung"])

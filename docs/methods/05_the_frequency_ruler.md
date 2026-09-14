@@ -204,11 +204,14 @@ completely**:
 [0.0479](../../results/ruler_tooth_shares.csv "ref:ruler_tooth_shares:pedestal_fraction_of_comb:")
 of the comb's power spread flat across the seven slots, the depth moving to
 [1.5298](../../results/ruler_tooth_shares.csv "ref:ruler_tooth_shares:two_beta_with_pedestal:")
-which sits inside the committed value's own scatter over the 41 combs. Its
-symmetry in $k$ is weaker evidence than it looks: the pedestal share is built
-from $J_k(2\beta)^2$, which is symmetric in $k$ by construction, so the absence
-of a significant asymmetry does not rule out a chirp, which would be
-antisymmetric. The origin is not settled here.
+which sits inside the committed value's own scatter over the 41 combs. The measured
+shares at $k=\pm3$ differ by [-0.0001](../../results/ruler_tooth_shares.csv "ref:ruler_tooth_shares:tooth_share_antisymmetry:k3"), so an antisymmetric excess of
+the observed $|k|=3$ size is refused there. An amplitude admixture in phase with
+the modulation gives exactly that antisymmetric form, proportional to
+$k J_k^2$, while one in quadrature gives a symmetric excess of second order
+that this test cannot see. At $k=\pm2$ the shares differ by
+[-0.0103](../../results/ruler_tooth_shares.csv "ref:ruler_tooth_shares:tooth_share_antisymmetry:k2") and a small antisymmetric part is not refused. The
+origin is not settled here.
 
 **Two of the obvious origins are excluded by the comb's own fit, and saying so
 narrows it.** `ruler.fit_comb` carries `b0 + b1 t` under the teeth, so a flat

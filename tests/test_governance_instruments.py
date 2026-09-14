@@ -108,6 +108,23 @@ UNBACKED = ROOT / "private" / "checks" / "check_unbacked.py"
 REMOTE_LAG = ROOT / "private" / "checks" / "check_remote_lag.py"
 
 
+def _lone_stamp_sites(text: str) -> list[int]:
+    """Line numbers that DECIDE on .targeted_ok without .prefloor_ok within two
+    lines (a marked floor-only site is exempt). One predicate for the guard and
+    its plant (the protocols seat, 2026-09-14: the plant had its own copy and
+    it had already drifted)."""
+    out = []
+    ls = text.splitlines()
+    for k, line in enumerate(ls):
+        if ".targeted_ok" not in line or ".prefloor_ok" in line or "stamp-site: floor-only" in line:
+            continue
+        if not any(w in line for w in ("grep -q", "grep -c", "[ -f", "test -f", "read_text", "exists(", "open(", "stamp_matches", "_stamp_tree")):
+            continue
+        if ".prefloor_ok" not in "\n".join(ls[max(0, k - 2):k + 3]):
+            out.append(k + 1)
+    return out
+
+
 @pytest.mark.skipif(not UNBACKED.is_file(),
                     reason="private/ is absent, as it is in the mirror")
 def test_the_unbacked_sweep_plant_still_discriminates():
@@ -224,8 +241,14 @@ def test_every_reader_of_the_floor_stamp_also_reads_the_fast_stamp():
                 continue
             txt = f.read_text(errors="ignore")
             rel = str(f.relative_to(ROOT))
-            if ".targeted_ok" in txt and ".prefloor_ok" not in txt and rel not in NOT_GATES:
-                offenders.append(rel)
+            if rel in NOT_GATES or ".targeted_ok" not in txt:
+                continue
+            # PER SITE, NOT PER FILE (2026-09-14): a file that reads both stamps
+            # somewhere would pass a new lone reader of the slow stamp added
+            # anywhere in it. A line that DECIDES on .targeted_ok (grep -q, test,
+            # if, read_text, exists, open) must read .prefloor_ok within two
+            # lines of it; a line that merely names the stamp is not a site.
+            offenders.extend(f"{rel}:{k}" for k in _lone_stamp_sites(txt))
     assert not offenders, (
         "these read the floor stamp and not the fast stamp, so a tree graded by "
         "scripts/prefloor.sh reads as ungraded to them:\n  " + "\n  ".join(offenders)
@@ -262,3 +285,19 @@ def test_the_idle_audit_plant_still_discriminates():
     """
     r = subprocess.run([sys.executable, str(IDLE), "--self-test"], capture_output=True, text=True)
     assert r.returncode == 0, r.stdout + r.stderr
+
+def test_the_stamp_guard_sees_a_lone_reader_added_to_a_compliant_file(tmp_path):
+    """The per-site predicate on a file that already reads both stamps
+    elsewhere: a new site gating on the slow stamp alone is flagged; the same
+    site reading both is not.
+
+    FAILURE MODE IF THIS TEST IS DELETED: the guard passes any file that
+    mentions the fast stamp once, and a lone reader added to landing.sh, the
+    exact shape of three regressions in one day, is invisible to it.
+    """
+    lines = ["x=1", 'grep -q "$TREE" .prefloor_ok || grep -q "$TREE" .targeted_ok', "y=2", "z=3", "w=4"]
+    lone = lines + ['if grep -q "$TREE" .targeted_ok; then echo admitted; fi']
+    both = lines + ['if grep -q "$TREE" .targeted_ok || grep -q "$TREE" .prefloor_ok; then echo admitted; fi']
+    offenders = _lone_stamp_sites
+    assert offenders("\n".join(lone)) == [6]
+    assert offenders("\n".join(both)) == []
