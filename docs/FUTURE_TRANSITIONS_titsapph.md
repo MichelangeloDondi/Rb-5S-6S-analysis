@@ -361,19 +361,19 @@ computed ratio. Verified by running `rb5s6s.vanderwaals.beta_self_anchored`
 (2026-08-05):
 
     beta_self(6S) = beta_self(7S)_measured * [DC6(5S+6S) / DC6(5S+7S)]^(2/5)
-                  = 5.290 * 0.3166^0.4 * 0.985
-                  = 3.29 +- 0.29 kHz per 1e12 cm^-3
+                  = 5.624 * 0.3166^0.4 * 0.985
+                  = 3.50 +- 0.37 kHz per 1e12 cm^-3
 
     DC6(5S+nS)    = C6(5S+nS) - C6(5S+5S)
 
 with C₆(5S+6S) = 53985 a.u., C₆(5S+7S) = 161474 a.u. and C₆(5S+5S) = 4180 a.u.
 from the module's second-order sums (its Casimir-Polder integrals, used until
 2026-09-14, undercounted both excited pairs by a factor 1.9 through the sign of
-the downward lines' denominators, A250, and the ratio barely moved), and 5.290 kHz per 10¹² cm⁻³
-being Zameroski's measured 129 ± 11 kHz/mTorr converted at 403 K. Exactly one
-number in that chain comes from outside. The recorded bound sits 8.8 to 14.7
+the downward lines' denominators, A250, and the ratio barely moved), and 5.624 kHz per 10¹² cm⁻³
+being Zameroski's measured 129 ± 13 kHz/mTorr converted at his own 429 K. Exactly one
+number in that chain comes from outside. The recorded bound sits 8.3 to 13.8
 times above that expectation. The rounded 8 to 14 quoted elsewhere in the
-portfolio predates the corrections below and is due to become 9 to 15.
+portfolio predates the corrections below and is due to become 8 to 14.
 
 **Why the subtraction.** The impact phase is set by the difference between the
 upper- and lower-state interactions with the ground-state perturber, not by the

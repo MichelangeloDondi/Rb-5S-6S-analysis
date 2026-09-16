@@ -82,6 +82,12 @@ $PY private/checks/ssot_guard.py --scan; ssc=$?
 # They ran by hand all day while their own docstrings said they were wired.
 $PY private/checks/prior_art.py --self-test; pac=$?
 $PY private/checks/prune_guard.py --self-test; pgc=$?
+# AND THE GUARD MUST GRADE THE TREE, NOT ONLY ITSELF (2026-09-16). The line above
+# runs the PLANT; until today nothing ran the guard. A guard wired to its own
+# self-test passes for ever, which is why a 30,000-word plan could be cut to 913
+# and lose 216 live claims with the floor green. --scan needs no snapshot: git
+# holds the before.
+$PY private/checks/prune_guard.py --scan; pgs=$?
 # THE COVERAGE METER, and it is a RATCHET and not a refusal: the covered
 # fraction is 6.2 per cent, so refusing on it would block every commit and a
 # guard that must be bypassed to work is not a guard. What it refuses is the
@@ -99,6 +105,15 @@ $PY private/checks/trace_names.py; tnc=$?
 # AND A SET POINT IS NOT A TEMPERATURE: the record says two variac labels have
 # already been taken for readings, and the rename made that error permanent if made.
 $PY private/checks/variac_guard.py; vgc=$?
+# AND NOTHING REACHES THE REAL TRACES EXCEPT THROUGH THE LADDER (owner, 2026-09-15,
+# restated 2026-09-16). `rb5s6s/ladder_gate.py` has carried that refusal since the
+# 15th and NOTHING IMPORTED IT; `noise_ladder_gate.py` scanned one cache directory
+# of a phase that had ended and no floor ran it, so the rule had a refusal nobody
+# called and a scanner grading nothing. It reported zero offenders for a week and
+# there were eleven. Wired here, scoped to the committed producers plus the one
+# declared live phase, with a members-not-counts ratchet of what predates it.
+$PY private/checks/noise_ladder_gate.py; nlc=$?
+$PY private/checks/ssot_literals.py; slc=$?
 [ $ssc = 0 ] || echo "prefloor: a canonical value gained a literal copy (see above)"
 fi   # end of the real stages; a plant supplies rc, prc and agc instead
 
@@ -106,7 +121,7 @@ fi   # end of the real stages; a plant supplies rc, prc and agc instead
 # it and on nothing narrower (the guards' self-test used to sit outside this `if`, so a deleted
 # guard printed GREEN and stamped while the exit code alone said otherwise, and the stamp on disk
 # is what idle_audit and the landing loop read).
-ALL_RC=$(( rc != 0 || prc != 0 || agc != 0 || ${ssc:-0} != 0 || ${pac:-0} != 0 || ${pgc:-0} != 0 || ${scc:-0} != 0 || ${sdc:-0} != 0 || ${tnc:-0} != 0 || ${vgc:-0} != 0 ))
+ALL_RC=$(( rc != 0 || prc != 0 || agc != 0 || ${ssc:-0} != 0 || ${pac:-0} != 0 || ${pgc:-0} != 0 || ${pgs:-0} != 0 || ${scc:-0} != 0 || ${sdc:-0} != 0 || ${tnc:-0} != 0 || ${vgc:-0} != 0 || ${nlc:-0} != 0  || ${slc:-0} != 0 ))
 if [ $ALL_RC -eq 0 ]; then
   # THE FAST STAMP. A reading stage reads a tree, it does not run one, so the
   # expensive question about that tree is answered by the gate running BESIDE
@@ -124,6 +139,6 @@ if [ $ALL_RC -eq 0 ]; then
   echo "prefloor: GREEN, stamped ${TREE:0:12}. The reading stage may open on this; the gate runs beside it."
 else
   rm -f "$STAMP"
-  echo "prefloor: RED (pytest $rc, precheck $prc, guards $agc, prior-art $pac, prune $pgc, coverage $scc, deps $sdc, trace-names ${tnc:-0}, variac ${vgc:-0}). No stamp. Fix these before anything expensive."
+  echo "prefloor: RED (pytest $rc, precheck $prc, guards $agc, prior-art $pac, prune $pgc, prune-scan ${pgs:-0}, coverage $scc, deps $sdc, trace-names ${tnc:-0}, variac ${vgc:-0}, ssot-literals ${slc:-0}, noise-ladder ${nlc:-0}). No stamp. Fix these before anything expensive."
 fi
 exit $ALL_RC

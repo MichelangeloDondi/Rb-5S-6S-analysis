@@ -42,7 +42,7 @@ out for runtime, the kernel series and the twin's closed loop and span
 sweep among them, with the coverage grid, the three-channel forecast, the
 quantisation pair and the waist ladder beside them, and this page has not
 caught up with them, so a reader
-reaches them only through `results/README.md`, which does index all 117
+reaches them only through `results/README.md`, which does index all 119
 committed files with the producer that writes each one. The number is
 measured: `tests/test_reproduction_routes.py` reads the
 index, the runner's stage loop and this page, and holds the unrouted set as a
@@ -73,7 +73,7 @@ under moving dependencies is a property of the environment until the pinned
 comparison disagrees, and that the pinned comparison is the one that speaks
 for the record.
 
-The runner's stages write the core subset of the 117 committed CSVs. The
+The runner's stages write the core subset of the 119 committed CSVs. The
 rest each have their own script, held out for one of two reasons.
 
 ### Seven need trees that stay outside the repository
@@ -117,10 +117,13 @@ over a 600,000-point grid), `run_fibre_twin.py` (`fibre_twin.csv`),
 `run_ultra_joint.py` (`ultra_joint_fit.csv`, the waist scanned under three laser
 kernels on both arms of the design: about twenty minutes for the coarse grid
 on ten workers and hours for the fine one, run from the night queue and never
-by the runner), `run_ultra_joint.py` (`ultra_joint_fit.csv`, the waist scanned under three laser
-kernels on both arms of the design: about twenty minutes for the coarse grid
-on ten workers and hours for the fine one, run from the night queue and never
-by the runner), `run_moment_power_map.py` (`moment_power_map.csv` and its per-rung table,
+by the runner), `run_ultra_joint_closure.py` (`ultra_joint_closure.csv`, that
+estimator closed on its own model at a known waist over eight noise steps, about
+seventy minutes on ten workers, and it records its ladder rungs as it goes so the
+real arm is refused unless they pass), `run_residual_resampling.py`
+(`residual_resampling.csv`, the archive's own wing residuals resampled as the
+twin's noise source against a Gaussian draw at the same sigma, a couple of
+minutes on one core), `run_moment_power_map.py` (`moment_power_map.csv` and its per-rung table,
 about half an hour on eight workers), `run_moment_power_map_deep.py`
 (`moment_power_map_deep.csv` and its per-rung table, about ninety minutes on
 six workers) and

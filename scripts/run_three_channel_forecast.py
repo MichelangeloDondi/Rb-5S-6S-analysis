@@ -248,8 +248,42 @@ def _rung_cfg(cfg: dict, rung: int):
 # twice. What this extension actually buys is provenance, a committed row with
 # a status in `results/trapping_channels.csv` for temperatures that previously
 # lived only in prose citing another script -- not a second route.
-_HALO_PER_CENT = {70.0: 0.0, 90.0: 0.00265292, 110.0: 0.0802985,
-                  130.0: 1.06867, 150.0: 8.94394, 170.0: 30.5661}
+def _halo_per_cent() -> dict:
+    """The committed `halo_reexcitation` rows, READ and not carried.
+
+    This was a dict literal of six values that `results/trapping_channels.csv` already holds,
+    which is the one staleness channel the gate stack cannot see: `verify_results_fresh` proves
+    a CSV matches its producer and never that a producer matches another producer's output, so
+    a copy here would stay self-consistently wrong through every check (A75). Reading the cell
+    is what makes the value MOVE when the cell moves.
+
+    It REFUSES rather than falling back. A silent default would put the forecast back exactly
+    where it started, with numbers that look sourced and are not, and the campaign projections
+    a reader opens are built on this.
+    """
+    import csv as _csv
+    src = C.RESULTS_DIR / "trapping_channels.csv"
+    out = {}
+    with src.open(encoding="utf-8") as fh:
+        for r in _csv.DictReader(fh):
+            if r.get("quantity") != "halo_reexcitation":
+                continue
+            key = (r.get("key") or "").strip()
+            if not (key.startswith("T") and key.endswith("C")):
+                continue
+            try:
+                out[float(key[1:-1])] = float(r["value"])
+            except (TypeError, ValueError):
+                continue
+    if len(out) < 2:
+        raise SystemExit(
+            f"run_three_channel_forecast: {src} carries {len(out)} halo_reexcitation row(s) and "
+            f"the interpolation needs at least two. Re-run run_trapping_channels.py; this used "
+            f"to be a dict literal here and the point of reading it is that it cannot go stale.")
+    return out
+
+
+_HALO_PER_CENT = _halo_per_cent()
 
 
 

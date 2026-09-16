@@ -138,6 +138,9 @@ CHEAP = {
 # Minutes each, or needing data_raw/ traces, or both - everything the
 # per-pass cheap set must not pay for.
 EXPENSIVE = {
+    # about two minutes on one core: the rungs are replica studies and not cells, and the
+    # archive arm pools the wing residuals of eight conditions before resampling them
+    "run_residual_resampling": ["residual_resampling.csv"],
     # the kernel-inhomogeneity study: about two and a half minutes, measured,
     # not asserted. THIS COMMENT SAID "minutes rather than seconds" WHEN THE
     # PRODUCER TOOK TEN (2026-09-09): it was timed twice independently in
@@ -320,9 +323,18 @@ UNCOVERED = {
         "Its cheap check is the same code path: the arm is exercised by "
         "tests/test_ultra_joint_producer.py, which runs the statistic and the admission "
         "rule on a synthetic condition without touching the archive."),
+    "ultra_joint_closure.csv": (
+        "run_ultra_joint_closure.py injects through run_ultra_joint's OWN forward model and "
+        "walks the same waist grid three times over -- the real traces as its control, and two "
+        "synthetic arms differing only in whether the noise is correlated -- so it costs what "
+        "its sibling costs and reads the same data_raw/ the public mirror does not hold. Its "
+        "`control_matches_producer` row is the self-check a freshness comparison would be: the "
+        "real arm against the committed fit's own cells at the same waists, as a BOOLEAN."),
     "ultra_joint_fit.csv": (
-        "run_ultra_joint.py refits the raw traces, 159 canonical and 71 more from two trees "
-        "outside the repository, at every point of the grid the run carries (six waists in the coarse "
+        "run_ultra_joint.py refits the raw traces -- 159 canonical, and 71 more from two trees "
+        "outside the repository WHEREVER THEY ARE PRESENT, which on this machine they are not "
+        "(the committed file is the PT scope since 2026-09-16 and says so in its own sessions "
+        "column) -- at every point of the grid the run carries (six waists in the coarse "
         "pass, twenty-six in the fine) under three kernel forms and then the arm and propagation cells, "
         "hours on eight workers, and reads data_raw/, which the public mirror "
         "does not hold; without the traces it prints what is missing and exits "

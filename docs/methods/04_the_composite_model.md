@@ -166,7 +166,7 @@ the general theory. Here neither reaches the measurement.
 The cell runs at 70 to 130 °C, so it sits inside its own thermal radiation, and
 the same two questions apply to it: does blackbody light re-drive 5P to 6S, and
 does it touch the 795 nm signal. `scripts/run_blackbody_channels.py` answers
-both, and one number decides almost all of it. At 403 K the blackbody **photon**
+both, and one number decides almost all of it. At 403 K the blackbody **photon**  <!-- other-quantity: 403 K is this cell at 130 C and not the 429 K effective temperature of Zameroski's fitted slope that moved in this diff -->
 spectrum peaks near 9.1 µm while every line of this cascade lies between 0.79
 and 2.8 µm, and the occupation number falls as $e^{-h\nu/kT}$. (The familiar
 Wien figure, 7.2 µm here, is the peak of the energy spectrum. Photon number

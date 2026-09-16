@@ -32,7 +32,31 @@ from .config import (MANIFEST_CSV, DATA_RAW_DIR, CSV_HEADER_LINES,
 from .constants import TRACE_N_POINTS, TRACE_DT_S
 
 
+def _ladder_check(loader: str) -> None:
+    """The owner's ladder, enforced where it cannot be walked around.
+
+    Imported lazily so `ingest` keeps no import-time dependency on `ladder_gate`, which
+    imports nothing from here; a cycle between the loader and its own gate would be a
+    mechanism that breaks the thing it protects.
+    """
+    from .ladder_gate import check_caller
+    check_caller(loader)
+
+
+def _is_packaged_example(path) -> bool:
+    """The one trace that travels inside the wheel (`rb5s6s/data/`) is a tutorial fixture and not
+    the archive: a stranger's first run fits it before any ladder exists for their own line, and no
+    number read from it reaches a claim surface. Admitted by WHERE IT LIVES, which a caller cannot
+    rename onto, unlike the caller's own file name (the gate's stated false-pass direction)."""
+    try:
+        return Path(path).resolve().parent == (Path(__file__).resolve().parent / "data")
+    except OSError:
+        return False
+
+
 def load_trace(path, with_info: bool = False):
+    if not _is_packaged_example(path):
+        _ladder_check("ingest.load_trace")
     """Read one InfiniiVision CSV -> (t_ms, v_volt)[, info], strictly validated.
 
     ARCHIVE QUIRK (discovered by this loader on first contact, 2026-07-11):
@@ -140,6 +164,12 @@ def load_trace(path, with_info: bool = False):
 
 
 def load_manifest() -> List[Dict[str, str]]:
+    # THE MANIFEST IS AN INDEX AND IS NOT GATED, which is a decision and not an oversight.
+    # It carries file names, roles, temperatures and powers, and no sample of anything; the
+    # ladder governs reading the archive's DATA. A caller must read the index to choose which
+    # traces to ask `ladder_gate.real_traces(..., rows=...)` for, so gating it would force
+    # every routed producer onto the exemption list for the one call that selects its own
+    # rows. `load_trace` below is the chokepoint: nothing reaches a voltage without it.
     """The dataset manifest as a list of dict rows (strings, as stored).
 
     Raises `config.RepoDataMissing` when called without the repository

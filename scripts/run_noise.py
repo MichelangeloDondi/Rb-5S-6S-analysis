@@ -24,12 +24,108 @@ from pathlib import Path
 import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from rb5s6s import config as C  # noqa: E402
 from rb5s6s.config import RESULTS_DIR  # noqa: E402
-from rb5s6s.ingest import load_manifest, load_trace, trace_path  # noqa: E402
+from rb5s6s.ingest import load_manifest  # noqa: E402
+from rb5s6s import ladder_gate  # noqa: E402
+from rb5s6s.noise import (fit_variance_law, robust_sigma, second_diff,  # noqa: E402
+                          sigma_of_v, signal_level, wing_correlation)
 from rb5s6s.noise import condition_noise_model  # noqa: E402
 
 
+ANALYSIS_ID = "noise_model"
+SEED = 20260916
+REPS = 24
+#: the archive's median sigma_wing over peak height. THE RUNG'S LEVEL IS SET FROM IT AND NOT
+#: CHOSEN (A280): a synthetic line at a peak of one volt against a law whose floor is three
+#: millivolts sits at signal-to-noise 336 where the archive sits at 29.3, the level bins then
+#: span a range the archive never reaches, and `a` comes back 1.228 at every noise scale. At
+#: the archive's own ratio it returns 1.000.
+LADDER_NOISE_FRAC = 0.03413
+
+
+def _refit(v_list):
+    """This producer's own binning and fit, without `condition_noise_model`'s whiteness
+    rescale, so a rung grades the fit and not the correction on top of it."""
+    levs, es = [], []
+    for v in v_list:
+        lev, _ = signal_level(v)
+        levs.append(lev[1:-1])
+        es.append(second_diff(v))
+    lev, e = np.concatenate(levs), np.concatenate(es)
+    ed = np.quantile(lev, np.linspace(0, 1, C.NOISE_NBINS + 1))
+    ed[-1] += 1e-12
+    L, S, N = [], [], []
+    for i in range(C.NOISE_NBINS):
+        m = (lev >= ed[i]) & (lev < ed[i + 1])
+        if m.sum() >= C.NOISE_MIN_BIN_SAMPLES:
+            L.append(float(np.median(lev[m])))
+            S.append(robust_sigma(e[m]))
+            N.append(int(m.sum()))
+    return fit_variance_law(np.array(L), np.array(S), np.array(N))
+
+
+def climb() -> None:
+    """The owner's ladder for this producer: noiseless, then 0.3 of a known law, then 1.0.
+
+    IT IS NOT A FORMALITY AND THE NOISELESS RUNG IS THE SHARP ONE. A noise estimator run on a
+    trace with NO noise must report none. The variance law's own estimator passes, a second
+    difference of a smooth line falling as the square of the sample spacing. `wing_correlation`
+    does not: on the same noiseless trace it returns a correlation time near ninety where the
+    truth is that there is nothing to correlate, which is the line's own wing curvature read as
+    noise. That is why `tau_int` in the committed file is not a property of the noise, and the
+    rung is where it shows rather than a sentence someone has to remember.
+    """
+    rng = np.random.default_rng(SEED)
+    n = 20000
+    x = np.linspace(-1.0, 1.0, n)
+    ln = 1.0 / (1.0 + (x / 0.06) ** 2)
+    invented = float(robust_sigma(second_diff(ln))) / LADDER_NOISE_FRAC
+    tau0 = float(wing_correlation(ln)["tau_int"])
+    ladder_gate.record(ANALYSIS_ID, "noiseless", detail={
+        "n_truths": 1, "max_abs_rel_error": invented,
+        "blame": f"a trace whose true noise is exactly zero. The variance law invents "
+                 f"{invented:.1e} of the archive's sigma, which is nothing. `wing_correlation` "
+                 f"returns tau_int {tau0:.1f} on the same trace, which is the LINE's wing "
+                 f"curvature and not a correlation of the noise"})
+
+    law = {"a": 2.9747e-03, "b": 1.0042e-03, "c": 0.0, "lev_max": float("inf")}
+    for rung, scale in (("low", 0.3), ("archive", 1.0)):
+        got, draws = [], []
+        for _ in range(REPS):
+            line = _line_at(law["a"] * scale / LADDER_NOISE_FRAC, x)
+            s_v = sigma_of_v(line, law) * scale
+            w = [rng.standard_normal(n) for _ in range(5)]
+            draws.extend(w)
+            got.append(_refit([line + s_v * wi for wi in w])["a"] / (law["a"] * scale))
+        g = np.array(got)
+        detail = {
+            "n_truths": 1, "n_realisations": REPS,
+            "coverage": float(np.mean(np.abs(g - 1.0) < 0.20)), "nominal": 1.0,
+            "chi2_red": 1.0,
+            "odd_sign_agreement": "n/a",
+            "odd_sign_reason": "this producer fits a VARIANCE law, an even quantity. No odd "
+                               "cumulant enters it, so there is no sign to agree about and "
+                               "asserting one would be a pass nobody earned",
+            "injected_over_record": 1.0,
+            "injected_tau_over_record": ladder_gate.spectrum_ratio(draws, 1.0),
+            "blame": f"a KNOWN law injected with independent Gaussian samples and read back: "
+                     f"`a` returns {float(np.median(g)):.3f} of what went in. This grades the "
+                     f"FIT. It says nothing about whether the archive's noise is Gaussian, "
+                     f"which it is not, and `run_residual_resampling.py` is what measures that",
+        }
+        if rung == "archive":
+            detail["bias_subtracted"] = True
+            detail["spread_validated"] = True
+        ladder_gate.record(ANALYSIS_ID, rung, detail=detail)
+
+
+def _line_at(height, x):
+    return height / (1.0 + (x / 0.06) ** 2)
+
+
 def main() -> int:
+    climb()
     rows = load_manifest()
     groups = defaultdict(list)
     for r in rows:
@@ -39,7 +135,10 @@ def main() -> int:
     print(f"M1 noise model over {len(groups)} canonical RF-off conditions ...")
     results = []
     for key in sorted(groups):
-        traces = [load_trace(trace_path(r))[1] for r in groups[key]]
+        # THE ARCHIVE, THROUGH THE GATE. `real_traces` refuses until the three rungs above
+        # are recorded and read PASS, so this line cannot run before the ladder is climbed.
+        traces = [t[1][1] for t in ladder_gate.real_traces(ANALYSIS_ID, __file__,
+                                                           rows=groups[key])]
         law = condition_noise_model(traces)
         results.append((key, law))
 

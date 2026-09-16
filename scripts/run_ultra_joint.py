@@ -240,7 +240,11 @@ DIFF_STEP = 3e-3
 #: 25 MHz cap on purpose: that cap is sized for a single-line FIT, and this producer
 #: needs the wing to grade a session's noise law.
 RETRACE_CUT_MHZ = 33.0
-MAX_NFEV = 80  # doubled 2026-09-14: the base cells stopped on their budget (start spread 3.5)
+MAX_NFEV = 160  # doubled again 2026-09-16: `alpha_rel` added a dimension and the
+# gate's own convergence check went red, the free minimum sitting up to 1171 chi2
+# ABOVE the lowest fixed-beta refit. A free fit scoring above its own profile has
+# not found the minimum, and every beta and waist read off such a cell is an
+# optimiser artefact.
 EVENING_RATE_SEED = 5.9 / 470.0      # run_stark_joint's r0, MHz per ms, when no committed rate exists
 # A TRACE THAT ENDS AT ITS OWN PEAK IS HALF A LINE. One morning file holds 976
 # finite samples of 2000 (the header-variant NaN rows the loader masks) and
@@ -498,6 +502,18 @@ def _load(spec: dict) -> list[dict]:
     key = json.dumps(dict(files=[r["file"] for r in spec["rows"]], sessions=spec["sessions"]), sort_keys=True)
     if key in _TRACES:
         return _TRACES[key]
+    # THIS ROUTE IS DEBT AND IS NAMED AS SUCH. The producer calls
+    # `ladder_gate.real_traces` at the top, which the TEXT scan reads as routed file-wide,
+    # and then loads its traces here with `ingest.load_trace`, which it does not cover.
+    # The runtime refusal added 2026-09-16 caught that the first time the suite ran, which
+    # is the whole reason the rule moved from a regex to the loader: one sanctioned call
+    # does not sanction a second route in the same file. Routing this line was TRIED and
+    # reverted the same hour -- the gate then refuses the producer outright, because the
+    # closure's own noiseless rung reads FAIL at a 0.70 per cent recovery with NO NOISE
+    # against a tolerance of 0.1, so the committed CSV would stop being reproducible and
+    # the gate would stay red on a defect that is real and is not this line's. The entry
+    # in `ladder_gate.PREDATES_THE_GATE` carries that reason and the paydown is exactly
+    # one thing: make the noiseless closure recover its injected waist.
     from rb5s6s.ingest import load_trace
     out = []
     q_groups: dict = {}
@@ -877,7 +893,23 @@ class Cell:
             nu = self.axis(d, t)
             m = self.model(nu - centres[i], d, self.per[i], t["peak"], t["session"])
             parts.append(self.linear(t, nu, m)[1])
-        parts.append(np.array([(d[n] - mu) / sig for n, mu, sig in self.prior_terms if n in self.names]))
+        # A PROFILE LIKELIHOOD CARRIES THE SAME OBJECTIVE AT EVERY POINT, and this
+        # line read `if n in self.names`, which DROPS a parameter's prior the moment
+        # that parameter is PINNED. The beta profile pins beta_rel, so every profile
+        # point was scored without the beta prior while the free fit paid it, and the
+        # two chi2 were not the same statistic. The gap is exactly the penalty:
+        # ((beta-1)/0.1064)^2 is 88 at beta 0, 1413 at 5x, and the gate's
+        # "the free fit is the beta profile's minimum" read 1171.58 in the gaussian
+        # arm, 88.27 in the lorentzian and 53.78 in the mixed -- diagnosed for two
+        # runs as an optimiser that had not converged, and answered once by doubling
+        # MAX_NFEV, which changed the number not at all.
+        # THE FALSE-PASS DIRECTION: the dropped term only ever made a pinned point
+        # look BETTER than the free minimum, so it biased the profile DOWNWARD away
+        # from theory -- widening the beta interval and pulling its centre.
+        # `unpack` merges `self.fixed` into `d`, so `n in d` is the free AND the
+        # pinned set; a term for a parameter this cell does not carry at all (a
+        # per-session power scale when power_scale is off) is still skipped.
+        parts.append(np.array([(d[n] - mu) / sig for n, mu, sig in self.prior_terms if n in d]))
         return np.concatenate(parts)
 
     def chi2(self, p, centres):
@@ -1233,17 +1265,26 @@ def _cell_task(job):
     # is an optimiser that stopped and not a physics statement. The best profile
     # point is a start the free fit must match or beat, so the free minimum can
     # never sit above its own profile.
-    if beta_profile:
+    # AND THE RESEED REPEATS UNTIL IT STOPS PAYING (2026-09-16). One pass was not
+    # enough once the parameter set gained a dimension: the profile's best point is
+    # a start, and a start can itself stop on its budget, leaving the free minimum
+    # above the profile again. Three passes at most, and it exits the moment a pass
+    # buys less than the convergence check's own tolerance.
+    for _ in range(3):
+        if not beta_profile:
+            break
         _br = min(beta_profile, key=lambda k: beta_profile[k]["chi2"])
-        if beta_profile[_br]["chi2"] < best["chi2"] - 1e-6:
-            _seed = dict(beta_profile[_br]["params"]); _seed["beta_rel"] = float(_br)
-            _f3 = cell.fit([_seed.get(n, p[n]) for n in cell.names], max_nfev=max_nfev)
-            fits.append(_f3)
-            if _f3["chi2"] < best["chi2"]:
-                best = _f3
-                bars = cell.conditional_bars(best["p"], best["centres"])
-                p = {k: float(v) for k, v in cell.unpack(best["p"]).items()}
-                e = {k: float(v) for k, v in zip(cell.names, bars)}
+        if beta_profile[_br]["chi2"] >= best["chi2"] - 1e-6:
+            break
+        _seed = dict(beta_profile[_br]["params"]); _seed["beta_rel"] = float(_br)
+        _f3 = cell.fit([_seed.get(n, p[n]) for n in cell.names], max_nfev=max_nfev)
+        fits.append(_f3)
+        if _f3["chi2"] >= best["chi2"] - 1e-6:
+            break
+        best = _f3
+        bars = cell.conditional_bars(best["p"], best["centres"])
+        p = {k: float(v) for k, v in cell.unpack(best["p"]).items()}
+        e = {k: float(v) for k, v in zip(cell.names, bars)}
     # THE SPREAD IS READ OVER THE ENDPOINTS AFTER A POLISH from each start's own
     # end, so a start that stopped on its budget is not read as a second minimum.
     spread = max(f["chi2"] for f in fits) - min(f["chi2"] for f in fits)
@@ -2283,6 +2324,30 @@ def main() -> int:
     sessions = [s for s in sessions if s not in _drop]
     from _producer_lock import producer_lock
     with producer_lock("run_ultra_joint"):
+        # THE NOISE LADDER BINDS HERE (owner, 2026-09-15, restated twice on 2026-09-16):
+        # "all analysis have to be done first on noiseless synthetic traces, then on
+        # increasingly noisy synthetic traces up to the archive noise levels and only
+        # after that to the real ones." This producer is the analysis that rule is most
+        # about, and until now it read data_raw/ with no ladder anywhere in its path.
+        #
+        # `real_traces` RAISES until the noiseless, low and archive rungs of
+        # `ultra_joint_waist` are recorded and all read PASS. Its rungs are written by
+        # scripts/run_ultra_joint_closure.py, which injects through THIS module's own
+        # forward model, so the two share one ladder as `ladder_gate`'s docstring
+        # intends -- "analysis_id is a name, not a path".
+        #
+        # CONSEQUENCE, SAID PLAINLY: while the closure fails, this producer does not
+        # run, and results/ultra_joint_fit.csv cannot be regenerated. That is the rule
+        # working rather than an obstacle to route around, and the pressure it creates
+        # is to repair the closure -- which is where the science is anyway.
+        #
+        # `--plant` and `--time-cells` are exempt and named: the first is a determinism
+        # check that fits two cells and asserts one worker equals many, the second times
+        # cells without reading a result. Neither draws a conclusion about the atom, and
+        # a gate that blocks its own plant cannot be tested.
+        if not ({"--plant", "--time-cells"} & set(args)):
+            from rb5s6s import ladder_gate
+            ladder_gate.real_traces("ultra_joint_waist", __file__)
         workers = n_workers()
         coarse = "--coarse" in args
         grid_ws = W0_COARSE_UM if coarse else W0_GRID_UM

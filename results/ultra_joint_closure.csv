@@ -1,0 +1,78 @@
+quantity,key,value,err,unit,note,status
+sweep_x0,interior_fraction,1.000,,,"1 of 1 realisations found an INTERIOR minimum at 0 times each condition's own noise law. bias +0.365 um, coverage 1.00, median bar 0.796 um, chi2_red 0.000. Verdicts: interior",DIAGNOSTIC
+chi2_x0,w0_40um,644.1,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0,w0_44um,183.3,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0,w0_48um,48.0,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0,w0_50um,22.7,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0,w0_50.5um,19.2,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0,w0_51um,16.8,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0,w0_51.5um,15.3,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0,w0_52um,14.4,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0,w0_52.5um,14.2,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0,w0_53um,14.8,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0,w0_53.5um,16.0,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0,w0_54um,17.7,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0,w0_56um,28.8,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0,w0_60um,63.8,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0,w0_64um,105.5,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+sweep_x0.05,interior_fraction,1.000,,,"6 of 6 realisations found an INTERIOR minimum at 0.05 times each condition's own noise law. bias +0.832 um, coverage 0.17, median bar 0.815 um, chi2_red 0.003. Verdicts: interior",DIAGNOSTIC
+chi2_x0.05,w0_40um,863.2,,whitened chi2,"realisation 0 at 0.05 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.05,w0_44um,399.3,,whitened chi2,"realisation 0 at 0.05 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.05,w0_48um,262.6,,whitened chi2,"realisation 0 at 0.05 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.05,w0_52um,228.0,,whitened chi2,"realisation 0 at 0.05 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.05,w0_56um,241.7,,whitened chi2,"realisation 0 at 0.05 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.05,w0_60um,276.1,,whitened chi2,"realisation 0 at 0.05 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.05,w0_64um,317.4,,whitened chi2,"realisation 0 at 0.05 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+sweep_x0.1,interior_fraction,1.000,,,"6 of 6 realisations found an INTERIOR minimum at 0.1 times each condition's own noise law. bias +0.941 um, coverage 0.00, median bar 0.812 um, chi2_red 0.010. Verdicts: interior",DIAGNOSTIC
+chi2_x0.1,w0_40um,1515.7,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.1,w0_44um,1045.0,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.1,w0_48um,905.2,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.1,w0_52um,868.5,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.1,w0_56um,880.7,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.1,w0_60um,913.9,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.1,w0_64um,954.4,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+sweep_x0.2,interior_fraction,1.000,,,"6 of 6 realisations found an INTERIOR minimum at 0.2 times each condition's own noise law. bias +0.537 um, coverage 1.00, median bar 1.206 um, chi2_red 0.040. Verdicts: interior",DIAGNOSTIC
+chi2_x0.2,w0_40um,4120.5,,whitened chi2,"realisation 0 at 0.2 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.2,w0_44um,3624.9,,whitened chi2,"realisation 0 at 0.2 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.2,w0_48um,3474.4,,whitened chi2,"realisation 0 at 0.2 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.2,w0_52um,3430.1,,whitened chi2,"realisation 0 at 0.2 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.2,w0_56um,3436.7,,whitened chi2,"realisation 0 at 0.2 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.2,w0_60um,3465.7,,whitened chi2,"realisation 0 at 0.2 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.2,w0_64um,3503.0,,whitened chi2,"realisation 0 at 0.2 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+sweep_x0.3,interior_fraction,1.000,,,"6 of 6 realisations found an INTERIOR minimum at 0.3 times each condition's own noise law. bias +2.011 um, coverage 0.00, median bar 1.154 um, chi2_red 0.090. Verdicts: interior",DIAGNOSTIC
+chi2_x0.3,w0_40um,8457.5,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.3,w0_44um,7921.6,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.3,w0_48um,7753.7,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.3,w0_52um,7697.3,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.3,w0_56um,7695.0,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.3,w0_60um,7717.5,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.3,w0_64um,7749.7,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+sweep_x0.5,interior_fraction,1.000,,,"6 of 6 realisations found an INTERIOR minimum at 0.5 times each condition's own noise law. bias +5.174 um, coverage 0.00, median bar 1.256 um, chi2_red 0.249. Verdicts: interior",DIAGNOSTIC
+chi2_x0.5,w0_40um,22320.5,,whitened chi2,"realisation 0 at 0.5 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.5,w0_44um,21658.1,,whitened chi2,"realisation 0 at 0.5 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.5,w0_48um,21429.1,,whitened chi2,"realisation 0 at 0.5 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.5,w0_52um,21335.0,,whitened chi2,"realisation 0 at 0.5 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.5,w0_56um,21305.2,,whitened chi2,"realisation 0 at 0.5 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.5,w0_60um,21307.0,,whitened chi2,"realisation 0 at 0.5 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.5,w0_64um,21323.6,,whitened chi2,"realisation 0 at 0.5 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+sweep_x0.7,interior_fraction,0.000,,,"0 of 6 realisations found an INTERIOR minimum at 0.7 times each condition's own noise law. bias +nan um, coverage 0.00, median bar nan um, chi2_red 0.486. Verdicts: rail",DIAGNOSTIC
+chi2_x0.7,w0_40um,43082.0,,whitened chi2,"realisation 0 at 0.7 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.7,w0_44um,42232.8,,whitened chi2,"realisation 0 at 0.7 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.7,w0_48um,41894.0,,whitened chi2,"realisation 0 at 0.7 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.7,w0_52um,41743.6,,whitened chi2,"realisation 0 at 0.7 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.7,w0_56um,41672.8,,whitened chi2,"realisation 0 at 0.7 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.7,w0_60um,41644.1,,whitened chi2,"realisation 0 at 0.7 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.7,w0_64um,41637.6,,whitened chi2,"realisation 0 at 0.7 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+sweep_x1,interior_fraction,0.000,,,"0 of 6 realisations found an INTERIOR minimum at 1 times each condition's own noise law. bias +nan um, coverage 0.00, median bar nan um, chi2_red 0.988. Verdicts: rail",DIAGNOSTIC
+chi2_x1,w0_40um,87083.1,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x1,w0_44um,85842.5,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x1,w0_48um,85207.6,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x1,w0_52um,84929.1,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x1,w0_56um,84770.7,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x1,w0_60um,84677.1,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x1,w0_64um,84621.5,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+noise_where_the_waist_dies,largest_scale_still_localised,0.5,,,"the largest multiple of the archive's own noise law at which at least half the realisations still return an INTERIOR minimum in w0. Above it the profile rails and the waist is not localised at all. This is a CAMPAIGN LEVER and not a reading of the past: it gives the noise reduction this estimator would need to measure the waist. Localised at [0.0, 0.05, 0.1, 0.2, 0.3, 0.5], railed at [0.7, 1.0]",ENVELOPE
+rung_noiseless,verdict,FAIL,,,"at x0 of the law: 1 of 1 interior, max|rel| 0.007017, coverage 1.00 against a nominal 0.68, chi2_red 0.000. noiseless recovery is off by 0.00702, over 0.001: a noiseless failure is an arithmetic or convention error",CALIB
+rung_low,verdict,NOT CLIMBED,,,"not on the ladder because its predecessor did not pass, but MEASURED in the sweep above at x0.3: 6 of 6 interior, max|rel| 0.0456, coverage 0.00. cannot record 'low' for 'ultra_joint_waist': its predecessor 'noiseless' does not read PASS.",CALIB
+real_arm_reached,boolean,False,,,"THE RULE MADE MECHANICAL (owner, 2026-09-15 and 2026-09-16): the real traces are reachable only through rb5s6s.ladder_gate.real_traces, which raises until the noiseless, low and archive rungs are recorded and all read PASS. REFUSED: real traces refused for 'ultra_joint_waist': the noiseless rung reads FAIL: {""n_truths"": 1, ""n_realisations"": 1, ""interior"": 1, ""max_abs_rel_error"": 0.007016900128782311, ""coverage"": 1.0, ""nominal"": 0.68, ""chi2_red"": 0.0001659602116074704, ""odd_sign_agreement"": ""n/a"", ""odd_si. the low rung has no artefact (private/cache/plan_2026-09-16/.ladder/ultra_joint_waist/low.json): run i",CALIB
+closure_verdict,waist_recovered,False,,,"PASS on every rung is what licenses a waist from this fit. Anything else and every w0 in results/ultra_joint_fit.csv is conditional and none is a measurement (register A274, A276)",CALIB

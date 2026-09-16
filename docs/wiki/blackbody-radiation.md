@@ -69,7 +69,7 @@ questions separately for the 5S to 6S cascade. Both are computed by
 
 *Thermal occupation number at each cascade wavelength, and the resulting rate budget from natural decay down to the blackbody-driven channels.*
 
-One comparison decides most of it. At 403 K the thermal peak is at 7.2 µm by
+One comparison decides most of it. At 403 K the thermal peak is at 7.2 µm by  <!-- other-quantity: 403 K is this cell at 130 C and not the 429 K effective temperature of Zameroski's fitted slope that moved in this diff -->
 energy and 9.1 µm by photon number, while every line of the cascade lies
 between 0.79 and 2.8 µm, so the cascade lives on the exponential tail of
 either. The rates below do not depend on which peak is quoted, because they

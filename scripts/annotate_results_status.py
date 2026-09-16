@@ -376,6 +376,48 @@ FILE_STATUS = {
 # (exact match, then longest-prefix). Unmapped -> hard error, so no row is
 # silently left un-tagged.
 QUANTITY_STATUS = {
+    # THE RESIDUAL-RESAMPLING ARM. Every row is a statement about an INSTRUMENT -- the twin's
+    # noise against the archive's own -- and none is a property of the atom, so nothing here is
+    # a measurement class. The ladder rungs and the bootstrap's own fidelity are CALIB, being
+    # the arm checking itself where the answer is known. The archive-facing ratios are ENVELOPE
+    # and not measurements: they are lower bounds by the bootstrap's measured under-read, and
+    # they describe how wrong a BAR is rather than how large a physical quantity is.
+    "residual_resampling.csv": {
+        "resampled_from_a_zero_pool": "CALIB",
+        "bootstrap_carries_of_truth": "CALIB",
+        "sd_k4_bootstrap_over_gaussian": "CALIB",
+        "sd_k4_direct_over_gaussian": "CALIB",
+        "sigma_resampled_over_gaussian": "CALIB",
+        "mixture_check_ratio_to_heaviest_member": "CALIB",
+        "conditions_pooled": "DIAGNOSTIC",
+        "pool_size_": "DIAGNOSTIC",
+        "excess_kurtosis_": "MEASURED",
+        "sd_k2_over_gaussian": "ENVELOPE",
+        "sd_k4_over_gaussian": "ENVELOPE",
+        "sd_k4_over_gaussian_corrected": "ENVELOPE",
+    },
+    # THE CLOSURE'S OWN ROWS. The landscapes and their differences are comparisons
+    # and measure no apparatus quantity, so DIAGNOSTIC; the control boolean and the
+    # verdict are CALIB, being statements about the INSTRUMENT rather than about the
+    # atom, and they are what the gate above reads.
+    "ultra_joint_closure.csv": {
+        # the landscapes and the sweep are comparisons and measure no apparatus quantity
+        "chi2_": "DIAGNOSTIC",
+        "sweep_": "DIAGNOSTIC",
+        "turnover_": "DIAGNOSTIC",
+        "model_error_curvature": "DIAGNOSTIC",
+        "correlated_minus_white": "DIAGNOSTIC",
+        "asymptote_tested": "DIAGNOSTIC",
+        # the noise at which the waist stops being localised IS an apparatus-facing
+        # number, giving the noise level a campaign would need, but it is measured on the
+        # twin and not on the bench, so it is an ENVELOPE and never a measurement
+        "noise_where_the_waist_dies": "ENVELOPE",
+        # the rungs, the route and the verdict are statements about the INSTRUMENT
+        "rung_": "CALIB",
+        "real_arm_reached": "CALIB",
+        "control_matches_producer": "CALIB",
+        "closure_verdict": "CALIB",
+    },
     # Gate A, added 2026-09-04 in the commit that creates the file. The status
     # varies by quantity and never within one, which is why this file is here
     # rather than in the per-row set above: the prediction and its band are
@@ -641,7 +683,35 @@ QUANTITY_STATUS = {
 # CALIB is a valid tag for a prediction row; extend VOCAB check accordingly.
 
 
+#: THE CLOSURE GATE, and it was a promise the code did not keep until 2026-09-16.
+#: THE STANDING RULE, stated here rather than cited: no interval before closure --
+#: this file holds the ultra-joint summary rows at DIAGNOSTIC until a twin-closure
+#: row is present. It did not: `ultra_joint_fit.csv` sat in FILE_STATUS as a flat literal
+#: that read no closure row at all (register A270). The direction was the safe one,
+#: a flat pin being stricter than the promised conditional, which is exactly why
+#: nothing ever caught it -- a mechanism that errs toward refusal is never caught by
+#: the thing it protects. This is the conditional, so the sentence is now true.
+#:
+#: THE PLANT, both ways: delete `results/ultra_joint_closure.csv` and these rows must
+#: stay DIAGNOSTIC (no closure, no interval); flip its `closure_verdict` row to True
+#: and they must stop being pinned here and fall through to FILE_STATUS.
+CLOSURE_GATED = {"ultra_joint_fit.csv": "ultra_joint_closure.csv"}
+
+
+def _closure_recovered(closure_csv: str) -> bool:
+    """True only when a closure exists AND says the parameter was recovered."""
+    path = C.RESULTS_DIR / closure_csv
+    if not path.is_file():
+        return False
+    for r in csv.DictReader(path.open()):
+        if r.get("quantity") == "closure_verdict":
+            return str(r.get("value", "")).strip().lower() == "true"
+    return False
+
+
 def status_for(fname: str, row: dict) -> str:
+    if fname in CLOSURE_GATED and not _closure_recovered(CLOSURE_GATED[fname]):
+        return "DIAGNOSTIC"
     if fname in QUANTITY_STATUS:
         m = QUANTITY_STATUS[fname]
         q = row["quantity"]

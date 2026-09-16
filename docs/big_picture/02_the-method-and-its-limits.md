@@ -250,7 +250,8 @@ continued to imaginary frequency: C₆ = (3/π)∫α_5S(iω)α_6S(iω)dω. That 
 That absolute value should not be used on its own, and the reason is worth
 stating. Run on 7S, the one nS state in Rb whose self-broadening has been
 measured at all, the same code returns 5.61 kHz per 10¹² cm⁻³ against
-Zameroski 2014's measured 5.4 (129 ± 11 kHz/mTorr, converted at 403 K), 4 per
+Zameroski 2014's measured 5.4 (129 ± 13 kHz/mTorr, converted at his own
+429 K), 4 per
 cent high and inside that measurement's bar. Before 2026-09-14 it returned 4.40,
 18 per cent low, because the pair coefficients came from an imaginary-frequency
 integral that mishandles an excited atom's downward lines (register A250,

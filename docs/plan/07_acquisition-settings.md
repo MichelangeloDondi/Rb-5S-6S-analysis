@@ -1200,7 +1200,7 @@ the traces as taken, neither ceiling binds.
 **The bandwidth cost is quantified on one side only.** ERes states it exactly,
 each half bit halving the passband: 0.5 bit leaves 0.5 of Nyquist, 1.0 leaves
 0.241, 2.0 leaves 0.058 and 3.0 leaves 0.016, with filter lengths of 2, 5, 24
-and 117 samples. The Agilent manual says only that High Resolution "limits the
+and 117 samples. The Agilent manual says only that High Resolution "limits the  <!-- other-quantity: 117 samples of the scope's High Resolution filter, not the count of committed CSVs -->
 oscilloscope's real-time bandwidth because it effectively acts like a low-pass
 filter". For a line crossed in tens of milliseconds neither cost is reachable.
 
@@ -1218,7 +1218,7 @@ independent crossings and no lag calibration, because there is no lag to
 calibrate. The Agilent's mode carries no such guarantee.
 
 Two smaller manual facts bear on the design. ERes discards samples equal to the
-filter length at each end of the record, between 2 and 117, which is negligible
+filter length at each end of the record, between 2 and 117, which is negligible  <!-- other-quantity: 117 samples of the scope's High Resolution filter, not the count of committed CSVs -->
 against 500 001 points but is a reason not to place a line near a record
 boundary. And the LeCroy sets its own sample rate at slow timebase so that "the
 maximum number of data samples is maintained over time", which is why the

@@ -334,6 +334,25 @@ close the second row and the amplitude needed is about seven times what the
 wings actually show, which is the evidence that something else contributes.
 **Two terms remain open, named, and not papered over.**
 
+**And the tail shape's cost is measured now, not only named.** Saying a term is
+open says nothing about what it is worth. Resampling the archive's own wing
+residuals in moving blocks, so the distribution comes off the bench and not out
+of a model of it, and comparing against a Gaussian draw at the *same* sigma with
+only the shape differing: the twin's fourth-cumulant spread is
+[5.5](../../results/residual_resampling.csv
+"ref:residual_resampling:sd_k4_over_gaussian_corrected:real") times too narrow,
+and its variance spread [1.5](../../results/residual_resampling.csv
+"ref:residual_resampling:sd_k2_over_gaussian:real") times. The covariance that
+weights the moment likelihood is estimated from those replicas, so **every
+higher-moment bar the twin quotes is that much too tight**. That direction
+flatters a forecast instead of guarding it, and it is the opposite of the other
+two rows. The number is a lower bound: a bootstrap can only resample the tail its
+pool contains, and the arm measures its own under-read at
+[0.85](../../results/residual_resampling.csv
+"ref:residual_resampling:bootstrap_carries_of_truth:archive") of a fresh draw.
+`run_residual_resampling.py` produces it, and it climbs the noiseless and
+scaled-noise rungs before it is allowed to read a real trace.
+
 **Two cautions travel with this result.** The wing must be taken where the line
 is absent. Three linewidths out, the statistic reads the line's shoulder and
 returns about ten whatever the noise is set to. And this estimator is not the

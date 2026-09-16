@@ -169,7 +169,32 @@ moment study found the same from the other side, the instrument axis moving the
 fitted exponent least of the four it varied. Wing-noise **correlation** is measured separately
 by the blocking method and summarized as an integrated correlation time
 $\tau_\text{int}$, which inflates the fit errors as above. We found $b$ flat in
-$T$ (the trapping test of [§2.7](04_the_composite_model.md)) and $\tau_\text{int}$ small. *Code:*
+$T$ (the trapping test of [§2.7](04_the_composite_model.md)) and $\tau_\text{int}$ small.
+
+**What $\tau_\text{int}$ measures is the line, not the noise**, and the
+distinction was only made in 2026. The window called signal-free is not: a
+Lorentzian wing is still falling through it, and the estimator removes a
+straight line before summing the autocorrelation, so the curvature that survives
+is read as correlation. Three checks separate them. On pure white noise with no
+line at all the estimator returns exactly one at every length, so it is not
+biased. On an *analytic* line laid over provably independent samples it returns
+the archive's own value, so the line alone accounts for it. And removing a
+quadratic instead of a straight line takes the archive to one, a Lorentzian wing
+over a short segment being quadratic to that order. **The archive's noise is
+white at sample scale**, which this repository's own 2026-07-11 verification had
+already said in words and which nothing had reconciled with the committed
+column. The consequence runs toward caution and not against it: a fit that
+divides its residuals by $\sqrt{\tau_\text{int}}$ widens every interval it
+reports for a correlation the post-fit residuals do not carry.
+
+**And every estimator of $\sigma$ here is a high-pass**, the one named *direct*
+included, being built from first differences. Second differences annihilate a
+linear trend, which is what they are for, and they also annihilate the slow
+components of the noise itself, so they under-read it whenever the noise is not
+white. The whiteness rescale exists to undo that, and it does not close it: the
+floor it returns still sits below the wing's own scatter once the baseline is
+removed to the order the wing needs. Read $a$ and $b$ as fit weights, which is
+what they are for, and not as a measurement of the detection chain. *Code:*
 `noise.py`.
 
 ### 4.5 Statistics versus systematics: the measurement-vs-bound rule

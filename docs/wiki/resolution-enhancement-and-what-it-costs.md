@@ -125,7 +125,7 @@ exchange exactly, each half bit halving the passband:
 | 0.5 | 0.5 | 2 |
 | 1.0 | 0.241 | 5 |
 | 2.0 | 0.058 | 24 |
-| 3.0 | 0.016 | 117 |
+| 3.0 | 0.016 | 117 <!-- other-quantity: a row of the resolution table, not the count of committed CSVs --> |
 
 For a spectroscopic line crossed in tens of milliseconds against a converter
 running at gigasamples per second, this cost is unreachable. Bandwidth is not

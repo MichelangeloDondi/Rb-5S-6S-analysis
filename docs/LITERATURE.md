@@ -405,7 +405,7 @@ distribution of AC-Stark shifts is a new frame**.
 > and the record were read from the publisher, and the physics from the
 > introduction of [`stalnaker2006`](lit/stalnaker2006.md), held, read, and
 > self-described as generalising it, but the paper itself is 1987, predates
-> arXiv, and APS returns 403 without a subscription.
+> arXiv, and APS returns 403 without a subscription.  <!-- other-quantity: 403 is an HTTP status, not a temperature in kelvin -->
 >
 > What that establishes: they excited the **forbidden 6S → 7S M1 and
 > Stark-induced** line in Cs where an atomic beam crosses an intense **standing
@@ -786,7 +786,7 @@ given, so a reader checking a number ends up here rather than in a module.
 - **Matrix elements for the 6S polarizability.**
   [Herold et al. 2012](lit/herold2012.md) supplies the 5S→6P reduced matrix
   elements 0.3235(9) and 0.5230(8) ea₀ that `rb5s6s/polarizability.py` uses,
-  measured by light-shift cancellation at the 421 and 423 nm magic zeros.
+  measured by light-shift cancellation at the 421 and 423 nm magic zeros.  <!-- other-quantity: 423 nm is a wavelength and not the 423 K conversion temperature that moved in this diff -->
   REPORTED, the record confirmed from the publisher listing and the source
   not read here. **[FEED]**
 

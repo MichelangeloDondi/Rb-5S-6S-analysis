@@ -60,6 +60,15 @@ ROOT = Path(__file__).resolve().parents[1]
 #
 # checker path (relative to the repo root) -> why it is not wired
 NOT_WIRED = {
+    "private/checks/ssot_bind.py":
+        "an author's TOOL and not a gate check. It offers a binding for a bare decimal that "
+        "matches exactly one committed cell at four significant figures with the quantity "
+        "named in context, and writes only those; everything else it prints for a person. "
+        "Wiring it into a floor would either bind on a digit coincidence, which makes a value "
+        "move when the cell it moved from is about something else, or refuse a tree for "
+        "numbers that have no cell to cite and never will -- four thousand of them, measured. "
+        "`ssot_coverage.py` is the RATCHET that grades this surface and it IS wired; this is "
+        "the tool that pays it down.",
     # ---- THE SESSION INSTRUMENTS, run by a prompt and not by a file on disk,
     # ---- on the same footing as half_hour_alarm.py below (2026-09-15).
     "private/checks/science_alarm.py":
@@ -101,11 +110,6 @@ NOT_WIRED = {
         "a truth. The harnesses it guards are the plan's Phase A and B, which "
         "have no committed caller yet, so wiring it now would guard nothing. "
         "OWED: a committed caller, together with ladder_gate's",
-    "private/checks/noise_ladder_gate.py":
-        "nothing reaches the real traces except through ladder_gate, and "
-        "ladder_gate itself is imported by nothing: three rungs exist under "
-        "private/cache written by a harness that is not in the repository. "
-        "OWED: the committed caller, which is the plan's own step 5",
     "private/checks/twin_licence.py":
         "ten rules applied when a twin artefact is READ. Nothing in the tree "
         "reads a twin artefact through it yet. OWED with the two above, and "

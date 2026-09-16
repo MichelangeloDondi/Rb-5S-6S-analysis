@@ -21,7 +21,7 @@
   "quoting_sites": [
    {
     "file": "docs/RESULTS.md",
-    "line": 13,
+    "line": 15,
     "writes": "0.030"
    },
    {
@@ -106,7 +106,7 @@
    },
    {
     "file": "docs/big_picture/02_the-method-and-its-limits.md",
-    "line": 281,
+    "line": 282,
     "writes": "3.50"
    },
    {
@@ -148,7 +148,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/02_the-method-and-its-limits.md",
-    "line": 281,
+    "line": 282,
     "writes": "0.37"
    },
    {
@@ -455,7 +455,7 @@
   "quoting_sites": [
    {
     "file": "docs/RESULTS.md",
-    "line": 72,
+    "line": 74,
     "writes": "7.3"
    },
    {
@@ -1225,12 +1225,12 @@
   "quoting_sites": [
    {
     "file": "docs/methods/06_the_statistics.md",
-    "line": 605,
+    "line": 630,
     "writes": "0.0102"
    },
    {
     "file": "docs/methods/06_the_statistics.md",
-    "line": 661,
+    "line": 686,
     "writes": "0.0102"
    }
   ],
@@ -1242,12 +1242,12 @@
   "quoting_sites": [
    {
     "file": "docs/methods/06_the_statistics.md",
-    "line": 606,
+    "line": 631,
     "writes": "0.2030"
    },
    {
     "file": "docs/methods/06_the_statistics.md",
-    "line": 661,
+    "line": 686,
     "writes": "0.2030"
    }
   ],
@@ -2391,7 +2391,7 @@
   "quoting_sites": [
    {
     "file": "docs/RESULTS.md",
-    "line": 60,
+    "line": 62,
     "writes": "1.2"
    },
    {
@@ -3475,7 +3475,7 @@
   "quoting_sites": [
    {
     "file": "docs/RESULTS.md",
-    "line": 141,
+    "line": 143,
     "writes": "1e-04"
    },
    {
@@ -3492,7 +3492,7 @@
   "quoting_sites": [
    {
     "file": "docs/RESULTS.md",
-    "line": 141,
+    "line": 143,
     "writes": "6e-06"
    },
    {
@@ -3563,7 +3563,7 @@
    },
    {
     "file": "docs/RESULTS.md",
-    "line": 141,
+    "line": 143,
     "writes": "-1131.8"
    },
    {
@@ -3630,7 +3630,7 @@
    },
    {
     "file": "docs/RESULTS.md",
-    "line": 141,
+    "line": 143,
     "writes": "5.9"
    },
    {
@@ -3701,7 +3701,7 @@
   "quoting_sites": [
    {
     "file": "docs/RESULTS.md",
-    "line": 141,
+    "line": 143,
     "writes": "15.0"
    },
    {
@@ -3718,7 +3718,7 @@
   "quoting_sites": [
    {
     "file": "docs/RESULTS.md",
-    "line": 141,
+    "line": 143,
     "writes": "1.3"
    },
    {
@@ -3735,7 +3735,7 @@
   "quoting_sites": [
    {
     "file": "docs/RESULTS.md",
-    "line": 141,
+    "line": 143,
     "writes": "-0.81"
    },
    {
@@ -3920,6 +3920,47 @@
   ],
   "source_file": "results/projections.csv",
   "source_value": "49.7754"
+ },
+ "residual_resampling:bootstrap_carries_of_truth:archive": {
+  "producer": "run_residual_resampling.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/the-digital-twin.md",
+    "line": 351,
+    "writes": "0.85"
+   }
+  ],
+  "source_file": "results/residual_resampling.csv",
+  "source_value": "0.8532"
+ },
+ "residual_resampling:sd_k2_over_gaussian:real": {
+  "producer": "run_residual_resampling.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/the-digital-twin.md",
+    "line": 344,
+    "writes": "1.5"
+   }
+  ],
+  "source_file": "results/residual_resampling.csv",
+  "source_value": "1.4811"
+ },
+ "residual_resampling:sd_k4_over_gaussian_corrected:real": {
+  "producer": "run_residual_resampling.py",
+  "quoting_sites": [
+   {
+    "file": "README.md",
+    "line": 129,
+    "writes": "5.5"
+   },
+   {
+    "file": "docs/wiki/the-digital-twin.md",
+    "line": 342,
+    "writes": "5.5"
+   }
+  ],
+  "source_file": "results/residual_resampling.csv",
+  "source_value": "5.5432"
  },
  "rf_saturation_ladder:ladder_rate_span:": {
   "producer": "run_rf_saturation_ladder.py",
@@ -4700,7 +4741,7 @@
   "quoting_sites": [
    {
     "file": "docs/RESULTS.md",
-    "line": 74,
+    "line": 76,
     "writes": "0.26"
    },
    {
@@ -4775,7 +4816,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/06_the_statistics.md",
-    "line": 660,
+    "line": 685,
     "writes": "0.360"
    },
    {
@@ -4807,7 +4848,7 @@
    },
    {
     "file": "results/README.md",
-    "line": 298,
+    "line": 300,
     "writes": "0.391"
    }
   ],
@@ -4824,7 +4865,7 @@
    },
    {
     "file": "results/README.md",
-    "line": 298,
+    "line": 300,
     "writes": "0.312"
    }
   ],
@@ -4977,7 +5018,7 @@
   "quoting_sites": [
    {
     "file": "docs/RESULTS.md",
-    "line": 68,
+    "line": 70,
     "writes": "0.00196"
    },
    {
@@ -5969,6 +6010,78 @@
   ],
   "source_file": "results/twin_completeness.csv",
   "source_value": "0.823"
+ },
+ "ultra_joint_closure:closure_verdict:waist_recovered": {
+  "producer": "run_ultra_joint_closure.py",
+  "quoting_sites": [
+   {
+    "file": "docs/RESULTS.md",
+    "line": 7,
+    "writes": "False"
+   }
+  ],
+  "source_file": "results/ultra_joint_closure.csv",
+  "source_value": "False"
+ },
+ "ultra_joint_closure:noise_where_the_waist_dies:largest_scale_still_localised": {
+  "producer": "run_ultra_joint_closure.py",
+  "quoting_sites": [
+   {
+    "file": "docs/RESULTS.md",
+    "line": 7,
+    "writes": "0.5"
+   }
+  ],
+  "source_file": "results/ultra_joint_closure.csv",
+  "source_value": "0.5"
+ },
+ "ultra_joint_closure:real_arm_reached:boolean": {
+  "producer": "run_ultra_joint_closure.py",
+  "quoting_sites": [
+   {
+    "file": "docs/RESULTS.md",
+    "line": 7,
+    "writes": "False"
+   }
+  ],
+  "source_file": "results/ultra_joint_closure.csv",
+  "source_value": "False"
+ },
+ "ultra_joint_closure:sweep_x0.5:interior_fraction": {
+  "producer": "run_ultra_joint_closure.py",
+  "quoting_sites": [
+   {
+    "file": "docs/RESULTS.md",
+    "line": 7,
+    "writes": "1.000"
+   }
+  ],
+  "source_file": "results/ultra_joint_closure.csv",
+  "source_value": "1.000"
+ },
+ "ultra_joint_closure:sweep_x0.7:interior_fraction": {
+  "producer": "run_ultra_joint_closure.py",
+  "quoting_sites": [
+   {
+    "file": "docs/RESULTS.md",
+    "line": 7,
+    "writes": "0.000"
+   }
+  ],
+  "source_file": "results/ultra_joint_closure.csv",
+  "source_value": "0.000"
+ },
+ "ultra_joint_closure:sweep_x1:interior_fraction": {
+  "producer": "run_ultra_joint_closure.py",
+  "quoting_sites": [
+   {
+    "file": "docs/RESULTS.md",
+    "line": 7,
+    "writes": "0.000"
+   }
+  ],
+  "source_file": "results/ultra_joint_closure.csv",
+  "source_value": "0.000"
  },
  "waist_ladder:rung:0.250000:k3_one_photon_over_two": {
   "producer": "run_waist_ladder.py",
