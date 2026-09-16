@@ -529,7 +529,7 @@ def main() -> int:
       "the laser.")
     # Axis discipline: laser_epoch.csv is on the laser axis, every fit below is
     # on the transition axis (= 2x laser). All four numbers are read from the
-    # CSVs. A hand-typed trio here (1.48/1.63/1.06) went stale and inverted the
+    # CSVs. A hand-typed trio here (1.44/1.63/1.06) went stale and inverted the
     # conversion, which is what tests/test_docs_canonical.py records.
     gsig = {r["key"]: float(r["value"]) for r in rows("global_fit")
             if r["quantity"] == "sigma_laser"}
@@ -695,7 +695,7 @@ def main() -> int:
       # the first version of this sentence was lost the same day it was made.
       "A third constraint is not statistical: the channel needs a sweep-rate "
       "variation under "
-      "[0.00203](../results/sweep_linearity.csv \"ref:sweep_linearity:archive:rate_variation_tolerance\") "
+      "[0.00196](../results/sweep_linearity.csv \"ref:sweep_linearity:archive:rate_variation_tolerance\") "
       "per cent across the window "
       "([methods 5](methods/05_the_frequency_ruler.md)). "
       f"({_skew_scaling_clause()}) "
@@ -996,7 +996,8 @@ def main() -> int:
           f"$\\rho={C.RHO_RETRO}$, the fit gives "
           f"{pred_ratio:.1f}× less. **Both cells in that comparison are "
           f"pre-adjudication**, computed at the cited 1093 a.u. rather than "
-          f"this record's own 1145. The current pair is 0.364 MHz and "
+          f"this record's own, which was then −1145 and is now −1131.8. "
+          f"The current pair is 0.360 MHz and "
           f"1.4×, carried by `results/stark_sweep.csv`, and the joint fit's "
           f"own prediction cells wait on a five-hour refit. The spread "
           f"across data subsets is the "
@@ -1075,7 +1076,8 @@ def main() -> int:
           f"band.\n\n  **Two things qualify that.** First, the strength is a RANGE and not a number: "
           f"$\\Delta\\chi^2$ runs 4.1 to 5.7 across the envelope, 2.0 to "
           f"2.4 $\\sigma$ under Wilks, and the same profile read as a "
-          f"posterior puts the computed 1145 a.u. in the upper 3 per cent, "
+          f"posterior puts 1145 a.u. -- the threshold this diagnostic was computed "
+          f"AGAINST, and the value since retired -- in the upper 3 per cent, "
           f"about 1.8 $\\sigma$. A single calibrated two-sigma is what is "
           f"withdrawn, not the existence of a significance. Second, and this "
           f"is the larger qualification, **on THIS construction the exclusion "
@@ -1574,8 +1576,11 @@ def main() -> int:
               f"{_t('static_tail_pull', 'computed_vs_SS2011')} sigma, and the quadrupole "
               f"and magnetic-dipole channels are bounded at "
               f"{_t('E2_over_E1_shift', 'at_drive')} and {_t('M1_over_E1_shift', 'at_drive')}. "
-              f"The package constant stays at −1145 until every producer that reads it "
-              f"is regenerated in one wave. Reproducible: `run_polarizability_deep.py`.")
+              f"The package constant moved to this value on 2026-09-15, every "
+              f"producer reading the chain regenerated in the same wave, and −1145 is "
+              f"confined to the correction record. The Rabi conversion moved with it, "
+              f"2T/|Δα| = 1.2511, and Ω is invariant under the pair. "
+              f"Reproducible: `run_polarizability_deep.py`.")
     rp = rows("resolving_power")
     if rp:
         obs = {r["observable"]: r for r in rp if r["kind"] == "observable"}

@@ -336,20 +336,33 @@ script carried its own literal until 2026-09-12)."""
 # --------------------------------------------------------------------------
 # AC-Stark / polarizability (fixed-lock physics; 2025 *prediction* only)
 # --------------------------------------------------------------------------
-DELTA_ALPHA_AU = -1145.0
-"""RE-DERIVED 2026-09-12 (scripts/run_polarizability_deep.py, M41): with the
-6S-nP sum carried explicitly to 12P and beyond at the drive, where the 9P and
-higher terms are enhanced three to seven times over their static size, the
-value is -1131.8 +- 5.9 a.u. with the 6s continuum computed (2026-09-13); the
-whole move is that group read dynamically. The
-constant is NOT moved here, because every light-shift prediction in results/
-reads it and moves together in one wave; results/polarizability_deep.csv
-carries the derived value beside it until then.
+DELTA_ALPHA_AU = -1131.8
+"""ADOPTED 2026-09-15: -1131.8 +- 5.9 a.u., the deep re-derivation of 2026-09-12
+(scripts/run_polarizability_deep.py, M41), with the 6S-nP sum carried explicitly
+to 12P and beyond at the drive, where the 9P and higher terms are enhanced three
+to seven times over their static size, and the 6s continuum computed
+(2026-09-13). The whole move from the earlier value is that group read
+dynamically instead of statically, so it corrects an error rather than refining
+an estimate; results/polarizability_deep.csv carries the derivation.
+
+The earlier value, -1145.0, is confined to history: it stands here and in the
+correction record and in no live code, docstring or claim surface. The wave that
+moved it moved every producer reading the chain in the same landing, which is
+what the deferral in this docstring had been waiting for since 2026-09-12.
+
+The Rabi conversion rides with it: 2T/|Delta_alpha| is 1416.02/1131.8 = 1.2511
+(stark.COMPANIONS["ratio"]), against 1.2367 on the retired value. Omega itself
+is invariant under the change -- Omega = (2T/|Da|) * S0 with S0 proportional to
+|Da| -- so the saturation companion does not move, and the two edits must land
+together or a committed S0 written under the old constant shifts Omega by
++1.17 per cent for nothing.
 
 alpha(6S) - alpha(5S) at 993 nm, atomic units. THIS RECORD'S OWN
-value, matching results/polarizability.csv's delta_alpha_993 row
-(-1145, band -1151 to -1140) and reproducible as delta_alpha(993.4) =
--1144.6 from alpha_6s - alpha_5s. Adopted as the package value by the 2026-08-24 adjudication of the sign dispute below.
+value. The static construction -- results/polarizability.csv's delta_alpha_993
+row at -1145, band -1151 to -1140, reproducible as delta_alpha(993.4) = -1144.6
+from alpha_6s - alpha_5s -- is the earlier one, replaced 2026-09-15 by the
+dynamic sum above and kept here only as the history of the value. The sign was
+adopted by the 2026-08-24 adjudication of the dispute below and is unchanged.
 The negative sign is a BLUE shift of the two-photon transition.
 
 THE CITED ALTERNATIVE, kept named rather than deleted, is
@@ -364,9 +377,11 @@ alpha(6S) - alpha(5S) = -alpha_56 = +1093 a.u. under THEIR sign.
 THE SIGN IS DISPUTED WITH THE LITERATURE, AND THIS PACKAGE NOW CARRIES
 THIS RECORD'S. The two values, both of alpha(6S) - alpha(5S) at 993 nm:
 
-  * this constant, the package default:  -1145.0
-    (reproducible as delta_alpha(993.4) = -1144.6 =
-     alpha_6s(993.4) - alpha_5s(993.4) = -312.2 - 832.5)
+  * this constant, the package default:  -1131.8
+    (the dynamic sum; its earlier static form was -1145.0, reproducible as
+     delta_alpha(993.4) = -1144.6 = alpha_6s(993.4) - alpha_5s(993.4)
+     = -312.2 - 832.5. The sign dispute below is about the sign alone and
+     neither value's magnitude moves it.)
   * DELTA_ALPHA_AU_ORSON2021, the cited: +1093.0
     the same quantity by the same definition, opposite sign, 4.7 per
     cent apart in magnitude.
@@ -453,6 +468,16 @@ that is the only normalisation any of them use. Remaining measured input
 before an absolute Stark coefficient: the retro ratio rho (measured in a fixed-lock session, per
 config) and the Delta_alpha magnitude. Novelty delineation: docs/LITERATURE.md
 and docs/THEORY_NOTE.md."""
+
+DELTA_ALPHA_ERR_AU = 5.9
+"""The bar on DELTA_ALPHA_AU, a.u., ADOPTED with it on 2026-09-15 and DECLARED
+here on 2026-09-16 because until then it existed only inside the sentence above.
+That is the SSOT defect this repository keeps measuring, on its most-propagated
+constant: the value was single-sourced and read by 108 producers while its
+UNCERTAINTY was prose, so nothing could cite it, no guard watched it, and any
+fit wanting to carry the polarizability under its own bar had to retype the
+number. `results/polarizability_deep.csv` carries the derivation, and this cell
+is what `run_ultra_joint.py`'s ALPHA_PRIOR_FRAC divides by."""
 
 DELTA_ALPHA_AU_ORSON2021 = 1093.0
 """alpha(6S) - alpha(5S) at 993 nm from Orson et al., J. Phys. B 54, 175001
@@ -542,7 +567,26 @@ LAMBDA_LASER_M = 993.4e-9              # drive wavelength (sets the Rayleigh ran
 # Beam geometry
 # --------------------------------------------------------------------------
 W0_MEASURED_M = 64e-6
-"""Beam waist, 64 um, A WORKING CONVENTION borrowed from the apparatus lineage
+"""Beam waist, 64 um, A WORKING CONVENTION borrowed from the apparatus lineage.
+
+**THE NAME OF THIS SYMBOL ASSERTS WHAT THE DOCSTRING DENIES, and the owner has
+corrected it twice (2026-09-10, 2026-09-15).** w0 is NOT measured on this bench.
+Two independent disqualifiers, and the second was missing from this note until
+2026-09-16: Nieddu profiled a DIFFERENT LASER SOURCE (a Coherent MBR 110, where
+this campaign runs a SolsTiS), and his path carried NO 3 mm EOM APERTURE, which
+this beam passes before the focusing lens. Both push the effective waist of THIS
+beam above 64 um. `W0_CONVENTION_M` is what this should be called; the rename
+touches 179 sites over 70 files and is owed as its own wave, because a name a
+reader autocompletes is read more often than the note under it.
+
+WHAT ESTIMATES IT INSTEAD, and it is the campaign's own answer: the ultra-joint
+maximum-likelihood estimate over every observable the 2025 data holds. And where
+a combination can avoid needing it at all, that combination is preferred --
+S0/(transit)^2 and sqrt(k2)/(transit)^2 are proportional to Delta_alpha(1+rho)P
+with the waist divided out, because the transit is the only term carrying an odd
+power of w0, and the same construction is being sought for M^2. Bypassing the
+ignorance beats propagating it.
+
 (owner, 2026-09-10; E76): profiled once on that lineage, in that configuration,
 and stated in a published paper; not measured on this bench. Enters the transit
 width (~1/w0) and all Stark magnitudes (~1/w0^2), so it is the dominant

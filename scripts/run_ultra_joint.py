@@ -40,8 +40,11 @@ is never the headline.
 WHAT IS FREE AT EACH GRID POINT, and what is pinned, and why:
 
   beta_self     profiled, one coefficient over every temperature, reported
-                AGAINST the theory value 3.38 +- 0.29 kHz per 1e12 cm^-3
-                (vanderwaals.beta_self_anchored) and never multiplied by it,
+                AGAINST the theory value 3.29 +- 0.29 kHz per 1e12 cm^-3
+                (vanderwaals.beta_self_anchored for the centre,
+                beta_self_budget for the bar, which is the whole measured
+                budget and not the anchor measurement's share of it) and
+                never multiplied by it,
                 and PROFILED at every waist: chi2 at beta fixed to zero, to
                 theory, to five and to twenty times theory beside the free
                 minimum, so the summary quotes a profile and never a Hessian
@@ -148,13 +151,14 @@ sys.path.insert(0, str(ROOT / "scripts"))
 from rb5s6s import config as C                                     # noqa: E402
 from rb5s6s import constants as K                                  # noqa: E402
 from rb5s6s import stark                                           # noqa: E402
+from rb5s6s.pmfmt import pm_cells                                  # noqa: E402
 from rb5s6s.density import number_density_cm3                      # noqa: E402
 from rb5s6s.fullmodel import collection_z_ratio_m2, convolution_licence, full_profile   # noqa: E402
 from rb5s6s.hyperpolarizability import two_photon_rabi_hz          # noqa: E402
 from rb5s6s.lineshape import local_ramp_density, ramp_mixture, stark_shift_S0_mhz   # noqa: E402
 from rb5s6s.noise import condition_noise_model, sigma_of_v         # noqa: E402
 from rb5s6s.qc import contiguous_fwhm_ms                           # noqa: E402
-from rb5s6s.vanderwaals import beta_self_anchored                  # noqa: E402
+from rb5s6s.vanderwaals import beta_self_anchored, beta_self_budget                  # noqa: E402
 from rb5s6s.workers import n_workers                               # noqa: E402
 from run_density_laws import n_aih, n_smi                          # noqa: E402
 
@@ -175,8 +179,14 @@ T_SWEEP_POWER_MW = 225.0             # the blank manifest power (docs/DATA.md)
 DCHI2_ONE_SIGMA = 1.0
 BETA_THEORY_DCHI2_MAX = 9.0      # dchi2 at the theory coefficient beyond 3 sigma one-sided: the form fails on beta (W1i finding)
 SIGMA_L_MAX_MHZ = K.SIGMA_LASER_BOUND_2025_TRANSITION_MHZ   # 2.4 MHz on the TRANSITION axis, the axis of every sigma_l here (W1j finding F1: the per-photon 1.2 was read against a transition-axis width)
-SESSION_CHI2_RED_BAND = (0.8, 1.25)   # the absolute band, kept as the record of W1j; the admission is RELATIVE (below)
-SESSION_CHI2_REL_TOL = 0.10           # a session's chi2_red within 10 per cent of the pooled value (W1j finding F3: model misfit is common-mode, a noise-law error is per session)
+# THE ADMISSION IS ABSOLUTE AND IN TWO HALVES (W1m, A254, after three forms in three commits): the
+# wing samples of a session read its NOISE LAW (chi2_red_wing against 1 +- sqrt(2/n_eff_wing)),
+# the core samples read the MODEL (chi2_red_core against the same), and the gate names the word:
+# WING-OFF when the wing is off either way (the session's noise law or the model's far wing: the
+# 12 MHz moment window says which), MISFIT when the core costs too much, UNDER-COST when it
+# costs too little (free nuisances). No pool, no reference containing the tested session.
+SESSION_Z_MAX = 5.0                   # the refusal in sigma of sqrt(2/n_eff) per statistic
+CORE_HALF_MHZ = 6.0                   # |nu - centre| inside this is the core, the 6 MHz window of the moment arm; outside is the wing
 SESSION_VOTE_SHARE_MAX = 2.0          # a session's share of n_eff at most twice its share of the traces (W1j finding F4: the evening's tau_int at the white floor gave 46 traces half the vote)
 RESOLVE_LEVELS = 4.0          # a crossing is read off the grid only within this many levels of rise per step
 DCHI2_ONE_SIDED_95 = 2.71
@@ -186,7 +196,19 @@ MAX_OUTER = 4                        # centre re-profiles per start
 CENTRE_TOL_MHZ = 0.02
 CENTRE_FINE_MHZ = 0.15
 _BETA = beta_self_anchored()
-BETA_THEORY_KHZ, BETA_THEORY_ERR_KHZ = float(_BETA["beta6_khz"]), float(_BETA["beta6_err_khz"])
+# THE BAR IS THE WHOLE BUDGET, not the anchor measurement's share of it.
+# `beta6_err_khz` carries Zameroski's 8.5 per cent alone; a pull of a fitted
+# coefficient against theory has to divide by the theory's own bar, which
+# `beta_self_budget` measures at 8.8 per cent by displacing each input in
+# turn. The difference is small here BECAUSE the anchor dominates, and that
+# is a result of the budget rather than a reason not to read it.
+BETA_THEORY_KHZ = float(_BETA["beta6_khz"])
+BETA_THEORY_ERR_KHZ = float(beta_self_budget()["err_khz"])
+#: beta_self's own budget, relative: beta_self_budget()['err_khz'] / BETA_THEORY_KHZ.
+BETA_PRIOR_FRAC = float(beta_self_budget()["err_khz"]) / BETA_THEORY_KHZ
+#: Delta_alpha's, relative: the committed +-5.9 a.u. on -1131.8.
+ALPHA_PRIOR_FRAC = abs(K.DELTA_ALPHA_ERR_AU / K.DELTA_ALPHA_AU)
+
 LAWS = {"Steck": number_density_cm3, "AIH": n_aih, "SMI": n_smi}
 PROPAGATIONS = (("delta_alpha", +1), ("delta_alpha", -1), ("rho", +1), ("rho", -1),
                 ("law", "AIH"), ("law", "SMI"))
@@ -206,11 +228,18 @@ SESSION_LADDER_W = {"P": (0.025, 0.225), "E": (0.09, 0.27), "M": (0.035, 0.21), 
 # the profile, and not a bound is what the reader sees.
 # THE EVENING RATE'S BOX IS WIDENED (2026-09-14): it sat on the old +-25 per cent wall
 # in every admitted cell, and a wall no gate reads makes every bar conditional.
-BOUNDS = {"beta_rel": (0.0, 40.0), "sigma_l": (0.2, 6.0), "omega_scale": (0.0, 3.0),
+BOUNDS = {"beta_rel": (0.0, 40.0), "alpha_rel": (0.5, 1.5), "sigma_l": (0.2, 6.0), "omega_scale": (0.0, 3.0),
           "gamma_l": (0.0, 3.0), "lograte": (math.log(0.5), math.log(1.5)), "power_scale": (0.5, 1.5)}
 START_SIGMA_L = {"gaussian": (1.4, 1.0), "lorentzian": (0.8, 0.4), "mixed": (1.3, 0.9)}
 START_OTHER = ((1.0, 1.0, 0.3), (4.0, 0.8, 0.05))      # beta_rel, omega_scale, gamma_l per start
 DIFF_STEP = 3e-3
+#: Half-window at load, MHz on the transition axis. The model puts the line below
+#: 1e-3 of peak beyond 33.3 MHz and the retrace mirror sits at 38 to 50 MHz, so this
+#: keeps every wing sample the noise-law statistic reads (|nu| > CORE_HALF_MHZ = 6)
+#: and drops the mirror band entirely. Wider than `linefit.adaptive_halfwidth`'s
+#: 25 MHz cap on purpose: that cap is sized for a single-line FIT, and this producer
+#: needs the wing to grade a session's noise law.
+RETRACE_CUT_MHZ = 33.0
 MAX_NFEV = 80  # doubled 2026-09-14: the base cells stopped on their budget (start spread 3.5)
 EVENING_RATE_SEED = 5.9 / 470.0      # run_stark_joint's r0, MHz per ms, when no committed rate exists
 # A TRACE THAT ENDS AT ITS OWN PEAK IS HALF A LINE. One morning file holds 976
@@ -364,6 +393,46 @@ def _init_worker(session_traces):
     _SESSION_TRACES = list(session_traces)
 
 
+# ---------------------------------------------------------------- moment arm
+#: The moment arm's windows and orders (owner orders O12, O13, O17).  BOTH
+#: PARITIES and orders 2 to 7, because the owner's specification opens with the
+#: ODD ones and their ratios and the arm that ran on 2026-09-15 carried orders
+#: [2, 4] at five windows, p = 10, which is a ladder with nothing to disagree
+#: about.  The windows sit inside the +-42.5 MHz sweep with room, and 12 is the
+#: widest that does not reach the off-centre-sweep mirror band.
+#: Two-sided 95 per cent t-factors by degrees of freedom, for the bar on a mean
+#: of a handful of repeats. A condition carries about five, so the Gaussian 1.96
+#: understates the interval by a third and the number has to come from the t.
+_T95 = {1: 12.706, 2: 4.303, 3: 3.182, 4: 2.776, 5: 2.571, 6: 2.447,
+        7: 2.365, 8: 2.306, 9: 2.262, 10: 2.228}
+
+MOMENT_WINDOWS = (3.25, 6.0, 12.0)
+MOMENT_ORDERS = (2, 3, 4, 5, 6, 7)
+
+
+def _moment_stats(nu, y, windows=MOMENT_WINDOWS, orders=MOMENT_ORDERS):
+    """Windowed cumulants of one trace, keyed `k<order>@<window>`.
+
+    `baseline=None` ON PURPOSE, and it is the repair of a measured bias rather
+    than a convenience.  `windowed_cumulants` defaults to a WINGS baseline, and
+    on this sweep the line itself contributes 0.878 per cent of peak at the
+    +-20 to 28 MHz strips, which biases k2 by -7.6 per cent and k3 by -20.9 at
+    the 12 MHz window -- and the sweep cannot be widened, because the model puts
+    the line below 1e-3 only beyond 33.3 MHz while the off-centre-sweep mirror
+    occupies the outer tenth from about 38.  A strip baseline is not available
+    on this dataset.  The caller therefore removes the FITTED offset and slope
+    first, which is what the profile fit already estimates, and hands this
+    function a trace whose baseline is a fitted parameter and not a strip.
+    """
+    from rb5s6s.cumulants import windowed_cumulants
+    out = {}
+    for w in windows:
+        k, _ = windowed_cumulants(nu, y, w, orders=tuple(orders), baseline=None)
+        for n in orders:
+            out[f"k{n}@{w:g}"] = float(k[n])
+    return out
+
+
 def _finish(t):
     t["ones"] = np.ones_like(t["x"])
     t["n"] = int(t["x"].size)
@@ -435,7 +504,21 @@ def _load(spec: dict) -> list[dict]:
     for r in spec["rows"]:
         t_ms, v = load_trace(C.DATA_RAW_DIR / r["file"])
         nu = (np.asarray(t_ms, float) - float(np.mean(t_ms))) * r["rate"]
-        t = dict(r, x=nu, v=np.asarray(v, float), axis="mhz")
+        v = np.asarray(v, float)
+        # THE OFF-CENTRE-SWEEP MIRROR IS CUT HERE, as every other fitter in this
+        # package already cuts it. The triangular sweep's down-ramp re-crosses the
+        # line and leaves a mirror about 40 MHz out; docs/DATA.md names the eight
+        # canonical RF-off traces that carry one, almost all in 4207, at up to 79
+        # per cent of peak, and records that not excluding it took those fits from
+        # a reduced chi-squared of 6.7 to 1.0. `linefit.adaptive_halfwidth` and
+        # `rb5s6s.beta` obey the rule and THIS PRODUCER DID NOT, which put the
+        # whole of the power session's far-wing excess (+142 sigma, of which five
+        # 4207 traces carry 100.5 per cent) into a likelihood that read it as
+        # physics. Diagnosed 2026-09-16 from the whitened residuals binned by
+        # detuning; the account is register entry A264.
+        keep = np.abs(nu) <= RETRACE_CUT_MHZ
+        nu, v = nu[keep], v[keep]
+        t = dict(r, x=nu, v=v, axis="mhz")
         out.append(_finish(t))
         if r["session"] == "Q":
             q_groups.setdefault((r["peak"], r["P_W"]), []).append(t)
@@ -481,7 +564,7 @@ def depleted_transit(transit_mhz: float, omega_mhz: float, peak: str, cycles: fl
     frequency it uses is exactly the tied one."""
     if cycles <= 0.0:
         return float(transit_mhz)
-    ratio = 1.2367
+    ratio = 1.2511
     stark.COMPANIONS = {"ratio": ratio, "deplete": True, "cycles": float(cycles)}
     try:
         return float(stark.companion_transit_mhz(float(transit_mhz), float(omega_mhz) / ratio, peak))
@@ -522,7 +605,7 @@ class Cell:
         self.power_scale = bool(spec.get("power_scale", False))
         self.evening_peaks = sorted({t["peak"] for t in traces if t["session"] == "E"})
         self.rate_seed = {pk: spec.get("rate_seeds", {}).get(pk, EVENING_RATE_SEED) for pk in self.evening_peaks}
-        names = ["beta_rel"]
+        names = ["beta_rel", "alpha_rel"]
         names += ["sigma_l_shared"] if self.shared_sigma else [f"sigma_l_{s}" for s in self.sessions]
         names += ["omega_scale"]
         if self.form == "mixed":
@@ -534,12 +617,23 @@ class Cell:
         self.names = tuple(n for n in names if n not in self.fixed)
         self.all_names = tuple(names)
         self.per = [self._per_trace(t) for t in traces]
-        self.prior_terms = [("omega_scale", 1.0, OMEGA_PRIOR_FRAC)] + [
+        # ALPHA AND BETA ENTER UNDER THEIR OWN THEORY UNCERTAINTIES, not pinned and
+        # not free (owner, 2026-09-16: "you have to do it with alpha jointly at the
+        # same time, considering their uncertainty in the MLE ultra-joint"). Pinning
+        # is infinitely stiff and makes the quantity do the model's work for it;
+        # free is unpenalised and lets beta run from 0 to 5x theory, which is what
+        # every committed grid row shows. A prior with the record's own bar is the
+        # construction between them, and it makes the owner's iteration unnecessary:
+        # the posterior reports how far the archive pulls against theory instead of
+        # the convener deciding by pinning.
+        self.prior_terms = [("omega_scale", 1.0, OMEGA_PRIOR_FRAC),
+                            ("beta_rel", 1.0, BETA_PRIOR_FRAC),
+                            ("alpha_rel", 1.0, ALPHA_PRIOR_FRAC)] + [
             (f"power_scale_{s}", 1.0, POWER_PRIOR_FRAC) for s in self.sessions if self.power_scale]
 
     # -- parameters -------------------------------------------------------
     def bounds(self, name):
-        for k in ("beta_rel", "sigma_l", "omega_scale", "gamma_l", "lograte", "power_scale"):
+        for k in ("beta_rel", "alpha_rel", "sigma_l", "omega_scale", "gamma_l", "lograte", "power_scale"):
             if name.startswith(k):
                 return BOUNDS[k]
         raise KeyError(name)
@@ -553,6 +647,12 @@ class Cell:
             for n in self.names:
                 if n == "beta_rel":
                     p.append(START_OTHER[i][0])
+                elif n == "alpha_rel":
+                    # BOTH STARTS AT THEORY. The prior is 0.52 per cent wide, so a
+                    # start away from 1.0 explores nothing the penalty allows and
+                    # only costs evaluations; the two starts differ where the
+                    # likelihood is actually multimodal, which is beta and sigma_l.
+                    p.append(1.0)
                 elif n.startswith("sigma_l"):
                     p.append(START_SIGMA_L[self.form][i])
                 elif n == "omega_scale":
@@ -570,6 +670,7 @@ class Cell:
         d = dict(zip(self.names, p))
         d.update(self.fixed)
         d.setdefault("gamma_l", 0.0)
+        d.setdefault("alpha_rel", 1.0)
         return d
 
     def _per_trace(self, t):
@@ -601,7 +702,7 @@ class Cell:
         transit = depleted_transit(per["transit"], omega_ref, peak, self.cycles)
         return full_profile(nu, gamma_coll=d["beta_rel"] * self.beta_theory_mhz * per["n12"],
                             sigma_laser_fwhm=self.sigma_l_of(d, sess), transit_fwhm=transit,
-                            s0=f * per["s0"], gamma_l=d["gamma_l"], laser_kind=self.kind, peak=peak,
+                            s0=f * d["alpha_rel"] * per["s0"], gamma_l=d["gamma_l"], laser_kind=self.kind, peak=peak,
                             omega_mhz=omega, profile=self.profile)
 
     def linear(self, t, nu, m):
@@ -622,6 +723,120 @@ class Cell:
         nu = self.axis(d, t)
         m = self.model(nu - c, d, per, t["peak"], t["session"])
         return self.linear(t, nu, m)[0]
+
+    def moment_arm(self, p, centres):
+        """Windowed cumulants 2 to 7 per CONDITION, data against this fit's own
+        prediction, with the covariance built from the repeats (owner O12).
+
+        WHAT IT COMPARES, and the distinction is the reason the arm exists. A
+        windowed cumulant is a SUMMARY STATISTIC matched against its own forward
+        prediction, never an estimator of an untruncated ramp cumulant: the
+        windowed fifth of a Lorentzian-cored line diverges as the window widens
+        and that is a property of the window. So every row here is
+        (data - model) at the SAME window, and nothing is extrapolated.
+
+        THE COVARIANCE IS DIAGONAL AND SAYS SO. A condition carries five
+        repeats, so a p x p covariance over 18 statistics is singular by
+        construction and any interval through its pseudo-inverse is an artefact.
+        What five repeats CAN estimate is a per-statistic spread, with about
+        four degrees of freedom, so the bar on the mean carries a t-factor and
+        the row states it. Pooling across conditions is the caller's job and is
+        not done here, because the statistics are not exchangeable across
+        temperature.
+
+        ADMISSION IS BY THE REPLICA DISTRIBUTION AND NEVER BY SIGNAL-TO-NOISE
+        (O17). A cross-rung ratio enters only where its denominator keeps one
+        sign across the repeats: a denominator that crosses zero makes the ratio
+        Cauchy-like, with no population mean for a pull to be computed against.
+        Everything else enters, whatever its size.
+        """
+        d = self.unpack(p)
+        conds: dict = {}
+        for i, t in enumerate(self.traces):
+            conds.setdefault((t["session"], t["peak"], round(float(t["P_W"]) * 1e3),
+                              round(float(t["T"]))), []).append(i)
+        out = []
+        for key, idx in sorted(conds.items()):
+            sess, peak, p_mw, t_c = key
+            per_trace, per_model = [], []
+            for i in idx:
+                t, per = self.traces[i], self.per[i]
+                nu = self.axis(d, t)
+                m = self.model(nu - centres[i], d, per, t["peak"], t["session"])
+                # THE BASELINE IS FITTED, NOT STRIPPED, and the amplitude with
+                # it: the same three-column solve the likelihood already does,
+                # so the statistic is taken on the trace this fit actually
+                # describes rather than on one a wing strip has biased.
+                A = np.column_stack([m, t["ones"], nu])
+                c0, *_ = np.linalg.lstsq(A, t["v"], rcond=None)
+                s_v = np.asarray(sigma_of_v(np.clip(c0[0] * m, 0.0, None), t["law"]), float)
+                cf, *_ = np.linalg.lstsq(A / s_v[:, None], t["v"] / s_v, rcond=None)
+                if not (cf[0] > 0):
+                    continue
+                y = (t["v"] - cf[1] * t["ones"] - cf[2] * nu) / cf[0]
+                per_trace.append(_moment_stats(nu - centres[i], y))
+                # THE MODEL IS AVERAGED OVER THE REPEATS TOO. Each repeat has its
+                # own centre and its own grid, so the model's windowed cumulant
+                # differs across them; taking the first and discarding four put
+                # that difference into every one of the condition's statistics as
+                # a COMMON OFFSET -- the block-systematic signature, manufactured
+                # inside the producer that went looking for it.
+                per_model.append(_moment_stats(nu - centres[i], m))
+            if len(per_model) < 1 or len(per_trace) < 2:
+                continue
+            pred = {k: float(np.mean([pm[k] for pm in per_model])) for k in per_model[0]}
+            n_rep = len(per_trace)
+            tfac = _T95.get(n_rep - 1, 2.0)
+            for k in sorted(pred):
+                vals = np.array([r[k] for r in per_trace], float)
+                if not np.all(np.isfinite(vals)):
+                    continue
+                mu, sd = float(vals.mean()), float(vals.std(ddof=1))
+                sem = sd / math.sqrt(n_rep)
+                pull = (mu - pred[k]) / sem if sem > 0 else float("nan")
+                out.append(dict(session=sess, peak=peak, p_mw=p_mw, t_c=t_c,
+                                statistic=k, n_rep=n_rep, data=mu, sem=sem,
+                                t95=tfac, model=pred[k], pull=pull,
+                                admitted=True, why=""))
+            # CROSS-RUNG RATIOS, admitted on having a population moment
+            for w in MOMENT_WINDOWS:
+                for lo in MOMENT_ORDERS:
+                    hi = lo + 2
+                    if hi not in MOMENT_ORDERS:
+                        continue
+                    den = np.array([r[f"k{lo}@{w:g}"] for r in per_trace], float)
+                    num = np.array([r[f"k{hi}@{w:g}"] for r in per_trace], float)
+                    flips = min(int((den > 0).sum()), int((den < 0).sum()))
+                    name = f"k{hi}/k{lo}@{w:g}"
+                    if flips > 0 or pred[f"k{lo}@{w:g}"] == 0.0:
+                        out.append(dict(session=sess, peak=peak, p_mw=p_mw, t_c=t_c,
+                                        statistic=name, n_rep=n_rep, data=float("nan"),
+                                        sem=float("nan"), t95=tfac, model=float("nan"),
+                                        pull=float("nan"), admitted=False,
+                                        why=f"the denominator changes sign in {flips} of "
+                                            f"{n_rep} repeats, so the ratio has no "
+                                            f"population moment"))
+                        continue
+                    # AN ADJACENT ODD-ODD RATIO IS MINUS TEN k2 PLUS A REMAINDER,
+                    # and the remainder is the only part that is about the
+                    # asymmetry: kappa5/kappa3 = mu5/mu3 - 10 kappa2 exactly, so
+                    # a fit reading k5/k3 beside k2 reads k2 twice. The row
+                    # carries the k2 term so a reader can subtract it rather
+                    # than discover the identity later.
+                    rat = num / den
+                    mu, sd = float(rat.mean()), float(rat.std(ddof=1))
+                    sem = sd / math.sqrt(n_rep)
+                    pm = pred[f"k{hi}@{w:g}"] / pred[f"k{lo}@{w:g}"]
+                    k2_term = -10.0 * pred[f"k2@{w:g}"] if lo % 2 else None
+                    out.append(dict(session=sess, peak=peak, p_mw=p_mw, t_c=t_c,
+                                    statistic=name, n_rep=n_rep, data=mu, sem=sem,
+                                    t95=tfac, model=pm,
+                                    pull=(mu - pm) / sem if sem > 0 else float("nan"),
+                                    admitted=True,
+                                    why=("" if k2_term is None else
+                                         f"an odd-odd adjacent ratio: -10*k2 = {k2_term:.4g} "
+                                         f"of this is k2 and not the asymmetry")))
+        return out
 
     @staticmethod
     def _parabola(x, y):
@@ -684,6 +899,36 @@ class Cell:
             a = acc.setdefault(t["session"], [0.0, 0.0, 0])
             a[0] += float(r @ r); a[1] += t["n"] / t["tau"]; a[2] += 1
         return {s: c / max(n_eff - 4.0 * n, 1.0) for s, (c, n_eff, n) in acc.items()}
+
+    def chi2_split_by_session(self, p, centres) -> dict:
+        """Per session, the whitened residual sum and the effective samples of the CORE
+        (|nu - centre| <= CORE_HALF_MHZ) and of the WING, separately.
+
+        **"THE WING READS THE NOISE LAW, NO LINE THERE TO MISFIT" IS RETRACTED**
+        (2026-09-15). On one P trace the per-sample line exceeds
+        the whitened noise wherever gamma^2/(gamma^2 + Delta^2) > sqrt(tau)/(A/s),
+        which is out to 35 MHz of an 85 MHz sweep, so the wing holds the
+        Lorentzian tail and not the noise alone: 3.1 per cent of the whitened
+        model power sits beyond 6 MHz, 8.7e4 units against the wing statistic's
+        per-trace resolution of 36, so a 1 per cent RMS tail misfit is 2.4 sigma
+        over 100 traces and 7.7 per cent is what the cached P split's wing excess
+        actually is. What DOES hold is one-sided: a NEGATIVE wing z can only be
+        the noise law, because a misfit ADDS residual power and four nuisances
+        per trace cannot remove 44 per cent of it. The word therefore splits by
+        sign, and the core reads the noise law too -- the evening's core swings
+        from +28.5 to -20 across kernel forms at fixed data. Returns
+        {session: {"core": [chi2, n_eff], "wing": [chi2, n_eff]}}; each half's chi2_red is
+        chi2 / n_eff, the per-trace nuisances being charged to the core."""
+        d = self.unpack(p); acc: dict = {}
+        for i, t in enumerate(self.traces):
+            nu = self.axis(d, t)
+            m = self.model(nu - centres[i], d, self.per[i], t["peak"], t["session"])
+            r = self.linear(t, nu, m)[1]
+            core = np.abs(nu - centres[i]) <= CORE_HALF_MHZ
+            a = acc.setdefault(t["session"], {"core": [0.0, 0.0], "wing": [0.0, 0.0]})
+            a["core"][0] += float(r[core] @ r[core]); a["core"][1] += float(np.sum(core)) / t["tau"] - 4.0
+            a["wing"][0] += float(r[~core] @ r[~core]); a["wing"][1] += float(np.sum(~core)) / t["tau"]
+        return acc
 
     def fit(self, p0, max_nfev=MAX_NFEV):
         """One start: inner bounded least squares with the centres held, outer
@@ -928,14 +1173,15 @@ def _diag_task(job):
     p = np.array([float(rec["params"][n]) for n in cell.names], float)
     centres = np.array([cell.centre(i, p)[0] for i in range(len(traces))])
     ne, nt = _n_by_session(traces)
-    return dict(idx=idx, chi2_red_session=cell.chi2_by_session(p, centres), n_eff_session=ne, n_traces_session=nt)
+    return dict(idx=idx, chi2_red_session=cell.chi2_by_session(p, centres), chi2_split_session=cell.chi2_split_by_session(p, centres),
+                n_eff_session=ne, n_traces_session=nt)
 
 
 def fill_session_diagnostics(base, design_spec, workers: int, session_traces=()) -> int:
     """Fill the per-session diagnostics into every saved cell that lacks them
     (W1j findings F3 to F5: the committed cells were fitted before the checks
     existed and the gate refused them for it). Returns the count filled."""
-    todo = [(i, r, design_spec) for i, r in enumerate(base) if not r.get("chi2_red_session") or not r.get("n_eff_session")]
+    todo = [(i, r, design_spec) for i, r in enumerate(base) if not r.get("chi2_red_session") or not r.get("n_eff_session") or not r.get("chi2_split_session")]
     if not todo:
         return 0
     print(f"  per-session diagnostics for {len(todo)} saved cell(s) that were fitted before they were carried", flush=True)
@@ -950,6 +1196,7 @@ def fill_session_diagnostics(base, design_spec, workers: int, session_traces=())
                 r = fu.result(); out[r["idx"]] = r
     for i, r in out.items():
         base[i]["chi2_red_session"], base[i]["n_eff_session"], base[i]["n_traces_session"] = r["chi2_red_session"], r["n_eff_session"], r["n_traces_session"]
+        base[i]["chi2_split_session"] = r["chi2_split_session"]
     return len(todo)
 
 
@@ -1019,7 +1266,8 @@ def _cell_task(job):
                     ref["transit"], ref["omega_ref"], "4192", cell.cycles),
                 z_ratio=cell.z_ratio, licensed=lic["licensed"], w0_edge_um=lic["w0_min_m"] * 1e6,
                 preds=preds, preds_fitted=preds_fitted, seconds=time.time() - t0,
-                chi2_red_session=chi2_red_session, n_eff_session=_n_by_session(traces)[0], n_traces_session=_n_by_session(traces)[1],
+                chi2_red_session=chi2_red_session, chi2_split_session=cell.chi2_split_by_session(best["p"], best["centres"]),
+                n_eff_session=_n_by_session(traces)[0], n_traces_session=_n_by_session(traces)[1],
                 delta_alpha=cell.delta_alpha, rho=cell.rho, law=cell.law_name, sessions=cell.sessions,
                 beta_profile={str(k): v for k, v in beta_profile.items()},
                 at_bound=at_bound_of(cell.names, best["p"], bars),
@@ -1241,7 +1489,7 @@ PARAM_COLUMNS = (["beta_rel", "sigma_l_shared"] + [f"sigma_l_{s}" for s in SESSI
 COLUMNS = (["row_kind", "sessions", "sigma_l_arm", "power_scale_arm", "form", "m2", "depletion_cycles", "propagation",
             "peak", "w0_um", "w0_err_parabola_um", "bound_kind", "w0_bound95_um", "w0_lo_um", "w0_hi_um",
             "w0_lo_overdispersed_um", "w0_hi_overdispersed_um", "w0_shift_um",
-            "chi2", "dchi2", "chi2_red", "n_eff", "n_traces", "start_spread_chi2", "chi2_red_by_session", "nfev"]
+            "chi2", "dchi2", "chi2_red", "n_eff", "n_traces", "start_spread_chi2", "chi2_red_by_session", "session_verdicts", "nfev"]
            + [c for n in PARAM_COLUMNS for c in (n, f"{n}_err_hessian")]
            + ["beta_khz_per_1e12", "beta_err_khz_hessian", "beta_pull_vs_theory_hessian", "beta_fixed_rel",
               "dchi2_beta_0", "dchi2_beta_theory", "dchi2_beta_5x", "dchi2_beta_20x",
@@ -1272,6 +1520,7 @@ def _row(kind, r, meas, dchi2=float("nan"), **extra):
                w0_um=sig2(s["w0_um"]), chi2=sig2(r["chi2"]), dchi2=sig2(dchi2), chi2_red=sig2(r["chi2_red"]),
                n_eff=sig2(r["n_eff"]), n_traces=str(r["n_traces"]), start_spread_chi2=sig2(r["spread"]),
                chi2_red_by_session=" ".join(f"{s}:{v:.3f}" for s, v in sorted(r.get("chi2_red_session", {}).items())),
+               session_verdicts=session_verdicts_text(r),
                nfev=str(r["nfev"]),
                beta_khz_per_1e12=pair(beta_khz, beta_err)[0], beta_err_khz_hessian=pair(beta_khz, beta_err)[1],
                beta_pull_vs_theory_hessian=sig2((beta_khz - BETA_THEORY_KHZ) / math.hypot(beta_err, BETA_THEORY_ERR_KHZ))
@@ -1512,6 +1761,46 @@ def _refuse_ragged_rows(path) -> None:
 
 
 # ------------------------------------------------------------------ the gate
+def session_verdicts(rec) -> dict:
+    """Per session, the two z's and the word, with the wing's sign carried.
+
+    THE WORDS. WING-LAW when the wing's chi2_red sits more than SESSION_Z_MAX
+    sigma BELOW one, which only the noise law can produce; WING-OFF when it sits
+    that far ABOVE, which is the noise law OR the model's far wing and the
+    statistic cannot separate them; MISFIT when the core's sits above;
+    UNDER-COST when the core's sits below; ADMITTED otherwise. The old single
+    WING-OFF covered both signs and read as one diagnosis.
+
+    **AND EVERY z HERE IS A LOWER BOUND.** `linear` divides by sqrt(tau), so
+    E[chi2] = n/tau and Var[chi2] = 2 n tau2 / tau^2 with tau2 = sum_k rho_k^2,
+    giving sd(chi2_red) = sqrt(2 tau2 / n). This divides by sqrt(2/n_eff) =
+    sqrt(2 tau / n) instead, and tau2 <= tau, so the divisor is too LARGE and
+    every z too small -- the false-pass direction. `results/noise_model.csv`
+    carries tau_int and rho1 and not the rho series, so tau2 cannot be computed
+    from it: the measured factor is 1.5 to 3 (tau2/tau about 0.4 at tau 2.4 and
+    near 0.1 at 20, a long weak tail rather than an exponential). The bound is
+    reported beside the value so a reader cannot take the z for the z.
+    """
+    out = {}
+    for s, halves in (rec.get("chi2_split_session") or {}).items():
+        zs = {}
+        for half in ("core", "wing"):
+            c, n = halves[half]
+            zs[half] = (c / max(n, 1.0) - 1.0) / math.sqrt(2.0 / max(n, 1.0))
+        word = ("WING-LAW" if zs["wing"] < -SESSION_Z_MAX
+                else "WING-OFF" if zs["wing"] > SESSION_Z_MAX
+                else "MISFIT" if zs["core"] > SESSION_Z_MAX
+                else "UNDER-COST" if zs["core"] < -SESSION_Z_MAX else "ADMITTED")
+        out[s] = dict(z_core=zs["core"], z_wing=zs["wing"], word=word,
+                      z_is_lower_bound=True, z_inflation_range=(1.5, 3.0))
+    return out
+
+
+def session_verdicts_text(rec) -> str:
+    v = session_verdicts(rec)
+    return " ".join(f"{s}:{d['word']}(core {d['z_core']:+.0f}, wing {d['z_wing']:+.0f})" for s, d in sorted(v.items()))
+
+
 def gate_checks(base, summaries, meas, coarse: bool) -> list[tuple[str, bool, str]]:
     """The rung gate in round_gate.py's form: every check with its value. A
     run that fails any check does not earn the next rung."""
@@ -1564,26 +1853,12 @@ def gate_checks(base, summaries, meas, coarse: bool) -> list[tuple[str, bool, st
         # A SESSION'S NOISE LAW SETS ITS VOTE (2026-09-14): a session whose rows cost
         # nothing has free nuisances, and one whose rows cost too much is misfit;
         # either refuses the cell and names the session.
-        # RELATIVE TO THE POOL (W1j finding F3): on the design without the evening the pooled
-        # chi2_red is 1.36 and every calibrated session sits near it, so an absolute band refused
-        # the calibrated sessions and could not see the evening at 0.86; a wrong kernel moves every
-        # session together and only a session's own noise law moves its ratio to the pool.
-        _cs = best.get("chi2_red_session") or {}
-        _ne0 = best.get("n_eff_session") or {}
-        # THE REFERENCE EXCLUDES THE SESSION IT TESTS (W1k physics finding F2): a session
-        # holding a fraction f of n_eff passed against a pool it dominated while under-costing
-        # by 0.9(1-f)/(1-0.9f); the reference is the n_eff-weighted mean of the OTHER
-        # sessions, and the verdict is named: MISFIT above the tolerance, UNDER-COST below it.
-        def _ref(s):
-            w = {k: _ne0.get(k, 1.0) for k in _cs if k != s}
-            return sum(_cs[k] * w[k] for k in w) / max(sum(w.values()), 1e-12) if w else float("nan")
-        _ratio = {s: (v / _ref(s) if len(_cs) > 1 else 1.0) for s, v in _cs.items()}   # one session has no reference
-        _misfit = {s: r for s, r in _ratio.items() if r > 1.0 + SESSION_CHI2_REL_TOL}
-        _under = {s: r for s, r in _ratio.items() if r < 1.0 - SESSION_CHI2_REL_TOL}
-        chk(f"{form}: every session's chi2_red within {100 * SESSION_CHI2_REL_TOL:.0f} per cent of the other sessions' at the best cell", bool(_cs) and not _misfit and not _under,
-            "no per-session chi2 in this cell" if not _cs else
-            ("all admitted: " if not (_misfit or _under) else "")
-            + ", ".join(f"{s} {_cs[s]:.3f} ({_ratio[s]:.2f} of the others" + (", MISFIT" if s in _misfit else ", UNDER-COST" if s in _under else "") + ")" for s in sorted(_cs)))
+        # ABSOLUTE, IN TWO HALVES (W1m, A254): the wing against the noise law, the core against the
+        # model, each 1 +- sqrt(2/n_eff) per session; the word names which failed.
+        _v = session_verdicts(best)
+        _bad = {s: d for s, d in _v.items() if d["word"] != "ADMITTED"}
+        chk(f"{form}: every session's wing within {SESSION_Z_MAX:g} sigma of its noise law and its core within {SESSION_Z_MAX:g} sigma of the model at the best cell", bool(_v) and not _bad,
+            "no per-session split in this cell" if not _v else ("all admitted: " if not _bad else "") + session_verdicts_text(best))
         # A SESSION'S VOTE IS ITS EFFECTIVE SAMPLE (W1j finding F4): the evening session held 48 per
         # cent of n_eff with 20 per cent of the traces because its tau_int sat at the white floor, and
         # no other session calibrates that whitening.
@@ -1635,7 +1910,7 @@ def _jsonable(x):
 def bounds_for(name):
     """The box of a parameter by its name, the rule Cell.bounds uses, for a cell read back
     without a Cell."""
-    for k in ("beta_rel", "sigma_l", "omega_scale", "gamma_l", "lograte", "power_scale"):
+    for k in ("beta_rel", "alpha_rel", "sigma_l", "omega_scale", "gamma_l", "lograte", "power_scale"):
         if name.startswith(k):
             return BOUNDS[k]
     raise KeyError(name)
@@ -1720,13 +1995,195 @@ def plant_determinism(workers_many: int = 2) -> bool:
     rows = design(traces_per_condition=1)
     dspec = design_spec(rows, ("P", "T"))
     da = deep_delta_alpha()
-    specs = base_specs(("mixed",), (40.0, 90.0), da, {}, starts=(START_OTHER[0][:1] + START_SIGMA_L["mixed"][:1] * 2
+    specs = base_specs(("mixed",), (40.0, 90.0), da, {}, starts=(START_OTHER[0][:1] + (1.0,) + START_SIGMA_L["mixed"][:1] * 2
                                                                  + (START_OTHER[0][1], START_OTHER[0][2]),),
                        max_nfev=2, beta_profile=False)
     seq = run_cells(specs, dspec, 0, label="seq ")
     par = run_cells(specs, dspec, workers_many, label=f"pool{workers_many} ")
     strip = lambda rs: [{k: v for k, v in r.items() if k != "seconds"} for r in rs]   # noqa: E731
     return repr(strip(seq)) == repr(strip(par))
+
+
+def moment_arm_run(w0_um: float = 64.0, out_name: str = "ultra_joint_moments.csv") -> int:
+    """The moment arm at one waist: fit, then read orders 2 to 7 per condition.
+
+    Owner orders O12, O13 and O17 in one arm. What it writes, per condition and
+    statistic: the repeats' mean, the bar on that mean with its t-factor, this
+    fit's own forward prediction of the same windowed statistic, and the pull.
+    Then the cross-rung ratios, admitted on having a population moment and never
+    on their size; then k3 against power, which is a waist channel because the
+    transit is the only term carrying an odd power of the waist; then a REFUSAL
+    row per session.
+
+    WHAT A READER MUST NOT TAKE FROM IT. The pulls are conditional on every
+    parameter this cell pinned, the waist above all, and the arm is run at one
+    waist rather than profiled over the grid. It says whether the model
+    DESCRIBES the higher moments at that waist; it does not measure the waist.
+    """
+    rows = design()
+    dspec = design_spec(rows, ("P", "T"))
+    traces = _load(dspec)
+    print(f"  loaded {len(traces)} traces", flush=True)
+    spec = _spec("mixed", w0_um, da=deep_delta_alpha(), beta_profile=False)
+    cell = Cell(spec, traces)
+    starts = spec.get("starts") or cell.starts()
+    fits = [cell.fit(p0, max_nfev=spec.get("max_nfev", MAX_NFEV)) for p0 in starts]
+    best = min(fits, key=lambda f: f["chi2"])
+    print(f"  fitted at w0={w0_um:g} um, chi2 {best['chi2']:.1f}", flush=True)
+    arm = cell.moment_arm(best["p"], best["centres"])
+
+    out = [["case", "quantity", "value", "err", "unit", "basis", "note", "status"]]
+    for r in arm:
+        case = f"{r['session']}_{r['peak']}_{r['p_mw']}mW_{r['t_c']}C"
+        if not r["admitted"]:
+            out.append([case, r["statistic"], "", "", "", "admitted on having a "
+                        "population moment, never on signal-to-noise (O17)",
+                        r["why"], "ARTIFACT"])
+            continue
+        out.append([case, r["statistic"], *pm_cells(r["data"], r["sem"] * r["t95"]),
+                    "MHz^n" if "/" not in r["statistic"] else "dimensionless",
+                    f"{r['n_rep']} repeats, the bar on the mean at the two-sided "
+                    f"95 per cent t-factor {r['t95']:g}",
+                    f"this fit predicts {r['model']:.6g} at the same window, so the "
+                    f"pull is {r['pull']:+.2f}. The statistic is compared against its "
+                    f"own forward prediction and is not an estimator of an "
+                    f"untruncated cumulant", "DIAGNOSTIC"])
+
+    # ---- k3 AGAINST POWER, the waist channel ----------------------------
+    # The transit is the only term with an odd power of the waist, and k3 is the
+    # ramp's own first-order signal, so the slope of k3 against P at fixed
+    # temperature is a waist statement in a way no even order is.
+    lanes: dict = {}
+    for r in arm:
+        if r["admitted"] and r["statistic"] == "k3@6":
+            lanes.setdefault((r["session"], r["peak"], r["t_c"]), []).append(r)
+    for key, rs in sorted(lanes.items()):
+        if len(rs) < 3:
+            continue
+        P = np.array([r["p_mw"] for r in rs], float)
+        y = np.array([r["data"] for r in rs], float)
+        w = np.array([r["sem"] for r in rs], float)
+        # WEIGHTED, because the comment above says so and until 2026-09-15 the
+        # line below did not: np.polyfit is unweighted while the bar under it is
+        # the weighted-fit variance, and the per-rung sems span a factor seven,
+        # so the four published z's were wrong by a median 2.2 and one lane
+        # changed SIGN between the two estimators. A producer's prose naming an
+        # estimator its own code does not compute.
+        _W = np.diag(1.0 / w ** 2)
+        _A = np.vstack([np.ones_like(P), P]).T
+        sd = float(np.linalg.solve(_A.T @ _W @ _A, _A.T @ _W @ y)[1])
+        sm = np.polyfit(P, [r["model"] for r in rs], 1)[0]
+        # THE SLOPE CARRIES ITS OWN BAR OR IT IS NOT A CHANNEL. Weighted
+        # least squares on the rungs' own repeat bars, so a lane whose
+        # "slope" is the scatter of a k3 consistent with zero says so
+        # instead of reading as a measurement.
+        V = np.sum(1.0 / w ** 2) * np.sum(P ** 2 / w ** 2) - np.sum(P / w ** 2) ** 2
+        sd_err = math.sqrt(np.sum(1.0 / w ** 2) / V) if V > 0 else float("nan")
+        z = (sd - sm) / sd_err if sd_err > 0 else float("nan")
+        out.append([f"k3_vs_P_{key[0]}_{key[1]}_{key[2]}C", "slope_data_minus_model",
+                    *pm_cells(sd - sm, sd_err), "MHz^3 per mW",
+                    f"{len(rs)} power rungs at one temperature, the bar from the "
+                    f"rungs' own repeat spreads",
+                    f"data slope {sd:.4g} against this fit's {sm:.4g}, a difference of "
+                    f"{z:+.1f} of its own bar. The transit is the only term carrying an "
+                    f"odd power of the waist, so a slope mismatch here is a waist "
+                    f"statement and an even order's is not -- BUT read the four peaks "
+                    f"together before reading any one of them: they share the physics, "
+                    f"so slopes that disagree in SIGN across them are scatter and not a "
+                    f"channel, whatever each one's own bar says",
+                    "DIAGNOSTIC"])
+
+    # ---- THE REFUSAL ARM -------------------------------------------------
+    # Per session, because a session's noise law and its model are graded
+    # separately everywhere else in this producer and a pooled number hides
+    # which one failed.
+    verdicts = {}
+    for sess in sorted({r["session"] for r in arm}):
+        pulls = [r["pull"] for r in arm
+                 if r["session"] == sess and r["admitted"] and np.isfinite(r["pull"])]
+        if not pulls:
+            continue
+        # THE REFUSAL IS AN EXCEEDANCE COUNT AND NOT A CHI-SQUARED, and the
+        # reason is the same one that governs which ratios are admitted above.
+        # A bar built from n repeats makes the pull a t-statistic with
+        # nu = n - 1 degrees of freedom. Its square has expectation
+        # nu/(nu - 2), which is 2 and not 1 at the five repeats a condition
+        # carries, and its VARIANCE is 2 nu^2 (nu - 1) / ((nu - 2)^2 (nu - 4)),
+        # which does not exist at nu = 4 at all. So a mean of squares here has
+        # no sd to quote a sigma against, and the first form of this arm quoted
+        # one: "+194.6 sigma" on a statistic with no second moment. What IS
+        # well defined at any dof is how often |t| clears its own two-sided 95
+        # per cent point, which is 5 per cent under a correct model whatever nu
+        # is, and that is what is counted.
+        n = len(pulls)
+        nu = max(int(round(np.median([r["n_rep"] for r in arm
+                                      if r["session"] == sess]))) - 1, 1)
+        # THE POPULATION THE TEST CAN SEE. A statistic whose model prediction sits
+        # below its own bar cannot fail: its pull is (data - ~0)/sem, a test of
+        # whether the DATA's cumulant is zero, with the model contributing
+        # nothing. Every odd-order statistic here is in that state. Harmless in a
+        # likelihood, where C^-1 down-weights it; in a pass/fail RATE it is a
+        # guaranteed near-pass that dilutes the numerator, so the admission rule
+        # that serves the covariance cannot serve this arm.
+        live = [r for r in arm if r["session"] == sess and r["admitted"]
+                and np.isfinite(r["pull"]) and r["sem"] > 0
+                and abs(r["model"]) / r["sem"] >= 3.0]
+        # AND A BAR IS AVAILABLE. The eighteen-plus statistics of a condition come
+        # from the same traces, which is what a CLUSTER-ROBUST bar is for: cluster
+        # on condition and the fraction carries its own sd without any
+        # independence assumption. "No p-value can be quoted" was wrong.
+        t95v = _T95.get(nu, 2.0)
+        over = int(sum(1 for v in pulls if abs(v) > t95v))
+        frac = over / n
+        chi2 = float(np.mean(np.square(pulls)))
+        expect = nu / (nu - 2.0) if nu > 2 else float("nan")
+        by_cond = {}
+        for r in arm:
+            if r["session"] == sess and r["admitted"] and np.isfinite(r["pull"]):
+                by_cond.setdefault((r["peak"], r["p_mw"], r["t_c"]), []).append(
+                    abs(r["pull"]) > t95v)
+        cl = np.array([np.mean(v) for v in by_cond.values()]) if by_cond else np.array([frac])
+        cl_sd = float(np.std(cl, ddof=1) / math.sqrt(cl.size)) if cl.size > 1 else float("nan")
+        z_cl = (frac - 0.05) / cl_sd if cl_sd and np.isfinite(cl_sd) and cl_sd > 0 else float("nan")
+        live_frac = (sum(1 for r in live if abs(r["pull"]) > t95v) / len(live)) if live else float("nan")
+        verdicts[sess] = (frac, n, over, chi2, expect, live_frac, len(live), z_cl, cl.size)
+        out.append([f"moment_refusal_{sess}", "exceedance_fraction", f"{frac:.4g}", "",
+                    "fraction", f"{over} of {n} admitted statistics clear their own "
+                    f"two-sided 95 per cent t-point ({t95v:g} at {nu} dof), "
+                    f"at w0={w0_um:g} um",
+                    f"expectation 0.05 under a correct model at ANY number of repeats. "
+                    f"Over the {len(live)} statistics whose own model prediction clears "
+                    f"three times their bar -- the only ones this test can fail -- it is "
+                    f"{live_frac:.3f}, and the rest are dead channels that can only "
+                    f"near-pass. Clustered on the {cl.size} conditions, the fraction "
+                    f"carries sd {cl_sd:.4f}, so it sits {z_cl:+.1f} sigma from 0.05. " +
+                    ("REFUSED: the model does not describe this session's higher moments "
+                     "at this waist" if frac > 0.25 else
+                     "not refused at a quarter") +
+                    ". The sigma above is CLUSTER-ROBUST on condition and needs no "
+                    "independence assumption between the statistics of one condition, "
+                    "which is what the sentence retracted here -- that no p-value could "
+                    "be quoted -- had mistaken for an obstacle.",
+                    "DIAGNOSTIC"])
+        out.append([f"moment_refusal_{sess}", "mean_square_pull", f"{chi2:.4g}", "",
+                    "dimensionless", f"{n} admitted statistics at w0={w0_um:g} um",
+                    f"a DIAGNOSTIC and not a test. Its expectation is nu/(nu-2) = "
+                    f"{expect:.3g} at {nu} degrees of freedom and NOT one, and its "
+                    f"variance does not exist below five degrees of freedom, so no sigma "
+                    f"may be taken from it. The exceedance row above is the test",
+                    "DIAGNOSTIC"])
+
+    dest = os.path.join(str(C.RESULTS_DIR), out_name)
+    with open(dest, "w", newline="", encoding="utf-8") as fh:
+        csv.writer(fh).writerows(out)
+    print(f"wrote {dest} with {len(out) - 1} rows", flush=True)
+    for sess, (frac, n, over, chi2, expect, lf, nl, zc, nc) in sorted(verdicts.items()):
+        print(f"  {sess}: {over} of {n} beyond their own 95 per cent point "
+              f"({100 * frac:.0f} per cent against an expected 5); over the {nl} with "
+              f"model power it is {100 * lf:.0f} per cent; clustered on {nc} conditions "
+              f"that is {zc:+.1f} sigma -- {'REFUSED' if frac > 0.25 else 'not refused'}",
+              flush=True)
+    return 0
 
 
 def time_cells(workers_for_queue: int = 10) -> dict:
@@ -1769,8 +2226,8 @@ def time_cells(workers_for_queue: int = 10) -> dict:
 
 
 def main() -> int:
-    known = {"--coarse", "--time-cells", "--plant", "--no-stage2", "--all-sessions", "--with-excluded", "--power-scale", "--accept-stale-walls"}
-    valued = {"--form": None, "--sigma-l": "session", "--run-name": None, "--arms-only": None, "--out": None, "--drop-session": "", "--accept-stale-walls": None}
+    known = {"--coarse", "--time-cells", "--plant", "--no-stage2", "--all-sessions", "--with-excluded", "--power-scale", "--accept-stale-walls", "--moment-arm"}
+    valued = {"--form": None, "--sigma-l": "session", "--run-name": None, "--arms-only": None, "--out": None, "--drop-session": "", "--accept-stale-walls": None, "--moment-w0": None}
     args = sys.argv[1:]
     for key in list(valued):
         if key in args:
@@ -1795,6 +2252,8 @@ def main() -> int:
         if "--plant" in sys.argv or "--time-cells" in sys.argv:
             print("PLANT NOT RUN: the raw traces are absent", flush=True); return 3
         return 0
+    if "--moment-arm" in args:
+        return moment_arm_run(float(valued.get("--moment-w0") or 64.0))
     if "--time-cells" in args:
         time_cells()
         return 0

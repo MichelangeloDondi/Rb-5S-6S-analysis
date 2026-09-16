@@ -40,9 +40,9 @@ as a bound. Concretely:
   [0.0153](../../results/delta_alpha_posterior.csv "ref:delta_alpha_posterior:budget:geometry_share_of_variance")
   of its variance, while the quoted limit's whole ±79 is geometric, because
   the crossing behind it is a fixed committed number. Beam metrology sharpens
-  the second and not the first. The older hand-scaled form, |Δα| ≲ 812 a.u.,
+  the second and not the first. The older hand-scaled form, |Δα| ≲ 811 a.u.,
   is derived rather than typed, and it is the same formula one micrometre
-  away: 837 at 65 µm against 812 at the pinned 64, differing by exactly
+  away: 837 at 65 µm against 811 at the pinned 64, differing by exactly
   (65/64)² and by nothing else, so the two agreeing is arithmetic and not
   corroboration.
 
@@ -64,7 +64,7 @@ as a bound. Concretely:
   those two readings and not a property of this fit. **The gap is not
   withdrawn, only the number attached to it**: the computed value sits in the
   upper tail at posterior probability
-  [0.0324](../../results/delta_alpha_posterior.csv "ref:delta_alpha_posterior:comparison:posterior_prob_above_computed_here")
+  [0.0342](../../results/delta_alpha_posterior.csv "ref:delta_alpha_posterior:comparison:posterior_prob_above_computed_here")
   and at 0.017 under the crossing, real under both and quotable to neither's
   third digit, and the primary limit sits below the whole predicted envelope.
   Either the intensity sits lower than the accepted geometry implies, or |Δα|
@@ -73,7 +73,8 @@ as a bound. Concretely:
   separates the geometry reading from the other two.
 
   The prediction is built on the magnitude of this repository's own
-  recompute, **−1145 a.u.** (§3), the value `DELTA_ALPHA_AU` now carries. The
+  recompute, **−1131.8 a.u.** (§3), the value `DELTA_ALPHA_AU` now carries, the
+  earlier −1145 a.u. having summed the 9P-and-above group at zero frequency. The
   same quantity re-derived with the 6S tail summed dynamically reads
   [-1131.8](../../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive") ± [5.9](../../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive:err") a.u.
   (`results/polarizability_deep.csv`), the constant moving in its own wave.

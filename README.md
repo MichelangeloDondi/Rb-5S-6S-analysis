@@ -124,8 +124,8 @@ each names what would lift it. The calculated rows do not.
 | **σ_laser** | ≤ 2.4 MHz on the transition axis at the lineage waist, half that per photon | bound | a beam profile |
 | **S₀(225 mW)** | < 0.26 MHz, below the predicted 0.36 MHz at the measured waist | bound | fixed lock, tighter focus |
 | power scaling | no width trend, and an amplitude departure from P² | null + a departure | not applicable |
-| **w₀** | 64 µm (measured, an earlier thesis); a Gaussian fit of the line returns 42.0 ± 1.7 µm, which the record reads as a model-form signature and not a waist | lineage, OPEN | a knife-edge scan here |
-| **Δα(993 nm)** | −1145 a.u. static tail, [-1131.8](results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive") ± [5.9](results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive:err") a.u. dynamic tail, [+6.5](results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha_vs_orson:at_drive") σ from the cited magnitude on this derivation's bar alone (the cited value states none, at one per cent of it the pair is unresolved), **opposite in sign**, adjudicated not measured | calculated | the fixed-lock pull direction, unrun |
+| **w₀** | 64 µm (prior), not a measurement of this beam: the lineage was profiled once on the previous laser, and this beam also passes a 3 mm modulator aperture that one did not. A Gaussian fit of the line returns 42.0 ± 1.7 µm, which the record reads as a model-form signature and not a waist | carried, OPEN | a knife-edge scan here |
+| **Δα(993 nm)** | [-1131.8](results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive") ± [5.9](results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive:err") a.u. dynamic tail, replacing the earlier −1145 a.u., [+6.5](results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha_vs_orson:at_drive") σ from the cited magnitude on this derivation's bar alone (the cited value states none), **opposite in sign**, adjudicated not measured | calculated | the fixed-lock pull direction, unrun |
 | **twin trust** | the twin's wing noise against the real traces' wings: measured [0.00287](results/twin_completeness.csv "ref:twin_completeness:measured_sigma:") ± [0.00020](results/twin_completeness.csv "ref:twin_completeness:measured_sigma::err") against the twin's [0.00300](results/twin_completeness.csv "ref:twin_completeness:twin_at_measured_tau_sigma:") ± [0.00022](results/twin_completeness.csv "ref:twin_completeness:twin_at_measured_tau_sigma::err") at the measured correlation time | measured vs diagnostic | the two open twin terms (tail shape, wing correlation) |
 | **magic wavelengths** | ≈ 1203.9 / 1287.9 / 1339.6 nm, where a trap holds both states without pulling the line | calculated (envelope) | a trapped-atom experiment |
 
@@ -176,12 +176,14 @@ the fibre is an open item.
 | to point it at another transition | [docs/ADAPTING.md](docs/ADAPTING.md) |
 | the apparatus | [docs/APPARATUS.md](docs/APPARATUS.md) |
 | what the data are | [docs/DATA.md](docs/DATA.md) |
+| how a trace is named, and what RF on and off mean | [data_raw/README.md](data_raw/README.md) |
 | no interest in nanofibres | the fibre thread is named in [docs/BIG_PICTURE.md](docs/BIG_PICTURE.md). Skip those surfaces and lose nothing |
 
 **Conventions.** Every frequency is on the transition axis, twice the laser
 axis. Every number carries a provenance tag and uncertainties two significant
 digits. Physics first, mathematics where physics is not enough, simulation
 where neither is, and each term says which it rests on.
+A temperature here is a thermocouple reading on the cell and never an oven dial, two archive labels being dials that read like temperatures.
 
 ## Contact
 

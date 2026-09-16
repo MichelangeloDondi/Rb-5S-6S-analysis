@@ -214,7 +214,7 @@ enters the answer.
 **And the sharpest form of that problem was measured across 432
 configurations, in [`results/moment_power_map.csv`](../../results/moment_power_map.csv).**
 The map generates traces through the production world builder at five
-light-shift rungs spanning the archive's 0.364 MHz and 1.0 MHz, a round figure inside the campaign's range (the plan's chapter 4 gives 1.42 MHz at a 40 um waist and 500 mW),
+light-shift rungs spanning the archive's 0.360 MHz and 1.0 MHz, a round figure inside the campaign's range (the plan's chapter 4 gives 1.42 MHz at a 40 um waist and 500 mW),
 at 2,000 traces a rung, and fits the power of $S_0$ that the windowed cumulant
 carries. In the noiseless limit, with the model's grid resolving the shift
 and the physics layers off, that power is three: `tests/test_moment_power_map_producer.py`
@@ -285,10 +285,12 @@ information and was measured separately: under the correlation time
 `results/noise_model.csv` reports, the third, fifth, seventh and ninth
 cumulants and every ratio among them sit at a per-trace signal-to-noise
 between [0.0004582](../../results/moment_admission.csv "ref:moment_admission:snr_refused_min:") and [1.279](../../results/moment_admission.csv "ref:moment_admission:snr_refused_max:"), against [23.23](../../results/moment_admission.csv "ref:moment_admission:snr_admitted_min:") to [1832](../../results/moment_admission.csv "ref:moment_admission:snr_admitted_max:") for the even orders and the even
-ratios, so an admission floor of three refuses
-[21](../../results/moment_admission.csv "ref:moment_admission:n_admitted:")
-of 42 statistics and the refused set is exactly the odd one
-(`results/moment_admission.csv`). That is the reason to read a windowed
+ratios. An admission floor of three would refuse 21 of the 42 statistics and the
+refused set would be exactly the odd one, which is why this record no longer has
+one: admission is on having a population moment and
+[33](../../results/moment_admission.csv "ref:moment_admission:n_admitted:")
+of 42 enter, the odd cumulants among them
+(`results/moment_admission.csv`). That is still the reason to read a windowed
 cumulant's measured scatter before its derivation: a cumulant of pure noise is
 largest exactly where the signal is smallest, so the odd ladder does not
 merely fail to add. Averaged in, it subtracts. Two rules of the estimator follow from the same study and are now the
@@ -299,7 +301,7 @@ cubed. And the window starts at the carrier, the line the ruler identifies,
 never at the trace's maximum, which at the measured modulation depth is a
 first-order tooth. The map's ladder is the twin's,
 five shifts at constant amplitude and two thousand traces a rung. The 2025 archive took five traces a rung over shifts
-of 0.04 to 0.364 MHz with amplitude rising as the power squared, so the map's
+of 0.04 to 0.360 MHz with amplitude rising as the power squared, so the map's
 exponent is not the archive's number. What is derivable from one cell is the
 archive's own: at its shift, noise and scope a single trace's cumulant has a
 signal-to-scatter of a few hundredths, so five traces reach a few tenths of
@@ -382,14 +384,14 @@ Writing the true frequency against the assumed axis as
 $\nu = \hat\nu + \alpha\hat\nu^2$, the rate varies across a window of
 half-width $W$ by a fraction $\epsilon$ equal to $2\alpha W$, and the induced
 cumulant is linear in that fraction. The
-rate variation that fakes the whole light-shift signal is **[0.0136](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:rate_variation_tolerance") per
-cent at the campaign's tightest licensed waist and [0.00203](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:rate_variation_tolerance") at the 2025 one**, and about 1.5 per cent at the 16 micron configuration the
+rate variation that fakes the whole light-shift signal is **[0.0131](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:rate_variation_tolerance") per
+cent at the campaign's tightest licensed waist and [0.00196](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:rate_variation_tolerance") at the 2025 one**, and about 1.5 per cent at the 16 micron configuration the
 model does not license, so this channel demands an axis two to three orders
 better than a centre fit does. Each carries a band over the two width bands,
 the waist band paired with the retro-ratio error, and the two ends of the
 coherence window the fringe density leaves open, largest excursion reported:
 [0.0022](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:rate_variation_tolerance_err")
-and [0.00064](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:rate_variation_tolerance_err")
+and [0.00061](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:rate_variation_tolerance_err")
 per cent for the first two.
 
 It does not separate by sweep rate, because it is not a response, and it

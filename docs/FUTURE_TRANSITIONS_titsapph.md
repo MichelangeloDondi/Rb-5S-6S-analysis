@@ -361,15 +361,15 @@ computed ratio. Verified by running `rb5s6s.vanderwaals.beta_self_anchored`
 (2026-08-05):
 
     beta_self(6S) = beta_self(7S)_measured * [DC6(5S+6S) / DC6(5S+7S)]^(2/5)
-                  = 5.386 * 0.3166^0.4 * (0.974 to 0.985)
-                  = 3.33 +- 0.29 kHz per 1e12 cm^-3
+                  = 5.290 * 0.3166^0.4 * 0.985
+                  = 3.29 +- 0.29 kHz per 1e12 cm^-3
 
     DC6(5S+nS)    = C6(5S+nS) - C6(5S+5S)
 
 with C₆(5S+6S) = 53985 a.u., C₆(5S+7S) = 161474 a.u. and C₆(5S+5S) = 4180 a.u.
 from the module's second-order sums (its Casimir-Polder integrals, used until
 2026-09-14, undercounted both excited pairs by a factor 1.9 through the sign of
-the downward lines' denominators, A250, and the ratio barely moved), and 5.386 kHz per 10¹² cm⁻³
+the downward lines' denominators, A250, and the ratio barely moved), and 5.290 kHz per 10¹² cm⁻³
 being Zameroski's measured 129 ± 11 kHz/mTorr converted at 403 K. Exactly one
 number in that chain comes from outside. The recorded bound sits 8.8 to 14.7
 times above that expectation. The rounded 8 to 14 quoted elsewhere in the
@@ -381,8 +381,8 @@ upper state's coefficient alone, so the ground-pair term enters both rungs and
 does not cancel between them. That was corrected on 2026-08-05 after a referee
 raised it, and it moved the anchor from 3.53 to an earlier 3.38, 4.1 per cent
 and inside the quoted error, the integral's repair of 2026-09-14 moved it to 3.40 (before the
-exchange branches), and the exchange branches computed the same day (`c6_exchange`, 0.35 to 0.45 of ΔC₆ for 6S, under 5
-per cent for 7S) to 3.33. `rb5s6s/vanderwaals.py` carries the adjudication and its
+exchange branches), and the exchange branches computed the same day (`c6_exchange`, 0.35 of ΔC₆ for 6S, no longer the earlier 0.35 to 0.45 bracket, under 5
+per cent for 7S with the signs from the sum rule) to 3.35. `rb5s6s/vanderwaals.py` carries the adjudication and its
 Lewis 1980 sources, and
 [the difference-potential note](notes/vdw_difference_potential_and_4d_channel.md)
 carries the working.
@@ -404,11 +404,11 @@ is the part the van der Waals module does well: the Lindholm-Foley prefactor,
 the mean-speed approximation and the dropped core and tail are common to the two
 states and cancel in it. The module predicts
 
-    beta(6S) / beta(7S) = 0.3166^0.4 * (0.974 to 0.985) = 0.615 to 0.622
+    beta(6S) / beta(7S) = 0.3166^0.4 * 0.985 = 0.622
 
 A measured ratio would test the C₆ machinery. A 6S measurement on its own keeps
 leaning on it. The absolute check already on record is of a different kind and
-is weaker: run on 7S the module predicts 5.61 against the measured 5.39 kHz per
+is weaker: run on 7S the module predicts 5.61 against the measured [5.62](../results/beta_self_theory.csv "ref:beta_self_theory:beta_self_7s:measured") kHz per
 10¹² cm⁻³, 4 per cent high and inside the measurement's bar (the earlier
 reading was 4.40, 18 per cent low, while the pair coefficients came from the
 integral until 2026-09-14, A250). That tests the absolute scale at one n. A ratio tests the n
@@ -550,7 +550,7 @@ its 5P group, +624 a.u., and its 6P group, -847, with the 7P and 8P terms adding
 -102 and the tail and core +12.5 (`rb5s6s.polarizability`, term by term), and
 the sign dispute in the literature is a dispute about that balance. The crossing
 at 1203.9 nm is set by the same balance and is correspondingly sensitive: scaling
-both 6S to 6P elements by 0.95 moves it to 1192.7 nm and by 1.05 to 1214.4, about
+both 6S to 6P elements by 0.95 moves it to 1192.7 nm and by 1.05 to 1214.4, about  <!-- other-quantity: a multiplicative scaling on a matrix element -->
 11 nm for five per cent, where the slope of the differential polarizability
 through the crossing is +12.3 a.u. per nanometre in the record's convention,
 the upper state's polarizability less the ground state's. Because a null needs no
@@ -843,7 +843,7 @@ now listed among them.
 three wavevectors to zero only cancels the first-order Doppler shift to the
 accuracy of the closure. Keeping the residual below a tenth of the natural width
 at the cell's 400 K needs the 120 degree vertices held to roughly 24 arcseconds
-for 8P3/2 and 115 for 5F. Achievable, and a specification rather than an
+for 8P3/2 and 115 for 5F. Achievable, and a specification rather than an  <!-- other-quantity: a transition count for 5F -->
 afterthought.
 
 ## The same items costed
@@ -986,7 +986,7 @@ published values disagreeing by a factor 2.6, Zameroski's 129 ± 11 kHz/mTorr
 against Wang's 0.32 ± 0.01 MHz/mTorr, with no HWHM or FWHM convention stated
 in the second. A rate measured here, with the convention stated, would
 replace the choice between them, and a measured β(6S)/β(7S) would test the
-rate ratio the module predicts at 0.615 to 0.622, the ΔC₆ ratio 0.3166 to the
+rate ratio the module predicts at 0.622, the ΔC₆ ratio 0.3166 to the
 power 0.4, rather than assume it. If 7S returned
 only a bound it would still separate the two published values, provided the
 bound landed below the higher one. If the filter answer goes the other way,

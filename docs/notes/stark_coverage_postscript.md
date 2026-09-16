@@ -40,7 +40,7 @@ coverage is 0.934 to 0.940, which is below 0.95 by six to seven Monte-Carlo
 standard errors and is a real effect, not noise.
 
 What that region is, stated so the reader can judge rather than take a verdict:
-a kappa of 5.5 corresponds to an S0 at 225 mW of 1.24 MHz, which is four
+a kappa of 5.5 corresponds to an S0 at 225 mW of 1.24 MHz, which is four  <!-- other-quantity: an S0 in MHz at 225 mW -->
 times the ramp prediction of 0.35 and roughly twice the width-only bound the
 record publishes. It is a part of parameter space this experiment already
 excludes. **The literal condition is met and the practical consequence is

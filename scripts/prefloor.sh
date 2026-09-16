@@ -38,6 +38,14 @@ MODULES=(
   tests/test_lit_consistency.py
 )
 
+# --plant: skip the real stages and take rc, prc and agc from PLANT_RC, PLANT_PRC, PLANT_AGC,
+# writing the stamp to PLANT_STAMP instead of .prefloor_ok, so the composition and the stamp
+# can be checked both ways in under a second (private/checks/analysis_guards.py runs it).
+PLANT=0; [ "${1:-}" = "--plant" ] && PLANT=1
+STAMP=.prefloor_ok; [ $PLANT = 1 ] && STAMP="${PLANT_STAMP:-/tmp/prefloor_plant_stamp}"
+if [ $PLANT = 1 ]; then
+  rc=${PLANT_RC:-0}; prc=${PLANT_PRC:-0}; agc=${PLANT_AGC:-0}
+else
 echo "prefloor: ${#MODULES[@]} prose and doc guards on $NW worker(s); this is not a floor and stamps .prefloor_ok with the index tree"
 $PY -m pytest -q -p no:randomly -n "$NW" --dist loadfile "${MODULES[@]}"
 rc=$?
@@ -49,9 +57,57 @@ PRE_RC=$?
 # THE GENERATED LITERATURE VIEWS ARE CHECKED HERE (2026-09-14: nine notes left the
 # bib and the index stale and only the full gate saw it)
 $PY scripts/build_lit_index.py --check >/dev/null 2>&1 || { echo "prefloor: docs/references.bib or docs/LITERATURE_INDEX.md is stale (run scripts/build_lit_index.py)"; PRE_RC=1; }
-prc=$?
+# GUARD prefloor-exit-code: the stage's result is PRE_RC, never `$?` of the `||` compound
+# above, which is 0 whenever the recovery branch ran (2026-09-15: `prc=$?` read that
+# compound, so precheck and the literature index could both fail and the floor still
+# stamped GREEN on a tree the gate failed).
+prc=$PRE_RC
 
-if [ $rc -eq 0 ] && [ $prc -eq 0 ]; then
+# THE ANALYSIS GUARDS ARE CHECKED HERE, in the forty-second set, because a guard that is
+# deleted and not noticed is the same as no guard (owner, 2026-09-14: enforce through
+# mechanisms). It asserts each guard is still in the file it protects and plants each one.
+$PY private/checks/analysis_guards.py --self-test; agc=$?
+[ $agc = 0 ] || echo "prefloor: an analysis guard is missing or its plant failed (see above)"
+
+# GUARD ssot: no constant GAINS a literal copy. The polarizability move of
+# 2026-09-15 took twelve edits because one value had been copied as a literal
+# into twelve places, and three of those were found only when their tests failed.
+# A RATCHET and not a cliff: the tree already carried 130 copies when this was
+# wired, so it refuses an INCREASE per constant. DELTA_ALPHA_AU is at zero and
+# can never regain one.
+$PY private/checks/ssot_guard.py --scan; ssc=$?
+# THE TWO GUARDS OF 2026-09-15, whose plants are a second each and whose
+# absence from any caller this floor grades was reported by
+# tests/test_checkers_are_wired.py after its caller population was repaired.
+# They ran by hand all day while their own docstrings said they were wired.
+$PY private/checks/prior_art.py --self-test; pac=$?
+$PY private/checks/prune_guard.py --self-test; pgc=$?
+# THE COVERAGE METER, and it is a RATCHET and not a refusal: the covered
+# fraction is 6.2 per cent, so refusing on it would block every commit and a
+# guard that must be bypassed to work is not a guard. What it refuses is the
+# fraction FALLING, which is what a wave that adds prose and cites nothing does.
+$PY private/checks/ssot_coverage.py; scc=$?
+# THE DEPENDENCY HALF OF THE SSOT, and it is a REFUSAL and not a ratchet: a
+# constant may not move without every producer whose import closure reads it
+# regenerating in the same commit. This is the class a value sweep cannot
+# reach, because a cell computed from a constant need never have spelled it.
+$PY private/checks/ssot_deps.py; sdc=$?
+# A FILENAME IS A VALUE (2026-09-16). The 297-trace rename left seventy dangling
+# names in four documents and nothing mentioned them; the dependency guard watches
+# numbers and freshness watches producers, and prose was covered by neither.
+$PY private/checks/trace_names.py; tnc=$?
+# AND A SET POINT IS NOT A TEMPERATURE: the record says two variac labels have
+# already been taken for readings, and the rename made that error permanent if made.
+$PY private/checks/variac_guard.py; vgc=$?
+[ $ssc = 0 ] || echo "prefloor: a canonical value gained a literal copy (see above)"
+fi   # end of the real stages; a plant supplies rc, prc and agc instead
+
+# GUARD prefloor-stamp-composed: ONE result from all three stages, and the stamp is written on
+# it and on nothing narrower (the guards' self-test used to sit outside this `if`, so a deleted
+# guard printed GREEN and stamped while the exit code alone said otherwise, and the stamp on disk
+# is what idle_audit and the landing loop read).
+ALL_RC=$(( rc != 0 || prc != 0 || agc != 0 || ${ssc:-0} != 0 || ${pac:-0} != 0 || ${pgc:-0} != 0 || ${scc:-0} != 0 || ${sdc:-0} != 0 || ${tnc:-0} != 0 || ${vgc:-0} != 0 ))
+if [ $ALL_RC -eq 0 ]; then
   # THE FAST STAMP. A reading stage reads a tree, it does not run one, so the
   # expensive question about that tree is answered by the gate running BESIDE
   # it rather than in front of it. Making the 212-second floor the gate-keeper
@@ -64,10 +120,10 @@ if [ $rc -eq 0 ] && [ $prc -eq 0 ]; then
   # then `tree <sha>`. A stamp file that merely holds a sha would be read as an
   # unmarked file and refused, which is how a mechanism wired in one place and
   # not the other reports compliance while admitting nothing.
-  printf 'PREFLOOR\ntree %s\n' "$TREE" > .prefloor_ok
+  printf 'PREFLOOR\ntree %s\n' "$TREE" > "$STAMP"
   echo "prefloor: GREEN, stamped ${TREE:0:12}. The reading stage may open on this; the gate runs beside it."
 else
-  rm -f .prefloor_ok
-  echo "prefloor: RED (pytest $rc, precheck $prc). No stamp. Fix these before anything expensive."
+  rm -f "$STAMP"
+  echo "prefloor: RED (pytest $rc, precheck $prc, guards $agc, prior-art $pac, prune $pgc, coverage $scc, deps $sdc, trace-names ${tnc:-0}, variac ${vgc:-0}). No stamp. Fix these before anything expensive."
 fi
-exit $(( rc != 0 || prc != 0 ))
+exit $ALL_RC

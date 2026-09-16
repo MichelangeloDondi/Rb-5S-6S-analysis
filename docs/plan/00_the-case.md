@@ -97,7 +97,7 @@ waist needed.
 The predicted shift does need one. At the 64 µm waist, measured by Rajasree
 on this same optical table with the same laser and lenses, though not in
 the cell at campaign time, which is why section 4 still asks for the
-profile, the prediction is [0.364](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred:shared") MHz, above the limit, and the limit lies below the whole predicted envelope,
+profile, the prediction is [0.360](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred:shared") MHz, above the limit, and the limit lies below the whole predicted envelope,
 1.404 to 1.760 in κ over the stated waist and retro band, so on the full
 three-session fit the prediction is excluded at 95 per cent at every geometry
 in that band. **Two things qualify that exclusion.**
@@ -134,7 +134,7 @@ a.u. read as a posterior, against the
 σ that separates the fit from zero. **The gap is real and what is withdrawn is the
 number attached to it**: the computed 1145 a.u. (re-derived at [-1131.8](../../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive") ± [5.9](../../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive:err") with the 6S tail summed dynamically, which sits nearer the cited magnitude and shrinks the tension below) sits in the upper tail
 at
-[0.0324](../../results/delta_alpha_posterior.csv "ref:delta_alpha_posterior:comparison:posterior_prob_above_computed_here")
+[0.0342](../../results/delta_alpha_posterior.csv "ref:delta_alpha_posterior:comparison:posterior_prob_above_computed_here")
 under the posterior and at 0.017 under the crossing, so it is a real tension
 under both readings and quotable to neither's third digit. Over the ±1σ box
 in waist and retro ratio the prediction runs 0.32 to 0.40, all above the

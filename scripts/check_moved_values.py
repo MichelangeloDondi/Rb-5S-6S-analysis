@@ -372,6 +372,15 @@ def scannable() -> list[Path]:
            if not (f.startswith("results/") and f.endswith(".csv"))   # the CSVs are the source; results/README.md is prose about them and is scanned (2026-09-04)
            and f not in _GENERATED
            and not f.endswith(BINARY_SUFFIXES)]
+    # THE RECORD MARK IS HONOURED ON THE TRACKED SIDE TOO (2026-09-15).  It was
+    # read only for files under `private/`, so `tests/_ratchet_history.md` --
+    # the ratchet's own append-only log of every reseed, a record by exactly the
+    # argument `_declares_record` states -- was graded, and the only way to
+    # satisfy the checker was to edit a log so that it agreed with the present,
+    # which is what a log exists not to do.  A marker honoured in one tree and
+    # not the other is a population defect and not a policy: same class as the
+    # sibling register the retired-value ratchet refused the same afternoon.
+    out = [q for q in out if not _declares_record(q)]
     priv = ROOT / "private"
     if priv.is_dir():
         # THE POPULATION IS NAMED, NOT GLOBBED, and it is narrow on purpose.

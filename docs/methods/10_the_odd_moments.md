@@ -169,11 +169,11 @@ with the shift so truncation stays comparable:
 
 | shift, MHz | shift / line width | window | k3 | k5 | k7 |
 |---|---|---|---|---|---|
-| 0.364 | 0.07 | 4.5 | 2.997 | 2.998 | 3.001 |
+| 0.360 | 0.07 | 4.5 | 2.997 | 2.998 | 3.001 |
 | 1.0 | 0.19 | 5.5 | 2.986 | 2.995 | 3.015 |
 | 2.0 | 0.37 | 7.0 | 2.974 | 3.004 | 3.096 |
 | 4.0 | 0.74 | 10.0 | 2.970 | 3.056 | 3.606 |
-| 8.0 | 1.48 | 16.0 | 2.977 | 3.182 | -5.597 |
+| 8.0 | 1.48 | 16.0 | 2.977 | 3.182 | -5.597 <!-- other-quantity: a half-window in MHz in the odd-moment ladder --> |
 | 16.0 | 2.96 | 28.0 | 2.985 | 3.410 | 1.042 |
 
 **`k_5` moves, but nowhere near far enough.** At a shift three times the line
@@ -286,7 +286,7 @@ for each cumulant, against the fraction of the kernel that is Lorentzian:
 **One cell of fifteen recovers the fifth power, and it is the one with no
 Lorentzian at all and the widest window.** A Lorentzian fraction of 0.15 is
 already enough to return the fifth cumulant to the third power. The third
-cumulant's own power is 3.00 on the noiseless model at a wide window, and it falls to [1.90](../../results/three_channel_forecast.csv "ref:three_channel_forecast:base::exponent_quiet") once the saturation companion broadens the line inside a fixed 6 MHz half-width. It climbs as the window widens, [2.15](../../results/three_channel_forecast.csv "ref:three_channel_forecast:window_8MHz::exponent_quiet") at 8 MHz, [2.60](../../results/three_channel_forecast.csv "ref:three_channel_forecast:window_16MHz::exponent_quiet") at 16, [2.89](../../results/three_channel_forecast.csv "ref:three_channel_forecast:window_40MHz::exponent_quiet") at 40 and [2.93](../../results/three_channel_forecast.csv "ref:three_channel_forecast:window_55MHz::exponent_quiet") at 55, each a cell of the producer's own window lever on the world that carries the collection window and the fringe tail, and within a few hundredths of the same scan on the world without them. **Whether it returns exactly to three is not established here**, because the producer's grid spans 60 MHz either side and a window reaching that edge leaves the trace, which the estimator refuses. What makes it the usable channel is that the loss is
+cumulant's own power is 3.00 on the noiseless model at a wide window, and it falls to [1.91](../../results/three_channel_forecast.csv "ref:three_channel_forecast:base::exponent_quiet") once the saturation companion broadens the line inside a fixed 6 MHz half-width. It climbs as the window widens, [2.15](../../results/three_channel_forecast.csv "ref:three_channel_forecast:window_8MHz::exponent_quiet") at 8 MHz, [2.60](../../results/three_channel_forecast.csv "ref:three_channel_forecast:window_16MHz::exponent_quiet") at 16, [2.89](../../results/three_channel_forecast.csv "ref:three_channel_forecast:window_40MHz::exponent_quiet") at 40 and [2.95](../../results/three_channel_forecast.csv "ref:three_channel_forecast:window_55MHz::exponent_quiet") at 55, each a cell of the producer's own window lever on the world that carries the collection window and the fringe tail, and within a few hundredths of the same scan on the world without them. **Whether it returns exactly to three is not established here**, because the producer's grid spans 60 MHz either side and a window reaching that edge leaves the trace, which the estimator refuses. What makes it the usable channel is that the loss is
 truncation, recoverable by a wider window or by a comb, and not a failure of the law.
 
 **This transition cannot reach that cell, and the reason is a constant.** The

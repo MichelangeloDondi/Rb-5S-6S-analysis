@@ -175,12 +175,25 @@ the difference of the two levels' interactions with the perturber
 $\Delta C_6 = C_6(5S+nS) - C_6(5S+5S)$, 49805 a.u. for $6S$ and 157294 for
 $7S$. The exchange term of the same order, which couples $|6S,5S\rangle$ to
 $|5S,6S\rangle$ through $|nP,n'P\rangle$, is computed from the same tables
-(`c6_exchange`): 22467 a.u. with every product positive, 17510 with the 6P
-products flipped, 0.35 to 0.45 of $\Delta C_6$ either way because the 5P legs
-dominate, and under 5 per cent on the 7S rung. It splits the potential into
-two branches $C_6(1 \pm f)$ sampled with equal weight, and since the width
-goes as $C_6^{2/5}$ the factor is $((1+f)^{2/5} + (1-f)^{2/5})/2$, 0.974 to
-0.985 for 6S and 1.000 for 7S. It does not cancel in the anchor.
+(`c6_exchange`). The tables carry magnitudes, and the relative signs of the
+$nP$ legs follow from the off-diagonal Thomas-Reiche-Kuhn rule,
+$\sum_k (\Delta_k(5S) + \Delta_k(6S))  d(5S,k)  d(6S,k) = 0$ for orthogonal
+states. That rule does not constrain the legs equally, and the sentence this page
+carried until 2026-09-15 -- that the elements satisfy it "for one pattern only"
+-- claimed more than it had. The per-group terms are 5P 1.308, 6P 1.284, 7P
+0.069 and 8P 0.017, so every $6P$-positive pattern leaves 2.5 to 2.7 against
+0.03 to 0.11 for the $6P$-negative ones: **the $6P$ sign is fixed at about fifty
+tail widths and the $7P$ and $8P$ signs are not.** The tail from $9P$ to $12P$ is 0.02
+to 0.05, which covers the $8P$ term outright and the gap between the two best
+patterns, so two patterns close inside the tail. Across them the exchange
+coefficient runs 17.4 to 17.5 thousand a.u. and the fraction 0.348 to 0.352, so
+0.35 of $\Delta C_6$ for 6S stands to its two figures and a five-figure
+coefficient does not. On the $7S$ rung two patterns are degenerate outright and
+4.5 per cent is one of two readings. It splits the
+potential into two branches $C_6(1 \pm f)$ sampled with equal weight (an
+equal superposition of the two exchange eigenstates), and since the width
+goes as $C_6^{2/5}$ the factor is $((1+f)^{2/5} + (1-f)^{2/5})/2$, 0.985 for
+6S and 1.000 for 7S. It does not cancel in the anchor.
 
 **Step 3, the impact cross-section.** Along a straight path with impact
 parameter $b$ and relative speed $v$ the phase accumulated in one collision
@@ -208,34 +221,117 @@ of a power is not the power of the average: over the Maxwell distribution
 of the relative speed, $\langle v^{3/5}\rangle/\bar v^{3/5} = 0.9775$
 (`speed_average_factor`), so the mean-speed form is 2.3 per cent high.
 
-**Step 5, the number.** At 130 C ($\bar v$ = 444 m/s) and $10^{12}$ cm⁻³:
+**Step 5, the number, and the two temperatures it has to keep apart.** A rate
+per millitorr becomes a rate per density only through $n = P/kT$ at the cell
+temperature of the measurement itself, and the impact width then goes as
+$\langle v^{3/5}\rangle$ and so as $T^{0.3}$ at fixed density. Those are two
+steps, and this record has now got the second one wrong twice. It converted at
+its own 403.15 K with no speed scaling until 2026-09-15. It then converted at
+393 K for one afternoon, reading that number off a table note. The board's
+physics seat retracted both the same day, against the source:
+
+> The temperature of the cell ranged from 353 K to 438 K.  *(figure 7 caption, the
+> plot the 129 kHz mTorr⁻¹ slope is fitted from)*
+
+**The rate is a slope across 85 K and has no single temperature.** The 393 K
+belongs to a table note giving the self-broadening contribution for a different
+experiment's linewidth budget at that experiment's temperature, a number about
+another quantity that happened to agree with the reading. Where the slope's
+effective temperature sits depends on the weights, and the Rb pressure runs
+0.056 mTorr at 353 K to 9.3 at 438, so the hot end carries the leverage:
+weighting by pressure gives 428.5 K, equal weight in $T$ gives 420.4, weighting
+by the inverse square of the width gives 368.3. The paper weights by the
+standard deviation of its own linewidths and does not print them, so **the
+effective temperature is not stated anywhere in the paper**, and the span is a budget row. Taken here: [429](../../results/beta_self_theory.csv "ref:beta_self_theory:anchor:effective_temperature_k") K, the centre of the
+$\beta$ those weightings imply. At 130 C
+($\bar v$ = 444 m/s) and $10^{12}$ cm⁻³:
 
 | route | $\beta_\text{self}(6S)$, kHz per $10^{12}$ cm⁻³ | its bar |
 |---|---|---|
-| first principles, steps 1 to 4, the exchange branches carried | 3.45 to 3.49 | the recipe's, below |
-| anchored on the measured $7S$ rate, $\beta_7 [\Delta C_6(6S)/\Delta C_6(7S)]^{2/5}$ times the ratio of branch factors | 3.31 to 3.35 | 0.29, Zameroski's 8.5 per cent alone |
-| the same recipe run on $7S$ against Zameroski's 5.39 | 5.61, 4 per cent above | inside the measurement's bar |
+| anchored on the measured $7S$ rate, $\beta_7 [\Delta C_6(6S)/\Delta C_6(7S)]^{2/5}$ times the ratio of branch factors | [3.50](../../results/beta_self_theory.csv "ref:beta_self_theory:beta_self_6s:anchored") | [0.37](../../results/beta_self_theory.csv "ref:beta_self_theory:beta_self_6s:anchored:err"), the whole budget of step 6 |
+| first principles, steps 1 to 4, the exchange branches carried | [3.49](../../results/beta_self_theory.csv "ref:beta_self_theory:beta_self_6s:first_principles") | it carries the recipe's own scale, which the anchor divides out |
+| the same recipe run on $7S$ against Zameroski's [5.62](../../results/beta_self_theory.csv "ref:beta_self_theory:beta_self_7s:measured") | [5.61](../../results/beta_self_theory.csv "ref:beta_self_theory:beta_self_7s:predicted"), 6.1 per cent above | 0.72 of the measurement's own bar |
 
-The two routes agree to 4 per cent, and the recipe reproduces the only
-measured $nS$ self-broadening rate in rubidium within that measurement's own
-error. The exchange branches, computed on 2026-09-14 in place of the hand
-estimate, lower the 6S value by 1.5 to 2.6 per cent and are written as the span above. Before the sign correction the recipe read 18 per cent low on $7S$
-and the module's docstring blamed the dropped core for the gap, which the
-corrected sum refutes.
+The two routes differ by exactly that [-0.17](../../results/beta_self_theory.csv "ref:beta_self_theory:beta_self_7s:recipe_scale_error") per cent, and **every
+discrepancy this page reported on 2026-09-15 was its own conversion.** The two
+are the same computation with and without the experimental scale, so their gap
+measures the recipe's absolute error on the one state that has a measured rate.
+It read 4 per cent, then 6.1, then 5.4 as the conversion temperature moved
+through three wrong readings, and at the leverage-weighted temperature it is
+under one part in five hundred. This is still not two independent estimates
+agreeing -- the anchored route takes its scale from the measurement and the
+first-principles route does not -- but a recipe reproducing an experiment it
+never saw, to better than one per cent, is the strongest statement this page has
+been able to make about the impact calculation. The exchange branches, computed on
+2026-09-14 in place of the hand estimate and signed by the sum rule, lower the
+6S value by 1.5 per cent. Before the sign correction the recipe read 18 per
+cent low on $7S$ and the module's docstring blamed the dropped core for the
+gap, which the corrected sum refutes.
 
-**Step 6, what the bar really is.** The 0.29 is the $7S$ experiment's
-statistical error scaled. The recipe's own terms, each sized: the core and
-tail polarizabilities dropped from the sums (3 per cent on the pair
-coefficient, 2 per cent on the anchor ratio), the matrix elements (2 per
-cent, Safronova's stated accuracy), the exchange branches (1.5 to 2.6 per
-cent, the untabulated sign of the 6P products),
-the speed average (now carried), the cell temperature at which the $7S$ rate
-per millitorr was converted to a density (OPEN: 5 per cent per 20 K, the
-paper's section 2.5 to be re-read for it), and one inelastic channel with
-no size yet, $6S+5S\to4D+5S$ releasing 777 cm⁻¹
-([the note](../notes/vdw_difference_potential_and_4d_channel.md)). Added in
-quadrature without the last, the coefficient is known to about 11 per cent:
-$3.33 \pm 0.37$ kHz per $10^{12}$ cm⁻³, ENVELOPE.
+**Step 6, what the bar really is, and every row of it is measured.**
+`vanderwaals.beta_self_budget` displaces one input at a time and reads the
+fractional move in $\beta$, so no row below is an exponent typed into a
+comment. In falling order:
+
+| term | how it was sized | on $\beta$ |
+|---|---|---|
+| Zameroski's total bar, 13 on 129 (Table 3) | it enters linearly, the anchor taking its whole scale from that measurement | [10.08](../../results/beta_self_theory.csv "ref:beta_self_theory:budget:anchor_measurement") per cent |
+| the exchange branches | the whole term's size carried as its bar, the signs being fixed by the sum rule | [1.52](../../results/beta_self_theory.csv "ref:beta_self_theory:budget:exchange_branches") per cent |
+| the slope's conversion temperature, 402 to 429 K | the rate is a slope over 353 to 438 K and the paper does not print the weights that fix its effective temperature, so $\beta$ is displaced across the span the defensible weightings give | [2.51](../../results/beta_self_theory.csv "ref:beta_self_theory:budget:anchor_conversion_temperature") per cent |
+| the matrix elements, 2 per cent (Safronova's stated accuracy) | applied to the 6S sum alone, a common-mode error cancelling in the ratio | [1.71](../../results/beta_self_theory.csv "ref:beta_self_theory:budget:matrix_elements_2pc_differential") per cent |
+| the truncated ground-pair sum | this module's 4180 a.u. swapped for the literature 4691, a 12 per cent move | [0.28](../../results/beta_self_theory.csv "ref:beta_self_theory:budget:ground_pair_truncation") per cent |
+
+**So the coefficient is known exactly as well as that one measurement is, and
+no better.** The quadrature sum is [10.64](../../results/beta_self_theory.csv "ref:beta_self_theory:beta_self_6s:rel_uncertainty") per cent,
+of which the anchor measurement alone is [10.08](../../results/beta_self_theory.csv "ref:beta_self_theory:budget:anchor_measurement") per cent. Everything the
+recipe contributes is 2.0 per cent in quadrature, and that is the whole distance
+between those two numbers. The
+value of record is $3.50 \pm 0.37$ kHz per $10^{12}$ cm⁻³, ENVELOPE, written in
+the form this repository uses for every bar, two significant digits with the
+value matching its decimals.
+
+**And the row this record deleted as a double count was not one.** On
+2026-09-15 it read section 2.5 -- "For the self-broadening and shift rates, a 5%
+uncertainty is used for the temperature dependent vapor pressure (density)" --
+as putting that term inside the $\pm 11$, and removed it, taking the bar from 11
+per cent to 8.8. **The paper prints two bars and the larger is the total.**
+Section 2.5 quotes $129 \pm 11$, Table 3 quotes $129 \pm 13$, and Table 4's
+$107 \pm 11$ is $0.83 \times 13$. The arithmetic closes both ways on his own
+stated recipe: $\sqrt{11^2 + 6.45^2 + 1.29^2} = 12.8$, printed 13, and
+$\sqrt{13^2 - 6.45^2 - 1.29^2} = 11.2$, printed 11. So the $\pm 11$ is the
+linear-fit interval without the density term and the $\pm 13$ is the total with
+it: the 5 per cent is the difference between them, deleting it narrowed a bar
+that was already right, and **the source's total is what this page now carries.**
+One convention does survive from that paragraph, and the record has been bitten
+by its kind before: his rates are on the atomic axis, $\nu = 2\nu_L$, which is
+the axis this page wants.
+
+**And the size of the conservatism is known, because he states what his bar is
+made of.** It is a 95 per cent linear-fit interval, a 1 per cent transducer
+calibration and the 5 per cent density term, in quadrature. Solving for the fit
+half gives [8.69](../../results/beta_self_theory.csv "ref:beta_self_theory:anchor_bar_one_sigma:fit_half_95pc") per
+cent, and dividing that by the t-factor of a fit over a handful of pressure points
+leaves a total of [5.78](../../results/beta_self_theory.csv "ref:beta_self_theory:anchor_bar_one_sigma:t_dof3_3.18") to
+[6.76](../../results/beta_self_theory.csv "ref:beta_self_theory:anchor_bar_one_sigma:gaussian_1.96") per cent, or 0.18
+to 0.27 kHz. So the coefficient carried here is about 1.3 times wider than a one-sigma
+reading of the same measurement. That reading is recorded and not taken: the division
+needs his degrees of freedom and the paper does not give them, and a bar a reader
+cannot rebuild from the source is worse than one that is wide. What it does say is
+where the precision is: not in the recipe, and not in anything this repository can
+compute, but in one 2014 linear fit.
+
+**What the quadrature leaves out**, named and not absorbed. The recipe's
+**his Rb pressure axis against this record's own density curve**, which is the
+largest term in the problem and no reading of the paper spans it: he cites the
+same correlation `rb5s6s/density.py` uses, yet his table notes give 0.83 mTorr at
+393 K and 0.23 at 373 where that curve gives 0.671 and 0.184, a ratio of 1.24, so  <!-- other-quantity: a vapour-pressure scale ratio -->
+either his slope is ~20 per cent low on this record's density scale or his
+temperature labels are 3.4 K low. The inelastic exit on the anchor rung,
+$7S+5S\to5P+5P$, open by 678 cm⁻¹ and first-order dipole-dipole coupled, worth 1
+to 3 per cent, where the $6S+5S\to4D+5S$ channel this paragraph used to name sits
+on the target rung, releases 777 cm⁻¹ and largely cancels
+([the note](../notes/vdw_difference_potential_and_4d_channel.md)). And the
+recipe's absolute scale error carrying an $n$-dependence.
 
 **Step 7, what the archive says about it.** Nothing yet. At 130 C the
 collisional width this coefficient predicts is 0.10 MHz, against per-session

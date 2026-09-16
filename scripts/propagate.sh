@@ -1,0 +1,61 @@
+#!/usr/bin/env bash
+# STEP 0 OF THE COMMIT POLICY, AS A COMMAND RATHER THAN A CHAIN REMEMBERED.
+#
+# The policy's step 0 is "propagate first, so the gate grades a propagated tree",
+# and until 2026-09-16 that chain was reconstructed by hand every wave: run the
+# producers whose inputs moved, re-annotate, rebuild the reference graph, redraw
+# the figures AFTER the last CSV is staged. Measured that day, doing it by hand
+# cost three floor rounds -- a missing status column, six semicolon cells, and
+# thirty-nine figures carrying a fingerprint older than the staged CSV set --
+# every one of which is a step of this file, skipped.
+#
+# `ssot_deps.py --propagate` is the first stage and HAD NO CALLER AT ALL: the
+# floor ran only its refusal, so the mechanism that moves values was a command
+# someone had to know to type. That is the gap between a refusal and a
+# poka-yoke, and this file is the caller.
+#
+# ORDER IS LOAD-BEARING and each line says why.
+set -u
+cd "$(dirname "$0")/.." || exit 2
+PY=.venv/bin/python
+rc=0
+
+# 1. MOVE THE VALUES. Re-runs every producer whose import closure reads a constant
+#    this diff moved, then rewrites ref: citations and the reference graph. Refuses
+#    rather than guessing where a row set cannot be regenerated on this machine.
+echo "propagate: 1/4 moving values (ssot_deps --propagate)"
+$PY private/checks/ssot_deps.py --propagate || rc=1
+
+# 1b. THE REFERENCE GRAPH, UNCONDITIONALLY. Stage 1 rebuilds it only when a
+#     CONSTANT moved, and a CSV regenerated any other way -- a producer re-run by
+#     hand, a formatting repair, a manifest rename -- leaves every ref: citation
+#     resolving to the old cell. Found by running this file on its second use:
+#     `test_the_committed_graph_is_fresh` was the one red left after stage 1 had
+#     nothing to do. A repair arm that fires only on one trigger is not the
+#     propagation step; it is one of its cases.
+echo "propagate: 1b/4 rewriting ref: citations and the reference graph"
+$PY scripts/check_references.py --fix  >/dev/null 2>&1 || true
+$PY scripts/check_references.py --graph >/dev/null || rc=1
+
+# 2. THE STATUS COLUMN, which annotate_results_status writes and which precheck
+#    refuses a staged CSV without. It runs LAST among the producers by design.
+echo "propagate: 2/4 annotating results status"
+$PY scripts/annotate_results_status.py >/dev/null || rc=1
+
+# 3. STAGE THE CSVs BEFORE THE REDRAW. `results_fingerprint()` hashes the
+#    git-tracked set, so a figure drawn before its CSV is staged embeds the old
+#    fingerprint and `test_figures_fresh` fails on every figure at once.
+echo "propagate: 3/4 staging results/ so the fingerprint is the staged set"
+git add results/ || rc=1
+
+# 4. REDRAW, then stage the figures and the doc surfaces the citations touched.
+echo "propagate: 4/4 redrawing figures"
+$PY scripts/make_figures.py >/dev/null || rc=1
+git add figures/ docs/ || rc=1
+
+if [ $rc -eq 0 ]; then
+  echo "propagate: done. Run scripts/prefloor.sh next; it grades a propagated tree."
+else
+  echo "propagate: a stage failed above. Fix it and re-run; do NOT hand-run the rest."
+fi
+exit $rc

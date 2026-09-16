@@ -116,7 +116,7 @@ narrowed to the fringe-averaged closed form and the drift-immune moment.
 [Zameroski et al., J. Phys. B 47, 225205 (2014)](lit/zameroski2014.md),
 full text HELD and read 2026-07-27, correcting this entry's central number.
 Zameroski measures the 5S→7S **self-BROADENING** rate directly:
-**129 ± 11 kHz/mTorr**, i.e. **5.39 ± 0.46 kHz per 10¹² cm⁻³** at their cell
+**129 ± 11 kHz/mTorr**, i.e. **[5.62](../results/beta_self_theory.csv "ref:beta_self_theory:beta_self_7s:measured") ± 0.45 kHz per 10¹² cm⁻³** at their cell
 temperature. It is the only measured self-broadening rate for an nS state in Rb, and
 exactly the observable β_self is. Their 7S self-*shift* "could not be extracted
 from the experimental data". The −17.82(81) kHz/mTorr this entry previously
@@ -128,8 +128,8 @@ the suspect impact prefactor cancelling in the ratio. Derivation in the lit
 file and in `rb5s6s/vanderwaals.beta_self_anchored`. The ratio is of van der
 Waals *differences*, C₆(5S+nS) − C₆(5S+5S), because the impact phase is set by
 the difference between the two levels' interactions with the perturber. That
-correction landed 2026-08-05 and moved the anchor from 3.53 to an earlier 3.38 (3.33 since the
-integral's excited-state repair and the exchange branches of 2026-09-14, A250 and A251) kHz per
+correction landed 2026-08-05 and moved the anchor from 3.53 to an earlier 3.38 (3.35 since the
+integral's excited-state repair and the signed exchange branches of 2026-09-14, A250, A251 and A253) kHz per
 10¹² cm⁻³, inside the quoted error. See
 [the difference-potential note](notes/vdw_difference_potential_and_4d_channel.md).
 
@@ -201,7 +201,7 @@ recomputed here.
 
 | Source | Transition | Measured coefficient | Status | Comparability |
 |---|---|---|---|---|
-| [Zameroski 2014](lit/zameroski2014.md) | Rb 5S→7S (self) | 129 ± 11 kHz/mTorr = 5.39 ± 0.46 kHz per 10¹² cm⁻³ | VERIFIED | one state above the 6S pair studied here, C₆-scaled to the β_self(6S) anchor of 3.4 ± 0.3 kHz per 10¹² cm⁻³ used throughout this ledger |
+| [Zameroski 2014](lit/zameroski2014.md) | Rb 5S→7S (self) | 129 ± 11 kHz/mTorr = [5.62](../results/beta_self_theory.csv "ref:beta_self_theory:beta_self_7s:measured") ± 0.45 kHz per 10¹² cm⁻³ | VERIFIED | one state above the 6S pair studied here, C₆-scaled to the β_self(6S) anchor of 3.4 ± 0.3 kHz per 10¹² cm⁻³ used throughout this ledger |
 | [Rahaman & Dutta 2022](lit/rahaman2022.md) | Cs 6S→7d₃/₂ (self) | −32.6 ± 2.0 kHz/mTorr collisional shift | VERIFIED | different alkali and a d state rather than an S–S pair, but the same two-photon vapour-cell class and the same convention as this work |
 | [Lee et al. 2010](lit/lee2010.md) | Cs 6S→8S | −7.25 ± 0.45 Hz/(mW/mm²) light shift | VERIFIED | an AC-Stark coefficient, not a collisional one, kept here because it is the closest analogue experiment there is, the same retro-reflected two-photon vapour-cell architecture as this work |
 | Lee et al., *J. Phys. B* (2010, the sibling to lee2010, not yet held) | Cs 6S→8S (self) | −588 ± 387 Hz/mPa pressure shift | REPORTED, abstract only | the direct collisional analogue to β_self, same group and line as lee2010, cite nothing further from it until the full text is read |
@@ -1216,6 +1216,11 @@ and not what it repeats: [xin2025](lit/xin2025.md),
 [lan2013](lit/lan2013.md), [lan2012](lit/lan2012.md),
 [estey2015](lit/estey2015.md), [hohensee2011](lit/hohensee2011.md) and
 [abdalla2025](lit/abdalla2025.md) on interferometers and their systematics.
+[li2026](lit/li2026.md) is the newest of them and the one that names this
+record's own quantity from the other side: a magic wavelength chosen so that
+two clock states see the same coupling, a tune-out wavelength measured on the
+upper one, and excited-state polarizability metrology named as the platform's
+direction.
 On storage, memory and mechanical squeezing,
 [leong2020storage](lit/leong2020storage.md),
 [leong2020fock](lit/leong2020fock.md), [leong2023](lit/leong2023.md),

@@ -347,7 +347,7 @@ def test_a_dim_tooth_is_broadened_less_because_its_rabi_frequency_is_smaller(mon
           "positions": {"4192": 0.0, "4192@+1": 60.0},
           "shares": {"4192": 0.40, "4192@+1": 0.02}}
     w = {}
-    for label, comp in (("on", {"ratio": 1.2367, "scale": 1.0, "cycles": 1.0}), ("off", None)):
+    for label, comp in (("on", {"ratio": 1.2511, "scale": 1.0, "cycles": 1.0}), ("off", None)):
         monkeypatch.setattr(stark, "COMPANIONS", comp)
         nu, y, _ = build_world_trace(0.225, 8.0, 130.0, 0, 1, np.random.default_rng(3), L,
                                      tooth_of={"4192@+1": "4192"}, grid_span=(-90.0, 150.0), **kw)

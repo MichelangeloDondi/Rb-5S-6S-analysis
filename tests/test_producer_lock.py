@@ -151,7 +151,13 @@ def test_every_results_producer_that_takes_minutes_holds_a_lock():
     # run_guided_mode_tables TWICE, which a membership test cannot
     # notice and which made the population look larger than it was.
     slow = {
-        "run_beta_self", "run_campaign_twin_forecast",
+        "run_beta_self",
+        # a SECOND it takes, not minutes, and it holds the lock anyway because
+        # it writes a committed CSV and two writers of one file is the failure
+        # the lock is for. The set names producers that HOLD the lock, so it
+        # belongs here whatever its runtime (2026-09-15)
+        "run_beta_self_theory",
+        "run_campaign_twin_forecast",
         # found by the reverse check below on its first run: three
         # producers held the lock and were absent from this set, which
         # is the omission the docstring above says nothing detects

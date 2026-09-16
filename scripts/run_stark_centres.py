@@ -35,7 +35,7 @@ The result, and the shape of it is the argument:
 The sign FLIPS between linear and exponential, and the bound degrades
 monotonically as the drift model gains freedom. That is an unidentifiable
 parameter, not a marginally measured one. Against the width channel's
-S0(225 mW) < 0.633 MHz the best of these is 15x weaker.
+S0(225 mW) < 0.632 MHz the best of these is 15x weaker.
 
 Note the direction of the correction: handling the knob CORRECTLY makes the
 bound worse than the retracted 7.3 MHz, because the free epoch offsets remove

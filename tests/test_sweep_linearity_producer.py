@@ -18,7 +18,7 @@ from rb5s6s import stark
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = ROOT / "scripts" / "run_sweep_linearity.py"
-CASE_LITERAL = '("archive", 64e-6, 0.364, 6.0, True)'
+CASE_LITERAL = '("archive", 64e-6, 0.3599, 6.0, True)'
 
 
 def _exec(source: str) -> dict:

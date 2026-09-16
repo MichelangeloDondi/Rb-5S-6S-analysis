@@ -60,6 +60,74 @@ ROOT = Path(__file__).resolve().parents[1]
 #
 # checker path (relative to the repo root) -> why it is not wired
 NOT_WIRED = {
+    # ---- THE SESSION INSTRUMENTS, run by a prompt and not by a file on disk,
+    # ---- on the same footing as half_hour_alarm.py below (2026-09-15).
+    "private/checks/science_alarm.py":
+        "the twenty-minute alarm the owner scheduled in the session: it grades "
+        "serialising, propagation, the ladder, the gate policy and significance "
+        "and prints a verdict to act on. Wiring it into a gate would grade the "
+        "gate's own tree at the moment the gate least needs interrupting",
+    "private/checks/convergence_alarm.py":
+        "the same cadence, on the science rather than the process: it reads "
+        "whether the named channels have moved. Its channel list goes stale "
+        "with the science and nothing re-grades it, which is a defect of the "
+        "alarm and not a reason to run it from a gate",
+    "private/checks/idle_agenda.py":
+        "what to do while a long job runs, printed on request. It is advice, "
+        "not a refusal, and a gate that ran it would be grading a to-do list",
+    "private/checks/current_cache.py":
+        "a POINTER, read by other instruments to find where the session is "
+        "writing. analysis_guards.py exercises its self-test every floor, so it "
+        "is graded; it has no caller because it is a lookup and not a check",
+    "private/checks/driver.py":
+        "the unattended driver: it POPS the queue and runs the jobs, so it is "
+        "the thing that calls, not a thing to be called",
+    "private/checks/run_ledger.py":
+        "read by the driver before it spends cores on a computation already on "
+        "the ledger with its artefact on disk; its caller is therefore the "
+        "driver and not a gate",
+    "private/checks/focus_guard.py":
+        "one phase in flight, enforced when a phase OPENS. A gate does not open "
+        "a phase, so wiring it there would grade nothing",
+    "private/checks/precommit_dry.py":
+        "finds every commit-time refusal in ONE pass instead of one per "
+        "attempt, so it is run by a convener before committing and duplicates "
+        "the hooks it previews. Running it from the gate would run the hooks "
+        "twice and report their findings under the wrong name",
+    # ---- THE PHASE 0 GUARDS, built and not yet reachable, which is a DEBT and
+    # ---- is written as one rather than left to read as a decision.
+    "private/checks/gage.py":
+        "no harness runs on real or long synthetic data until it has recovered "
+        "a truth. The harnesses it guards are the plan's Phase A and B, which "
+        "have no committed caller yet, so wiring it now would guard nothing. "
+        "OWED: a committed caller, together with ladder_gate's",
+    "private/checks/noise_ladder_gate.py":
+        "nothing reaches the real traces except through ladder_gate, and "
+        "ladder_gate itself is imported by nothing: three rungs exist under "
+        "private/cache written by a harness that is not in the repository. "
+        "OWED: the committed caller, which is the plan's own step 5",
+    "private/checks/twin_licence.py":
+        "ten rules applied when a twin artefact is READ. Nothing in the tree "
+        "reads a twin artefact through it yet. OWED with the two above, and "
+        "they are one debt and not three",
+    "private/checks/write_claim.py":
+        "A HAND TOOL WITH TEETH, on the same footing as govedit.py below: it is "
+        "the only sanctioned way a finding reaches a claim surface, and its "
+        "caller is the convener writing that finding. It refuses a CLAIM "
+        "without four green ladder rungs and lets a RETRACTION through at once, "
+        "which is a refusal a gate cannot make on the convener's behalf because "
+        "the gate does not know what is being claimed",
+    "private/checks/twin_redteam.py":  # term-of-art: the module's own filename
+        "the twin's own battery, which is run against a twin sha and files its "
+        "verdict under that sha. Nothing in the tree generates a twin artefact "
+        "through a committed harness yet, so it has no caller for the same "
+        "reason gage.py and twin_licence.py have none. OWED with them, and it "
+        "is one debt",
+    "private/checks/price_first.py":
+        "a scan is refused until its worst cell has been timed. It guards the "
+        "act of launching a scan, which a convener does by hand; "
+        "run_ultra_joint.py --time-cells is the instance that satisfies it and "
+        "calls nothing. OWED: the launcher that consults it",
     "private/checks/govedit.py": (
         "a hand tool, not a guard: the line-bound replacement a convener runs on a "
         "governance file (A248, a DOTALL regex truncated the escape ledger); its "
@@ -180,7 +248,17 @@ NOT_WIRED = {
 # Places a checker may be called from. A checker named in any of these is
 # wired; run_all.sh counts because a producer that dies takes the pipeline
 # with it, which is exactly how the annotator's failure was found.
+# THE FLOOR IS TWO SCRIPTS AND THIS LISTED ONE OF THEM (2026-09-15). The
+# 40-second set was split out of the floor into `scripts/prefloor.sh` on
+# 2026-09-13 on the owner's instruction, and this tuple did not follow, so every
+# checker that moved with it -- `precheck.py`, `analysis_guards.py`,
+# `ssot_guard.py` among them -- read as "called by nothing" while being called
+# on every commit. A test that reports a wired guard as an orphan trains its
+# reader to skip the list, which is the failure mode this file exists to
+# prevent, applied to itself. The population is the SCRIPTS THAT RUN CHECKERS,
+# derived by name rather than enumerated one at a time.
 CALLER_GLOBS = ("scripts/ci_gate.sh", "scripts/run_all.sh",
+                "scripts/prefloor.sh", "scripts/targeted.sh",
                 "tests/*.py", ".github/workflows/*.yml",
                 ".github/workflows/*.yaml")
 

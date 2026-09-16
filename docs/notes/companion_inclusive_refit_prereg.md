@@ -54,7 +54,8 @@ centre.
 $\Gamma(\sqrt{1+s}-1)$ with $s=2\Omega^2/\Gamma^2$, exactly the function already
 committed as `saturation_increment_mhz` in `scripts/run_saturation_probe.py`.
 It carries the conversion from the shift to the Rabi frequency, which is the one
-number in the chain the record gives as a band (1.24 to 1.30) rather than a
+number in the chain the record gives as a band, 1.2446 to 1.2577
+(earlier 1.24 to 1.30) rather than a
 value, so **every prediction below is stated at both ends of that band.**
 
 **Hyperfine pumping.** An atom that decays mid-transit cascades through 5P,

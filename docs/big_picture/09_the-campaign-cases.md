@@ -82,10 +82,10 @@ one, because power broadening is symmetric and does not move a centre.
 
 | waist | injected | the centre recovers |
 |---|---|---|
-| 64 microns | [1.618](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_64um::kappa_true") | [1.63](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_64um::kappa_pull") plus or minus [0.11](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_64um::sd_pull") |
-| 40 microns | [4.143](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_40um::kappa_true") | [4.15](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_40um::kappa_pull") plus or minus [0.12](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_40um::sd_pull") |
-| 24 microns | [11.507](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_24um::kappa_true") | [11.49](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_24um::kappa_pull") plus or minus [0.18](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_24um::sd_pull") |
-| 16 microns | [25.891](../../results/three_channel_forecast.csv "ref:three_channel_forecast:base::kappa_true") | [25.89](../../results/three_channel_forecast.csv "ref:three_channel_forecast:base::kappa_pull") plus or minus [0.34](../../results/three_channel_forecast.csv "ref:three_channel_forecast:base::sd_pull") |
+| 64 microns | [1.599](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_64um::kappa_true") | [1.61](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_64um::kappa_pull") plus or minus [0.11](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_64um::sd_pull") |
+| 40 microns | [4.095](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_40um::kappa_true") | [4.10](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_40um::kappa_pull") plus or minus [0.12](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_40um::sd_pull") |
+| 24 microns | [11.375](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_24um::kappa_true") | [11.35](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_24um::kappa_pull") plus or minus [0.18](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_24um::sd_pull") |
+| 16 microns | [25.593](../../results/three_channel_forecast.csv "ref:three_channel_forecast:base::kappa_true") | [25.59](../../results/three_channel_forecast.csv "ref:three_channel_forecast:base::kappa_pull") plus or minus [0.34](../../results/three_channel_forecast.csv "ref:three_channel_forecast:base::sd_pull") |
 
 **Every number in this section carries one model-form caveat, the centre
 numbers included, and at the tight waist it is the centre numbers that carry it
@@ -143,13 +143,13 @@ reverses the third cumulant's sign against the pure ramp and the fringes
 suppress it further, and each admitted rung is inverted through the quiet
 curve's own local law with the sign read from that curve, so the comb cells
 are quoted against the bench's geometry. On the 40 MHz comb the moments recover
-[25.8](../../results/three_channel_forecast.csv "ref:three_channel_forecast:eom_comb_40MHz::kappa_skew") plus or
+[25.5](../../results/three_channel_forecast.csv "ref:three_channel_forecast:eom_comb_40MHz::kappa_skew") plus or
 minus [2.1](../../results/three_channel_forecast.csv "ref:three_channel_forecast:eom_comb_40MHz::sd_skew"), on
-the 25 MHz comb [25.6](../../results/three_channel_forecast.csv "ref:three_channel_forecast:eom_comb_25MHz::kappa_skew")
+the 25 MHz comb [25.4](../../results/three_channel_forecast.csv "ref:three_channel_forecast:eom_comb_25MHz::kappa_skew")
 plus or minus [2.4](../../results/three_channel_forecast.csv "ref:three_channel_forecast:eom_comb_25MHz::sd_skew"),
 and on the 2025 spacing of 12.5 MHz, which the world without those terms
-refused, [26.3](../../results/three_channel_forecast.csv "ref:three_channel_forecast:eom_comb_12.5MHz::kappa_skew") plus or minus
-[4.4](../../results/three_channel_forecast.csv "ref:three_channel_forecast:eom_comb_12.5MHz::sd_skew"), twice the wide combs' scatter,
+refused, [26.0](../../results/three_channel_forecast.csv "ref:three_channel_forecast:eom_comb_12.5MHz::kappa_skew") plus or minus
+[4.7](../../results/three_channel_forecast.csv "ref:three_channel_forecast:eom_comb_12.5MHz::sd_skew"), twice the wide combs' scatter,
 against the same injected coefficient the centre reads. **Without a comb the
 channel is not refused, it is unreliable**: 13 comb-free cells recover a
 coefficient and they span -0.6 to 37 per cent of the injected value, all but one of

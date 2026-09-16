@@ -36,17 +36,22 @@ def test_qc_reason_column_complete_and_consistent():
 
 def test_discard_reasons_match_curation_audit():
     rows = {r["file"].split("/")[-1]: r for r in _rows() if r["flag"] == "discarded"}
-    assert rows["4154nm_070c4.csv"]["qc_reason"].startswith("curation discard: ~27% dimmer")
-    assert "supernumerary" in rows["4192nm_090c3.csv"]["qc_reason"]
-    assert "replaced by canonical" in rows["4207nm_025mw2.csv"]["qc_reason"]
-    assert "block-wide" in rows["4207nm_070c2.csv"]["qc_reason"]
+    assert rows["4154nm_T70C_P225mWi_RFoff_r4.csv"]["qc_reason"].startswith("curation discard: ~27% dimmer")
+    assert "supernumerary" in rows["4192nm_T90C_P225mWi_RFoff_r3.csv"]["qc_reason"]
+    assert "replaced by canonical" in rows["4207nm_T130C_P25mW_RFoff_r2.csv"]["qc_reason"]
+    assert "block-wide" in rows["4207nm_T70C_P225mWi_RFoff_r2.csv"]["qc_reason"]
 
 
 def test_exclusion_reasons_are_session_grain():
+    # THE MARKER IS `RFon`, NOT `eom`, SINCE THE 2026-09-16 RENAME. Every trace
+    # now names its own drive state, so the ruler/power split is read off the
+    # filename's explicit field instead of an accident of the old naming. The
+    # old form silently returned zero rulers and 29 powers rather than failing
+    # on the split, which is why this test, and not the rename, found it.
     q = [r for r in _rows() if r["flag"] == "excluded"]
     assert len(q) == 29
-    rulers = [r for r in q if "eom" in r["file"]]
-    powers = [r for r in q if "eom" not in r["file"]]
+    rulers = [r for r in q if "RFon" in r["file"]]
+    powers = [r for r in q if "RFon" not in r["file"]]
     assert len(rulers) == 10 and len(powers) == 19
     assert all(r["qc_reason"].startswith("session excluded: EOM ruler") for r in rulers)
     assert all(r["qc_reason"].startswith("session excluded: aborted") for r in powers)
@@ -59,8 +64,8 @@ def test_excluded_traces_really_are_individually_clean():
     # never silently claim a cleanliness the QC would contradict.
     rows = load_manifest()
     q = [r for r in rows if r["flag"] == "excluded"]
-    sample = ([r for r in q if "eom" in r["file"]][:2]
-              + [r for r in q if "eom" not in r["file"]][:3])
+    sample = ([r for r in q if "RFon" in r["file"]][:2]
+              + [r for r in q if "RFon" not in r["file"]][:3])
     for r in sample:
         t, v, info = load_trace(trace_path(r), with_info=True)
         m = trace_metrics(t, v)

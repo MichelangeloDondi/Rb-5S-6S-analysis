@@ -421,14 +421,26 @@ def test_the_widened_orders_reproduce_the_retired_tuple_exactly():
     assert len(wide) == 42 and len(old) == 18
 
 
-def test_the_covariance_refuses_the_odd_ladder_on_its_measured_snr():
-    """The parity split is a MEASUREMENT and this is where it is asserted.
+def test_the_likelihood_carries_the_odd_ladder_and_refuses_only_what_has_no_moment():
+    """ADMISSION IS BY THE REPLICA DISTRIBUTION, NOT BY SIGNAL-TO-NOISE (O17).
 
-    At the archive's parameters the even statistics carry a per-trace SNR in
-    the hundreds and the odd ones about a hundredth, so an SNR floor of 3
-    admits exactly the even ladder. If this ever fails in the other direction
-    -- odd statistics admitted -- the world being generated is not this
-    archive's and every interval taken from the ladder needs re-reading.
+    This test replaces `test_the_covariance_refuses_the_odd_ladder_on_its_measured_snr`,
+    which asserted the retired rule: it pinned `admitted_orders == {2, 4, 6, 8}`
+    and `refused_orders == {3, 5, 7, 9}` and would have gone RED on the correct
+    behaviour. The parity split it measured is real and is still asserted below
+    -- on `snr_admitted`, where it is a diagnostic -- but it no longer gates.
+
+    FAILURE MODES THIS CATCHES, and there are three. An SNR floor creeping back
+    into the gate drops the odd ladder, which is the shift channel and half the
+    owner's specification, so the set of orders in the likelihood is asserted to
+    be both parities. A ratio whose denominator changes sign across replicas
+    slipping INTO the likelihood gives the fit a statistic with no population
+    mean or variance, whose replica covariance returns a finite number that
+    keeps moving with the replica count -- the failure that does not announce
+    itself -- so every refusal is asserted to name a sign flip. And the
+    effective rank is pinned ABOVE the retired rule's three, because carrying
+    the odd cumulants is supposed to buy information and a change that does not
+    is not the change this test is for.
     """
     from rb5s6s.fullmodel import ultra_joint_covariance
     grid = np.linspace(-25.0, 25.0, 1501)
@@ -436,14 +448,25 @@ def test_the_covariance_refuses_the_odd_ladder_on_its_measured_snr():
              gamma_l=0.40, s0=0.364, peak="4192", T_C=110.0)
     r = ultra_joint_covariance(grid, n_real=120, tau_int=2.515, **B)
     order_of = lambda k: int(k[1:k.index("@")])            # noqa: E731
-    admitted_orders = {order_of(k) for k in r["admitted"] if "/" not in k}
-    refused_orders = {order_of(k) for k in r["refused"] if "/" not in k}
-    assert admitted_orders == {2, 4, 6, 8}, admitted_orders
-    assert refused_orders == {3, 5, 7, 9}, refused_orders
-    # the admitted set is a few numbers, not twenty-one
-    assert 2.0 < r["effective_rank"] < 4.5, r["effective_rank"]
-    # and the full set's rank is HIGHER, because noise is nearly full rank:
-    # reporting that one as the information content is the trap
+
+    # EVERY cumulant is in the likelihood, both parities
+    in_like = {order_of(k) for k in r["admitted"] if "/" not in k}
+    assert in_like == {2, 3, 4, 5, 6, 7, 8, 9}, in_like
+    # and nothing that is refused is a bare cumulant: only ratios can be
+    assert all("/" in k for k in r["refused"]), r["refused"]
+    # what IS refused is refused for a stated distributional reason
+    for k in r["refused"]:
+        assert r["denominator_sign_flips"].get(k, 0) > 0, (k, r["refused_why"][k])
+        assert "no population moment" in r["refused_why"][k]
+    # the parity split survives as the DIAGNOSTIC it always was
+    snr_hi = {order_of(k) for k in r["snr_admitted"] if "/" not in k}
+    snr_lo = {order_of(k) for k in r["keys"]
+              if "/" not in k and k not in set(r["snr_admitted"])}
+    assert snr_hi == {2, 4, 6, 8}, snr_hi
+    assert snr_lo == {3, 5, 7, 9}, snr_lo
+    # carrying the odd ladder buys information: the retired rule's admitted set
+    # sat between 2 and 4.5, and this one must sit above it
+    assert r["effective_rank"] > 4.5, r["effective_rank"]
     assert r["effective_rank_all"] > r["effective_rank"]
 
 

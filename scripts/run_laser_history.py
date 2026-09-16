@@ -178,14 +178,27 @@ from rb5s6s import config as C  # noqa: E402
 CLOCK = C.REPO_ROOT / "data_recovered" / "CLOCK.csv"
 
 
+
+#: WHERE THIS PRODUCER READS ITS INPUTS, which is NOT where it writes.
+#: `C.RESULTS_DIR` follows RB5S6S_RESULTS_DIR so an isolated freshness run writes
+#: into a private directory. This file also READS two committed CSVs, and pointing
+#: those at the same redirect made it read an EMPTY directory under isolation,
+#: print "qc_metrics.csv absent -- nothing to do", exit 0 and write nothing. The
+#: verifier then reported that it "did not write into RB5S6S_RESULTS_DIR, so this
+#: check verified nothing". Two committed CSVs were graded by a check that
+#: could never have run. Inputs come from the canonical
+#: results directory; only the output follows the redirect.
+_IN = C.REPO_ROOT / "results"
+
+
 def _campaign_rate() -> tuple[float, float]:
-    with open(C.RESULTS_DIR / "ruler_campaign.csv") as f:
+    with open(_IN / "ruler_campaign.csv") as f:
         r = next(csv.DictReader(f))
     return float(r["rate_laser"]), float(r["rate_laser_err"])
 
 
 def build() -> list[dict]:
-    qc_path = C.RESULTS_DIR / "qc_metrics.csv"
+    qc_path = _IN / "qc_metrics.csv"
     if not qc_path.exists():
         print("  qc_metrics.csv absent (gitignored scratch dump) -- nothing to do")
         return []

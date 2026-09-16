@@ -29,6 +29,26 @@ ZERO IS THE PATH OF RECORD. The default is sequential, every committed
 CSV was produced that way unless its own docstring says otherwise, and
 a reader who sets nothing gets exactly the committed numbers.
 
+AND THE COLLAPSE TO ZERO NOW SPEAKS, because the silence was the whole
+defect. The clamp above prints when a caller asks for MORE than the
+machine has; the fall back to sequential printed nothing, so a producer
+launched by hand ran on one core of ten and looked exactly like a
+producer running correctly. Measured 2026-09-16: an ultra-joint
+regeneration launched with nothing set took 3m42s for two of
+seventy-eight cells before anyone noticed, against roughly five times
+that throughput once RB5S6S_WORKERS was set. That is the same shape as
+the gate splitter's silent collapse, which `gate_split` was taught to
+narrate for the same reason: the number is cheap and the silence is
+what costs. `RB5S6S_WORKERS_QUIET=1` silences it for a caller that
+means sequential, which `verify_results_fresh` does.
+
+THE TENSION THIS MAKES VISIBLE, rather than resolves. This module says
+zero is the path of record; the repository's working rules say ten
+workers unless a measured reason says fewer and the reason is printed.
+Both are right about what they guard -- byte-identity against idle
+cores -- and nothing reconciles them, so the announcement states the
+cost and leaves the choice with the caller.
+
 THE CEILING IS DELIBERATE. Unattended operation runs gates and
 sessions beside these jobs, so a request above `MAX_WORKERS` is
 clamped rather than honoured, and the clamp says so on stderr instead
@@ -51,6 +71,25 @@ ENV_VAR = "RB5S6S_WORKERS"
 MAX_WORKERS = max(1, os.cpu_count() or 10)  # every core; the old cores-minus-two was a cap no measurement set (2026-09-14)
 
 
+_announced = False
+
+
+def _announce_sequential(src, why: str) -> None:
+    """Say, ONCE per process, that this run will use one core of many.
+
+    Silent on a single-core machine, where there is nothing to report, and
+    under RB5S6S_WORKERS_QUIET for a caller that means sequential.
+    """
+    global _announced
+    if _announced or MAX_WORKERS <= 1 or src.get("RB5S6S_WORKERS_QUIET"):
+        return
+    _announced = True
+    print(f"workers: SEQUENTIAL ({why}); this run will use 1 core of "
+          f"{MAX_WORKERS}. Set {ENV_VAR}=<n> to pool it -- the contract above "
+          f"promises a byte-identical CSV at every worker count.",
+          file=sys.stderr)
+
+
 def n_workers(env: dict[str, str] | None = None) -> int:
     """The requested worker count, clamped, with 0 meaning sequential.
 
@@ -62,8 +101,11 @@ def n_workers(env: dict[str, str] | None = None) -> int:
     try:
         n = int(raw)
     except ValueError:
+        _announce_sequential(src, f"{ENV_VAR}={raw!r} is not an integer")
         return 0
     if n <= 0:
+        _announce_sequential(src, f"{ENV_VAR} unset" if ENV_VAR not in src
+                             else f"{ENV_VAR}={raw}")
         return 0
     if n > MAX_WORKERS:
         print(f"{ENV_VAR}={n} exceeds MAX_WORKERS={MAX_WORKERS}; "

@@ -77,7 +77,12 @@ def main() -> int:
         m["empty_interior"] = float(info["empty_interior"])
         m["axis_rebuilt"] = float(info["axis_rebuilt"])
         m["header_variant"] = info["header_variant"]
-        m["hard_flags"] = "; ".join(
+        # THE SEPARATOR IS A PIPE AND NOT A SEMICOLON: `precheck.py`'s csv-semicolon
+        # rule refuses a semicolon in a committed cell, and this join put one in every
+        # multi-flag row. It was invisible while the file was unstaged and refused the
+        # moment the rename staged it, which is the "a guard's population is defined by
+        # git" shape rather than a regression.
+        m["hard_flags"] = " | ".join(
             hard_flags(m, rf_on=(r["rf_on"] == "True")) + ingest_flags(info))
         metrics[r["file"]] = m
 

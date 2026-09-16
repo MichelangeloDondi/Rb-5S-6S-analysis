@@ -530,7 +530,7 @@ CANONICAL = [
     dict(
         name="vdW anchor: the predicted 7S rate",
         value=lambda: f"{_vdw_beta7():.2f}",
-        find=re.compile(r"\b([0-9]\.[0-9]{2})\s+kHz\s+per\s+10"),   # any d.dd, not the 4.xx the guard was written around (it could not see the corrected 5.61, 2026-09-14)
+        find=re.compile(r"\b([0-9]\.[0-9]{2})\s+kHz\s+per\s+10¹²\s+cm⁻³\s+against"),   # the 7S sentence ("... against Zameroski"), not the 6S headline beside it; any d.dd, not the 4.xx the guard was first written around (2026-09-14)
         mode="all",
         # The note is absent here too: it carries the number only in
         # its before/after table, next to the retired 4.50.
@@ -635,7 +635,7 @@ def test_canonical_registry_entries_are_well_formed(entry):
 
     The real protection is the next test: corrupting
     results/stark_sweep.csv fails test_docs_cite_canonical_value, verified by
-    planting 0.633 -> 999.999. Keep both -- this one catches a producer that
+    planting 0.632 -> 999.999. Keep both -- this one catches a producer that
     silently emits NaN, which the citation check would then happily match
     against equally-NaN prose."""
     toks = _tokens(entry)

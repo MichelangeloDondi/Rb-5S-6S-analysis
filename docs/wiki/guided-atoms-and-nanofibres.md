@@ -123,7 +123,7 @@ sixteen seconds at the row's own assumed number.
 **And the nanofibre runs out of power headroom before it runs out of
 atoms.** The evanescent mode is tight enough that one milliwatt through a
 400 nm fibre reaches a peak light shift of
-[41.426](../../results/platform_twins.csv "ref:platform_twins:onf:onf:s0_mhz") MHz
+[40.948](../../results/platform_twins.csv "ref:platform_twins:onf:onf:s0_mhz") MHz
 and a saturation parameter of
 [429.623](../../results/platform_twins.csv "ref:platform_twins:onf:onf:saturation_s"),
 with only

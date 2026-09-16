@@ -60,7 +60,7 @@ def _rows():
         return [r for r in csv.DictReader(fh)]
 
 
-OMEGA_OVER_S0 = 1.2367     # the two-photon Rabi frequency over the light shift at this package's polarizability (fullmodel.py, hyperpolarizability.py)
+OMEGA_OVER_S0 = 1.2511     # the two-photon Rabi frequency over the light shift at this package's polarizability (fullmodel.py, hyperpolarizability.py)
 
 
 def _transit_mhz(T_C: float) -> float:

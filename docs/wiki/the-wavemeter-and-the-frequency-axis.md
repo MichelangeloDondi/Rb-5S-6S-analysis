@@ -220,17 +220,17 @@ composed line the campaign forecasts:
 
 | configuration | window | the light shift's own third cumulant | rate variation that fakes it |
 |---|---|---|---|
-| 2025, 64 microns | 6 MHz | [0.00010822](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:k3_light_shift") MHz cubed | [0.00203](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:rate_variation_tolerance") per cent |
-| campaign, 40 microns, the tightest licensed | 6 MHz | [0.00071772](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:k3_light_shift") MHz cubed | [0.0136](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:rate_variation_tolerance") per cent |
-| campaign, 16 microns, outside the model's licence | 12 MHz | [-0.689176](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_16um:k3_light_shift") MHz cubed | [1.48](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_16um:rate_variation_tolerance") per cent |
+| 2025, 64 microns | 6 MHz | [0.00010447](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:k3_light_shift") MHz cubed | [0.00196](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:rate_variation_tolerance") per cent |
+| campaign, 40 microns, the tightest licensed | 6 MHz | [0.00069510](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:k3_light_shift") MHz cubed | [0.0131](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:rate_variation_tolerance") per cent |
+| campaign, 16 microns, outside the model's licence | 12 MHz | [-0.666476](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_16um:k3_light_shift") MHz cubed | [1.44](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_16um:rate_variation_tolerance") per cent |
 
 Each tolerance carries a band: the producer scans the collisional and laser
 width bands, the waist band paired with the retro-ratio error, and the two
 ends of the coherence window the fringe density leaves open, and reports the
 largest excursion from the tolerance. That is
-[0.00064](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:rate_variation_tolerance_err"),
+[0.00061](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:rate_variation_tolerance_err"),
 [0.0022](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:rate_variation_tolerance_err")
-and [0.50](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_16um:rate_variation_tolerance_err")
+and [0.48](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_16um:rate_variation_tolerance_err")
 per cent for the three rows above.
 
 **A bow of two parts in a thousand of the actuator's travel already reaches

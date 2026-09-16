@@ -115,7 +115,7 @@ def companion_gamma_mhz(s0: float, peak: str) -> float:
     """
     if COMPANIONS is None:
         return 0.0
-    om = COMPANIONS.get("ratio", 1.2367) * max(s0, 0.0)
+    om = COMPANIONS.get("ratio", 1.2511) * max(s0, 0.0)
     sat = _GAMMA_MHZ * (math.sqrt(1.0 + 2.0 * (om / _GAMMA_MHZ) ** 2) - 1.0)
     return sat * (1.0 + COMPANIONS.get("scale", 1.0) * F_PER_LINE[peak])
 
@@ -130,7 +130,7 @@ def companion_transit_mhz(transit: float, s0: float, peak: str) -> float:
     """
     if COMPANIONS is None or not COMPANIONS.get("deplete"):
         return transit
-    om = COMPANIONS.get("ratio", 1.2367) * max(s0, 0.0)
+    om = COMPANIONS.get("ratio", 1.2511) * max(s0, 0.0)
     s = 2.0 * (om / _GAMMA_MHZ) ** 2
     lost = F_PER_LINE[peak] * (s / 2.0) / (1.0 + s) * COMPANIONS.get("cycles", 1.0)
     return transit / max(1.0 - lost, 0.05)

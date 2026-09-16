@@ -331,7 +331,7 @@ in the 130 °C anchor pulls the fitted slope down because `gamma_coll(T)`
 barely grows across the full lever, which is a residual floor rather than
 resolved collisions, and that is a cleaner demonstration with the full ×52.5 span
 than with the ×16.2 one. What does not change: the bound still sits an order
-of magnitude above the ~3.5 kHz expectation anchored on the measured 7S
+of magnitude above the [3.50](../results/beta_self_theory.csv "ref:beta_self_theory:beta_self_6s:anchored") kHz expectation anchored on the measured 7S
 self-broadening rate ([BIG_PICTURE.md](BIG_PICTURE.md) §1), so a same-session
 150 to 170 °C extension remains worth doing, not to combine extreme lever
 points at all (that objection is retired), but because a purpose-built

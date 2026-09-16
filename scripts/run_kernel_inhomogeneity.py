@@ -71,7 +71,7 @@ CASES = ((64e-6, 6.0), (40e-6, 6.0), (24e-6, 8.0), (16e-6, 12.0))
 # combined halving had hidden it. The axial axis carries essentially all of the
 # movement, so it is the one that is doubled.
 N_S, N_Z = 140, 72
-COMPANION_RATIO = 1.2367          # the record's own, stark.COMPANIONS["ratio"]
+COMPANION_RATIO = 1.2511          # the record's own, stark.COMPANIONS["ratio"]
 
 
 def _refuse_unless_isolated() -> None:

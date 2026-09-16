@@ -31,7 +31,8 @@ from rb5s6s import DELTA_ALPHA_AU, alpha_5s, alpha_6s, delta_alpha
 from rb5s6s.constants import DELTA_ALPHA_AU_ORSON2021
 
 LAM_NM = 993.4
-OURS = -1145.0
+OURS = -1131.8        # the ADOPTED value, the dynamic sum (2026-09-15)  # SSOT-HISTORY: this file pins the STATE and not the truth, so it carries the value literally or it cannot detect a change
+OURS_STATIC = -1144.6  # what the module's own line-list sum still computes
 CITED = 1093.0
 DISPUTE_HOME = "docs/THEORY_NOTE.md"
 
@@ -42,9 +43,31 @@ def test_the_package_defaults_to_this_records_value():
         f"2026-08-24 adjudication and the one results/polarizability.csv "
         f"carries. A change here is a change of physics policy and belongs "
         f"in {DISPUTE_HOME} section 5 first.")
-    assert math.isclose(DELTA_ALPHA_AU, delta_alpha(LAM_NM), rel_tol=2e-3), (
-        "the constant and the model that reproduces it have come apart, "
-        "which is the divergence this file was created to end")
+    # THE CONSTANT AND THE MODULE FUNCTION ARE NOW DIFFERENT CONSTRUCTIONS,
+    # and this assertion changed on 2026-09-15 to say so rather than to pass.
+    # Until then the constant WAS delta_alpha(993.4) to 2e-3, and this file was
+    # created to keep it so.  The adopted value is the DYNAMIC sum: the 6S-nP
+    # series carried explicitly to 12P at the drive, where the 9P-and-above
+    # group is enhanced three to seven times over the static size the module
+    # uses, plus the 6s continuum.  `delta_alpha` still computes the STATIC
+    # line-list sum and is not wrong; it is a different construction, and
+    # results/polarizability_deep.csv commits the gap as
+    # delta_alpha_shift_from_module = +12.8 a.u.
+    #
+    # So the divergence this file ends is between the constant and the CITED
+    # sign, which is unchanged.  The constant-versus-module gap is now a
+    # DECLARED difference of construction with a committed row, and the test
+    # pins its size so that a THIRD value cannot drift in unnoticed.
+    assert math.isclose(delta_alpha(LAM_NM), OURS_STATIC, rel_tol=2e-3), (
+        "the module's static sum moved; it is the reference the adopted "
+        "dynamic value is measured against")
+    gap = abs(DELTA_ALPHA_AU - delta_alpha(LAM_NM))
+    assert 11.0 < gap < 15.0, (
+        f"the constant sits {gap:.1f} a.u. from the module's static sum, "
+        f"outside the committed +12.8 of results/polarizability_deep.csv. "
+        f"Either the constant moved again or the line lists did, and which "
+        f"it is belongs in {DISPUTE_HOME} section 5 before this tolerance "
+        f"is touched")
 
 
 def test_the_cited_value_is_still_reachable_by_name():
@@ -83,4 +106,6 @@ def test_the_shift_depth_is_a_magnitude_whatever_the_sign():
         "assume S0 >= 0: the ramp runs on [-S0, 0] and every bound is "
         "one-sided positive. The shift's DIRECTION lives in the sign of "
         "Delta_alpha, not in this magnitude.")
-    assert math.isclose(ours / theirs, abs(OURS / CITED), rel_tol=1e-6)
+    assert math.isclose(ours / theirs, abs(OURS / CITED), rel_tol=1e-6), (
+        "the S0 ratio no longer tracks the two constants' magnitudes, so one "
+        "of them moved without the other. Both are policy, not measurement")

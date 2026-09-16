@@ -30,7 +30,7 @@ Academy measured the absolute frequencies and hyperfine constants ([Orson
 50 minutes). [Orson 2021](../lit/orson2021.md) also reports two null results at ~6 MHz resolution,
 no observable light shift and no density shift, and computes the
 differential polarizability Δα = 1093 a.u. An independent in-repo recompute
-(`rb5s6s/polarizability.py`) reproduces that magnitude to ~5% at −1145 a.u. with the 6S
+(`rb5s6s/polarizability.py`), whose earlier static-tail sum is kept beside the value of record, reproduces that magnitude to ~5% at −1145 a.u. with the 6S
 sum above 8P carried as a static tail, and within 4% at
 [-1131.8](../../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive") ± [5.9](../../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive:err") a.u.
 with that sum carried dynamically and the continuum computed from a model

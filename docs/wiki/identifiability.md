@@ -603,27 +603,43 @@ forty, so the pair discriminates an instrumental asymmetry from the ramp's.
 The earlier reading that no ratio among the odd orders can see a common
 asymmetry holds only for their magnitudes and not for their signs.
 
-### But on this archive's noise the odd ladder is not a channel at all
+### The odd ladder is weak on this archive's noise, and weak is not a reason to drop it
 
-Everything above is about the signal and is silent about the noise, and the
-noise settles it. Measured on the twin's world under the correlation time
-`results/noise_model.csv` reports, over the eight orders and three windows, the
-statistics split exactly by parity at a per-trace signal-to-noise of three:
-[21](../../results/moment_admission.csv "ref:moment_admission:n_admitted:") of
-42 are admitted and they are precisely the even orders and the even ratios. The
+Everything above is about the signal and is silent about the noise. Measured on
+the twin's world under the correlation time `results/noise_model.csv` reports,
+over the eight orders and three windows, the statistics split exactly by parity
+at a per-trace signal-to-noise of three: the even orders and the even ratios sit
+far above it and the odd ones far below. **That split is a diagnostic and it gates
+nothing** (owner order O17, 2026-09-15). It used to: an admission floor at three
+took 21 of the 42 and refused the whole odd ladder, which is the shift channel.
+Two things were wrong with that, and the second makes it a defect and not a
+conservative choice. A likelihood already down-weights a noisy statistic through
+its own entry in the inverse covariance, so carrying one costs nothing while
+dropping it is a decision that can bias. And a floor on the ratio of the mean to
+the spread is a floor on the mean that was realised, which is admission by the
+data. What is refused now is a statistic with no population moment, a statement
+about its distribution and not about its size, and on this archive that is
+exactly the odd ratios, whose denominators change sign from replica to replica:
+[33](../../results/moment_admission.csv "ref:moment_admission:n_admitted:") of 42 enter, with every cumulant
+`k2` through `k9` among them. The
 second cumulant at the six-megahertz window carries
 [1667](../../results/moment_admission.csv "ref:moment_admission:snr_k2:6") per
 trace. The third carries
 [0.00543](../../results/moment_admission.csv "ref:moment_admission:snr_k3:6"),
-and `k5/k3`, `k7/k5` and `k9/k7` are refused at every window. A windowed
-cumulant of pure noise is largest exactly where the signal is smallest, so a
-refused statistic averaged into a joint fit does not dilute the answer, it
-inverts it.
+and it is carried at that weight, not dropped. `k5/k3`, `k7/k5` and
+`k9/k7` are the ones genuinely refused, at every window, because a denominator
+that changes sign leaves the ratio with no mean to be weighted against. The old
+reasoning for refusing on size -- that a windowed cumulant of pure noise is
+largest exactly where the signal is smallest, so a weak statistic averaged into
+a joint fit inverts the answer -- is an argument about an average and not about a
+likelihood, which is where it was being applied.
 
 Two things follow that a rank count hides. The admitted set carries about
-[2.85](../../results/moment_admission.csv "ref:moment_admission:effective_rank_admitted:")
-independent numbers and not twenty-one, so "three equations or one equation
-three times" is answered, and the answer is nearer three. And the same measure
+[5.46](../../results/moment_admission.csv "ref:moment_admission:effective_rank_admitted:")
+independent numbers and not thirty-three, so "three equations or one equation
+three times" is answered, and the answer is nearer five. It was 2.85 while the
+floor refused the odd ladder, so carrying that ladder buys information and does
+not merely add columns, which is the test a change like this has to pass. And the same measure
 over every statistic including the refused ones reads
 [8.42](../../results/moment_admission.csv "ref:moment_admission:effective_rank_all:")
 which is higher, because pure noise is nearly full rank. Quoting that one as the
@@ -798,7 +814,7 @@ Expanding to second order, $P = P_0 - \tfrac{2S_0}{3}P_0' + \tfrac{S_0^2}{4}P_0'
 
 Two consequences follow without any fit. The residual is second order in $S_0$, so the derivative of the observable response vanishes at $S_0 = 0$: the Fisher information for the shift is zero at the boundary and the log-likelihood is quartic there. That is why the bound is one-sided and the profile is flat at the boundary. (A coefficient linear in the data is negative half the time under a null at the boundary, so a rail rate near one half is that argument's expectation there. The coverage study's zero-shift cell rails 6 per cent of the time in the nominal arm, the one the postscript finds the real data behave like, and 14 per cent in the over-dispersed arm. The postscript records the discrepancy with one half as open.) And the width channel is even in $S_0$, so it cannot see the sign of the shift at any precision.
 
-The size of what survives, computed by `scripts/run_identifiability.py` with `rb5s6s.lineshape.total_fwhm_mhz` at the archive's two fitted branches and never by prose arithmetic: at the predicted shift of [0.364](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred:shared") MHz (envelope [0.316](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred_lo:shared") to [0.396](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred_hi:shared")) the line broadens by [7.23](../../results/identifiability.csv "ref:identifiability:width_signature_broadening_khz:cusp_branch") kHz at the cusp branch and [6.48](../../results/identifiability.csv "ref:identifiability:width_signature_broadening_khz:gaussian_branch") kHz at the Gaussian branch, on lines of [5.3179](../../results/identifiability.csv "ref:identifiability:width_signature_fwhm_mhz:cusp_branch") and [5.4036](../../results/identifiability.csv "ref:identifiability:width_signature_fwhm_mhz:gaussian_branch") MHz, so the centre pull the free centre discards is [33.6](../../results/identifiability.csv "ref:identifiability:width_signature_centre_over_width:cusp_branch") to [37.4](../../results/identifiability.csv "ref:identifiability:width_signature_centre_over_width:gaussian_branch") times the width signal. The pure-Gaussian estimate a withdrawn draft carried was about half of this, because the real line is about two thirds Lorentzian, and the two-branch cells above are the record's own.
+The size of what survives, computed by `scripts/run_identifiability.py` with `rb5s6s.lineshape.total_fwhm_mhz` at the archive's two fitted branches and never by prose arithmetic: at the predicted shift of [0.360](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred:shared") MHz (envelope [0.312](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred_lo:shared") to [0.391](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred_hi:shared")) the line broadens by [7.23](../../results/identifiability.csv "ref:identifiability:width_signature_broadening_khz:cusp_branch") kHz at the cusp branch and [6.48](../../results/identifiability.csv "ref:identifiability:width_signature_broadening_khz:gaussian_branch") kHz at the Gaussian branch, on lines of [5.3179](../../results/identifiability.csv "ref:identifiability:width_signature_fwhm_mhz:cusp_branch") and [5.4036](../../results/identifiability.csv "ref:identifiability:width_signature_fwhm_mhz:gaussian_branch") MHz, so the centre pull the free centre discards is [33.6](../../results/identifiability.csv "ref:identifiability:width_signature_centre_over_width:cusp_branch") to [37.4](../../results/identifiability.csv "ref:identifiability:width_signature_centre_over_width:gaussian_branch") times the width signal. The pure-Gaussian estimate a withdrawn draft carried was about half of this, because the real line is about two thirds Lorentzian, and the two-branch cells above are the record's own.
 
 **Which side the centre sits on is now a fitted choice, shown and not only
 derived.** The expansion above is a statement about the forward
@@ -819,7 +835,7 @@ is biased:
 | 0.004, the archive's | 0.36558 | **0.28530** |
 | 0.020 | 0.36842 | **0.85509** |
 
-against an injected 0.364. At the level these traces carry, freeing the centre
+against an injected 0.360. At the level these traces carry, freeing the centre
 costs **twenty-two per cent, low**. At four times it the answer is wrong by
 more than a factor of two, while the pinned fit is still good to one per cent.
 
@@ -851,6 +867,54 @@ a loop run through one term list proves only that the optimiser can invert a
 function it was handed.
 
 A note on two numbers this page and its neighbours quote. The split-against-total anisotropy is [0.0032](../../results/identifiability.csv "ref:identifiability:best_constrained_sigma:total_width") MHz against [0.0588](../../results/identifiability.csv "ref:identifiability:worst_constrained_sigma:split") MHz, a factor of [18.6](../../results/identifiability.csv "ref:identifiability:anisotropy_ratio:split_over_total"). [The statistics chapter](../methods/06_the_statistics.md) calls the same pair twenty-fold worse. The producer divides the unrounded sigmas and writes [18.6](../../results/identifiability.csv "ref:identifiability:anisotropy_ratio:split_over_total"). The two committed digits give a ratio a fifth of a unit smaller, which is what the campaign-projection figure prints from the same cells, and the difference is rounding, not physics.
+
+## What the collisional coefficient absorbs, and how to tell
+
+The ultra-joint fit scans the waist and reports a collisional coefficient at
+each node. Across 40 to 90 µm that coefficient runs from zero to nearly five
+times its first-principles value while the reduced chi-squared barely moves,
+which reads like a missing term and is not one.
+
+**It is the Lorentzian sum of the section below, seen from one end.** The
+collisional width, the far-wing floor and the saturation broadening enter the
+homogeneous core as one measurable total, and the record's own per-condition
+fits correlate the collisional width with the laser width at $-0.90$. So
+whichever Lorentzian knob a given model form leaves free absorbs the constant
+excess. The three kernel arms show it directly: the two forms that pin the
+far-wing floor at zero drive the collisional coefficient up to fill the gap,
+and the one form that carries a floor lets the coefficient fall to zero and
+puts the same width there instead. Nothing about the collisions changed between
+those runs. **Which knob was free changed.**
+
+**The temperature ladder is what separates them, and it separates them from one
+end only.** The collisional width scales with density, which moves by a factor
+of fifty-two across 70 to 130 °C, while the laser width does not move at all.
+That is a real lever. But at 70 °C the collisional term is a fiftieth of its
+value at 130, so the cold end measures the T-independent widths and the hot end
+carries essentially all of the coefficient, where it is degenerate with
+everything else. A four-point ladder breaks the degeneracy in principle and
+puts almost all the weight on one point in practice.
+
+**Two things make the reading honest, and neither makes it tighter.** First, put the
+coefficient in under its own theory uncertainty instead of pinning it or
+leaving it free: pinning is infinitely stiff and makes the quantity do the
+model's work. Free is unpenalised and is what lets it run to five times
+theory. A prior at the budget's own width reports how far the data pull. The
+same holds for the polarizability, and both are priors in the fit since
+2026-09-16. Second, and this one is not a statistics question at all: check
+what population the fit is reading.
+
+**A population defect reads exactly like a missing term, and this record had
+one.** The power session's far-wing residual sat at 142 sigma, identical across
+all three kernel forms and unchanged whether the far-wing floor was pinned at
+zero or fitted to half a megahertz. That identity is the signature. A term the
+model lacks would respond to a knob that models it. A feature beyond the range
+where every form has already fallen to zero cannot. It was five traces. The
+triangular sweep's down-ramp re-crosses the line and leaves a mirror about
+40 MHz out, [DATA](../DATA.md) names the eight canonical traces that carry one,
+and `linefit.adaptive_halfwidth` exists to exclude it. The joint fit was not
+applying that window. **Before reading a fitted parameter as physics, ask which
+samples the likelihood saw.**
 
 ## The exact Lorentzian-sum degeneracy
 

@@ -93,13 +93,13 @@ def test_known_double_saves_pinned(rows):
                 return r["source_paths"]
         raise AssertionError(f"row not found: {file_end}")
 
-    s = sources_of("t_sweep/4154nm_070c1.csv")
+    s = sources_of("t_sweep/4154nm_T70C_P225mWi_RFoff_r1.csv")
     assert "temperature/4154nm_070c1.csv" in s and "temperature/4154nm_070c2.csv" in s
 
-    s = sources_of("rulers_t/4192nm_eom_090c3.csv")
+    s = sources_of("rulers_t/4192nm_T90C_P225mWi_RFon_r3.csv")
     assert "4192nm_eom_090c3.csv" in s and "4192nm_eom_090c4.csv" in s
 
-    s = sources_of("rulers_p/4192nm_eom_after3.csv")
+    s = sources_of("rulers_p/4192nm_T130C_Punknown_RFon_after_r3.csv")
     assert "4192nm_eom_after3.csv" in s and "4192nm_eom_after4.csv" in s
 
 

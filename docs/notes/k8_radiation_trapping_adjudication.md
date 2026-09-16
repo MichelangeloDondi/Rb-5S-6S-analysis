@@ -32,7 +32,7 @@ across 32 conditions
 | predictor | z | reading |
 |---|---|---|
 | the model's own profile height | 9.41 | the structure scales with signal amplitude |
-| log10 vapour number density | 1.30 | it does not scale with density |
+| log10 vapour number density | 1.30 | it does not scale with density <!-- other-quantity: a log10 vapour number density --> |
 
 The two predictors correlate at 0.488, below the threshold preregistered
 for separability, so the density null is a measurement rather than an
@@ -51,7 +51,7 @@ the four temperatures is 52.5-fold ([RESULTS.md](../RESULTS.md)), and the
 cell is optically thick on the D1 detection line over that span, with
 tau per centimetre running about 1 to 160 (RESULTS.md, radiation trapping).
 A mechanism whose strength tracks tau across a 160-fold range cannot
-produce a density coefficient of 1.30 sigma while producing a height
+produce a density coefficient of 1.30 sigma while producing a height  <!-- other-quantity: a significance in sigma -->
 coefficient of 9.41.
 
 ## What this does not settle

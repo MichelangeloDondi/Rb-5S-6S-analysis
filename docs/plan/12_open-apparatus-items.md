@@ -75,7 +75,7 @@ the tolerance of that profile, which is 8 to 16 per cent on the coefficient at
 taper, a Gaussian at half at the edge and a window half again as long gives
 0.585, 0.677, 0.615 and 0.555, against 0.818 to 0.942 at 40 microns. **And the
 realised factor is not that geometric ratio**: `pull_factor_quiet` at a fixed
-16 micron geometry reads [0.5752](../../results/three_channel_forecast.csv "ref:three_channel_forecast:base::pull_factor_quiet"), 0.5578, [0.4802](../../results/three_channel_forecast.csv "ref:three_channel_forecast:eom_comb_8MHz::pull_factor_quiet") and [0.5542](../../results/three_channel_forecast.csv "ref:three_channel_forecast:eom_comb_12.5MHz::pull_factor_quiet") across the base,
+16 micron geometry reads [0.5754](../../results/three_channel_forecast.csv "ref:three_channel_forecast:base::pull_factor_quiet"), 0.5578, [0.4825](../../results/three_channel_forecast.csv "ref:three_channel_forecast:eom_comb_8MHz::pull_factor_quiet") and [0.5523](../../results/three_channel_forecast.csv "ref:three_channel_forecast:eom_comb_12.5MHz::pull_factor_quiet") across the base,
 the 0.5 W ladder and two comb spacings, because the centre is fitted in a
 window that moves with the comb, so a campaign supplying the geometric number
 reads 1.7 to 18 per cent low. The two quantities are named apart: the

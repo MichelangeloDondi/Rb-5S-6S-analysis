@@ -73,7 +73,7 @@ All values from `rb5s6s.vanderwaals`, at 403.15 K and 10¹² cm⁻³.
 | scale factor, ratio to the power 2/5 | 0.6551 | 0.6282 |
 | β_self(6S) anchored on Zameroski | 3.53 ± 0.30 kHz | 3.38 ± 0.29 kHz (before the 2026-09-14 correction of section 7) |
 | β_self(7S) predicted absolutely | 4.50 kHz | 4.40 kHz (before the 2026-09-14 correction of section 7) |
-| that prediction against the measured 5.39 | 17 per cent low | 18 per cent low |
+| that prediction against the measured 5.29, both at 403.15 K | 17 per cent low | 18 per cent low |
 
 Inputs before the 2026-09-14 correction (section 7): C₆(5S+5S) = 4180, C₆(5S+6S) = 28908, C₆(5S+7S) = 83228 a.u., so
 ΔC₆(6S) = 24728 and ΔC₆(7S) = 79048 a.u., both before that correction.
@@ -174,7 +174,8 @@ already reachable with instruments this programme has or plans.
    in the per-isotope consistency check.
 3. *It sits above the elastic anchor, never below.* Any inelastic rate adds to
    the elastic van der Waals rate. So if a measured β_self(6S) came in above the
-   3.33 kHz per 10¹² cm⁻³ elastic anchor by more than the anchor's own envelope,
+   [3.50](../../results/beta_self_theory.csv "ref:beta_self_theory:beta_self_6s:anchored") kHz per 10¹² cm⁻³ elastic anchor by more than the anchor's own
+   envelope,
    this channel would be the first candidate to examine, and the width-to-shift
    ratio of item 1 would be the way to examine it. A measurement at or below the
    anchor would say nothing about it either way.
@@ -197,7 +198,7 @@ second-order sum with signed denominators (`c6_direct`) gives C₆(5S+6S) = 5398
 C₆(5S+7S) = 161474 a.u. against the retired 28908 and 83228 of section 3, factors 1.87 and 1.94, while
 the ground pair is unchanged at 4180 because every one of its lines is upward. The
 anchor ratio moved from the earlier 0.3128 to 0.3166 and β_self(6S) from 3.38 to 3.40 kHz per 10¹²
-cm⁻³ (3.33 once the exchange branches are carried, section 8), while the absolute recipe on 7S, which was 4.40 (18 per cent low), moved to 5.61 kHz
+cm⁻³ (3.35 once the exchange branches are carried, section 8), while the absolute recipe on 7S, which was 4.40 (18 per cent low), moved to 5.61 kHz
 (4 per cent high, inside Zameroski's bar), which retires the attribution in section 4
 of that gap to the dropped core and tail (A250, E78). The impact prefactor is derived in
 the same repair (8.083 against the quoted 8.16) and the Maxwell average of $v^{3/5}$
@@ -208,10 +209,21 @@ in `docs/wiki/self-broadening.md`. Section 6's inelastic channel stays open.
 
 The section 7 addendum sized the exchange term by hand at a quarter of ΔC₆. Computed from
 the same tables (`c6_exchange`, the second-order amplitude carrying the excitation from one
-atom to the other through $|nP, n'P\rangle$), it is 22467 a.u. with every product positive
-and 17510 with the 6P products flipped, 0.35 to 0.45 of ΔC₆(6S) because the 5P legs
-dominate, and under 5 per cent on the 7S rung, so it does not cancel in the anchor. The two
-branches $C_6(1 \pm f)$ sampled with equal weight give a width factor
-$((1+f)^{2/5} + (1-f)^{2/5})/2$, 0.974 to 0.985 for 6S and 1.000 for 7S, and the anchored
-value is 3.31 to 3.35 kHz per 10¹² cm⁻³, carried as 3.33 (A251, the first-principles value
-3.45 to 3.49). The eleven per cent envelope of section 7 stands.
+atom to the other through $|nP, n'P\rangle$), its signs follow from the off-diagonal
+sum rule (A253: 6P and 7P opposed to 5P, 8P parallel, `exchange_signs`), and with them it
+is 17.4 thousand a.u. to the three figures the sum rule licenses, 0.35 of ΔC₆ for 6S
+and 4.5 per cent on the 7S rung as one of two readings. The five-figure value this
+note carried earlier is withdrawn: the rule fixes the 6P sign and leaves 7P and 8P
+inside the truncation tail, so the coefficient spans about 17.4 to 17.5 thousand
+across the closing patterns and only its first three digits stand (the bracket 0.35 to
+0.45 this section carried earlier, and the 17510 typed beside it for a 6P-only flip the
+function never computed, are retired). It splits the potential into two branches
+C6(1 +- f) sampled with equal weight, and since the width goes as C6^(2/5) the width factor
+is ((1+f)^(2/5) + (1-f)^(2/5))/2, 0.985 for 6S and 1.000 for 7S, and the anchored value is
+[3.50](../../results/beta_self_theory.csv "ref:beta_self_theory:beta_self_6s:anchored") kHz per 10¹² cm⁻³ (A251, the first-principles value 3.49). Section 7's
+envelope no longer stands at eleven per cent: it carried the cell temperature as an OPEN
+5 per cent term that Zameroski's own paper puts inside his ±11, so the double count was
+removed on 2026-09-15 and the measured budget is 8.8 per cent, [0.37](../../results/beta_self_theory.csv "ref:beta_self_theory:beta_self_6s:anchored:err") kHz.
+The anchored centre also moved 1.8 per cent, from an earlier 3.35, because the 7S rate is now
+converted to a density at the 393 K it was measured at and carried to 403.15 K by the
+$T^{0.3}$ of the speed average, which are two steps and were one wrong one.

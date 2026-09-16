@@ -82,6 +82,8 @@ committed table holds. The `M` codes below are the pipeline stage labels of
 | `run_ruler.py` (M2) | the frequency axis from the EOM ruler blocks into `ruler_blocks.csv`, `ruler_traces.csv`, `ruler_nlmap.csv`, `ruler_campaign.csv` and the time-resolved `ruler_rate_model.csv` |
 | `run_linefit.py` (M3) | the joint lineshape fit of every canonical radio-frequency-off condition into `linefit_conditions.csv` |
 | `run_trim_report.py` | every trim and every removal the earlier stages made, gathered from their own tables, into `trim_report.csv` |
+| `run_ultra_joint.py --moment-arm` | the moment arm into `ultra_joint_moments.csv`: orders 2 to 7 per condition against this fit's own prediction, with the baseline fitted, not read from wing strips, which on this sweep bias `k2` by 7.6 per cent and `k3` by 21 |
+| `run_beta_self_theory.py` | the theory self-broadening coefficient into `beta_self_theory.csv`: Zameroski's measured 7S rate converted at his own 393 K, carried to 403.15 K by the speed average's T^0.3 and scaled to 6S through the ratio of pair-coefficient differences, with the error budget measured term by term. About a second, reads no data |
 | `run_beta_self.py` (M4) | collisional self-broadening into `beta_self.csv`, the model-independent width-slope bound into `beta_self_probe.csv`, and the noise-law swap check into `noise_law_swap.csv` |
 | `run_global_fit.py` (M4b) | the hierarchical fit across peaks and temperatures, with the laser width shared, into `global_fit.csv` |
 | `run_lever_crosscheck.py` (M4d) | the lever-limited cross-check of the collisional coefficient, with its error budget, into `lever_crosscheck.csv` |

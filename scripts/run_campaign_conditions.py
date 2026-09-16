@@ -100,7 +100,7 @@ def lever_row(w0_um: float, p_mw: float) -> dict:
     tr = transit_fwhm_from_w0(w0, 403.15)
     base = stark._fwhm_of(0.0, SIGMA_LASER_MHZ, tr, 0.0, NU)
     ramp = stark._fwhm_of(0.0, SIGMA_LASER_MHZ, tr, m["s0"], NU) - base
-    sat = SP.saturation_increment_mhz(m["s0"], 1.2367)
+    sat = SP.saturation_increment_mhz(m["s0"], 1.2511)
     total = base + ramp + sat
     lever = sat * (max(F_PER_LINE) - min(F_PER_LINE))
     return {"s0": m["s0"], "sat_par": m["sat_w"], "transit": tr, "ramp": ramp,

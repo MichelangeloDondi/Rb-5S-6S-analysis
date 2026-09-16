@@ -121,7 +121,7 @@ unbiased moments) is committed: `tests/test_intrascan_drift.py`.
 **"A Δα bracket that wide discriminates nothing."** Partly answered by the
 joint three-session bound: S₀(225 mW) < 0.26 MHz sits below the predicted
 shift at the accepted geometry. Two files carry that prediction and they
-disagree: `results/stark_sweep.csv` has 0.364 at the polarizability this
+disagree: `results/stark_sweep.csv` has 0.360 at the polarizability this
 record now pins, while `results/stark_joint.csv` still has 0.348 from
 before that decision, because its five-hour producer has not re-run, so the record constrains the (Δα, intensity)
 pair. What it cannot do is split the pair: either the intensity or |Δα| sits

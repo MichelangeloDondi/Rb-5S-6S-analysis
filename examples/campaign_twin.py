@@ -230,7 +230,7 @@ def run_world(kappa: float, layers: dict, seed: int) -> dict:
 def main() -> int:
     layers = {"cascade": True, "saturation": True, "stark": True, "bbr": True,
               "drift": True, "quantise": True, "randomise": True}
-    stark.COMPANIONS = {"ratio": 1.2367, "scale": 1.0, "cycles": 1.0}
+    stark.COMPANIONS = {"ratio": 1.2511, "scale": 1.0, "cycles": 1.0}
 
     print(__doc__.splitlines()[0], "\n")
     # claim 5, checked before anything is generated

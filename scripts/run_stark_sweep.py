@@ -72,20 +72,20 @@ def main() -> int:
         w = csv.writer(f)
         w.writerow(["quantity", "key", "value", "err", "unit"])
         w.writerow(["kappa", "shared", f"{res['kappa']:.3f}", f"{res['kappa_err']:.3f}",
-                    "MHz per W (S0 = kappa*P, transition axis); err is chi2-INFLATED"])
+                    "MHz per W (S0 = kappa*P, transition axis). err is chi2-INFLATED"])
         w.writerow(["kappa_err_raw", "shared", f"{res['kappa_err_raw']:.3f}",
                     f"{res['chi2_inflation']:.2f}",
-                    "value=un-inflated kappa error; err=inflation factor sqrt(chi2_red) applied to get kappa_err"])
+                    "value=un-inflated kappa error. err=inflation factor sqrt(chi2_red) applied to get kappa_err"])
         w.writerow(["kappa_ub95_profile", "shared", f"{res['kappa_ub95_profile']:.3f}", "",
                     "one-sided 95% upper bound on kappa (MHz per W), profile likelihood: Dchi2 = 2.706 x max(chi2_red,1) with per-peak cores re-minimized at each kappa -- THE quoted construction (the fit rails at kappa=0 where the Wald error has no coverage)"])
         w.writerow(["S0_225mW_ub95_profile", "shared", f"{res['S0_225_ub95_profile']:.3f}", "",
                     "95% upper bound on S0 at 225 mW (MHz, transition), profile likelihood -- the archival BOUND"])
         w.writerow(["kappa_ub95", "shared", f"{res['kappa_ub95']:.3f}", "",
-                    "REPLACED diagnostic: linearized (Wald) bound from the chi2-inflated error; evaluated at the kappa=0 rail where the width handle's gradient vanishes, so its sigma is a finite-difference artifact without 95% coverage"])
+                    "REPLACED diagnostic: linearized (Wald) bound from the chi2-inflated error, evaluated at the kappa=0 rail where the width handle's gradient vanishes, so its sigma is a finite-difference artifact without 95% coverage"])
         w.writerow(["S0_225mW_fit", "shared", f"{res['S0_225_fit']:.3f}", "",
                     "fitted on-axis AC-Stark shift at 225 mW (MHz, transition)"])
         w.writerow(["S0_225mW_ub95", "shared", f"{res['S0_225_ub95']:.3f}", "",
-                    "REPLACED diagnostic: Wald chi2-inflated bound (MHz); kept for continuity with earlier ledgers -- quote the profile row instead"])
+                    "REPLACED diagnostic: Wald chi2-inflated bound (MHz), kept for continuity with earlier ledgers -- quote the profile row instead"])
         w.writerow(["S0_225mW_ub95_raw", "shared", f"{res['S0_225_ub95_raw']:.3f}", "",
                     "REPLACED diagnostic: un-inflated Wald bound (MHz)"])
         # ENVELOPE, not CALIB, and the retag is the record's own rule

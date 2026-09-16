@@ -147,12 +147,12 @@ Backup (quarantine copy): `~/Documents/RawDataBackUp_QUARANTINE_2026-07-23`  · 
 Backup files seen: 325 (325 distinct basenames)
 
 Manifest rows matched to backup: 282; missing: 15
-  missing (first 10): rulers_t/4154nm_eom_070c1.csv, rulers_t/4154nm_eom_070c2.csv, rulers_t/4154nm_eom_070c3.csv, rulers_t/4154nm_eom_070c4.csv, rulers_t/4154nm_eom_070c5.csv, rulers_t/4192nm_eom_070c1.csv, rulers_t/4192nm_eom_070c2.csv, rulers_t/4192nm_eom_070c3.csv, rulers_t/4192nm_eom_070c4.csv, rulers_t/4192nm_eom_070c5.csv
+  missing (first 10): rulers_t/4154nm_T70C_P225mWi_RFon_r1.csv, rulers_t/4154nm_T70C_P225mWi_RFon_r2.csv, rulers_t/4154nm_T70C_P225mWi_RFon_r3.csv, rulers_t/4154nm_T70C_P225mWi_RFon_r4.csv, rulers_t/4154nm_T70C_P225mWi_RFon_r5.csv, rulers_t/4192nm_T70C_P225mWi_RFon_r1.csv, rulers_t/4192nm_T70C_P225mWi_RFon_r2.csv, rulers_t/4192nm_T70C_P225mWi_RFon_r3.csv, rulers_t/4192nm_T70C_P225mWi_RFon_r4.csv, rulers_t/4192nm_T70C_P225mWi_RFon_r5.csv
 
 ## Integrity gates
 
 * **T1 content identity: FAIL** — 273/297 rows byte-identical (MD5); 9 mismatched, 15 absent.
-  mismatched (first 10): p_sweep/4121nm_125mw5.csv, p_sweep/4121nm_175mw3.csv, p_sweep/4121nm_075mw1.csv, p_sweep/4121nm_075mw2.csv, p_sweep/4121nm_075mw3.csv, p_sweep/4121nm_075mw4.csv, p_sweep/4121nm_075mw5.csv, p_sweep/4192nm_225mw1.csv, p_sweep/4192nm_075mw5.csv
+  mismatched (first 10): p_sweep/4121nm_T130C_P125mW_RFoff_r5.csv, p_sweep/4121nm_T130C_P175mW_RFoff_r3.csv, p_sweep/4121nm_T130C_P75mW_RFoff_r1.csv, p_sweep/4121nm_T130C_P75mW_RFoff_r2.csv, p_sweep/4121nm_T130C_P75mW_RFoff_r3.csv, p_sweep/4121nm_T130C_P75mW_RFoff_r4.csv, p_sweep/4121nm_T130C_P75mW_RFoff_r5.csv, p_sweep/4192nm_T130C_P225mW_RFoff_r1.csv, p_sweep/4192nm_T130C_P75mW_RFoff_r5.csv
 * **T2 clock plausibility: PASS** — 282/282 mtimes inside 17–18 July 2025 (JST). Range seen: 2025-07-17 22:48:12 JST → 2025-07-18 20:26:34 JST.
 * **T3 mass-copy signature: PASS** — largest shared-mtime fraction 0.4% (threshold 20%).
 * **T4 granularity (recorded)** — 0/282 carry sub-second parts; 0 odd integer seconds (0 would suggest fat 2 s).
@@ -169,7 +169,7 @@ Backup (quarantine copy): `~/Documents/RawDataBackUp_QUARANTINE_2026-07-23`  · 
 Backup files seen: 325 (325 distinct basenames)
 
 Manifest rows matched to backup: 296; missing: 1
-  missing (first 10): p_sweep/4192nm_225mw1.csv
+  missing (first 10): p_sweep/4192nm_T130C_P225mW_RFoff_r1.csv
 
 ## Integrity gates
 
@@ -190,7 +190,7 @@ Manifest rows matched to backup: 296; missing: 1
 * **P4: PASS** — 0 temperature increases along the time-ordered block sequence
 * **P5: PASS** — median intra-block gap 8.0 s vs inter-block 383.0 s → ratio 47.9 (needs ≥10)
 * **P6: PASS** — all four peaks bracketed
-* **P7: Ambiguous** — 4154nm_070c1.csv|4154nm_070c2.csv absent from backup
+* **P7: Ambiguous** — 4154nm_T70C_P225mWi_RFoff_r1.csv|4154nm_070c2.csv absent from backup
 * **P8: FAIL** — 4/194 curated copies predate their raw/ source
 * **D5: PASS** — median 5-repeat block span 34.0 s (needs <70 s; range 20–148 s)
 
@@ -246,7 +246,7 @@ the backup. None of them was retired after seeing the timestamps.
   naming variants (`4154_eom_070c*` without "nm"), 8 re-takes renamed into
   canonical slots (`075mw_1→075mw1`, `125mw6→125mw5`, …) — the DATA.md §3.4
   renumbering, now directly visible — and **one genuine absence**:
-  `p_sweep/4192nm_225mw1.csv`'s analysed bytes are nowhere in this backup.
+  `p_sweep/4192nm_T130C_P225mW_RFoff_r1.csv`'s analysed bytes are nowhere in this backup.
 * P8's 4 flagged rows are a name-collision artifact of content-mode matching
   (a consistent-name recheck finds zero curated-before-raw violations);
   P7 is ambiguous because the pair names are naming-variant casualties.
@@ -325,7 +325,7 @@ the curation-time discards: the repo says they were dropped because they
 > test. The paragraph is left as written; the correction is below.
 
 **The one T1 absence is not a loss — it is the reverse.** Addendum 1 recorded
-that `p_sweep/4192nm_225mw1.csv`'s analysed bytes are absent from the backup,
+that `p_sweep/4192nm_T130C_P225mW_RFoff_r1.csv`'s analysed bytes are absent from the backup,
 and called it a genuine absence. That is true but misleading. The backup
 contains a file of that name, and it is the **pristine original**; the analysed
 copy is a degraded export of it:
@@ -378,8 +378,8 @@ closed with a number instead of an assumption, which is the difference between
 Addendum 2 said 10 backup files "carry content that exists nowhere in the
 analysed set". **That undercounts: the correct figure is 19.** The error was
 matching on filenames — an entire re-taken series hides behind names identical
-to analysed files. The backup's `4121nm_075mw1.csv` and the analysed
-`p_sweep/4121nm_075mw1.csv` share a name and differ in content: the analysed
+to analysed files. The backup's `4121nm_T130C_P75mW_RFoff_r1.csv` and the analysed
+`p_sweep/4121nm_T130C_P75mW_RFoff_r1.csv` share a name and differ in content: the analysed
 copy descends from `4121nm_075mw_1.csv`, the *underscore* re-take. Content
 hashing is the only correct test; 19 of 320 backup CSVs are unique.
 
@@ -414,7 +414,7 @@ nothing at all — the signature of truncation, not cherry-picking.
 
 **The other seven unique files, checked the same way.** Twelve of the 19 are
 the two takes above. Of the remaining seven, one is the pristine original of
-`4192nm_225mw1.csv` and two are its degraded unreadable copies (Addendum 2);
+`4192nm_T130C_P225mW_RFoff_r1.csv` and two are its degraded unreadable copies (Addendum 2);
 the last four are single surplus acquisitions, one per condition. Each is
 compared with the five kept repeats *at its own condition*, since width is
 power-broadened and pooling across conditions would be wrong.
@@ -687,7 +687,7 @@ declined is now made, in both directions:
 > not a 3σ detection. The paragraph stands as written; the audit is below.
 
 - **Drift: c = +0.74 [+0.54, +0.94] ms/min (68%, profile likelihood; 95%
-  [+0.24, +1.24]) = +0.032 [+0.023, +0.040] MHz/min laser axis** — one
+  [+0.24, +1.24]) = +0.032 [+0.023, +0.040] MHz/min laser axis** — one  <!-- other-quantity: a drift confidence interval in MHz per minute -->
   constant rate across the five-hour power session, the span the fit sees
   (the T-session probes are operator-contaminated and give only bounds,
   ≲0.2 MHz/min, which contain it). If it persisted, ~39 MHz laser across
@@ -943,10 +943,10 @@ since addendum 2 — and they close it.
 |---|---|---|
 | `4192nm_225mw2…5.csv` | 2025-07-17 23:47:42–23:48:02 JST | byte-identical to the repo's canonical block; acquisition mtimes match the audit exactly |
 | `4192nm_225mw1copy.csv` | 2025-08-16 18:51 cest | byte-identical to the main backup's degraded copy |
-| `4192nm_225mw1.csv` | 2025-08-16 22:15 cest | **a fourth variant, nowhere else — and the analysed repo copy is this file byte-for-byte after CRLF→lf** |
+| `4192nm_T130C_P225mW_RFoff_r1.csv` | 2025-08-16 22:15 cest | **a fourth variant, nowhere else — and the analysed repo copy is this file byte-for-byte after CRLF→lf** |
 
 **The T1 audit's one genuine absence is resolved.** The analysed
-`p_sweep/4192nm_225mw1.csv` — whose bytes the main backup never contained —
+`p_sweep/4192nm_T130C_P225mW_RFoff_r1.csv` — whose bytes the main backup never contained —
 now has a complete, dated lineage:
 
 1. **2025-07-17 23:47:38 JST** — pristine acquisition (53.8 kB, uniform time
@@ -1669,7 +1669,7 @@ four columns must then agree. They do not:
 |---|---|---|---|---|---|
 | 90 °C | 1.32 | 1.68 | 1.45 | 1.23 | ×1.37 |
 | 110 °C | 0.79 | 1.50 | 1.84 | 1.78 | ×2.35 |
-| 130 °C | 0.93 | 1.30 | 1.31 | 1.65 | ×1.78 |
+| 130 °C | 0.93 | 1.30 | 1.31 | 1.65 | ×1.78 <!-- other-quantity: a width in MHz in a per-temperature table --> |
 
 The scatter of ln(A/N) about each row's mean is **25%** — against the same
 ~2% quoted errors, and recovered with no model at all beyond "the density

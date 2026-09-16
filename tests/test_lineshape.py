@@ -238,7 +238,7 @@ def test_stark_S0_reproduces_orson2021():
     # into a 63 um waist radius, single beam (rho=0, their I = 2P/pi r^2).
     # Reproducing it locks the light-shift CONVENTION to a published external
     # number. Since 2026-08-24 this passes THEIR constant explicitly: the
-    # package default is now this record's own -1145 (this record's
+    # package default is now this record's own -1131.8, the dynamic sum (this record's
     # adjudication of the sign dispute), so reproducing Orson's arithmetic
     # needs Orson's input, and using the default here would silently test the
     # convention against a different number than the one it was pinned to.

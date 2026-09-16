@@ -389,8 +389,8 @@ this section, which has to be in place before any of them runs.
    fitted centre's response at
    [0.9775](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_64um::pull_factor_quiet"),
    [0.8913](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_40um::pull_factor_quiet"),
-   [0.6918](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_24um::pull_factor_quiet")
-   and [0.5752](../../results/three_channel_forecast.csv "ref:three_channel_forecast:base::pull_factor_quiet")
+   [0.6917](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_24um::pull_factor_quiet")
+   and [0.5754](../../results/three_channel_forecast.csv "ref:three_channel_forecast:base::pull_factor_quiet")
    of the pure ramp's mean pull at these four waists, with the scatter growing
    by the reciprocal.
    So the tight-waist rows are the optimistic ones and the ratios below are

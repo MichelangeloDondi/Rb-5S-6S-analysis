@@ -100,7 +100,7 @@ cooling-sweep $\beta$ with its stacked error bars and a leave-one-peak and
 leave-one-temperature scan, and adds the lever test: folding in the
 130 °C anchor ([§4.2](06_the_statistics.md)) pulls $\beta$ down
 to $0.020$, a shift of $-0.034$, because $\gamma_\text{coll}$
-rises only ${\sim}1.48\times$ across a ${\times}52.5$ density span. That is a
+rises only about [1.48](../../results/lever_crosscheck.csv "ref:lever_crosscheck:gamma_rise_factor:70to130")-fold across a ${\times}52.5$ density span. That is a
 residual floor rather than resolved collisions, so $\beta$ is a lever-dependent
 bound. The full audited
 budget is in the results ledger (`docs/RESULTS.md`).
@@ -216,7 +216,7 @@ the 4 July evening session and 26 from the campaign-morning session,
 sharpens the same channel to $S_0(225\ \text{mW})$ below 0.26 MHz,
 under the 0.35 MHz predicted at the measured waist, so the $\Delta\alpha$
 bracket sits under both values on the table (Orson's published 1093 and this
-work's recomputed 1145,
+work's recomputed 1131.8,
 [§2.6](03_the_ac_stark_ramp.md)). The constraint
 therefore lands on the (Δα, intensity) pair rather than adjudicating the
 theory, and since the measured waist is now itself the lineage measurement, the
@@ -354,7 +354,7 @@ seed, confirmed by three independent methods, sweep linear to better than 0.3% w
 block. The 20 blocks over-disperse ($\chi^2_\text{red}=8.1$), block-level
 ruler scatter (bracket-to-bracket drift, and the calibrated spacing rule removes
 three temperature-session combs while missing
-`rulers_p/4207nm_eom_before5.csv`, which the top-three amplitude test does
+`rulers_p/4207nm_T130C_P225mWi_RFon_before_r5.csv`, which the top-three amplitude test does
 flag, so the two instruments disagree about that one trace, see
 [`DATA.md`](../DATA.md) §5 and
 [the ruler specification](../notes/ruler_validity_and_trim_prereg.md)

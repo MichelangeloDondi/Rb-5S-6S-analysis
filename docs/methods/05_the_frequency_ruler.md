@@ -306,26 +306,26 @@ the window truncation has no closed form against this kernel.
 
 | configuration | window | the ramp's own windowed third cumulant | rate variation that fakes it |
 |---|---|---|---|
-| 2025, waist 64 microns | 6 MHz | [0.00010822](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:k3_light_shift") MHz cubed | [0.00203](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:rate_variation_tolerance") per cent |
-| campaign, waist 40 microns, the tightest licensed | 6 MHz | [0.00071772](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:k3_light_shift") MHz cubed | [0.0136](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:rate_variation_tolerance") per cent |
+| 2025, waist 64 microns | 6 MHz | [0.00010447](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:k3_light_shift") MHz cubed | [0.00196](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:rate_variation_tolerance") per cent |
+| campaign, waist 40 microns, the tightest licensed | 6 MHz | [0.00069510](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:k3_light_shift") MHz cubed | [0.0131](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:rate_variation_tolerance") per cent |
 
 **Uncertainty and its blind region.** The tolerance is a property of the
 composed line, so the line's own width uncertainty is its own: scanned over
 both extremes of the collisional and the laser width bands, the waist band
 paired with the retro-ratio error, which moves it most, and the two ends of the
 coherence window, which the fringe tail brackets and does not correct for, it is
-[0.00203](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:rate_variation_tolerance") plus or minus
-[0.00064](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:rate_variation_tolerance_err") per cent at the 2025
-configuration and [0.0136](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:rate_variation_tolerance") plus or minus
+[0.00196](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:rate_variation_tolerance") plus or minus
+[0.00061](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:rate_variation_tolerance_err") per cent at the 2025
+configuration and [0.0131](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:rate_variation_tolerance") plus or minus
 [0.0022](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:rate_variation_tolerance_err") at the campaign's tightest
 licensed waist of 40 microns. The tolerance falls as the line widens, because a
 wider line leaves less of its asymmetry inside a fixed window, which is the
 direction of that band. The coherence window is the one axis of the three set
 by a modelling choice and not by a measured band, and it moves the tolerance
 one way only: taking the 6S lifetime in place of the transit-limited cap moves it by
-[0.00019](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:rate_variation_tolerance_coherence_err")
+[0.00018](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:rate_variation_tolerance_coherence_err")
 per cent here and by
-[0.0021](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:rate_variation_tolerance_coherence_err")
+[0.0020](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:rate_variation_tolerance_coherence_err")
 at 40 microns, where that is nearly the whole band. The error is read as the
 largest excursion from the tolerance for that reason, since half a bracket
 covers a one-sided departure only to half its size. The result is first order in the curvature, confirmed
@@ -337,8 +337,8 @@ axial collection window and the standing wave's fringe tail since 2026-09-08,
 and at 16 microns those reverse the sign of the cumulant the tolerance is set
 against, but it still carries no saturation companion, which the record puts
 at the factor-of-three level on this cumulant there, so its
-[1.48](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_16um:rate_variation_tolerance") plus or minus
-[0.50](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_16um:rate_variation_tolerance_err") per cent carries that factor
+[1.44](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_16um:rate_variation_tolerance") plus or minus
+[0.48](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_16um:rate_variation_tolerance_err") per cent carries that factor
 and not only its width band.
 
 **The nonlinearity is the actuator's and not the scan's.** With the best-fit

@@ -217,7 +217,7 @@ def test_sign_is_anchored_to_measurements_not_to_a_convention():
     Orson's published alpha_56 = -1093 (verified verbatim from the typeset PDF
     2026-07-29, with his convention stated in words, the SI value also negative,
     and a worked -0.66 MHz red shift this repo reproduces at -0.653) has the
-    opposite sign to this work's +1145 in the same convention.
+    opposite sign to this work's +1131.8 in the same convention.
     """
     from rb5s6s.polarizability import alpha_5s, delta_alpha
     # far below every resonance the ground state is positively polarizable

@@ -361,7 +361,7 @@ reason.
    rate, which is the case it was written to catch.
 
 There is a second finding that bears on the ladder rather than the rule. On
-`rulers_p/4154nm_eom_before_1.csv` the correct relabelling was rejected by the
+`rulers_p/4154nm_T130C_P225mWi_RFon_before_r1.csv` the correct relabelling was rejected by the
 chi-squared condition of section 3, because on real data a relabelling is not
 as degenerate as it is on a synthetic. The excision step then ran and removed a
 real first-order tooth. That ordering is safe only while the phase-shift step
@@ -488,7 +488,7 @@ do.
 
 ## A4. The ladder fix
 
-Section 10 recorded that on `rulers_p/4154nm_eom_before_1.csv` the correct
+Section 10 recorded that on `rulers_p/4154nm_T130C_P225mWi_RFon_before_r1.csv` the correct
 relabelling was rejected by the chi-squared condition and the excision rung
 then removed a real tooth. Both halves are confirmed, and the diagnosis is
 below.
@@ -598,7 +598,7 @@ ones join it.
 A pure relabelling should not move the spacing at all. Across the 44 accepted
 relabellings the spacing moves by a median of 4.7e-4 and by 2.5e-3 at the 90th
 percentile, which is consistent with a refit of the same peaks. One trace,
-`rulers_p/4121nm_eom_after3.csv`, moves 1.49 per cent, lands with its tallest
+`rulers_p/4121nm_T130C_Punknown_RFon_after_r3.csv`, moves 1.49 per cent, lands with its tallest
 tooth in the outer slot at order three, and is accepted because its chi2_red
 improves. The amplitude rule reads only the two first-order slots, so it cannot
 see an implausible outer height, and the chi-squared ceiling only bounds
@@ -651,7 +651,7 @@ the rise is read here as the excisions and not as the labelling test.
 predicted the 4207 before-against-after separation would shrink, on the ground
 that the power-session brackets are where the retrace crossing was first seen.
 It grows from 3.7 to 5.6 standard deviations. The mechanism is visible in the
-blocks. Gating quarantines `rulers_p/4207nm_eom_before5.csv`, whose spacing of
+blocks. Gating quarantines `rulers_p/4207nm_T130C_P225mWi_RFon_before_r5.csv`, whose spacing of
 145.40 ms sits about 1% below its own block, so the before bracket moves from
 146.35 plus or minus 0.34 ms on five traces to 146.79 plus or minus 0.26 ms on
 four, and the separation widens because the mean rose and the error fell. That
@@ -891,7 +891,7 @@ floor of one part in a thousand sits just above that and can therefore never be
 reached by a real fit, while still leaving a one per cent disagreement visible
 at ten scale units.
 
-The expected catch is `rulers_p/4207nm_eom_before5.csv`, whose spacing sits
+The expected catch is `rulers_p/4207nm_T130C_P225mWi_RFon_before_r5.csv`, whose spacing sits
 about one per cent below its own block and which section A5 already identified
 as the trace that moves the 4207 bracket separation. Naming it in advance is
 what makes the run a test rather than a description.
@@ -966,8 +966,8 @@ the reading taken, and it lands on 8.
 | condition fit | 159 canonical lines | 0 | 1 | 158 |
 
 **The ruler stage moves two traces and nothing else.**
-`rulers_t/4207nm_eom_110c5.csv` gains 0.181 ms of spacing and
-`rulers_t/4207nm_eom_090c6.csv` gains 0.016 ms. Both move up, which is the
+`rulers_t/4207nm_T110C_P225mWi_RFon_r5.csv` gains 0.181 ms of spacing and
+`rulers_t/4207nm_T90C_P225mWi_RFon_r6.csv` gains 0.016 ms. Both move up, which is the
 direction removing contamination that contracted the grid predicts. Every other
 fitted ruler is byte-identical to the untrimmed fit. The refusals are the
 guarded-half rule working: a centred campaign comb spans 882 ms of a 999 ms
@@ -1069,18 +1069,18 @@ blocks, all of them temperature-session dwells.
 
 | trace | block | spacing, ms | deviation | threshold |
 |---|---|---|---|---|
-| `rulers_t/4207nm_eom_110c3.csv` | T 4207 110 C | 147.96 | 12.17 | 4.60 |
-| `rulers_t/4154nm_eom_090c2.csv` | T 4154 90 C | 144.30 | 9.23 | 4.60 |
-| `rulers_t/4121nm_eom_110c4.csv` | T 4121 110 C | 145.98 | 8.80 | 4.60 |
-| `rulers_t/4207nm_eom_070c4.csv` | T 4207 70 C | 147.40 | 5.91 | 4.60 |
-| `rulers_t/4121nm_eom_070c2.csv` | T 4121 70 C | 147.34 | 5.74 | 4.60 |
+| `rulers_t/4207nm_T110C_P225mWi_RFon_r3.csv` | T 4207 110 C | 147.96 | 12.17 | 4.60 |
+| `rulers_t/4154nm_T90C_P225mWi_RFon_r2.csv` | T 4154 90 C | 144.30 | 9.23 | 4.60 |
+| `rulers_t/4121nm_T110C_P225mWi_RFon_r4.csv` | T 4121 110 C | 145.98 | 8.80 | 4.60 |
+| `rulers_t/4207nm_T70C_P225mWi_RFon_r4.csv` | T 4207 70 C | 147.40 | 5.91 | 4.60 |
+| `rulers_t/4121nm_T70C_P225mWi_RFon_r2.csv` | T 4121 70 C | 147.34 | 5.74 | 4.60 |
 
 **Population B, the lines.** Three traces removed, from three condition groups:
-`p_sweep/4121nm_025mw5.csv` at 5.91 against 5.60, `t_sweep/4154nm_070c1.csv` at
-11.74 against 6.90, and `t_sweep/4207nm_090c5.csv` at 6.14 against 5.60.
+`p_sweep/4121nm_T130C_P25mW_RFoff_r5.csv` at 5.91 against 5.60, `t_sweep/4154nm_T70C_P225mWi_RFoff_r1.csv` at
+11.74 against 6.90, and `t_sweep/4207nm_T90C_P225mWi_RFoff_r5.csv` at 6.14 against 5.60.
 
 **The expected catch did not fire, and that is a failed prediction.** B4 named
-`rulers_p/4207nm_eom_before5.csv` in advance. Its spacing of 145.40 ms sits
+`rulers_p/4207nm_T130C_P225mWi_RFon_before_r5.csv` in advance. Its spacing of 145.40 ms sits
 0.95 per cent below its block median of 146.80 ms, but the other four members of
 that block spread over 146.49 to 147.08 ms, so the block's own scaled median
 absolute deviation is 0.414 ms and the trace is 3.37 deviations out against a
@@ -1332,12 +1332,12 @@ blocks, all temperature-session dwells, all at n of 5 against a threshold of
 
 | trace | block | spacing, ms | deviation |
 |---|---|---|---|
-| `rulers_t/4207nm_eom_110c3.csv` | T 4207 110 C | 147.96 | 12.17 |
-| `rulers_t/4154nm_eom_090c2.csv` | T 4154 90 C | 144.30 | 9.23 |
-| `rulers_t/4121nm_eom_110c4.csv` | T 4121 110 C | 145.98 | 8.80 |
+| `rulers_t/4207nm_T110C_P225mWi_RFon_r3.csv` | T 4207 110 C | 147.96 | 12.17 |
+| `rulers_t/4154nm_T90C_P225mWi_RFon_r2.csv` | T 4154 90 C | 144.30 | 9.23 |
+| `rulers_t/4121nm_T110C_P225mWi_RFon_r4.csv` | T 4121 110 C | 145.98 | 8.80 |
 
-Two of amendment 2's five now stand: `rulers_t/4207nm_eom_070c4.csv` at 5.91
-and `rulers_t/4121nm_eom_070c2.csv` at 5.74, both below 7.926 and both above the
+Two of amendment 2's five now stand: `rulers_t/4207nm_T70C_P225mWi_RFon_r4.csv` at 5.91
+and `rulers_t/4121nm_T70C_P225mWi_RFon_r2.csv` at 5.74, both below 7.926 and both above the
 retired 4.604.
 
 **This is the outcome B5.7 stated in advance.** It wrote that the correctly
@@ -1347,7 +1347,7 @@ the census keeps the top three and drops the other two. B5.7 named the answer
 before the calibration was run, which is what makes this a check rather than a
 description.
 
-The trace B4 named in advance, `rulers_p/4207nm_eom_before5.csv`, is still not
+The trace B4 named in advance, `rulers_p/4207nm_T130C_P225mWi_RFon_before_r5.csv`, is still not
 caught. It sits at 3.37 deviations against 7.926, further outside the rule than
 it was against 4.604. The failed prediction of B5.7 fails harder and is recorded
 again rather than reinterpreted. The top-three amplitude test still flags it,
@@ -1358,9 +1358,9 @@ table.
 
 | trace | group size | deviation | calibrated threshold |
 |---|---|---|---|
-| `t_sweep/4154nm_070c1.csv` | 4 | 11.74 | 122.507 |
-| `p_sweep/4121nm_025mw5.csv` | 5 | 5.91 | 19.884 |
-| `t_sweep/4207nm_090c5.csv` | 5 | 6.14 | 19.884 |
+| `t_sweep/4154nm_T70C_P225mWi_RFoff_r1.csv` | 4 | 11.74 | 122.507 |
+| `p_sweep/4121nm_T130C_P25mW_RFoff_r5.csv` | 5 | 5.91 | 19.884 |
+| `t_sweep/4207nm_T90C_P225mWi_RFoff_r5.csv` | 5 | 6.14 | 19.884 |
 
 All three stand. The first of them is the n=4 group of C5, where the rule is
 inert, and it would stand at 19.884 as well.
@@ -1450,7 +1450,7 @@ census by first failing clause: 54 fail the tooth-labelling test, 37 have a
 tooth below the fit residual, 13 have a slot railed on its zero bound. The
 height clause is not merely selective, it is unsatisfiable. The tallest
 weakest tooth in the whole population stands at 0.706 of its own fit residual
-(`rulers_p/4154nm_eom_before_1.csv`) against the 1.0 the clause requires. The
+(`rulers_p/4154nm_T130C_P225mWi_RFon_before_r1.csv`) against the 1.0 the clause requires. The
 standing-teeth census over all 104 combs: 21 traces stand on six teeth, 64 on
 five, 1 on four, 18 on three. No recorded ruler stands on seven.
 
@@ -1494,13 +1494,13 @@ measured on the displayed trace.
 ## D4. What the amended rule selects
 
 Seven traces are eligible under the amended clause. The winner is
-`rulers_p/4192nm_eom_after1.csv`, six teeth standing, weakest tooth at 0.63 of
+`rulers_p/4192nm_T130C_Punknown_RFon_after_r1.csv`, six teeth standing, weakest tooth at 0.63 of
 the fit residual, reduced chi-squared 1.01, clean labelling test, no ladder action,
 no railed slot, untrimmed. On this trace the standing k = +3 tooth sits in a
 window the scan end clips, and the fully covered k = -3 tooth is the one below
 the residual, so the two causes of section D2 are both visible on the panel
 itself. The trace with the tallest weakest tooth, 0.71 on
-`rulers_p/4154nm_eom_before_1.csv`, stands on six teeth and is still not the
+`rulers_p/4154nm_T130C_P225mWi_RFon_before_r1.csv`, stands on six teeth and is still not the
 winner, because it fails the tooth-labelling test and the ladder had to
 re-index it, the one-slot mislabelling signature of amendment A2. The clause
 the relaxation touched is not the clause holding that trace out. `tests/test_ruler.py` holds the amended clause the same way it
@@ -1591,7 +1591,7 @@ What a displaced grid shows is a SECOND-order tooth taller than a
 FIRST-order tooth, which the ordering above forbids. Applied to the
 persisted heights this identifies 54 combs of 104, not the 52 the labelling
 test marks. The two the test misses are recorded as marginal passes,
-`rulers_t/4121nm_eom_070c5.csv` and `rulers_t/4154nm_eom_070c5.csv`, and
+`rulers_t/4121nm_T70C_P225mWi_RFon_r5.csv` and `rulers_t/4154nm_T70C_P225mWi_RFon_r5.csv`, and
 both were inside the calibration with the wrong first-order pair drawn and
 no note. Both carry a clean one-slot signature, and shifting them by one
 slot returns a textbook pattern.
@@ -1711,7 +1711,7 @@ can produce, which is a second, independent signature of displacement.
 At 2 beta = 1.569 pure phase modulation predicts a carrier-to-first height
 ratio of 0.696. On the same 41 clean combs the measured ratio runs 0.360 to
 1.188, and on ten of them the carrier stands taller than the first-order
-mean. The fig8 winner, `rulers_p/4192nm_eom_after1.csv`, is one of the ten,
+mean. The fig8 winner, `rulers_p/4192nm_T130C_Punknown_RFon_after_r1.csv`, is one of the ten,
 carrier 0.704 V over first-order teeth of 0.677 and 0.691 V. The
 second-to-first ratio is tight while the carrier ratio is wide, which is the
 signature of residual amplitude modulation at the carrier, the imperfection
@@ -1737,7 +1737,7 @@ orders only.
 The population the gate acts on is stated here so that no count below floats
 free, and there are two populations, one inside the other. The counts in
 this note are over the 104 fitted combs persisted in the calibration table.
-The gallery draws 115 combs, the same 104 plus ten from the aborted first
+The gallery draws 115 combs, the same 104 plus ten from the aborted first  <!-- other-quantity: a count of combs in the gallery -->
 session and one whose export is too short for a table row, so its printed
 census reads 55 flagged where this note reads 54, and its recorded-offset
 count sits one higher for the same reason. Section E5's amplitude test

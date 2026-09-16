@@ -243,20 +243,24 @@ def test_two_photon_matrix_element_and_its_ratio_to_the_light_shift():
     as a correction of "two field conventions". That diagnosis was wrong: 1.294
     divides by the CITED 1093 a.u., which constants.DELTA_ALPHA_AU carried
     until the 2026-08-24 adjudication and which now lives in
-    DELTA_ALPHA_AU_ORSON2021, 1.237 divides by this record's own 1145 a.u., and
-    the 4.7 per cent between them is the documented Delta_alpha discrepancy. So
-    this test pins BOTH ends and the fact that they bracket the same physics.
+    DELTA_ALPHA_AU_ORSON2021. Since 2026-09-15 the package constant is the ADOPTED
+    dynamic sum, -1131.8 a.u., giving 1.2511, while the module's STATIC line-list
+    sum still gives -1144.6 and so 1.2367. Three ends, and this test pins each to
+    the construction that produces it: the module end, the constant end and the
+    cited end, which no longer coincide and must not be allowed to drift into
+    one another silently.
     """
     from rb5s6s.constants import DELTA_ALPHA_AU, DELTA_ALPHA_AU_ORSON2021
     from rb5s6s.polarizability import delta_alpha
     T = hp.two_photon_matrix_element(993.4192)
     assert abs(T - 707.75) < 0.5
+    # the MODULE end: the static line-list sum, unchanged by the adoption
     ratio = 2.0 * abs(T) / abs(delta_alpha(993.4192))
     assert abs(ratio - 1.2367) < 0.002
-    # Since the 2026-08-24 adjudication the package constant IS this
-    # record's value, so the constant end and the model end coincide, and
-    # the CITED end of the band lives under the Orson name.
-    assert abs(2.0 * abs(T) / abs(DELTA_ALPHA_AU) - 1.2367) < 0.002
+    # the CONSTANT end: the adopted dynamic sum since 2026-09-15. Until then
+    # this line read 1.2367 and the two ends coincided; they no longer do, and
+    # the gap is the 9P-and-above group read dynamically.
+    assert abs(2.0 * abs(T) / abs(DELTA_ALPHA_AU) - 1.2511) < 0.002
     ratio_cited = 2.0 * abs(T) / DELTA_ALPHA_AU_ORSON2021
     assert abs(ratio_cited - 1.2951) < 0.002
     # the band is the Delta_alpha gap and nothing else
@@ -301,13 +305,13 @@ def test_two_photon_rabi_uses_the_geometric_arm_combination():
 
     # and the ratio to the committed S0 is the band's matching end times the
     # contrast, which is the whole content of the correction. Since the
-    # 2026-08-24 adjudication S0 defaults to this record's Delta_alpha, so
-    # the matching end is 1.2367; the cited 1.2951 end is reproduced by
-    # passing the Orson constant explicitly.
+    # S0 defaults to the package constant, which since 2026-09-15 is the
+    # adopted dynamic sum, so the matching end is 1.2511; the cited 1.2951 end
+    # is reproduced by passing the Orson constant explicitly.
     from rb5s6s.constants import DELTA_ALPHA_AU_ORSON2021
     contrast = 2.0 * math.sqrt(0.94) / 1.94
     ratio = om / (stark_shift_S0_mhz(0.225, 64e-6, rho=0.94) * 1e6)
-    assert abs(ratio - 1.2367 * contrast) < 1e-3
+    assert abs(ratio - 1.2511 * contrast) < 1e-3
     ratio_cited = om / (stark_shift_S0_mhz(
         0.225, 64e-6, rho=0.94,
         delta_alpha_au=DELTA_ALPHA_AU_ORSON2021) * 1e6)

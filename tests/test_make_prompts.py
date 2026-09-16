@@ -109,7 +109,12 @@ def test_it_emits_the_model_first_and_files_the_prompt(tmp_path):
     repo = _repo(tmp_path)
     tree = _tree(repo)
     _marker(repo, tree, ["physics", "rules", "concision"], opus=["rules"])
-    for seat, model in (("physics", "fable"), ("rules", "opus"), ("concision", "sonnet")):
+    # EVERY SEAT IS OPUS AND THE PHYSICS CHAIR ALONE IS FABLE (owner, 2026-09-15:
+    # "the board has to be done with all agents on opus 5, apart physics which
+    # should have a main agent on fable 5.1"). The Sonnet branch of `seat_model`
+    # was DELETED rather than left unreachable, so a test still expecting it was
+    # asserting a model the code cannot return.
+    for seat, model in (("physics", "fable"), ("rules", "opus"), ("concision", "opus")):
         r = _run(repo, seat)
         assert r.returncode == 0, r.stderr
         assert r.stdout.splitlines()[0] == f"MODEL: {model}"

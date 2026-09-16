@@ -123,7 +123,13 @@ def main() -> int:
         out.append([f"support_{key}", "law", law, "", "", level, ""])
     rows = _t_sweep()
     if rows:
-        BETA_THEORY = 0.00333     # MHz per 1e12 cm^-3, vanderwaals.beta_self_anchored at 403 K (the record's anchor, 3.33 since A250 and A251; the 393 K correction is 2.6 per cent)
+        # DERIVED, NOT TYPED (2026-09-15). This was 0.00335 with a comment naming a
+        # temperature correction and not applying it, so the producer reproduced the
+        # retired anchor faithfully and the freshness check passed it -- the rule
+        # file's own "a physics literal inside a producer is invisible to the gate
+        # stack", live, and found by grepping the producers for a typed anchor.
+        from rb5s6s.vanderwaals import beta_self_anchored as _bsa
+        BETA_THEORY = float(_bsa()["beta6_khz"]) / 1e3   # MHz per 1e12 cm^-3
         for name, f in LAWS.items():
             # the trade-off, made explicit: beta at dT fixed at 0 and at 10 K, and dT with beta pinned at theory
             T = np.array([r[0] for r in rows]); g = np.array([r[1] for r in rows]); e = np.array([r[2] for r in rows])

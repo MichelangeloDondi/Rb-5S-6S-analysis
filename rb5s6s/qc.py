@@ -403,7 +403,7 @@ def hard_flags(m: Dict[str, float], rf_on: bool) -> List[str]:
         # firing on none of the 104.
 
         flags.append(
-            f"second structure in RF-off trace (n={int(m['n_major'])}; "
+            f"second structure in RF-off trace (n={int(m['n_major'])}, "
             "likely sweep-retrace crossing — mask at fit time)")
     if (not rf_on) and m["comb_score"] > C.QC_COMB_SCORE_RFOFF_MAX:
         flags.append(f"comb periodicity in RF-off trace (score {m['comb_score']:.2f})")

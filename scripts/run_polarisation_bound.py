@@ -82,7 +82,7 @@ def _s0_225():
     hours. That reason covers the bound, which the traces determine. It does
     not cover the prediction, which is computed from constants alone, and that
     row still stands at the polarizability this record retired on 2026-08-25:
-    0.348 MHz where the adopted value gives 0.364. Sizing a systematic against
+    0.348 MHz where the adopted value gives 0.360. Sizing a systematic against
     the smaller number understated it by 4.8 per cent, in the flattering
     direction. The prediction now comes from results/stark_sweep.csv, which IS
     in the checked set and carries the current value. The bound stays in the

@@ -155,6 +155,11 @@ rb5s6s/   api(the supported entry point: a trace in, a linewidth out)
           amplitudes(M10) model_ladder(M11) identifiability(M12) coverage(M13)
           sharing_bic(M14) fringe_tail(M15) polarizability(M16) resolving(M17)
           vanderwaals(M18) ramp_transit(M19) hyperpolarizability(M29)
+          ladder_gate(a refusal and not a pipeline stage, so it carries no module code. An
+                    analysis reaches the archive's real traces only after recovering an
+                    injected truth with no noise, then at 0.3 of the measured noise law,
+                    then at 1.0. Each rung's verdict is COMPUTED from the coverage and the
+                    chi-squared it is handed. The caller cannot declare it)
           model_potential(M42: Numerov bound and continuum radial functions in the
                     Marinescu-Sadeghpour-Dalgarno potential, the 6S continuum's share of the polarizability)
           coulomb_approx(M41: Bates-Damgaard radial functions for the 6s-nP elements
@@ -244,7 +249,7 @@ scripts/  import_data (+ annotate_manifest_qc: qc_reason provenance)
           run_geometry_design (the running-wave and waist designs, whose
           weak-field branch reproduces lineshape.stark_ramp_axial_moments)
 data_raw/ MANIFEST.csv, and the 297 traces where the copy carries them
-tests/    4876-test battery (4788 fast ~5 min + 88 `slow` high-statistics
+tests/    4800-test battery (4711 fast ~5 min + 89 `slow` high-statistics
           closure tests via --runslow, incl. the M4d synthetic-β and M4e
           synthetic-κ closures, the MANIFEST qc_reason guards, and the
           docs-consistency gates: canonical numbers, links+anchors, math
@@ -268,8 +273,8 @@ The first six scripts form the pipeline (each reads the previous ones'
 
 ```bash
 python3 -m venv .venv && source .venv/bin/activate
-pip install -e ".[dev]" && pytest -q          # 4788 fast tests (~5 min)
-pytest -q --runslow                           # full 4876 incl. slow closures (what CI runs)
+pip install -e ".[dev]" && pytest -q          # 4711 fast tests (~5 min)
+pytest -q --runslow                           # full 4800 incl. slow closures (what CI runs)
 # reproduce every committed CSV, figure, and docs/RESULTS.md from data_raw/
 # (already in git; import_data.py only re-imports from the original tree):
 bash scripts/run_all.sh

@@ -26,7 +26,7 @@ def test_a_test_may_switch_the_companion_on():
     assert stark.COMPANIONS is None, (
         "the companion was already on when this test started, so the fixture "
         "did not restore it after an earlier test")
-    stark.COMPANIONS = {"ratio": 1.2367, "scale": 1.0, "cycles": 1.0}
+    stark.COMPANIONS = {"ratio": 1.2511, "scale": 1.0, "cycles": 1.0}
     assert stark.companion_gamma_mhz(5.8, "4192") > 1.0, \
         "the layer should be live once the global is set"
 
@@ -160,7 +160,7 @@ def _run_two_modules(tmp_path, with_module_restore: bool):
 
         @pytest.fixture(scope="module")
         def loader():
-            stark.COMPANIONS = {"ratio": 1.2367, "scale": 1.0}
+            stark.COMPANIONS = {"ratio": 1.2511, "scale": 1.0}
             return True
 
         def test_uses_the_loader(loader):

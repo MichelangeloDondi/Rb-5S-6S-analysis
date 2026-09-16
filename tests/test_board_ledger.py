@@ -662,15 +662,26 @@ def test_sibling_refusals_outrank_the_no_board_one(bl, repo):
     strategy. No seat is automatic now, so `["rules"]` is a perfectly legal
     board and the no-board residual is the CORRECT answer for it. The
     conformance sibling that still has a trigger without an open board is the
-    seat-and-verdict count mismatch, so the ordering is asserted through that."""
+    seat-and-verdict count mismatch, so the ordering is asserted through that.
+
+    AND THE SIBLING MOVED AGAIN (2026-09-16), the same way and for the same
+    reason. `["rules"]` was a legal board while `REQUIRED_SEATS` was empty; the
+    owner made `advancement` required on 2026-09-15, so that list now trips the
+    MISSING-SEAT refusal before the count one and this test was asserting an
+    ordering between two refusals neither of which was firing. The fixture uses
+    a conformant list -- `MINIMAL_BOARD`, which is derived from the required set
+    -- so the count mismatch is once again the operative trigger. A fixture that
+    hard-codes a seat list goes stale every time the seat model moves; this one
+    now follows it."""
     _point_at(bl, repo)
     (repo / "f.txt").write_text("x")
     _run(repo, "add", "f.txt")
+    conformant = list(bl.MINIMAL_BOARD)
     with pytest.raises(SystemExit, match="counts differ"):
-        bl.record(["rules"], ["CONFIRM", "CONFIRM"])
+        bl.record(conformant, ["CONFIRM"] * (len(conformant) + 1))
     # and a conformant list with no begin gets the residual, as it should
     with pytest.raises(SystemExit, match="no open board"):
-        bl.record(["rules"], ["CONFIRM"])
+        bl.record(conformant, ["CONFIRM"] * len(conformant))
     # with a full, valid board and no begin, the residual fires
     with pytest.raises(SystemExit, match="no open board"):
         bl.record(FULL, CONFIRMS)

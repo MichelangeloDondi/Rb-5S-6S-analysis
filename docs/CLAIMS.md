@@ -210,8 +210,7 @@ systematic as fig1.*
 
 **Calculated** (anchored, not fitted to this data):
 
-- Differential polarizability Δα(993 nm) recomputed at −1145 a.u. with a
-  static tail above 8P, and at [-1131.8](../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive") ± [5.9](../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive:err") a.u. with that tail
+- Differential polarizability Δα(993 nm) recomputed at [-1131.8](../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive") ± [5.9](../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive:err") a.u. with that tail
   summed dynamically to 12P and beyond (`results/polarizability_deep.csv`).
   The twin's trust statistic, the moments' admission floor, the comb teeth's
   shares, the RF ladder and the fringe recovery are read in the wiki and the
@@ -447,7 +446,7 @@ would add:
   150-170 °C points interleaved against the block scatter that
   co-limits the dataset's density lever. The projection, on five
   temperature blocks per peak reaching 170 °C with the block scatter
-  cut fourfold, is the expected 3.4 kHz per 10¹² cm⁻³ rate resolved
+  cut fourfold, is the expected [3.50](../results/beta_self_theory.csv "ref:beta_self_theory:beta_self_6s:anchored") kHz per 10¹² cm⁻³ rate resolved
   at about 10 sigma,
   and 3 sigma if the block scatter is not cut, so the interleaving and
   the temperature reach are co-limiting rather than one refining the

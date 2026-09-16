@@ -299,7 +299,7 @@ which is why those exist.
 
 **And the width channel is not merely worse, it is blind.** At the campaign's
 maximum 225 mW with the measured $w_0 = 64$ µm prior, `stark_shift_S0_mhz` gives
-$S_0 = 0.364$ MHz. The ramp's density is $f(s)\propto|s|$ on $[-S_0,0]$, so it
+$S_0 = 0.360$ MHz. The ramp's density is $f(s)\propto|s|$ on $[-S_0,0]$, so it
 peaks at $|s|=S_0$ and halves at $|s|=S_0/2$: the kernel's full width at half
 maximum is $S_0/2$ exactly, with no grid and no fit.
 
@@ -666,7 +666,7 @@ is *fixed by* that value (`TAIL_6S` in `rb5s6s/polarizability.py`, and
 `results/polarizability.csv` records the row as tail-calibrated), so the
 agreement there is arithmetic rather than a test. It **confirms the
 magnitude**,
-$|\Delta\alpha(993)| = 1145$ a.u. with the 6S sum above 8P carried as a static tail, and [-1131.8](../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive") ± [5.9](../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive:err") a.u. once that group is summed dynamically to 12P and beyond (`results/polarizability_deep.csv`: the 9P-and-above group is [15.0](../results/polarizability_deep.csv "ref:polarizability_deep:dynamic_6s_9p_and_above:at_drive") ± [1.3](../results/polarizability_deep.csv "ref:polarizability_deep:dynamic_6s_9p_and_above:at_drive:err") a.u. at the drive against the module's static tail of a fifth of that, its static size checks against Safronova and Safronova 2011's own residual at [-0.81](../results/polarizability_deep.csv "ref:polarizability_deep:static_tail_pull:computed_vs_SS2011") sigma, the quadrupole channel enters at [1e-04](../results/polarizability_deep.csv "ref:polarizability_deep:E2_over_E1_shift:at_drive") and the magnetic-dipole one at [6e-06](../results/polarizability_deep.csv "ref:polarizability_deep:M1_over_E1_shift:at_drive") of the dipole shift). The magnitude then stands [+6.5](../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha_vs_orson:at_drive") sigma of this derivation's bar from Orson's 1093, which is one bar of two: Orson's own uncertainty is not held here, and at one per cent of 1093 the separation would read about 3 sigma, so the two are apart on this derivation's bar and unresolved on the pair, **and the derivation finds the opposite sign**: $\alpha_{6S}(993)\approx-312$ a.u., because the dominant 6S
+$|\Delta\alpha(993)| =$ [-1131.8](../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive") ± [5.9](../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive:err") a.u. once that group is summed dynamically to 12P and beyond (`results/polarizability_deep.csv`: the 9P-and-above group is [15.0](../results/polarizability_deep.csv "ref:polarizability_deep:dynamic_6s_9p_and_above:at_drive") ± [1.3](../results/polarizability_deep.csv "ref:polarizability_deep:dynamic_6s_9p_and_above:at_drive:err") a.u. at the drive against the module's static tail of a fifth of that, its static size checks against Safronova and Safronova 2011's own residual at [-0.81](../results/polarizability_deep.csv "ref:polarizability_deep:static_tail_pull:computed_vs_SS2011") sigma, the quadrupole channel enters at [1e-04](../results/polarizability_deep.csv "ref:polarizability_deep:E2_over_E1_shift:at_drive") and the magnetic-dipole one at [6e-06](../results/polarizability_deep.csv "ref:polarizability_deep:M1_over_E1_shift:at_drive") of the dipole shift). The magnitude then stands [+6.5](../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha_vs_orson:at_drive") sigma of this derivation's bar from Orson's 1093, which is one bar of two: Orson's own uncertainty is not held here, and at one per cent of 1093 the separation would read about 3 sigma, so the two are apart on this derivation's bar and unresolved on the pair, **and the derivation finds the opposite sign**: $\alpha_{6S}(993)\approx-312$ a.u., because the dominant 6S
 couplings, 6S–6P at 2.73 and 2.79 µm, are driven far blue-detuned at 993 nm and
 push 6S *up* while 5S is pushed *down*.
 
@@ -712,15 +712,17 @@ explicitly before anything is compared:
 | symbol | definition here | value at 993 nm |
 |---|---|---|
 | $\alpha_{5S}$, $\alpha_{6S}$ | scalar polarizability of each level | [832.4](../results/polarizability_deep.csv "ref:polarizability_deep:alpha_5s:at_drive"), [-299.4](../results/polarizability_deep.csv "ref:polarizability_deep:alpha_6s:at_drive") a.u. from the deep derivation ($+834$, $-312$ with the module's static tail) |
-| $\Delta\alpha$ | $\alpha_{6S}-\alpha_{5S}$ (**excited minus ground**) | $-1145$ a.u. static tail; [-1131.8](../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive") ± [5.9](../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive:err") dynamic tail |
+| $\Delta\alpha$ | $\alpha_{6S}-\alpha_{5S}$ (**excited minus ground**) | [-1131.8](../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive") ± [5.9](../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive:err") a.u., the dynamic sum. $-1145$ was the static-tail computation and is replaced, not a second convention: it carried the 9P-and-above group statically where the drive enhances it 3 to 7 times |
 | $\alpha_{56}$ (Orson's) | $\alpha_{5S}-\alpha_{6S}$ (**ground minus excited**) | $=-\Delta\alpha$ |
 | level shift | $\delta E = -\tfrac{1}{2}\alpha E^2$ | — |
 | transition shift | $-\tfrac{1}{2}\Delta\alpha E^2 \equiv +\tfrac{1}{2}\alpha_{56}E^2$ | — |
 
 The last row is the point: both conventions give the same formula, so the
 algebra is not in dispute. Orson prints $\alpha_{56}=$ [-1093](lit/orson2021.md "ref:lit:orson2021:alpha_56_au"), hence a red
-transition shift. This work computes $\Delta\alpha=-1145$, that is
-$\alpha_{56}=+1145$, hence a blue one. Same equation, opposite input. Both
+transition shift. This work computes $\Delta\alpha=-1131.8$ (and $-1145$ under the older
+static tail), that is $\alpha_{56}=+1131.8$, hence a blue one. **The sign
+argument below does not depend on the magnitude**, so the 2026-09-15 adoption
+leaves it untouched. Same equation, opposite input. Both
 sides are verified from the typeset PDFs. Orson states the convention in
 words, prints $\alpha_{56}=-1093$ a.u., repeats it in SI as
 $-1.80\times10^{-38}$ J m² V⁻², and draws the consequence $\Delta f=-0.66$
@@ -808,7 +810,8 @@ the shift-versus-power slope) settles it outright, and it has not been run.
 
 **What changed on 2026-08-24, and what did not.** The theoretical evidence
 was weighed and this record's value became
-the package's, so `rb5s6s.DELTA_ALPHA_AU` is now $-1145$ a.u. and Orson's
+the package's, so `rb5s6s.DELTA_ALPHA_AU` is now $-1131.8$ a.u.
+The earlier $-1145$ summed the 9P-and-above group at zero frequency. Orson's
 $+1093$ is kept beside it under its own name for the comparison. That is a
 decision about which value the framework hands its reader, taken on the three
 anchors and the lifetime discriminant above. **It is not an experimental

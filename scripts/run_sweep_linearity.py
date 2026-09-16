@@ -79,9 +79,15 @@ SIGMA_LASER_BAND = (1.2, 2.0)
 # the actuator's full travel: the four-peak span the campaign sweeps
 TRAVEL_MHZ = 6000.0
 # (name, waist, on-axis shift at 225 mW, window half-width, inside the licence)
-CASES = (("archive", 64e-6, 0.364, 6.0, True),
-         ("campaign_40um", 40e-6, 0.932, 6.0, True),
-         ("campaign_16um", 16e-6, 5.826, 12.0, False))
+CASES = (("archive", 64e-6, 0.3599, 6.0, True),
+         ("campaign_40um", 40e-6, 0.9213, 6.0, True),
+         ("campaign_16um", 16e-6, 5.7584, 12.0, False))
+# MOVED 2026-09-15 from 0.364, 0.932 and 5.826, all by the same 1.16 per cent,
+# when the replaced DELTA_ALPHA_AU of -1145.0 was replaced by the dynamic
+# sum's -1131.8: S0 goes as
+# |Delta_alpha| and these are its value at the campaign's top power. The literals
+# stay literals ON PURPOSE -- deriving them would make the check below vacuous,
+# and the check firing at the floor is exactly how this drift was found.
 # EVERY SHIFT LITERAL ABOVE IS CHECKED AGAINST THE PACKAGE AT IMPORT, so the
 # freshness check grades the physics and not only the arithmetic (
 # 2026-09-08): a case's shift is the package's at the campaign's top

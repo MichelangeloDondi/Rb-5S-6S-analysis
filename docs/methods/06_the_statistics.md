@@ -122,7 +122,7 @@ The dataset's curated 130 °C anchor (the `serves_t130` traces, 225 mW) would
 triple the density lever ($N{\times}16.2\to{\times}52.5$), and the lever cross-check
 uses it as a **lever test**: adding it pulls the joint $\beta$ far below the
 cooling-sweep value. The lesson is not "bad block". It is that
-$\gamma_\text{coll}$ **barely grows with density**: it rises only ${\sim}1.48\times$
+$\gamma_\text{coll}$ **barely grows with density**: it rises only about [1.48](../../results/lever_crosscheck.csv "ref:lever_crosscheck:gamma_rise_factor:70to130")-fold
 across a ${\times}52.5$ density span (70→130 °C), and the 130 °C widths sit *on*
 that near-flat trend, whereas a real binary-collision width is *linear* in $N$.
 So the fitted $\gamma_\text{coll}$ is a residual floor, not resolved collisions,
@@ -657,7 +657,7 @@ bias is not the laser width. A control row repeats it with the true
 $\sigma$ and gets $-0.978$ against $-0.990$, and the remainder is
 consistent with window placement, though no committed row yet isolates
 placement from the $\gamma$ float, so that attribution is plausible rather
-than measured. At the duel's injected 0.35 MHz, near the archive's predicted $S_0$ of [0.364](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred:shared") MHz (an envelope, not a measurement), the picture inverts:
+than measured. At the duel's injected 0.35 MHz, near the archive's predicted $S_0$ of [0.360](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred:shared") MHz (an envelope, not a measurement), the picture inverts:
 the fit's spread grows to [0.2030](../../results/estimator_duel.csv "ref:estimator_duel:bias_profile_mle:S0_0.35_clean:err") where the cumulants' is [0.0102](../../results/estimator_duel.csv "ref:estimator_duel:bias_odd_cumulants:S0_0.35_clean:err") (the same producer's cells, re-read with it), and the two
 gap between the defect sensitivities narrows from a factor of 23 to a factor of 1.9, 0.0798 against 0.1503. And the twin is
 one defect shape with white noise and no baseline, so it speaks to a

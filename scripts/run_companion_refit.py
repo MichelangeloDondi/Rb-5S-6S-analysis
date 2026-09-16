@@ -46,7 +46,7 @@ from rb5s6s import stark  # noqa: E402
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from run_saturation_probe import _grid  # noqa: E402
 
-RATIO_BAND = (1.2367, 1.2951)
+RATIO_BAND = (1.2446, 1.2577)
 A_GRID = tuple(float(a) for a in
                (0.0, 0.5, 1.0, 2.0, 4.0, 8.0, 16.0, 31.0, 50.0, 69.0, 100.0))
 

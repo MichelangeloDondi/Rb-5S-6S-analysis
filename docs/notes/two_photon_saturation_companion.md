@@ -71,9 +71,16 @@ conventions". That diagnosis was mistaken. Both numbers are right about
 different denominators, because the project holds two values of |Delta_alpha|
 that differ by a documented 4.7 per cent: the cited 1093 a.u. that every
 committed S0 is written with, giving 2t/1093 = 1.2951, and this package's own
-sum-over-states 1145 a.u., giving 1.2367. The ratio is therefore a 1.24 to 1.30
-band whose width is the Delta_alpha discrepancy, and the probe below now reports
-both ends. The matrix element itself, T = 707.75 a.u. and M = 225 kHz at the
+sum-over-states, retired at 1145 a.u. and giving 1.2367.
+
+**Replaced 2026-09-15.** The record now carries the dynamic sum
+([-1131.8](../../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive")
+a.u., with its
+[5.9](../../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha_sigma_pairs:MC")
+a.u. envelope), so the ratio is 2t/1131.8 and the band it spans is the
+uncertainty on one derived value, not a dispute between two candidates.
+Every table below labelled `ratio 1.2367` is a row computed at the earlier value
+and is kept as history, not as a current reading. The matrix element itself, T = 707.75 a.u. and M = 225 kHz at the
 campaign maximum, was confirmed independently to 0.04 per cent and does not
 move.
 
@@ -371,7 +378,8 @@ the added effect is far below the block-to-block scatter that dominates chi2.
 **Robustness to the one number not independently re-derived at the time.** The ratio came
 from the two-photon matrix element and the lead did not rebuild that sum. The bound
 scales roughly inversely with it: 0.3732 MHz at half the ratio, 0.23 across the
-1.24 to 1.30 band itself, 0.1479 at 1.5 times it. So even a factor-of-two error in
+1.2446 to 1.2577 band itself, earlier given as 1.24 to 1.30, 0.1479 at 1.5 times
+it. So even a factor-of-two error in
 the Rabi frequency leaves the bound well below the committed 0.6325, and the
 qualitative result is robust while the digits are not. The sum has since been
 rebuilt twice, and the band is now the whole of the residual uncertainty in it.

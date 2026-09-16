@@ -159,7 +159,9 @@ FENG_778_DELIVERED_W = 0.030      # docs/lit/feng2026.md
 GUIDED_MODE_RADIUS_M = 10e-6     # notes/guided_mode_two_photon_design.md 2.2
 GUIDED_POWER_W = 0.100
 GUIDED_RHO = 1.0
-GUIDED_DELTA_ALPHA_AU = 1144.6
+GUIDED_DELTA_ALPHA_AU = abs(K.DELTA_ALPHA_AU)   # read by NAME, never copied:
+# this line was the literal -1144.6 for months and was one of the twelve edits
+# the 2026-09-15 polarizability move needed. ssot_guard.py refuses the copy now.
 GUIDED_HOT_FILL_COUNTS_PER_S = 2.8e5   # carried, not recomputable here
 GUIDED_ANCHOR_GAP = (16, 47)
 
@@ -362,8 +364,9 @@ def project_pull(rows, inp) -> dict:
              "sigma",
              "|S0(+Delta-alpha) - S0(-Delta-alpha)| divided by the projected "
              "uncertainty, both evaluated at the committed measured waist",
-             common + ". the two signs are the pinned +1093 a.u. and the "
-             "recomputed -1145 a.u., both evaluated at the committed waist "
+             common + ". the two signs are the pinned +1093 a.u. and this "
+             "record's own, -1131.8 a.u. since 2026-09-15 and -1145 before it, "
+             "both evaluated at the committed waist "
              "prior, so a common intensity-scale error moves the separation "
              "even though it cannot move which sign the pull has",
              "rb5s6s.constants DELTA_ALPHA_AU, results/polarizability.csv")

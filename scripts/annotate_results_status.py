@@ -48,6 +48,18 @@ VOCAB = {"BOUND", "NULL", "MEASURED", "PRELIM", "ARTIFACT", "DIAGNOSTIC",
 
 # files that already carry their own provenance column -> leave untouched
 SKIP = {"laser_epoch.csv", "qc_metrics.csv",
+        # the theory self-broadening coefficient: its rows are a mix of the
+        # anchoring measurement (CALIB), the envelope value and its budget
+        # (ENVELOPE) and one row kept as ARTIFACT because it records a term
+        # that was counted twice and has been removed. Only the producer
+        # knows which is which, and the ARTIFACT row exists to stop the
+        # double count coming back, so it may not be re-graded from a map.
+        "beta_self_theory.csv",
+        # the moment arm: DIAGNOSTIC for every statistic and refusal row and
+        # ARTIFACT for a ratio refused as having no population moment. The
+        # ARTIFACT rows are the record of WHY a statistic is out, so they may
+        # not be re-graded from a per-file map.
+        "ultra_joint_moments.csv",
         # M27 writes its own per-row statuses (the bound and the case
         # verdict are BOUND, every diagnostic row says so itself)
         "centre_stark.csv",

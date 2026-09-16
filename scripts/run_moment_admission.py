@@ -119,7 +119,7 @@ def main() -> int:
     ranks, ranks_all = [], []
     for _n in N_REAL_SWEEP:
         _r = ultra_joint_covariance(NU, n_real=_n, tau_int=tau_int,
-                                    snr_floor=SNR_FLOOR, seed=4_000_000, **POINT)
+                                    snr_report_floor=SNR_FLOOR, seed=4_000_000, **POINT)
         ranks.append(_r["effective_rank"]); ranks_all.append(_r["effective_rank_all"])
         if _n == N_REAL:
             r = _r
@@ -131,9 +131,17 @@ def main() -> int:
     # `test_every_claim_carries_an_uncertainty` recognises.
     out = [["quantity", "window_mhz", "value", "err", "note", "status"]]
     admitted = set(r["admitted"])
+    snr_adm = set(r["snr_admitted"])
     for key, mean, sd, snr in zip(r["keys"], r["mean"], r["sd"], r["snr"]):
         stat, wtxt = key.split("@")
+        # TWO VERDICTS, because two different questions are being asked and
+        # conflating them is what owner order O17 struck. `verdict` is what
+        # the LIKELIHOOD does, which is admit anything with a population
+        # moment; `snr_verdict` is the old floor, kept as the diagnostic it
+        # always was. They disagree on the whole odd ladder, which is the
+        # point.
         verdict = "ADMITTED" if key in admitted else "REFUSED"
+        snr_verdict = "ABOVE" if key in snr_adm else "BELOW"
         pooled = snr * np.sqrt(POWER_ARM_TRACES) if np.isfinite(snr) else float("nan")
         # NO COLON IN A QUANTITY NAME. `check_references.py` splits a
         # `ref:<stem>:<col0>:<col1>` tag on colons, so a quantity carrying one
@@ -155,25 +163,43 @@ def main() -> int:
             v_cell, e_cell, se_txt = "", "", ""
         out.append([
             f"snr_{stat}", wtxt, v_cell, e_cell,
-            f"{verdict} at a floor of {SNR_FLOOR:g}. Mean {mean:.6g}, "
+            f"{verdict} by the likelihood, {snr_verdict} the retired SNR floor "
+            f"of {SNR_FLOOR:g}. Mean {mean:.6g}, "
             f"per-trace sd {sd:.4g}. Pooled over {POWER_ARM_TRACES} traces "
             f"it reaches {pooled:.4g}.{se_txt}",
             "DIAGNOSTIC"])
 
-    even = sorted({int(k[1:k.index("@")]) for k in r["admitted"] if "/" not in k})
-    odd = sorted({int(k[1:k.index("@")]) for k in r["refused"] if "/" not in k})
+    even = sorted({int(k[1:k.index("@")]) for k in snr_adm if "/" not in k})
+    odd = sorted({int(k[1:k.index("@")]) for k in r["keys"]
+                  if "/" not in k and k not in snr_adm})
     out.append(["admitted_orders", "", ",".join(map(str, even)), "",
-                "the orders clearing the floor at every window", "DIAGNOSTIC"])
+                "the orders clearing the SNR floor at every window. A "
+                "DIAGNOSTIC and no longer a gate: see orders_in_likelihood",
+                "DIAGNOSTIC"])
     out.append(["refused_orders", "", ",".join(map(str, odd)), "",
-                "the orders below it at every window. The split is exactly "
-                "by parity and that is the result", "DIAGNOSTIC"])
+                "the orders below that floor at every window. The split is "
+                "exactly by parity and that is the result. They are IN the "
+                "likelihood all the same, per owner order O17", "DIAGNOSTIC"])
+    in_like = sorted({int(k[1:k.index("@")]) for k in admitted if "/" not in k})
+    out.append(["orders_in_likelihood", "", ",".join(map(str, in_like)), "",
+                "the orders the ultra-joint likelihood carries: every one, "
+                "because a likelihood weights a noisy statistic by its own "
+                "variance and dropping it is a decision that can bias",
+                "DIAGNOSTIC"])
+    noratio = sorted(k for k in r["refused"] if "/" in k)
+    out.append(["refused_no_population_moment", "", str(len(noratio)), "",
+                "the statistics the likelihood genuinely cannot carry: odd "
+                "ratios whose denominator changes sign across the replicas, "
+                "so they are Cauchy-like and a replica covariance returns a "
+                "finite number that keeps moving with the replica count",
+                "DIAGNOSTIC"])
     # THE RANGES ARE CELLS SO A DOCSTRING CAN CITE THEM. Three surfaces
     # quoted "30 to 2332 against 0.01 to 0.22" from an earlier run; the
     # committed maximum is 1832 and no cell held 2332. A range stated in prose
     # and held nowhere is unciteable by construction, so `check_references`
     # could not see it. It can now.
-    _adm = [s for k, s in zip(r["keys"], r["snr"]) if k in set(r["admitted"])]
-    _ref = [s for k, s in zip(r["keys"], r["snr"]) if k not in set(r["admitted"])]
+    _adm = [s for k, s in zip(r["keys"], r["snr"]) if k in snr_adm]
+    _ref = [s for k, s in zip(r["keys"], r["snr"]) if k not in snr_adm]
     for name, vals in (("snr_admitted_min", _adm), ("snr_admitted_max", _adm),
                        ("snr_refused_min", _ref), ("snr_refused_max", _ref)):
         v = (min(vals) if name.endswith("min") else max(vals)) if vals else float("nan")
@@ -185,8 +211,9 @@ def main() -> int:
                     "DIAGNOSTIC"])
 
     out.append(["n_admitted", "", str(len(r["admitted"])), "",
-                f"of {len(r['keys'])} statistics over three windows",
-                "DIAGNOSTIC"])
+                f"of {len(r['keys'])} statistics over three windows, admitted "
+                f"on having a population moment. The retired SNR floor would "
+                f"have taken {len(snr_adm)}", "DIAGNOSTIC"])
     er_v, er_e = pm_cells(float(r["effective_rank"]), er_spread)
     out.append(["effective_rank_admitted", "", er_v, er_e,
                 "participation ratio of the admitted correlation matrix: the "

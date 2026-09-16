@@ -349,19 +349,20 @@ def two_photon_matrix_element(lam_nm: float = 993.4192) -> float:
     but it is NOT single-valued, because this project holds two values of
     |Delta_alpha| that differ by a documented 4.7 per cent: the cited 1093 a.u.
     that constants.DELTA_ALPHA_AU carries and every committed S0 uses, and this
-    package's own sum-over-states recompute of 1145 a.u. (the magnitude side of
-    the sign dispute, THEORY_NOTE section 5). So
+    package's own recompute (the magnitude side of the sign dispute,
+    THEORY_NOTE section 5). So, with 2T = 1416.02 invariant:
 
-        2T/1093 = 1.2951      converts a S0 written with the CITED value
-        2T/1145 = 1.2367      converts a S0 written with THIS package's value
+        2T/1131.8 = 1.2511    the ADOPTED value, the dynamic sum (2026-09-15)
+        2T/1093   = 1.2951    converts a S0 written with the CITED value
+        2T/1145   = 1.2367    the static sum, kept as history only
 
-    so the ratio is a 1.24 to 1.30 band whose width is the Delta_alpha
-    discrepancy, not a convention error. Corrected 2026-08-09 on a
-    second reading: the saturation companion note first used 1.294, then
-    recorded 1.237 as a correction of "two field conventions". That diagnosis
-    was wrong. Both numbers are right about different denominators, and 1.2367
-    is the CONSERVATIVE end for the saturation probe, which injects more
-    broadening per unit fitted kappa as the ratio grows.
+    The band changed in kind. It was a 1.24 to 1.30 dispute
+    between two candidate polarizabilities, one of them now set aside; it is now
+    the +-5.9 a.u. uncertainty on one derived value, 1.2446 to 1.2577, a one per
+    cent span rather than a 4.7 per cent one. Corrected 2026-08-09 on a second
+    reading: the saturation companion note first used 1.294, then recorded 1.237
+    as a correction of "two field conventions". That diagnosis was wrong; both
+    numbers were right about different denominators.
 
     Nothing here is needed to get the Rabi frequency itself: use
     two_photon_rabi_hz(), which goes from power to field to M without passing

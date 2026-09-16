@@ -54,6 +54,7 @@ CHEAP = {
     # every-pass set, and entering EXPENSIVE with no comment removed them from
     # the freshness canary that runs without --all.
     "run_moment_admission": ["moment_admission.csv"],
+    "run_beta_self_theory": ["beta_self_theory.csv"],   # ~1 s, no data read
     "run_density_laws": ["density_laws.csv"],
     "run_four_peak_contrasts": ["four_peak_contrasts.csv"],
     "run_detection_budget": ["detection_budget.csv"],
@@ -312,6 +313,13 @@ EXPENSIVE = {
 # decision rather than an omission nobody noticed. Before this registry existed,
 # 19 of 46 committed CSVs were unchecked and nothing said so.
 UNCOVERED = {
+    "ultra_joint_moments.csv": (
+        "run_ultra_joint.py --moment-arm reads the same raw traces as its sibling below "
+        "and fits one cell before it can read a single statistic, so it is minutes and "
+        "it cannot run at all on the public mirror, where data_raw/ is absent by design. "
+        "Its cheap check is the same code path: the arm is exercised by "
+        "tests/test_ultra_joint_producer.py, which runs the statistic and the admission "
+        "rule on a synthetic condition without touching the archive."),
     "ultra_joint_fit.csv": (
         "run_ultra_joint.py refits the raw traces, 159 canonical and 71 more from two trees "
         "outside the repository, at every point of the grid the run carries (six waists in the coarse "

@@ -123,7 +123,7 @@ produce and not the pure transverse ramp's. Measured on the quiet curve, the
 ramp's mean pull falls to
 [0.9775](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_64um::pull_factor_quiet")
 of the pure form at the measured waist and
-[0.5752](../../results/three_channel_forecast.csv "ref:three_channel_forecast:base::pull_factor_quiet")
+[0.5754](../../results/three_channel_forecast.csv "ref:three_channel_forecast:base::pull_factor_quiet")
 at the 16 micron configuration, the collection window carrying most of that
 movement and the fringe tail the rest.
 
@@ -134,7 +134,7 @@ eleven in the fraction of atoms slow enough to freeze a fringe, so the density
 refuses to be called without naming which end it takes. The sweep-rate
 producer carries both ends as end-members of its envelope: at the campaign's
 tightest licensed waist that excursion is
-[0.0021](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:rate_variation_tolerance_coherence_err")
+[0.0020](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:rate_variation_tolerance_coherence_err")
 per cent of rate variation, most of that case's whole band.
 
 The wide-scan design in the fixed-lock proposal uses the same physics as a

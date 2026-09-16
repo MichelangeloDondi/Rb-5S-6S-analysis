@@ -209,7 +209,7 @@ def rank_one_leak_rate(mismatch_deg: float, t_c: float = 130.0,
     return (math.sin(math.radians(abs(mismatch_deg))) * energy) ** 2
 
 
-def vector_ratio(lam_nm: float = 993.4) -> float:
+def vector_ratio(lam_nm: float = _K.W0_REFERENCE_LAMBDA_NM) -> float:
     """|d alpha_vector / d alpha_scalar| between 5S and 6S at this wavelength.
 
     Both sums run over the same committed line lists the scalar polarizability
@@ -238,7 +238,7 @@ def vector_ratio(lam_nm: float = 993.4) -> float:
 
 
 def vector_spread_mhz(s0_mhz: float, circular_degree: float,
-                      lam_nm: float = 993.4) -> float:
+                      lam_nm: float = _K.W0_REFERENCE_LAMBDA_NM) -> float:
     """Route 1: the m_F spread the vector light shift opens, in MHz.
 
     ``s0_mhz`` is the differential SCALAR shift at the same power, which is

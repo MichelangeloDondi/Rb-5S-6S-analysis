@@ -90,7 +90,7 @@ the axial collection window and the fringe-resolved tail and not the
 transverse ramp alone: the ramp's mean pull reads
 [0.9775](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_64um::pull_factor_quiet")
 of the pure form at the measured waist and
-[0.5752](../../results/three_channel_forecast.csv "ref:three_channel_forecast:base::pull_factor_quiet")
+[0.5754](../../results/three_channel_forecast.csv "ref:three_channel_forecast:base::pull_factor_quiet")
 at 16 microns. The guided-platform outlook carries
 it for a mode profile in
 [chapter 6 of the big picture](../big_picture/06_next-nanofibre.md) and

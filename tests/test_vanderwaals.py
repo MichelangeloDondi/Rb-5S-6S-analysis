@@ -17,7 +17,7 @@ import pytest
 
 from rb5s6s._compat import trapezoid
 from rb5s6s.polarizability import LINES_5S, LINES_6S, LINES_7S, E_6S_CM, E_7S_CM, alpha_5s
-from rb5s6s.vanderwaals import (C6_RB2_GROUND_LIT_AU, LINDHOLM_FOLEY_PREFACTOR, branch_average, c6_exchange,
+from rb5s6s.vanderwaals import (C6_RB2_GROUND_LIT_AU, LINDHOLM_FOLEY_PREFACTOR, branch_average, c6_exchange, exchange_signs,
                                 LINDHOLM_FOLEY_PREFACTOR_QUOTED, alpha_imaginary,
                                 beta_self_anchored, beta_self_vdw, c6_5s5s, c6_5s6s,
                                 c6_5s7s, c6_coefficient, c6_direct, impact_prefactors,
@@ -153,18 +153,39 @@ def test_first_principles_rate_agrees_with_the_one_measured_nS_rate():
     regression in either direction fires."""
     r = beta_self_anchored()
     assert 0.92 < r["prefactor_discrepancy"] < 1.09, r["prefactor_discrepancy"]
-    assert r["beta7_measured_khz"] == pytest.approx(5.39, rel=0.02)
+    # 5.33, AND THE ROUTE TO IT IS THE PART UNDER TEST. The rate is a SLOPE
+    # fitted over 353 to 438 K, so it has no single temperature; the effective
+    # one is adopted at the centre of the beta the defensible weightings give
+    # and its span is a budget row. This record read 403.15 K until
+    # 2026-09-15 and then 393 K for one afternoon, the second being a table
+    # note about a different experiment. Both are retracted, and the assert
+    # pins the effective temperature rather than any cell temperature.
+    assert r["beta7_measured_khz"] == pytest.approx(5.624, abs=0.005)
+    # THE EFFECTIVE TEMPERATURE IS COMPUTED, NOT TYPED, and the assert pins the
+    # distinction that makes it right: a weighted MEAN of T and the regression
+    # LEVERAGE must differ on this input, because the vapour pressure is
+    # exponential and a slope is carried by its hot end. 397 K, this record's
+    # reading for one afternoon, came from the mean family and is not reachable
+    # from the leverage one.
+    from rb5s6s.vanderwaals import zameroski_effective_T
+    assert r["zameroski_eff_t_k"] == pytest.approx(428.9, abs=0.5)
+    assert all(zameroski_effective_T(w) > 400.0
+               for w in ("unit", "inv_width2", "inv_p2"))
+    assert r["t_factor"] == pytest.approx((403.15 / r["zameroski_eff_t_k"]) ** 0.3, rel=1e-12)
 
 
 def test_anchored_and_first_principles_values_agree_and_are_bracketed():
     """beta(6S) anchored = beta(7S)_measured * [dC6(6S)/dC6(7S)]^(2/5) sits
-    below the measured 7S rate, near 3.40 kHz per 1e12 cm^-3, and the
-    first-principles value beside it agrees to better than 5 per cent."""
+    below the measured 7S rate, near 3.50 kHz per 1e12 cm^-3, and the
+    first-principles value beside it agrees to better than 8 per cent -- and
+    that agreement is NOT two routes confirming each other. It is the same
+    computation with and without the experimental scale, so the gap IS the
+    recipe's absolute error on the one state where it can be measured."""
     r = beta_self_anchored()
     assert r["dc6_ratio"] < 1.0
     assert 0.0 < r["beta6_khz"] < r["beta7_measured_khz"]
-    assert r["beta6_khz"] == pytest.approx(3.33, rel=0.03)
-    assert r["beta6_first_principles_khz"] == pytest.approx(r["beta6_khz"], rel=0.05)
+    assert r["beta6_khz"] == pytest.approx(3.497, abs=0.005)
+    assert r["beta6_first_principles_khz"] == pytest.approx(r["beta6_khz"], rel=0.08)
 
 
 def test_record_bound_still_sits_well_above_the_anchored_expectation():
@@ -177,7 +198,7 @@ def test_the_exchange_coefficient_is_computed_and_bracketed_over_the_untabulated
     """W1k physics finding F1: typed as a quarter of Delta C6, the exchange term is
     0.35 to 0.45 for 6S whichever way the 6P products point, because the 5P legs
     dominate; for 7S it is under 5 per cent. The anchor carries the branch average
-    of each rung and moves from 3.40 to 3.31-3.35, inside the envelope."""
+    of each rung and moves 3.55 to 3.50, inside the envelope."""
     from rb5s6s.polarizability import LINES_5S, LINES_6S, LINES_7S, E_6S_CM, E_7S_CM
     d6 = c6_direct(LINES_5S, 0.0, LINES_6S, E_6S_CM) - c6_direct(LINES_5S, 0.0, LINES_5S, 0.0)
     d7 = c6_direct(LINES_5S, 0.0, LINES_7S, E_7S_CM) - c6_direct(LINES_5S, 0.0, LINES_5S, 0.0)
@@ -186,7 +207,77 @@ def test_the_exchange_coefficient_is_computed_and_bracketed_over_the_untabulated
     assert all(0.33 < f < 0.47 for f in f6), f6
     assert all(f < 0.05 for f in f7), f7
     assert branch_average(0.0) == 1.0 and 0.97 < branch_average(0.45) < 0.975
+    # THE RULE FIXES THE 6P SIGN AND NOT THE REST (physics seat, tree e53355ad).
+    # The assert that stood here, `signs == (1, -1, -1, 1)`, pinned a CONVENTION:
+    # the 7P and 8P terms (0.069 and 0.017) sit inside the 9P-to-12P truncation
+    # tail (0.02 to 0.05), so two patterns close and the chooser picking one of
+    # them is arithmetic and not physics. What is licensed is the 6P sign, at
+    # about fifty tail widths, and the insensitivity of everything downstream.
+    s6 = exchange_signs(LINES_5S, LINES_6S, E_6S_CM)
+    assert s6["signs"][0] == 1 and s6["signs"][1] == -1, s6
+    assert s6["residual"] < 0.03 * s6["gauge_f_sum"] and s6["residual_all_positive"] > 2.0 * s6["gauge_f_sum"], s6
+    assert c6_exchange(LINES_5S, LINES_6S, E_6S_CM) / d6 == pytest.approx(0.349, abs=0.005)
     r = beta_self_anchored()
-    assert 3.30 < r["beta6_khz"] < 3.36, r["beta6_khz"]
-    assert r["beta6_khz"] < r["beta6_khz_no_exchange"] == pytest.approx(3.40, rel=0.01)
+    assert r["beta6_khz"] == pytest.approx(3.50, abs=0.01), r["beta6_khz"]
+    assert r["beta6_khz"] < r["beta6_khz_no_exchange"] == pytest.approx(3.55, rel=0.01)
 
+
+
+def test_the_budget_reconstructs_the_anchor_and_is_dominated_by_the_measurement():
+    """The bar on beta_self, every row of it measured by displacing an input.
+
+    FAILURE MODES THIS CATCHES. `beta_self_budget` re-evaluates the anchored
+    expression in closed form, so it can drift away from `beta_self_anchored`
+    silently and report a budget for a different number; the reconstruction
+    assert inside it is the guard and this test is its plant. A row growing
+    past the anchor's own share would mean the recipe had started to matter,
+    which is a finding and not a tolerance. And the double-counted 5 per cent
+    density term is pinned OUT: if the quadrature ever returns 11 per cent
+    again, that term has come back.
+    """
+    from rb5s6s.vanderwaals import beta_self_budget
+    b = beta_self_budget()
+    a = beta_self_anchored()
+    assert b["beta6_khz"] == pytest.approx(a["beta6_khz"], rel=1e-12)
+    # the anchor measurement dominates and everything else is noise beside it
+    anchor = b["terms_rel"]["anchor_measurement"]
+    rest = math.sqrt(sum(v * v for k, v in b["terms_rel"].items()
+                         if k != "anchor_measurement"))
+    # THE SOURCE'S TOTAL, 13 and not 11: Table 3 prints 129 +- 13 where section
+    # 2.5 prints +- 11, and sqrt(13^2 - 6.45^2 - 1.29^2) = 11.2 reproduces the
+    # second from the first, so the two are the total and the fit interval.
+    assert anchor == pytest.approx(13.0 / 129.0, rel=1e-6)
+    # the conversion temperature is now the second row and was zero
+    assert b["terms_rel"]["anchor_conversion_temperature"] > 0.02
+    assert rest < 0.04, b["terms_rel"]
+    assert 0.103 < b["rel"] < 0.110, b["rel"]
+    assert b["err_khz"] == pytest.approx(0.372, abs=0.01)
+    # AT THE LEVERAGE-WEIGHTED TEMPERATURE THE RECIPE REPRODUCES THE ONE
+    # MEASURED nS RATE IN RUBIDIUM TO BETTER THAN ONE PER CENT. Every apparent
+    # discrepancy this record reported during 2026-09-15 -- 4 per cent, then
+    # 6.1, then 5.4 -- was its own conversion, not the physics.
+    assert abs(b["recipe_scale_error_on_7s"]) < 0.02, b["recipe_scale_error_on_7s"]
+
+
+def test_the_committed_theory_row_matches_the_module():
+    """The SSOT edge: results/beta_self_theory.csv against the package.
+
+    The producer is the only writer and `verify_results_fresh` grades it, but
+    that proves the CSV matches its producer and not that either matches the
+    physics. This asserts the third edge, the committed cell against the module
+    a reader would call, which is what a stale quote resolves through.
+    """
+    import csv as _csv
+    from pathlib import Path
+    from rb5s6s.vanderwaals import beta_self_budget
+    path = Path(__file__).resolve().parents[1] / "results" / "beta_self_theory.csv"
+    rows = {(r["case"], r["quantity"]): r for r in _csv.DictReader(path.open())}
+    b = beta_self_budget()
+    cell = rows[("beta_self_6s", "anchored")]
+    assert float(cell["value"]) == pytest.approx(b["beta6_khz"], abs=5e-5)
+    assert float(cell["err"]) == pytest.approx(b["err_khz"], abs=5e-5)
+    # the removed double count stays on the record as ARTIFACT, so that a
+    # future budget cannot quietly re-adopt it
+    # the ARTIFACT row is the RETRACTION of this record's own deletion, kept so
+    # the removed term cannot be removed again
+    assert rows[("budget", "retracted_double_count_claim")]["status"] == "ARTIFACT"

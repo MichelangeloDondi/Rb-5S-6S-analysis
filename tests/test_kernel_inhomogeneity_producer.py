@@ -57,7 +57,7 @@ def test_the_first_moment_does_not_depend_on_the_kernel():
     its own frequency span truncating a Lorentzian wing, not physics. If the
     span narrows again this case fails."""
     mod = _load()
-    stark.COMPANIONS = {"ratio": 1.2367, "scale": 1.0}
+    stark.COMPANIONS = {"ratio": 1.2511, "scale": 1.0}
     cells, _s0, _z = mod.volume_grid(16e-6, n_s=40, n_z=10)
     tot = sum(float(w.sum()) for _, _, w in cells)
     analytic = -sum(float((m * w).sum()) for m, _, w in cells) / tot
@@ -122,7 +122,7 @@ def test_the_companion_is_the_cumulant_uncertainty_axis_and_the_grid_is_not():
     """The error row named the grid while the companion moved the value by
     threefold. Both axes are swept; this holds their ordering."""
     mod = _load()
-    stark.COMPANIONS = {"ratio": 1.2367, "scale": 1.0}
+    stark.COMPANIONS = {"ratio": 1.2511, "scale": 1.0}
     cells, _s0, _z = mod.volume_grid(64e-6, n_s=60, n_z=10)
     base = mod.observables(mod.profile_exact(cells), 6.0)[1]
     lo = mod.observables(mod.profile_exact(cells, companion_scale=1 / 3.0), 6.0)[1]

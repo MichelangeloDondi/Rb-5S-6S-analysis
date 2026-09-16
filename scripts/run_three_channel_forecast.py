@@ -110,7 +110,7 @@ LAYERS = {"cascade": True, "saturation": True, "stark": True, "bbr": True,
 # is assigned at module level because the pool spawns and a worker
 # re-imports this file: an assignment made in the parent's frame reaches
 # no child.
-stark.COMPANIONS = {"ratio": 1.2367, "scale": 1.0, "cycles": 1.0}
+stark.COMPANIONS = {"ratio": 1.2511, "scale": 1.0, "cycles": 1.0}
 # The floor on the quiet curve's LOCAL exponent below which a rung is not
 # inverted. The inversion raises a ratio to one over this exponent, so the
 # noise amplification is its reciprocal and the danger is a small
@@ -746,7 +746,7 @@ def main() -> int:
                         "one campaign lever varied from the base point, the injected coefficient in kappa_true (MHz per W at this "
                         "waist and retro ratio). kappa_skew is the third cumulant inverted through the noiseless quiet curve's local "
                         "exponent at the rungs admitted on two statistics (fraction of sets with the wrong sign below 0.35 and median "
-                        f"beyond three standard errors), {_why}. kappa_pull inverts the fitted centre's slope through the quiet curve's own centroid slope per unit coefficient, and pull_factor_quiet is THIS ROW's ratio of that slope to the pure ramp's mean pull, the factor a campaign supplies from its collection geometry; it is not the mixture's geometric centroid ratio, which differs, and it moves with the analysis window, so read the column and not a remembered pair. kappa_pull is the "
+                        f"beyond three standard errors), {_why}. kappa_pull inverts the fitted centre's slope through the quiet curve's own centroid slope per unit coefficient, and pull_factor_quiet is THIS ROW's ratio of that slope to the pure ramp's mean pull, the factor a campaign supplies from its collection geometry. It is not the mixture's geometric centroid ratio, which differs, and it moves with the analysis window, so read the column and not a remembered pair. kappa_pull is the "
                         "fitted centre against power with the lock drift as a nuisance in acquisition order. sd_skew, sd_pull and "
                         "sd_combined are the scatter of PER-TRACE-SET estimates, so each is the precision of ONE set, and gain is "
                         "the better single channel's sd over the combined sd with the measured correlation. sd_skew_pooled is NOT "

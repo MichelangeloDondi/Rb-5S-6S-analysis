@@ -29,7 +29,7 @@ line's gives the retro ratio, which is now the largest apparatus term in the
 waist-free route at 2.1 per cent.
 
 **2. Saturation, parameterised by the two-photon Rabi frequency and NOT by the
-light shift.** `stark.companion_gamma_mhz` computes `Omega = 1.2367 * S0`, so
+light shift.** `stark.companion_gamma_mhz` computes `Omega = 1.2511 * S0`, so
 every saturation term is proportional to the one fitted coefficient that this
 archive drives to zero, and the companion refit found the exact consequence:
 `dchi2` is 0.0000 for the pumping scale from A = 0.5 to 16, because at
@@ -76,7 +76,7 @@ __all__ = ["doppler_pedestal_fwhm_mhz", "residual_doppler_fwhm_mhz",
 
 
 def doppler_pedestal_fwhm_mhz(T_C: float, isotope: int = 87,
-                              lam_m: float = 993.4e-9) -> float:
+                              lam_m: float = K.LAMBDA_LASER_M) -> float:
     """FWHM of the co-propagating two-photon Doppler pedestal, MHz.
 
     Two photons from the SAME direction give a momentum transfer of `2k`, so the
@@ -90,7 +90,7 @@ def doppler_pedestal_fwhm_mhz(T_C: float, isotope: int = 87,
 
 
 def residual_doppler_fwhm_mhz(tilt_rad: float, T_C: float, isotope: int = 87,
-                              lam_m: float = 993.4e-9) -> float:
+                              lam_m: float = K.LAMBDA_LASER_M) -> float:
     """Residual Doppler FWHM from an imperfectly retro-reflected beam, MHz.
 
     Two counter-propagating photons cancel the first-order Doppler shift only
@@ -137,7 +137,7 @@ def saturation_companion_mhz(omega_mhz: float, peak: Optional[str] = None,
 
     ``omega_mhz`` is the two-photon Rabi frequency IN ITS OWN RIGHT, which is
     what separates this from `stark.companion_gamma_mhz`: that function takes
-    the light shift and multiplies by 1.2367, so it vanishes wherever the
+    the light shift and multiplies by 1.2511, so it vanishes wherever the
     fitted shift does. Saturation is F-independent; the pumping term carries the
     per-line branching and is the only part that moves with ``peak``.
     """
@@ -331,7 +331,7 @@ def fringe_survival_mc(*, w0_m: float, rho: float = 1.0, T_C: float = 130.0,
     direction is stated rather than left to be inferred.
     """
     rng = np.random.default_rng(seed if seed is not None else 12345)
-    k = 2.0 * math.pi / 993.4e-9
+    k = 2.0 * math.pi / K.LAMBDA_LASER_M
     m = K.M_RB87_KG
     sv = math.sqrt(K.K_B_J_PER_K * (T_C + 273.15) / m)
 
@@ -346,7 +346,7 @@ def fringe_survival_mc(*, w0_m: float, rho: float = 1.0, T_C: float = 130.0,
 
     # the axial coordinate over the collected region, which is where M^2 enters
     z0 = rng.uniform(-half_window_m, half_window_m, n_atoms)
-    z_R = math.pi * w0_m ** 2 / (float(m2) * 993.4e-9)
+    z_R = math.pi * w0_m ** 2 / (float(m2) * K.LAMBDA_LASER_M)
     w_z = w0_m * np.sqrt(1.0 + (z0 / z_R) ** 2)
 
     # forward and retro envelopes, the retro displaced along x
@@ -424,9 +424,16 @@ DEFAULT_WINDOWS = (3.25, 6.0, 12.0)
 #: `(2, 3, 5, 7)` until 2026-09-12, carrying ONE even order and no even ratio,
 #: so the statistic set that holds the width information could not be produced
 #: by this module at all. The odd orders stay in the tuple because they are the
-#: SHIFT channel and a campaign at a larger light shift reads them; on this
-#: archive a caller is expected to drop them on their measured SNR, not on
-#: their name.
+#: SHIFT channel and a campaign at a larger light shift reads them. **The
+#: sentence that stood here until 2026-09-15, "a caller is expected to drop them
+#: on their measured SNR, not on their name", is RETRACTED on owner order O17**:
+#: a caller drops them on NEITHER. A likelihood weights a noisy statistic by its
+#: own variance, so carrying the odd ladder costs nothing and dropping it is a
+#: decision that can bias; and the floor that did the dropping was |mean|/sd
+#: over the replicas, which selects on the realised data. `ultra_joint_covariance`
+#: now admits on whether a statistic HAS a population moment, which keeps every
+#: odd cumulant and refuses only the odd RATIOS whose denominator changes sign
+#: across replicas -- 33 of 42 statistics against the old floor's 22.
 DEFAULT_ORDERS = (2, 3, 4, 5, 6, 7, 8, 9)
 
 
@@ -436,12 +443,26 @@ def ultra_joint_statistics(nu: np.ndarray, *, windows=DEFAULT_WINDOWS,
     """The statistic vector the ultra-joint fit matches, from `full_profile`.
 
     Returns raw windowed cumulants at every (window, order), and optionally the
-    shift-free RATIOS `k5/k3` and `k7/k5`, which carry no information about the
-    light shift and a great deal about whether the asymmetry IS the ramp: at the
-    archive's parameters `k5/k3` sits near -40 and stable to a few per cent over
-    a twenty-four-fold span in the shift, with the opposite sign to `k3`, so a
-    sloped baseline or a detection nonlinearity carries its own value and is
-    separable from the ramp's.
+    adjacent same-parity RATIOS.
+
+    **THE CLAIM THIS DOCSTRING CARRIED ABOUT `k5/k3` IS RETRACTED**, on the
+    twin's own truth read at four conditions and seven windows on 2026-09-15: it
+    said the ratio carries "a great deal about whether the asymmetry IS the
+    ramp", and its stability was read as evidence. For a
+    centred distribution
+
+        kappa5 = mu5 - 10 mu2 mu3,   so   kappa5/kappa3 = mu5/mu3 - 10 kappa2
+
+    EXACTLY. On the twin's own truth at a 1.5 MHz window the ratio reads -4.62,
+    -5.40, -4.59 and -4.58 at four conditions whose `k3` spans two orders of
+    magnitude AND BOTH SIGNS, while -10 k2 is -6.97 there and mu5/mu3 the
+    remaining +2.35, of order the window's (7/9)w^2. At 3.25 MHz it is -17.3 at
+    every condition. **A ratio identical across conditions whose asymmetry
+    differs in size and in sign carries nothing about the asymmetry**: its
+    stability was k2 being well measured, and a fit that reads it reads k2
+    twice. What is left of the odd channel is the odd CUMULANTS themselves, and
+    a caller wanting the shift-free part of the ratio subtracts the -10 k2 term
+    it already has.
 
     FAILURE MODE: a window wider than the data's own span returns a statistic
     dominated by whatever the model puts in the wings, which on this archive is
@@ -582,7 +603,7 @@ def convolution_licence(w0_m: float, m2: float = 1.0, **kw) -> dict:
 
 def ultra_joint_covariance(nu: np.ndarray, *, n_real: int = 400,
                            noise_frac: float = 0.004, tau_int: float = 1.0,
-                           snr_floor: float = 3.0, seed: int = 0,
+                           snr_report_floor: float = 3.0, seed: int = 0,
                            windows=DEFAULT_WINDOWS, orders=DEFAULT_ORDERS,
                            with_ratios: bool = True, **profile_kw) -> dict:
     """The statistic vector's empirical covariance, and which statistics survive.
@@ -592,12 +613,19 @@ def ultra_joint_covariance(nu: np.ndarray, *, n_real: int = 400,
     it returned when first run (2026-09-12) is why a caller must read
     `admitted` rather than averaging the whole vector:
 
-    **THE ADMISSION FLOOR SPLITS THE LADDER BY PARITY.** Over 42 statistics at
-    the archive's parameters, the 21 even ones carry a per-trace SNR of
-    23.23 [ref:moment_admission:snr_admitted_min:] to
-    1832 [ref:moment_admission:snr_admitted_max:] and the 21 odd ones reach
-    only 1.279 [ref:moment_admission:snr_refused_max:], so at any sensible floor the odd
-    ladder is refused entirely. A windowed cumulant of pure noise is largest
+    **THE SNR SPLITS THE LADDER BY PARITY, AND IT NO LONGER GATES ANYTHING.**
+    Over 42 statistics at the archive's parameters, the 21 even ones carry a
+    per-trace SNR of 23.23 [ref:moment_admission:snr_admitted_min:] to
+    1832 [ref:moment_admission:snr_admitted_max:] and the 21 odd ones reach only
+    1.279 [ref:moment_admission:snr_refused_max:], so a floor at 3 refused the
+    odd ladder entirely -- the shift channel, and the half of the owner's
+    specification that opens with "in particular the ODD ones". Owner order O17
+    of 2026-09-15 forbids admitting by SNR at all, and the reasoning is in the
+    body: a likelihood down-weights a noisy statistic through C^-1 without help,
+    and a floor on |mean|/sd selects on the realised data. What is refused now is
+    a statistic with NO POPULATION MOMENT, which on this archive is the three odd
+    RATIOS at each window, whose denominator changes sign in about half the
+    replicas. 33 admitted against the floor's 22, with `k3` through `k9` in. A windowed cumulant of pure noise is largest
     exactly where the signal is smallest (A74), so averaging a refused
     statistic into a result does not dilute it, it inverts it.
 
@@ -673,9 +701,54 @@ def ultra_joint_covariance(nu: np.ndarray, *, n_real: int = 400,
     sd = np.nanstd(X, axis=0, ddof=1)
     with np.errstate(divide="ignore", invalid="ignore"):
         snr = np.abs(mean) / np.where(sd > 0, sd, np.nan)
-    admitted = [k for k, s in zip(keys, snr)
-                if np.isfinite(s) and s >= snr_floor]
-    refused = [k for k in keys if k not in admitted]
+    # ADMISSION IS BY THE REPLICA DISTRIBUTION AND NEVER BY SIGNAL-TO-NOISE
+    # (owner order O17, 2026-09-15: "no admission of statistics by SNR in the
+    # ultra-joint MLE, only biases matter").  Two reasons, and the second is the
+    # one that makes the old rule a defect rather than a conservative choice:
+    #
+    #   * A LIKELIHOOD ALREADY DOWN-WEIGHTS A NOISY STATISTIC, through its own
+    #     entry in C^-1.  A statistic whose signal is small contributes little
+    #     and costs nothing; DROPPING it is a decision, and a decision that can
+    #     bias.  The owner's specification says it in one line -- it is a
+    #     likelihood, and the only thing to care about is BIAS.
+    #   * THE OLD FLOOR SELECTED ON THE REALISED MEAN.  `snr` here is
+    #     |mean|/sd over the replicas, so admitting on it is admitting on the
+    #     data, which is this record's own named class: a statistic used as an
+    #     admission test is computed over the population it admits.  It refused
+    #     the whole odd ladder at any sensible floor -- the SHIFT channel, and
+    #     the half of the owner's specification that opens with "in particular
+    #     the ODD ones".
+    #
+    # What genuinely cannot enter is a statistic with NO USABLE MOMENT, which is
+    # a statement about its distribution and not about its size: a ratio whose
+    # denominator changes sign across the replicas is Cauchy-like, has no
+    # population mean or variance, and a replica covariance would return a
+    # finite number that keeps moving with the replica count.  That is the
+    # failure that does not announce itself, and it is what this refuses.
+    denom_flips = {}
+    for k in keys:
+        if "/" not in k:
+            continue
+        lo_name = k.split("/")[1]                       # "k3@6" from "k5/k3@6"
+        vals = [r.get(lo_name, float("nan")) for r in rows]
+        pos = sum(1 for v in vals if np.isfinite(v) and v > 0)
+        neg = sum(1 for v in vals if np.isfinite(v) and v < 0)
+        denom_flips[k] = min(pos, neg)
+    admitted, refused, why = [], [], {}
+    for k, m, d in zip(keys, mean, sd):
+        if not (np.isfinite(m) and np.isfinite(d) and d > 0.0):
+            refused.append(k); why[k] = "no finite mean and variance over the replicas"
+        elif denom_flips.get(k, 0) > 0:
+            refused.append(k)
+            why[k] = (f"the denominator changes sign in {denom_flips[k]} of {len(rows)} "
+                      "replicas, so the ratio has no population moment")
+        else:
+            admitted.append(k)
+    # KEPT AS A DIAGNOSTIC AND NOT AS A GATE, so the split the old floor made is
+    # still reportable and still cited, while nothing is dropped for it.
+    snr_admitted = [k for k, v in zip(keys, snr)
+                    if np.isfinite(v) and v >= snr_report_floor]
+    snr_refused = [k for k in keys if k not in snr_admitted]
     cov = np.cov(X, rowvar=False)
     corr = np.corrcoef(X, rowvar=False)
 
@@ -692,7 +765,9 @@ def ultra_joint_covariance(nu: np.ndarray, *, n_real: int = 400,
     ai = [keys.index(k) for k in admitted]
     return {
         "keys": keys, "mean": mean, "sd": sd, "snr": snr,
-        "admitted": admitted, "refused": refused,
+        "admitted": admitted, "refused": refused, "refused_why": why,
+        "snr_admitted": snr_admitted, "snr_refused": snr_refused,
+        "denominator_sign_flips": denom_flips,
         "cov": cov, "corr": corr,
         "cov_admitted": cov[np.ix_(ai, ai)] if ai else np.zeros((0, 0)),
         "cond": float(np.linalg.cond(cov[np.ix_(ai, ai)])) if ai else float("nan"),

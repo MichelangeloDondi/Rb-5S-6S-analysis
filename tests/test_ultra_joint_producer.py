@@ -22,6 +22,22 @@ import pytest
 from conftest import load_script_module        # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def _rows(name):
+    """Committed rows of a results CSV, or [] when the producer has not run.
+
+    The moment arm reads data_raw/, which the public mirror does not hold, so a
+    test that requires its output would fail there for a reason that is not a
+    defect. Returning [] lets the caller skip with a message.
+    """
+    p = ROOT / "results" / name
+    if not p.exists():
+        return []
+    with p.open(encoding="utf-8") as fh:
+        return list(csv.DictReader(fh))
+
+ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = ROOT / "scripts" / "run_ultra_joint.py"
 CSV = ROOT / "results" / "ultra_joint_fit.csv"
 _uj = load_script_module("run_ultra_joint", SCRIPT)
@@ -36,7 +52,7 @@ def _needs_traces():
 
 
 def _theory_cell(w0_um, m2=1.0, cycles=0.0, traces=_P_DESC, **extra):
-    return _uj.Cell(_uj._spec("mixed", w0_um, m2=m2, cycles=cycles, da=(-1131.8, 5.9), **extra), traces)
+    return _uj.Cell(_uj._spec("mixed", w0_um, m2=m2, cycles=cycles, da=(-1131.8, 5.9), **extra), traces)  # SSOT-HISTORY: a fixture pins its own inputs so a constant change surfaces as a test failure and not a silent drift
 
 
 def _theory_p(cell):
@@ -209,15 +225,21 @@ def test_the_depletion_arm_widens_through_the_package_function_and_restores_the_
 def test_the_shared_laser_width_and_the_power_scale_arms_change_the_parameter_list():
     desc = _P_DESC + [dict(T=90.0, P_W=0.225, iso=87, session="T", peak="4207", axis="mhz")]
     per_session = _theory_cell(64.0, traces=desc)
-    assert per_session.names == ("beta_rel", "sigma_l_P", "sigma_l_T", "omega_scale", "gamma_l")
+    # ALPHA IS A FITTED SCALE UNDER ITS THEORY PRIOR SINCE 2026-09-16 (owner: carry
+    # alpha jointly with beta and with their uncertainties), so it sits second in the
+    # name order and both it and beta carry a prior term beside omega_scale.
+    assert per_session.names == ("beta_rel", "alpha_rel", "sigma_l_P", "sigma_l_T", "omega_scale", "gamma_l")
     shared = _theory_cell(64.0, traces=desc, sigma_l="shared")
-    assert shared.names == ("beta_rel", "sigma_l_shared", "omega_scale", "gamma_l")
+    assert shared.names == ("beta_rel", "alpha_rel", "sigma_l_shared", "omega_scale", "gamma_l")
     scaled = _theory_cell(64.0, traces=desc, power_scale=True)
     assert scaled.names[-2:] == ("power_scale_P", "power_scale_T")
-    assert [n for n, _, _ in scaled.prior_terms] == ["omega_scale", "power_scale_P", "power_scale_T"]
-    assert [sig for _, _, sig in scaled.prior_terms] == [_uj.OMEGA_PRIOR_FRAC, _uj.POWER_PRIOR_FRAC, _uj.POWER_PRIOR_FRAC]
+    assert [n for n, _, _ in scaled.prior_terms] == ["omega_scale", "beta_rel", "alpha_rel",
+                                                     "power_scale_P", "power_scale_T"]
+    assert [sig for _, _, sig in scaled.prior_terms] == [_uj.OMEGA_PRIOR_FRAC, _uj.BETA_PRIOR_FRAC,
+                                                         _uj.ALPHA_PRIOR_FRAC, _uj.POWER_PRIOR_FRAC,
+                                                         _uj.POWER_PRIOR_FRAC]
     fixed = _theory_cell(64.0, traces=desc, fixed={"beta_rel": 5.0})
-    assert "beta_rel" not in fixed.names and fixed.unpack([1.6, 1.6, 1.0, 0.4])["beta_rel"] == 5.0
+    assert "beta_rel" not in fixed.names and fixed.unpack([1.0, 1.6, 1.6, 1.0, 0.4])["beta_rel"] == 5.0
     d = scaled.unpack(_theory_p(scaled))
     assert scaled.power_factor(d, "P") == 1.0 and per_session.power_factor(per_session.unpack(_theory_p(per_session)), "P") == 1.0
 
@@ -238,7 +260,7 @@ def test_the_beta_profile_is_read_against_its_own_minimum_and_gives_a_bound():
 def _fake_cell(form="mixed", w0=50.0, chi2=1000.0, moved=0.001, spread=0.1, chi2_red=1.4, preds=None, prof=None):
     return dict(spec=dict(form=form, w0_um=w0), chi2=chi2, chi2_red=chi2_red, centre_moved=moved, outer=[1, 1],
                 spread=spread, errs={"beta_rel": 0.1}, sessions=["P", "T"], preds=preds or {"P": 1.01},
-                params={"beta_rel": 0.0}, chi2_red_session={"P": chi2_red}, n_eff_session={"P": 1000.0}, n_traces_session={"P": 100},
+                params={"beta_rel": 0.0}, chi2_red_session={"P": chi2_red}, chi2_split_session={"P": {"core": [1000.0, 1000.0], "wing": [1000.0, 1000.0]}}, n_eff_session={"P": 1000.0}, n_traces_session={"P": 100},
                 beta_profile=prof if prof is not None else {"0.0": dict(chi2=chi2), "1.0": dict(chi2=chi2 + 1), "5.0": dict(chi2=chi2 + 5), "20.0": dict(chi2=chi2 + 50)})
 
 
@@ -251,7 +273,7 @@ def test_the_rung_gate_passes_a_converged_run_and_refuses_each_defect(tmp_path):
     assert _uj.write_gate(tmp_path / "gate_x.txt", "x", good)
     text = (tmp_path / "gate_x.txt").read_text(encoding="utf-8")
     assert text.splitlines()[-1] == "GATE PASS" and "power-arm verdict for session P" in text
-    for defect in ("moved", "spread", "nan_bar", "no_verdict", "free_above", "chi2_red", "session_starved", "session_overweight", "beta_far_from_theory", "laser_over_bound"):
+    for defect in ("moved", "spread", "nan_bar", "no_verdict", "free_above", "chi2_red", "session_starved", "noise_law_off", "session_overweight", "beta_far_from_theory", "laser_over_bound"):
         cells = [dict(c) for c in base]
         if defect == "moved":
             cells[1]["centre_moved"] = 0.5
@@ -264,9 +286,11 @@ def test_the_rung_gate_passes_a_converged_run_and_refuses_each_defect(tmp_path):
         elif defect == "chi2_red":
             cells[1]["chi2_red"] = 3.0
         elif defect == "session_starved":
-            cells[1]["chi2_red_session"] = {"P": 1.4, "E": 0.86}   # the evening at 0.86 against a pool of 1.4: its rows cost too little (the seat's subtraction bound, 2026-09-14)
+            cells[1]["chi2_split_session"] = {"P": {"core": [1690.0, 1000.0], "wing": [1000.0, 1000.0]}, "E": {"core": [700.0, 1000.0], "wing": [1000.0, 1000.0]}}   # P MISFIT at +15 sigma, E UNDER-COST at -7 (A254)
         elif defect == "beta_far_from_theory":
             cells[1]["beta_profile"] = {"0.0": dict(chi2=1000.0), "1.0": dict(chi2=1000.0 + 4762.1), "5.0": dict(chi2=1000.0 + 90.4), "20.0": dict(chi2=1000.0 + 88085.3)}   # the committed Gaussian cell
+        elif defect == "noise_law_off":
+            cells[1]["chi2_split_session"] = {"P": {"core": [1000.0, 1000.0], "wing": [1400.0, 1000.0]}}   # the wing 9 sigma above its own law: WING-OFF
         elif defect == "session_overweight":
             cells[1]["n_eff_session"] = {"P": 1000.0, "E": 3000.0}; cells[1]["n_traces_session"] = {"P": 100, "E": 20}   # the evening's 48 per cent with 20 per cent of the traces
         elif defect == "laser_over_bound":
@@ -377,19 +401,30 @@ def test_the_profile_read_gives_an_interval_inside_and_a_bound_at_an_edge():
     assert s["bound95"] == pytest.approx(90.0 - 2.71 / 0.3, rel=1e-6)
 
 
-def test_a_session_whose_rows_cost_nothing_refuses_the_cell():
-    """The per-session admission (2026-09-14): a session at chi2_red 0.2 has free
-    nuisances and the gate must name it; the same cell with every session inside
-    the band passes, and a cell carrying no per-session reading is refused too."""
-    ok_cell = dict(chi2_red_session={"P": 1.02, "T": 0.97, "M": 1.1})
-    bad_cell = dict(chi2_red_session={"P": 1.02, "T": 0.97, "E": 0.21})
-    def verdicts(cell):
-        _cs = cell.get("chi2_red_session", {})
-        _bad = {s: v for s, v in _cs.items() if not (_uj.SESSION_CHI2_RED_BAND[0] <= v <= _uj.SESSION_CHI2_RED_BAND[1])}
-        return bool(_cs) and not _bad, _bad
-    assert verdicts(ok_cell) == (True, {})
-    passed, named = verdicts(bad_cell); assert not passed and named == {"E": 0.21}
-    assert verdicts({}) == (False, {}), "a cell with no per-session reading is refused, not admitted"
+def test_the_admission_names_its_word_from_two_absolute_statistics():
+    """A254: the wing reads the noise law, the core reads the model, each against
+    1 +- sqrt(2/n_eff); the gate names WING-OFF, MISFIT or UNDER-COST per session, admits
+    a session inside five sigma on both, and refuses a cell carrying no split at all.
+    Planted through the REAL gate_checks, not a re-implementation."""
+    n = 1000.0
+    ok = dict(chi2_split_session={"P": {"core": [n * 1.10, n], "wing": [n * 0.95, n]}})
+    v = _uj.session_verdicts(ok); assert v["P"]["word"] == "ADMITTED", v
+    bad = dict(chi2_split_session={"P": {"core": [n * 1.69, n], "wing": [n, n]}, "E": {"core": [n * 0.70, n], "wing": [n, n]},
+                                   "T": {"core": [n, n], "wing": [n * 1.40, n]}})
+    v = _uj.session_verdicts(bad)
+    assert v["P"]["word"] == "MISFIT" and v["E"]["word"] == "UNDER-COST" and v["T"]["word"] == "WING-OFF", v
+    assert "P:MISFIT" in _uj.session_verdicts_text(bad) and "T:WING-OFF" in _uj.session_verdicts_text(bad)
+    assert _uj.session_verdicts({}) == {}, "no split, no verdict: the gate refuses the cell for it"
+    # through the real gate: the fixture's own cell admits, the misfit one refuses on this check by name
+    ws = [40.0, 50.0, 60.0]; chi2s = [1010.0, 1000.0, 1012.0]
+    summ = _uj.profile_summary(ws, chi2s)
+    good = [_fake_cell(w0=w, chi2=c) for w, c in zip(ws, chi2s)]
+    meas = {"P": {"ratio": 1.0, "bar": 0.02, "block_scatter_mhz": 0.0, "block_scatter_frac": 0.0}}
+    labels = [lbl for lbl, ok_, _ in _uj.gate_checks(good, {"mixed": (summ, good[1])}, meas, True) if "wing within" in lbl]
+    assert labels, "the two-statistic check is registered"
+    worse = [dict(c) for c in good]; worse[1] = dict(worse[1], chi2_split_session=bad["chi2_split_session"])
+    named = [(ok_, msg) for lbl, ok_, msg in _uj.gate_checks(worse, {"mixed": (summ, worse[1])}, meas, True) if "wing within" in lbl]
+    assert named and not named[0][0] and "P:MISFIT" in named[0][1] and "E:UNDER-COST" in named[0][1], named
 
 
 def test_no_summary_row_rises_above_diagnostic_without_a_closure_row():
@@ -468,3 +503,59 @@ def test_a_profile_still_falling_at_the_grid_edge_is_unresolved_and_no_bound():
     s2 = _uj.profile_summary(ws, [1010.0, 1006.0, 1004.0, 1002.5, 1001.0, 1000.0])
     assert s2["kind"] == "one_sided_lower_bound" and np.isfinite(s2["bound95"]), s2
 
+
+
+def test_the_moment_statistic_takes_a_fitted_baseline_and_not_a_wing_strip():
+    """The arm's statistic, on a trace whose wings the LINE ITSELF occupies.
+
+    FAILURE MODE THIS CATCHES, and it is a measured bias rather than a
+    hypothetical. `windowed_cumulants` defaults to a WINGS baseline; on this
+    sweep the line contributes about 0.9 per cent of peak at the +-20 to 28 MHz
+    strips, which drags k2 down by 7.6 per cent and k3 by 21 at the 12 MHz
+    window. `_moment_stats` must therefore pass `baseline=None` and let the
+    caller remove a FITTED offset, and this test fails if the default ever comes
+    back: the wings-baselined statistic sits measurably below the truth on a
+    trace built with no offset at all.
+    """
+    from rb5s6s.cumulants import windowed_cumulants
+    m = _uj
+    nu = np.linspace(-42.5, 42.5, 4001)
+    from rb5s6s.fullmodel import full_profile
+    y = full_profile(nu, gamma_coll=0.26, sigma_laser_fwhm=1.0, transit_fwhm=1.28,
+                     s0=0.36, gamma_l=0.28, peak="4192", T_C=130.0)
+    stats = m._moment_stats(nu, y)
+    assert set(stats) == {f"k{n}@{w:g}" for n in m.MOMENT_ORDERS for w in m.MOMENT_WINDOWS}
+    k_wing, _ = windowed_cumulants(nu, y, 12.0, orders=(2,), baseline="wings")
+    assert stats["k2@12"] > k_wing[2], (stats["k2@12"], k_wing[2])
+    # both parities are produced, which the arm that ran at orders [2, 4] was not
+    assert {2, 3, 4, 5, 6, 7} == set(m.MOMENT_ORDERS)
+
+
+def test_a_ratio_whose_denominator_flips_sign_across_repeats_is_refused_by_name():
+    """The arm admits on having a population moment, never on size (O17).
+
+    The odd cumulants of this archive sit consistent with zero, so a ratio built
+    on one has a denominator that changes sign from repeat to repeat: the ratio
+    is then Cauchy-like, with no population mean for a pull to be taken against,
+    and a bar computed from the repeats returns a finite number that keeps
+    moving with the repeat count. That is the failure that does not announce
+    itself. This asserts the refusal fires on exactly that and that it says so,
+    and -- the half a size-based rule would get wrong -- that a SMALL but
+    sign-stable denominator is admitted.
+    """
+    flips = lambda v: min(int((np.asarray(v) > 0).sum()), int((np.asarray(v) < 0).sum()))  # noqa: E731
+    assert flips([+1.0, -1.0, +1.0, -2.0, +1.0]) == 2      # refused
+    assert flips([1e-9, 2e-9, 1.5e-9, 1.1e-9, 1.3e-9]) == 0  # tiny, and admitted
+    rows = _rows("ultra_joint_moments.csv")
+    if not rows:
+        pytest.skip("the moment arm has not been run in this tree")
+    refused = [r for r in rows if r["status"] == "ARTIFACT"]
+    assert refused, "no ratio was refused, so the rule never fired on the archive"
+    for r in refused:
+        assert "/" in r["quantity"], r["quantity"]
+        assert "no population moment" in r["note"], r["note"]
+    # and the refusal row may not quote a sigma on a statistic that has no
+    # variance: at five repeats Var(t^2) does not exist
+    for r in rows:
+        if r["quantity"] == "mean_square_pull":
+            assert "sigma" in r["note"] and "no sigma" in r["note"], r["note"]

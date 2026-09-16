@@ -333,9 +333,9 @@ byte-exact:
 5. **InfiniiVision export quirks (found at first strict-parse contact, 2026-07-11).**
    (i) ~180 files contain 1–4 "time-without-voltage" rows at the window
    edges (a benign export artifact, and the loader drops and counts them).
-   (ii) `rulers_t/4192nm_eom_070c3.csv` is dropout-riddled: ~950 *interior*
+   (ii) `rulers_t/4192nm_T70C_P225mWi_RFon_r3.csv` is dropout-riddled: ~950 *interior*
    empty rows, only 1047 valid samples, hard-flagged and excluded from ruler
-   pooling. (iii) `p_sweep/4192nm_225mw1.csv` is a nonstandard export
+   pooling. (iii) `p_sweep/4192nm_T130C_P225mW_RFoff_r1.csv` is a nonstandard export
    **and a recoverable one: the recovered backup holds its pristine
    full-precision original (uniform time axis, 0 duplicate timestamps vs
    799 in the analysed copy). Substituting it shifts this condition's
@@ -496,7 +496,7 @@ aborted first 4154 130 C power attempt, redone in full ... Kept excluded by
 pre-registration". Canonical rows leave the column empty.
 
 One row of the table is invisible in the manifest.
-`rulers_t/4192nm_eom_070c3.csv` carries `flag=canonical` with an empty
+`rulers_t/4192nm_T70C_P225mWi_RFon_r3.csv` carries `flag=canonical` with an empty
 `qc_reason`, because that exclusion happens in the loader at parse time rather
 than at curation, and the trace is simply absent from
 `results/ruler_traces.csv`. The table row above is its only register entry.
@@ -773,9 +773,9 @@ the brief, and they moved no headline number.
   its own date and the pipeline has been refit since, so read the current
   values from `results/lever_crosscheck.csv` rather than from here. As of
   2026-08-14 that file gives the 4-peak mean γ_coll as 0.401 / 0.391 / 0.444 /
-  0.594 MHz and the rise as ×1.48 over a density ratio of ×52.5, and the joint
+  0.594 MHz and the rise as ×[1.48](../results/lever_crosscheck.csv "ref:lever_crosscheck:gamma_rise_factor:70to130") over a density ratio of ×52.5, and the joint
   β as 0.0198 (⁸⁵Rb) and 0.0219 (⁸⁷Rb) against a headline 0.0534. The direction
-  and the conclusion are unchanged, which is why the entry stands: ×1.48 across
+  and the conclusion are unchanged, so the entry stands: ×[1.48](../results/lever_crosscheck.csv "ref:lever_crosscheck:gamma_rise_factor:70to130") across
   ×52.5 is still far sub-linear. What follows is the 2026-07-12 record.
   Per-condition fits (linefit_conditions):
   the 4-peak mean γ_coll is 0.245 / 0.231 / 0.289 / 0.454 MHz at 70/90/110/130 °C
@@ -914,7 +914,7 @@ the scatter of that comb's own fit. The carrier height plays no part in either
 direction, because it runs from 0.360 to 1.188 of the first order and that
 variation is residual amplitude modulation, which identifies nothing.
 
-The gallery of §4 draws 115 combs, the same 104 plus ten from the aborted first
+The gallery of §4 draws 115 combs, the same 104 plus ten from the aborted first  <!-- other-quantity: a count of combs in the gallery -->
 session and one whose export is too short for a table row, so its printed
 census reads 55 flagged where this section reads 54. Same test, wider
 population.

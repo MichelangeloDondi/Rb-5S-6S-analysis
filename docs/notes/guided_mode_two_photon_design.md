@@ -50,7 +50,7 @@ In the cell the working point is 225 mW into a waist of
 `constants.W0_MEASURED_M` = 64 µm, giving `2P/(pi w0^2)` = 3.497e7 W/m² per
 travelling wave and, with `rho` = 0.94, an on-axis maximum shift
 
-    lineshape.stark_shift_S0_mhz(0.225, 64e-6, 0.94) = 0.3641 MHz
+    lineshape.stark_shift_S0_mhz(0.225, 64e-6, 0.94) = 0.3599 MHz
 
 on the transition axis, at the record's own pinned `DELTA_ALPHA_AU`. An
 earlier version of this line passed `1093.0` explicitly and got 0.3476,
@@ -157,7 +157,7 @@ deeper does not help. Only colder atoms, or a different trap wavelength, would.
 | 100 µK | 3.655 MHz |
 | 556 µK | 20.3 MHz (ENVELOPE, past the harmonic limit) |
 
-For scale, the record's whole ramp edge is 0.364 MHz and the natural width is
+For scale, the record's whole ramp edge is 0.360 MHz and the natural width is
 `constants.GAMMA_NAT_HZ` = 3.4925 MHz. A 1064 nm trap reaches the record's
 ramp edge at **9.5 µK** and the natural width at **95.6 µK**. A sample at the
 few-hundred-µK temperature that a fibre load without further cooling would
@@ -310,7 +310,7 @@ filled fibre, line width natural plus transit plus ramp.
 | natural FWHM | 3.4925 MHz | 1.802 MHz | 0.410 MHz (ENVELOPE) |
 | `S0` at 100 mW | 6.83 MHz | 26.1 MHz | 171 MHz |
 | power at which `S0` = natural width | **51.1 mW** | **6.91 mW** | **240 µW** |
-| power at which `S0` = the cell's 0.364 MHz | 5.09 mW | 0.68 mW | 0.0049 mW |
+| power at which `S0` = the cell's 0.360 MHz | 5.09 mW | 0.68 mW | 0.0049 mW |
 | peak rate per atom at 100 mW | 6.22e6 /s | 5.48e6 /s | 1.29e6 /s |
 | counts/s, 1e4 cold atoms, 100 mW | 2.7e5 | 1.6e5 | 9.9e3 |
 | counts/s, cold, at the usable power | 1.2e5 | 2.2e4 | 4.2e3 |
@@ -545,7 +545,7 @@ trap frequency and confinement parameter downstream is anchored to it. Two
 independent checks put it wide. The capillary model gives `w0 = 0.6435 a`, so a
 48 µm core implies **15.4 µm**, not 19. A published kagome measurement gives
 `w0/a` = 0.694, which applied to a 24 µm core radius gives **16.7 µm**. Taking
-16.7 µm raises the intensity by 1.30, so the depth would move from 1090.7 to
+16.7 µm raises the intensity by 1.30, so the depth would move from 1090.7 to  <!-- other-quantity: an intensity factor at 16.7 um -->
 1411.9 µK and the axial frequency from 429.4 to 488.5 kHz (calculated).
 
 For the shift budget of section 1.3 this does not matter, because the trap depth

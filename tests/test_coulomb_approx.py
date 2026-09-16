@@ -13,6 +13,7 @@ import warnings
 import numpy as np
 import pytest
 
+from rb5s6s import constants as K
 from rb5s6s.coulomb_approx import (calibrate, radial_integral, reduced_e1_s_to_p,
                                    n_star, E_ION_CM, RYD_RB_CM)
 from rb5s6s.polarizability import E_6S_CM
@@ -73,6 +74,6 @@ def test_the_deep_derivation_bounds_the_multipole_channels_and_moves_the_constan
     assert float(rows[("E2_over_E1_shift", "at_drive")]["value"]) < 1e-3
     assert float(rows[("M1_over_E1_shift", "at_drive")]["value"]) < 1e-4
     d = rows[("delta_alpha", "at_drive")]
-    assert abs(float(d["value"]) - (-1145.0)) < 30.0
+    assert abs(float(d["value"]) - K.DELTA_ALPHA_AU) < 30.0
     assert 0 < float(d["err"]) < 15.0
     assert abs(float(rows[("static_tail_pull", "computed_vs_SS2011")]["value"])) < 2.0

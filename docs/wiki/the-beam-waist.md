@@ -83,10 +83,16 @@ uncertainty out of proportion to its own fractional size.
 
 [`rb5s6s/constants.py`](../../rb5s6s/constants.py) holds `W0_MEASURED_M` and
 `W0_BAND_M`, the accepted value and working band every $w_0$-dependent
-quantity reads from. This waist is measured on this bench, not re-measured
-during the campaign: the 64 µm value of record is [Rajasree
-2020](../lit/rajasree2020thesis.md)'s measurement, made on the same optical
-table, laser and lenses as this campaign, in its $1/e^2$ convention.
+quantity reads from. **This waist is not measured on this bench.** The 64 µm
+of record is one profiling of the OIST lineage, reported in both [Rajasree
+2020](../lit/rajasree2020thesis.md) and [Nieddu 2019](../lit/nieddu2019.md) in
+its $1/e^2$ convention, and taken on the laser generation preceding the one this
+campaign used. The owner retired it as the waist authority on 2026-09-10 and
+restated why on 2026-09-15: a different laser source, and a 2025 beam that
+additionally passes a 3 mm modulator aperture the profiled beam did not. Both
+differences push the effective waist above the transferred value, so the
+constant is a carried convention and the name `W0_MEASURED_M` asserts what its
+own docstring denies.
 
 The campaign did not read the waist off its own beam at its own time, so
 what remains open is drift or realignment since that measurement, and the

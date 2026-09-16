@@ -43,6 +43,283 @@
   "source_file": "results/beta_self_probe.csv",
   "source_value": "0.0298311050142662"
  },
+ "beta_self_theory:anchor:effective_temperature_k": {
+  "producer": "run_beta_self_theory.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/self-broadening.md",
+    "line": 245,
+    "writes": "429"
+   }
+  ],
+  "source_file": "results/beta_self_theory.csv",
+  "source_value": "428.9"
+ },
+ "beta_self_theory:anchor_bar_one_sigma:fit_half_95pc": {
+  "producer": "run_beta_self_theory.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/self-broadening.md",
+    "line": 312,
+    "writes": "8.69"
+   }
+  ],
+  "source_file": "results/beta_self_theory.csv",
+  "source_value": "8.69"
+ },
+ "beta_self_theory:anchor_bar_one_sigma:gaussian_1.96": {
+  "producer": "run_beta_self_theory.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/self-broadening.md",
+    "line": 315,
+    "writes": "6.76"
+   }
+  ],
+  "source_file": "results/beta_self_theory.csv",
+  "source_value": "6.76"
+ },
+ "beta_self_theory:anchor_bar_one_sigma:t_dof3_3.18": {
+  "producer": "run_beta_self_theory.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/self-broadening.md",
+    "line": 314,
+    "writes": "5.78"
+   }
+  ],
+  "source_file": "results/beta_self_theory.csv",
+  "source_value": "5.78"
+ },
+ "beta_self_theory:beta_self_6s:anchored": {
+  "producer": "run_beta_self_theory.py",
+  "quoting_sites": [
+   {
+    "file": "docs/CLAIMS.md",
+    "line": 449,
+    "writes": "3.50"
+   },
+   {
+    "file": "docs/RESEARCH_DECISIONS.md",
+    "line": 334,
+    "writes": "3.50"
+   },
+   {
+    "file": "docs/big_picture/02_the-method-and-its-limits.md",
+    "line": 281,
+    "writes": "3.50"
+   },
+   {
+    "file": "docs/notes/vdw_difference_potential_and_4d_channel.md",
+    "line": 177,
+    "writes": "3.50"
+   },
+   {
+    "file": "docs/notes/vdw_difference_potential_and_4d_channel.md",
+    "line": 223,
+    "writes": "3.50"
+   },
+   {
+    "file": "docs/plan/05_width-collision-amplitude.md",
+    "line": 84,
+    "writes": "3.50"
+   },
+   {
+    "file": "docs/quantities/self-broadening.md",
+    "line": 194,
+    "writes": "3.50"
+   },
+   {
+    "file": "docs/wiki/self-broadening.md",
+    "line": 251,
+    "writes": "3.50"
+   },
+   {
+    "file": "results/README.md",
+    "line": 99,
+    "writes": "3.50"
+   }
+  ],
+  "source_file": "results/beta_self_theory.csv",
+  "source_value": "3.4971763177723574"
+ },
+ "beta_self_theory:beta_self_6s:anchored:err": {
+  "producer": "run_beta_self_theory.py",
+  "quoting_sites": [
+   {
+    "file": "docs/big_picture/02_the-method-and-its-limits.md",
+    "line": 281,
+    "writes": "0.37"
+   },
+   {
+    "file": "docs/notes/vdw_difference_potential_and_4d_channel.md",
+    "line": 226,
+    "writes": "0.37"
+   },
+   {
+    "file": "docs/quantities/self-broadening.md",
+    "line": 194,
+    "writes": "0.37"
+   },
+   {
+    "file": "docs/wiki/self-broadening.md",
+    "line": 251,
+    "writes": "0.37"
+   },
+   {
+    "file": "results/README.md",
+    "line": 99,
+    "writes": "0.37"
+   }
+  ],
+  "source_file": "results/beta_self_theory.csv",
+  "source_value": "0.3721005747704747"
+ },
+ "beta_self_theory:beta_self_6s:first_principles": {
+  "producer": "run_beta_self_theory.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/self-broadening.md",
+    "line": 252,
+    "writes": "3.49"
+   }
+  ],
+  "source_file": "results/beta_self_theory.csv",
+  "source_value": "3.4905"
+ },
+ "beta_self_theory:beta_self_6s:rel_uncertainty": {
+  "producer": "run_beta_self_theory.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/self-broadening.md",
+    "line": 285,
+    "writes": "10.64"
+   }
+  ],
+  "source_file": "results/beta_self_theory.csv",
+  "source_value": "10.64"
+ },
+ "beta_self_theory:beta_self_7s:measured": {
+  "producer": "run_beta_self_theory.py",
+  "quoting_sites": [
+   {
+    "file": "docs/FUTURE_TRANSITIONS_titsapph.md",
+    "line": 411,
+    "writes": "5.62"
+   },
+   {
+    "file": "docs/LITERATURE.md",
+    "line": 119,
+    "writes": "5.62"
+   },
+   {
+    "file": "docs/LITERATURE.md",
+    "line": 204,
+    "writes": "5.62"
+   },
+   {
+    "file": "docs/quantities/self-broadening.md",
+    "line": 70,
+    "writes": "5.62"
+   },
+   {
+    "file": "docs/wiki/self-broadening.md",
+    "line": 253,
+    "writes": "5.62"
+   }
+  ],
+  "source_file": "results/beta_self_theory.csv",
+  "source_value": "5.6242"
+ },
+ "beta_self_theory:beta_self_7s:predicted": {
+  "producer": "run_beta_self_theory.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/self-broadening.md",
+    "line": 253,
+    "writes": "5.61"
+   }
+  ],
+  "source_file": "results/beta_self_theory.csv",
+  "source_value": "5.6148"
+ },
+ "beta_self_theory:beta_self_7s:recipe_scale_error": {
+  "producer": "run_beta_self_theory.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/self-broadening.md",
+    "line": 255,
+    "writes": "-0.17"
+   }
+  ],
+  "source_file": "results/beta_self_theory.csv",
+  "source_value": "-0.17"
+ },
+ "beta_self_theory:budget:anchor_conversion_temperature": {
+  "producer": "run_beta_self_theory.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/self-broadening.md",
+    "line": 280,
+    "writes": "2.51"
+   }
+  ],
+  "source_file": "results/beta_self_theory.csv",
+  "source_value": "2.51"
+ },
+ "beta_self_theory:budget:anchor_measurement": {
+  "producer": "run_beta_self_theory.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/self-broadening.md",
+    "line": 278,
+    "writes": "10.08"
+   },
+   {
+    "file": "docs/wiki/self-broadening.md",
+    "line": 286,
+    "writes": "10.08"
+   }
+  ],
+  "source_file": "results/beta_self_theory.csv",
+  "source_value": "10.08"
+ },
+ "beta_self_theory:budget:exchange_branches": {
+  "producer": "run_beta_self_theory.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/self-broadening.md",
+    "line": 279,
+    "writes": "1.52"
+   }
+  ],
+  "source_file": "results/beta_self_theory.csv",
+  "source_value": "1.52"
+ },
+ "beta_self_theory:budget:ground_pair_truncation": {
+  "producer": "run_beta_self_theory.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/self-broadening.md",
+    "line": 282,
+    "writes": "0.28"
+   }
+  ],
+  "source_file": "results/beta_self_theory.csv",
+  "source_value": "0.28"
+ },
+ "beta_self_theory:budget:matrix_elements_2pc_differential": {
+  "producer": "run_beta_self_theory.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/self-broadening.md",
+    "line": 281,
+    "writes": "1.71"
+   }
+  ],
+  "source_file": "results/beta_self_theory.csv",
+  "source_value": "1.71"
+ },
  "blackbody_channels:bbr_detector_background:T70C": {
   "producer": "run_blackbody_channels.py",
   "quoting_sites": [
@@ -338,11 +615,11 @@
    {
     "file": "docs/UNCERTAINTY.md",
     "line": 446,
-    "writes": "0.86"
+    "writes": "0.92"
    }
   ],
   "source_file": "results/collisional_shift_bound.csv",
-  "source_value": "0.860"
+  "source_value": "0.920"
  },
  "collisional_shift_bound:expectation:shift_expected_differential": {
   "producer": "run_collisional_shift_bound.py",
@@ -350,11 +627,11 @@
    {
     "file": "docs/UNCERTAINTY.md",
     "line": 444,
-    "writes": "0.031"
+    "writes": "0.033"
    }
   ],
   "source_file": "results/collisional_shift_bound.csv",
-  "source_value": "0.03120"
+  "source_value": "0.03335"
  },
  "cumulant_window_check:kappa1_window_excess_pct:gc0.55": {
   "producer": "run_cumulant_window_check.py",
@@ -487,28 +764,28 @@
    {
     "file": "docs/big_picture/04_what-2025-delivered.md",
     "line": 67,
-    "writes": "0.0324"
+    "writes": "0.0342"
    },
    {
     "file": "docs/plan/00_the-case.md",
     "line": 137,
-    "writes": "0.0324"
+    "writes": "0.0342"
    },
    {
     "file": "docs/quantities/ac-stark-light-shift.md",
-    "line": 233,
-    "writes": "0.0324"
+    "line": 234,
+    "writes": "0.0342"
    }
   ],
   "source_file": "results/delta_alpha_posterior.csv",
-  "source_value": "0.0324"
+  "source_value": "0.0342"
  },
  "delta_alpha_posterior:comparison:posterior_prob_above_orson2021": {
   "producer": "run_delta_alpha_posterior.py",
   "quoting_sites": [
    {
     "file": "docs/quantities/ac-stark-light-shift.md",
-    "line": 235,
+    "line": 236,
     "writes": "0.0404"
    }
   ],
@@ -629,7 +906,7 @@
    },
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 766,
+    "line": 782,
     "writes": "0.606"
    }
   ],
@@ -646,7 +923,7 @@
    },
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 764,
+    "line": 780,
     "writes": "-1.838"
    }
   ],
@@ -675,7 +952,7 @@
    },
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 762,
+    "line": 778,
     "writes": "-1.914"
    }
   ],
@@ -823,7 +1100,7 @@
    },
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 769,
+    "line": 785,
     "writes": "3.97"
    }
   ],
@@ -852,7 +1129,7 @@
    },
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 768,
+    "line": 784,
     "writes": "2.78"
    }
   ],
@@ -1050,7 +1327,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 740,
+    "line": 756,
     "writes": "0.1517"
    }
   ],
@@ -1062,7 +1339,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 741,
+    "line": 757,
     "writes": "0.0055"
    }
   ],
@@ -1074,7 +1351,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 742,
+    "line": 758,
     "writes": "-0.248"
    }
   ],
@@ -1086,7 +1363,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 743,
+    "line": 759,
     "writes": "0.050"
    }
   ],
@@ -1098,7 +1375,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 748,
+    "line": 764,
     "writes": "0.0669"
    }
   ],
@@ -1110,7 +1387,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 738,
+    "line": 754,
     "writes": "0.00863"
    }
   ],
@@ -1122,7 +1399,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 752,
+    "line": 768,
     "writes": "0.098"
    }
   ],
@@ -1134,7 +1411,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 753,
+    "line": 769,
     "writes": "0.035"
    }
   ],
@@ -1146,7 +1423,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 755,
+    "line": 771,
     "writes": "0.084"
    }
   ],
@@ -1158,7 +1435,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 756,
+    "line": 772,
     "writes": "0.043"
    }
   ],
@@ -1170,7 +1447,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 734,
+    "line": 750,
     "writes": "0.0814"
    }
   ],
@@ -1218,7 +1495,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 705,
+    "line": 721,
     "writes": "2.98e-08"
    }
   ],
@@ -1646,12 +1923,12 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 853,
+    "line": 869,
     "writes": "18.6"
    },
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 853,
+    "line": 869,
     "writes": "18.6"
    }
   ],
@@ -1663,7 +1940,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 853,
+    "line": 869,
     "writes": "0.0032"
    }
   ],
@@ -1702,7 +1979,7 @@
    },
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 801,
+    "line": 817,
     "writes": "7.23"
    }
   ],
@@ -1724,7 +2001,7 @@
    },
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 801,
+    "line": 817,
     "writes": "6.48"
    }
   ],
@@ -1736,7 +2013,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 801,
+    "line": 817,
     "writes": "33.6"
    }
   ],
@@ -1748,7 +2025,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 801,
+    "line": 817,
     "writes": "37.4"
    }
   ],
@@ -1760,7 +2037,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 801,
+    "line": 817,
     "writes": "5.3179"
    }
   ],
@@ -1772,7 +2049,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 801,
+    "line": 817,
     "writes": "5.4036"
    }
   ],
@@ -1784,7 +2061,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 853,
+    "line": 869,
     "writes": "0.0588"
    }
   ],
@@ -1882,7 +2159,7 @@
    },
    {
     "file": "docs/wiki/third-cumulant.md",
-    "line": 330,
+    "line": 332,
     "writes": "89.701"
    },
    {
@@ -2023,7 +2300,7 @@
    },
    {
     "file": "docs/wiki/third-cumulant.md",
-    "line": 332,
+    "line": 334,
     "writes": "0.000"
    }
   ],
@@ -2097,7 +2374,7 @@
    },
    {
     "file": "docs/wiki/third-cumulant.md",
-    "line": 329,
+    "line": 331,
     "writes": "106.911"
    },
    {
@@ -2126,12 +2403,59 @@
   "source_file": "results/laser_epoch.csv",
   "source_value": "1.2"
  },
+ "lever_crosscheck:gamma_rise_factor:70to130": {
+  "producer": "run_lever_crosscheck.py",
+  "quoting_sites": [
+   {
+    "file": "docs/DATA.md",
+    "line": 776,
+    "writes": "1.48"
+   },
+   {
+    "file": "docs/DATA.md",
+    "line": 778,
+    "writes": "1.48"
+   },
+   {
+    "file": "docs/methods/06_the_statistics.md",
+    "line": 125,
+    "writes": "1.48"
+   },
+   {
+    "file": "docs/methods/07_what_we_found.md",
+    "line": 103,
+    "writes": "1.48"
+   },
+   {
+    "file": "docs/plan/05_width-collision-amplitude.md",
+    "line": 37,
+    "writes": "1.48"
+   },
+   {
+    "file": "docs/plan/05_width-collision-amplitude.md",
+    "line": 74,
+    "writes": "1.48"
+   },
+   {
+    "file": "docs/quantities/self-broadening.md",
+    "line": 111,
+    "writes": "1.48"
+   },
+   {
+    "file": "docs/quantities/self-broadening.md",
+    "line": 175,
+    "writes": "1.48"
+   }
+  ],
+  "source_file": "results/lever_crosscheck.csv",
+  "source_value": "1.48"
+ },
  "lit:gomez2005:tau_6s_ns": {
   "producer": null,
   "quoting_sites": [
    {
     "file": "docs/THEORY_NOTE.md",
-    "line": 785,
+    "line": 787,
     "writes": "45.57(17)"
    }
   ],
@@ -2143,7 +2467,7 @@
   "quoting_sites": [
    {
     "file": "docs/THEORY_NOTE.md",
-    "line": 745,
+    "line": 747,
     "writes": "790.032326(32)"
    }
   ],
@@ -2179,7 +2503,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/04_what-2025-delivered.md",
-    "line": 90,
+    "line": 91,
     "writes": "18"
    },
    {
@@ -2196,19 +2520,19 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 624,
-    "writes": "2.85"
+    "line": 638,
+    "writes": "5.46"
    }
   ],
   "source_file": "results/moment_admission.csv",
-  "source_value": "2.847"
+  "source_value": "5.464"
  },
  "moment_admission:effective_rank_all:": {
   "producer": "run_moment_admission.py",
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 628,
+    "line": 644,
     "writes": "8.42"
    }
   ],
@@ -2220,17 +2544,17 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 612,
-    "writes": "21"
+    "line": 623,
+    "writes": "33"
    },
    {
     "file": "docs/wiki/third-cumulant.md",
-    "line": 289,
-    "writes": "21"
+    "line": 291,
+    "writes": "33"
    }
   ],
   "source_file": "results/moment_admission.csv",
-  "source_value": "21"
+  "source_value": "33"
  },
  "moment_admission:snr_admitted_max:": {
   "producer": "run_moment_admission.py",
@@ -2247,7 +2571,7 @@
    },
    {
     "file": "rb5s6s/fullmodel.py",
-    "line": 598,
+    "line": 619,
     "writes": "1832"
    }
   ],
@@ -2269,7 +2593,7 @@
    },
    {
     "file": "rb5s6s/fullmodel.py",
-    "line": 597,
+    "line": 618,
     "writes": "23.23"
    }
   ],
@@ -2281,7 +2605,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 615,
+    "line": 626,
     "writes": "1667"
    }
   ],
@@ -2293,7 +2617,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 617,
+    "line": 628,
     "writes": "0.00543"
    }
   ],
@@ -2315,7 +2639,7 @@
    },
    {
     "file": "rb5s6s/fullmodel.py",
-    "line": 599,
+    "line": 620,
     "writes": "1.279"
    }
   ],
@@ -3128,11 +3452,11 @@
    {
     "file": "docs/wiki/guided-atoms-and-nanofibres.md",
     "line": 126,
-    "writes": "41.426"
+    "writes": "40.948"
    }
   ],
   "source_file": "results/platform_twins.csv",
-  "source_value": "41.426"
+  "source_value": "40.9484"
  },
  "platform_twins:onf:onf:saturation_s": {
   "producer": "run_platform_twins.py",
@@ -3202,7 +3526,7 @@
    },
    {
     "file": "docs/THEORY_NOTE.md",
-    "line": 754,
+    "line": 756,
     "writes": "-299.4"
    }
   ],
@@ -3219,12 +3543,12 @@
    },
    {
     "file": "docs/CLAIMS.md",
-    "line": 214,
+    "line": 213,
     "writes": "-1131.8"
    },
    {
     "file": "docs/CLAIMS.md",
-    "line": 517,
+    "line": 516,
     "writes": "-1131.8"
    },
    {
@@ -3259,7 +3583,12 @@
    },
    {
     "file": "docs/big_picture/04_what-2025-delivered.md",
-    "line": 78,
+    "line": 79,
+    "writes": "-1131.8"
+   },
+   {
+    "file": "docs/notes/two_photon_saturation_companion.md",
+    "line": 77,
     "writes": "-1131.8"
    },
    {
@@ -3281,12 +3610,12 @@
    },
    {
     "file": "docs/CLAIMS.md",
-    "line": 214,
+    "line": 213,
     "writes": "5.9"
    },
    {
     "file": "docs/CLAIMS.md",
-    "line": 517,
+    "line": 516,
     "writes": "5.9"
    },
    {
@@ -3321,12 +3650,24 @@
    },
    {
     "file": "docs/big_picture/04_what-2025-delivered.md",
-    "line": 78,
+    "line": 79,
     "writes": "5.9"
    },
    {
     "file": "docs/plan/00_the-case.md",
     "line": 135,
+    "writes": "5.9"
+   }
+  ],
+  "source_file": "results/polarizability_deep.csv",
+  "source_value": "5.9"
+ },
+ "polarizability_deep:delta_alpha_sigma_pairs:MC": {
+  "producer": "run_polarizability_deep.py",
+  "quoting_sites": [
+   {
+    "file": "docs/notes/two_photon_saturation_companion.md",
+    "line": 79,
     "writes": "5.9"
    }
   ],
@@ -3343,7 +3684,7 @@
    },
    {
     "file": "docs/CLAIMS.md",
-    "line": 220,
+    "line": 219,
     "writes": "+6.5"
    },
    {
@@ -3585,7 +3926,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 873,
+    "line": 937,
     "writes": "5.50"
    }
   ],
@@ -3597,7 +3938,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 878,
+    "line": 942,
     "writes": "-0.034"
    }
   ],
@@ -3609,7 +3950,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 878,
+    "line": 942,
     "writes": "0.061"
    }
   ],
@@ -3621,7 +3962,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 879,
+    "line": 943,
     "writes": "-0.019"
    }
   ],
@@ -3633,7 +3974,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 879,
+    "line": 943,
     "writes": "0.018"
    }
   ],
@@ -3645,7 +3986,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 881,
+    "line": 945,
     "writes": "-0.17"
    }
   ],
@@ -3657,7 +3998,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 881,
+    "line": 945,
     "writes": "0.13"
    }
   ],
@@ -3669,7 +4010,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 876,
+    "line": 940,
     "writes": "1.378"
    },
    {
@@ -3686,7 +4027,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 876,
+    "line": 940,
     "writes": "0.027"
    }
   ],
@@ -4435,60 +4776,60 @@
    {
     "file": "docs/methods/06_the_statistics.md",
     "line": 660,
-    "writes": "0.364"
+    "writes": "0.360"
    },
    {
     "file": "docs/plan/00_the-case.md",
     "line": 100,
-    "writes": "0.364"
+    "writes": "0.360"
    },
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 801,
-    "writes": "0.364"
+    "line": 817,
+    "writes": "0.360"
    },
    {
     "file": "docs/wiki/magnetic-sublevels.md",
     "line": 138,
-    "writes": "0.364"
+    "writes": "0.360"
    }
   ],
   "source_file": "results/stark_sweep.csv",
-  "source_value": "0.364"
+  "source_value": "0.360"
  },
  "stark_sweep:S0_225mW_pred_hi:shared": {
   "producer": "run_stark_sweep.py",
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 801,
-    "writes": "0.396"
+    "line": 817,
+    "writes": "0.391"
    },
    {
     "file": "results/README.md",
-    "line": 296,
-    "writes": "0.396"
+    "line": 298,
+    "writes": "0.391"
    }
   ],
   "source_file": "results/stark_sweep.csv",
-  "source_value": "0.396"
+  "source_value": "0.391"
  },
  "stark_sweep:S0_225mW_pred_lo:shared": {
   "producer": "run_stark_sweep.py",
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 801,
-    "writes": "0.316"
+    "line": 817,
+    "writes": "0.312"
    },
    {
     "file": "results/README.md",
-    "line": 296,
-    "writes": "0.316"
+    "line": 298,
+    "writes": "0.312"
    }
   ],
   "source_file": "results/stark_sweep.csv",
-  "source_value": "0.316"
+  "source_value": "0.312"
  },
  "stark_sweep:chi2_red:fit": {
   "producer": "run_stark_sweep.py",
@@ -4563,7 +4904,7 @@
    },
    {
     "file": "docs/wiki/third-cumulant.md",
-    "line": 402,
+    "line": 404,
     "writes": "0.0240"
    }
   ],
@@ -4602,7 +4943,7 @@
    },
    {
     "file": "docs/wiki/third-cumulant.md",
-    "line": 404,
+    "line": 406,
     "writes": "10.0664"
    }
   ],
@@ -4615,21 +4956,21 @@
    {
     "file": "docs/methods/05_the_frequency_ruler.md",
     "line": 309,
-    "writes": "0.00010822"
+    "writes": "0.00010447"
    },
    {
     "file": "docs/plan/07_acquisition-settings.md",
     "line": 1906,
-    "writes": "0.00010822"
+    "writes": "0.00010447"
    },
    {
     "file": "docs/wiki/the-wavemeter-and-the-frequency-axis.md",
     "line": 223,
-    "writes": "0.00010822"
+    "writes": "0.00010447"
    }
   ],
   "source_file": "results/sweep_linearity.csv",
-  "source_value": "0.000108223"
+  "source_value": "0.000104474"
  },
  "sweep_linearity:archive:rate_variation_tolerance": {
   "producer": "run_sweep_linearity.py",
@@ -4637,41 +4978,41 @@
    {
     "file": "docs/RESULTS.md",
     "line": 68,
-    "writes": "0.00203"
+    "writes": "0.00196"
    },
    {
     "file": "docs/methods/05_the_frequency_ruler.md",
     "line": 309,
-    "writes": "0.00203"
+    "writes": "0.00196"
    },
    {
     "file": "docs/methods/05_the_frequency_ruler.md",
     "line": 317,
-    "writes": "0.00203"
+    "writes": "0.00196"
    },
    {
     "file": "docs/plan/07_acquisition-settings.md",
     "line": 1906,
-    "writes": "0.00203"
+    "writes": "0.00196"
    },
    {
     "file": "docs/wiki/the-wavemeter-and-the-frequency-axis.md",
     "line": 223,
-    "writes": "0.00203"
+    "writes": "0.00196"
    },
    {
     "file": "docs/wiki/third-cumulant.md",
-    "line": 386,
-    "writes": "0.00203"
+    "line": 388,
+    "writes": "0.00196"
    },
    {
     "file": "results/README.md",
     "line": 78,
-    "writes": "0.00203"
+    "writes": "0.00196"
    }
   ],
   "source_file": "results/sweep_linearity.csv",
-  "source_value": "0.00203"
+  "source_value": "0.00196"
  },
  "sweep_linearity:archive:rate_variation_tolerance_coherence_err": {
   "producer": "run_sweep_linearity.py",
@@ -4679,11 +5020,11 @@
    {
     "file": "docs/methods/05_the_frequency_ruler.md",
     "line": 326,
-    "writes": "0.00019"
+    "writes": "0.00018"
    }
   ],
   "source_file": "results/sweep_linearity.csv",
-  "source_value": "0.00019"
+  "source_value": "0.00018"
  },
  "sweep_linearity:archive:rate_variation_tolerance_err": {
   "producer": "run_sweep_linearity.py",
@@ -4691,21 +5032,21 @@
    {
     "file": "docs/methods/05_the_frequency_ruler.md",
     "line": 318,
-    "writes": "0.00064"
+    "writes": "0.00061"
    },
    {
     "file": "docs/wiki/the-wavemeter-and-the-frequency-axis.md",
     "line": 231,
-    "writes": "0.00064"
+    "writes": "0.00061"
    },
    {
     "file": "docs/wiki/third-cumulant.md",
-    "line": 392,
-    "writes": "0.00064"
+    "line": 394,
+    "writes": "0.00061"
    }
   ],
   "source_file": "results/sweep_linearity.csv",
-  "source_value": "0.00064"
+  "source_value": "0.00061"
  },
  "sweep_linearity:campaign_16um:k3_light_shift": {
   "producer": "run_sweep_linearity.py",
@@ -4713,16 +5054,16 @@
    {
     "file": "docs/plan/07_acquisition-settings.md",
     "line": 1908,
-    "writes": "-0.689176"
+    "writes": "-0.666476"
    },
    {
     "file": "docs/wiki/the-wavemeter-and-the-frequency-axis.md",
     "line": 225,
-    "writes": "-0.689176"
+    "writes": "-0.666476"
    }
   ],
   "source_file": "results/sweep_linearity.csv",
-  "source_value": "-0.689176"
+  "source_value": "-0.666476"
  },
  "sweep_linearity:campaign_16um:rate_variation_tolerance": {
   "producer": "run_sweep_linearity.py",
@@ -4730,26 +5071,26 @@
    {
     "file": "docs/methods/05_the_frequency_ruler.md",
     "line": 340,
-    "writes": "1.48"
+    "writes": "1.44"
    },
    {
     "file": "docs/plan/07_acquisition-settings.md",
     "line": 1908,
-    "writes": "1.48"
+    "writes": "1.44"
    },
    {
     "file": "docs/wiki/the-wavemeter-and-the-frequency-axis.md",
     "line": 225,
-    "writes": "1.48"
+    "writes": "1.44"
    },
    {
     "file": "results/README.md",
     "line": 78,
-    "writes": "1.48"
+    "writes": "1.44"
    }
   ],
   "source_file": "results/sweep_linearity.csv",
-  "source_value": "1.48"
+  "source_value": "1.44"
  },
  "sweep_linearity:campaign_16um:rate_variation_tolerance_err": {
   "producer": "run_sweep_linearity.py",
@@ -4757,16 +5098,16 @@
    {
     "file": "docs/methods/05_the_frequency_ruler.md",
     "line": 341,
-    "writes": "0.50"
+    "writes": "0.48"
    },
    {
     "file": "docs/wiki/the-wavemeter-and-the-frequency-axis.md",
     "line": 233,
-    "writes": "0.50"
+    "writes": "0.48"
    }
   ],
   "source_file": "results/sweep_linearity.csv",
-  "source_value": "0.50"
+  "source_value": "0.48"
  },
  "sweep_linearity:campaign_40um:k3_light_shift": {
   "producer": "run_sweep_linearity.py",
@@ -4774,21 +5115,21 @@
    {
     "file": "docs/methods/05_the_frequency_ruler.md",
     "line": 310,
-    "writes": "0.00071772"
+    "writes": "0.00069510"
    },
    {
     "file": "docs/plan/07_acquisition-settings.md",
     "line": 1907,
-    "writes": "0.00071772"
+    "writes": "0.00069510"
    },
    {
     "file": "docs/wiki/the-wavemeter-and-the-frequency-axis.md",
     "line": 224,
-    "writes": "0.00071772"
+    "writes": "0.00069510"
    }
   ],
   "source_file": "results/sweep_linearity.csv",
-  "source_value": "0.000717723"
+  "source_value": "0.000695101"
  },
  "sweep_linearity:campaign_40um:rate_variation_tolerance": {
   "producer": "run_sweep_linearity.py",
@@ -4796,36 +5137,36 @@
    {
     "file": "docs/methods/05_the_frequency_ruler.md",
     "line": 310,
-    "writes": "0.0136"
+    "writes": "0.0131"
    },
    {
     "file": "docs/methods/05_the_frequency_ruler.md",
     "line": 319,
-    "writes": "0.0136"
+    "writes": "0.0131"
    },
    {
     "file": "docs/plan/07_acquisition-settings.md",
     "line": 1907,
-    "writes": "0.0136"
+    "writes": "0.0131"
    },
    {
     "file": "docs/wiki/the-wavemeter-and-the-frequency-axis.md",
     "line": 224,
-    "writes": "0.0136"
+    "writes": "0.0131"
    },
    {
     "file": "docs/wiki/third-cumulant.md",
-    "line": 385,
-    "writes": "0.0136"
+    "line": 387,
+    "writes": "0.0131"
    },
    {
     "file": "results/README.md",
     "line": 78,
-    "writes": "0.0136"
+    "writes": "0.0131"
    }
   ],
   "source_file": "results/sweep_linearity.csv",
-  "source_value": "0.0136"
+  "source_value": "0.0131"
  },
  "sweep_linearity:campaign_40um:rate_variation_tolerance_coherence_err": {
   "producer": "run_sweep_linearity.py",
@@ -4833,16 +5174,16 @@
    {
     "file": "docs/methods/05_the_frequency_ruler.md",
     "line": 328,
-    "writes": "0.0021"
+    "writes": "0.0020"
    },
    {
     "file": "docs/wiki/standing-waves.md",
     "line": 137,
-    "writes": "0.0021"
+    "writes": "0.0020"
    }
   ],
   "source_file": "results/sweep_linearity.csv",
-  "source_value": "0.0021"
+  "source_value": "0.0020"
  },
  "sweep_linearity:campaign_40um:rate_variation_tolerance_err": {
   "producer": "run_sweep_linearity.py",
@@ -4859,7 +5200,7 @@
    },
    {
     "file": "docs/wiki/third-cumulant.md",
-    "line": 391,
+    "line": 393,
     "writes": "0.0022"
    }
   ],
@@ -4872,11 +5213,11 @@
    {
     "file": "docs/methods/10_the_odd_moments.md",
     "line": 289,
-    "writes": "1.90"
+    "writes": "1.91"
    }
   ],
   "source_file": "results/three_channel_forecast.csv",
-  "source_value": "1.904"
+  "source_value": "1.906"
  },
  "three_channel_forecast:base::kappa_pull": {
   "producer": "run_three_channel_forecast.py",
@@ -4884,11 +5225,11 @@
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
     "line": 88,
-    "writes": "25.89"
+    "writes": "25.59"
    }
   ],
   "source_file": "results/three_channel_forecast.csv",
-  "source_value": "25.8854"
+  "source_value": "25.5888"
  },
  "three_channel_forecast:base::kappa_true": {
   "producer": "run_three_channel_forecast.py",
@@ -4896,11 +5237,11 @@
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
     "line": 88,
-    "writes": "25.891"
+    "writes": "25.593"
    }
   ],
   "source_file": "results/three_channel_forecast.csv",
-  "source_value": "25.8912"
+  "source_value": "25.5927"
  },
  "three_channel_forecast:base::pull_factor_quiet": {
   "producer": "run_three_channel_forecast.py",
@@ -4913,26 +5254,26 @@
    {
     "file": "docs/plan/04_intensity-and-light-shift.md",
     "line": 393,
-    "writes": "0.5752"
+    "writes": "0.5754"
    },
    {
     "file": "docs/plan/12_open-apparatus-items.md",
     "line": 78,
-    "writes": "0.5752"
+    "writes": "0.5754"
    },
    {
     "file": "docs/wiki/standing-waves.md",
     "line": 126,
-    "writes": "0.5752"
+    "writes": "0.5754"
    },
    {
     "file": "docs/wiki/the-inhomogeneous-light-shift.md",
     "line": 93,
-    "writes": "0.5752"
+    "writes": "0.5754"
    }
   ],
   "source_file": "results/three_channel_forecast.csv",
-  "source_value": "0.5752"
+  "source_value": "0.5754"
  },
  "three_channel_forecast:base::sd_pull": {
   "producer": "run_three_channel_forecast.py",
@@ -4944,7 +5285,7 @@
    }
   ],
   "source_file": "results/three_channel_forecast.csv",
-  "source_value": "0.3368"
+  "source_value": "0.3369"
  },
  "three_channel_forecast:depth_ladder_25MHz::kappa_pull": {
   "producer": "run_three_channel_forecast.py",
@@ -4956,7 +5297,7 @@
    }
   ],
   "source_file": "results/three_channel_forecast.csv",
-  "source_value": "12.6174"
+  "source_value": "12.6127"
  },
  "three_channel_forecast:depth_ladder_25MHz::sd_pull": {
   "producer": "run_three_channel_forecast.py",
@@ -4968,7 +5309,7 @@
    }
   ],
   "source_file": "results/three_channel_forecast.csv",
-  "source_value": "51.6349"
+  "source_value": "51.6511"
  },
  "three_channel_forecast:depth_ladder_40MHz::kappa_pull": {
   "producer": "run_three_channel_forecast.py",
@@ -4980,7 +5321,7 @@
    }
   ],
   "source_file": "results/three_channel_forecast.csv",
-  "source_value": "0.0093"
+  "source_value": "0.0090"
  },
  "three_channel_forecast:depth_ladder_40MHz::sd_pull": {
   "producer": "run_three_channel_forecast.py",
@@ -4992,7 +5333,7 @@
    }
   ],
   "source_file": "results/three_channel_forecast.csv",
-  "source_value": "0.0243"
+  "source_value": "0.0239"
  },
  "three_channel_forecast:eom_comb_12.5MHz::kappa_skew": {
   "producer": "run_three_channel_forecast.py",
@@ -5000,11 +5341,11 @@
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
     "line": 151,
-    "writes": "26.3"
+    "writes": "26.0"
    }
   ],
   "source_file": "results/three_channel_forecast.csv",
-  "source_value": "26.2848"
+  "source_value": "26.0392"
  },
  "three_channel_forecast:eom_comb_12.5MHz::pull_factor_quiet": {
   "producer": "run_three_channel_forecast.py",
@@ -5012,11 +5353,11 @@
    {
     "file": "docs/plan/12_open-apparatus-items.md",
     "line": 78,
-    "writes": "0.5542"
+    "writes": "0.5523"
    }
   ],
   "source_file": "results/three_channel_forecast.csv",
-  "source_value": "0.5542"
+  "source_value": "0.5523"
  },
  "three_channel_forecast:eom_comb_12.5MHz::sd_skew": {
   "producer": "run_three_channel_forecast.py",
@@ -5024,11 +5365,11 @@
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
     "line": 152,
-    "writes": "4.4"
+    "writes": "4.7"
    }
   ],
   "source_file": "results/three_channel_forecast.csv",
-  "source_value": "4.3884"
+  "source_value": "4.6500"
  },
  "three_channel_forecast:eom_comb_25MHz::kappa_skew": {
   "producer": "run_three_channel_forecast.py",
@@ -5036,11 +5377,11 @@
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
     "line": 148,
-    "writes": "25.6"
+    "writes": "25.4"
    }
   ],
   "source_file": "results/three_channel_forecast.csv",
-  "source_value": "25.6059"
+  "source_value": "25.3957"
  },
  "three_channel_forecast:eom_comb_25MHz::sd_skew": {
   "producer": "run_three_channel_forecast.py",
@@ -5052,7 +5393,7 @@
    }
   ],
   "source_file": "results/three_channel_forecast.csv",
-  "source_value": "2.3699"
+  "source_value": "2.4129"
  },
  "three_channel_forecast:eom_comb_40MHz::kappa_skew": {
   "producer": "run_three_channel_forecast.py",
@@ -5060,11 +5401,11 @@
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
     "line": 146,
-    "writes": "25.8"
+    "writes": "25.5"
    }
   ],
   "source_file": "results/three_channel_forecast.csv",
-  "source_value": "25.8390"
+  "source_value": "25.5109"
  },
  "three_channel_forecast:eom_comb_40MHz::sd_skew": {
   "producer": "run_three_channel_forecast.py",
@@ -5076,7 +5417,7 @@
    }
   ],
   "source_file": "results/three_channel_forecast.csv",
-  "source_value": "2.1115"
+  "source_value": "2.1466"
  },
  "three_channel_forecast:eom_comb_8MHz::pull_factor_quiet": {
   "producer": "run_three_channel_forecast.py",
@@ -5084,11 +5425,11 @@
    {
     "file": "docs/plan/12_open-apparatus-items.md",
     "line": 78,
-    "writes": "0.4802"
+    "writes": "0.4825"
    }
   ],
   "source_file": "results/three_channel_forecast.csv",
-  "source_value": "0.4802"
+  "source_value": "0.4825"
  },
  "three_channel_forecast:waist_24um::kappa_pull": {
   "producer": "run_three_channel_forecast.py",
@@ -5096,11 +5437,11 @@
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
     "line": 87,
-    "writes": "11.49"
+    "writes": "11.35"
    }
   ],
   "source_file": "results/three_channel_forecast.csv",
-  "source_value": "11.4862"
+  "source_value": "11.3544"
  },
  "three_channel_forecast:waist_24um::kappa_true": {
   "producer": "run_three_channel_forecast.py",
@@ -5108,11 +5449,11 @@
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
     "line": 87,
-    "writes": "11.507"
+    "writes": "11.375"
    }
   ],
   "source_file": "results/three_channel_forecast.csv",
-  "source_value": "11.5072"
+  "source_value": "11.3746"
  },
  "three_channel_forecast:waist_24um::pull_factor_quiet": {
   "producer": "run_three_channel_forecast.py",
@@ -5125,11 +5466,11 @@
    {
     "file": "docs/plan/04_intensity-and-light-shift.md",
     "line": 392,
-    "writes": "0.6918"
+    "writes": "0.6917"
    }
   ],
   "source_file": "results/three_channel_forecast.csv",
-  "source_value": "0.6918"
+  "source_value": "0.6917"
  },
  "three_channel_forecast:waist_24um::sd_pull": {
   "producer": "run_three_channel_forecast.py",
@@ -5141,7 +5482,7 @@
    }
   ],
   "source_file": "results/three_channel_forecast.csv",
-  "source_value": "0.1809"
+  "source_value": "0.1803"
  },
  "three_channel_forecast:waist_40um::kappa_pull": {
   "producer": "run_three_channel_forecast.py",
@@ -5149,11 +5490,11 @@
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
     "line": 86,
-    "writes": "4.15"
+    "writes": "4.10"
    }
   ],
   "source_file": "results/three_channel_forecast.csv",
-  "source_value": "4.1460"
+  "source_value": "4.0987"
  },
  "three_channel_forecast:waist_40um::kappa_true": {
   "producer": "run_three_channel_forecast.py",
@@ -5161,11 +5502,11 @@
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
     "line": 86,
-    "writes": "4.143"
+    "writes": "4.095"
    }
   ],
   "source_file": "results/three_channel_forecast.csv",
-  "source_value": "4.1426"
+  "source_value": "4.0948"
  },
  "three_channel_forecast:waist_40um::pull_factor_quiet": {
   "producer": "run_three_channel_forecast.py",
@@ -5194,7 +5535,7 @@
    }
   ],
   "source_file": "results/three_channel_forecast.csv",
-  "source_value": "0.1245"
+  "source_value": "0.1247"
  },
  "three_channel_forecast:waist_64um::kappa_pull": {
   "producer": "run_three_channel_forecast.py",
@@ -5202,11 +5543,11 @@
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
     "line": 85,
-    "writes": "1.63"
+    "writes": "1.61"
    }
   ],
   "source_file": "results/three_channel_forecast.csv",
-  "source_value": "1.6255"
+  "source_value": "1.6070"
  },
  "three_channel_forecast:waist_64um::kappa_true": {
   "producer": "run_three_channel_forecast.py",
@@ -5214,11 +5555,11 @@
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
     "line": 85,
-    "writes": "1.618"
+    "writes": "1.599"
    }
   ],
   "source_file": "results/three_channel_forecast.csv",
-  "source_value": "1.6182"
+  "source_value": "1.5995"
  },
  "three_channel_forecast:waist_64um::pull_factor_quiet": {
   "producer": "run_three_channel_forecast.py",
@@ -5269,7 +5610,7 @@
    }
   ],
   "source_file": "results/three_channel_forecast.csv",
-  "source_value": "2.604"
+  "source_value": "2.605"
  },
  "three_channel_forecast:window_40MHz::exponent_quiet": {
   "producer": "run_three_channel_forecast.py",
@@ -5281,7 +5622,7 @@
    }
   ],
   "source_file": "results/three_channel_forecast.csv",
-  "source_value": "2.892"
+  "source_value": "2.886"
  },
  "three_channel_forecast:window_55MHz::exponent_quiet": {
   "producer": "run_three_channel_forecast.py",
@@ -5289,11 +5630,11 @@
    {
     "file": "docs/methods/10_the_odd_moments.md",
     "line": 289,
-    "writes": "2.93"
+    "writes": "2.95"
    }
   ],
   "source_file": "results/three_channel_forecast.csv",
-  "source_value": "2.933"
+  "source_value": "2.946"
  },
  "three_channel_forecast:window_8MHz::exponent_quiet": {
   "producer": "run_three_channel_forecast.py",
@@ -5742,7 +6083,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 681,
+    "line": 697,
     "writes": "-0.241"
    }
   ],
@@ -5754,7 +6095,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 679,
+    "line": 695,
     "writes": "-0.127"
    }
   ],
@@ -5766,7 +6107,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 675,
+    "line": 691,
     "writes": "-0.87"
    }
   ],
@@ -5778,7 +6119,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 655,
+    "line": 671,
     "writes": "0.62"
    }
   ],
@@ -5790,7 +6131,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 657,
+    "line": 673,
     "writes": "0.97"
    }
   ],
@@ -5802,7 +6143,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 651,
+    "line": 667,
     "writes": "1.92"
    }
   ],
@@ -5814,7 +6155,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 649,
+    "line": 665,
     "writes": "1.713"
    }
   ],
@@ -5826,7 +6167,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 643,
+    "line": 659,
     "writes": "3.213"
    }
   ],
@@ -5838,7 +6179,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 645,
+    "line": 661,
     "writes": "5.559"
    }
   ],
@@ -5850,7 +6191,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 647,
+    "line": 663,
     "writes": "0.90"
    }
   ],
@@ -5862,7 +6203,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 669,
+    "line": 685,
     "writes": "0.0447"
    }
   ],
@@ -5874,7 +6215,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 671,
+    "line": 687,
     "writes": "0.0653"
    }
   ],
@@ -5886,7 +6227,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 661,
+    "line": 677,
     "writes": "0.0385"
    }
   ],
@@ -5898,7 +6239,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 673,
+    "line": 689,
     "writes": "0.1234"
    }
   ],

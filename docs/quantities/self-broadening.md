@@ -67,7 +67,7 @@ rubidium.
 | [Wang 2025](../lit/wang2025.md) | $0.32 \pm 0.01$ MHz/mTorr | 85Rb 5S to 7S, five-channel fluorescence | **Not stated** |
 
 Zameroski 2014 is the closest, being the only measured self-broadening rate for
-an nS state in rubidium, and it converts to about $5.39 \pm 0.46$ kHz per
+an nS state in rubidium, and it converts to about [5.62](../../results/beta_self_theory.csv "ref:beta_self_theory:beta_self_7s:measured") $\pm$ 0.45 kHz per
 1e12 per cubic centimetre in this repository's units. **The 6S entry between the 5D
 and 7S rungs is the missing one, and it is the entry this experiment addresses.**
 
@@ -108,7 +108,7 @@ cent.
 **The measurement that turns the value into a bound.** The fitted collisional
 width across the temperature ladder is 0.401, 0.391, 0.444 and 0.594 MHz at 70,
 90, 110 and 130 C, against densities of 0.56, 2.45, 9.10 and 29.43 in units of
-1e12 per cubic centimetre. That is a factor of 1.48 in width across a factor of 52.5
+1e12 per cubic centimetre. That is a factor of [1.48](../../results/lever_crosscheck.csv "ref:lever_crosscheck:gamma_rise_factor:70to130") in width across a factor of 52.5
 in density. A genuine collisional width would rise linearly. **A width that
 rises by 1.5 while the density rises by 52 is a floor with a small collisional
 component on top, not a resolved collision rate**, so the quantity the data
@@ -172,7 +172,7 @@ $-0.035$, the per-temperature Gaussian taking the remaining fifth.
 quantity by two constructions, 0.401 from the density intercept against the
 weighted mean the kernel chain fits. The lever dependence that makes this
 coefficient a BOUND, the width rising only
-[1.48](../../results/lever_crosscheck.csv)-fold across a 52.5-fold density span,
+[1.48](../../results/lever_crosscheck.csv "ref:lever_crosscheck:gamma_rise_factor:70to130")-fold across a 52.5-fold density span,
 is that floor forced through the origin, so modelling it removes the lever
 dependence instead of explaining it. And the dip in $\sigma_\text{laser}(T)$ at
 110 °C, which `docs/RESULTS.md` attributes to the
@@ -191,7 +191,7 @@ that reason and for no other.
 **Owed before any of this is quoted further.** The per-peak and hierarchical
 coefficients at the fitted component have no committed producer: they exist in
 this repository's private correction record and in a replay beside it, not in
-`results/`. The van der Waals prediction of 3.33(29) kHz is crossed somewhere
+`results/`. The van der Waals prediction of [3.50](../../results/beta_self_theory.csv "ref:beta_self_theory:beta_self_6s:anchored")([0.37](../../results/beta_self_theory.csv "ref:beta_self_theory:beta_self_6s:anchored:err")) kHz is crossed somewhere
 above the fitted component, and locating that crossing needs a third grid point
 and not a line drawn through two.
 

@@ -59,7 +59,7 @@ the conclusions. It states it in words: the authors calculate "the AC Stark diff
 polarizabilty of the 5S state minus 6S state alpha5 - alpha6 = alpha56",
 and find alpha56 = -1093 a.u., or -1.80e-38 J m^2 V^-2. So their subtraction
 runs 5S minus 6S, and converting to this record's convention gives
-alpha(6S) - alpha(5S) = +1093. The disagreement with this record's -1145 is
+alpha(6S) - alpha(5S) = +1093. The disagreement with this record's -1131.8 is
 therefore a real disagreement between two calculations, not an artefact of
 which way the subtraction runs. That question was put and settled from this
 paragraph on 2026-08-26.

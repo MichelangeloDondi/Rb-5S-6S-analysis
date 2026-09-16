@@ -131,7 +131,7 @@ def bbr_temperature_k(p: "Platform") -> float:
     return float(p.temperature_k)
 
 
-def rayleigh_range_m(w0_m: float, lam_m: float = 993.4e-9) -> float:
+def rayleigh_range_m(w0_m: float, lam_m: float = C.LAMBDA_LASER_M) -> float:
     """z_R of a free Gaussian beam. Meaningless for a guided mode, which is
     why `effective_length_m` branches on `guided` before calling this."""
     return np.pi * w0_m ** 2 / lam_m
@@ -222,7 +222,8 @@ def excited_fraction(power_w: float, p: Platform, rho: float = 0.94) -> float:
 CASCADE_DEAD_TIME_S = C.TAU_6S_S + mean_5p_lifetime_s()
 
 
-def trap_depth_uk(power_w: float, w0_m: float, lam_nm: float = 993.4,
+def trap_depth_uk(power_w: float, w0_m: float,
+                  lam_nm: float = C.W0_REFERENCE_LAMBDA_NM,
                   rho: float = 0.0, at_antinode: bool = False) -> float:
     """Depth of the ground-state dipole potential, in microkelvin.
 
@@ -278,7 +279,7 @@ def trap_depth_uk(power_w: float, w0_m: float, lam_nm: float = 993.4,
 
 
 def trap_eta(power_w: float, w0_m: float, t_radial_k: float,
-             lam_nm: float = 993.4, rho: float = 0.0,
+             lam_nm: float = C.W0_REFERENCE_LAMBDA_NM, rho: float = 0.0,
              at_antinode: bool = False) -> float:
     """U0 / kT, the only parameter of the trapped shift weight.
 
@@ -463,7 +464,7 @@ def signal_and_noise(power_w: float, p: Platform, integration_s: float,
     """
     events_per_s = events_per_s_profile(power_w, p, rho)
     t_eff = integration_s * p.duty_cycle
-    photon_energy = H_PLANCK_JS * C_M_PER_S / 993.4e-9
+    photon_energy = H_PLANCK_JS * C_M_PER_S / C.LAMBDA_LASER_M
     flux = power_w / photon_energy                      # probe photons per second
 
     if p.detection == "fluorescence":

@@ -1418,7 +1418,7 @@ linearly.
 
 **So the depth splits by the trace's job.** The ruler information is
 lever-weighted, tooth $s$ pulling on the spacing with arm $s$, so it keeps
-climbing with depth: 0.48 at the 2025 depth against 0.87 to 1.48 at $2\beta$
+climbing with depth: 0.48 at the 2025 depth against 0.87 to 1.44 at $2\beta$
 of 2.2 to 3.0, where the width contribution still joins the fit at 0.4 to
 0.5. Brackets therefore go deep. An in-block RF-on interleave leans the
 other way, $2\beta$ near 1.0 to 1.3, keeping 0.65 of a science trace's
@@ -1903,9 +1903,9 @@ campaign forecasts:
 
 | configuration | window | the light shift's own third cumulant | rate variation that fakes it |
 |---|---|---|---|
-| 2025, 64 microns | 6 MHz | [0.00010822](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:k3_light_shift") MHz cubed | [0.00203](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:rate_variation_tolerance") per cent |
-| campaign, 40 microns, the tightest licensed waist | 6 MHz | [0.00071772](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:k3_light_shift") MHz cubed | [0.0136](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:rate_variation_tolerance") per cent |
-| campaign, 16 microns, outside the licence | 12 MHz | [-0.689176](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_16um:k3_light_shift") MHz cubed | [1.48](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_16um:rate_variation_tolerance") per cent |
+| 2025, 64 microns | 6 MHz | [0.00010447](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:k3_light_shift") MHz cubed | [0.00196](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:rate_variation_tolerance") per cent |
+| campaign, 40 microns, the tightest licensed waist | 6 MHz | [0.00069510](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:k3_light_shift") MHz cubed | [0.0131](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:rate_variation_tolerance") per cent |
+| campaign, 16 microns, outside the licence | 12 MHz | [-0.666476](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_16um:k3_light_shift") MHz cubed | [1.44](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_16um:rate_variation_tolerance") per cent |
 
 **That is a second and independent reason the 2025 third cumulant was never
 available.** The first is signal to noise, and it is severe enough on its own.

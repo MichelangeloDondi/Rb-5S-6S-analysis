@@ -36,6 +36,43 @@ def test_an_over_request_is_clamped_and_says_so(capsys):
     assert "MAX_WORKERS" in capsys.readouterr().err
 
 
+def test_the_collapse_to_sequential_says_so(capsys):
+    """The SILENT half of the seam, which cost a regeneration on 2026-09-16.
+
+    The clamp already announced an over-request. Falling back to sequential
+    announced nothing, so a producer launched with nothing set ran on one core
+    of ten and was indistinguishable from one running correctly: an ultra-joint
+    regeneration took 3m42s for two of seventy-eight cells before it was caught.
+    Failure mode guarded: a collapse that does not speak, which is the same
+    defect `gate_split` was taught to narrate for the same reason.
+    """
+    import rb5s6s.workers as w
+    w._announced = False
+    assert n_workers({}) == 0
+    err = capsys.readouterr().err
+    assert "SEQUENTIAL" in err and ENV_VAR in err, err
+    assert "1 core of" in err, err
+
+    # ONCE PER PROCESS, or a pooled verifier's log is unreadable
+    assert n_workers({}) == 0
+    assert capsys.readouterr().err == ""
+
+    # and SILENT for a caller that means it
+    w._announced = False
+    assert n_workers({ENV_VAR: "0", "RB5S6S_WORKERS_QUIET": "1"}) == 0
+    assert capsys.readouterr().err == ""
+
+    # the NEGATIVE arm: a satisfied request says nothing at all
+    w._announced = False
+    assert n_workers({ENV_VAR: "2"}) == 2
+    assert capsys.readouterr().err == ""
+
+    # a typo announces, and names the value rather than pretending it was unset
+    w._announced = False
+    assert n_workers({ENV_VAR: "ten"}) == 0
+    assert "ten" in capsys.readouterr().err
+
+
 def test_the_producer_reads_the_seam_and_not_its_own_copy():
     """U1's available plant, and the commit says why it is this one.
 

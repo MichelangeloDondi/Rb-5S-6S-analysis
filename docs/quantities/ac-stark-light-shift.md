@@ -65,7 +65,7 @@ converting them silently is how comparisons stop meaning anything.
 
 | reference | value as published | system | why it is comparable |
 |---|---|---|---|
-| [Orson 2021](../lit/orson2021.md) | no shift resolved at 6 MHz spectral resolution, and computes $\alpha_{56} = -1093$ a.u. | Rb 5S-6S at 993 nm, this line | The only prior work on this transition, and its null is the standing prior result on this channel. Its computed differential polarizability is not the value this repository uses. In this record's sign convention that value is $+1093$, and an independent sum-over-states recompute gives $-1145$, the same quantity by the same definition, with the opposite sign and magnitudes agreeing to about five per cent. The record's own value became the package default by a decision on the theory, which is not a measurement, and the published one is kept named beside it as `DELTA_ALPHA_AU_ORSON2021`. Every committed bound is sign-immune; the fixed-lock pull direction is what would settle it. See [THEORY_NOTE](../THEORY_NOTE.md) |
+| [Orson 2021](../lit/orson2021.md) | no shift resolved at 6 MHz spectral resolution, and computes $\alpha_{56} = -1093$ a.u. | Rb 5S-6S at 993 nm, this line | The only prior work on this transition, and its null is the standing prior result on this channel. Its computed differential polarizability is not the value this repository uses. In this record's sign convention that value is $+1093$, and an independent sum-over-states recompute gives $-1145$, the same quantity by the same definition, with the opposite sign and magnitudes agreeing to about five per cent. The record's own value became the package default by a decision on the theory, which is not a measurement, and the published one is kept named beside it as `DELTA_ALPHA_AU_ORSON2021`. Every committed bound is sign-immune; the fixed-lock pull direction is what would settle it. See [THEORY_NOTE](../THEORY_NOTE.md) <!-- other-quantity: Orson's own published magnitude in a literature row --> |
 | [Lee 2010](../lit/lee2010.md) | -7.25(45) Hz per mW per square millimetre, against theory $-6.58$ and a prior $-6.13(1.25)$ | Cs 6S-8S two-photon, hot cell | The closest published analogue: an nS to n'S alkali two-photon line with intensity and density scanned independently |
 | [Fendel 2007](../lit/fendel2007.md) | $-0.21$ Hz per mW per square centimetre against average, not peak, intensity | Cs 6S-8S two-photon, comb-driven | The same experiment one element to the left. It engineered the spatial distribution away with an unfocused 0.72 mm waist, which is the effect measured here |
 
@@ -113,10 +113,10 @@ prevent.
 **The prediction, for comparison rather than as a result.** $\kappa$ is
 predicted at [1.545](../../results/stark_joint.csv "ref:stark_joint:kappa_pred:prediction") MHz/W, giving $S_0 =$ [0.348](../../results/stark_joint.csv "ref:stark_joint:S0_225mW_pred:prediction") MHz at 225 mW, a waist of 64 µm and a retro ratio of 0.94. Those two cells
 were computed under the earlier $|\Delta\alpha| = 1093$ default and have not
-been regenerated since this record pinned its own 1145, which raises them by
-the ratio 1145/1093, about 4.8 per cent.
+been regenerated since this record pinned its own 1131.8, which raises them by
+the ratio 1131.8/1093, about 3.5 per cent.
  The file `results/stark_sweep.csv` carries the
-current shift, 0.364 MHz. The coefficient 1.618 MHz/W is that divided by the
+current shift, 0.360 MHz. The coefficient 1.618 MHz/W is that divided by the
 225 mW drive and has no committed row of its own, and its producer is the cheap one. The bounds therefore sit below the prediction,
 which is the interesting feature of the table and is discussed in section 4.
 
@@ -149,7 +149,7 @@ the prediction is excluded at 95 per cent at every geometry in that band.
 **Qualification one: the strength is a range and not a number.**
 $\Delta\chi^2$ runs 4.1 at the envelope's lower vertex to 5.7 at its upper,
 2.0 to 2.4 $\sigma$ under Wilks, and the same profile read as a posterior
-puts the computed 1145 a.u. in the upper 3 per cent, about 1.8 $\sigma$. A
+puts the computed 1131.8 a.u. in the upper 3 per cent, about 1.8 $\sigma$. A
 single calibrated two-sigma is what the record withdraws, not the existence
 of a significance. The envelope's own half-width is a two-vertex scan and
 must never be used as the denominator of one.
@@ -209,10 +209,11 @@ withdrawn. They are named so that none is revived.**
    the two limits differ by
    [1.231](../../results/delta_alpha_posterior.csv "ref:delta_alpha_posterior:limit:construction_spread")
    at fixed geometry on both sides, about 23 per cent, and the tail
-   probabilities they imply differ by a factor of two, 0.0324 against 0.0165,
+   probabilities they imply differ by a factor of two, 0.0342
+ against 0.0165,
    so neither is a third-digit effect and an earlier draft of this entry
    called them one. **The figure is the committed like-for-like row and not
-   1038/837.** That ratio of 1.24 divides a geometry-marginalised percentile
+   1038/837.** That ratio of 1.24 divides a geometry-marginalised percentile  <!-- other-quantity: the ratio 1038/837, not the Omega-over-S0 band -->
    by a central-geometry crossing, mixing the construction change with a
    marginalisation. That is the not-like-for-like class the producer was
    rewritten to remove, reintroduced here by hand. It does not bear on whether an exclusion
@@ -228,9 +229,9 @@ withdrawn. They are named so that none is revived.**
    it, its margin is several times smaller than the profile's own numerical
    scatter, and `RESULTS.md` C3f reads the margin from the primary alone.
 
-**What survives all of this is the tension itself.** The computed 1145 a.u.
+**What survives all of this is the tension itself.** The computed 1131.8 a.u.
 sits in the upper
-[0.0324](../../results/delta_alpha_posterior.csv "ref:delta_alpha_posterior:comparison:posterior_prob_above_computed_here")
+[0.0342](../../results/delta_alpha_posterior.csv "ref:delta_alpha_posterior:comparison:posterior_prob_above_computed_here")
 of the posterior and Orson's 1093 in the upper
 [0.0404](../../results/delta_alpha_posterior.csv "ref:delta_alpha_posterior:comparison:posterior_prob_above_orson2021"),
 under the posterior, and 0.017 and 0.016 under the crossing. Those two sit
