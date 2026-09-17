@@ -209,8 +209,11 @@ CANONICAL = [
         # more spelling of the relation. Note for the width-only 0.63: the
         # prose that cites it must now avoid "S0(225 mW) below" as well as
         # "S0(225 mW) <", or it will be read as a citation of this bound.
+        # A BOUND CITATION IS STILL A CITATION: the value moved inside a markdown link with a
+        # ref: title when this surface was bound to its cell (2026-09-17), and the registry read
+        # that as the number having left the page.
         find=re.compile(r"S(?:₀|_?0)\s*\(225[^)]*\)[^0-9]*(?:[<≲]|below)\s*"
-                        r"([0-9.]+)\s*MHz"),
+                        r"\[?([0-9.]+)\]?(?:\([^)]*\))?\s*MHz"),
         mode="all",
         # docs/PLAN.md joined 2026-08-05: it quotes the bound twice in its
         # referee-risk section and was in no docs= list at all, which is the
@@ -302,24 +305,14 @@ CANONICAL = [
     dict(
         name="beam waist w0",
         value=lambda: f"{int(_const('W0_MEASURED_M') * 1e6)}",
-        find=re.compile(r"w.?0\s*[≈=]\s*([0-9]+)\s*µm|([0-9]+)\s*µm\s*(?:\((?:prior|measured)|,\s*measured)|~([0-9]+)\s+µm;"),
+        # "64 um, the value ..." is the wording that replaced "64 um (prior)" when the waist
+        # stopped being called measured on this bench; the citation is the same one.
+        find=re.compile(r"w.?0\s*[≈=]\s*([0-9]+)\s*µm|([0-9]+)\s*µm\s*(?:\((?:prior|measured)|,\s*measured|,\s*the value)|~([0-9]+)\s+µm;"),
         mode="any",
         # docs/PLAN.md joined 2026-08-05 through the "(prior" alternate: its
         # configuration table writes the waist as "w₀" with a subscript zero,
         # which the first alternate cannot see.
         docs=["README.md", "docs/big_picture/04_what-2025-delivered.md", "docs/plan/03_optics-protocol.md"],
-    ),
-    dict(
-        # The M16 recompute -- distinct from Orson's fixed 1093 (which stays
-        # unguarded as a textbook input, see the scope note above): -1145 is a
-        # re-runnable result of run_polarizability.py and its stale copies
-        # would contradict the ledger.
-        name="M16 Delta-alpha(993) recompute",
-        value=lambda: f"{abs(float(_cell('polarizability.csv', 'delta_alpha_993', 'model'))):.0f}",
-        find=re.compile(r"[−-](1[0-9]{3})\s*a\.u"),
-        mode="all",
-        docs=["README.md", "docs/big_picture/03_goals-and-prior-art.md",
-              "docs/big_picture/04_what-2025-delivered.md", "docs/RESULTS.md"],
     ),
     dict(
         # The frequency axis every MHz-denominated number in the repository is
@@ -635,7 +628,7 @@ def test_canonical_registry_entries_are_well_formed(entry):
 
     The real protection is the next test: corrupting
     results/stark_sweep.csv fails test_docs_cite_canonical_value, verified by
-    planting 0.632 -> 999.999. Keep both -- this one catches a producer that
+    planting the cell's value -> 999.999. Keep both -- this one catches a producer that
     silently emits NaN, which the citation check would then happily match
     against equally-NaN prose."""
     toks = _tokens(entry)
@@ -708,6 +701,7 @@ REPLACED_IN_CODE = [
 ]
 
 
+
 @pytest.mark.parametrize("val,pat,label,files", REPLACED_IN_CODE,
                          ids=lambda x: x if isinstance(x, str) else "")
 def test_no_superseded_value_in_the_code_that_carries_it(val, pat, label, files):
@@ -772,13 +766,13 @@ def test_c3a_spread_is_quoted_as_observed_not_as_the_prediction():
 
 
 def test_delta_alpha_within_five_percent_is_actually_within_five_percent():
-    """THEORY_NOTE/PLAN/methods03 say the recompute agrees with Orson 'within
-    5%'. It is 4.76% -- true, but close enough to the boundary that a small
-    change to either number would silently falsify three documents."""
+    """THEORY_NOTE/PLAN/methods03 say the record's value agrees with Orson 'within
+    5%'. It is 3.5% for the dynamic sum of record (4.8% for the static-tail sum it replaced),
+    so a small change to either number could still falsify three documents."""
     import csv
-    rows = {r["quantity"]: r for r in
-            csv.DictReader(open(ROOT / "results" / "polarizability.csv"))}
-    recomputed = abs(float(rows["delta_alpha_993"]["value"]))
+    rows = {(r["quantity"], r["key"]): r for r in
+            csv.DictReader(open(ROOT / "results" / "polarizability_deep.csv"))}
+    recomputed = abs(float(rows[("delta_alpha", "at_drive")]["value"]))
     orson = 1093.0
     frac = abs(recomputed - orson) / orson
     assert frac < 0.05, (

@@ -130,6 +130,27 @@ def test_a_corrected_copy_passes(mv, repo, capsys):
     assert "clean" in capsys.readouterr().out
 
 
+def test_a_line_marked_as_another_quantity_passes_and_its_neighbour_does_not(mv, repo, capsys):
+    """The marker exempts its own line and nothing beside it (2026-09-17).
+
+    The precheck's stale-copy check read `<!-- other-quantity: ... -->` per line and this scan did
+    not, so a tagged coincidence was refused here while admitted there.
+    """
+    _point_at(mv, repo)
+    (repo / "docs" / "note.md").write_text(
+        "Quoting `results/m.csv`.\n\n"
+        "A detector's fill factor is 0.611 of the area <!-- other-quantity: a fill factor -->\n"
+        "and the cold transit term is a band of 73 to 98 kHz.\n")
+    assert mv.main(["check_moved_values.py", "HEAD~1"]) == 0
+    capsys.readouterr()
+    (repo / "docs" / "note.md").write_text(
+        "Quoting `results/m.csv`.\n\n"
+        "A detector's fill factor is 0.611 of the area <!-- other-quantity: a fill factor -->\n"
+        "while the effective mode area is 0.611 um^2.\n")
+    assert mv.main(["check_moved_values.py", "HEAD~1"]) == 1
+    assert "0.611" in capsys.readouterr().out
+
+
 def test_a_file_that_does_not_cite_the_csv_is_out_of_scope(mv, repo, capsys):
     """The scope that makes the run readable, pinned so it is not widened by
     accident. Unscoped, the first form of this fixture returned 281 hits of

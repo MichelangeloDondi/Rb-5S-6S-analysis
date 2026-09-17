@@ -125,16 +125,28 @@ def nanofibre(atom_temperature_uk: float = 30.0, **kw) -> Platform:
 
 
 def line_positions_mhz() -> Dict[str, float]:
-    """Transition-axis positions of the four peaks, from their wavelengths.
+    """Transition-axis positions of the four peaks, from the HYPERFINE STRUCTURE.
 
-    Computed from `constants.PEAKS` rather than typed, referenced to the
-    highest-frequency line, so a hand-copied splitting cannot enter. The four
-    span about 5.2 GHz.
+    NOT from `constants.PEAKS`' wavelengths. Those are uncalibrated WS-8 labels,
+    and this record's settled rule is that they identify lines and do not measure
+    them. Their per-line positions miss the hyperfine-built ones by up to 14.1 MHz
+    on this axis, and the INTERVALS between them, which is what a ruler uses, by up
+    to 19.1 MHz (9.5 on the laser axis); one digit of a four-decimal label is worth
+    30.4 MHz on the laser axis. A detection simulation hardly notices, but the four lines are proposed
+    as a frequency RULER inside the campaign's own sweeps, and a ruler built from
+    the thing it is meant to calibrate is not a ruler.
+
+    `constants.two_photon_frequency_hz` builds each component from the NIST
+    centroid interval, the measured hyperfine constants and the isotope shift.
+    Its `centroid_isotope` choice shifts all four together, so it moves no
+    interval here. Referenced to the highest-frequency component, so every
+    position is at or below zero and the four span about 5.2 GHz.
+
+    Found by the thesis side's equation audit, 2026-09-17.
     """
-    ref_nm = min(p["lambda_nm"] for p in K.PEAKS.values())
-    return {k: 2.0 * (C_M_S / (v["lambda_nm"] * 1e-9)
-                      - C_M_S / (ref_nm * 1e-9)) / 1e6
-            for k, v in K.PEAKS.items()}
+    f = {k: K.two_photon_frequency_hz(k) for k in K.PEAKS}
+    ref = max(f.values())
+    return {k: (v - ref) / 1e6 for k, v in f.items()}
 
 
 def _profile(nu: np.ndarray, centre: float, platform: Platform) -> np.ndarray:

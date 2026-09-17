@@ -2,22 +2,12 @@
 
 *[wiki index](README.md) · concept*
 
-**The question.** How a transition a single photon's parity rule forbids
-can still be driven by absorbing more than one photon, and what sets the
-required photon count.
-**Takes.** The one-photon parity and angular-momentum rules from
-[Selection rules](selection-rules.md), nothing else assumed.
-**Gives.** The virtual, non-resonant two-photon amplitude, its
-intensity-squared scaling, and the polarisation-dependent tensor
-decomposition that separates the Doppler-free line from its pedestal.
-**Skip if.** the reader wants the one-photon parity argument on its own,
-not its extension to more than one photon, in which case
-[Selection rules](selection-rules.md) is the right page.
+How a transition a single photon's parity rule forbids can still be driven by absorbing more than one photon, and what sets the required photon count. This page builds on the one-photon parity and angular-momentum rules from [Selection rules](selection-rules.md), nothing else assumed and sets out the virtual, non-resonant two-photon amplitude, its intensity-squared scaling, and the polarisation-dependent tensor decomposition that separates the Doppler-free line from its pedestal. Not covered here: the one-photon parity argument on its own, not its extension to more than one photon, in which case [Selection rules](selection-rules.md) is the right page.
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
 > defines every term and symbol used anywhere in this repository.
 
-## What it is
+## Definition
 
 A transition between two atomic states can be driven by absorbing more than
 one photon at once, provided the photon energies sum to the energy gap
@@ -78,6 +68,7 @@ factors, an energy difference between the two photons and a cross product of
 their polarisation vectors, either of which vanishing removes it
 ([Selection rules](selection-rules.md)). Under one laser and an ideal retro
 both are small, so only the scalar part survives to any useful precision.
+
 Neither is exactly zero: the Doppler-free geometry makes the energy factor
 nonzero for every moving atom, and a five degree retro mismatch reopens rank
 one at $2\times10^{-13}$ in rate. The
@@ -102,7 +93,7 @@ denominator, so at a given available power the achievable rate falls
 sharply as the photon count grows, and a higher-order process responds more
 strongly, fractionally, to drift or noise in the driving intensity.
 
-## What problem it solves
+## The problem it addresses
 
 Multiphoton absorption is what makes an otherwise Laporte-forbidden
 transition observable at all, and it explains why the photon count matters
@@ -116,7 +107,7 @@ after the fact, by fitting a lineshape, which part of a signal came from
 which term. The difference between settings is then a separation made in
 hardware, not a modelling assumption.
 
-## Where this repository uses it
+## Application in this repository
 
 The polarisation configurations of
 [The fixed-lock instrument, section 10c.9](../plan/10_the-fixed-lock-instrument.md)
@@ -133,7 +124,9 @@ wavevector-cancellation condition instead of from polarisation. Circular
 polarisation is not a third way of isolating one of those two pieces.
 Because the whole coupling for this transition reduces to the scalar term,
 and that term vanishes identically for two photons of the same handedness,
-circular light removes the cross term and the same-beam term together. It
+circular light removes the cross term and the same-beam term together.
+
+It
 is an extinction null, useful for measuring whatever the detector reports
 with the atoms switched off by polarisation alone, not a line-only or
 pedestal-only mode.
@@ -144,7 +137,7 @@ pedestal-only mode.
 qualities, separating the cross term a two-photon fit uses from the
 same-beam term a light shift feels.*
 
-## What can go wrong
+## Failure modes
 
 The clearest model failure is carrying a one-photon intuition about
 polarisation into the two-photon case unchanged: expecting circular light
@@ -245,8 +238,7 @@ a reader.
   and same-beam terms, derived there from wavevector cancellation instead of
   from polarisation.
 
-## See also
-
+## Related pages
 - [Selection rules](selection-rules.md), the one-photon parity and
   angular-momentum rules this page extends to more than one photon.
 - [Saturation](saturation.md), for what the intensity-squared law becomes

@@ -119,6 +119,7 @@ from __future__ import annotations
 import csv
 import hashlib
 import os
+import re
 import sys
 from pathlib import Path
 
@@ -686,7 +687,7 @@ def mixture_report() -> None:
 def pull_bound_report() -> None:
     """The centre channel, attempted anyway (2026-07-23).
 
-    The AC-Stark pull (-2/3 S0, S0 = kappa P) is a DIFFERENTIAL centre
+    The AC-Stark pull (+2/3 S0 on the blue side, S0 = kappa P) is a DIFFERENTIAL centre
     observable: locked to the power ladder, repeated at four different times,
     so it separates from the zero-mean recapture walk (which has no reason to
     follow P) and from drift (which follows elapsed time, not P). Add q*P to
@@ -826,7 +827,7 @@ def _rekick_steps() -> pd.DataFrame:
     for f in sorted((ROOT / "data_raw" / "rulers_t").glob("*.csv")):
         rel = f"rulers_t/{f.name}"
         if rel in mt:
-            rul.append(dict(peak=int(f.stem[:4]), T=float(f.stem.split("_")[2][:3]),
+            rul.append(dict(peak=int(f.stem[:4]), T=float(re.search(r"_T(\d+)C_", f.stem).group(1)),
                             t=mt[rel], pos=_carrier_ms(f)))
     R = pd.DataFrame(rul).dropna()
     # The T-epoch half needs the ruler traces themselves, which live in

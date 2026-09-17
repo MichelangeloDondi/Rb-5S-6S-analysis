@@ -7,7 +7,7 @@ bright line, plus the GLOBAL profile-likelihood map in the
 per-trace nuisance at each grid point).
 
 The three widths all broaden the same ~5 MHz line, so the analysis FIXES transit
-(from the measured w0) and reports sigma_laser as a bound. This driver quantifies
+(from the w0 convention) and reports sigma_laser as a bound. This driver quantifies
 why, twice over: the covariance shows the archive constrains the TOTAL width
 well but the SPLIT poorly; the profile map shows that local picture is the
 whole picture -- a single valley, straight (no 'banana'), whose 95% region runs

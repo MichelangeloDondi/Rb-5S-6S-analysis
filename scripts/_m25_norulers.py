@@ -190,18 +190,18 @@ sys.path.insert(0, str(REPO))
 sys.path.insert(0, str(REPO / "scripts"))
 
 from rb5s6s import config as C  # noqa: E402
+from rb5s6s.stark import kappa_pred_per_watt  # noqa: E402  (SSOT: one predicted coefficient)
 from rb5s6s.density import number_density_cm3  # noqa: E402
 from rb5s6s.ingest import load_manifest, load_trace, trace_path  # noqa: E402
 from rb5s6s.linefit import (_shared_profile_grid, adaptive_halfwidth,  # noqa: E402
                             to_frequency, transit_fwhm_at_T)
-from rb5s6s.lineshape import stark_shift_S0_mhz  # noqa: E402
 from rb5s6s.noise import condition_noise_model, sigma_of_v, signal_level  # noqa: E402
 from run_beta_self import load_t_rates  # noqa: E402
 from run_stark_joint import PEAKS, SESSION_20250717, SESSION_20250704, load_session_20250717, load_session_20250704  # noqa: E402
 
 PK_IX = {p: i for i, p in enumerate(PEAKS)}
 DNU_FLOOR = 2e-2
-KAPPA_PRED = stark_shift_S0_mhz(1.0, C.W0_MEASURED_M, rho=C.RHO_RETRO)
+KAPPA_PRED = kappa_pred_per_watt(C.W0_MEASURED_M, C.RHO_RETRO)
 KAPPAS = tuple(sorted({0.0, 0.25, 0.5, 0.75, 1.0, round(KAPPA_PRED, 3),
                        2.0, 2.62, 3.5, 5.0}))
 

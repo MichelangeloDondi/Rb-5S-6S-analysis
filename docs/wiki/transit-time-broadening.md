@@ -2,21 +2,12 @@
 
 *[wiki index](README.md) · physical effect*
 
-**The question.** Why a finite-size beam broadens a line even though
-nothing perturbs the atom, and why the resulting kernel is not Gaussian.
-**Takes.** Nothing beyond the idea that a finite interaction time
-Fourier-broadens a response. No fitting, no data.
-**Gives.** The cusped-exponential transit kernel derived for Doppler-free
-two-photon spectroscopy, its dependence on beam waist and temperature, and
-its degeneracy with the laser width.
-**Skip if.** You want the Gaussian-plus-Lorentzian convolution this kernel
-is added to, not the transit kernel itself. That is
-[The Voigt profile](voigt-profile.md).
+Why a finite-size beam broadens a line even though nothing perturbs the atom, and why the resulting kernel is not Gaussian. This page is self-contained and sets out the cusped-exponential transit kernel derived for Doppler-free two-photon spectroscopy, its dependence on beam waist and temperature, and its degeneracy with the laser width. beyond the idea that a finite interaction time Fourier-broadens a response. No fitting, no data. Not covered here: the Gaussian-plus-Lorentzian convolution this kernel is added to, not the transit kernel itself. That is [The Voigt profile](voigt-profile.md).
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
 > defines every term and symbol used anywhere in this repository.
 
-## What it is
+## Definition
 
 An atom crossing a laser beam is illuminated only while it is inside. If the
 beam has waist $w_0$ and the atom's transverse speed is $v$, the interaction
@@ -56,8 +47,8 @@ $$K_\text{transit}(\nu)\propto e^{-|\nu|/b},\qquad \text{FWHM}=2b\ln 2$$
 Its excess kurtosis is close to the two-sided exponential's, the
 quantitative statement of "more cusped than a Gaussian".
 
-**The derivation is a thin-slice result, and that is a condition on the
-geometry and not a detail.**
+The derivation is a thin-slice result, and that is a condition on the
+geometry and not a detail.
 [Biraben, Bassini and Cagnac](../lit/biraben1979.md) observe the atoms over a
 length small compared with the Rayleigh range, so the beam is one waist
 crossed in a plane. `constants.collection_z_ratio` returns that ratio for this
@@ -75,14 +66,14 @@ already exists in this repository, the Monte Carlo below, which crosses the
 full `w(z)` instead of one waist. It is not on the forecast path, and
 connecting the two is owed.
 
-## What problem it solves
+## The problem it addresses
 
 It sets the floor on how narrow a line can be made in a beam of finite size,
 converting an optical geometry into a spectroscopic width. The relation also
 runs in reverse, so a line whose width is transit-limited reports the beam
 waist that produced it.
 
-## Where this repository uses it
+## Application in this repository
 
 It is one of the four kernels of the composite model in
 [methods chapter 2](../methods/02_the_lineshape.md), which carries the
@@ -95,17 +86,17 @@ beam.
 
 ![Monte Carlo trajectory average of the transit kernel](../../figures/fig3_transit_mc.png)
 
-*Monte Carlo trajectory average of the transit kernel for this cell's measured beam waist and operating temperature.*
+*Monte Carlo trajectory average of the transit kernel for this cell's conventional beam waist and operating temperature.*
 
-Its width depends on the beam waist, which was measured on this bench
-(Rajasree, same optical table, laser and lenses) but never re-read during
-the campaign, so the transit width and the laser width are degenerate
+Its width depends on the beam waist, which is the lineage convention
+(a profile of the predecessor laser through the same lens and geometry) and was
+never measured on this bench, so the transit width and the laser width are degenerate
 through the waist, and a waist small enough would make the natural and
 transit widths alone exceed the observed line. The cusp is a falsifiable
 prediction this dataset was not designed to test, and
 [what we found](../methods/07_what_we_found.md) reports the outcome.
 
-## What can go wrong
+## Failure modes
 
 The most consequential error here is modelling the kernel as a Gaussian.
 The cusp is a real, derived feature, and a Gaussian stand-in absorbs the
@@ -145,8 +136,7 @@ for w0_um in (32, 64, 90):
 - [`../lit/lehmann2021.md`](../lit/lehmann2021.md) for the modern closed form
   in the transit-time limit.
 
-## See also
-
+## Related pages
 - [The campaign page](../quantities/campaign.md), where the waist dependence
   makes one measurement serve two quantities.
 - [The Voigt profile](voigt-profile.md), the two-kernel convolution this

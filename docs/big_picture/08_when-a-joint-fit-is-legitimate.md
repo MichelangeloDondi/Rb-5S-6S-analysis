@@ -1,22 +1,11 @@
 *Chapter 8 of 9 of [the big picture](../BIG_PICTURE.md)*
 
-**The question.** A joint fit shares one parameter across many measurements. When
-does that add information, and when does it only add freedom?
-**Takes.** The constructions of [what the 2025 dataset
-delivered](04_what-2025-delivered.md) and the degeneracies of [limitations and
-identifiability](07_limitations-and-identifiability.md).
-**Gives.** The two sharing decisions this record makes, one across spectral
-peaks and one across measurement sessions, each with the evidence for it and the
-boundary beyond which it is not established. Then six questions to ask of any
-pooled fit.
-**Skip if.** You want the bounds rather than their construction, in which case
-[RESULTS.md](../RESULTS.md) is the ledger.
+A joint fit shares one parameter across many measurements. When does that add information, and when does it only add freedom? This page builds on the constructions of [what the 2025 dataset delivered](04_what-2025-delivered.md) and the degeneracies of [limitations and identifiability](07_limitations-and-identifiability.md) and sets out the two sharing decisions this record makes, one across spectral peaks and one across measurement sessions, each with the evidence for it and the boundary beyond which it is not established. Then six questions to ask of any pooled fit. Not covered here: the bounds rather than their construction, in which case [RESULTS.md](../RESULTS.md) is the ledger.
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
-> explains the measurement in six sentences, then defines every term
-> and symbol used anywhere in this repository.
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
+> defines every term and symbol used anywhere in this repository.
 
-## 1. What a joint fit assumes
+## 1. Assumptions of a joint fit
 
 Sharing a parameter across a set of measurements asserts that one physical
 quantity produced all of them. Everything in this chapter follows from taking
@@ -38,7 +27,7 @@ work](../notes/beta_self_pooling_prereg.md), whose framing is the template this
 chapter follows, that the sharing level is decided by physics and the fit
 statistics are reported as a check rather than as the licence.
 
-**One peak difference is real, computable, and currently unspendable.** Hyperfine
+One peak difference is real, computable, and currently unspendable. Hyperfine
 pumping through the intermediate cascade does not preserve the hyperfine index,
 and its branching product runs from 0.223 to 0.372 across the four lines, a
 factor of 1.67. That is about 4 kHz of width against a single-block scatter of
@@ -66,7 +55,9 @@ while the parameter penalty shrinks only logarithmically, and the verdict moves
 toward the shared model. The decomposition from the committed numbers: the
 penalty change alone would move the verdict by about eleven units toward the
 freer model, the chi-square whitening moves it by about one hundred and twenty
-the other way, and their sum is the observed flip of one hundred and thirteen. A
+the other way, and their sum is the observed flip of one hundred and thirteen.
+
+A
 dataset whose verdict flips with the counting convention does not resolve shared
 against independent, and the record's response is to keep the headline result
 model-independent, which is why the width-slope bound rather than the
@@ -86,7 +77,7 @@ preregistration](../notes/full_dataset_fit_prereg.md), and the coefficient is th
 only row whose sharing column reads across everything, with no session
 qualifier of any kind.
 
-**A sharing that was wrong, kept on the record.** The first version of this fit
+A sharing that was wrong, kept on the record. The first version of this fit
 shared the laser width across sessions. The campaign widths then inflated to
 about 4.4 MHz, which is far outside anything the campaign supports, so the second
 version separated them per session. The failure was visible because it moved a
@@ -109,12 +100,12 @@ sessions had different geometry is untested. The archive carries no per-session
 waist measurement, so the question is open on apparatus knowledge rather than
 settled either way.
 
-## 4. The signature of a pool that is not measuring one parameter
+## 4. Signature of an inhomogeneous pool
 
 Two committed diagnostics say the pooled construction is not behaving like a fit
 to one quantity.
 
-**The profile passes disagree about the bound itself, by a factor of two.** The
+The profile passes disagree about the bound itself, by a factor of two. The
 numbers come from two runs and the provenance matters, so it is stated. The
 committed bound, 1.147 MHz per W, is the 2026-08-03 production run's
 pointwise-minimum construction over cold and seeded chains, interpolated between
@@ -140,7 +131,7 @@ before the threshold is applied, so a constant offset between passes moves no
 bound at all. The quantity that matters is the spread of the answers, and that is
 the factor of 2.1 above.
 
-**The signal and every noise scale it must beat, in one table.** The loosening
+The signal and every noise scale it must beat, in one table. The loosening
 this section would like to interpret is the pooled 1.147 against the
 campaign-only 1.025.
 
@@ -164,7 +155,9 @@ on the Delta chi-square curve and not merely on the fitted point. **That test ha
 since run at two evaluation budgets, and the second run resolved it**: at the
 production budget half the starts never converged, and at four times the
 budget two complete curves still disagree by a factor of 2.13 while one start
-converged to a stationary point about 21,000 in chi-square above the best. A
+converged to a stationary point about 21,000 in chi-square above the best.
+
+A
 third run repeated the identical design under the pinned dependency floor of
 the continuous-integration minimum leg. A 2026-08-19 correction found the
 apparent reproduction of the two-optimum split to be an artefact of display
@@ -175,7 +168,9 @@ optimum, every independent start sits 4.66 to 26.29 chi-square units above it
 at every tested coefficient, all past the 2.706 threshold, so no start has
 been shown to enter the confidence region. What the test still establishes is
 that the surface is expensive to reach from a cold start and that the
-production warm-start chain is load-bearing rather than merely efficient. It
+production warm-start chain is load-bearing rather than merely efficient.
+
+It
 does not establish that the committed profile sits at the wrong optimum, and
 the anchored comparison says the opposite. All three runs' per-start curves
 are in [the profile
@@ -208,8 +203,8 @@ interpretation, in [the preregistration
 record](../PREREGISTRATION_RESULTS.md) and in [the full-dataset
 preregistration](../notes/full_dataset_fit_prereg.md).
 
-**The interpretation, which is the one step this chapter adds, stated as narrowly
-as the evidence allows.** Two objects have to be kept apart. The information the
+The interpretation, which is the one step this chapter adds, stated as narrowly
+as the evidence allows. Two objects have to be kept apart. The information the
 data carry about a shared parameter is a property of the data under a correctly
 specified common model, and adding informative data cannot reduce it: the pooled
 dataset contains the campaign, so it cannot know less about a genuinely shared
@@ -218,7 +213,9 @@ particular model, nuisance structure and optimiser, and it is the thing observed
 to loosen. So a longer lever that loosens the bound does not say the added data
 destroyed information, which is impossible. It says the enlarged construction
 changed the reported inference, and the question becomes which part of the
-construction did it. A further consequence follows and is the defensible
+construction did it.
+
+A further consequence follows and is the defensible
 headline: **the two bounds profile different parameter spaces, so they are not
 comparable as constraints on one quantity**, and no ordering between them should
 be read as one construction knowing more than the other.
@@ -324,7 +321,9 @@ here is only that most of the observed width is a constant no lever moves. The
 leverage comparison is then per observable: the light-shift term moves the
 composite width by about 4 kHz at the bound, against a per-block width scatter
 of 88 kHz, while the same term pulls the line centre by about 150 kHz, nearly
-forty times its width effect. The width is the insensitive moment because the
+forty times its width effect.
+
+The width is the insensitive moment because the
 shift distribution is one-sided, so the moment has to be matched to the symmetry
 of the perturbation. **And the sensitive moment is not available to this
 archive**, which the comparison would otherwise leave as an obvious question:
@@ -334,7 +333,7 @@ therefore says what a fixed-lock session buys, which is why the plan carries
 one.
 [The identifiability page](../wiki/identifiability.md) carries the general form.
 
-**A seventh question, from the joint fits of 2026-09-12.** *Is any parameter
+A seventh question, from the joint fits of 2026-09-12. *Is any parameter
 the data cannot see left free to absorb what the fixed ones predict?* Four
 fits over the whole archive tied the transit to the waist and the light shift
 to the polarizability from theory, profiled a centre per trace, and each
@@ -345,10 +344,10 @@ parameter held to its physical range with its prior turns that into a
 chi-squared cost the fit has to show, and the shift is then read where a
 drifting centre cannot reach it, on the self-centred moments and their ratios.
 
-## 6. What the record does about all of this
+## 6. Measures taken in this record
 
-**A converged construction is not automatically the better-supported one, and
-this dataset makes the point sharply.** The campaign alone is the construction
+A converged construction is not automatically the better-supported one, and
+this dataset makes the point sharply. The campaign alone is the construction
 whose profile passes agree, and it is also the construction whose reported upper
 limit is by far the more sensitive to the one alternative model that competes
 with the light shift. The perturbation is controlled, since the only change is
@@ -356,7 +355,9 @@ whether the fit carries a free red-side wing, an alternative explanation of the
 same structure the light shift is read from. Granting it moves the campaign-alone
 upper limit by a factor of about 7.3 and the pooled upper limit by a factor of
 about 1.07, stated that way because the two movements are the same kind of ratio
-and should read as one. That is a statement about the reported limits under two
+and should read as one.
+
+That is a statement about the reported limits under two
 stated constructions, not a measured systematic error, and it is a reassignment
 rather than a tightening: the wing's thirteen units of chi-square say real
 red-side structure exists, and the fit reassigns that structure from the light
@@ -382,8 +383,7 @@ work, and the second is the reason
 [chapter 7](07_limitations-and-identifiability.md) calls the waist the largest
 open systematic.
 
-## See also
-
+## Related pages
   * [The wiki on joint fitting](../wiki/joint-fit.md), for the machinery in
     general rather than this dataset's two decisions.
   * [The wiki on identifiability](../wiki/identifiability.md), for what sharing

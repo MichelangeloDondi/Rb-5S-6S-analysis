@@ -2,21 +2,12 @@
 
 *[wiki index](README.md) · concept*
 
-**The question.** What does "the laser linewidth" actually mean, and why does
-the same laser have different widths in different measurements?
-**Takes.** [Shot noise and technical noise](shot-noise-and-technical-noise.md)
-for the idea of a noise spectrum. Nothing else.
-**Gives.** The map from a frequency-noise spectrum to a lineshape, why the
-width depends on the sampled band, and why the kernel a fit assigns the
-laser is a physics claim with a bias attached.
-**Skip if.** You want the detector's noise instead of the laser's: see
-[the noise law](the-noise-law.md). The two are different quantities, easy
-to conflate.
+What does "the laser linewidth" actually mean, and why does the same laser have different widths in different measurements? This page builds on [Shot noise and technical noise](shot-noise-and-technical-noise.md) for the idea of a noise spectrum. Nothing else. It sets out the map from a frequency-noise spectrum to a lineshape, why the width depends on the sampled band, and why the kernel a fit assigns the laser is a physics claim with a bias attached. Not covered here: the detector's noise instead of the laser's: see [the noise law](the-noise-law.md). The two are different quantities, easy to conflate.
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
 > defines every term and symbol used anywhere in this repository.
 
-## What it is
+## Definition
 
 A laser's frequency wanders. The complete description is the frequency-noise
 spectral density $S_\nu(f)$, its power at each Fourier frequency. Every
@@ -37,7 +28,7 @@ of duration $T$ samples the noise from roughly $1/T$ upward, so lengthening
 it admits more slow noise and widens the measured line. A linewidth quoted
 without its observation time is not a full specification.
 
-## What problem it solves
+## The problem it addresses
 
 A lineshape fit gives the laser a kernel, a physics claim about $S_\nu$,
 not a convenience. A gaussian kernel suits slow noise. If the truth is
@@ -60,6 +51,7 @@ import numpy as np
 
 # The same laser at three observation times, under 1/f frequency noise.
 # S_nu = h1/f, and the Gaussian FWHM is sqrt(8 ln2 * integral over the band).
+
 h1 = 4.9e10                      # Hz^2, an illustrative flicker coefficient
 f_high = 1.5e6                   # Hz, the fast cutoff (inverse transit time)
 LN2_8 = 8 * np.log(2)
@@ -70,7 +62,7 @@ for T_obs in (4.1e-3, 41e-3, 0.41):
 print("one laser, three linewidths, each correct in its own band")
 ```
 
-## Where this repository uses it
+## Application in this repository
 
 The record fits a Gaussian laser kernel, stated plainly as an assumption
 ([CLAIMS.md](../CLAIMS.md) section 2). The lineshape data cannot settle the
@@ -122,18 +114,18 @@ electronic pickup and intensity noise share one sign. That sign flip is the
 discriminator, needs no comb or extra hardware, and for a deep line beats a
 tooth-position clock by an order of magnitude.
 
-## What can go wrong
+## Failure modes
 
 **Quoting a linewidth without its band.** The number is not portable. Carry
 the observation time, or better, $S_\nu$.
 
-**Reading a converged fit as a validated kernel.** A Voigt fit converges on
+Reading a converged fit as a validated kernel. A Voigt fit converges on
 a line whose Lorentzian part is mislabelled, and the misfit lands in the
 coefficient sharing that shape.
 
-**Estimating slow noise with a statistic that has no limit.** Under $1/f$
+Estimating slow noise with a statistic that has no limit. Under $1/f$
 noise the variance of a record grows with the record, so the raw scatter of
-line centres saturates at a fixed fractional spread however long you
+line centres saturates at a fixed fractional spread however long the record
 measure: a false convergence plateau. The [Allan deviation](allan-deviation.md)
 at fixed averaging time converges as $1/\sqrt{N}$.
 
@@ -216,7 +208,7 @@ laser frequency noise and laser line shape" (Applied Optics 49, 4801, 2010),
 is the beta-separation-line paper. Any frequency-metrology text carries the
 Allan-variance route from $S_\nu$ to a width and back.
 
-## See also
+## Related pages
 
 [The noise law](the-noise-law.md), the detector's noise, which this page is
 not · [Allan deviation](allan-deviation.md), the statistic that survives

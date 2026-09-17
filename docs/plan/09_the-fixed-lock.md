@@ -1,15 +1,11 @@
 *Chapter 9 of 12 of [the plan](../PLAN.md)*
 
-**The question.** What does a fixed lock convert, and how is the frequency axis built once positions carry meaning?
-**Takes.** The acquisition settings of chapter 7 and the record discipline of chapter 8.
-**Gives.** Identifiability under a fixed lock, the sweep and scan axis, the modulator, and the atomic pairs as anchor beside the comb as interpolator and clock.
-**Skip if.** You want the lock hardware and the day-one list, which is chapter 10.
+This chapter builds on the acquisition settings of chapter 7 and the record discipline of chapter 8 and sets out identifiability under a fixed lock, the sweep and scan axis, the modulator, and the atomic pairs as anchor beside the comb as interpolator and clock. The lock hardware and the day-one list is chapter 10.
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
-> explains the measurement in six sentences, then defines every term
-> and symbol used anywhere in this repository.
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
+> defines every term and symbol used anywhere in this repository.
 
-## 10c. The fixed cavity lock, and the settings that follow from it
+## 10c. The fixed cavity lock and its settings
 
 Written 2026-08-16 after the cavity lock was repaired. Section 10a sizes the
 span and the record, 10b records what the acquisition must log, and this
@@ -19,7 +15,7 @@ computed from a committed quantity, in which case its source is named, or
 marked as a measurement the bench must supply. None of it is settled by
 argument alone.
 
-### 10c.1 the prize is identifiability, not a narrower line
+### 10c.1 Identifiability as the prize
 
 The instinct that a better lock gives a narrower line is nearly wrong here,
 and the arithmetic matters because it decides where the work goes. The
@@ -40,7 +36,9 @@ different quantities in this repository can be called the correlation between
 the two widths, namely this per-condition fit covariance, the global
 identifiability map's own correlation, and the ridge direction the profile
 likelihood traces, and they are different statistical objects with different
-values. A number of this kind is only meaningful with its construction named, and
+values.
+
+A number of this kind is only meaningful with its construction named, and
 the pinning comparison now has a committed producer that names its own:
 `scripts/run_width_pinning.py`, on a bright synthetic condition with
 signal-dependent noise, returns a collisional-width scatter of 0.0070 MHz
@@ -64,7 +62,7 @@ global sharing becomes correct. If the repaired lock holds across a session,
 the sharing level should be revisited, and the evidence for the change is a
 measured drift rate rather than the fact of the repair.
 
-### 10c.2 drift, and why the sweep timing is now a choice
+### 10c.2 Drift and the choice of sweep timing
 
 At the cavity-locked rate of the 2025-06-11 record, 0.19 MHz/min, a 28.4 s
 sweep across 2400 MHz smears 0.090 MHz, which is comparable to the collisional
@@ -119,14 +117,16 @@ per cent on the record's line, and
 [chapter 10](10_the-fixed-lock-instrument.md) bounds the real chain faster
 than 10 microseconds at 10^6 V/A from the rehearsal's own LeCroy traces. On
 that bound the lag at 0.94 MHz per ms is under 10 kHz, two parts in a thousand
-of the 5.37 MHz line, and the atomic cascade lag, about 72 ns, is 68 Hz. What
+of the 5.37 MHz line, and the atomic cascade lag, about 72 ns, is 68 Hz.
+
+What
 the illustration does establish survives as a qualitative reading: a causal
 lag forges skew faster than it inflates width, so the measured time constant
 chapter 10 asks for is what admits any fast rate for the asymmetry channel.
 What binds the fast segment is the piezo and the servo, which are
 [chapter 12](12_open-apparatus-items.md) items, and not the detection chain.
 
-### 10c.3a the scan axis, and what to do about its nonlinearity
+### 10c.3a The scan axis and its nonlinearity
 
 The frequency scan is the laser's own internal cavity scan, driven from the
 control software, which specifies the scan width in gigahertz rather than in
@@ -154,7 +154,9 @@ construction, since the reference becomes the line. Three things bound it. The
 derivative's zero is the mode of an asymmetric profile and not its centroid, and
 on this record's ramp-broadened line the mode sits at -0.67 to -0.68 of the
 shift against a mean of exactly two thirds, so a locked centre channel reads the pull
-coefficient to within a tenth and the lineshape channels still need scans. The
+coefficient to within a tenth and the lineshape channels still need scans.
+
+The
 lock point is the perturbed line, so every shift is read by modulating its cause
 and reading the correction, which is the interleaved design the forecast
 already carries. And a locked laser scans only through an offset, so the natural
@@ -222,7 +224,7 @@ copy of the line and its pedestal through the very baseline the widescan
 exists to identify. Calibration blocks and pedestal blocks are separate blocks,
 bracketed as 10b.2 requires.
 
-### 10c.5 two components in one sweep, and an atomic ruler
+### 10c.5 Two components in one sweep
 
 From the campaign file labels, the four components sit at 0, 911.3, 3220.0 and
 5225.0 MHz on the transition axis. Two pairs fit inside a 2400 MHz span, and

@@ -44,7 +44,6 @@ is why this matters beyond bookkeeping.
 from __future__ import annotations
 
 import numpy as np
-import pytest
 
 from rb5s6s.constants import DELTA_ALPHA_AU
 from rb5s6s.lineshape import stark_ramp
@@ -73,16 +72,18 @@ def test_the_two_sides_are_each_well_defined():
     assert DELTA_ALPHA_AU != 0.0
 
 
-@pytest.mark.xfail(strict=True, reason=(
-    "OPEN, and it is the owner's adjudication. DELTA_ALPHA_AU is -1145, which "
-    "puts the transition BLUE, and lineshape.stark_ramp is coded RED-sided, "
-    "which is the side the cited +1093 implies. Nothing committed moves, "
-    "because every bound reads the magnitude through abs(). What moves is "
-    "every directional statement, including the fixed-lock pull test the "
-    "record names as what would settle the sign. Strict xfail: when the two "
-    "are made to agree this XPASSES and the suite fails, so the resolution "
-    "cannot land silently."))
 def test_the_ramp_side_matches_the_adopted_polarizability():
+    """RESOLVED by the owner on 2026-09-17 (O27), in his words: use the SSOT of
+    -1131.8 +- 5.9 a.u., sign included. A level shifts by dE = -alpha E^2 / 4, so a
+    negative differential polarizability moves the transition BLUE, and the kernel
+    was the statement that changed: `lineshape.stark_ramp` now carries its mass at
+    positive detuning.
+
+    This assertion was a STRICT xfail for as long as the two disagreed, which is why
+    the resolution could not land quietly: the moment they were made to agree the
+    xfail became an unexpected pass and the suite went red. It is a plain assertion
+    now, and it is the guard that keeps them agreeing.
+    """
     assert _ramp_side() == _polarizability_side(), (
         f"the adopted Delta_alpha = {DELTA_ALPHA_AU} a.u. implies a "
         f"{'blue' if _polarizability_side() > 0 else 'red'} shift, and "
@@ -90,11 +91,12 @@ def test_the_ramp_side_matches_the_adopted_polarizability():
         f"{'blue' if _ramp_side() > 0 else 'red'} side")
 
 
-def test_the_disagreement_is_the_one_this_file_documents():
-    """Pins the CURRENT state, so a change in either half is visible here.
+def test_both_halves_are_on_the_side_the_ruling_names():
+    """Pins each half separately, so a change in either is visible here.
 
-    Without this, the xfail above could start failing for a new reason and
-    read as the same old open item.
+    The pair used to pin the DISAGREEMENT; it now pins the agreement, and it names
+    both sides rather than only their equality, so a simultaneous flip of both --
+    which the equality above would admit -- is refused.
     """
     assert _polarizability_side() == 1, "the adopted value no longer implies blue"
-    assert _ramp_side() == -1, "the kernel is no longer red-sided"
+    assert _ramp_side() == 1, "the kernel is no longer blue-sided (O27)"

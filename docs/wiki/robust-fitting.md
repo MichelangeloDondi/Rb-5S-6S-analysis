@@ -2,21 +2,12 @@
 
 *[wiki index](README.md) · method*
 
-**The question.** Once a point is suspected of pulling a fit too far, which
-loss functions stop that pull without a person deciding by eye which points
-to trust.
-**Takes.** An ordinary weighted least-squares fit to compare against, and no
-assumption about which points, if any, are contaminated.
-**Gives.** Huber and Tukey's biweight losses, the breakdown point that
-separates them, and the rule that a robust fit runs beside the standard
-fit, not in place of it.
-**Skip if.** You want to find which point is doing the pulling before
-choosing a loss. That is [influence diagnostics](influence-diagnostics.md).
+Once a point is suspected of pulling a fit too far, which loss functions stop that pull without a person deciding by eye which points to trust. This page builds on an ordinary weighted least-squares fit to compare against, and no assumption about which points, if any, are contaminated and sets out Huber and Tukey's biweight losses, the breakdown point that separates them, and the rule that a robust fit runs beside the standard fit, not in place of it. Not covered here: to find which point is doing the pulling before choosing a loss. That is [influence diagnostics](influence-diagnostics.md).
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
 > defines every term and symbol used anywhere in this repository.
 
-## What it is
+## Definition
 
 An ordinary least-squares fit scores every residual by its square, so the
 pull a point exerts, the derivative of its loss with respect to the
@@ -78,7 +69,7 @@ Winsorization caps an extreme value at a percentile instead of deleting it,
 carrying full weight afterward without the reported uncertainty reflecting
 how extreme it was.
 
-## What problem it solves
+## The problem it addresses
 
 A measured noise law handles the case where every point is honest about its
 own uncertainty. It does nothing for a point that is wrong for a reason the
@@ -96,7 +87,7 @@ silently replaces the standard one discards that comparison, the only
 signal for whether an answer rests on the whole dataset or a few points
 within it.
 
-## Where this repository uses it
+## Application in this repository
 
 This repository does not use robust fitting in its committed analysis.
 Every fit here is
@@ -129,7 +120,7 @@ them, finds almost nothing to act on.
 [Collisional self-broadening](self-broadening.md) reports its
 density-based coefficient as a bound instead of a value for this reason.
 
-## What can go wrong
+## Failure modes
 
 The clearest failure is a robust fit reported in place of the standard one,
 with no comparison shown: it hides whether the two agree, the reason for
@@ -231,8 +222,7 @@ print(f"contaminated point's converged Huber weight: {weights[7]:.3f} "
 - [Collisional self-broadening](self-broadening.md), for the bound this
   page's leverage discussion explains.
 
-## See also
-
+## Related pages
 - [Influence diagnostics](influence-diagnostics.md), for finding which point
   is doing the pulling before a loss is chosen.
 - [Resampling](resampling.md), a different way to get an interval with no

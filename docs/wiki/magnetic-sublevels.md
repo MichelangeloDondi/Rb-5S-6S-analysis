@@ -2,21 +2,12 @@
 
 *[wiki index](README.md) · concept*
 
-**The question.** What the $2F+1$ magnetic sublevels of a level are, and
-when averaging over them versus resolving one individually changes what a
-measurement reports.
-**Takes.** The $F$ levels [Hyperfine structure](hyperfine-structure.md)
-builds, nothing else assumed beyond that.
-**Gives.** The Zeeman splitting per sublevel and the scalar, vector and
-tensor decomposition of the light shift across them.
-**Skip if.** the reader wants the $F$ levels themselves instead of the
-$m_F$ structure inside each one, in which case
-[Hyperfine structure](hyperfine-structure.md) is the right page.
+What the $2F+1$ magnetic sublevels of a level are, and when averaging over them versus resolving one individually changes what a measurement reports. This page builds on the $F$ levels [Hyperfine structure](hyperfine-structure.md) builds, nothing else assumed beyond that and sets out the Zeeman splitting per sublevel and the scalar, vector and tensor decomposition of the light shift across them. Not covered here: the $F$ levels themselves instead of the $m_F$ structure inside each one, in which case [Hyperfine structure](hyperfine-structure.md) is the right page.
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
 > defines every term and symbol used anywhere in this repository.
 
-## What it is
+## Definition
 
 A level of total angular momentum $F$ consists of $2F+1$ magnetic
 sublevels, labelled by the projection $m_F$, running in integer steps
@@ -57,7 +48,7 @@ tensor pieces average to zero and only the scalar part survives. In a
 trapped, field-defined, prepared sample they become quantities in their
 own right.
 
-## What problem it solves
+## The problem it addresses
 
 It draws the line between when "the $F$ level" is a sufficient description
 and when the finer structure inside it has to be tracked. It also explains
@@ -67,7 +58,7 @@ the scalar part is a background to subtract, the vector part reports on the
 light's circular character, and the tensor part reports on the level's own
 angular structure.
 
-## Where this repository uses it
+## Application in this repository
 
 This repository's two levels, $5S_{1/2}$ and $6S_{1/2}$, are both $J=1/2$,
 so their tensor light shift does not exist to find, the same triangle rule
@@ -109,7 +100,7 @@ The 5S to 6S line is protected against a laboratory field by two nearly
 exact cancellations. With identical linear photons the two-photon
 operator only connects $m_F$ to itself, so the nuclear part of $g_F$
 cancels between the two S states exactly and the remaining electronic
-$g_J$ difference is a core correction of order $10^{-4}$: under 140 Hz of
+$g_J$ difference is a core correction of order $10^{-4}$: under 140 Hz of <!-- other-quantity: a residual Zeeman splitting in hertz, not the dilute-gas margin of docs/methods/02 -->
 spread at Earth's 50 uT against a line millions of hertz wide. A smaller,
 quadratic Breit-Rabi term separately shifts a hyperfine pair separation by
 one to two kHz, which matters only at the coincidence block that reads
@@ -123,7 +114,9 @@ as a displaced satellite, not a spread: for $q=2$ that is 700 kHz at
 carry two units of angular momentum, but in an S state the electron's
 $m_J$ runs over only $-1/2$ and $+1/2$, the electric dipole operator does
 not touch the nucleus, and a sigma-plus sigma-plus pair has nowhere to
-put its second unit: the matrix element is zero. Retro-reflection does
+put its second unit: the matrix element is zero.
+
+Retro-reflection does
 not help, since propagation reversal is cancelled by helicity reversal
 and a counter-propagating pair still carries two units, offered at
 amplitude one half by linear light. The matrix element stays zero
@@ -135,10 +128,10 @@ Ellipticity shifts levels through the vector light shift, computed in
 `rb5s6s/polarisation.py`, and does not open a transition channel. The
 differential vector polarizability is 1.7 per cent of the differential
 scalar one at the drive wavelength. `results/stark_sweep.csv` gives the
-predicted `S0_225mW_pred` as [0.360](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred:shared") MHz, an ENVELOPE conditional on a waist
+predicted `S0_225mW_pred` as [0.348](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred:shared") MHz, an ENVELOPE conditional on a waist
 never measured in the cell and on an assumed retro ratio, and the joint
 three-session bound `S0_225mW_ub95` as 0.258 MHz. Sized against the
-larger, the spread is 6.3 kHz at the campaign's highest power for fully
+larger, the spread is 6.0 kHz at the campaign's highest power for fully
 circular light, or 4.5 kHz against the bound, small against
 per-condition width errors near 30 kHz, and it cancels in the mean
 unless optical pumping biases the population, a concern for a
@@ -168,7 +161,9 @@ $|5P,5P\rangle$, sits 5025 reciprocal centimetres above where the
 two-photon energy belongs, and the dipole-dipole interaction between the
 atoms carries it to $|6S,5S\rangle$ in one step: atom A keeps all the
 energy and rises to 6S, atom B keeps none and falls back to the ground
-state, and each keeps its own unit of angular momentum. Each atom's own
+state, and each keeps its own unit of angular momentum.
+
+Each atom's own
 change is one unit, all a $J=1/2$ atom can take, and the pair's combined
 change is two units, what the light delivered.
 
@@ -193,7 +188,7 @@ density sweep, where both scale linearly. Only a field sweep at fixed
 density could separate them, since the channel's width contribution
 scales as $B^2$ and the collisional term does not.
 
-## What can go wrong
+## Failure modes
 
 The first failure is a model one: reading a population-averaged
 measurement as if it described one sublevel, or the reverse, concluding a
@@ -229,11 +224,13 @@ from this repository's own `PEAKS` table instead of typed from memory.
 from rb5s6s.constants import PEAKS, H_PLANCK_JS
 
 # Bohr magneton, CODATA 2018 (a universal constant, not a repository number).
+
 MU_B_J_PER_T = 9.274_010_078_3e-24
 
 # Lande g_J of an L=0 (S-state) level is, to leading order, the free-electron
 # spin g-factor: a J=1/2 alkali ground state measures within 0.01% of it, and
 # the (much smaller) nuclear contribution is dropped here.
+
 G_J_S_STATE = 2.002_319_304_4
 
 
@@ -281,8 +278,7 @@ here.
 - [The AC-Stark shift](ac-stark-shift.md), for the scalar shift a warm
   cell measures.
 
-## See also
-
+## Related pages
 - [Hyperfine structure](hyperfine-structure.md), the $F$ levels this
   page's sublevels sit inside.
 - [Hyperfine populations and branching](hyperfine-populations-and-branching.md),

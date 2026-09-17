@@ -240,31 +240,33 @@ def fig_shift_distribution():
     """The inhomogeneous light shift as a distribution, not a number.
 
     Closed form throughout: for the two-photon triangle ramp the shift
-    density on [-S0, 0] is f(s) = 2|s|/S0^2 under I^2 weighting, against
+    density on the package's side (O27: [0, S0]) is f(s) = 2|s|/S0^2 under I^2 weighting, against
     the uniform f(s) = 1/S0 a one-photon (I-weighted) line would carry.
     The panel shows both, with each distribution's mean marked, which is
     the single number a naive treatment would quote in place of either
     shape. Rebuild: python scripts/make_wiki_figures.py
     """
     import numpy as np
+    from rb5s6s.lineshape import RAMP_SIDE
     s0 = 1.0
-    s = np.linspace(-s0, 0.0, 400)
+    s = RAMP_SIDE * np.linspace(0.0, s0, 400)
     two = 2.0 * np.abs(s) / s0**2
     one = np.ones_like(s) / s0
     fig, ax = plt.subplots(figsize=(6.0, 3.4))
     ax.plot(s, two, lw=2.2, label="two-photon, $I^2$ weighting: $f(s)=2|s|/S_0^2$")
     ax.plot(s, one, lw=2.2, ls="--", label="one-photon, $I$ weighting: uniform")
-    ax.axvline(-2.0 * s0 / 3.0, color="C0", lw=1.0, alpha=0.7)
-    ax.axvline(-s0 / 2.0, color="C1", lw=1.0, alpha=0.7, ls="--")
-    ax.annotate("mean $-\\frac{2}{3}S_0$", (-2.0 * s0 / 3.0, 0.30),
+    sgn = "+" if RAMP_SIDE > 0 else "-"
+    ax.axvline(RAMP_SIDE * 2.0 * s0 / 3.0, color="C0", lw=1.0, alpha=0.7)
+    ax.axvline(RAMP_SIDE * s0 / 2.0, color="C1", lw=1.0, alpha=0.7, ls="--")
+    ax.annotate("mean $%s\\frac{2}{3}S_0$" % sgn, (RAMP_SIDE * 2.0 * s0 / 3.0, 0.30),
                 color="C0", ha="center", fontsize=9,
                 textcoords="offset points", xytext=(-2, 0))
-    ax.annotate("mean $-\\frac{1}{2}S_0$", (-s0 / 2.0, 0.12),
+    ax.annotate("mean $%s\\frac{1}{2}S_0$" % sgn, (RAMP_SIDE * s0 / 2.0, 0.12),
                 color="C1", ha="center", fontsize=9,
                 textcoords="offset points", xytext=(2, 0))
     ax.set_xlabel("shift $s$ ($S_0$)")
     ax.set_ylabel("probability density")
-    ax.set_xlim(-1.02 * s0, 0.02)
+    ax.set_xlim(*sorted((RAMP_SIDE * -0.02, RAMP_SIDE * 1.02 * s0)))
     ax.set_ylim(0, 2.3)
     ax.legend(frameon=False, fontsize=9, loc="upper left")
     _footer(fig, "Closed form, no data. The line carries the whole shape, "

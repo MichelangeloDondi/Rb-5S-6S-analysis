@@ -71,7 +71,7 @@ from rb5s6s.constants import (GAMMA_NAT_HZ, K_B_J_PER_K,  # noqa: E402
                               LAMBDA_LASER_M, M_RB87_KG,
                               transit_fwhm_from_w0)
 from rb5s6s.hyperpolarizability import two_photon_rabi_hz  # noqa: E402
-from rb5s6s.lineshape import (stark_ramp_axial_moments,  # noqa: E402
+from rb5s6s.lineshape import (RAMP_SIDE, stark_ramp_axial_moments,  # noqa: E402
                               stark_shift_S0_mhz)
 
 G_MHZ = GAMMA_NAT_HZ / 1e6
@@ -135,7 +135,7 @@ def ramp_moments(w0_m: float, power_w: float, zc_m: float,
     u = np.linspace(0.0, 30.0, n_u)          # u = 2 r^2 / w(z)^2
     uu, zz = np.meshgrid(u, z / z_r, indexing="ij")
     frac = np.exp(-uu) / (1.0 + zz ** 2)     # I / I(0,0)
-    shift = -s0 * frac
+    shift = RAMP_SIDE * s0 * frac          # O27: the package's side, never restated
     sat = sat00 * frac ** 2
     weight = (sat / 2.0) / (1.0 + sat) if saturate else sat / 2.0
     # dV = w0^2 (1 + zeta^2) du dz / 4; the w0^2 is kept so signal comparisons

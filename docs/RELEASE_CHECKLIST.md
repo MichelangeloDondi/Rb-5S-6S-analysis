@@ -4,7 +4,7 @@ The framework is a release candidate and the release act is the owner's. The phr
 page is what that act requires, assembled so it can be worked through rather
 than reconstructed. Nothing here has been performed.
 
-## What "release" would change
+## The effects of a release
 
 The repository already installs, imports without data, and runs its examples
 from a bare clone. Releasing changes one thing only: it invites people who
@@ -13,7 +13,7 @@ item below exists to make that invitation honest.
 
 ## Before the release
 
-**1. Decide what the version means.** The framework and the rubidium result
+1. Decide what the version means. The framework and the rubidium result
 move independently, which the README states, and the current number is in
 `pyproject.toml`, not here, because this sentence carried 4.1 through three
 releases. A release
@@ -21,7 +21,7 @@ should say which of the two the number tracks. The current answer is the
 framework, and it is worth saying so in `pyproject.toml`'s description rather
 than leaving it inferred.
 
-**2. Retire or keep the release-candidate paragraph.** README carries "no
+2. Retire or keep the release-candidate paragraph. README carries "no
 independent scientist has installed this and applied it to a dataset that is
 not ours, so the package is a release candidate and not yet a community
 release." That sentence is true and it is the most useful sentence in the file
@@ -40,7 +40,7 @@ project.
 **3. Refresh `CITATION.cff`.** Version, date, and the author list. The DOI, if
 one is minted, goes here and in the README badge.
 
-**4. Confirm the two entry points still run from a clean environment.** In a
+4. Confirm the two entry points still run from a clean environment. In a
 fresh virtual environment, from a clone with `data_raw/` absent:
 
 ```
@@ -69,7 +69,7 @@ manifold computation. The committed coefficient table means a plain install
 has the physics without it, so the extra is genuinely optional, and the
 release notes should say that rather than leaving it to be discovered.
 
-**7. State what the framework does not do.** It does not download data, does
+7. State what the framework does not do. It does not download data, does
 not fit anything it has not been given a model for, and its noise-law
 coefficients and quality-control thresholds are calibrated to one apparatus.
 `docs/ADAPTING.md` is the seam map and should be linked from the release
@@ -89,7 +89,7 @@ port was found to have overwritten the mirror's push-trigger workflow with
 the archive's dispatch-only one, a by-design divergence now excluded in
 `scripts/port_to_mirror.sh` both ways.
 
-## What the release does not need
+## Requirements outside a release
 
 A tutorial, a documentation site, and a paper are all reasonable things to
 want and none is a precondition. The criterion is what a stranger can do
@@ -110,7 +110,7 @@ be retired, and it is worth waiting for rather than asserting.
 Every mechanical item below was executed rather than asserted. The
 judgement items are marked and remain open.
 
-**Read this section as dated rather than as current.** Every check below was
+Read this section as dated rather than as current. Every check below was
 measured against a public checkout that predates `rb5s6s/cascade.py`,
 `rb5s6s/blackbody.py`, `rb5s6s/model_compare.py`, `rb5s6s/forecast.py`,
 `docs/TUTORIAL.md` and the two example scripts that exercise them. A PASS
@@ -156,14 +156,14 @@ in a bare directory outside any repository, `tutorial_forecast.py` and
 clean-environment suite run is repeated after the port, which is the one
 check that has to wait for the port by construction.
 
-### What is still a judgement and not a check
+### Judgements outside the checks
 
 **What the version number tracks.** The package is at 4.1 while the README
 states plainly that the framework and the rubidium result move independently.
 A release should say which of the two the number follows. Nothing here can
 decide that.
 
-**`CITATION.cff`** carries version 4.1 dated 2026-08-18 and needs whatever
+`CITATION.cff` carries version 4.1 dated 2026-08-18 and needs whatever
 the version decision implies.
 
 ### On the release-candidate sentence

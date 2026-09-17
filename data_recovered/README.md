@@ -15,7 +15,7 @@ addenda 1–9):
 | `lineage_4192nm_225mw1/` | the four variants of the dataset's one degraded trace, whose dated degradation chain addendum 8 closed. |
 | `RECOVERED_MANIFEST.csv` | file → original name, source, role, md5, bytes for everything above. Built by `scripts/publish_recovered.py`. |
 
-**Match by hash, never by name**: nine of the recovered names collide with
+Match by hash, never by name: nine of the recovered names collide with
 *different* bytes in `data_raw/`. That collision is how an entire re-take
 series stayed hidden until content hashing exposed it. Filenames here carry
 an `__<md5-8>` suffix for that reason.

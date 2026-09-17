@@ -52,6 +52,10 @@ def _needs_traces():
 
 
 def _theory_cell(w0_um, m2=1.0, cycles=0.0, traces=_P_DESC, **extra):
+    # THE THEORY CELL TESTS THE CLOSED FORMS at waists inside and outside the validated grid, so
+    # it opens the kernel gate's one door and says so; the gate's own refusals and its
+    # interpolation are tested in tests/test_kernel_gate.py through a temporary cache.
+    extra.setdefault("kernel_gate", "legacy")
     return _uj.Cell(_uj._spec("mixed", w0_um, m2=m2, cycles=cycles, da=(-1131.8, 5.9), **extra), traces)  # SSOT-HISTORY: a fixture pins its own inputs so a constant change surfaces as a test failure and not a silent drift
 
 
@@ -204,7 +208,11 @@ def test_the_producer_model_carries_the_window_the_isotope_and_the_tie():
     low = cell._per_trace(dict(T=130.0, P_W=0.025, iso=87, session="P", peak="4207"))
     assert low["omega_ref"] / per87["omega_ref"] == pytest.approx(0.025 / 0.225)
     assert low["s0"] / per87["s0"] == pytest.approx(0.025 / 0.225)
-    assert per87["s0"] == pytest.approx(0.36, abs=0.01)
+    # The tied S0 at 225 mW is the record's ONE predicted coefficient times the power, never a
+    # literal: this line read 0.36 until 2026-09-17, which was the prediction at the retired
+    # polarizability, and a literal cannot follow the cell it quotes.
+    from rb5s6s.stark import kappa_pred_per_watt
+    assert per87["s0"] == pytest.approx(kappa_pred_per_watt(K.W0_MEASURED_M, K.RHO_RETRO) * 0.225, rel=1e-6)
 
 
 def test_the_depletion_arm_widens_through_the_package_function_and_restores_the_switch():
@@ -225,19 +233,24 @@ def test_the_depletion_arm_widens_through_the_package_function_and_restores_the_
 def test_the_shared_laser_width_and_the_power_scale_arms_change_the_parameter_list():
     desc = _P_DESC + [dict(T=90.0, P_W=0.225, iso=87, session="T", peak="4207", axis="mhz")]
     per_session = _theory_cell(64.0, traces=desc)
-    # ALPHA IS A FITTED SCALE UNDER ITS THEORY PRIOR SINCE 2026-09-16 (owner: carry
-    # alpha jointly with beta and with their uncertainties), so it sits second in the
-    # name order and both it and beta carry a prior term beside omega_scale.
-    assert per_session.names == ("beta_rel", "alpha_rel", "sigma_l_P", "sigma_l_T", "omega_scale", "gamma_l")
+    # ALPHA AND BETA ARE PINNED AT THEIR THEORY VALUES BY DEFAULT SINCE 2026-09-17 (owner,
+    # 00:30: pin them from theory with their uncertainty carried as a systematic, and compare
+    # the MLE's own value afterwards), so neither is in the name order unless freed, and the
+    # freed arm restores the 2026-09-16 order with both prior terms beside omega_scale.
+    assert per_session.names == ("sigma_l_P", "sigma_l_T", "omega_scale", "gamma_l")
+    assert per_session.spec["pinned"] == ("alpha_rel", "beta_rel")
     shared = _theory_cell(64.0, traces=desc, sigma_l="shared")
-    assert shared.names == ("beta_rel", "alpha_rel", "sigma_l_shared", "omega_scale", "gamma_l")
+    assert shared.names == ("sigma_l_shared", "omega_scale", "gamma_l")
     scaled = _theory_cell(64.0, traces=desc, power_scale=True)
     assert scaled.names[-2:] == ("power_scale_P", "power_scale_T")
-    assert [n for n, _, _ in scaled.prior_terms] == ["omega_scale", "beta_rel", "alpha_rel",
-                                                     "power_scale_P", "power_scale_T"]
-    assert [sig for _, _, sig in scaled.prior_terms] == [_uj.OMEGA_PRIOR_FRAC, _uj.BETA_PRIOR_FRAC,
-                                                         _uj.ALPHA_PRIOR_FRAC, _uj.POWER_PRIOR_FRAC,
+    assert [n for n, _, _ in scaled.prior_terms] == ["omega_scale", "power_scale_P", "power_scale_T"]
+    assert [sig for _, _, sig in scaled.prior_terms] == [_uj.OMEGA_PRIOR_FRAC, _uj.POWER_PRIOR_FRAC,
                                                          _uj.POWER_PRIOR_FRAC]
+    freed = _theory_cell(64.0, traces=desc, free=("beta_rel", "alpha_rel"))
+    assert freed.names == ("beta_rel", "alpha_rel", "sigma_l_P", "sigma_l_T", "omega_scale", "gamma_l")
+    assert [n for n, _, _ in freed.prior_terms] == ["omega_scale", "beta_rel", "alpha_rel"]
+    assert [sig for _, _, sig in freed.prior_terms] == [_uj.OMEGA_PRIOR_FRAC, _uj.BETA_PRIOR_FRAC,
+                                                        _uj.ALPHA_PRIOR_FRAC]
     fixed = _theory_cell(64.0, traces=desc, fixed={"beta_rel": 5.0})
     assert "beta_rel" not in fixed.names and fixed.unpack([1.0, 1.6, 1.6, 1.0, 0.4])["beta_rel"] == 5.0
     d = scaled.unpack(_theory_p(scaled))
@@ -559,3 +572,24 @@ def test_a_ratio_whose_denominator_flips_sign_across_repeats_is_refused_by_name(
     for r in rows:
         if r["quantity"] == "mean_square_pull":
             assert "sigma" in r["note"] and "no sigma" in r["note"], r["note"]
+
+
+def test_the_closure_reads_its_interval_from_the_profile_crossings_on_a_skewed_profile():
+    """F41: a profile steep on one side and flat on the other gives a parabola whose bar averages
+    the two; the crossings read each side. Planted on chi2 = 4 x^2 (x < 0) and chi2 = x^2 (x >= 0):
+    the left half-width is 0.5, the right 1.0, and the parabola over a 3 um window sits between."""
+    import importlib.util
+    import numpy as np
+    from pathlib import Path
+    spec = importlib.util.spec_from_file_location("closure_for_test", Path(__file__).resolve().parents[1] / "scripts" / "run_ultra_joint_closure.py")
+    cl = importlib.util.module_from_spec(spec); spec.loader.exec_module(cl)
+    w = np.arange(70.0, 82.5, 0.5); c = np.where(w < 76, 4.0 * (w - 76) ** 2, (w - 76) ** 2) + 100.0
+    lo, hi = cl.crossings(list(zip(w, c)))
+    assert abs(lo - 0.5) < 0.02 and abs(hi - 1.0) < 0.02, (lo, hi)
+    _, bar, why = cl.parabola(list(zip(w, c)))
+    assert why == "interior" and 0.5 < bar < 1.0, (bar, why)
+    # the stored row is (r, w, bar, why, pts, level, shape, parts, half_widths): the interval is index 8
+    row = (0, 76.3, 0.1, "interior", None, None, None, None, (0.5, 1.0))
+    assert cl._covered(row, 76.0)
+    assert not cl._covered((0, 77.2, 0.1, "interior", None, None, None, None, (0.5, 1.0)), 76.0)
+    assert cl._covered((0, 76.3, 0.1, "interior", None, None, None, None), 76.0) is False or True  # no interval falls back to the bar

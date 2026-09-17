@@ -224,6 +224,9 @@ SKIP = {"laser_epoch.csv", "qc_metrics.csv",
 
 # wide CSVs: one status for the whole file (its rows are homogeneous)
 FILE_STATUS = {
+    "ultra_joint_treatments.csv": "DIAGNOSTIC",
+    "linefit_traces.csv": "DIAGNOSTIC",
+    "linefit_pulls.csv": "CALIB",
     # the observable taxonomy: every row is a forecast about a design over a
     # pooled inventory, so ENVELOPE; registered before the file lands so a
     # stranger who runs the committed producer does not die on this map.
@@ -293,6 +296,9 @@ FILE_STATUS = {
     # row (M48, 2026-09-14): a discrimination between forms conditional on
     # the pinned terms, so DIAGNOSTIC throughout and never a waist.
     "ultra_joint_fit.csv": "DIAGNOSTIC",
+    # THE WINDOW SURFACE (2026-09-16): the twin's windowed cumulants per window and noise level,
+    # a diagnostic of the ESTIMATOR and of the truncation bias, never a property of the atom.
+    "window_surface.csv": "DIAGNOSTIC", "kernel_mc.csv": "DIAGNOSTIC",
     # the detection budget (M46): the chain's prediction against the archive's
     # own photoelectron rate with the aperture, the filter, the excess noise and
     # the D1 trapping spanned or named open, so DIAGNOSTIC.
@@ -376,6 +382,16 @@ FILE_STATUS = {
 # (exact match, then longest-prefix). Unmapped -> hard error, so no row is
 # silently left un-tagged.
 QUANTITY_STATUS = {
+    # THE NOISELESS CLOSURE OF THE WAIST ESTIMATOR. The profile and the recovered value are
+    # statements about the INSTRUMENT on data the model itself generated, so CALIB, not a
+    # measurement of any beam. `chi2_at_injected_truth` is the sharp row: a self-recovering fit
+    # returns zero there.
+    "noiseless_floor.csv": {
+        "chi2_profile": "CALIB",
+        "chi2_at_injected_truth": "CALIB",
+        "recovered_w0": "CALIB",
+        "injected_truth": "CALIB",
+    },
     # THE RESIDUAL-RESAMPLING ARM. Every row is a statement about an INSTRUMENT -- the twin's
     # noise against the archive's own -- and none is a property of the atom, so nothing here is
     # a measurement class. The ladder rungs and the bootstrap's own fidelity are CALIB, being
@@ -383,6 +399,9 @@ QUANTITY_STATUS = {
     # and not measurements: they are lower bounds by the bootstrap's measured under-read, and
     # they describe how wrong a BAR is rather than how large a physical quantity is.
     "residual_resampling.csv": {
+        "tau_resid": "MEASURED",
+        "tau_resid_err": "MEASURED",
+        "tau_resid_median": "MEASURED",
         "resampled_from_a_zero_pool": "CALIB",
         "bootstrap_carries_of_truth": "CALIB",
         "sd_k4_bootstrap_over_gaussian": "CALIB",
@@ -573,7 +592,7 @@ QUANTITY_STATUS = {
         # bounds, so the point estimate is a DIAGNOSTIC, not a BOUND.
         "kappa_ub95": "DIAGNOSTIC", "kappa_err_raw": "DIAGNOSTIC", "kappa": "DIAGNOSTIC",
         "S0_225mW_ub95_raw": "DIAGNOSTIC", "S0_225mW_ub95": "DIAGNOSTIC",
-        "S0_225mW_fit": "BOUND", "S0_225mW_pred": "ENVELOPE",
+        "S0_225mW_fit": "BOUND", "S0_225mW_pred": "ENVELOPE", "kappa_pred": "ENVELOPE",
         # EXPLICIT, 2026-08-27: the two sensitivity anchors were inheriting
         # ENVELOPE from `S0_225mW_pred` through the prefix fallback, which
         # is the right tag reached by the wrong mechanism.

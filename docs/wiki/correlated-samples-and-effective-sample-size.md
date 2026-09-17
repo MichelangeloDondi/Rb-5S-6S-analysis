@@ -2,18 +2,12 @@
 
 *[wiki index](README.md) · method*
 
-**The question.** How many independent measurements a dataset actually
-contains, when adjacent points are not independent.
-**Takes.** Any series whose points were acquired in order, and its residuals.
-**Gives.** The autocorrelation time, the design effect, and the places an
-uncorrected sample count inflates a result.
-**Skip if.** The question is how large each point's uncertainty is: see
-[the noise law](the-noise-law.md). This page is about how many points count.
+How many independent measurements a dataset actually contains, when adjacent points are not independent. This page builds on any series whose points were acquired in order, and its residuals and sets out the autocorrelation time, the design effect, and the places an uncorrected sample count inflates a result. Not covered here: the question is how large each point's uncertainty is: see [the noise law](the-noise-law.md). This page is about how many points count.
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
 > defines every term and symbol used anywhere in this repository.
 
-## What it is
+## Definition
 
 Almost every statistical formula assumes independent samples. The standard
 error of a mean falls as one over the square root of $n$, a
@@ -45,7 +39,7 @@ In the survey literature the same quantity appears as the **design effect**,
 the factor by which a clustered design's variance exceeds an independent
 one's. The correction is identical either way.
 
-## What problem it solves
+## The problem it addresses
 
 It stops a measurement from claiming precision it does not have. Skipping the
 correction leaves the error on a mean, the significance of a trend, the
@@ -54,7 +48,7 @@ of $\tau$, or by $\tau$ itself. Since $\tau$ is often between two and ten, the
 overstatement is routinely a factor of two or three in significance, enough to
 turn a null result into a finding.
 
-## Where this repository uses it
+## Application in this repository
 
 The correlation is measured per condition alongside the noise law, as an
 integrated autocorrelation time and a white-noise ratio. The median across the
@@ -83,7 +77,7 @@ intraclass correlation of 0.38 across the repeats of each cell. Five
 independent versions of the estimator agreed, so the discrepancy was in the
 sample count, not the estimator.
 
-## What can go wrong
+## Failure modes
 
 **Correcting once and forgetting the other level.** Correlation within a trace
 and correlation between traces have different divisors. Fixing one says
@@ -93,7 +87,7 @@ nothing about the other.
 naive version diverges. Practical estimators truncate it self-consistently,
 and a $\tau$ from a few hundred samples is uncertain by tens of per cent.
 
-**Assuming smoothing is harmless.** Any filter, hardware or software, imposes
+Assuming smoothing is harmless. Any filter, hardware or software, imposes
 correlation. A high-resolution mode that averages adjacent samples gains
 effective bits by spending independence, which downstream arithmetic must
 account for.
@@ -135,8 +129,7 @@ broken one fails the suite instead of misleading a reader here.
 - L. Kish, *Survey Sampling* (Wiley, 1965), which introduced the design effect,
   reached from clustered sampling instead of time series.
 
-## See also
-
+## Related pages
 - [The noise law](the-noise-law.md), on each sample's variance, while this
   page counts the samples
 - [Resampling](resampling.md), where the block bootstrap applies this

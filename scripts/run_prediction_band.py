@@ -35,8 +35,9 @@ import csv
 import math
 
 from rb5s6s import config as C
+from rb5s6s.stark import kappa_pred_per_watt  # noqa: E402  (SSOT)
 from rb5s6s import constants as K
-from rb5s6s.lineshape import ramp_moment_contributions, stark_shift_S0_mhz
+from rb5s6s.lineshape import ramp_moment_contributions
 
 # TWO QUANTITIES UNDER ONE NAME, separated 2026-09-12. The
 # 0.005 is the owner-stated drive STABILITY, repeatability at the meter.
@@ -48,7 +49,7 @@ from rb5s6s.lineshape import ramp_moment_contributions, stark_shift_S0_mhz
 POWER_STABILITY_SPAN = 0.005   # owner-stated drive stability, 2026-09-11
 #: THE CALIBRATION IS STILL OPEN AND IS STILL SPANNED. Replacing this 0.05 with
 #: the stability figure narrowed the band from a half-width of 0.108 to 0.096
-#: and moved worst_lo from 1.273 to 1.333 -- in the direction that STRENGTHENS
+#: and moved worst_lo from 1.273 to 1.333 as it stood at 2026-09-11 -- in the direction that STRENGTHENS
 #: this record's published tension against its own bound, which is the direction
 #: a dropped uncertainty always moves a result and the reason it is the one to
 #: check. docs/plan/12 says the meter-to-atoms chain "is still owed", so it is
@@ -69,18 +70,21 @@ def _pair(value: float, err: float) -> tuple[str, str]:
 
 
 def _polarizability_upper_magnitude(default: float) -> float:
-    """The largest |delta_alpha| this record's own band allows, from
-    results/polarizability.csv. Falls back to the package constant when the row
-    is absent, and never returns less than it, so a missing file widens nothing
-    silently in the direction that would flatter the prediction."""
-    path = C.RESULTS_DIR / "polarizability.csv"
+    """The largest |delta_alpha| this record's own value allows: the dynamic sum of
+    results/polarizability_deep.csv plus its bar. Falls back to the package constant when the
+    row is absent, and never returns less than it, so a missing file widens nothing
+    silently in the direction that would flatter the prediction.
+
+    Until 2026-09-17 this read the static-tail recompute's band in results/polarizability.csv,
+    whose edge sat 18 a.u. above the value of record, so the band's upper edge rested on a
+    replaced construction."""
+    path = C.RESULTS_DIR / "polarizability_deep.csv"
     if not path.exists():
         return default
     with open(path) as fh:
         for row in csv.DictReader(fh):
-            if row["quantity"] == "delta_alpha_993":
-                edges = [abs(float(row[k])) for k in ("value", "err_lo16", "err_hi84")]
-                return max(max(edges), default)
+            if row["quantity"] == "delta_alpha" and row["key"] == "at_drive":
+                return max(abs(float(row["value"])) + abs(float(row["err"] or 0.0)), default)
     return default
 
 
@@ -118,9 +122,12 @@ def _argmax(fn, lo: float, hi: float, tol: float = 1e-6) -> float:
 def main() -> int:
     w0, (lo_w, hi_w) = K.W0_MEASURED_M, K.W0_BAND_M
     rho, rerr = K.RHO_RETRO, K.RHO_RETRO_ERR
-    k0 = stark_shift_S0_mhz(1.0, w0, rho=rho)
-    k_w = (stark_shift_S0_mhz(1.0, hi_w, rho=rho), stark_shift_S0_mhz(1.0, lo_w, rho=rho))
-    k_r = (stark_shift_S0_mhz(1.0, w0, rho=rho - rerr), stark_shift_S0_mhz(1.0, w0, rho=rho + rerr))
+    # SSOT: one predicted coefficient per RECORDED watt, from `stark.kappa_pred_per_watt`,
+    # which carries the modulator bore's on-axis factor. Until 2026-09-17 this computed the
+    # bare shift and the record held four values of one quantity (F82, F83).
+    k0 = kappa_pred_per_watt(w0, rho)
+    k_w = (kappa_pred_per_watt(hi_w, rho), kappa_pred_per_watt(lo_w, rho))
+    k_r = (kappa_pred_per_watt(w0, rho - rerr), kappa_pred_per_watt(w0, rho + rerr))
     da, da_orson = abs(K.DELTA_ALPHA_AU), abs(K.DELTA_ALPHA_AU_ORSON2021)
     # The band reaches DOWN to Orson's magnitude and UP to this record's own
     # err_hi84. Taking max(da, da_orson) for the upper edge gave da itself and
@@ -181,7 +188,7 @@ def main() -> int:
     v_c, e_c = _pair(k0, k0 * rel)
     v_z, e_z = _pair(z_c, 0.5 * (z_hi - z_lo))
     rows = [
-        ["kappa_pred", "central", v_c, e_c, "MHz/W, stark_shift_S0_mhz(1 W, W0_MEASURED_M, RHO_RETRO). ENVELOPE on the waist this record carries, err the quadrature half-width"],
+        ["kappa_pred", "central", v_c, e_c, "MHz/W, stark.kappa_pred_per_watt(W0_MEASURED_M, RHO_RETRO), which is stark_shift_S0_mhz at one recorded watt times the aperture on-axis factor. ENVELOPE on the waist this record carries, err the quadrature half-width"],
         ["kappa_pred_band", "worst_lo", f"{worst[0]:.3f}", "", "MHz/W, every input at the edge that lowers kappa, power calibration spanned at POWER_CAL_SPAN. single_valued: a band edge is constructed from the corners of stated inputs, not summarised over a population, so it has no spread of its own"],
         ["kappa_pred_band", "worst_hi", f"{worst[1]:.3f}", "", "MHz/W, every input at the edge that raises kappa. single_valued: the opposite corner of the same construction, so the same reason applies"],
         ["kappa_pred_band", "quadrature_lo", f"{quad[0]:.3f}", "", f"MHz/W, inputs in quadrature, relative half-width {rel:.3f}"],
@@ -193,7 +200,7 @@ def main() -> int:
         ["collection_window", "kappa3_ratio", f"{k3_c / k3_ref:.4f}", "", "the same for the third cumulant"],
         ["collection_window", "shift_bias_width_pct", f"{100 * bias_width:.2f}", "", "per cent, SIGNED: the shift a pure-ramp fit recovers through the WIDTH channel. Negative means read low. The committed bound comes from a full profile likelihood, and its bias measured start-free on that channel is -1.96 per cent against this proxy's -1.97 (private/cache/profile_bias_scan.py), flat across a factor of 5.5 in the shift"],
         ["collection_window", "shift_bias_k3_pct", f"{100 * bias_k3:.2f}", "", "per cent, SIGNED: the same through the THIRD CUMULANT, which is the campaign's channel"],
-        ["collection_window", "transit_kernel_rms_spread_pct", f"{100 * kernel_rms:.2f}", "", "per cent, the signal-weighted rms spread of the TRANSIT kernel across the window, which is one of the two mechanisms and the axial one. It is NOT the size of the non-convolution: the saturation companion follows the local light shift and is radial, and results/kernel_inhomogeneity.csv measures the cost on the third cumulant at 106.911 per cent at this same waist. This row bounds the transit spread and nothing else"],
+        ["collection_window", "transit_kernel_rms_spread_pct", f"{100 * kernel_rms:.2f}", "", "per cent, the signal-weighted rms spread of the TRANSIT kernel across the window, which is one of the two mechanisms and the axial one. It is NOT the size of the non-convolution: the saturation companion follows the local light shift and is radial, and results/kernel_inhomogeneity.csv measures the cost on the third cumulant at this same waist. This row bounds the transit spread and nothing else"],
         ["collection_window", "skew_null_z_ratio", f"{z_null:.3f}", "", "the window at which the ramp's third cumulant vanishes and reverses sign. A design limit on the collection path"],
         ["collection_window", "width_bias_sign_flip_z_ratio", f"{z_flip:.3f}", "", "the window above which the ramp's variance exceeds the pure transverse ramp's, so the width-channel correction changes sign and stops being conservative"],
         ["collection_window", "snr_optimum_z_ratio", f"{z_opt:.3f}", "", "the window maximising |kappa3| sqrt(collected), the third cumulant's signal-to-noise"],

@@ -70,7 +70,7 @@ def _k3_axial(z_ratio: float, n_photon: int, n_grid: int = 600_001) -> float:
     of the on-axis shift cubed.
 
     Emitted so the one-photon comparison below is a computed cell and not a
-    remembered fact. At `z_ratio` zero it returns 0 for n = 1 and +1/135 for
+    remembered fact. At `z_ratio` zero it returns 0 for n = 1 and -1/135 for
     n = 2, which are the closed forms `docs/methods/03` derives."""
     import numpy as np
     from rb5s6s._compat import trapezoid

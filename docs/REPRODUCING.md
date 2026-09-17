@@ -4,11 +4,11 @@ What runs from a clone, what needs data that is not in it, and how the
 committed numbers are held to the files that produce them. The short version
 is on the front page under Reproduce. This is the detail behind it.
 
-**Skip if.** You want one number and not the whole pipeline, in which case
+Not covered here: a single number instead of the whole pipeline, for which
 [`results/README.md`](../results/README.md) names the producer beside each
 committed file, and running that one script is the shortest path.
 
-**Cutting a release** follows
+Cutting a release follows
 [the release checklist](RELEASE_CHECKLIST.md), whose form is stated publicly in
 [the release-note style](RELEASE_NOTE_STYLE.md) so a reader can check the rules
 a note claims to obey. The front page no longer carries operational detail,
@@ -20,8 +20,8 @@ which is what this page is for.
 then the reference graph, the figures, `docs/RESULTS.md`, and the CSV status
 column.
 
-**Two producers written in August 2026 sat outside every list on this page
-until 2026-08-28**, which meant two committed CSVs had no route named anywhere
+Two producers written in August 2026 sat outside every list on this page
+until 2026-08-28, which meant two committed CSVs had no route named anywhere
 a reader looks. `run_guided_mode_tables.py` (`guided_mode_tables.csv`, the
 HE11 mode solve and the evanescent profile, under a second) and
 `run_onf_lever_ranking.py` (`onf_lever_ranking.csv`, a Fisher forecast over the
@@ -36,13 +36,13 @@ four-minute claim that understated it elevenfold. Re-running any
 stage reproduces its committed CSV in `results/` within the tolerance
 `scripts/verify_results_fresh.py` states.
 
-**Thirty-two producers of a committed CSV are named by neither this page nor
-the runner, and that is a debt.** The runner holds them
+Thirty-two producers of a committed CSV are named by neither this page nor
+the runner, and that is a debt. The runner holds them
 out for runtime, the kernel series and the twin's closed loop and span
 sweep among them, with the coverage grid, the three-channel forecast, the
 quantisation pair and the waist ladder beside them, and this page has not
 caught up with them, so a reader
-reaches them only through `results/README.md`, which does index all 119
+reaches them only through `results/README.md`, which does index every committed CSV
 committed files with the producer that writes each one. The number is
 measured: `tests/test_reproduction_routes.py` reads the
 index, the runner's stage loop and this page, and holds the unrouted set as a
@@ -73,10 +73,10 @@ under moving dependencies is a property of the environment until the pinned
 comparison disagrees, and that the pinned comparison is the one that speaks
 for the record.
 
-The runner's stages write the core subset of the 119 committed CSVs. The
+The runner's stages write the core subset of the committed CSVs (count them with `ls results/*.csv | wc -l`). The
 rest each have their own script, held out for one of two reasons.
 
-### Seven need trees that stay outside the repository
+### Seven producers needing external trees
 
 These do not run from a clone: `run_stark_joint.py` (`stark_joint.csv`, the
 joint three-session AC-Stark bound, a long profile-likelihood run that also
@@ -93,49 +93,40 @@ git worktree per commit.
 
 Four of those seven reach the trees indirectly, importing `run_stark_joint`'s
 `load_session_20250704` and `load_session_20250717` rather than reading the environment
-variables themselves, which is worth knowing if you are grepping for what
+variables themselves, which is worth knowing when grepping for what
 depends on them. Three further scripts outside the two lists above also need the trees
 and write no CSV: `build_clock_table.py`, `run_epoch_checks.py`, and
 `run_saturation_probe.py` in its opt-in `--joint` stage.
 
-Point `RB5S6S_SESSION_20250704_DIR` and `RB5S6S_SESSION_20250717_DIR` at the trees if you have
-them. The fallback path the scripts fall back to is not where they live.
+Point `RB5S6S_SESSION_20250704_DIR` and `RB5S6S_SESSION_20250717_DIR` at the trees where they are held. The fallback path the scripts fall back to is not where they live.
 
-### The rest run from a clone, held out for runtime or as diagnostics
+### The remainder, held out for runtime or as diagnostics
 
-`run_wing_check.py` (`wing_check.csv`, about 6 minutes over the raw traces),
-`run_wavemeter_reconstruction.py` (`wavemeter_reconstruction.csv`, digitised
-from a tracked photograph), `run_laser_history.py` (`laser_history.csv` and
-`laser_history_structure.csv`), `run_stark_centres.py` (`stark_centres.csv`),
-`run_centre_stark.py` (`centre_stark.csv`), `run_cavity_scan.py`
-(`cavity_scan_integrals.csv`) and `run_tooth_scatter.py`
-(`ruler_tooth_scatter.csv`, about a minute refitting every RF-on comb with
-free tooth centres, held out because nothing downstream reads its bound),
-`run_kernel_inhomogeneity.py` (`kernel_inhomogeneity.csv`, about three and a half minutes building the collected volume element by element, held out for runtime. It landed in d5bc11aa routed by neither this page nor the runner, which is escape E44), `run_transit_additivity.py` (`transit_additivity.csv`, the guided transit
-kernel's second-order entry computed two independent ways, a few minutes
-over a 600,000-point grid), `run_fibre_twin.py` (`fibre_twin.csv`),
-`run_ultra_joint.py` (`ultra_joint_fit.csv`, the waist scanned under three laser
-kernels on both arms of the design: about twenty minutes for the coarse grid
-on ten workers and hours for the fine one, run from the night queue and never
-by the runner), `run_ultra_joint_closure.py` (`ultra_joint_closure.csv`, that
-estimator closed on its own model at a known waist over eight noise steps, about
-seventy minutes on ten workers, and it records its ladder rungs as it goes so the
-real arm is refused unless they pass), `run_residual_resampling.py`
-(`residual_resampling.csv`, the archive's own wing residuals resampled as the
-twin's noise source against a Gaussian draw at the same sigma, a couple of
-minutes on one core), `run_moment_power_map.py` (`moment_power_map.csv` and its per-rung table,
-about half an hour on eight workers), `run_moment_power_map_deep.py`
-(`moment_power_map_deep.csv` and its per-rung table, about ninety minutes on
-six workers) and
-`run_paired_reference_forecast.py` (`paired_reference_forecast.csv`,
-Monte-Carlo comparing the paired cell-plus-fibre acquisition against
-unreferenced sweeps, with no traces needed. It draws six
+* `run_wing_check.py` (`wing_check.csv`, about 6 minutes over the raw traces).
+* `run_wavemeter_reconstruction.py` (`wavemeter_reconstruction.csv`, digitised from a tracked photograph).
+* `run_laser_history.py` (`laser_history.csv` and `laser_history_structure.csv`).
+* `run_stark_centres.py` (`stark_centres.csv`).
+* `run_centre_stark.py` (`centre_stark.csv`).
+* `run_cavity_scan.py` (`cavity_scan_integrals.csv`) and `run_tooth_scatter.py` (`ruler_tooth_scatter.csv`, about a minute refitting every RF-on comb with free tooth centres, held out because nothing downstream reads its bound).
+* `run_kernel_inhomogeneity.py` (`kernel_inhomogeneity.csv`, about three and a half minutes building the collected volume element by element, held out for runtime. It landed in d5bc11aa routed by neither this page nor the runner, which is escape E44).
+* `run_transit_additivity.py` (`transit_additivity.csv`, the guided transit kernel's second-order entry computed two independent ways, a few minutes over a 600,000-point grid).
+* `run_fibre_twin.py` (`fibre_twin.csv`).
+* `run_ultra_joint.py` (`ultra_joint_fit.csv`, the waist scanned under three laser kernels on both arms of the design: about twenty minutes for the coarse grid on ten workers and hours for the fine one, run from the night queue and never by the runner).
+* `run_ultra_joint_closure.py` (`ultra_joint_closure.csv`, that estimator closed on its own model at a known waist over eight noise steps, about seventy minutes on ten workers, and it records its ladder rungs as it goes so the real arm is refused unless they pass).
+* `run_ultra_joint_treatments.py` (`ultra_joint_treatments.csv`, the treatment matrix of the main aim on the twin: the laser-width worlds with the shift and the waist tied through the exponent table and the theory constants pinned, about two hours on eight workers for six worlds at the L's thirty-two conditions, its rows DIAGNOSTIC until the whitening re-run).
+* `run_noiseless_floor.py` (`noiseless_floor.csv`, one closure cell at two optimiser budgets, about six minutes on one core).
+* `run_residual_resampling.py` (`residual_resampling.csv`, the archive's own wing residuals resampled as the twin's noise source against a Gaussian draw at the same sigma, a couple of minutes on one core).
+* `run_window_surface.py` (`window_surface.csv`, the twin's windowed cumulants at eight half-windows and six orders per condition at one noise level per run, its noiseless rung the estimator against the direct truncated moments and its noisy rungs the replica bias and spread, about a minute at the full noiseless size on eight workers).
+* `run_moment_power_map.py` (`moment_power_map.csv` and its per-rung table, about half an hour on eight workers).
+* `run_moment_power_map_deep.py` (`moment_power_map_deep.csv` and its per-rung table, about ninety minutes on six workers) and `run_paired_reference_forecast.py` (`paired_reference_forecast.csv`, Monte-Carlo comparing the paired cell-plus-fibre acquisition against unreferenced sweeps, with no traces needed. It draws six
 independent base seeds per configuration and concatenates them, and is
 byte-identical at every worker count. Measured on a ten-core machine on
 2026-09-02, three times and independently, spanning 668 to 789 s
 sequential, about 240 s at three workers, 153 to 170 s at six and 142 s
 at eight, the spread being other load. The replication multiplied the
 cost by about five, and the figures before it are not comparable).
+
+The kernel Monte Carlo (`run_kernel_mc.py`) writes its artefacts under the session's cache, which is what `kernel_gate.require_node` reads before the fit evaluates the full model at a node, and `--collect` writes `results/kernel_mc.csv` from them (the committed readings). A fit on a fresh machine runs the grid first (`--grid`, minutes on eight workers) or points `RB5S6S_KERNEL_MC_DIR` at a set of artefacts.
 
 **What that curve says once the machine is described, added 2026-09-10.** It
 was measured on an Apple M4, `hw.perflevel0.physicalcpu` 4 and
@@ -149,12 +140,12 @@ over six. **So "up to ten workers" is a ceiling on the count and not a promise
 of ten times**, and a budget computed as serial seconds over the worker count
 is optimistic by roughly a factor of two on this part.
 
-**`run_fibre_twin.py` was absent from this page as a standing omission**, the
+`run_fibre_twin.py` was absent from this page as a standing omission, the
 same defect the paragraph above records. `run_transit_additivity.py` was
 written in the same wave that documented it, so it is not an instance of that
 class and calling it one overstated a claim about recurrence.
 
-**And the class is larger than this page's repairs have measured.** A reading
+And the class is larger than this page's repairs have measured. A reading
 of every `scripts/run_*.py` against every committed CSV found roughly twenty
 with a producer, runnable from a clone, named nowhere here. The two lists below
 are therefore not the exhaustive partition the sentence above them implies.
@@ -184,7 +175,7 @@ print the full report, because the per-trace QC metrics they read
 behind the clock is preserved verbatim as the release asset
 `raw-backup-2026-07-24` (sha256 in its notes).
 
-## How a quoted number is held to its source
+## The binding of a quoted number to its source
 
 The headline numbers are cited across many documents.
 `tests/test_docs_canonical.py` holds each in a single registry, reads its true

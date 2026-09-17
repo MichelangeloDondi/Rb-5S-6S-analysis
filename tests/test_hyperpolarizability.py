@@ -245,7 +245,7 @@ def test_two_photon_matrix_element_and_its_ratio_to_the_light_shift():
     until the 2026-08-24 adjudication and which now lives in
     DELTA_ALPHA_AU_ORSON2021. Since 2026-09-15 the package constant is the ADOPTED
     dynamic sum, -1131.8 a.u., giving 1.2511, while the module's STATIC line-list
-    sum still gives -1144.6 and so 1.2367. Three ends, and this test pins each to
+    sum still gives its own ratio, 1.2367. Three ends, and this test pins each to
     the construction that produces it: the module end, the constant end and the
     cited end, which no longer coincide and must not be allowed to drift into
     one another silently.

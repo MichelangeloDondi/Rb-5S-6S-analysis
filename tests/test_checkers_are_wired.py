@@ -60,6 +60,22 @@ ROOT = Path(__file__).resolve().parents[1]
 #
 # checker path (relative to the repo root) -> why it is not wired
 NOT_WIRED = {
+    "private/checks/rename_heading.py":
+        "an author's TOOL and not a gate check, the write half of the heading register. It "
+        "renames one heading and carries every anchor that points at it across the tracked "
+        "markdown, which is a deliberate act on named text and never something a floor should "
+        "perform unasked: a guard that rewrote headings would be editing prose to make itself "
+        "green. `heading_register.py` is the RATCHET that grades the surface and it IS wired "
+        "into prefloor.sh; this is the tool that pays it down, and it refuses a heading that "
+        "is not unique in its file so a rename cannot land on the wrong one.",
+    "private/checks/split_paragraph.py":
+        "an author's TOOL and not a gate check, the write half of the wall count. It breaks "
+        "ONE named paragraph at sentence boundaries it finds, without reflowing, because a "
+        "rewrap flattens the two-space continuation blocks these pages use and changes how "
+        "their lists render. Which boundary to cut on is a judgement about the argument, so a "
+        "floor must not choose it: `prose_walls.py` is the RATCHET that grades the surface and "
+        "it IS wired; this is the tool that pays it down, and it refuses to write at all when "
+        "the sentence split would drop a word.",
     "private/checks/ssot_bind.py":
         "an author's TOOL and not a gate check. It offers a binding for a bare decimal that "
         "matches exactly one committed cell at four significant figures with the quantity "
@@ -69,6 +85,27 @@ NOT_WIRED = {
         "numbers that have no cell to cite and never will -- four thousand of them, measured. "
         "`ssot_coverage.py` is the RATCHET that grades this surface and it IS wired; this is "
         "the tool that pays it down.",
+    "private/checks/retire_sweep.py":
+        "an author's TOOL and not a gate check, the write half of the retired-value sweep. It "
+        "moves a whole record into private/history/records and rewrites a LIVE file in place, "
+        "and which files count as live is a judgement stated in its own list, never something "
+        "a floor should decide unasked. `retired_values.py` is the RATCHET that grades this "
+        "surface and it IS wired; this is the tool that pays it down.",
+    "private/checks/producer_run.py":
+        "the wrapper a person or a session uses to START a producer by hand: it prints the "
+        "last measured cost, forces unbuffered output and diverts an expensive run into an "
+        "isolated snapshot when a landing is in progress, so it is the thing that calls a "
+        "producer, the same relation driver.py has to the job queue, not a thing a gate calls.",
+    "private/checks/core_watch.py":
+        "the twenty-minute core-utilisation alarm the owner asked for, the same kind of "
+        "instrument as science_alarm.py and convergence_alarm.py: it reads the performance "
+        "cores' occupancy and prints a verdict to act on, and wiring it into a gate would "
+        "grade the gate's own idle cores at the exact moment the gate is running.",
+    "private/checks/chapter7_readiness.py":
+        "a measurement the advancement seat reads at every board --begin, yellow and never a "
+        "refusal by the plan's own design: it prints a count for a reader, and wiring it into "
+        "a gate would turn a measure meant to inform into a blocking check it was written "
+        "specifically not to be.",
     # ---- THE SESSION INSTRUMENTS, run by a prompt and not by a file on disk,
     # ---- on the same footing as half_hour_alarm.py below (2026-09-15).
     "private/checks/science_alarm.py":

@@ -51,6 +51,9 @@ from rb5s6s.pmfmt import pm_cells                                  # noqa: E402
 
 _CFG_RESULTS = _CFG.RESULTS_DIR
 
+# THE SHIFT OF THIS WORKING POINT IS A DESIGN VALUE OF ITS DATE: 0.364 MHz was the archive's
+# prediction when the point was set (the static-tail polarizability, retired 2026-09-17), and the
+# record's own is stark_sweep.csv's S0_225mW_pred. The re-run at it is queued as twin-working-point-ssot.
 TRUTH = dict(gamma_coll=0.55, sigma_laser_fwhm=1.6, transit_fwhm=0.9575,
              gamma_l=0.40, s0=0.364)
 OMEGA0 = 0.45

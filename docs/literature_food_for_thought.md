@@ -7,7 +7,7 @@ papers + the snippets in each section.
 
 ---
 
-## 1. The transit MC was wrong, and w₀ re-centres from 32 to ~50 µm
+## 1. The transit Monte Carlo error and the waist re-centring
 
 **Confirmed by cross-checking against Lehmann's worked example.** Lehmann 2021 works a numerical example (NNO, m=44 u,
 w₀=0.90 mm, T=300 K → transit HWHM **41.2 kHz**, vrms 335 m/s). My analytic
@@ -46,7 +46,7 @@ right, and two independent things follow:
 - `TRANSIT_FWHM_PLACEHOLDER_MHZ` is now derived from w₀ via
   `constants.transit_fwhm_from_w0` (≈1.20 MHz at 50 µm), and every fit was re-run.
 
-**This propagation is done** (`docs/notes/transit_width_resolved.md`): the flux fix +
+This propagation is done (`docs/notes/transit_width_resolved.md`): the flux fix +
 Lehmann test, the w₀ re-pin, and the C1/C2/C3d re-runs all landed 2026-07-13. The
 headline results are unchanged in *kind* (model-independent bounds and
 nulls, gated on a direct beam-profile measurement), and only the w₀-conditional central values
@@ -69,8 +69,7 @@ because the right comparison is broadening-to-broadening. Conclusion unchanged
 (consistent but not constraining, since the 70–130 °C lever can't reach it →
 the fixed-lock session's 150–170 °C).
 
-## 3. Grimm and Stalnaker: the ⟨E²⟩ convention and the novelty bound (both hold)
-
+## 3. Grimm and Stalnaker on the ⟨E²⟩ convention
 - **Grimm 2000** confirms our S₀ convention verbatim: $\Delta E=-\tfrac14\alpha E_0^2=-\alpha I/(2\varepsilon_0 c)$
   (their oscillator model, §ii). No change, and it is the right citation for
   `stark_shift_S0_mhz`.
@@ -80,7 +79,7 @@ the fixed-lock session's 150–170 °C).
   *supports our method*, being a precedent for using the shift's spatial
   structure as a measurement channel, in the fringe-averaged FM regime we invoke.
 
-## 4. Lehmann §ii: a ready-made tool for the fixed-lock session's saturated Stark regime
+## 4. Lehmann §ii on the saturated Stark regime
 
 Lehmann's saturated-field treatment (his §ii) gives the two-photon lineshape
 *with* an AC-Stark shift in dimensionless reduced units (reduced Rabi
@@ -95,6 +94,7 @@ which is one less systematic to worry about.)
 ---
 
 ### Bottom line
+
 The papers did what the dataset's own numbers couldn't: they **caught a real bug
 in the transit MC** (a missing crossing-flux factor) **and re-centred the dominant
 systematic** (w₀ ~50 µm, not the 32 µm nominal, which the corrected transit

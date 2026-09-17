@@ -2,20 +2,12 @@
 
 *[wiki index](README.md) · physical effect*
 
-**The question.** Whether the cell's own thermal glow drives or shifts the 5S
-to 6S cascade, and by how much.
-**Takes.** The cascade's transition wavelengths and the cell temperature, and
-no fitted data of its own.
-**Gives.** The two blackbody peaks and why they rarely matter here, plus the
-one channel and the one shift that do.
-**Skip if.** You want the light shift from the drive laser itself, not the
-cell's own thermal field, covered in
-[the AC-Stark shift](ac-stark-shift.md).
+Whether the cell's own thermal glow drives or shifts the 5S to 6S cascade, and by how much. This page builds on the cascade's transition wavelengths and the cell temperature, and no fitted data of its own and sets out the two blackbody peaks and why they rarely matter here, plus the one channel and the one shift that do. Not covered here: the light shift from the drive laser itself, not the cell's own thermal field, covered in [the AC-Stark shift](ac-stark-shift.md).
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
 > defines every term and symbol used anywhere in this repository.
 
-## What it is
+## Definition
 
 Any object at temperature $T$ glows. The spectrum of that glow is set by
 temperature alone, and the quantity that matters for atoms is the mean
@@ -52,13 +44,13 @@ $\langle E^2\rangle \propto T^4$. The two effects have different sizes and
 different consequences, and a transition can be immune to one and not the
 other.
 
-## What problem it solves
+## The problem it addresses
 
 In precision spectroscopy the blackbody shift is often the largest
 uncontrolled systematic, because a cell or a trap has a temperature and the
 $T^4$ scaling is steep.
 
-## Where this repository uses it
+## Application in this repository
 
 The cell runs at 70 to 130 °C, so it sits inside its own glow, and
 [methods chapter 4](../methods/04_the_composite_model.md) asks the two
@@ -121,7 +113,7 @@ the near-resonant 6S to 6P contribution whose weight grows with temperature,
 so a model that assumes the fourth power understates the shift where a
 ceiling matters most.
 
-## The 6S to 6P channel, and where it now lives
+## The 6S to 6P channel and its location
 
 The near-resonant channel is not only a correction to the shift. It also
 **transfers population**: `results/blackbody_channels.csv` gives the 6S to 6P
@@ -132,8 +124,8 @@ thermal field is
 [3.32229e-05](../../results/blackbody_channels.csv "ref:blackbody_channels:bbr_reexcitation:5P3/2_to_6S") per
 second, so the thermal field empties 6S and does not fill it.
 
-**Neither rate depletes the state, and the comparison that shows it is one
-division.** The total rate out of 6S is $1/\tau_{6S}$, and
+Neither rate depletes the state, and the comparison that shows it is one
+division. The total rate out of 6S is $1/\tau_{6S}$, and
 `constants.TAU_6S_S` holds the measured lifetime, 45.57 ns, so that rate is
 $2.19\times10^{7}$ per second. The blackbody transfer above is 44.3 per
 second, which is **two parts in a million** of it. So the thermal field removes
@@ -144,7 +136,7 @@ budget of `docs/methods/02` does not carry a blackbody line. The argument is
 physics and arithmetic, so it sits on the first rung of the ladder and needs no
 simulation. Re-derive it with `constants.TAU_6S_S` and the transfer cell above.
 
-**The same file bounds the thermal light the detector itself sees**, which is a
+The same file bounds the thermal light the detector itself sees, which is a
 different question from what the atoms do and is easy to conflate with it. The
 cell wall emits
 [2994.39](../../results/blackbody_channels.csv "ref:blackbody_channels:bbr_detector_background:T70C")
@@ -156,19 +148,19 @@ the background scattering opened as an apparatus item in
 [the plan's open list](../plan/12_open-apparatus-items.md), and the reason that
 item matters is that a *moment* estimator carries no baseline model at all.
 
-**The blackbody shift is in the twin's world builder and not in its forecast
-generator, and the trapped-light halo is in both.** `blackbody.shift_hz` moves the
+The blackbody shift is in the twin's world builder and not in its forecast
+generator, and the trapped-light halo is in both. `blackbody.shift_hz` moves the
 line centre in `build_world_trace`, and `synthetic_traces` carries no blackbody
 argument at all. Read `results/twin_term_census.csv` for which term reaches
 which path. That file is measured from the signatures, not asserted.
 
-**Do not confuse this channel with radiation trapping.** Blackbody transfer is
+Do not confuse this channel with radiation trapping. Blackbody transfer is
 driven by the thermal field and depends on temperature through the photon
 occupation. Trapping is driven by the atoms' own resonant D-line photons and
 depends on optical depth. They act on the same detection leg and are separate
 terms with separate producers.
 
-## What can go wrong
+## Failure modes
 
 The commonest modelling error is to reason from the power spectrum, whose
 peak sits at a different wavelength from the photon-number peak, and then to
@@ -219,8 +211,7 @@ for lam in (0.795, 1.324, 2.73):
 - [Wikipedia: Planck's law](https://en.wikipedia.org/wiki/Planck%27s_law) for
   the spectrum and its two limits.
 
-## See also
-
+## Related pages
 - [The AC-Stark shift](ac-stark-shift.md) for the other source of level shift
   acting on the same states, driven by the beam, not the cell.
 - [Hyperfine populations and branching](hyperfine-populations-and-branching.md)

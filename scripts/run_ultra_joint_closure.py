@@ -52,6 +52,7 @@ import csv
 import importlib.util
 import json
 import math
+import os
 import sys
 import time
 from pathlib import Path
@@ -73,8 +74,8 @@ from rb5s6s.noise import sigma_of_v         # noqa: E402
 
 FORM = "mixed"                  # the form the archive's own fit prefers on chi2
 SESSIONS = ("P", "T")           # the canonical L; E and M live off this machine
-TRUTH_UM = 52.0
-GRID_UM = (40.0, 44.0, 48.0, 52.0, 56.0, 60.0, 64.0)
+TRUTH_UM = 76.0          # the ansatz grid's centre (owner, 19:40: start on w0 >= 64 um); 52 was the estimator's arithmetic, done
+GRID_UM = (64.0, 68.0, 72.0, 76.0, 80.0, 84.0, 88.0, 90.0)   # the validated nodes of the kernel gate, 64-90
 # THE NOISELESS RUNG NEEDS A FINER GRID, AND THE TOLERANCE IS NOT THE THING TO MOVE.
 # `ladder_gate.NOISELESS_TOL` is 1e-3, which on a 52 um truth is 0.052 um -- and a
 # parabola through three points of a 4 um grid cannot localise to that however good
@@ -85,6 +86,10 @@ GRID_UM = (40.0, 44.0, 48.0, 52.0, 56.0, 60.0, 64.0)
 # catches a landscape that rails far away, which is the failure mode actually seen, and
 # the fine half resolves a minimum if there is one to resolve.
 GRID_NOISELESS = tuple(sorted(set(GRID_UM) | {TRUTH_UM + k * 0.5 for k in range(-4, 5)}))
+
+
+def grid_noiseless(truth: float) -> tuple:
+    return tuple(sorted(set(GRID_UM) | {truth + k * 0.5 for k in range(-4, 5)}))
 WIDE_UM = (76.0, 90.0)          # tests the asymptote instead of extrapolating it
 SEED = 1000
 # THE SWEEP, AND IT IS THE RULE READ LITERALLY. The owner's words are "first on noiseless
@@ -95,7 +100,7 @@ SEED = 1000
 # ask: at what noise does the waist information die? That number is a campaign lever --
 # if the minimum survives to 0.3 of the archive's law and not to 1.0, a quieter
 # acquisition measures the waist this one cannot.
-NOISE_SWEEP = (0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 0.7, 1.0)
+NOISE_SWEEP = (0.0, 0.1, 0.3, 1.0)      # coarse first (owner, 2026-09-17 02:40): the waist profile's rungs and one decade below; 0.05, 0.2, 0.5, 0.7 are refinements a reading must ask for
 RUNG_OF_SCALE = {0.0: "noiseless", 0.3: "low", 1.0: "archive"}
 ANALYSIS_ID = "ultra_joint_waist"
 OUT = C.RESULTS_DIR / "ultra_joint_closure.csv"
@@ -132,10 +137,25 @@ def _synthetic_source():
     dspec = UJ.design_spec(rows, list(SESSIONS))
     session_traces, _ = UJ.load_sessions(list(SESSIONS))    # ladder-exempt: the injection's own source
     UJ._init_worker(session_traces)
-    return UJ._load(dspec)                                  # ladder-exempt: the injection's own source
+    _tr = UJ._load(dspec)                                  # ladder-exempt: the injection's own source
+    _lim = os.environ.get("RB5S6S_CLOSURE_CONDITIONS", "all")
+    if _lim != "all":                        # START SMALL: the first N conditions in design order
+        _keys = []
+        for _t in _tr:
+            _k = (_t["session"], _t["peak"], round(_t["P_W"], 4), _t["T"])
+            if _k not in _keys:
+                _keys.append(_k)
+        # BOTH ARMS IN EVERY WORLD (2026-09-17 04:10): sixteen conditions in design order were the
+        # power arm alone, and a world with one temperature cannot separate the transit from the
+        # laser width, so the noisy rungs read "not convex" about the estimator when the world was
+        # the cause. The cut takes half its conditions from each session in design order.
+        _n = int(_lim); _p = [k for k in _keys if k[0] == "P"]; _t = [k for k in _keys if k[0] != "P"]
+        _keep = set(_p[: (_n + 1) // 2] + _t[: _n // 2]) if _t else set(_keys[:_n])
+        _tr = [_t for _t in _tr if (_t["session"], _t["peak"], round(_t["P_W"], 4), _t["T"]) in _keep]
+    return _tr
 
 
-def truth_params(traces, w0):
+def truth_params(traces, w0, prior_mean: bool = False):
     """The archive's OWN best fit at the truth waist, as the world to inject.
 
     NOT `Cell.starts()[0]`: that is the optimiser's start vector, a per-form generic
@@ -148,7 +168,15 @@ def truth_params(traces, w0):
         f = cell.fit(list(p0))
         if best is None or f["chi2"] < best["chi2"]:
             best = f
-    return cell, np.asarray(best["p"], float)
+    ptr = np.asarray(best["p"], float)
+    if prior_mean:
+        # THE TRUTH AT THE PRIOR MEANS (2026-09-16, F1/F4): the archive's own fit sits 4.8 and 3.8
+        # sigma off the Omega and beta priors, so a closure scoring data + prior against it measures
+        # the priors' pull (37.02 at the injected vector, 52.37 for 52.00) and not the estimator.
+        # Injected at the prior means the estimator returns 52.0074 for 52.000.
+        ptr = np.array([1.0 if n in ("beta_rel", "omega_scale", "alpha_rel") else v
+                        for n, v in zip(cell.names, ptr)], float)
+    return cell, ptr
 
 
 # THE NOISELESS RUNG NEEDS A TIGHTER INNER FIT, and the gate's own refusal said so.
@@ -162,10 +190,10 @@ def truth_params(traces, w0):
 NOISELESS_NFEV = 1200
 
 
-def _fit_grid(traces, grid, max_nfev=None):
+def _fit_grid(traces, grid, max_nfev=None, logdet: bool = False, noise_scale: float = 1.0):
     out = []
     for w0 in grid:
-        c = UJ.Cell(UJ._spec(FORM, w0, beta_profile=False), traces)
+        c = UJ.Cell(dict(UJ._spec(FORM, w0, beta_profile=False), logdet=logdet, noise_scale=noise_scale), traces)
         best = None
         for p0 in c.starts():
             f = c.fit(list(p0)) if max_nfev is None else c.fit(list(p0), max_nfev=max_nfev)
@@ -189,7 +217,7 @@ def _fit_grid(traces, grid, max_nfev=None):
 RECORD_NOISE_TAU = 1.0
 
 
-def inject(cell, p_truth, seed, correlated=False, noise_scale=1.0):
+def inject(cell, p_truth, seed, correlated=False, noise_scale=1.0, residual_source=None):
     """Every trace's voltage replaced by the model at the truth, plus its noise.
 
     `noise_scale` is the ladder's rung: 0.0 is noiseless, 0.3 is `low`, 1.0 is the
@@ -211,7 +239,10 @@ def inject(cell, p_truth, seed, correlated=False, noise_scale=1.0):
         rec = np.asarray(sigma_of_v(np.clip(c[0] * m, 0.0, None), t["law"]), float)
         s = rec * float(noise_scale)
         used.append(s); held.append(rec * float(noise_scale))
-        w = rng.standard_normal(m.size)
+        # `residual_source(trace, n, rng)` returns n unit-variance draws with the archive's own
+        # residual shape (moving blocks of the condition's normalised pool, step 2); None is the
+        # Gaussian draw the rungs below the archive's use.
+        w = residual_source(t, m.size, rng) if residual_source is not None else rng.standard_normal(m.size)
         if correlated:
             w = _correlate(w, float(max(t["law"].get("tau_int", 1.0), 1.0)))
         draws.append(w)
@@ -256,13 +287,52 @@ def _cell(exc) -> str:
     return t[:380]
 
 
-def parabola(pts):
-    """The producer's own reading -- a parabola through the three lowest cells --
-    REFUSING a minimum that is not interior. Returns (w0, dchi2=1 half-width, why)."""
+def crossings(pts):
+    """The profile's OWN interval: the half-widths to the delta-chi2 = 1 crossings on each side of
+    the lowest node, by linear interpolation between nodes (F41, 2026-09-17). The waist's profile
+    is skewed toward large w0 (steep on the small side, flat on the large), so a parabola over a
+    window reads the average curvature and overstates the steep side; the coverage is judged
+    against this asymmetric interval and the parabola stays a diagnostic column. Returns
+    (left, right) in microns, NaN on a side the grid does not cross."""
+    q = sorted((float(a), float(b)) for a, b in pts if np.isfinite(b))
+    if len(q) < 3:
+        return float("nan"), float("nan")
+    w = np.array([a for a, _ in q]); c = np.array([b for _, b in q]); c = c - c.min(); i = int(np.argmin(c))
+    def _cross(pairs):
+        for a, b in pairs:
+            if (c[a] <= 1.0 < c[b]) or (c[b] <= 1.0 < c[a]):
+                return w[a] + (1.0 - c[a]) * (w[b] - w[a]) / (c[b] - c[a])
+        return float("nan")
+    left = _cross([(k, k - 1) for k in range(i, 0, -1)])
+    right = _cross([(k, k + 1) for k in range(i, len(w) - 1)])
+    return (float(w[i] - left) if np.isfinite(left) else float("nan"),
+            float(right - w[i]) if np.isfinite(right) else float("nan"))
+
+
+def parabola(pts, window_um: float = 3.0):
+    """The producer's own reading of the profile, REFUSING a minimum that is not interior.
+    Returns (w0, dchi2=1 half-width, why).
+
+    A QUADRATIC FITTED OVER THE NODES WITHIN `window_um` OF THE LOWEST (2026-09-17 05:40): the
+    three-lowest-cells parabola read "not convex" on the L at 0.3x and 1.0x with the fine band at
+    half-micron steps, because the profile's roughness from one optimisation per node is of the
+    order of the chi-squared difference between neighbouring fine nodes there; ten nodes carry the
+    curvature and three do not. The three-point rule remains the fallback under four nodes."""
     pts = sorted(pts)
     lo = min(pts, key=lambda q: q[1])
     if lo[0] in (pts[0][0], pts[-1][0]):
         return float("nan"), float("nan"), "rail"
+    near = [q for q in pts if abs(q[0] - lo[0]) <= window_um + 1e-9]
+    if len(near) >= 4:
+        xs = np.array([q[0] for q in near], float); ys = np.array([q[1] for q in near], float)
+        x0 = xs.mean()
+        a, b, _c = np.polyfit(xs - x0, ys, 2)
+        if a <= 0:
+            return float("nan"), float("nan"), "not convex"
+        w = x0 - b / (2 * a)
+        if not (near[0][0] <= w <= near[-1][0]):
+            return float("nan"), float("nan"), "extrapolated"
+        return float(w), float(1.0 / math.sqrt(a)), "interior"
     three = sorted(sorted(pts, key=lambda q: q[1])[:3])
     (x1, y1), (x2, y2), (x3, y3) = three
     den = (x1 - x2) * (x1 - x3) * (x2 - x3)
@@ -286,19 +356,47 @@ def _W_traces():
 
 
 def _init():
-    tr = _synthetic_source()
-    cell, ptr = truth_params(tr, TRUTH_UM)
-    _W["real"], _W["cell"], _W["ptr"] = tr, cell, ptr
+    _W["real"] = _synthetic_source()
+
+
+def _truth(truth: float, prior_mean: bool):
+    key = ("truth", float(truth), bool(prior_mean))
+    if key not in _W:
+        _W[key] = truth_params(_W["real"], float(truth), prior_mean=prior_mean)
+    return _W[key]
 
 
 def _task(args):
     """One realisation at one noise scale: inject, walk the grid, read the parabola."""
-    scale, r, correlated = args
-    syn, level, shape = inject(_W["cell"], _W["ptr"], SEED + r, correlated=correlated, noise_scale=scale)
-    pts = (_fit_grid(syn, GRID_NOISELESS, max_nfev=NOISELESS_NFEV) if scale <= 0.0
-           else _fit_grid(syn, GRID_UM))
+    scale, r, correlated, truth, prior_mean, logdet = args
+    cell, ptr = _truth(truth, prior_mean)
+    syn, level, shape = inject(cell, ptr, SEED + r, correlated=correlated, noise_scale=scale)
+    wscale = scale if scale > 0.0 else 1.0          # the rung whitens at its own scale (F7)
+    ld = bool(logdet and scale > 0.0)               # no log-determinant at zero noise
+    # EVERY RUNG WALKS THE FINE BAND (F14, 2026-09-17): the noisy rungs walked the 4 um grid alone,
+    # and a parabola through 4 um nodes of a profile that is not a parabola read +0.56 um at the
+    # first noisy level and railed a 64 um truth that had no interior triple there.
+    pts = _fit_grid(syn, grid_noiseless(truth), max_nfev=(NOISELESS_NFEV if scale <= 0.0 else None),
+                    logdet=ld, noise_scale=wscale)
     w, bar, why = parabola(pts)
-    return scale, r, w, bar, why, pts, level, shape
+    lo_hw, hi_hw = crossings(pts)                 # the profile's own interval (F41)
+    # THE SPLIT AT THE INJECTED VECTOR, at every rung: data, prior and log-determinant blocks. The
+    # rung is judged on the data block (zero for a generator equal to the fitter at zero noise,
+    # n_eff +- sqrt(2 n_eff) at a noisy rung whitened at its own scale); the objective's own
+    # minimum carries the log-determinant residual and its offset and is not a chi-squared.
+    c = UJ.Cell(dict(UJ._spec(FORM, truth, beta_profile=False), logdet=ld, noise_scale=wscale), syn)
+    parts = c.chi2_parts(ptr, np.zeros(len(syn)))
+    return scale, r, w, bar, why, pts, level, shape, float(truth), parts, (lo_hw, hi_hw)
+
+
+def _covered(x, truth):
+    """One realisation covers the truth on the profile's own interval (the crossings) where both
+    crossings exist, on the parabola's symmetric bar otherwise (F41)."""
+    w, bar = x[1], x[2]
+    hw = x[8] if len(x) > 8 else (float("nan"), float("nan"))
+    if np.isfinite(hw[0]) and np.isfinite(hw[1]):
+        return w - hw[0] <= truth <= w + hw[1]
+    return abs(w - truth) <= bar
 
 
 def _run(jobs, workers):
@@ -331,6 +429,12 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--workers", type=int, default=0)
     ap.add_argument("--reals", type=int, default=6)
+    ap.add_argument("--conditions", default=None, help="'all' or the number of conditions in design order; sets RB5S6S_CLOSURE_CONDITIONS for the workers")
+    ap.add_argument("--levels", default=None, help="a comma list of noise levels to walk instead of the sweep (0 is always walked first)")
+    ap.add_argument("--truths", default=str(TRUTH_UM), help="comma-separated truth waists in um; the first is the ladder's canonical one")
+    ap.add_argument("--prior-mean", action="store_true", help="inject the truth at the prior means (beta_rel, omega_scale, alpha_rel = 1)")
+    ap.add_argument("--logdet", action="store_true", help="carry sum ln sigma^2 in the objective")
+    ap.add_argument("--correlated", action="store_true", help="filter the injected noise to each condition's measured tau_int (the comparison arm, F36: the archive's post-fit residuals are near white, so the white arm is the one that matches the record)")
     a = ap.parse_args()
     from _producer_lock import producer_lock
     with producer_lock("run_ultra_joint_closure"):
@@ -342,48 +446,85 @@ def main() -> int:
         # order left SIX workers idle for the tail while four finished, measured at 66
         # minutes into the first run. Sorting by cell count costs nothing and hands the
         # long task to a free worker at the start rather than at the end.
-        jobs = [(sc, r, False) for sc in NOISE_SWEEP
+        if a.conditions is not None:
+            os.environ["RB5S6S_CLOSURE_CONDITIONS"] = str(a.conditions)
+        truths = [float(x) for x in a.truths.split(",")]
+        sweep = tuple(sorted({0.0} | {float(x) for x in a.levels.split(",")})) if a.levels else NOISE_SWEEP
+        jobs = [(sc, r, bool(a.correlated), t, a.prior_mean, a.logdet) for t in truths for sc in sweep
                 for r in range(1 if sc <= 0.0 else a.reals)]     # noiseless is deterministic
-        jobs.sort(key=lambda j: -(len(GRID_NOISELESS) if j[0] <= 0.0 else len(GRID_UM)))
+        jobs.sort(key=lambda j: (j[0] > 0.0, j[0]))      # the noiseless walks (the longest) first
+        # THE SIZE LADDER (owner, 2026-09-16): this run declares its size and is refused unless a
+        # smaller stage passed. Stage 0 is one truth and one realisation, which the probes of
+        # F4 ran and recorded; the L is the unit of this closure, so its conditions are 32.
+        _src = _synthetic_source()
+        n_cond = len({(t["session"], t["peak"], round(t["P_W"], 4), t["T"]) for t in _src})
+        # THE KERNEL PREFLIGHT (F91): every waist the grids walk is admitted by the gate at every
+        # condition and every line BEFORE the first cell runs. On 2026-09-17 the gate refused a waist
+        # at cell 85 of 89 after eight hours, and eight conditions still carried a gap over its
+        # interpolation bound that would have killed the rerun later still.
+        from rb5s6s import kernel_gate as _kg
+        from rb5s6s.constants import RHO_RETRO as _rho
+        _conds = sorted({(1.0, float(_rho), float(t["T"]), float(t["P_W"]) * 1e3) for t in _src})
+        _lo = min(list(GRID_UM) + list(GRID_NOISELESS) + [x - 2.0 for x in truths])
+        _hi = max(list(GRID_UM) + list(GRID_NOISELESS) + [x + 2.0 for x in truths])
+        for _line in sorted({str(t["peak"]) for t in _src}):
+            _kg.require_span(_conds, _lo, _hi, line=_line)
+        print(f"  kernel preflight: {len(_conds)} conditions x {_lo:g}-{_hi:g} um admitted", flush=True)
+        size = {"conditions": n_cond, "truths": len(truths), "realisations": max(1, a.reals), "forms": 1}
+        cells = n_cond * len(truths) * max(1, a.reals)
+        stage = 0 if cells <= 1 else int(math.ceil(math.log(cells, 4) - 1e-9))   # a stage per factor of four in cells: 1, 4, 16, 64, ...
+        adm = ladder_gate.launch(ANALYSIS_ID + "_closure", stage, size, pool_speedup=(5.5 if a.workers >= 8 else max(1.0, a.workers)))
+        print(f"  size ladder: stage {stage} admitted {adm}", flush=True)
         res = _run(jobs, a.workers)
         by: dict = {}
-        for sc, r, w, bar, why, pts, level, shape in res:
-            by.setdefault(sc, []).append((r, w, bar, why, pts, level, shape))
+        splits = {}
+        for sc, r, w, bar, why, pts, level, shape, truth, parts, hw in res:
+            by.setdefault((truth, sc), []).append((r, w, bar, why, pts, level, shape, parts, hw))
+            if sc <= 0.0:
+                splits[truth] = parts
+        canon = truths[0]
         n_eff = float(sum(t["n"] / t["tau"] for t in _W_traces()))
 
         rows, summary = [], {}
-        for sc in NOISE_SWEEP:
-            g = sorted(by[sc])
+        for truth in truths:
+          for sc in sweep:
+            g = sorted(by[(truth, sc)])
             ws = np.array([x[1] for x in g], float)
             bs = np.array([x[2] for x in g], float)
             ok = np.isfinite(ws)
-            rel = np.abs(ws - TRUTH_UM) / TRUTH_UM
+            rel = np.abs(ws - truth) / truth
             d = dict(n=len(g), interior=int(ok.sum()),
                      max_abs_rel_error=(float(np.max(rel[ok])) if ok.any() else float("inf")),
-                     bias=(float(np.mean(ws[ok])) - TRUTH_UM if ok.any() else float("nan")),
-                     coverage=(float(np.mean(np.abs(ws[ok] - TRUTH_UM) <= bs[ok])) if ok.any() else 0.0),
+                     bias=(float(np.mean(ws[ok])) - truth if ok.any() else float("nan")),
+                     coverage=(float(np.mean([_covered(x, truth) for x in g if np.isfinite(x[1])])) if ok.any() else 0.0),
+                     coverage_parabola=(float(np.mean(np.abs(ws[ok] - truth) <= bs[ok])) if ok.any() else 0.0),
+                     half_widths=[list(x[8]) if len(x) > 8 else [float("nan"), float("nan")] for x in g],
                      median_bar=(float(np.median(bs[ok])) if ok.any() else float("nan")),
-                     chi2_red=float(min(c for _, c in g[0][4]) / n_eff),
+                     chi2_red=float(np.mean([x[7]["data"] for x in g]) / n_eff),   # the data block at the truth
                      verdicts=sorted({x[3] for x in g}))
-            summary[sc] = d
-            print(f"  noise x{sc:<5} {d['interior']}/{d['n']} interior  "
+            summary[(truth, sc)] = d
+            print(f"  noise x{sc:<5} {d['interior']}/{d['n']} interior  bar {d['median_bar']:.3f} um  "
                   f"bias {d['bias']:+7.3f} um  max|rel| {d['max_abs_rel_error']:.4g}  "
                   f"coverage {d['coverage']:.2f}  chi2_red {d['chi2_red']:.3f}  {','.join(d['verdicts'])}",
                   flush=True)
-            rows.append([f"sweep_x{sc:g}", "interior_fraction", f"{d['interior']/d['n']:.3f}", "", "",
+            rows.append([f"sweep_x{sc:g}" + ("" if truth == canon else f"_truth{truth:g}"), "median_bar_um", f"{d['median_bar']:.4f}", "", "um",
+                         "the median over realisations of the vertex's delta-chi2 = 1 half-width at this level, whitened at the level's own scale", "", "DIAGNOSTIC"])
+            rows.append([f"sweep_x{sc:g}" + ("" if truth == canon else f"_truth{truth:g}"), "bias_um", f"{d['bias']:.4f}", "", "um",
+                         "the mean recovered waist minus the truth over the interior realisations at this level", "", "DIAGNOSTIC"])
+            rows.append([f"sweep_x{sc:g}" + ("" if truth == canon else f"_truth{truth:g}"), "interior_fraction", f"{d['interior']/d['n']:.3f}", "", "",
                          f"{d['interior']} of {d['n']} realisations found an INTERIOR minimum at "
                          f"{sc:g} times each condition's own noise law. bias {d['bias']:+.3f} um, "
                          f"coverage {d['coverage']:.2f}, median bar {d['median_bar']:.3f} um, "
                          f"chi2_red {d['chi2_red']:.3f}. Verdicts: {', '.join(d['verdicts'])}",
                          "DIAGNOSTIC"])
             for w0, c2 in g[0][4]:
-                rows.append([f"chi2_x{sc:g}", f"w0_{w0:g}um", f"{c2:.1f}", "", "whitened chi2",
-                             f"realisation 0 at {sc:g} times the law, {FORM} arm, truth {TRUTH_UM:g} um",
+                rows.append([f"chi2_x{sc:g}" + ("" if truth == canon else f"_truth{truth:g}"), f"w0_{w0:g}um", f"{c2:.1f}", "", "whitened chi2",
+                             f"realisation 0 at {sc:g} times the law, {FORM} arm, truth {truth:g} um",
                              "DIAGNOSTIC"])
 
         # THE CAMPAIGN LEVER: where does the waist information die?
-        alive = [sc for sc in NOISE_SWEEP if summary[sc]["interior"] >= max(1, summary[sc]["n"] // 2)]
-        dead = [sc for sc in NOISE_SWEEP if sc not in alive]
+        alive = [sc for sc in sweep if summary[(canon, sc)]["interior"] >= max(1, summary[(canon, sc)]["n"] // 2)]
+        dead = [sc for sc in sweep if sc not in alive]
         lever = max(alive) if alive else float("nan")
         rows.append(["noise_where_the_waist_dies", "largest_scale_still_localised", f"{lever:g}", "", "",
                      "the largest multiple of the archive's own noise law at which at least half the "
@@ -398,9 +539,19 @@ def main() -> int:
         climbed = {}
         for rung in ladder_gate.RUNGS:
             sc = ladder_gate.NOISE_SCALE[rung]
-            d = summary[sc]
-            detail = dict(n_truths=1, n_realisations=d["n"], interior=d["interior"],
-                          max_abs_rel_error=d["max_abs_rel_error"], coverage=d["coverage"],
+            if (canon, sc) not in summary:
+                print(f"  rung {rung:<10} not walked (--levels)", flush=True)
+                continue
+            d = summary[(canon, sc)]
+            worst = max(summary[(t, sc)]["max_abs_rel_error"] for t in truths)
+            detail = dict(n_truths=len(truths), n_realisations=d["n"], interior=d["interior"], median_bar_um=d["median_bar"],
+                          profiles=[[[float(w_), float(c_)] for w_, c_ in x[4]] for x in sorted(by[(canon, sc)])],   # every realisation's walk, for the vertex and interpolation tests
+                          recovered=[float(x[1]) for x in sorted(by[(canon, sc)])], bars=[float(x[2]) for x in sorted(by[(canon, sc)])],
+                          half_widths=[[float(v) for v in x[8]] if len(x) > 8 else [float('nan'), float('nan')] for x in sorted(by[(canon, sc)])],
+                          max_abs_rel_error=worst, coverage=d["coverage"],
+                          chi2_data_at_truth=(splits.get(canon) or {}).get("data"),
+                          chi2_prior_at_truth=(splits.get(canon) or {}).get("prior"),
+                          truth_at_prior_means=bool(a.prior_mean), logdet=bool(a.logdet),
                           nominal=0.68, chi2_red=d["chi2_red"],
                           odd_sign_agreement="n/a",
                           odd_sign_reason=("this closure estimates a LOCATION, the waist, from a "
@@ -416,7 +567,7 @@ def main() -> int:
                           # at this rung by construction and the ratio is 1 exactly. Saying
                           # so is not a formality: three ruler harnesses read the same scale
                           # as a fraction of PEAK and injected 29 times the archive's noise.
-                          injected_over_record=float(np.median([x[5] for x in sorted(by[sc])])),
+                          injected_over_record=float(np.median([x[5] for x in sorted(by[(canon, sc)])])),
                           # THE RUNG'S SHAPE, and it is a SECOND field because the level is
                           # blind to it: independent samples and an AR(1) at any coefficient
                           # whatever both report `injected_over_record` 1.000. Measured on the
@@ -424,8 +575,16 @@ def main() -> int:
                           # record's own time, so the two sides are one instrument on one kind
                           # of trace -- the record's time carries the line's wing curvature
                           # (2026-09-16) and a rung reproducing the archive reproduces that too.
-                          injected_tau_over_record=float(np.median([x[6] for x in sorted(by[sc])])),
+                          injected_tau_over_record=float(np.median([x[6] for x in sorted(by[(canon, sc)])])),
                           bias_subtracted=False, spread_validated=False)
+            if sc > 0.0 and n_cond < 32:
+                # ONE CONDITION CANNOT ASK THE WAIST QUESTION (2026-09-17, stage 0 on the corner
+                # alone: not convex at 0.1x, -2.9 um at 0.3x, a rail at 1.0x): the small stages
+                # prove the arithmetic and are recorded on the SIZE ladder; the noise rungs of the
+                # waist's own ladder are recorded where the L's two arms are in the world.
+                print(f"  rung {rung:<10} measured on {n_cond} conditions but not recorded: the noisy rungs are judged on the L", flush=True)
+                climbed[rung] = f"MEASURED (stage {stage})"
+                continue
             try:
                 art = ladder_gate.record(ANALYSIS_ID, rung, detail=detail)
             except ladder_gate.LadderRefused as exc:
@@ -450,7 +609,7 @@ def main() -> int:
                          f"at x{sc:g} of the law: {d['interior']} of {d['n']} interior, max|rel| "
                          f"{d['max_abs_rel_error']:.4g}, coverage {d['coverage']:.2f} against a "
                          f"nominal 0.68, chi2_red {d['chi2_red']:.3f}. "
-                         + json.loads(Path(art).read_text()).get("reasons", [""])[0][:220], "CALIB"])
+                         + (json.loads(Path(art).read_text()).get("reasons") or [""])[0][:220], "CALIB"])
 
         # ---------------------------------------------------- THE REAL ARM, ONLY THROUGH THE GATE
         gate_msg, traces = "", None
@@ -484,6 +643,20 @@ def main() -> int:
             w.writerow(["quantity", "key", "value", "err", "unit", "note", "status"])
             w.writerows(rows)
         print(f"  {(time.time()-t0)/60:.1f} min; wrote {OUT} ({len(rows)} rows)")
+        # THE SIZE LADDER'S RECORD (owner: start small): the stage's cost and its evidence, the
+        # noiseless recovery at the small stages and the archive rung's coverage on the L.
+        # the evidence is read at the HIGHEST WALKED level (a --levels run may stop below the archive),
+        # with the count, the bias and the realised scatter beside the coverage, so the size judge can
+        # read an unresolved coverage on the bias instead (F32.3, F35)
+        _hi = max(sc_ for (t_, sc_) in summary if t_ == canon)
+        _g = sorted(by[(canon, _hi)]); _ws = np.array([x[1] for x in _g], float); _ok = np.isfinite(_ws)
+        _ev = ({"max_abs_rel_error": float(max(summary[(t_, 0.0)]["max_abs_rel_error"] for t_ in truths))} if (n_cond < 32 or _hi == 0.0)
+               else {"coverage": float(summary[(canon, _hi)]["coverage"]), "nominal": 0.68,
+                     "n_realisations": int(summary[(canon, _hi)]["n"]), "noise_scale": float(_hi),
+                     "bias_um": float(summary[(canon, _hi)]["bias"]),
+                     "scatter_um": float(np.std(_ws[_ok], ddof=1)) if _ok.sum() > 1 else float("nan")})
+        ladder_gate.size_rung(ANALYSIS_ID + "_closure", stage, size, time.time() - t0, _ev)
+        print(f"  size ladder: stage {stage} recorded, {time.time() - t0:.0f} s, evidence {_ev}", flush=True)
     return 0
 
 

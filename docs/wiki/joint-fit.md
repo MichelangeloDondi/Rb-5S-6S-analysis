@@ -2,21 +2,12 @@
 
 *[wiki index](README.md) · method*
 
-**The question.** Whether repeated measurements of the same quantity should
-be fitted together with the physics shared, or fitted separately and
-averaged.
-**Takes.** A per-point weight for each measurement, already in hand. That is
-the subject of [weighted least squares](weighted-least-squares.md).
-**Gives.** The shared-versus-per-trace structure, the physical claim each
-sharing level makes, and the over-sharing failure that looks like success.
-**Skip if.** The question is whether an extra parameter is justified by the
-data, not how repeats of one condition are combined. That is
-[information criteria](information-criteria.md).
+Whether repeated measurements of the same quantity should be fitted together with the physics shared, or fitted separately and averaged. This page builds on a per-point weight for each measurement, already in hand. That is the subject of [weighted least squares](weighted-least-squares.md). It sets out the shared-versus-per-trace structure, the physical claim each sharing level makes, and the over-sharing failure that looks like success. Not covered here: the question is whether an extra parameter is justified by the data, not how repeats of one condition are combined. That is [information criteria](information-criteria.md).
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
 > defines every term and symbol used anywhere in this repository.
 
-## What it is
+## Definition
 
 When an experiment records the same quantity several times, the repeats can
 be fitted one at a time and averaged, or fitted together with the physics
@@ -48,13 +39,13 @@ usually safe. Sharing across conditions recorded hours apart asserts that
 the quantity did not change in between, and that assertion is the substance
 of the fit.
 
-## What problem it solves
+## The problem it addresses
 
 It makes drifting data usable. If an instrument wanders between repeats but
 the physics does not, a joint fit puts the wander in the per-trace
 parameters and keeps the physics in the shared ones.
 
-## Where this repository uses it
+## Application in this repository
 
 Everywhere the widths are extracted.
 [Methods chapter 6 section 4.2](../methods/06_the_statistics.md) sets out the
@@ -79,7 +70,7 @@ is shared per isotope, not globally, so the two isotopes can be tested
 against each other instead of assumed equal. The transit width is shared
 globally, since it follows the beam and the temperature law.
 
-## What can go wrong
+## Failure modes
 
 Over-sharing is the characteristic failure of joint fitting. A large shared
 fit returns a small formal error, and if the shared quantity varied between
@@ -161,8 +152,7 @@ print(f"fitted jointly: {joint:.3f}   truth: {w_true}")
   hierarchy and the leave-one-out checks on it.
 - [Identifiability](identifiability.md) for what joint fitting cannot fix.
 
-## See also
-
+## Related pages
 - [Weighted least squares](weighted-least-squares.md), for the per-point
   weights a joint fit shares across every trace.
 - [Identifiability](identifiability.md), for the degeneracy that sharing a

@@ -1,6 +1,6 @@
 *Chapter 1 of 9 of [the big picture](../BIG_PICTURE.md)*
 
-## 1. Why the line is worth characterising at all
+## 1. Motivation for characterising the line
 
 *Status, plainly. 993 nm is not put forward as a better clock line. On
 natural linewidth it is worse than the 778 nm standard. The
@@ -13,7 +13,7 @@ lever rather than a trap. §1.3 is the method. §1.4 is the size the collisional
 coefficient should have. Sections 5 and 6 say what the next measurements would
 add.
 
-### 1.1 An uncharacterised line in a well-motivated class, but not a better clock line
+### 1.1 An uncharacterised line, not a clock line
 
 The 778 nm 5S→5D two-photon transition is an established optical
 frequency reference, and the reason is structural: two-photon Doppler-free
@@ -80,19 +80,21 @@ density span. The neighbouring rung says the same thing from the other direction
 proposing 5S→7S as the basis for an optical frequency standard. The 5S→6S line
 is not being characterised in an empty field.
 
-### 1.2 Magic wavelengths would let it be done on trapped atoms
+### 1.2 Magic wavelengths for trapped atoms
 
 The awkwardness of a cell reference is that the atoms are hot, colliding and
 moving through the beam. Those are the transit and collisional terms this
 record spends its work bounding. Trapping fixes that, but a trap normally
-shifts the very line you are measuring. A *magic* wavelength does not: both states shift equally, and
+shifts the very line under measurement. A *magic* wavelength does not: both states shift equally, and
 the transition frequency is untouched. That is the trick behind lattice
 clocks (Sr at 813 nm). The polarizability recompute here gives the **first
 5S–6S magic wavelengths**, ≈ 1203.9 / 1287.9 / 1339.6 nm, all trapping (α > 0 for
 both states), with a 16 to 84 percent band of 1203.06 to 1204.73 nm on the
 1203.9 nm crossing, so the
 trapped-atom version of this measurement has candidate wavelengths where
-before it had none. The state pair has to be said out loud: Zang *et al.* 2012
+before it had none.
+
+The state pair has to be said out loud: Zang *et al.* 2012
 report six magic wavelengths between 1200 and 1600 nm for the **6S–5p₁/₂,₃/₂**
 pairs of a four-level active clock, two of which (1336 and 1342 nm) bracket the
 1339.6 here. They are a different state pair and a different magic condition,
@@ -104,7 +106,9 @@ at 1339.6 nm included. These are an envelope, and scalar only, which for
 these states is less of a caveat than it sounds: the tensor polarizability
 vanishes identically for $J=1/2$
 (triangle rule), so with linear polarization the scalar term is exact, not an
-approximation. None of the three crossings has been measured. The list is also
+approximation. None of the three crossings has been measured.
+
+The list is also
 deliberately incomplete: three more crossings exist hard against poles, one at
 1297.5 nm sitting 0.7 nm from the 6s₁/₂–7p₁/₂ resonance at 1298.3 nm and two
 hugging the 6S–8P doublet near 1029.7 and 1031.9 nm, and the 1.5 nm pole guard
@@ -116,7 +120,9 @@ two shifts to within a factor of two. The fourth-order differential shift, the h
 +0.87 Hz per megahertz squared of trap depth at the 1203.9 nm crossing, where a
 depth of h × 1 MHz is 48 µK, so a trap half a millikelvin deep moves the line
 by somewhere between fifty and two hundred hertz against the transition's
-3.49 MHz natural width. The vector shift is the
+3.49 MHz natural width.
+
+The vector shift is the
 sharper requirement: at that same depth a stretched-state atom sees 280 kHz per
 megahertz of depth per unit circularity of the trap light, so holding the trap
 shift under a kilohertz needs the circularity below about 3 × 10⁻⁴. At the 1297.5 and 1339.6 nm
@@ -127,7 +133,9 @@ megahertz of depth at 1203.9 nm and ten to sixty times faster at the 1287.9,
 this line list, but there the module flags its upward entries as several-fold
 understatements, and holding a trap wavelength against the adjacent 6S–8P
 doublet would put the trap laser's own stability into the error budget. That
-leaves 1203.9 nm as the one practical operating point. The crossings also read backwards. Where one sits is fixed by
+leaves 1203.9 nm as the one practical operating point.
+
+The crossings also read backwards. Where one sits is fixed by
 the matrix elements that build the two polarizabilities, so measuring a
 crossing constrains them, which is how the 5S–5D magic wavelength was turned
 into a 5P–5D matrix element by [Hamilton 2023](../lit/hamilton2023.md). The lever
@@ -163,12 +171,14 @@ so the 1203.9 nm crossing, which sits on the smooth part of the curve, is the
 usable one ([README.md](../../README.md)'s results table and
 [CLAIMS.md](../CLAIMS.md) §1 both say so). The O-band also has no erbium
 amplifier, so reaching trap power there is harder than in the C-band, but that
-is the soluble half of the objection. Recorded as an observation about the
+is the soluble half of the objection.
+
+Recorded as an observation about the
 numbers, not a design: they remain unvalidated, scalar-only envelopes, and the
 band edges are an external convention rather than anything this repo computes.
 
-**A third O-band crossing is a lever rather than a trap, and it is the map's
-cheapest arrow.** The three above cleared the pole guard. The same differential
+A third O-band crossing is a lever rather than a trap, and it is the map's
+cheapest arrow. The three above cleared the pole guard. The same differential
 polarizability also crosses zero on a steep root at 1297.5 nm, 0.745 nm from
 the 6S to 7P resonance, trapping in sign like the other five but quantified out as
 a trap by that proximity, and the proximity that ruins it as a trap is what
@@ -176,7 +186,9 @@ makes it precise for metrology: an auxiliary diode scanned across it while
 the 993 nm lineshape is read locates the root, and the root's position gives
 the 6S to 7P reduced dipole matrix elements with no intensity calibration and
 no absolute frequency reference in the chain. The same beam is a sign-reversal
-test of the asymmetry channel and a calibrated shift injector. It rides any
+test of the asymmetry channel and a calibrated shift injector.
+
+It rides any
 cell session on one commodity diode and no new laser time, which is why
 [FUTURE_TRANSITIONS_titsapph.md](../FUTURE_TRANSITIONS_titsapph.md) §4.1 ranks it
 first of four candidate papers on expected distinctiveness per unit bench

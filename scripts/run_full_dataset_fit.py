@@ -118,10 +118,10 @@ sys.path.insert(0, str(REPO / "scripts"))
 from rb5s6s import config as C  # noqa: E402
 from rb5s6s.density import number_density_cm3  # noqa: E402
 from rb5s6s.ingest import load_manifest, load_trace, trace_path  # noqa: E402
-from rb5s6s.lineshape import stark_shift_S0_mhz  # noqa: E402
+from rb5s6s.stark import kappa_pred_per_watt  # noqa: E402
 from rb5s6s.linefit import (_shared_profile_grid, adaptive_halfwidth,  # noqa: E402
                             to_frequency, transit_fwhm_at_T)
-from rb5s6s.noise import condition_noise_model, sigma_of_v, signal_level  # noqa: E402
+from rb5s6s.noise import condition_noise_model, condition_key as noise_key, sigma_of_v, signal_level  # noqa: E402
 from rb5s6s.qc import trace_metrics  # noqa: E402
 from run_beta_self import load_t_rates  # noqa: E402
 from run_stark_joint import (DNU_FLOOR, NU0_WING, PEAKS, SESSION_20250717,  # noqa: E402
@@ -156,7 +156,7 @@ at camp130 is 147.5 kHz, rounded to 150 kHz (RESEARCH_DECISIONS section 10). It
 is the scale a real per-peak effect is expected to sit at, not a value tuned to
 this fit's outcome."""
 
-KAPPA_PRED = stark_shift_S0_mhz(1.0, C.W0_MEASURED_M, rho=C.RHO_RETRO)
+KAPPA_PRED = kappa_pred_per_watt(C.W0_MEASURED_M, C.RHO_RETRO)   # F39: per RECORDED watt
 KAPPAS = tuple(sorted({0.0, 0.25, 0.5, 0.75, 1.0, round(KAPPA_PRED, 3),
                        1.5, 2.0, 2.62, 3.5, 5.0}))
 KAPPAS_LOPO = tuple(sorted({0.0, 0.25, 1.0, round(KAPPA_PRED, 3), 2.0, 2.62}))
@@ -264,8 +264,8 @@ def load_campaign_full(smoke=False):
         if len(kept) < 3:                      # gate A2: the M1 law needs a group
             dropped.append((pk, T, P, len(kept)))
             continue
-        law = condition_noise_model([k[1] for k in kept])
-        tau = max(law.get("tau_int", 1.0), 1.0)
+        law = condition_noise_model([k[1] for k in kept], key=noise_key(pk, T, P))   # F36
+        tau = max(law.get("tau_eff", law.get("tau_int", 1.0)), 1.0)   # F36
         for r, v, nu, lev, base, c0, m in (kept[:SMOKE_REPEATS] if smoke else kept):
             sg = np.maximum(sigma_of_v(np.maximum(lev, 0.0), law), 1e-6) * np.sqrt(tau)
             out.append(dict(campaign=CAMPAIGN, sess="camp", role=role, peak=pk,
@@ -609,7 +609,7 @@ def gate_rows(*, n_traces, n_points, chi2_min, railed, tensions, ub, basin_gap,
 
     add("gate_B1_census", n_traces, n_traces == GATE_N_TRACES,
         f"exactly {GATE_N_TRACES}", True,
-        "trace count entering the fit; a silent loader change is what this catches")
+        "trace count entering the fit, a silent loader change being what this catches")
     chi2p = chi2_min / max(n_points, 1)
     add("gate_B2_chi2_per_point", chi2p, GATE_CHI2_LO <= chi2p <= GATE_CHI2_HI,
         f"[{GATE_CHI2_LO}, {GATE_CHI2_HI}]", False,
@@ -625,11 +625,11 @@ def gate_rows(*, n_traces, n_points, chi2_min, railed, tensions, ub, basin_gap,
         "the 95% crossing must exist inside the kappa grid, not beyond it")
     add("gate_B6_basin_gap", basin_gap, not (basin_gap > GATE_BASIN_GAP),
         f"<= {GATE_BASIN_GAP}", False,
-        "best cold chain minus best seeded chain; the pointwise minimum keeps "
+        "best cold chain minus best seeded chain, and the pointwise minimum keeps "
         "the profile safe either way, so this is a flag and not a stop")
     add("gate_B7_direction_delta", dir_delta, dir_delta < GATE_BASIN_GAP,
         f"< {GATE_BASIN_GAP}", False,
-        "max |chi2 difference| between evening-session axis directions; thousands "
+        "max |chi2 difference| between evening-session axis directions, where thousands "
         "means a parked chain, not a physical preference")
     add("gate_B8_dchi2_kappa0", dchi2_0, dchi2_0 < GATE_DCHI2_DETECT,
         f"< {GATE_DCHI2_DETECT}", False,
@@ -800,60 +800,60 @@ def main(argv=None) -> int:
         w = csv.writer(fh)
         w.writerow(["quantity", "key", "value", "err", "unit"])
         w.writerow(["kappa_min", "primary", f"{kmin_a:.2f}", "",
-                    "MHz per W; profile minimum, four-point priors, dir -1; "
+                    "MHz per W, profile minimum, four-point priors, dir -1, "
                     "NOT a detection (see dchi2_kappa0)"])
         w.writerow(["dchi2_kappa0", "primary", f"{dchi2_a:.2f}", "",
-                    "chi2(kappa=0) - chi2(min); the strength of the kappa>0 "
+                    "chi2(kappa=0) - chi2(min), the strength of the kappa>0 "
                     "preference"])
         w.writerow(["kappa_ub95", "primary", f"{ka:.3f}", "",
-                    "MHz per W; 95% one-sided profile-likelihood bound over "
+                    "MHz per W, 95% one-sided profile-likelihood bound over "
                     "the FULL dataset (negative kappa is flat by construction: "
                     "the ramp model only broadens red)"])
         w.writerow(["S0_225mW_ub95", "primary", f"{ka * 0.225:.3f}", "",
-                    "MHz, transition axis; full-dataset bound at the "
+                    "MHz, transition axis, full-dataset bound at the "
                     "campaign's maximum power"])
         w.writerow(["S0_270mW_ub95", "primary", f"{ka * 0.270:.3f}", "",
-                    "MHz; at the evening session's maximum power"])
+                    "MHz, at the evening session's maximum power"])
         w.writerow(["kappa_pred", "prediction", f"{KAPPA_PRED:.3f}", "",
-                    f"MHz per W; the PREDICTED coefficient at the current "
+                    f"MHz per W, the PREDICTED coefficient at the current "
                     f"priors (w0 = {C.W0_MEASURED_M * 1e6:.0f} um, rho = "
                     f"{C.RHO_RETRO}), computed from constants"])
         w.writerow(["S0_225mW_pred", "prediction", f"{KAPPA_PRED * 0.225:.3f}", "",
-                    "MHz, transition axis; the prediction at 225 mW"])
+                    "MHz, transition axis, the prediction at 225 mW"])
         w.writerow(["kappa_ub95_camponly", "robustness", f"{ka_camp:.3f}", "",
-                    "MHz per W; campaign rows of the same profile (power AND "
+                    "MHz per W, campaign rows of the same profile (power AND "
                     "temperature ladders), so the bound does not lean on the "
                     "evening session's soft rate anchor"])
         w.writerow(["kappa_ub95_pladder", "robustness", f"{ka_pld:.3f}", "",
-                    "MHz per W; campaign POWER-ladder rows only -- the M23 "
+                    "MHz per W, campaign POWER-ladder rows only -- the M23 "
                     "trace set inside this fit, so the difference from the "
                     "primary is what the temperature ladder adds"])
         w.writerow(["kappa_min_wing", "robustness", f"{kmin_c:.2f}", "",
-                    "MHz per W; minimum with the red-wing nuisance free"])
+                    "MHz per W, minimum with the red-wing nuisance free"])
         w.writerow(["kappa_ub95_wing", "robustness", f"{kc:.3f}", "",
-                    "MHz per W; bound with the wing marginalized -- quote "
+                    "MHz per W, bound with the wing marginalized -- quote "
                     "alongside the primary, the gap IS the wing systematic"])
         w.writerow(["direction_dchi2_max", "robustness", f"{dir_delta:.2f}", "",
                     "max |chi2 difference| between evening-session axis directions "
-                    "across the profile; small = indifferent"])
+                    "across the profile, small = indifferent"])
         w.writerow(["basin_gap_max", "robustness", f"{basin_gap:.2f}", "",
-                    "chi2; worst (best cold chain - best seeded chain) over "
+                    "chi2, worst (best cold chain - best seeded chain) over "
                     "the families that have both. Large = a cold chain parked, "
                     "and the pointwise minimum already discarded it"])
         if np.isfinite(ka_d4192):
             w.writerow(["kappa_ub95_drop4192", "robustness", f"{ka_d4192:.3f}", "",
-                        "MHz per W; 95% bound with peak 4192 dropped, which "
+                        "MHz per W, 95% bound with peak 4192 dropped, which "
                         "removes the ENTIRE campaign-morning session -- the most "
                         "conservative subset"])
             w.writerow(["S0_225mW_ub95_drop4192", "robustness",
                         f"{ka_d4192 * 0.225:.3f}", "",
-                        "MHz; the drop-4192 bound at 225 mW"])
+                        "MHz, the drop-4192 bound at 225 mW"])
         for pk in PEAKS:
             if pk in lopo:
                 w.writerow(["lopo_dchi2_pred", pk,
                             f"{lopo[pk][round(KAPPA_PRED, 3)]:+.2f}", "",
-                            "chi2(kappa_pred) - min with this peak dropped; "
-                            "compare each against the 2.706 threshold and not against zero, since positivity was never the test. ON THIS CONSTRUCTION all four arms CLEAR the threshold, with margin, which the three-session joint fit does not: there one arm clearly excludes, two clearly do not, and the fourth sits inside that profile's own scatter of the threshold. No count of arms is quotable there. Note also that this construction carries gate_B4_prior_tension FAIL at 3.78 sigma on beta_self, which is degenerate with the width channel the bound is read from, so robust here means robust to leaving a peak out and not robust in every respect"])
+                            "chi2(kappa_pred) - min with this peak dropped. "
+                            "compare each against the 2.706 threshold and not against zero, since positivity was never the test. Each arm is a fit with one peak removed against its own minimum, so the four are separate likelihoods. The verdict per arm, and its comparison with the three-session joint fit and with this construction's gate_B4_prior_tension row, are read in RESULTS.md C3f from the rows and never typed here"])
                 if 2.62 in lopo[pk]:
                     w.writerow(["lopo_dchi2_262", pk, f"{lopo[pk][2.62]:+.2f}", "",
                                 "chi2(kappa=2.62) - min with this peak dropped"])
@@ -861,30 +861,30 @@ def main(argv=None) -> int:
         for k, pk in enumerate(PEAKS):
             w.writerow(["beta_self_post", pk, f"{q_a[I_BETA + k - 1]:.5f}",
                         f"{tensions[pk]:.2f}",
-                        f"MHz per 1e12 cm^-3; posterior under the four-point "
+                        f"MHz per 1e12 cm^-3, posterior under the four-point "
                         f"prior {priors[pk][0]:.5f}+/-{priors[pk][1]:.5f} "
                         f"(err column: the tension in prior sigmas)"])
             w.writerow(["gamma_coll_post_130C", pk,
                         f"{q_a[I_BETA + k - 1] * n130:.3f}", "",
-                        "MHz; the same posterior expressed as a collisional "
+                        "MHz, the same posterior expressed as a collisional "
                         "width at 130 C, comparable with M23's row"])
             w.writerow(["reh_rate", pk, f"{np.exp(q_a[I_REHRATE + k - 1]):.5f}", "",
-                        "MHz per ms, transition; fitted evening-session scan rate"])
+                        "MHz per ms, transition, fitted evening-session scan rate"])
         for b in SL_BLOCKS:
             w.writerow(["sigma_laser_s", b, f"{q_a[I_SL + SL_IX[b] - 1]:.3f}", "",
-                        "MHz, transition axis; session-block population mean"])
+                        "MHz, transition axis, session-block population mean"])
         for i, (blk, pk) in enumerate(sp_keys):
             val = q_a[NS + i - 1]
             w.writerow(["sigma_laser_sp", f"{blk}_{pk}", f"{val:.3f}",
                         f"{val - q_a[I_SL + SL_IX[blk] - 1]:+.3f}",
-                        f"MHz, transition axis; per-(block, peak) sigma_laser "
+                        f"MHz, transition axis, per-(block, peak) sigma_laser "
                         f"under a {SIGMA_SP_PRIOR_MHZ * 1e3:.0f} kHz shrinkage "
                         f"prior toward the {blk} mean (err column: the "
                         f"deviation from it)"])
         w.writerow(["Vsat_agilent", "nuisance", f"{np.exp(q_a[I_VSAT_AG - 1]):.1f}", "",
-                    "V; detector saturation, campaign and campaign-morning -- large = linear"])
+                    "V, detector saturation, campaign and campaign-morning -- large = linear"])
         w.writerow(["Vsat_lecroy", "nuisance", f"{np.exp(q_a[I_VSAT_LC - 1]):.1f}", "",
-                    "V; detector saturation, evening session"])
+                    "V, detector saturation, evening session"])
         _box = ("box = measured M26 value +/- 5 sigma"
                 if measured_pilot_scale() else "bounded [0.9, 1.1]")
         w.writerow(["pilot_rate_scale", "nuisance",
@@ -893,13 +893,13 @@ def main(argv=None) -> int:
                     + _box])
         w.writerow(["n_traces", "camp_p/camp_t/reh/pil",
                     f"{len(camp_p)}/{len(camp_t)}/{len(reh)}/{len(pil)}", "",
-                    f"{npts} points; canonical p_sweep / canonical t_sweep / "
+                    f"{npts} points, canonical p_sweep / canonical t_sweep / "
                     f"usable evening session ({n_corrupt} files corrupt or lineless) "
                     f"/ campaign-morning sweep. Rulers excluded (addendum 22)"])
         w.writerow(["qc_gate_a1_examined", "count", f"{len(qc_examined)}", "",
                     "canonical RF-off traces carrying a hard QC flag, each "
                     "re-checked on its own fit window: "
-                    + ("; ".join(f"{f}: {v}" for f, v in qc_examined)
+                    + (", ".join(f"{f}: {v}" for f, v in qc_examined)
                        if qc_examined else "none")])
         w.writerow(["qc_gate_a2_dropped", "count", f"{len(qc_dropped)}", "",
                     "condition groups dropped for fewer than 3 admitted "

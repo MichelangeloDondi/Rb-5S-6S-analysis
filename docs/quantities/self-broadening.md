@@ -2,22 +2,10 @@
 
 *[quantities index](README.md) · headline parameter*
 
-**The question.** How much self-broadening does this experiment resolve
-independently of the laser width and of the density scale? The quantity is
-$\beta_{\rm self}$, the coefficient relating the collisional Lorentzian width
-to the rubidium number density, in MHz per 1e12 per cubic centimetre, so that
-$\gamma_{\rm coll} = \beta_{\rm self} N$.
-**Takes.** The committed width fits across four temperatures. No new fitting.
-**Gives.** The bound in each construction, the reason the fitted collisional
-width is a floor rather than a resolved effect, the position of that bound
-against the measured rungs above and below this line, and three levels of
-improvement with their recipes.
-**Skip if.** The question is the physics of the broadening mechanism, which is
-[self-broadening](../wiki/self-broadening.md), or how the width channel is
-shared with the light shift, which is
-[the AC-Stark dossier](ac-stark-light-shift.md).
+How much self-broadening does this experiment resolve independently of the laser width and of the density scale? The quantity is $\beta_{\rm self}$, the coefficient relating the collisional Lorentzian width to the rubidium number density, in MHz per 1e12 per cubic centimetre, so that $\gamma_{\rm coll} = \beta_{\rm self} N$. This page builds on the committed width fits across four temperatures. No new fitting. It sets out the bound in each construction, the reason the fitted collisional width is a floor rather than a resolved effect, the position of that bound against the measured rungs above and below this line, and three levels of improvement with their recipes. Not covered here: the question is the physics of the broadening mechanism, which is [self-broadening](../wiki/self-broadening.md), or how the width channel is shared with the light shift, which is [the AC-Stark dossier](ac-stark-light-shift.md).
+**Where it stands.** A bound.
 
-**Where it stands.** A bound. The pooled four-temperature construction gives
+The pooled four-temperature construction gives
 $\beta_{\rm self} \lt$ [0.030](../../results/beta_self_probe.csv "ref:beta_self_probe:pooled_slope::bound95_nscale") MHz per 1e12 per cubic centimetre, which is the
 figure the rest of the record quotes, and the reason it is a
 bound is measured rather than assumed: across a factor of 52.5 in density the
@@ -25,10 +13,10 @@ fitted collisional width rises only by a factor of 1.5. Without the
 vapour-pressure scale systematic the same construction gives [0.0249](../../results/beta_self_probe.csv "ref:beta_self_probe:pooled_slope::bound95"), and
 section 4 says why that column is not the one to quote.
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md) defines
-> every term and symbol used anywhere in this repository.
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
+> defines every term and symbol used anywhere in this repository.
 
-## 1. What it is, and which observable carries it
+## 1. Definition and observable
 
 Rubidium atoms collide with rubidium atoms, each collision interrupts the
 radiating phase, and the line acquires a Lorentzian width proportional to the
@@ -50,14 +38,14 @@ itself. The first is a coefficient, atomic and transferable. The second is a
 fitted width at one condition, and it can be nonzero for reasons that have
 nothing to do with collisions, which is exactly what this dataset finds.
 
-## 2. What the literature has achieved
+## 2. Prior achievements in the literature
 
 Rubidium self-broadening has been measured on the neighbouring rungs of the
 same ladder but not on this one. Values appear exactly as published, in the
 authors' own units, because the conventions differ and one of them is not
 stated at all.
 
-**Direct comparators**, self-broadening of an nS state in rubidium by
+Direct comparators, self-broadening of an nS state in rubidium by
 rubidium.
 
 | reference | value as published | state | convention |
@@ -94,8 +82,7 @@ and [Bala 2026](../lit/bala2026.md) supports the expectation that the two
 isotopes share a coefficient, the reduced-mass difference being about one per
 cent.
 
-## 3. What this dataset establishes
-
+## 3. Results established by this dataset
 | construction | value | status | source |
 |---|---|---|---|
 | Four-temperature width slope, pooled, dof 2 | $\lt$ [0.030](../../results/beta_self_probe.csv "ref:beta_self_probe:pooled_slope::bound95_nscale") MHz per 1e12 per cubic centimetre, the headline; [0.0249](../../results/beta_self_probe.csv "ref:beta_self_probe:pooled_slope::bound95") before the density-scale systematic | BOUND | [`beta_self_probe.csv`](../../results/beta_self_probe.csv) |
@@ -114,22 +101,22 @@ rises by 1.5 while the density rises by 52 is a floor with a small collisional
 component on top, not a resolved collision rate**, so the quantity the data
 support is an upper limit and that is what the record reports.
 
-**The hierarchical construction is a cross-check and is not settled.** Its
+The hierarchical construction is a cross-check and is not settled. Its
 central value of 0.0534 moves to 0.0198 and 0.0219 when the 130 C anchor
 extends the density lever from 16 to 52. A cross-check estimator that moves by
 a factor of 2.6 when one condition is added is reporting its own model
 dependence, which is precisely why the model-independent slope is the headline
 and this is not.
 
-## 4. Why the experiment cannot do better
+## 4. Limits of the present experiment
 
-**Experimental: the density is inferred, not measured.** Density comes from the
+Experimental: the density is inferred, not measured. Density comes from the
 cell temperature through a vapour-pressure curve, so every value above inherits
 a scale uncertainty that no amount of spectroscopy removes. The committed
 numbers carry it explicitly as a separate systematic column, and it is the
 reason a `bound95_nscale` variant exists beside every `bound95`.
 
-**Experimental: the temperature lever is short and one-ended.** Four
+Experimental: the temperature lever is short and one-ended. Four
 temperatures spanning a factor of 52 in density sounds generous and is not,
 because the width response is 1.5 over that span. Most of the density lever
 buys almost no width.
@@ -143,7 +130,7 @@ $U_\text{kernel} = 0.004530$ MHz per density unit, exceeds the statistical
 error $U_\text{statistical} = 0.001398$ by a factor
 $R_\text{kernel} = 3.24$ (`results/kernel_k3.csv`).
 
-**And the hierarchical arm had not carried it until 2026-09-11.** The paragraph
+And the hierarchical arm had not carried it until 2026-09-11. The paragraph
 above is a per-peak result, from `kernel_k3.csv`, which fits the extra component
 free in each peak. The hierarchical fit that `docs/RESULTS.md` heads its table
 with publishes a model-form bar built from a grid of transit form and sharing
@@ -157,8 +144,8 @@ that file now, beside `beta_err_transit` and `beta_err_sharing`, and outside
 `beta_err_modelform`, whose definition over three cells is left where a reader
 found it.
 
-**And the reason it moves is the shape of the fit, not a wide bar on a good
-number.** The homogeneous width is $\Gamma_\text{nat} + \beta N + \gamma_l$.
+And the reason it moves is the shape of the fit, not a wide bar on a good
+number. The homogeneous width is $\Gamma_\text{nat} + \beta N + \gamma_l$.
 Holding $\gamma_l$ at zero forces the density line through the origin against a
 floor this same file reports: `gamma_coll_mean_vs_T` reads
 [0.401](../../results/lever_crosscheck.csv) MHz at the lowest density, where
@@ -168,7 +155,7 @@ in $\gamma_l$. It is, to half a per cent, until it reaches its lower bound.
 The two ladders predict $-0.136$ and $-0.0435$ per MHz and measure $-0.120$ and
 $-0.035$, the per-temperature Gaussian taking the remaining fifth.
 
-**Three things follow.** The floor and the fitted component are the same
+Three things follow. The floor and the fitted component are the same
 quantity by two constructions, 0.401 from the density intercept against the
 weighted mean the kernel chain fits. The lever dependence that makes this
 coefficient a BOUND, the width rising only
@@ -188,14 +175,14 @@ of the apparatus or of the vapour, which is the K5 transfer triangle's question
 and is not settled here. The central value is left where a reader found it for
 that reason and for no other.
 
-**Owed before any of this is quoted further.** The per-peak and hierarchical
+Owed before any of this is quoted further. The per-peak and hierarchical
 coefficients at the fitted component have no committed producer: they exist in
 this repository's private correction record and in a replay beside it, not in
 `results/`. The van der Waals prediction of [3.50](../../results/beta_self_theory.csv "ref:beta_self_theory:beta_self_6s:anchored")([0.37](../../results/beta_self_theory.csv "ref:beta_self_theory:beta_self_6s:anchored:err")) kHz is crossed somewhere
 above the fitted component, and locating that crossing needs a third grid point
 and not a line drawn through two.
 
-**So the answer to "why can the experiment not do better" has changed.** It is
+So the answer to "why can the experiment not do better" has changed. It is
 no longer the density lever or the statistics. **More repetitions of the
 current construction do not improve this coefficient**, because the kernel
 systematic is three times larger than the thing more data would shrink. What
@@ -217,7 +204,7 @@ quantity than any improvement to the fitting**, and the computation with its
 construction is discussed in
 [identifiability](../wiki/identifiability.md).
 
-**Model: what the floor actually is.** The 0.4 MHz that does not scale with
+Model: what the floor actually is. The 0.4 MHz that does not scale with
 density is unattributed. It could be residual laser width, transit, or
 lineshape misfit, and the record does not resolve which. Until it is
 attributed, the collisional coefficient is being read as the slope of a line
@@ -311,8 +298,7 @@ lever and an external laser width together. The lever alone is computed in
 [the projection note](../notes/extended_lever_and_skew_projection.md), and the
 combined configuration is not.
 
-## 6. What goes wrong as sensitivity improves
-
+## 6. Failure modes at higher sensitivity
 | knob | what it buys | what it costs |
 |---|---|---|
 | higher temperature | density, and the whole lever | blackbody redistribution, thermal gradients across the cell, a changing pedestal, and a vapour-pressure curve extrapolated further from where it is trusted |
@@ -325,7 +311,7 @@ sensitivity. It is the external laser-width measurement, which raises nothing
 and instead removes a competitor, and that asymmetry is the general lesson of
 [identifiability](../wiki/identifiability.md).
 
-## 7. What each level would make answerable
+## 7. Questions answerable at each level
 
 **Improved bound.** Whether the 0.4 MHz floor is collisional at all, which the
 extended lever answers by whether the width finally begins to track density.
@@ -339,7 +325,7 @@ alkali nS series, which needs three rungs at comparable precision and currently
 has two. The technique, a temperature ladder with a measured density scale and
 an externally calibrated laser width, transfers to any thermal-cell line.
 
-## 8. What remains impossible
+## 8. Questions out of reach
 
 **Not measurable with this architecture.** An absolute density scale better
 than the absorption channel supports. Every published comparator except
@@ -353,12 +339,11 @@ temperature-independent collision channel in this observable, and only a better
 profile, not more data, separates them. That is the same conclusion the band
 excess reaches from the residual side.
 
-**Not yet measured, which is different.** The isotope difference. It is
+Not yet measured, which is different. The isotope difference. It is
 expected to be about one per cent and neither the current data nor any planned
 level resolves it, but nothing in the architecture forbids it.
 
-## See also
-
+## Related pages
 - [The AC-Stark light shift](ac-stark-light-shift.md), which shares the width
   channel with this quantity
 - [The campaign](campaign.md), for the session that serves both

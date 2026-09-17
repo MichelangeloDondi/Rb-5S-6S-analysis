@@ -185,7 +185,113 @@ def wing_correlation(v: np.ndarray) -> Dict:
 # condition-level model (the M1 deliverable)
 # ---------------------------------------------------------------------------
 
-def condition_noise_model(traces: List[np.ndarray]) -> Dict:
+def integrated_time_sokal(x: np.ndarray, c: float = 5.0, kmax: int = 200) -> Dict:
+    """The integrated autocorrelation time of a residual series, tau = 1 + 2 sum_k rho_k, summed
+    to the self-consistent window W = the first lag at which W >= c tau(W) (Sokal's rule).
+
+    WHY IT EXISTS (F36, 2026-09-17). `wing_correlation`'s `tau_int` is measured on raw wing
+    segments and reads the LINE's own curvature through a window that is not signal-free (the
+    record's three routes of 2026-09-16 put the noise's own time at 1.000), yet sixteen producers
+    divided their residuals by sqrt(tau_int). The time that whitens a fit is measured on the
+    residuals OF THAT FIT; this is that estimator, for the pointwise weights.
+
+    WHAT IT DOES NOT SEE. The window cuts near c tau lags, about six for near-white residuals, so
+    a small autocorrelation floor that persists past it (the archive's residual pools carry about
+    +0.015 out to lag 20) is truncated. A line-shape parameter projects the residuals onto a
+    template smooth over tens of samples and integrates that floor, so its effective time can be
+    larger than this number; the per-parameter calibration from repeats (the scatter of a fitted
+    parameter over its repeats against the fit's own bar) is the estimator for those, and where
+    the two disagree the parameter's own is the one its bar carries.
+
+    Returns tau, the window W, rho_1 and the mean of rho_k over the window.
+    """
+    x = np.asarray(x, dtype=float)
+    x = x - x.mean()
+    n = x.size
+    if n < 3 * kmax:
+        kmax = max(2, n // 3)
+    v = float(np.dot(x, x)) / n
+    if not v > 0.0:
+        return {"tau": float("nan"), "window": 0, "rho1": float("nan"), "rho_mean": float("nan")}
+    tau, W, rhos = 1.0, 0, []
+    for k in range(1, kmax + 1):
+        rho = float(np.dot(x[:-k], x[k:])) / ((n - k) * v)
+        rhos.append(rho)
+        tau += 2.0 * rho
+        W = k
+        if k >= c * tau:
+            break
+    return {"tau": float(tau), "window": int(W), "rho1": float(rhos[0]), "rho_mean": float(np.mean(rhos))}
+
+
+_RESID_TAU = None
+
+
+def residual_tau_table(csv_path=None) -> Dict:
+    """The post-fit residuals' integrated time per condition, the `tau_resid` rows of
+    `results/residual_resampling.csv` keyed `<peak>_<T>C_<P>mW`, read once per process (F36).
+    Empty when the table is absent, which leaves every law on its raw `tau_int` with the printed
+    reason of `effective_tau`."""
+    global _RESID_TAU
+    if _RESID_TAU is None or csv_path is not None:
+        out = {}
+        try:
+            import csv as _csv
+            from pathlib import Path as _P
+            p = _P(csv_path) if csv_path else (C.RESULTS_DIR / "residual_resampling.csv")
+            with p.open(newline="", encoding="utf-8") as fh:
+                for r in _csv.DictReader(fh):
+                    if r.get("quantity") == "tau_resid":
+                        try:
+                            out[r["key"]] = float(r["value"])
+                        except (TypeError, ValueError):
+                            pass
+        except OSError:
+            pass
+        if csv_path is not None:
+            return out
+        _RESID_TAU = out
+    return _RESID_TAU
+
+
+def effective_tau(law: Dict, resid_tau: Dict = None, key: str = None) -> float:
+    """The correlation time a producer whitens by: the post-fit residuals' own time for the
+    condition when the table carries it, else the law's raw-segment `tau_int` (F36's interim, the
+    reason printed once per process). Floored at one: a time below one is an estimator's
+    fluctuation, never anti-correlated noise a fit may reward."""
+    if resid_tau and key in resid_tau and np.isfinite(resid_tau[key]):
+        return max(float(resid_tau[key]), 1.0)
+    if not getattr(effective_tau, "_said", False):
+        print("noise.effective_tau: no post-fit residual time for this condition, whitening by the raw-segment tau_int (F36: the interim)")
+        effective_tau._said = True
+    return max(float(law.get("tau_int", 1.0)), 1.0) if np.isfinite(float(law.get("tau_int", 1.0))) else 1.0
+
+
+def condition_key(peak, T_C, P_mW) -> str:
+    """The residual-time key of a condition, `<peak>_<T>C_<P>mW` as the resampler writes it; None
+    when the condition's numbers are absent (a session outside the record).
+
+    A BLANK POWER IS THE TEMPERATURE ARM'S (F43, 2026-09-17): the manifest's t_sweep rows carry no
+    power and sit at 225 mW by the design, and a key left unresolved there sent every fit of that
+    arm back to the raw tau of 15 to 20 (a whitened variance of 0.05 in the first core check). So a
+    blank or empty power with a finite temperature reads 225 mW here, once, for every caller."""
+    try:
+        T = float(T_C)
+    except (TypeError, ValueError):
+        return None
+    try:
+        P = float(P_mW)
+        if not np.isfinite(P):
+            raise ValueError
+    except (TypeError, ValueError):
+        if P_mW in (None, "", "nan"):
+            P = 225.0                                   # the L's temperature arm
+        else:
+            return None
+    return f"{peak}_{T:.0f}C_{P:.0f}mW"
+
+
+def condition_noise_model(traces: List[np.ndarray], key: str = None) -> Dict:
     """Pooled noise model for one condition (its 4-5 back-to-back repeats).
 
     Pools (level, e) samples across traces (per-trace baselines), fits the
@@ -227,6 +333,9 @@ def condition_noise_model(traces: List[np.ndarray]) -> Dict:
     law["sigma_wing_direct"] = float(np.mean(sig_direct)) if sig_direct else np.nan
     law["n_traces"] = len(traces)
     law["lev_max"] = float(np.quantile(lev, 0.999))
+    # F36: the time a fit whitens by is the post-fit residuals' own, attached here when the caller
+    # names the condition; a law built for a condition outside the record keeps the raw tau_int
+    law["tau_eff"] = effective_tau(law, residual_tau_table(), key)
     return law
 
 
@@ -284,8 +393,13 @@ def load_noise_model(csv_path, *, role: str = None, peak: str = None,
                 f"load_noise_model: selection matched {len(sel)} rows, "
                 "need exactly 1. Name the condition fully, or pool.")
         r = sel[0]
+        try:
+            _key = f"{r['peak']}_{float(r['temperature_C']):.0f}C_{float(r['power_mW']):.0f}mW"
+        except (KeyError, TypeError, ValueError):
+            _key = None                      # a pooled row carries no condition
         return {"a": float(r["a_V"]), "b": float(r["b_V"]),
                 "c": float(r["c"]), "tau_int": float(r["tau_int"]),
+                "tau_eff": effective_tau({"tau_int": float(r["tau_int"])}, residual_tau_table(), _key),
                 "rho1": float(r["rho1"]),
                 "sigma_wing_direct": float(r["sigma_wing_direct_V"]),
                 "n_traces": int(r["n_traces"]),

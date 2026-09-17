@@ -1,6 +1,6 @@
 *Chapter 3 of 9 of [the big picture](../BIG_PICTURE.md)*
 
-## 2. What we would like to do
+## 2. Objectives
 
 The rubidium 5S₁/₂ → 6S₁/₂ two-photon transition at 993 nm is a narrow,
 Doppler-free line that has been remarkably little studied. The field's
@@ -22,7 +22,7 @@ this dataset's main defect: a shape-based, reference-free light-shift readout,
 insensitive to the lock drift that prevents centre-based measurements. §1.3
 gives the method and §4 states what of it is new.
 
-## 3. What others have already done
+## 3. Prior art
 
 **On this line.** Precision work on 5S–6S is essentially one group: the USAF
 Academy measured the absolute frequencies and hyperfine constants ([Orson
@@ -30,12 +30,13 @@ Academy measured the absolute frequencies and hyperfine constants ([Orson
 50 minutes). [Orson 2021](../lit/orson2021.md) also reports two null results at ~6 MHz resolution,
 no observable light shift and no density shift, and computes the
 differential polarizability Δα = 1093 a.u. An independent in-repo recompute
-(`rb5s6s/polarizability.py`), whose earlier static-tail sum is kept beside the value of record, reproduces that magnitude to ~5% at −1145 a.u. with the 6S
-sum above 8P carried as a static tail, and within 4% at
+(`rb5s6s/polarizability.py` and its deep derivation) reproduces that magnitude within 4% at
 [-1131.8](../../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive") ± [5.9](../../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive:err") a.u.
 with that sum carried dynamically and the continuum computed from a model
 potential (the deep derivation, [§4](04_what-2025-delivered.md) and the theory
-note), but finds the opposite sign. Both sides are now verified from the typeset PDFs: Orson states
+note), but finds the opposite sign.
+
+Both sides are now verified from the typeset PDFs: Orson states
 the convention in words, repeats the value in SI, and works a −0.66 MHz red
 shift that this repo's unit chain returns as −0.653, so the disagreement is
 real rather than a convention or units artifact, while this work's sign is anchored
@@ -46,7 +47,9 @@ the 6S–5P dipole elements ×2.15, which drives the 6S lifetime from 45.4 ns to
 that resonance and those terms are negative by construction. So one side is
 anchored to a measured lifetime and the other is not
 ([THEORY_NOTE §5](../THEORY_NOTE.md), which also records a candidate mechanism as
-a hypothesis). Every result reported here uses |Δα| and is sign-immune. So on
+a hypothesis).
+
+Every result reported here uses |Δα| and is sign-immune. So on
 this line the *constants* are measured, but
 the *environmental coefficients* are only bounded, coarsely.
 
@@ -73,7 +76,9 @@ detection, with the intensity-dependent broadening already attributed to the
 transverse profile. That phenomenon is theirs, sixteen years ago, and no
 wording here should imply otherwise. The closed form is not new either, being
 Delone's Eq. (5.3) evaluated for the intensity distribution of a focused
-Gaussian beam ([delone1980](../lit/delone1980.md)). What is open is what §4
+Gaussian beam ([delone1980](../lit/delone1980.md)).
+
+What is open is what §4
 states and no more: the evaluation for the geometry that actually occurs, its
 cumulants in closed form, and the third cumulant used as a measurement channel
 *because* no reference is available. The 778 nm clock community suppresses the light shift actively

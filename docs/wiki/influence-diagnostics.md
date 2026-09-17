@@ -2,20 +2,12 @@
 
 *[wiki index](README.md) · method*
 
-**The question.** Which observations is a fitted answer actually resting on,
-and how does that differ from which observations merely look surprising.
-**Takes.** A least-squares fit already run, weighted or not, and no further
-assumption about the shape of the noise law.
-**Gives.** The leverage and case-deletion machinery, Cook's distance and
-DFBETA among them, that separates an outlying point from an influential one.
-**Skip if.** You want the weighting a fit itself should carry, not what to
-check after fitting. That is
-[weighted least squares](weighted-least-squares.md).
+Which observations is a fitted answer actually resting on, and how does that differ from which observations merely look surprising. This page builds on a least-squares fit already run, weighted or not, and no further assumption about the shape of the noise law and sets out the leverage and case-deletion machinery, Cook's distance and DFBETA among them, that separates an outlying point from an influential one. Not covered here: the weighting a fit itself should carry, not what to check after fitting. That is [weighted least squares](weighted-least-squares.md).
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
 > defines every term and symbol used anywhere in this repository.
 
-## What it is
+## Definition
 
 A least-squares fit turns a vector of measurements $d$ into a vector of
 fitted values $\hat d = X\hat\theta$, and that map is linear in $d$ itself:
@@ -66,7 +58,7 @@ point at leverage near one can carry almost no residual, having pulled the
 fit to itself, and still swing the fit entirely if it is removed: influential
 without being outlying.
 
-## What problem it solves
+## The problem it addresses
 
 A residual, weighted correctly or not, answers whether a point looks
 surprising against the fitted model. It does not answer whether the point
@@ -77,7 +69,7 @@ to look wrong. Case-deletion diagnostics answer the second question directly,
 by actually removing a point and measuring what moves, instead of judging the
 point from a residual that its own pull on the fit has already shrunk.
 
-## Where this repository uses it
+## Application in this repository
 
 The repository's influence audit, run on 2026-08-16, computed leverage,
 deleted residuals, Cook's distance and drop-one comparisons on two of its own
@@ -148,7 +140,7 @@ spread evenly across density itself, not across temperature, would lower the
 anchor's leverage and let the coefficient be checked by the fit instead of
 anchored to one point in it.
 
-## What can go wrong
+## Failure modes
 
 A textbook Cook's-distance cutoff such as $4/n$ assumes enough degrees of
 freedom for its null distribution to behave the way the rule of thumb
@@ -235,8 +227,7 @@ a reader.
 - [Collisional self-broadening](self-broadening.md), the coefficient whose
   four-point construction motivated this audit.
 
-## See also
-
+## Related pages
 - [Robust fitting](robust-fitting.md), the losses that discount a point once
   diagnostics like these say it is not simply outlying.
 - [Resampling](resampling.md), for building a leverage or Cook's-distance

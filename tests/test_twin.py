@@ -159,3 +159,51 @@ def test_eres_kernel_matches_the_manual_table():
         meas = 2.0 * f[int(np.argmin(np.abs(h - 2 ** -0.5)))]
         assert meas == pytest.approx(bw_nyq, rel=0.08), (
             f"{bits} bits: -3 dB at {meas:.3f} x Nyquist, manual prints {bw_nyq}")
+
+
+def test_the_line_ruler_is_built_from_hyperfine_structure_and_not_from_the_labels():
+    """A RULER BUILT FROM THE THING IT CALIBRATES IS NOT A RULER (2026-09-17).
+
+    `constants.PEAKS`' wavelengths are uncalibrated WS-8 labels. This record's settled rule is
+    that they identify lines and do not measure them, and one digit of a four-decimal label is
+    worth 30.4 MHz on the laser axis. `twin.line_positions_mhz` read them for years, which a
+    detection simulation hardly notices; but the four lines are proposed as a frequency ruler
+    inside the campaign's own sweeps, where the intervals ARE the scale. Found by the thesis
+    side's equation audit.
+
+    The guard is not "the numbers are these": it is that the positions track the hyperfine
+    builder and NOT the label ladder, which are the two things that could be there.
+    """
+    import rb5s6s.constants as K
+    C_M_S = K.C_M_PER_S
+
+    pos = twin.line_positions_mhz()
+
+    hyper = {k: K.two_photon_frequency_hz(k) for k in K.PEAKS}
+    ref_h = max(hyper.values())
+    want = {k: (v - ref_h) / 1e6 for k, v in hyper.items()}
+    for k in pos:
+        assert abs(pos[k] - want[k]) < 1e-6, f"{k}: {pos[k]} is not the hyperfine position {want[k]}"
+
+    ref_nm = min(p["lambda_nm"] for p in K.PEAKS.values())
+    label = {k: 2.0 * (C_M_S / (v["lambda_nm"] * 1e-9) - C_M_S / (ref_nm * 1e-9)) / 1e6
+             for k, v in K.PEAKS.items()}
+    gap = max(abs(pos[k] - label[k]) for k in pos)
+    assert gap > 5.0, (
+        "the positions agree with the uncalibrated label ladder to better than 5 MHz, so either "
+        "the labels are being read again or the two constructions have converged; the audit "
+        "measured the gap at about 14 MHz on this axis")
+
+
+def test_the_example_twin_does_not_keep_its_own_copy_of_the_line_ruler():
+    """A numerical routine that appears twice belongs in the package with a test.
+
+    `examples/campaign_twin.py` carried a second `line_positions_mhz` that read the wavelength
+    labels, so the package's repair would have left the exhibit on the old construction.
+    """
+    import pathlib
+    src = (pathlib.Path(__file__).resolve().parents[1] / "examples" / "campaign_twin.py").read_text()
+    assert "from rb5s6s.twin import line_positions_mhz" in src, (
+        "the example re-derives the line ruler instead of importing the package's")
+    assert "lambda_nm" not in src.split("def line_positions_mhz")[1].split("def ")[0], (
+        "the example's line ruler still reads the wavelength labels")

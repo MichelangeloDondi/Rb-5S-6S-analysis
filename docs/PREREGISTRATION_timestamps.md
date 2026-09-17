@@ -4,22 +4,14 @@
 `fd45da6`. Nothing in this document may be edited after the backup is first
 read; corrections go in the results report that follows it.*
 
-**The question.** Before the recovered backup was opened, what was predicted
-to be in it?
-**Takes.** Nothing.
-**Gives.** The predictions, the scoring rules and the falsifiers, all fixed
-before first contact with the data.
-**Skip if.** You want how it scored, which is
-[PREREGISTRATION_RESULTS.md](PREREGISTRATION_RESULTS.md). This document is
-frozen by its own terms and is not edited when it turns out to be wrong.
+Before the recovered backup was opened, what was predicted to be in it? This page is self-contained and sets out the predictions, the scoring rules and the falsifiers, all fixed before first contact with the data. Not covered here: how it scored, which is [PREREGISTRATION_RESULTS.md](PREREGISTRATION_RESULTS.md). This document is frozen by its own terms and is not edited when it turns out to be wrong.
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](GLOSSARY.md)
-> explains the measurement in six sentences, then defines every term
-> and symbol used anywhere in this repository.
+> [GLOSSARY.md](GLOSSARY.md) states the measurement in six sentences and
+> defines every term and symbol used anywhere in this repository.
 
 ---
 
-## 1. What happened, and why this document exists
+## 1. Origin and purpose of this document
 
 Every analysis in this repository was built on the premise that the archive
 carries **no acquisition clock**. `PLAN.md` (the pre-audit version, in git history) stated it flatly — block order
@@ -42,7 +34,7 @@ can be checked against it. The value of that test survives only if the
 predictions are fixed *before* the data is read — hence this document, and
 hence the release tagged before the audit runs.
 
-## 2. What this does not test
+## 2. Scope exclusions
 
 Stated first, because the temptation to over-read a recovered clock is the main
 <!-- term-of-art: frozen preregistration record, not edited after the fact -->
@@ -59,8 +51,7 @@ risk here.
   provenance and ordering. If one fails, what changes is a stated premise and
   its downstream caveats — named in §6 — not a fitted number.
 
-## 3. Integrity gates (scored first; predictions are void if these fail)
-
+## 3. Integrity gates, scored first
 | # | Gate | Pass criterion | If it fails |
 |---|---|---|---|
 | T1 | **Content identity** | sha-256 of every backup file matches `data_raw/MANIFEST.csv` for basenames present in both | stop. Adversarial review before any interpretation: a content difference means the backup is not the analysed data |
@@ -137,7 +128,7 @@ from a nuisance to a **drift measurement** — with the block's elapsed time, th
 measuring that rate as something only a future session could buy (item ii);
 if the clock survives §3, the archive may yield it retroactively.
 
-**A tension that already exists, stated before looking.** For 5 evenly spaced
+A tension that already exists, stated before looking. For 5 evenly spaced
 traces under linear drift, scatter $= r \times T \times 0.354$. The measured
 0.08 MHz and the `constants.DRIFT_RATE_LASER_HZ_PER_MIN` envelope of 4 MHz/min
 are mutually consistent only for $T \approx 3.4$ s — shorter than the
@@ -154,7 +145,7 @@ $5\times1.000$ s of acquisition the block must contain. So:
 | D2 | **Drift model** — linear vs random walk | how intra-block scatter scales with block duration across blocks of differing length: $\propto T$ linear, $\propto\sqrt{T}$ random walk | undeclared. The archive reads the between-block swing as scatter rather than as a trend (`RESULTS.md` C3a, non-monotonic across the power sweep), which favours $\sqrt{T}$, but this is not a prediction |
 | D3 | **Re-centring frequency** consistency | count between-block position discontinuities; compare with (rate × campaign elapsed) ÷ 43 MHz window | the count implied by D1 is consistent with "many times" as reported |
 
-**If D1 and D3 disagree** — a drift rate too low to have forced the re-centring
+If D1 and D3 disagree — a drift rate too low to have forced the re-centring
 the experimenter remembers — then either drift was episodic rather than steady,
 or the intra-block scatter is dominated by lock jitter rather than drift. Both
 are reportable outcomes, not failures; what is *not* permitted is choosing
@@ -167,7 +158,7 @@ later be quoted as though it had been predicted.
 
 ---
 
-## 8. Integrity note, 2026-07-22 — the drift evidence, and a retraction
+## 8. Integrity note, 2026-07-22: the drift evidence
 
 *Written before the backup was opened and before any prediction was scored.
 §8 as first drafted drew a conclusion from two wavemeter photographs; the
@@ -187,7 +178,7 @@ transients between blocks and is the physical basis on which a *shared*
 $\sigma_\text{laser}$ across nearby blocks is plausible at all — the
 assumption limitation row 5 calls untestable.
 
-### 8.2 Retraction: the "20× too high" reading was from outside the campaign
+### 8.2 Retraction of the "20× too high" reading
 
 Setup photographs carry three HighFinesse ws/8l long-term records. Their EXIF
 dates place only one inside the campaign:
@@ -226,7 +217,7 @@ by any photograph here.
   itself showing intra-block scatter growing with block duration (that is D2).
   If D2 shows no growth, D4 is void rather than failed.
 
-### 8.4 The WLM logs do not exist — and the archive answered anyway
+### 8.4 Absence of the WLM logs
 
 The wavemeter's long-term logs were **not saved** (experimenter, 2026-07-22).
 The three photographs are the whole of the wavemeter evidence; there is no

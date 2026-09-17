@@ -79,6 +79,7 @@ sys.path.insert(0, str(ROOT))
 from rb5s6s import config as C          # noqa: E402
 from rb5s6s import constants as K       # noqa: E402
 from rb5s6s import density, lineshape, polarizability as pol, vanderwaals   # noqa: E402
+from rb5s6s.stark import kappa_pred_per_watt   # noqa: E402  (SSOT: one predicted coefficient)
 
 # --------------------------------------------------------------------------- #
 # PLAN's stated session parameters. Every value below is quoted from            #
@@ -160,7 +161,7 @@ GUIDED_MODE_RADIUS_M = 10e-6     # notes/guided_mode_two_photon_design.md 2.2
 GUIDED_POWER_W = 0.100
 GUIDED_RHO = 1.0
 GUIDED_DELTA_ALPHA_AU = abs(K.DELTA_ALPHA_AU)   # read by NAME, never copied:
-# this line was the literal -1144.6 for months and was one of the twelve edits
+# this line was a literal copy of the static-tail value for months and was one of the twelve edits
 # the 2026-09-15 polarizability move needed. ssot_guard.py refuses the copy now.
 GUIDED_HOT_FILL_COUNTS_PER_S = 2.8e5   # carried, not recomputable here
 GUIDED_ANCHOR_GAP = (16, 47)
@@ -205,9 +206,6 @@ def read_inputs() -> dict:
     qc = pd.read_csv(C.RESULTS_DIR / "qc_metrics.csv")
     peak_snr = float(qc[qc.flag == "canonical"].snr.median())
 
-    pol = pd.read_csv(C.RESULTS_DIR / "polarizability.csv")
-    da_recompute = abs(float(
-        pol[(pol.quantity == "delta_alpha_993") & (pol.key == "model")].value.iloc[0]))
 
     return dict(
         sigma_centre_laser=sigma_centre_laser,
@@ -216,7 +214,7 @@ def read_inputs() -> dict:
         sigma_width_block=width_mean * rel_block,
         ruler_rel=ruler_rel, linearity_rel=linearity_rel,
         rate_laser_mhz_per_ms=float(rc.rate_laser), peak_snr=peak_snr,
-        t95_four_point=t95_four_point, da_recompute=da_recompute)
+        t95_four_point=t95_four_point)
 
 
 def density_lever(grid_c, lag_k: int) -> float:
@@ -253,8 +251,8 @@ def rung_wavelength_nm(e_upper_cm: float) -> float:
 
 # The three rungs, each with the differential polarizability it is entitled to.
 RUNGS = (
-    ("993 nm, 5S to 6S", pol.E_6S_CM, pol.delta_alpha,
-     "rb5s6s.polarizability.delta_alpha"),
+    ("993 nm, 5S to 6S", pol.E_6S_CM, lambda lam: K.DELTA_ALPHA_AU,
+     "rb5s6s.constants.DELTA_ALPHA_AU, the dynamic sum of results/polarizability_deep.csv"),
     ("760 nm, 5S to 7S", pol.E_7S_CM, pol.delta_alpha_7s,
      "rb5s6s.polarizability.delta_alpha_7s"),
     ("778 nm, 5S to 5D5/2", pol.E_5D52_CM, pol.delta_alpha_5d,
@@ -292,11 +290,15 @@ def project_pull(rows, inp) -> dict:
         + (sigma_drift / s_pp) ** 2)
     sigma_s0_cycle = QUOTE_P_W * sigma_slope / pull_coeff
 
-    s0_pred = lineshape.stark_shift_S0_mhz(
-        QUOTE_P_W, K.W0_MEASURED_M, K.RHO_RETRO, K.DELTA_ALPHA_AU)
-    s0_pred_recompute = lineshape.stark_shift_S0_mhz(
-        QUOTE_P_W, K.W0_MEASURED_M, K.RHO_RETRO, inp["da_recompute"])
-    sign_gap = s0_pred + s0_pred_recompute
+    # ONE PREDICTED COEFFICIENT (2026-09-17): the record's prediction per recorded watt carries the
+    # aperture's on-axis factor, so both signs are evaluated through it. Until that day this read
+    # stark_shift_S0_mhz without the factor, and the other sign's arm read the static-tail
+    # recompute's magnitude where its own note named Orson's +1093 (P7).
+    s0_pred = kappa_pred_per_watt(K.W0_MEASURED_M, K.RHO_RETRO) * QUOTE_P_W
+    s0_pred_other_sign = (lineshape.stark_shift_S0_mhz(
+        QUOTE_P_W, K.W0_MEASURED_M, K.RHO_RETRO, K.DELTA_ALPHA_AU_ORSON2021)
+        * lineshape.aperture_onaxis_factor(K.W0_MEASURED_M))
+    sign_gap = s0_pred + s0_pred_other_sign
 
     _add(rows, "input_centre_precision_per_trace", "archive", 2.0 * inp["sigma_centre_laser"],
          None, "MHz, transition axis",
@@ -317,9 +319,9 @@ def project_pull(rows, inp) -> dict:
          f"half-window {PLAN_ZC_CONFIG_L_M * 1e3:.2f} mm, PLAN 4.1 and PLAN 6",
          "rb5s6s.lineshape.ramp_moment_contributions")
     _add(rows, "input_S0_predicted", "225 mW", s0_pred, None, "MHz, transition axis",
-         "stark_shift_S0_mhz at the committed measured waist and retro ratio",
+         "stark.kappa_pred_per_watt times the quoted power, at the waist convention and retro ratio",
          "the prediction the recorded bound is compared against",
-         "rb5s6s.constants, rb5s6s.lineshape")
+         "rb5s6s.stark.kappa_pred_per_watt")
     _add(rows, "input_intensity_axis_systematic", "differential transit anchor",
          PLAN_INTENSITY_AXIS_FRAC, None, "fraction",
          "the intensity-axis accuracy PLAN 5 attributes to the S minus L "
@@ -363,13 +365,12 @@ def project_pull(rows, inp) -> dict:
         _add(rows, "proj_deltaalpha_sign_separation", label, sign_gap / sigma, None,
              "sigma",
              "|S0(+Delta-alpha) - S0(-Delta-alpha)| divided by the projected "
-             "uncertainty, both evaluated at the committed measured waist",
-             common + ". the two signs are the pinned +1093 a.u. and this "
-             "record's own, -1131.8 a.u. since 2026-09-15 and -1145 before it, "
-             "both evaluated at the committed waist "
+             "uncertainty, both evaluated at the waist convention",
+             common + ". the two signs are Orson 2021's +1093 a.u. and this "
+             "record's own, both through the aperture's on-axis factor at the waist convention "
              "prior, so a common intensity-scale error moves the separation "
              "even though it cannot move which sign the pull has",
-             "rb5s6s.constants DELTA_ALPHA_AU, results/polarizability.csv")
+             "rb5s6s.constants DELTA_ALPHA_AU and DELTA_ALPHA_AU_ORSON2021")
 
     return dict(sigma_s0_cycle=sigma_s0_cycle, s0_pred=s0_pred)
 
@@ -427,7 +428,7 @@ def project_beta(rows, inp) -> dict:
          "the optimistic end, valid only if the cold spot is absent",
          "rb5s6s.density")
     _add(rows, "input_beta_self_expected", "vdW anchored", anchor["beta6_khz"],
-         anchor["beta6_err_khz"], "kHz per 1e12 cm^-3",
+         vanderwaals.beta_self_budget()["err_khz"], "kHz per 1e12 cm^-3",   # the SSOT budget's bar (10.64 per cent), not the anchor's own (F38)
          "the measured 7S rate carried across one rung by the computed "
          "difference-coefficient ratio (Delta C6, the 2026-08-05 adjudication "
          "in docs/notes/vdw_difference_potential_and_4d_channel.md)",

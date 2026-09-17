@@ -2,20 +2,12 @@
 
 *[wiki index](README.md) · method*
 
-**The question.** Whether the data can actually separate two parameters, or
-only determine some combination of them.
-**Takes.** A fitted model and its parameter covariance.
-**Gives.** The structural-versus-practical distinction, three diagnostics
-for a degeneracy, and what breaking one is worth.
-**Skip if.** The question is building a confidence interval that already
-accounts for a nuisance parameter's freedom, instead of whether two
-parameters are separable at all. That is
-[the profile likelihood](profile-likelihood.md).
+Whether the data can actually separate two parameters, or only determine some combination of them. This page builds on a fitted model and its parameter covariance and sets out the structural-versus-practical distinction, three diagnostics for a degeneracy, and what breaking one is worth. Not covered here: the question is building a confidence interval that already accounts for a nuisance parameter's freedom, instead of whether two parameters are separable at all. That is [the profile likelihood](profile-likelihood.md).
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
 > defines every term and symbol used anywhere in this repository.
 
-## What it is
+## Definition
 
 A parameter is identifiable if the data could, in principle, distinguish its
 true value from any other. This is a property of the model and the
@@ -45,14 +37,14 @@ The remedy is to change the experiment, either by adding a measurement that
 moves one parameter and not the other, or by reporting only the combination
 the data determine.
 
-## What problem it solves
+## The problem it addresses
 
 It decides whether a number should be published, by asking whether the
 dataset determines the quantity itself or only something the quantity is
 part of. Answering it early turns an unfalsifiable result into either a
 measurement or a stated bound.
 
-## Where this repository uses it
+## Application in this repository
 
 It is the reason several quantities here are reported as bounds instead of
 values. The analysis is worked in full in
@@ -79,7 +71,7 @@ the first by a gap the chapter records instead of smoothing over. A fit
 that converges is not the same as a parameter that is determined, which is
 why the map exists.
 
-## What breaking it is worth
+## The value of breaking a degeneracy
 
 Non-identifiability is not always permanent. Where a degenerate pair can be
 separated by measuring one member independently, the gain is concrete and
@@ -168,8 +160,8 @@ spread over more baseline. Among the acquisition settings the asymmetric
 knob does not exist, which is why the pinning approach above is used
 instead.
 
-**The scope of that sentence is the acquisition settings, and a platform
-change is a knob it never searched.** The sweep behind it varied the span and
+The scope of that sentence is the acquisition settings, and a platform
+change is a knob it never searched. The sweep behind it varied the span and
 the repeat count inside one vapour cell. Changing where the atoms are changes
 the width budget term by term, and asymmetrically:
 
@@ -181,7 +173,7 @@ the width budget term by term, and asymmetrically:
 | vapour-filled fibre | identical to the cell's, same vapour and temperature | different, and set by a manufactured mode diameter | the collisional width, and with it the cell's own unmeasured waist |
 | trapped guided sample | negligible | not a crossing at all | the light shift, as a displacement |
 
-**Both transit ratios are waist-free**, the square root of the temperature
+Both transit ratios are waist-free, the square root of the temperature
 ratio with the beam radius cancelling, which is why they are a property of the
 platform and not of the optics. A figure taken by dividing one platform's
 transit by another's at a *different* waist is not that property, and an earlier
@@ -190,14 +182,14 @@ form of this row carried such a figure.
 The cold rows are the strongest and the vapour-filled fibre row is the one that
 reaches the waist.
 
-**The rung, because this table is a ranking and not a result.** Every entry is
+The rung, because this table is a ranking and not a result. Every entry is
 a closed form evaluated at a committed cell, rung 2. The twin has not fitted
 any of these arms jointly, so nothing here is a forecast and no error bar
 belongs to it. Neither is available inside a cell at any
 acquisition setting, which is why the sentence above is a statement about a
 subspace and not about the problem.
 
-## The trapped regime, where the ramp stops being the observable
+## The trapped regime
 
 Every degeneracy above is stated for atoms that fly through the beam. A sample
 held by the probe itself, which the guided arm has no choice about because
@@ -207,7 +199,7 @@ milliseconds, changes three of them at once. The derivation is in
 becomes the free ramp times a Boltzmann factor, and it reduces to the free
 ramp exactly when the trap depth goes to zero.
 
-**The transit degeneracy disappears, because the transit does.** The
+The transit degeneracy disappears, because the transit does. The
 correlation of
 [-0.958](../../results/identifiability.csv "ref:identifiability:corr:gamma_coll_transit")
 between the collisional width and the transit is a
@@ -217,7 +209,7 @@ not cross the beam, so the kernel is not a transit at all and
 crossing, is the wrong function for those rows. What replaces it is the trap's
 own motional structure.
 
-**The shift stops being a shape and becomes a displacement.** The spread of
+The shift stops being a shape and becomes a displacement. The spread of
 sampled shifts is $k_BT/U_0$ of the shift itself, and because the depth and
 the shift are the same light the power cancels: the sample temperature alone
 sets it. At a microkelvin the line is homogeneous to a few parts in a
@@ -235,7 +227,7 @@ comparison or by a power ladder whose slope the free centre cannot span. The
 exchange is a clean, strong channel wholly dependent on the reference,
 against a weak, contaminated channel that needs none.
 
-## The beam waist is the one input this bench takes from outside itself
+## The beam waist as an external input
 
 Nearly every other quantity here is calibrated by the system itself, from the
 same traces the physics is fitted to:
@@ -258,7 +250,7 @@ here is a bound because of it. It is the last quantity on the bench still taken
 on trust, and the case for measuring it inside the system is that everything
 around it already is.
 
-### The waist appears in every observable, with a different exponent
+### Waist exponents across the observables
 
 `results/waist_ladder.csv` carries these and fits each slope back against the
 derivation of [methods chapter 3](../methods/03_the_ac_stark_ramp.md):
@@ -280,7 +272,7 @@ not the leverage but the inversion: the waist has never been a free parameter.
 passed it `True`, which by the switch rule makes the waist an untested
 assumption and not merely an unmeasured one.
 
-### One exact cancellation, which is where to start
+### An exact cancellation
 
 Since the transit goes as $\sqrt{T}/w_0$ and the shift as
 $\Delta\alpha(1+\rho)P/w_0^2$,
@@ -294,7 +286,7 @@ trace. Run the other way, with $T$ known, the transit width *is* a waist
 measurement. Two channels, one consistency test, and the headline quantity no
 longer inherits the waist it is currently bounded by.
 
-**And this is one member of a family, not a lucky ratio.** Eliminating $w_0$ is
+And this is one member of a family, not a lucky ratio. Eliminating $w_0$ is
 a linear condition on a monomial's exponents, so the set of such combinations
 is a null space and can be enumerated. Two facts make the family small enough
 to write down. **Beam quality enters this model in exactly one place**, the
@@ -321,8 +313,7 @@ systematic for the collection chain's own calibration, which pays off only once
 that chain is measured. The fifth is the answer to the beam-quality question
 that no function here used to carry.
 
-### Rounds of joint fits, in the order that breaks the confounds
-
+### Ordering of the joint-fit rounds
 1. **The wide trace first.** One gigahertz-wide scan returns $T$ and $\rho$
    together from the pedestal, needs no lock quality and no new hardware, and
    replaces two external numbers with two measured here.
@@ -343,7 +334,7 @@ that no function here used to carry.
    $\Delta\alpha$ either free or held at the sum-over-states value, both ways
    round. The two answers must agree, and the disagreement is the result.
 
-### And the strongest lever is that the waist belongs to the beam, not the line
+### The waist as a property of the beam
 
 A fixed lens focuses a fixed input beam to $w_0=\lambda f/\pi w_\text{in}$, so
 the waist goes as the *wavelength* and every two-photon transition the same
@@ -365,9 +356,9 @@ states do not have: a tensor polarizability, hence a dependence on the drive's
 polarisation angle that the scalar $S$ states are blind to, which separates the
 geometry from the atomic structure again.
 
-### What the inventory above overstates
+### Overstatements in the inventory
 
-**"The waist is the only one still taken from outside" is false**, and the list
+"The waist is the only one still taken from outside" is false, and the list
 of others is not short: the differential polarizability itself, from a sum over
 states with literature matrix elements, the natural width from a measured 6S
 lifetime, the vapour-pressure law from published correlations about twenty per
@@ -378,7 +369,7 @@ apparatus *geometry* term not calibrated inside the system, and the differential
 polarizability the only *atomic* one that matters.** Those two are exactly the
 pair the ratio below separates, which is what makes the ratio worth having.
 
-### The archive is an L, and both of its axes are known
+### The L design and its two axes
 
 The design is in the manifest's own `role` column, and reading it settles what
 the ratio below costs. One arm sweeps the power at a pinned temperature and the
@@ -402,8 +393,8 @@ cent, and every width in the model has a different exponent along them:
 | the saturation companion | 1.00 | 0.00 |
 | the amplitude | 2.00 | 22.42 |
 
-**So the transit is an observable, and the temperature arm is what makes it
-so.** The $-0.958$ correlation is a property of a fit at a single temperature.
+So the transit is an observable, and the temperature arm is what makes it
+so. The $-0.958$ correlation is a property of a fit at a single temperature.
 The density runs as the 22nd power of the temperature where the transit runs as
 its square root, a separation of a factor of 45. The power arm then moves
 the shift alone, with every width standing still. Three exponents across two
@@ -423,7 +414,7 @@ The apparatus terms it takes from outside are exactly three:
 | **the apparatus floor** | **2.3 per cent** |
 | the waist | **nothing, by construction** |
 
-**That third row is softer than it looks, and it is the one to watch.** The
+That third row is softer than it looks, and it is the one to watch. The
 retro ratio is an assumption, 0.94, which this record's own epistemic ledger
 marks as never informed by these data, and the 2.1 per cent is the spread
 attached to that assumption and not a measured error. The measurement that
@@ -433,25 +424,25 @@ the apparatus floor above is conditional on an unmeasured quantity, and **the
 same wide scan that measures the pedestal measures $\rho$**, which is one more
 reason it is the first thing a campaign should run.
 
-**The retro ratio is now the largest apparatus term**, twice the power and the
+The retro ratio is now the largest apparatus term, twice the power and the
 temperature together, so it and not the waist is what this route would next pay
 to measure. Carrying the observables, a shift known to 2 per cent and a transit
 to 1 gives the polarizability to 3.7 per cent, and to 1 and 0.5 per cent gives
 2.7.
 
-**The pedestal's retro ratio is two-valued.** The area ratio is
+The pedestal's retro ratio is two-valued. The area ratio is
 $4\rho/(1+\rho^2)$, which is symmetric under $\rho\to1/\rho$: 0.80 and 1.25
 both give 1.9512. One wide trace therefore returns $\rho$ or its reciprocal. The
 branch is settled by knowing which beam is the weaker, which is a bench fact and
 not a fit output.
 
-**Half the inventory is designed and not taken.** The pedestal supplies the
+Half the inventory is designed and not taken. The pedestal supplies the
 temperature and the retro ratio in principle, and in the 2025 archive it cannot:
 the pedestal is 942 MHz wide and the windows span 85, so every trace samples its
 flat top and the baseline takes it up as an offset. Listing a designed calibration beside a
 working one overstates what the bench has done.
 
-**And the transition ladder's ratios carry an assumption, not zero parameters.**
+And the transition ladder's ratios carry an assumption, not zero parameters.
 $w_0=\lambda f/\pi w_\text{in}$ needs the input radius to be the same at every
 wavelength, and a titanium-sapphire cavity's own mode radius is not. If it goes
 as the square root of the wavelength then the waist does too, and the transit
@@ -463,7 +454,7 @@ rungs still over-determine. A smaller term the first statement also ignored is t
 focusing lens is not achromatic, so its focal length moves about one per cent
 across the family in the same direction.
 
-### The wavemeter can be calibrated by the atoms as well
+### Atomic calibration of the wavemeter
 
 The peak labels come from an uncalibrated wavemeter, which is why they identify
 lines and do not measure them. Two transitions the same laser reaches turn that
@@ -489,7 +480,7 @@ first. So the two anchors cannot be taken in one configuration, and the
 calibration takes two sessions, and the repeatability of the wavemeter across a
 mirror change enters the error budget of the result.
 
-### The beam quality is a second axis, and no function here carries it
+### Beam quality as a second axis
 
 Every waist-dependent quantity in this repository assumes a diffraction-limited
 beam, and the bench has a reason not to be one. The drive passes a modulator
@@ -511,22 +502,22 @@ cumulant's reversal is $M^2=3.17$ at 55 microns, 4.29 at 64 and 7.56 at 85. The
 damage arrives earlier than the reversal: at 55 microns the third cumulant keeps
 86 per cent of its value at $M^2=1$, 69 at 1.5, 48 at 2 and 26 at 2.5.
 
-**So a working range for the waist is a region in $(w_0, M^2)$ and not an
-interval in $w_0$.** The convolution condition holds across 55 to 85
+So a working range for the waist is a region in $(w_0, M^2)$ and not an
+interval in $w_0$. The convolution condition holds across 55 to 85
 microns with room to spare, the kernel spread over the collected region running
 1.75, 0.98 and 0.32 per cent and reproduces the record's own measured 1.0 at 64. The collection
 window is what strains, and it strains at the small end. A range of 55 to 85
 microns with $M^2$ under about two keeps every term inside its licence with a
 factor of two to spare.
 
-**None of this is a forecast.** Every relation above is closed form, rung 2.
+None of this is a forecast. Every relation above is closed form, rung 2.
 The twin has not fitted a multi-transition arm, `fit_transit` has not been
 thrown in a producer, and the knife-edge measurement remains the cheapest
 single answer to the question. What the programme offers is that the knife edge
 would then be a *check* on a number the system had already produced, instead of
 the only number there is.
 
-### The modulator is a knob this page never listed
+### The modulator as an unlisted knob
 
 Every knob above moves the light shift and the widths together, which is why so
 few of them separate anything. The modulator does not. A phase modulation
@@ -537,13 +528,13 @@ power. The two-photon rate goes as $f^2$, so the saturation companion does too.
 
 The shares follow from the comb [the ruler chapter](../methods/05_the_frequency_ruler.md)
 measures, heights $0 : 1.00 : 0.69 : 0.15$ at $k = 0, \pm1, \pm2, \pm3$ with the
-carrier running 0.360 to 1.188 of the first order. A two-photon height goes as
+carrier running 0.360 to 1.188 of the first order. A two-photon height goes as <!-- other-quantity: the carrier's height against the first-order tooth, not the light-shift prediction -->
 the share squared, so the tallest tooth carries **0.18 to 0.20** and the carrier
 0.12 to 0.20. At those shares the saturation companion sits **25 to 31 times**
 below the unmodulated line's, at otherwise identical conditions. Nothing else in this model separates saturation from the Lorentzian
 sum, which it otherwise joins and does not break.
 
-**And the shares are measured, not predicted.** A two-photon height goes as the
+And the shares are measured, not predicted. A two-photon height goes as the
 share squared, so each tooth's share is read from the same trace it is used on.
 That matters here because the polarisation axis into the modulator was tilted
 deliberately, to stop the carrier burying the other teeth, so the shares do not
@@ -555,7 +546,7 @@ the traces the archive holds the test is about 1.3 sigma a line and 2.5 pooled
 over four. Real, the right sign, and not decisive here. What makes it decisive
 is the fixed lock, which is what the scatter is made of.
 
-### And the polarisation is not a detail of the ruler
+### Polarisation in the ruler
 
 For this line only rank 0 survives: rank 1 is absent by the exchange symmetry,
 since both photons come from one laser, and rank 2 is zero for $J = 1/2$. Rank 0
@@ -579,7 +570,7 @@ respect to the parameter, in units of the observable's own scatter, its
 leverage. Appearing in the forward model is not leverage. Constraining
 such a channel harder adds almost no information.
 
-### A summary statistic is not an estimator, and the bar differs
+### Summary statistics against estimators
 
 A statistic used in a joint fit is compared against its own forward
 prediction. It does not have to converge to anything. Asking it to is a
@@ -593,8 +584,8 @@ singular value**, and the seventh order at an intermediate window is the only
 statistic in the set that probes the widths hard while still carrying the
 shift.
 
-**And the ratio of the fifth to the third is a systematic discriminator, not an
-empty number.** It is shift-free, which is why it was read as carrying no
+And the ratio of the fifth to the third is a systematic discriminator, not an
+empty number. It is shift-free, which is why it was read as carrying no
 information. Measured across a twenty-four-fold span in the shift it sits at
 minus forty, stable to two and a half per cent, and negative while the third
 cumulant is positive. A sloped baseline, a detection nonlinearity or an
@@ -603,7 +594,7 @@ forty, so the pair discriminates an instrumental asymmetry from the ramp's.
 The earlier reading that no ratio among the odd orders can see a common
 asymmetry holds only for their magnitudes and not for their signs.
 
-### The odd ladder is weak on this archive's noise, and weak is not a reason to drop it
+### The odd ladder under archive noise
 
 Everything above is about the signal and is silent about the noise. Measured on
 the twin's world under the correlation time `results/noise_model.csv` reports,
@@ -615,7 +606,9 @@ took 21 of the 42 and refused the whole odd ladder, which is the shift channel.
 Two things were wrong with that, and the second makes it a defect and not a
 conservative choice. A likelihood already down-weights a noisy statistic through
 its own entry in the inverse covariance, so carrying one costs nothing while
-dropping it is a decision that can bias. And a floor on the ratio of the mean to
+dropping it is a decision that can bias.
+
+And a floor on the ratio of the mean to
 the spread is a floor on the mean that was realised, which is admission by the
 data. What is refused now is a statistic with no population moment, a statement
 about its distribution and not about its size, and on this archive that is
@@ -623,12 +616,14 @@ exactly the odd ratios, whose denominators change sign from replica to replica:
 [33](../../results/moment_admission.csv "ref:moment_admission:n_admitted:") of 42 enter, with every cumulant
 `k2` through `k9` among them. The
 second cumulant at the six-megahertz window carries
-[1667](../../results/moment_admission.csv "ref:moment_admission:snr_k2:6") per
+[2485](../../results/moment_admission.csv "ref:moment_admission:snr_k2:6") per
 trace. The third carries
-[0.00543](../../results/moment_admission.csv "ref:moment_admission:snr_k3:6"),
+[0.04850](../../results/moment_admission.csv "ref:moment_admission:snr_k3:6"),
 and it is carried at that weight, not dropped. `k5/k3`, `k7/k5` and
 `k9/k7` are the ones genuinely refused, at every window, because a denominator
-that changes sign leaves the ratio with no mean to be weighted against. The old
+that changes sign leaves the ratio with no mean to be weighted against.
+
+The old
 reasoning for refusing on size -- that a windowed cumulant of pure noise is
 largest exactly where the signal is smallest, so a weak statistic averaged into
 a joint fit inverts the answer -- is an argument about an average and not about a
@@ -649,7 +644,7 @@ The odd orders stay in the model's order tuple because they are the shift
 channel and a campaign at a larger light shift reads them. On the 2025 archive
 a fit drops them on their measured signal-to-noise, never on their name.
 
-### The window is a scan axis, and the even ladder carries the transit
+### The window as a scan axis
 
 Every statistic above was read at a fixed window. Read across the window it
 is a function, and every term of the line has its own law in it, measured on
@@ -690,7 +685,9 @@ and with a slow wander carrying a third of the variance
 The transit and the Lorentzian sum stay correlated at
 [-0.87](../../results/window_laws.csv "ref:window_laws:corr_transit_lorentzian_white:1.5-20")
 under every form, which is the degeneracy the theory prior on the
-self-broadening coefficient breaks and nothing in one trace does. And the
+self-broadening coefficient breaks and nothing in one trace does.
+
+And the
 estimator's own noise-induced bias, per trace in units of its scatter, is
 [-0.127](../../results/window_laws.csv "ref:window_laws:bias_k2_white:6") at
 6 MHz and
@@ -699,7 +696,7 @@ estimator's own noise-induced bias, per trace in units of its scatter, is
 is a one-to-two-sigma term the twin supplies per condition from that
 condition's measured spectrum, never from a white draw.
 
-### rho and Delta-alpha are exactly degenerate in the shift, and only one channel breaks it
+### Degeneracy of rho and Delta-alpha
 
 The light shift enters as $S_0 \propto (1+\rho) \Delta\alpha P/w_0^2$, so
 every observable built on the shift constrains the product $(1+\rho)\Delta\alpha$
@@ -719,15 +716,17 @@ ratio is $2\sqrt{\rho}/(1+\rho)$ everywhere and the local radius has already
 cancelled before any atom is drawn. The Monte Carlo returns it across the whole licensed grid, which tests the
 implementation: the cell grid's
 [2.98e-08](../../results/fringe_rho_recovery.csv "ref:fringe_rho_recovery:max_rho_bias_clean:")
-residual is floating-point noise. What the grid does measure is everything that
+residual is floating-point noise.
+
+What the grid does measure is everything that
 breaks the identity: the retro offset a tilt implies, and the polarisation. The defect: the contrast is
 **stationary at $\rho = 1$**, its derivative vanishing identically there, and
 this bench sits near that point. At $\rho = 0.94$ a ten per cent determination
 of $\rho$ needs the contrast measured to about $1.5\times10^{-3}$. At
 $\rho = 0.5$ the same determination needs only $1.6\times10^{-2}$.
 
-**The design consequence is concrete, and it costs signal: unbalance the retro on
-purpose.** Attenuating the return beam moves the contrast's derivative by an
+The design consequence is concrete, and it costs signal: unbalance the retro on
+purpose. Attenuating the return beam moves the contrast's derivative by an
 order of magnitude and turns a stationary channel into an informative one,
 and it costs signal, since the Doppler-free rate goes as the ratio itself
 ([methods 3](../methods/03_the_ac_stark_ramp.md)), a factor 1.9 at one half,
@@ -735,7 +734,7 @@ and the shift being measured, which goes as one plus the ratio, a factor 1.3. It
 belongs to a campaign and not to the 2025 data, which is why the archive's
 $\Delta\alpha$ stays where the record puts it.
 
-### The four peaks as a two-by-two design, and the two faces of the F-dependent term
+### The four peaks as a two-by-two design
 
 The four lines are one isotope contrast and two hyperfine contrasts, and the
 record's own terms predict each: the transit's root-of-mass difference on the
@@ -746,7 +745,9 @@ per crossing ([the cascade and F depletion](the-cascade-and-f-depletion.md)),
 and each isotope's within-isotope ratio sits above the thermal law
 abundance × (2F + 1)/G by the log of the two survival factors, the
 higher-branching line the more depleted. `results/four_peak_contrasts.csv`
-carries both faces. On the archive the cycles per crossing on a central chord
+carries both faces.
+
+On the archive the cycles per crossing on a central chord
 are [0.0814](../../results/four_peak_contrasts.csv "ref:four_peak_contrasts:cycles_per_crossing_axis:P225_w64")
 at 225 mW and 64 µm (the saturated rate integrated along the chord, which is
 $P^2/w_0^3$ only while the core is unsaturated: at 16 µm the saturated integral
@@ -763,16 +764,18 @@ cent (`amplitude_ratios.csv`), so the face is NULL on this archive and the movem
 is an observation the acquisition order confounds (A92). At 25 µm the same
 term predicts [0.0669](../../results/four_peak_contrasts.csv "ref:four_peak_contrasts:amplitude_face_predicted:87Rb_P225_w25"),
 which the campaign's cycled order reads against the width face with the same
-branching coefficients. The width face, pooled over the power arm, gives an
+branching coefficients.
+
+The width face, pooled over the power arm, gives an
 87Rb contrast of
-[0.098](../../results/four_peak_contrasts.csv "ref:four_peak_contrasts:contrast_F87:pooled_power_arm") ±
-[0.035](../../results/four_peak_contrasts.csv "ref:four_peak_contrasts:contrast_F87:pooled_power_arm:err") MHz
+[0.086](../../results/four_peak_contrasts.csv "ref:four_peak_contrasts:contrast_F87:pooled_power_arm") ±
+[0.028](../../results/four_peak_contrasts.csv "ref:four_peak_contrasts:contrast_F87:pooled_power_arm:err") MHz
 and over the temperature arm
-[0.084](../../results/four_peak_contrasts.csv "ref:four_peak_contrasts:contrast_F87:pooled_temperature_arm") ±
-[0.043](../../results/four_peak_contrasts.csv "ref:four_peak_contrasts:contrast_F87:pooled_temperature_arm:err") MHz,
+[0.050](../../results/four_peak_contrasts.csv "ref:four_peak_contrasts:contrast_F87:pooled_temperature_arm") ±
+[0.032](../../results/four_peak_contrasts.csv "ref:four_peak_contrasts:contrast_F87:pooled_temperature_arm:err") MHz,
 the design an L whose (130 °C, 225 mW) condition belongs to both arms.
 
-**The amplitude channel's own waist power** is derived in
+The amplitude channel's own waist power is derived in
 `results/detection_budget.csv`: the integrated weak-drive signal in a collected
 length $L$ goes as $2\arctan(L/2z_R)$, whose slope in the waist is
 [-1.914](../../results/detection_budget.csv "ref:detection_budget:exponent_weak_drive:along12_w64um") at 64 µm
@@ -806,7 +809,7 @@ The practical order is to build the component budget, compute the leverage
 in each channel, and only then ask whether the parameter is identifiable in
 the channel that carries it.
 
-## What a free centre removes, derived
+## Effect of a free centre
 
 The AC-Stark ramp of [the light shift](the-inhomogeneous-light-shift.md) is a shift density $w(u) = 2u$ on $[0,1]$, scaled by $S_0$. Writing the observed profile as $P(\nu \mid S_0) = \int_0^1 P_0(\nu - S_0 u) w(u) \mathrm{d}u$ keeps every moment used below a moment of $w$, which is finite by construction. No moment of the observed line enters, so the Lorentzian's divergent cumulants (see [the ramp chapter](../methods/03_the_ac_stark_ramp.md)) never do.
 
@@ -814,18 +817,18 @@ Expanding to second order, $P = P_0 - \tfrac{2S_0}{3}P_0' + \tfrac{S_0^2}{4}P_0'
 
 Two consequences follow without any fit. The residual is second order in $S_0$, so the derivative of the observable response vanishes at $S_0 = 0$: the Fisher information for the shift is zero at the boundary and the log-likelihood is quartic there. That is why the bound is one-sided and the profile is flat at the boundary. (A coefficient linear in the data is negative half the time under a null at the boundary, so a rail rate near one half is that argument's expectation there. The coverage study's zero-shift cell rails 6 per cent of the time in the nominal arm, the one the postscript finds the real data behave like, and 14 per cent in the over-dispersed arm. The postscript records the discrepancy with one half as open.) And the width channel is even in $S_0$, so it cannot see the sign of the shift at any precision.
 
-The size of what survives, computed by `scripts/run_identifiability.py` with `rb5s6s.lineshape.total_fwhm_mhz` at the archive's two fitted branches and never by prose arithmetic: at the predicted shift of [0.360](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred:shared") MHz (envelope [0.312](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred_lo:shared") to [0.391](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred_hi:shared")) the line broadens by [7.23](../../results/identifiability.csv "ref:identifiability:width_signature_broadening_khz:cusp_branch") kHz at the cusp branch and [6.48](../../results/identifiability.csv "ref:identifiability:width_signature_broadening_khz:gaussian_branch") kHz at the Gaussian branch, on lines of [5.3179](../../results/identifiability.csv "ref:identifiability:width_signature_fwhm_mhz:cusp_branch") and [5.4036](../../results/identifiability.csv "ref:identifiability:width_signature_fwhm_mhz:gaussian_branch") MHz, so the centre pull the free centre discards is [33.6](../../results/identifiability.csv "ref:identifiability:width_signature_centre_over_width:cusp_branch") to [37.4](../../results/identifiability.csv "ref:identifiability:width_signature_centre_over_width:gaussian_branch") times the width signal. The pure-Gaussian estimate a withdrawn draft carried was about half of this, because the real line is about two thirds Lorentzian, and the two-branch cells above are the record's own.
+The size of what survives, computed by `scripts/run_identifiability.py` with `rb5s6s.lineshape.total_fwhm_mhz` at the archive's two fitted branches and never by prose arithmetic: at the predicted shift of [0.348](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred:shared") MHz (envelope [0.306](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred_lo:shared") to [0.375](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred_hi:shared")) the line broadens by [7.23](../../results/identifiability.csv "ref:identifiability:width_signature_broadening_khz:cusp_branch") kHz at the cusp branch and [6.48](../../results/identifiability.csv "ref:identifiability:width_signature_broadening_khz:gaussian_branch") kHz at the Gaussian branch, on lines of [5.3179](../../results/identifiability.csv "ref:identifiability:width_signature_fwhm_mhz:cusp_branch") and [5.4036](../../results/identifiability.csv "ref:identifiability:width_signature_fwhm_mhz:gaussian_branch") MHz, so the centre pull the free centre discards is [33.6](../../results/identifiability.csv "ref:identifiability:width_signature_centre_over_width:cusp_branch") to [37.4](../../results/identifiability.csv "ref:identifiability:width_signature_centre_over_width:gaussian_branch") times the width signal. The pure-Gaussian estimate a withdrawn draft carried was about half of this, because the real line is about two thirds Lorentzian, and the two-branch cells above are the record's own.
 
 **Which side the centre sits on is now a fitted choice, shown and not only
 derived.** The expansion above is a statement about the forward
-model: the ramp's density is $|s|$ on $[-S_0, 0]$, fixed by the beam geometry
+model: the ramp's density is $s$ on $[0, S_0]$, fixed by the beam geometry
 and the polarizability, with no free shape anywhere in it. `fullmodel.fit_full`
 carries the centre as a term, so the two regimes can be run against the same
 trace. On noiseless data **both find the injected shift exactly**, and the difference
 shows only in the spread across starts: four parts in $10^{14}$ with the centre
 pinned against $1.2\times10^{-1}$ with it freed.
 
-**That is the benign case, and quoting it alone understates the cost.** At the
+That is the benign case, and quoting it alone understates the cost. At the
 archive's own noise level the free-centre fit is not merely start-dependent, it
 is biased:
 
@@ -835,7 +838,7 @@ is biased:
 | 0.004, the archive's | 0.36558 | **0.28530** |
 | 0.020 | 0.36842 | **0.85509** |
 
-against an injected 0.360. At the level these traces carry, freeing the centre
+against an injected 0.360. At the level these traces carry, freeing the centre <!-- other-quantity: the shift this study injected, a design of its date -->
 costs **twenty-two per cent, low**. At four times it the answer is wrong by
 more than a factor of two, while the pinned fit is still good to one per cent.
 
@@ -844,7 +847,7 @@ before. Pin the centre and the asymmetry is a prediction the fit must match.
 Free it and the asymmetry is largely absorbed. Neither is wrong. **Fitting the
 shift with a free centre and reporting its error as though it were pinned is.**
 
-### What the estimator can and cannot take out, computed
+### Limits of the estimator's correction
 
 A closed loop means something only where the world and the estimator carry the
 same terms. `fullmodel.term_coverage` reports that split from the fitter's own
@@ -868,14 +871,14 @@ function it was handed.
 
 A note on two numbers this page and its neighbours quote. The split-against-total anisotropy is [0.0032](../../results/identifiability.csv "ref:identifiability:best_constrained_sigma:total_width") MHz against [0.0588](../../results/identifiability.csv "ref:identifiability:worst_constrained_sigma:split") MHz, a factor of [18.6](../../results/identifiability.csv "ref:identifiability:anisotropy_ratio:split_over_total"). [The statistics chapter](../methods/06_the_statistics.md) calls the same pair twenty-fold worse. The producer divides the unrounded sigmas and writes [18.6](../../results/identifiability.csv "ref:identifiability:anisotropy_ratio:split_over_total"). The two committed digits give a ratio a fifth of a unit smaller, which is what the campaign-projection figure prints from the same cells, and the difference is rounding, not physics.
 
-## What the collisional coefficient absorbs, and how to tell
+## Absorption by the collisional coefficient
 
 The ultra-joint fit scans the waist and reports a collisional coefficient at
 each node. Across 40 to 90 µm that coefficient runs from zero to nearly five
 times its first-principles value while the reduced chi-squared barely moves,
 which reads like a missing term and is not one.
 
-**It is the Lorentzian sum of the section below, seen from one end.** The
+It is the Lorentzian sum of the section below, seen from one end. The
 collisional width, the far-wing floor and the saturation broadening enter the
 homogeneous core as one measurable total, and the record's own per-condition
 fits correlate the collisional width with the laser width at $-0.90$. So
@@ -886,8 +889,8 @@ and the one form that carries a floor lets the coefficient fall to zero and
 puts the same width there instead. Nothing about the collisions changed between
 those runs. **Which knob was free changed.**
 
-**The temperature ladder is what separates them, and it separates them from one
-end only.** The collisional width scales with density, which moves by a factor
+The temperature ladder is what separates them, and it separates them from one
+end only. The collisional width scales with density, which moves by a factor
 of fifty-two across 70 to 130 °C, while the laser width does not move at all.
 That is a real lever. But at 70 °C the collisional term is a fiftieth of its
 value at 130, so the cold end measures the T-independent widths and the hot end
@@ -895,7 +898,7 @@ carries essentially all of the coefficient, where it is degenerate with
 everything else. A four-point ladder breaks the degeneracy in principle and
 puts almost all the weight on one point in practice.
 
-**Two things make the reading honest, and neither makes it tighter.** First, put the
+Two things make the reading honest, and neither makes it tighter. First, put the
 coefficient in under its own theory uncertainty instead of pinning it or
 leaving it free: pinning is infinitely stiff and makes the quantity do the
 model's work. Free is unpenalised and is what lets it run to five times
@@ -904,8 +907,8 @@ same holds for the polarizability, and both are priors in the fit since
 2026-09-16. Second, and this one is not a statistics question at all: check
 what population the fit is reading.
 
-**A population defect reads exactly like a missing term, and this record had
-one.** The power session's far-wing residual sat at 142 sigma, identical across
+A population defect reads exactly like a missing term, and this record had
+one. The power session's far-wing residual sat at 142 sigma, identical across
 all three kernel forms and unchanged whether the far-wing floor was pinned at
 zero or fitted to half a megahertz. That identity is the signature. A term the
 model lacks would respond to a knob that models it. A feature beyond the range
@@ -918,7 +921,7 @@ samples the likelihood saw.**
 
 ## The exact Lorentzian-sum degeneracy
 
-**Saturation joins this sum, it does not break it.** The two-photon Rabi
+Saturation joins this sum, it does not break it. The two-photon Rabi
 frequency broadens the homogeneous core, and that broadening is added to
 $\gamma_\text{coll}$, so a fit carrying saturation has three terms entering as
 one measurable total. Measured on sixteen moment statistics against six
@@ -931,7 +934,7 @@ power is in the **amplitude against power**, which no moment carries and which
 goes as the inverse fourth power of the waist, the steepest dependence in the
 model. A joint fit over moments alone gives that lever up.
 
-**The ruler's teeth are the lever that isolates it, and the ladder puts a number on it.** A phase
+The ruler's teeth are the lever that isolates it, and the ladder puts a number on it. A phase
 modulation holds the total intensity, so the light shift and every width are
 the same on every tooth while the two-photon rate follows the tooth's share of
 the drive: across the orders the archive's rulers admit the rate spans [5.50](../../results/rf_saturation_ladder.csv "ref:rf_saturation_ladder:ladder_rate_span:")
@@ -941,7 +944,9 @@ waist alone free and the companion unmodelled biases the transit by
 Fitting every usable tooth jointly with one shared Rabi frequency free returns
 [-0.034](../../results/rf_saturation_ladder.csv "ref:rf_saturation_ladder:transit_bias_pct:ladder_waist_only_omega_free") ± [0.061](../../results/rf_saturation_ladder.csv "ref:rf_saturation_ladder:transit_bias_pct:ladder_waist_only_omega_free:err"), the bias gone, and holding
 that frequency at the truth gives [-0.019](../../results/rf_saturation_ladder.csv "ref:rf_saturation_ladder:transit_bias_pct:ladder_waist_only_omega_pinned") ± [0.018](../../results/rf_saturation_ladder.csv "ref:rf_saturation_ladder:transit_bias_pct:ladder_waist_only_omega_pinned:err"), so the
-ladder is not limited by the extra parameter. An arm with the Lorentzian width
+ladder is not limited by the extra parameter.
+
+An arm with the Lorentzian width
 free instead measures nothing here, [-0.17](../../results/rf_saturation_ladder.csv "ref:rf_saturation_ladder:transit_bias_pct:one_tooth_gamma_l_free") ± [0.13](../../results/rf_saturation_ladder.csv "ref:rf_saturation_ladder:transit_bias_pct:one_tooth_gamma_l_free:err"), because
 it absorbs the companion one for one, which is this section's degeneracy read
 the other way round.
@@ -1019,15 +1024,15 @@ quantified effect on the coefficient (`results/kernel_k4.csv`). The lever
 map above marks the one measurement that would settle its origin, still
 untaken.
 
-## The retro ratio and the polarizability, and the one channel that splits them
+## The retro ratio against the polarizability
 
 The peak shift goes as `S0 ~ (1 + rho) * Delta-alpha * P / w0^2`, so once the
 waist is known the shift channel constrains only the product `(1 + rho) *
 Delta-alpha`. **No amount of shift data separates them**: they enter through one
 factor and a fit that reports both from the shift alone is reporting its priors.
 
-**The fringe contrast is the one observable that carries rho and not
-Delta-alpha.** A retro-reflected standing wave has contrast `2 sqrt(rho) / (1 +
+The fringe contrast is the one observable that carries rho and not
+Delta-alpha. A retro-reflected standing wave has contrast `2 sqrt(rho) / (1 +
 rho)`, a function of the power ratio alone, so the fringe-resolved suppression
 measured per waist and per quality factor is a rho measurement, not a
 correction to one. With rho in hand, Delta-alpha follows from the product.
@@ -1035,11 +1040,12 @@ correction to one. With rho in hand, Delta-alpha follows from the product.
 carries the beam quality, the retro tilt, the retro offset and the polarisation
 overlap that `fringe_tail` does not.
 
-**Consequence for any joint fit on this page**: rho and Delta-alpha are never
+Consequence for any joint fit on this page: rho and Delta-alpha are never
 both free against the shift alone. Either one is pinned, or the fringe channel
 is in the fit, or the result is stated as the product.
 
-## Values that moved
+## Revised values
+
 Three figures on this page's subject were withdrawn or rebuilt. A
 per-condition collisional-width split was traced to a grid-truncation
 artefact rather than to physics. A background span sized on an assumed
@@ -1049,10 +1055,10 @@ sample-count change landing on a discrete trim boundary in a nearly flat
 profile direction. the private correction record carries each row with its
 before and after.
 
-### The collisional coefficient's apparent excess is the omitted Lorentzian
+### The apparent collisional excess
 
-**This is the sharpest identifiability result the record holds, and it is a
-committed cell and not an argument.** Fitted with the laser's Lorentzian
+This is the sharpest identifiability result the record holds, and it is a
+committed cell and not an argument. Fitted with the laser's Lorentzian
 component pinned at zero, the collisional coefficient comes back at 0.0534
 MHz per density unit, sixteen times the van der Waals anchor of 0.003383 and
 far outside either error. Fitted with that component carried at the value the
@@ -1061,7 +1067,7 @@ sits 0.54 of a sigma from the anchor**. The extra-homogeneous-component axis
 alone moves the coefficient by 0.0477, which is nearly the whole apparent
 excess.
 
-**That setting is not a measurement of the coefficient**, and the reason is this
+That setting is not a measurement of the coefficient, and the reason is this
 page's own subject. At a fixed condition the extra component is exactly
 degenerate with the collisional width, since both are Lorentzian and Lorentzians
 add, so it is identified only across the density ladder. The fit holding it at
@@ -1075,7 +1081,7 @@ What does generalise is the reading: **an excess in a fitted parameter is
 evidence about the model's term list before it is evidence about the physics**,
 and the first place to look is an axis a model-form grid already spans.
 
-### The third error bar is larger than the first
+### Relative size of the third error bar
 
 The same grid of refits measures the model-form systematic, across the
 transit-kernel and sharing axes. On the collisional coefficient the
@@ -1098,7 +1104,7 @@ at unity while the absolute statistic is uncertain by tens. Conflating the two
 is the error that produced an uncalibrated waist interval on this page's own
 subject.
 
-## What can go wrong
+## Failure modes
 
 The failure that matters is mistaking a converged fit for a determined
 parameter: an optimiser always returns a point, a covariance matrix always
@@ -1123,8 +1129,8 @@ measurement.
 
 ## Try it
 
-How similar the line looks when you widen the collisional part against
-when you widen the laser part. An overlap near one means the data cannot
+How similar the line looks under a widened collisional part against
+a widened laser part. An overlap near one means the data cannot
 tell the two changes apart.
 
 ```python
@@ -1160,8 +1166,7 @@ reader.
 - [Injection-recovery testing](injection-recovery.md), for whether the
   intervals a degenerate problem produces actually cover.
 
-## See also
-
+## Related pages
 - [The AC-Stark light shift](../quantities/ac-stark-light-shift.md) and
   [collisional self-broadening](../quantities/self-broadening.md), the
   quantity dossiers with their own limiting degeneracy and the measurement

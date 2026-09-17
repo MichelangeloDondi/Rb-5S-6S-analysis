@@ -2,20 +2,12 @@
 
 *[wiki index](README.md) · physical effect*
 
-**The question.** How a focused two-photon drive's light shift turns from a
-single number into a shaped, asymmetric blur on the line.
-**Takes.** The beam waist that converts power into intensity, and no fitted
-data.
-**Gives.** The shift distribution's shape, its dependence on the two-photon
-exponent, and where the derivation and current bound live.
-**Skip if.** You want the length that sets intensity in the first place, not
-what intensity does to the line, covered in
-[the beam waist](the-beam-waist.md).
+How a focused two-photon drive's light shift turns from a single number into a shaped, asymmetric blur on the line. This page builds on the beam waist that converts power into intensity, and no fitted data and sets out the shift distribution's shape, its dependence on the two-photon exponent, and where the derivation and current bound live. Not covered here: the length that sets intensity in the first place, not what intensity does to the line, covered in [the beam waist](the-beam-waist.md).
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
 > defines every term and symbol used anywhere in this repository.
 
-## What it is
+## Definition
 
 An oscillating electric field shifts atomic energy levels, and far from
 resonance the shift is proportional to the intensity and to the level's
@@ -38,7 +30,7 @@ $n$: a one-photon process gives a uniform distribution with no skew from a
 focused Gaussian beam, and the skew here exists only because the two-photon
 signal goes as $I^2$.
 
-## What problem it solves
+## The problem it addresses
 
 Read one way it is a systematic: the drive shifts the very transition it is
 probing, so a measured line centre depends on power and must be
@@ -46,7 +38,7 @@ extrapolated to zero. Read the other way it is an observable: the shift
 distribution's shape, set by geometry and by $n$, carries information about
 the light field the atoms experienced, otherwise inaccessible.
 
-## Where this repository uses it
+## Application in this repository
 
 This is the repository's most developed piece of theory, and this page is
 an on-ramp, not the derivation. The closed-form distribution for a focused
@@ -70,7 +62,9 @@ forecast finds accurate on a 25 or 40 MHz comb and biased high on the
 comb-free trace, because splitting the drive among teeth lowers each
 tooth's saturation width while leaving the shift alone. The first-order pull of the centre against power, which the
 repaired lock makes readable, is the standard channel, and the campaign
-forecast combines the two with their measured covariance. The standard
+forecast combines the two with their measured covariance.
+
+The standard
 channel gains a null test from the modulation depth: a phase modulation
 leaves the intensity, and so the shift, the same for every tooth at any
 depth while the rate per tooth goes as the Bessel weight squared, so the
@@ -104,7 +98,7 @@ components either: the differential polarizability holds its full value
 across the whole span, with genuine zeros hundreds of nanometres away, where
 the record's polarizability model puts them.
 
-## The geometry factor, tested at a very different operating point
+## The geometry factor at a distant operating point
 
 The coefficient here is the polarizability times a geometry factor,
 `I_eff = (1 + rho) 2P / (pi w0^2)`, and a reader is entitled to ask whether
@@ -126,7 +120,7 @@ about the geometry factor, the factor of two and the frequency conversion. It
 says nothing about the polarizability's magnitude and nothing at all about its
 sign, which remains the open dispute.
 
-**And it shows the two programmes are not competing.** They reached kilohertz
+And it shows the two programmes are not competing. They reached kilohertz
 line centres by making this shift negligible through geometry, which is the
 design rule [Zhang and co-workers](../lit/zhang2026.md) measure at two orders
 of magnitude for a collimated beam against a tight focus. This repository
@@ -134,9 +128,9 @@ makes the shift large and reads its distribution. A symmetric fit is correct
 at their waist, and what it costs at a focused one is the subject of this
 page.
 
-## What can go wrong
+## Failure modes
 
-**The density is exact and its composition was not** (2026-09-09). Everything
+The density is exact and its composition was not (2026-09-09). Everything
 above is about the distribution of shifts. The pipeline then convolved that
 distribution with one homogeneous kernel, which is a condition and not a
 form: it holds only where the kernel is the same at every collected volume
@@ -188,7 +182,8 @@ for n in (1, 2):
 Every snippet here is executed by `tests/test_wiki_snippets_run.py`, so one
 that stops working fails the suite instead of misleading a reader.
 
-## Values that moved
+## Revised values
+
 The ramp prediction published in July was evaluated at the beam waist
 accepted at the time, and that waist was later replaced by a direct
 same-bench measurement. The prediction has not been recomputed against the
@@ -204,8 +199,7 @@ the private correction record carries both rows and the live figures.
 - [The third cumulant](third-cumulant.md) for the statistic the asymmetry is
   read through.
 
-## See also
-
+## Related pages
 - [The AC-Stark dossier](../quantities/ac-stark-light-shift.md), for the
   bound per construction, the literature benchmark, and the recipes to
   convert it into a measurement.

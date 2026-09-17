@@ -118,13 +118,11 @@ and in the three documents this pass was scoped to touch:
 [CLAIMS](../CLAIMS.md), [LITERATURE](../LITERATURE.md) §2 and
 [FUTURE_TRANSITIONS](../FUTURE_TRANSITIONS_titsapph.md) §3.2 and §3.3.
 
-Two things are knowingly left behind. `results/projections.csv` is produced by
-`scripts/run_projections.py` from `beta_self_anchored`, so it carries 3.52809
-and the four detection-significance rows derived from it until the pending
-recompute regenerates them, which lowers those by 4 per cent. And the
-bound-over-anchor headline was 8.2 to 14.0 times, quoted as 8 to 14, and is now
-8.5 to 14.6, which rounds to 8 to 15. Both belong in one sweep rather than file
-by file, so that no two documents disagree on a headline number in the interval.
+`results/projections.csv` is produced by `scripts/run_projections.py` from `beta_self_anchored`, so
+it carries [3.49718](../../results/projections.csv "ref:projections:input_beta_self_expected:vdW anchored")
+with the four detection-significance rows derived from it, regenerated together on 2026-09-17. The
+bound-over-anchor ratio has no committed row: it is `bound95` of `results/beta_self_probe.csv` over the
+anchored cell, and a figure for it is computed from those two cells, never carried from a page.
 
 ## 6. The 6S to 4D interval is an open inelastic channel
 
@@ -223,7 +221,7 @@ is ((1+f)^(2/5) + (1-f)^(2/5))/2, 0.985 for 6S and 1.000 for 7S, and the anchore
 [3.50](../../results/beta_self_theory.csv "ref:beta_self_theory:beta_self_6s:anchored") kHz per 10¹² cm⁻³ (A251, the first-principles value 3.49). Section 7's
 envelope no longer stands at eleven per cent: it carried the cell temperature as an OPEN
 5 per cent term that Zameroski's own paper puts inside his ±11, so the double count was
-removed on 2026-09-15 and the measured budget is 8.8 per cent, [0.37](../../results/beta_self_theory.csv "ref:beta_self_theory:beta_self_6s:anchored:err") kHz.
+removed on 2026-09-15 and the measured budget is [10.64](../../results/beta_self_theory.csv "ref:beta_self_theory:beta_self_6s:rel_uncertainty") per cent, [0.37](../../results/beta_self_theory.csv "ref:beta_self_theory:beta_self_6s:anchored:err") kHz.
 The anchored centre also moved 1.8 per cent, from an earlier 3.35, because the 7S rate is now
 converted to a density at the 393 K it was measured at and carried to 403.15 K by the
 $T^{0.3}$ of the speed average, which are two steps and were one wrong one.

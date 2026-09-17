@@ -2,21 +2,12 @@
 
 *[wiki index](README.md) · concept*
 
-**The question.** Is a large residual a mistake to remove, real structure the
-model has not captured, or evidence that the noise has heavier tails than
-assumed.
-**Takes.** A weighted fit under an assumed noise law, Gaussian in this
-repository, to serve as the baseline it is compared against.
-**Gives.** The Student-t likelihood as a continuous, fitted alternative to a
-hand-chosen loss, and the scale-mixture-of-normals framing behind it.
-**Skip if.** You want a hand-chosen loss applied by rule instead of a
-likelihood fitted to the tail shape. That is
-[robust fitting](robust-fitting.md).
+Is a large residual a mistake to remove, real structure the model has not captured, or evidence that the noise has heavier tails than assumed. This page builds on a weighted fit under an assumed noise law, Gaussian in this repository, to serve as the baseline it is compared against and sets out the Student-t likelihood as a continuous, fitted alternative to a hand-chosen loss, and the scale-mixture-of-normals framing behind it. Not covered here: a hand-chosen loss applied by rule instead of a likelihood fitted to the tail shape. That is [robust fitting](robust-fitting.md).
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
 > defines every term and symbol used anywhere in this repository.
 
-## What it is
+## Definition
 
 A point that sits far from a fitted curve is usually read as a mistake to
 find and remove, or a real feature the model has not yet captured. The noise
@@ -60,7 +51,7 @@ captured. A fitted $\nu$ describes the shape of the residuals in this
 dataset, not why they take that shape or whether another dataset would show
 the same tail.
 
-## What problem it solves
+## The problem it addresses
 
 A weighted fit under a Gaussian likelihood gives every point exactly the
 influence its stated weight implies, with no headroom for a point whose
@@ -83,7 +74,7 @@ changed the answer, the same use the closing section of
 whole robust and influence family, instead of a silent substitute for the
 weighted fit itself.
 
-## Where this repository uses it
+## Application in this repository
 
 No fit committed to this repository maximizes a Student-t or any other
 heavy-tailed likelihood. The noise law behind every weighted fit is measured
@@ -127,7 +118,7 @@ of this moves any committed bound: no single point accounts for the
 block-to-block scatter, so a heavier tail, if one is present, is a property
 of the whole block population instead of one condition.
 
-## What can go wrong
+## Failure modes
 
 A heavy-tailed fit can paper over a problem that has a specific cause and
 deserves to be found instead of absorbed. If a handful of large residuals
@@ -232,8 +223,7 @@ instead of sitting here misleading a reader.
   section this page answers, and the source of the noise law this
   repository fits instead of a heavy-tailed one.
 
-## See also
-
+## Related pages
 - [Robust fitting](robust-fitting.md), the hand-chosen-loss version of the
   same continuous downweighting this page gets from a likelihood instead.
 - [Influence diagnostics](influence-diagnostics.md), the audit that found no

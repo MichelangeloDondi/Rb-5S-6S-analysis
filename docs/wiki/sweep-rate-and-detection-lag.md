@@ -2,23 +2,12 @@
 
 *[wiki index](README.md) · physical effect*
 
-**The question.** How does a fast continuous sweep forge width and
-asymmetry that a slow one would not, and how is that instrumental
-component separated from the atoms' own.
-**Takes.** That a fit reads skew as light-shift information, established
-in [The third cumulant](third-cumulant.md) and assumed here, not
-re-argued.
-**Gives.** The regression of apparent width against inverse sweep rate,
-the causal-kernel argument for why a lag forges asymmetry and not only
-width, and the two-rate design this repository specifies.
-**Skip if.** The question is how densely a line is sampled, not how
-fast it can be crossed, a case covered by
-[Designing an acquisition](designing-an-acquisition.md).
+How does a fast continuous sweep forge width and asymmetry that a slow one would not, and how is that instrumental component separated from the atoms' own. This page builds on that a fit reads skew as light-shift information, established in [The third cumulant](third-cumulant.md) and assumed here, not re-argued and sets out the regression of apparent width against inverse sweep rate, the causal-kernel argument for why a lag forges asymmetry and not only width, and the two-rate design this repository specifies. Not covered here: the question is how densely a line is sampled, not how fast it can be crossed, a case covered by [Designing an acquisition](designing-an-acquisition.md).
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
 > defines every term and symbol used anywhere in this repository.
 
-## What it is
+## Definition
 
 A line can be measured two ways. Step and settle parks the laser at one
 frequency, waits for the detector to settle, and records a steady reading,
@@ -67,7 +56,7 @@ Measuring the same line at several rates separates a real asymmetry from a
 manufactured one, and neither a better model nor more averaging at one
 rate substitutes for the comparison across rates.
 
-## What problem it solves
+## The problem it addresses
 
 A single trace, taken at one sweep rate, cannot tell a physical width and
 asymmetry apart from an instrumental one: both a real line and a convolved
@@ -82,7 +71,7 @@ fast those points can be taken before the detection chain's response time
 writes itself into their shape, and both questions must be answered before
 a scan rate is chosen.
 
-## Where this repository uses it
+## Application in this repository
 
 [Section 10c.3 of the fixed-lock chapter](../plan/09_the-fixed-lock.md)
 specifies a two-speed sweep, slow across each line and fast between them.
@@ -127,7 +116,7 @@ mean cancels it exactly, and neither number depends on the lineshape
 model. The failure modes a dirty flip brings are covered in
 [reversal tests](reversal-tests.md).
 
-## What can go wrong
+## Failure modes
 
 The first failure is a model one. The scaling assumes a single,
 first-order response with one timescale, and a real detection chain,
@@ -249,8 +238,7 @@ broken one fails the suite instead of misleading a reader here.
   and per-sweep timestamp requirements a multi-rate regression needs to run
   at all.
 
-## See also
-
+## Related pages
 - [The third cumulant](third-cumulant.md), for why skew is the channel a
   light-shift fit reads.
 - [Designing an acquisition](designing-an-acquisition.md), the companion

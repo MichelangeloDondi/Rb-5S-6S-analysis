@@ -1,23 +1,15 @@
 *Chapter 7 of 8 · [methods index](../methods.md)*
 
-**The question.** What did the 2025 dataset actually deliver, and why is every
-headline a bound or a null?
-**Takes.** The lineshape through statistics chapters, chapters 2 to 6.
-**Gives.** The results the paper reports and the reason each one is
-conditional, which the assumptions chapter then turns into what to challenge.
-**Skip if.** You have read [`docs/RESULTS.md`](../RESULTS.md), the generated
-ledger of the same numbers with its full audit trail.
+This chapter sets out what the 2025 dataset delivered, and why every headline is a bound or a null. This chapter builds on the lineshape through statistics chapters, chapters 2 to 6 and sets out the results the paper reports and the reason each one is conditional, which the assumptions chapter then turns into what to challenge. Not covered here: you have read [`docs/RESULTS.md`](../RESULTS.md), the generated ledger of the same numbers with its full audit trail.
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
-> explains the measurement in six sentences, then defines every term
-> and symbol used anywhere in this repository.
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
+> defines every term and symbol used anywhere in this repository.
 
-## 5. What we found (2025 data)
-
+## 5. Findings from the 2025 data
 ### 5.1 $\beta_\text{self}$: the T-sweep bounds it
 
-**Headline: the T-sweep *bounds* $\beta_\text{self}$ and shows why it cannot
-measure it.** The raw, model-independent widths are **non-monotonic in
+Headline: the T-sweep *bounds* $\beta_\text{self}$ and shows why it cannot
+measure it. The raw, model-independent widths are **non-monotonic in
 density** for two of the four peaks (993.4154 and 993.4207 nm): somewhere along
 the sweep the line gets *narrower* at higher density, which no collision can
 produce. The scatter left over about the fitted width-versus-density line is
@@ -48,7 +40,9 @@ divides by the degrees of freedom, not by $n$. Using $n$ would tighten the
 bound, a directional bug fixed 2026-07-12.) The spread across the boxed range
 is systematics rather than physics, because the four bounds track each peak's
 residual scatter and not a physical rate, so the number to quote is the loosest
-of the four. A naive global Voigt fit instead reports a
+of the four.
+
+A naive global Voigt fit instead reports a
 4–10 sigma "detection", the [§4.5](06_the_statistics.md) cautionary tale in practice. This bound is
 the 2025 data *showing the two-epoch design was necessary*, and is reported as a
 vapour-cell result.
@@ -66,7 +60,9 @@ a *model-based* value, and it sits **above** both the per-peak model fits
 (0.03–0.05). The three estimators of the same quantity therefore span about
 a factor of four, and that spread across $\sigma_\text{laser}$ treatments is
 the uncertainty on this deliverable, larger than any single fit's error
-bar. This $0.053$ carries **five separate error bars**, and the systematics
+bar.
+
+This $0.053$ carries **five separate error bars**, and the systematics
 dominate the statistical one: statistical
 $\pm0.004$ (joint-fit covariance), **the kernel axis $0.048$**, the largest of
 the five, and the one that says the central value is a floor fitted through the
@@ -80,6 +76,7 @@ and the $w_0$-band $[0.050,0.057]$, which covers transit reference widths from
 $w_0=65$ down to 40 µm and is the narrowest of the four.
 The paper must quote all four, not the optimistic $\pm0.004$ alone.
 So the conservative model-independent bound, not this value, stays the headline.
+
 Its real value is the isotope test, and the in-sample consistency check
 (`run_sigma_laser_sharing`) that the four peaks at each temperature agree on a
 single $\sigma_\text{laser}$. That check is *passive*: χ²/dof = 0.28/0.59/0.32,
@@ -87,7 +84,9 @@ all well below 1, so the peak-blocks are closer to the shared model than their
 own error bars, and the test cannot discriminate. It does not license the
 sharing, it merely fails to contradict it (RESULTS §σ_laser sharing). It also
 covers only 70, 90 and 110 °C, so it says nothing about sharing at the 130 °C
-point that now carries most of the lever. The fit's
+point that now carries most of the lever.
+
+The fit's
 $\sigma_\text{laser}(T)\approx2.1/2.2/1.5$ MHz is **not** a clean drift curve,
 though: the free per-condition fit gives a *flat* 1.5–1.75 MHz, so that trend
 is the $\beta \leftrightarrow \sigma_\text{laser}$ degeneracy under the density
@@ -108,16 +107,18 @@ budget is in the results ledger (`docs/RESULTS.md`).
 ### 5.3 The 2025 laser width
 
 $\sigma_\text{laser}(2025)\lesssim2.2$ MHz on the transition axis, which is
-below 1.2 MHz on the laser axis and $\sim1.09$ MHz laser-axis at the measured
-$w_0=64$ µm prior.
+below 1.2 MHz on the laser axis and $\sim1.09$ MHz laser-axis at the
+$w_0=64$ µm convention.
 It is a bound and not a measurement, because that non-Lorentzian Gaussian
 is degenerate with the transit width, and the transit Monte-Carlo ([§2.5](02_the_lineshape.md), M9)
 now makes the degeneracy quantitative: the corrected transit adds $\sim2.1$ MHz
 at $w_0=32$ µm (which overshoots the observed line, excluding 32 µm) but only
-$\sim0.93$ MHz at the 64 µm measured waist, so below $w_0\approx38$ µm transit
+$\sim0.93$ MHz at the 64 µm waist convention, so below $w_0\approx38$ µm transit
 alone fills the observed 5.25 MHz and **the laser is narrow**, while at the
-measured 64 µm waist the laser carries $\sim1.09$ MHz laser-axis, close to the
-bound itself: widening the waist hands width from transit to laser. The
+64 µm waist convention the laser carries $\sim1.09$ MHz laser-axis, close to the
+bound itself: widening the waist hands width from transit to laser.
+
+The
 dataset cannot locate that crossover, and only a direct beam-profile $w_0$
 can. (Slow drift is *not* the cause, at only $\sim0.01$ MHz within a scan.)
 A measured $w_0$, by fixing transit, would turn this bound into a measurement.
@@ -144,7 +145,9 @@ directions (ascending 993.4121 nm at $+3.00 \pm 0.78$ MHz/W and
 $+0.70 \pm 0.93$) but the descending one unresolved on its own, so the
 pooled row, not any single ladder, carries the discrimination
 ([`power_time_sign_test.csv`](../../results/power_time_sign_test.csv),
-every row DIAGNOSTIC). Three limits are part of the statement. The
+every row DIAGNOSTIC).
+
+Three limits are part of the statement. The
 campaign-morning pilot, the least collinear arm in the file, gives a weak opposite-sign slope
 ($-2.7 \pm 1.7$ MHz/W) that resolves nothing either way and is that
 file's recorded caveat. The fitted width on the same rehearsal behaves
@@ -171,11 +174,13 @@ within-cell error. The departure replicates in the 2025-07-04 rehearsal, whose
 alternating ladder directions show it to be invariant under acquisition order,
 and its ordering across lines follows their brightness rather than their
 hyperfine branching, so it is a signature of the detection rather than of the
-transition. No inventoried mechanism predicts that combination, and
+transition.
+
+No inventoried mechanism predicts that combination, and
 [the amplitude departure note](../notes/amplitude_departure_from_p2.md)
 carries the construction. The interpretive discussion below is retained
 because it remains the best account of the low slope specifically, and it does
-not address the two high ones. We say *near*, not *confirms*: at the thick-cell end ($\tau/\text{cm}$ up to 160)
+not address the two high ones. The word is *near*, not *confirms*: at the thick-cell end ($\tau/\text{cm}$ up to 160)
 a slope below 2 could be genuine saturation or a weak power-dependence of the
 trapping collection efficiency through the saturating emitter profile, and the
 single-temperature 2025 sweep cannot separate the two. The 4121 low slope
@@ -204,29 +209,37 @@ the bound needs care: at $\kappa=0$ the width handle has *zero gradient*, so a
 linearized (Wald) $\kappa+1.645\sigma$ interval is evaluated where the Jacobian
 column vanishes and its "sigma" is a finite-difference artifact with no 95%
 coverage (that route reads 1.0 MHz un-inflated and 2.4 MHz inflated, both kept
-in the CSV as replaced diagnostics). The quoted limit is therefore a
+in the CSV as replaced diagnostics).
+
+The quoted limit is therefore a
 **profile likelihood**: scan $\kappa$ upward, re-minimizing the per-peak cores,
 to the one-sided crossing $\Delta\chi^2=2.706\times\chi^2_\text{red}$ (the
 threshold scaled by the block-to-block over-dispersion $\chi^2_\text{red}=3.7$,
 the same conservative rescale the $\sqrt{\chi^2_\text{red}}$ inflation applies
 elsewhere). It gives a 95% profile-likelihood bound of 0.63 MHz from the
-widths alone. The joint three-session full-profile fit
+widths alone.
+
+The joint three-session full-profile fit
 (`run_stark_joint`, RESULTS C3f), over 100 traces from the campaign, 46 from
 the 4 July evening session and 26 from the campaign-morning session,
-sharpens the same channel to $S_0(225\ \text{mW})$ below 0.26 MHz,
-under the 0.35 MHz predicted at the measured waist, so the $\Delta\alpha$
+sharpens the same channel to $S_0(225\ \text{mW})$ below [0.26](../../results/stark_joint.csv "ref:stark_joint:S0_225mW_ub95:primary") MHz
+on the red-sided ramp, a reading that waits on its refit on the side this record's
+polarizability fixes, under the [0.348](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred:shared") MHz predicted at the waist convention, so the $\Delta\alpha$
 bracket sits under both values on the table (Orson's published 1093 and this
-work's recomputed 1131.8,
+work's recomputed [-1131.8](../../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive"),
 [§2.6](03_the_ac_stark_ramp.md)). The constraint
 therefore lands on the (Δα, intensity) pair rather than adjudicating the
-theory, and since the measured waist is now itself the lineage measurement, the
+theory, and since the waist convention is a lineage profile taken on another source, the
 comparison is a direct test of it. The comparison is on magnitude and is
 therefore untouched by the sign disagreement between them
 ([THEORY_NOTE §5](../THEORY_NOTE.md)).
+
 The reading is a conservative bound, not a sensitivity claim: the width
 channel is over-dispersed ($\chi^2_\text{red}=3.7$, block-to-block drift),
-so it does not cleanly resolve or exclude $\kappa$. The $0.63$ MHz limit uses the
-inflated threshold and brackets the predicted $0.35$ without measuring it. It bounds the drift, not the
+so it does not cleanly resolve or exclude $\kappa$. The [0.633](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_ub95_profile:shared") MHz limit uses the
+inflated threshold and brackets the predicted [0.348](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred:shared") MHz without measuring it.
+
+It bounds the drift, not the
 coefficient's scale. It is also loose by a measured factor, because the model
 behind it carries no saturation and no hyperfine pumping and both broaden with
 the ramp's own $P^2$ signature
@@ -235,7 +248,9 @@ re-profiling gives $0.23$ MHz here and $0.117$ MHz on the joint fit, factors of
 $2.8$ and $2.21$. Neither committed bound moves, because the injected law is
 the two-level homogeneous form used with a two-photon Rabi frequency, so the
 looseness is stated with its size rather than taken. There is no second channel
-behind it. The centre channel
+behind it.
+
+The centre channel
 was worked and yields nothing: the fitted pull reverses sign between drift
 models, and the limit loosens as the drift model gains freedom,
 $|S_0(225\ \text{mW})|$ below $9.49$, $14.57$ and $17.65$ MHz for linear,
@@ -245,13 +260,17 @@ releases carried are withdrawn, because they differenced centres across changes
 of the scope horizontal position ([`THEORY_NOTE.md`](../THEORY_NOTE.md) §3).
 A second attempt worked the channel the other way round, fitting inside each
 maximal run of unchanged scope window (module M27, `run_centre_stark`), where
-the lock is untouched and a constant offset cannot bias a slope. It returns a
+the lock is untouched and a constant offset cannot bias a slope.
+
+It returns a
 bound of $8.65$ MHz/W, seven times weaker than the width channel's $1.147$
 and $12.21$ once its drift prior is corrected to the sign-undetermined form
 the 2026-07-30 window-reference correction leaves licensed (addendum 29),
 and it measures its own false-positive floor by injecting a power step into
 epochs where the true power difference is zero: those controls return spurious
-pulls of several MHz/W, comparable to the signal. Extending it to the other two
+pulls of several MHz/W, comparable to the signal.
+
+Extending it to the other two
 sessions was then tested and closed, and the closure is arithmetic rather than
 a preference. The campaign itself ran its powers in monotonic order, so any
 drift the epoch model does not capture is confounded with power by
@@ -263,6 +282,7 @@ to calibrate a frame against. What would reopen it is not a
 better estimator but an export of the ramp monitor, which would supply a
 frequency reference independent of the scope window
 ([`docs/notes/centre_channel_cannot_be_revived.md`](../notes/centre_channel_cannot_be_revived.md)).
+
 Width and shape are the dataset's only light-shift channel, and the two
 constructions above are two readings of that one channel, not two channels. A
 fixed-lock session's stable lock would resurrect the pull
@@ -297,7 +317,9 @@ $1.09\to1.01\to2.48\to1.94$), whereas trapping would bend them *monotonically*,
 so the 30 to 50% degeneracy-law disagreement (module M10, on the *areas*) is
 between-block **drift**, not trapping. (iii) A one-parameter trapping model does not improve
 the fit over pure $\propto N$ (both $\chi^2_\text{red}\gg1$, dominated by the
-drift scatter). *Conclusion:* trapping is physically present and expected-large by
+drift scatter).
+
+*Conclusion:* trapping is physically present and expected-large by
 $\tau$, but its net effect on the collected amplitude is modest and its
 degeneracy-breaking effect is $\lesssim10$%, buried under drift. Separating it
 needs a fixed-lock interleaved-peak run with a controlled collection

@@ -2,20 +2,12 @@
 
 *[wiki index](README.md) · technique*
 
-**The question.** What frequency ruler does a phase-modulated sweep carry,
-and how does a two-photon transition change that ruler's arithmetic.
-**Takes.** No prior background. The sideband picture and the Bessel
-amplitudes are introduced from scratch.
-**Gives.** The one-photon and two-photon comb laws, the carrier-null depth
-for each, and where this repository's ruler and its design trade-off live.
-**Skip if.** The sideband derivation is already familiar and only the
-two-photon consequences for reach and shape-fitting precision are wanted,
-a case covered by [The two-photon comb](the-two-photon-comb.md).
+What frequency ruler does a phase-modulated sweep carry, and how does a two-photon transition change that ruler's arithmetic. This page builds on no prior background. The sideband picture and the Bessel amplitudes are introduced from scratch. It sets out the one-photon and two-photon comb laws, the carrier-null depth for each, and where this repository's ruler and its design trade-off live. Not covered here: the sideband derivation is already familiar and only the two-photon consequences for reach and shape-fitting precision are wanted, a case covered by [The two-photon comb](the-two-photon-comb.md).
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
 > defines every term and symbol used anywhere in this repository.
 
-## What it is
+## Definition
 
 An electro-optic modulator is a crystal whose refractive index follows an
 applied voltage. Driving it with a radio-frequency tone imposes a
@@ -42,13 +34,13 @@ $m+m'=k$, and by Neumann's addition theorem the sum collapses:
 
 $$A_k \propto \Big|\sum_m J_m(\beta) J_{k-m}(\beta)\Big|^2 = J_k(2\beta)^2$$
 
-**This bench's teeth do not follow that law, and the shares are measured.** The
+This bench's teeth do not follow that law, and the shares are measured. The
 pure-phase form is rejected by `results/ruler_tooth_shares.csv` at a reduced
 chi-squared of [6.11](../../results/ruler_tooth_shares.csv "ref:ruler_tooth_shares:chi2_red_depth_fixed:"). A free modulation depth does not
 rescue it. A flat pedestal does, completely, at [0.62](../../results/ruler_tooth_shares.csv "ref:ruler_tooth_shares:chi2_red_depth_and_pedestal:"): the discrepancy is an
 additive floor and not a depth's shape.
 
-**The excess sits in the wings, and its origin is not settled here.** Both third
+The excess sits in the wings, and its origin is not settled here. Both third
 teeth sit above the pure-phase prediction by a comparable amount, $+2.8$ at
 $k=-3$ and $+3.4$ at $k=+3$, against observed shares of
 [0.0107](../../results/ruler_tooth_shares.csv "ref:ruler_tooth_shares:tooth_share_observed:-3") and [0.0108](../../results/ruler_tooth_shares.csv "ref:ruler_tooth_shares:tooth_share_observed:3") that agree to 0.04 sigma.
@@ -57,7 +49,7 @@ differ by 1.4 sigma and 17 per cent, with pulls of opposite sign. That is not
 significant, but it is the one place a $k \to -k$ asymmetry appears, and it is
 not evidence for a pedestal.
 
-**So no mechanism is claimed here.** An additive floor fits the residual
+So no mechanism is claimed here. An additive floor fits the residual
 completely, and an amplitude admixture is not refuted by these shares. The
 absence of a significant asymmetry is weaker evidence than symmetry would be.
 The fitted `signal_over_pedestal` column cannot decide it either, being built
@@ -75,7 +67,9 @@ addition theorem then gives $A_k \propto J_k(2\beta\cos(\pi f\cdot 2d/c))^2$. Th
 depth the teeth report is that effective one, 0.3 per cent below the drive's at
 12.5 MHz for a 0.3 m path, and at $f = c/4d$ every tooth collapses into the
 carrier. Checked against the explicit delayed pair sum to $10^{-16}$ at five
-geometries on 2026-09-06. The pathways that feed a tooth from unequal sideband
+geometries on 2026-09-06.
+
+The pathways that feed a tooth from unequal sideband
 orders are resonant with velocity classes spread by the order difference times
 the modulation frequency times the speed over that of light, about 14 Hz per
 unit of order difference at 12.5 MHz and the vapour's rms speed, three parts
@@ -93,7 +87,7 @@ moves by $\Omega/2$.
 *The comb at two modulation depths: shallow, where nearly everything sits in
 the central tooth, and beta = 1.202, where the carrier tooth nulls.*
 
-## What problem it solves
+## The problem it addresses
 
 A laser sweep is driven by a voltage ramp, and the relation between that
 ramp and the frequency it produces is neither linear nor stable enough to
@@ -102,7 +96,7 @@ milliseconds. The comb supplies the conversion from the same trace that
 carries the data, so the calibration cannot drift away from the measurement
 it calibrates.
 
-## Where this repository uses it
+## Application in this repository
 
 The frequency axis of every trace comes from this.
 [Methods chapter 3](../methods/05_the_frequency_ruler.md) derives the comb,
@@ -130,7 +124,7 @@ power: the comb reaches only a few tens of megahertz around whatever line
 it marks. Calibrating a wider span needs a separate frequency reference to
 carry the scale across the gap.
 
-## What can go wrong
+## Failure modes
 
 At shallow modulation depth only two or three teeth rise above the noise. A
 ruler with few teeth over a short span constrains the fitted rate far less
@@ -183,8 +177,7 @@ so a broken one fails the suite instead of misleading a reader here.
 - [Methods chapter 3](../methods/05_the_frequency_ruler.md) for this
   bench's numbers and common-mode rejections.
 
-## See also
-
+## Related pages
 - [The two-photon comb](the-two-photon-comb.md) for what the doubled
   argument costs in reach and fitting precision.
 - [Bessel functions](bessel-functions.md) for the addition theorem and

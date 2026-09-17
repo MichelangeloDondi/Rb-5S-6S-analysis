@@ -2,22 +2,12 @@
 
 *[wiki index](README.md) · concept, supporting topic*
 
-**The question.** How do phase-modulation sideband heights map to Bessel
-function values, and why do a one-photon and a two-photon comb null the
-carrier at different modulation depths.
-**Takes.** Nothing beyond knowing what a phase modulator does. No prior
-wiki page is required.
-**Gives.** The Jacobi-Anger identity, the $J_n(\beta)$ sideband amplitude
-law, and the arithmetic that separates the one-photon carrier null from the
-two-photon one.
-**Skip if.** The reader wants the full two-photon amplitude law and
-derivation on a real bench, not the identity underneath it. That is
-[EOM sidebands](eom-sidebands.md).
+How do phase-modulation sideband heights map to Bessel function values, and why do a one-photon and a two-photon comb null the carrier at different modulation depths. This page is self-contained and sets out the Jacobi-Anger identity, the $J_n(\beta)$ sideband amplitude law, and the arithmetic that separates the one-photon carrier null from the two-photon one. beyond knowing what a phase modulator does. No prior wiki page is required. Not covered here: the full two-photon amplitude law and derivation on a real bench, not the identity underneath it. That is [EOM sidebands](eom-sidebands.md).
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
 > defines every term and symbol used anywhere in this repository.
 
-## What it is
+## Definition
 
 Bessel functions of the first kind, written $J_n(x)$, are the solutions of
 
@@ -55,7 +45,7 @@ without creating or destroying it. The sidebands are symmetric in
 magnitude, $J_{-n} = (-1)^n J_n$, so pure phase modulation gives a symmetric
 comb.
 
-## What problem it solves
+## The problem it addresses
 
 A frequency axis has to come from somewhere. Phase modulation writes a comb
 of copies of any spectral feature onto the light, spaced by a radio frequency
@@ -63,7 +53,7 @@ that a laboratory can know to many digits, and the Bessel amplitudes are what
 predict how tall each copy will be. That turns "how do I calibrate this
 sweep" into "how many teeth can I see, and how big should they be".
 
-## Where this repository uses it
+## Application in this repository
 
 The frequency ruler. An electro-optic modulator puts sidebands on the light,
 they pair up in the two-photon transition, and the resulting comb of line
@@ -82,7 +72,7 @@ two-photon comb every tooth sums the pairs of sidebands that reach it, and
 the addition theorem collapses that sum to $J_k(2\beta)$. The carrier
 therefore vanishes at $2\beta = 2.405$, that is at $\beta = 1.202$.
 
-## What can go wrong
+## Failure modes
 
 Reading a carrier-null depth off a one-photon formula and applying it to a
 two-photon comb puts the modulator at twice the intended depth.
@@ -124,8 +114,7 @@ a reader.
   the identity in one line.
 - [EOM sidebands](eom-sidebands.md) for what this becomes on a real bench.
 
-## See also
-
+## Related pages
 - [EOM sidebands](eom-sidebands.md), the two-photon amplitude law and
   derivation this page's identity feeds into.
 - [The wavemeter and the frequency axis](the-wavemeter-and-the-frequency-axis.md),

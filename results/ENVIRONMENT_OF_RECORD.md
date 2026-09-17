@@ -1,4 +1,4 @@
-# The environment the committed numbers were produced in
+# The production environment of the committed numbers
 
 Every CSV in this directory was produced by the versions below. This file
 exists because "the numbers reproduce" is not a property of the code alone, and
@@ -7,7 +7,7 @@ version pulled in numpy 2.5, which replaced the `np.convolve` implementation
 this whole lineshape model is built on, and four of sixteen committed files
 stopped matching a fresh run of their own producers.
 
-**That is now the history of this file rather than its present tense.** The
+That is now the history of this file rather than its present tense. The
 migration onto numpy 2.5 was measured, held for two days on a preregistered
 backstop, and landed on 2026-08-23. What it moved, cell by cell, is in
 the private correction record.
@@ -25,7 +25,7 @@ moved are the archive's known ill-conditioned direction.
 | blas | Apple Accelerate |
 | platform | macOS 26.6.2, arm64 |
 
-**The environment is recorded item by item on purpose.** "The environment"
+The environment is recorded item by item on purpose. "The environment"
 is too broad to be a controlled variable, and the migration was run as a
 controlled re-centring with these rows as the only thing allowed to differ.
 
@@ -52,7 +52,7 @@ python3.9 -m venv .venv-record       # 3.10-3.12 also host numpy 2.0.2
 ./.venv-record/bin/python -c "import numpy, scipy; print(numpy.__version__, scipy.__version__)"
 ```
 
-**`--no-deps` is load-bearing and the last line is not optional.** Until
+`--no-deps` is load-bearing and the last line is not optional. Until
 2026-08-20 this recipe ended `pip install -e .` with a note to ignore the
 `requires-python` warning. That was wrong, and wrong in the one way that
 destroys the thing it is building: an editable install is a dependency
@@ -69,7 +69,7 @@ directory named for the record. Measured on 2026-08-20, both arms run:
 
 The package still imports either way, so nothing announces the failure. Hence
 the printed versions: an environment is a MEASURED quantity, not a configured
-one, and its name is not evidence about its contents. If pythonpath suits you
+one, and its name is not evidence about its contents. If pythonpath suits the reader
 better it is safer still, because it never lets pip near the environment.
 
 The editable install will also complain that the package declares
@@ -78,7 +78,7 @@ this file: the supported environment and the environment of record are
 different statements, and only the second one reproduces the committed
 digits.
 
-## What reproduces, and how widely
+## The scope of reproduction
 
 The committed digits reproduce on **numpy 2.0 through 2.4**. They drift on both
 sides of that band, which was measured rather than assumed: five files differ
@@ -105,7 +105,7 @@ Their well-conditioned siblings, the total width and `chi2_full`, move by under
 was already declared unidentifiable, and stable everywhere a number is
 quoted.**
 
-## How the guard treats this
+## Treatment by the guard
 
 `scripts/verify_results_fresh.py` compares at 2e-2 by default, with named
 per-column tolerances for the two families above and a zero test taken
@@ -114,7 +114,7 @@ constant. The reasoning, including the two mistakes that produced it, is in
 that file's header and in
 [`docs/UNCERTAINTY.md`](../docs/UNCERTAINTY.md) section 4b.
 
-## The convergence run was performed on 2026-08-21, and its result
+## The convergence run of 2026-08-21 and its result
 
 The full heavy-producer rerun this file anticipates was executed on 2026-08-21
 under Python 3.14.6 / numpy 2.5.2, about forty minutes of wall clock, and
@@ -134,7 +134,7 @@ Both belong to the families this file already names as ill-conditioned: a
 correlation coefficient, and a ratio of covariance elements taken along a flat
 valley. Neither is a quantity this record reads as physics.
 
-**The migration was held at that point, and it landed on 2026-08-23.** The
+The migration was held at that point, and it landed on 2026-08-23. The
 preregistered threshold was that the migration lands unless a number a public
 document quotes moves beyond its stated tolerance. The second drift was such a
 number: `docs/methods/06_the_statistics.md` quoted the covariance prediction as
@@ -142,8 +142,8 @@ number: `docs/methods/06_the_statistics.md` quoted the covariance prediction as
 migration, and the paragraph above records the versions the committed digits
 are made under now.
 
-**This paragraph described the hold in the present tense for two days after it
-was written**, and it survived four propagation sweeps in the window that
+This paragraph described the hold in the present tense for two days after it
+was written, and it survived four propagation sweeps in the window that
 landed the migration, because a sweep that greps `docs/` does not read a file
 in `results/`. It is corrected here for the same reason
 `results/kernel_budget.csv` was: a statement a reader could act on has no
@@ -160,7 +160,7 @@ Two findings came out of the run that outlast the decision:
   because only one of the two numbers is robust. The statistics chapter says so
   and names which one.
 
-## When this file stops being necessary
+## The conditions retiring this file
 
 The two environments converge on their own at the next full run of the heavy
 producers. That run is already scheduled for a different reason: the archive
@@ -174,7 +174,7 @@ Until then the versions above are a fact about how the committed files were
 produced, and this file records it rather than leaving a reader to discover
 it from a diff.
 
-## What this file is not
+## Limits of this file
 
 It is not a claim that the analysis requires these versions. The code runs, and
 the suite passes, on the declared floor (Python 3.12, numpy 2.5, scipy 1.16)

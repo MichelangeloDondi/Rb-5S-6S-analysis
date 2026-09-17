@@ -1,18 +1,9 @@
 *Chapter 4 of 8 · [methods index](../methods.md)*
 
-**The question.** How do the separate kernels become one profile in code, and
-what is deliberately kept out of it?
-**Takes.** The lineshape chapter and the AC-Stark chapter, whose kernels it
-assembles.
-**Gives.** `model_profile()` and `composite_profile()`, the two functions every
-fit in the statistics and results chapters calls.
-**Skip if.** You are not going to read the code. Most of this chapter is
-radiation trapping, the mechanism that moves amplitudes without moving the
-lineshape, and the trapping result itself is reported in the results chapter.
+How do the separate kernels become one profile in code, and what is deliberately kept out of it? This chapter builds on the lineshape chapter and the AC-Stark chapter, whose kernels it assembles and sets out `model_profile()` and `composite_profile()`, the two functions every fit in the statistics and results chapters calls. A reader who will not open the code can stop before it. Most of this chapter is radiation trapping, the mechanism that moves amplitudes without moving the lineshape, and the trapping result itself is reported in the results chapter.
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
-> explains the measurement in six sentences, then defines every term
-> and symbol used anywhere in this repository.
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
+> defines every term and symbol used anywhere in this repository.
 
 ### 2.7 Radiation trapping: why it moves amplitudes, not the lineshape
 
@@ -32,7 +23,7 @@ $\epsilon(\tau_\text{opt})$ is a constant multiplier across the scan: trapping
 **rescales the amplitude** (and can alter photon-counting *statistics*) but
 does **not** distort the two-photon lineshape. Onset is at
 $\tau_\text{opt}\sim1$, i.e. $N\sim1/(\sigma_{795}L)\sim10^{12}$ to $10^{13}$
-cm⁻³, straddled by our T-sweep. We tested the statistics route: the
+cm⁻³, straddled by the temperature sweep. The statistics route was tested: the
 shot-noise coefficient $b$ in the noise law ([§4.4](06_the_statistics.md)) is **flat in temperature**
 (no growth of the Fano factor 70→130 °C), so trapping, if it shows anywhere,
 shows in *amplitude ratios* versus density (module M7, against [Nieddu's 2019](../lit/nieddu2019.md)
@@ -51,9 +42,9 @@ breaking the pure population ratios (5/3, 7/5, 2.42), and unlike the
 between-block drift, it is **monotonic in density and isotope-ordered**, which
 is exactly the discriminator M7 now runs.
 
-#### The other trapped colour, and why it does not re-excite the atoms
+#### The second trapped colour and re-excitation
 
-Everything above is about the 795 nm photon we detect. The same atoms radiate
+Everything above is about the 795 nm photon under detection. The same atoms radiate
 on two more lines, the 6S to 5P legs at 1324 and 1367 nm, and those were never
 examined. The question is whether trapped infrared light re-drives 5P back up
 to 6S and feeds the signal a second time.
@@ -70,13 +61,13 @@ lower-state atom as the detection line does, and what separates the two
 channels is population and nothing else. That is worth stating because the
 infrared is usually set aside on the grounds of its wavelength.
 
-**Inside the driven volume the re-excitation cannot happen, because both
-infrared lines are inverted.** 5P empties in 27 ns while the drive keeps
+Inside the driven volume the re-excitation cannot happen, because both
+infrared lines are inverted. 5P empties in 27 ns while the drive keeps
 refilling 6S, so the degeneracy-weighted populations run 4.81 to 1 on the
 1324 nm line and 5.25 to 1 on 1367 nm. Trapped infrared there stimulates 6S
 downward instead of pumping 5P upward.
 
-**Outside it can, and it is about one per cent.** Trapped 795 nm photons
+Outside it can, and it is about one per cent. Trapped 795 nm photons
 deposit $5P_{1/2}$ population in a halo around the driven column where there is
 no 6S at all, and there the infrared absorbs. That halo grows steeply with
 density, reaching $1.13\times10^{10}$ cm⁻³ at 130 °C, which is 0.64 of the 5P
@@ -102,7 +93,7 @@ factor are geometric estimates and the Holstein form assumes a Doppler line in
 a cylinder, so the isotope *ratio* is the robust part and the absolute scale is
 not.
 
-#### A fourth power-dependent channel, named late: the EOM as a thermal lens
+#### The modulator as a thermal lens
 
 **Demoted 2026-08-18.** This channel was inventoried as a candidate for the
 concave width against power, and that concavity has since been withdrawn to
@@ -142,7 +133,9 @@ equilibrates within one sweep and makes a static w0(P), survives both nulls by
 construction** and is discriminated only by measuring the waist against power
 with the EOM in the beam, which [the plan](../plan/04_intensity-and-light-shift.md)
 now requires, or by the component-resolved power sweep locating the anomalous
-power dependence in the transit component. Until one of those runs, w0(P)
+power dependence in the transit component.
+
+Until one of those runs, w0(P)
 stands beside rho(P) as the two open candidates for the width structure, and
 the composite model's constant-waist assumption is a stated assumption rather
 than a checked one.
@@ -174,13 +167,13 @@ peaks a quarter further out, and it is photon number an atomic rate follows.
 Nothing below depends on which is quoted, since every rate is computed from
 $h\nu/kT$ line by line.)
 
-**It does not re-drive 5P to 6S.** The occupation numbers are
+It does not re-drive 5P to 6S. The occupation numbers are
 $2.0\times10^{-12}$ at 1324 nm and $4.6\times10^{-12}$ at 1367 nm, giving upward
 rates of $7.4\times10^{-6}$ and $3.3\times10^{-5}$ s⁻¹. The trapped-infrared
 halo above does the same job at about $1.9\times10^{3}$ s⁻¹, so blackbody light
 is $10^{-8}$ of a channel that is itself one per cent.
 
-**It does not touch the signal, and the blocking element is not the filters.**
+It does not touch the signal, and the blocking element is not the filters.
 Stimulated emission on D1 runs at $1.2\times10^{-12}$ s⁻¹ against a 28 ns
 lifetime. For the background, the photocathode's own red edge does the blocking,
 not the 50 dB of 795 nm filtering: the R636-10 is a GaAs tube whose response
@@ -189,7 +182,9 @@ conclusion does not depend on that figure, because a cathode with a red edge
 anywhere below a couple of µm is blind to a 9.1 µm peak. In the band it can
 respond to at all, the whole cell wall emits
 $3.0\times10^{3}$ photons per second at 70 °C and $3.6\times10^{6}$ at 130 °C,
-before any collection solid angle and before the filters. That background is
+before any collection solid angle and before the filters.
+
+That background is
 flat in laser frequency, so it enters the free per-trace baseline rather than
 the lineshape, and M1's shot-noise coefficient was measured **flat** from 70 to
 130 °C, which bounds it empirically.
@@ -202,7 +197,9 @@ million from the detected cascade, negligible here and worth watching at the 150
 to 170 °C extension [the outlook](08_assumptions_and_outlook.md) proposes. And
 the **blackbody AC-Stark shift is hundreds of hertz**, not the ~1 Hz the ground
 state alone would give, because the differential polarizability is 5171 minus
-318 a.u. and the 6S resonances sit inside the blackbody band. It runs −79.9 Hz
+318 a.u. and the 6S resonances sit inside the blackbody band.
+
+It runs −79.9 Hz
 at 70 °C to −161.0 Hz at 130 °C on the transition axis, $3\times10^{-5}$ of the
 observed line. **It shifts and does not broaden**, so it cannot reach
 $\beta_\text{self}$, which is read from widths. It is stated for the fixed-lock
@@ -222,7 +219,7 @@ the physics. The error bar in `results/blackbody_channels.csv` is the committed
 
 *One consistency check, and a correction to how it was first reported.* The
 integration's long-wavelength limits, 318.3 and 5171.1 a.u., reproduce the
-committed `alpha_5s_static` 318.28 and `alpha_6s_static` 5167.0 of
+committed `alpha_5s_static` [318.28](../../results/polarizability.csv "ref:polarizability:alpha_5s_static:model") and `alpha_6s_static` 5167.0 of
 `results/polarizability.csv`. Those rows already carry their own Monte-Carlo
 bands and their own validation, against Holmgren 2010 and the Safronova-group
 value. This was first written up here as a free check of a module never tested
@@ -243,15 +240,16 @@ holds only where the kernel is the same at every collected volume element, and
 on this bench two things break it: the transit width follows the local beam
 radius, and the saturation companion is keyed on the local light shift, the ramp's
 own variable, so the broad elements are the shifted ones.
+
 `scripts/run_kernel_inhomogeneity.py` builds the volume as a mixture with one
 kernel per element and measures what the difference costs. The centroid is exactly
 immune at
-every waist ([0.000](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w64um:centroid_pull_error")
+every waist ([-0.000](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w64um:centroid_pull_error")
 per cent, the first moment of a mixture of symmetric kernels being the density's
 own mean), and nothing else is. The fitted centre moves by
-[-56.972](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w16um:fitted_centre_error") per cent at
+[-57.023](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w16um:fitted_centre_error") per cent at
 16 microns and the windowed third cumulant by
-[106.911](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w64um:k3_error") per cent at the
+[106.742](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w64um:k3_error") per cent at the
 archive's own 64. So `model_profile` is the right object for the centroid at
 every waist and for the shape channels at none of them, and
 [the odd-moments chapter](10_the_odd_moments.md) section 1 carries the
@@ -281,9 +279,9 @@ power. Which of the three is smallest varies by line, since hyperfine pumping
 runs from below the ramp on 993.4207 and 993.4192 nm to above it on the other
 two, so no fixed ordering holds and the share is what transports.*
 
-**Two broadeners with the ramp's own power signature are absent from
+Two broadeners with the ramp's own power signature are absent from
 `model_profile` and carried by `fullmodel.full_profile` (M40), which is
-where a fit that wants them goes.** The composite below is unchanged and
+where a fit that wants them goes. The composite below is unchanged and
 byte-identical at its defaults. What changed on 2026-09-12 is that both
 terms now have a parameter, `omega_mhz` for the saturation companion and
 the hyperfine `pump_scale`. The census computes from the model's own tables
@@ -300,18 +298,30 @@ second is hyperfine pumping: every real 6S decay cascades through 5P, whose
 decay does not preserve $F$, so a transiting atom can leave the driven ground
 state mid-flight and the effective transit width rises. The ratio of the two
 widths is exactly the branching fraction $f$, because $\Gamma_{6S}/2\pi$ is
-the natural width. The committed per-line values run 0.223, 0.248, 0.348 and
+the natural width.
+
+The committed per-line values run 0.223, 0.248, 0.348 and
 0.372 across 993.4207, 993.4192, 993.4154 and 993.4121 nm, so $f$ straddles
 $1/3$ and the older bracket of $1/3$ to $2/3$ quoted here was too high at the
 bottom, which is why the pumping term falls below the ramp on the first two
-lines and above it on the last two. Both are omitted for the same reason: injecting them means
+lines and above it on the last two. **That per-crossing form is replaced** (2026-09-17): the
+kernel Monte Carlo of [the lineshape page's 2.5b](02_the_lineshape.md) resolves the depletion
+along each chord and finds the surviving transit kernel wider by a fraction [0.050](../../results/kernel_mc.csv "ref:kernel_mc:w64.0_m1.00_r0.940_T130_P225:depletion_fwhm_rel_4121:mc") at 64 µm and
+225 mW ([0.0015](../../results/kernel_mc.csv "ref:kernel_mc:w64.0_m1.00_r0.940_T130_P25:depletion_fwhm_rel_4121:mc") at 25 mW, faster than $P$ and slower than $P^2$), because the slowest atoms complete the most
+cycles and are the kernel's narrow core.
+
+a cusp fitted to the surviving kernel reads only [0.0050](../../results/kernel_mc.csv "ref:kernel_mc:w64.0_m1.00_r0.940_T130_P225:depletion_widening_rel_4121:mc") wider after the natural Lorentzian (a third of a micron at 64 µm), because the wings are untouched, and that fitted ratio is what the fit carries, while the four lines' shares move by [0.0008](../../results/kernel_mc.csv "ref:kernel_mc:w64.0_m1.00_r0.940_T130_P225:shares_shift_abs:mc") from the thermal law.
+The fit carries that fitted ratio as a computed factor per node through the kernel gate and
+never as a fitted term. Both are omitted for the same reason: injecting them means
 committing to the two-level homogeneous saturation law with a two-photon Rabi
 frequency, which is standard practice rather than a derivation for this level
 structure. The consequence is measured rather than argued, a factor 2.8 on the
 width-only bound and 2.21 on the joint, so the committed bounds stand and are
 known to be loose by that much
 ([`docs/notes/two_photon_saturation_companion.md`](../notes/two_photon_saturation_companion.md),
-reproduced by `scripts/run_saturation_probe.py`). The degeneracy is
+reproduced by `scripts/run_saturation_probe.py`).
+
+The degeneracy is
 complete in both of the width channel's knobs, not just in power: all three
 terms also grow as the inverse fourth power of the waist, the ramp because its
 increment goes as the square of a shift that goes as the inverse square, and

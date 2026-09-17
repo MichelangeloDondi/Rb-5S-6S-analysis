@@ -40,7 +40,7 @@ is never the headline.
 WHAT IS FREE AT EACH GRID POINT, and what is pinned, and why:
 
   beta_self     profiled, one coefficient over every temperature, reported
-                AGAINST the theory value 3.29 +- 0.29 kHz per 1e12 cm^-3
+                AGAINST the theory cell of results/beta_self_theory.csv (read, never typed)
                 (vanderwaals.beta_self_anchored for the centre,
                 beta_self_budget for the bar, which is the whole measured
                 budget and not the anchor measurement's share of it) and
@@ -153,9 +153,12 @@ from rb5s6s import constants as K                                  # noqa: E402
 from rb5s6s import stark                                           # noqa: E402
 from rb5s6s.pmfmt import pm_cells                                  # noqa: E402
 from rb5s6s.density import number_density_cm3                      # noqa: E402
-from rb5s6s.fullmodel import collection_z_ratio_m2, convolution_licence, full_profile   # noqa: E402
+from rb5s6s.fullmodel import collection_z_ratio_m2, convolution_licence, full_profile, transit_collection_factor   # noqa: E402
+from rb5s6s import kernel_gate                                                          # noqa: E402
+from rb5s6s import noise                                                                # noqa: E402
 from rb5s6s.hyperpolarizability import two_photon_rabi_hz          # noqa: E402
-from rb5s6s.lineshape import local_ramp_density, ramp_mixture, stark_shift_S0_mhz   # noqa: E402
+from rb5s6s.lineshape import (aperture_onaxis_factor, local_ramp_density, ramp_mixture,   # noqa: E402
+                              stark_shift_S0_mhz)
 from rb5s6s.noise import condition_noise_model, sigma_of_v         # noqa: E402
 from rb5s6s.qc import contiguous_fwhm_ms                           # noqa: E402
 from rb5s6s.vanderwaals import beta_self_anchored, beta_self_budget                  # noqa: E402
@@ -166,8 +169,8 @@ OUT = C.RESULTS_DIR / "ultra_joint_fit.csv"
 GATE_DIR = ROOT / "private" / "cache" / "ultra_joint_2026-09-14"
 
 # ------------------------------------------------------------------ the design
-W0_GRID_UM = tuple(float(w) for w in range(40, 91, 2))
-W0_COARSE_UM = (40.0, 50.0, 60.0, 70.0, 80.0, 90.0)
+W0_GRID_UM = tuple(float(w) for w in range(64, 91, 2))   # the ansatz grid (owner, 2026-09-16 19:40) and the kernel gate's validated nodes; 40-62 was read before the gate
+W0_COARSE_UM = (64.0, 70.0, 80.0, 90.0)   # inside the validated nodes of the kernel gate
 FORMS = ("gaussian", "lorentzian", "mixed")
 M2_ARMS = (1.0, 1.5, 2.0)
 DEPLETION_ARMS = (0.0, 3.0)          # mean cycles through stark.companion_transit_mhz
@@ -199,7 +202,7 @@ _BETA = beta_self_anchored()
 # THE BAR IS THE WHOLE BUDGET, not the anchor measurement's share of it.
 # `beta6_err_khz` carries Zameroski's 8.5 per cent alone; a pull of a fitted
 # coefficient against theory has to divide by the theory's own bar, which
-# `beta_self_budget` measures at 8.8 per cent by displacing each input in
+# `beta_self_budget` measures at 10.64 per cent by displacing each input in
 # turn. The difference is small here BECAUSE the anchor dominates, and that
 # is a result of the budget rather than a reason not to read it.
 BETA_THEORY_KHZ = float(_BETA["beta6_khz"])
@@ -210,7 +213,7 @@ BETA_PRIOR_FRAC = float(beta_self_budget()["err_khz"]) / BETA_THEORY_KHZ
 ALPHA_PRIOR_FRAC = abs(K.DELTA_ALPHA_ERR_AU / K.DELTA_ALPHA_AU)
 
 LAWS = {"Steck": number_density_cm3, "AIH": n_aih, "SMI": n_smi}
-PROPAGATIONS = (("delta_alpha", +1), ("delta_alpha", -1), ("rho", +1), ("rho", -1),
+PROPAGATIONS = (("delta_alpha", +1), ("delta_alpha", -1), ("rho", +1), ("rho", -1), ("rho_floor", 0),
                 ("law", "AIH"), ("law", "SMI"))
 SESSIONS = {"P": "the 130 C power sweep, canonical p_sweep",
             "T": "the 70/90/110 C sweep at 225 mW, canonical t_sweep",
@@ -228,8 +231,18 @@ SESSION_LADDER_W = {"P": (0.025, 0.225), "E": (0.09, 0.27), "M": (0.035, 0.21), 
 # the profile, and not a bound is what the reader sees.
 # THE EVENING RATE'S BOX IS WIDENED (2026-09-14): it sat on the old +-25 per cent wall
 # in every admitted cell, and a wall no gate reads makes every bar conditional.
+#: makes the log-determinant residual real: sum ln sigma^2 / tau over the L is about -0.92e6
+#: (measured 2026-09-16 at 52 um); a constant moves no minimum.
+LOGDET_OFFSET = 4.0e6
 BOUNDS = {"beta_rel": (0.0, 40.0), "alpha_rel": (0.5, 1.5), "sigma_l": (0.2, 6.0), "omega_scale": (0.0, 3.0),
-          "gamma_l": (0.0, 3.0), "lograte": (math.log(0.5), math.log(1.5)), "power_scale": (0.5, 1.5)}
+          "gamma_l": (0.0, 3.0), "lograte": (math.log(0.5), math.log(1.5)), "power_scale": (0.5, 1.5),
+          "s0_scale": (0.2, 5.0), "w0_": (0.7, 1.4)}
+# THE OWNER'S SECOND ANGLE (2026-09-17 00:30: "explore also the w_0 free and S_0 free combinations"):
+# `spec["s0_free"]` frees the light shift per condition (`s0_scale_<condition>`, no prior), and
+# `spec["w0_free"]` lets the three waist meters float about the scanned waist (`w0_transit_rel`,
+# `w0_shift_rel`, `w0_sat_rel`, the transit going as the inverse, the shift and the saturation's
+# Rabi frequency as the inverse square, per the exponent table), so their disagreement, term by
+# term, is a statement about the term list. Tied is the default and the primary matrix's form.
 START_SIGMA_L = {"gaussian": (1.4, 1.0), "lorentzian": (0.8, 0.4), "mixed": (1.3, 0.9)}
 START_OTHER = ((1.0, 1.0, 0.3), (4.0, 0.8, 0.05))      # beta_rel, omega_scale, gamma_l per start
 DIFF_STEP = 3e-3
@@ -312,7 +325,8 @@ def noise_law_for(rows, role, peak, T, P_mW):
     r = min(pool, key=lambda r: (dist(_f(r["temperature_C"]), T), dist(_f(r["power_mW"]), P_mW)))
     c = _f(r["c"])
     return dict(a=_f(r["a_V"]), b=_f(r["b_V"]), c=c if np.isfinite(c) else 0.0, lev_max=float("inf"),
-                tau_int=_f(r["tau_int"]), source="results/noise_model.csv")
+                tau_int=_f(r["tau_int"]), source="results/noise_model.csv",
+                tau_eff=noise.effective_tau({"tau_int": _f(r["tau_int"])}, tau_resid_table(), _tau_key_of_row(r)))
 
 
 def _law_from_traces(volts):
@@ -369,7 +383,7 @@ def design(traces_per_condition: int | None = None, with_excluded: bool = False)
         law = None if sess == "Q" else noise_law_for(laws, r["role"], r["peak"], T, p_mw)
         rows.append(dict(file=r["file"], role=r["role"], peak=r["peak"], T=T, P_W=p_mw * 1e-3,
                          rate=rate, session=sess, iso=int(K.PEAKS[r["peak"]]["isotope"]),
-                         law=law, tau=max(float(law["tau_int"]), 1.0) if law else float("nan")))
+                         law=law, tau=max(float(law.get("tau_eff", law["tau_int"])), 1.0) if law else float("nan")))
     return rows
 
 
@@ -464,7 +478,7 @@ def load_sessions(sessions) -> tuple[list[dict], list[dict]]:
         for grp in groups.values():
             law = _law_from_traces([t["v"] for t in grp])
             for t in grp:
-                t["law"], t["tau"] = law, max(law["tau_int"], 1.0)
+                t["law"], t["tau"] = law, noise.effective_tau(law, tau_resid_table(), _tau_key(t["peak"], t["T"], t["P_W"]))
             out.extend(grp)
     if "M" in sessions:
         _, prates = load_t_rates()
@@ -487,7 +501,7 @@ def load_sessions(sessions) -> tuple[list[dict], list[dict]]:
         for grp in groups.values():
             law = _law_from_traces([t["v"] for t in grp])
             for t in grp:
-                t["law"], t["tau"] = law, max(law["tau_int"], 1.0)
+                t["law"], t["tau"] = law, noise.effective_tau(law, tau_resid_table(), _tau_key(t["peak"], t["T"], t["P_W"]))
             out.extend(grp)
         for d in dropped:
             print(f"  dropped one {d['session']} trace at {d['P_W'] * 1e3:g} mW: {d['reason']}", flush=True)
@@ -541,7 +555,7 @@ def _load(spec: dict) -> list[dict]:
     for grp in q_groups.values():
         law = _law_from_traces([t["v"] for t in grp])
         for t in grp:
-            t["law"], t["tau"] = law, max(law["tau_int"], 1.0)
+            t["law"], t["tau"] = law, noise.effective_tau(law, tau_resid_table(), _tau_key(t["peak"], t["T"], t["P_W"]))
     have = {t["session"] for t in _SESSION_TRACES}
     missing = [s for s in spec["sessions"] if s in ("E", "M") and s not in have]
     if missing:
@@ -558,7 +572,7 @@ def window_profile(w0_m: float, m2: float):
     ON at every M2 including exactly 1, memoised on the grid it is asked for.
     The z_ratio is on the closure for the tests."""
     zr = collection_z_ratio_m2(float(w0_m), float(m2))
-    xg = np.linspace(-1.0, 0.0, 4001)
+    xg = np.linspace(0.0, 1.0, 4001)
     gx = local_ramp_density(xg)
     memo: dict = {}
 
@@ -588,6 +602,44 @@ def depleted_transit(transit_mhz: float, omega_mhz: float, peak: str, cycles: fl
         stark.COMPANIONS = None
 
 
+_TAU_RESID = None
+
+
+def tau_resid_table() -> dict:
+    """The post-fit residuals' integrated correlation time per condition (F36), the rows
+    `tau_resid` of `results/residual_resampling.csv` keyed `<peak>_<T>C_<P>mW`, read once; an
+    absent table (the interim before the resampler's regeneration) leaves every producer on the
+    raw-segment `tau_int` with `noise.effective_tau`'s printed reason."""
+    global _TAU_RESID
+    if _TAU_RESID is None:
+        _TAU_RESID = {}
+        try:
+            import csv as _csv
+            from rb5s6s import config as _cfg
+            with open(os.path.join(str(_cfg.RESULTS_DIR), "residual_resampling.csv"), newline="") as fh:
+                for r in _csv.DictReader(fh):
+                    if r.get("quantity") == "tau_resid":
+                        try:
+                            _TAU_RESID[r["key"]] = float(r["value"])
+                        except (TypeError, ValueError):
+                            pass
+        except OSError:
+            pass
+    return _TAU_RESID
+
+
+def _tau_key(peak, T, P_W) -> str:
+    return f"{peak}_{float(T):.0f}C_{1e3 * float(P_W):.0f}mW"
+
+
+def _tau_key_of_row(r) -> str:
+    """The residual-time key of a noise-model row; None for a pooled row without a condition."""
+    try:
+        return f"{r['peak']}_{float(r['temperature_C']):.0f}C_{float(r['power_mW']):.0f}mW"
+    except (KeyError, TypeError, ValueError):
+        return None
+
+
 class Cell:
     """One (form, M2 arm, depletion arm, propagation arm, w0, fixed terms)
     with its traces. The free parameter list is built from the traces the
@@ -600,6 +652,17 @@ class Cell:
         self.kind = "lorentzian" if self.form == "lorentzian" else "gaussian"
         self.w0 = spec["w0_um"] * 1e-6
         self.m2, self.cycles = float(spec["m2"]), float(spec["cycles"])
+        # THE DEPLETION FORM AND THE KERNEL GATE (owner, 2026-09-16 22:30; F12, F15). "mc": the
+        # transit carries the kernel Monte Carlo's own depletion factor at the trace's node,
+        # read through `kernel_gate.depletion_factor`, which REFUSES a node without a passing
+        # artefact; "none" and "companion" are the legacy forms, kept for the comparison and
+        # still gated. `kernel_gate="legacy"` is the one door, for reproducing a committed CSV
+        # that predates the gate, and it is printed once per Cell.
+        self.depletion = str(spec.get("depletion", "mc"))
+        self.kernel_gate = str(spec.get("kernel_gate", "require"))
+        if self.kernel_gate == "legacy" and not spec.get("_legacy_said"):
+            print("  Cell: kernel gate LEGACY, no node validated (reproduction of a pre-gate CSV only)", flush=True)
+            spec["_legacy_said"] = True
         da, da_err = spec["delta_alpha"], spec["delta_alpha_err"]
         self.delta_alpha, self.rho, law = da, RHO, "Steck"
         prop = spec.get("propagation")
@@ -608,7 +671,9 @@ class Cell:
             if what == "delta_alpha":
                 self.delta_alpha = da + val * da_err
             elif what == "rho":
-                self.rho = RHO + val * RHO_ERR
+                self.rho = RHO + val * RHO_ERR        # the owner's 0.94 +- 0.04
+            elif what == "rho_floor":
+                self.rho = 0.80                       # "very surprised in case it is below 0.8"
             elif what == "law":
                 law = val
         self.law_name = law
@@ -618,6 +683,23 @@ class Cell:
         self.beta_theory_mhz = BETA_THEORY_KHZ * 1e-3
         self.sessions = sorted({t["session"] for t in traces}, key=list(SESSIONS).index)
         self.shared_sigma = spec.get("sigma_l", "session") == "shared"
+        # THE LOG-DETERMINANT (2026-09-16). `linear` sets sigma from the FITTED level, so the
+        # objective's weights depend on the parameters and the sum of squares alone is not a
+        # likelihood: -2 ln L = sum r^2/sigma^2 + sum ln sigma^2 (the rule file: "an objective whose
+        # weights depend on its own parameters is not a likelihood until its log-determinant is
+        # carried"). Measured at the fixed truth across the noiseless grid, the term moves by
+        # 358 per micron near 52 um, nine times the archive-rung rail. With `logdet` on, the term
+        # rides as ONE extra residual sqrt(sum ln sigma^2 / tau + LOGDET_OFFSET), whose square adds
+        # the term to the sum of squares up to a constant that moves no minimum; `chi2_parts`
+        # returns the three blocks so a closure judges a rung on the DATA block alone.
+        self.logdet = bool(spec.get("logdet", False))
+        # THE WHITENING FOLLOWS THE NOISE THAT IS THERE (2026-09-16, F7): a closure rung at scale s
+        # injects s times the law, so its objective whitens at s times the law too, or every bar
+        # below the archive's rung is too small by s and a log-determinant at the wrong scale
+        # rewards whatever shrinks sigma (42.2 um for an injected 52 at zero noise). Real data and
+        # the archive rung sit at 1.0; the noiseless rung passes 1.0 for its data term and carries
+        # no log-determinant, which is undefined at zero noise.
+        self.noise_scale = float(spec.get("noise_scale", 1.0))
         self.power_scale = bool(spec.get("power_scale", False))
         self.evening_peaks = sorted({t["peak"] for t in traces if t["session"] == "E"})
         self.rate_seed = {pk: spec.get("rate_seeds", {}).get(pk, EVENING_RATE_SEED) for pk in self.evening_peaks}
@@ -626,6 +708,11 @@ class Cell:
         names += ["omega_scale"]
         if self.form == "mixed":
             names.append("gamma_l")
+        self.conditions = sorted({self._condition_key(t) for t in traces})
+        if spec.get("s0_free"):
+            names += [f"s0_scale_{c}" for c in self.conditions]
+        if spec.get("w0_free"):
+            names += ["w0_transit_rel", "w0_shift_rel", "w0_sat_rel"]
         names += [f"lograte_E_{pk}" for pk in self.evening_peaks]
         if self.power_scale:
             names += [f"power_scale_{s}" for s in self.sessions]
@@ -642,14 +729,22 @@ class Cell:
         # construction between them, and it makes the owner's iteration unnecessary:
         # the posterior reports how far the archive pulls against theory instead of
         # the convener deciding by pinning.
-        self.prior_terms = [("omega_scale", 1.0, OMEGA_PRIOR_FRAC),
-                            ("beta_rel", 1.0, BETA_PRIOR_FRAC),
-                            ("alpha_rel", 1.0, ALPHA_PRIOR_FRAC)] + [
+        self.prior_terms = [t for t in [("omega_scale", 1.0, OMEGA_PRIOR_FRAC),
+                                        ("beta_rel", 1.0, BETA_PRIOR_FRAC),
+                                        ("alpha_rel", 1.0, ALPHA_PRIOR_FRAC)] + [
             (f"power_scale_{s}", 1.0, POWER_PRIOR_FRAC) for s in self.sessions if self.power_scale]
+                            # a PINNED parameter carries no prior term (owner, 2026-09-17 00:30): its
+                            # theory uncertainty is a systematic band read by displacing the pin, never a
+                            # pull on the objective, and a term evaluated at a fixed value is a constant
+                            if t[0] not in self.fixed]
 
     # -- parameters -------------------------------------------------------
+    @staticmethod
+    def _condition_key(t) -> str:
+        return f"{t['session']}_{t['peak']}_{1e3 * t['P_W']:.0f}mW_{t['T']:.0f}C"
+
     def bounds(self, name):
-        for k in ("beta_rel", "alpha_rel", "sigma_l", "omega_scale", "gamma_l", "lograte", "power_scale"):
+        for k in ("beta_rel", "alpha_rel", "sigma_l", "omega_scale", "gamma_l", "lograte", "power_scale", "s0_scale", "w0_"):
             if name.startswith(k):
                 return BOUNDS[k]
         raise KeyError(name)
@@ -679,6 +774,8 @@ class Cell:
                     p.append(0.0)
                 elif n.startswith("power_scale_"):
                     p.append(1.0)
+                elif n.startswith("s0_scale_") or n.startswith("w0_"):
+                    p.append(1.0)
             out.append(tuple(p))
         return out
 
@@ -690,8 +787,21 @@ class Cell:
         return d
 
     def _per_trace(self, t):
-        return dict(transit=K.transit_fwhm_from_w0(self.w0, t["T"], isotope=t["iso"]),
-                    s0=stark_shift_S0_mhz(t["P_W"], self.w0, rho=self.rho, delta_alpha_au=self.delta_alpha),
+        # THE COLLECTED COLUMN'S WINDOW FACTOR (F12): the kernel the detector sees is the
+        # signal-weighted mixture over the column, narrower than the closed form at the waist by
+        # <w^-3>/<w^-2> (1.1 per cent at 64 um); the ramp carried this mixture and the transit did not.
+        bare = K.transit_fwhm_from_w0(self.w0, t["T"], isotope=t["iso"]) * transit_collection_factor(self.w0, self.m2)
+        if self.kernel_gate == "legacy":
+            dep = 1.0
+        else:
+            dep = kernel_gate.depletion_factor(self.w0 * 1e6, t["peak"], self.m2, self.rho, float(t["T"]), t["P_W"] * 1e3)
+            if self.depletion != "mc":
+                dep = 1.0                          # the node is still required; the factor is the form's
+        return dict(transit=bare, dep=dep, cond=self._condition_key(t),
+                    # F39: the meter reads behind the cell, so the recorded watt buys the clipped
+                    # focus's on-axis intensity, c(w0) of the ideal Gaussian's (0.967 at 64 um)
+                    s0=stark_shift_S0_mhz(t["P_W"], self.w0, rho=self.rho, delta_alpha_au=self.delta_alpha)
+                       * aperture_onaxis_factor(self.w0),
                     omega_ref=two_photon_rabi_hz(t["P_W"], self.w0, self.rho) / 1e6,
                     n12=float(LAWS[self.law_name](np.array([t["T"]]))[0]) / 1e12,
                     sess=t["session"], peak=t["peak"], axis=t.get("axis", "mhz"))
@@ -711,14 +821,16 @@ class Cell:
     def model(self, nu, d, per, peak, sess):
         f = self.power_factor(d, sess)
         omega_ref = f * per["omega_ref"]
-        omega = d["omega_scale"] * omega_ref
+        omega = d["omega_scale"] * omega_ref * d.get("w0_sat_rel", 1.0) ** -2
         # THE DEPLETION ARM IS A MODEL FORM AND NOT A FIT PARAMETER: it takes
         # the tied Omega at its theory scale, so a fit that pulls the
         # saturation scale toward zero cannot switch the arm off as well.
-        transit = depleted_transit(per["transit"], omega_ref, peak, self.cycles)
+        transit = (depleted_transit(per["transit"], omega_ref, peak, self.cycles) if self.depletion == "companion"
+                   else per["transit"] * per["dep"]) / d.get("w0_transit_rel", 1.0)
         return full_profile(nu, gamma_coll=d["beta_rel"] * self.beta_theory_mhz * per["n12"],
                             sigma_laser_fwhm=self.sigma_l_of(d, sess), transit_fwhm=transit,
-                            s0=f * d["alpha_rel"] * per["s0"], gamma_l=d["gamma_l"], laser_kind=self.kind, peak=peak,
+                            s0=f * d["alpha_rel"] * per["s0"] * d.get(f"s0_scale_{per['cond']}", 1.0) * d.get("w0_shift_rel", 1.0) ** -2,
+                            gamma_l=d["gamma_l"], laser_kind=self.kind, peak=peak,
                             omega_mhz=omega, profile=self.profile)
 
     def linear(self, t, nu, m):
@@ -728,10 +840,29 @@ class Cell:
         A = np.column_stack([m, t["ones"], nu])
         c0, *_ = np.linalg.lstsq(A, t["v"], rcond=None)
         level = np.clip(c0[0] * m, 0.0, None)
-        s = np.asarray(sigma_of_v(level, t["law"]), float)
+        s = np.asarray(sigma_of_v(level, t["law"]), float) * self.noise_scale
         cf, *_ = np.linalg.lstsq(A / s[:, None], t["v"] / s, rcond=None)
         r = (t["v"] - A @ cf) / s / math.sqrt(t["tau"])
         return float(r @ r), r
+
+    def logdet_of(self, t, nu, m) -> float:
+        """sum ln sigma^2 over the trace's samples, each counted 1/tau, at the level `linear` uses."""
+        A = np.column_stack([m, t["ones"], nu])
+        c0, *_ = np.linalg.lstsq(A, t["v"], rcond=None)
+        s = np.asarray(sigma_of_v(np.clip(c0[0] * m, 0.0, None), t["law"]), float) * self.noise_scale
+        return float(np.sum(np.log(s * s))) / float(t["tau"])
+
+    def chi2_parts(self, p, centres) -> dict:
+        """The objective split into its blocks: data (whitened residual sum), prior, logdet."""
+        d = self.unpack(p)
+        data = ld = 0.0
+        for i, t in enumerate(self.traces):
+            nu = self.axis(d, t)
+            m = self.model(nu - centres[i], d, self.per[i], t["peak"], t["session"])
+            data += self.linear(t, nu, m)[0]
+            ld += self.logdet_of(t, nu, m)
+        prior = float(sum(((d[n] - mu) / sig) ** 2 for n, mu, sig in self.prior_terms if n in d))
+        return {"data": data, "prior": prior, "logdet": ld, "logdet_on": self.logdet}
 
     def chi2_at(self, i, p, c):
         t, per = self.traces[i], self.per[i]
@@ -910,6 +1041,13 @@ class Cell:
         # pinned set; a term for a parameter this cell does not carry at all (a
         # per-session power scale when power_scale is off) is still skipped.
         parts.append(np.array([(d[n] - mu) / sig for n, mu, sig in self.prior_terms if n in d]))
+        if self.logdet:
+            ld = sum(self.logdet_of(t, self.axis(d, t),
+                                    self.model(self.axis(d, t) - centres[i], d, self.per[i], t["peak"], t["session"]))
+                     for i, t in enumerate(self.traces))
+            if ld + LOGDET_OFFSET <= 0.0:
+                raise ValueError(f"logdet: sum ln sigma^2 = {ld:.0f} is below -LOGDET_OFFSET; raise the offset")
+            parts.append(np.array([math.sqrt(ld + LOGDET_OFFSET)]))
         return np.concatenate(parts)
 
     def chi2(self, p, centres):
@@ -1316,6 +1454,16 @@ def _cell_task(job):
 
 
 def _spec(form, w0, m2=1.0, cycles=0.0, propagation=None, starts=None, da=None, **extra):
+    # ALPHA AND BETA PINNED AT THEORY BY DEFAULT (owner, 2026-09-17 00:30: "pin alpha and beta_self
+    # from theory ... to compare only after the theoretical value with what would come from the
+    # MLE"), replacing the 2026-09-16 prior form for the PRIMARY matrix: `fixed` carries both at
+    # their theory scale unless the caller frees one (`free=("alpha_rel",)`), which is the
+    # comparison arm and is recorded as such in `pinned`. Their uncertainties ride as systematics
+    # through `propagation` (delta_alpha and rho at one sigma, beta through a fixed beta_rel).
+    free = tuple(extra.pop("free", ()))
+    pinned = {n: 1.0 for n in ("beta_rel", "alpha_rel") if n not in free}
+    extra["fixed"] = {**pinned, **extra.get("fixed", {})}
+    extra["pinned"] = tuple(sorted(pinned))
     da = da if da is not None else deep_delta_alpha()
     return dict(form=form, w0_um=float(w0), m2=float(m2), cycles=float(cycles), propagation=propagation,
                 starts=(None if starts is None else tuple(tuple(s) for s in starts)),
@@ -2036,9 +2184,13 @@ def plant_determinism(workers_many: int = 2) -> bool:
     rows = design(traces_per_condition=1)
     dspec = design_spec(rows, ("P", "T"))
     da = deep_delta_alpha()
-    specs = base_specs(("mixed",), (40.0, 90.0), da, {}, starts=(START_OTHER[0][:1] + (1.0,) + START_SIGMA_L["mixed"][:1] * 2
-                                                                 + (START_OTHER[0][1], START_OTHER[0][2]),),
+    specs = base_specs(("mixed",), (40.0, 90.0), da, {}, starts=(START_SIGMA_L["mixed"][:1] * 2 + (START_OTHER[0][1], START_OTHER[0][2]),),
+                       # the start follows the PINNED default's name order (sigma_l per session, omega, gamma_l)
                        max_nfev=2, beta_profile=False)
+    for s in specs:
+        # the plant measures the pool's ORDER, not a node of the model: the 40 um probe sits
+        # below the validated span, so it opens the gate's one door and says so in the row
+        s["kernel_gate"] = "legacy"
     seq = run_cells(specs, dspec, 0, label="seq ")
     par = run_cells(specs, dspec, workers_many, label=f"pool{workers_many} ")
     strip = lambda rs: [{k: v for k, v in r.items() if k != "seconds"} for r in rs]   # noqa: E731
@@ -2294,6 +2446,12 @@ def main() -> int:
             print("PLANT NOT RUN: the raw traces are absent", flush=True); return 3
         return 0
     if "--moment-arm" in args:
+        # THE MOMENT ARM READS THE ARCHIVE AND IS GATED ON ITS OWN LADDER (2026-09-16): before this
+        # line it returned ahead of the real_traces call below and read the archive ungated.
+        # "ultra_joint_moments" is registered on the MOMENTS profile, seven noise levels in order,
+        # so the arm runs on real traces only after the twin has climbed them.
+        from rb5s6s import ladder_gate
+        ladder_gate.real_traces("ultra_joint_moments", __file__)
         return moment_arm_run(float(valued.get("--moment-w0") or 64.0))
     if "--time-cells" in args:
         time_cells()

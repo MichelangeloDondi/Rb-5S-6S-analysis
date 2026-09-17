@@ -6,18 +6,10 @@ this file changes is what an introduction on the 993 nm 5S–6S line may claim,
 and whom it must delineate against. Section 5 is the answer and the rest is the
 evidence for it.
 
-**The question.** What may a paper on this line claim as new, and whose work
-must it position itself against?
-**Takes.** Nothing.
-**Gives.** Every external number this analysis leans on with its source, and
-the delineation from the nearest prior art, which is closer than it first
-looked.
-**Skip if.** You are not writing or refereeing a claim of priority. Section 5
-is the answer if you want only that.
+This page asks what a paper on this line may claim as new, and whose work it must position itself against. This page is self-contained and sets out every external number this analysis leans on with its source, and the delineation from the nearest prior art, which is closer than it first looked. Anyone not writing or refereeing a claim of priority can skip it. Section 5 is the answer if you want only that.
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](GLOSSARY.md)
-> explains the measurement in six sentences, then defines every term
-> and symbol used anywhere in this repository.
+> [GLOSSARY.md](GLOSSARY.md) states the measurement in six sentences and
+> defines every term and symbol used anywhere in this repository.
 
 Two clicks to the status of any statement. The map below routes to a section,
 and the section names the paper with what it costs or supports.
@@ -43,15 +35,14 @@ been done to a paper, never about how good it is.
 | [OPEN] | a question this ledger has not settled, with the work that would settle it |
 | QUARANTINED | an identifier that must not be used, kept visible so it cannot come back |
 
-### Where things are
-
+### Organisation of this file
 | section | what it settles |
 |---|---|
 | [1. Nearest prior art](#1-nearest-prior-art) | the three papers a referee reaches for first, each with the axis that separates it |
 | [2. Collision-rate series](#2-collision-rate-series) | what β_self(6S) should be, and why the dataset's bound cannot measure it |
 | [3. Transit-time lineshape](#3-transit-time-lineshape) | that the transit kernel is a published analytic form, not an assumption |
 | [4. Anchors still at REPORTED](#4-anchors-still-at-reported-status) | what is quoted from a summary and must be read before it is cited |
-| [5. What may be claimed](#5-what-may-be-claimed-and-what-may-not) | the novelty law: the concessions, the survivors, and the searches that found nothing |
+| [5. What may be claimed](#5-the-admissible-claims) | the novelty law: the concessions, the survivors, and the searches that found nothing |
 | [6. Prior work on this line](#6-prior-work-on-this-line-5s6s-993-nm) | the two lineages that measured 5S–6S before us, OIST and USAFA |
 | [7. Method anchors](#7-method-anchors) | the ruler, the trapping, the detection channels, the reference standards |
 | [8. The 2024–2026 field](#8-the-20242026-field) | where a vapour-cell paper from here sits among the 778 nm clocks |
@@ -60,7 +51,7 @@ been done to a paper, never about how good it is.
 
 ## 1. Nearest prior art
 
-**[Stalnaker et al., Phys. Rev. A 73, 043416 (2006)](lit/stalnaker2006.md)**
+[Stalnaker et al., Phys. Rev. A 73, 043416 (2006)](lit/stalnaker2006.md)
 (arXiv:physics/0512111). VERIFIED, lineage Wieman et al., PRL 58, 1738
 (1987). One-photon forbidden Stark-induced transition (Yb 408 nm) in a
 collimated beam, numerically fit to α = −0.312(34) Hz/(V/cm)². So the
@@ -72,7 +63,7 @@ narrower than "first use of the asymmetry".
 | Transition | 1-photon Stark-induced (signal ∝ I) | 2-photon (signal ∝ I²) |
 | Ensemble | collimated beam, velocity-selective | thermal vapor cell |
 | Regime | **fringe-resolved**: FM index ξ/Ω ≳ 1, Bessel sidebands, sub-Doppler features | **fringe-averaged**: ξ/Ω ~ 10⁻³, atoms see the time-averaged envelope |
-| Lineshape | numerical Bloch, per-condition | **closed-form** shift density f(s) ∝ \|s\| on [−S₀,0] |
+| Lineshape | numerical Bloch, per-condition | **closed-form** shift density f(s) ∝ s on [0,S₀] |
 | Extraction | full-shape fit; needs β, cavity field, velocity model, per-scan free center | **closed-form ramp** fit with a per-trace free center; S₀ is read from the drift-invariant shape asymmetry, not the centre |
 | Saturation | saturating + hole-burning entangled with the asymmetry | unsaturated throughout (C3: amplitude ∝ P², slopes 1.83–2.12) |
 
@@ -88,12 +79,12 @@ Their FM framework (Sec. IV/Fig. 6) settles our ⟨E²⟩ convention: at
 fringe-averaged intensity with no coherent ×2 enhancement. The fringe-resolved
 tail is not benign, though: near-transverse atoms sample the node/antinode
 arcsine, and because the fringe multiplies the shift it suppresses the ramp
-skew, κ₃ → S₀³(1/135 − f_res/10) at ρ=1. As a fraction of the intrinsic +0.566
+skew, κ₃ → −S₀³(1/135 − f_res/10) at ρ=1. As a fraction of the intrinsic 0.566
 triangle skew that is negligible at w₀=64 µm (~7–14% of an
 already-below-noise skew) but ~26–28% at w₀=16 µm, additive to the
 beam-divergence correction (`rb5s6s/fringe_tail.py`). Calculated.
 
-**[Hamilton et al., Phys. Rev. Applied 19, 054059 (2023)](lit/hamilton2023.md)**
+[Hamilton et al., Phys. Rev. Applied 19, 054059 (2023)](lit/hamilton2023.md)
 (arXiv:2212.10743). VERIFIED. The nearest prior art for our specific
 construction: a retro-reflected Rb-87 vapour two-photon line (5S→5D,
 two-colour 780+776 nm) building the identical Iⁿ·(linear shift)·(r dr)
@@ -105,7 +96,7 @@ axial standing-wave fringes at all. Must be delineated in the introduction,
 since a referee who knows Hamilton will see the integral parallel
 immediately.
 
-**Dounas-Frazer, Tsigutkin, Family, Budker, Phys. Rev. A 82, 062507 (2010)**
+Dounas-Frazer, Tsigutkin, Family, Budker, Phys. Rev. A 82, 062507 (2010)
 (arXiv:1009.5952). VERIFIED online, PDF to-pull. Extends "polarizability from
 a standing-wave lineshape" to Yb 5d6s ³D₁, the same fringe-resolved
 atomic-beam family as Stalnaker/Wieman, reinforcing that our novelty is
@@ -123,8 +114,10 @@ from the experimental data". The −17.82(81) kHz/mTorr this entry previously
 attributed to them is **Morzyński 2013's**, on the laser axis (Zameroski
 restates it on the transition axis as −35.6 ± 1.6). Scaling the measured 7S
 broadening to 6S by the computed C₆ ratio (M18, 0.313) gives the expected
-**β_self(6S) = 3.4 ± 0.3 kHz per 10¹² cm⁻³**, anchored on a measurement, with
-the suspect impact prefactor cancelling in the ratio. Derivation in the lit
+**β_self(6S) = [3.50](../results/beta_self_theory.csv "ref:beta_self_theory:beta_self_6s:anchored") ± [0.37](../results/beta_self_theory.csv "ref:beta_self_theory:beta_self_6s:anchored:err") kHz per 10¹² cm⁻³**, anchored on a measurement, with
+the suspect impact prefactor cancelling in the ratio.
+
+Derivation in the lit
 file and in `rb5s6s/vanderwaals.beta_self_anchored`. The ratio is of van der
 Waals *differences*, C₆(5S+nS) − C₆(5S+5S), because the impact phase is set by
 the difference between the two levels' interactions with the perturber. That
@@ -145,7 +138,9 @@ Consequences (calibration against the theoretical expectation):
   β_self·ΔN = 0.10 MHz on a 5.2 MHz line, which is why the bound sits an order
   of magnitude above the expectation rather than on it. A real measurement
   needs **150–170 °C points**, where N = 0.85–2.2×10¹⁴ cm⁻³ and β_self·N runs
-  0.29–0.74 MHz. That is a fixed-lock-session shot-list change, subject to the
+  0.29–0.74 MHz.
+
+That is a fixed-lock-session shot-list change, subject to the
   cell and oven limits. Trapping grows there, and it moves amplitude rather
   than width.
   *These four numbers were recomputed 2026-08-05 from
@@ -169,7 +164,8 @@ self-broadening number, and the source that answers each.
 - *Isotope effect on β (why β₈₅ = β₈₇ matches the theoretical prediction).* [Bala
   et al. 2026](lit/bala2026.md) give the theoretical isotope-dependence of
   collisional widths and shifts from reduced mass, C₆ and scattering length.
-  In the thermal impact regime this predicts a negligible width isotope-effect,
+
+In the thermal impact regime this predicts a negligible width isotope-effect,
   so our measured β₈₅ = β₈₇ null is the physically expected result.
   **[FEED]** for the isotope-null framing (their Hg–Rb ultracold system is a
   different regime, so cite the framework and not the numbers).
@@ -185,6 +181,7 @@ self-broadening number, and the source that answers each.
   Kielkopf 2022](lit/spiegelman2022.md) is a **[FEED]** pointer to the
   quasistatic/satellite regime our low-density impact-regime Lorentzian
   assumption sits opposite to.
+
 - *Why γ_coll is linear in N at all.* [Baranger 1958](lit/baranger1958.md) is
   the impact-theory result `methods/02` invokes. When collisions are on average
   weak and well separated in time the line is Lorentzian, and for an isolated
@@ -266,7 +263,7 @@ cited until it is read. Where the obstacle is known it is named.
   "6S completes the series" quotable, so §2 leans on its existence and on
   nothing further.
 
-## 5. What may be claimed, and what may not
+## 5. The admissible claims
 
 This is the novelty law of the programme. The four claims below are what a paper
 from here may assert, followed by the list of what it may not. Each concession
@@ -275,12 +272,12 @@ rather than in the order they were found:
 
 - **[5.1](#51-narrowed-by-the-precedent-audit-2026-07-26)** the precedents an
   external audit surfaced, which cost the first version of claim 1.
-- **[5.2a](#52a-the-concession-runs-to-1980-and-the-closed-form-is-not-new-either)**
+- **[5.2a](#52a-the-1980-precedent-for-the-closed-form)**
   the 1980 review that replaces even what 5.1 left standing. This is the
   binding precedent, and the later word on claim 1.
-- **[5.3](#53-the-nearest-analogue-experiment-and-what-it-costs-claim-1)** the
+- **[5.3](#53-the-nearest-analogue-experiment)** the
   closest published experiment, which owns the phenomenon.
-- **[5.2](#52-negative-searches-which-are-what-defend-the-rest)** the searches
+- **[5.2](#52-negative-searches)** the searches
   that found nothing, which is what defends the rest.
 
 The subsection labels are cited from other documents and are therefore fixed.
@@ -297,7 +294,7 @@ A number here is an identifier, not a position.
    geometry rather than by laser statistics, so Delone's integral, which they
    could only leave formal, P being their unknown, closes.
    **(b)** the resulting **analytic cumulants** on bounded support, in particular
-   the intrinsic g₁ = +0.566 at n = 2, which is a number and not a fit.
+   the intrinsic g₁ = −0.566 at n = 2, which is a number and not a fit.
    **(c)** the fringe-averaged treatment and the M19 result that a retro standing
    wave does not move the mean.
    **(d)** the evanescent-geometry invariance of the dA ∝ dI/I step (the nanofibre extension
@@ -342,11 +339,12 @@ A number here is an identifier, not a position.
    asymmetric factor, so the fitted asymmetry does **not** exchange against
    $\Gamma_{\rm nat}$, $\gamma_{\rm coll}$, $\sigma_{\rm laser}$ or the
    transit width, the four-way degeneracy that dominates the width channel.
+
    The single remaining exposure is an *asymmetric* misspecification of the
    core, which is checkable by BIC and the M8 cusp fit. See
    [THEORY_NOTE](THEORY_NOTE.md) §3.
    *And the width channel is not a weaker alternative. It is blind.* At 225 mW
-   and the measured $w_0 = 64$ µm the ramp kernel's own width is $S_0/2$ exactly
+   and the $w_0 = 64$ µm convention the ramp kernel's own width is $S_0/2$ exactly
    (its density peaks at $|s|=S_0$ and halves at $|s|=S_0/2$). The extra width
    that puts on the line is read from `run_identifiability.py`, not composed
    here: [6.48](../results/identifiability.csv "ref:identifiability:width_signature_broadening_khz:gaussian_branch")
@@ -358,6 +356,7 @@ A number here is an identifier, not a position.
    their own measured light-shift coefficient can produce, so the intensity
    inhomogeneity they name (tentatively, "possibly", against velocity-dependent
    collisions as the alternative) is probably not its dominant cause.
+
    Preliminary: the span covers the retro and transition-vs-laser-axis
    conventions their text leaves open. **[OPEN]**
 3. **β_self(6S)**: completes the measured 5D/7S self-rate series, a
@@ -418,7 +417,7 @@ distribution of AC-Stark shifts is a new frame**.
 > **one-photon** rate, and [THEORY_NOTE](THEORY_NOTE.md) §2 gives
 > $f(s)\propto|s|^{n-1}$, so $n=1$ (the case it already names as "a
 > Stark-induced forbidden line") is the **uniform** distribution with
-> $\kappa_3 = 0$, exactly zero skew. The triangular ramp and its $+0.566$ cannot
+> $\kappa_3 = 0$, exactly zero skew. The triangular ramp and its $-0.566$ cannot
 > be Wieman's effect. Theirs is the standing wave's node structure crossed with
 > velocity, ours the $I^2$ weighting over a transverse Gaussian, with the
 > standing wave shown not to move the mean at all (M19).
@@ -467,7 +466,7 @@ referee find them.
 > paragraph as the later word. The reconciliation of claim 1 is itself still
 > **[OPEN]** there.
 
-### 5.2a The concession runs to 1980, and the closed form is not new either
+### 5.2a The 1980 precedent for the closed form
 
 [delone1980](lit/delone1980.md), read in full from the rendered pages,
 contains four things this repository had treated as its own frame, and it is a
@@ -499,7 +498,7 @@ Gaussian beam.** The introduction here must say so in those words.
 $P$ as the *unknown to be reconstructed*, their point being that the lineshape
 measures the laser's statistics. This programme runs it backwards: $P$ is
 **known from the geometry**, so the integral evaluates and the result carries
-**analytic cumulants**, an intrinsic $g_1=+0.566$ on bounded support that is a
+**analytic cumulants**, an intrinsic $g_1=-0.566$ on bounded support that is a
 number rather than a fit. Delone cannot write that number because in their
 setting it is exactly what is unknown. The defensible contributions are
 therefore: evaluating a known general result for the geometry that actually
@@ -508,7 +507,7 @@ drift-immune measurement channel, which answers an experimental problem (an
 untrustworthy centre) that does not arise in Delone's setting. **Claim 1 above
 should be narrowed accordingly before the introduction is drafted.** **[OPEN]**
 
-### 5.3 The nearest analogue experiment, and what it costs claim 1
+### 5.3 The nearest analogue experiment
 
 [lee2010](lit/lee2010.md), Lee, Chui, Chen, Chang & Tsai, *Opt. Commun.* **283**,
 1788 (2010), held and read, is closer to this analysis than anything in §5.1. Not an
@@ -534,13 +533,13 @@ Any wording implying this programme first noticed that is indefensible.
 **Gaussian**: symmetric, $\kappa_3 = 0$, no closed form, no cumulants, and the
 distribution treated as a nuisance parameter to be separated from the natural
 width. The programme's derivation gives $f(s)\propto|s|^{n-1}$, triangular at
-$n=2$, with intrinsic skew $g_1 = +0.566$, and a Voigt fit has no third moment
+$n=2$, with intrinsic skew $g_1 = -0.566$, and a Voigt fit has no third moment
 to put it in. So the claim to defend is **the shape and its cumulants**, never
 the phenomenon. That is narrower than the §5 wording was, and it is the version
 that survives contact with this paper.
 
-**There is a check against their published data, but not the obvious one, and
-this section first stated it wrongly.** The tempting argument (an AC-Stark
+There is a check against their published data, but not the obvious one, and
+this section first stated it wrongly. The tempting argument (an AC-Stark
 $W_G$ must be *linear in power*, their $W_G$ is not linear through the origin,
 so something is missing) **is invalid**: $W_G$ is the total Gaussian component
 of a Voigt fit, independent Gaussian terms add in quadrature, and so
@@ -561,7 +560,7 @@ model-form systematic on $\beta_{\rm self}$ (M4c/M8), where this repository
 already differences the two-sided-exponential and Gaussian transit forms for
 exactly this reason.
 
-### 5.2 Negative searches, which are what defend the rest
+### 5.2 Negative searches
 
 The same audit searched and found nothing, which is worth stating explicitly in
 any manuscript:
@@ -635,7 +634,9 @@ check out), [weller2011](lit/weller2011.md)
 ($\beta/2\pi = (0.69 \pm 0.04) \times 10^{-7}$ Hz cm³, the 0.73 theory value
 and the 170 °C range all hold), [wall2014](lit/wall2014.md) and
 [camparo1992](lit/camparo1992.md) (Camparo turned up the sentence that costs a
-novelty claim, recorded in §5 above). Two attribution errors were found and
+novelty claim, recorded in §5 above).
+
+Two attribution errors were found and
 fixed outside the checked set: [saha2010](lit/saha2010.md) and
 [slepkov2010](lit/slepkov2010.md) were both credited with an 18 µm
 hollow-core mode field that appears in **neither** paper, which belongs
@@ -656,8 +657,7 @@ beam) and the **Usaf Academy** precision-metrology lineage (Orson 2021 and
 Ayachitula 2024, hyperfine and isotope-shift metrology, and the prior AC-Stark
 and density-shift nulls this dataset's bounds refine).
 
-### 6a. OIST apparatus lineage, the provenance of the cell and beam
-
+### 6a. Provenance of the cell and beam
 - **[Nieddu 2019](lit/nieddu2019.md)** (Opt. Express and OIST PhD thesis), the
   group's 993 nm two-photon *frequency-reference* demonstration on our exact
   line. **[CITE, established]** They measured **w₀ = 64 µm** (f₁ = 150 mm
@@ -709,7 +709,7 @@ two-epoch design turns those nulls into measured coefficients.
   C3d and C1 channels) are consistent with, and refined by, our dataset's
   bounds (S₀ < 0.63 MHz by profile likelihood, β_self a bound). They are also
   the source of `DELTA_ALPHA_AU_ORSON2021 = +1093`, kept beside this record's
-  own `DELTA_ALPHA_AU = -1145` instead of pinning it (re-derived at [-1131.8](../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive") ± [5.9](../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive:err") with the 6S tail summed dynamically), and
+  own `DELTA_ALPHA_AU` instead of pinning it (now [-1131.8](../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive") ± [5.9](../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive:err") with the 6S tail summed dynamically), and
   our `stark_shift_S0_mhz` reproduces their predicted shift to the digit
   (`test_stark_S0_reproduces_orson2021`). Prior groups looked for these
   shifts on this line and saw nulls at ~MHz resolution. The drift-immune
@@ -828,7 +828,9 @@ this record tests, and the two fail differently. On the AC-Stark side the
 difference is a threshold and not a factor: their null sits eighteen times
 above the shift their own Δα predicts at their own conditions, so it tests
 neither size nor sign, while this record's bound sits below the shift
-predicted at its own conditions. On the density side their limit is a shift
+predicted at its own conditions.
+
+On the density side their limit is a shift
 and this record's is a width, and once the measured shift-to-width ratio
 converts one into the other the gap is about twenty-four times, wider still
 once their one-sigma resolution is matched to a 95 per cent limit. Crossing
@@ -850,7 +852,9 @@ K 4S→6S line a decade earlier (Liu & Baird, *Meas. Sci. Technol.* **12**
 740, 2001), independently confirms the same scoping: its 17 MHz linewidth
 is left undecomposed beyond a fixed 1 MHz transit-time estimate, at one
 fixed cell density and one fixed laser power, with no self-broadening or
-light-shift coefficient reported. The two K papers together, not
+light-shift coefficient reported.
+
+The two K papers together, not
 `kirankumar2011` alone, are what shows no measured s-s environmental
 coefficient exists across the same-family alkali literature surveyed
 here.
@@ -868,7 +872,9 @@ closest external precedent even to that narrower claim, REPORTED and not
 held, so the language stays scoped until it is read in full:
 - **`wieman1987`**, Wieman, Noecker, Masterson, Cooper, *PRL* **58**, 1738 (1987):
   AC-Stark lineshape asymmetry in standing waves, the foundational precedent
-  (treated as a distortion). **[CITE]**
+  (treated as a distortion).
+
+[CITE]
 - [antypas2018](lit/antypas2018.md), the AC-Stark-asymmetry elimination
   precedent (Yb) our method inverts. **[CITE]**
 - [`bruvelis2012`](lit/bruvelis2012.md), Bruvelis, Ulmanis, Bezuglov, Miculis,
@@ -904,7 +910,9 @@ sections, and for the future Paper A.
   358 K, ~37× the ~8-day permeation time constant).
 - **`yudin2020`**, *PRApplied* **14**, 024001 (2020): the power-modulation
   light-shift-suppression framework behind Andeweg. [li2024b](lit/li2024b.md) is Li, Liu, Wang and Kang, dual
-  interrogation, *Opt. Express* **32**, 2766 (2024), VERIFIED and held [the
+  interrogation, *Opt.
+
+Express* **32**, 2766 (2024), VERIFIED and held [the
   compass artifact's arXiv:2310.10175 was wrong, flagged here, and the
   related *compensation-method* preprint, first author Dou Li, is
   [li2024](lit/li2024.md), a different paper, REPORTED with no DOI]. (With
@@ -921,7 +929,7 @@ sections, and for the future Paper A.
 
 ### 8c. Radiation trapping, the 795 nm systematic
 
-**The modern Lévy-flight lineage** beyond the Holstein, Molisch and Fioretti
+The modern Lévy-flight lineage beyond the Holstein, Molisch and Fioretti
 canon (Kaiser, Passerat de Silans), for the 795 nm trapping systematic:
 - [chevrollier2012](lit/chevrollier2012.md), the canonical radiation-trapping /
   Lévy-flight review. **[CITE]** framework.
@@ -975,7 +983,7 @@ the Rb 993 nm sign is argued from it. Both anchors are **static**, so neither
 constrains the 993 nm cancellation directly. They validate the machine, not the
 answer.
 
-**The Cs 6S–8S line, the closest analogue experiment there is.**
+The Cs 6S–8S line, the closest analogue experiment there is.
 [lee2010](lit/lee2010.md) (Tsai/Chui, NCKU Tainan) and its sister
 [lee2012](lit/lee2012.md) run the same experiment in Cs: hot-cell,
 retro-reflected, cascade-detected two-photon $nS\to n'S$ with laser intensity
@@ -1005,7 +1013,7 @@ The proposed optical-nanofibre extension has no data. What it has is a
 precedent chain, and this section is it. Nothing below licenses a claim about
 this programme's own measurement.
 
-### 9a. The precedent chain for an asymmetric line near a surface
+### 9a. Precedent for an asymmetric line near a surface
 
 The bridge runs through the Gokhroo, Le Kien and Nic Chormaic lineage:
 [gokhroo2022](lit/gokhroo2022.md) (the ONF two-peak pushing-dip
@@ -1087,7 +1095,7 @@ the reference against which ONF surface/pushing effects are read.
   published core would impose, with Perrella's 10 MHz total warning that
   transit is not the whole budget in a real large-core fibre. **[CITE]**
 
-**[FEED] Pennetta et al. 2026** ([pennetta2026](lit/pennetta2026.md)), the
+[FEED] Pennetta et al. 2026 ([pennetta2026](lit/pennetta2026.md)), the
 nearest-platform result to the nanofibre extension, feeding two of its
 pillars: radial trap ~7 kHz, atom ~280 nm from the surface, and record
 Ramsey/spin-echo coherence times. It puts quantified atom–surface content
@@ -1100,7 +1108,7 @@ systems, the premise of THEORY_NOTE §3 and the M16 toolkit. Platform
 caveats: Cs not Rb, a D2 hyperfine qubit not 5S–6S, a 450 nm fibre not the
 OIST 650 nm, so the physics transfers but the numbers do not.
 
-**[FEED] Pache et al. 2026** ([pache2026](lit/pache2026.md)), the same
+[FEED] Pache et al. 2026 ([pache2026](lit/pache2026.md)), the same
 group's companion on the loading and cooling toolkit for this platform,
 naming the same residual differential light shift of the trapping fields as
 the limiting imperfection. Cs/D2 again, so the physics transfers, the
@@ -1164,8 +1172,7 @@ the group has already built, so its own published numbers are the first
 external constraint any guided row here has ever had. Every note names the
 held PDF it was read against.
 
-### 10a. The hollow-core fibre, which is the one that prices a row
-
+### 10a. The hollow-core fibre
 - [xin2018](lit/xin2018.md), *Sci. Adv.* **4**, e1701723. Cold 85Rb in a
   hollow-core photonic crystal fibre, read in transmission, the optical depth
   giving the column density directly. Two things transfer. The observable is
@@ -1195,8 +1202,7 @@ held PDF it was read against.
   transfer to a 5S-6S line. What transfers is that the trap depth is a
   line-shape parameter and not only a loading parameter. **[CITE] [FEED]**
 
-### 10b. The cooling and trapping the guided arms stand on
-
+### 10b. Cooling and trapping beneath the guided arms
 - [huang2018](lit/huang2018.md), 85Rb to the recoil limit, and
   [huang2021](lit/huang2021.md), dark-state sideband cooling in an ensemble.
   These are the temperatures the cold rows assume, achieved by this group in
@@ -1208,7 +1214,7 @@ held PDF it was read against.
 - [li2023](lit/li2023.md), a bi-color beam slower with field compensation:
   apparatus engineering, cited for the group's own practice. **[CITE]**
 
-### 10c. What the group uses the platforms for, which is not spectroscopy
+### 10c. The group's use of the platforms
 
 The interferometry and quantum-memory thread explains why the guided platform
 exists at all, and it is the reason a proposal to them must say what it adds
@@ -1229,7 +1235,7 @@ On storage, memory and mechanical squeezing,
 [kuan2016](lit/kuan2016.md), [kuan2020](lit/kuan2020.md) and
 [chen2020](lit/chen2020.md). **[CITE]**
 
-### 10d. What this section does not license
+### 10d. Limits of this section
 
 No paper here measures a two-photon 5S-6S line, in a fibre or out of one, so
 nothing below section 10a's atom number is evidence about this transition. The

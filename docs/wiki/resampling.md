@@ -2,21 +2,12 @@
 
 *[wiki index](README.md) · method*
 
-**The question.** How to get a standard error, a bias estimate or a
-confidence interval for a statistic that has no closed-form sampling
-distribution.
-**Takes.** One sample in hand, or a fitted model to simulate from, and no
-closed-form formula for the statistic's variance.
-**Gives.** The nonparametric and parametric bootstrap, the jackknife,
-jackknife-after-bootstrap, and why a block or stratified draw is needed once
-the data are not individually exchangeable.
-**Skip if.** You want to know whether one observation drives a fit. See
-[influence diagnostics](influence-diagnostics.md) instead.
+How to get a standard error, a bias estimate or a confidence interval for a statistic that has no closed-form sampling distribution. This page builds on one sample in hand, or a fitted model to simulate from, and no closed-form formula for the statistic's variance and sets out the nonparametric and parametric bootstrap, the jackknife, jackknife-after-bootstrap, and why a block or stratified draw is needed once the data are not individually exchangeable. Not covered here: to know whether one observation drives a fit. See [influence diagnostics](influence-diagnostics.md) instead.
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
 > defines every term and symbol used anywhere in this repository.
 
-## What it is
+## Definition
 
 A fitted quantity's standard error usually comes from a textbook formula
 assuming Gaussian noise and a closed-form variance expression. Resampling
@@ -60,7 +51,7 @@ the bootstrap distribution. Comparing the resamples that omit one
 observation against those that include it attributes uncertainty to
 individual observations.
 
-## What problem it solves
+## The problem it addresses
 
 Resampling substitutes computation for a derivation. A median, a ratio of
 two fitted parameters, or the maximum of several correlated residuals
@@ -77,7 +68,7 @@ use, not a generic large-sample approximation: a cutoff read from a table
 assumes the data resemble the table's asymptotic case, which a small,
 unevenly spaced dataset often does not.
 
-## Where this repository uses it
+## Application in this repository
 
 An audit of this repository's own influence diagnostics needed a threshold
 for the largest Cook's distance across the four-point width-against-density
@@ -115,7 +106,7 @@ instead draws five cells with replacement from each peak's own five,
 independently: a stratified bootstrap resampling the exchangeable unit, a
 whole peak's power sweep, not a smaller one.
 
-## What can go wrong
+## Failure modes
 
 Resampling cannot manufacture information the sample does not contain, and
 a nonparametric bootstrap on a very small sample meets that limit early: a
@@ -173,6 +164,7 @@ rng = np.random.default_rng(0)
 # takes when three conditions sit close together and one sits far off at
 # the same measured precision: the far point alone then carries most of
 # the leverage.
+
 x = np.array([1.0, 1.6, 2.2, 4.0])
 sigma = np.full_like(x, 0.05)
 n, p = len(x), 2
@@ -209,7 +201,8 @@ print("the design alone inflates the threshold this far above the rule of "
 Every snippet on these pages runs under `tests/test_wiki_snippets_run.py`,
 so a broken one fails the suite instead of misleading a reader.
 
-## Values that moved
+## Revised values
+
 An earlier interval on $\beta_\text{self}$ used a hard-coded multiplier
 without checking how many degrees of freedom the fit carried, and was
 rebuilt on the Student-t quantile those degrees of freedom call for, with
@@ -243,8 +236,7 @@ the private correction record carries the before and after.
 - [The joint fit](joint-fit.md), whose leave-one-out checks are the
   jackknife described here.
 
-## See also
-
+## Related pages
 - [Methods chapter 6](../methods/06_the_statistics.md), where the
   resampling constructions used on the record are specified.
 - [Influence diagnostics](influence-diagnostics.md), the case-deletion idea

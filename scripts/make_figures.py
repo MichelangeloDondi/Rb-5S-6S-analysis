@@ -521,7 +521,7 @@ def fig_power_sweep():
     # ROW DISCIPLINE, learned here: a first version selected the quantity
     # "S0_225mW_ub95", which is the REPLACED Wald diagnostic at 2.205 MHz and
     # says "quote the profile row instead" in its own unit field. The quoted
-    # construction is S0_225mW_ub95_profile, 0.632 MHz, status BOUND. Filter
+    # construction is S0_225mW_ub95_profile, status BOUND, its value read from the row. Filter
     # on the status column, which exists for exactly this.
     from rb5s6s import stark as _stark
     _s0_ub = next(float(x["value"]) for x in _rows("stark_sweep")
@@ -1405,7 +1405,7 @@ def fig_ruler():
     # Name the worst point once, on the canvas, with its significance.
     if departs.any():
         j = int(np.argmax(np.abs(dev) * departs))
-        ax2.annotate(f"{dev[j]:+.2f}% $\pm$ {dev_err[j]:.2f},  {sig[j]:.1f}$\sigma$",
+        ax2.annotate(rf"{dev[j]:+.2f}% $\pm$ {dev_err[j]:.2f},  {sig[j]:.1f}$\sigma$",
                      xy=(pos[j], dev[j]), xytext=(0.17, 0.035),
                      textcoords="axes fraction", fontsize=6.4, color="#cb181d",
                      ha="left", va="bottom",
@@ -1710,7 +1710,7 @@ def fig_ramp_construction():
     variables and the result is the observable the whole analysis rests on, so
     it is worth seeing rather than integrating mentally. Every curve comes from
     rb5s6s.lineshape -- no data, no fitted parameters."""
-    from rb5s6s.lineshape import stark_ramp, model_profile
+    from rb5s6s.lineshape import stark_ramp, model_profile, RAMP_SIDE, ramp_mean_over_s0
     fig, ax = plt.subplots(1, 4, figsize=(13.6, 3.5))
     S0 = 1.0
 
@@ -1759,14 +1759,17 @@ def fig_ramp_construction():
     ax[1].legend(fontsize=7, framealpha=1.0, frameon=True)
 
     # (c) the triangle itself
-    nu = np.arange(-1.6, 0.4, 0.002)
+    # the plotted span follows the package's side (O27): the kernel moved to [0, S0] and a span
+    # fixed at -1.6 to 0.4 drew nothing of it but its first 0.4
+    nu = RAMP_SIDE * np.arange(-0.4, 1.6, 0.002)[::int(RAMP_SIDE)]
     ramp = stark_ramp(nu, S0)
     # The skewness of this curve used to be printed in the panel title, from
     # the third standardised moment of the plotted density. It is a result, so
     # it moves to the caption.
     ax[2].plot(nu, ramp, color="#D55E00", lw=1.9)
-    ax[2].axvline(-2 / 3 * S0, color="0.35", lw=1.0, ls=":")
-    ax[2].annotate("mean $-\\frac{2}{3}S_0$", (-2 / 3 * S0, 2.28), fontsize=7,
+    ax[2].axvline(ramp_mean_over_s0() * S0, color="0.35", lw=1.0, ls=":")
+    ax[2].annotate("mean $%s\\frac{2}{3}S_0$" % ("+" if RAMP_SIDE > 0 else "-"),
+                   (ramp_mean_over_s0() * S0, 2.28), fontsize=7,
                    ha="center", color="0.3")
     ax[2].set_ylim(0, 2.55)
     ax[2].set_xlabel("shift $s/S_0$")
@@ -2384,7 +2387,7 @@ def fig_weak_field_limit():
 
     fig.text(0.065, 0.155,
              f"{P_MAX*1e3:.0f} mW, $Z_c$ = {ZC_M*1e3:.1f} mm, "
-             f"$S_0$ = {s0_here:.2f} MHz at the measured waist. Sign flip at "
+             f"$S_0$ = {s0_here:.2f} MHz at the waist convention. Sign flip at "
              "$Z_c/z_R \\approx 1.12$.",
              fontsize=7.8, color="0.3", va="top")
     _footer(fig, "figure 24 | scripts/run_geometry_design.ramp_moments "
@@ -4943,8 +4946,12 @@ def fig_third_cumulant():
             color="#185FA5", lw=1.8, label=r"$|\kappa_1| = \frac{2}{3}S_0$")
     ax.plot(S, [ramp_moment_contributions(s)["excess_var"] for s in S],
             color="#0F6E56", lw=1.8, label=r"$\kappa_2 = S_0^2/18$")
-    ax.plot(S, [ramp_moment_contributions(s)["kappa3"] for s in S],
-            color="#993C1D", lw=2.2, label=r"$\kappa_3 = S_0^3/135$")
+    # THE MAGNITUDE, ON A LOG AXIS. kappa3 is NEGATIVE on the blue side (O27, 2026-09-17) and a
+    # negative value does not render on a log scale at all: the curve simply vanished, under a
+    # legend that already said it was a magnitude. Found by reading the sign flip's whole
+    # population rather than the figure it was drawn on (2026-09-17).
+    ax.plot(S, np.abs([ramp_moment_contributions(s)["kappa3"] for s in S]),
+            color="#993C1D", lw=2.2, label=r"$|\kappa_3| = S_0^3/135$")
     ax.set_yscale("log")
     ax.set_ylim(1e-6, 30)
     ax.set_xlabel("$S_0$, the ramp depth  (MHz)")
@@ -5142,7 +5149,10 @@ def fig_third_cumulant_measured():
 
     # --- panel C: the gap, and what closes it ------------------------------
     ax = fig.add_subplot(gs[:, 2])
-    k3_pred = ramp_moment_contributions(s0_bound)["kappa3"]
+    # the MAGNITUDE again, for the same reason as panel B of fig30, and here it also kept the
+    # arithmetic real: gap would be negative and gap ** (1/3) a complex number, which the format
+    # string below raises on rather than draws.
+    k3_pred = abs(ramp_moment_contributions(s0_bound)["kappa3"])
     err225 = []
     for peak in ("4154", "4192"):
         k3s = [cumulants(xx, vv)[2] for xx, vv in traces(peak, 225)]
@@ -5343,10 +5353,13 @@ def fig_achieved_vs_achievable():
     2026-08-27 is the single calibrated two-sigma, for two reasons, and this
     docstring gave neither. FIRST, the strength is a range, Delta_chi2 of 4.1
     to 5.7 across the envelope. SECOND, and the larger, on this construction
-    the exclusion does not survive leaving one peak out. No count of arms is
-    quoted: each lopo_dchi2_pred arm is a fit with one peak removed against
-    its own minimum, so the arms do not share the full profile's derivative.
-    Carrying them to 1.618 needs no curvature model. Each arm's own committed pair, at 1.545 and at 2.62, brackets it between its value at 1.545 and that value plus its own secant slope across the gap, giving 4121 in [8.75, 10.05], 4192 in [2.27, 2.77], 4154 in [1.12, 1.35] and 4207 in [0.61, 0.86]. So 4121 clears at both ends, 4154 and 4207 fail at both ends, and 4192 straddles the threshold and is not callable.
+    the exclusion does not survive leaving one peak out. Each lopo_dchi2_pred
+    arm is a fit with one peak removed against its own minimum, so the arms do
+    not share the full profile's derivative. The arms were evaluated at the joint
+    fit's kappa_pred (stark_joint.csv) and this record's own coefficient is
+    stark_sweep.csv's kappa_pred; each arm's committed pair at the joint fit's
+    coefficient and at 2.62 brackets it across that gap, and RESULTS.md C3f
+    computes the brackets and the verdict from the rows rather than typing them.
     The fuller full_dataset_fit construction is stronger and keeps all four.
 
     The reason this docstring used to give, that the limit moves by a quarter

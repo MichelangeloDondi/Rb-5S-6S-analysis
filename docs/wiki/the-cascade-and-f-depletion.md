@@ -2,21 +2,12 @@
 
 *[wiki index](README.md) · concept*
 
-**The question.** Why an observed line amplitude is not its transition
-strength, and what the de-excitation cascade does to the ground state it
-returns the atom to.
-**Takes.** A driven hyperfine level, a cascade, and a transit time.
-**Gives.** The ground-level populations under repeated excitation, the
-depletion that reduces an observed amplitude, and the reason the four lines
-of this experiment deplete at different rates.
-**Skip if.** The question is which lines exist and how strong they are in the
-first place, which is
-[hyperfine populations and branching](hyperfine-populations-and-branching.md).
+Why an observed line amplitude is not its transition strength, and what the de-excitation cascade does to the ground state it returns the atom to. This page builds on a driven hyperfine level, a cascade, and a transit time and sets out the ground-level populations under repeated excitation, the depletion that reduces an observed amplitude, and the reason the four lines of this experiment deplete at different rates. Not covered here: the question is which lines exist and how strong they are in the first place, which is [hyperfine populations and branching](hyperfine-populations-and-branching.md).
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
 > defines every term and symbol used anywhere in this repository.
 
-## What it is
+## Definition
 
 A two-photon transition drives an atom out of one ground hyperfine level. The
 atom does not stay excited: it decays through a cascade, and the hyperfine
@@ -31,7 +22,7 @@ observed amplitude below what the transition strength alone would predict.
 The quantity that governs it is the cascade branching $f$: the probability
 that one excitation-and-decay cycle ends in the undriven level.
 
-## What problem it solves
+## The problem it addresses
 
 Without the cascade, an amplitude that falls with power or with time in the
 beam has two candidate readings, saturation and depletion, and the two scale
@@ -61,7 +52,7 @@ toward zero, where $r$ is the return rate per cycle. This experiment has no
 repumping, so the unrepumped limit is the one that applies, and the driven
 level empties monotonically.
 
-## Why the four lines differ, and why it is not the degeneracy weight
+## The origin of the difference between the four lines
 
 The branching is not the naive degeneracy weight of the destination level.
 Selection rules block specific paths: an atom in $5P_{3/2}$ $F=0$ of
@@ -90,7 +81,7 @@ roughly 1.7 between the extremes. This ordering is a prediction about
 relative amplitudes, distinct from the order the observed amplitude
 departure follows.
 
-## Why populations suffice, and what would break that
+## The sufficiency of populations, and its limits
 
 This is a rate model over populations, not a density-matrix solve, and the
 justification is specific. The two-photon operator for two identical
@@ -105,7 +96,7 @@ ellipticity in the drive, or a treatment of the standing wave that resolves
 its polarisation structure. None is present in the model of record, and
 each is a reason to revisit.
 
-## A sideband is depleted at its own rate
+## Per-sideband depletion rates
 
 Depletion counts excitation cycles, so a line driven through a modulated
 comb depletes tooth by tooth and not as one line. A tooth carrying a
@@ -127,8 +118,7 @@ the one term a depth ladder is meant to expose. The correction is in
 teeth to their physical line, and leaves every single-line output
 unchanged.
 
-## What can go wrong
-
+## Failure modes
 - A branching read as a degeneracy weight. The blocked paths are the point,
   and the naive weight is wrong by factors of $8/9$ and $4/9$ on the two legs.
 - The intermediate levels treated as populated statistically. They are not.
@@ -140,7 +130,7 @@ unchanged.
   grow with power, and they are separated by their different power laws, which
   is what [saturation](saturation.md) and the acquisition chapter set out.
 
-## Which photon is counted, and why the filter is an experimental control
+## The counted photon and the filter as a control
 
 The cascade emits twice, and the two photons leave the cell under different
 rules. The first leg, 6S to 5P, emits near 1324 and 1367 nm, carrying 34.1
@@ -184,7 +174,7 @@ computed. What it costs is a detector that reaches past 900 nm.
 `rb5s6s/detection.py` carries the three channels, with wavelengths computed
 from the term energies instead of hardcoded.
 
-## Where this repository uses it
+## Application in this repository
 
 `rb5s6s/cascade.py` implements the population model, with the invariants
 above as its tests. The exact manifold computation behind the table is
@@ -219,8 +209,7 @@ for peak, f in sorted(BRANCHING_F.items()):
 - [`../lit/steck_rb.md`](../lit/steck_rb.md), the D-line branching ratios
   and hyperfine constants the population model draws on.
 
-## See also
-
+## Related pages
 - [Hyperfine populations and branching](hyperfine-populations-and-branching.md),
   the thermal starting populations this page's cycles act on.
 - [Saturation](saturation.md), the other mechanism that bends amplitude

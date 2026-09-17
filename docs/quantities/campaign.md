@@ -2,32 +2,23 @@
 
 *[quantities index](README.md) · synthesis*
 
-**The question.** The dossiers are written one quantity at a time, and a
-measurement session is not. Which re-centrings move which quantities, which
-ones move several at once, and what would one session actually buy?
-**Takes.** The dossiers and the plan chapters. Nothing new.
-**Gives.** The coupling between the quantities, the leverage of each
-re-centring across all of them, a comparison of candidate sessions, and the
-smallest version of each that is already worth running.
-**Skip if.** The question is the ordering of the whole programme by leverage,
-which is [big picture chapter 5](../big_picture/05_next-vapour-cell.md), or the
-detailed design of one block, which is [the plan](../PLAN.md).
+The dossiers are written one quantity at a time, and a measurement session is not. Which re-centrings move which quantities, which ones move several at once, and what would one session actually buy? This page builds on the dossiers and the plan chapters. Nothing new. It sets out the coupling between the quantities, the leverage of each re-centring across all of them, a comparison of candidate sessions, and the smallest version of each that is already worth running. Not covered here: the question is the ordering of the whole programme by leverage, which is [big picture chapter 5](../big_picture/05_next-vapour-cell.md), or the detailed design of one block, which is [the plan](../PLAN.md).
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md) defines
-> every term and symbol used anywhere in this repository.
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
+> defines every term and symbol used anywhere in this repository.
 
-## The quantities are one coupled system
+## The quantities as one coupled system
 
 Reading the dossiers separately gives a misleading picture of the experiment,
 because the quantities are not independent and the couplings are the reason a
 single session can be efficient.
 
-**The waist is the hub.** It sets the intensity, and therefore the light shift,
+The waist is the hub. It sets the intensity, and therefore the light shift,
 quadratically. It sets the transit width, inversely. Those two enter the same
 composite line, so an error in the waist moves the light-shift prediction and
 the transit kernel in the same stroke and in different directions. It is one
-number that two dossiers both depend on, measured on this bench by Rajasree
-but never re-read during the campaign itself, which is why it is the first
+number that two dossiers both depend on, taken from the lineage profile rather
+than measured on this bench, which is why it is the first
 item of
 [big picture chapter 5](../big_picture/05_next-vapour-cell.md).
 
@@ -51,7 +42,7 @@ shift read from line centres is a measurement of the axis as much as of the
 atom, which is why the fixed lock appears in the light-shift dossier rather
 than only in a calibration chapter.
 
-## What each re-centring moves
+## Effect of each re-centring
 
 Qualitative, and deliberately so. A numeric leverage would need a simulation
 per cell, and only the cells marked with a computed factor have one. Every
@@ -74,11 +65,11 @@ entry points at the section that argues it.
 
 Two readings of that table matter more than any single cell.
 
-**The first two rows carry most of the programme.** A beam profile and a fixed
+The first two rows carry most of the programme. A beam profile and a fixed
 lock between them touch five of the seven quantities, and neither requires
 apparatus that does not exist. The lock is now available rather than proposed.
 
-**The external laser-width calibration is the only row that buys by removing.**
+The external laser-width calibration is the only row that buys by removing.
 Every other re-centring raises a sensitivity and brings a new systematic with
 it. That one takes a competitor out of the fit and is the only cell in the table
 with a computed factor behind it, the 1.7 in
@@ -97,21 +88,21 @@ is computed, because the inputs to one do not exist.
 | **C. Extended temperature ladder** | 150 and 170 C with an absorption channel, extending the density lever about fivefold and measuring rather than inferring the density | two days | absorption path on the cell | blackbody and thermal gradients broadening the line, which would make the added points uninterpretable |
 | **D. External laser-width calibration** | the sigma-gamma ridge broken from outside the fit | one day, mostly setup | a delayed self-heterodyne or cavity reference | that the ridge is not what limits the bound, which would be a real result and a negative one |
 
-**The efficient order is A, then B or D, then C.** A is the cheapest, feeds
+The efficient order is A, then B or D, then C. A is the cheapest, feeds
 every other session, and is the only one that can invalidate the joint
 constructions the record already carries. B and D are independent of each other
 and buy different things, an identifying channel and a broken degeneracy
 respectively. C is the most expensive and the most exposed to a systematic that
 would spoil it, so it goes last and only after A has fixed the geometry.
 
-**The minimum entry into the whole programme is session A at its minimum
-viable version**, which is one profiler measurement at three powers with the
+The minimum entry into the whole programme is session A at its minimum
+viable version, which is one profiler measurement at three powers with the
 EOM in the beam and thermalised. That is an afternoon, it converts the
 programme's largest open systematic from set point to measured, and it can return
 a result that changes what the rest of the plan should be. A programme that can
 be entered that cheaply should be.
 
-## What the equipment can already do
+## Present capability of the equipment
 
 This section is deliberately incomplete. The apparatus record establishes what
 was used in 2025, and what a bench can do today is the owner's knowledge rather
@@ -130,8 +121,7 @@ bench confirmation is not evidence of feasibility.
 | a 12-bit or better acquisition | **already delivered**: the campaign's own files carry an 11.86-bit grid from the Agilent's High Resolution mode, measured 2026-08-19, and the LeCroy channel export is the eight-bit one | no. The open item moved: holding one vertical range across the ladder, feasible at a dither ratio of 0.99 with the bright range set tight, per [plan 7](../plan/07_acquisition-settings.md) |
 | a measured detector response curve | bounded but never traced: the rehearsal's finer-sampled records put the chain faster than 10 us at the 10^6 V/A gain, and the range-to-range gain remains the leading candidate for the amplitude departure | yes, converting the bound into a curve, and it needs no atoms, only a calibrated variable source |
 
-## See also
-
+## Related pages
 - [The AC-Stark light shift](ac-stark-light-shift.md) and
   [collisional self-broadening](self-broadening.md), the two written dossiers
 - [Big picture chapter 5](../big_picture/05_next-vapour-cell.md), the whole

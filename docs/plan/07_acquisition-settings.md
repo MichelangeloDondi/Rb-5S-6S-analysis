@@ -1,13 +1,9 @@
 *Chapter 7 of 12 of [the plan](../PLAN.md)*
 
-**The question.** What span, record length and sweep rate does the next session need?
-**Takes.** Nothing beyond the block register of chapter 6.
-**Gives.** The settings, and the simulations that fix each one.
-**Skip if.** You want what was actually logged in 2025, which is chapter 8.
+This chapter builds on nothing beyond the block register of chapter 6 and sets out the settings, and the simulations that fix each one. What was actually logged in 2025 is chapter 8.
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
-> explains the measurement in six sentences, then defines every term
-> and symbol used anywhere in this repository.
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
+> defines every term and symbol used anywhere in this repository.
 
 > **Question.** What span, record length and sweep rate does the next session need?
 > **Design.** A span wide enough to curve the pedestal, at a record length set by points across the line.
@@ -15,15 +11,14 @@
 > **Success.** An injected pedestal is recovered at the stated span and record.
 > **Residual uncertainty.** The detection chain's own noise law, which must be re-measured on the day.
 
-## 10a. Acquisition settings, and why 2025's choices bounded what could be learned
+## 10a. Acquisition settings and their consequences
 
 Added 2026-08-15, and every number below is derived from the committed
 constants rather than recalled. This section exists because a full day of
 analysis ended against limits that were set at acquisition time and could not
 be undone afterwards. None of them needed new hardware.
 
-### What 2025 actually acquired
-
+### The 2025 acquisition
 | quantity | 2025 value | source |
 |---|---|---|
 | record length | 2000 points | `constants.TRACE_N_POINTS` |
@@ -40,7 +35,7 @@ not the resolution, and every open question below is a span question.
 
 ### The three limits this cost, each measured
 
-**One.** The out-of-window band that carries the ridge-breaking information
+**The first limit.** The out-of-window band that carries the ridge-breaking information
 was 19 to 36 MHz, seventeen megahertz wide, out of a 43 MHz half-span. The
 lower edge is the fit half-width and the upper edge stays clear of the
 retrace mirror. That band was enough to show the band prefers a lower
@@ -75,7 +70,7 @@ distrust the core fit. The band cannot arbitrate the collisional width while
 its own baseline is an extrapolation rather than a measurement, and the span
 below is what turns that baseline into data.
 
-**Two.** The co-propagating Doppler pedestal is 942 MHz FWHM at 130 C
+**The second limit.** The co-propagating Doppler pedestal is 942 MHz FWHM at 130 C
 (`projections.csv`, `input_pedestal_width`). Across the entire 85 MHz span it
 varies by under half a per cent of itself, so within these traces it is a
 constant, absorbed by the free per-trace background. It can be neither
@@ -102,13 +97,13 @@ finding its shape as an open question rather than a confirmation exercise.
 What the pedestal is good for, once a wide span makes it visible, is set out in
 section 10c.
 
-**Three.** The retrace mirror. The triangular ramp images the line about its
+**The third limit.** The retrace mirror. The triangular ramp images the line about its
 turning point, so a line sitting off centre in the sweep produces a copy at
 twice its offset. In 2025 that copy sits near 40 MHz, which is why
 `FIT_HALFWIDTH_MAX_MHZ` caps the fit window at 25. Centring the line in the
 sweep, or scanning one direction only, returns the whole half-span for free.
 
-### What the next campaign should set, with the arithmetic
+### Settings for the next campaign
 
 Computed by `scripts/run_widescan_design.py` and written up with the
 forward-modelled trace and the on-the-day checks in
@@ -146,7 +141,9 @@ decision and not two, because widening the span at a fixed record thins the
 sampling of the very line being measured, and the quantity to hold is points
 across the line rather than points per trace. Simulated at this span with the
 pedestal fitted correctly, 10000 points is 22 across the line and fails a
-frozen recovery criterion, 20000 passes, and 40000 passes with margin. An
+frozen recovery criterion, 20000 passes, and 40000 passes with margin.
+
+An
 earlier version of this bullet specified 10000, which is the failing member
 of that set. At the 2025 record of 2000 points the span and shape
 requirements are mutually exclusive at any span.
@@ -210,7 +207,7 @@ at a resolvable offset, and record which it is. Keep the per-point dwell no
 shorter than 2025's 0.5 ms unless the detection bandwidth is checked against
 it, since the cusp is a time-domain feature and a fast scan can smear it.
 
-**The deep trace, and what it does and does not settle** (owner design
+The deep trace, and what it does and does not settle (owner design
 question, 2026-09-06. The first form of this block was struck the same day,
 see the correction record). The bench records 2000 points in a 1.000 s window
 at a 0.5 ms dwell, so half a million points is a real setting. What it buys is
@@ -220,7 +217,7 @@ A budget in triangles therefore rests on the two-pair span and on a sampling
 rule, and neither the budget nor the sawtooth-against-triangle preference is
 re-stated here until a producer owns it. Chapter 12 carries it as an open item.
 
-**The rate ladder is a scope fact and it stands.** Half a million points is
+The rate ladder is a scope fact and it stands. Half a million points is
 reached at three very different dwells:
 
 | setting | dwell | trace | rate |
@@ -229,8 +226,8 @@ reached at three very different dwells:
 | a middle | 20 us | 10 s | 600 MHz/s |
 | keep the 1 s window | 2 us | 1 s | 6000 MHz/s |
 
-**What a rate ladder separates, by the power of the rate and the symmetry of
-the two ramps.** Read the up and down sweeps against the rate: the terms
+A rate ladder separates the terms by the power of the rate and the symmetry of
+the two ramps. Read the up and down sweeps against the rate: the terms
 constant in rate and equal on both ramps are the physics, the terms linear in
 rate and opposite on the two ramps are the lag, the detection chain's and the
 cascade's together, the terms linear in rate and equal on both ramps are the
@@ -242,8 +239,8 @@ the cascade's share of the lag fixed by the two lifetimes, one ladder
 separates the chain from the hysteresis from the sampling. From an external
 reading of 2026-09-06, on rung 1.
 
-**What the fast end buys is drift immunity, and the rate that would justify it is not
-measured.** The repaired lock's residual is an open item and the record spans
+What the fast end buys is drift immunity, and the rate that would justify it is not
+measured. The repaired lock's residual is an open item and the record spans
 it instead of valuing it, from zero to 0.04 MHz per minute, which across a
 250 s trace is a total drift anywhere between nothing and 0.167 MHz. That is a
 factor of forty of ignorance, so no single smear figure belongs in this
@@ -252,11 +249,13 @@ sweeps necessary", rests on reading the 2025 record as a 0.19 MHz per minute
 straight line, and [chapter 1](01_aim-and-failure-modes.md) retires exactly
 that reading. The root cause there was cavity-lock dropouts across a two-hour
 etalon thermal transient, not a drift rate. **The two chapters disagree and
-neither cites the other**. The lock residual is the open item that settles it,
+neither cites the other**.
+
+The lock residual is the open item that settles it,
 and until it exists the sweep timing is argued from structure and not from a
 smear.
 
-**The structural argument does not need the rate.** A single crossing cannot
+The structural argument does not need the rate. A single crossing cannot
 separate a drift from the peak spacings it displaces. Two crossings determine a
 centre and a slope with no degree of freedom left to check them. With `2n`
 crossings the drift is a fitted trend in acquisition order carrying `2n - 2`
@@ -265,8 +264,8 @@ and the order of drift removable. They buy no precision: the photons are fixed,
 so each crossing's uncertainty grows as the root of the count and averaging
 removes exactly that much again.
 
-**And the same record contrasts two powers inside one display epoch, which is
-the obstruction the 2025 centre channel could not clear.** The record's own
+And the same record contrasts two powers inside one display epoch, which is
+the obstruction the 2025 centre channel could not clear. The record's own
 [revival note](../notes/centre_channel_cannot_be_revived.md) locates that
 channel's failure in the power order: every multi-power epoch ran monotone in
 power, so the drift and the pull were one regression column. Alternating the
@@ -276,7 +275,7 @@ the campaign morning had without the frame move that ate it there. The
 centre channel's precision at that design is the pull channel of the
 three-channel forecast, and it needs no absolute frequency reference.
 
-**The ladder is not free, and the earlier claim that it was is withdrawn.** A
+The ladder is not free, and the earlier claim that it was is withdrawn. A
 scanned width integrates laser noise from one over the crossing time up to the
 per-point sampling rate, so **the observed width moves with the rate**
 (`docs/wiki/laser-frequency-noise-and-the-linewidth.md`, and chapter 6 uses exactly
@@ -285,11 +284,13 @@ is not that cost: chapter 9 once quoted a 24.6 per cent inflation at 0.94 MHz
 per ms, which no lag model in the tree reproduces (the wiki illustration gives
 three per cent as its snippet prints on its own 2.3 MHz Gaussian at its
 assumed 0.25 ms, about one per cent on the record's line), and on the chain bound chapter 10 holds
-the lag costs a hundredth of a per cent at that rate. A rate ladder is
+the lag costs a hundredth of a per cent at that rate.
+
+A rate ladder is
 therefore an instrument for the laser width and for the drift's shape, bought
 at the laser-noise cost above, and not a free axis.
 
-**What binds the fast end** is the piezo's own response and, under lock, the
+The binding constraint at the fast end is the piezo's own response and, under lock, the
 servo's ability to follow. Both are apparatus items in chapter 12. The finite
 6S and 5P lifetimes bind far above any of these settings. The record carries no
 defended coefficient for either ceiling, so none is quoted here.
@@ -306,12 +307,12 @@ ramp monitor (section 3 item 0), and a horizontal setting that is not
 touched inside a block, since the 2025 window moved 58 times across the
 campaign and line offsets are only meaningful within one scope-knob epoch.
 
-### The two cheap measurements that would collapse a whole degeneracy
+### Two measurements against the degeneracy
 
 Both are session-level, neither is a scan setting, and either one alone
 retires a question that cost a full day of analysis on 2026-08-15.
 
-**Laser linewidth, once, by beat note or self-heterodyne.** The fitted
+Laser linewidth, once, by beat note or self-heterodyne. The fitted
 `sigma_laser` is 1.50 to 1.73 MHz on the transition axis. This bench's own
 records put the laser at 0.19 to 0.47 MHz there. Of the eight wavemeter
 records, only one falls inside the 17 to 18 July campaign (`APPARATUS.md`
@@ -330,7 +331,7 @@ supplies the missing Gaussian. Two beams at angle theta to antiparallel carry
 pedestal already carries `k_eff = 2k`. Closing the budget in quadrature needs
 **3.2 to 3.5 mrad**, about 0.19 degrees.
 
-**That paragraph assumed the pivot sits at the atoms, and it does not.** It read:
+That paragraph assumed the pivot sits at the atoms, and it does not. It read:
 a 3.2 mrad tilt walks the return beam 41 microns over one Rayleigh range, which
 is 0.64 of a waist, so the beams stay overlapped and the Doppler-free peak does
 not refute the candidate. The retro mirror sits about 50 mm from an f = 150 lens
@@ -347,7 +348,7 @@ disfavoured as the whole answer: `docs/plan/12` carries the derivation and the
 self-limiting argument. It is not excluded as a contributor. Measuring the tilt
 is still worth an afternoon, and the missing width stays open.
 
-**Third, and it is cheaper than either: the wing-noise discriminator.**
+Third, and it is cheaper than either: the wing-noise discriminator.
 Half an hour, no atoms needed on the line. Detune far off resonance and
 record the baseline against power, which isolates the light-linked $a$
 term from anything the line contributes. Then record the monitor
@@ -361,30 +362,30 @@ prize is the same eight-to-ten-times growth the budget measures across the
 ladder, in the region where the pedestal and the band excess live, and
 this record cannot currently tell the two mechanisms apart.
 
-**And while the ruler is out:** measure u and v for the collection lens.
+And while the ruler is out: measure u and v for the collection lens.
 `config.py` derives the axial field of view as Z_c = L_par / 2m and its M is
 an estimate, so Z_c is bracketed at 2.0 to 2.4 mm. The RECOLLECTION of the
 f = 18 mm lens at about 50 mm from the PMT implies
 M = 1.78 and Z_c = 3.4 mm, outside that bracket. Two ruler readings replace
 an estimate that every ramp-geometry moment depends on.
 
-### The vertical range is a physics setting, measured 2026-08-18
+### The vertical range as a physics setting
 
 Everything above concerns the horizontal axis and the record length. The
 vertical axis turns out to carry a systematic that nothing in the record had
 looked for, and it was found by reading the quantisation step of the stored
 samples rather than by any documented setting.
 
-**Both 2025 sessions changed the vertical range at every rung of every power
-ladder.** In the 2025-07-04 rehearsal the quantisation step grows by a factor
+Both 2025 sessions changed the vertical range at every rung of every power
+ladder. In the 2025-07-04 rehearsal the quantisation step grows by a factor
 of 35 across the ladder while 172 to 210 digitiser steps are used per cell, so
 the range tracked the signal. In the campaign the step ratio across a ladder
 is 48 on 993.4121 nm, 112 on 993.4207 nm, 191 on 993.4154 nm and **596 on
 993.4192 nm**, against a signal that spans only about 80, and the digitiser
 steps actually used run from 486 to 3583.
 
-**A power ladder acquired that way is not one measurement at five powers. It
-is five measurements on five different instrument ranges**, and the fitted
+A power ladder acquired that way is not one measurement at five powers. It
+is five measurements on five different instrument ranges, and the fitted
 power-law exponent inherits whatever range-to-range gain and offset error the
 oscilloscope carries. Because each hyperfine line's brightness decides which
 ranges it traverses, the resulting bias is ordered by brightness, which is
@@ -417,15 +418,15 @@ measures and could not otherwise explain.
    only gain record anywhere in the programme is one token in one session's
    filenames.
 
-### The ladder order, and the one change that costs nothing
+### The ladder order
 
 In the campaign the power descends with time, so every quantity measured
 against power is also measured against elapsed time and no analysis can
 separate them. That single choice is why the concave width against power
 cannot be established, and it can be removed for free.
 
-**Randomise or interleave the rung order within each ladder, and record the
-seed.** Run at least one ladder in each direction per session, so that the
+Randomise or interleave the rung order within each ladder, and record the
+seed. Run at least one ladder in each direction per session, so that the
 direction test exists by design. The archive shows what it is worth twice
 over. The rehearsal's alternating directions, run that way by convenience
 rather than by intent, are the only reason the amplitude departure could
@@ -439,7 +440,7 @@ reconciliation are in
 [the methods record](../methods/07_what_we_found.md), and the
 campaign's axis stays unseparated.
 
-### Where the noise actually comes from, measured rather than assumed
+### Sources of the noise, measured
 
 The committed noise law is $\sigma^2 = a^2 + bV + cV^2$ per condition, with
 $a$ the signal-independent term, $b$ the shot-like term proportional to
@@ -477,14 +478,14 @@ of each term measured in
     four times smaller than raw ones, which is already carried in the
     analysis and matters here for a different reason, below.
 
-**What this means for reducing noise, in order of leverage.** Collect more
+**Consequences for reducing noise, in order of leverage.** Collect more
 light, because the dominant term scales as the square root of the photon
 number and nothing else in the budget responds. Spend nothing on amplitude
 stabilisation. And at the dim end, where the floor is a third of the variance,
 either raise the signal or move to counting, which
 [photon counting](../wiki/photon-counting.md) sets out.
 
-**The floor is not a dark floor, and that changes what to do about it.** The
+The floor is not a dark floor, and that changes what to do about it. The
 noise law's $a$ term is nominally the zero-signal noise, and across the power
 sweep it rises with power on every line, by 4.1 to 9.9 times from 25 to 225
 mW. Two checks say what it is. It sits 6 to 485 times above the digitiser's
@@ -496,8 +497,8 @@ optical background**, dominated at the top of the range by a background that
 scales roughly as the square of the power, which is what a two-photon signal
 does.
 
-**Which background, and the first candidate is refuted by its own
-arithmetic.** The implied background level is $a^2/b$, which runs at a median
+The background in question, and the first candidate is refuted by its own
+arithmetic. The implied background level is $a^2/b$, which runs at a median
 of 3.4 per cent of the narrow line's peak height across the twenty committed
 cells. The Doppler pedestal is the obvious candidate and it is far too small:
 the narrow line carries about twice the pedestal's area and is 175 times
@@ -505,7 +506,7 @@ narrower than the 941 MHz Doppler width at 130 C, so the pedestal's height
 should be about 0.29 per cent of the line's, and the measurement is **11.9
 times larger**. The pedestal is present and it is not what sets the floor.
 
-**Radiation trapping was the next candidate and it is refuted too.** Trapping
+Radiation trapping was the next candidate and it is refuted too. Trapping
 is set by the optical depth, which grows with density, while the excitation is
 not, so the temperature sweep separates them. Across 70, 90 and 110 C at fixed
 power the floor rises with density as a power of
@@ -524,7 +525,7 @@ exponent hides a per-peak spread, from
 ordered by line height, which `scripts/run_noise_floor_scaling.py` carries
 beside the pooled value.
 
-**The floor is a directly measured quantity, not an artefact of the fit.**
+The floor is a directly measured quantity, not an artefact of the fit.
 The producer already computes the noise in the off-line region with no fitting
 at all and prints its agreement with the fitted floor, and across all 32
 conditions that ratio has a median of **0.953** in a range of 0.884 to 1.086.
@@ -532,14 +533,14 @@ The committed column is `sigma_wing_direct_V`. So the floor is the wing noise,
 measured, and the same power scaling appears in that unfitted column directly,
 at log-log exponents of 0.67 to 1.10 against power.
 
-**So there is a real optical background and both candidates for it have
-failed.** Combining the two sweeps, the background goes roughly as the atom
+So there is a real optical background and both candidates for it have
+failed. Combining the two sweeps, the background goes roughly as the atom
 number to the first power and the laser power squared, which is the scaling of
 the two-photon excitation rate itself. It is therefore two-photon fluorescence
 that is not in the narrow line, which is what the same-beam pedestal is, and
 the pedestal's magnitude is short by a factor of twelve.
 
-**That discrepancy has an arithmetic consequence worth stating.** For the
+That discrepancy has an arithmetic consequence worth stating. For the
 pedestal alone to supply the measured background, the narrow-to-pedestal area
 ratio would have to be 0.168 rather than the value near 2 that a good retro
 reflector gives, and since that ratio is $4\rho/(1+\rho^2)$ it would require a
@@ -550,8 +551,8 @@ the same-beam pedestal. **This measurement cannot separate those two**, and
 saying which it is needs the pedestal measured directly, which is what the
 wide-scan block in this chapter already exists to do.
 
-**A second channel disagrees with the first, and the disagreement is the most
-useful thing in this section.** A constant background is absorbed by the
+A second channel disagrees with the first, and the disagreement is the most
+useful thing in this section. A constant background is absorbed by the
 per-trace baseline in the mean, but not in the variance, so the fitted
 baseline level and the wing noise are two independent measurements of the same
 quantity. They do not agree. The background implied by the wing noise exceeds
@@ -564,7 +565,7 @@ noise of the off-line signal**, by about 1.6 times in sigma at the median and
 more at high power, so a component of it is not photon statistics on the
 visible background at all and it grows with laser power.
 
-**No mechanism is named for it here, deliberately.** Three interpretations of
+No mechanism is named for it here, deliberately. Three interpretations of
 this floor were proposed and refuted in a single evening, each because an
 interpretation was reached for before the record's own measurements were
 exhausted. What is established is a measurement: the wing noise is real,
@@ -572,7 +573,7 @@ directly measured, rises with power, exceeds the shot noise of the visible
 background, and is not accounted for by the same-beam pedestal at the accepted
 retro ratio.
 
-**This is where analysis stops and the bench starts.** Three measurements
+This is where analysis stops and the bench starts. Three measurements
 would close it, none of them expensive. A wide scan that resolves the pedestal
 separates the background's size from the retro ratio. A detector response
 curve with a calibrated source separates chain noise from optical noise. And a
@@ -582,7 +583,7 @@ atom-dependent background outright. Until at least one of them exists, further
 analysis of these twenty cells will keep producing interpretations that the
 next check refutes.
 
-**None of this changes the practical conclusions above**, which rest on the
+None of this changes the practical conclusions above, which rest on the
 measurement rather than on its interpretation: the floor is not electronic,
 not the digitiser, and rises with signal, so a quieter amplifier addresses
 nothing and photons are the only lever.
@@ -610,7 +611,7 @@ property of the detection chain rather than of the condition.
     cent of its maximum. **That lever is exhausted** and is worth stating so
     nobody spends a session on it.
 
-### Which acquisition knob actually controls the precision
+### The acquisition knob controlling precision
 
 The Sobol decomposition queued above is computed by
 `scripts/run_sobol_acquisition.py` into `results/sobol_acquisition.csv`,
@@ -657,7 +658,7 @@ sigma. Every
 ranking survives both corrections, and with exact values the ordering
 is no longer a statistical statement.
 
-**Power controls two thirds of it through its total effect** (alone it
+Power controls two thirds of it through its total effect (alone it
 carries [0.428](../../results/sobol_acquisition.csv "ref:sobol_acquisition:sobol:S1_power")), which is the arithmetic behind the
 recommendation to work at the top of the ladder and the reason the saturation
 and light-shift costs of doing so are the binding constraint rather than the
@@ -669,8 +670,8 @@ repeats are the most expensive thing on the list in session time and buy the
 least precision per hour, while remaining essential for a different reason:
 they are the only source of the within-cell error every fit here uses.
 
-**Two things this table does not say, both of which the next section
-measures.** It ranks the width of the line, so it serves what improves the
+Two things this table does not say, both of which the next section
+measures. It ranks the width of the line, so it serves what improves the
 peak, and it assumes repeats are independent. Neither holds for the open
 questions. The pedestal and the band excess live in the wings, where the
 light-linked $a$ term rules and the ranking is different: attacking the
@@ -679,7 +680,7 @@ the ladder, more than any index in this table. And back-to-back repeats
 carry a condition-common share that no fit removes, so their real index is
 lower still until the schedule interleaves them.
 
-### Three ways to buy photons, and they are not equivalent
+### Three routes to more photons
 
 The statement that a shot-limited measurement needs more photons is true and
 almost useless, because it does not say which way to get them. There are
@@ -695,12 +696,12 @@ the signal, which is the square root of the signal.
 | double the repeats | doubled | **times 1.41** |
 | double the power | quadrupled | **times 2.00** |
 
-**Slowing the scan and adding repeats are exactly equivalent in photons.**
+Slowing the scan and adding repeats are exactly equivalent in photons.
 Time is time, and the scan rate only decides how that time is distributed
 across frequency. Anyone choosing between them is choosing on other grounds,
 and there are strong ones below.
 
-**Power is in a different class.** The two-photon signal goes as the square of
+Power is in a different class. The two-photon signal goes as the square of
 the power while the shot noise goes as the square root of the signal, so the
 signal-to-noise goes as the power itself, linearly. Doubling the power is
 worth quadrupling the time. This is the arithmetic behind the Sobol
@@ -709,8 +710,8 @@ decomposition above putting power at a total index of
 [0.1140](../../results/sobol_acquisition.csv "ref:sobol_acquisition:sobol:ST_repeats"), and it is why the binding constraints at the top of a power ladder
 are saturation and the light shift rather than noise.
 
-**And when time is the thing being spent, spend it on repeats rather than on a
-slower scan.** They are equal in photons and unequal in everything else.
+And when time is the thing being spent, spend it on repeats rather than on a
+slower scan. They are equal in photons and unequal in everything else.
 
   * Repeats give the within-cell scatter, which is the only source of the
     per-condition error that every fit in this record uses. A single slow
@@ -721,11 +722,11 @@ slower scan.** They are equal in photons and unequal in everything else.
   * Five traces survive a glitch, an operator bump or a mode hop. One long
     trace does not.
 
-**So the order is: more power until saturation and the light shift bite, then
-more repeats, and the scan rate left alone.** That last clause is not laziness
+So the order is: more power until saturation and the light shift bite, then
+more repeats, and the scan rate left alone. That last clause is not laziness
 about the rate, it is the measured result of the next section.
 
-### Repeats obey root-n only when they are independent, and the schedule decides that
+### Independence of repeats and the schedule
 
 The bullets above earn repeats their place, and one measured fact bounds
 what they buy. Back-to-back repeats share whatever is common to the visit,
@@ -740,15 +741,15 @@ fit that models the repeats as independent reports the root-n it did not
 earn ([the pooling page](../wiki/pooling-across-groups.md) carries the
 arithmetic).
 
-**So the schedule is part of the design: a condition's repeats are spread
-across the session and the lock is re-acquired between visits**, which
+So the schedule is part of the design: a condition's repeats are spread
+across the session and the lock is re-acquired between visits, which
 converts common scatter into the kind that averages, at zero cost in
 photons. Three or four back-to-back traces per visit for the within-visit
 scatter, and the visits interleaved with other conditions, is the shape
 that spends the same time and keeps root-n honest. The randomised rung
 order above is this same rule one level up.
 
-### Fast scans against slow scans, and why this is not the knob
+### Fast scans against slow scans
 
 The exchange has a hard limit at each end and the useful window between them is
 enormous, which is the actual finding.
@@ -778,9 +779,9 @@ the measured correlation length of 3.8 samples is taken into account.
     smoothing windows inside the processing limit, so the acquisition as run
     was safe whatever the chain's own limit turns out to be.
 
-**The campaign's 1 second trace therefore sits about 800 times inside the
+The campaign's 1 second trace therefore sits about 800 times inside the
 slow limit at the span's top and, on chapter 10's chain bound, five orders of
-magnitude inside the fast one.** Scan rate is not where
+magnitude inside the fast one. Scan rate is not where
 this experiment loses anything, and the knob people reach for first is the one
 with the least to give. What the record's own
 [sweep rate and detection lag](../wiki/sweep-rate-and-detection-lag.md) page
@@ -788,17 +789,17 @@ adds is that the lag degrades the skew faster than the width, so if the
 asymmetry channel is ever spent the fast limit tightens and the chain's time
 constant stops being optional to know.
 
-**The one thing worth buying with rate**: more traces per unit time averages
+The one thing worth buying with rate: more traces per unit time averages
 over drift and gives more independent centre estimates, which is a real gain
 that costs only the flyback.
 
-### Triangular against sawtooth, and a control that comes free
+### Triangular against sawtooth scans
 
 A sawtooth ramps in one direction and flies back. A triangle ramps up and then
 down, so every period yields two traces acquired in opposite directions.
 
-**The argument for the triangle is exactly the argument this record has just
-had to make the hard way.** The 2026-08-18 replication work turned on the
+The argument for the triangle is exactly the argument this record has just
+had to make the hard way. The 2026-08-18 replication work turned on the
 2025-07-04 rehearsal's alternating ladder directions, which were run that way
 for convenience and are the only reason two power-dependence findings could be
 separated. A triangular scan builds that control into every period: any
@@ -806,7 +807,7 @@ lineshape feature that reverses between the up-ramp and the down-ramp is a
 property of the scan rather than of the atom, tested continuously and for
 free.
 
-**The argument against, and it is real.** The scanning element has hysteresis,
+The argument against, and it is real. The scanning element has hysteresis,
 so the up-ramp and the down-ramp do not share a rate calibration. Averaging
 the two halves naively broadens the line by the hysteresis offset and
 manufactures exactly the kind of width systematic this record has spent
@@ -828,7 +829,7 @@ worse than a sawtooth.
 The 2025 archive holds one frozen campaign and two excluded sessions, and the
 2026-08-18 work measured what that structure costs and what it buys.
 
-**What one campaign cannot do.** It cannot separate a parameter from anything
+**The limits of one campaign.** It cannot separate a parameter from anything
 collinear with it. The campaign's power descends with time, so no analysis of
 that session alone can distinguish power dependence from drift, and the
 concave width against power is provisional for exactly that reason (the
@@ -837,13 +838,13 @@ rehearsal's own axis has such a separation, per the DIAGNOSTIC
 The campaign session's axis and that second-order verdict are both
 untouched by it).
 
-**What several campaigns buy.** Replication under changed nuisances is the
+**The gain from several campaigns.** Replication under changed nuisances is the
 only way to establish that an effect belongs to the atom. The amplitude
 departure from the square-of-power law survives precisely because a second
 session with a different scope, a different power range and opposite ladder
 directions reproduces it.
 
-**What several campaigns cost, and the cost is measurable.** They introduce a
+The cost of several campaigns, and it is measurable. They introduce a
 between-session offset that must be modelled rather than ignored: the same
 amplitude exponent shifts by 0.165 between the campaign and the rehearsal
 while the ordering across lines is identical at a rank correlation of 1.00. A
@@ -858,9 +859,9 @@ to serve as the cross-session anchor. One long campaign gives precision that
 cannot be checked, and that is the exchange this record has already paid for
 once.
 
-### How much of the triangle goes in one trace, and how many periods
+### Triangle fraction and period count per trace
 
-**Take the whole up-and-down in one trace.** The two ramps then share the same
+Take the whole up-and-down in one trace. The two ramps then share the same
 drift epoch, the same vertical range, the same baseline and the same
 acquisition settings, separated only by the turnaround, so the direction
 comparison becomes a within-trace control rather than a within-session one.
@@ -869,7 +870,7 @@ to find by luck, and it costs only record length, which the instrument has in
 abundance: the rehearsal's own files are 500001 samples over 5 s at 10 µs
 per sample.
 
-**How many periods fit is not a memory question.** At the committed rate a 5 s
+How many periods fit is not a memory question. At the committed rate a 5 s
 record spans 425 MHz on the transition axis and crosses the 5.37 MHz line in
 63 ms, which is 6318 samples and about 1663 independent points once the
 measured correlation length is taken into account. Against the record's own
@@ -877,7 +878,7 @@ requirement of about 90 points across the line, a single ramp is **oversampled
 by a factor of 70**, so memory alone would allow about 35 up-and-down periods
 per record.
 
-**A processing limit rather than a physical one, and the difference matters.**
+A processing limit rather than a physical one, and the difference matters.
 Each period added shortens the line crossing proportionally while the 1.9 ms
 smoothing window does not shrink with it. That window belongs to the
 high-resolution mode rather than to the chain, so it is a setting and not a
@@ -891,7 +892,7 @@ constraint, and choosing less smoothing raises the ceiling:
 | 8 | 395 | 7.9 ms | 4 |
 | 16 | 197 | 4.0 ms | 2 |
 
-**So the answer is two to four periods per trace at the archive's smoothing**,
+So the answer is two to four periods per trace at the archive's smoothing,
 not thirty-five, and the ceiling rises if the smoothing is reduced. Two has
 margin at seventeen windows and already gives two independent up-and-down
 pairs inside one trace. Four is the point at which the lag begins
@@ -899,7 +900,7 @@ to matter for the asymmetry channel before it matters for the width, which is
 the ordering the sweep-rate page sets out. Beyond eight the chain is
 integrating across the line and the lineshape is no longer the atom's.
 
-**The measurement that would raise this ceiling** is the same one named
+The measurement that would raise this ceiling is the same one named
 earlier: a measured detector response curve, which turns the 1.9 ms inference
 into a number and would license more periods if the chain is faster than the
 noise correlation suggests. Until then, treat the noise correlation as the
@@ -909,33 +910,33 @@ bound and take two.
 
 These are different things and the answer differs.
 
-**High-resolution mode averages adjacent samples in hardware**, exchanging
+High-resolution mode averages adjacent samples in hardware, exchanging
 bandwidth for effective bits, and **the archive was acquired with it on**, a
 fact recovered from direct recollection rather than from any stored setting.
 Measured from the stored quantisation steps it delivered a median of about
 **9.5 effective bits** against the instrument's native eight, reaching twelve
 on the dimmest cell.
 
-**The exchange it made was not obviously the right one.** The bits it bought were
+The exchange it made was not obviously the right one. The bits it bought were
 not needed, since quantisation sits 6 to 485 times below the noise floor in
 every committed condition, so finer steps bought nothing the noise did not
 already swamp. What it spent was bandwidth, and that 1.9 ms window is what
 caps the triangle at two to four periods above.
 
-**It costs no signal-to-noise, which is worth stating because it looks as
-though it should.** Averaging adjacent samples of white noise loses no
+It costs no signal-to-noise, which is worth stating because it looks as
+though it should. Averaging adjacent samples of white noise loses no
 information: four samples at one sigma become one sample at half a sigma, and
 a fit recovers the same precision either way. What is lost is only the ability
 to resolve features faster than the window, and the line is crossed in 63 ms
 against a 1.9 ms window.
 
-**So keep it for a single-ramp design, reduce it if many triangle periods are
-wanted, and in either case record the setting per trace.** The archive did not,
+So keep it for a single-ramp design, reduce it if many triangle periods are
+wanted, and in either case record the setting per trace. The archive did not,
 which is why that 1.9 ms was read here as a property of the detector. Every
 correlation length, effective sample count and design-effect correction
 downstream rests on a number that was nowhere written down.
 
-**Averaging mode averages successive sweeps**, and it should not be used.
+Averaging mode averages successive sweeps, and it should not be used.
 The reasons are specific to this analysis rather than general.
 
   * The within-cell error in every fit here is the scatter across repeats.
@@ -952,7 +953,7 @@ The reasons are specific to this analysis rather than general.
 
 **Take single-shot traces and average offline if wanted.**
 
-### Four peaks in one trace, which the current bench can do
+### Four peaks in one trace
 
 The repaired cavity lock and the LeCroy's ability to hold all four peaks in a single acquisition, with the EOM on and off, change two things
 at once. The known hyperfine splittings become an in-trace frequency ruler, so
@@ -979,7 +980,7 @@ provenance in [APPARATUS.md](../APPARATUS.md)).
 | LeCroy WS3104z | **500 001 points over 5 s measured** in the rehearsal files | 8-bit ADC raw. **ERes is a moving-average FIR across stored samples**, 0.5 to 3.0 bits in half-bit steps, each step halving bandwidth. It correlates neighbouring points by construction, which is the artefact class the mode correction just removed from this record, **so the LeCroy runs raw and any smoothing happens offline**, where the kernel is known and disjoint |
 | R&S RTM3004 | record length selectable **5 k to 80 MSample** | High Resolution is decimation, the average of the samples behind each stored point, same disjoint family as the Agilent, and the stored words go 8-bit to **16-bit**. Sixteen-bit words are not sixteen effective bits, and the native ADC depth is a datasheet item the manual does not print. Has Average+hr combined and a segmented HISTORY mode |
 
-**Which instrument for which kind.** The quantitative one-peak ladders stay on
+**The instrument for each kind.** The quantitative one-peak ladders stay on
 the **Agilent**: its High Resolution is disjoint and documented, its export
 signature is the provenance anchor this archive already keys on, and staying
 on the 2025 chain keeps the new ladders comparable with the committed ones.
@@ -993,7 +994,7 @@ dual-chain subset runs on both at once**, one split signal, because a
 nonlinearity is a property of the chain and a shape error is not, and that
 comparison is the one design the 2025 record cannot support.
 
-**What the one-peak traces still add, once four-peak traces exist.** Points
+The one-peak traces' remaining contribution, once four-peak traces exist. Points
 density where the width lives: at fixed record length a one-peak span puts
 several times more points across the line, and the collisional ladder rides
 the width error linearly. Continuity: the committed beta_self construction is
@@ -1007,7 +1008,7 @@ which is the direct test of the brightness-ordered departure, and cross-line
 height ratios free of the between-block gain drift that made the committed
 amplitude ratios untestable, swinging 30 to 50 per cent between blocks.
 
-**How many, stated as the design defaults with their sources.** Per one-peak
+The counts, stated as the design defaults with their sources. Per one-peak
 condition, **five repeats**, the 2025 practice the noise model is fitted on,
 in blocks interleaved a-b-a so power and elapsed time stop being collinear.
 **Split those five across two visits, three and two, with the lock
@@ -1021,7 +1022,9 @@ Per block, **eight science and four ruler traces** at 2025-like proportions,
 which the modulation menu above puts at a free 1.26 to 1.33 width-statistics
 gain since the brackets exist anyway. Four-peak blocks of **five traces**, the
 size at which every row of the wide-scan reach schedule still detects its
-target. The dual-chain subset is **one full power ladder duplicated on both
+target.
+
+The dual-chain subset is **one full power ladder duplicated on both
 chains**, twenty traces, prospective until the second chain is on the bench.
 Counts scale as the square root, so doubling any of them buys 1.4, and the
 place to spend remains power, which buys linearly.
@@ -1039,9 +1042,11 @@ to get wrong.** The reach rows of
 against the band: at ten times the rate the 0.5 MHz drive samples 1.70 kHz
 while the 12.5 MHz drive reaches only 0.068 kHz, a factor 25 apart, because
 finer teeth clock the axis more often. At the ordinary rate neither drive
-reaches. **So the fast block runs the 0.5 MHz drive, and a fast block on
+reaches.
+
+So the fast block runs the 0.5 MHz drive, and a fast block on
 the 12.5 MHz teeth is a block that cannot answer the question it was taken
-for.** And the fast-record
+for. And the fast-record
 diagnostics stay on the LeCroy at 10 us sampling, which is what bounded the
 chain below 10 us in the rehearsal.
 
@@ -1082,7 +1087,7 @@ modes decimate from the internal converter rate rather than from the stored
 record. The four-bit gap is the difference between a session with the smoothing
 mode on and a session without it, which is a menu item rather than silicon.
 
-### The second trap, then preferring the Agilent on bit depth
+### The second trap and the choice of the Agilent
 
 Quantisation is harmless whenever the step is small against the noise, because
 the noise dithers the grid and averaging recovers what the grid discarded. The
@@ -1094,8 +1099,8 @@ adds in quadrature:
 | LeCroy WS3104z | 1.37 | 19.2 % | 1.83 % |
 | Agilent dso-x 3054a | 30.1 | 1.3 % | 0.008 % |
 
-**Neither instrument was resolution-limited as it was used, and this now
-holds campaign-wide**: [`quantisation.csv`](../../results/quantisation.csv)
+Neither instrument was resolution-limited as it was used, and this now
+holds campaign-wide: [`quantisation.csv`](../../results/quantisation.csv)
 runs the same check over all 35 quality-passed conditions, noise over step
 5.2 to 246 with median 37, worst inflation 0.155 per cent, and its budget
 rows carry what binds instead, the light-linked wing noise growing linearly
@@ -1105,7 +1110,7 @@ extra bits bought nothing on the traces that were taken. The LeCroy's 1.8 per
 cent is small but is not zero, and it is the one place where the missing
 smoothing mode has a measurable cost.
 
-### Where the four bits would matter
+### Consequences of the four bits
 
 The bits are unspent headroom rather than waste, and one specific measurement
 would spend them. Holding a single vertical range across the power ladder is
@@ -1140,7 +1145,7 @@ requirement is therefore two settings rather than either instrument: **the
 smoothing mode on, and the bright range tight.** With both right, either scope
 holds one range across the ladder. With either wrong, neither does with margin.
 
-### The vertical range is a measured covariate, and it breaks its own confound
+### The vertical range as a measured covariate
 
 The quantisation step is recoverable per trace from the raw file with no fit of
 any kind, which makes the vertical range an instrument covariate that can enter
@@ -1161,7 +1166,7 @@ confounded with each other and the ordering evidence cannot separate them on
 its own. Four different ranges at one power is the handle that can, and it uses
 only data already taken.
 
-### What the manuals say, and one thing they settle
+### Evidence from the manuals
 
 The comparison above is measured from the files. The instrument documentation
 adds three facts that measurement alone cannot supply, and one of them corrects
@@ -1175,14 +1180,14 @@ a reading given earlier in this chapter's history.
 | ceiling on delivered bits | **12** | **11**, being 8 plus at most 3 | 11 |
 | phase response of the smoothing | not stated, causal average | **exactly zero phase** | zero phase |
 
-**Smoothing lives in a different place on the two makes.** On the Agilent, High
+Smoothing lives in a different place on the two makes. On the Agilent, High
 Resolution is an acquisition mode, so the stored samples themselves carry the
 extra bits, and the campaign's measured 11.86 bits confirm it was in use. On the
 LeCroy, ERes is reached by "the usual steps to set up a math function, selecting
 Eres from the Filter submenu", so it produces a separate trace and a saved
 channel carries eight bits whatever is on the screen.
 
-**What that does not establish is why the rehearsal reads 7.74 bits.** Two
+What that does not establish is why the rehearsal reads 7.74 bits. Two
 explanations fit the measurement equally well: ERes was configured and the
 channel rather than the math trace was exported, or ERes was not enabled at all.
 Nothing in the stored files distinguishes them, and an earlier version of this
@@ -1191,20 +1196,20 @@ way is the operational point, that on this instrument a smoothed display does
 not imply a smoothed export, so the file has to be checked rather than the
 front panel.
 
-**The ceilings differ by one bit and in the opposite direction to the
-capability.** The Agilent's averaging table runs 2 averages to 8 bits, 4 to 9,
+The ceilings differ by one bit and in the opposite direction to the
+capability. The Agilent's averaging table runs 2 averages to 8 bits, 4 to 9,
 16 to 10, 64 to 11 and 256 or more to 12. ERes offers 0.5 to 3.0 bits in
 half-bit steps, so 11 is the LeCroy ceiling. Against a dither ratio of 30 on
 the traces as taken, neither ceiling binds.
 
-**The bandwidth cost is quantified on one side only.** ERes states it exactly,
+The bandwidth cost is quantified on one side only. ERes states it exactly,
 each half bit halving the passband: 0.5 bit leaves 0.5 of Nyquist, 1.0 leaves
 0.241, 2.0 leaves 0.058 and 3.0 leaves 0.016, with filter lengths of 2, 5, 24
 and 117 samples. The Agilent manual says only that High Resolution "limits the  <!-- other-quantity: 117 samples of the scope's High Resolution filter, not the count of committed CSVs -->
 oscilloscope's real-time bandwidth because it effectively acts like a low-pass
 filter". For a line crossed in tens of milliseconds neither cost is reachable.
 
-### The manuals settle the triangular-scan lag, against the earlier reading
+### The triangular-scan lag settled
 
 This chapter argued that an acquisition-side filter would displace the apparent
 line centre in opposite directions on the two halves of a triangular scan, and
@@ -1225,7 +1230,7 @@ maximum number of data samples is maintained over time", which is why the
 rehearsal holds 500 001 points without anyone choosing that number, whereas the
 Agilent's 2000-point records were a setting.
 
-### What actually decides the choice
+### The deciding criterion
 
 Bandwidth and sample rate decide nothing here. The line is crossed in tens of
 milliseconds, so a 500 MHz front end is seven orders of magnitude faster than
@@ -1250,8 +1255,8 @@ current one.** It becomes a real discriminator only for a narrower line, which
 is precisely what a fixed-lock session is meant to produce, and at that point
 the coherent baseline structure would no longer average away.
 
-**The four-peak trace is a property of the laser scan, not of either
-oscilloscope**, and an earlier version of this section miscast it as a 3104z
+The four-peak trace is a property of the laser scan, not of either
+oscilloscope, and an earlier version of this section miscast it as a 3104z
 capability. The rehearsal demonstrated it on the 3104z, but a scope records
 whatever span the laser sweeps. What the two instruments offer that sweep is
 what differs. The Agilent writes about twelve bits into the saved file, gains
@@ -1290,8 +1295,8 @@ limit and converting the bound into a time constant needs the fast record.
 Long noise and drift captures, whose PSD frequency resolution is set by record
 length, and mains monitoring are its job for the same reason.
 
-**The strongest use of owning both is to record the same light on the two
-chains at once.** Split the detector signal into both scopes for a subset of
+The strongest use of owning both is to record the same light on the two
+chains at once. Split the detector signal into both scopes for a subset of
 conditions. The amplitude departure reads as a detection signature, and two
 different acquisition chains digitising one photocurrent is the direct
 discriminator: what appears in both records belongs to the experiment, and
@@ -1343,7 +1348,7 @@ time, and trimming the scan span toward the occupied region raises it again.
 Together they are worth more than any plausible gain from scanning slower,
 because scanning slower buys the square root of time and these cost nothing.
 
-## The correlation time is not the smoothing mode
+## Correlation time against the smoothing mode
 
 Measured on baseline alone, away from the line, the integrated autocorrelation
 is 2.34 samples, which is 1.17 ms at the campaign's sample interval. A boxcar
@@ -1351,7 +1356,7 @@ average taken to the stored sample rate returns statistically independent
 samples for white input, so the smoothing mode does not account for this on its
 own, and the detection chain is the obvious suspect.
 
-**The rehearsal refutes the chain.** The LeCroy sampled at 10 us, a hundred
+The rehearsal refutes the chain. The LeCroy sampled at 10 us, a hundred
 times finer than the campaign, and its baseline autocorrelation across 47
 traces is 0.070 at a lag of 1 ms, where an analogue pole at that timescale
 would require about 0.99. Its 1/e decay is 10.0 us, one single sample, so the
@@ -1389,7 +1394,7 @@ and the evidence column names what it rests on rather than asserting authority.
 | record length | more points across the line, **not** for resolution | the CSV export caps at 64k and its Length control was low, but points buy time resolution rather than bits |
 | peaks per trace | **all four, one range, EOM on and off** | 5.57 per cent duty measured, and it is the direct test of the brightness ordering |
 | scan shape | triangular, keep both halves | two crossings per trace, and on a causal filter the splitting measures the lag. The transmitted power is logged on each half, because a driver's up and down brightness can differ and the up-down mean cancels a lag only when the drive is symmetric |
-| ladder order | **cycle the power several times inside a single display epoch**, not merely randomise across the session | power and elapsed time were collinear by construction in 2025, and the cost is measured in [`centre_fisher.csv`](../../results/centre_fisher.csv) (`run_centre_fisher.py`). Letting each display epoch carry a free linear drift instead of a level alone inflates the error on the light-shift amplitude by [7.3](../../results/centre_fisher.csv "ref:centre_fisher:inflation_linear_over_constant:measured")x, because a single power step and a line differ only through the arrangement of points around the change. The mechanism is sharper than collinearity: each epoch took every repeat of one power back to back, so its traces sit in two tight time clusters with one power in each. A line through two clusters is fixed by the difference of their means, and so is a one-time step. Cycling the power through the epoch separates them, since a line cannot follow a zig-zag. On the campaign's own traces and times, with nothing changed but the order, the re-ordering is forecast to be worth [7.2](../../results/centre_fisher.csv "ref:centre_fisher:ladder_order_gain:cycled_over_as_taken")x, and the rows carry that label: the light-shift error would fall from the measured [3.48](../../results/centre_fisher.csv "ref:centre_fisher:sigma_amplitude:linear_per_epoch") to [0.48](../../results/centre_fisher.csv "ref:centre_fisher:sigma_amplitude_forecast:linear_drift_cycled"), crossing the threshold at which this channel says anything at all. It is the cheapest design change in this chapter, because it costs only the order the powers are written down in. The scatter is not what limits this: it runs [0.025](../../results/centre_fisher.csv "ref:centre_fisher:sigma_per_trace_mhz:epoch_28") to [0.065](../../results/centre_fisher.csv "ref:centre_fisher:sigma_per_trace_mhz:epoch_33") MHz per trace, and with the drift pinned to a level the three multi-power epochs together separate the predicted shift from no shift at [2.1](../../results/centre_fisher.csv "ref:centre_fisher:prediction_significance_sigma:constant_per_epoch") sigma. **An earlier version of this row said a factor of 48 and a three-sigma effect per epoch, and both were wrong**: the 48 divided by a fixed-lock baseline this archive cannot evaluate, since a centre here already has its per-epoch mean removed, and the significance was quoted across a 100 mW power change that no single epoch contains. The design conclusion is unchanged, which is why the numbers moved and the recommendation did not |
+| ladder order | **cycle the power several times inside a single display epoch**, not merely randomise across the session | power and elapsed time were collinear by construction in 2025, and the cost is measured in [`centre_fisher.csv`](../../results/centre_fisher.csv) (`run_centre_fisher.py`). Letting each display epoch carry a free linear drift instead of a level alone inflates the error on the light-shift amplitude by [7.3](../../results/centre_fisher.csv "ref:centre_fisher:inflation_linear_over_constant:measured")x, because a single power step and a line differ only through the arrangement of points around the change. The mechanism is sharper than collinearity: each epoch took every repeat of one power back to back, so its traces sit in two tight time clusters with one power in each. A line through two clusters is fixed by the difference of their means, and so is a one-time step. Cycling the power through the epoch separates them, since a line cannot follow a zig-zag. On the campaign's own traces and times, with nothing changed but the order, the re-ordering is forecast to be worth [7.2](../../results/centre_fisher.csv "ref:centre_fisher:ladder_order_gain:cycled_over_as_taken")x, and the rows carry that label: the light-shift error would fall from the measured [3.64](../../results/centre_fisher.csv "ref:centre_fisher:sigma_amplitude:linear_per_epoch") to [0.51](../../results/centre_fisher.csv "ref:centre_fisher:sigma_amplitude_forecast:linear_drift_cycled"), crossing the threshold at which this channel says anything at all. It is the cheapest design change in this chapter, because it costs only the order the powers are written down in. The scatter is not what limits this: it runs [0.025](../../results/centre_fisher.csv "ref:centre_fisher:sigma_per_trace_mhz:epoch_28") to [0.065](../../results/centre_fisher.csv "ref:centre_fisher:sigma_per_trace_mhz:epoch_33") MHz per trace, and with the drift pinned to a level the three multi-power epochs together separate the predicted shift from no shift at [2.0](../../results/centre_fisher.csv "ref:centre_fisher:prediction_significance_sigma:constant_per_epoch") sigma. **An earlier version of this row said a factor of 48 and a three-sigma effect per epoch, and both were wrong**: the 48 divided by a fixed-lock baseline this archive cannot evaluate, since a centre here already has its per-epoch mean removed, and the significance was quoted across a 100 mW power change that no single epoch contains. The design conclusion is unchanged, which is why the numbers moved and the recommendation did not |
 | where to spend | **power first** | signal-to-noise is linear in power and square-root in everything else |
 | chopping | no | the noise is 83 to 97 per cent white, and a chopper costs half the photons |
 | transimpedance gain | leave it | it cancels in the shot-limited regime |
@@ -1402,7 +1407,7 @@ either as one number wastes one channel to serve another. The menu below is
 computed against the measured noise law and the corrected tooth-weight model
 (`rb5s6s.forecast.comb_tooth_weights`), with the constructions stated.
 
-**Depth costs width information per sweep, and the right frame is marginal.**
+Depth costs width information per sweep, and the right frame is marginal.
 Phase modulation conserves the two-photon signal exactly and the detector
 floor still taxes every copy, so a sweep whose only job is widths runs RF
 off or shallow: at the 2025 depth an RF-on trace carries 0.52 of an RF-off
@@ -1416,7 +1421,7 @@ the free gain is a factor 1.26 to 1.33 in width statistics, an error factor
 0.87 to 0.89, and the collisional coefficient rides the width error
 linearly.
 
-**So the depth splits by the trace's job.** The ruler information is
+So the depth splits by the trace's job. The ruler information is
 lever-weighted, tooth $s$ pulling on the spacing with arm $s$, so it keeps
 climbing with depth: 0.48 at the 2025 depth against 0.87 to 1.44 at $2\beta$
 of 2.2 to 3.0, where the width contribution still joins the fit at 0.4 to
@@ -1424,7 +1429,7 @@ of 2.2 to 3.0, where the width contribution still joins the fit at 0.4 to
 other way, $2\beta$ near 1.0 to 1.3, keeping 0.65 of a science trace's
 widths while still carrying its own ladder. Two depths, one joint fit.
 
-**And a third purpose, which is physics and not statistics.** The depth is
+And a third purpose, which is physics and not statistics. The depth is
 the one knob that changes the excitation rate while leaving the intensity
 alone, so a ladder in depth at one power holds the light shift fixed and
 moves everything that rides on the rate. That makes the fitted centre
@@ -1436,8 +1441,8 @@ runs it is [chapter 4](04_intensity-and-light-shift.md), item 3b. It wants
 a spacing where the standard channel survives the tails, so it rides the
 wider comb of the same menu and not the 2025 spacing.
 
-**The teeth also clean the amplitude channel, which may be worth more than
-the widths.** Within one RF-on trace every tooth and every line shares one
+The teeth also clean the amplitude channel, which may be worth more than
+the widths. Within one RF-on trace every tooth and every line shares one
 detector gain. The tooth pattern is RF-predicted, so intra-trace deviations
 calibrate detector nonlinearity and the am admixture, and cross-line height
 ratios in a wide-span RF-on trace are free of the gain drift that makes the
@@ -1445,7 +1450,7 @@ committed amplitude ratios swing 30 to 50 per cent between blocks. The
 in-trace ladder likewise removes the sweep rate from the centre channel per
 trace, which was the axis systematic that dominated 2025.
 
-**Rate is free to first order, so it buys band placement.** Information per
+Rate is free to first order, so it buys band placement. Information per
 crossing falls as one over the rate and crossings per hour rise with it, so
 the rate is chosen by systematics, and there is a prize. Within any one
 block the clock band and the width band both scale with the rate and their
@@ -1454,7 +1459,9 @@ laser, so the bands of different blocks compose: a block at ten times the
 2025 rate has its tooth clock sampling at 68 Hz, inside the 24 Hz to 1.5 MHz
 band that the science blocks' widths integrate at the ordinary rate. One
 fast block therefore measures, in situ, part of the very noise that
-broadens the slow blocks' lines. If the fitted Gaussian is slow laser noise
+broadens the slow blocks' lines.
+
+If the fitted Gaussian is slow laser noise
 the fast clock sees excursions near 180 kHz, if it is fast noise it sees
 near 4 kHz, and tooth centres resolve 96 kHz each, so a single block
 separates the two readings of the laser kernel
@@ -1475,7 +1482,7 @@ there, and the carrier-null diagnostic moved to the last row because the
 null exists only where the retro-delay phase is small
 ([chapter 8 section 10b.4a](08_the-acquisition-record.md)).
 
-**The card has an executable form.** Every row above is a setting that this
+The card has an executable form. Every row above is a setting that this
 card asserts is better, and an assertion about an acquisition is testable
 before the acquisition happens. `examples/campaign_twin.py` builds the dataset
 this card would produce, with the hyperfine amplitudes, the cascade depletion,
@@ -1487,7 +1494,7 @@ recovered widths match what was put in. A row of this card that the twin cannot
 justify is a row to reconsider, and the twin is where to reconsider it, since
 it costs minutes rather than a session.
 
-### 1. The vertical range, which is the one change that matters most
+### 1. The vertical range
 
 Hold one range across the whole power ladder. This is first because it is the
 only setting that changed a published analysis, and because it costs nothing.
@@ -1509,30 +1516,30 @@ If the dynamic range genuinely cannot be held in one setting, split the ladder
 into two overlapping blocks with at least two rungs measured on both ranges, so
 the range change becomes a measurable offset rather than a confound.
 
-### 2. Smoothing, which the campaign already had, and the check that it reached the file
+### 2. Smoothing and its verification
 
-**The 2025 campaign ran High Resolution and the files confirm it.** The
+The 2025 campaign ran High Resolution and the files confirm it. The
 quantisation grid gives 11.86 bits across the signal swing, which an eight-bit
 converter cannot produce at any record length. This section is therefore a
 statement of what to keep rather than what to change, and it is written that
 way because an earlier draft of this chapter implied the opposite.
 
-**The digitiser was never the limitation, and would not have been at eight
-bits either.** What decides that is not the bit count but the **dither ratio**,
+The digitiser was never the limitation, and would not have been at eight
+bits either. What decides that is not the bit count but the **dither ratio**,
 the baseline noise divided by the quantisation step. Above about 3 the grid has
 stopped mattering, because the noise moves the signal across codes and averaging
 recovers what rounding discarded. The campaign ran at 30, where quantisation
 contributes 0.008 per cent of the noise. The rehearsal ran at 1.37, where it
 contributes 1.8 per cent. Neither session was resolution-limited.
 
-**The check that matters is on the saved file, not the front panel**, because
+The check that matters is on the saved file, not the front panel, because
 the two makes put the feature in different places. An acquisition mode writes
 its bits into the stored samples. A math function does not, so the channel
 export carries none of it however smooth the display looks. One pass over a file
 settles it: the smallest nonzero voltage difference is the quantisation step,
 and the noise divided by that step is the dither ratio.
 
-**More exported points do not buy resolution.** High Resolution averages
+More exported points do not buy resolution. High Resolution averages
 converter samples into each record point, so every stored point already carries
 its extra bits independently of how many points are written out. The Agilent's
 CSV export has a Length control and the manual caps that format at 64k points,
@@ -1541,7 +1548,7 @@ time resolution, more points across the line, and not vertical resolution. At
 0.5 ms per point the 2025 records already placed roughly 110 points across a
 56 ms crossing, which is adequate, so this is a refinement rather than a defect.
 
-### 3. Duty cycle, which is the cheapest factor of four available
+### 3. Duty cycle
 
 Only 5.57 per cent of each 2025 record stands above half maximum. Each trace
 spent about 56 ms on the line and 944 ms on baseline, one line at a time.
@@ -1587,7 +1594,7 @@ and that is worth knowing before the analysis rather than after. The 2025-07-04
 rehearsal already ran its ladders in alternating directions and is the reason
 this is stated as a requirement rather than a preference.
 
-### 6. Where to spend the session's time
+### 6. Allocation of the session's time
 
 The two-photon rate goes as the square of intensity, so signal-to-noise is
 linear in power and only square-root in time. Doubling the power is worth four
@@ -1602,7 +1609,7 @@ Between the two square-root options, prefer repeats over slower scans: they cost
 the same in time and additionally deliver a direct estimate of the
 trace-to-trace scatter, which a single long scan cannot give at any length.
 
-### 7. What not to do, with the reason
+### 7. Settings to avoid
 
 Do not chop the light. The noise is 83 to 97 per cent white across the
 conditions, so a lock-in has almost no excess low-frequency noise to reject, and
@@ -1616,7 +1623,7 @@ Choose it for range and bandwidth, and then record it.
 Do not select an instrument on sample rate or bandwidth. Both exceed what this
 measurement needs by orders of magnitude.
 
-### 8. Record what 2025 did not, which is the cheapest improvement of all
+### 8. Records the 2025 campaign omitted
 
 The largest single deficiency of the existing archive is not any setting. It is
 that the settings were not written down, so they had to be recovered from the
@@ -1639,9 +1646,9 @@ Record per trace, in the filename or an accompanying line:
 None of this costs bench time. All of it decides whether a future analysis can
 separate a physical effect from an instrument setting.
 
-### 9. Which instrument, and the three settings that follow from it
+### 9. Choice of instrument and its settings
 
-**The instrument choice is not close, and the campaign's own scope settles it.**
+The instrument choice is not close, and the campaign's own scope settles it.
 Three are named in the record and they differ in the two things that matter,
 how deep the stored word is and whether resolution enhancement correlates
 neighbouring samples.
@@ -1652,7 +1659,7 @@ neighbouring samples.
 | LeCroy WaveSurfer 3104z | 9.5 to 11 bits, filter | 500,001 | **correlated by construction** |
 | R&S RTM3004 | 16-bit words, boxcar | 80 million | independent |
 
-**The export cap is what disqualifies the 2025 instrument.** Sixty-four
+The export cap is what disqualifies the 2025 instrument. Sixty-four
 thousand points across the four-peak span leaves about sixty-six samples per
 linewidth in a single crossing, so at eight per crossing the record holds at
 most four triangles. The LeCroy holds thirty-two, and its enhanced mode is a
@@ -1666,15 +1673,15 @@ whether it can be borrowed is already an open decision in
 because each stored point averages its own block and adjacent points share
 none, so it raises the depth and leaves the noise white. Never the filter.
 
-**Setting two, the vertical range, and it is section 1 of this chapter
-restated as a rule.** Hold it across a ladder. The 2025 campaign reset it at
+Setting two, the vertical range, and it is section 1 of this chapter
+restated as a rule. Hold it across a ladder. The 2025 campaign reset it at
 every rung, a factor of 347 in step, so a power ladder taken that way is five
 measurements on five instrument settings, and no averaging touches a
 per-condition systematic. If a ladder must span more than the range allows,
 repeat one rung at both ranges so the difference is measured.
 
-**Setting three, the triangle count, and it beats binning for a reason that is
-not statistical.** Total time on the line is fixed by the sweep rate and the
+Setting three, the triangle count, and it beats binning for a reason that is
+not statistical. Total time on the line is fixed by the sweep rate and the
 span and does not depend on the count, so binning within one crossing and
 co-adding across many are the same operation against white noise. What the
 count buys is what binning cannot: twice the count of independent up-minus-down
@@ -1684,10 +1691,10 @@ which needs of order eight samples per linewidth: about a hundred and thirty
 triangles at two megasamples. **The binding limit is the piezo's own triangle
 frequency and not the memory**, and that is an open apparatus item.
 
-### 10. The RF gate, and why the two states are taken in a palindrome
+### 10. The radio-frequency gate and its palindrome
 
-**The gate is the one knob that moves the saturation while the light shift
-stands still**, because a phase modulation splits the drive among the teeth
+The gate is the one knob that moves the saturation while the light shift
+stands still, because a phase modulation splits the drive among the teeth
 without changing the intensity. It is also the ruler: the comb calibrates the
 axis, and the forecast reads the moment channel accurately on a wide comb and
 high without one, so the science trace for that channel is taken with the gate
@@ -1696,48 +1703,48 @@ At the 2025 spacing of 12.5 MHz the teeth's tails contaminate the window, and
 the forecast recovers the coefficient there only since the world carried the
 collection window and the fringe tail, at about twice the wide combs' scatter.
 
-**Take the two states as a four-block palindrome, off-on-on-off, and not as
-an alternating pair.**
+Take the two states as a four-block palindrome, off-on-on-off, and not as
+an alternating pair.
 Under a drift linear in time, an alternating order leaves the two states'
 mean times one block apart, so their difference carries the drift rate times
 the block time. In the palindrome both means fall at the same instant and the
 difference carries none of it. The cost is nothing: the same four blocks either way.
 
-### 11. What actually reduces the noise, ranked by the record's own law
+### 11. Noise reductions ranked by the record's law
 
 The committed law is a floor in quadrature with a term proportional to the
 signal, and the two are equal at 8.8 mV, **1.60 per cent of the median peak**.
 That number decides which action helps where.
 
-**Above about two per cent of peak the measurement is shot-limited, and only
-photons help.** Collecting both cascade legs is close to three times the
+Above about two per cent of peak the measurement is shot-limited, and only
+photons help. Collecting both cascade legs is close to three times the
 signal, and the collection aperture, which the record does not state, is worth
 up to about three and a half in solid angle. Both multiply the signal, so the
 ratio improves as their square root.
 
-**Below that level the floor dominates, and that is where every open question
-lives**: the wings, the Doppler pedestal, the band excess. There, counting
+Below that level the floor dominates, and that is where every open question
+lives: the wings, the Doppler pedestal, the band excess. There, counting
 beats the analogue chain by about 1.7 times at one per cent of peak and 2.7 at
 three parts in a thousand, and two oscilloscopes let both chains see the same
 photons at once so the disagreement measures the detection systematic.
 
-**Binning and co-adding reduce every white term together as the square root of
-the count**, including quantisation, which is already 30 to 360 times below the
+Binning and co-adding reduce every white term together as the square root of
+the count, including quantisation, which is already 30 to 360 times below the
 floor and is not what limits anything here.
 
-**And what no averaging touches**: the vertical-range changes above, the drift,
+And what no averaging touches: the vertical-range changes above, the drift,
 and the block-to-block scatter of the temperature axis. Those are answered by
 the acquisition order of sections 9 and 10 and by the reference conditions of
 chapter 6, not by more samples.
 
-## The triangle count, the point budget and the bit depth, settled together
+## Triangle count, point budget and bit depth
 
 Three questions arrive as one, because each answer changes what the other two
 may spend. The record's earlier reading of them was wrong in one place and is
 corrected here.
 
-**The memory figure was never the export figure, and the plan quoted it as if
-it were.** The R&S RTM3004 selects a record length up to 80 MSample, which is
+The memory figure was never the export figure, and the plan quoted it as if
+it were. The R&S RTM3004 selects a record length up to 80 MSample, which is
 what the acquisition memory holds. What the instrument transfers over its
 interface is a different quantity, and this record holds no measurement of it.
 The 80 MSample row therefore states a capability the campaign cannot use
@@ -1759,12 +1766,12 @@ information flat from three points per linewidth upward.
 | four peaks, 6 GHz | 35,556 | 213,333 | 1.07 MSample |
 | one peak, 200 MHz | 1,185 | 7,111 | 0.04 MSample |
 
-**So the budget does not bind and the memory question is moot.** A full
+So the budget does not bind and the memory question is moot. A full
 four-peak campaign block at the resolution the tight waist wants costs about a
 megasample in total, which every instrument on the bench holds and transfers.
 The single-peak zoom costs forty kilosamples, which is nothing.
 
-**Three triangles, and the reason is identifiability, not photons.** A
+Three triangles, and the reason is identifiability, not photons. A
 triangle crosses each line twice, so n triangles give 2n crossings and 2n - 2
 degrees of freedom against a drift model. One triangle removes a linear drift
 and cannot test it. Two remove it and test it. Three remove a quadratic drift
@@ -1773,8 +1780,8 @@ residual is unmeasured. Beyond three the return falls, and the precision does
 not move at all, since the photons are fixed by the sweep time and dividing
 them among more crossings buys no counts.
 
-**Five repeats of the block, interleaved through the session and never taken
-back to back.**
+Five repeats of the block, interleaved through the session and never taken
+back to back.
 The repeats exist for the error bar the fit cannot supply, and their scatter
 carries the slow systematics a single acquisition cannot see. The interleaving
 is not a preference: this chapter's own sizing section measures the
@@ -1785,8 +1792,8 @@ Five give four degrees of freedom on an empirical variance. That variance is the
 record quotes, the scatter over trace sets, so measuring it on the bench in the
 same form is what makes the forecast checkable.
 
-**Eight bits is more than the measurement can use, and the record has already
-measured it on the traces themselves.** `results/quantisation.csv` reads the
+Eight bits is more than the measurement can use, and the record has already
+measured it on the traces themselves. `results/quantisation.csv` reads the
 baseline noise of the committed 2025 traces in units of the true quantisation
 step: it runs from 6.1 to 73.2 steps, and the quantiser adds between 0.001 and
 0.112 per cent to the analogue noise. **Those are the numbers. A hand-constructed table on a nominal vertical range
@@ -1794,7 +1801,7 @@ is not.** An earlier version
 of this section quoted 0.38 per cent from such a table, which is three times
 the measured worst case and describes a range setting no block used.
 
-**The condition that would bind, if any did, is dither and not depth.**
+The condition that would bind, if any did, is dither and not depth.
 Quantisation behaves as additive noise only while the noise spans at least one
 step. The measured blocks span at least 6.1, so the bench has never been near
 that boundary and the committed cells say the digitiser binds nothing. What
@@ -1806,9 +1813,9 @@ to avoid, not a description of any block taken. The rule it gives is about the
 range: set it so the trace fills the screen, keep the noise above a few steps,
 and the bit depth stops mattering.
 
-**And the smoothing mode's cost depends on which mechanism it is, which this
+And the smoothing mode's cost depends on which mechanism it is, which this
 chapter's own instrument table states four hundred lines above and the first
-version of this section blurred.** The two are not variants of one thing. The
+version of this section blurred. The two are not variants of one thing. The
 LeCroy's enhanced resolution is a moving-average finite impulse response
 across stored samples: it correlates them and its kernel is wider than the
 sampling, so both costs below apply to it. The Agilent's and the RTM3004's High
@@ -1818,13 +1825,13 @@ kernel is exactly one stored sample wide, which is the sampling already in the
 model. **Disjoint high resolution is free and should be taken. A stored-rate filter
 is the one to decline.** The paragraphs below are about the second.
 
-**On the enhanced-resolution mode, the first version of this section named the
-wrong mechanism.** It said the enhanced mode costs
+On the enhanced-resolution mode, the first version of this section named the
+wrong mechanism. It said the enhanced mode costs
 sample independence and that a pooled likelihood is optimistic by an amount set
 by that correlation. Both halves are weaker than they sounded, and the chapter
 above already carried the measurement that says so.
 
-**The correlation is not the objection.** This chapter measured the LeCroy's own
+The correlation is not the objection. This chapter measured the LeCroy's own
 baseline autocorrelation across 47 traces at a 10 microsecond sample interval
 and found a 1 over e decay of one single sample, so the correlation is already
 gone at the instrument's resolution limit. The 2.34-sample integrated
@@ -1833,15 +1840,15 @@ attributed there to a smoothing filter, not to this instrument and not to its
 enhanced mode. Pinning it on enhanced resolution contradicted a measurement
 sitting four sections above.
 
-**And its cost, when it is present, is a factor on an error bar and not a
-bias.** A correlated series carries n over tau_int independent samples, so a
+And its cost, when it is present, is a factor on an error bar and not a
+bias. A correlated series carries n over tau_int independent samples, so a
 likelihood written for independent ones under-reports the uncertainty by the
 square root of tau_int and reports the parameter itself correctly. At the
 measured 2.34 that is 1.53, and it is recoverable for nothing, since every
 trace carries its own baseline and the integrated autocorrelation is read off
 it directly.
 
-**Filtering destroys no information at all.** Fisher information is invariant
+Filtering destroys no information at all. Fisher information is invariant
 under an invertible linear map of the data, and a boxcar of n samples has its
 first zero at one over n in normalised frequency. At 32 points per linewidth
 the line occupies about a thirtieth of the sample rate, which sits a factor of
@@ -1849,8 +1856,8 @@ the line occupies about a thirtieth of the sample rate, which sits a factor of
 one, so the signal band is passed intact at every enhanced-resolution setting
 the instrument offers.
 
-**What is a real cost is the filter as a kernel, and that is the objection
-that survives.** A boxcar of n samples convolved onto the record's own composed line, two
+What is a real cost is the filter as a kernel, and that is the objection
+that survives. A boxcar of n samples convolved onto the record's own composed line, two
 thirds Lorentzian, broadens it by (the first version of this table used the
 Gaussian quadrature rule this record has already withdrawn once, and
 understated every entry by about two):
@@ -1861,8 +1868,8 @@ understated every entry by about two):
 | 10 samples, about +1.5 bits | 3.9 % | 0.19 % |
 | 24 samples, about +2 bits | 21.6 % | 1.1 % |
 
-**That matters here more than the number suggests, because kernel separation is
-the whole difficulty of this measurement.** The 2025 analysis failed on a
+That matters here more than the number suggests, because kernel separation is
+the whole difficulty of this measurement. The 2025 analysis failed on a
 degeneracy between three widths, so adding a fourth that is not in the model is
 the last thing this line needs, and a 12 per cent instrumental broadening at
 +2 bits is larger than every width signal the light shift produces. The filter
@@ -1881,12 +1888,12 @@ across all three instruments and would have thrown away free resolution on two
 of them. At 148 points per linewidth even the LeCroy objection is small, which
 is worth knowing if that mode is ever wanted for another reason.
 
-**The open item this leaves.** The transfer rate of each instrument over its
+The open item this leaves. The transfer rate of each instrument over its
 own interface, in samples per second, which sets how long an acquisition block
 occupies the bench and therefore how many blocks a day holds. It is an
 apparatus fact the bench has and this record does not.
 
-## The four channels, and the sweep-linearity tolerance that ranks them
+## The four channels and their linearity tolerance
 
 The oscilloscope records four channels at once, and the campaign has five
 things worth putting on them. The allocation is decided here and not left
@@ -1903,12 +1910,12 @@ campaign forecasts:
 
 | configuration | window | the light shift's own third cumulant | rate variation that fakes it |
 |---|---|---|---|
-| 2025, 64 microns | 6 MHz | [0.00010447](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:k3_light_shift") MHz cubed | [0.00196](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:rate_variation_tolerance") per cent |
-| campaign, 40 microns, the tightest licensed waist | 6 MHz | [0.00069510](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:k3_light_shift") MHz cubed | [0.0131](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:rate_variation_tolerance") per cent |
-| campaign, 16 microns, outside the licence | 12 MHz | [-0.666476](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_16um:k3_light_shift") MHz cubed | [1.44](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_16um:rate_variation_tolerance") per cent |
+| 2025, 64 microns | 6 MHz | [-0.00010447](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:k3_light_shift") MHz cubed | [0.00196](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:rate_variation_tolerance") per cent |
+| campaign, 40 microns, the tightest licensed waist | 6 MHz | [-0.00069510](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:k3_light_shift") MHz cubed | [0.0131](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:rate_variation_tolerance") per cent |
+| campaign, 16 microns, outside the licence | 12 MHz | [0.666476](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_16um:k3_light_shift") MHz cubed | [1.44](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_16um:rate_variation_tolerance") per cent |
 
-**That is a second and independent reason the 2025 third cumulant was never
-available.** The first is signal to noise, and it is severe enough on its own.
+That is a second and independent reason the 2025 third cumulant was never
+available. The first is signal to noise, and it is severe enough on its own.
 This one is worse, because a bow of two parts in a thousand of the actuator's
 travel already reaches two parts in a hundred thousand across the window, so
 the channel was unavailable on the axis as well as in the counts. The
@@ -1917,8 +1924,8 @@ thousand, which
 a bow of about two per cent of the travel reaches, and that is a measurable
 requirement.
 
-**The nonlinearity is the actuator's, and the first version of this section
-made it the scan's.** It defined the departure as a fraction of the span
+The nonlinearity is the actuator's, and the first version of this section
+made it the scan's. It defined the departure as a fraction of the span
 scanned, so a 200 MHz zoom of the same piezo read thirty times worse than a
 6 GHz sweep and this chapter refused the zoom on that ground. A piezo's bow is
 a fraction of its travel: the same actuator scanned over a sub-span at the same
@@ -1940,15 +1947,15 @@ travel. Read against a 6 GHz travel and this chapter's windows:
 | 2 per cent | [0.0240](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:eps_bow_eta2") per cent | fails by 11 | clears by 1.2 |
 | 10 per cent | [0.1199](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:eps_bow_eta10") per cent | fails by 54 | fails by 4.1 |
 
-**So the moment channel at the campaign's tightest licensed waist needs the
+So the moment channel at the campaign's tightest licensed waist needs the
 actuator's bow under about two per cent of its travel, or measured and taken
-out.** An open-loop piezo is of order ten per cent, which fails by four. A
+out. An open-loop piezo is of order ten per cent, which fails by four. A
 linearised one or an anchored correction of the bow reaches it. At 64 microns a
 bow of two parts in a thousand already reaches the tolerance, which is why the
 2025 channel was unavailable on its axis.
 
-**A short-scale departure does not dilute, and its number is smaller than the
-first version said because a larger one reverses the sweep.** A ripple of N
+A short-scale departure does not dilute, and its number is smaller than the
+first version said because a larger one reverses the sweep. A ripple of N
 cycles across the travel replaces the twelve by the square of two pi N, so at
 fifty cycles the coefficient is about a hundred thousand and a ripple of a
 tenth of a per cent gives [10.0664](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:eps_ripple50_eta0.1_p95_over_phase") per cent across a 6 MHz window,
@@ -1968,7 +1975,7 @@ no bow measurement replaces it.
 | 3 | cavity error | the lock residual, in situ, per trace |
 | 4 | contended | see below |
 
-**The cavity error channel witnesses the lock and not the reference.** An
+The cavity error channel witnesses the lock and not the reference. An
 in-loop error signal reads the laser against the cavity, so a slow drift of the
 locked laser at the 0 to 0.04 MHz per minute the forecast spans is the
 cavity's own and the error signal is blind to it by construction. What it does
@@ -1978,7 +1985,7 @@ its residual. The reference's drift is measured out of loop, by the hyperfine
 intervals crossed in the same trace, which is the ruler's job and not the
 servo's.
 
-**The fourth channel, and the decision is conditional on one apparatus fact.**
+The fourth channel, and the decision is conditional on one apparatus fact.
 The candidates are a marker for the modulator state, a second platform's
 detector, and a monitor of the retro-reflected power. The modulator marker
 is the weakest of the three, because the modulator state is commanded rather
@@ -1987,7 +1994,7 @@ trigger, the state follows from the sample index and the marker records
 something already known. Whether it can be so synchronised is an apparatus fact
 this record does not hold, and it is an open item.
 
-**If it can, the fourth channel goes to a second detector.** On paired blocks
+If it can, the fourth channel goes to a second detector. On paired blocks
 that is the second platform's, and what riding one sweep buys it is stated
 where that platform's thread lives, in
 [the nanofibre chapter](../big_picture/06_next-nanofibre.md). On cell-only
@@ -1996,12 +2003,12 @@ ratio is an assumption today and enters the coefficient as one plus itself: a
 five per cent error there is 2.6 per cent on the coefficient, which is the same
 size as the margin the prediction band is arguing over.
 
-## What cooling the detector would buy, and it is nothing
+## Effect of cooling the detector
 
 The question follows from the noise decomposition above and the answer is
 already in those cells, so it is arithmetic and not a new measurement.
 
-**The signal-independent term is not a dark term.** Fitted across the
+The signal-independent term is not a dark term. Fitted across the
 committed conditions it goes as the laser power to the 0.85, from 1.34 mV at
 the dimmest 25 mW condition to about 8 mV at 225 on the fitted law. A dark and electronic floor does not depend on the
 laser at all, so what this term measures is light reaching the detector that
@@ -2010,8 +2017,8 @@ which is unphysical and says the dark contribution sits below what the
 extrapolation can resolve. The bound that survives is the dimmest rung's whole
 value, 1.34 mV, and most of that is itself light-linked.
 
-**Bounding the gain by that whole value, which is generous by construction,
-at two conditions that must be named because the answer depends on them.** At
+Bounding the gain by that whole value, which is generous by construction,
+at two conditions that must be named because the answer depends on them. At
 the median condition, floor 3.6 mV, and at the dimmest rung, whose floor is the
 bound itself and whose peak is of order 7 mV since the signal goes as the
 square of the power:
@@ -2024,8 +2031,8 @@ square of the power:
 | dimmest rung | 5 mV, the wings | 2.6 mV | 2.2 mV | 14 per cent |
 | dimmest rung | 7 mV, the peak | 2.9 mV | 2.6 mV | 11 per cent |
 
-**So a cooled housing buys under a per cent at any working power, and up to
-fourteen in the dimmest rung's wings**, which is a real number and not the
+So a cooled housing buys under a per cent at any working power, and up to
+fourteen in the dimmest rung's wings, which is a real number and not the
 nothing the first version of this section said. The reason it stays small at
 working power is structural: the term cooling attacks is the one term in this budget
 that the laser does not drive, and every other term does.
@@ -2056,7 +2063,7 @@ that the laser does not drive, and every other term does.
    multiplicative term was needed in only one of the thirty-two committed
    conditions. It may buy something on the background, which is item 9a again.
 
-### 7k. The four channels, allocated, and the band each one witnesses
+### 7k. Allocation of the four channels
 
 *Added 2026-09-10.* [Chapter 10](10_the-fixed-lock-instrument.md) states that
 four channels carry five candidates and says the allocation is made here. It
@@ -2070,14 +2077,14 @@ external trigger input, so no signal channel is spent on it.
 | 3 | the cavity error signal | the lock's residual, per block | above the servo bandwidth |
 | 4 | contended, decided per block below | | |
 
-**Why the ramp monitor is not optional.** The archive's blocks were dated to
+**Grounds for the ramp monitor.** The archive's blocks were dated to
 each other only by file order, and the recovered clock later put peaks 54 to 76
 minutes apart where the analysis had assumed minutes. A recorded ramp gives
 every sweep its own time coordinate, which is what makes the drift a nuisance
 regressor and not an assumption.
 
-**What the cavity error channel does and does not measure, which chapter 10
-overstated.** It called this channel the in-situ laser-noise witness. It is a
+The cavity error channel's measurement and its limits, which chapter 10
+overstated. It called this channel the in-situ laser-noise witness. It is a
 witness of part of the band and it is structurally blind over the rest. A servo
 suppresses in-loop noise below its bandwidth, so below that frequency the laser
 follows the cavity: the atoms then see the cavity's own noise, which is common
@@ -2118,7 +2125,7 @@ the whole band by construction and is the only one of the three routes that is.
 | the power ladder | the retro-reflected power | `rho` enters the shift as one plus itself and is never measured in the archive, and a per-sweep monitor makes a per-configuration assumption into a per-sweep one |
 | the paired guided blocks | the fibre arm's own detector | the two arms then share a sweep, a trigger and a clock, which is what makes the lock drop out of their difference |
 
-**The rule when they contend**: the retro monitor takes the channel on any
+The rule when they contend: the retro monitor takes the channel on any
 block whose result is quoted in absolute units, because it is the only one of the three
 that enters a published number directly.
 

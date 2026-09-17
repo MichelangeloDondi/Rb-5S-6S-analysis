@@ -19,7 +19,8 @@ from rb5s6s import constants as K
 from rb5s6s.lineshape import ramp_moment_contributions
 
 # the pure transverse ramp, which the moments helper reaches as z_ratio -> 0
-PURE = {"pull": -2.0 / 3.0, "excess_var": 1.0 / 18.0, "kappa3": 1.0 / 135.0}
+# the ODD entries mirror with the ramp support (O27); the even one does not
+PURE = {"pull": +2.0 / 3.0, "excess_var": 1.0 / 18.0, "kappa3": -1.0 / 135.0}
 
 
 def _independent_moments(z_ratio: float) -> tuple[float, float, float]:
@@ -43,7 +44,8 @@ def _independent_moments(z_ratio: float) -> tuple[float, float, float]:
     mean = integral(lambda u: u) / norm
     var = integral(lambda u: (u - mean) ** 2) / norm
     mu3 = integral(lambda u: (u - mean) ** 3) / norm
-    return -mean, var, -mu3          # s = -s0 u, so the odd moments flip sign
+    return +mean, var, +mu3          # s = +s0 u since O27: the ramp is BLUE-sided, so the
+                                     # odd moments keep the sign of this u-integral
 
 
 def test_the_window_comes_from_the_apparatus_and_not_from_a_literal():
@@ -103,7 +105,8 @@ def test_the_window_correction_is_one_sided_only_below_a_stated_window():
     previous = ref["kappa3"]
     for z_ratio in np.linspace(0.01, 3.0, 120):
         got = ramp_moment_contributions(1.0, z_ratio=float(z_ratio))
-        assert got["kappa3"] <= previous + 1e-12, f"the third cumulant rose at {z_ratio}"
+        # MONOTONE the other way since O27: the cumulant mirrored, so it RISES with the window
+        assert got["kappa3"] >= previous - 1e-12, f"the third cumulant fell at {z_ratio}"
         previous = got["kappa3"]
 
     for z_ratio in np.linspace(0.01, 1.60, 40):
@@ -119,6 +122,7 @@ def test_the_third_cumulant_has_a_null_beyond_the_operating_point():
     """kappa3 vanishes and reverses at a finite window, which is a design limit
     on the collection path rather than a curiosity: past it the asymmetry the
     shift is read from comes back with the wrong sign."""
-    assert ramp_moment_contributions(1.0, z_ratio=1.0)["kappa3"] > 0
-    assert ramp_moment_contributions(1.0, z_ratio=1.5)["kappa3"] < 0
+    # the null is unchanged; the two SIDES of it mirror (O27)
+    assert ramp_moment_contributions(1.0, z_ratio=1.0)["kappa3"] < 0
+    assert ramp_moment_contributions(1.0, z_ratio=1.5)["kappa3"] > 0
     assert K.collection_z_ratio() < 1.0, "the bench must sit well clear of the null"

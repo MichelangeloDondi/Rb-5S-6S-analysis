@@ -114,6 +114,18 @@ $PY private/checks/variac_guard.py; vgc=$?
 # declared live phase, with a members-not-counts ratchet of what predates it.
 $PY private/checks/noise_ladder_gate.py; nlc=$?
 $PY private/checks/ssot_literals.py; slc=$?
+$PY private/checks/ssot_quotations.py; sqc=$?
+$PY private/checks/main_aim_guard.py; mac=$?
+$PY private/checks/heading_register.py; hrc=$?   # the headings in the register a thesis uses (O26)
+$PY private/checks/prose_walls.py; pwc=$?          # paragraphs a reader can finish (O26)
+$PY private/checks/bold_hooks.py; bhc=$?          # bold pseudo-headings, the register the heading guard cannot see (O26)
+$PY private/checks/stamp_sanity.py; stc=$?        # a governance stamp ahead of its own file's mtime was typed, not read
+$PY private/checks/stop_class_gate.py; sgc=$?    # a results table carrying a FAILED stop-class gate its producer refused to stand behind
+$PY private/checks/uncovered_constants.py; ucc=$?  # a declared constant inside a freshness EXCLUSION, which is where E81 hid for a month
+$PY private/checks/plan_prune_debt.py; ppd=$?     # the plan's word count read, a heading the plan has marked as replaced and older than two commits refused
+$PY private/checks/fanout.py --scan; foc=$?      # a shell throttle counting jobs from a subshell, which launched 164 Python processes into a kernel panic (F93)
+$PY private/checks/retired_values.py; rvc=$?   # a retired value outside private/history/, anywhere in the repository (owner, 2026-09-17: "strictly in the history folder")
+$PY private/checks/retired_values.py --self-test > /dev/null || rvc=1
 [ $ssc = 0 ] || echo "prefloor: a canonical value gained a literal copy (see above)"
 fi   # end of the real stages; a plant supplies rc, prc and agc instead
 
@@ -121,7 +133,7 @@ fi   # end of the real stages; a plant supplies rc, prc and agc instead
 # it and on nothing narrower (the guards' self-test used to sit outside this `if`, so a deleted
 # guard printed GREEN and stamped while the exit code alone said otherwise, and the stamp on disk
 # is what idle_audit and the landing loop read).
-ALL_RC=$(( rc != 0 || prc != 0 || agc != 0 || ${ssc:-0} != 0 || ${pac:-0} != 0 || ${pgc:-0} != 0 || ${pgs:-0} != 0 || ${scc:-0} != 0 || ${sdc:-0} != 0 || ${tnc:-0} != 0 || ${vgc:-0} != 0 || ${nlc:-0} != 0  || ${slc:-0} != 0 ))
+ALL_RC=$(( rc != 0 || prc != 0 || agc != 0 || ${ssc:-0} != 0 || ${pac:-0} != 0 || ${pgc:-0} != 0 || ${pgs:-0} != 0 || ${scc:-0} != 0 || ${sdc:-0} != 0 || ${tnc:-0} != 0 || ${vgc:-0} != 0 || ${nlc:-0} != 0 || ${hrc:-0} != 0 || ${pwc:-0} != 0 || ${bhc:-0} != 0 || ${stc:-0} != 0 || ${sgc:-0} != 0 || ${ucc:-0} != 0 || ${ppd:-0} != 0  || ${foc:-0} != 0 || ${rvc:-0} != 0 || ${slc:-0} != 0  || ${sqc:-0} != 0 || ${mac:-0} != 0 ))
 if [ $ALL_RC -eq 0 ]; then
   # THE FAST STAMP. A reading stage reads a tree, it does not run one, so the
   # expensive question about that tree is answered by the gate running BESIDE
@@ -139,6 +151,6 @@ if [ $ALL_RC -eq 0 ]; then
   echo "prefloor: GREEN, stamped ${TREE:0:12}. The reading stage may open on this; the gate runs beside it."
 else
   rm -f "$STAMP"
-  echo "prefloor: RED (pytest $rc, precheck $prc, guards $agc, prior-art $pac, prune $pgc, prune-scan ${pgs:-0}, coverage $scc, deps $sdc, trace-names ${tnc:-0}, variac ${vgc:-0}, ssot-literals ${slc:-0}, noise-ladder ${nlc:-0}). No stamp. Fix these before anything expensive."
+  echo "prefloor: RED (pytest $rc, precheck $prc, guards $agc, prior-art $pac, prune $pgc, prune-scan ${pgs:-0}, coverage $scc, deps $sdc, trace-names ${tnc:-0}, variac ${vgc:-0}, ssot-literals ${slc:-0}, ssot-quotations ${sqc:-0}, main-aim ${mac:-0}, noise-ladder ${nlc:-0}, headings ${hrc:-0}, walls ${pwc:-0}, plan-prune ${ppd:-0}, retired-values ${rvc:-0}). No stamp. Fix these before anything expensive."
 fi
 exit $ALL_RC

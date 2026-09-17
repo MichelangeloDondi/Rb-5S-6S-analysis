@@ -2,22 +2,12 @@
 
 *[wiki index](README.md) · concept*
 
-**The question.** How many atoms sit in each hyperfine sublevel at
-thermal equilibrium, and how decay through an intermediate level can pump
-an atom out of the one the laser addresses.
-**Takes.** The $F$ levels and their degeneracies from
-[Hyperfine structure](hyperfine-structure.md), nothing else assumed.
-**Gives.** The degeneracy-and-abundance counting law that predicts each
-line's relative strength, and the pumping mechanism that both reduces
-amplitude and broadens the line.
-**Skip if.** the reader wants the magnetic sublevel structure itself,
-not how atoms populate it. [Magnetic sublevels](magnetic-sublevels.md)
-is the right page.
+How many atoms sit in each hyperfine sublevel at thermal equilibrium, and how decay through an intermediate level can pump an atom out of the one the laser addresses. This page builds on the $F$ levels and their degeneracies from [Hyperfine structure](hyperfine-structure.md), nothing else assumed and sets out the degeneracy-and-abundance counting law that predicts each line's relative strength, and the pumping mechanism that both reduces amplitude and broadens the line. Not covered here: the magnetic sublevel structure itself, not how atoms populate it. [Magnetic sublevels](magnetic-sublevels.md) is the right page.
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
 > defines every term and symbol used anywhere in this repository.
 
-## What it is
+## Definition
 
 A hyperfine level $F$ carries $2F+1$ magnetic sublevels, one for every
 allowed $m_F$, and with no external field to single one out they sit at the
@@ -65,7 +55,7 @@ shorter stretch of time than an atom that survives the whole transit, and
 a shorter interaction time broadens the response, the same way any early
 truncation does.
 
-## What problem it solves
+## The problem it addresses
 
 It replaces a transition-rate calculation with an arithmetic one. Predicting
 the relative strength of several hyperfine lines from a driven cascade would
@@ -84,7 +74,7 @@ atoms misses this second cost. This cost is what makes hyperfine pumping one
 of the mechanisms that broaden the line with the light shift's own power and
 waist signature.
 
-## Where this repository uses it
+## Application in this repository
 
 The population weight for each of the four observed lines, abundance times
 degeneracy share, is the prediction committed in the `predicted` column of
@@ -110,8 +100,8 @@ measured-to-predicted ratio as a probe of radiation trapping, the emitted
 795 nm decay photons being reabsorbed on the way out, a density-dependent
 effect the pure counting law above does not include.
 
-**Two mechanisms write into this one observable and the 2025 data separates
-neither.** Beside trapping, hyperfine pumping depletes each line by its own
+Two mechanisms write into this one observable and the 2025 data separates
+neither. Beside trapping, hyperfine pumping depletes each line by its own
 branching fraction, so it moves the ratios too, and it grows with power where
 trapping grows with density. They would separate on those two axes if the axes
 were crossed with the acquisition blocks. They are not: each power sits in its
@@ -139,7 +129,7 @@ and the size of the bound it costs, is worked out in
 and in
 [the saturation companion note](../notes/two_photon_saturation_companion.md).
 
-## What can go wrong
+## Failure modes
 
 The most direct mistake is comparing peak heights instead of integrated
 areas. Height is area divided by width times a shape factor, so a height
@@ -183,6 +173,7 @@ from rb5s6s.constants import PEAKS, ABUNDANCE_RB85, ABUNDANCE_RB87
 # Nuclear spin I, a fixed property of each isotope: 87Rb has I = 3/2, 85Rb
 # has I = 5/2. For the J = 1/2 ground state F runs over |I - 1/2| and
 # I + 1/2, so the two F levels together carry (2*I + 1) * 2 sublevels.
+
 NUCLEAR_SPIN = {87: 1.5, 85: 2.5}
 ABUNDANCE = {87: ABUNDANCE_RB87, 85: ABUNDANCE_RB85}
 
@@ -227,8 +218,7 @@ print(f"4192/4207 (cross isotope, abundance also enters): {r_cross:.4f}")
   D-line branching ratios and hyperfine constants this repository's cascade
   calculations draw on.
 
-## See also
-
+## Related pages
 - [The AC-Stark dossier](../quantities/ac-stark-light-shift.md), where the
   pumping branching is one of the mechanisms sharing the light shift's power
   signature.

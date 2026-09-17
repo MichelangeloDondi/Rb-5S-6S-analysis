@@ -1,31 +1,28 @@
 # A fixed-lock session for Rb 5S₁/₂→6S₁/₂: proposal and measurement protocol
 
-**The question.** What would a next session measure, what would it cost, and
-what does each block return if the effect is not there?
-**Takes.** [CLAIMS.md](CLAIMS.md), for what is bounded rather than measured
-today.
-**Gives.** The session blocks with their instruments, their durations and their
-empty cases, ranked by what a shrinking budget should cut.
-**Skip if.** You want what has been delivered rather than what is proposed.
-Every verb here is conditional on a session that is not scheduled.
+This document specifies what a next session would measure, what it would cost,
+and what each block returns if the effect is absent. It sets out the session
+blocks with their instruments, their durations and their empty cases, ranked by
+the order a shrinking budget should cut them in. [CLAIMS.md](CLAIMS.md) states
+which quantities are bounded rather than measured today. Every verb below is
+conditional on a session that is not scheduled.
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](GLOSSARY.md)
-> explains the measurement in six sentences, then defines every term
-> and symbol used anywhere in this repository.
+> [GLOSSARY.md](GLOSSARY.md) states the measurement in six sentences and
+> defines every term and symbol used anywhere in this repository.
 
 ## The proposal in five lines
 
-**The research question.** Can the collisional self-broadening and the
+The research question is whether the collisional self-broadening and the
 AC-Stark light shift of the 993 nm two-photon line be measured rather than
 bounded?
 
-**The bottleneck.** The 2025 session ran under a lock that drifted, so line
+The bottleneck is the lock. The 2025 session ran under a lock that drifted, so line
 positions carried no information and only shapes did. Reading shapes alone
 leaves the collisional width degenerate with the laser width, and leaves the
 light shift bounded at below 0.26 MHz at 225 mW against 0.35 MHz predicted,
 with the collisional coefficient bounded at 0.03-0.05 MHz per 10¹² cm⁻³.
 
-**And the degeneracy has a second face, measured 2026-08-20.** It is not only
+And the degeneracy has a second face, measured 2026-08-20. It is not only
 the laser width that competes with the collisional one. The laser kernel's
 shape does too, and by more. Fitting every peak twice, differing only in
 whether the laser's contribution is a Gaussian or a Lorentzian, moves the
@@ -34,7 +31,9 @@ on its own quoted error. A per-condition version of the same comparison was
 withdrawn on 2026-08-20: at fixed condition the two widths enter only through
 their sum, so the split is unidentified and only the density ladder separates
 them. The mechanism is that Lorentzians add linearly and a Lorentzian laser width is degenerate with a collisional one in
-a way a Gaussian is not. The two kernels are not alternatives: the pure-Lorentzian
+a way a Gaussian is not.
+
+The two kernels are not alternatives: the pure-Lorentzian
 model is nested inside the Gaussian one, reached by letting the Gaussian width
 go to zero, so the Gaussian cannot fit worse and the 32-of-32 tally is
 arithmetic rather than evidence. The informative quantity is the size of the
@@ -46,7 +45,7 @@ into the model-form error bar on the collisional coefficient, and costs a fit
 rather than beam time
 (`scripts/run_laser_kernel.py`).
 
-**That fit has since been run, and it changes what the session is for.** Freeing
+That fit has since been run, and it changes what the session is for. Freeing
 the Lorentzian-equivalent width inside the containing model at each peak gives a
 component present everywhere, by a nested likelihood ratio of 176 to 961, at
 0.315 to 0.449 MHz per peak (`results/kernel_k3.csv`). The model-form error bar
@@ -54,8 +53,8 @@ it was meant to produce is $R_\text{kernel} = 3.24$ times the statistical one
 (`results/kernel_budget.csv`). So the model-form question no longer needs beam
 time and is answered.
 
-**What still needs beam time is the origin, and that is now the sharper reason
-for the session.** The component is identified and unattributed. Calling it the
+What still needs beam time is the origin, and that is now the sharper reason
+for the session. The component is identified and unattributed. Calling it the
 laser is a separate claim, and the transfer that would carry it is classified
 NOT_ESTABLISHED for every measurement taken so far, because the one in-situ
 laser measurement samples a different band from the one a scanned width
@@ -71,12 +70,12 @@ assumes, including the row this record most wants a reader to distrust:
 temperature is intended to move the transit term while leaving the laser
 contribution alone, and a campaign using it needs the controls that show it did.
 
-**The proposed measurement.** A vapour-cell session under the repaired cavity
+The proposed measurement is a vapour-cell session under the repaired cavity
 lock, with an independent measurement of the laser width, a span wide enough
 to fit the Doppler pedestal as a pedestal, two same-isotope frequency rulers
 inside every sweep, and a randomised power ladder.
 
-**What it would establish.** The two bounds above become measurements, the
+It would establish three things. The two bounds above become measurements, the
 frequency axis becomes calibratable, and the baseline becomes data rather than
 a modelling choice.
 
@@ -92,8 +91,8 @@ today and a precision after. The width split moves least, which is the
 argument for a fixed lock and against simply taking more traces. Every value
 is read from a committed CSV.*
 
-**Where the detailed design lives.** In the chapters below, with
-[the case in ten minutes](plan/00_the-case.md) as their opening summary.
+The detailed design is in the chapters below, opening with
+[the case in summary](plan/00_the-case.md).
 Nothing
 here is scheduled, no date is assumed, and the specification names no
 operator. It is a specification, not a booking.
@@ -125,11 +124,11 @@ costed against exactly that.*
 | 11 | [Beyond 993 nm](plan/11_beyond-993.md) | the riders that cost no drive time, and the analysis plan of record |
 | 12 | [The open apparatus items](plan/12_open-apparatus-items.md) | every number in this plan nobody has measured, what each would change, and the producer that spans it |
 
-**The block register**, which is the table a session actually runs from, is at
+The block register, which is the table a session actually runs from, is at
 the head of [chapter 6](plan/06_sizing-and-spending-rules.md).
 
 
-### Where each section lives
+### Section map
 
 The chapters are files and the sections are numbered across them, so `§9` is not chapter 9. The section map below covers the numbered sections of the chapters. It does not yet cover every lettered subsection: the labels `§7a` through `§7j`, and `§7D` and `§7F`, are not in it. No count is written here, because one was and it was wrong by one. `§7F` is defined in this file and used four times in chapter 6. [The case](plan/00_the-case.md) numbers its own sections separately and is not part of this scheme.
 
@@ -152,7 +151,7 @@ The chapters are files and the sections are numbered across them, so `§9` is no
 | **§12** | Beyond 993 nm, and the one rider that costs no drive time | [`beyond 993`](plan/11_beyond-993.md) |
 | **§13** | The open apparatus items, and how the forecast handles each | [`open apparatus items`](plan/12_open-apparatus-items.md) |
 
-## This proposal can be run before it is run
+## Rehearsal of the proposal in software
 
 Everything below is a prediction about a session that has not happened, and a
 prediction is worth what it costs to check. The forward model that fits the
@@ -198,7 +197,7 @@ separating effects by parity under a knob before any fit is asked to, is
 [reversal tests](wiki/reversal-tests.md), and the sharpest instance cost
 nothing because the hyperfine g-factor's sign structure supplied the flip.
 
-## Roles, so that four documents need not be reconciled by the reader
+## Division of roles across the four documents
 
 This file owns procedure: what would be set up, in what order, against which
 go/no-go criteria. [`FUTURE_TRANSITIONS_titsapph.md`](FUTURE_TRANSITIONS_titsapph.md)
@@ -212,13 +211,15 @@ add, and [`APPARATUS.md`](APPARATUS.md) owns the hardware of record and its
 provenance. Where a number in this file disagrees with the table or the map,
 the table and the map win on numbers and this file wins on procedure. Where it
 disagrees with `APPARATUS.md` the split is by kind rather than by number:
-hardware facts are APPARATUS's and priorities are PLAN's. Projected precisions
+hardware facts are APPARATUS's and priorities are PLAN's.
+
+Projected precisions
 are not restated here beyond the two headline figures above: they live in
 [`results/projections.csv`](../results/projections.csv), which is computed from
 the dataset's own measured precision and the session parameters these chapters
 state.
 
-**The schema, applied to every costed block.** Each block states, in this order
+The schema is applied to every costed block. Each block states, in this order
 and in these words: **Needs** (its prerequisites, with hardware facts cited to
 [`APPARATUS.md`](APPARATUS.md) rather than restated), **Shots** (what to
 acquire, or the section that holds the list of record), **Go/no-go** (the
@@ -226,7 +227,7 @@ criterion that decides whether the block proceeds or aborts, frozen before
 data), **Empty** (what it looks like if the block returns nothing), and
 **Record** (what leaves the bench).
 
-**What becomes reusable regardless of these sessions.** The analysis pipeline
+Some products are reusable regardless of these sessions. The analysis pipeline
 ingests session data unchanged as long as the export keeps the 2025 shape, a
 two-column InfiniiVision CSV of exactly 2000 rows, which `rb5s6s/ingest.py`
 requires and rejects anything else against. On that path a session buys shots
@@ -278,6 +279,7 @@ index maps each section to the chapter that now holds it.
 **8.1.** the cascade branch and
 **8.3.** the saturation check.
 **9.** Session sizing, in [chapter 6](plan/06_sizing-and-spending-rules.md).
+
 **10.** Spending rules from the 2025 session, in [chapter 6](plan/06_sizing-and-spending-rules.md), whose rules run
 **10.1.** through
 **10.7.**, including

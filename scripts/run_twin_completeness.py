@@ -185,7 +185,7 @@ def _floor_for(r: dict) -> float:
 def _twin(used: list[dict], tau_int: float, tilt: float = 0.0,
           floor: bool = True) -> list[dict]:
     """One twin trace per real trace, at that trace's own power, peak and law."""
-    law_s0 = 0.364
+    law_s0 = 0.364   # a design value of its date (the static-tail prediction), queued: twin-working-point-ssot
     out = []
     for i, r in enumerate(used):
         p_w = float(r["power_mW"] or 225.0) / 1000.0

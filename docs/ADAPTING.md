@@ -1,19 +1,9 @@
 # Adapting this pipeline
 
-**The question.** You have your own transition, your own cell or fibre, and your
-own detector. Which parts of this machinery transfer, which need editing, and
-what does getting each one wrong do to your answer?
-**Takes.** Nothing. This page is a door, not a chapter.
-**Gives.** Every seam named, with the file it lives in, the failure it causes,
-and the test that catches it. Then the three radiation fields, the branching
-fraction, and the two-mass correction, each as a test you can run on your own
-numbers before writing code.
-**Skip if.** You only want this repository's own results, which are in
-[RESULTS.md](RESULTS.md) and [CLAIMS.md](CLAIMS.md).
+You have your own transition, your own cell or fibre, and your own detector. Which parts of this machinery transfer, which need editing, and what does getting each one wrong do to your answer? This page is self-contained and sets out every seam named, with the file it lives in, the failure it causes, and the test that catches it. Then the three radiation fields, the branching fraction, and the two-mass correction, each as a test you can run on your own numbers before writing code. This page is a door, not a chapter. Not covered here: this repository's own results, which are in [RESULTS.md](RESULTS.md) and [CLAIMS.md](CLAIMS.md).
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](GLOSSARY.md)
-> explains the measurement in six sentences, then defines every term
-> and symbol used anywhere in this repository.
+> [GLOSSARY.md](GLOSSARY.md) states the measurement in six sentences and
+> defines every term and symbol used anywhere in this repository.
 
 > **Want the concept rather than the seam?** [`docs/wiki/`](wiki/README.md)
 > carries one page per concept, method and effect, each with a worked
@@ -153,7 +143,7 @@ takes the same measurement into a hollow-core fibre, states which of the
 four line-shaping mechanisms stop being true there, and quotes the module
 call behind every number so a reader can recompute it.
 
-## The frequency axis, and the layer that decides whether to believe it
+## The frequency axis and its validation layer
 
 Every width and every shift here is quoted on an axis a sideband ruler
 builds. [`rb5s6s/ruler.py`](../rb5s6s/ruler.py) fits each ruler trace as one
@@ -229,7 +219,7 @@ moves a fitted centre. It moves every error bar and every model-selection
 verdict, and the ladder choosing how many components a line needs reads
 chi-squared. Refit it for your detector.
 
-## What the fit layer assumes
+## Assumptions of the fit layer
 
 `linefit.fit_condition` fits repeats of one condition jointly: shared
 physical widths, per-trace centre, amplitude, and linear background. It
@@ -261,7 +251,7 @@ under `private/qc_gallery/`, rebuilt from the repository alone.
 [`DATA.md`](DATA.md) section 4 describes it as the inspection instrument for
 this dataset.
 
-## Three radiation fields, and the tests that say whether yours matter
+## Three radiation fields and their relevance tests
 
 Any hot cell has three, and this repository checked all three only after being
 asked about them one at a time. Each has a one-line test you can run on your own
@@ -298,7 +288,7 @@ the blackbody AC-Stark shift, which is hundreds of hertz here rather than the
 ~1 Hz a ground state alone would give, because the excited state's own
 resonances sit inside the thermal band.
 
-## Getting the branching fraction for your cascade
+## Branching fractions for a new cascade
 
 If your upper state can decay into a ground level you are not driving, atoms
 leave your line mid-transit and your effective interaction time shortens. The
@@ -361,7 +351,7 @@ width. A cell with a focused beam, a guided evanescent field and a hollow
 core are three closures over the same machinery, and the fibre files above
 are one worked instance, not a dependency.
 
-## What transfers with no edits at all
+## Components transferring without edits
 
 The statistical machinery holds nothing about rubidium: the noise-law
 fitting, the identifiability and coverage studies, the model comparison
@@ -370,7 +360,7 @@ guards (the canonical-value test, the figure fingerprint, the results status
 tags). [`methods/06_the_statistics.md`](methods/06_the_statistics.md)
 derives each one.
 
-## The names you can import
+## The exported names
 
 `import rb5s6s` gives a small public surface, and it is deliberately
 small: every name on it is **pure**, meaning it computes and does not read the
@@ -398,7 +388,7 @@ from rb5s6s import (
 Everything else is reached through its module, and two kinds of module are
 worth naming separately.
 
-**`rb5s6s.fibre` is pure and is deliberately not re-exported.** It carries the
+`rb5s6s.fibre` is pure and is deliberately not re-exported. It carries the
 guided geometry: the HE11 mode solve, the vector fields, the evanescent
 profile and the transit kernel. It touches no file, so it works from an
 installed wheel, and the route is
@@ -414,7 +404,7 @@ to depend on unbuilt apparatus. Hoisting it into `__all__` was tried on
 2026-08-28 and that guard refused it. **The gap that was real is that no page
 said this**, which is what this paragraph fixes.
 
-**Six modules read from disk** (`config`, `ingest`, `qc`, `rate_model`,
+Six modules read from disk (`config`, `ingest`, `qc`, `rate_model`,
 `ruler`, `cavity_scan`), and from an installed wheel their paths resolve inside
 site-packages, where the directories are not. Those six split into two
 contracts, and the split is deliberate.
@@ -531,7 +521,7 @@ return a preference.
 convention it enforces is this repository's, described in
 `rb5s6s/sharing_bic.py` and not a theorem.
 
-**The trap this seam closes.** The effective BIC needs the whitened
+The trap this seam closes. The effective BIC needs the whitened
 chi-square against the effective count, both terms. A raw chi-square against a
 reduced penalty inflates the fit's gain by roughly the correlation time while
 lowering its parameter cost, and on this archive that reverses a verdict. The
@@ -564,7 +554,9 @@ the fraction of its uncertainty a parameter keeps once its correlated partner
 is measured independently. `comb_tooth_weights` returns the two-photon comb
 tooth weights in the zero-delay limit and cell-averaged beyond it, where the
 retro delay maps to a position-dependent effective modulation depth, with
-the identity tested against the explicit pathway sum. Its reciprocal is the factor bought, and it depends
+the identity tested against the explicit pathway sum.
+
+Its reciprocal is the factor bought, and it depends
 on the correlation alone, so it is a property of the design rather than of the
 sample size.
 
@@ -573,7 +565,7 @@ is the campaign-specific instance, and it embeds every committed input it needs
 as a provenance-tagged constant rather than reading `results/`, so it runs from
 a clone with no data present.
 
-**The trap this seam closes.** A design study that reports what more data buys
+The trap this seam closes. A design study that reports what more data buys
 will always report an improvement, because more data always shrinks an error
 bar. It will not tell you that the pair you care about stays degenerate. Run
 `width_identifiability` or read `corr_laser_coll` alongside every forecast: on

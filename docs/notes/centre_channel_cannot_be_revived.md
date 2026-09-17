@@ -34,7 +34,7 @@ committed sweep rate:
 | campaign morning, the two powers whose window setting matches | 4.87 |
 | **campaign morning, all 26 traces, 175 mW contrast** | **0.87** |
 | campaign morning, all 26, with a free offset per window setting | 4.83 |
-| 4 July evening session, 46 traces, 180 mW contrast | 1.35 |
+| 4 July evening session, 46 traces, 180 mW contrast | 1.35 <!-- other-quantity: a centre contrast of the evening session, not a leave-one-out bracket --> |
 
 The width channel's bound is 1.147 MHz/W and the prediction is 1.545, so two of
 those configurations would be worth having. The model is calibrated: it forecasts

@@ -80,11 +80,12 @@ def _s0_225():
     used to be read from results/stark_joint.csv, which the freshness check
     exempts because its producer needs an excluded trace tree and about five
     hours. That reason covers the bound, which the traces determine. It does
-    not cover the prediction, which is computed from constants alone, and that
-    row still stands at the polarizability this record retired on 2026-08-25:
-    0.348 MHz where the adopted value gives 0.360. Sizing a systematic against
-    the smaller number understated it by 4.8 per cent, in the flattering
-    direction. The prediction now comes from results/stark_sweep.csv, which IS
+    not cover the prediction, which is computed from constants alone, and until 2026-09-17
+    that row stood at the polarizability this record retired on 2026-08-25, 4.8 per cent
+    below the adopted value's prediction then: sizing a systematic against the smaller
+    number understated it, in the flattering direction. (The aperture's on-axis factor,
+    wired 2026-09-17, brought the current prediction to the same three digits the stale
+    row carries, which is a coincidence and the reason the SOURCE is what this reads.) The prediction now comes from results/stark_sweep.csv, which IS
     in the checked set and carries the current value. The bound stays in the
     joint file, because the sweep's row of that name is a replaced diagnostic
     of a different construction and reads 2.205.

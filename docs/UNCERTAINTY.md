@@ -1,4 +1,4 @@
-# How to read an uncertainty in this project
+# Reading an uncertainty in this project
 
 Every number here carries a grade and, where one is meaningful, an error. Two
 vocabularies do that work, one for physical inputs and one for computed results,
@@ -7,20 +7,10 @@ This page is that place. It states what each tag licenses, which errors are
 statistical and which are not, and where a stated uncertainty is deliberately
 absent.
 
-**The question.** What does a tag or an error column on a number in this
-project actually license, and where is a stated uncertainty deliberately
-absent rather than merely missing?
-**Takes.** Nothing. This page is the reference the rest of the repository
-points readers at.
-**Gives.** The two provenance vocabularies, the five bound constructions and
-when each is valid, what is mechanised, and what is not covered.
-**Skip if.** You want the numbers themselves rather than what licenses them:
-those live in [`RESULTS.md`](RESULTS.md) and the claim register in
-[`CLAIMS.md`](CLAIMS.md).
+What does a tag or an error column on a number in this project actually license, and where is a stated uncertainty deliberately absent rather than merely missing? This page is self-contained and sets out the two provenance vocabularies, the five bound constructions and when each is valid, what is mechanised, and what is not covered. This page is the reference the rest of the repository points readers at. Not covered here: the numbers themselves rather than what licenses them: those live in [`RESULTS.md`](RESULTS.md) and the claim register in [`CLAIMS.md`](CLAIMS.md).
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](GLOSSARY.md)
-> explains the measurement in six sentences, then defines every term
-> and symbol used anywhere in this repository.
+> [GLOSSARY.md](GLOSSARY.md) states the measurement in six sentences and
+> defines every term and symbol used anywhere in this repository.
 
 ## 1. Physical inputs: the provenance tags in `constants.py`
 
@@ -35,8 +25,8 @@ module's own house rules, restated here so a reader need not open the source.
 | `ENVELOPE` | order of magnitude only | may bound an argument, must never carry a published digit |
 | `OPEN` | not settled | must never reach a published number |
 
-**One word does double duty and the two meanings differ, which is worth saying
-before a reader trips on it.** The table above is the vocabulary of
+One word does double duty and the two meanings differ, which is worth saying
+before a reader trips on it. The table above is the vocabulary of
 `constants.py`, describing where a physical input came from. The `status`
 column on every row of `results/` is a different vocabulary, described in
 `scripts/annotate_results_status.py`, describing what a result is. Both
@@ -44,7 +34,9 @@ contain the token `ENVELOPE`. The input tag means order of magnitude only.
 The results tag means a quantity conditional on something unmeasured, which
 may be computed to three digits and still not support a confidence statement:
 `S0_225mW_pred` is calculated exactly from constants and is `ENVELOPE` in the
-results sense because the waist behind it was never measured in this cell. So
+results sense because the waist behind it was never measured in this cell.
+
+So
 a results-row `ENVELOPE` may carry a digit, provided its conditional travels
 with it, and **may not carry a single calibrated significance.** It may carry
 a range obtained by scanning the conditional, which is what the light-shift
@@ -91,42 +83,44 @@ written. The layers are kept so the staleness rate of a
 hand-maintained census stays visible. **No
 guard ties this census to a live recount**, unlike the test-count line in
 `docs/methods.md`, so it is a hand-maintained number in a document about
-provenance discipline. It is recorded as a defect until a guard sums the
+provenance discipline.
+
+It is recorded as a defect until a guard sums the
 column. The
 preponderance of `DIAGNOSTIC` is expected and is not a weakness: most rows in
 this ledger are checks, counts and errors-on-other-rows rather than results, and
 the results are deliberately few.
 
-**The rule a reader most needs.** A `DIAGNOSTIC` row is not a result, and no
+The rule a reader most needs. A `DIAGNOSTIC` row is not a result, and no
 reader-facing document should quote one as though it were. Several rows in the
 ledger exist only to carry the uncertainty of a neighbouring row and are tagged
 `DIAGNOSTIC` for that reason.
 
-## 3. Where the error lives, and what kind it is
+## 3. Location and kind of each error
 
-Uncertainty is stored three ways in this project, and the shape tells you the
+Uncertainty is stored three ways in this project, and the shape states the
 kind.
 
-**An `err` column** is a one-sigma error on the value in the same row. What it is
+An `err` column is a one-sigma error on the value in the same row. What it is
 an error *of* is stated in that row's `unit` field, because the kinds genuinely
 differ: `coverage.csv` carries binomial Monte-Carlo errors on a simulated
 coverage fraction, `wavemeter_reconstruction.csv` carries a residual-bootstrap
 standard error on a fitted noise floor, and the fit files carry the fit's own
 parameter errors.
 
-**An `err_lo16`/`err_hi84` pair** is a 16 to 84 per cent band from Monte-Carlo
+An `err_lo16`/`err_hi84` pair is a 16 to 84 per cent band from Monte-Carlo
 draws over the inputs, used where the distribution is not symmetric and quoting a
 single sigma would misrepresent it. `polarizability.csv` uses this throughout:
 its bands come from drawing every matrix element, core and tail from its quoted
 one-sigma and re-evaluating.
 
-**A sibling row** whose quantity name ends in `_mc_err` is a Monte-Carlo error on
+A sibling row whose quantity name ends in `_mc_err` is a Monte-Carlo error on
 the row above it, used where the error is a property of the sampling rather than
 of the physics. `fringe_tail.csv` uses this for all four of its pooled
 quantities: each is estimated from the across-block scatter of sixteen
 independent blocks, which is why it is zero when only one block is run.
 
-**An `err_kind` column** names what the error is *of*, where the value's
+An `err_kind` column names what the error is *of*, where the value's
 uncertainty is dominated by something other than statistics. Two files carry it,
 both from 2026-08-10, and they carry it because their two error bars are
 different claims that a bare number could not distinguish.
@@ -138,7 +132,7 @@ not a repeatability. `blackbody_channels.csv` marks its shift rows
 differential polarizability it integrates, so the error is the committed
 `alpha_6s_static` band carried through rather than recomputed.
 
-**And an `err_lo`/`err_hi` pair** where a range is not symmetric about the value
+And an `err_lo`/`err_hi` pair where a range is not symmetric about the value
 it belongs to. The halo rows use it: the point value sits at a 2 mm standoff
 while the band runs over 1 to 5 mm, and since the halo is not linear in the
 standoff the band is −0.58 and +0.78 about 1.07 at 130 °C. A single `err`
@@ -148,7 +142,7 @@ wrong**, which is the dangerous direction: a reader checking by eye would have
 seen the correct band and a reader loading the CSV would not.
 
 Three lessons from putting those bars on, all of which generalise. **A range
-is not an error bar until you know the function is monotonic over it.** The halo
+is not an error bar until the function is known to be monotonic over it.** The halo
 band was first taken at the two ends of the standoff range, and the halo is not
 monotonic in the standoff, because below the Holstein cutoff the escape factor
 is exactly one and the halo is exactly zero. At 90 °C that happens inside the
@@ -157,16 +151,18 @@ the range now, and `tests/test_radiation_environment_csv.py` checks that every
 banded row brackets its own value. And **a number quoted in prose with no
 producer is a defect even when it is right**: those numbers reached CLAIMS and
 the methods chapters before either CSV existed, against this project's own rule
-that prose quotes committed CSVs rather than restating them. And **a symmetric
+that prose quotes committed CSVs rather than restating them.
+
+And **a symmetric
 error bar is a claim of symmetry**, which is a claim like any other and has to
 be true. Where it is not, say both ends.
 
-**A blank `err` is a claim, not an omission.** It says an error is not meaningful
+A blank `err` is a claim, not an omission. It says an error is not meaningful
 for that row, and the row's `unit` field says why. Counts, flags and grid-read
 sensitivities are the usual cases. A guard checks intervals rather than blanks,
 see section 5.
 
-### 3a. An open systematic the error bars do not yet carry: the fit window
+### 3a. The fit window as an open systematic
 
 The fitted collisional width falls with widening fit window in 30 of 32
 conditions over the wing-safe range
@@ -184,7 +180,7 @@ the shared-slope construction re-run per window. §4.14 of
 [the statistics chapter](methods/06_the_statistics.md) carries the full
 treatment.
 
-## 4. Bounds: four constructions, and when each is valid
+## 4. Four bound constructions and their validity
 
 The project quotes several one-sided 95 per cent limits and they are not built
 the same way. Quoting a bound without its construction is not reproducible, so
@@ -221,7 +217,7 @@ each site names it.
   [the refit's postscript](notes/companion_inclusive_refit_prereg.md) for the
   full profile and the general form of the failure.
 
-### 4a. Reading a crossing off a grid, which is where two defects came from
+### 4a. Reading a crossing off a grid
 
 Every construction above ends in the same small operation: a profile is
 evaluated on a grid, and the edge is the point where it crosses a threshold.
@@ -250,7 +246,7 @@ than left to the producer.
   because the file reported a best fit outside the interval three rows below it.
   That is now a guard.
 
-### 4b. Reproducing a number is a question about an environment
+### 4b. Reproduction as a question about the environment
 
 The committed CSVs are checked against a fresh run of their producers. That
 check had a flat tolerance until 2026-08-11, when raising the tested Python
@@ -258,8 +254,8 @@ version pulled in numpy 2.5 and four of sixteen files stopped matching. numpy
 2.5 replaced the `np.convolve` implementation this whole lineshape model is
 built on, and a different algorithm rounds differently.
 
-**The committed digits were reproducible only near the numpy version that
-produced them.** The versions themselves, and the command that recovers them,
+The committed digits were reproducible only near the numpy version that
+produced them. The versions themselves, and the command that recovers them,
 are pinned in
 [`results/ENVIRONMENT_OF_RECORD.md`](../results/ENVIRONMENT_OF_RECORD.md), which
 also states plainly that the supported environment and the environment of
@@ -281,8 +277,8 @@ cancellation multiplies a $10^{-15}$ perturbation by $10^4$. Their
 well-conditioned siblings, the total width and $\chi^2$, move by under 0.5 per
 cent in the same runs, and every conclusion is unchanged.
 
-**So the arithmetic is unstable exactly where the physics was already declared
-unidentifiable**, and stable everywhere a number is quoted. The guard now
+So the arithmetic is unstable exactly where the physics was already declared
+unidentifiable, and stable everywhere a number is quoted. The guard now
 carries per-column tolerances that say which class each quantity is in and why,
 rather than one constant that has to be loose enough for the worst case and is
 therefore blind to the rest.
@@ -296,7 +292,7 @@ rounded away. And a number stored inside a text field cannot be compared as a
 number: one file embedded its own effective sample size in a unit string, so a
 count that moved by 2 in 13853 read as a changed label.
 
-## 5. What is mechanised
+## 5. Mechanised checks
 
 Uncertainty handling is guarded, not merely documented.
 
@@ -317,11 +313,10 @@ Uncertainty handling is guarded, not merely documented.
 * `tests/test_docs_canonical.py` pins the reader-facing numbers against the CSVs
   they come from, so a document cannot drift from its source.
 
-## 6. What is not covered, stated rather than implied
+## 6. Coverage not claimed
 
-
-**No function here takes a beam-quality argument, so every waist-dependent
-number assumes a diffraction-limited beam.** `M^2` appears in no signature in
+No function here takes a beam-quality argument, so every waist-dependent
+number assumes a diffraction-limited beam. `M^2` appears in no signature in
 `rb5s6s/`, and it enters the physics in one place, the Rayleigh range
 `z_R = pi w0^2 / (M^2 lambda)`, and therefore in everything axial. That is the
 collection window's ratio, the fringe Monte Carlo, and the spread that licenses
@@ -331,11 +326,13 @@ puts the aperture at the beam's own 1/e^2 radius. The direction of the error is
 stated here instead of left to be inferred: a real beam has `M^2 > 1`, so the true
 Rayleigh range is *shorter* than every number in this record assumes, the window
 ratio *larger*, and the collection-window correction on the second and third
-cumulants bigger than the signed rows the record carries. Nothing quantifies it,
+cumulants bigger than the signed rows the record carries.
+
+Nothing quantifies it,
 because nothing has measured `M^2` on this bench.
 
-**The light-shift convention describes free atoms, and a trapped sample is not
-one.** `stark_shift_S0_mhz` uses an effective intensity
+The light-shift convention describes free atoms, and a trapped sample is not
+one. `stark_shift_S0_mhz` uses an effective intensity
 $(1+\rho) 2P/\pi w_0^2$, the time and space average of the standing wave,
 because $\langle\cos^2\rangle = 1/2$. An atom held in that standing wave sits
 at an *antinode*, where the intensity is four times the running wave and twice
@@ -348,15 +345,15 @@ measurement has yet been made against. The derivation and its check against the
 record's own closed form are in
 [the ramp chapter](methods/03_the_ac_stark_ramp.md).
 
-**The transit width of a trapped row is computed by a function that does not
-apply to it.** `constants.transit_fwhm_from_w0` is the Maxwell-Boltzmann
+The transit width of a trapped row is computed by a function that does not
+apply to it. `constants.transit_fwhm_from_w0` is the Maxwell-Boltzmann
 flux-weighted crossing of a Gaussian beam. Trapped atoms do not cross, and the
 cold rows of the platform table carry its output anyway. The number is small
 there, so nothing downstream is visibly wrong, which is exactly why it is
 written here: it is an unflagged use of a formula outside its regime, and the
 replacement is the trap's motional structure.
 
-**And a delta-kick cooled sample has no temperature to put in either formula.**
+And a delta-kick cooled sample has no temperature to put in either formula.
 The cooling that reaches a microkelvin inside a fibre
 ([wang2022](lit/wang2022.md)) ends in a collimated, non-thermal phase-space
 distribution. The $k_BT/U_0$ spread of the trapped ramp is an equipartition
@@ -366,8 +363,8 @@ intensity spread. Which of the two applies depends on whether the cloud is
 recaptured and rethermalised or probed ballistically, and the record has no
 measurement either way.
 
-**The collisional (pressure) shift is not in the model, and this is the
-number that says why.** The lineshape carries a collisional width,
+The collisional (pressure) shift is not in the model, and this is the
+number that says why. The lineshape carries a collisional width,
 `gamma_coll`, and no collisional shift term. Collisions do both. The
 absence is given a number, and every number below is a committed row and not a
 typed digit: `scripts/run_collisional_shift_bound.py` writes
@@ -380,8 +377,8 @@ Rb and Cs transitions at less than
 MHz per Torr, a figure it takes in turn from Zameroski 2014, which this
 record also holds as [zameroski2014](lit/zameroski2014.md).
 
-**Every frequency in this block is on the transition axis, which is twice
-the laser axis.** The warrant is Zameroski's own statement that it defines
+Every frequency in this block is on the transition axis, which is twice
+the laser axis. The warrant is Zameroski's own statement that it defines
 nu = 2 nu_L and reports its shift rates on the atomic frequency scale. It is
 not that Orson's worked example uses that axis, which is how this block
 justified it before: a multiplication inherits the axis of its input rate,
@@ -401,10 +398,10 @@ for the spread between published vapour-pressure correlations:
 | 110 C | `shift_bound_110C` | below `0.013` MHz |
 | 130 C | `shift_bound_130C` | below `0.044` MHz |
 
-**Across the campaign's own four-point grid, 70/90/110/130 C, the
+Across the campaign's own four-point grid, 70/90/110/130 C, the
 differential is below
 [0.044](../results/collisional_shift_bound.csv "ref:collisional_shift_bound:bound:shift_bound_differential")
-MHz**, about
+MHz, about
 [5.9](../results/collisional_shift_bound.csv "ref:collisional_shift_bound:comparison:light_shift_over_collisional")
 times smaller than the light-shift bound this record quotes on the same
 axis, below
@@ -418,6 +415,7 @@ can bias a width, but `rb5s6s/beta.py` floats a centre per trace, and the
 density and hence the collisional shift are constant within a trace at a fixed
 set point. A shift is therefore absorbed at every trace whether or not it
 varies across the sweep, so neither figure is a width bias this fit could see.
+
 Both stand as ceilings on a channel the forward model does not carry, which is
 what a borrowed bound can honestly be.
 
@@ -435,8 +433,8 @@ were the answer would not be independent, because for a -C6/R^6 potential
 the shift-to-width ratio is a fixed constant, so the shift produced would be
 a fixed multiple of the `beta_self` this record already has.
 
-**The record's own expectation for this atom very nearly exhausts the borrowed
-ceiling, and that is what two numbers agreeing in size actually say.**
+The record's own expectation for this atom very nearly exhausts the borrowed
+ceiling, and that is what two numbers agreeing in size actually say.
 [Rahaman 2022](lit/rahaman2022.md) measures a Cs 6S-7D self-shift whose
 shift-to-broadening ratio is -0.33 of the FWHM, a value Zameroski's Rb
 5S-5D5/2 pair independently reproduces. Applied to this record's own
@@ -450,27 +448,29 @@ carry the same vapour-density inflation and it cancels in the ratio, so raw
 against raw is the like-for-like comparison. Dividing the central expectation
 by the inflated ceiling was a first draft of this line. Two numbers that close in size, one a ceiling and one an
 expectation, do not corroborate one another: they say the ceiling is nearly
-used up by the only estimate the record holds. **Nor are they two routes.**
+used up by the only estimate the record holds.
+
+Nor are they two routes.
 The borrowed 30 MHz/Torr is Zameroski's measured 5D self-shift, and the
 expectation's absolute scale is a `beta_self` anchored on Zameroski's 7S
 broadening. Both run through the same paper, and this block called them
 independent.
 
-**The waist conditionality is not a statistical error and is not in any `err`
-column.** Every absolute result rides on the beam waist through the transit
+The waist conditionality is not a statistical error and is not in any `err`
+column. Every absolute result rides on the beam waist through the transit
 width. The waist is a measurement on this apparatus lineage rather than a fit
 output, so the results conditional on it are tagged `PRELIM` and the dependence
 is mapped explicitly as a scan rather than propagated as a sigma. Read the
 `w0_scan` rows of the joint-fit files to see how a result moves with it.
 
-**Correlated inputs are not propagated as a covariance across files.** Several
+Correlated inputs are not propagated as a covariance across files. Several
 results share the same few inputs, so their errors are not independent and
 combining them in quadrature would understate the total. Where two results are
 compared for consistency, the text says whether the comparison is independent by
 construction.
 
-**The `value` column is not always a number, and that is deliberate in every
-case it happens.** A census on 2026-08-11 across all forty-six files found seven
+The `value` column is not always a number, and that is deliberate in every
+case it happens. A census on 2026-08-11 across all forty-six files found seven
 rows whose `value` does not parse as a float, and they fall into two kinds. Four
 are trace censuses written as one field, `100/59/46/26` and its siblings, which
 say how many traces each session contributed and would lose their meaning split
@@ -479,19 +479,19 @@ answering a question that has no number. Neither kind is an error, and neither
 carries an uncertainty, but a downstream reader parsing the column numerically
 will meet them, so they are named here rather than discovered.
 
-**Two files run their own status vocabulary and are outside the ledger's.**
+Two files run their own status vocabulary and are outside the ledger's.
 `qc_metrics.csv` tags each trace with its role in the dataset, `canonical` and
 its siblings, which answers a different question from the eight words above, and
 `laser_epoch.csv` likewise. Both sit in `annotate_results_status.py`'s skip list
 by design, so a census of status words across the whole directory will report
 them as violations and they are not.
 
-**One quantity in the joint region is known to disagree with its own point
-estimate**, `beta_self_joint` against `beta_self_min`, the second being the
+One quantity in the joint region is known to disagree with its own point
+estimate, `beta_self_joint` against `beta_self_min`, the second being the
 minimum of a coarse two-dimensional grid and the first a direct fit. The gap is
 the grid step and is not yet reconciled.
 
-**One file used to sit outside all of this and no longer does.**
+One file used to sit outside all of this and no longer does.
 `results/laser_epoch.csv` carried its own header, a prose paragraph in the field
 every other file uses for a status word, the inequality `<1.2` in a column the
 rest of the ledger keeps numeric, and a transit width baked into a quantity name

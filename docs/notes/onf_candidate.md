@@ -1,21 +1,6 @@
 # The nanofiber candidate: three instruments one apparatus provides
 
-**The question.** What a nanofibre alongside the vapour cell would add to this
-measurement, sized from committed numbers rather than asserted, and which of
-its settings can carry which instrument.
-**Takes.** The guided-geometry derivations of
-[methods chapter 9](../methods/09_the_guided_geometry.md), which this page
-restates in its own words and now cites instead of re-deriving. Then the
-lineshape and identifiability chapters for the kernel budget,
-and the joint Fisher block for what a second platform is worth to beta_self.
-**Gives.** The sized candidate, the three instruments the apparatus already
-provides, the joint forecast, and what the EOM ruler is worth once the drive
-becomes a design variable.
-**Skip if.** You have no fibre. The method, the results and the plan are
-platform-neutral and this note is one of the three surfaces you can skip whole
-without losing anything on your path. Terms are in
-[GLOSSARY.md](../GLOSSARY.md).
-
+What a nanofibre alongside the vapour cell would add to this measurement, sized from committed numbers rather than asserted, and which of its settings can carry which instrument. This page builds on the guided-geometry derivations of [methods chapter 9](../methods/09_the_guided_geometry.md), which this page restates in its own words and now cites instead of re-deriving. Then the lineshape and identifiability chapters for the kernel budget, and the joint Fisher block for what a second platform is worth to beta_self. It sets out the sized candidate, the three instruments the apparatus already provides, the joint forecast, and what the EOM ruler is worth once the drive becomes a design variable. Not covered here: you have no fibre. The method, the results and the plan are platform-neutral and this note is one of the three surfaces you can skip whole without losing anything on your path. Terms are in [GLOSSARY.md](../GLOSSARY.md).
 `provenance: results/onf_candidate.csv` - Sized from committed numbers rather than asserted, in its own words. This is the fibre lane's own row set. An untagged number here is a claim to check, not a checked one. Two untagged figures on this page stood stale until a reading found them, and the count of grounded values this line used to assert was never checkable: it ranged over a population nobody had defined.
 
 
@@ -160,7 +145,7 @@ the powers quoted here bound an integration window rather than a steady state.
 ## C. Hot vapor: the transit kernel where it is the whole line
 
 Thermal atoms cross the evanescent field in about a nanosecond, so the
-transit width scales from 0.96 MHz in the cell to about 140 MHz at the
+transit width scales from 0.96 MHz in the cell to about 140 MHz at the <!-- other-quantity: a transit width in megahertz at the fibre, not the dilute-gas margin of docs/methods/02 -->
 fiber, from a small component of the line to essentially all of it. The
 transit kernel, whose Gaussian versus cusp choice carries 18 to 23 per cent
 of model form on the collisional coefficient and cannot be resolved inside
@@ -340,7 +325,7 @@ is inversely proportional to that extent. The carrier weight at the depth
 |---|---|---|
 | 12.5 MHz | 0.000000 | 0.000000 |
 | 700 MHz | 0.089584 | 0.000000 |
-| 1.5 GHz | 0.438608 | 0.000001 |
+| 1.5 GHz | [0.438608](../../results/onf_candidate.csv "ref:onf_candidate:eom_carrier_at_null_cell_7cm_1500MHz:") | 0.000001 |
 
 The 130 C fibre would need a drive of
 [358.6 to 483.4](../../results/onf_candidate.csv "ref:onf_candidate:eom_drive_needed_onf_hot_130C:") MHz. By

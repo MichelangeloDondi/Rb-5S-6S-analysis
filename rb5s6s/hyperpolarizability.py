@@ -347,14 +347,13 @@ def two_photon_matrix_element(lam_nm: float = 993.4192) -> float:
 
     The ratio to the light shift is 2T/|Delta_alpha| and is field-independent,
     but it is NOT single-valued, because this project holds two values of
-    |Delta_alpha| that differ by a documented 4.7 per cent: the cited 1093 a.u.
-    that constants.DELTA_ALPHA_AU carries and every committed S0 uses, and this
-    package's own recompute (the magnitude side of the sign dispute,
-    THEORY_NOTE section 5). So, with 2T = 1416.02 invariant:
+    |Delta_alpha| that differ by 3.5 per cent: this record's dynamic sum, which
+    constants.DELTA_ALPHA_AU carries and every committed S0 uses, and the cited
+    1093 a.u. (the magnitude side of the sign dispute, THEORY_NOTE section 5).
+    So, with 2T = 1416.02 invariant:
 
         2T/1131.8 = 1.2511    the ADOPTED value, the dynamic sum (2026-09-15)
         2T/1093   = 1.2951    converts a S0 written with the CITED value
-        2T/1145   = 1.2367    the static sum, kept as history only
 
     The band changed in kind. It was a 1.24 to 1.30 dispute
     between two candidate polarizabilities, one of them now set aside; it is now

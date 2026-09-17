@@ -67,12 +67,27 @@ import math
 import numpy as np
 from scipy.optimize import least_squares
 
-from .lineshape import stark_shift_S0_mhz, total_fwhm_mhz
+from .lineshape import aperture_onaxis_factor, stark_shift_S0_mhz, total_fwhm_mhz
 from .linefit import transit_fwhm_at_T
 from .constants import (GAMMA_NAT_HZ, RHO_RETRO, RHO_RETRO_ERR, W0_BAND_M,
                         W0_MEASURED_M)
 from .cascade import BRANCHING_F as F_PER_LINE
 from .config import TRANSIT_FWHM_PLACEHOLDER_MHZ
+
+
+def kappa_pred_per_watt(w0_m: float = None, rho: float = None) -> float:
+    """The predicted light shift per RECORDED watt, MHz per W on the transition axis (F39).
+
+    The ideal Gaussian relation times the on-axis part of the clipped focus's diffraction,
+    `lineshape.aperture_onaxis_factor`: the power meter reads behind the cell, so a recorded
+    watt buys 0.967 of the unclipped on-axis intensity at 64 um and 0.994 at 76. Three
+    producers computed this line identically (the global and full dataset fits and the stark
+    joint fit), which is why it lives here. The profile part of the aperture term (the side
+    lobes, the effective M2, the kernel) stays deferred, and the width channel reads
+    `aperture_spread_factor` instead."""
+    w0 = W0_MEASURED_M if w0_m is None else float(w0_m)
+    r = RHO_RETRO if rho is None else float(rho)
+    return stark_shift_S0_mhz(1.0, w0, rho=r) * aperture_onaxis_factor(w0)
 
 
 # --- the two width companions, OFF unless a caller turns them on -----------
@@ -183,16 +198,18 @@ def fit_stark_sweep(grid: Dict[Tuple[str, float], Tuple[float, float]], *,
     npk = len(peaks)
 
     # seeds: per-peak sigma_laser ~1.6, kappa ~ predicted
-    kpred = stark_shift_S0_mhz(1.0, w0_um * 1e-6, rho=rho)   # MHz per W (S0 at 1 W)
+    kpred = kappa_pred_per_watt(w0_um * 1e-6, rho)           # MHz per W (S0 at 1 W), F39
     p0 = np.array([1.6] * npk + [kpred], float)
-    # S0 prediction BAND over the measured w0 band AND the rho uncertainty. S0 ~
+    # S0 prediction BAND over the w0 convention's band AND the rho uncertainty. S0 ~
     # (1+rho)/w0^2, so the widest credible interval pairs the tight-waist edge
     # with the high rho and the wide-waist edge with the low rho. Both bands
     # come from constants (W0_BAND_M, RHO_RETRO +/- RHO_RETRO_ERR) so no edge
     # is ever hand-typed here.
     _w0_lo_m, _w0_hi_m = W0_BAND_M
-    s0_225_pred_hi = stark_shift_S0_mhz(0.225, _w0_lo_m, rho=rho + RHO_RETRO_ERR)
-    s0_225_pred_lo = stark_shift_S0_mhz(0.225, _w0_hi_m, rho=rho - RHO_RETRO_ERR)
+    s0_225_pred_hi = (stark_shift_S0_mhz(0.225, _w0_lo_m, rho=rho + RHO_RETRO_ERR)
+                      * aperture_onaxis_factor(_w0_lo_m))
+    s0_225_pred_lo = (stark_shift_S0_mhz(0.225, _w0_hi_m, rho=rho - RHO_RETRO_ERR)
+                      * aperture_onaxis_factor(_w0_hi_m))
     lo = np.array([0.0] * npk + [0.0], float)
     hi = np.array([np.inf] * (npk + 1), float)
 

@@ -1,16 +1,9 @@
 *Chapter 5 of 8 · [methods index](../methods.md)*
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
+> defines every term and symbol used anywhere in this repository.
 
-**The question.** How does a record of volts against time become a frequency
-axis, and how well is that axis known?
-**Takes.** The measurement chapter, for the sweep and the apparatus. It needs
-none of the lineshape chapters, which is why it can be read early.
-**Gives.** The tooth spacing and the sweep rate that turn every millisecond in
-the dataset into megahertz. Every width quoted anywhere in this set is
-denominated in this axis.
-**Skip if.** You are reading for the physics of the line rather than for the
-calibration. Nothing later re-derives the axis, it only spends it.
+How does a record of volts against time become a frequency axis, and how well is that axis known? This chapter builds on the measurement chapter, for the sweep and the apparatus. It needs none of the lineshape chapters, which is why it can be read early. It sets out the tooth spacing and the sweep rate that turn every millisecond in the dataset into megahertz. Every width quoted anywhere in this set is denominated in this axis. For the physics of the line rather than its calibration, this is the wrong page. Nothing later re-derives the axis, it only spends it.
 
 ## 3. From volts-versus-time to a frequency axis (the EOM ruler)
 
@@ -22,7 +15,7 @@ derivation. Here $\Omega = 12.5$ MHz gives
 $$\boxed{ \Delta\nu_\text{tooth}=\frac{\Omega}{2}=6.25\ \text{MHz (laser axis)} }$$
 
 with the same factor-2 as [§0](../methods.md). Fitting the tooth spacing (in ms) per block gives
-the sweep rate. We measure $0.042524(51)$ MHz/ms on the laser axis, and the
+the sweep rate. The measured value is $0.042524(51)$ MHz/ms on the laser axis, and the
 sweep is linear across the window to better than 0.3%.
 
 This spacing's exactness, assumed above to calibrate the sweep rate, is now
@@ -58,14 +51,16 @@ $\Delta=146.804$ ms at five teeth against $146.970$ ms at seven, and the
 five-tooth value reproduces the previously committed rate exactly, which is
 what identifies the truncation as the cause. The corrected campaign rate is
 therefore **0.4% of a linewidth lower**, $0.0425706 \to 0.0425243$ MHz/ms,
-a $-0.109$% shift carried by every frequency this analysis quotes. The size
+a $-0.109$% shift carried by every frequency this analysis quotes.
+
+The size
 is about one standard error of the rate itself and is small beside the beam
 waist, but it is a one-directional bias rather than scatter, so it is
 corrected rather than absorbed into an error bar. The same truncation was
 railing the collisional width at zero in the M25 comb fits, which is how it
 surfaced.
 
-### Why the ruler is a clean number: the common-mode rejections
+### Common-mode rejections in the ruler
 
 The rate is a *differential* measurement across five copies of the **same
 physical line**, and everything that afflicts the line afflicts every copy
@@ -109,14 +104,16 @@ in any well-sampled window, and that bound is set by the well-sampled windows
 alone. The strip beneath the map carries the number of traces each window
 draws on, so the split is visible rather than asserted.
 
-**The two leading-edge windows are not merely imprecise, they depart.** At
+The two leading-edge windows are not merely imprecise, they depart. At
 -537 ms the local rate sits 1.75% below the whole-scan rate with an
 uncertainty of 0.40%, and at -412 ms it sits 0.73% above with an uncertainty
 of 0.18%, which are 4.4 and 4.0 standard deviations from flat. They are
 excluded from the bound on sample count, four and five traces against nineteen
 or more elsewhere, and an earlier version of this caption and of the figure
 justified that exclusion by saying such windows carry uncertainties larger
-than the bound. Of the five excluded windows two do (0.40% and 0.68%) and
+than the bound.
+
+Of the five excluded windows two do (0.40% and 0.68%) and
 three do not (0.18%, 0.18% and 0.29%), so the justification was true of two of
 them and the leading edge needs a different statement: **the scan's
 first samples are where the ramp is turning, the conversion from scan time to
@@ -128,7 +125,9 @@ stand above this trace's fit residual, and the seventh does not because the
 third-order pair carries about 2% of the first-order power at this modulation
 depth, and the scan end clips the outermost window, as on every recorded ruler
 (pre-registration
-[amendment 4](../notes/ruler_validity_and_trim_prereg.md)). This trace is the one
+[amendment 4](../notes/ruler_validity_and_trim_prereg.md)).
+
+This trace is the one
 drawn because it meets the conditions fixed before the analysis, §7 of the same
 note, every clause required: the two first-order teeth are among the three
 tallest without relabelling, six of the seven teeth stand above the scatter of
@@ -171,7 +170,7 @@ law explains the 2025 design compromise and prescribes its fix:
   demands $A_{+k}=A_{-k}$ exactly, and the 2025 traces violate it, for example
   $1.00$ against $0.90$ at $k=\pm1$ on a T-session ruler. The carrier is where
   the admixture concentrates: across the clean combs its height runs from
-  $0.360$ to $1.188$ of the first order and on ten of the 41 it stands *taller*
+  $0.360$ to $1.188$ of the first order and on ten of the 41 it stands *taller* <!-- other-quantity: the carrier's height against the first-order tooth, not the light-shift prediction -->
   than the first order, while the second-to-first ratio holds to four per cent.
   That contrast localises the residual amplitude modulation to the carrier and
   is why the carrier height settles nothing about the labelling.
@@ -187,8 +186,8 @@ law explains the 2025 design compromise and prescribes its fix:
   shares and not the constancy of the total. The shares are read from the tooth
   heights on the same trace, so the ladder keeps a measured abscissa.
 
-**Measured against the shares as a whole, the law is rejected, and what fixes
-it is a floor and not a depth.** The asymmetry above is read tooth by
+Measured against the shares as a whole, the law is rejected, and what fixes
+it is a floor and not a depth. The asymmetry above is read tooth by
 tooth. The shares themselves had never been tested against
 $J_k(2\beta)^2$ jointly. Over the
 [52](../../results/ruler_tooth_shares.csv "ref:ruler_tooth_shares:n_ruler_traces:")
@@ -204,7 +203,9 @@ completely**:
 [0.0479](../../results/ruler_tooth_shares.csv "ref:ruler_tooth_shares:pedestal_fraction_of_comb:")
 of the comb's power spread flat across the seven slots, the depth moving to
 [1.5298](../../results/ruler_tooth_shares.csv "ref:ruler_tooth_shares:two_beta_with_pedestal:")
-which sits inside the committed value's own scatter over the 41 combs. The measured
+which sits inside the committed value's own scatter over the 41 combs.
+
+The measured
 shares at $k=\pm3$ differ by [-0.0001](../../results/ruler_tooth_shares.csv "ref:ruler_tooth_shares:tooth_share_antisymmetry:k3"), so an antisymmetric excess of
 the observed $|k|=3$ size is refused there. An amplitude admixture in phase with
 the modulation gives exactly that antisymmetric form, proportional to
@@ -213,13 +214,13 @@ that this test cannot see. At $k=\pm2$ the shares differ by
 [-0.0103](../../results/ruler_tooth_shares.csv "ref:ruler_tooth_shares:tooth_share_antisymmetry:k2") and a small antisymmetric part is not refused. The
 origin is not settled here.
 
-**Two of the obvious origins are excluded by the comb's own fit, and saying so
-narrows it.** `ruler.fit_comb` carries `b0 + b1 t` under the teeth, so a flat
+Two of the obvious origins are excluded by the comb's own fit, and saying so
+narrows it. `ruler.fit_comb` carries `b0 + b1 t` under the teeth, so a flat
 optical background or a detector offset is absorbed by that baseline and cannot
 reappear as a tooth height. Whatever the floor is, it is not something constant
 across the trace.
 
-**The leading explanation is the estimator and not the bench.** Tooth heights
+The leading explanation is the estimator and not the bench. Tooth heights
 are fitted non-negative, and at the third orders the height is about 0.4 of the
 fit residual, so those teeth sit below unity signal-to-noise. A bounded
 estimator at that level has a positive expectation under noise alone, of order
@@ -227,14 +228,14 @@ the residual itself, and the fitted floor per slot is about 0.35 of the
 residual: the same size. So the excess at the outer orders is consistent with a
 positivity bias in the fit and not with light that is really there.
 
-**The reading for the depth ladder is unchanged and its reason is not.** The
+The reading for the depth ladder is unchanged and its reason is not. The
 third-order teeth are unusable either way, because a height at signal-to-noise
 below one carries no rung whether the excess is optical or statistical. What
 changes is what a bench test would show: blocking the drive would leave a
 positivity bias exactly where it is, so that test separates the two only if it
 is read on the *fitted* heights and not on the raw trace.
 
-**The figure is conditional on a cut made over the same teeth, and by a lot.**
+The figure is conditional on a cut made over the same teeth, and by a lot.
 The combs kept are those whose calibration verdict passes, and that verdict is
 an amplitude verdict on the ordering of the very teeth being fitted. Keeping
 every non-excluded comb instead moves the floor to
@@ -247,12 +248,14 @@ of them rail against the fit's own bound, so the law does not describe them at
 all and averaging them in would average a fitted number with a railed one. The
 floor is also heterogeneous: the per-trace median is
 [0.022](../../results/ruler_tooth_shares.csv "ref:ruler_tooth_shares:pedestal_per_trace_median:verdict_not_FAIL"),
-half the pooled value. A spread in modulation depth was the obvious alternative
+half the pooled value.
+
+A spread in modulation depth was the obvious alternative
 explanation and is refuted: pure phase modulation drawn at the measured
 per-trace depths, with no floor at all, returns well under one per cent when
 the same pooled fit is applied to it.
 
-**The consequence falls on the faint teeth and therefore on the depth ladder.**
+The consequence falls on the faint teeth and therefore on the depth ladder.
 A floor at that level puts about 0.68 per cent under every slot against a
 $k=3$ tooth standing at [0.58](../../results/ruler_tooth_shares.csv "ref:ruler_tooth_shares:signal_over_pedestal:-3") of that floor, so the third-order teeth sit *below* their own
 pedestal and cannot carry a rung. The usable orders are
@@ -265,7 +268,7 @@ against the seventy-fold span the full comb suggests. The ladder still
 works at that span, and what it buys is worked out in the ramp chapter. But a design
 that assumes the third orders is designing on a floor.
 
-**The same law makes the comb a lever and not only a ruler.** The weights sum
+The same law makes the comb a lever and not only a ruler. The weights sum
 to one, so the signal summed over teeth is the same at every depth while its
 distribution over them is not, and the intensity is the same at every depth so
 the light shift is too. A ladder in depth at one power therefore moves the
@@ -288,7 +291,7 @@ trimming rules are pre-registered in
 [the ruler specification](../notes/ruler_validity_and_trim_prereg.md), and the
 provenance of the combs themselves is [`DATA.md`](../DATA.md) §7.
 
-### How linear the axis must be, and which observable sets the bar
+### Linearity requirement on the frequency axis
 
 The ruler above fixes the scale of the frequency axis. How linear it is
 between anchors is a separate requirement, and the observable that sets it is the third
@@ -306,8 +309,8 @@ the window truncation has no closed form against this kernel.
 
 | configuration | window | the ramp's own windowed third cumulant | rate variation that fakes it |
 |---|---|---|---|
-| 2025, waist 64 microns | 6 MHz | [0.00010447](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:k3_light_shift") MHz cubed | [0.00196](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:rate_variation_tolerance") per cent |
-| campaign, waist 40 microns, the tightest licensed | 6 MHz | [0.00069510](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:k3_light_shift") MHz cubed | [0.0131](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:rate_variation_tolerance") per cent |
+| 2025, waist 64 microns | 6 MHz | [-0.00010447](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:k3_light_shift") MHz cubed | [0.00196](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:rate_variation_tolerance") per cent |
+| campaign, waist 40 microns, the tightest licensed | 6 MHz | [-0.00069510](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:k3_light_shift") MHz cubed | [0.0131](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:rate_variation_tolerance") per cent |
 
 **Uncertainty and its blind region.** The tolerance is a property of the
 composed line, so the line's own width uncertainty is its own: scanned over
@@ -320,7 +323,9 @@ configuration and [0.0131](../../results/sweep_linearity.csv "ref:sweep_linearit
 [0.0022](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:rate_variation_tolerance_err") at the campaign's tightest
 licensed waist of 40 microns. The tolerance falls as the line widens, because a
 wider line leaves less of its asymmetry inside a fixed window, which is the
-direction of that band. The coherence window is the one axis of the three set
+direction of that band.
+
+The coherence window is the one axis of the three set
 by a modelling choice and not by a measured band, and it moves the tolerance
 one way only: taking the 6S lifetime in place of the transit-limited cap moves it by
 [0.00018](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:rate_variation_tolerance_coherence_err")
@@ -331,8 +336,10 @@ largest excursion from the tolerance for that reason, since half a bracket
 covers a one-sided departure only to half its size. The result is first order in the curvature, confirmed
 by the induced cumulant rising [10.0006](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:artefact_linearity_ratio") times for a
 tenfold rate variation, so it understates the damage from a departure large
-enough for the next term to matter. **The 16 micron configuration the campaign
-proposes is outside this model's licence**: the composition carries the
+enough for the next term to matter.
+
+The 16 micron configuration the campaign
+proposes is outside this model's licence: the composition carries the
 axial collection window and the standing wave's fringe tail since 2026-09-08,
 and at 16 microns those reverse the sign of the cumulant the tolerance is set
 against, but it still carries no saturation companion, which the record puts
@@ -341,7 +348,7 @@ at the factor-of-three level on this cumulant there, so its
 [0.48](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_16um:rate_variation_tolerance_err") per cent carries that factor
 and not only its width band.
 
-**The nonlinearity is the actuator's and not the scan's.** With the best-fit
+The nonlinearity is the actuator's and not the scan's. With the best-fit
 line removed, a quadratic bow whose maximum departure is a fraction of the
 actuator's travel gives a rate variation across a window of half-width W of
 exactly twelve times that fraction times W over the travel, on rung two. The

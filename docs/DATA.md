@@ -7,18 +7,10 @@ before trusting any number this repository quotes. Every one of them is
 denominated in a frequency axis this file explains, and computed on a
 population this file bounds.
 
-**The question.** Where did each of the 297 traces come from, what was done to
-it, and what was thrown away?
-**Takes.** Nothing. This is a starting point, not a conclusion.
-**Gives.** The campaign chronology, the meaning of every column of the
-manifest, the exclusion register with a reason per file, the frequency ruler,
-and the history of every bound that was later corrected.
-**Skip if.** You are reading the physics rather than checking it. Come back
-here the moment a specific number looks wrong.
+Where did each of the 297 traces come from, what was done to it, and what was thrown away? This page is self-contained and sets out the campaign chronology, the meaning of every column of the manifest, the exclusion register with a reason per file, the frequency ruler, and the history of every bound that was later corrected. This is a starting point, not a conclusion. A reader following the physics rather than checking it needs none of this. Come back here the moment a specific number looks wrong.
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](GLOSSARY.md)
-> explains the measurement in six sentences, then defines every term
-> and symbol used anywhere in this repository.
+> [GLOSSARY.md](GLOSSARY.md) states the measurement in six sentences and
+> defines every term and symbol used anywhere in this repository.
 
 | what this is | |
 |---|---|
@@ -27,7 +19,7 @@ here the moment a specific number looks wrong.
 | the census | 297 curated traces in seven roles, 264 of them canonical and 33 excluded with a recorded reason, listed in `MANIFEST.csv` |
 | what is in the repository | the manifest of the 297 curated traces, the acquisition clock and every fitted result, in every copy. Whether the traces themselves sit beside the manifest under `data_raw/` depends on the copy, and `data_raw/README.md` says which this one is. The trees that stay outside either copy hold the campaign-morning session and the two sessions of 4 July, and section 3a lists them |
 
-| if you are | your question | where it is answered |
+| reader | question | where it is answered |
 |---|---|---|
 | tracing one trace | which file, which condition, which block, and what the record did to it | section 4, which lists every column of the manifest, then section 5 for anything excluded |
 | auditing an exclusion | what was cut, when, by whom, under which criterion, and how many | section 5, one row per exclusion class |
@@ -194,6 +186,7 @@ the clock wins and the reversal is reported, not reconciled
 ([PREREGISTRATION_RESULTS.md](PREREGISTRATION_RESULTS.md)).** After the whole power
 session: stepwise cooling **110 → 90 → 70 °C** at 225 mW, each temperature
 with its own 5-repeat RF-off block and its own ruler block.
+
 That 225 mW is recollection, not record. The manifest's `power_mW` column is
 empty for all 62 `t_sweep` rows, which
 [PREREGISTRATION_RESULTS.md](PREREGISTRATION_RESULTS.md) records as never having
@@ -210,8 +203,10 @@ campaign's dwell labels: the same 0.65 A is what the 4 July evening session
 records as an internal 130 °C, and the morning session's amplitude agrees,
 sitting ~15× above what an internal-90 °C session would give, addendum 17. Its
 linewidth cannot tell the dwells apart either way, which took two attempts to
-establish. **Since 2026-08-01 the 4 July evening session is no longer
-analysis-untouched:**
+establish.
+
+Since 2026-08-01 the 4 July evening session is no longer
+analysis-untouched:
 `run_stark_joint.py` reads its traces in place from its private tree,
 never copying them into the repository, because its 270 mW rung and alternating
 ladder directions add leverage the campaign lacks. 46 of the 50 traces enter.
@@ -220,7 +215,9 @@ runs on **three** sessions, not two: 100 canonical campaign `p_sweep` traces,
 those 46 traces of the 4 July evening, and the campaign morning's 26, which the
 same script reads from a second private tree (`results/stark_joint.csv`, row
 `n_traces`).
-Those private copies themselves remain read-only and unmodified. The EOM
+Those private copies themselves remain read-only and unmodified.
+
+The EOM
 trial traces, whose folder is labelled `2025-07-03` while the clock reads
 2025-07-04 03:37 JST, turned out to carry the **piezo ramp on their second
 channel**, identified from recollection and confirmed by the data: the
@@ -243,8 +240,10 @@ standing)
 but because the cavity lock kept
 dropping out during the etalon thermal transient, each recapture landing
 MHz-scale off (`APPARATUS.md` §6, results report addenda 4–7), so
-**absolute trace positions carry no meaning across saves**, and each trace's comb is its own frequency axis. **Within a 5-repeat block the reference was
-usually left alone**, a tendency rather than a protocol
+**absolute trace positions carry no meaning across saves**, and each trace's comb is its own frequency axis.
+
+Within a 5-repeat block the reference was
+usually left alone, a tendency rather than a protocol
 (confirmed from recollection, 2026-07-22), and the dataset shows the exceptions:
 24 of 32 RF-off science blocks scatter about a common position (median
 1.79 ms, confirming the figure quoted above), while 8 step mid-block, two of
@@ -286,7 +285,7 @@ across the whole campaign (130 °C first … 70 °C last), so ordering alone
 cannot separate density effects from slow instrument drift. The plan's
 opposite-order temperature grid (PLAN.md §7a, §10.3) exists precisely for this.
 
-## 3. What the hash comparison established
+## 3. Results of the hash comparison
 
 The original `data/` tree holds 722 CSVs in six directories with ~2×
 duplication (367 unique basenames, fewer unique MD5s). Key identities, all
@@ -522,7 +521,8 @@ and its brackets, and they are set out below.
   re-examination two entries below confirmed the exclusion does not matter
   either way: folding these traces into the power fit moves the AC-Stark bound
   by a few per cent, within its own scatter.
-- **`4154nm_eom_before{1..5}` / `after{1..5}` (non-underscore)**: the ruler
+
+  - **`4154nm_eom_before{1..5}` / `after{1..5}` (non-underscore)**: the ruler
   brackets of that same preliminary attempt, and 4154 is the only peak with two
   bracket sets because of it. The clock settles which is which. These run at
   22:48 and 23:14, bracketing the preliminary sweep. The underscore set pooled
@@ -553,7 +553,7 @@ and its brackets, and they are set out below.
   bound history, which starts at 3.1 MHz and runs to 0.14. The `qc_reason`
   column now records this concretely.
 
-## 6. What changed after the first pass, and why
+## 6. Changes after the first pass
 
 In July 2026, before this pipeline existed, a short first-pass summary of
 this dataset circulated with preliminary numbers, and other people saw it.
@@ -585,8 +585,9 @@ sub-grid interpolation, which turned out to matter because the committed "MC
 errors" had been the 0.01 MHz grid quantum in disguise. The noise-law floor
 rose to the dark-noise level, verified zero-churn, and tests were added for
 both. Detail is in the commits.
-**The phrase dark-noise level was a numeric regression target rather than a
-physical attribution, and 2026-08-19 established that it is not dark noise.**
+
+The phrase dark-noise level was a numeric regression target rather than a
+physical attribution, and 2026-08-19 established that it is not dark noise.
 The floor rises with laser power on every line and agrees with the directly
 measured off-line noise at a ratio of 0.953, so it is shot noise on an
 optical background, and the law unifies as one shot term over signal plus
@@ -625,11 +626,11 @@ cold-spot offset also tilts the N(T) lever by ~2.3%/K of offset, which is a
 slope effect rather than a scale one, quantified in `density.py` and recorded
 but not propagated as second order.
 
-**The AC-Stark bound, 3.1 → 0.63 MHz (2026-07-16), then 0.63 → 0.14 MHz
+The AC-Stark bound, 3.1 → 0.63 MHz (2026-07-16), then 0.63 → 0.14 MHz
 (2026-08-01, a construction change rather than a correction: the joint fit uses
 every point of every profile across all three sessions where the earlier
 width-only fit used 20 summary widths.
-Both bounds stand, the tighter one is quoted).** 95% limit on $S_0$ at
+Both bounds stand, the tighter one is quoted). 95% limit on $S_0$ at
 225 mW.
 
 *What was wrong.* The interval was built by linearising at the best fit. The
@@ -681,7 +682,7 @@ conclusions:
   predicts 8.4%, though with ~0.07 MHz of peak-to-peak scatter and a *fall* from
   70→90 °C, four points do not establish this. Read it as consistent with transit +
   laser being absorbed into one Gaussian, not as a measurement of either.
-- **Consequences for us:** the earlier per-condition widths remain usable as
+- **Consequences for this record:** the earlier per-condition widths remain usable as
   order-of-magnitude cross-check targets (their total widths are in the same few-MHz
   range as ours), but none of their *physical interpretations* transfer, and their
   reduced χ² of 2–5 is consistent with a missing model component. The disagreement traces to which
@@ -772,7 +773,7 @@ the brief, and they moved no headline number.
   hence a *bound* (2026-07-12).** The figures in this entry are as MEASURED on
   its own date and the pipeline has been refit since, so read the current
   values from `results/lever_crosscheck.csv` rather than from here. As of
-  2026-08-14 that file gives the 4-peak mean γ_coll as 0.401 / 0.391 / 0.444 /
+  2026-08-14 that file gives the 4-peak mean γ_coll as 0.401 / 0.391 / 0.444 / <!-- other-quantity: a collisional width of 2026-08-14, not the shift band's edge -->
   0.594 MHz and the rise as ×[1.48](../results/lever_crosscheck.csv "ref:lever_crosscheck:gamma_rise_factor:70to130") over a density ratio of ×52.5, and the joint
   β as 0.0198 (⁸⁵Rb) and 0.0219 (⁸⁷Rb) against a headline 0.0534. The direction
   and the conclusion are unchanged, so the entry stands: ×[1.48](../results/lever_crosscheck.csv "ref:lever_crosscheck:gamma_rise_factor:70to130") across
@@ -911,7 +912,7 @@ A proposed renumbering is accepted on a ratio test and not on the carrier: the
 correction stands when the corrected numbering brings the second-to-first
 height ratio into the band the campaign measured, 0.159 to 0.249, carried with
 the scatter of that comb's own fit. The carrier height plays no part in either
-direction, because it runs from 0.360 to 1.188 of the first order and that
+direction, because it runs from 0.360 to 1.188 of the first order and that <!-- other-quantity: the carrier's height against the first-order tooth, not the light-shift prediction -->
 variation is residual amplitude modulation, which identifies nothing.
 
 The gallery of §4 draws 115 combs, the same 104 plus ten from the aborted first  <!-- other-quantity: a count of combs in the gallery -->
@@ -977,7 +978,7 @@ observables, an in-window mirror height against a rising residual tail beyond
 the window edge, and over populations that differ by the discarded shot. Which
 of them a caption should quote is open and belongs to the author.
 
-### What the trim census means
+### Interpretation of the trim census
 
 The register in §5 records that the residual-tail trimmer acted on two
 calibration traces and on no line fit. That line is a fact about the order of
@@ -1004,7 +1005,9 @@ active on the dataset: the 25 MHz cap binds on 0 of 159 canonical traces and
 the 9 MHz floor on 0 of 159, so every canonical window is the plain 3.5 fitted
 widths. The recorded crossing separations run 39.2 to 43.0 MHz, that is 7.64 to
 8.54 fitted widths against a window edge at 3.50, a minimum clearance of 4.14
-widths. The cap cannot be active and unsafe at the same rate calibration, since
+widths.
+
+The cap cannot be active and unsafe at the same rate calibration, since
 being capped needs a rate high enough to push 3.5 widths past 25 MHz while
 being unsafe needs one low enough to pull 7.64 widths inside it, so the element
 that is sensitive to the rate in the widening direction is the 9 MHz floor and

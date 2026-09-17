@@ -20,7 +20,7 @@ on whether the field varies slowly or quickly compared with the atomic
 response -- slow (adiabatic) fluctuations give an asymmetric line, fast ones
 average away to a symmetric line at the mean shift. Their variation is in
 time and ours is in space, but an atom in flight converts one into the other,
-and in this cell the two timescales are comparable. At the MEASURED 64 um
+and in this cell the two timescales are comparable. At the 64 um convention
 waist (constants.W0_MEASURED_M; this line said ~50 um until 2026-08-10, from
 the estimate the lineage measurement replaced) an atom takes w0/v ~ 260 ns to
 cross one waist radius, or 520 ns for the full beam diameter, against a natural
@@ -48,7 +48,7 @@ Camparo warns about. So the claim is checked WITHOUT that assumption here, by
 propagating the weak-excitation amplitude
 
     A(nu) = integral Omega_2ph(t) exp(i[2 pi nu t - phi(t)]) dt,
-    phi(t) = 2 pi integral^t delta(t') dt',   Omega_2ph ~ I(t),  delta = -S0 I(t),
+    phi(t) = 2 pi integral^t delta(t') dt',   Omega_2ph ~ I(t),  delta = +S0 I(t),
 
 for each trajectory and summing |A|^2 over impact parameters. No quasi-static
 step is taken: the phase is integrated along the path. The first two moments
@@ -97,9 +97,15 @@ from __future__ import annotations
 
 import numpy as np
 
+from .lineshape import RAMP_SIDE
+
 # Static-triangle benchmarks the moving ensemble must reproduce (n_photon = 2,
 # pure transverse). Derived in lineshape.stark_ramp / stark_ramp_axial_moments.
-TRIANGLE_MEAN_OVER_S0 = -2.0 / 3.0
+# THE SIGN IS BLUE-SIDED (owner order O27, 2026-09-17): the density runs on [0, s0],
+# so the mean sits at +2/3 s0 and the third cumulant at -s0^3/135. This module read
+# -2/3 for five hours after `lineshape` was flipped, which put two functions of one
+# package on opposite sides of the line for the same ramp (F90).
+TRIANGLE_MEAN_OVER_S0 = RAMP_SIDE * 2.0 / 3.0
 TRIANGLE_EXCESS_VAR_OVER_MEAN_SQ = 0.125
 
 
@@ -173,7 +179,7 @@ def moving_atom_moments(s0: float, *, n_b: int = 501, n_t: int = 60001,
                         # rate: unit-mean modulation of the shift only
                         shift_env = shift_env * 2.0 * np.cos(
                             np.pi * fringe_per_transit * v * t) ** 2
-                    phase = 2.0 * np.pi * np.cumsum(-shift * shift_env) * dt
+                    phase = 2.0 * np.pi * np.cumsum(RAMP_SIDE * shift * shift_env) * dt
                     amp = np.fft.fftshift(
                         np.fft.fft(couple * np.exp(-1j * phase))) * dt
                     tot += np.abs(amp) ** 2
@@ -192,7 +198,7 @@ def moving_atom_moments(s0: float, *, n_b: int = 501, n_t: int = 60001,
     m1, var = moments(spectrum(s0))
     # the simulation's nu axis runs opposite to the physical detuning (numpy's
     # forward FFT carries exp(-2 pi i nu t) against the exp(+i 2 pi nu t) of the
-    # amplitude above), so the physical red shift is -m1
+    # amplitude above), so the physical BLUE shift is -m1
     mean_over_s0 = -m1 / s0
     return {"mean_over_s0": mean_over_s0,
             "excess_var": var - var_transit,

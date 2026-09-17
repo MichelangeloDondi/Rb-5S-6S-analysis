@@ -2,20 +2,12 @@
 
 *[wiki index](README.md) · method*
 
-**The question.** Can an analysis recover a truth it was handed in advance,
-and what does passing that test actually prove.
-**Takes.** A complete analysis pipeline, already built and ready to run
-start to finish. No other wiki page is required first.
-**Gives.** The bias, coverage and pull diagnostics a recovery test produces,
-and the boundary between what a closure test validates and what it cannot.
-**Skip if.** You want the general Monte Carlo machinery a recovery test is
-built from, not the closure test itself:
-[Monte Carlo methods](monte-carlo-methods.md).
+Can an analysis recover a truth it was handed in advance, and what does passing that test actually prove. This page builds on a complete analysis pipeline, already built and ready to run start to finish. No other wiki page is required first. It sets out the bias, coverage and pull diagnostics a recovery test produces, and the boundary between what a closure test validates and what it cannot. Not covered here: the general Monte Carlo machinery a recovery test is built from, not the closure test itself: [Monte Carlo methods](monte-carlo-methods.md).
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
 > defines every term and symbol used anywhere in this repository.
 
-## What it is
+## Definition
 
 An injection-recovery test asks whether an analysis can find an answer it
 already knows. Choose true parameter values $\theta_\text{true}$, generate
@@ -37,14 +29,14 @@ window choices, the weighting, the starting values and any automated cuts.
 An injection test on a simplified version of the pipeline validates the
 simplification.
 
-## What problem it solves
+## The problem it addresses
 
 Every analysis rests on assumptions that its machinery is unbiased and its
 error bars are accurate, and injection-recovery testing checks those
 assumptions at the cost of computer time. It is also the only practical way
 to calibrate a bound, since a bound's value depends on its coverage.
 
-## What it cannot establish
+## Limits of the method
 
 Generating synthetic data from the model and recovering the injected truth
 validates the implementation: the estimator is unbiased, the optimiser
@@ -59,18 +51,18 @@ the data reject a component, a noise law that is measured instead of
 assumed, and residual audits that look for structure no fitted component
 absorbs.
 
-**The sharpest instance in this repository is dated 2026-09-08.** The
+The sharpest instance in this repository is dated 2026-09-08. The
 forecast's world builder and its centre estimator both omitted the axial
 collection window, so the study recovered the coefficient it injected to
 better than a per cent and would not have recovered this bench's, where the
 window puts the windowed third cumulant at about nine tenths of the pure
-ramp's at the measured waist and reverses its sign at 16 microns. Nothing inside the closure
+ramp's at the waist convention and reverses its sign at 16 microns. Nothing inside the closure
 test could see it, because the omission was common to both halves. What found
 it was reading the world builder against the record's own derivation of the
 term, and the fix was to give the world the term, not to widen a
 bar.
 
-## Where this repository uses it
+## Application in this repository
 
 No fitter is allowed near real data here until it recovers known injected
 truths from campaign-like synthetics, stated in
@@ -138,7 +130,7 @@ excluded, and only an injection at that hypothesis does
 ([`run_skew_scaling.py`](../../scripts/run_skew_scaling.py)). The exclusion
 is $p = 0.011$, not 6.6 sigma.
 
-## What can go wrong
+## Failure modes
 
 The dominant failure is reporting a closure test as evidence the physics is
 right. A green injection test on a wrong model is exactly as green as one
@@ -222,8 +214,7 @@ reported.
   because the parameter was never determined and not because the code is
   wrong.
 
-## See also
-
+## Related pages
 - [Monte Carlo methods](monte-carlo-methods.md), the general simulation
   technique a recovery test applies to an estimator's bias and coverage.
 - [Preregistration](preregistration.md), which freezes the criterion a

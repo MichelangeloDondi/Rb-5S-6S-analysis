@@ -2,21 +2,12 @@
 
 *[wiki index](README.md) · method*
 
-**The question.** How are two systematics separated when they produce the
-same signature in the data?
-**Takes.** Nothing beyond the idea of a systematic. Pairs naturally with
-[confounding by acquisition order](confounding-by-acquisition-order.md).
-**Gives.** The odd-even decomposition under a flipped knob, the reversal
-table as a design discipline, and the case where the atom's structure
-supplies it directly.
-**Skip if.** You want the statistics of separating parameters inside one
-fit, which is [identifiability](identifiability.md). This page separates
-effects by symmetry before any fit runs.
+How are two systematics separated when they produce the same signature in the data? This page is self-contained and sets out the odd-even decomposition under a flipped knob, the reversal table as a design discipline, and the case where the atom's structure supplies it directly. beyond the idea of a systematic. Pairs naturally with [confounding by acquisition order](confounding-by-acquisition-order.md). Not covered here: the statistics of separating parameters inside one fit, which is [identifiability](identifiability.md). This page separates effects by symmetry before any fit runs.
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
 > defines every term and symbol used anywhere in this repository.
 
-## What it is
+## Definition
 
 A reversal test separates effects by their parity under a knob that can be
 flipped. The difference of the flipped and unflipped results isolates
@@ -31,7 +22,7 @@ The discipline scales into a table: each candidate mechanism is listed with
 the knob that flips it and the scaling that grows it. A mechanism without
 an assigned knob or scaling is admitted only if it can be computed exactly.
 
-## What problem it solves
+## The problem it addresses
 
 Fitting cannot separate what the data do not distinguish, and two effects
 with the same functional signature are one effect to any fit. A reversal
@@ -49,6 +40,7 @@ only needs the same shape on both halves, not a correct profile.
 import numpy as np
 
 # A line swept up and down, with a detection lag and a REAL shift injected.
+
 nu = np.linspace(-30, 30, 1201)
 line = lambda c: 1.0/(1.0 + ((nu - c)/2.7)**2)
 lag_shift, real_shift = 0.8, 0.5          # both move the apparent centre
@@ -69,7 +61,7 @@ print(f"injected lag        {lag_shift}, recovered from the diff:  {diff:+.3f}")
 print("neither number needed the lineshape model to be right")
 ```
 
-## Where this repository uses it
+## Application in this repository
 
 The measurement plan's asymmetry budget is a reversal table: detection lag
 is odd under sweep direction, the AC-Stark ramp's asymmetry follows power,
@@ -91,22 +83,22 @@ The same approach also finds a null: scanning a knob to minimise an odd
 signature locates its zero, as when a coil nulls the ambient field without
 a magnetometer.
 
-## What can go wrong
+## Failure modes
 
-**The flip is not clean.** Reversing a sweep changes the settling transient
+The flip is not clean. Reversing a sweep changes the settling transient
 the line meets, so the half-difference carries settling along with lag. A
 knob that changes two things separates nothing until the second is
 controlled.
 
-**The flip is incomplete.** A half-wave plate rotating polarisation by
+The flip is incomplete. A half-wave plate rotating polarisation by
 almost the right angle leaves a suppressed residual of the odd effect in
 the even channel. The suppression factor is recorded in the budget.
 
-**The even channel is read as clean.** The decomposition isolates what is
+The even channel is read as clean. The decomposition isolates what is
 odd under the knob. Effects even under it, including the one under study,
 stay superposed and need a different knob or scaling.
 
-**The reversal is run but never checked for closure.** Flipping twice must
+The reversal is run but never checked for closure. Flipping twice must
 reproduce the original within errors. Drift between flips reads as a fake
 odd signal, so reversal pairs are taken adjacent in time, not at opposite
 session ends.
@@ -119,7 +111,7 @@ reverse fields, and clock evaluations interleave states. Odd signals are
 candidate physics, even signals are references, and a claimed effect
 carries the flip that would rule it out.
 
-## See also
+## Related pages
 
 [Confounding by acquisition order](confounding-by-acquisition-order.md), the
 time-ordering member · [Identifiability](identifiability.md), separation

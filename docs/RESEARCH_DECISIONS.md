@@ -4,16 +4,10 @@ Why the analysis has the shape it has: which questions this dataset can answer,
 which it cannot, and what was done about the gap. The methods pages say what the
 pipeline computes, and this one says why it stops where it does.
 
-**The question.** Why does the analysis stop where it stops?
-**Takes.** Nothing.
-**Gives.** One entry per decision, each pointing at the code or document that
-carries it, and each stating the alternative that was rejected.
-**Skip if.** You want what the pipeline computes rather than why it computes
-that and not something else, which is [methods.md](methods.md).
+Why does the analysis stop where it stops? This page is self-contained and sets out one entry per decision, each pointing at the code or document that carries it, and each stating the alternative that was rejected. Not covered here: what the pipeline computes rather than why it computes that and not something else, which is [methods.md](methods.md).
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](GLOSSARY.md)
-> explains the measurement in six sentences, then defines every term
-> and symbol used anywhere in this repository.
+> [GLOSSARY.md](GLOSSARY.md) states the measurement in six sentences and
+> defines every term and symbol used anywhere in this repository.
 
 Every entry points at the code or document that carries the decision.
 
@@ -45,7 +39,7 @@ The decisions at a glance, each argued in full in its numbered section:
 
 ---
 
-## 1. The total width is the observable, and the split carries its error and correlation
+## 1. The total width as the observable
 
 The composite line is a Lorentzian (natural + collisional, `gamma_coll`)
 convolved with Gaussian-like components (laser width `sigma_laser`, transit).
@@ -130,7 +124,7 @@ constrained fit is a cross-check.
 
 ---
 
-## 2. The model-independent bound is the headline, and the global fit is a cross-check
+## 2. The model-independent bound as the headline
 
 Two estimates of `beta_self` exist: a model-independent width-versus-density
 slope, and the hierarchical global fit, which is tighter. The tighter one is not
@@ -254,7 +248,7 @@ Most of the suite's guards are regression guards for mistakes that were made:
   "satisfied by the very correction note explaining the reversal"
   ([test_docs_canonical.py:428](../tests/test_docs_canonical.py#L428)).
 - an asymptotic w0 → ∞ test, after a reader outside the project found it untested
-  ([test_transit_mc.py:119](../tests/test_transit_mc.py#L119)).
+  ([test_transit_mc.py:119](../tests/test_transit_mc.py#L119)).  <!-- other-quantity: 119 is a line number in a test file, not the count of committed CSVs -->
 - an SVG canonical-number guard, because the hand-authored bench schematic
   quoted a waist matching no value in the record and asserted the retro ratio
   at 1, invisible to both the figure guards and the markdown scan
@@ -272,7 +266,7 @@ wave and a thermal spread of speeds. **κ₃ is not resolved**, because the
 ν³-weighted FFT noise floor swamps it, and κ₃ is the moment the asymmetry claim
 rests on.
 
-## 8. What is not modelled, and what would revive it
+## 8. Unmodelled terms and their revival
 
 Eight load-bearing assumptions are listed as a numbered attack surface
 ([08_assumptions_and_outlook.md](methods/08_assumptions_and_outlook.md) §6), and
@@ -295,7 +289,7 @@ could not be closed with the tools available, which is a limitation rather than
 an absence
 ([lit/beterov1973.md](lit/beterov1973.md)).
 
-## 9. The 130 °C point moves from a diagnostic to the headline (2026-08-02)
+## 9. The 130 °C point as the headline, 2026-08-02
 
 Through 2026-08-01 the `beta_self` headline used only the 70/90/110 °C
 temperature sweep, three points at dof=1 with a ×16.2 density lever, and treated
@@ -307,7 +301,7 @@ configuration: a power sweep rather than a temperature sweep, calibrated off
 before/after EOM ruler brackets rather than the T-session's own per-block
 ruler.
 
-**Decision: the 130 °C point is folded into the headline.** On firsthand
+Decision: the 130 °C point is folded into the headline. On firsthand
 knowledge of the bench, the 130 °C power-sweep session ran
 in the same optical/cell configuration as the 70/90/110 °C temperature sweep
 with the same beam path, the same cell and the same detection chain. That
@@ -330,7 +324,9 @@ stronger with it: `rb5s6s/lever_crosscheck.py` had already noted that folding
 in the 130 °C anchor pulls the fitted slope down because `gamma_coll(T)`
 barely grows across the full lever, which is a residual floor rather than
 resolved collisions, and that is a cleaner demonstration with the full ×52.5 span
-than with the ×16.2 one. What does not change: the bound still sits an order
+than with the ×16.2 one.
+
+What does not change: the bound still sits an order
 of magnitude above the [3.50](../results/beta_self_theory.csv "ref:beta_self_theory:beta_self_6s:anchored") kHz expectation anchored on the measured 7S
 self-broadening rate ([BIG_PICTURE.md](BIG_PICTURE.md) §1), so a same-session
 150 to 170 °C extension remains worth doing, not to combine extreme lever
@@ -343,8 +339,8 @@ clear the block-noise floor ([PLAN.md](PLAN.md) §7).
 
 Recorded together because the fold-in groups them as one commit.
 
-**Decision: the four-point `beta_self` lever, already decided in §9, gets
-the code that had not caught up to it.** The promotion of the
+Decision: the four-point `beta_self` lever, already decided in §9, gets
+the code that had not caught up to it. The promotion of the
 70/90/110/130 °C construction to the sole headline (dof=2, the ×52.5 lever,
 the same-configuration fact and the instrument authority both recorded in
 §9) was a documentation decision before it was a code one. `rb5s6s/beta.py`
@@ -357,8 +353,8 @@ actually reports, not its retired three-point predecessor. No separate
 construction is kept alongside it, matching §9's own statement of the
 decision.
 
-**Decision: the per-(session, peak) `sigma_laser` split takes a shrinkage
-prior sized from the evidence that motivated it, not from convenience.** A
+Decision: the per-(session, peak) `sigma_laser` split takes a shrinkage
+prior sized from the evidence that motivated it, not from convenience. A
 free-Gaussian-sigma probe on the brightest trace per peak
 (the fig16 residual-asymmetry working note, "Seventh addition")
 found the pooled-per-block `sigma_laser` too coarse at camp130: −85 kHz
@@ -374,8 +370,8 @@ independent fit constrained by it.
 [PREREGISTRATION_RESULTS.md](PREREGISTRATION_RESULTS.md) addendum 21's third
 postscript carries the full comparison.
 
-**Decision: the campaign-morning axis nuisance takes the measured prior in
-place of the assumption box.** `pilot_rate_scale` used to float inside a
+Decision: the campaign-morning axis nuisance takes the measured prior in
+place of the assumption box. `pilot_rate_scale` used to float inside a
 flat [0.9, 1.1] box and had drifted to 1.02–1.03 in earlier fits. M26's own
 ruler day measures it directly, at 1.0022(12) from 27 rulers, and the refit
 now uses a tight ±5σ box around that number, [0.9962, 1.0081], in its place
@@ -388,7 +384,7 @@ the question the module docstring poses, stays open.
 
 ---
 
-## 11. A profile is only as good as its local minimum, so the minimum search now leads (2026-08-03)
+## 11. Precedence of the minimum search, 2026-08-03
 
 The four-point joint refit's primary chain, started cold, parked in a false
 minimum 283,000 chi-squared units above the solution every other chain in
@@ -401,7 +397,7 @@ docstring had documented from an earlier run, striking the primary variant
 this time. Two structural
 decisions follow.
 
-**Decision: the wing variant runs first and seeds every other family.** A
+Decision: the wing variant runs first and seeds every other family. A
 cold start finds the true local minimum reliably only with the wing free, so the
 chain order in [run_stark_joint.py](../scripts/run_stark_joint.py) now puts
 the wing variant first and seeds the primary from its solution with the
@@ -410,7 +406,7 @@ the pointwise minimum kept. A seed can only improve a profile, so this
 closes the failure mode for every family at once rather than patching the
 variant it last struck.
 
-**Decision: no cold-start profile is quoted without a seeded twin.** The
+Decision: no cold-start profile is quoted without a seeded twin. The
 previous run's direction row compared a stuck profile against a converged
 one and printed 283,135 where the physics answer, measured in the true
 local minimum, is indifference. Any future variant added to the fit inherits the
@@ -485,7 +481,7 @@ sites, from 2.3 to 12.9, worked in
 
 ---
 
-## 13. One coefficient is shared across three sessions, and the geometry that licenses it is untested (2026-08-17)
+## 13. One coefficient across three sessions, 2026-08-17
 
 The joint light-shift fit pools 100 campaign traces with 46 from the 4 July
 rehearsal and 26 from the campaign-morning session of 17 July, and shares one
@@ -513,8 +509,8 @@ squared-shift lever while the pooled bound sits looser than its own campaign-row
 column, which is the opposite of what adding a longer lever to a measurement of
 one quantity does.
 
-**The rejected alternative was to promote a campaign-only construction on the
-strength of those diagnostics.** It was rejected for now because a badly behaved
+The rejected alternative was to promote a campaign-only construction on the
+strength of those diagnostics. It was rejected for now because a badly behaved
 likelihood surface is a statement about the surface rather than proof that the
 sessions saw different coefficients, because no campaign-alone refit is in
 `results/`, and because replacing a published number with none is a loss. The
@@ -551,7 +547,7 @@ status cannot be strengthened without changing the producing code.
 
 `beta_self`, `sigma_laser` and the AC-Stark `S0` are all **BOUND**.
 
-## 14. The width concavity is withdrawn to provisional, 2026-08-18
+## 14. Withdrawal of the width concavity, 2026-08-18
 
 **The decision.** A concave curvature of the linewidth against power, carried
 since 2026-08-17 as a measured diagnostic, is reclassified as provisional and
@@ -568,7 +564,7 @@ which is order dependence rather than power dependence. Section C3a of the
 results ledger had said from the beginning that the width's power variation is
 block scatter, and that reading is now tested rather than asserted.
 
-**The rejected alternative** was to keep the concavity as a measured
+The rejected alternative was to keep the concavity as a measured
 diagnostic with a caveat, on the ground that its sign agrees across sessions
 and that the pilot test is underpowered. Rejected because a diagnostic that
 has motivated a channel sweep, a component-resolved decomposition and a

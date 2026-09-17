@@ -9,27 +9,19 @@ for context, [PLAN.md](PLAN.md) for the proposed session,
 [PREREGISTRATION_RESULTS.md](PREREGISTRATION_RESULTS.md) for everything
 that was withdrawn along the way and why.
 
-**The question.** What does this record claim, what does it refuse to claim,
-and what would a further campaign convert?
-**Takes.** Nothing, though [BIG_PICTURE.md](BIG_PICTURE.md) supplies the
-context each claim sits in.
-**Gives.** Every claim with its status and its conditionality, then a section
-of things deliberately not claimed, which is the more useful half.
-**Skip if.** You are checking one number rather than the claim set, in which
-case [RESULTS.md](RESULTS.md) reads it from its producing CSV.
+What does this record claim, what does it refuse to claim, and what would a further campaign convert? This page is self-contained and sets out every claim with its status and its conditionality, then a section of things deliberately not claimed, which is the more useful half. It takes nothing beyond [BIG_PICTURE.md](BIG_PICTURE.md), which supplies the context each claim sits in. One number rather than the claim set belongs to [RESULTS.md](RESULTS.md), which reads it from its producing CSV.
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](GLOSSARY.md)
-> explains the measurement in six sentences, then defines every term
-> and symbol used anywhere in this repository.
+> [GLOSSARY.md](GLOSSARY.md) states the measurement in six sentences and
+> defines every term and symbol used anywhere in this repository.
 
 Terms used throughout: S₀ is the peak light shift on the beam axis at a
 stated power, the "ramp" is the closed-form distribution of light shifts a
 focused beam imprints on a two-photon line, and the transition axis is the
 two-photon sum frequency, twice the laser frequency.
 
-## 1. What the 2025 record establishes
+## 1. Established results of the 2025 record
 
-**Bounds** (95%, each with its own conditionality stated):
+Bounds (95%, each with its own conditionality stated):
 
 - Collisional self-broadening of the 993 nm line:
   β_self < 0.03-0.05 MHz per 10¹² cm⁻³ across the four hyperfine
@@ -59,8 +51,8 @@ two-photon sum frequency, twice the laser frequency.
   measurement and the open options. The bound
   depends on the waist only weakly, through the transit kernel in its
   lineshape. The prediction it is compared against rides the waist
-  measurement directly: 0.36 MHz
-  central, with a 0.32-0.40 MHz band over the waist measurement band and the
+  measurement directly: [0.348](../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred:shared") MHz
+  central, with a [0.306](../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred_lo:shared") to [0.375](../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred_hi:shared") MHz band over the waist measurement band and the
   retro ratio (the values under this record's own differential
   polarizability, taken as the package's on 2026-08-25. Under the cited
   Orson figure they were 0.35 and 0.30-0.38, and the ordering holds
@@ -71,14 +63,17 @@ two-photon sum frequency, twice the laser frequency.
   exclusion at roughly the two-sigma level. **Both halves hold on the full fit,
   and the sentence lacked two qualifications instead of being wrong.** The
   exclusion holds, the limit lying below every point of the predicted
-  envelope, 1.404 to 1.760 in κ. Two things qualify it. Its strength is a range, Δχ² running 4.1 to 5.7
+  envelope, 1.404 to 1.760 in κ. <!-- other-quantity: the ±1σ waist-and-retro envelope of the joint fit on the red-sided ramp, recomputed with its refit, not the prediction band's outermost cell --> Two things qualify it. Its strength is a range, Δχ² running 4.1 to 5.7
   across the envelope, 2.0 to 2.4 σ, so a single calibrated two-sigma is what
   is withdrawn. And it does not survive leaving one peak out: the
-  leave-one-out Δχ² are 8.75, 2.27, 1.12 and 0.61 against a 2.706 threshold
-  (`results/stark_joint.csv`), at the pre-adjudication κ of 1.545 and not at
-  this record's own 1.618. Each arm is a fit with one peak removed against its
-  own minimum, so they do not share the full profile's derivative. Carrying them to 1.618 needs no curvature model. Each arm's own committed pair, at 1.545 and at 2.62, brackets it between its value at 1.545 and that value plus its own secant slope across the gap, giving 4121 in [8.75, 10.05], 4192 in [2.27, 2.77], 4154 in [1.12, 1.35] and 4207 in [0.61, 0.86]. So 4121 clears at both ends, 4154 and 4207 fail at both ends, and 4192 straddles the threshold and is not callable. **No count of arms is quoted, because one arm's bracket straddles
-  the threshold.**
+  leave-one-out Δχ² are [8.75](../results/stark_joint.csv "ref:stark_joint:lopo_dchi2_pred:4121"), [2.27](../results/stark_joint.csv "ref:stark_joint:lopo_dchi2_pred:4192"), [1.12](../results/stark_joint.csv "ref:stark_joint:lopo_dchi2_pred:4154") and [0.61](../results/stark_joint.csv "ref:stark_joint:lopo_dchi2_pred:4207")
+  for 4121, 4192, 4154 and 4207 against a 2.706 threshold, at the joint fit's κ of
+  [1.545](../results/stark_joint.csv "ref:stark_joint:kappa_pred:prediction"), computed at the cited 1093 a.u., where this record's own coefficient is
+  [1.547](../results/stark_sweep.csv "ref:stark_sweep:kappa_pred:shared"). Each arm is a fit with one peak removed against its
+  own minimum, so the arms do not share the full profile's derivative, and each is carried
+  across that gap by its own secant bracket to the 2.62 checkpoint (RESULTS.md C3f): 4121
+  clears at both ends, 4154, 4192 and 4207 fail at both ends, all four read on the
+  red-sided ramp until the joint fit's refit lands.
   On the full-archive fit the exclusion is stronger and robust, κ < 0.944 with
   all four arms clearing the threshold (`results/full_dataset_fit.csv`, and RESULTS.md C3f).
   That construction's own `gate_B4_prior_tension` reads FAIL at 3.78 against a
@@ -126,7 +121,9 @@ is stated. It also carries a 20 per cent scale systematic from the
 vapour-pressure model, the largest single uncertainty on the figure, and it is
 common to every point, so it slides the abscissa bodily. The 6S natural width
 is 3.49 MHz, below the bottom of the ordinate, so most of the width shown here
-is instrumental. The pale vertical band at 130 °C is the spread over the five
+is instrumental.
+
+The pale vertical band at 130 °C is the spread over the five
 drive powers measured at that temperature. The absolute widths ride the beam
 waist, a lineage measurement that this campaign did not re-measure, so a
 smaller waist would lower every point together.*
@@ -158,7 +155,9 @@ falling below it is what makes the coefficient lever-dependent. Panel (b) shows
 the fitted laser width moving with the choice of model rather than with
 temperature, which is why the per-block laser widths are quoted as a working
 range and not as a result. Fitting each condition freely gives a flat 1.6 MHz
-within the plotted uncertainties. Tying the collisional term to the density
+within the plotted uncertainties.
+
+Tying the collisional term to the density
 instead forces the laser width down to its lowest value at 110 °C, and that is
 the trade-off between the two widths inside the fit rather than a change in the
 laser. The density axis is logarithmic and carries the same 20 per cent scale
@@ -182,7 +181,7 @@ systematic as fig1.*
   claimed is that the amplitude follows the two-photon rate law to within a
   few per cent in the exponent, not that it follows it exactly.
 
-**Bounded rather than assumed** (ENVELOPE, computed 2026-08-10):
+Bounded rather than assumed (ENVELOPE, computed 2026-08-10):
 
 - The radiation environment is audited on all three channels a photon
   can act through here, not only the detected one. Trapped light on the
@@ -208,7 +207,7 @@ systematic as fig1.*
   cost is measured rather than an assumption
   ([methods 2](methods/02_the_lineshape.md)).
 
-**Calculated** (anchored, not fitted to this data):
+Calculated (anchored, not fitted to this data):
 
 - Differential polarizability Δα(993 nm) recomputed at [-1131.8](../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive") ± [5.9](../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive:err") a.u. with that tail
   summed dynamically to 12P and beyond (`results/polarizability_deep.csv`).
@@ -259,8 +258,7 @@ systematic as fig1.*
   withdrawn, corrected, or downgraded, including the local minimum retraction
   of this record's own headline light-shift bound.
 
-## 2. What is not claimed
-
+## 2. Claims not made
 - No environmental coefficient of the 993 nm line is measured here.
   The coefficients are bounds, and the collisional floor is not read as
   a detection of Rb-Rb collisions.
@@ -399,7 +397,7 @@ systematic as fig1.*
   dataset holds a flat offset and not a shape, and section 3's pedestal
   figures are projections for a wide scan nobody has taken.
 
-## 3. What another campaign would convert or add
+## 3. Gains from a further campaign
 
 Everything in this section is proposed, not scheduled. Verbs are
 conditional on the sessions happening. Each figure below is a
@@ -409,7 +407,7 @@ dataset's own measured precision and the session parameters
 [PLAN.md](PLAN.md) states, and every one of them travels with its
 assumption set in [results/projections.csv](../results/projections.csv).
 
-**A beam-profile measurement alone** (knife-edge or camera, no physics
+A beam-profile measurement alone (knife-edge or camera, no physics
 run) would collapse the transit-laser degeneracy, sharpen the
 waist-conditional statements in place, and put the laser-width range on
 a measured geometry. It is the cheapest single improvement to the
@@ -420,7 +418,7 @@ under every absolute coefficient below, conditional on the knife-edge
 and the camera agreeing with the transit difference before any
 coefficient is quoted in physical units.
 
-**A fixed-lock cell session** (the specified follow-up, [PLAN.md](PLAN.md))
+A fixed-lock cell session (the specified follow-up, [PLAN.md](PLAN.md))
 would add:
 
 - The first measured AC-Stark coefficient of the 993 nm line, from the
@@ -480,7 +478,7 @@ would add:
   dataset's own configuration, on the left of each panel, sits where the two
   treatments agree to a couple of per cent.*
 
-**A tunable-drive campaign (options map, not a plan)**, mapped in
+A tunable-drive campaign (options map, not a plan), mapped in
 [FUTURE_TRANSITIONS_titsapph.md](FUTURE_TRANSITIONS_titsapph.md): the drive
 laser is tunable, so the same machinery would reach other rubidium
 two-photon lines. Running it on the 778 nm reference line, where other
@@ -504,7 +502,9 @@ Reproducing the 778 nm coefficient would catch a factor-two convention
 error, which needs 13 kHz per mTorr against the same 8 delivered, and
 would not reach the 2.6 kHz per mTorr a 20 percent method bias needs, so
 the calibration rung would test the method's bookkeeping rather than its
-accuracy. Placing the magic wavelength to Hamilton's own 5 pm would need
+accuracy.
+
+Placing the magic wavelength to Hamilton's own 5 pm would need
 a scan step of 0.045 nm across the 0.18 nm of half span the neighbouring
 pole leaves usable, each point good to 8 percent of the shift at the edge
 of that span,
@@ -513,14 +513,16 @@ the closed-form shift distribution applies at all.
 
 Those three projections assume the drive can run at the dataset's own
 225 mW, and on two of the three rungs it cannot. The differential
-polarizability is about 1130 atomic units at 993 nm ([-1131.8](../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive") ± [5.9](../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive:err") with the dynamic tail, 1145 with the static one), 4372 at 760 nm and
+polarizability is about 1130 atomic units at 993 nm ([-1131.8](../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive") ± [5.9](../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive:err") with the dynamic tail), 4372 at 760 nm and
 about 28600 at 778 nm, so the power at which the shift stops being a
 correction to the width and becomes a feature of the lineshape differs
 by twenty-five across the ladder. Reading that ceiling as the power
 where the on-axis shift reaches one tenth of the measured width, at
 the retro ratio of record and at each rung's own drive waist, gives
-the 993 nm ceiling of 332 mW, the 760 nm ceiling of 50 mW and the
-778 nm ceiling of 8 mW. The first sits above the campaign maximum. The
+the 993 nm ceiling of 336 mW, the 760 nm ceiling of 50 mW and the
+778 nm ceiling of 8 mW.
+
+The first sits above the campaign maximum. The
 other two do not, and the two-photon rate falls as the square of the
 intensity, so a width precision measured at the dataset's power
 degrades in proportion once the drive is capped. On the 7S rung it
@@ -532,7 +534,7 @@ and the calibration rung loses the one test it had power for.
 Recovering that needs about 181 repeats and the uncapped precision
 about 787.
 
-**The waist there is each rung's own**, corrected 2026-09-09:
+The waist there is each rung's own, corrected 2026-09-09:
 `w0 = λf/(πw_in)`, so the 64 µm measured at 993.4 nm is 48.59 at
 760.1 through the same lens, and holding all three at 64 µm, which
 gave the retired ceilings of 87 and 13 mW, described a focus no single
@@ -556,11 +558,13 @@ source here states that amplifier's output at this wavelength. At
 778 nm the compact-clock community's own architecture, a 1556 nm fibre
 amplifier with second-harmonic generation, puts 30 mW on a cell in a
 held demonstration, which is 3.7 times the 778 nm ceiling, so the
-titanium sapphire is not required there either. Those source figures
+titanium sapphire is not required there either.
+
+Those source figures
 are calibration class, conditional on the delivered powers being read
 as demonstrated operating points rather than as class maxima.
 
-**A wide-scan add-on**, which costs an acquisition setting and no
+A wide-scan add-on, which costs an acquisition setting and no
 hardware. Two photons taken from the same beam drive a two-photon line
 that is first-order Doppler broadened, 942 MHz wide on the transition
 axis at 130 °C, sitting under the narrow line the record fits. Its
@@ -572,7 +576,9 @@ pins the temperature in about 1.9 hours well enough that the vapour
 curve's 22-fold leverage leaves the implied density inside the
 20 percent scale systematic it would check, and about 31 hours if only
 one hyperfine component's pedestal is fitted rather than the comb of
-four. For everyone using the light-shift prediction, the same design
+four.
+
+For everyone using the light-shift prediction, the same design
 reaches the assumed retro ratio in about 2.1 hours on the comb and about
 33 hours on one component, which converts an accepted prior into a
 same-trace measurement rather than improving on one. Three conditions
@@ -584,7 +590,9 @@ literature and the projection does not carry it either: transit-induced
 optical pumping distorts the lineshape a Doppler thermometer reads, and it is
 named in the alkali Doppler-thermometry literature as the dominant systematic
 temperature shift, so a pedestal width read as a temperature inherits a bias
-this record has not sized. The thermometer measures
+this record has not sized.
+
+The thermometer measures
 the temperature of the atoms in the beam and not the cold spot, so it
 pins the temperature the density curve is evaluated at and leaves the
 cold-spot lag to the absorption channel. The 2025 dataset cannot do
@@ -592,7 +600,7 @@ either measurement, because its own scan window is 85 MHz on the
 transition axis, a tenth of the pedestal width, so it samples the
 pedestal's flat top and its linear baseline absorbs it.
 
-**A guided-mode extension**, sketched in
+A guided-mode extension, sketched in
 [BIG_PICTURE.md](BIG_PICTURE.md) §6 and budgeted in
 [notes/guided_mode_two_photon_design.md](notes/guided_mode_two_photon_design.md),
 not specified as a session: the same measurement inside a hollow-core
@@ -604,7 +612,9 @@ describe trapped atoms, whose shift distribution is set by their
 vibrational energies and is about three times as skewed, with no hard edge at
 the maximum shift. Fluorescence
 cannot leave along the fibre at any density that gives signal. The
-light shift rather than the available power sets the usable drive. What
+light shift rather than the available power sets the usable drive.
+
+What
 does carry over is the operation the record is built on, mapping a
 known intensity geometry onto a shift distribution and reading its
 cumulants, and one result closes analytically on the new geometry: the
@@ -630,14 +640,16 @@ campaign shift precision, which is about 1.8 per cent on the reduced
 matrix element itself, a sign-reversal test of the
 asymmetry channel, and a calibrated shift injector at 3.6 kHz per
 picometre. The design and its envelope numbers are section 5.1 of
-[FUTURE_TRANSITIONS_titsapph.md](FUTURE_TRANSITIONS_titsapph.md). Not
+[FUTURE_TRANSITIONS_titsapph.md](FUTURE_TRANSITIONS_titsapph.md).
+
+Not
 claimable from the 2025 data, and the crossing is deliberately absent
 from the magic-wavelength list, whose criterion is usability as a trap.
 
 The dependency map, which measurement converts which claim, is the first
 section of [BIG_PICTURE.md](BIG_PICTURE.md).
 
-## 4. Who this serves, now and after a campaign
+## 4. Intended readers and their use
 
 Stating the audience is part of stating the claim, so this section names
 who has a reason to read the record today and who would gain from each
@@ -668,7 +680,7 @@ blocked waiting for these bounds, and this section does not soften that.
   and waist cancelling
   ([notes/guided_mode_two_photon_design.md](notes/guided_mode_two_photon_design.md)).
 
-**After a campaign, by what is run.** Each entry names what the audience
+After a campaign, by what is run. Each entry names what the audience
 would gain, and section 3 gives the projected precision they would gain
 it at, with the condition attached:
 

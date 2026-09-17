@@ -8,18 +8,10 @@ the answer, because in each case the error was the interesting part.
 `provenance: DESIGN` - Its own status line is DESIGN, says nothing here is a result, and names `run_geometry_design.py`, which writes nothing. The 43 unaccounted values are geometry intermediates of a proposed configuration rather than measurements of data, which is what DESIGN means here. **43 numeric claims on this page remain unaccounted for.** Declared after checking every three-significant-figure value on the page against `results/`, not by labelling.
 
 
-**The question.** Two geometry choices for a future session: should one arm be
-frequency-shifted so the fringes run, and how tight should the focus be?
-**Takes.** [methods/03_the_ac_stark_ramp.md](../methods/03_the_ac_stark_ramp.md).
-**Gives.** Both designs computed, each with the first pass that was wrong
-printed beside the answer, because in both cases the wrong criterion was the
-obvious one.
-**Skip if.** You want the recorded result rather than the next session's
-design.
+Two geometry choices for a future session: should one arm be frequency-shifted so the fringes run, and how tight should the focus be? This page builds on [methods/03_the_ac_stark_ramp.md](../methods/03_the_ac_stark_ramp.md) and sets out both designs computed, each with the first pass that was wrong printed beside the answer, because in both cases the wrong criterion was the obvious one. Not covered here: the recorded result rather than the next session's design.
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
-> explains the measurement in six sentences, then defines every term
-> and symbol used anywhere in this repository.
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
+> defines every term and symbol used anywhere in this repository.
 
 The two questions come from the same worry. The ramp skew is the observable that
 would turn the light-shift bound into a coefficient, and two features of the
@@ -146,12 +138,12 @@ Integrating the moments with the saturated weight instead, at 225 mW and the
 
 | w0 | Z_c/z_R | saturation | S0 | skew, saturated | skew, weak-field | width | figure of merit |
 |---|---|---|---|---|---|---|---|
-| 64 um | 0.15 | 0.033 | 0.348 MHz | +0.545 | +0.555 | 5.40 MHz | 1 |
-| 48 um | 0.27 | 0.105 | 0.618 MHz | +0.516 | +0.546 | 5.86 MHz | 5 |
-| 40 um | 0.40 | 0.217 | 0.890 MHz | +0.462 | +0.517 | 6.27 MHz | 13 |
-| 32 um | 0.62 | 0.531 | 1.390 MHz | +0.294 | +0.393 | 6.96 MHz | 24 |
-| 24 um | 1.10 | 1.678 | 2.472 MHz | -0.191 | +0.007 | 8.27 MHz | 54 |
-| 16 um | 2.47 | 8.496 | 5.561 MHz | -1.067 | -0.358 | 11.27 MHz | 1100 |
+| 64 um | 0.15 | 0.033 | 0.348 MHz | -0.545 | -0.555 | 5.40 MHz | 1 |
+| 48 um | 0.27 | 0.105 | 0.618 MHz | -0.516 | -0.546 | 5.86 MHz | 5 |
+| 40 um | 0.40 | 0.217 | 0.890 MHz | -0.462 | -0.517 | 6.27 MHz | 13 |
+| 32 um | 0.62 | 0.531 | 1.390 MHz | -0.294 | -0.393 | 6.96 MHz | 24 |
+| 24 um | 1.10 | 1.678 | 2.472 MHz | +0.191 | -0.007 | 8.27 MHz | 54 |
+| 16 um | 2.47 | 8.496 | 5.561 MHz | +1.067 | +0.358 | 11.27 MHz | 1100 |
 
 The figure of merit is the shot-noise-limited significance of the third cumulant,
 the cumulant over the cube of the observed width times the square root of the
@@ -171,9 +163,9 @@ large. Right is the last two columns of the table as a curve.*
 
 **The weak-field skew is wrong by a factor of three at the waist the record plans
 to use.** Read the two skew columns together. Saturation shrinks the skew where it
-is positive and grows it where it is negative, because flattening the weight
+is negative and grows it where it is positive, because flattening the weight
 lowers the effective exponent, the transverse contribution dies at n = 1, and what
-survives is the axial term. At 16 um the prediction moves from -0.358 to -1.067.
+survives is the axial term. At 16 um the prediction moves from +0.358 to +1.067.
 The small-waist session is written around 16 um, so this is not a remote regime:
 it is a factor-of-three error in the headline prediction for the planned
 measurement, and it comes from a modelling assumption rather than from an input.
@@ -351,25 +343,25 @@ way. The axial-averaged skew across that band:
 
 | w0 | z_R | Z_c = 2.40 | 2.00 | 1.33 | 1.00 | 0.83 | 0.67 | 0.50 mm |
 |---|---|---|---|---|---|---|---|---|
-| 64 um | 12.95 mm | +0.563 | +0.565 | +0.565 | +0.566 | +0.566 | +0.566 | +0.566 |
-| 32 um | 3.24 mm | +0.301 | +0.402 | +0.521 | +0.550 | +0.558 | +0.562 | +0.565 |
-| 24 um | 1.82 mm | -0.113 | +0.013 | +0.309 | +0.450 | +0.501 | +0.536 | +0.555 |
-| 16 um | 0.81 mm | -0.386 | -0.354 | -0.231 | -0.071 | +0.062 | +0.230 | +0.402 |
-| 12 um | 0.46 mm | -0.451 | -0.434 | -0.384 | -0.327 | -0.273 | -0.174 | +0.013 |
+| 64 um | 12.95 mm | -0.563 | -0.565 | -0.565 | -0.566 | -0.566 | -0.566 | -0.566 |
+| 32 um | 3.24 mm | -0.301 | -0.402 | -0.521 | -0.550 | -0.558 | -0.562 | -0.565 |
+| 24 um | 1.82 mm | +0.113 | -0.013 | -0.309 | -0.450 | -0.501 | -0.536 | -0.555 |
+| 16 um | 0.81 mm | +0.386 | +0.354 | +0.231 | +0.071 | -0.062 | -0.230 | -0.402 |
+| 12 um | 0.46 mm | +0.451 | +0.434 | +0.384 | +0.327 | +0.273 | +0.174 | -0.013 |
 
 **Two results, and the second is a trap.**
 
 First, a tight collection region removes the axial penalty almost entirely. At
-Z_c below about 0.7 mm the skew is positive and within a few per cent of its
-intrinsic +0.566 at every waist from 64 down to 16 um. That is the configuration
+Z_c below about 0.7 mm the skew is negative and within a few per cent of its
+intrinsic -0.566 at every waist from 64 down to 16 um. That is the configuration
 the earlier sections were looking for and did not find: the small waist's shift
 gain with no axial suppression, which moves the binding constraint back onto
 saturation where the second section left it.
 
 Second, **the small-waist configuration's own zero sits inside the achievable
 range.** The sign changes at Z_c/z_R = 1.12, which at 16 um is Z_c = 0.90 mm,
-squarely inside the 0.5 to 2.4 mm band. Read the 16 um row: -0.071 at 1.00 mm and
-+0.062 at 0.83 mm. A session that lands there measures nothing at all, whichever
+squarely inside the 0.5 to 2.4 mm band. Read the 16 um row: +0.071 at 1.00 mm and
+-0.062 at 0.83 mm. A session that lands there measures nothing at all, whichever
 sign it set out to confirm. The record's existing statement that the two-waist
 sign flip survives every plausible magnification is correct on the sign and
 carries the magnitude as still geometry-dependent, and this is what that

@@ -1,13 +1,9 @@
 *Chapter 6 of 12 of [the plan](../PLAN.md)*
 
-**The question.** How large must a session be, and what does the 2025 session forbid?
-**Takes.** The blocks of chapters 4 and 5.
-**Gives.** The block register, the sizing arithmetic, and the spending rules.
-**Skip if.** You want the physics rather than the budget.
+This chapter builds on the blocks of chapters 4 and 5 and sets out the block register, the sizing arithmetic, and the spending rules. The physics rather than the budget.
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
-> explains the measurement in six sentences, then defines every term
-> and symbol used anywhere in this repository.
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
+> defines every term and symbol used anywhere in this repository.
 
 > **Question.** How large must a session be, and what does the 2025 session forbid?
 > **Design.** Block sizes set by the precision each block must reach, not by the time available.
@@ -69,8 +65,8 @@ conversions done.
 | D7 | Configuration M spot check, half a day: knife-edge, camera, power grid, one 130 °C point. Wavemeter GHz-linearity shots (§11). | the 2025-epoch bridge, and the wavemeter's own frequency scale |
 | D8 | Contingency: re-run whatever the bracket veto excluded. | the recovered blocks, or unused |
 
-**If the adjustable expander of chapter 4 item 3c is on the bench, D4's
-reconfiguration becomes a ladder and not a move.** Two configurations, L
+If the adjustable expander of chapter 4 item 3c is on the bench, D4's
+reconfiguration becomes a ladder and not a move. Two configurations, L
 and S, give one relative comparison and leave the absolute scale open. Three
 or four expander settings at fixed power give a scaling law with a calibrated
 abscissa, because the magnification is a ratio of focal lengths, and the
@@ -144,7 +140,7 @@ Repetition is the right currency only where the observable is genuinely
 photon- or gain-limited: the skew integration, the amplitude ratios, the
 ruler-width monitor.
 
-### 10.3 What ordering buys and repetition cannot
+### 10.3 The gain from ordering over repetition
 
 Within one sweep direction, drift monotonic in time is exactly collinear with
 physics monotonic in T. That is a rank problem, and no number of repetitions
@@ -203,13 +199,13 @@ Spend structure before statistics: orders before days, blocks before repeats,
 interleaves before points, and one measured cadence instead of a guessed
 alternation.
 
-## What 2026-08-19 added to the spending rules
+## Additions to the spending rules, 2026-08-19
 
 Three findings from the model and acquisition work change how a session should
 be costed, and all three make the cheap options cheaper rather than the
 expensive ones better.
 
-**The temperature lever has no thermal ceiling worth costing.**
+The temperature lever has no thermal ceiling worth costing.
 `rb5s6s/blackbody.py` was built to find the temperature above which blackbody
 radiation enters the systematic budget. Across the cell's 70 to 130 C the
 differential shift is 79.9 to 161.0 Hz, four orders below the light-shift
@@ -221,13 +217,13 @@ detail matters if the ceiling is ever recomputed: the shift scales as the
 6S to 6P contribution grows with T, so the naive exponent understates it in
 the direction that matters.
 
-**Four levers cost nothing but a decision, and between them they remove both
-confounds that most limit the 2025 record.** One vertical range across the
+Four levers cost nothing but a decision, and between them they remove both
+confounds that most limit the 2025 record. One vertical range across the
 ladder, randomised rung order, all four peaks in one trace, and both halves of
 the triangle kept. None needs hardware, bench time or a new alignment. They
 belong at the head of any session plan, before anything that costs.
 
-**The pedestal thermometer's precision requirement is undemanding.** A Doppler
+The pedestal thermometer's precision requirement is undemanding. A Doppler
 width goes as the square root of temperature, so a fractional width error is
 half the fractional temperature error, and resolving 20 K near 400 K asks for
 a width fit good to 2.5 per cent. That is one slow wide trace per temperature
@@ -263,7 +259,7 @@ that contradicts it owes this page an edit.
 | frequency axis | comb-calibrated in the campaign, fractional-only in the excluded sessions | ruler coverage and flyback | the cascade drive of chapter 8, the sweep-direction column, wavemeter shots per block | an absolute axis everywhere | | item 6, flyback settle |
 | amplitude against detection | departure follows brightness, not branching | range switching and a single chain | four peaks on one vertical range, and the same photocurrent on two chains at once | the confound held fixed, and the dual-chain subset is the kernel discriminator's lever | | the dual recording |
 
-**The fibre platform sits behind its own thread** and its knobs are the
+The fibre platform sits behind its own thread and its knobs are the
 subject of [the guided-atoms page](../wiki/guided-atoms-and-nanofibres.md)
 and [the candidate note](../notes/onf_candidate.md): an apparatus whose
 trap-colour ratio scans the atom-surface distance pins geometry directly,
@@ -273,7 +269,7 @@ which are the cell campaign's two hardest degeneracies attacked by
 hardware instead of by statistics. A reader with no fibre loses nothing
 here: every row above stands on the cell campaign alone.
 
-## Costing a session against a twin rather than against intuition
+## Costing a session against the twin
 
 The digital twin of `examples/campaign_twin.py` and the forecast module make
 one spending question answerable in seconds that used to be answerable only
@@ -281,32 +277,32 @@ in argument: what does this design change actually buy.
 
 Three results from it that bear directly on sizing.
 
-**The scan span and the repeat count are interchangeable within a factor.**
+The scan span and the repeat count are interchangeable within a factor.
 Doubling points, doubling repeats and doubling power all reduce the width
 uncertainty by broadly comparable factors in the twin's measured scalings,
 so the choice among them is governed by dead time and drift exposure rather
 than by information.
 
-**Nothing in that family touches identifiability.** The width correlation is
+Nothing in that family touches identifiability. The width correlation is
 unmoved by all of it. A session that spends its whole budget on more of the
 same returns a tighter number for a quantity the record still cannot resolve
 into its components.
 
-**One measurement outside the fit is worth more than any of them.** The
+One measurement outside the fit is worth more than any of them. The
 factor an independent laser width buys, between 2.3 and 3.2 depending on the
 condition it is evaluated at, is larger than any single design change in the
 twin's table, and it costs an afternoon on a different instrument.
 
 The rule this adds to the spending rules already here: before buying more of
-a measurement, run the twin and ask whether the quantity you want is limited
+a measurement, run the twin and ask whether the quantity of interest is limited
 by noise or by identifiability. More data fixes the first and never the
 second, and the twin distinguishes them in seconds.
 
 
-## The order the calibrations run in, and why it is not free
+## The calibration order and its cost
 
-**The dependencies bind, and getting them wrong voids the measurement that
-came first.** Raised from outside the record on 2026-09-07 and checked here
+The dependencies bind, and getting them wrong voids the measurement that
+came first. Raised from outside the record on 2026-09-07 and checked here
 against the chapters that own each step.
 
 1. **Null the retro angle before anything else is calibrated.** A tilt changes
@@ -334,7 +330,7 @@ against the chapters that own each step.
 5. **Anchor the density at the bottom of the temperature lever**, where the
    absorption is weakest, before the lever is run.
 
-**And the analysis that needs no bench runs first**, because three of its
+And the analysis that needs no bench runs first, because three of its
 answers change what is built. Whether per-trace centres are recoverable at
 all, which gates the whole centre channel. Whether a single record's width
 matches the co-added one. Whether the four-line gaps reproduce the hyperfine

@@ -2,21 +2,12 @@
 
 *[wiki index](README.md) · concept*
 
-**The question.** How nuclear spin splits one electronic level into
-several closely spaced $F$ sublevels, and why the pattern differs isotope
-to isotope.
-**Takes.** The electronic angular momentum $J$ and nuclear spin $I$ as
-separate quantum numbers, nothing else assumed.
-**Gives.** The interval formula for a $J=1/2$ hyperfine splitting and the
-isotope-and-sublevel identity of the four measured components.
-**Skip if.** the reader wants what a further applied field does to those
-sublevels instead of their zero-field structure, in which case
-[Magnetic sublevels](magnetic-sublevels.md) is the right page.
+How nuclear spin splits one electronic level into several closely spaced $F$ sublevels, and why the pattern differs isotope to isotope. This page builds on the electronic angular momentum $J$ and nuclear spin $I$ as separate quantum numbers, nothing else assumed and sets out the interval formula for a $J=1/2$ hyperfine splitting and the isotope-and-sublevel identity of the four measured components. Not covered here: what a further applied field does to those sublevels instead of their zero-field structure, in which case [Magnetic sublevels](magnetic-sublevels.md) is the right page.
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
 > defines every term and symbol used anywhere in this repository.
 
-## What it is
+## Definition
 
 Many nuclei carry a nonzero angular momentum, nuclear spin $I$. That spin
 couples magnetically to the atom's total electronic angular momentum $J$, and
@@ -51,7 +42,7 @@ apart they sit. A same-isotope pair of sublevels, by contrast, is set purely
 by quantities intrinsic to that one nucleus and that one electronic
 transition, with nothing about a different isotope entering at all.
 
-## What problem it solves
+## The problem it addresses
 
 Hyperfine structure is why a line that looks single at modest resolution
 resolves into several distinct, individually addressable lines once the
@@ -65,7 +56,7 @@ atom, not by anything in a particular apparatus, a same-isotope spacing
 doubles as an absolute frequency reference that needs no external
 calibration once the constants are known.
 
-## Where this repository uses it
+## Application in this repository
 
 The four measured components of this experiment are exactly this: hyperfine
 components of two rubidium isotopes on the same $5S_{1/2} \to 6S_{1/2}$
@@ -95,7 +86,7 @@ both are constants this repository already holds, which is what makes the
 separation usable as a ruler independent of the modulator, the piezo and the
 wavemeter reading.
 
-## What can go wrong
+## Failure modes
 
 Comparing a labelled component against the wrong reference frequency reports
 real physics as a residual error. Measuring each component against an
@@ -144,6 +135,7 @@ from rb5s6s.constants import (
 
 # Total 6S1/2 hyperfine splitting of a J=1/2 level is A*(I + 1/2):
 # 2A for 87Rb (I=3/2), 3A for 85Rb (I=5/2).
+
 splitting_6s_rb87_hz = 2.0 * A_6S_RB87_HZ
 splitting_6s_rb85_hz = 3.0 * A_6S_RB85_HZ
 
@@ -169,8 +161,7 @@ print("neither value carries the 85-87 isotope shift, both are same-isotope")
 - [Doppler-free two-photon spectroscopy](doppler-free-two-photon.md), the
   technique that resolves these components against their Doppler width.
 
-## See also
-
+## Related pages
 - [Selection rules](selection-rules.md), for the angular-momentum rule
   this page extends from $J$ to $F$.
 - [Magnetic sublevels](magnetic-sublevels.md), for the further splitting

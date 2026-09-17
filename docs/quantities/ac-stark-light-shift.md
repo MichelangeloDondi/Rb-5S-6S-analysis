@@ -2,34 +2,20 @@
 
 *[quantities index](README.md) · headline parameter*
 
-**The question.** What light shift can be separated from the other mechanisms
-that share its power signature? The quantity is $\kappa$, relating the on-axis
-shift to the drive power in MHz per watt, and $S_0 = \kappa P$, the shift at a
-stated power, both on the transition axis.
-**Takes.** The committed fits and their profile likelihoods. No new fitting.
-**Gives.** The bound in every construction that produced one, the four reasons
-it is a bound rather than a value, and three defined levels of improvement with
-their bench recipes.
-**Skip if.** The question is how the shift distorts a line, which is
-[the AC-Stark shift](../wiki/ac-stark-shift.md), or whether the joint
-constructions may be compared with each other, which is
-[chapter 8](../big_picture/08_when-a-joint-fit-is-legitimate.md).
-
+What light shift can be separated from the other mechanisms that share its power signature? The quantity is $\kappa$, relating the on-axis shift to the drive power in MHz per watt, and $S_0 = \kappa P$, the shift at a stated power, both on the transition axis. This page builds on the committed fits and their profile likelihoods. No new fitting. It sets out the bound in every construction that produced one, the four reasons it is a bound rather than a value, and three defined levels of improvement with their bench recipes. Not covered here: the question is how the shift distorts a line, which is [the AC-Stark shift](../wiki/ac-stark-shift.md), or whether the joint constructions may be compared with each other, which is [chapter 8](../big_picture/08_when-a-joint-fit-is-legitimate.md).
 **Where it stands.** A bound, not a measurement, in every construction the
 record carries, and the constructions span $\kappa \lt 0.944$ to
 $\kappa \lt 2.811$ MHz/W depending on which data and which channel are used.
+
 No single number is quotable without its construction, and whether the joint
 three-session construction reproduces remains an open question, so
 section 3's table with its status column is the citable object, not any one
 row of it.
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md) defines
-> every term and symbol. The physics of the effect is
-> [the AC-Stark shift](../wiki/ac-stark-shift.md), and the reason a bound is
-> reported rather than a value is
-> [identifiability](../wiki/identifiability.md).
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
+> defines every term and symbol used anywhere in this repository.
 
-## 1. What it is, and which observable carries it
+## 1. Definition and observable
 
 The 993 nm drive shifts the 5S and 6S levels by different amounts, so the
 two-photon resonance moves. Because the beam has a spatial intensity profile
@@ -54,22 +40,22 @@ that sets the standing-wave contrast. A measurement of $\kappa$ is a
 measurement of $\Delta\alpha$ only to the accuracy of that geometry, which is
 section 4's second theme.
 
-## 2. What the literature has achieved
+## 2. Prior achievements in the literature
 
 Three classes of comparator, assembled from the repository's own
 [literature notes](../LITERATURE_INDEX.md). Values appear exactly as
 published, in the units their authors used, because the conventions differ and
 converting them silently is how comparisons stop meaning anything.
 
-**Direct comparators**, the same measurement on the same or a sister line.
+Direct comparators, the same measurement on the same or a sister line.
 
 | reference | value as published | system | why it is comparable |
 |---|---|---|---|
-| [Orson 2021](../lit/orson2021.md) | no shift resolved at 6 MHz spectral resolution, and computes $\alpha_{56} = -1093$ a.u. | Rb 5S-6S at 993 nm, this line | The only prior work on this transition, and its null is the standing prior result on this channel. Its computed differential polarizability is not the value this repository uses. In this record's sign convention that value is $+1093$, and an independent sum-over-states recompute gives $-1145$, the same quantity by the same definition, with the opposite sign and magnitudes agreeing to about five per cent. The record's own value became the package default by a decision on the theory, which is not a measurement, and the published one is kept named beside it as `DELTA_ALPHA_AU_ORSON2021`. Every committed bound is sign-immune; the fixed-lock pull direction is what would settle it. See [THEORY_NOTE](../THEORY_NOTE.md) <!-- other-quantity: Orson's own published magnitude in a literature row --> |
+| [Orson 2021](../lit/orson2021.md) | no shift resolved at 6 MHz spectral resolution, and computes $\alpha_{56} = -1093$ a.u. | Rb 5S-6S at 993 nm, this line | The only prior work on this transition, and its null is the standing prior result on this channel. Its computed differential polarizability is not the value this repository uses. In this record's sign convention that value is $+1093$, and this record's own sum over states gives [-1131.8](../../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive") a.u., the same quantity by the same definition, with the opposite sign and magnitudes agreeing within four per cent. The record's own value became the package default by a decision on the theory, which is not a measurement, and the published one is kept named beside it as `DELTA_ALPHA_AU_ORSON2021`. Every committed bound is sign-immune; the fixed-lock pull direction is what would settle it. See [THEORY_NOTE](../THEORY_NOTE.md) <!-- other-quantity: Orson's own published magnitude in a literature row --> |
 | [Lee 2010](../lit/lee2010.md) | -7.25(45) Hz per mW per square millimetre, against theory $-6.58$ and a prior $-6.13(1.25)$ | Cs 6S-8S two-photon, hot cell | The closest published analogue: an nS to n'S alkali two-photon line with intensity and density scanned independently |
 | [Fendel 2007](../lit/fendel2007.md) | $-0.21$ Hz per mW per square centimetre against average, not peak, intensity | Cs 6S-8S two-photon, comb-driven | The same experiment one element to the left. It engineered the spatial distribution away with an unfocused 0.72 mm waist, which is the effect measured here |
 
-**Physical analogues**, the same mechanism in a different system.
+Physical analogues, the same mechanism in a different system.
 [Stalnaker 2006](../lit/stalnaker2006.md) extracted a polarizability from an
 asymmetric line produced by a spatially varying AC-Stark shift in a Yb standing
 wave, quoting $-0.312(34)$ Hz per (V/cm) squared, and is the nearest prior art for the
@@ -84,8 +70,8 @@ version of the same distortion in He.
 a0 cubed, which is the validation target for the analogous Rb 5S-6S quantity,
 though it is DC where this is AC.
 
-**The counterpoint worth stating, because it defines the gap this experiment
-sits in.** [Yudin 2020](../lit/yudin2020.md),
+The counterpoint worth stating, because it defines the gap this experiment
+sits in. [Yudin 2020](../lit/yudin2020.md),
 [Li 2024](../lit/li2024b.md) and [Gerginov 2018](../lit/gerginov2018.md) all
 treat the light shift as one scalar to be suppressed, and the words
 distribution, waist and inhomogeneous appear nowhere in the last of them. The
@@ -94,7 +80,7 @@ suppressing a shift and a programme reading a distribution from it need
 different things from the apparatus, and the second has almost no measured
 precedent on an alkali nS to n'S line.
 
-## 3. What this dataset establishes
+## 3. Results established by this dataset
 
 Every row is one construction. They are not alternative renderings of one
 number, and quoting one where another applies is the error this layer exists to
@@ -107,21 +93,22 @@ prevent.
 | Joint, with the red-side wing marginalised | $\lt$ [1.066](../../results/stark_joint.csv "ref:stark_joint:kappa_ub95_wing:robustness") MHz/W | | BOUND, conditional | `stark_joint.csv` |
 | Joint, dropping the 4192 peak and with it the whole pilot session | $\lt$ [1.626](../../results/stark_joint.csv "ref:stark_joint:kappa_ub95_drop4192:robustness") MHz/W | $\lt 0.366$ MHz | BOUND | `stark_joint.csv` |
 | $\kappa$ and $\beta_{\rm self}$ both free, no prior | $\lt 0.963$ MHz/W | $\lt 0.217$ MHz | PRELIM | [`global_dataset_fit.csv`](../../results/global_dataset_fit.csv) |
-| Width channel alone | $\lt 2.811$ MHz/W | $\lt 0.632$ MHz | BOUND | [`stark_sweep.csv`](../../results/stark_sweep.csv) |
+| Width channel alone | $\lt [2.811](../../results/stark_sweep.csv "ref:stark_sweep:kappa_ub95_profile:shared")$ MHz/W | $\lt [0.633](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_ub95_profile:shared")$ MHz | BOUND | [`stark_sweep.csv`](../../results/stark_sweep.csv) |
 | Centre channel alone | $\lt 8.653$ MHz/W | | BOUND | [`centre_stark.csv`](../../results/centre_stark.csv) |
 
 **The prediction, for comparison rather than as a result.** $\kappa$ is
-predicted at [1.545](../../results/stark_joint.csv "ref:stark_joint:kappa_pred:prediction") MHz/W, giving $S_0 =$ [0.348](../../results/stark_joint.csv "ref:stark_joint:S0_225mW_pred:prediction") MHz at 225 mW, a waist of 64 µm and a retro ratio of 0.94. Those two cells
-were computed under the earlier $|\Delta\alpha| = 1093$ default and have not
-been regenerated since this record pinned its own 1131.8, which raises them by
-the ratio 1131.8/1093, about 3.5 per cent.
- The file `results/stark_sweep.csv` carries the
-current shift, 0.360 MHz. The coefficient 1.618 MHz/W is that divided by the
-225 mW drive and has no committed row of its own, and its producer is the cheap one. The bounds therefore sit below the prediction,
-which is the interesting feature of the table and is discussed in section 4.
+predicted at [1.547](../../results/stark_sweep.csv "ref:stark_sweep:kappa_pred:shared") MHz/W, giving $S_0 =$ [0.348](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred:shared") MHz at 225 mW, the 64 µm waist convention and a retro ratio of 0.94.
+One function computes both (`stark.kappa_pred_per_watt`), at this record's own
+polarizability, [−1131.8](../../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive") a.u., with the on-axis factor of the modulator's aperture.
+The joint fit's own prediction cells, [1.545](../../results/stark_joint.csv "ref:stark_joint:kappa_pred:prediction") MHz/W and [0.348](../../results/stark_joint.csv "ref:stark_joint:S0_225mW_pred:prediction") MHz, were
+computed at the cited $|\Delta\alpha| = 1093$ without that factor, so the shift
+cells agreeing to the printed digits is a coincidence and not a confirmation,
+and they are replaced when the joint fit's refit lands. The bounds sit below
+the prediction, which is the interesting feature of the table and is discussed
+in section 4.
 
-**Two things the table does not say, stated here so that it cannot be read as
-saying them.** No construction reports a detection: the joint profile's minimum
+Two things the table does not say, stated here so that it cannot be read as
+saying them. No construction reports a detection: the joint profile's minimum
 sits at $\kappa = 0.25$ MHz/W with $\Delta\chi^2 = 0.12$ at $\kappa = 0$, which
 is no preference at all. And the pooled three-session construction is **not
 currently reproducible**: its passes span a factor of 2.1 and a second local
@@ -132,7 +119,7 @@ difference. That is worked out in
 which is the page to read before quoting any of these numbers against each
 other.
 
-### The retired significance, and the two supports that did not hold
+### The retired significance and its supports
 
 Every bound in the primary constructions sits below the prediction, and until
 2026-08-27 this record called that an exclusion at 95 per cent, at roughly
@@ -143,32 +130,35 @@ and withdrawing all five. They are listed at the end of this section.
 
 **What stands.** The 95 per cent one-sided limit on the full three-session
 fit, $\kappa \lt 1.147$ MHz/W, lies below every point of the predicted
-envelope, which runs 1.404 to 1.760 over the stated waist and retro band. So
+envelope, which runs 1.404 to 1.760 <!-- other-quantity: the ±1σ waist-and-retro envelope of the joint fit on the red-sided ramp, recomputed with its refit, not the prediction band's outermost cell --> over the stated waist and retro band. So
 the prediction is excluded at 95 per cent at every geometry in that band.
 
-**Qualification one: the strength is a range and not a number.**
+Qualification one: the strength is a range and not a number.
 $\Delta\chi^2$ runs 4.1 at the envelope's lower vertex to 5.7 at its upper,
 2.0 to 2.4 $\sigma$ under Wilks, and the same profile read as a posterior
-puts the computed 1131.8 a.u. in the upper 3 per cent, about 1.8 $\sigma$. A
+puts the earlier static-tail value, since retired, in the upper 3 per cent, about 1.8 $\sigma$. A
 single calibrated two-sigma is what the record withdraws, not the existence
 of a significance. The envelope's own half-width is a two-vertex scan and
 must never be used as the denominator of one.
 
-**Qualification two, and it is the larger: on this construction the exclusion
-does not survive leaving one peak out.** At the predicted $\kappa$ the committed
-`lopo_dchi2_pred` rows read 8.75, 2.27, 1.12 and 0.61 for 993.4121, 993.4192,
-993.4154 and 993.4207 nm against a 2.706 threshold. **No count of arms is
-quoted here.** Each arm is a fit with one peak removed against its own
-minimum, so the arms do not share the full profile's derivative. Carrying them to 1.618 needs no curvature model. Each arm's own committed pair, at 1.545 and at 2.62, brackets it between its value at 1.545 and that value plus its own secant slope across the gap, giving 4121 in [8.75, 10.05], 4192 in [2.27, 2.77], 4154 in [1.12, 1.35] and 4207 in [0.61, 0.86]. So 4121 clears at both ends, 4154 and 4207 fail at both ends, and 4192 straddles the threshold and is not callable. The rows are
-evaluated at the pre-adjudication predicted $\kappa$ of 1.545 and not at
-this record's own 1.618, which is why the bracket above is quoted instead of
-a count. The record used to
+Qualification two, and it is the larger: on this construction the exclusion
+does not survive leaving one peak out. At the predicted $\kappa$ the committed
+`lopo_dchi2_pred` rows read [8.75](../../results/stark_joint.csv "ref:stark_joint:lopo_dchi2_pred:4121"), [2.27](../../results/stark_joint.csv "ref:stark_joint:lopo_dchi2_pred:4192"), [1.12](../../results/stark_joint.csv "ref:stark_joint:lopo_dchi2_pred:4154") and [0.61](../../results/stark_joint.csv "ref:stark_joint:lopo_dchi2_pred:4207") for 993.4121, 993.4192,
+993.4154 and 993.4207 nm against a 2.706 threshold. Each arm is a fit with one peak removed against its own
+minimum, so the arms do not share the full profile's derivative.
+
+The rows are evaluated at the joint fit's predicted $\kappa$ of [1.545](../../results/stark_joint.csv "ref:stark_joint:kappa_pred:prediction"), computed at the cited
+1093 a.u., where this record's own coefficient is [1.547](../../results/stark_sweep.csv "ref:stark_sweep:kappa_pred:shared"). Each arm's committed pair, at that
+coefficient and at the 2.62 checkpoint, brackets it across the gap with no model of the profile's
+shape, and RESULTS.md C3f carries the brackets computed from the rows: 993.4121 nm clears at both
+ends and 993.4154, 993.4192 and 993.4207 nm fail at both ends, all four read on the red-sided ramp
+until the joint fit's refit lands. The record used to
 read those four as "all positive and similar" over a span of fourteen. Note
 too that drop-4192 is called the most conservative subset only because
 `run_stark_joint` gives that one drop a fine $\kappa$ grid, so it is the only
 arm whose bound can be read off at all.
 
-**An observation that looks like a third reason and is not.** The drop-4192
+An observation that looks like a third reason and is not. The drop-4192
 arm of the table above, $\kappa \lt 1.626$, lands inside the predicted
 envelope and not below it. It cannot carry the retraction: its margin
 against the predicted point is half a per cent, several times smaller than
@@ -178,7 +168,7 @@ a robustness range and not separately quotable limits. An earlier draft of
 this section led on it, which is the third leading reason this retraction has
 had to withdraw.
 
-**A caveat that runs the other way**, recorded because it is easy to
+A caveat that runs the other way, recorded because it is easy to
 over-read in this record's favour. The limit bounds the sum of three channels
 sharing the $P^2$ signature, of which the ramp is about a sixth. But the
 width grows as $S_0^2$, so a bound on $\kappa$ scales as the square root of
@@ -188,9 +178,11 @@ of the joint bound is of the same size, but it is classified
 NEEDS_EXTERNAL_TREE in `results/saturation_companion.csv` and is not
 committed as a digit, so it corroborates the scale and not the value. Which of the three channels is
 smallest varies by line: the pumping term is below the ramp on 993.4207 and
-993.4192 nm and above it on the other two. **The branching fractions 0.223 to
+993.4192 nm and above it on the other two.
+
+The branching fractions 0.223 to
 0.372 are not commensurate with the ramp's ~1/6 share of the P-squared budget
-and this page put them on one line as though they were**, which a reader who
+and this page put them on one line as though they were, which a reader who
 checks concludes is false. The per-line statement is the checkable form and is
 carried in `docs/methods/04_the_composite_model.md`.
 
@@ -205,15 +197,16 @@ withdrawn. They are named so that none is revived.**
    bound, and the reading was already withdrawn in-record as a like-for-like
    error mixing railed and unrailed simulations. Restricted properly it is a
    12th percentile of 41. Entries 1 and 2 are one category error made twice.
-3. **The 837-to-1038 construction spread.** Real and correctly computed, and
-   the two limits differ by
+3. **The construction spread between the profile limit,
+   [868](../../results/delta_alpha_posterior.csv "ref:delta_alpha_posterior:limit:delta_alpha_abs_ub95_profile"),
+   and the posterior's,
+   [1076](../../results/delta_alpha_posterior.csv "ref:delta_alpha_posterior:limit:delta_alpha_abs_ub95_posterior").**
+   Real and correctly computed, and the two limits differ by
    [1.231](../../results/delta_alpha_posterior.csv "ref:delta_alpha_posterior:limit:construction_spread")
-   at fixed geometry on both sides, about 23 per cent, and the tail
-   probabilities they imply differ by a factor of two, 0.0342
- against 0.0165,
-   so neither is a third-digit effect and an earlier draft of this entry
-   called them one. **The figure is the committed like-for-like row and not
-   1038/837.** That ratio of 1.24 divides a geometry-marginalised percentile  <!-- other-quantity: the ratio 1038/837, not the Omega-over-S0 band -->
+   at fixed geometry on both sides, about 23 per cent, so it is not a
+   third-digit effect and an earlier draft of this entry called it one.
+   **The figure is the committed like-for-like row and not the ratio of the
+   two limits.** That ratio divides a geometry-marginalised percentile
    by a central-geometry crossing, mixing the construction change with a
    marginalisation. That is the not-like-for-like class the producer was
    rewritten to remove, reintroduced here by hand. It does not bear on whether an exclusion
@@ -229,11 +222,11 @@ withdrawn. They are named so that none is revived.**
    it, its margin is several times smaller than the profile's own numerical
    scatter, and `RESULTS.md` C3f reads the margin from the primary alone.
 
-**What survives all of this is the tension itself.** The computed 1131.8 a.u.
+**What survives all of this is the tension itself.** The computed [-1131.8](../../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive") a.u.
 sits in the upper
-[0.0342](../../results/delta_alpha_posterior.csv "ref:delta_alpha_posterior:comparison:posterior_prob_above_computed_here")
+[0.0406](../../results/delta_alpha_posterior.csv "ref:delta_alpha_posterior:comparison:posterior_prob_above_computed_here")
 of the posterior and Orson's 1093 in the upper
-[0.0404](../../results/delta_alpha_posterior.csv "ref:delta_alpha_posterior:comparison:posterior_prob_above_orson2021"),
+[0.0472](../../results/delta_alpha_posterior.csv "ref:delta_alpha_posterior:comparison:posterior_prob_above_orson2021"),
 under the posterior, and 0.017 and 0.016 under the crossing. Those two sit
 closer together than this profile's own numerical noise floor, so no ordering
 between them may be read. Neither pair is quotable
@@ -241,12 +234,12 @@ to three digits, and the data prefer a smaller shift than the calculation
 predicts under both. This record simply does not claim a calibrated
 confidence level for that preference.
 
-## 4. Why the experiment cannot do better
+## 4. Limits of the present experiment
 
 Four limitations, of three different kinds, and only one of them is about
 noise.
 
-**Statistical: the estimator sits where its own gradient vanishes.** The width
+Statistical: the estimator sits where its own gradient vanishes. The width
 grows as the square of $S_0$, so at the best fit, which rails at $\kappa = 0$, the
 derivative of the observable with respect to the parameter is zero. A
 linearised error bar evaluated there is a finite-difference artefact carrying
@@ -255,7 +248,7 @@ not a Wald bound. That correction is recorded in
 [`rb5s6s/stark.py`](../../rb5s6s/stark.py) and its coverage was checked by
 simulation.
 
-**The wrong moment is being used, by a factor of forty.** At the bound the
+The wrong moment is being used, by a factor of forty. At the bound the
 light-shift term moves the composite width by about 4 kHz, against a per-block
 width scatter of 88 kHz. The same term pulls the line centre by about 150 kHz.
 The centre is the sensitive moment because a one-sided perturbation moves a
@@ -265,7 +258,7 @@ is nevertheless the weakest bound in the table, because the laser lock drifted
 during the campaign and absolute centres are lost. **The experiment measured
 the insensitive moment well and the sensitive moment not at all.**
 
-**Model: the geometry is accepted rather than measured.** The waist of 64 µm,
+Model: the geometry is accepted rather than measured. The waist of 64 µm,
 with an accepted band of 62 to 68 µm, comes from one profiler measurement on
 the predecessor laser of this apparatus lineage, not on the campaign's own
 beam, and no error bar on the campaign's own waist exists to be quoted. The
@@ -274,7 +267,7 @@ assumed waist, from 1.050 to 1.191 MHz/W across 56 to 72 µm. This is the
 largest open systematic in the whole programme, and it is
 [big picture chapter 5](../big_picture/05_next-vapour-cell.md)'s first item.
 
-**Model: mechanisms sharing the power signature are omitted.** Atomic
+Model: mechanisms sharing the power signature are omitted. Atomic
 saturation and hyperfine pumping both widen the line with the same power
 dependence as the ramp, and both are left out of the production model. Their
 effect is measured rather than argued: including a saturation companion
@@ -340,7 +333,7 @@ rather than of width on power. This is
 [chapter 10](../plan/10_the-fixed-lock-instrument.md), and the lock is now
 available rather than proposed.
 
-**And the recipe now carries its own null.** The modulation depth changes the
+And the recipe now carries its own null. The modulation depth changes the
 excitation rate without changing the intensity, so the light shift cannot
 depend on it. A short ladder in depth at the top power, taken inside the power
 block, gives a centre against depth whose expected slope is zero, and a slope
@@ -405,8 +398,7 @@ why the precision beyond it needs a full lineshape simulation at the
 tight-focus geometry rather than an extrapolation, so no number is given
 here.
 
-## 6. What goes wrong as sensitivity improves
-
+## 6. Failure modes at higher sensitivity
 | knob | what it buys | what it costs |
 |---|---|---|
 | more power | signal, and $S_0$ linearly | saturation and hyperfine pumping, which share the ramp's power law exactly and are omitted from the model, so the bound loosens as they grow |
@@ -419,7 +411,7 @@ The pattern worth naming: **every knob that raises $S_0$ also raises something
 that imitates it.** That is why the levels above buy identifiability through
 the centre and skew channels rather than buying precision through power.
 
-## 7. What each level would make answerable
+## 7. Questions answerable at each level
 
 **Improved bound.** Whether the geometry, rather than the statistics, is what
 stands between this archive and a measurement. It converts the programme's
@@ -434,7 +426,7 @@ a two-photon lineshape at all. The technique generalises to any two-photon
 transition in a focused beam, which is the methodological payoff, and it
 inverts the standard practice of engineering the distribution away.
 
-## 8. What remains impossible
+## 8. Questions out of reach
 
 **Not measurable with this architecture.** The differential polarizability
 cannot be extracted to better than the geometry is known, so $\Delta\alpha$
@@ -450,12 +442,11 @@ branching, can. The centroid route is the measurement level above. The line
 index route gives 4 kHz against an 88 kHz scatter and is real but unspendable
 in this archive.
 
-**Not yet measured, which is different.** The convergence of the pooled
+Not yet measured, which is different. The convergence of the pooled
 surface. That is a computational question with a known answer route, and it is
 open rather than closed.
 
-## See also
-
+## Related pages
 - [Collisional self-broadening](self-broadening.md), the other headline
   quantity, which shares the width channel with this one
 - [The campaign](campaign.md), for how one session serves both

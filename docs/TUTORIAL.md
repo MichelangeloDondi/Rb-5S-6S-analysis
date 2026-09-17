@@ -1,20 +1,13 @@
-# Tutorial: build a digital twin of your experiment
+# Tutorial: building a digital twin of an experiment
 
 *[START_HERE](../START_HERE.md) · guide*
 
-**The question.** Can you find out what your experiment will measure before
-you build it, and can you trust the answer?
-**Takes.** A transition you care about and a rough idea of your apparatus.
-**Gives.** A digital twin: software that generates the data your instrument
-would record, fits it the way your analysis would, tells you which parameters
-are degenerate, and forecasts the precision you can reach.
-**Skip if.** You want the rubidium result rather than the method, which is
-[RESULTS.md](RESULTS.md).
+Can you find out what your experiment will measure before you build it, and can you trust the answer? This page builds on a transition you care about and a rough idea of your apparatus and sets out A digital twin: software that generates the data your instrument would record, fits it the way your analysis would, tells you which parameters are degenerate, and forecasts the precision you can reach. Not covered here: the rubidium result rather than the method, which is [RESULTS.md](RESULTS.md).
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](GLOSSARY.md) defines
-> every term and symbol used anywhere in this repository.
+> [GLOSSARY.md](GLOSSARY.md) states the measurement in six sentences and
+> defines every term and symbol used anywhere in this repository.
 
-## What a digital twin is, and why it is the point
+## The digital twin and its purpose
 
 The same forward model that fits data can generate it. That single fact turns
 an analysis package into a design instrument: an experiment that does not
@@ -43,7 +36,7 @@ back within its own uncertainty. **Run it before you trust anything else
 here.** A package that cannot recover a known truth has no business
 forecasting an unknown one.
 
-## 2. Describe your line
+## 2. Describing the line
 
 One dictionary holds everything the model needs. `examples/your_line.ipynb`
 carries the same one with plots attached, and is worth opening beside this.
@@ -63,7 +56,7 @@ the transit width from your waist through
 `rb5s6s.transit_fwhm_from_w0`. None has to be right yet. The point of a twin
 is to ask what happens if they are.
 
-## 3. Generate the data your instrument would record
+## 3. Generating the instrument's data
 
 ```python
 from rb5s6s.forecast import synthetic_traces
@@ -121,12 +114,12 @@ on their thermal speed. Pass the temperature your own cell actually sits at,
 and pass `transit_fwhm` explicitly as above if you would rather hold the
 transit width fixed than let the temperature set it.
 
-**The discipline that matters: judge the fit by its pull, not by its residual
-plot.** A pull under about three says the fit recovered the truth within the
+The discipline that matters: judge the fit by its pull, not by its residual
+plot. A pull under about three says the fit recovered the truth within the
 uncertainty it claims. A small residual with a pull of ten means the fit is
 confidently wrong, which looks better on a plot and is worse.
 
-## 5. Find what is degenerate, by breaking it on purpose
+## 5. Finding degeneracies by breaking them
 
 Run chapter 4 and look at `res["corr_laser_coll"]`. It will be around
 **-0.9**. That number is the tutorial's real lesson: the laser width and the
@@ -144,11 +137,11 @@ looks like:
 | `sigma_laser` and `gamma_coll` both near 1.0 | the correlation approaches -1 and the individual errors blow up |
 | a wrong `transit_fwhm` | the other widths absorb it and the pull on them goes bad |
 
-**A package that fails honestly reports larger errors and a warning
+A package that fails honestly reports larger errors and a warning
 correlation. A package that fails dishonestly reports the same small error
-and a wrong number.** Check which one you have before you believe a forecast.
+and a wrong number. Check which one you have before you believe a forecast.
 
-## 6. Change the measurement, and learn what does not work first
+## 6. Changing the measurement
 
 This is where a twin stops being a demonstration and starts being a design
 tool, and the first thing it will tell you is unwelcome.
@@ -182,7 +175,7 @@ scanning wider and longer is not. That is the whole argument for putting an
 independent linewidth measurement near the top of a campaign plan, and it is
 an argument you can now make with a number instead of an intuition.
 
-## 7. Forecast your own experiment
+## 7. Forecasting an experiment
 
 ```python
 from rb5s6s.forecast import forecast_precision
@@ -224,7 +217,7 @@ twin contradicted its author and sided with the record. That is what a twin is
 for, and it is why the loop ends by pointing back at the experiment rather
 than at the software.
 
-## Where to go next
+## Further reading
 
 [ADAPTING.md](ADAPTING.md) for the seams to change for another species or
 geometry. `examples/full_model_tour.py` for the expert modules, cascade

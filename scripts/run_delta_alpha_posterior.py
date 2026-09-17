@@ -79,7 +79,7 @@ from math import erfc, sqrt
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from rb5s6s import config as C  # noqa: E402
 from rb5s6s import constants as K  # noqa: E402
-from rb5s6s.lineshape import stark_shift_S0_mhz  # noqa: E402
+from rb5s6s.lineshape import aperture_spread_factor, stark_shift_S0_mhz  # noqa: E402
 
 # The owner's stated priors, 2026-08-27. W0_PRIOR_M is the centre of the
 # committed 62-68 um band; the pinned constant is 64 um, and the two are
@@ -124,14 +124,19 @@ def _rows():
 
     # a.u. per (MHz per W): stark_shift_S0_mhz is linear in delta_alpha_au,
     # so one evaluation inverts it exactly.
-    conv = P_REF_W / stark_shift_S0_mhz(P_REF_W, W0_PRIOR_M, RHO_PRIOR, 1.0)
-    conv_pinned = P_REF_W / stark_shift_S0_mhz(P_REF_W, W0_PINNED_M,
-                                               RHO_PRIOR, 1.0)
+    # F39: kappa is read from the WIDTH channel, which reads the spread of the shift
+    # distribution under the rate weighting, so the clipped focus enters through the SPREAD
+    # factor F(w0) (0.9595 at 64 um) and not the on-axis c; the conversion divides by it, so
+    # the same kappa buys a larger delta-alpha
+    conv = P_REF_W / (stark_shift_S0_mhz(P_REF_W, W0_PRIOR_M, RHO_PRIOR, 1.0)
+                      * aperture_spread_factor(W0_PRIOR_M))
+    conv_pinned = P_REF_W / (stark_shift_S0_mhz(P_REF_W, W0_PINNED_M, RHO_PRIOR, 1.0)
+                             * aperture_spread_factor(W0_PINNED_M))
 
     # The spacing that limits a claim about the MINIMUM is the one that
     # brackets the minimum, not the smallest spacing anywhere on the grid.
     # The first version took np.diff(kap).min(), which is the 0.04 of the
-    # 1.50/1.545 pair sitting 1.3 units away, and then argued a 149 a.u.
+    # 1.50/1.545 pair sitting 1.3 units away, and formerly argued a 149 a.u.
     # vertex was unresolved beside a step five times smaller than it.
     j = int(np.argmin(dchi2))
     local = [kap[j + 1] - kap[j] if j + 1 < len(kap) else np.inf,
@@ -150,7 +155,8 @@ def _rows():
     rho = np.clip(rng.normal(RHO_PRIOR, RHO_PRIOR_ERR, N_DRAW), None, 1.0)
     keep = w0 > 0
     w0, rho = w0[keep], rho[keep]
-    conv_draw = P_REF_W / stark_shift_S0_mhz(P_REF_W, w0, rho, 1.0)
+    conv_draw = P_REF_W / (stark_shift_S0_mhz(P_REF_W, w0, rho, 1.0)
+                           * aperture_spread_factor(w0))            # F39, the width channel's factor
 
     # (a) the committed construction, transferred. The 95 per cent is already
     # inside k_ub95, so the geometry prior is reported as the spread OF THE

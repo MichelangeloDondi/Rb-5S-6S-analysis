@@ -48,7 +48,7 @@ from rb5s6s import stark
 from rb5s6s.constants import collection_z_ratio
 from rb5s6s.cumulants import windowed_cumulants
 from rb5s6s.linefit import fit_condition
-from rb5s6s.lineshape import model_profile
+from rb5s6s.lineshape import RAMP_SIDE, model_profile
 
 # THE SPAN AND NOT THE GRID CARRIES THE PULL'S BIAS (2026-09-09). The first moment of a mixture of symmetric kernels is the density's own
 # mean, kernel-independent by one line of algebra. At +-80 MHz the committed
@@ -126,7 +126,7 @@ def volume_grid(w0_m, n_s=N_S, n_z=N_Z, l_scale=1.0):
         # relative areas: the waist slices, which are the broad AND the shifted
         # ones, stop being over-counted.
         # Measured at 16 microns: the waist-to-edge slice weight ratio falls
-        # from 18.316 to 9.043, the pull from -2.073 to -1.804 MHz, and the k3
+        # from 18.316 to 9.043, the pull from -2.073 to -1.804 MHz (the red side, before O27), and the k3
         # cost from 92.7 to 89.7 per cent.
         wgt = wgt * (w_z[iz] / w0_m) ** 2
         cells.append((mid, transit[iz], wgt))
@@ -159,11 +159,13 @@ def _mix(cells, kernel_of):
         for s, w in zip(mid, wgt):
             if w <= 0.0:
                 continue
-            # THE SHIFT IS RED, so the element's line sits at MINUS s and the
-            # kernel is sampled at nu + s. The first draft sampled at nu - s
-            # and returned a mean pull of the right size with the wrong sign,
-            # which the closed form -2 S0 / 3 caught on the first run.
-            out += w * np.interp(NU + float(s), NU, kernel_of(float(s), float(tr)),
+            # THE ELEMENT'S LINE SITS AT RAMP_SIDE * s, so the kernel is sampled at
+            # nu - RAMP_SIDE * s. The shift was red and sampled at nu + s until the
+            # ruling of 2026-09-17 (O27), and after the kernel flipped this line kept
+            # the red side for hours, so the exact mixture and model_profile sat on
+            # opposite sides of the line (P3). The first draft of all, before either,
+            # had the sign wrong in the other direction, which the closed-form mean caught.
+            out += w * np.interp(NU - RAMP_SIDE * float(s), NU, kernel_of(float(s), float(tr)),
                                  left=0.0, right=0.0)
     return out / out.sum()
 
@@ -266,14 +268,23 @@ def kernel_windowed_variance(gamma_coll, transit, window):
     return _VCACHE[key]
 
 
+def _side_free_err(exact: float, approx: float) -> float:
+    """100 (exact - approx) / exact, in per cent: the share of the exact value the approximation
+    misses. Every error row of this file compares ODD moments, which change sign with the ramp's
+    side, and the form used until 2026-09-17, 100 (approx - exact) / |exact|, changed sign with them;
+    on the red side it equals this one, so every committed value keeps its sign and the column now
+    means the same thing on either side of the line (O27, P3)."""
+    return 100.0 * (exact - approx) / exact
+
+
 def covariance_term(cells, window):
     """Cov(u, V(u)) over the collected volume, and the two means behind it.
 
-    THE IDENTITY THIS MEASURES. With the observed frequency X = -u + K, K
+    THE IDENTITY THIS MEASURES. With the observed frequency X = RAMP_SIDE u + K, K
     conditional on u, symmetric about zero and of variance V(u), the third
     central moment expands to
 
-        mu3(X) = -mu3(u) - 3 Cov(u, V(u))
+        mu3(X) = RAMP_SIDE (mu3(u) + 3 Cov(u, V(u)))
 
     because the cross terms in K and K^3 vanish by symmetry. The first moment
     is untouched at any V, which is why the centroid is exactly immune while
@@ -468,7 +479,7 @@ def main() -> int:
         add(name, "centroid_pull_fixed_kernel", f"{m_f:.5f}", "MHz",
             "first moment with the kernel held at the weighted mean",
             "the approximation the shipped mixture makes", "CALIB")
-        add(name, "centroid_pull_error", f"{100.0 * (m_f - m_e) / abs(m_e):.3f}", "per cent",
+        add(name, "centroid_pull_error", f"{_side_free_err(m_e, m_f):.3f}", "per cent",
             "the fixed kernel against the exact mixture",
             "what the convolution assumption costs the centroid, which is not "
             "the channel the campaign reads: see fitted_centre_error", "ENVELOPE")
@@ -482,7 +493,7 @@ def main() -> int:
         add(name, "fitted_centre_fixed_kernel", f"{c_f:.5f}", "MHz",
             "the same estimator on the fixed-kernel mixture",
             "the two differ only in the kernel", "CALIB")
-        add(name, "fitted_centre_error", f"{100.0 * (c_f - c_e) / abs(c_e):.3f}",
+        add(name, "fitted_centre_error", f"{_side_free_err(c_e, c_f):.3f}",
             "per cent",
             "the fixed kernel against the exact mixture, through the fitter",
             "the centroid's immunity does not transfer. The first moment of a "
@@ -512,7 +523,7 @@ def main() -> int:
         # twin's kernel is the wider one and pays more. A caveat citing the
         # mean-shift row as the forecast's own cost understates it.
         add(name, "k3_error_forecast_kernel",
-            f"{100.0 * (k_fc - k_e) / abs(k_e):.3f}" if k3_ok else "", "per cent",
+            f"{_side_free_err(k_e, k_fc):.3f}" if k3_ok else "", "per cent",
             "the forecast's own single kernel against the exact mixture",
             "the companion at the on-axis shift and the transit at the waist, "
             "as rb5s6s/forecast.py composes them, so this row and not the "
@@ -549,17 +560,17 @@ def main() -> int:
         # factor of three makes k3_exact uncertain by more than itself, while
         # the ratio moves only a little, which is why the headline survives and
         # the individual cells do not carry it alone.
-        _r_lo = 100.0 * (k_f - _k3_lo) / abs(_k3_lo) if _k3_lo else float("nan")
-        _r_hi = 100.0 * (k_f - _k3_hi) / abs(_k3_hi) if _k3_hi else float("nan")
+        _r_lo = _side_free_err(_k3_lo, k_f) if _k3_lo else float("nan")
+        _r_hi = _side_free_err(_k3_hi, k_f) if _k3_hi else float("nan")
         add(name, "k3_error_err", f"{0.5 * abs(_r_hi - _r_lo):.2f}" if k3_ok else "",
             "per cent",
             "half-span of the same ratio with the companion scaled three ways",
             "the grid movement is carried separately and is the smaller axis. "
             "Blank where the comparison is refused", "ENVELOPE")
         # THE COVARIANCE IDENTITY, MEASURED RATHER THAN ASSERTED (2026-09-10).
-        # mu3(X) = -mu3(u) - 3 Cov(u, V(u)) is exact for a kernel symmetric
+        # mu3(X) = RAMP_SIDE (mu3(u) + 3 Cov(u, V(u))) is exact for a kernel symmetric
         # about each element's own centre. The contamination this producer
-        # measures, k3_fixed minus k3_exact, is therefore -3 Cov up to whatever
+        # measures, k3_fixed minus k3_exact, is therefore -RAMP_SIDE 3 Cov up to whatever
         # the windowed stand-in for V costs, and the ratio of the two is the
         # constant the methods chapter quotes. It stood there for a day with no
         # script behind it, which is what these four rows repair.
@@ -575,21 +586,22 @@ def main() -> int:
             "the scale the covariance sits against, and the quantity a "
             "convolution replaces by a constant", "DIAGNOSTIC")
         add(name, "covariance_identity_ratio",
-            f"{(k_f - k_e) / (3.0 * _cov):.4f}" if (k3_ok and _cov) else "",
+            f"{(k_f - k_e) / (-RAMP_SIDE * 3.0 * _cov):.4f}" if (k3_ok and _cov) else "",
             "dimensionless",
-            "the measured contamination, k3_fixed minus k3_exact, over 3 Cov(u, V)",
+            "the measured contamination, k3_fixed minus k3_exact, over -RAMP_SIDE 3 Cov(u, V)",
             "THE IDENTITY PREDICTS ONE. The fixed-kernel profile carries a "
             "constant V, so its covariance term vanishes and the difference of "
-            "the two third cumulants is exactly 3 Cov. This reads 0.386 with a "
+            "the two third cumulants is exactly -RAMP_SIDE 3 Cov, on either side of "
+            "the line. This reads 0.386 with a "
             "spread of 4.0 per cent across a factor of sixteen in L/z_R and "
             "three orders of magnitude in the cumulant itself. The shortfall "
             "is the analysis window truncating a Lorentzian, whose second "
             "moment does not exist at all, so the windowed stand-in for V "
             "over-states the covariance by the reciprocal, 2.594, and the "
-            "factor belongs to the estimator and not to the physics. This "
-            "column divided by MINUS 3 Cov until 2026-09-10, which flipped the "
-            "sign for nothing and left its own note predicting one while the "
-            "arithmetic predicted minus one. Its CONSTANCY is the usable part, "
+            "factor belongs to the estimator and not to the physics. The "
+            "denominator carries the ramp's side (O27), so the column predicts "
+            "one whether the shift is blue or red, which a fixed sign did not. "
+            "Its CONSTANCY is the usable part, "
             "since a new waist or a new drive wavelength is then geometry "
             "alone. Blank where the comparison is refused", "DIAGNOSTIC")
         add(name, "kernel_variance_span", f"{_vspan:.6g}", "MHz^2",
@@ -602,12 +614,12 @@ def main() -> int:
         add(name, "k3_fixed_kernel", f"{k_f:.6g}" if k3_ok else "", "MHz^3",
             "the same under the fixed kernel", "the approximation", "CALIB")
         add(name, "k3_error",
-            f"{100.0 * (k_f - k_e) / abs(k_e):.3f}" if k3_ok else "", "per cent",
-            "the fixed kernel against the exact mixture",
+            f"{_side_free_err(k_e, k_f):.3f}" if k3_ok else "", "per cent",
+            "the fixed kernel against the exact mixture, 100 (exact - fixed) / exact",
             "what the convolution assumption costs the moment channel", "ENVELOPE")
         print(f"  {name}: pull {m_e:.4f} vs {m_f:.4f} MHz "
-              f"({100*(m_f-m_e)/abs(m_e):+.2f}%), k3 {k_e:.4g} vs {k_f:.4g} "
-              f"({100*(k_f-k_e)/abs(k_e):+.2f}%)", flush=True)
+              f"({_side_free_err(m_e, m_f):+.2f}%), k3 {k_e:.4g} vs {k_f:.4g} "
+              f"({_side_free_err(k_e, k_f):+.2f}%)", flush=True)
 
 
     # RESOLVED THROUGH THE CONFIG. Until 2026-09-11 this joined the repository

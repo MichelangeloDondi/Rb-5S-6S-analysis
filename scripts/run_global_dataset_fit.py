@@ -47,8 +47,10 @@ Two facts about the comb, both RECOLLECTION and both
 confirmed against the traces. The carrier is DELIBERATELY SUPPRESSED (the half-wave
 plate was tilted), and the comb is uniform. Measured on 993.4121/4192/4207
 at 110 C over the five INNER slots, k = -2..+2, which is all the 2026-07-11
-reading resolved: 12.49 +/- 1.10, 12.25 +/- 0.29 and 12.37 +/- 0.58 MHz
-spacing, with relative amplitudes [0.24, 1.00, 0.69, 0.93, 0.21] -- the
+reading resolved: about 12.5, 12.3 and 12.4 MHz spacing on the three lines. Those
+are a RECOLLECTION of that reading and not this producer's output, so they are
+quoted without bars; the current seven-slot spacings and their uncertainties are
+cells of `results/ruler.csv` and are read from there. They came with relative amplitudes [0.24, 1.00, 0.69, 0.93, 0.21] -- the
 centre tooth sitting BELOW both of its neighbours, which is the suppression,
 with symmetric +/-1 and +/-2 sidebands either side of it. The comb runs to
 +/-3, and the fit was widened to all seven slots on 2026-08-01 when the
@@ -202,14 +204,14 @@ from rb5s6s.density import number_density_cm3  # noqa: E402
 from rb5s6s.ingest import load_manifest, load_trace, trace_path  # noqa: E402
 from rb5s6s.linefit import (_shared_profile_grid, adaptive_halfwidth,  # noqa: E402
                             to_frequency, transit_fwhm_at_T)
-from rb5s6s.lineshape import stark_shift_S0_mhz  # noqa: E402
-from rb5s6s.noise import condition_noise_model, sigma_of_v, signal_level  # noqa: E402
+from rb5s6s.stark import kappa_pred_per_watt  # noqa: E402
+from rb5s6s.noise import condition_noise_model, condition_key as noise_key, sigma_of_v, signal_level  # noqa: E402
 from run_beta_self import load_t_rates  # noqa: E402
 from run_stark_joint import PEAKS, SESSION_20250717, SESSION_20250704, load_session_20250717, load_session_20250704  # noqa: E402
 
 PK_IX = {p: i for i, p in enumerate(PEAKS)}
 DNU_FLOOR = 2e-2
-KAPPA_PRED = stark_shift_S0_mhz(1.0, C.W0_MEASURED_M, rho=C.RHO_RETRO)
+KAPPA_PRED = kappa_pred_per_watt(C.W0_MEASURED_M, C.RHO_RETRO)   # F39: per RECORDED watt
 KAPPAS = tuple(sorted({0.0, 0.25, 0.5, 0.75, 1.0, round(KAPPA_PRED, 3),
                        2.0, 2.62, 3.5, 5.0}))
 
@@ -268,8 +270,8 @@ def load_campaign_all():
             continue
         rate, _ = prates[pk]
         volts = [load_trace(trace_path(r))[1] for r in recs]
-        law = condition_noise_model(volts)
-        tau = max(law.get("tau_int", 1.0), 1.0)
+        law = condition_noise_model(volts, key=noise_key(recs[0].get("peak"), recs[0].get("temperature_C"), recs[0].get("power_mW")))   # F36
+        tau = max(law.get("tau_eff", law.get("tau_int", 1.0)), 1.0)   # F36
         for r in recs:
             t, v = load_trace(trace_path(r))
             nu = to_frequency(t, rate)
@@ -315,8 +317,8 @@ def load_rulers_t():
     for (pk, T), recs in sorted(groups.items()):
         rate, _ = prates[pk]
         volts = [load_trace(trace_path(r))[1] for r in recs]
-        law = condition_noise_model(volts)
-        tau = max(law.get("tau_int", 1.0), 1.0)
+        law = condition_noise_model(volts, key=noise_key(recs[0].get("peak"), recs[0].get("temperature_C"), recs[0].get("power_mW")))   # F36
+        tau = max(law.get("tau_eff", law.get("tau_int", 1.0)), 1.0)   # F36
         for r in recs:
             t, v = load_trace(trace_path(r))
             nu = to_frequency(t, rate)
@@ -829,6 +831,10 @@ def _preflight() -> str | None:
     return None
 
 
+#: The design's own census, asserted before the fit (F80). 100 + 59 + 46 + 26 = 231 traces
+#: plus the ruler combs. The sibling full-dataset fit carries the same numbers as GATE_N_TRACES.
+GATE_N_P_SWEEP, GATE_N_T_SWEEP, GATE_N_EVENING, GATE_N_MORNING = 100, 59, 46, 26
+
 def main() -> int:
     # A pooled producer is the one that most needs this: it holds most
     # of the machine for its whole run, so a second copy started because
@@ -867,6 +873,28 @@ def main() -> int:
           f"({len(camp)-nT} campaign p_sweep + {nT} campaign t_sweep + "
           f"{len(reh)} evening-session + {len(pil)} campaign-morning + {len(rul)} ruler "
           f"combs = ~{len(rul)*N_TEETH} tooth replicas), {npts} points")
+
+    # A PRINTED CENSUS IS EVIDENCE ONLY WHILE SOMEBODY READS IT (F80, 2026-09-17).
+    # On 2026-09-17 a chain exported RB5S6S_SESSION_20250704_DIR one level too deep, this
+    # producer loaded ZERO evening-session traces, printed that zero in the line above, and
+    # ran to completion in 10,225 s writing a table that is wrong for the wave. Its sibling
+    # `run_full_dataset_fit.py` asserts the identical census against GATE_N_TRACES and stopped
+    # on exactly this, so the guard existed in the family and not in this member. It is a
+    # REFUSAL BEFORE the fit rather than a gate after it, because three hours of processor
+    # time spent on a population that was wrong at second one is the whole cost of the defect.
+    _census = {"campaign p_sweep": (len(camp) - nT, GATE_N_P_SWEEP),
+               "campaign t_sweep": (nT, GATE_N_T_SWEEP),
+               "evening-session": (len(reh), GATE_N_EVENING),
+               "campaign-morning": (len(pil), GATE_N_MORNING)}
+    _bad = [f"{k}: {got} against {want}" for k, (got, want) in _census.items() if got != want]
+    if _bad:
+        raise SystemExit(
+            "REFUSING TO RUN: the trace census does not match the design.\n  "
+            + "\n  ".join(_bad)
+            + "\nA zero here is an unset or mis-pointed session directory, not an empty session: "
+              "RB5S6S_SESSION_20250704_DIR and RB5S6S_SESSION_20250717_DIR name the PARENT of the "
+              "tree, because this producer appends the dated subdirectory itself (F79). Set "
+              "GATE_N_* deliberately if the design itself has changed.")
 
     p0, lo, hi, offsets = build(traces)
     print(f"  {len(p0)} parameters")
@@ -959,12 +987,12 @@ def main() -> int:
         w = csv.writer(fh)
         w.writerow(["quantity", "key", "value", "err", "unit"])
         w.writerow(["kappa_ub95", "primary", f"{ka:.3f}", "",
-                    "MHz per W; 95% one-sided profile-likelihood bound on the "
+                    "MHz per W, 95% one-sided profile-likelihood bound on the "
                     "AC-Stark coefficient, beta_self free (not a prior)"])
         w.writerow(["S0_225mW_ub95", "primary", f"{ka*0.225:.3f}", "",
                     "MHz, transition axis, at the campaign's maximum power"])
         w.writerow(["kappa_min", "primary", f"{kmin:.3f}", "",
-                    "MHz per W; profile minimum -- NOT a detection unless "
+                    "MHz per W, profile minimum -- NOT a detection unless "
                     "dchi2_kappa0 is large"])
         w.writerow(["dchi2_kappa0", "primary", f"{prof[0.0]-min(cs):.2f}", "",
                     "chi2(kappa=0) - chi2(min)"])
@@ -972,47 +1000,47 @@ def main() -> int:
                     f"MHz per W at w0={C.W0_MEASURED_M*1e6:.0f} um, "
                     f"rho={C.RHO_RETRO}"])
         w.writerow(["beta_self_joint", "primary", f"{beta_fit:.4f}", "",
-                    "MHz per 1e12 cm^-3; fitted JOINTLY with kappa over the "
+                    "MHz per 1e12 cm^-3, fitted JOINTLY with kappa over the "
                     "x53 density lever -- no Stark prior, no transit-derived "
                     "beta prior, the two coefficients' covariance propagated"])
         for b in SL_BLOCKS:
             w.writerow(["sigma_laser", b, f"{best_q[I_SL + SL_IX[b] - 1]:.3f}", "",
-                        "MHz, transition axis; free per session/temperature block"])
+                        "MHz, transition axis, free per session/temperature block"])
         sp_keys = sp_keys_for(traces)
         sp_ix = {k: i for i, k in enumerate(sp_keys)}
         for (blk, pk), i in sp_ix.items():
             sp_val = best_q[NS + i - 1]
             dev = sp_val - best_q[I_SL + SL_IX[blk] - 1]
             w.writerow(["sigma_laser_sp", f"{blk}_{pk}", f"{sp_val:.3f}", f"{dev:+.3f}",
-                        f"MHz, transition axis; per-(session,peak) sigma_laser, "
+                        f"MHz, transition axis, per-(session,peak) sigma_laser, "
                         f"hierarchical shrinkage prior width "
                         f"{SIGMA_SP_PRIOR_MHZ*1e3:.0f} kHz toward the {blk} pooled "
                         f"mean (err column: deviation from that mean)"])
         for k, pk in enumerate(PEAKS):
             w.writerow(["reh_rate", pk, f"{np.exp(best_q[I_REHRATE + k - 1]):.5f}",
-                        "", "MHz per ms, transition; fitted evening-session scan rate"])
+                        "", "MHz per ms, transition, fitted evening-session scan rate"])
         w.writerow(["pilot_rate_scale", "nuisance",
                     f"{np.exp(best_q[I_PILSCALE - 1]):.4f}", "",
                     "campaign-morning axis = campaign 4192 rate x this, bounded [0.9,1.1]"])
         w.writerow(["n_traces", "camp_p/camp_t/reh/pil/ruler",
                     f"{len(camp)-nT}/{nT}/{len(reh)}/{len(pil)}/{len(rul)}", "",
                     f"{npts} points total ({n_corrupt} evening-session files "
-                    f"unusable); rulers enter as five-tooth combs with free "
+                    f"unusable), rulers enter as five-tooth combs with free "
                     f"tooth amplitudes"])
         for k in KAPPAS:
             w.writerow(["profile_point", f"{k:.3f}", f"{prof[k]:.2f}", "",
                         "chi2 at this kappa, beta and all nuisances re-minimized"])
         w.writerow(["beta_self_min", "joint_region", f"{bmin:.5f}", "",
-                    "MHz per 1e12 cm^-3; beta at the 2D profile minimum, on the "
+                    "MHz per 1e12 cm^-3, beta at the 2D profile minimum, on the "
                     f"refined grid of step {beta_grid_step:.5f}"])
         w.writerow(["beta_self_lo95", "joint_region", f"{b_lo95:.5f}", "",
-                    "MHz per 1e12 cm^-3; 1-parameter 95% (dchi2 < 3.841), "
+                    "MHz per 1e12 cm^-3, 1-parameter 95% (dchi2 < 3.841), "
                     "kappa profiled out at each beta, edges interpolated in "
                     "sqrt(dchi2) on a grid refined until the interval spans it"])
         w.writerow(["beta_self_hi95", "joint_region", f"{b_hi95:.5f}", "",
-                    "MHz per 1e12 cm^-3; upper edge of the same interval"])
+                    "MHz per 1e12 cm^-3, upper edge of the same interval"])
         w.writerow(["beta_grid_step", "joint_region", f"{beta_grid_step:.5f}", "",
-                    "MHz per 1e12 cm^-3; the spacing the interval above was "
+                    "MHz per 1e12 cm^-3, the spacing the interval above was "
                     "resolved on, refined down from 0.01000 by the loop of "
                     "addendum 30 -- quote it whenever the interval is quoted"])
         for (kk, bb), cc in sorted(g2.items()):

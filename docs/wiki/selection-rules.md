@@ -2,20 +2,12 @@
 
 *[wiki index](README.md) · concept*
 
-**The question.** What fixes which multipole order, and therefore roughly
-how strong or weak, connects two given atomic states.
-**Takes.** Only parity and total angular momentum $J$ as separate quantum
-numbers, nothing else assumed.
-**Gives.** The parity and angular-momentum rules that read a state pair's
-multipole order and transition strength directly off their quantum numbers.
-**Skip if.** the reader wants the two-photon mechanism a parity-forbidden
-line proceeds through, not the multipole bookkeeping itself. See
-[Multiphoton transitions](multiphoton-transitions.md).
+What fixes which multipole order, and therefore roughly how strong or weak, connects two given atomic states. This page builds on only parity and total angular momentum $J$ as separate quantum numbers, nothing else assumed and sets out the parity and angular-momentum rules that read a state pair's multipole order and transition strength directly off their quantum numbers. Not covered here: the two-photon mechanism a parity-forbidden line proceeds through, not the multipole bookkeeping itself. See [Multiphoton transitions](multiphoton-transitions.md).
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
 > defines every term and symbol used anywhere in this repository.
 
-## What it is
+## Definition
 
 An atom couples to a light field through its charges. The interaction
 expands in powers of $k \cdot r$, the atom's own size $r$ measured against
@@ -82,7 +74,7 @@ rule $J$ does for a given multipole order, once $I$ is added consistently
 to the initial and final state. There is no separate nuclear selection
 rule.
 
-## What problem it solves
+## The problem it addresses
 
 Selection rules turn a spectrum's structure into something predictable
 before any matrix element is computed. Given only the parity and the
@@ -97,7 +89,7 @@ Because the rules follow from symmetry, they generalise instantly: the
 argument that forbids one atom's version of a transition forbids every
 atom's.
 
-## Where this repository uses it
+## Application in this repository
 
 The transition this repository measures connects $5S_{1/2}$ and $6S_{1/2}$,
 both $l=0$ states, so both share the same even parity. Parity forbids any
@@ -175,7 +167,7 @@ The magnetic consequence of that is in
 Zeeman shift cancels between two S states of equal $g_F$, and any other
 component's would not.
 
-## What can go wrong
+## Failure modes
 
 The first failure is reading a selection rule as forbidding a transition
 outright, when it states only which multipole order carries it. A
@@ -226,6 +218,7 @@ alpha_fs = sc.physical_constants["fine-structure constant"][0]
 
 # A generic hydrogen-like atom, probed at a representative optical
 # wavelength, far from any near-resonant intermediate state.
+
 wavelength_m = 500e-9
 k_per_m = 2.0 * math.pi / wavelength_m
 
@@ -251,8 +244,7 @@ print("a forbidden line is weaker by many orders of magnitude, not absent")
 - [Hyperfine structure](hyperfine-structure.md) for how nuclear spin
   combines with the electronic angular momentum these rules constrain.
 
-## See also
-
+## Related pages
 - [Methods chapter 1](../methods/01_the_measurement.md), where the same
   parity argument selects this apparatus's four hyperfine lines.
 - [Multiphoton transitions](multiphoton-transitions.md), the two-photon

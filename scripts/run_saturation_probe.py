@@ -154,7 +154,7 @@ def stage1() -> dict:
     # STALE UNTIL 2026-08-26. This block was written when DELTA_ALPHA_AU
     # carried the CITED 1093, so "cited" against "this package's own" was a
     # real contrast. The 2026-08-24 adjudication made DELTA_ALPHA_AU the
-    # record's own -1145, after which the branch labelled "cited" compared
+    # record's own value, after which the branch labelled "cited" compared
     # that value with itself, and the printed gap read -200 per cent because
     # an abs() numerator sat over a signed denominator. Magnitudes on both
     # sides now, and the cited value read from its own constant.

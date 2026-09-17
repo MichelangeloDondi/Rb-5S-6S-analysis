@@ -2,19 +2,12 @@
 
 *[wiki index](README.md) · technique*
 
-**The question.** How far a two-photon comb reaches, and what it costs to
-use the same comb for a line shape instead of a total rate.
-**Takes.** The two-photon Bessel-squared amplitude law derived in
-[EOM sidebands](eom-sidebands.md), taken here as given.
-**Gives.** The carrier-null depth, why the comb sits as two small islands
-instead of a carpet, and the shape-weight sum a shape fit draws on.
-**Skip if.** The derivation of the two-photon law is wanted instead of its
-consequences, covered in [EOM sidebands](eom-sidebands.md).
+How far a two-photon comb reaches, and what it costs to use the same comb for a line shape instead of a total rate. This page builds on the two-photon Bessel-squared amplitude law derived in [EOM sidebands](eom-sidebands.md), taken here as given and sets out the carrier-null depth, why the comb sits as two small islands instead of a carpet, and the shape-weight sum a shape fit draws on. Not covered here: the derivation of the two-photon law is wanted instead of its consequences, covered in [EOM sidebands](eom-sidebands.md).
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
 > defines every term and symbol used anywhere in this repository.
 
-## What it is
+## Definition
 
 A two-photon transition does not respond to one sideband at a time the way
 a one-photon transition does: it needs two photons, and the field offers a
@@ -53,7 +46,7 @@ second time suppresses every tooth but the strongest few far more than
 the rate sum does. The rate survives modulation intact. The precision of
 a shape measurement from the same comb does not.
 
-## What problem it solves
+## The problem it addresses
 
 Two-photon spectroscopy cannot reuse a one-photon calibration recipe
 unchanged. Setting the depth from one-photon intuition leaves a carrier
@@ -65,7 +58,7 @@ that empties the carrier, states in advance how far the comb can reach,
 and separates what it measures at full precision, the total rate, from
 what it measures only at reduced precision, the shape.
 
-## Where this repository uses it
+## Application in this repository
 
 What runs today is the underlying sideband ruler: every committed trace
 has its frequency axis set by fitting EOM tooth positions, the
@@ -93,7 +86,7 @@ saturation, axis nonlinearity and power broadening within a single trace.
 [Information criteria](information-criteria.md) compares such nested
 models by how much the extra freedom improves the fit, not by preference.
 
-## Two spacings from one drive, and where the factor of two lives
+## Two spacings from one drive
 
 The sidebands sit at $\nu_c + n\Omega$ on each beam, and no optical
 component sits at $\Omega/2$. Yet the observed teeth stand $\Omega/2$
@@ -104,7 +97,7 @@ but the laser by $\Omega/2$. The half-spacing belongs to the scan axis,
 not to any photon, and a pair such as $(+1,-1)$ has $s=0$ and lands on the
 carrier tooth instead of making a new one.
 
-## Tooth positions are not teeth
+## Tooth positions against teeth
 
 A tooth needs a position and a resonance. Positions repeat every
 $\Omega/2$ across the sweep, but teeth exist only where an atomic line
@@ -130,7 +123,7 @@ lattice. The cost is that the carrier keeps only $J_0(2\beta_2)^2$ of its
 height, under a tenth at gap-filling depths, so the cascade belongs on
 interleaved calibration sweeps, not the science sweeps.
 
-## What the teeth are worth as statistics
+## The statistical worth of the teeth
 
 Each tooth is a copy of the atomic line, so a comb trace looks like free
 replicas, and per sweep it never is: phase modulation conserves the total
@@ -145,7 +138,7 @@ Within one trace every tooth and every line shares a single detector
 gain, so intra-trace height ratios are immune to gain drift that affects
 ratios assembled across traces.
 
-## Tooth heights between two limits, and where the crossovers go
+## Tooth heights between two limits, with the crossovers
 
 The weights $J_s(2\beta)^2$ are an interference result, holding only when
 every pathway to a tooth carries the same phase.
@@ -239,7 +232,7 @@ first two of them are what
 [the cascade](the-cascade-and-f-depletion.md) is measured against, since
 depletion counts a tooth's own cycles and not the whole line's.
 
-## What can go wrong
+## Failure modes
 
 The first failure is a model one: reading the rate identity as a shape
 identity. Because $\sum_k J_k(2\beta)^2$ equals one at every depth, the
@@ -282,6 +275,7 @@ from scipy.special import jv, jn_zeros
 
 # The two-photon carrier vanishes where 2*beta reaches the first zero of J0
 # (see bessel-functions.md), so the carrier-null depth is half that zero.
+
 first_zero_of_j0 = jn_zeros(0, 1)[0]
 beta_two_photon_null = first_zero_of_j0 / 2.0
 argument = 2.0 * beta_two_photon_null  # equals first_zero_of_j0
@@ -299,6 +293,7 @@ print(f"sum of J_k(2 beta)^4 across the comb: {sum_shape:.6f}  <- the shape weig
 
 # Driven at the one-photon null instead, the two-photon argument is 2x that,
 # nowhere near a zero of J0, so the carrier tooth is far from empty.
+
 carrier_at_one_photon_null = jv(0, 2.0 * first_zero_of_j0) ** 2
 print(f"if the depth were chosen from one-photon intuition instead, the "
       f"two-photon carrier would still carry {carrier_at_one_photon_null:.3f} "
@@ -322,8 +317,7 @@ a reader.
 - [Information criteria](information-criteria.md) for the forced-versus-free
   comparison this repository's comb-as-instrument plan relies on.
 
-## See also
-
+## Related pages
 - [EOM sidebands](eom-sidebands.md) for the derivation of the two-photon
   amplitude law this page treats as given.
 - [Bessel functions](bessel-functions.md) for the Jacobi-Anger and

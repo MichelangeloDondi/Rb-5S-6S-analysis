@@ -2,21 +2,12 @@
 
 *[wiki index](README.md) · method*
 
-**The question.** How to build a confidence interval for one parameter that
-accounts for every nuisance parameter still free in the fit.
-**Takes.** A model already fitted by chi-squared minimization, with the
-parameter of interest and its nuisances identified. No new data.
-**Gives.** The re-optimizing construction itself, why it beats a
-fixed-nuisance scan or a quadratic approximation, and what a flat profile
-means about the data.
-**Skip if.** The question is whether two parameters can be separated at all
-before any interval is scanned. That is
-[identifiability](identifiability.md).
+How to build a confidence interval for one parameter that accounts for every nuisance parameter still free in the fit. This page builds on a model already fitted by chi-squared minimization, with the parameter of interest and its nuisances identified. No new data. It sets out the re-optimizing construction itself, why it beats a fixed-nuisance scan or a quadratic approximation, and what a flat profile means about the data. Not covered here: the question is whether two parameters can be separated at all before any interval is scanned. That is [identifiability](identifiability.md).
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
 > defines every term and symbol used anywhere in this repository.
 
-## What it is
+## Definition
 
 Most fits have one or two parameters of interest and a crowd of nuisance
 parameters that must be there but are not the point. The profile likelihood
@@ -51,7 +42,7 @@ is not a wide confidence interval, it is a statement that the data do not
 determine the parameter at all. The shape of the curve carries information
 the interval alone discards.
 
-## What problem it solves
+## The problem it addresses
 
 It produces an interval that accounts for what is not known. When a
 systematic is represented by a free nuisance parameter, profiling propagates
@@ -59,7 +50,7 @@ the ignorance about that systematic into the quoted uncertainty
 automatically, instead of requiring a separate error budget line that is
 easy to forget.
 
-## Where this repository uses it
+## Application in this repository
 
 It is the construction behind the intervals quoted here, and
 [methods chapter 6 section 4.12](../methods/06_the_statistics.md) gives the
@@ -81,7 +72,7 @@ Profiling is also how the width degeneracy is mapped, the subject of
 repository where it is the right tool, namely model selection through
 [information criteria](information-criteria.md).
 
-## What can go wrong
+## Failure modes
 
 The most consequential misreading is treating a flat profile as a
 conservative interval. A flat direction means non-identifiability, and
@@ -138,7 +129,8 @@ for gc in (0.40, 0.60, 0.80):
     print(f"gamma = {gc:.2f} MHz: delta chi2 = {chi2_at(gc) - base:6.2f}")
 ```
 
-## Values that moved
+## Revised values
+
 The AC-Stark bound on this page was once a Wald interval, the linearised
 one a covariance matrix gives. The best fit rails at the physical boundary
 $\kappa = 0$, and there the width handle broadens as $S_0$ squared, so its
@@ -156,8 +148,7 @@ describes. the private correction record carries the figures.
 - [Methods chapter 6](../methods/06_the_statistics.md) for this repository's
   own construction and its coverage study.
 
-## See also
-
+## Related pages
 - [Identifiability](identifiability.md), for the diagnostic that maps a flat
   profile before an interval is scanned.
 - [Information criteria](information-criteria.md), for the model-selection

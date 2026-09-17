@@ -1,17 +1,8 @@
 # The case in ten minutes
 
-**The question.** What the 2025 campaign established, what it could only
-bound, and what the next measurement has to change to convert the second
-into the first.
-**Takes.** No prior familiarity with the apparatus. Every number is linked
-to the file that produced it.
-**Gives.** The three systematic limits with their status, the reason each
-is a bound and not a value, and the design that lifts each one.
-**Skip if.** The question is how a single quantity is constructed. Each has
-its own page under [quantities](../quantities/), and the campaign design is
-[chapter 2](02_priorities.md).
+This chapter builds on no prior familiarity with the apparatus. Every number is linked to the file that produced it. It sets out the three systematic limits with their status, the reason each is a bound and not a value, and the design that lifts each one. The question is how a single quantity is constructed. Each has its own page under [quantities](../quantities/), and the campaign design is [chapter 2](02_priorities.md).
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
 > defines every term and symbol used anywhere in this repository.
 
 This is a 2025 two-photon 5S-6S spectroscopy campaign in a rubidium vapour
@@ -33,14 +24,14 @@ not measure, this record identifies why, as a property of the lineshape, the
 apparatus or the sampling, and names the single measurement that removes
 each limit.
 
-1. [What was measured](#1-what-was-measured)
-2. [How these numbers were stress-tested](#2-how-these-numbers-were-stress-tested)
-3. [What is not identified, and why it survives](#3-what-is-not-identified-and-why-it-survives)
-4. [The one measurement that breaks each](#4-the-one-measurement-that-breaks-each)
-5. [What a next campaign is projected to achieve](#5-what-a-next-campaign-is-projected-to-achieve)
-6. [What stays out of reach](#6-what-stays-out-of-reach)
+1. [What was measured](#1-the-measurements)
+2. [How these numbers were stress-tested](#2-stress-tests-of-these-numbers)
+3. [What is not identified, and why it survives](#3-the-unidentified-quantities)
+4. [The one measurement that breaks each](#4-the-single-measurement-breaking-each)
+5. [What a next campaign is projected to achieve](#5-projected-yield-of-a-next-campaign)
+6. [What stays out of reach](#6-quantities-out-of-reach)
 
-## 1. What was measured
+## 1. The measurements
 
 Three bounds, each with the construction that produced it.
 
@@ -56,11 +47,11 @@ the 20% density systematic. The effective coefficients sit at 0.005 to
 0.016, each below 2 sigma against its own standard error, so nothing
 resolves a collisional width and every number here is a bound.
 
-**The unexplained Gaussian width, which is not the laser.** Below 2.4 MHz on the two-photon transition axis, the axis the
+The unexplained Gaussian width, which is not the laser. Below 2.4 MHz on the two-photon transition axis, the axis the
 analysis works on, or [1.2](../../results/laser_epoch.csv "ref:laser_epoch:sigma_laser_bound:over_w0_band") MHz per photon
 ([`laser_epoch.csv`](../../results/laser_epoch.csv)). **The name matters
 more than the number.** What the fit bounds is the Gaussian left over once
-transit is removed at the measured waist, which is why the bound rises with
+transit is removed at the waist convention, which is why the bound rises with
 the waist and falls to zero near 16 µm. **The laser is not what fills that
 slot.** A wavemeter record taken mid-acquisition holds a 100 kHz standard
 deviation over 24 minutes, the comb read as a clock bounds the
@@ -68,7 +59,9 @@ non-repeating excursion below 28.3 kHz on this page's transition axis, and
 the previous generation of this
 laser, at about 100 kHz, produced a line of **4.9 to 5.2 MHz on this page's
 transition axis** (2.4 to 2.6 per photon), which is where the 2025 line sits
-at about 5.25. The axis matters and the natural width settles it: at
+at about 5.25.
+
+The axis matters and the natural width settles it: at
 3.49 MHz on the transition axis, a 2.4 MHz line would be narrower than
 natural and therefore impossible, so the comparison only closes when both
 numbers are read on the same axis. **A laser two orders of magnitude
@@ -94,20 +87,20 @@ out exactly. An on-axis shift instead spreads the line into a ramp of red
 shifts across the beam, broadening and skewing it as power rises, with no
 waist needed.
 
-The predicted shift does need one. At the 64 µm waist, measured by Rajasree
-on this same optical table with the same laser and lenses, though not in
+The predicted shift does need one. At the 64 µm waist convention, taken from the lineage
+profile of the predecessor laser through the same lens and geometry, though not in
 the cell at campaign time, which is why section 4 still asks for the
-profile, the prediction is [0.360](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred:shared") MHz, above the limit, and the limit lies below the whole predicted envelope,
-1.404 to 1.760 in κ over the stated waist and retro band, so on the full
+profile, the prediction is [0.348](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred:shared") MHz, above the limit, and the limit lies below the whole predicted envelope,
+1.404 to 1.760 in κ <!-- other-quantity: the ±1σ waist-and-retro envelope of the joint fit on the red-sided ramp, recomputed with its refit, not the prediction band's outermost cell --> over the stated waist and retro band, so on the full
 three-session fit the prediction is excluded at 95 per cent at every geometry
 in that band. **Two things qualify that exclusion.**
 
-**The strength is a range and not a number.** Δχ² runs 4.1 to 5.7 across the
+The strength is a range and not a number. Δχ² runs 4.1 to 5.7 across the
 envelope, 2.0 to 2.4 σ, and the same profile read as a posterior puts the
 computed value in the upper 3 per cent, about 1.8 σ. What is withdrawn is a
 single calibrated two-sigma, not the existence of a significance.
 
-**The stronger reading of the same data is the full-archive fit**, over both
+The stronger reading of the same data is the full-archive fit, over both
 ladders and not three sessions: κ < 0.944, Δχ² of 6.5 to 10.5 across the
 same envelope, 2.5 to 3.2 σ, and all four leave-one-out arms clearing the
 threshold with margin. It carries a failing prior-tension gate of its own,
@@ -115,26 +108,32 @@ threshold with margin. It carries a failing prior-tension gate of its own,
 channel the bound is read from, so it is the stronger construction and not an
 unqualified one.
 
-**On the three-session fit the exclusion is fragile to leaving one peak out.**
-The leave-one-out Δχ² are 8.75, 2.27, 1.12 and 0.61 against a 2.706
-threshold, at the pre-adjudication κ of 1.545 and not at this record's own
-1.618. Each arm is a fit with one peak removed against its own minimum, so
-they do not share the full profile's derivative. Carrying them to 1.618 needs no curvature model. Each arm's own committed pair, at 1.545 and at 2.62, brackets it between its value at 1.545 and that value plus its own secant slope across the gap, giving 4121 in [8.75, 10.05], 4192 in [2.27, 2.77], 4154 in [1.12, 1.35] and 4207 in [0.61, 0.86]. So 4121 clears at both ends, 4154 and 4207 fail at both ends, and 4192 straddles the threshold and is not callable. **No count of arms is quoted, because one arm's bracket straddles the
-threshold.** That is the same lesson as the calibration withdrawn above, one
-level down.
+On the three-session fit the exclusion is fragile to leaving one peak out.
+The leave-one-out Δχ² are [8.75](../../results/stark_joint.csv "ref:stark_joint:lopo_dchi2_pred:4121"), [2.27](../../results/stark_joint.csv "ref:stark_joint:lopo_dchi2_pred:4192"), [1.12](../../results/stark_joint.csv "ref:stark_joint:lopo_dchi2_pred:4154") and [0.61](../../results/stark_joint.csv "ref:stark_joint:lopo_dchi2_pred:4207") for 4121, 4192,
+4154 and 4207 against a 2.706 threshold, at the joint fit's κ of [1.545](../../results/stark_joint.csv "ref:stark_joint:kappa_pred:prediction"),
+computed at the cited 1093 a.u., where this record's own coefficient is [1.547](../../results/stark_sweep.csv "ref:stark_sweep:kappa_pred:shared").
+Each arm is a fit with one peak removed against its own minimum, so the arms do not
+share the full profile's derivative, and each is carried across that gap by its own
+secant bracket to the 2.62 checkpoint (RESULTS.md C3f): 4121 clears at both ends and 4154,
+4192 and 4207 fail at both ends, all four read on the red-sided ramp until the joint
+fit's refit lands.
+
+A count of arms is read only once each bracket sits clear of the threshold, and a bracket
+that straddles it is not callable. That is the same lesson as the calibration withdrawn
+above, one level down.
 
 What the data support is the inversion. Taking the geometry as a stated
 prior, the width channel puts the magnitude of the differential
 polarizability below
-[837](../../results/delta_alpha_posterior.csv "ref:delta_alpha_posterior:limit:delta_alpha_abs_ub95_profile")
+[868](../../results/delta_alpha_posterior.csv "ref:delta_alpha_posterior:limit:delta_alpha_abs_ub95_profile")
 a.u. in the record's own construction and below
-[1038](../../results/delta_alpha_posterior.csv "ref:delta_alpha_posterior:limit:delta_alpha_abs_ub95_posterior")
+[1076](../../results/delta_alpha_posterior.csv "ref:delta_alpha_posterior:limit:delta_alpha_abs_ub95_posterior")
 a.u. read as a posterior, against the
 [0.35](../../results/delta_alpha_posterior.csv "ref:delta_alpha_posterior:estimator:sigma_from_zero")
 σ that separates the fit from zero. **The gap is real and what is withdrawn is the
-number attached to it**: the computed 1145 a.u. (re-derived at [-1131.8](../../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive") ± [5.9](../../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive:err") with the 6S tail summed dynamically, which sits nearer the cited magnitude and shrinks the tension below) sits in the upper tail
+number attached to it**: the earlier computed value (now [-1131.8](../../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive") ± [5.9](../../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive:err") with the 6S tail summed dynamically, which sits nearer the cited magnitude and shrinks the tension below) sits in the upper tail
 at
-[0.0342](../../results/delta_alpha_posterior.csv "ref:delta_alpha_posterior:comparison:posterior_prob_above_computed_here")
+[0.0406](../../results/delta_alpha_posterior.csv "ref:delta_alpha_posterior:comparison:posterior_prob_above_computed_here")
 under the posterior and at 0.017 under the crossing, so it is a real tension
 under both readings and quotable to neither's third digit. Over the ±1σ box
 in waist and retro ratio the prediction runs 0.32 to 0.40, all above the
@@ -165,7 +164,7 @@ response to power. A beam profile in the interaction volume separates the
 first from the other two, and a longer power lever sharpens all three,
 section 4.
 
-**And there is a configuration that attacks the geometry directly.** Measure
+And there is a configuration that attacks the geometry directly. Measure
 the coefficient at two waists in one session: κ scales as 1/w₀², so in the
 ratio κ(w₁)/κ(w₂) the polarizability cancels exactly and what is left is the
 geometry. The full form of that identity carries (1+ρ₁)/(1+ρ₂) as well, and
@@ -207,7 +206,7 @@ A reported instability in this bound was an input artefact, five samples
 crossing a trim boundary, and the primary bound is untouched. The diagnosis
 is entry three of the next section, because the atom does not appear in it.
 
-## 2. How these numbers were stress-tested
+## 2. Stress tests of these numbers
 
 Each entry reads the same way: a number was believed, an instrument was
 pointed at it, and here is what came back. The full audit trail is in
@@ -253,8 +252,7 @@ the private correction record.
   and the correlation is unexplained, the decimation stage the
   candidate.
 
-## 3. What is not identified, and why it survives
-
+## 3. The unidentified quantities
 ![which lever breaks which degeneracy](../../figures/fig35_orthogonal_information.png)
 
 *The record's degeneracies and the lever that breaks each, drawn from the
@@ -273,8 +271,8 @@ Free the transit width as well and the degeneracy moves instead of lifting:
 a different direction.
 
 **Transit against waist.** The transit width follows from the waist.
-The 64 µm value is Rajasree's measurement on this same optical table, laser
-and lenses. What this campaign did not do is re-measure it in its own
+The 64 µm value is the lineage profile of the predecessor laser through the same
+lens and geometry. What this campaign did not do is measure it in its own
 interaction volume at its own time. A wrong waist is absorbed by the other
 widths, so it never shows up as a misfit.
 
@@ -292,8 +290,7 @@ the dataset carries per block is the set point, not a logged thermocouple
 series. One session's internal temperature spans 110 to 130 °C, a factor
 3.2 in vapour density, propagating into every density-linked quantity.
 
-## 4. The one measurement that breaks each
-
+## 4. The single measurement breaking each
 | what is unidentified | the measurement that removes it | why it works |
 |---|---|---|
 | the width split | an independent laser-width measurement | it removes one side of a correlated pair, and the other side's uncertainty falls by 1/√(1 − ρ²), about 1.3 to 2.5 across the 32 committed conditions, rising to about 3 at the design points the text below names |
@@ -314,7 +311,7 @@ ten times the traces
 ([`twin_span_sweep.csv`](../../results/twin_span_sweep.csv) regenerates the
 sweep from a named committed condition).
 
-## 5. What a next campaign is projected to achieve
+## 5. Projected yield of a next campaign
 
 Everything in this section is a projection from the forward model
 ([`forecast.py`](../../rb5s6s/forecast.py) and
@@ -337,7 +334,7 @@ the campaign would establish.
   makes every 2025 power trend equally a time trend. Broken if drift
   remains correlated within blocks despite randomisation.
 
-## 6. What stays out of reach
+## 6. Quantities out of reach
 
 A measured collisional coefficient, at these densities and this
 temperature lever. The width split without an external constraint, at any
@@ -346,7 +343,7 @@ And the absolute optical frequency of the transition, a different quantity
 from the scan-axis repair of section 4, which this apparatus was never
 built to deliver and which the record does not claim.
 
-## Where to check any of this
+## Verification routes
 
 [RESULTS.md](../RESULTS.md) for the results ledger, every value read from
 its producing CSV,

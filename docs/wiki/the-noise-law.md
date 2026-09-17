@@ -2,20 +2,12 @@
 
 *[wiki index](README.md) · method*
 
-**The question.** How large the uncertainty on each sample is, as a function
-of the signal at that sample.
-**Takes.** Repeated traces of the same condition. No model of the line.
-**Gives.** The variance law that supplies every fit's weights, what its
-terms mean physically, and the checks that decide whether a term is real.
-**Skip if.** The question is how to use weights once you have them, which is
-[weighted least squares](weighted-least-squares.md), or whether adjacent
-samples are independent, which is
-[correlated samples](correlated-samples-and-effective-sample-size.md).
+How large the uncertainty on each sample is, as a function of the signal at that sample. This page builds on repeated traces of the same condition. No model of the line. It sets out the variance law that supplies every fit's weights, what its terms mean physically, and the checks that decide whether a term is real. Not covered here: the question is how to use weights once you have them, which is [weighted least squares](weighted-least-squares.md), or whether adjacent samples are independent, which is [correlated samples](correlated-samples-and-effective-sample-size.md).
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
 > defines every term and symbol used anywhere in this repository.
 
-## What it is
+## Definition
 
 A detector's noise is rarely constant across a trace. In almost any optical
 measurement it grows with the signal, because the dominant contribution is
@@ -78,14 +70,14 @@ collection efficiency would, so the law measures their product, not either
 alone. Shot-limited means the variance tracks the signal, not that it sits
 at the physical bound for photons arriving at the window.
 
-## What problem it solves
+## The problem it addresses
 
 Least-squares weights are one over the variance. A wrong noise model does not
 only mis-state the error bars, it mis-weights the data and moves the fitted
 parameters. The dominant term also names which change would reduce the
 noise.
 
-## How it is measured
+## Measurement
 
 Take several repeats of one condition, bin the samples by signal level, and
 compute the scatter within each bin. That gives $\sigma$ against $V$
@@ -107,7 +99,7 @@ noise where the signal is absent and compare it with the fitted value, the
 same quantity found two ways. A disagreement means the fit is absorbing
 something into the floor that does not belong there.
 
-## Where this repository uses it
+## Application in this repository
 
 The law is fitted per condition and supplies the weights for every fit in
 the pipeline. Committed values are in
@@ -124,18 +116,18 @@ Three findings from those thirty-two conditions:
     on every line, and the direct-wing check confirms that value directly, so
     the floor contains an optical background that scales with the drive.
 
-## What can go wrong
+## Failure modes
 
 **Fitting the law over too small a range of signal.** The three terms
 separate by scaling, so a fit confined to one decade cannot tell them
 apart, and the coefficients exchange.
 
-**Assuming the floor is instrumental.** A floor is signal-independent by
+Assuming the floor is instrumental. A floor is signal-independent by
 construction of the model, not of the apparatus. An optical background
 scaling with a control parameter, not the fitted signal, lands in $a$ and
 looks electronic.
 
-**Forgetting that the law describes samples.** If adjacent samples are
+Forgetting that the law describes samples. If adjacent samples are
 correlated, the law is still correct per sample, and the independent sample
 count is smaller than the total, a separate correction and page.
 
@@ -162,7 +154,7 @@ print(f"\nfloor and shot cross at V = a^2/b = {1e3*a*a/b:.2f} mV")
 Every snippet on these pages is executed by `tests/test_wiki_snippets_run.py`,
 so one that stops working fails the suite instead of misleading a reader.
 
-## What the fitted terms say about the apparatus
+## The apparatus as read from the fitted terms
 
 Across the campaign, the three terms diagnose three different noise sources
 ([`quantisation.csv`](../../results/quantisation.csv), budget rows). The
@@ -188,8 +180,7 @@ size, contributes at most 0.155 per cent.
 - W. Kester, ed., *The Data Conversion Handbook* (Analog Devices, 2005), for
   the instrumental contributions to the floor.
 
-## See also
-
+## Related pages
 - [Weighted least squares](weighted-least-squares.md), which consumes this law
 - [Correlated samples and effective sample size](correlated-samples-and-effective-sample-size.md),
   a correction the law does not carry

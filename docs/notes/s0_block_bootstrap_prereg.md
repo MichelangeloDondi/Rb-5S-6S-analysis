@@ -87,7 +87,7 @@ condition 10 per cent, did not fire), 23.8 minutes, seed as frozen.
 
 - P1 holds. The primary percentile bound is S0(225 mW) = 0.262 MHz
   at the 95th percentile of the resampled minimizers, against the
-  committed profile bound of 0.632 MHz. The committed construction is
+  committed profile bound of 0.632 MHz. The committed construction is <!-- other-quantity: the S0 bound as committed when this record was written, since moved by the sweep's regeneration -->
   conservative relative to the empirical percentile bound, by a
   factor of 2.4.
 - P2 does not fire. The conservatism wording stands unchanged at its
@@ -100,7 +100,7 @@ condition 10 per cent, did not fire), 23.8 minutes, seed as frozen.
 - The secondary diagnostic is the run's sharpest result: the median
   raw-profile bound under resampling (unscaled 2.706 threshold) is
   0.634 MHz with interquartile range 0.607 to 0.723, and the
-  committed over-dispersion-scaled bound is 0.632. The global factor
+  committed over-dispersion-scaled bound is 0.632. The global factor <!-- other-quantity: the S0 bound as committed when this record was written, since moved by the sweep's regeneration -->
   lands where the empirical block-level dispersion puts the median,
   so the committed construction is not only conservative against the
   percentile estimator but calibrated at the median of the sharper

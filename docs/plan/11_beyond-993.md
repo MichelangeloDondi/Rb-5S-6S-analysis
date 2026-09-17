@@ -1,6 +1,6 @@
 *Chapter 11 of 12 of [the plan](../PLAN.md)*
 
-## 12. Beyond 993 nm, and the one rider that costs no drive time
+## 12. Beyond 993 nm
 
 The drive laser is a tunable Ti:Sapphire, so future sessions are not locked to
 this line. The reachable Rb two-photon lines and the papers they enable are
@@ -26,8 +26,8 @@ rubidium degrades fiber transmission, and the Stark geometry seam in
 `model_profile` gets its first second geometry for free. None of it replaces
 the cell campaign, because nothing at the fiber carries a density ladder.
 
-**And the guided platform is somebody's working apparatus, not only a
-proposal.** The group this work is addressed to runs cold atoms in a
+And the guided platform is somebody's working apparatus, not only a
+proposal. The group this work is addressed to runs cold atoms in a
 hollow-core fibre and reads them in transmission, and their published atom
 numbers, loading efficiencies and in-fibre cooling are read paper by paper in
 [section 10 of the literature hub](../LITERATURE.md#10-the-host-groups-own-platforms).
@@ -51,7 +51,8 @@ held still, and off the crossing it is a calibrated shift injector for
 exercising the §6 analysis on data with a known light shift. It needs no
 Ti:Sapph time, because it rides whatever the session is already doing on the
 993 nm line.
-**Needs.** One stabilized O-band diode and a calibrated wavemeter, both
+
+Needs. One stabilized O-band diode and a calibrated wavemeter, both
 commodity items at this wavelength, plus a way to overlap the auxiliary beam
 with the drive at the cell. No change to the 993 nm path. **Shots.** A
 wavelength scan of the auxiliary beam across the crossing, with the 993 nm
@@ -62,7 +63,9 @@ scan time. **Empty.** The delivered intensity could undershoot, which stretches
 the localization beyond the useful range and returns a bound on the crossing
 position rather than a measurement. **Record.** The induced shift and the
 asymmetry against auxiliary wavelength, and the crossing position with its
-error. The full specification, the localization it would reach at the campaign's
+error.
+
+The full specification, the localization it would reach at the campaign's
 projected shift precision, about 26 pm and a 6S to 7P residue near 3 per cent,
 and the multipole scrutiny behind the predicted position are in
 [`FUTURE_TRANSITIONS_titsapph.md`](../FUTURE_TRANSITIONS_titsapph.md) §5.1.

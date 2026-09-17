@@ -223,7 +223,6 @@ def main() -> int:
     add("alpha_6s_explicit_5p_8p", "at_drive", f"{a6_expl:.2f}", "", "a.u.", "the four tabulated pairs at the drive")
     add("alpha_6s", "at_drive", f"{a6:.1f}", "", "a.u.", "explicit + core + the computed 9P-and-above group + the continuum row")
     add("alpha_5s", "at_drive", f"{a5:.1f}", "", "a.u.", "polarizability.alpha_5s: the D lines, 6P, 7P-12P tabulated, tail and core (Leonard 2015)")
-    add("delta_alpha_module", "at_drive", f"{delta_alpha(LAM_DRIVE_NM):.1f}", "", "a.u.", "polarizability.delta_alpha, the value constants.DELTA_ALPHA_AU carries")
 
     # ---- 4. multipole channels, BOUNDED by derivation, not computed by a method
     # that fails where the term lives. The 6s quadrupole polarizability is
@@ -299,7 +298,7 @@ def main() -> int:
         f"alpha_6s - alpha_5s at {LAM_DRIVE_NM:.4f} nm with the 9P-and-above group summed dynamically and the continuum carried as its own term. "
         f"the package constant {DELTA_ALPHA_AU:.0f} differs by {d_alpha - DELTA_ALPHA_AU:+.0f}. Orson 2021 carries {DELTA_ALPHA_AU_ORSON2021:.0f} in magnitude", "ENVELOPE")
     add("delta_alpha_shift_from_module", "at_drive", f"{d_alpha - delta_alpha(LAM_DRIVE_NM):+.1f}", "", "a.u.",
-        "against the module's own value (delta_alpha_module above). the whole move is the 9P-and-above group read dynamically instead of statically. the constant -1145.0 sits 0.4 further")
+        "against the module's static-tail sum, reproducible as rb5s6s.polarizability.delta_alpha at the drive. the whole move is the 9P-and-above group read dynamically instead of statically")
     add("delta_alpha_vs_orson", "at_drive", f"{(abs(d_alpha) - abs(DELTA_ALPHA_AU_ORSON2021)) / sig:+.1f}", "", "sigma",
         "magnitude against Orson 2021's, over this derivation's sigma alone (Orson's own uncertainty is not carried by the record)")
 

@@ -43,7 +43,7 @@ from rb5s6s.linefit import fit_condition  # noqa: E402
 from rb5s6s.noise import load_noise_model  # noqa: E402
 
 # MHz. The transit is the twin's own, where a retired 1.8 stood until
-# 2026-09-05: the record's transit at its measured waist and 130 C is 0.9575,
+# 2026-09-05: the record's transit at its waist convention and 130 C is 0.9575,
 # so the literal was 88 per cent high and no committed row ever held 1.8. The
 # same triple was repaired in run_estimator_duel.py on 2026-09-04 and this
 # producer was missed by that sweep, which is why the value is now DERIVED

@@ -2,23 +2,12 @@
 
 *[wiki index](README.md) · concept*
 
-**The question.** Why the light shift of an atom in a structured beam is a
-distribution and not a number, how a lineshape reads that distribution, and
-why the same object grades a guided-platform design before it is built.
-**Takes.** [The AC-Stark shift](ac-stark-shift.md) for the single-atom
-coefficient, [the beam waist](the-beam-waist.md) for what an intensity
-profile is, and [standing waves](standing-waves.md) for the fringe
-structure a retro-reflected drive adds.
-**Gives.** The distribution view, the intensity-squared weighting that
-decides which atoms speak, the cumulant reading of what a line can recover,
-and the transfer of all three to a guided mode.
-**Skip if.** You want the coefficient's bound and its
-construction, which is [the AC-Stark dossier](../quantities/ac-stark-light-shift.md).
+Why the light shift of an atom in a structured beam is a distribution and not a number, how a lineshape reads that distribution, and why the same object grades a guided-platform design before it is built. This page builds on [The AC-Stark shift](ac-stark-shift.md) for the single-atom coefficient, [the beam waist](the-beam-waist.md) for what an intensity profile is, and [standing waves](standing-waves.md) for the fringe structure a retro-reflected drive adds and sets out the distribution view, the intensity-squared weighting that decides which atoms speak, the cumulant reading of what a line can recover, and the transfer of all three to a guided mode. Not covered here: the coefficient's bound and its construction, which is [the AC-Stark dossier](../quantities/ac-stark-light-shift.md).
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
 > defines every term and symbol used anywhere in this repository.
 
-## What it is
+## Definition
 
 A light shift follows intensity, and in any structured beam the intensity
 depends on where the atom sits. An ensemble therefore has no single shift.
@@ -49,7 +38,7 @@ The peak shift at the focus is the scale of the whole object. This
 repository computes it as $S_0$, the shift at beam centre at full power,
 and the distribution hangs below it.
 
-## What problem it solves
+## The problem it addresses
 
 The light shift was an unconstrained systematic. This record holds the
 three-step chain in order: no shift was detected, the width channel
@@ -61,7 +50,9 @@ the stated band. What the page did not say is that the strength is a range,
 2.0 to 2.4 σ across the envelope, and that on this construction the exclusion does
 not survive leaving one peak out: one arm clearly excludes, two clearly do not,
 and the fourth lands inside the profile's own scatter of the threshold, so a
-count of arms is not a stable summary. The fuller archive fit is stronger and
+count of arms is not a stable summary.
+
+The fuller archive fit is stronger and
 keeps all four, and carries a failing prior-tension gate of its own.
 The gap survives, the computed polarizability sitting in the upper few per
 cent of the posterior either way. What is withdrawn is the single calibrated
@@ -75,7 +66,7 @@ Gaussian, every trapped or guided atom samples the mode's intensity
 profile, and the spread of shifts across that profile is what limits
 a cooling scheme's bandwidth and a superposition's coherence.
 
-## Where this repository uses it
+## Application in this repository
 
 The ramp model of [the composite lineshape](../methods/04_the_composite_model.md)
 carries the shift distribution's broadening as its $S_0^2$ term, the only
@@ -89,14 +80,14 @@ distribution itself since 2026-09-08, through
 the axial collection window and the fringe-resolved tail and not the
 transverse ramp alone: the ramp's mean pull reads
 [0.9775](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_64um::pull_factor_quiet")
-of the pure form at the measured waist and
+of the pure form at the waist convention and
 [0.5754](../../results/three_channel_forecast.csv "ref:three_channel_forecast:base::pull_factor_quiet")
 at 16 microns. The guided-platform outlook carries
 it for a mode profile in
 [chapter 6 of the big picture](../big_picture/06_next-nanofibre.md) and
 [the guided-atoms page](guided-atoms-and-nanofibres.md).
 
-## What can go wrong
+## Failure modes
 
 **Quoting the peak shift as the shift.** $S_0$ is the distribution's
 scale, and the line's centroid moves by an intensity-weighted average
@@ -117,19 +108,19 @@ the standing wave, and the resulting skew is treated in
 **Treating the distribution's shape as fixed while the waist varies.**
 The whole object scales with the waist through $S_0 \propto 1/w_0^2$ and
 through the transit time, so a waist uncertainty is not one uncertain
-number but an uncertain distribution, which is why the measured waist
+number but an uncertain distribution, which is why the waist convention
 gates every absolute statement in the dossier.
 
 ## Try it
 
 The committed machinery reproduces the case page's own prediction: the
-peak shift at 225 mW, the measured waist and the assumed retro ratio.
+peak shift at 225 mW, the waist convention and the assumed retro ratio.
 
 ```python
 from rb5s6s.stark import stark_shift_S0_mhz, W0_MEASURED_M, RHO_RETRO
 
 S0 = stark_shift_S0_mhz(0.225, W0_MEASURED_M, rho=RHO_RETRO)
-print(f"peak shift S0 at 225 mW, measured waist: {S0:.3f} MHz")
+print(f"peak shift S0 at 225 mW, waist convention: {S0:.3f} MHz")
 ```
 
 The bound this is compared against, and the subset spread that dominates
@@ -147,8 +138,7 @@ in `results/stark_joint.csv`.
 - [`../lit/vylegzhanin2023.md`](../lit/vylegzhanin2023.md), the nanofibre
   geometry of the same question.
 
-## See also
-
+## Related pages
 - [The AC-Stark shift](ac-stark-shift.md), the single-atom coefficient
   this page turns into an ensemble object.
 - [Standing waves](standing-waves.md), the fringe structure and the

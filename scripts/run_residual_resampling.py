@@ -34,6 +34,7 @@ Re-runnable:  .venv/bin/python private/cache/plan_2026-09-16/residual_resample.p
 from __future__ import annotations
 
 import csv
+import os
 import sys
 from collections import defaultdict
 from pathlib import Path
@@ -44,6 +45,7 @@ from scipy import stats
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
+from rb5s6s import noise
 from rb5s6s import config as C                                   # noqa: E402
 from rb5s6s import ladder_gate                                   # noqa: E402
 from rb5s6s.noise import signal_level                            # noqa: E402
@@ -220,8 +222,14 @@ def main() -> int:
     # condition's residuals are divided by their own robust sigma before they are pooled. That
     # is a claim and it is checked below: if the conditions had different shapes, pooling them
     # would be a mixture and its kurtosis would exceed every member's.
-    per, sizes, kur = [], [], []
-    for k in keys:
+    per, sizes, kur, per_keys = [], [], [], []
+    # THE EXPORT COVERS EVERY CONDITION (a reading of 2026-09-17): `keys` is the study's first
+    # N_COND in sorted order, which are one line's eight, and a pool exported from them left the
+    # other three lines drawing the shared shape. The pool takes every condition with four or more
+    # traces; the study's own rows keep their N_COND.
+    tau_rows = []
+    _pool_keys = [k for k in sorted(groups) if len(groups[k]) >= 4] if os.environ.get("RB5S6S_RESIDUAL_POOL_OUT") else keys
+    for k in _pool_keys:
         triples = ladder_gate.real_traces(ANALYSIS_ID, __file__, rows=groups[k][:5])
         rs = [residuals_of(t[1][1]) for t in triples]
         rs = [r for r in rs if r is not None]
@@ -233,9 +241,35 @@ def main() -> int:
             continue
         sizes.append(len(pool))
         kur.append(float(stats.kurtosis(pool, fisher=True, bias=False)))
-        per.append(pool / sd)
+        per.append(pool / sd); per_keys.append(k)
+        # THE POST-FIT RESIDUALS' OWN CORRELATION TIME (F36, 2026-09-17): the time a fit whitens by is
+        # measured on the residuals of that fit, not on raw wing segments; Sokal's window on the
+        # condition's pool, with a block-bootstrap bar (64-sample blocks, 100 draws). The rows are the
+        # seam `noise.effective_tau` reads through the ultra-joint producer's `tau_resid_table`.
+        _pk, _T, _P = k
+        _st = noise.integrated_time_sokal(pool / sd)
+        _rng = np.random.default_rng(int(round(1e3 * float(_P))) + int(round(float(_T))) + int(str(_pk)[-3:]))   # a fixed seed per condition
+        _n = len(pool); _B = 64
+        _boot = [noise.integrated_time_sokal(np.concatenate([pool[i:i + _B] for i in _rng.integers(0, _n - _B, size=_n // _B)]) / sd)["tau"] for _ in range(100)]
+        tau_rows.append((f"{_pk}_{_T}C_{_P}mW", _st["tau"], float(np.std(_boot, ddof=1)), _st["window"], _st["rho1"]))
     shared = np.concatenate(per) if per else np.array([])
+    # THE POOL AS THE TWIN'S NOISE SOURCE (step 2 of the 2026-09-16 order): the normalised wing
+    # residuals per condition and the shared pool, written where the environment names, so the
+    # window surface's archive rung draws the archive's own residual SHAPE by moving blocks
+    # instead of a Gaussian and its spread can be validated against the repeats. A sample array
+    # of real residuals, so the path is under private/ and never under results/.
+    _out = os.environ.get("RB5S6S_RESIDUAL_POOL_OUT")
+    if _out:
+        _p = Path(_out).expanduser(); _p.parent.mkdir(parents=True, exist_ok=True)
+        assert "private" in _p.parts, "a residual pool of real traces stays under private/"
+        np.savez(_p, shared=shared, **{f"cond_{pk}_{T}C_{P}mW": arr for (pk, T, P), arr in zip(per_keys, per)})
+        print(f"  residual pool: {len(per)} conditions and the shared pool ({len(shared)}) -> {_p}")
     rows.append(("real", "conditions_pooled", float(len(per))))
+    for _key, _tau, _err, _W, _r1 in tau_rows:
+        rows.append((_key, "tau_resid", _tau))
+        rows.append((_key, "tau_resid_err", _err))
+    if tau_rows:
+        rows.append(("real", "tau_resid_median", float(np.median([t for _, t, _, _, _ in tau_rows]))))
     rows.append(("real", "pool_size_per_condition_median", float(np.median(sizes)) if sizes else 0.0))
     rows.append(("real", "pool_size_shared", float(len(shared))))
     rows.append(("real", "excess_kurtosis_per_condition_median", float(np.median(kur)) if kur else float("nan")))

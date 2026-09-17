@@ -9,18 +9,10 @@ which is why this is a note rather than a correction.
 `provenance: results/saturation_companion.csv` - **Upgraded from NO_PRODUCER.** The probe now writes its C3d half, so the reproduced committed bound, both saturated bounds and both tightening factors are committed rows. Their freshness registry entry was unrunnable for the file's whole life and was repaired on 2026-08-31: the repaired run flips one arm's ratio sign, and the rows stay ungraded until that investigation closes (docs/RESULTS.md C3d). **The joint factor is deliberately not a row**: stage 4 reads two data trees outside this repository, and stage 3 states in terms that quoting a joint number before that fit runs would be inventing one, so the CSV records it as a classification with the date of the run that produced it rather than as a digit. **6 numeric claims on this page remain unaccounted for**, the stage-1 and stage-3 intermediates among them.
 
 
-**The question.** Is the power-squared broadening the light-shift bound rests
-on really the light shift?
-**Takes.** [methods/04_the_composite_model.md](../methods/04_the_composite_model.md).
-**Gives.** Two effects with the same power signature that are absent from that
-model, their sizes measured rather than argued, and what they do and do not
-license.
-**Skip if.** You are not reading the light-shift bound closely. The short
-version is that both bounds stand and are loose by a stated factor.
+Is the power-squared broadening the light-shift bound rests on really the light shift? This page builds on [methods/04_the_composite_model.md](../methods/04_the_composite_model.md) and sets out two effects with the same power signature that are absent from that model, their sizes measured rather than argued, and what they do and do not license. A reader not reading the light-shift bound closely will not need it. The short version is that both bounds stand and are loose by a stated factor.
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
-> explains the measurement in six sentences, then defines every term
-> and symbol used anywhere in this repository.
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
+> defines every term and symbol used anywhere in this repository.
 
 ## How it came up
 
@@ -33,7 +25,7 @@ different reason.
 ## The number
 
 The two-photon Rabi frequency for 5S(1/2) to 6S(1/2) at 993.4192 nm, at the
-campaign maximum of 225 mW with the measured 64 um waist and rho = 0.94, is
+campaign maximum of 225 mW with the 64 um waist convention and rho = 0.94, is
 
     Omega_2ph / 2pi = 450 kHz   on axis
 
@@ -71,13 +63,13 @@ conventions". That diagnosis was mistaken. Both numbers are right about
 different denominators, because the project holds two values of |Delta_alpha|
 that differ by a documented 4.7 per cent: the cited 1093 a.u. that every
 committed S0 is written with, giving 2t/1093 = 1.2951, and this package's own
-sum-over-states, retired at 1145 a.u. and giving 1.2367.
+sum-over-states, retired with the earlier polarizability and giving 1.2367.
 
 **Replaced 2026-09-15.** The record now carries the dynamic sum
 ([-1131.8](../../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive")
 a.u., with its
 [5.9](../../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha_sigma_pairs:MC")
-a.u. envelope), so the ratio is 2t/1131.8 and the band it spans is the
+a.u. envelope), so the ratio is 2t over the magnitude of [-1131.8](../../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive") and the band it spans is the
 uncertainty on one derived value, not a dispute between two candidates.
 Every table below labelled `ratio 1.2367` is a row computed at the earlier value
 and is kept as history, not as a current reading. The matrix element itself, T = 707.75 a.u. and M = 225 kHz at the

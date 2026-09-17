@@ -1,6 +1,6 @@
 # The documentation, and where to start
 
-Three doors, by what you came for. Before any of them, if the vocabulary is
+Three doors, by subject. Before any of them, where the vocabulary is
 new: [GLOSSARY.md](GLOSSARY.md) explains the measurement in six sentences and
 then defines every term and symbol used here, each with a pointer to where it
 is derived.

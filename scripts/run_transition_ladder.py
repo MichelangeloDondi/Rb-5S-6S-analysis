@@ -514,7 +514,9 @@ def main() -> int:
             "sigmas. Near a pole the band is asymmetric and the half-span "
             "understates the far side", "DIAGNOSTIC")
         if rung == "6S":
-            da = pol.delta_alpha(lam)
+            # THE VALUE OF RECORD, not the module's static-tail sum (2026-09-17, P7): the 6S rung is
+            # the one upper state this record has summed dynamically, in polarizability_deep.csv.
+            da = K.DELTA_ALPHA_AU
         elif rung == "7S":
             da = pol.delta_alpha_7s(lam)
         elif rung == "5D":
@@ -540,17 +542,17 @@ def main() -> int:
             _src = ("the Hamilton-anchored construction of "
                     "rb5s6s.polarizability.delta_alpha_5d, scalar only and an "
                     "envelope, not a sum over states" if rung == "5D"
+                    else "this record's dynamic sum (results/polarizability_deep.csv), the value "
+                    "constants.DELTA_ALPHA_AU carries" if rung == "6S"
                     else "alpha(upper) minus alpha(5S), this package's own sum "
-                    "over states")
+                    "over states with the static tail")
             add(rung, "differential_polarizability", f"{da:.2f}", "a.u.", _src,
-                "the 993 nm sign is under dispute and the magnitude is what every "
-                "bound reads", "ENVELOPE" if rung == "5D" else "CALIB")
+                "the 993 nm sign was settled by the ruling of 2026-09-17 and the magnitude "
+                "is what every bound reads", "ENVELOPE" if rung == "5D" else "CALIB")
             if rung == "6S":
-                _db = pol.mc_band(
-                    lambda kw5, kw6: pol.alpha_6s(lam, **kw6) - pol.alpha_5s(lam, **kw5),
-                    n=400, seed=0)
-                _da_note = ("both sides of the difference drawn from their own "
-                            "quoted sigmas")
+                _db = {"lo": -K.DELTA_ALPHA_ERR_AU, "hi": K.DELTA_ALPHA_ERR_AU}
+                _da_note = ("the dynamic sum's own bar, constants.DELTA_ALPHA_ERR_AU: the largest "
+                            "of its three correlation treatments")
             else:
                 _db = pol.mc_band(lambda kw5, kw6: pol.alpha_5s(lam, **kw5),
                                   n=400, seed=0)
@@ -560,7 +562,8 @@ def main() -> int:
                             "the true error and not the error")
             _da_err = 0.5 * (_db["hi"] - _db["lo"])
             add(rung, "differential_polarizability_err", f"{_da_err:.4g}", "a.u.",
-                "half the 16 to 84 band of rb5s6s.polarizability.mc_band at 400 draws",
+                ("constants.DELTA_ALPHA_ERR_AU, the dynamic sum's own bar" if rung == "6S"
+                 else "half the 16 to 84 band of rb5s6s.polarizability.mc_band at 400 draws"),
                 _da_note, "DIAGNOSTIC")
             from rb5s6s import lineshape
             add(rung, "on_axis_shift_per_watt",
@@ -630,7 +633,9 @@ def main() -> int:
         # rows at all; the others are refused with the reason below.
         g_rel = GAMMA_REL.get(rung)
         if da is not None and m_rel is not None and g_rel is not None:
-            a_rel = abs(da) / abs(pol.delta_alpha(2e7 / pol.E_6S_CM))
+            # the other rungs are static-tail sums, so their ratio is taken against the 6S static
+            # sum and the 6S rung's to itself is one, never a mixed-construction ratio
+            a_rel = 1.0 if rung == "6S" else abs(da) / abs(pol.delta_alpha(2e7 / pol.E_6S_CM))
             add(rung, "natural_width_relative_to_6s", f"{g_rel:.4f}",
                 "dimensionless",
                 "the rung's own natural width over the 6S rung's, from the "

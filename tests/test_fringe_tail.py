@@ -33,28 +33,33 @@ ROOT = Path(__file__).resolve().parents[1]
 _RECORD = dict(w0_m=50e-6, s0_mhz=0.6)
 _SMALL = dict(w0_m=16e-6, s0_mhz=5.7)
 
-# The intrinsic standardized skew of the triangular ramp, 18^1.5/135 = +0.566.
+# The intrinsic standardized skew of the triangular ramp, 18^1.5/135 = 0.566 in MAGNITUDE.
+# Its sign is negative under the blue-sided density of owner order O27 (2026-09-17); only the
+# magnitude is used below, in |d_skew|/g1, so the ratio is unchanged by the flip.
 G1_TRIANGLE = 18 ** 1.5 / 135
 
 
 def test_reproduces_reference_direct_mc_at_the_anchor_draw():
     # one 3e5-atom block at the reference seed reproduces the earlier direct MC:
-    # d_skew -0.038 (archival) and -0.143 (config S).
+    # d_skew +0.038 (archival) and +0.143 (config S). THE MAGNITUDES ARE THE DIRECT MC'S
+    # and have not moved; the signs are O27's blue-sided density (2026-09-17), under which
+    # the ramp's distribution is the mirror of the red-sided one about zero, so every ODD
+    # standardised moment changes sign and every even one does not.
     a = fringe_tail_mc(**_RECORD, rho=1.0, seed=7, n_atoms=300_000)
     o = fringe_tail_mc(**_SMALL, rho=1.0, seed=7, n_atoms=300_000)
-    assert a["d_skew"] == pytest.approx(-0.0382, abs=1e-3), a
-    assert o["d_skew"] == pytest.approx(-0.1429, abs=1e-3), o
+    assert a["d_skew"] == pytest.approx(+0.0382, abs=1e-3), a
+    assert o["d_skew"] == pytest.approx(+0.1429, abs=1e-3), o
 
 
 def test_mean_pull_preserved_by_the_symmetric_fringe():
     # E[x] = 0 for the fringe modulation, so the centroid pull is unchanged
     # (the fringe preserves the mean). The transit path factor is sqrt(2/3) ~ 0.816 and the
-    # wedge centroid is -(2/3) sqrt(2/3) S0 ~ -0.544 S0.
+    # wedge centroid is +(2/3) sqrt(2/3) S0 ~ +0.544 S0 under O27's blue-sided density.
     r = fringe_tail_mc(**_SMALL, rho=1.0, n_atoms=300_000, n_blocks=4, seed=1)
     assert r["mean_over_s0"] == pytest.approx(r["mean_nofringe_over_s0"],
                                               abs=2e-3), r
     assert r["kappa_path"] == pytest.approx(np.sqrt(2.0 / 3.0), abs=2e-3), r
-    assert r["mean_over_s0"] == pytest.approx(-(2.0 / 3.0) * np.sqrt(2.0 / 3.0),
+    assert r["mean_over_s0"] == pytest.approx(+(2.0 / 3.0) * np.sqrt(2.0 / 3.0),
                                               abs=3e-3), r
 
 
@@ -62,14 +67,16 @@ def test_mean_pull_preserved_by_the_symmetric_fringe():
 def test_skew_suppressed_and_scales_with_waist():
     a = fringe_tail_mc(**_RECORD, rho=1.0, n_atoms=10 ** 6, n_blocks=8, seed=1)
     o = fringe_tail_mc(**_SMALL, rho=1.0, n_atoms=10 ** 6, n_blocks=8, seed=1)
-    # suppression is negative (same sign as the divergence rider), and larger at
-    # the small (config S) waist than at the archival waist
-    assert a["d_skew"] < 0.0 and o["d_skew"] < 0.0, (a, o)
-    assert o["d_skew"] < a["d_skew"], (a["d_skew"], o["d_skew"])
-    # seed-robust magnitudes: ~-0.05 archival, ~-0.16 config S
-    assert a["d_skew"] == pytest.approx(-0.052, abs=0.012), a
-    assert o["d_skew"] == pytest.approx(-0.156, abs=0.018), o
-    # config-S suppression is a material fraction of the +0.566 triangle skew
+    # THE SUPPRESSION OPPOSES THE SKEW IT SUPPRESSES, so its sign MIRRORS with the ramp's
+    # support (O27, 2026-09-17): the blue-sided triangle's skew is negative, and a term that
+    # moves it toward zero is positive. Its MAGNITUDE is unchanged and is what the record
+    # quotes, larger at the small (config S) waist than at the archival one.
+    assert a["d_skew"] > 0.0 and o["d_skew"] > 0.0, (a, o)
+    assert o["d_skew"] > a["d_skew"], (a["d_skew"], o["d_skew"])
+    # seed-robust magnitudes: ~0.05 archival, ~0.16 config S
+    assert a["d_skew"] == pytest.approx(+0.052, abs=0.012), a
+    assert o["d_skew"] == pytest.approx(+0.156, abs=0.018), o
+    # config-S suppression is a material fraction of the triangle skew's 0.566 magnitude
     assert abs(o["d_skew"]) > 0.20 * 0.5657, o
 
 
@@ -82,8 +89,9 @@ def test_third_cumulant_and_variance_coefficients():
     f_res = 2.0 * o["f_res_var"]
     exc_over_var0 = (o["var"] - o["var_nofringe"]) / o["var_nofringe"]
     assert exc_over_var0 / f_res == pytest.approx(4.5, abs=0.3), o
-    # the standardized-skew leverage is negative and O(-10) per f_res
-    assert -14.0 < o["d_skew"] / f_res < -8.0, o
+    # the standardized-skew leverage opposes the skew, so it is positive and O(+10) per
+    # f_res on the blue side (O27); the magnitude is the physics and did not move
+    assert 8.0 < o["d_skew"] / f_res < 14.0, o
 
 
 def test_shorter_coherence_window_resolves_more_fringe():

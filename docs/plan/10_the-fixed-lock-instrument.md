@@ -1,12 +1,9 @@
 *Chapter 10 of 12 of [the plan](../PLAN.md)*
 
-**The question.** Which instruments acquire the fixed-lock campaign, at which settings, and what actually limits them?
-**Takes.** Chapter 9's fixed-lock design and the measured noise budget of [`quantisation.csv`](../../results/quantisation.csv).
-**Gives.** The oscilloscope allocation and settings, the noise budget that retires the bit-depth argument, the pulse and count-rate branch, and the day-one measurement list.
-**Skip if.** You want the acquisition record's format, which is chapter 8, or the lock itself, which is chapter 9.
+This chapter builds on chapter 9's fixed-lock design and the measured noise budget of [`quantisation.csv`](../../results/quantisation.csv) and sets out the oscilloscope allocation and settings, the noise budget that retires the bit-depth argument, the pulse and count-rate branch, and the day-one measurement list. The acquisition record's format, which is chapter 8, or the lock itself is chapter 9.
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
-> explains the measurement in six sentences, then defines every term.
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
+> defines every term and symbol used anywhere in this repository.
 
 ### 10c.6 the oscilloscopes
 
@@ -22,7 +19,9 @@ three that no other measurement supplies are the fluorescence, the ramp monitor
 and the cavity error signal. The fourth is contended between a marker for the
 modulator state and a second detector, either a second platform's or a monitor
 of the retro-reflected power. The sweep synchronisation is on the
-external trigger input, so no signal channel is spent on it. The cavity error channel is the in-situ
+external trigger input, so no signal channel is spent on it.
+
+The cavity error channel is the in-situ
 laser-noise witness the 2025 session had to reconstruct afterwards from rulers,
 **over part of the band and not all of it**: a servo suppresses in-loop noise
 below its bandwidth, so beneath that frequency the laser follows the cavity and
@@ -118,7 +117,7 @@ oscilloscopes the analog and counting chains can run on the same photons
 simultaneously, and any disagreement between them measures the detection
 systematic directly rather than assuming it away.
 
-### 10c.7 what the pedestal is good for
+### 10c.7 Uses of the pedestal
 
 A wide span makes the pedestal visible for the first time, and limit two of
 section 10a records that it is not the band excess. What it does carry is the
@@ -261,12 +260,16 @@ for every shape observable in this section, since the record's own branching, a
 theory-only value with no measurement behind it, puts 34 per cent of the
 cascade through the D1 leg this bench collects
 (`results/trapping_channels.csv`), at the cost of the filtering argument that
-currently rests on the photocathode red edge. Collected separately, the two
+currently rests on the photocathode red edge.
+
+Collected separately, the two
 legs also give a trapping monitor for nothing: their ratio is a fixed atomic
 branching absent reabsorption, and the D1 photon is about half as reabsorbed as
 the D2 photon, so the ratio drifts across the density sweep if and only if
 trapping is live, while a detector nonlinearity, which acts on the count rate
-both legs share, leaves it alone. **The trade-off, on the record's own
+both legs share, leaves it alone.
+
+**The trade-off, on the record's own
 cells.** The 795 nm passband was chosen to collect the less-reabsorbed leg
 without a 1.3 micron detector (owner, 2026-09-06). A 780 nm passband in its
 place collects two thirds of the cascade instead of one third, but the D2
@@ -276,7 +279,9 @@ temperature of the sweep (3 per centimetre for 85Rb at 70 C, 160 at 130), so
 the extra photons are trapped harder. Trapping does not destroy them, it
 blurs where they come from and it doubles the density rollover of M7 on every
 amplitude observable, so 780 alone gives nearly twice the photons and a
-doubled trapping term. The move is therefore both legs on two detectors and no swap of one
+doubled trapping term.
+
+The move is therefore both legs on two detectors and no swap of one
 passband for the other, which costs a second scope channel and a dichroic, buys close
 to three times the photons, and makes the trapping correctable through the
 ratio monitor above. Calibrated against the D1 and D2 lines driven directly,
@@ -286,7 +291,7 @@ the sum of the two decay rates it fixes both matrix elements and so the 5P half
 of the disputed 6S polarizability, +624 a.u. of the two groups whose balance
 sets the sign.
 
-### 10c.10 the comb as a statistical instrument, not only a ruler
+### 10c.10 The comb as a statistical instrument
 
 With the modulator on, a science trace carries a small number of teeth on each
 line rather than one profile, and they are not merely a frequency scale. The

@@ -1,26 +1,26 @@
-# Theory note: the AC-Stark ramp lineshape of a focused two-photon transition
+# The AC-Stark ramp lineshape of a focused two-photon transition
 
 *A short self-contained note for a theoretical check and a contribution. The
 backing pipeline and data live in this repository. Nothing here depends on
 reading the code. Notation follows the README, and every frequency is on the
 two-photon **transition axis** (twice the laser frequency) unless stated.*
 
-**The question.** What does a focused beam do to the shape of a two-photon
-line, and how much of that is new?
-**Takes.** Nothing. The note is self-contained and does not require the code.
-**Gives.** The ramp law and its cumulants, the diverging-beam form and its sign
-flip, the two width companions, the open sign disagreement on the
-polarizability, and an explicit position against the nearest prior art.
-**Skip if.** You want the recorded result. This is the theory behind it, and
-its central quantity is below the 2025 noise floor.
+A focused beam distributes AC-Stark shifts across the atoms it illuminates, so a
+two-photon line carries that distribution and not a single shift. This note
+derives the distribution's closed form and its cumulants, the diverging-beam
+form and the sign reversal it predicts, the two companion terms in the width
+channel, and the polarizability sign disagreement that the record adjudicates.
+It closes with the one theoretical question that remains genuinely open. A
+reader seeking the recorded 2025 result instead of the theory behind it should
+begin at [RESULTS.md](RESULTS.md), since the quantity treated here sits below
+that year's noise floor.
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](GLOSSARY.md)
-> explains the measurement in six sentences, then defines every term
-> and symbol used anywhere in this repository.
+> [GLOSSARY.md](GLOSSARY.md) states the measurement in six sentences and
+> defines every term and symbol used anywhere in this repository.
 
-## 1. What this note asks
+## 1. Purpose and scope
 
-We drive the Doppler-free $5S_{1/2}\to 6S_{1/2}$ two-photon transition in a Rb
+This work drives the Doppler-free $5S_{1/2}\to 6S_{1/2}$ two-photon transition in a Rb
 vapour cell with a **focused, retro-reflected** 993 nm beam. Because the
 excitation rate goes as the square of a spatially inhomogeneous intensity, the
 distribution of AC-Stark shifts across the illuminated atoms is not a single
@@ -31,43 +31,45 @@ Kovarskii, Masalov and Perel'man, and §2 shows the
 reduction. What this note does is evaluate it for the case where the
 distribution is set by beam geometry rather than by laser statistics, which is
 where their integral closes and ours does not stay formal. It gives that
-evaluation, its moments, the drift-immune way we extract it from a lock too
+evaluation, its moments, the drift-immune extraction from a lock too
 unstable to hold a line centre, and the field-intensity convention that fixes
-its coefficient. It closes with **one genuinely open theoretical question**, the
+its coefficient.
+
+It closes with **one genuinely open theoretical question**, the
 survival of the closed form under the real collection geometry, which is the
 natural place for a contribution.
 
 
-| you want | go to |
+| section | subject |
 |---|---|
-| the derivation and its moments | §2 |
-| whether atomic motion destroys it | §2.1 |
-| why a light shift is measurable from a drifted dataset | §3 |
-| what the 2025 data actually returned | §4 |
-| the intensity convention, and the $\Delta\alpha$ sign dispute | §5 |
-| what is new here and what is not | §6 |
-| the open question | §7 |
+| §2 | the derivation and its moments |
+| §2.1 | the survival of the form under atomic motion |
+| §3 | the measurability of a light shift from a drifted dataset |
+| §4 | the return of the 2025 dataset |
+| §5 | the intensity convention and the $\Delta\alpha$ sign dispute |
+| §6 | the novelty position |
+| §7 | the open question |
 [methods chapter 3](methods/03_the_ac_stark_ramp.md). This note states the
 
 ## 2. The ramp law
 
 Let the two-photon excitation rate be $\propto I^{n}$ with $n=2$ (one power of
-$I$ per photon), and the light shift of the transition be $s = -\kappa I$ with
-positive $\kappa$ (red shift, sign discussed in §5). In a Gaussian beam
+$I$ per photon), and the light shift of the transition be $s = +\kappa I$ with
+positive $\kappa$ (a blue shift, this record's $\Delta\alpha$ being negative, with the sign discussed in §5). In a Gaussian beam
 $I(r)=I_0 e^{-2r^2/w_0^2}$, put $u \equiv I/I_0 \in (0,1]$. The signal from the
 annulus $[r,r+dr]$ is
 
 $$dS \propto I^{n}(2\pi r\ dr) \propto u^{n} r\ dr$$
 
 Changing variable with $du/u = -(4r/w_0^2)\ dr$ gives $dS \propto u^{n-1} du$,
-and with $s=-S_0 u$ (where $S_0=\kappa I_0$ is the on-axis maximum shift) the
+and with $s=S_0 u$ (where $S_0=\kappa I_0$ is the on-axis maximum shift) the
 signal-weighted shift distribution is
 
-$$\boxed{\ f(s) \propto |s|^{n-1}\quad\text{on}\quad s\in[-S_0,0]\ }$$
+$$\boxed{\ f(s) \propto s^{n-1}\quad\text{on}\quad s\in[0,S_0]\ }$$
 
-For $n=2$ this is the triangular **ramp** $f(s)=2|s|/S_0^2$.
+For $n=2$ this is the triangular **ramp** $f(s)=2s/S_0^2$.
 
-**This relation is not new, and the note should not be read as claiming it.**
+This relation is not new, and the note should not be read as claiming it.
 <!-- term-of-art: review names the cited article's genre -->
 It reduces exactly to Eq. (5.3) of the 1980 review of Delone, Kovarskii,
 Masalov and Perel'man ([delone1980](lit/delone1980.md)) once the geometric
@@ -83,43 +85,50 @@ the statistics of a fluctuating field, unknown a priori, so their integral
 stays formal. In a focused beam the distribution is fixed by **geometry**, the
 integral closes, and the moments follow by direct integration:
 
-$$\langle s\rangle = -\tfrac{2}{3}S_0,\qquad
+$$\langle s\rangle = +\tfrac{2}{3}S_0,\qquad
 \mathrm{Var}(s) = \tfrac{1}{18}S_0^2,\qquad
-\kappa_3 = +\tfrac{1}{135}S_0^3$$
+\kappa_3 = -\tfrac{1}{135}S_0^3$$
 
 so the ramp's intrinsic standardised skewness is the pure number
 
-$$g_1 = \frac{\kappa_3}{\mathrm{Var}^{3/2}} = \frac{18^{3/2}}{135} \approx +0.566$$
+$$g_1 = \frac{\kappa_3}{\mathrm{Var}^{3/2}} = -\frac{18^{3/2}}{135} \approx -0.566$$
 
 independent of $S_0$. It is a property of the ramp component's shape and a
 diagnostic, not a standardised skewness of the observed line, which is
 ill-defined (see §3).
 
-**The law is general in $n$, and the next rung up is worth naming** (added
+The law is general in $n$, and the next rung up is worth naming (added
 2026-08-09 when a one-colour three-photon target entered the future programme,
 `FUTURE_TRANSITIONS_titsapph.md` §3.5). Direct integration of
 $f(s)\propto|s|^{n-1}$ gives
 
-$$\langle s\rangle=-\frac{n}{n+1}S_0,\qquad
+$$\langle s\rangle=+\frac{n}{n+1}S_0,\qquad
 \mathrm{Var}(s)=\frac{n}{(n+1)^2(n+2)}S_0^2,\qquad
-g_1=+\frac{2(n-1)}{n+3}\sqrt{\frac{n+2}{n}}$$
+g_1=-\frac{2(n-1)}{n+3}\sqrt{\frac{n+2}{n}}$$
 
-The sign is positive because the substitution $u=-s/S_0$ maps the density onto
-a Beta distribution with parameters $(n,1)$ on the unit interval, whose own skew
-is negative, and the reflection
-$s=-S_0u$ flips it. The magnitude rises with $n$: zero at $n=1$, 0.566 at $n=2$, and 0.861 at
+The sign is negative because the substitution $u=s/S_0$ maps the density straight
+onto a Beta distribution with parameters $(n,1)$ on the unit interval, whose own
+skew is negative: the weight piles against the upper edge $u=1$, which is the
+on-axis shift, and the thin tail runs back toward the unshifted line. No
+reflection enters. On the red side the same density is $s=-S_0u$ and every odd
+cumulant changes sign with it, which is the one thing owner order O27 settled
+for this record.
+
+The magnitude rises with $n$: zero at $n=1$, 0.566 at $n=2$, and 0.861 at
 $n=3$, where the distribution is the parabola $f(s)=3s^2/S_0^3$ with
-$\langle s\rangle=-\tfrac34 S_0$ and $\mathrm{Var}=\tfrac{3}{80}S_0^2$. So a
+$\langle s\rangle=+\tfrac34 S_0$ and $\mathrm{Var}=\tfrac{3}{80}S_0^2$. So a
 three-photon rung would carry a shape asymmetry 1.52 times this one's on a
 relatively tighter distribution, which is the reason to want it. The moment
 machinery already accepts the photon order, and
-`tests/test_lineshape.py` pins $n=1$, 2 and 3. The one-photon case $n=1$, a Stark-induced forbidden line
-for instance, gives the uniform distribution, $\langle s\rangle=-S_0/2$ and
+`tests/test_lineshape.py` pins $n=1$, 2 and 3.
+
+The one-photon case $n=1$, a Stark-induced forbidden line
+for instance, gives the uniform distribution, $\langle s\rangle=+S_0/2$ and
 $\kappa_3=0$, exactly zero skew. The skewness observable therefore exists *only
 because the two-photon rate goes as $I^2$*, which is the sharpest statement of
 what is specific here.
 
-**The three-photon case costs more than that paragraph makes it sound**
+The three-photon case costs more than that paragraph makes it sound
 (added 2026-08-10). A three-photon Rabi frequency goes as $I^{3/2}$ while a
 light shift goes as $I$, so the ratio of rate to shift is fixed by the atom and
 not by a knob, and the near resonance that makes such a rate viable at all is
@@ -131,8 +140,7 @@ cliff regime, where the shift greatly exceeds the linewidth. That is a
 legitimate measurement of a shift and a poor one of anything needing a narrow
 line. `FUTURE_TRANSITIONS_titsapph.md` section 3.5 carries the numbers.
 
-### 2.0a The exponent is a weak-field statement, and the dataset is near its edge
-
+### 2.0a Weak-field validity of the exponent
 ![the weak-field limit and what leaving it costs the predicted skewness](../figures/fig24_weak_field_limit.png)
 
 *The whole section in one picture. On the left, the weight the atom actually
@@ -155,10 +163,10 @@ slope in intensity falls below $n$, and **the whole family above moves with it**
 $g_1$ shrinks toward its $n=1$ value of zero.
 
 This matters because $s$ scales as the fourth power of the inverse waist. At
-the dataset's measured 64 µm and 225 mW it is 0.033, so the weak-field law is
+the dataset's 64 µm convention and 225 mW it is 0.033, so the weak-field law is
 good to a per cent and nothing here is affected. At the 16 µm the fixed-lock
 session proposes it is 8.5, and integrating the moments with the saturated
-weight instead moves the predicted axial skew from $-0.36$ to $-1.07$. So the
+weight instead moves the predicted axial skew from $+0.36$ to $+1.07$. So the
 committed axial machinery, which takes an integer photon order, is being asked
 a question outside its range at exactly the configuration that was chosen to
 make the skew large.
@@ -173,7 +181,7 @@ profile that is flat in one coordinate, including the exponential evanescent
 field of a nanofibre. That is the bridge to the fibre geometry of the proposed
 extension.
 
-### 2.1 Does the atoms' motion wash the ramp out? (M19)
+### 2.1 Motional averaging of the ramp (M19)
 
 The derivation above is quasi-static. Each atom sits at one intensity and
 carries one shift. Real atoms cross the beam, sweeping their own shift from
@@ -187,7 +195,7 @@ mean shift. So a composite model convolving a static ramp with a transit
 lineshape needs a justification rather than an assumption, because the two
 factors describe the same atom crossing the same beam.
 
-**It survives, and the reason is a change of variables.** An atom's impact
+It survives, and the reason is a change of variables. An atom's impact
 parameter $b$ and its displacement $vt$ along the flight direction *are* the
 transverse plane, and $\mathrm{d}b\mathrm{d}(vt)$ *is* the area element. A
 uniform-density ensemble weighted by crossing flux therefore samples exactly
@@ -236,12 +244,12 @@ not this one's.
 
 *From a Gaussian beam to a triangular shift distribution. A focused beam does not
 apply one light shift, it applies a distribution of them. (a) the intensity
-profile sets each atom's shift, from zero at the dim edge to $-S_0$ on axis, with
+profile sets each atom's shift, from zero at the dim edge to $+S_0$ on axis, with
 radius in units of the beam radius $w$ at which the intensity has fallen to
 $1/e^2$ of its on-axis value. (b) the two weights that compete, many atoms sit at
 low intensity but each contributes only $I^2$ of signal, and the product is
 linear in $u$. (c) hence $f(s)\propto|s|$, a triangle with mean
-$-\tfrac{2}{3}S_0$ and intrinsic skew $+0.566$, which exists at all only because
+$+\tfrac{2}{3}S_0$ and intrinsic skew $-0.566$, which exists at all only because
 the rate goes as $I^2$, drawn as a density normalised to unit area. (d) the line
 it produces, drawn at $S_0=3$ MHz so the asymmetry is visible.*
 
@@ -254,7 +262,7 @@ are therefore dead, and a fit must give each scan its own free centre to absorb
 that motion.
 
 That has a sharp consequence for the ramp. Its first-order effect is a shift of
-the line, the centroid pull $-\tfrac23 S_0$, and a shift is exactly what a
+the line, the centroid pull $+\tfrac23 S_0$, and a shift is exactly what a
 per-scan free centre absorbs. In the drifted dataset the pull is degenerate
 with the drift and is not a usable handle on $S_0$. What survives is the ramp's
 **shape asymmetry**, which no free centre can absorb because it is not a
@@ -275,7 +283,7 @@ wrong core (Voigt where the truth is Voigt $\otimes$ transit-cusp) exchanges
 against it. Unlike raw-moment window-dependence, that is *checkable*, by BIC
 and the M8 cusp fit.
 
-**Why the asymmetry is identified while the width is not.** The drift argument
+The asymmetry is identified where the width is not. The drift argument
 above is about *translations*, and a per-scan free centre absorbs a shift but
 cannot absorb a shape change. A second and independent argument is about *the
 other broadeners*, and it is what makes the fit identifiable at all. The model
@@ -286,7 +294,9 @@ component cannot produce asymmetry at any width. The ramp is the *only*
 asymmetric factor in the model, so the fitted asymmetry coefficient does not
 exchange against $\Gamma_{\rm nat}$, $\gamma_{\rm coll}$, $\sigma_{\rm laser}$ or
 the transit width, which is the four-way degeneracy that dominates the width
-channel and that M9 and M4c work on. (Stated as symmetry rather
+channel and that M9 and M4c work on.
+
+(Stated as symmetry rather
 than as $\kappa_3 = 0$. Cumulants are additive under convolution and vanish for
 symmetric factors, but a Lorentzian has no finite third moment (the windowed, self-centred form and its measured remainder: [the concept page](wiki/third-cumulant.md)), so symmetry is
 the property the fit actually uses. This is the same reason the extraction is a
@@ -297,14 +307,15 @@ error in the assumed core, not a mis-estimated symmetric width. That is the
 core-model dependence above, and it is checkable by BIC and the M8 cusp fit,
 which is why those exist.
 
-**And the width channel is not merely worse, it is blind.** At the campaign's
-maximum 225 mW with the measured $w_0 = 64$ µm prior, `stark_shift_S0_mhz` gives
-$S_0 = 0.360$ MHz. The ramp's density is $f(s)\propto|s|$ on $[-S_0,0]$, so it
-peaks at $|s|=S_0$ and halves at $|s|=S_0/2$: the kernel's full width at half
+And the width channel is not merely worse, it is blind. At the campaign's
+maximum 225 mW, at the $w_0 = 64$ µm convention (the waist is not measured), the record's
+prediction (`stark.kappa_pred_per_watt`, the ideal coefficient times the on-axis aperture factor) is
+$S_0 =$ [0.348](../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred:shared") MHz. The ramp's density is $f(s)\propto s$ on $[0,S_0]$, so it
+peaks at $s=S_0$ and halves at $s=S_0/2$: the kernel's full width at half
 maximum is $S_0/2$ exactly, with no grid and no fit.
 
-**The extra width it puts on the line is read from a producer, never composed
-here.** `run_identifiability.py` evaluates the profile at the fitted widths and
+The extra width it puts on the line is read from a producer, never composed
+here. `run_identifiability.py` evaluates the profile at the fitted widths and
 reports the whole width-channel signal at the predicted shift as
 [6.48](../results/identifiability.csv "ref:identifiability:width_signature_broadening_khz:gaussian_branch") kHz on the Gaussian branch and
 [7.23](../results/identifiability.csv "ref:identifiability:width_signature_broadening_khz:cusp_branch") kHz on the cusp. **Composing it
@@ -318,19 +329,19 @@ On a line of about 5.3 MHz that signal is a part in some 800,
 far below the width budget's own systematics. No width measurement of any
 precision reaches this signal. The asymmetry channel is not a refinement of the
 width channel but the only channel there is. Calculated 2026-07-30, requoted
-2026-08-02 at the measured waist.
+2026-08-02 at the waist convention.
 
 The reference moments the fit encodes,
 
-$$\text{centroid pull} = -\tfrac{2}{3}S_0,\qquad
-\kappa_3^{\text{ramp}} = +\tfrac{1}{135}S_0^3$$
+$$\text{centroid pull} = +\tfrac{2}{3}S_0,\qquad
+\kappa_3^{\text{ramp}} = -\tfrac{1}{135}S_0^3$$
 
 order the signal by statistical cost: pull $\propto P$, excess variance
 $\propto P^2$, skew $\propto P^3$, the last vanishing unless $n=2$, the $I^2$
 signature. The pull as a *measurement* becomes available only once a stable
 lock un-absorbs it.
 
-**Two caveats on the drift.** *Between*-scan drift is absorbed exactly by the
+Two caveats attach to the drift argument. *Between*-scan drift is absorbed exactly by the
 free centres. *Within*-scan drift is not a pure translation. It smears the line
 asymmetrically in a scan-direction-dependent way that couples the fitted centre
 to the fitted asymmetry. At the established $\lesssim0.1$ MHz within-scan drift
@@ -342,10 +353,12 @@ free-centre fit, so the linear sweep warp lands in the fitted width and only
 the residual curvature can skew. At the dataset's within-scan drift the fitted
 ramp coefficient shifts by well under a fifth of its SNR-limited statistical
 error, a few $\times 10^{-3}$ on $S_0$ for the dominant linear part, and
-reaches order $S_0$ only at tens of times the dataset's rate. The within-scan
+reaches order $S_0$ only at tens of times the dataset's rate.
+
+The within-scan
 skew is therefore bounded and small, not unmodelled.
 
-**Status.** In the 2025 sweep the fitted asymmetry coefficient is consistent
+In the 2025 sweep the fitted asymmetry coefficient is consistent
 with zero. At $\le225$ mW its significance (the skew grows only as $S_0^3$)
 sits below the SNR $\approx130$ floor, so the estimator, correct as it is,
 returns an **upper bound, not a detection**. A fit always returns *some* value
@@ -353,7 +366,7 @@ with an error bar, and the discipline is to report a bound unless it clears
 that bar, which at the dataset's intensity it does not.
 
 A fixed-lock session would change this two ways. The fixed lock would recover
-the first-order pull ($-\tfrac23 S_0 \propto P$, a shift of order MHz against a
+the first-order pull ($+\tfrac23 S_0 \propto P$, a shift of order MHz against a
 stable reference, and the primary $S_0$ measurement once it is no longer
 absorbed by a free centre). The small waist, where $S_0$ would be about
 16 times larger, would lift the shape asymmetry into a detection, though not by
@@ -362,10 +375,10 @@ third cumulant's magnitude and, for a long enough collection window, its sign
 (§7). Both are conditional on the small-waist skew corrections, the
 beam-divergence collection average of §7 (the larger, sign-flipping one) and
 the standing-wave fringe-resolved tail of §5 (same-sign, and fit jointly with
-it). Those move the ramp form, and the pull coefficient off $-\tfrac23$, at
+it). Those move the ramp form, and the pull coefficient off $+\tfrac23$, at
 small waist, and must be applied before $S_0$, hence $\Delta\alpha$, is read.
 
-**The hybrid, made principled.** The three cumulants are not three rival
+The three cumulants are not three rival
 measurements to be combined or cherry-picked. They are three analytic
 functionals of the *one* parameter $S_0(P)$
 (`lineshape.ramp_moment_contributions`): pull $\propto S_0$, excess variance
@@ -378,12 +391,14 @@ pull where $S_0$ is small, the skew only where $P^3$ has climbed clear of
 noise), and the others are consistency checks with their own error bars. A
 spurious asymmetry from a fit artifact or from the diverging-beam geometry will
 not *also* reproduce the correct, more-robust lower-order pull and variance for
-the same $S_0$. So the claim is never "we measured the skew" but "pull,
+the same $S_0$.
+
+So the claim is never "the skew was measured" but "pull,
 variance and skew are jointly consistent with one triangular ramp of amplitude
 $S_0(P)$". The extraction stays single: one fitted profile per condition and
 three functionals of it, never several estimators of one moment.
 
-## 4. What the dataset returns
+## 4. Results from the 2025 dataset
 
 At fixed density the dataset tests the *convention-free* content, and is
 consistent with it. Across a $9\times$ power sweep the linewidth is flat to
@@ -412,7 +427,7 @@ summary widths. The 20-summary-width construction is kept as the independent
 simpler bracket, so there are two constructions of one physical channel and
 still no second channel to corroborate it.
 
-**The centre channel gives no bound either** (M21,
+The centre channel gives no bound either (M21,
 `scripts/run_stark_centres.py`). A peak position is a frequency only within a
 *display epoch*, a run of unchanged scope horizontal position, so each epoch
 carries a free offset, and of the 26 epochs covering the power sweep only three
@@ -437,6 +452,7 @@ times the statistical error. And the 4 July evening session, whose
 alternating ladders are the design the campaign lacked, cannot fix its own
 frequency origin, because each 5 s record contains one crossing of the line
 and not the mirror pair a self-referenced apex would need.
+
 Every obstruction is the same shape, no frequency reference independent of the
 knobs, which promotes the unexported ramp-monitor channel from a convenience to
 the precondition for this channel existing.
@@ -444,7 +460,7 @@ the precondition for this channel existing.
 carries the forecasts and the arithmetic.
 
 Through the §5 convention the M23 bound maps to a $\Delta\alpha$ bracket below
-the computed $1093$ at the measured $w_0=64$ µm, so the dataset constrains
+the computed $1093$ at the $w_0 = 64$ µm convention, so the dataset constrains
 the $(\Delta\alpha,\ \text{intensity})$ pair rather than either alone. The
 prior is now the lineage measurement itself (§5), a direct test rather than an
 inference pointing at an external number. Two documented effects push the
@@ -457,8 +473,7 @@ itself, since the mapping inherits $w_0$. A fixed lock would measure the pull
 $\propto S_0$ directly at a small waist, turning this bracket into the
 coefficient.
 
-### 4.1 The width channel has two companions with the same power signature
-
+### 4.1 Companion terms in the width channel
 ![the hyperfine branch, how often it fires, and the three terms it competes with](../figures/fig23_hyperfine_pumping.png)
 
 *The second companion is the one that needs a picture. Every real 6S decay
@@ -495,7 +510,7 @@ $\Gamma_\text{FWHM}$, which takes the companion-to-ramp ratio to 4.9–6.2. The
 two-level saturation law assumes a closed system. This is the correction for
 its being open.
 
-**The direction is favourable, which is why no bound moves.** If the observed
+The direction is favourable, which is why no bound moves. If the observed
 $P^2$ broadening is mostly companion rather than ramp, the true limit on the
 Stark coefficient is *tighter* than quoted. Adding the saturation term to the
 forward model and re-profiling confirms it: the width-only bound moves from
@@ -512,8 +527,8 @@ rather than a derivation for a two-photon transition.
 [notes/two_photon_saturation_companion.md](notes/two_photon_saturation_companion.md)
 carries the derivation, the probe and what it does not license.
 
-**And the degeneracy is complete in both of the width channel's continuous
-knobs, which is why no sweep can break it.** All three terms grow as $P^2$, and all three
+And the degeneracy is complete in both of the width channel's continuous
+knobs, which is why no sweep can break it. All three terms grow as $P^2$, and all three
 also grow as the inverse fourth power of the waist: the ramp because its width
 increment goes as $S_0^2$ and $S_0$ goes as $w_0^{-2}$, the companions because
 $s$ carries $\Omega^2$ and $\Omega$ is two-photon. So neither a power sweep
@@ -524,7 +539,7 @@ while the ramp pulls the centroid by $\tfrac23 S_0$. That channel is the
 centroid pull, and reaching it is the fixed lock's job, which is the same
 conclusion §3 reaches from the other direction.
 
-**There is a second separator, and it is a discrete one (2026-08-10).** The
+There is a second separator, and it is a discrete one (2026-08-10). The
 ramp and the saturation are identical on all four dataset lines, because the
 two-photon Rabi frequency is $F$-independent here and the hyperfine factor is
 exactly 1 (`constants.ABUNDANCE_RB85`). The pumping is not. Its branching is
@@ -549,8 +564,10 @@ decay evolves the density matrix as $\rho\to\sum_q D_q\rho D_q^\dagger$, which
 is basis-free, and neither dipole operator touches the nucleus, so evaluating it
 in $|m_J,m_I\rangle$ makes the nuclear spin a spectator and the leg ratio
 reduces to $2(1-p)$ with $p$ the purely electronic non-flip probability, $5/9$
-and $7/9$. **A sum of probabilities over an intermediate basis is not itself
-basis-free**, so that argument does not on its own license the hyperfine sum.
+and $7/9$.
+
+A sum of probabilities over an intermediate basis is not itself
+basis-free, so that argument does not on its own license the hyperfine sum.
 What does is that the $5P$ hyperfine splitting far exceeds the linewidth, so
 those coherences dephase, and that the prepared state is unpolarised, so the
 $m$ coherences are absent. Neither has to be taken on trust: check 7 of
@@ -590,7 +607,7 @@ factor of thirty is real, and it is not the binding constraint. See the
 The shape and centred moments above are convention-free. The **magnitude** of
 $S_0$, needed to turn a measured pull into a differential polarizability
 $\Delta\alpha = \alpha_{6S}-\alpha_{5S}$ or to predict $S_0$ from a computed
-$\Delta\alpha$, requires fixing the $\langle E^2\rangle$ convention. We adopt
+$\Delta\alpha$, requires fixing the $\langle E^2\rangle$ convention. This record adopts
 the standard AMO one ([Grimm, Weidemüller &
 Ovchinnikov](lit/grimm2000.md), *Adv. At. Mol. Opt. Phys.* **42**, 95 (2000),
 and [Steck](lit/steck_rb.md)): for a real field $E(t)=E_0\cos(\omega t)$ the time
@@ -607,7 +624,7 @@ Here $I_{\text{eff}}$ is the time-averaged on-axis intensity of the forward
 plus retro beams and $\rho$ is the retro power ratio. Code:
 `lineshape.stark_shift_S0_mhz`.
 
-**No coherent standing-wave enhancement, and why.** A *fast-axial* atom crosses
+The standing wave adds no coherent enhancement. A *fast-axial* atom crosses
 the $\lambda/2$ fringes at $2v_z/\lambda\sim0.56$ GHz (mean axial speed) while
 the shift depth is $\lesssim1$ MHz, so its frequency-modulation index is about
 $2\times10^{-3}$. In [Stalnaker](lit/stalnaker2006.md)'s FM framework (*Phys.
@@ -616,15 +633,15 @@ the carrier at the fringe-*mean* intensity, so $I_{\text{eff}}$ **is** that
 standing-wave mean and the pull is exactly fringe-immune. There is no factor of
 two to add.
 
-**The fringe-resolved tail suppresses the skew.** The line is Doppler-free over
+The fringe-resolved tail suppresses the skew. The line is Doppler-free over
 **all** $v_z$, so near-transverse atoms sit at a frozen fringe and sample the
 node-to-antinode arcsine. That is a fringe-resolved tail (weight
 $f_\text{res}$) which keeps the mean but, because the fringe *multiplies* the
 shift $s\to s(1+x)$ with $x$ arcsine, suppresses the ramp skew:
-$\kappa_3\to S_0^3(1/135-f_\text{res}/10)$ at $\rho=1$, a $-13.5 f_\text{res}$
+$\kappa_3\to -S_0^3(1/135-f_\text{res}/10)$ at $\rho=1$, a $-13.5 f_\text{res}$
 fractional leverage $\propto$ contrast², of which only
 $P=f_\text{res}\sigma_x^2$ is observable. Measured as the change in standardized
-skew over the intrinsic +0.566 of the triangle, it is negligible at $w_0=64$ µm
+skew over the intrinsic 0.566 magnitude of the triangle, it is negligible at $w_0=64$ µm
 (≈7–14% of an already-below-noise skew, `results/fringe_tail.csv`, whose
 7–14% spread is the open coherence-window choice, not Monte-Carlo noise: the
 block-to-block error on the underlying standardized skew, `d_skew_mc_err` in
@@ -633,29 +650,29 @@ the same file, is 2 to 4% of the value it accompanies) and
 divergence correction, so the two must be fit jointly at small waist
 (quantified and coherence-window-bracketed in `fringe_tail`).
 
-**The predicted magnitude.** With $\Delta\alpha = 1093$ a.u. ([Orson *et
-al.*](lit/orson2021.md) 2021, sourced below) this gives $S_0 = 0.35$ MHz
+With this record's $\Delta\alpha$ (§5.0) in place of Orson's 1093 a.u., and the on-axis aperture factor, the prediction is
+$S_0 =$ [0.348](../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred:shared") MHz
 (transition) at $P=225$ mW, $w_0=64$ µm, $\rho=0.94$. It grows to $5.6$ MHz
 at $w_0=16$ µm, which is why a small waist would lift the ramp asymmetry to
 a detection, though *not* by the on-axis $S_0^3$ cube of the intensity gain,
 since the axial average over the collection window changes the third cumulant's
 magnitude and, past $Z_c/z_R\approx1.12$, its sign (§7).
 
-**Sign, and provenance.** The $\langle E^2\rangle$ convention is magnitude-only.
-The *direction* of the pull is set by $\mathrm{sign}(\Delta\alpha)$, and
-$\Delta\alpha$ is [Orson *et al.*](lit/orson2021.md) 2021's published value
+The $\langle E^2\rangle$ convention is magnitude-only.
+The *direction* of the pull is set by $\mathrm{sign}(\Delta\alpha)$. Until the
+ruling of 2026-09-17, $\Delta\alpha$ was [Orson *et al.*](lit/orson2021.md) 2021's published value
 (*J. Phys. B* **54**, 175001, prior art on this exact 5S–6S line). They compute
 $\alpha_{56}=\alpha_{5S}-\alpha_{6S}=-1093$ a.u. "in a manner similar to
-[Martin 2019](lit/martin2019.md)", so our
-$\Delta\alpha=\alpha_{6S}-\alpha_{5S} =+1093$ is positive (6S pulled down more
-than 5S, hence red shift, hence positive $S_0$). This was formerly flagged as
+[Martin 2019](lit/martin2019.md)", so this record's
+$\Delta\alpha=\alpha_{6S}-\alpha_{5S}$ read $+1093$ until 2026-09-17, positive (6S pulled down more
+than 5S, hence a red shift). This was formerly flagged as
 the number most wanting a theorist's check. It is now (a) a **cited** value on
-our exact
-transition and (b) **cross-checked**, in that our `stark_shift_S0_mhz`
+this record's exact
+transition and (b) **cross-checked**, in that this record's `stark_shift_S0_mhz`
 reproduces Orson's own $-0.66$ MHz shift prediction (0.8 W, 63 µm) to the digit
 (`test_stark_S0_reproduces_orson2021`).
 
-**The independent recompute now exists in-repo** (`rb5s6s/polarizability.py`,
+The independent recompute now exists in-repo (`rb5s6s/polarizability.py`,
 M16), a sum-over-states model from Safronova-lineage matrix elements. Two of
 its three anchors are held out and one is not, and the distinction is worth
 making rather than blurring. Held out, and therefore evidence: it reproduces
@@ -666,7 +683,9 @@ is *fixed by* that value (`TAIL_6S` in `rb5s6s/polarizability.py`, and
 `results/polarizability.csv` records the row as tail-calibrated), so the
 agreement there is arithmetic rather than a test. It **confirms the
 magnitude**,
-$|\Delta\alpha(993)| =$ [-1131.8](../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive") ± [5.9](../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive:err") a.u. once that group is summed dynamically to 12P and beyond (`results/polarizability_deep.csv`: the 9P-and-above group is [15.0](../results/polarizability_deep.csv "ref:polarizability_deep:dynamic_6s_9p_and_above:at_drive") ± [1.3](../results/polarizability_deep.csv "ref:polarizability_deep:dynamic_6s_9p_and_above:at_drive:err") a.u. at the drive against the module's static tail of a fifth of that, its static size checks against Safronova and Safronova 2011's own residual at [-0.81](../results/polarizability_deep.csv "ref:polarizability_deep:static_tail_pull:computed_vs_SS2011") sigma, the quadrupole channel enters at [1e-04](../results/polarizability_deep.csv "ref:polarizability_deep:E2_over_E1_shift:at_drive") and the magnetic-dipole one at [6e-06](../results/polarizability_deep.csv "ref:polarizability_deep:M1_over_E1_shift:at_drive") of the dipole shift). The magnitude then stands [+6.5](../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha_vs_orson:at_drive") sigma of this derivation's bar from Orson's 1093, which is one bar of two: Orson's own uncertainty is not held here, and at one per cent of 1093 the separation would read about 3 sigma, so the two are apart on this derivation's bar and unresolved on the pair, **and the derivation finds the opposite sign**: $\alpha_{6S}(993)\approx-312$ a.u., because the dominant 6S
+$|\Delta\alpha(993)| =$ [-1131.8](../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive") ± [5.9](../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive:err") a.u.
+
+once that group is summed dynamically to 12P and beyond (`results/polarizability_deep.csv`: the 9P-and-above group is [15.0](../results/polarizability_deep.csv "ref:polarizability_deep:dynamic_6s_9p_and_above:at_drive") ± [1.3](../results/polarizability_deep.csv "ref:polarizability_deep:dynamic_6s_9p_and_above:at_drive:err") a.u. at the drive against the module's static tail of a fifth of that, its static size checks against Safronova and Safronova 2011's own residual at [-0.81](../results/polarizability_deep.csv "ref:polarizability_deep:static_tail_pull:computed_vs_SS2011") sigma, the quadrupole channel enters at [1e-04](../results/polarizability_deep.csv "ref:polarizability_deep:E2_over_E1_shift:at_drive") and the magnetic-dipole one at [6e-06](../results/polarizability_deep.csv "ref:polarizability_deep:M1_over_E1_shift:at_drive") of the dipole shift). The magnitude then stands [+6.5](../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha_vs_orson:at_drive") sigma of this derivation's bar from Orson's 1093, which is one bar of two: Orson's own uncertainty is not held here, and at one per cent of 1093 the separation would read about 3 sigma, so the two are apart on this derivation's bar and unresolved on the pair, **and the derivation finds the opposite sign**: $\alpha_{6S}(993)\approx-312$ a.u., because the dominant 6S
 couplings, 6S–6P at 2.73 and 2.79 µm, are driven far blue-detuned at 993 nm and
 push 6S *up* while 5S is pushed *down*.
 
@@ -675,7 +694,7 @@ only the largest term and the runner-up is not the one a reader would guess.
 Computed line by line through `polarizability._alpha` (2026-08-09): the 5P pair
 contributes $+214.6$ and $+409.5$ a.u., positive because 6S–5P runs *downward*.
 The 6P pair gives $-279.8$ and $-567.0$, the 7P pair $-13.2$ and $-32.4$, and the
-8P pair $-15.3$ and $-41.2$, for a line sum of $-324.7$ and $-312.2$ after tail
+8P pair $-15.3$ and $-41.2$, for a line sum of $-324.7$ and $[-312.2](../results/polarizability.csv "ref:polarizability:alpha_6s_993:model")$ after tail
 and core. So the 8P pair, at $-56.5$ a.u., is **18% of $\alpha_{6S}$ and the second
 largest upward group**, ahead of 7P. The reason is that 993 nm sits only
 345 cm^-1 blue of the *real* 6S–8P3/2 transition at 1028.67 nm, which is the
@@ -702,7 +721,7 @@ not a measurement: the sign remains unset by experiment, and the decisive
 check is still one line for a theorist, the sign of $\alpha_{6S}$ at 993 nm,
 with the fixed-lock pull direction as the experiment that would settle it.
 
-### 5.0 The sign dispute, and the adjudication that closed it
+### 5.0 The sign dispute and its adjudication
 
 An external audit (2026-07-26) proposed that the whole Orson disagreement was
 a convention artifact. It is not, but a careful reader did reach that
@@ -712,15 +731,15 @@ explicitly before anything is compared:
 | symbol | definition here | value at 993 nm |
 |---|---|---|
 | $\alpha_{5S}$, $\alpha_{6S}$ | scalar polarizability of each level | [832.4](../results/polarizability_deep.csv "ref:polarizability_deep:alpha_5s:at_drive"), [-299.4](../results/polarizability_deep.csv "ref:polarizability_deep:alpha_6s:at_drive") a.u. from the deep derivation ($+834$, $-312$ with the module's static tail) |
-| $\Delta\alpha$ | $\alpha_{6S}-\alpha_{5S}$ (**excited minus ground**) | [-1131.8](../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive") ± [5.9](../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive:err") a.u., the dynamic sum. $-1145$ was the static-tail computation and is replaced, not a second convention: it carried the 9P-and-above group statically where the drive enhances it 3 to 7 times |
+| $\Delta\alpha$ | $\alpha_{6S}-\alpha_{5S}$ (**excited minus ground**) | [-1131.8](../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive") ± [5.9](../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive:err") a.u., the dynamic sum. The module's static-tail sum is replaced, not a second convention: it carried the 9P-and-above group statically where the drive enhances it 3 to 7 times |
 | $\alpha_{56}$ (Orson's) | $\alpha_{5S}-\alpha_{6S}$ (**ground minus excited**) | $=-\Delta\alpha$ |
 | level shift | $\delta E = -\tfrac{1}{2}\alpha E^2$ | — |
 | transition shift | $-\tfrac{1}{2}\Delta\alpha E^2 \equiv +\tfrac{1}{2}\alpha_{56}E^2$ | — |
 
 The last row is the point: both conventions give the same formula, so the
 algebra is not in dispute. Orson prints $\alpha_{56}=$ [-1093](lit/orson2021.md "ref:lit:orson2021:alpha_56_au"), hence a red
-transition shift. This work computes $\Delta\alpha=-1131.8$ (and $-1145$ under the older
-static tail), that is $\alpha_{56}=+1131.8$, hence a blue one. **The sign
+transition shift. This work computes $\Delta\alpha=$ [-1131.8](../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive") (its static-tail form is in
+the private correction record), that is $\alpha_{56}$ of the opposite sign, hence a blue one. **The sign
 argument below does not depend on the magnitude**, so the 2026-09-15 adoption
 leaves it untouched. Same equation, opposite input. Both
 sides are verified from the typeset PDFs. Orson states the convention in
@@ -739,11 +758,10 @@ literature demonstrably carries printed-sign faults: [Martin 2019](lit/martin201
 quotes $+2.30$ in its abstract and Table ii against $-2.5$ in its Fig. 5
 caption for the same coefficient, verified from the held PDF.
 
-### 5.0.1 Where this work's sign is anchored
-
+### 5.0.1 Sign anchoring in this work
 $\alpha_{5S}$ here is pinned by two measurements the model does not fit: the
-static value ($+318.28$ computed against the measured $318.79(1.42)$) and the
-5S tune-out wavelength ($790.0339$ nm computed against the measured
+static value ($+[318.28](../results/polarizability.csv "ref:polarizability:alpha_5s_static:model")$ computed against the measured $318.79(1.42)$) and the
+5S tune-out wavelength ($[790.0339](../results/polarizability.csv "ref:polarizability:tuneout_5s:model")$ nm computed against the measured
 [790.032326(32)](lit/leonard2017.md "ref:lit:leonard2017:tuneout_nm"), [Leonard 2015](lit/leonard2015.md) as corrected by their
 [2017 erratum](lit/leonard2017.md), both held). A positive ground-state
 polarizability far below resonance is also required physically. Orson reports
@@ -776,7 +794,7 @@ regression-guarded (`test_the_993_sign_and_its_margin`).
 
 ### 5.0.2 The lifetime discriminant
 
-This answers the fair question of how we know the sign error is not ours. The
+This answers the fair question of how the sign error is known not to be this record's. The
 upward 6S–6P group's sign is structural: at 993 nm the drive sits above the
 2732 nm resonance, so every one of those denominators is negative. Orson's
 $\alpha_{56}=-1093$ therefore requires $\alpha_{6S}=+1925$, which the
@@ -801,17 +819,17 @@ verified: it would need Martin's tabulated values checked against their own
 printed equation, and Orson's intermediate numbers, neither available here.
 Recorded because it is testable.
 
-### 5.0.4 What resolves it
+### 5.0.4 Resolution of the dispute
 
 Every recorded result uses $|\Delta\alpha|$ and is unaffected either way.
 Orson's own AC-Stark measurement was a null at 6 MHz resolution, so the sign
 has never been set by experiment. A fixed-lock pull measurement (the sign of
 the shift-versus-power slope) settles it outright, and it has not been run.
 
-**What changed on 2026-08-24, and what did not.** The theoretical evidence
-was weighed and this record's value became
-the package's, so `rb5s6s.DELTA_ALPHA_AU` is now $-1131.8$ a.u.
-The earlier $-1145$ summed the 9P-and-above group at zero frequency. Orson's
+On 2026-08-24 the theoretical evidence was weighed and this record's value became
+the package's, so `rb5s6s.DELTA_ALPHA_AU` is now $[-1131.8](../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive")$ a.u.
+The earlier value summed the 9P-and-above group at zero frequency, and its
+digits are in the private correction record and not here. Orson's
 $+1093$ is kept beside it under its own name for the comparison. That is a
 decision about which value the framework hands its reader, taken on the three
 anchors and the lifetime discriminant above. **It is not an experimental
@@ -824,15 +842,15 @@ line for a specialist: the sign of $\alpha_{6S}$ at 993 nm.
 
 A fair question about any polarizability calculation, and it splits in two.
 
-**The driven transition is purely E1·E1, by parity.** $5S_{1/2}$ and $6S_{1/2}$
+The driven transition is purely E1·E1, by parity. $5S_{1/2}$ and $6S_{1/2}$
 are both even, so a two-photon amplitude connecting them must be even overall.
 E1·E1 is odd × odd = even and is the allowed channel. E1·M1 and E1·E2 are both
 odd × even = odd, and so vanish identically for $S\to S$. There is no multipole
 admixture to the transition amplitude to include or to bound, because the
 selection rule is exact rather than an approximation.
 
-**The polarizability does admit E2 and M1 terms, and they are far below
-everything else here.** Their nominal scales relative to $\alpha_{E1}$ are
+The polarizability does admit E2 and M1 terms, and they are far below
+everything else here. Their nominal scales relative to $\alpha_{E1}$ are
 
 $$\frac{\alpha_{E2}}{\alpha_{E1}}\sim(ka_0)^2 = 1.1\times10^{-7},\qquad
 \frac{\alpha_{M1}}{\alpha_{E1}}\sim\alpha_{\text{fs}}^2 = 5.3\times10^{-5}$$
@@ -841,10 +859,10 @@ at $k=2\pi/993.4$ nm. Against $\alpha_{6S}(993)=-312$ a.u. that is
 $3.5\times10^{-5}$ and $1.7\times10^{-2}$ a.u. The comparison that matters is
 with the questions actually open on this line. The sign dispute is a factor
 $4.6$ in a group of terms, the magnitude spread between this work and Orson is
-4.7%, and the measured $w_0$ is $\pm20$% and gates every absolute result.
+4.7%, and the $w_0$ convention carries $\pm20$% and gates every absolute result.
 Multipole corrections enter at $10^{-5}$% and $10^{-3}$%.
 
-**Nor is any multipole channel resonantly enhanced out of that suppression.**
+Nor is any multipole channel resonantly enhanced out of that suppression.
 The nearest S–D (E2) and S–S (M1) channels from either state sit
 thousands of cm⁻¹ from the 10066 cm⁻¹ drive: 5S–4D at 516.7 nm (detuned
 9289 cm⁻¹), 5S–6S M1 at 496.7 nm (10066), 6S–5D at 1796 nm (4497),
@@ -865,12 +883,14 @@ multipole-allowed one-photon resonance of either clock state falls inside the
 neglected terms contribute background and never a local pole. Granting the
 radial matrix elements two orders of magnitude of enhancement still leaves that
 background below $10^{-5}$ of the dipole background the root balances against,
-which moves the root by under a hundredth of a picometre. A ten per cent error
+which moves the root by under a hundredth of a picometre.
+
+A ten per cent error
 on the dipole inputs themselves moves it by about 75 pm, four orders of
 magnitude further. Slope table in
 [FUTURE_TRANSITIONS_titsapph.md](FUTURE_TRANSITIONS_titsapph.md) §5.1.
 
-### 5.2 What a third 993 nm photon does, quantified
+### 5.2 Third-photon contributions at 993 nm
 
 Asked 2026-08-09 and answered here because the polarizability breakdown above
 raises it: the field that drives the two-photon transition is still present once
@@ -878,7 +898,7 @@ the atom is in 6S, so what does the next photon do? The short answer is almost
 nothing, and the arithmetic is worth keeping because it closes three questions
 at once.
 
-**It reaches no resonance.** From 6S a third photon lands at 30198.75 cm^-1.
+It reaches no resonance. From 6S a third photon lands at 30198.75 cm^-1.
 Selection rules allow only $n\mathrm{P}$ from a real S state, and the nearest odd-parity
 level of any kind is 8P3/2 at 29853.79 cm^-1, so the photon arrives
 **345 cm^-1 above it**. That is 10.34 THz, about 23000 Doppler widths of the
@@ -887,7 +907,7 @@ width. The next candidates are farther: 8P1/2 at 364 cm^-1, then 9P and 6F at
 several hundred more. A single-colour three-photon resonance to 8P3/2 would need
 1004.90 nm, 11.5 nm from where this laser runs.
 
-**It is not a loss channel.** At 225 mW and the measured waist the 8P admixture of
+It is not a loss channel. At 225 mW and the waist convention the 8P admixture of
 6S is $1.7\times10^{-9}$, and the 6S to 8P scattering rate is $8.5\times10^{-4}$
 per second. Every channel together, from `hyperpolarizability.scattering_rates`
 rescaled to the campaign field, reaches 0.122 per second and is dominated by the
@@ -896,17 +916,17 @@ rate $2.194\times10^{7}$ per second that is a branching of $6\times10^{-9}$, and
 the width it adds is 0.04 Hz against a 3.4925 MHz natural width. No power law in
 the data can see it.
 
-**It cannot ionize, and the fourth photon can.** 6S sits 13558.30 cm^-1 below the
+It cannot ionize, and the fourth photon can. 6S sits 13558.30 cm^-1 below the
 33690.81 cm^-1 limit, and one photon falls 3492.06 cm^-1 short. A fourth clears
 threshold by 6574 cm^-1, which `FUTURE_TRANSITIONS_titsapph.md` already records
 for this laser. So the open process is 2+1+1 rather than 2+1, at a rate this
 experiment cannot reach.
 
-**The one footprint it does leave** is the 8P contribution to the light shift
+The one footprint it does leave is the 8P contribution to the light shift
 computed above: 18% of $\alpha_{6S}$ and 4.9% of the differential, which is a
 term to keep and the reason 8P appears in the line lists at all.
 
-**The cascade's own photons, asked and quantified (2026-08-09).** Each excitation
+The cascade emits photons of its own, quantified on 2026-08-09. Each excitation
 ends in a cascade that emits one infrared photon, 1323.9 or 1366.9 nm on
 6S to 5P, then one D-line photon, 795.0 or 780.2 nm on 5P to 5S, so the cell
 contains four more wavelengths than the drive, and the atom passes through a
@@ -926,8 +946,8 @@ at the campaign's brightest point are $1.2\times10^{-3}$ for 6S and
 $7.4\times10^{-4}$ for 5P of the illuminated atoms, so the rates are doubly
 negligible before any detuning suppression is counted.
 
-**Every pairwise two-photon combination of the five wavelengths, from 5S.** The
-sums of {993.4, 780.2, 795.0, 1323.9, 1366.9} nm photon pairs land as follows
+Every pairwise two-photon combination of the five wavelengths was enumerated from
+5S. The sums of {993.4, 780.2, 795.0, 1323.9, 1366.9} nm photon pairs land as follows
 against the even-parity levels: the drive pair on 6S exactly, which is the
 signal. Two mixed pairs, 780.2 with 1366.9 and 795.0 with 1323.9, land on 6S
 **exactly**, and must, because each is the cascade's own photon pair and energy
@@ -936,8 +956,8 @@ proximity of 780 nm to the 778 nm two-photon line. Everything else is 238 cm^-1
 or farther from any even level, and the infrared pairs land thousands of
 wavenumbers from anything.
 
-**The exactly resonant pairs are a two-step echo, and its rate is small with a
-distinctive scaling.** The first step is D-line reabsorption, which is the
+The exactly resonant pairs are a two-step echo, and its rate is small with a
+distinctive scaling. The first step is D-line reabsorption, which is the
 known radiation trapping and makes a real 5P atom. The second is an infrared
 cascade photon driving that atom 5P to 6S resonantly. At the campaign maximum,
 with the peak-rate envelope below, the second step runs at about
@@ -948,7 +968,7 @@ the photon bath and the 5P population scale as the second. That is invisible
 under the measured amplitude slopes of 1.83 to 2.12 and adds nothing a width or
 centre channel can see. ENVELOPE grade.
 
-**The light shift from the bath fields, which is the sharper question.** Four
+The light shift from the bath fields is the sharper question. Four
 new wavelengths fill the cell, so the levels are shifted by more than the
 drive. The infrared bath is ballistic, of order $10^{3}$ photons per cubic
 centimetre at the campaign maximum, an equivalent intensity below a microwatt
@@ -957,7 +977,9 @@ trapped and is the one that needs numbers. An a-priori chain, the beam-column
 excitation rate at the record's peak-rate figure, one D photon per cascade, and
 a Holstein confinement of about 64 natural lifetimes at the record's line-centre
 opacity of 160 per centimetre, gives an equivalent bath intensity of order
-$10^{2}$ milliwatts per square centimetre. That chain refutes itself at the top:
+$10^{2}$ milliwatts per square centimetre.
+
+That chain refutes itself at the top:
 such a bath would saturate the D lines and put a visible fraction of the cell in
 5P, which the data exclude on sight, so at least one link, the
 peak-rate-everywhere assumption or the confinement time, overestimates by an
@@ -969,6 +991,7 @@ drive power, like the excitation rate that sources it, and the width and centre
 channels cap any such term empirically: the width shows no power trend under
 3 to 8 per cent block scatter (C3a), and the window-referenced centre analysis
 bounds power-correlated centre motion at the few-hundred-kilohertz level (C3e).
+
 So for this dataset the bath shift is bounded well below the drive's own
 $S_0$, but it is not dismissible a priori at the precision a fixed-lock centre
 campaign aims for, and it is common-mode across the four peaks. Recorded OPEN:
@@ -977,7 +1000,7 @@ trapped-light shift properly, Holstein geometry and measured fluorescence in
 hand, or take a cell-temperature lever against it, since the trapping factor
 rides the ground-state density.
 
-**Addendum, 2026-08-09, from an independent pass on the paragraph above.** Three
+An independent pass over the paragraph above, on 2026-08-09, returned three
 corrections, and the first reverses the direction the paragraph assumed.
 
 *The confinement factor is too small, not too large, and the cell geometry now
@@ -988,8 +1011,10 @@ per centimetre, which does reproduce `density.d1_optical_depth_per_cm` at 130 C,
 the standard Doppler-limited escape factor for a cylinder, and the cell's
 dimensions as APPARATUS.md section 5 now records them, about 25 mm across and
 100 mm long, the transverse escape path is a 1.25 cm radius and the trapping
-factor is **about 500 natural lifetimes at 130 C and 140 at 110 C**, against the
-64 quoted. Reproducing 64 would need a 2 mm radius. So that link makes the
+factor is **about 500 natural lifetimes at 130 C and 140 at 110 C**, against the <!-- other-quantity: a count of natural lifetimes at 110 C, not the dilute-gas margin of docs/methods/02 -->
+64 quoted. Reproducing 64 would need a 2 mm radius.
+
+So that link makes the
 estimate eight times worse at the campaign's hottest condition, and by
 elimination the overestimate sits in the excitation-rate assumption, which is
 where a Gaussian beam column is being treated as a uniform one at peak rate.
@@ -1031,8 +1056,10 @@ changes the escape geometry, because a trapped photon leaves by the shortest
 optically thick path and the shortest path is now the standoff to the near window,
 not the 12.5 mm radius. At 130 C the factor runs 508 lifetimes for a centred
 source, 185 at a 5 mm standoff, 66 at 2 mm and 29 at 1 mm, and at 110 C from 138
-down to 7 over the same range. **So the 64 the paragraph quotes is defensible
-after all, and corresponds to a standoff of about 2 mm.** The claim that the
+down to 7 over the same range.
+
+So the 64 the paragraph quotes is defensible
+after all, and corresponds to a standoff of about 2 mm. The claim that the
 confinement link makes the estimate eight times worse holds only for a source at
 the cell's mid-plane, which this apparatus does not have. What survives is that
 the factor is not 64 by derivation, it is 64 by coincidence with an unrecorded
@@ -1055,7 +1082,7 @@ rescales the amplitude without bending the power law, which is C3b's stated
 immunity argument. The infrared pair is not trapped at all, since its only
 absorbers are the 5P transients themselves.
 
-**And the standard treatment is already in the prior art.** Section 6c of
+And the standard treatment is already in the prior art. Section 6c of
 [delone1980](lit/delone1980.md) is the resonance-enhanced $k = k_1 + k_2$
 problem, which is exactly this 2+1, and it names the three field-induced
 perturbations with their intensity scalings, including an ionization broadening
@@ -1063,8 +1090,8 @@ $\Gamma_i$ from the resonant state to the continuum. The right way to quantify a
 third photon here is their $\Gamma_i$, not a fresh derivation, and all three of
 their terms sit far below the natural width at this intensity.
 
-**A caution about the fourth-order machinery, recorded where it will be found.**
-`hyperpolarizability._rspt4` must not be evaluated at this wavelength. Its
+One caution about the fourth-order machinery is recorded here, where it will be
+found. `hyperpolarizability._rspt4` must not be evaluated at this wavelength. Its
 Floquet basis contains the partner S state two photons down, so it carries a pole
 wherever $2h\nu$ equals a real S-to-S interval, and for 5S-6S that is here. Fed a
 campaign peak label it returns a differential fourth-order shift of order 100 Hz,
@@ -1120,7 +1147,7 @@ modelling it. What is specific here:
    actually occurs. Their $P$ is a laser's unknown statistics, so their
    integral stays formal. In a focused beam $P$ is fixed by geometry, the
    integral closes, and the result carries **analytic cumulants on bounded
-   support**, in particular the intrinsic $g_1=+0.566$ at $n=2$, which is a
+   support**, in particular the intrinsic $g_1=-0.566$ at $n=2$, which is a
    number rather than a fit. The closed form itself is theirs.
 2. the **drift-immune moment method** (§3), using a light shift as a
    reference-free measurement channel, which the precision community's
@@ -1133,7 +1160,7 @@ modelling it. What is specific here:
    showing that the fringes do not move the mean. The delineation against
    Wieman and Stalnaker is fringe-*averaged* against fringe-*resolved*, **not**
    travelling against standing, since both are standing waves. Their slow
-   atomic beam resolves the $\lambda/2$ fringes and our fast thermal atoms
+   atomic beam resolves the $\lambda/2$ fringes and the fast thermal atoms here
    average them, leaving only the small resolved tail of §5.
 4. the **geometry-independence to the evanescent case**, the bridge to a
    nanofibre lineshape.
@@ -1143,7 +1170,7 @@ the phenomenon. A Voigt fit has no third moment to put $g_1$ in.
 
 (The transit kernel itself, natural Lorentzian $\otimes$ two-sided exponential,
 is the established [Biraben–Bassini–Cagnac](lit/biraben1979.md) result, *J.
-Phys. (Paris)* **40**, 445 (1979), and we do not reinvent it. Full ledger:
+Phys. (Paris)* **40**, 445 (1979), and it is not reinvented here. Full ledger:
 `docs/LITERATURE.md`.)
 
 ## 7. The open question (where a contribution fits)
@@ -1157,9 +1184,9 @@ the local ramp normalisation up to one factor $1+\zeta^2$) gives the closed form
 $$f(s) \propto |s|^{n-1}\left[\zeta_m + \frac{\zeta_m^3}{3}\right],\qquad
 \zeta_m(s) = \min \left(\frac{Z_c}{z_R},\ \sqrt{\frac{S_0}{|s|}-1}\right)$$
 
-which we evaluate numerically (`lineshape.stark_ramp_axial`). The standardised
-skewness **changes sign** with the collection window, $g_1 \approx +0.56$ at
-$w_0=60$ µm ($Z_c/z_R=0.18$) but $\approx -0.35$ at $w_0=16$ µm
+which is evaluated numerically (`lineshape.stark_ramp_axial`). The standardised
+skewness **changes sign** with the collection window, $g_1 \approx -0.56$ at
+$w_0=60$ µm ($Z_c/z_R=0.18$) but $\approx +0.35$ at $w_0=16$ µm
 ($Z_c/z_R=2.5$), crossing zero at $Z_c/z_R\approx1.12$, because a long window
 piles weight at weak out-of-focus shifts.
 
@@ -1175,7 +1202,7 @@ the magnitude still carries an envelope (PLAN §6 #4). The pure triangle holds
 only at large waist, and the small-waist configuration that maximises $S_0$ is
 exactly where the clean triangular law is least valid.
 
-**The questions.** (i) Is the axial-averaged form above correct and complete, or
+Three questions remain open. (i) Is the axial-averaged form above correct and complete, or
 does a proper treatment of the position- *and* velocity-dependent shift (the
 thermal transit through a diverging Gaussian) modify it beyond this
 quasi-static $z$-average? (ii) What is the right observable to quote when the

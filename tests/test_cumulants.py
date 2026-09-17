@@ -11,16 +11,17 @@ import pytest
 
 from rb5s6s._compat import trapezoid
 from rb5s6s.cumulants import cumulants_from_central_moments, linear_baseline, windowed_cumulant, windowed_cumulants, wing_baseline
+from rb5s6s.lineshape import RAMP_SIDE, ramp_kappa3, ramp_mean_over_s0
 
 GRID = np.linspace(-60.0, 60.0, 6001)
 
 
 def _ramp_line(s0: float, sigma: float, amplitude: float = 1.0, pedestal: float = 0.0) -> np.ndarray:
     """A Gaussian kernel of rms `sigma` convolved with the ramp f(s) = 2|s|/S0^2
-    on [-S0, 0]: mass at the full shift thinning toward zero, so the mean sits
-    at -2 S0/3 and the third cumulant is +S0^3/135 (docs/methods/03), on a
-    flat pedestal."""
-    s = np.linspace(-s0, 0.0, 2001)
+    on the package's side (lineshape.RAMP_SIDE, [0, S0] since the ruling of 2026-09-17): mass
+    at the full shift thinning toward zero, so the mean and the third cumulant are the package's
+    closed forms (docs/methods/03), on a flat pedestal."""
+    s = RAMP_SIDE * np.linspace(0.0, s0, 2001)
     f = 2.0 * np.abs(s) / s0 ** 2
     line = np.zeros_like(GRID)
     for si, fi in zip(s, f):
@@ -45,8 +46,8 @@ def test_the_ramp_third_cumulant_is_s0_cubed_over_135():
     y = _ramp_line(s0, 1.0)
     k3, info = windowed_cumulant(GRID, y, 12.0, 3, baseline=None)
     assert info["converged"] == 1.0
-    assert k3 == pytest.approx(s0 ** 3 / 135.0, rel=0.02)
-    assert info["centre"] == pytest.approx(-2 * s0 / 3, abs=0.01)
+    assert k3 == pytest.approx(ramp_kappa3(s0), rel=0.02)
+    assert info["centre"] == pytest.approx(ramp_mean_over_s0() * s0, abs=0.01)
 
 
 def test_the_pedestal_does_not_move_the_converged_estimate_and_moved_the_old_one():

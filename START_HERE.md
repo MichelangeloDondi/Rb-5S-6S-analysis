@@ -1,11 +1,11 @@
 # Start here
 
-A working setup in five minutes, then a reading order that depends on why you
-came. If the vocabulary is unfamiliar, open
-[docs/GLOSSARY.md](docs/GLOSSARY.md) beside whatever you read. The main [README](README.md) is the full account and runs to about four
+A working setup in five minutes, then a reading order by purpose. Where the
+vocabulary is unfamiliar, [docs/GLOSSARY.md](docs/GLOSSARY.md) sits beside
+any page here. The main [README](README.md) is the full account and runs to about four
 thousand words. This page is the front door.
 
-## 1. Run it
+## 1. Installation and first run
 
 ```bash
 python3 -m venv .venv && source .venv/bin/activate
@@ -33,14 +33,14 @@ The last digits are the finite window and the discrete sum, not the model.
 Integrate over a wider axis and they go away.
 
 Three API traps, stated once. `model_profile` takes the frequency axis and is
-the one you want, while `composite_profile` takes widths and no axis.
+the intended entry point, while `composite_profile` takes widths and no axis.
 `stark_shift_S0_mhz` needs the waist as well as the power.
 `transit_fwhm_from_w0` takes metres where `transit_fwhm_at_T` takes MHz, and
 confusing them now raises instead of returning a silently tiny number.
 `rb5s6s/README.md` carries the rest.
 
 That should end green in about two minutes, and it needs no data beyond what
-this checkout carries. What `data_raw/` holds in the copy you are reading, and
+this checkout carries. What `data_raw/` holds in any given copy, and
 how to obtain the original traces, is stated in
 [data_raw/README.md](data_raw/README.md). If the fast suite passes, everything
 below will work.
@@ -53,7 +53,7 @@ bash scripts/run_all.sh
 
 That runs the analysis stages in dependency order, then the figures, the
 results ledger and the status column. The stages that read raw traces need the
-traces, so which of them run at all depends on the copy you have, and
+traces, so which of them run at all depends on the copy at hand, and
 [data_raw/README.md](data_raw/README.md) states what this one carries.
 **Where a stage runs, it reproduces its committed CSV within the tolerance
 `scripts/verify_results_fresh.py` states**, which is the property the whole
@@ -65,19 +65,19 @@ physics. [results/ENVIRONMENT_OF_RECORD.md](results/ENVIRONMENT_OF_RECORD.md)
 gives the versions and the sizes. A difference the verifier rejects is a
 finding. One it accepts is the arithmetic.
 
-Two things are worth knowing before you wonder why something fails:
+Two things explain most apparent failures:
 
 * `pytest -q --runslow` is the full battery and is what CI runs. Run it before
   pushing, not the fast subset, because several guards live only in it.
 * Eight scripts read two data trees that are not in the repository. They exit
   0 naming the missing tree instead of failing, and the committed CSVs are the
-  record for those stages, so nothing you need is missing. If you do have the
-  trees, point `RB5S6S_SESSION_20250704_DIR` and `RB5S6S_SESSION_20250717_DIR`
+  record for those stages, so nothing is missing. Where the trees are
+  available, point `RB5S6S_SESSION_20250704_DIR` and `RB5S6S_SESSION_20250717_DIR`
   at them. The fallback path is not where they live.
 
-## 2. Read it, depending on why you are here
+## 2. Reading order by purpose
 
-| you are | start with |
+| reader | start with |
 |---|---|
 | here for ten minutes | [docs/plan/00_the-case.md](docs/plan/00_the-case.md), the whole record compressed: the three bounds with their constructions, what stays unidentified, the measurement that breaks each, and what this record refuted in its own claims |
 | new to two-photon spectroscopy | [docs/GLOSSARY.md](docs/GLOSSARY.md), which explains the measurement in six sentences and then defines every term and symbol the rest of the repository uses |
@@ -97,7 +97,7 @@ Two things are worth knowing before you wonder why something fails:
 
 [docs/README.md](docs/README.md) is the index over all of it.
 
-## 3. If you are going to work on the code
+## 3. Working on the code
 
 The layout, in one sentence each. `rb5s6s/` is the library, one module per
 analysis stage, pure physics with no disk access except in six named modules.
@@ -106,13 +106,13 @@ analysis stage, pure physics with no disk access except in six named modules.
 injects before checking what the module recovers, which makes them the second
 half of the documentation.
 
-**Reading order for the code**, merged from `rb5s6s/README.md`: the
+Reading order for the code, merged from `rb5s6s/README.md`: the
 [measurement chapter](docs/methods/01_the_measurement.md) next to `ingest.py`
 and `qc.py`, then the [lineshape chapter](docs/methods/02_the_lineshape.md)
 next to `lineshape.py`, then the statistics chapter next to `linefit.py` and
 `beta.py`. Read each module's test alongside it.
 
-Two conventions that will otherwise cost you an afternoon:
+Two conventions, each of which costs an afternoon when missed:
 
 * **Every frequency is on the two-photon transition axis** unless the name ends
   in `_LASER`. The laser axis is exactly half. Never mix them silently.
@@ -121,13 +121,13 @@ Two conventions that will otherwise cost you an afternoon:
   and each carries a provenance tag saying where it came from and how much it
   can be trusted.
 
-Before you commit: `pytest -q --runslow` and `ruff check`. If you changed
+Before a commit: `pytest -q --runslow` and `ruff check`. After a change to
 anything that writes a `results/*.csv`, also run
 `scripts/annotate_results_status.py` and redraw the figures once, because the
 figures carry a fingerprint of the results they were drawn from and go stale
 when a CSV changes.
 
-## 4. What this is, in three sentences
+## 4. The analysis in three sentences
 
 A from-scratch reanalysis of a 2025 two-photon spectroscopy campaign on the
 rubidium 5S to 6S transition, driven at 993.4 nm in a hot vapour cell. The

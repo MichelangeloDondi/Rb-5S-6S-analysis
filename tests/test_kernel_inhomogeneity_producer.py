@@ -60,7 +60,8 @@ def test_the_first_moment_does_not_depend_on_the_kernel():
     stark.COMPANIONS = {"ratio": 1.2511, "scale": 1.0}
     cells, _s0, _z = mod.volume_grid(16e-6, n_s=40, n_z=10)
     tot = sum(float(w.sum()) for _, _, w in cells)
-    analytic = -sum(float((m * w).sum()) for m, _, w in cells) / tot
+    from rb5s6s.lineshape import RAMP_SIDE
+    analytic = RAMP_SIDE * sum(float((m * w).sum()) for m, _, w in cells) / tot   # the ramp's side (O27)
     exact, _ = mod.observables(mod.profile_exact(cells), 12.0)
     assert exact == pytest.approx(analytic, rel=5e-3), (exact, analytic)
 
@@ -81,7 +82,8 @@ def test_one_axial_slice_reproduces_the_shipped_composite_profile():
                          s0=s0, gamma_nat_mhz=mod.GAMMA_NAT, resolve_shift=True)
     a, b = mine / mine.sum(), ship / ship.sum()
     assert float(np.abs(a - b).max() / b.max()) < 2e-3
-    assert float((mod.NU * a).sum()) == pytest.approx(-2.0 * s0 / 3.0, rel=2e-3)
+    from rb5s6s.lineshape import ramp_mean_over_s0
+    assert float((mod.NU * a).sum()) == pytest.approx(ramp_mean_over_s0() * s0, rel=2e-3)
 
 
 def test_the_saturated_kernel_is_matched_by_a_saturated_weight():

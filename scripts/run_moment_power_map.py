@@ -51,6 +51,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from rb5s6s import config as C                                    # noqa: E402
+from rb5s6s.lineshape import RAMP_SIDE                             # noqa: E402  (O27)
 from rb5s6s.forecast import build_world_trace                      # noqa: E402
 from rb5s6s.cumulants import windowed_cumulants                     # noqa: E402
 from rb5s6s.qc import median_standard_error                        # noqa: E402
@@ -101,7 +102,7 @@ SCOPES = (("lecroy_ws3104z", "raw", 8.0),
 # the production path instead of beside it.
 WINDOW = (3.25, 4.0, 6.0, 8.0, 12.0, 16.0)   # 3.25 is the measured optimum
 S0_LADDER = ((0.364, 0.5, 0.73, 1.0, 2.0) if os.environ.get("RB5S6S_MPM_DEEP")
-             else (0.18, 0.364, 0.73, 1.0, 2.0))    # archive 0.364, campaign 1.0
+             else (0.18, 0.364, 0.73, 1.0, 2.0))    # archive 0.364 when set (0.348 since 2026-09-17), campaign 1.0
 # THE DEEP LADDER STARTS AT THE ARCHIVE. The 0.18 rung's signal-to-scatter was
 # 0.05 at four thousand traces, so no affordable budget makes it a
 # measurement, and the deep run answers what the 2025 shift itself can carry.
@@ -127,11 +128,13 @@ GAMMA_COLL, SIGMA_LASER, TRANSIT = 0.55, 1.6, 0.9575
 N_TRACES = int(os.environ.get("RB5S6S_MPM_TRACES", "2000"))
 FINE = np.linspace(-40.0, 40.0, 32001)
 # THE TRUE SIGN OF EACH ORDER, from the ramp's own cumulants (docs/methods/03):
-# kappa_3 = +S0^3/135, kappa_5 = -S0^5/567, kappa_7 positive again. A statistic
+# on the package's side (lineshape.RAMP_SIDE, blue since the ruling of 2026-09-17) kappa_3 =
+# -S0^3/135, kappa_5 = +S0^5/567, kappa_7 negative again, and every odd one flips with the side;
+# this table read the red side's signs for the hours after the kernel flipped (P3). A statistic
 # built on the sign of a windowed cumulant is read against these, never
 # against zero: the first form of the per-rung status keyed on the fraction
 # NEGATIVE for every order and tagged every settled fifth-order rung NULL.
-TRUE_SIGN = {3: 1.0, 5: -1.0, 7: 1.0}
+TRUE_SIGN = {3: -RAMP_SIDE, 5: +RAMP_SIDE, 7: -RAMP_SIDE}
 # The rung-admission bar, and the null it is read against: under a coin flip
 # the fraction's standard deviation is 0.5/sqrt(n), 0.011 at two thousand
 # traces and 0.0025 at forty thousand, so 0.35 sits 13 and 60 standard

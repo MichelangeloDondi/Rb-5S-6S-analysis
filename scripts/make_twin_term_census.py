@@ -220,7 +220,8 @@ def main() -> int:
         ("ac_stark_ramp", yes("s0" in gen), yes("stark" in world & ex),
          "lineshape.stark_ramp", "optional",
          "inspected: s0 in synthetic_traces since 2026-08-30 and the stark "
-         "layer in build_world_trace. The side stays open per "
+         "layer in build_world_trace. The side is the adopted polarizability's "
+         "(lineshape.RAMP_SIDE, owner order O27), held by "
          "tests/test_ramp_side_matches_the_polarizability"),
         ("axial_collection_window", yes("z_ratio" in _params(forecast.build_world_trace)),
          yes("z_ratio" in _example_calls()),

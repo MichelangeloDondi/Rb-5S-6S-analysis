@@ -2,21 +2,12 @@
 
 *[wiki index](README.md) · method*
 
-**The question.** Whether an extra parameter or model component is justified
-by the data, not merely by a lower chi-squared.
-**Takes.** Two or more fits already carried out on the same data, each with
-its own chi-squared and parameter count. No new fitting.
-**Gives.** The AIC and BIC penalties, when a comparison is
-criterion-independent, and the F-test for the narrower case of nested
-models.
-**Skip if.** The question is whether a single parameter is determined by the
-data at all, not whether a model deserves an extra one. That is
-[identifiability](identifiability.md).
+Whether an extra parameter or model component is justified by the data, not merely by a lower chi-squared. This page builds on two or more fits already carried out on the same data, each with its own chi-squared and parameter count. No new fitting. It sets out the AIC and BIC penalties, when a comparison is criterion-independent, and the F-test for the narrower case of nested models. Not covered here: the question is whether a single parameter is determined by the data at all, not whether a model deserves an extra one. That is [identifiability](identifiability.md).
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
 > defines every term and symbol used anywhere in this repository.
 
-## What it is
+## Definition
 
 A richer model always fits better. Adding a parameter cannot increase the
 best achievable $\chi^2$, so goodness of fit alone always prefers the more
@@ -56,13 +47,13 @@ contains a simpler one cannot fit worse at its own optimum, so a comparison
 showing it doing so is measuring the optimiser, not the data, and no penalty
 term repairs that.
 
-## What problem it solves
+## The problem it addresses
 
 It converts "is this extra component justified" from a matter of taste into
 an arithmetic with a stated convention, and it does so without requiring the
 models to be nested, which is where a likelihood-ratio test cannot go.
 
-## Where this repository uses it
+## Application in this repository
 
 For every complexity decision, and
 [methods chapter 6 sections 4.7 and 4.7a](../methods/06_the_statistics.md)
@@ -121,14 +112,14 @@ compute the effective form unless both are supplied.
 
 The interpretation layer returns one of four outcomes:
 
-**robust**, every available criterion agrees and at least one separates
+robust, every available criterion agrees and at least one separates
 decisively. **convention-dependent**, the criteria disagree among themselves,
 so the preference is a choice of convention, not a fact about the data.
 **assumption-dependent**, the raw and effective forms point opposite ways, so
 the answer is about the correlation treatment. **unresolved**, nothing
 separates the models at the threshold treated as decisive.
 
-## What can go wrong
+## Failure modes
 
 The deepest failure is a comparability one. These criteria compare models
 fitted to the same data with likelihoods on the same scale. Comparing scores
@@ -220,7 +211,7 @@ print(f"  Bayesian: {d_bic:+.1f}  -> prefers the "
 - [Methods chapter 6](../methods/06_the_statistics.md) for this repository's
   panel and the one case where its members disagree.
 
-## What a criterion cannot grade at all, and it is not a matter of degree
+## The grading a criterion cannot perform
 
 A criterion compares two models over one dataset with different parameter
 counts. It therefore says nothing about a term the fit cannot free: there is no
@@ -247,13 +238,12 @@ just as invisible to a criterion, because it is a world term with no fitted
 twin. A term invisible to the likelihood is invisible to AIC by
 construction.
 
-**The test that does work is a residual comparison**, because a missing term
+The test that does work is a residual comparison, because a missing term
 cannot hide in what a fit leaves behind whether or not the fit could have freed
 it. [The digital twin](the-digital-twin.md) carries what that comparison found,
 and it found something an information criterion could not have.
 
-## See also
-
+## Related pages
 - [Identifiability](identifiability.md), for the question of whether a
   parameter is determined at all, which a criterion does not ask.
 - [The profile likelihood](profile-likelihood.md), for the interval

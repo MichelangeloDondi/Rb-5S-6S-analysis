@@ -4,20 +4,10 @@ House rules for this repository's documents and code comments. They exist so
 that every page reads in one voice and states exactly as much certainty as the
 data support. `tests/test_repo_hygiene.py` enforces the mechanical ones.
 
-**The question.** How should a claim, a number or a figure in this repository
-be written, so that a reader can tell what it licenses without opening the code
-behind it?
-**Takes.** Nothing. This page is the convention the rest of the repository is
-written against.
-**Gives.** The rules for claims and certainty, for retired and superseded
-values, for register, for figures, and for which files are generated rather
-than edited.
-**Skip if.** You are reading for the physics or the results. This page governs
-how they are stated, not what they say.
+How should a claim, a number or a figure in this repository be written, so that a reader can tell what it licenses without opening the code behind it? This page is self-contained and sets out the rules for claims and certainty, for retired and superseded values, for register, for figures, and for which files are generated and not edited. This page is the convention the rest of the repository is written against. Someone here for the physics or the results has no use for it. This page governs how they are stated, not what they say.
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](GLOSSARY.md)
-> explains the measurement in six sentences, then defines every term
-> and symbol used anywhere in this repository.
+> [GLOSSARY.md](GLOSSARY.md) states the measurement in six sentences and
+> defines every term and symbol used anywhere in this repository.
 
 ## Claims and certainty
 
@@ -50,12 +40,12 @@ how they are stated, not what they say.
   independently.
   `tests/test_docs_canonical.py` and `tests/test_ramp_geometry_docs.py` fail if
   a document and its producing code disagree.
-- **Name the construction whenever you quote a number.** Five committed
+- **Name the construction whenever a number is quoted.** Five committed
   constructions in this repository produce a quantity called "S0(225 mW)", and
   three of them also carry rows that are replaced diagnostics kept for
   continuity. A bare "the bound" is ambiguous, and on 2026-08-14 a reader of
   this repository (the author) quoted `stark_sweep.csv`'s replaced Wald row
-  2.205 in place of its actual bound, `S0_225mW_ub95_profile` = 0.632, whose own
+  [2.205](../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_ub95:shared") in place of its actual bound, `S0_225mW_ub95_profile`, whose own
   note says "quote the profile row". Say which file, and check the `status`
   column before quoting the row.
 - **A number cited from a paper carries the sentence that states it.** Quote
@@ -90,7 +80,7 @@ how they are stated, not what they say.
   against its source (a constant, a CSV, a measurement) rather than against
   other prose. A consistency sweep with no source in it converges the tree onto
   whichever value is most widely repeated.
-- **Do not carry a discrepancy you cannot adjudicate.** If two sites disagree
+- **Do not carry an unadjudicated discrepancy.** If two sites disagree
   and the deciding evidence is not reachable, the honest move is to reach it,
   by running the thing that prints it or by asking whoever knows. Recording
   "these disagree" and moving on leaves both numbers live and the reader worse
@@ -143,7 +133,31 @@ Precise technical contrasts are different and are welcome: "an upper bound,
 not a detection" and "a model fit, not a moment computation" draw real
 distinctions and should stay.
 
-### Banned vocabulary, and the one way to keep a banned word
+### Headings
+
+A heading is a noun phrase naming the section's subject, as in a thesis's table of
+contents: "The ramp law", "Weak-field validity of the exponent", "Coverage of the
+95 per cent bound". Not a sentence, not a question, not an instruction, and not
+the appositive form this record used to favour ("The design the filenames now
+state, and it is an L").
+
+The rules, and `private/checks/heading_register.py` grades every tracked heading
+against them at the floor with a per-file baseline that may only shrink:
+
+* no second person and no first person
+* no question, and no leading auxiliary
+* no finite clause, which is what "is", "are", "that", "which" and a leading verb
+  signal
+* no terminal full stop
+* at most nine words after any section number
+* not block capitals
+
+Section numbers, colons and parenthetical tags are kept: "5.2 Third-photon
+contributions at 993 nm" and "2.1 Motional averaging of the ramp (M19)" both pass.
+Renaming a heading moves its anchor, so `private/checks/rename_heading.py` carries
+every link that points at it in the same act.
+
+### Banned vocabulary and its one exemption
 
 `tests/test_repo_hygiene.py` holds a bank of vocabulary this record does not
 use, checked line by line over every tracked Markdown and Python file. The
@@ -192,7 +206,7 @@ them. Write "a new operator", "the group", "an external theory check".
 
 Editing these directly is lost on the next run, and the freshness tests fail.
 
-**Redraw with the generator you edited, by name, and then look at the output.**
+Redraw with the edited generator, by name, and then look at the output.
 `scripts/run_all.sh` calls `make_fig0_spectrum`, `make_figures` and
 `make_results_ledger`. It does not call `make_timeline_figure`, so a text edit
 to that generator leaves a stale published PNG that every test passes over: the
@@ -202,7 +216,7 @@ panel title kept a retired word through a full sweep, two gates and two
 commits, and was caught only by opening the image. Before relying on a runner,
 check which generators it actually calls.
 
-**A guard keyed to data freshness says nothing about text freshness.** Whenever
+A guard keyed to data freshness says nothing about text freshness. Whenever
 a pass changes words rather than numbers, name what will detect it.
 
 **Editing a source regenerates its artifacts too.** The table above reads in
@@ -273,7 +287,7 @@ file, ask what is generated from it, not only what generates it.
 - **Redraw only where `results/` is clean.** The figure fingerprint reads the
   working tree, so drawing while another session holds uncommitted CSVs stamps
   its numbers into a published PNG. Use a detached worktree at head and confirm
-  the fingerprint matches the tree you are publishing from.
+  the fingerprint matches the tree being published.
 - **Compute every drawn number at draw time, from the function that produces
   it.** Never copy it from the document the figure illustrates. When a figure
   recomputed a companion width it came out at 28.2 kHz against the note's 25.4,
@@ -303,29 +317,37 @@ Long documents are the main thing that makes this repository hard to enter, and
 the fixes are cheap and were repeatedly not applied, so they are rules now
 rather than habits. `tests/test_docs_structure.py` checks the first two.
 
-**Any document over 2500 words opens with the four-line reader header.** The
-methods chapters set the pattern and it is the most useful thing here for
-somebody arriving without context:
+Any document over 2500 words opens by orienting its reader, in a paragraph of
+ordinary prose before its structure begins. It says what the document is, what
+it rests on, and what it does not cover, so that somebody arriving without
+context can decide in one paragraph whether it is theirs.
 
 ```
-**The question.** What this document answers, as a question.
-**Takes.** What a reader should have read first, or "Nothing".
-**Gives.** What they leave with.
-**Skip if.** When not to read it. Say this honestly, including when the
-answer is that a shorter document already covers it.
+This page builds on <what a reader should have read first> and sets out
+<what they leave with>. Not covered here: <what a shorter document covers
+instead, said honestly>.
 ```
 
-**Any document over 2500 words carries the glossary pointer**, as a blockquote
+The form changed on 2026-09-17 and the purpose did not. Until then the rule
+was four bold labels, `The question. / Takes. / Gives. / Skip if.`, and the
+owner reported four times that the record reads as an assistant's writing and
+not a physicist's. That card was the clearest instance. What it did for a
+reader is kept and the labels are gone. `tests/test_docs_structure.py` still
+accepts the old form, so a page not yet converted is not refused, and its
+docstring records that a structural check is weaker than the phrase match it
+replaced.
+
+Any document over 2500 words carries the glossary pointer, as a blockquote
 near the top, because a reader who lands in the middle of the repository from a
 search result has no front door.
 
-**A document over about 4000 words should show something before it argues.**
+A document over about 4000 words should show something before it argues.
 A figure in the first screen is worth more than a better paragraph, and there
 are usually one already drawn: `figures/README.md` names, for every figure, the
 document it supports. A figure embedded nowhere is a defect at both ends, the
 document reading as an unbroken wall and the figure as decoration.
 
-**Every embedded figure carries a caption in italics under it**, saying what
+Every embedded figure carries a caption in italics under it, saying what
 the reader should take from it rather than restating the axis labels. The
 caption is the document's, not the figure's: on-canvas text stays to what the
 axes cannot say (see Figures, above).

@@ -77,10 +77,10 @@ measurement, both below) now converge on **w₀ ≈ 50–64 µm**, above the nai
 **Resolved at v3.0.0 (2026-08-01): the prior is the measurement, 64 µm.**
 The note above kept 50 µm because the transit-width match slightly preferred
 50–55 and because the 2025 alignment was not guaranteed to match Nieddu's.
-Two things settled it. Rajasree's thesis §5.2 turns out to record the same
-128 µm diameter on the **same laser model** this campaign used, through the
+Two things settled it. Rajasree's thesis §5.2 turns out to reprint the same
+128 µm diameter, profiled on the **predecessor laser** through the
 same f = 150 mm lens, at the same 130 °C, in the same 2F retro geometry, so
-the transfer is far better evidenced than a bare citation. And the
+the transfer rests on the geometry and not on the source. And the
 three-session Stark bound (M23) lands below the prediction at every data
 subset, which is what a lower intensity, meaning a wider waist, produces.
 Two documented effects push the *effective* waist above 64 rather than below
@@ -142,6 +142,7 @@ The earlier "diagnosed (decisive), w₀ ≈ 90 µm" claim had two errors:
    not 3.8, at 32 µm. The correct pull is ~1.5× (to ~50 µm), and S₀ ÷2.4 not ÷8.
 
 ## Provenance
+
 Numbers: `results/transit_mc.csv` (M9), the re-run fit CSVs, and
 `constants.transit_fwhm_from_w0` (Lehmann-validated). Source PDFs are held locally
 (untracked). Synthesis in `docs/literature_food_for_thought.md` §1.

@@ -2,22 +2,12 @@
 
 *[wiki index](README.md) · method*
 
-**The question.** How do span, resolution and record length exchange against
-each other, and which acquisition choices cannot be revisited once a
-session has run.
-**Takes.** The idea of a digitized sweep, an oscilloscope trace or a
-lock-in scan. No other wiki page is required first.
-**Gives.** The single relation linking span, resolution and record length,
-points across the feature as the governing quantity, and the choices a
-later analysis can never repair.
-**Skip if.** You want the frequency axis a record's grid is calibrated
-against, instead of how densely that grid is sampled. That is
-[the wavemeter and the frequency axis](the-wavemeter-and-the-frequency-axis.md).
+How do span, resolution and record length exchange against each other, and which acquisition choices cannot be revisited once a session has run. This page builds on the idea of a digitized sweep, an oscilloscope trace or a lock-in scan. No other wiki page is required first. It sets out the single relation linking span, resolution and record length, points across the feature as the governing quantity, and the choices a later analysis can never repair. Not covered here: the frequency axis a record's grid is calibrated against, instead of how densely that grid is sampled. That is [the wavemeter and the frequency axis](the-wavemeter-and-the-frequency-axis.md).
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
 > defines every term and symbol used anywhere in this repository.
 
-## What it is
+## Definition
 
 A digitizing scan (an oscilloscope trace, a lock-in sweep, anything that
 turns a continuous signal into a finite list of numbers) is set by three
@@ -74,7 +64,7 @@ that a later stability statistic consumes directly. Without it, the only
 surviving order is the sequence files were saved in, which says nothing
 about how much time actually separated them.
 
-## What problem it solves
+## The problem it addresses
 
 It turns three settings that look like separate line items on an
 instrument's menu into one design question with a numeric, testable answer,
@@ -86,7 +76,7 @@ exported with no clock can never gain one, so both are worth deciding
 correctly before the first point is digitized, since neither can be
 repaired in analysis.
 
-## Where this repository uses it
+## Application in this repository
 
 [Chapter 7 of the plan](../plan/07_acquisition-settings.md) sizes the
 wide-scan record for the next campaign exactly this way.
@@ -171,7 +161,7 @@ background, interleave repeats in time so their scatter averages, spend
 sweep time and repeat count, not sample rate, and increase collection
 solid angle for the shot-limited peak.
 
-## Which channels, when the instrument has four
+## Choice of channels on a four-channel instrument
 
 A design decision this page's levers do not reach, because it is about what is
 recorded and not how long for. The campaign has five things worth putting
@@ -201,7 +191,7 @@ a marker records something already known, which frees the channel for a second
 detector. Otherwise the marker is mandatory and a second detector needs a
 second instrument.
 
-## What can go wrong
+## Failure modes
 
 The first failure is a model one, mistaking a record's ability to draw a
 convincing curve for its ability to fit one. A trace with a thin
@@ -288,8 +278,7 @@ misleading a reader.
 - [Allan deviation](allan-deviation.md), the statistic a per-sweep timestamp
   channel makes possible.
 
-## See also
-
+## Related pages
 - [The wavemeter and the frequency axis](the-wavemeter-and-the-frequency-axis.md),
   turning an acquired record's grid into a calibrated frequency axis.
 - [Photon counting](photon-counting.md), the detection choice sized before

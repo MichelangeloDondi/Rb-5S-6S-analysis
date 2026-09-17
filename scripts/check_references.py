@@ -18,6 +18,10 @@ is the notification, and staleness cannot be committed.
 Key forms:
     ref:<csv-stem>:<scope>:<quantity>   a results/ CSV cell (value column)
     ref:lit:<citekey>:<field>           a row of the lit page's values table
+    ref:constant:<NAME>[:<unit>]        a constant of rb5s6s/constants.py, the SSOT of a
+                                        physical constant (a results row echoing one is a
+                                        copy); <unit> scales it: Hz, kHz, MHz, GHz, or a
+                                        number such as 1e-6
 
 The lit values table is a `## Values` section on docs/lit/<citekey>.md:
     | field | value | where in the paper |
@@ -173,6 +177,29 @@ def _lit_value(citekey: str, field: str) -> str | None:
     return None
 
 
+_UNIT_SCALE = {"Hz": 1.0, "kHz": 1e-3, "MHz": 1e-6, "GHz": 1e-9, "": 1.0}
+
+
+def _constant_value(name: str, unit: str = "") -> str | None:
+    """A constant of the package at the unit the page prints, as the source string `_matches`
+    compares against. The natural width on two platform-neutral pages was bound to a fibre-only
+    file's echo of GAMMA_NAT_HZ on 2026-09-17, and the platform lane refused the citation: the
+    constant's own module is its SSOT and this scheme binds to it directly."""
+    try:
+        from rb5s6s import constants as _K
+        value = float(getattr(_K, name))
+    except (ImportError, AttributeError, TypeError, ValueError):
+        return None
+    if unit in _UNIT_SCALE:
+        scale = _UNIT_SCALE[unit]
+    else:
+        try:
+            scale = float(unit)
+        except ValueError:
+            return None
+    return f"{value * scale:.12g}"
+
+
 def _matches(written: str, source: str) -> bool:
     """Compare at the precision the page prints, the prototype's rule."""
     w = written.strip().replace("−", "-")
@@ -241,7 +268,11 @@ def _scan() -> list[dict]:
             key = m.group("title")[len("ref:"):]
             parts = key.split(":")
             line = text[: m.start()].count("\n") + 1
-            if parts[0] == "lit" and len(parts) == 3:
+            if parts[0] == "constant" and len(parts) in (2, 3):
+                source = _constant_value(parts[1], parts[2] if len(parts) == 3 else "")
+                src_file = "rb5s6s/constants.py"
+                producer = None
+            elif parts[0] == "lit" and len(parts) == 3:
                 source = _lit_value(parts[1], parts[2])
                 src_file = f"docs/lit/{parts[1]}.md"
                 producer = None
@@ -307,8 +338,28 @@ def _fix() -> int:
             prefix = r["written"][: len(r["written"]) - len(r["written"].lstrip("<>~ "))]
             a, b = r["span"]
             old_link = text[a:b]
-            new_link = old_link.replace(f"[{r['written']}]",
-                                        f"[{prefix}{newtext}]", 1)
+            if old_link.lstrip().startswith("["):
+                new_link = old_link.replace(f"[{r['written']}]",
+                                            f"[{prefix}{newtext}]", 1)
+            else:
+                # THE PYTHON FORM IS NOT A LINK, and assuming it was made this
+                # fixer report rewrites it had not made. In a docstring the
+                # reference reads `23.23 [ref:...]`, so the value is the token
+                # BEFORE the bracket and `[23.23]` appears nowhere: the replace
+                # matched nothing, the file was written back unchanged, and the
+                # count and the message went up regardless. Two stale SNR
+                # figures in `fullmodel.py` survived three --fix passes that
+                # way, on the very population `_tracked_python` was built for.
+                new_link = re.sub(r"^\s*[-+]?\d[\d.eE+-]*",
+                                  f"{prefix}{newtext}", old_link, count=1)
+            if new_link == old_link:
+                # AND THE CLAIM IS NOW EVIDENCE: a no-op cannot be reported as
+                # a rewrite, whatever form a future surface writes its
+                # references in.
+                print(f"  REFUSED {rel}:{r['line']}: {r['written']!r} -> "
+                      f"{newtext!r} changed nothing, the link form is unhandled")
+                flagged += 1
+                continue
             text = text[:a] + new_link + text[b:]
             rewritten += 1
             print(f"  rewrote {rel}:{r['line']}: {r['written']!r} -> "
@@ -370,7 +421,13 @@ def main() -> int:
             parts = key.split(":")
             line = text[: m.start()].count("\n") + 1
             where = f"{rel}:{line}"
-            if parts[0] == "lit":
+            if parts[0] == "constant":
+                if len(parts) not in (2, 3):
+                    bad.append(f"{where}: malformed constant key ref:{key}")
+                    continue
+                source = _constant_value(parts[1], parts[2] if len(parts) == 3 else "")
+                kind = f"rb5s6s/constants.py {parts[1]}" + (f" in {parts[2]}" if len(parts) == 3 else "")
+            elif parts[0] == "lit":
                 if len(parts) != 3:
                     bad.append(f"{where}: malformed lit key ref:{key}")
                     continue

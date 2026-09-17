@@ -3,7 +3,7 @@
 *Every term and symbol this repository uses, in one place, defined for someone
 meeting the work for the first time. Each entry says what the thing is, and
 then where it is derived or measured, so this page is a set of doors rather
-than a substitute for the chapters. If you are new here, read
+than a substitute for the chapters. A reader new to the record should begin with
 [START_HERE.md](../START_HERE.md) first and keep this open beside it.*
 
 Nothing on this page is a result. Numbers appear only where they are part of
@@ -63,7 +63,7 @@ is worth checking any number that looks off by a factor of two
 ([START_HERE](../START_HERE.md) section 3).
 
 **Natural width, $\Gamma$.** The linewidth an isolated, motionless atom would
-have, set by how long the excited state lives. For 6S it is 3.4925 MHz FWHM
+have, set by how long the excited state lives. For 6S it is [3.4925](../rb5s6s/constants.py "ref:constant:GAMMA_NAT_HZ:MHz") MHz FWHM
 (`rb5s6s.constants.GAMMA_NAT_HZ`), which is about two thirds of the observed
 line. Everything above it is apparatus
 ([fig26](../figures/fig26_lineshape_kernels.png)).
@@ -85,7 +85,7 @@ atom is in. It matters because the 5P decay does not preserve it, so an atom
 that decays while crossing the beam can land in the other one and leave the
 line for good ([fig23](../figures/fig23_hyperfine_pumping.png)).
 
-## Words for the things that broaden the line
+## Vocabulary of the broadening mechanisms
 
 **Kernel.** One contribution to the line's shape, drawn as a curve. The
 observed line is all of them convolved together, which means each one smears
@@ -175,12 +175,12 @@ watch the line's centre move as the power changes. It needs a frequency
 reference that holds still, which the 2025 lock did not, so this dataset cannot
 use it ([notes](notes/centre_channel_cannot_be_revived.md)).
 
-## Three things that make the light shift hard to measure
+## Three obstacles to measuring the light shift
 
 Worth knowing before reading any bound, because all three shape how the numbers
 are quoted. [BIG_PICTURE §1.3a](BIG_PICTURE.md) gives them in full.
 
-**Saturation stops the square law.** The signal grows as the square of the
+Saturation stops the square law. The signal grows as the square of the
 intensity only while the drive is weak, and the saturation parameter says how
 weak. It grows as the fourth power of the inverse spot size while the shift
 grows as the second, so a tighter focus leaves the safe regime faster than it
@@ -213,7 +213,7 @@ bounds and are quoted as loose by a stated factor.
 here at 64 µm (`rb5s6s.config.W0_MEASURED_M`). Almost every intensity-dependent
 number rides on it.
 
-**Rayleigh range, $z_R$.** How far along the beam you can go before it has
+**Rayleigh range, $z_R$.** The distance along the beam before it has
 spread appreciably. The ratio of the observed region to this length decides
 whether the skewness above comes out positive or negative.
 
@@ -262,14 +262,14 @@ internal 130 degrees C. Some fits use all three. The raw files of the two
 earlier sessions stay outside the repository in every copy, with the committed
 CSVs as the record for them. DATA.md section 0 names all four sessions,
 including the 4 July first trials that fix the start of the clock. Whether the campaign's own traces sit beside
-the manifest depends on the copy you are reading, and
+the manifest depends on the copy at hand, and
 [data_raw/README.md](../data_raw/README.md) says which this one is
 ([DATA.md](DATA.md)).
 
 **Module, M0 to M46.** One analysis stage, with its script, its result file and
 its tests. The map is [methods.md](methods.md).
 
-## Words for how claims are made
+## Vocabulary of claim-making
 
 **Bound.** A statement that a quantity is smaller than some value, at stated
 confidence. Most headline results here are bounds rather than measurements, and

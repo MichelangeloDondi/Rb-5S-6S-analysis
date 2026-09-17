@@ -68,7 +68,7 @@ paragraph on 2026-08-26.
 campaign's.** The same paragraph gives a focused waist radius of 6.3e-5 m,
 0.8 W, a peak intensity of 1.28e8 W m^-2 and E^2 = 4.8e10 V^2 m^-2, with the
 shift as half alpha56 E^2. That returns -0.652 MHz against their stated
--0.66. Their waist is 63 um against this record's measured 64 um, so the
+-0.66. Their waist is 63 um against this record's 64 um convention, so the
 geometry is near enough for a direct comparison: at their conditions this
 record's value predicts +0.683 MHz, the same size and the other sign.
 
@@ -112,7 +112,11 @@ the discrepancy is internal to the paper and not a choice between
 correlations, and their 0.09 MHz is high by that factor.
 
 
-This repository's independently computed alpha(6S) - alpha(5S) is -1145 a.u., opposite in sign to this paper's implied alpha(6S) - alpha(5S) = +1093 a.u. and 4.8% different in magnitude. Since the predicted shift itself reproduces closely, the discrepancy is not a units or convention error but one of atomic-structure calculation. Resolving it in the paper's favor would require a 33% revision to the 6s-5p3/2 radial matrix element, on which this repository's value, Safronova 2004, and Arora 2012 agree to within 0.7%.
+This repository's independently computed alpha(6S) - alpha(5S) is [-1131.8](../../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive") a.u. at the drive, with the 9P-and-above group summed at the drive's own frequency, opposite in sign to this paper's implied alpha(6S) - alpha(5S) = +1093 a.u. Since the predicted shift itself reproduces closely, the discrepancy is not a units or convention error but one of atomic-structure calculation.
+
+The size of the revision the paper's value would need was understated here, and the corrected arithmetic is the thesis side's (2026-09-17, reproduced against this record's own legs). The paper needs alpha(6S) = +1925.4 a.u. against this record's -299.4, a gap of 2224.8. Supplied by the 6s-5p3/2 leg alone, which stands at +409.52, that is a factor 6.43 in the squared matrix element and 2.54 in the element itself, not 33 per cent. A 33 per cent revision to the element raises the leg by 315 a.u. and leaves alpha(6S) - alpha(5S) near -817, still opposite in sign. Those elements agree between this repository, Safronova 2004 and Arora 2012 to within 0.7 per cent.
+
+The sign has a second, independent route that needs no element at all. Every 6P, 7P and 8P leg has its resonance below the drive's 0.045865 a.u., so each is negative whatever its element. Dropping all of them bounds alpha(6S) at +649.4 and alpha(6S) - alpha(5S) at -183 a.u. The sign is therefore fixed by the level ordering, not by the calculation's precision.
 
 ## Values
 

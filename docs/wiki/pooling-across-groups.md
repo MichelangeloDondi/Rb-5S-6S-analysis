@@ -2,21 +2,12 @@
 
 *[wiki index](README.md) · method*
 
-**The question.** Combining groups of measurements to constrain one shared
-quantity should sharpen the answer. When does it instead make the answer worse,
-and how would you know?
-**Takes.** [The joint fit](joint-fit.md), for what sharing a parameter means
-mechanically.
-**Gives.** The condition under which pooling adds information, the observable
-signature when that condition fails, and a runnable demonstration that more data
-with a longer lever can widen a bound.
-**Skip if.** You have one group, or every group is a repeat of one measurement
-under identical conditions.
+Combining groups of measurements to constrain one shared quantity should sharpen the answer. When does it instead make the answer worse, and how would you know? This page builds on [The joint fit](joint-fit.md), for what sharing a parameter means mechanically and sets out the condition under which pooling adds information, the observable signature when that condition fails, and a runnable demonstration that more data with a longer lever can widen a bound. Not covered here: you have one group, or every group is a repeat of one measurement under identical conditions.
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
 > defines every term and symbol used anywhere in this repository.
 
-## What it is
+## Definition
 
 Pooling is fitting several groups of data at once with a parameter held common
 to all of them. The groups can be repeats, sessions, days, samples, detectors or
@@ -26,7 +17,7 @@ A shared parameter asserts that one physical quantity produced every group, and
 the fit cannot check that assertion, because assuming it is how the fit is
 built.
 
-## What problem it solves
+## The problem it addresses
 
 More data constrains a parameter better, and pooling is how groups that were
 not recorded together contribute to one number. Where the groups genuinely
@@ -52,7 +43,7 @@ every group. It fails in two distinguishable ways.
   parameter handles this. The shared parameter survives intact, at a small
   cost in precision.
 - The groups differ in a way no free parameter can absorb. This is the
-  dangerous case, with a signature you can check in advance. List what the
+  dangerous case, with a signature checkable in advance. List what the
   shared parameter depends on, and check whether a nuisance exists for each
   dependency that could differ between groups. A dependency with no nuisance
   opposite it is not absorbed, and the shared parameter is then a different
@@ -63,7 +54,7 @@ something geometric or instrumental that was never recorded per group. The fit
 does not flag this. It converges normally and returns a number that averages
 over quantities that were never the same.
 
-## Where this repository uses it
+## Application in this repository
 
 The light-shift coefficient is fitted with one value shared across three
 measurement sessions and four spectral lines, argued in full in
@@ -102,8 +93,7 @@ repeats across the session, which converts common scatter into the kind that
 averages. Quote the across-repeat empirical spread whenever it exceeds the
 noise-law propagation, until independence is engineered into the design.
 
-## What can go wrong
-
+## Failure modes
 - Reading a converged fit as a checked assumption. Convergence is a statement
   about the optimiser. It says nothing about whether the groups shared the
   quantity.
@@ -184,8 +174,7 @@ the same one.
   261 (2005), for the between-group variance estimators the REML split
   above belongs to.
 
-## See also
-
+## Related pages
 - [The AC-Stark dossier](../quantities/ac-stark-light-shift.md), whose
   pooled constructions are this page's worked case, with the literature
   benchmark attached.

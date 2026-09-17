@@ -2,19 +2,12 @@
 
 *[wiki index](README.md) · concept*
 
-**The question.** Which beam geometries cancel the first-order Doppler shift
-for every atom at once, and which only appear to.
-**Takes.** A wavevector and a velocity. No fitting, no data.
-**Gives.** The summing rule for multiphoton shifts, the two-photon
-counter-propagating case, why three equal-colour photons cannot close
-collinearly, and the harmonic pair that can.
-**Skip if.** You want the frequency axis, not the geometry. That is
-[the wavemeter and the frequency axis](the-wavemeter-and-the-frequency-axis.md).
+Which beam geometries cancel the first-order Doppler shift for every atom at once, and which only appear to. This page builds on a wavevector and a velocity. No fitting, no data. It sets out the summing rule for multiphoton shifts, the two-photon counter-propagating case, why three equal-colour photons cannot close collinearly, and the harmonic pair that can. Not covered here: the frequency axis, not the geometry. That is [the wavemeter and the frequency axis](the-wavemeter-and-the-frequency-axis.md).
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md) defines
-> every term and symbol used anywhere in this repository.
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
+> defines every term and symbol used anywhere in this repository.
 
-## What it is
+## Definition
 
 An atom moving with velocity $\vec v$ sees a photon of wavevector $\vec k$
 shifted, to first order in $v/c$, by an amount proportional to
@@ -107,7 +100,7 @@ crossing beams, at the cost of interaction volume, alignment tolerance,
 and signal, while the fundamental-harmonic pair closes flat and keeps the
 full overlap.
 
-## What problem it solves
+## The problem it addresses
 
 It answers the geometric question under every Doppler-cancelling scheme:
 given a set of photons and colours, which beam arrangement, if any,
@@ -119,7 +112,7 @@ colour. Higher orders can be made collinear only by choosing colours so
 the wavevectors cancel along a line, which restores the overlap but
 requires a second beam at a different frequency.
 
-## Where this repository uses it
+## Application in this repository
 
 The whole measurement rests on the two-photon instance of this rule: one
 beam retro-reflected through the vapour cell, so every atom sees a
@@ -148,7 +141,7 @@ one colour against a doubled-frequency photon the other way close
 collinearly with no crossing beams, ruled out there on energy grounds and
 not on geometry.
 
-## What can go wrong
+## Failure modes
 
 The first failure is treating the cancellation as a velocity-class
 selection like saturated absorption, instead of a whole-ensemble
@@ -238,8 +231,7 @@ print("collinearly, which the equal-colour argument cannot reach at odd order.")
 - [Standing waves](standing-waves.md), for what the same retro-reflected
   geometry does to the uncancelled same-direction pairs.
 
-## See also
-
+## Related pages
 - [Doppler-free two-photon spectroscopy](doppler-free-two-photon.md), the
   two-photon instance of the geometry rule stated here, worked out in full
   for this apparatus.

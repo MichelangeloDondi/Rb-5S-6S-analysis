@@ -52,16 +52,17 @@ def test_kernels_have_claimed_fwhm():
 
 
 def test_stark_ramp_shape_and_mean():
-    # density ∝ |s| on [-s0,0] => mean shift = -2/3 s0 (the "2/3 of on-axis").
+    # density ∝ s on [0,s0] => mean shift = +2/3 s0 (the "2/3 of on-axis").
+    # BLUE since the adopted Delta alpha is negative (O27, the owner's SSOT ruling).
     nu = np.arange(-40, 40, 0.005)
     s0 = 6.0
     r = stark_ramp(nu, s0)
     assert abs(_area(nu, r) - 1.0) < 1e-3
     mean = trapezoid(nu * r, nu)
-    assert abs(mean - (-2.0 / 3.0 * s0)) < 0.05
-    # strictly red: no weight at nu > half a grid cell
+    assert abs(mean - (+2.0 / 3.0 * s0)) < 0.05
+    # strictly blue: no weight at nu < minus half a grid cell
     dnu = nu[1] - nu[0]
-    assert np.all(r[nu > dnu] == 0.0)
+    assert np.all(r[nu < -dnu] == 0.0)
 
 
 def test_stark_ramp_small_s0_continuous_and_mean_exact():
@@ -69,7 +70,7 @@ def test_stark_ramp_small_s0_continuous_and_mean_exact():
     # DISCONTINUOUSLY from ramp to grid spike at s0 <= dnu (a false-minimum
     # trap for fixed-lock fits that float s0). The cell-integral + moment-
     # corrected version must (a) keep exact unit mass, (b) keep the exact
-    # -2/3 s0 mean even for s0 far below the grid step, and (c) evolve
+    # +2/3 s0 mean even for s0 far below the grid step, and (c) evolve
     # continuously as s0 sweeps through the grid scale.
     nu = np.arange(-30.0, 30.0, 0.05)
     dnu = 0.05
@@ -78,7 +79,7 @@ def test_stark_ramp_small_s0_continuous_and_mean_exact():
         r = stark_ramp(nu, float(s0))
         assert abs(np.sum(r) * dnu - 1.0) < 1e-9
         mean = float(np.sum(nu * r) * dnu)
-        assert abs(mean - (-(2.0 / 3.0) * s0)) < 1e-6, (s0, mean)
+        assert abs(mean - (+(2.0 / 3.0) * s0)) < 1e-6, (s0, mean)
         if prev is not None:
             gap = float(np.sum(np.abs(r - prev)) * dnu)  # L1 distance
             assert gap < 0.35, (s0, gap)  # old code jumped by O(2) here
@@ -110,12 +111,13 @@ def test_lorentzian_gaussian_is_voigt():
     assert abs(_fwhm(nu, y) - expected) < 0.1
 
 
-def test_stark_ramp_pulls_peak_red():
-    # with a Stark ramp the peak of the composite line moves to NEGATIVE nu.
+def test_stark_ramp_pulls_peak_blue():
+    # with a Stark ramp the peak of the composite line moves to POSITIVE nu,
+    # the adopted Delta alpha being negative (O27).
     nu = np.arange(-40, 40, 0.01)
     y = model_profile(nu, gamma_coll=0.0, sigma_laser_fwhm=1.0,
                       transit_fwhm=1.0, s0=6.0)
-    assert nu[np.argmax(y)] < -0.1
+    assert nu[np.argmax(y)] > 0.1
 
 
 def test_composite_area_normalized():
@@ -126,30 +128,30 @@ def test_composite_area_normalized():
 
 
 def test_axial_ramp_recovers_triangle_at_zero_window():
-    # z_ratio -> 0: pure transverse triangle. mean = -2/3 s0,
-    # var/mean^2 = 1/8, standardized skew = 18^1.5/135.
+    # z_ratio -> 0: pure transverse triangle. mean = +2/3 s0,
+    # var/mean^2 = 1/8, standardized skew = -18^1.5/135.
     from rb5s6s.lineshape import stark_ramp_axial_moments
     m = stark_ramp_axial_moments(3.0, 1e-4)
-    assert abs(m["mean"] / 3.0 + 2.0 / 3.0) < 1e-3
+    assert abs(m["mean"] / 3.0 - 2.0 / 3.0) < 1e-3
     assert abs(m["var"] / m["mean"] ** 2 - 0.125) < 1e-3
-    assert abs(m["skew_standardized"] - 18.0 ** 1.5 / 135.0) < 1e-3
+    assert abs(m["skew_standardized"] + 18.0 ** 1.5 / 135.0) < 1e-3   # mirrored with the support
 
 
 def test_axial_ramp_one_photon_has_zero_skew():
     # n=1 (one-photon weighting) at zero window is the UNIFORM ramp:
-    # mean -s0/2 and exactly zero skew -- the skew observable exists only
+    # mean +s0/2 and exactly zero skew -- the skew observable exists only
     # because the two-photon signal goes as I^2.
     from rb5s6s.lineshape import stark_ramp_axial_moments
     m = stark_ramp_axial_moments(3.0, 1e-4, n_photon=1)
-    assert abs(m["mean"] / 3.0 + 0.5) < 1e-3
+    assert abs(m["mean"] / 3.0 - 0.5) < 1e-3
     assert abs(m["skew_standardized"]) < 1e-3
 
 
 def test_axial_ramp_three_photon_is_the_parabola():
     """n=3 at zero window is the PARABOLIC ramp f(s) = 3 s^2 / s0^3.
 
-    Exact cumulants by direct integration: mean -3/4 s0, variance 3/80 s0^2,
-    third central moment + s0^3/160, standardised skew 2 sqrt(15)/9 = 0.8607.
+    Exact cumulants by direct integration: mean +3/4 s0, variance 3/80 s0^2,
+    third central moment - s0^3/160, standardised skew -2 sqrt(15)/9 = -0.8607.
     Added 2026-08-09 when a one-colour three-photon rung entered the future
     programme: a three-photon rate goes as intensity cubed, so the same
     machinery that gives the two-photon triangle gives this parabola with
@@ -159,9 +161,9 @@ def test_axial_ramp_three_photon_is_the_parabola():
     from math import sqrt
     from rb5s6s.lineshape import stark_ramp_axial_moments
     m = stark_ramp_axial_moments(3.0, 1e-4, n_photon=3)
-    assert abs(m["mean"] / 3.0 + 0.75) < 1e-3
+    assert abs(m["mean"] / 3.0 - 0.75) < 1e-3
     assert abs(m["var"] / 9.0 - 3.0 / 80.0) < 1e-3
-    assert abs(m["skew_standardized"] - 2.0 * sqrt(15.0) / 9.0) < 1e-3
+    assert abs(m["skew_standardized"] + 2.0 * sqrt(15.0) / 9.0) < 1e-3   # mirrored (O27)
 
 
 def test_the_ramp_cumulants_follow_the_general_n_law():
@@ -172,7 +174,7 @@ def test_the_ramp_cumulants_follow_the_general_n_law():
 
     The sign of g1 is the part worth pinning: substituting u = -s/S0 gives a
     Beta(n,1) law whose own skew is NEGATIVE, and the reflection flips it, so
-    the ramp's standardised skew is positive. A first write-up of the general
+    the ramp's standardised skew is negative. A first write-up of the general
     law on 2026-08-09 had it negative, and this test is what would have caught
     that.
     """
@@ -181,10 +183,10 @@ def test_the_ramp_cumulants_follow_the_general_n_law():
     s0 = 2.0
     for n in (1, 2, 3):
         m = stark_ramp_axial_moments(s0, 1e-4, n_photon=n)
-        assert abs(m["mean"] / s0 + n / (n + 1)) < 1e-3
+        assert abs(m["mean"] / s0 - n / (n + 1)) < 1e-3
         assert abs(m["var"] / s0**2 - n / ((n + 1) ** 2 * (n + 2))) < 1e-3
         g1 = 2.0 * (n - 1) / (n + 3) * sqrt((n + 2) / n)
-        assert abs(m["skew_standardized"] - g1) < 1e-3
+        assert abs(m["skew_standardized"] + g1) < 1e-3   # mirrored with the support (O27)
 
 
 def test_axial_ramp_dilutes_mean_pull_monotonically():
@@ -198,7 +200,7 @@ def test_axial_ramp_dilutes_mean_pull_monotonically():
 
 def test_axial_ramp_grid_density_matches_moments():
     # the on-grid density (fit kernel) must reproduce the quadrature
-    # moments and stay area-normalized with support in [-s0, 0].
+    # moments and stay area-normalized with support in [0, s0], the blue side.
     import numpy as np
     from rb5s6s.lineshape import stark_ramp_axial, stark_ramp_axial_moments
     nu = np.arange(-6.0, 6.0 + 1e-9, 0.01)
@@ -206,7 +208,7 @@ def test_axial_ramp_grid_density_matches_moments():
     f = stark_ramp_axial(nu, s0, zr)
     dnu = nu[1] - nu[0]
     assert abs(f.sum() * dnu - 1.0) < 1e-9
-    assert f[nu > 1e-9].max() == 0.0 and f[nu < -s0 - dnu].max() == 0.0
+    assert f[nu < -1e-9].max() == 0.0 and f[nu > s0 + dnu].max() == 0.0
     m = stark_ramp_axial_moments(s0, zr)
     assert abs((f * nu).sum() * dnu - m["mean"]) < 5e-3
 
@@ -215,8 +217,8 @@ def test_stark_S0_convention_and_scaling():
     # Pinned standard convention. The 1.43 MHz checkpoint (225 mW, the old
     # 32 um nominal, rho=1) was computed under the cited 1093, so the
     # convention lock keeps using that constant EXPLICITLY: since the
-    # 2026-08-24 adjudication the package default is this record's -1145,
-    # under which the same point is 1.50. The factor-of-2 is what this
+    # 2026-08-24 adjudication the package default is this record's own value,
+    # under which the same point is 1.48. The factor-of-2 is what this
     # pins, and it is Delta_alpha-independent.
     from rb5s6s.constants import DELTA_ALPHA_AU_ORSON2021
     from rb5s6s.lineshape import stark_shift_S0_mhz
@@ -255,9 +257,9 @@ def test_ramp_moment_contributions_forward_model():
     from rb5s6s.lineshape import ramp_moment_contributions
     S0 = 3.0
     m = ramp_moment_contributions(S0, z_ratio=0.0)
-    assert abs(m["pull"] - (-2.0 / 3.0 * S0)) < 2e-3
+    assert abs(m["pull"] - (+2.0 / 3.0 * S0)) < 2e-3
     assert abs(m["excess_var"] - S0 ** 2 / 18.0) < 2e-3
-    assert abs(m["kappa3"] - S0 ** 3 / 135.0) < 2e-3
+    assert abs(m["kappa3"] + S0 ** 3 / 135.0) < 2e-3   # the odd cumulant mirrors (O27)
     # all three scale with the ONE parameter S0 (pull ~S0, var ~S0^2, k3 ~S0^3)
     m2 = ramp_moment_contributions(2 * S0, z_ratio=0.0)
     assert abs(m2["pull"] / m["pull"] - 2) < 1e-2
@@ -307,8 +309,9 @@ def test_axial_ramp_matches_the_independent_closed_form():
     assert lo * hi < 0, f"skew does not change sign in [1.10, 1.13]: {lo}, {hi}"
 
     # spot-check the interpolation against the closed form's own table
-    for z, mean_note, skew_note in ((0.5, 0.6209, 0.4793), (2.0, 0.4538, -0.3016),
-                                    (5.0, 0.3800, -0.4460)):
+    # the skews MIRROR with the support (O27); the |mean| notes are unchanged
+    for z, mean_note, skew_note in ((0.5, 0.6209, -0.4793), (2.0, 0.4538, +0.3016),
+                                    (5.0, 0.3800, +0.4460)):
         mm = stark_ramp_axial_moments(1.0, z)
         assert abs(mm["mean"]) == pytest.approx(mean_note, rel=2e-3)
         assert mm["skew_standardized"] == pytest.approx(skew_note, rel=2e-2)
@@ -360,7 +363,7 @@ def test_general_profile_reproduces_focused_beam_triangle():
     test conflated them."""
     from rb5s6s.lineshape import stark_from_intensity_profile, stark_ramp
     s0 = 2.0
-    nu = np.arange(-4.0, 1.0, 0.002)
+    nu = np.arange(-1.0, 4.0, 0.002)          # the window follows the blue support (O27)
     r = np.linspace(0.0, 5.0, 400001)
     intensity = np.exp(-2.0 * r ** 2)
     general = stark_from_intensity_profile(nu, s0, intensity, r, n_photon=2)
@@ -373,48 +376,48 @@ def test_general_profile_reproduces_focused_beam_triangle():
 
 
 def test_general_profile_n1_uniform_mean():
-    """n_photon=1 on the same geometry: mean pull -s0/2 (the flat case)."""
+    """n_photon=1 on the same geometry: mean pull +s0/2 (the flat case)."""
     from rb5s6s.lineshape import stark_from_intensity_profile
     s0 = 1.5
-    nu = np.arange(-3.0, 1.0, 0.002)
+    nu = np.arange(-1.0, 3.0, 0.002)          # blue window (O27)
     r = np.linspace(0.0, 5.0, 400001)
     f = stark_from_intensity_profile(nu, s0, np.exp(-2.0 * r ** 2), r,
                                      n_photon=1)
     mean = float(np.sum(nu * f) * (nu[1] - nu[0]))
-    assert abs(mean - (-s0 / 2.0)) < 5e-3
+    assert abs(mean - (+s0 / 2.0)) < 5e-3
 
 
 def test_general_profile_evanescent_is_not_a_triangle():
     """A nanofibre-like evanescent field (I ~ e^{-2r/L}, measure r dr)
     must give a different distribution: the measure grows outward while the
     intensity dies, boosting the small-shift tail, so the mean pull is
-    SHALLOWER than the focused beam's -2/3 s0 (an early version of this
+    SHALLOWER than the focused beam's +2/3 s0 (an early version of this
     test asserted the opposite; the machinery corrected the intuition)."""
     from rb5s6s.lineshape import stark_from_intensity_profile
     s0 = 2.0
-    nu = np.arange(-4.0, 1.0, 0.002)
+    nu = np.arange(-1.0, 4.0, 0.002)          # blue window (O27)
     r = np.linspace(120.0, 800.0, 200001)      # nm, from the fibre surface
     L = 100.0
     inten = np.exp(-2.0 * (r - r[0]) / L)
     f = stark_from_intensity_profile(nu, s0, inten, r, n_photon=2)
     mean = float(np.sum(nu * f) * (nu[1] - nu[0]))
-    assert -(2.0 / 3.0) * s0 + 0.02 < mean < -0.2 * s0, mean
+    assert +0.2 * s0 < mean < (2.0 / 3.0) * s0 - 0.02, mean       # mirrored (O27)
     assert abs(float(np.sum(f) * (nu[1] - nu[0])) - 1.0) < 1e-9
 
 
 def test_general_profile_axial_lorentzian_mean():
     """The axial line I(z) = 1/(1+z^2) with uniform measure: weight u^2 dz
-    with dz ~ du/(u^1.5 sqrt(1-u)) gives mean -3/4 s0 for n=2 -- a genuinely
+    with dz ~ du/(u^1.5 sqrt(1-u)) gives mean +3/4 s0 for n=2 -- a genuinely
     different geometry from the transverse triangle, kept as the example
     that the seam distinguishes geometries the summary widths cannot."""
     from rb5s6s.lineshape import stark_from_intensity_profile
     s0 = 2.0
-    nu = np.arange(-4.0, 1.0, 0.002)
+    nu = np.arange(-1.0, 4.0, 0.002)          # blue window (O27)
     z = np.linspace(-200.0, 200.0, 400001)
     f = stark_from_intensity_profile(nu, s0, 1.0 / (1.0 + z ** 2),
                                      np.ones_like(z), n_photon=2)
     mean = float(np.sum(nu * f) * (nu[1] - nu[0]))
-    assert abs(mean - (-0.75 * s0)) < 5e-3, mean
+    assert abs(mean - (+0.75 * s0)) < 5e-3, mean
 
 
 def test_model_profile_default_profile_is_stark_ramp_bitwise():
@@ -451,9 +454,9 @@ def test_model_profile_plumbed_general_seam_matches_ramp():
 
 def test_model_profile_custom_geometry_changes_line():
     """A different geometry through the same seam must actually reach the
-    model: the n=1 flat density pulls the line by -s0/2 against the
-    triangle's -2/3 s0, so the two composite lines' means must differ by
-    s0/6. Differencing the two means cancels the shared symmetric core and
+    model: the n=1 flat density pulls the line by +s0/2 against the
+    triangle's +2/3 s0 (BLUE since O27), so the two composite lines' means
+    must differ by -s0/6. Differencing the two means cancels the shared symmetric core and
     its truncation error."""
     from rb5s6s.lineshape import stark_from_intensity_profile
     r = np.linspace(0.0, 5.0, 200001)
@@ -471,4 +474,77 @@ def test_model_profile_custom_geometry_changes_line():
         return float(np.sum(nu * y) * dnu / (np.sum(y) * dnu))
 
     dm = mean(model_profile(nu, **kw, profile=flat)) - mean(model_profile(nu, **kw))
-    assert abs(dm - s0 / 6.0) < 0.05, dm
+    assert abs(dm + s0 / 6.0) < 0.05, dm
+
+
+def test_the_aperture_on_axis_factor_matches_its_closed_form_table():
+    """F39: the modulator's 3 mm bore ahead of the 150 mm lens clips the input Gaussian; the
+    on-axis intensity per recorded watt is (1 - e^{-a^2/w^2})^2 / (1 - e^{-2 a^2/w^2}) with
+    w = lam f / (pi w0). The thesis session's table, checked both sides: 28.4, 12.4, 3.3 and 0.6
+    per cent lost at 42.4, 52.1, 64 and 76 um; the factor tends to one for a wide focus (a
+    narrow input beam) and to zero for a tight one."""
+    from rb5s6s.lineshape import aperture_onaxis_factor
+    for w0_um, loss_pct in ((42.4, 28.4), (52.1, 12.4), (64.0, 3.3), (76.0, 0.6)):
+        assert abs(100.0 * (1.0 - aperture_onaxis_factor(w0_um * 1e-6)) - loss_pct) < 0.1, w0_um
+    assert aperture_onaxis_factor(300e-6) > 0.9999 and aperture_onaxis_factor(5e-6) < 0.05
+
+
+def test_the_aperture_spread_factor_reproduces_the_reviewed_column_and_its_unclipped_anchor():
+    """F39: the width channel reads the spread of the shift distribution under the rate weighting,
+    which the clipped focus moves by a factor F that differs from the on-axis one; the
+    column (0.699, 0.860, 0.959, 0.992 at 42.4, 52.1, 64 and 76 um) reproduces here to 0.3 per
+    cent, and the unclipped rms over the peak is 1/sqrt(18)."""
+    from rb5s6s.lineshape import aperture_spread_factor, aperture_onaxis_factor
+    from rb5s6s.constants import W0_MEASURED_M
+    for w0_um, F in ((42.4, 0.699), (52.1, 0.860), (64.0, 0.959), (76.0, 0.992)):
+        got = aperture_spread_factor(w0_um * 1e-6)
+        assert abs(got - F) < 0.004, (w0_um, got)
+        assert got < aperture_onaxis_factor(w0_um * 1e-6), "the spread factor sits below the on-axis one at every waist"
+    assert abs(aperture_spread_factor(W0_MEASURED_M, a_m=50e-3) - 1.0) < 2e-3, "a bore far wider than the beam clips nothing"
+
+
+def test_the_predicted_shift_per_recorded_watt_carries_the_on_axis_factor_once():
+    """F39: three producers computed the prediction identically, so it lives in the package;
+    it is the ideal relation times the on-axis factor at the same waist, and nothing else."""
+    from rb5s6s.stark import kappa_pred_per_watt
+    from rb5s6s.lineshape import aperture_onaxis_factor, stark_shift_S0_mhz
+    from rb5s6s import constants as K
+    for w0_um in (42.4, 64.0, 76.0):
+        w0 = w0_um * 1e-6
+        want = stark_shift_S0_mhz(1.0, w0, rho=K.RHO_RETRO) * aperture_onaxis_factor(w0)
+        assert abs(kappa_pred_per_watt(w0, K.RHO_RETRO) / want - 1.0) < 1e-12, w0_um
+    # the defaults are the record's own geometry, and the factor is applied once, not twice
+    d = kappa_pred_per_watt()
+    ideal = stark_shift_S0_mhz(1.0, K.W0_MEASURED_M, rho=K.RHO_RETRO)
+    assert 0.9 < d / ideal < 1.0, (d, ideal)
+
+
+def test_both_aperture_factors_take_a_waist_grid_and_agree_with_the_scalar_call():
+    """A GRID OF WAISTS IS THE NATURAL CALL AND IT RAISED (F57, 2026-09-17).
+
+    `run_delta_alpha_posterior.py` passes its whole waist grid to the spread factor, and the
+    wiring of 2026-09-17 had both factors doing `float(w0_m)`, so the producer died on the
+    first row and left `results/delta_alpha_posterior.csv` holding its header alone. Fourteen
+    bound references into that table went dangling, which is how it surfaced: as fourteen
+    documentation defects rather than as a broken producer. Both paths are checked here, and
+    the grid must agree with the scalar element by element or the vectorisation is a different
+    computation wearing the same name.
+    """
+    import numpy as np
+    from rb5s6s.lineshape import aperture_onaxis_factor, aperture_spread_factor
+    from rb5s6s.constants import W0_MEASURED_M
+    grid = np.array([42.4e-6, 52.1e-6, W0_MEASURED_M, 76.0e-6])
+
+    on_grid = aperture_onaxis_factor(grid)
+    assert np.shape(on_grid) == (4,)
+    for w, got in zip(grid, on_grid):
+        assert abs(got - aperture_onaxis_factor(float(w))) < 1e-12
+
+    sp_grid = aperture_spread_factor(grid)
+    assert np.shape(sp_grid) == (4,)
+    for w, got in zip(grid, sp_grid):
+        assert abs(got - aperture_spread_factor(float(w))) < 1e-12
+
+    # and a scalar still returns a python float, which is what every committed caller stores
+    assert isinstance(aperture_onaxis_factor(W0_MEASURED_M), float)
+    assert isinstance(aperture_spread_factor(W0_MEASURED_M), float)

@@ -1,17 +1,9 @@
 *Chapter 7 of 9 of [the big picture](../BIG_PICTURE.md)*
 
-**The question.** What does this dataset fail to determine, why does each
-failure happen, and which measurement fixes which one?
-**Takes.** The results of [what the 2025 dataset delivered](04_what-2025-delivered.md).
-**Gives.** Six chains from a limitation to the measurement that removes it,
-each with what would be learnt if it worked and if it did not.
-**Skip if.** You want the summary rather than the argument, in which case
-Part iii of [the big picture](../BIG_PICTURE.md) is the table this chapter
-expands.
+What does this dataset fail to determine, why does each failure happen, and which measurement fixes which one? This page builds on the results of [what the 2025 dataset delivered](04_what-2025-delivered.md) and sets out six chains from a limitation to the measurement that removes it, each with what would be learnt if it worked and if it did not. Not covered here: the summary rather than the argument, in which case Part iii of [the big picture](../BIG_PICTURE.md) is the table this chapter expands.
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
-> explains the measurement in six sentences, then defines every term
-> and symbol used anywhere in this repository.
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
+> defines every term and symbol used anywhere in this repository.
 
 A limitation is only useful when it names its own cure. Each section below runs
 from what the data cannot determine, through the physical reason, to the change
@@ -67,7 +59,7 @@ error, the polarizability spread and a spanned power calibration,
 [False](../../results/prediction_band.csv "ref:prediction_band:verdict:worst_band_spans_bound")
 for the worst case, and the waist at which the prediction would meet the bound
 is
-[76.0](../../results/prediction_band.csv "ref:prediction_band:waist_at_bound:w0_um")
+[74.3](../../results/prediction_band.csv "ref:prediction_band:waist_at_bound:w0_um")
 um against the 64 this record carries. The tension is therefore conditional on the waist,
 which no measurement of this beam has fixed, and on the retro power ratio, an
 assumption the record labels as one with a deliberately modest spread: at the
@@ -88,8 +80,8 @@ ladder through a calibrated expander is proposed as a second, because the
 laser and transit variances carry different powers of the magnification. The
 plan hub's intensity chapter states it with the conditioning it still owes.
 
-**A second limitation hides inside this one: the laser kernel is an
-assumption, and its failure mode is a bias rather than an error bar.** Every
+A second limitation hides inside this one: the laser kernel is an
+assumption, and its failure mode is a bias rather than an error bar. Every
 fit convolves a Gaussian for the laser, which is what slow frequency noise
 produces. Fast noise produces a Lorentzian, and a Lorentzian laser
 contribution is absorbed by the collisional width directly. Switching the kernel between two pure
@@ -100,7 +92,9 @@ of the comparison turns out to matter more than its verdict did.** A switch
 sets two models of equal dimension against each other. Freeing a second,
 Lorentzian component alongside the Gaussian one instead makes the pinned model
 a nested special case of the mixed one, and a nested test has power that a
-switch does not. What
+switch does not.
+
+What
 evidence exists leans the unfavourable way: the comb-clock limit excludes
 the slow spectra that would justify the Gaussian by factors of seventeen to
 eighty. Two in-situ resolutions are designed and neither has run, the lock's
@@ -108,8 +102,8 @@ own error signal and a fast-scan comb block whose tooth clock samples inside
 the band the science blocks' widths integrate
 ([plan chapter 7](../plan/07_acquisition-settings.md)).
 
-**That systematic is now measured, and measuring it did not settle the
-question.** A mixed Gaussian-plus-Lorentzian laser kernel was fitted against
+That systematic is now measured, and measuring it did not settle the
+question. A mixed Gaussian-plus-Lorentzian laser kernel was fitted against
 the pinned-Gaussian one at every peak. The mixed form wins decisively, by
 $\Delta\chi^2$ of 176 to 961 on a nested test with one parameter at its
 boundary, so **a non-Gaussian homogeneous component is present**, with
@@ -129,8 +123,8 @@ determines close to a sum, and each variable moves one term. The
 independent laser diagnostic is drawn greyed because no such measurement has
 been taken.*
 
-**Four things are true at once here and merging any two of them is the error
-this section exists to prevent.** A parameter is identified. Whether the four
+Four things are true at once here and merging any two of them is the error
+this section exists to prevent. A parameter is identified. Whether the four
 peaks share one value is neither rejected nor established, at $p = 0.097$, so
 the inverse-variance mean of those four values is never quoted bare. The
 physical origin is not identified, and calling the component the laser is a
@@ -157,8 +151,8 @@ turning this structure into an admissible alternative model and computing its
 effect on the collisional coefficient has not been done. And the domain is
 stated: the structure is inside the fit window.
 
-**Its relation to the excess outside the window has since been measured and is no longer
-unresolved.** Regressing each condition's in-window amplitude on
+Its relation to the excess outside the window has since been measured and is no longer
+unresolved. Regressing each condition's in-window amplitude on
 the model's own profile height and on vapour density at once, weighted, height
 prevails at 9.4 sigma and density gives 1.3, with the two predictors correlated
 only 0.49 and the height term surviving every leave-one-out above 8.5
@@ -170,8 +164,10 @@ come from [a note with no committed producer](../notes/band_excess_is_model_form
 **A documented reconstruction (`results/band_excess.csv`) rebuilt
 the construction from the same committed traces and did not reproduce them**:
 the census matches exactly at 79 traces while the cubic-surviving amplitude
-and the height significance come back far weaker. **A preregistered recovery
-then identified the note's predictor** (the absolute in-band model height,
+and the height significance come back far weaker.
+
+A preregistered recovery
+then identified the note's predictor (the absolute in-band model height,
 matching the note's 0.415 correlation to 0.001) **and proved no predictor
 reaches the note's significance with the current amplitudes** (0.70 partial
 correlation required, 0.39 available), so the discrepancy sits in the
@@ -186,7 +182,7 @@ nonlinearity and an amplitude-dependent baseline all predict this. **The
 mechanism is not named.** What is excluded is a density-driven collisional
 origin.
 
-**On the two runs.** An earlier run of the same atlas on the same data was
+On the two runs. An earlier run of the same atlas on the same data was
 declared void by its own preregistered check, which had invented a reproduction
 threshold twenty times stricter than the one `verify_results_fresh.py` sets for
 this repository and voided on a single condition already measured as
@@ -202,7 +198,7 @@ unattributed cause, which is a different and more useful position, and
 **Target outcome.** The collisional width becomes separately identifiable, and
 the bound of [q-beta-01](../BIG_PICTURE.md) becomes a measurement.
 
-**If it works,** the whole width budget resolves, and the laser-width row stops
+If it works, the whole width budget resolves, and the laser-width row stops
 being conditional on the split it is part of. **If it does not,** and the
 pinned fit's residual scatter fails to fall, that is informative rather than
 wasted: it would place the missing information somewhere other than the laser
@@ -245,7 +241,7 @@ uncertainty budget is verified, the scan software's span is confirmed to cover
 the manifold, the axis model of the scan is validated, and the sweep-to-sweep
 reproducibility is quantified. Until those are done this is a projection.
 
-**If it works,** the two rulers agree within the projected nonlinearity, the
+If it works, the two rulers agree within the projected nonlinearity, the
 axis is anchored inside every trace rather than transferred from an
 instrument, and the cross-isotope separations carry the isotope shift as a
 by-product worth a literature check. **If it does not,** and the two rulers
@@ -274,7 +270,7 @@ the record length set by points across the line rather than points per trace.
 **Target outcome.** The baseline becomes measured, so it stops being a source
 of model error in every other quantity that shares the window.
 
-**If it works,** the pedestal also becomes a thermometer of the atoms actually
+If it works, the pedestal also becomes a thermometer of the atoms actually
 probed, which is a different quantity from a thermocouple reading of the cell
 wall. **If it does not,** and the wide fit fails to recover an injected
 pedestal, the span was still too narrow or the baseline is not the assumed
@@ -310,7 +306,7 @@ discrimination power remains a projection until the injection tests are run,
 so the statement to make is that the measurement becomes possible, while its
 verdict stays open.
 
-**If it works,** the geometry stops being an assumption and every bound that
+If it works, the geometry stops being an assumption and every bound that
 divides by the waist sharpens without any new physics run. **If it does not,**
 and the comparison stays inconclusive, that bounds how much of the width budget
 the transit kernel can be responsible for, which narrows chain 1's failure
@@ -351,7 +347,7 @@ coverage holding in a joint-fit simulation. The projections put the
 prediction-to-precision ratio at 1.89 for the smallest session considered and
 5.35 for the largest.
 
-**If it works,** the light shift becomes the first absolute coefficient this
+If it works, the light shift becomes the first absolute coefficient this
 line yields by this method. **If it does not,** and the per-sweep normalisation
 scatter exceeds the pull it is meant to resolve, the limitation moves from the
 lock to the power metrology, which is a cheaper problem to fix and a different
@@ -384,12 +380,14 @@ far-wing collisional excess does not.
 [The full construction and its controls](../notes/band_excess_is_model_form.md),
 **which carries no committed producer**: these four numbers were computed once
 for the commit that introduced them, no `results/` row holds them, and the
-freshness machinery that guards every ledger number cannot see them. They are
+freshness machinery that guards every ledger number cannot see them.
+
+They are
 not withdrawn and none is known to be wrong. They simply stand on a weaker
 footing than the bounds around them, and a reader cannot tell that from the
 sentence alone.
 
-**This is a candidate mechanism and not an explanation**, so the limitation
+This is a candidate mechanism and not an explanation, so the limitation
 stands. Nothing in `results/` moved on it. What it does settle is what the
 excess is not: the pedestal is excluded as its source by the ceiling test of
 chain 3, and the excess is not evidence for a collisional far wing, which
@@ -409,12 +407,12 @@ co-rotating circular light. The published extinction and the rank argument
 are the same statement twice, which is worth knowing because it means the
 null has a reason and not only a measurement.
 
-**And the same argument closes the magnetic channel**, which is a limitation
+And the same argument closes the magnetic channel, which is a limitation
 this chapter no longer has to carry. Only the zero-change-in-projection
 component survives to any useful precision, for any polarisation, any
 ellipticity, any imperfection in the retro and any direction of an ambient
 field. That component's Zeeman shift cancels between two S states of equal
-hyperfine g-factor, leaving under 140 Hz at the Earth's field.
+hyperfine g-factor, leaving under 140 Hz at the Earth's field. <!-- other-quantity: a residual Zeeman splitting in hertz, not the dilute-gas margin of docs/methods/02 -->
 
 The components that would not cancel, at 350 kHz and 700 kHz per unit, are
 driven so weakly that the distinction from not at all is academic, and saying
@@ -426,7 +424,9 @@ momentum a single J=1/2 atom must refuse, at 1.3e-9 of the line
 polarisation mismatch and the Doppler-free geometry's own rest-frame energy
 split act together, at 2e-13 for a five degree mismatch
 (`rb5s6s/polarisation.py`). Both sit six orders or more below the tightest
-bound this record carries on an out-of-window feature. A
+bound this record carries on an out-of-window feature.
+
+A
 first pass at this in August 2026 claimed that a polarisation mismatch opened
 the first of them and had to be retracted the same day: the mistake was
 applying the antisymmetric part of the light-shift operator, which elliptical
@@ -443,7 +443,7 @@ residual-structure work.
 **Target outcome.** The anomaly becomes attributable, which is the projected
 outcome and not an assured one.
 
-**If it works,** the one open anomaly in the record acquires a mechanism, or is
+If it works, the one open anomaly in the record acquires a mechanism, or is
 shown to be instrumental. **If it does not,** and the isolated blocks carry the
 same excess, that moves it out of the optics and into the detection chain,
 which is a smaller space to search than the one it lives in now.
@@ -454,8 +454,8 @@ The six limitations above are properties of the model and the data. This one
 is a property of how the data were taken, and it was found by reading the
 quantisation step of the stored samples rather than any recorded setting.
 
-**Power was confounded with time, and the vertical range moved under the
-measurement.** In the campaign the power descends monotonically with elapsed
+Power was confounded with time, and the vertical range moved under the
+measurement. In the campaign the power descends monotonically with elapsed
 time, so any quantity measured against power is equally a measurement against
 drift, and no analysis of that session alone can separate them. Independently,
 the oscilloscope's vertical range was changed at every rung of every ladder,
@@ -472,19 +472,19 @@ under acquisition order, but its ordering across lines follows their
 brightness rather than any atomic quantity, which points at the ranging rather
 than at the atom.
 
-**Both halves are removable at almost no cost**, which is what makes this a
+Both halves are removable at almost no cost, which is what makes this a
 limitation rather than a fact of life: randomise the rung order and record the
 seed, and hold one vertical range across a ladder, which needs a 12-bit
 acquisition and is arithmetic rather than preference. The full design is in
 [the acquisition-settings chapter](../plan/07_acquisition-settings.md).
 
-**The general lesson the record should keep.** The archive's most informative
+The general lesson the record should keep. The archive's most informative
 control was an accident: the rehearsal's alternating ladders were run that way
 for convenience, and they are the only reason one of these two findings could
 be adjudicated at all. A design that varies the nuisance on purpose costs
 nothing and would not have depended on luck.
 
-## A note on the density design, which is a seventh limitation
+## The density design as a seventh limitation
 
 The collisional bound has a limitation that is neither degeneracy nor absence
 but geometry. Density rises steeply with temperature, so the three lower
@@ -510,7 +510,7 @@ temperature, with the hot points the plan already wants for signal reasons
 moving the far end of the lever and giving the fit a second constraint out
 there.
 
-## What none of this would fix
+## Limitations no campaign would remove
 
 Two limits survive every session above, and they belong here so the chapter
 does not read as a promise. The density scale that the collisional coefficient
@@ -520,7 +520,7 @@ absolute rather than relative. And the archive itself cannot be improved: these
 chains describe what a new session would determine, and the 2025 bounds stand
 as bounds whatever happens next.
 
-## A limitation this chapter does not carry
+## A limitation not carried here
 
 Every chain above is about a quantity the data fail to determine. One limitation
 is about the construction instead: whether the joint fit that produces the

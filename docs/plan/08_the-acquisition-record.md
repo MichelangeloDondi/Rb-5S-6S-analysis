@@ -1,22 +1,18 @@
 *Chapter 8 of 12 of [the plan](../PLAN.md)*
 
-**The question.** What must every block log, and which single omission cost a measurement?
-**Takes.** The acquisition settings of chapter 7.
-**Gives.** The per-block record, the comb bracket, the EOM drive, the sub-multiple coincidence design, the two-tone cascade and the mid-band alternative, the sweep-direction column, and the wavemeter shots.
-**Skip if.** You want the span and sweep settings themselves, which is chapter 7.
+This chapter builds on the acquisition settings of chapter 7 and sets out the per-block record, the comb bracket, the EOM drive, the sub-multiple coincidence design, the two-tone cascade and the mid-band alternative, the sweep-direction column, and the wavemeter shots. The span and sweep settings themselves is chapter 7.
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
-> explains the measurement in six sentences, then defines every term
-> and symbol used anywhere in this repository.
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
+> defines every term and symbol used anywhere in this repository.
 
-## 10b. The acquisition record itself, and the one setting whose absence cost a measurement
+## 10b. The acquisition record and its one missing setting
 
 Section 10a sizes the span and the record length. This section is about what
 must be written down while the traces are taken, and it exists because on
 2026-08-16 a complete, deep, well-conditioned dataset turned out to be
 uninterpretable for want of a single number nobody recorded.
 
-### 10b.1 the piezo amplitude is recorded per block, and this is not optional
+### 10b.1 Mandatory per-block piezo amplitude
 
 The 2025-07-04 session holds fifty traces at 500,001 points, 5.000 s, 10 us
 per sample: 250 times the record depth of the campaign, 50 times its time
@@ -65,7 +61,7 @@ One recorded number would have decided it. So:
   * any change to any of them starts a new block, and the change is written
     down at the moment it is made rather than reconstructed afterwards.
 
-### 10b.2 every session carries a comb, and it brackets the block
+### 10b.2 The per-session comb bracketing each block
 
 The 2025-07-04 session's real defect is not its missing amplitude, it is its
 missing comb. A comb is the only calibration that does not borrow a number from
@@ -102,7 +98,7 @@ modulation depth to an alignment.
 Record the drive voltage that achieves beta = 2.405 and re-check it whenever
 the crystal temperature is touched, since beta drifts with it.
 
-### 10b.4 EOM RF frequency: raise it, and only with the wider span
+### 10b.4 EOM RF frequency and the wider span
 
 The 2025 drive was 12.5 MHz. The teeth it produces sit 12.5 MHz apart on the
 transition axis and 6.25 MHz apart on the laser axis, against a line 5.4 MHz
@@ -113,15 +109,17 @@ the lower first-order tooth's tail cancelled the ramp's third cumulant inside
 a 6 MHz window and the centre fit, confined to just under half the spacing,
 read the leakage as a centre, in the world without the collection window. With
 the window and the fringe tail in it (2026-09-08) both channels recover the
-coefficient there, at two to four times the wide combs' scatter. From 25 MHz
+coefficient there, at two to four times the wide combs' scatter.
+
+From 25 MHz
 up the centre channel
 survives with its own background, and **the moment channel wants the comb
 there too**: measured on the twin, it recovers the coefficient on the 25 and
 40 MHz spacings and reads high without one, since the comb lowers each
 tooth's saturation width while holding the shift.
 
-**Why the two spacings differ, stated because an earlier version of this
-section ran them together and halved every RF figure below.** The sidebands
+The reason the two spacings differ, stated because an earlier version of this
+section ran them together and halved every RF figure below. The sidebands
 sit at $\nu_c + n\Omega$ on each beam, and there is no optical component at
 6.25 MHz anywhere in the light. A two-photon resonance needs
 $\nu_a + \nu_b = \nu_0$, so $2\nu_c + s\Omega = \nu_0$ with $s = n + m$, and
@@ -131,7 +129,9 @@ therefore a property of the scan axis rather than of any photon**, and a pair
 such as $(+1,-1)$ has $s=0$ and lands on the carrier tooth rather than making
 a new one. The drive is photographed at 12.500 000 000 0 MHz on the generator
 and is the EOM's designed resonance ([`APPARATUS.md`](../APPARATUS.md)), and
-`constants.OMEGA_EOM_HZ` carries it. The distinction is load-bearing here
+`constants.OMEGA_EOM_HZ` carries it.
+
+The distinction is load-bearing here
 because this section is a hardware recommendation, and the halved column would
 have specified a modulator at half the frequency it needs. That is **2.3 linewidths between teeth**, and `rb5s6s/ruler.py`
 records the consequence in its own docstring: a strong tooth's wing under a
@@ -170,7 +170,7 @@ the clusters and never fills the gaps.
 Three teeth is not a ruler. So raising the RF on the 2025 span would make the
 calibration worse, and raising it on the proposed span costs nothing.
 
-### 10b.4a A drive that is an exact sub-multiple of a pair separation
+### 10b.4a Drives at a sub-multiple of a pair separation
 
 An optional measurement with its own deliverable, stated before the design
 because the distinction decides whether hardware is worth buying. This
@@ -219,18 +219,18 @@ crossing, so one hundred crossings reach 0.3 kHz on the separation. That is a
 factor of about six on the 6S hyperfine constant, a small, clean deliverable
 separate from the broadening programme.
 
-**The readout is light-shift-free at full power.** For these
+The readout is light-shift-free at full power. For these
 $J=\tfrac12 \to J=\tfrac12$ lines under linear polarisation the two-photon
 light shift is purely scalar, so it moves both members of the doublet
 identically and cancels in the splitting to first order. The individual
 positions carry the full shift. The splitting does not.
 
-**The amplitude cost is mild.** The best achievable tooth height falls only
+The amplitude cost is mild. The best achievable tooth height falls only
 from 0.339 at $n=1$ to 0.160 at $n=4$, because the first maximum of $J_n$
 falls roughly as $n^{-1/3}$. A fourth-order coincidence keeps 47 per cent of
 what a first-order one could give, at a drive four times lower.
 
-**One drive reaches both isotopes, but do not ask it to.** At 579.634 MHz the
+One drive reaches both isotopes, but do not ask it to. At 579.634 MHz the
 85 pair coincides exactly at $n=4$ and the 87 pair falls at $n=9$, missing by
 3.26 MHz, which is 0.94 linewidths and therefore a cleanly resolved doublet
 whose splitting measures $\Delta_{87} - \tfrac94\Delta_{85}$ with no sweep
@@ -243,8 +243,8 @@ synthesiser setting, so switch it rather than compromise it**: 579.634 MHz for
 the 85 pair and 1304.993 MHz for the 87 pair, each at $2\beta$ near 5.3, is
 two blocks and two optima.
 
-**The table above holds only where the retro delay is negligible, and at
-these drives it is not.** The weights $J_n(2\beta)^2$ assume every pathway
+The table above holds only where the retro delay is negligible, and at
+these drives it is not. The weights $J_n(2\beta)^2$ assume every pathway
 pair interferes with zero relative phase. With the modulator in the common
 path the retro photon arrives late by $\tau(z)$, and the pathway sum
 collapses exactly to a single tone at effective depth
@@ -255,11 +255,13 @@ explicit pathway sum). At 12.5 MHz the phase is 0.04 to 0.09 rad and nothing
 changes. At 579.634 MHz it spans 1.8 to 4.3 rad across a 10 cm cell behind a
 7.5 cm standoff, the effective depth sweeps through zero, and the
 fourth-order coincidence tooth collapses from 0.16 to 0.003, a factor of
-fifty, killing the block as costed. The crossover pairs the zero-delay
+fifty, killing the block as costed.
+
+The crossover pairs the zero-delay
 interference had cancelled also return to the carrier, which keeps 0.62 of
 its height at $2\beta = 3.05$ rather than 0.076, and never nulls at 2.405.
 
-**The repair is placement, not power.** Put the coincidence modulator
+The repair is placement, not power. Put the coincidence modulator
 between the cell and the retro mirror. The forward photon is then
 unmodulated, every pathway carries a distinct order, nothing interferes, and
 the zero-delay weights are exact at any drive: the fourth-order tooth
@@ -268,7 +270,7 @@ valid at any frequency. The cost is one more optic in the retro path and its
 3 mm aperture.
 
 **The one magnetic systematic in this plan lives here.** The line barely
-feels a laboratory field, first order doubly cancelled to under 140 Hz at
+feels a laboratory field, first order doubly cancelled to under 140 Hz at <!-- other-quantity: a residual Zeeman splitting in hertz, not the dilute-gas margin of docs/methods/02 -->
 50 uT and second order under 3 kHz per state. The pair separation is less
 lucky: it inherits the difference of the quadratic Zeeman terms, dominated
 by the smaller 6S splitting, near 0.9 and 2.1 kilohertz per gauss squared on the laser axis for the 87
@@ -276,10 +278,12 @@ and 85 pairs, which is half the transition-axis figure the campaign-cases
 chapter quotes and about a kilohertz at a laboratory field of one gauss, against this block's 0.3 kHz target. The term
 scales as the field squared, so nulling to about 15 uT with a coil pair buys
 a factor of ten, and the fluxgate column of section 10b.4b supplies the
-correction either way. No other block in this plan carries a magnetic term
+correction either way.
+
+No other block in this plan carries a magnetic term
 at its own precision.
 
-**The systematic measures itself, which makes the block a magnetometer.**
+The systematic measures itself, which makes the block a magnetometer.
 The quadratic Zeeman term above is a calibrated field-squared coefficient of
 pure atomic structure, so reading the doublet at two coil settings returns
 the field inside the cell, at the atoms, where no external probe sits: near
@@ -291,7 +295,9 @@ signature separates a real field from an axis error.** Each level carries the Br
 second-order term, proportional to one minus four times the magnetic quantum
 number squared over the square of twice the nuclear spin plus one, positive
 for the upper hyperfine level and negative for the lower, and inversely
-proportional to the hyperfine splitting. The transition takes the 6S term less
+proportional to the hyperfine splitting.
+
+The transition takes the 6S term less
 the 5S one, and the record's own `A_6S_RB87_HZ` and `A_6S_RB85_HZ` put the 6S
 splittings 4.23 times below the ground state's in both isotopes. The
 construction is gauged against the published 87 clock coefficient of 575.15
@@ -303,7 +309,9 @@ middle, and the 0.9 and 2.1 above are the same physics read as the two
 hyperfine pairs at zero projection. A scale error in the frequency axis, linear or
 quadratic, moves all three the same way, so the sign opposition is the
 discriminator and a fit returning a negative field squared indicts the axis
-and not the field. The three agree or the axis is wrong, and that test is
+and not the field.
+
+The three agree or the axis is wrong, and that test is
 free on any trace carrying all four lines. Per-peak
 coefficient differences enter this budget too and are computed from the
 record's own polarizability model at 4 to 16 Hz at full power, twenty to
@@ -311,13 +319,13 @@ seventy times below the Zeeman term. The complementary null-seeker, zeroing
 the coil by minimising the vector-skew reversal of
 [chapter 5](05_width-collision-amplitude.md), needs no calibration at all.
 
-**Read it out detuned, not on the coincidence.** Two identical lines exactly
+Read it out detuned, not on the coincidence. Two identical lines exactly
 on top of each other broaden quadratically in their detuning, so the
 coincidence itself is the least sensitive place to sit. Offsetting the drive
 by about a linewidth over $n$, 872 kHz at $n=4$, resolves the pair and the
 splitting is then read linearly.
 
-**What it costs, as a three-option menu.** This paragraph has moved twice as
+The cost, as a three-option menu. This paragraph has moved twice as
 the adjudication sharpened, and the current form is a menu rather than a
 single recommendation.
 
@@ -344,7 +352,7 @@ resonant tank reaches, and the 6S-hyperfine-constant measurement of this
 section is the one deliverable that justifies it. The 85 pair at 150 MHz
 would need order sixteen, which is unreachable at any survivable depth.
 
-### 10b.4b record the sweep direction, which costs one column
+### 10b.4b The sweep-direction column
 
 The manifest records no sweep direction, and one measurement is blocked
 entirely on that omission. `run_tooth_scatter.py` reads the comb as a clock
@@ -393,7 +401,7 @@ the tooth interval is not near an integer number of mains periods, which
 costs nothing and keeps the clock's response at the one frequency a lab is
 guaranteed to be asked about.
 
-### 10b.4c two drives in cascade, which fills the gaps the single comb cannot
+### 10b.4c Two drives in cascade
 
 Drive the light with two tones at once, the 12.5 MHz tank and a broadband
 modulator near 580 MHz in series, and the two-photon tooth amplitudes
@@ -438,7 +446,7 @@ option. What the cascade alone preserves is the fine 0.15 s clock band
 running simultaneously with the gap-filling lattice, and the coincidence
 metrology keeps needing the broadband device either way.
 
-### 10b.5 oscilloscope: use the deep one, and say which one
+### 10b.5 Choice and recording of the oscilloscope
 
 The campaign used a 2000-point record. The 2025-07-04 session used a LeCroy
 WaveSurfer 3104z at 500,001 points, and that instrument was available all
@@ -457,9 +465,9 @@ wider one.
     line count at the end of each block would have caught it while the block
     could still be repeated.
 
-### 10b.5a two channels the block log gains, both because the bench had the signal and the record did not
+### 10b.5a Two channels added to the block log
 
-**The thermocouples are logged, not merely present.** The cell carries four
+The thermocouples are logged, not merely present. The cell carries four
 thermocouples between the vapour cell and its metallic case inside the
 foil-wrapped oven, and the 2025 dataset holds only the set point per block,
 which is why one session's internal temperature spans 110 to 130 C in the
@@ -469,7 +477,7 @@ set point, at block start and block end so a drift across the block is
 visible. The Doppler pedestal thermometer of chapter 10 then calibrates
 the atoms against the logged wall reading instead of against a set point.
 
-**The laser-power monitor is a recorded channel.** The measured noise
+The laser-power monitor is a recorded channel. The measured noise
 budget ([`quantisation.csv`](../../results/quantisation.csv), budget rows)
 puts the wing noise on a light-linked background growing linearly with
 power, and a monitor photodiode is both the discriminator and the repair:
@@ -479,7 +487,7 @@ offline for every trace afterwards. It takes the spare input of whichever
 instrument has one, and its gain and bandwidth go in the block log like
 everything else.
 
-### 10b.5b the block row, in full, because a missing column is a lost measurement
+### 10b.5b The block row in full
 
 Every failure this chapter documents is a column that was not written. The
 list below is the row a block must carry, each entry naming the question it
@@ -498,11 +506,11 @@ answers, so an operator can check completeness without reading the chapter.
 | the wall clock, from the instrument | the record's own timing had to be reconstructed from file metadata afterwards |
 | the oven setpoint, and whether the last change was a rise or a fall | a density that lags the oven differs at one nominal temperature by the approach, which reads as block scatter. The archive carries no column to sort on, its sixteen temperature blocks show no within-block climb at a power that could not see a few per cent, and the campaign approaches every temperature from both directions once |
 
-**The rule this table encodes: a setting that is not written is a setting
-that did not happen.** Every one of these rows exists because its absence
+The rule this table encodes: a setting that is not written is a setting
+that did not happen. Every one of these rows exists because its absence
 cost a measurement that the analysis then spent days trying to recover.
 
-### 10b.6 scan speed, and the two rates that must differ
+### 10b.6 Scan speed and its two distinct rates
 
 Take at least one block at a deliberately different scan rate, with the piezo
 amplitude recorded, at otherwise identical conditions.
@@ -533,7 +541,7 @@ absolute offset. Three shots:
 3. **MHz transfer check during the shift grids**: log the wavemeter
    continuously and compare its reported shifts to the comb, which wins.
 
-**The wavemeter is logged to disk, never photographed.** The 2025 record's
+The wavemeter is logged to disk, never photographed. The 2025 record's
 wavemeter evidence is screen photographs digitised by hand, whose noise
 floor near 3 MHz per sample is the digitiser rather than the laser, and one
 adjudication of an apparent 50 s modulation spent a full analysis deciding

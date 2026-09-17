@@ -271,7 +271,7 @@ def condition_task(key, fit, recs, seeds):
     role, peak, T, P = key
     law = load_noise_model(_CFG.RESULTS_DIR / "noise_model.csv", role=role, peak=peak,
                            temperature_C=T, power_mW=(P if role == "p_sweep" else None))
-    tau = max(law["tau_int"], 1.0)
+    tau = max(law.get("tau_eff", law["tau_int"]), 1.0)   # F36
     transit = transit_fwhm_at_T(T, _CFG.TRANSIT_FWHM_PLACEHOLDER_MHZ)
     g, prof = _shared_profile_grid(fit["gamma_coll"], fit["sigma_laser"], transit, 0.0, "gaussian", 0.0)
     pmax = float(prof.max())

@@ -12,19 +12,10 @@ had to be assumed, the assumption is labelled and its basis stated. Provenance
 tags follow `docs/STYLE.md` (measured-here / calculated / established /
 ENVELOPE / OPEN).
 
-**The question.** What would it take to move this measurement out of the
-vapour cell and into a hollow-core fibre?
-**Takes.** [BIG_PICTURE.md](../BIG_PICTURE.md) §6, for why a guided mode is
-interesting at all.
-**Gives.** The optical budget, the expected signal, the surface and collision
-terms a guided mode adds, and every assumption labelled where it had to be
-made.
-**Skip if.** You want the cell result. Nothing here is scheduled, agreed or
-costed.
+What would it take to move this measurement out of the vapour cell and into a hollow-core fibre? This page builds on [BIG_PICTURE.md](../BIG_PICTURE.md) §6, for why a guided mode is interesting at all and sets out the optical budget, the expected signal, the surface and collision terms a guided mode adds, and every assumption labelled where it had to be made. Not covered here: the cell result. Nothing here is scheduled, agreed or costed.
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
-> explains the measurement in six sentences, then defines every term
-> and symbol used anywhere in this repository.
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
+> defines every term and symbol used anywhere in this repository.
 
 The reader addressed throughout is a guided-mode platform, a hollow-core fibre
 experiment holding either a warm fill or a trapped sample. No apparatus outside
@@ -48,10 +39,10 @@ analogue for.
 
 In the cell the working point is 225 mW into a waist of
 `constants.W0_MEASURED_M` = 64 µm, giving `2P/(pi w0^2)` = 3.497e7 W/m² per
-travelling wave and, with `rho` = 0.94, an on-axis maximum shift
-
-    lineshape.stark_shift_S0_mhz(0.225, 64e-6, 0.94) = 0.3599 MHz
-
+travelling wave and, with `rho` = 0.94, an on-axis maximum shift, the ideal Gaussian's
+before the aperture's on-axis factor, of
+[0.3599](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w64um:on_axis_shift") MHz
+(`lineshape.stark_shift_S0_mhz(0.225, 64e-6, 0.94)`)
 on the transition axis, at the record's own pinned `DELTA_ALPHA_AU`. An
 earlier version of this line passed `1093.0` explicitly and got 0.3476,
 which matched `results/stark_joint.csv` only because that file's five-hour
@@ -66,7 +57,7 @@ not buy collection, which section 3 quantifies.
 
 **This is the one thing from the record that does not transplant, stated
 plainly.** The closed-form ramp weight `lineshape.stark_ramp`, density
-`f(s) ∝ |s|` on `s ∈ [-S0, 0]`, is derived for atoms **crossing a focused
+`f(s) ∝ s` on `s ∈ [0, S0]`, is derived for atoms **crossing a focused
 beam**. Its derivation, quoted in the module docstring, is that the two-photon
 signal goes as `I²`, the shift goes as `I`, and the transverse volume measure
 of a Gaussian beam gives `du/u`, so that `dS/du ∝ u`. The step that fails for a
@@ -88,12 +79,12 @@ verified numerically against `lineshape.stark_ramp` itself):
 |---|---|---|
 | mean deficit | `(2/3) S0` | `(3/2) (k_B T/U0) S0` |
 | sd / mean | 0.3536 (`= 1/sqrt(18) ÷ 2/3`) | 0.8165 (`= sqrt(2/3)`) |
-| skewness, in the deficit `d` | **+0.566** | **+1.633** |
+| skewness, in the deficit `d` (O27 mirrors it in the shift) | **+0.566** | **+1.633** |
 | support | hard edge at `S0`, zero beyond | no edge, exponential tail |
 
 **The signs are the same, and the table above was relabelled on 2026-09-11 to
 say so.** The row above is quoted in the positive deficit `d`,
-as its heading says. In that variable the ramp's skewness is **+0.566** and the
+as its heading says. In that variable the ramp's skewness is **+0.566**, the mirror of O27's blue-sided -0.566 in the shift, and the
 trapped sample's is **+1.633**: both distributions pile their weight at small
 deficit, which is large shift, and tail off toward large deficit. The −0.566
 the table used to carry is the same quantity in the *shift* variable `u = 1 − d`,
@@ -157,8 +148,8 @@ deeper does not help. Only colder atoms, or a different trap wavelength, would.
 | 100 µK | 3.655 MHz |
 | 556 µK | 20.3 MHz (ENVELOPE, past the harmonic limit) |
 
-For scale, the record's whole ramp edge is 0.360 MHz and the natural width is
-`constants.GAMMA_NAT_HZ` = 3.4925 MHz. A 1064 nm trap reaches the record's
+For scale, the record's whole ramp edge is [0.348](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred:shared") MHz and the natural width is
+`constants.GAMMA_NAT_HZ` = [3.4925](../../rb5s6s/constants.py "ref:constant:GAMMA_NAT_HZ:MHz") MHz. A 1064 nm trap reaches the record's
 ramp edge at **9.5 µK** and the natural width at **95.6 µK**. A sample at the
 few-hundred-µK temperature that a fibre load without further cooling would
 plausibly deliver would be dominated by this term, not by anything the dataset
@@ -188,7 +179,7 @@ For the 19 µm mode assumed in the sibling design studies, two counter-propagati
 `4 × 2P/(pi w²)` = 7.054e9 W/m², a depth `U0` = 22.727 MHz = 1090.7 µK, an
 axial frequency of 429.4 kHz and a radial frequency of 5.41 kHz (all calculated
 here from `alpha_5s(1064.0)`, and reproducing the sibling repositories' own
-stored 430 kHz to 0.1 %). The recoil frequency is 2.028 kHz, so the fractional
+stored 430 kHz to 0.1 %). The recoil frequency is 2.028 kHz, so the fractional<!-- other-quantity: the recoil frequency in kHz, not global_dataset_fit's per-peak sigma_laser in MHz. The digits coincide -->
 intensity a single axial vibrational quantum costs is `2 E_rec/(h nu_z)` =
 0.945 %, which on a 26.58 MHz differential trap shift is **251 kHz per
 quantum**. At 100 µK the mean axial occupation would be 4.4, so the axial
@@ -306,11 +297,11 @@ filled fibre, line width natural plus transit plus ramp.
 |---|---|---|---|
 | drive (from the repo's nist terms) | 993.418 nm | 760.126 nm | 778.104 nm |
 | detection | 795.0 / 780.2 nm | 420.30 nm | 420.30 nm |
-| `Δα` (a.u.) | 1144.6 | 4371.7 | 28649 (ENVELOPE) |
+| `Δα` (a.u.) | [-1131.8](../../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive") | 4371.7 | 28649 (ENVELOPE) |
 | natural FWHM | 3.4925 MHz | 1.802 MHz | 0.410 MHz (ENVELOPE) |
-| `S0` at 100 mW | 6.83 MHz | 26.1 MHz | 171 MHz |
-| power at which `S0` = natural width | **51.1 mW** | **6.91 mW** | **240 µW** |
-| power at which `S0` = the cell's 0.360 MHz | 5.09 mW | 0.68 mW | 0.0049 mW |
+| `S0` at 100 mW | 6.75 MHz | 26.1 MHz | 171 MHz |
+| power at which `S0` = natural width | **[51.7](../../results/projections.csv "ref:projections:proj_guided_power_ceiling:S0 equals the natural width") mW** | **6.91 mW** | **240 µW** |
+| power at which `S0` = the cell's [0.348](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred:shared") MHz | 5.09 mW | 0.68 mW | 0.0049 mW |
 | peak rate per atom at 100 mW | 6.22e6 /s | 5.48e6 /s | 1.29e6 /s |
 | counts/s, 1e4 cold atoms, 100 mW | 2.7e5 | 1.6e5 | 9.9e3 |
 | counts/s, cold, at the usable power | 1.2e5 | 2.2e4 | 4.2e3 |
@@ -341,7 +332,7 @@ radiation-trapping physics the repository already carries for the cell.
 
 | | 85Rb | 87Rb |
 |---|---|---|
-| 60 °C, per cm | 1.35 | 0.52 |
+| 60 °C, per cm | 1.35 | 0.52 <!-- other-quantity: an absorption per centimetre at 60 C, not a leave-one-out bracket --> |
 | 100 °C, per cm | 26.0 | 10.0 |
 | 100 °C, over 10 cm | 260 | 100 |
 | 100 °C, over 40 cm | 1041 | 401 |
@@ -351,7 +342,7 @@ that is a **radial** optical depth of 0.023. The vapour is axially opaque and
 radially transparent by four orders of magnitude, so essentially every cascade
 photon leaves through the side wall on its first flight. Any scheme that
 collects out the fibre ends at 795 or 780 nm is collecting from a channel that
-is closed. Running the fill at 60 °C would reopen it (1.35 per cm, so 7.4 mm of
+is closed. Running the fill at 60 °C would reopen it (1.35 per cm, so 7.4 mm of <!-- other-quantity: an absorption per centimetre at 60 C, not a leave-one-out bracket -->
 a fill contributes) at the cost of a 19-fold drop in density.
 
 ---

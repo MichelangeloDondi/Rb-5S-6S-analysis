@@ -2,21 +2,12 @@
 
 *[wiki index](README.md) · method*
 
-**The question.** What does it mean to compute a number by simulation
-instead of by a formula, and how fast does that number sharpen as more
-samples are drawn.
-**Takes.** A basic sense of sampling and averaging. No other wiki page is
-required first.
-**Gives.** The $1/\sqrt{N}$ convergence law, the distinction between
-simulating from a model and resampling data already in hand, and the seed
-discipline that makes a simulated result checkable.
-**Skip if.** You want to resample data already collected instead of
-simulating from a fitted model. That is [resampling](resampling.md).
+What does it mean to compute a number by simulation instead of by a formula, and how fast does that number sharpen as more samples are drawn. This page builds on a basic sense of sampling and averaging. No other wiki page is required first. It sets out the $1/\sqrt{N}$ convergence law, the distinction between simulating from a model and resampling data already in hand, and the seed discipline that makes a simulated result checkable. Not covered here: to resample data already collected instead of simulating from a fitted model. That is [resampling](resampling.md).
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
 > defines every term and symbol used anywhere in this repository.
 
-## What it is
+## Definition
 
 A Monte Carlo method computes a quantity by simulation instead of by a formula: draw random samples according to some rule, evaluate a function of interest on each one, and average. It is useful where the direct computation is hard, an integral with no closed form, or a distribution with no known shape. Sample enough times from the process that generates the number, and the average of the samples converges to the number itself.
 
@@ -34,11 +25,11 @@ A pseudo-random generator run from an unrecorded starting state produces a diffe
 
 Variance reduction changes how the samples are drawn so a given $N$ yields a smaller error than the plain $\sigma/\sqrt{N}$ estimate promises. The most useful case here is common random numbers: when comparing two or more configurations instead of estimating one alone, drive every configuration from the same underlying draws instead of independent ones, so whatever is shared between them cancels out of the difference, leaving the comparison to show only what actually changes.
 
-## What problem it solves
+## The problem it addresses
 
 An integral, a null distribution, or an estimator's bias and coverage sometimes has no closed form, or only one under an assumption nobody wants to make. Monte Carlo replaces the derivation with a direct simulation of the process, exchanging an unchecked approximation for the cost of computer time, and replaces a threshold read off an asymptotic table with one built from the actual design and sample size.
 
-## Where this repository uses it
+## Application in this repository
 
 [`rb5s6s/transit_mc.py`](../../rb5s6s/transit_mc.py) computes the transit-broadening lineshape by simulation, an ensemble of atomic trajectories sampled across impact parameter, transverse speed, and beam position, instead of the closed-form approximation on [transit-time broadening](transit-time-broadening.md). [`rb5s6s/config.py`](../../rb5s6s/config.py) carries the seed constant these modules draw on by default, so the ensemble is reproducible run to run.
 
@@ -52,7 +43,7 @@ The coverage study behind the headline bound turns the same idea on an estimator
 
 None of these simulations runs cold. [Preregistration](preregistration.md) fixes, before any of them runs, which quantity the simulation is meant to score and at what threshold, so a Monte Carlo built after the real answer is visible cannot be tuned to agree with it.
 
-## What can go wrong
+## Failure modes
 
 A Monte Carlo estimate carries its own sampling error on top of whatever it estimates, and the two are easy to run together. A rate or bound quoted without the number of trials beside it lets a reader mistake the simulation's noise floor for a real feature. The number of samples belongs beside any figure a simulation produces, for the same reason a measurement's error bar belongs beside it.
 
@@ -108,8 +99,7 @@ The transit Monte Carlo's crossing-flux weighting was corrected once, and the fi
 - C. P. Robert and G. Casella, *Monte Carlo Statistical Methods*, 2nd ed. (Springer, 2004), the standard reference for the parametric use.
 - A. B. Owen, *Monte Carlo theory, methods and examples* (2013), for common random numbers and other variance-reduction techniques.
 
-## See also
-
+## Related pages
 - [Resampling](resampling.md), for simulation built from the data already
   collected instead of from a fitted model.
 - [Injection-recovery testing](injection-recovery.md), a parametric Monte

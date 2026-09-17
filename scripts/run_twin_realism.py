@@ -48,7 +48,7 @@ def main() -> int:
 
     add("TRUTH", "source", "linefit_conditions p_sweep/4154/130/225", "reference",
         "the truth is read from a named committed condition and the transit "
-        "from the measured waist, so no number here is chosen to be recovered")
+        "from the waist convention, so no number here is chosen to be recovered")
     for k, v in TRUTH.items():
         add("TRUTH", k, f"{v:.6f}", "MHz", "the world the twin generates")
 

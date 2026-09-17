@@ -2,22 +2,12 @@
 
 *[wiki index](README.md) · physical effect*
 
-**The question.** What the same retro-reflected beam that cancels the
-Doppler shift does to the intensity pattern the atoms sit in, and how that
-splits between the fringe-resolved and fringe-averaged regimes.
-**Takes.** The retro-reflected two-photon geometry from
-[Doppler-free two-photon spectroscopy](doppler-free-two-photon.md). No
-fitting, no data.
-**Gives.** The fringe-resolved and fringe-averaged limits, the retro ratio,
-and the area ratio between the Doppler-free line and its same-beam pedestal.
-**Skip if.** You want the frequency cancellation itself: see
-[Doppler-free two-photon spectroscopy](doppler-free-two-photon.md). This
-page covers the spatial pattern it rides on.
+What the same retro-reflected beam that cancels the Doppler shift does to the intensity pattern the atoms sit in, and how that splits between the fringe-resolved and fringe-averaged regimes. This page builds on the retro-reflected two-photon geometry from [Doppler-free two-photon spectroscopy](doppler-free-two-photon.md). No fitting, no data. It sets out the fringe-resolved and fringe-averaged limits, the retro ratio, and the area ratio between the Doppler-free line and its same-beam pedestal. Not covered here: the frequency cancellation itself: see [Doppler-free two-photon spectroscopy](doppler-free-two-photon.md). This page covers the spatial pattern it rides on.
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
 > defines every term and symbol used anywhere in this repository.
 
-## What it is
+## Definition
 
 Retro-reflecting a laser beam back through itself sends two waves of the
 same frequency through the same volume in opposite directions. Their
@@ -72,7 +62,7 @@ counter-propagating beams the Doppler-free line carries twice the area of
 the pedestal beneath it, from the interference of two indistinguishable
 excitation pathways.
 
-## What problem it solves
+## The problem it addresses
 
 A retro-reflected geometry is required for Doppler-free two-photon
 spectroscopy: the cancellation needs both counter-propagating beams, so
@@ -85,7 +75,7 @@ two absorption channels share the same retro ratio, the pedestal's size
 relative to the narrow line is a second observable: a measured departure
 from the predicted ratio constrains the retro ratio itself.
 
-## Where this repository uses it
+## Application in this repository
 
 [`rb5s6s.constants.RHO_RETRO`](../../rb5s6s/constants.py) holds the
 assumed retro power ratio, 0.94 with an uncertainty of 0.04, a design
@@ -122,7 +112,7 @@ as an axial mixture, so a forecast trace carries the line this bench would
 produce and not the pure transverse ramp's. Measured on the quiet curve, the
 ramp's mean pull falls to
 [0.9775](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_64um::pull_factor_quiet")
-of the pure form at the measured waist and
+of the pure form at the waist convention and
 [0.5754](../../results/three_channel_forecast.csv "ref:three_channel_forecast:base::pull_factor_quiet")
 at the 16 micron configuration, the collection window carrying most of that
 movement and the fringe tail the rest.
@@ -148,7 +138,7 @@ carry the area ratio forward on the same traces as the line itself. That
 ratio is stationary in the retro ratio near unity, so it reads the ratio only
 under a retro attenuator scan, which the plan's open-items chapter carries.
 
-### A tilt is an offset, and the offset is what the fringes feel
+### A tilt as the offset the fringes feel
 
 The retro ratio above absorbs "imperfect overlap" into a single number, which is
 right for the channel arithmetic and hides the geometry that produces it. A
@@ -166,27 +156,29 @@ beams are offset, the fringe planes rotate by $\theta/2$ and gain a transverse
 period $\lambda/\sin\theta$, and near the focus the two wavefronts no longer
 match.
 
-**The fringe-resolved suppression this page quotes is a contrast-weighted
+The fringe-resolved suppression this page quotes is a contrast-weighted
 quantity, so all three reach it, and the Monte Carlo behind it assumes a perfect
-retro.** A generalised one, `fullmodel.fringe_survival_mc`, carries the beam
+retro. A generalised one, `fullmodel.fringe_survival_mc`, carries the beam
 quality, the tilt and the offset, and reduces to the contrast above when all
 three are ideal. It separates them: the tilt angle is negligible, since
 $k\sin\theta$ is four orders below the axial $2k$ and 0.5 mrad moves the mean
 survival by under 2 per cent, while an offset of one waist takes the mean
 contrast from 0.9995 to 0.836, both at the bench's retro ratio `RHO_RETRO`. The function's own default is a perfect retro, where the contrast is one by construction and the pair does not reproduce. Beam quality acts through the axial sampling, the
 mean radius over the collected region rising from 1.011 to 1.083 waists at
-$M^2 = 3$. **A tilt reaches the fringes through the offset it produces and not
-through its angle.** The wavefront mismatch remains unmodelled, so these are an
+$M^2 = 3$.
+
+A tilt reaches the fringes through the offset it produces and not
+through its angle. The wavefront mismatch remains unmodelled, so these are an
 upper bound on the fringe effect at non-zero tilt.
 
-**And the retro ratio cannot supply the bound.** The value this repository
+And the retro ratio cannot supply the bound. The value this repository
 carries is an assumption, recorded as never informed by these data, and the
 area ratio that would measure it needs the Doppler pedestal, which is 931 MHz
 wide against archive traces spanning under 100. What does bound the tilt is the
 narrow line's own presence: at 90 per cent of aligned strength the tilt is under
 0.069 mrad, and even at one per cent it stays under 0.46.
 
-## What can go wrong
+## Failure modes
 
 The most common model failure is a factor-of-two slip in the fringe
 period: the pattern's spacing is $\lambda/2$ because it is set by the
@@ -243,7 +235,8 @@ for rho, label in ((1.0, "perfect retro"), (RHO_RETRO, "accepted RHO_RETRO")):
 print("the slope vanishes at rho = 1, so the ratio is a weak monitor near it")
 ```
 
-## Values that moved
+## Revised values
+
 A tilt tolerance for the retro-reflector was once computed from the
 same-beam term's coefficient, which carries the wavevector sum $2k$, when
 the mechanism is the cross term, whose sum for a small tilt $\theta$ is
@@ -265,8 +258,7 @@ the private correction record carries the figure that was replaced.
 - [The AC-Stark shift](ac-stark-shift.md), for what the fringe-averaged
   mean feeds into once the standing wave is resolved as a beam geometry.
 
-## See also
-
+## Related pages
 - [Doppler-free two-photon spectroscopy](doppler-free-two-photon.md), the
   frequency cancellation the cross term performs, which this page's
   fringes ride on.

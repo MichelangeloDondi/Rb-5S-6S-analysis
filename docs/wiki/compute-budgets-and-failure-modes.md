@@ -2,21 +2,12 @@
 
 *[wiki index](README.md) · method*
 
-**The question.** Will a planned parallel fit or scan fit inside the
-machine's memory, and can that be known before launch instead of by
-watching it crash.
-**Takes.** Nothing beyond arithmetic. No prior wiki page is required.
-**Gives.** The per-worker memory estimate, the arithmetic that multiplies it
-by worker count against a machine budget, and the discipline for what a
-killed run's partial output is and is not.
-**Skip if.** The reader wants the companion cost that scales with a trial
-count instead of a worker count. That is
-[Monte Carlo methods](monte-carlo-methods.md).
+Will a planned parallel fit or scan fit inside the machine's memory, and can that be known before launch instead of by watching it crash. This page is self-contained and sets out the per-worker memory estimate, the arithmetic that multiplies it by worker count against a machine budget, and the discipline for what a killed run's partial output is and is not. beyond arithmetic. No prior wiki page is required. Not covered here: the companion cost that scales with a trial count instead of a worker count. That is [Monte Carlo methods](monte-carlo-methods.md).
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
 > defines every term and symbol used anywhere in this repository.
 
-## What it is
+## Definition
 
 A scientific computation has a resource profile as real as its physics: how
 much memory it needs, how long it runs, and how both change when the same
@@ -53,7 +44,7 @@ degrades instead: the operating system may start paging memory to disk
 instead of refusing it outright, and a run can then appear to progress for
 hours while doing almost no useful work.
 
-## What problem it solves
+## The problem it addresses
 
 The arithmetic itself is short: estimate one fit's footprint, multiply by
 the number of workers planned, and compare the total against the machine's
@@ -83,7 +74,7 @@ and simply reducing the worker count so each surviving worker gets a larger
 share of memory, are the two standard remedies once the arithmetic shows a
 job will not fit as planned.
 
-## Where this repository uses it
+## Application in this repository
 
 The global dataset fit chain in
 [`scripts/run_global_dataset_fit.py`](../../scripts/run_global_dataset_fit.py)
@@ -126,7 +117,7 @@ same code, and resolved the whole range in about four minutes
 ([`run_commit_sweep.py`](../../scripts/run_commit_sweep.py)). The fits were
 then run once, to confirm what the proxy had already located.
 
-## What can go wrong
+## Failure modes
 
 The bare point-count-times-parameter-count estimate is a lower bound on a
 fit's memory, not the actual figure. A solver keeps the Jacobian's residual,
@@ -216,8 +207,7 @@ a reader.
   committing to what a run's outcome counts as before the run itself decides
   it by exhaustion instead of by design.
 
-## See also
-
+## Related pages
 - [Methods chapter 6](../methods/06_the_statistics.md), whose Jacobian and
   SVD memory discussion is the worked version of this page's arithmetic.
 - [Optimiser convergence](optimiser-convergence.md), the multi-start and

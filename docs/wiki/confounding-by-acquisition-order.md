@@ -2,22 +2,12 @@
 
 *[wiki index](README.md) · method*
 
-**The question.** Whether an apparent dependence on a control variable is a
-dependence on when each point was taken.
-**Takes.** A measurement swept over a parameter, and the order in which its
-points were acquired.
-**Gives.** Why a monotone sweep cannot separate the parameter from elapsed
-time, how to find a control for it inside data already taken, and what
-randomising the order costs.
-**Skip if.** The question is whether two parameters of a model can be
-separated by the data, which is [identifiability](identifiability.md). This
-page is about a variable the experiment controls being entangled with one it
-does not.
+Whether an apparent dependence on a control variable is a dependence on when each point was taken. This page builds on a measurement swept over a parameter, and the order in which its points were acquired and sets out why a monotone sweep cannot separate the parameter from elapsed time, how to find a control for it inside data already taken, and what randomising the order costs. Not covered here: the question is whether two parameters of a model can be separated by the data, which is [identifiability](identifiability.md). This page is about a variable the experiment controls being entangled with one it does not.
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
 > defines every term and symbol used anywhere in this repository.
 
-## What it is
+## Definition
 
 An experiment sets a parameter to several values and records an observable
 at each. Visited in monotone order, the parameter and elapsed time increase
@@ -31,7 +21,7 @@ fitted alongside the parameter does not help either, since the two
 regressors are the same one. Avoiding the confound costs no more time than
 creating it.
 
-## What problem it solves
+## The problem it addresses
 
 Naming it converts an unanswerable question into a design decision. Once
 written down, there are three moves: randomise or interleave the order,
@@ -55,7 +45,7 @@ of history, not necessarily drift: thermal and mechanical hysteresis,
 detector and amplifier settling, baseline memory and alignment history all
 produce order dependence, and separating them comes later.
 
-## Where this repository uses it
+## Application in this repository
 
 The 2025 campaign ran its power ladder descending in time on all four
 lines, so power and elapsed time are collinear, and every quantity measured
@@ -81,7 +71,7 @@ it stays provisional. Numbers for both are in
 [the amplitude departure note](../notes/amplitude_departure_from_p2.md) and
 [limitations and identifiability](../big_picture/07_limitations-and-identifiability.md).
 
-## What can go wrong
+## Failure modes
 
 **Reading order dependence as drift.** Order dependence is the observation.
 Drift is one of several mechanisms, alongside hysteresis, settling and other
@@ -102,7 +92,7 @@ order, direction is entangled with group identity, and a difference between
 groups is unattributable. Here the reversed group agrees with the others, so
 it did no harm.
 
-**Randomising has an operational cost.** It costs nothing in acquisition
+Randomising has an operational cost. It costs nothing in acquisition
 time, but forbids the settling shortcuts a monotone ramp allows, demanding a
 wait at every step instead.
 
@@ -139,8 +129,7 @@ stops working fails the suite instead of quietly misleading a reader.
 - R. A. Fisher, *The Design of Experiments* (Oliver and Boyd, 1935):
   randomisation licenses the inference, not a precaution added afterward.
 
-## See also
-
+## Related pages
 - [Identifiability](identifiability.md), the model-side analogue: parameters
   entangled inside the model instead of variables entangled by the schedule.
 - [Digitisation and dynamic range](digitisation-and-dynamic-range.md), the

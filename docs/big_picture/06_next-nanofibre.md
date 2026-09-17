@@ -1,21 +1,11 @@
 *Chapter 6 of 9 of [the big picture](../BIG_PICTURE.md)*
 
-## 6. What new nanofibre measurements would add
+## 6. Gains from nanofibre measurements
 
-**The question.** What would a guided-atom campaign add that a vapour cell
-cannot, and what does it cost the fibre it runs on?
-**Takes.** The solved HE11 mode and the guided derivations of
-[methods chapter 9](../methods/09_the_guided_geometry.md), and the lever
-ranking in `results/onf_lever_ranking.csv`.
-**Gives.** What the fibre removes from the width budget, what it measures that
-the cell cannot, and the open items the forecast spans instead of assuming.
-**Skip if.** You have no fibre. This chapter is the fibre thread's own
-surface, declared in [BIG_PICTURE](../BIG_PICTURE.md), and the vapour-cell
-result rests on nothing in it.
+This page asks what a guided-atom campaign adds beyond a vapour cell, and what it costs the fibre it runs on. This page builds on the solved HE11 mode and the guided derivations of [methods chapter 9](../methods/09_the_guided_geometry.md), and the lever ranking in `results/onf_lever_ranking.csv` and sets out what the fibre removes from the width budget, what it measures that the cell cannot, and the open items the forecast spans instead of assuming. Not covered here: you have no fibre. This chapter is the fibre thread's own surface, declared in [BIG_PICTURE](../BIG_PICTURE.md), and the vapour-cell result rests on nothing in it.
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
-> explains the measurement in six sentences, then defines every term
-> and symbol used anywhere in this repository.
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
+> defines every term and symbol used anywhere in this repository.
 
 > The signal, readout and feasibility budget for running this measurement in a
 > guided mode is
@@ -31,9 +21,9 @@ result rests on nothing in it.
 > cell coefficient. [Chapter 9](09_the-campaign-cases.md) states the whole
 > case beside the cell-only alternative.
 
-### What the fibre is for, and it is not a better number on the same axis
+### The purpose of the fibre arm
 
-**The case is identifiability, not precision.** The cell measures one line in
+The case is identifiability, not precision. The cell measures one line in
 which four channels broaden together, and it separates them only by how each
 responds to power, temperature and density. Two of those separations are
 weak. The fitted collision-against-laser split is degenerate at **-0.9**, and
@@ -52,18 +42,18 @@ A nanofibre does not fight those degeneracies. It removes them.
 | blackbody | the density lever and the thermal field share one knob | cold atoms against a 300 K room. The two **decouple** |
 | atom to surface | absent | Casimir-Polder, a term to **measure** and not avoid |
 
-**Four of those six are the systematics that limit this record now**, which is
+Four of those six are the systematics that limit this record now, which is
 why the fibre is not a second opinion on the cell's answer. It is the
-instrument that tells you which part of the cell's answer was real.
+instrument that says which part of the cell's answer was real.
 
-**The sixth is somebody else's headline.** A group whose main programme is
+The sixth is somebody else's headline. A group whose main programme is
 Rydberg atoms near a nanofibre is limited by the near-surface field, and
 [Raj 2026](../lit/raj2026.md) recovers that field as a free parameter of a fit
 its own authors call qualitative only. The 5S-6S line is already driven on the
 platform and is a low-lying state, so it probes the same environment without
 the Rydberg population that complicates it.
 
-### One method the guided programme keeps, and it needs no hardware
+### A method the guided programme retains
 
 The modulation depth is a knob every phase-modulated experiment already has,
 and it separates what a power ladder cannot. A phase modulation changes the
@@ -84,7 +74,7 @@ the beam, and it transfers to whatever line the programme drives next, which
 is the property that makes it worth more to a group than a number about
 rubidium.
 
-### What the cell arm gives the fibre arm, on one sweep
+### The cell arm's contribution to the fibre arm
 
 The plan's lever table already carries the cell and the fibre on one scan and
 refuses it as a drift architecture, because the correlation between the laser
@@ -103,19 +93,21 @@ narrow line's area to the pedestal's is nearly stationary in the retro power
 ratio near unity, its slope there a fifteenth of the ratio's own since the
 narrow line goes as the product of the two beams and the pedestal as the sum
 of their squares, so it reads that ratio only slowly, which the hours the
-projections put on it carry. A calibrated attenuator in the retro path
+projections put on it carry.
+
+A calibrated attenuator in the retro path
 does, and [the plan's open-items chapter](../plan/12_open-apparatus-items.md)
 carries the law and the run.
 
-**The fibre arm inherits all three for nothing**, because it is the same sweep,
+The fibre arm inherits all three for nothing, because it is the same sweep,
 the same laser and the same instant. None of the three can be produced by a
 guided measurement on its own: there is no second isotope pair to rule the axis
 with, and the trapped sample's velocity distribution is not the cell's. That is
 the argument for the shared sweep, and it is stronger than the drift argument
 the plan already refused.
 
-**Three things bound it, and all are stated here instead of being discovered on
-the bench.** The third is an instrument: the fibre's detector shares the
+Three things bound it, and all are stated here instead of being discovered on
+the bench. The third is an instrument: the fibre's detector shares the
 cell's oscilloscope only if the modulator's radio-frequency gate can be
 triggered from the sweep, and otherwise it needs an instrument of its own
 ([plan 7](../plan/07_acquisition-settings.md)). The pedestal is roughly three parts in a thousand of the narrow line's
@@ -126,9 +118,9 @@ of the beam split, the comb is common to both arms, so a setting that suits the
 moment channel in one arm is forced on the other. Either the arms take turns, or
 a second modulator goes in one of them.
 
-### Two things the host group's own recent papers settle (2026-09-06)
+### Two points settled by the host group's papers
 
-**Their current fibre is thinner than the one this record commits.**
+Their current fibre is thinner than the one this record commits.
 `results/onf_candidate.csv` carries a diameter of 400 nm, cited to the 2020
 cold-atom measurement. The group's 2025 fictitious-field paper states a radius
 of 175 nm, so a diameter of 350 nm, and the 2026 surface-charge paper's fibre is
@@ -137,23 +129,29 @@ of 175 nm, so a diameter of 350 nm, and the 2026 surface-charge paper's fibre is
 312 nm at 400 and **492 nm at 350**, a factor of 1.58. **Every guided intensity,
 shift and rate in this chapter is keyed on the committed diameter**, and the
 band those rows advertise spans a plus or minus 20 nm tolerance about it, which
-is four times smaller than the gap between the two candidate fibres. The
+is four times smaller than the gap between the two candidate fibres.
+
+The
 diameter is cited and not measured, so this is a discrepancy to settle and not
 an error to correct, and it is now the largest single lever on every guided
 number here.
 
-**Their trap wavelength lands where this record cannot compute.** The
+Their trap wavelength lands where this record cannot compute. The
 fictitious-field trap is built at 790 nm, the ground-state tune-out where the
 scalar shift on 5S vanishes and only the vector term, which is the trap itself,
 survives. Whether 790 nm is also near a differential zero for 5S to 6S is a
-natural question and **this repository cannot answer it**. The 6S line list
+natural question and **this repository cannot answer it**.
+
+The 6S line list
 stops at 8P, whose transition lies at 1028.7 nm, while the 6S to nP series
-continues through 13P near 797.9 nm and 14P near 787.1 nm to the ionisation
+continues through 13P near 797.9 nm and 14P near 787.1 nm <!-- other-quantity: the 14P line's wavelength in nm, not a projections factor --> to the ionisation
 limit at 737.6 nm. **A trap at 790 nm sits between those two omitted states, a
 few nanometres from each**, where their neglected denominators are far smaller
 than any term the sum retains. `polarizability.magic_wavelengths` is scoped to
 950 to 1500 nm for exactly this reason, and evaluating the differential below
-that range returns a number the inputs do not support. The Ti:Sapph chapter's
+that range returns a number the inputs do not support.
+
+The Ti:Sapph chapter's
 790.1 nm entry carries the same limitation and now says so.
 
 **What would answer it** is the 6S to 9P through 14P reduced matrix elements,
@@ -175,7 +173,9 @@ reporting a loaded trap ([the note](../lit/raj2026.md)). The 2025
 fictitious-field trap is a proposal ([the note](../lit/vylegzhanin2025.md)).
 So the red beam this chapter's next section moves exists on the bench, a
 loaded trap does not yet, and every row and section of this chapter that
-depends on atoms held in the trap is conditional on that loading. What the proposed trap's design then
+depends on atoms held in the trap is conditional on that loading.
+
+What the proposed trap's design then
 offers is the cleanest handle on the disputed polarizability this record knows
 of: at the ground-state tune-out where it would operate, the trap light shifts
 the 5S state by nothing and the 6S state by its own polarizability alone, so
@@ -188,7 +188,7 @@ do with no loaded trap are in the table below, the single guided beam and the
 heating beam's power, and a third, the molasses temperature as a knob on the
 sampled intensity, waits on the near-surface density model the twin lacks.
 
-### A red beam at 1204 nm would make the trap magic for this transition
+### A magic trap at 1204 nm
 
 An external analysis proposed moving the two-colour trap's red beam from 1064
 nm to the record's own 1203.9 nm crossing, and its inputs reproduce from this
@@ -201,11 +201,12 @@ need to gate the trap off during the probe, turning a gated snapshot into a
 trapped, static line. **The blue beam still shifts the line**, by about 1.9 MHz
 at 762 nm against the 7.4 MHz the 1064 nm red now contributes, and no blue-side
 crossing is available because that window lies inside the 6S to nP forest.
-**Check 1204 nm against the 5S to nP series before adopting it**, since a
+
+Check 1204 nm against the 5S to nP series before adopting it, since a
 trap wavelength sitting near an excited-state resonance is the error the same
 analysis made once before with a 685 nm blue beam.
 
-**One number in the same analysis is refused.** It infers an effective mode
+One number in the same analysis is refused. It infers an effective mode
 area of 1.4 square microns backwards from the group's published trap depth,
 and builds a table on it in which one milliwatt guided gives a 1.74 MHz shift.
 This record's validated field solve gives 0.62 square microns on the
@@ -218,7 +219,9 @@ at the group's 350, with a shift of 1.253 MHz per milliwatt at the trap site
 on the 370 nm fibre of `results/onf_lever_ranking.csv`, so the refusal is a
 factor under two at the group's own diameter and over two at the committed
 one. The later briefing from the
-same source withdrew the 1.4 itself. And the table's claim that the shift
+same source withdrew the 1.4 itself.
+
+And the table's claim that the shift
 scales as the inverse square of the area is wrong on its face: a shift follows
 intensity, which is power over area, so it scales as the inverse first power.
 
@@ -228,7 +231,7 @@ calibration, and the fibre reaches the shift at a thousandth of the cell's
 power, so the trap the fibre programme wants and the crossing the sign dispute
 turns on are one experiment.
 
-### The hollow-core case is stronger than the nanofibre one, and for a reason neither shares with the cell
+### The hollow-core case against the nanofibre
 
 A nanofibre puts atoms in an evanescent tail outside the glass. A hollow-core
 fibre puts them inside a mode that does not diverge, and that second fact is
@@ -239,8 +242,8 @@ mm of vapour-filled kagome mode holds more atoms in the probe than a tightly
 focused beam reaches in a cell, and reads out at a signal-to-noise within a
 small factor of one.
 
-**For a host group the practical consequence is the observable.** A cell hands
-you fluorescence against a dark background. A fibre hands you a transmission
+For a host group the practical consequence is the observable. A cell hands
+fluorescence against a dark background. A fibre gives a transmission
 dip, which an ideal shot-noise-limited photodiode would resolve at
 [0.00604294](../../results/platform_twins.csv "ref:platform_twins:hcpcf_warm:hcpcf:absorbed_fraction")
 with vapour in the mode and a part-per-million measurement at
@@ -250,7 +253,7 @@ one that decides whether a cold guided experiment is a measurement or a
 proposal, and it rests on a shot-noise-limited detector this record has not
 demonstrated.
 
-**And on an atom number the host group's own measurement does not support.**
+And on an atom number the host group's own measurement does not support.
 The cold guided row puts about a hundred and thirteen thousand atoms in the
 mode. [Xin and co-workers](../lit/xin2018.md) load a hollow-core fibre and use
 about ten thousand, read in transmission. The dip counts the atoms the mode
@@ -262,7 +265,9 @@ the shot noise does not move, so the row's committed
 [2.51759](../../results/platform_twins.csv "ref:platform_twins:hcpcf_cold:hcpcf:snr_per_s")
 per second divided by eleven, or by five on the larger count, is what the arm
 delivers: the measurement that took sixteen seconds at the assumed number takes
-about thirty-four minutes on the first reading and seven on the second. The loading efficiency behind it, a fifth of a per cent to three
+about thirty-four minutes on the first reading and seven on the second.
+
+The loading efficiency behind it, a fifth of a per cent to three
 per cent from a free-space trap, is [Wang and co-workers](../lit/wang2020.md).
 What the cold platform buys instead is the transit width, which at one
 microkelvin is a twenty-thousandth of the warm value, the square root of the
@@ -271,7 +276,7 @@ width this record's own fits cannot separate from the collisional one. The
 cooling that reaches it inside the fibre is
 [Wang and co-workers](../lit/wang2022.md).
 
-### What a guided arm adds to a joint fit, which is not its own signal-to-noise
+### The guided arm's contribution to a joint fit
 
 A fibre arm would be run beside the cell, the trap and the nanofibre, so what
 it is worth is what it does to the joint problem. This record's bound fails on
@@ -284,8 +289,8 @@ sum, and a beam waist nobody has measured, which is why every absolute result he
 and not a value. A guided arm attacks two of the four by geometry alone, and a cold free-space
 arm attacks a third.
 
-**The warm fibre shares its collisional width with the cell and cannot share
-its transit.** Vapour at the same temperature has the same density and the same
+The warm fibre shares its collisional width with the cell and cannot share
+its transit. Vapour at the same temperature has the same density and the same
 collision physics, so that width is identical in the two arms by construction,
 while the transit differs because the mode is
 [19.000](../../results/platform_twins.csv "ref:platform_twins:hcpcf_warm:hcpcf:w0_um")
@@ -301,8 +306,8 @@ an alignment that drifts. So the pair returns the collisional width and
 the cell's own waist, which is the foundational calibration the plan ranks
 first and the reason every absolute number here carries a bound.
 
-**A free beam locks the shift to the interaction length, and a fibre does
-not.** The light shift goes as the inverse square of the waist while the
+A free beam locks the shift to the interaction length, and a fibre does
+not. The light shift goes as the inverse square of the waist while the
 Rayleigh range goes as its square, so focusing buys shift and pays it straight
 back. Tightening the cell from 64 to 16 microns multiplies the shift by sixteen
 and divides the interaction length by sixteen, from
@@ -326,7 +331,7 @@ through the atoms' own optical path. The plan puts a per-cent laser-width
 instrument at a factor of two on the coefficient's error, and this is that
 instrument without new hardware.
 
-**The convolution condition is exact in a guided mode.** A convolution holds
+The convolution condition is exact in a guided mode. A convolution holds
 only where the homogeneous kernel is the same at every collected element, and
 in a free beam the transit follows the local beam radius, so the kernel varies
 along the axis by one per cent at 64 microns and by nearly half at 16. A guided
@@ -335,13 +340,13 @@ holds identically. The shape channels, which is to say the asymmetry this whole
 programme reads, are clean in the fibre at every length and contaminated in the
 cell exactly where the campaign wants to work.
 
-**And the observable carries no collection geometry.** A transmission dip is a
+And the observable carries no collection geometry. A transmission dip is a
 ratio of two powers on one detector. The cell's fluorescence arm carries an
 axial collection window that biases the extracted shift and reverses sign past
 a window-to-Rayleigh ratio this bench sits a factor of four inside. The fibre arm
 has no such term to get wrong.
 
-### What a guided trap costs this line, which is the design problem
+### The cost of a guided trap to this line
 
 The trap light shifts 5S and 6S by different amounts, so a trap deep enough to
 hold a sample displaces the line and, because the atoms sample a range of
@@ -355,7 +360,7 @@ excess is about seven per cent at 821 nm, one per cent at 797.25 and two and a
 half at 802, so it is a wavelength-by-wavelength number and not a single
 factor.
 
-**The size of it is the problem.** In the 313 microkelvin trap of that paper's
+The size of it is the problem. In the 313 microkelvin trap of that paper's
 first column the displacement is about seven megahertz, and the spread over a
 sample at one to two hundred microkelvin across the fibre is one to one and a
 half. Against a natural width of 3.493 MHz that is a dominant inhomogeneous
@@ -373,7 +378,7 @@ of magnitude better than this line could. What this line has instead is a
 large and calculable differential polarizability, which suits it to an absolute
 intensity or mode-area calibration and not to out-measuring their clock.
 
-**And the escape is a magic trap, which nothing here has evaluated.** A
+And the escape is a magic trap, which nothing here has evaluated. A
 wavelength where the two polarizabilities are equal removes the displacement
 and its spread together. [`docs/plan/11`](../plan/11_beyond-993.md) already
 names the 5S-6S crossing near 1297.5 nm as a shift-injection lever and calls it
@@ -396,7 +401,7 @@ collisional width shared, against the cell alone. The paired-reference
 forecast covers a cell-plus-nanofibre pair and has no hollow-core arm, so that
 run is owed before any of this becomes a figure instead of an argument.
 
-### What the guided arm measures that no cell can, and the observable that survives the radius
+### Observables unique to the guided arm
 
 The guided light shift is a translation of the whole line and not an asymmetry
 of a per cent, so at the record's 1.253 MHz per milliwatt
@@ -409,7 +414,9 @@ observable that survives the fibre's own open item is a ratio.** The absolute
 shift carries the mode area, hence the radius nobody has measured. The ratio of
 the probe's shift to the trap light's shift at the same site carries the ratio
 of two polarizabilities and the ratio of two intensities on one mode, and a
-five-nanometre radius error moves that intensity ratio by under a per cent. On
+five-nanometre radius error moves that intensity ratio by under a per cent.
+
+On
 the record's polarizabilities the ratio at 993 to 1064 nm is 1.42. It is the
 trapped-ion light-shift-ratio method, whose lit note this record owes, and it
 is the first determination of a 6S polarizability that does not ride on a beam-waist prior.
@@ -426,7 +433,7 @@ on it.
 | **the 6S decay rate at the trap site** | the guided line's natural width, which at the fibre is nearly the whole width once transit, collisions and Doppler are gone: a modification of a fifth would move it by 0.7 MHz | unmodelled in this record, which carries the free-space lifetime. Expected small, since the 6S decays at 1.3 microns where the fibre is a fifth of a wavelength across and the atom sits near three radii out, and in that limit the quasistatic term dominates with the guided contribution exponentially small ([Klimov and Ducloy 2004](../lit/klimovducloy2004.md), held). Computed with the Green's function of a dielectric cylinder before the first guided fit, and measured, it is a nanofibre-QED result on a lifetime known to 0.4 per cent |
 | **the cloud's temperature against its density at the probe radius** | one potential sets both, so a temperature change is a density change and the guided transit's ensemble factor moves with it. A modelled correlation and no free lever | the trap potential, once the radius and the two powers are known, and clean in the sense that the coupling is computed and not read from a vapour-pressure curve |
 | **the guided beam geometry, one beam or two** | whether the guided line is one component or two, whether the retro ratio and the comb's path-delay factor enter, and whether frozen fringes raise the rate-weighted mean shift by five thirds and spread it to four times the forward shift | at 150 uK the co-propagating Doppler width is a sixth of the natural width, so a single guided beam costs under three per cent of width and removes all three, a twin question once the guided world builder carries both geometries (2026-09-06) |
-| **the 1064 nm heating beam as a potential** | on cold atoms the host's 300 microwatt guided 1064 nm light is an attractive potential on the ground state, computed with this record's mode solver on the azimuthal-mean convention (the guided power over the mode's effective area at the surface, then the solved flux profile) at 20, 10 and 2 microkelvin at 200, 400 and 1000 nm from the 2026 paper's 370 nm fibre, beside a van der Waals term from the committed coefficient of 5 microkelvin at 200 nm and under one at 400 | nothing at the 140 uK of the MOT, half of the thermal energy in a 20 uK molasses, where its power becomes a lever on the sampled intensity distribution with no loaded trap, conditional on a near-surface density model the twin does not carry. That beam also shifts the line itself, by about 0.4 MHz at 200 nm from the surface on the record's polarizabilities, an eighth of the natural width. And it is the adsorption heater the group runs it for, so turning it down costs the fibre what the adsorption row weighs (2026-09-06) |
+| **the 1064 nm heating beam as a potential** | on cold atoms the host's 300 microwatt guided 1064 nm light is an attractive potential on the ground state, computed with this record's mode solver on the azimuthal-mean convention (the guided power over the mode's effective area at the surface, then the solved flux profile) at 20, 10 and 2 microkelvin at 200, 400 and 1000 nm from the 2026 paper's 370 nm fibre, beside a van der Waals term from the committed coefficient of 5 microkelvin at 200 nm and under one at 400 | nothing at the 140 uK of the MOT, half of the thermal energy in a 20 uK molasses, where its power becomes a lever on the sampled intensity distribution with no loaded trap, conditional on a near-surface density model the twin does not carry. That beam also shifts the line itself, by about 0.4 MHz at 200 nm from the surface on the record's polarizabilities, an eighth of the natural width. And it is the adsorption heater the group runs it for, so turning it down costs the fibre what the adsorption row weighs (2026-09-06) <!-- other-quantity: a guided-light quantity of the fibre arm, not the dilute-gas margin of docs/methods/02 --> |
 | **the thermal near field of the fibre** | the blackbody shift at the atom's position, which the record takes as free space | the atom sits within a twentieth of the thermal wavelength of a warm dielectric with phonon resonances in the thermal band, so the free-space shift is a lower bound and the near-field value is unevaluated (2026-09-06) |
 | **fibre diameter tolerance** | the mode area, and through it every guided intensity, shift and rate | a stated tolerance propagated through the mode solve in `results/onf_candidate.csv`, worked out with its two cited precisions in the open item further down this page  |
 | **two-photon ionisation rate from 6S** | whether the probe perturbs the surface charge it reads | no forecast rests on it. Single-photon ionisation is excluded by [0.433](../../results/campaign_twin_forecast.csv "ref:campaign_twin_forecast:model:photoionisation_margin_from_6S") eV, and the surviving claim is narrower: a 5S-6S probe populates no Rydberg state, so the Rydberg-ground mechanism is absent by construction |
@@ -437,7 +444,7 @@ on it.
 | **the Doppler pedestal's detectability in the guided arm** | whether the shared-sweep thermometer can be read at the fibre as well as lent to it | no forecast rests on it. The cell arm supplies the temperature either way, and the guided pedestal would measure the trapped sample instead of the vapour, which is a different and more valuable quantity if it is reachable at all |
 | **whether the modulator is upstream of the beam split** | whether the comb state can differ between the cell and fibre arms in one sweep | no forecast rests on it. Every committed cell is single-arm. It decides only whether the two arms can hold different comb settings at once, or must take turns |
 
-### The mode is now solved, and the assumption it replaces was wrong
+### The solved mode and the assumption it replaces
 
 `rb5s6s.fibre.solve_he11` solves the HE11 eigenvalue equation for a fibre in
 vacuum, checked against two effective-index values standard for this geometry, which no note in this record cites to a paper, and against an independently written solver. The derivation,
@@ -453,14 +460,14 @@ runs are 350 to 400 nm, so the assumed band did not contain the apparatus.
 | 370 nm ([Raj 2026](../lit/raj2026.md)) | [1.01927](../../results/guided_mode_tables.csv "ref:guided_mode_tables:mode_solve_370nm:neff") | [802](../../results/guided_mode_tables.csv "ref:guided_mode_tables:mode_solve_370nm:amplitude_decay_length") nm | yes, V = 1.23 |
 | 400 nm ([Rajasree 2020](../lit/rajasree2020spin.md)) | [1.03164](../../results/guided_mode_tables.csv "ref:guided_mode_tables:mode_solve_400nm:neff") | [624](../../results/guided_mode_tables.csv "ref:guided_mode_tables:mode_solve_400nm:amplitude_decay_length") nm | yes, V = 1.33 |
 
-**Both defects it exposed are now fixed in the producer**, and twenty of
+Both defects it exposed are now fixed in the producer, and twenty of
 that file's rows moved. The band is computed from the diameter, and the
 amplitude and intensity lengths are carried separately after the formula was
 found returning one while labelled the other.
 
-**The mode is not in the exponential regime at all**, since `q*a` is [0.231](../../results/guided_mode_tables.csv "ref:guided_mode_tables:mode_solve_370nm:qa") on the 370 nm fibre where the asymptotic form needs it far above one.
+The mode is not in the exponential regime at all, since `q*a` is [0.231](../../results/guided_mode_tables.csv "ref:guided_mode_tables:mode_solve_370nm:qa") on the 370 nm fibre where the asymptotic form needs it far above one.
 
-**The effective mode area is a convention as much as a number.** It is
+The effective mode area is a convention as much as a number. It is
 **[0.615](../../results/guided_mode_tables.csv "ref:guided_mode_tables:mode_solve_400nm:mode_area_azimuthal_mean") µm²** as power divided by the azimuthally
 averaged surface flux, and [0.489](../../results/guided_mode_tables.csv "ref:guided_mode_tables:mode_solve_400nm:mode_area_peak")
 on the polarisation axis, so it is not quotable without saying which. Both come
@@ -481,21 +488,21 @@ third route was sweeping the atom-surface distance and fitting the decay, and
 this chapter called it the one the campaign can perform, measuring the quantity
 that actually enters rather than a proxy for it.
 
-**It reaches the diameter to about
+It reaches the diameter to about
 [30.73](../../results/onf_lever_ranking.csv "ref:onf_lever_ranking:lock_span_0.04:sigma_diameter_nm") nm at the
 2025 drifting lock and
 [0.67](../../results/onf_lever_ranking.csv "ref:onf_lever_ranking:lock_span_0.0:sigma_diameter_nm") nm at the
-photon floor.** The lock was repaired in August 2026 and its residual is
+photon floor. The lock was repaired in August 2026 and its residual is
 unmeasured, so the campaign sits inside that span.
 
-**The design must marginalise over the drive's own surface shift**, which the
+The design must marginalise over the drive's own surface shift, which the
 scan cannot know and the power sweep measures. Amplitude against decay length
 is the classic degeneracy of a short near-exponential scan, and holding the
 amplitude fixed makes the lever look about twice as good as it is. Earlier
 values are in HISTORY.
 
-**The route the campaign can run itself is open, and it is worth less than
-this chapter claimed.** A repaired lock is what makes it competitive with the
+The route the campaign can run itself is open, and it is worth less than
+this chapter claimed. A repaired lock is what makes it competitive with the
 10 nm the chapter originally assumed. At the 2025 rate it is not. SEM and the
 mode-cutoff diagnostic stay as independent cross-checks, and they matter more
 than they did.
@@ -510,6 +517,7 @@ focused beam, and a trapped sample sits concentrated where the intensity is
 highest, so its shift distribution has no hard edge and carries the opposite
 a skewness about three times larger with no hard edge (section 1.2 of the
 design note, which computes both).
+
 Carrying the ramp over unchanged would get the sign of the line's asymmetry
 wrong, and the self-centred third cumulant is the drift-immune channel this programme
 relies on, where the shift is large against the line, as it is in the
@@ -556,8 +564,8 @@ lineshape program**:
   ramp. It is ambitious, and the per-distance signal budget is an open
   question.
 
-**The group's own Rydberg work says the same thing about itself, which is
-better evidence than our saying it.**
+The group's own Rydberg work says the same thing about itself, which is
+better evidence than our saying it.
 [Vylegzhanin 2023](../lit/vylegzhanin2023.md) excites Rydberg nS and nD states
 through the evanescent field of the same kind of fibre, and fits each spectrum
 with an *empirical skewed Gaussian* chosen to absorb the 1064 nm AC Stark shift
@@ -582,7 +590,7 @@ a proposal and says so. What a trap engineered to cancel a differential shift
 still needs is a measurement showing it cancelled, and the residual is a
 distribution across an evanescent field, which is the same object again.
 
-**A design validation exists for the temperature lever.**
+A design validation exists for the temperature lever.
 `results/fibre_twin.csv` asks whether a molasses temperature ladder can
 separate a guided transit contribution from a temperature-independent
 homogeneous one. **That separation is harder than this chapter first stated**:
@@ -595,9 +603,11 @@ common Lorentzian component at [0.9640](../../results/fibre_twin.csv "ref:fibre_
 decay-length band edges, and does **not** identify the Gaussian one, at
 [0.4040](../../results/fibre_twin.csv "ref:fibre_twin:O2A_lambda_312nm:coverage_sigma_g") and [0.3760](../../results/fibre_twin.csv "ref:fibre_twin:O2A_lambda_492nm:coverage_sigma_g").
 A single-rung control fails to split, which is what makes the ladder the lever,
-not the fit. **Those worlds inject the transit width into the additive
+not the fit.
+
+Those worlds inject the transit width into the additive
 Lorentzian channel, which the second-order result above shows is not how the
-kernel enters**, so the coverage rows describe a design under an assumption the
+kernel enters, so the coverage rows describe a design under an assumption the
 same chapter now retracts, and re-running them against the correct kernel is
 the next item and not a refinement. This is simulation-backed and not a
 measurement: it says the design can identify the intended quantities under

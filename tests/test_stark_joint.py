@@ -132,29 +132,25 @@ def test_the_leave_one_out_arms_are_checked_against_the_threshold():
     body could not have caught the defect: it asserted only positivity, and
     only at the legacy kappa = 2.62 checkpoint, which sits far above the
     predicted coefficient. Positivity was never the test. The threshold is
-    2.706, and the arms straddle it: bracketed to the value the constants
-    later gave, 4121 clears at both ends, 4154 and 4207 fail at both ends,
-    and 4192 straddles the threshold. No count is quotable.
+    2.706, and the arms straddle it: 4121 clears and 4154, 4192 and 4207 fail,
+    and RESULTS.md C3f brackets each arm to the record's own coefficient from
+    the committed rows rather than restating a count here.
 
     This test pins the COMMITTED ROWS so they cannot silently revert, and pins the
     2.62 checkpoint separately as the convergence check it actually is.
 
     NOTE THE REFERENT. The committed `lopo_dchi2_pred` rows were evaluated at
-    whatever `KAPPA_PRED` the constants gave at run time, which is 1.545, the
-    pre-adjudication value. This record's own predicted coefficient is now
-    1.618, where each arm would sit higher by roughly the amount the full
-    profile rises over that interval, about half a unit. The count below
-    threshold is therefore stated at 1.545 and is provisional until the
-    five-hour refit runs."""
+    whatever coefficient the constants gave at run time, the joint fit's own
+    `kappa_pred` row; this record's current coefficient is `stark_sweep.csv`'s
+    `kappa_pred`, and the two are read from their cells, never typed here. The
+    rows are the red-sided ramp's until the joint fit's refit lands."""
     below = [pk for pk in ("4121", "4154", "4192", "4207")
              if val("lopo_dchi2_pred", pk) < 2.706]
     assert sorted(below) == ["4154", "4192", "4207"], (
         f"the committed leave-one-out arms below 2.706 changed: {below}. "
-        f"This pins the COMMITTED ROWS at the pre-adjudication kappa_pred of "
-        f"1.545; it is not a claim that the record summarises them as a "
-        f"count, which it does not, because the arms are separate "
-        f"likelihoods and carrying them to 1.618 leaves 4192 inside the "
-        f"profile's own scatter of the threshold. If the refit has run, "
+        f"This pins the COMMITTED ROWS at the joint fit's own kappa_pred row. "
+        f"The arms are separate likelihoods, bracketed to the record's own "
+        f"coefficient in RESULTS.md C3f from these rows. If the refit has run, "
         f"restate the finding rather than re-seeding this list.")
     # the legacy checkpoint, which is a convergence check and speaks to
     # nothing about the exclusion at the prediction

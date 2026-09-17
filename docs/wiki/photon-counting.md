@@ -2,23 +2,12 @@
 
 *[wiki index](README.md) · technique*
 
-**The question.** When does counting individual photons beat an analog
-voltage measurement, and when is a counter unavailable regardless of the
-crossover.
-**Takes.** The additive-plus-multiplicative noise law from
-[Weighted least squares](weighted-least-squares.md), restated here instead
-of re-derived.
-**Gives.** The crossover level computed from measured noise coefficients,
-the dead-time pile-up condition, and where this repository's noise law and
-planned counter check live.
-**Skip if.** The noise law itself, and why it sets a fit's weights, is
-wanted instead of the counting decision built on it. See
-[Weighted least squares](weighted-least-squares.md).
+When does counting individual photons beat an analog voltage measurement, and when is a counter unavailable regardless of the crossover. This page builds on the additive-plus-multiplicative noise law from [Weighted least squares](weighted-least-squares.md), restated here instead of re-derived and sets out the crossover level computed from measured noise coefficients, the dead-time pile-up condition, and where this repository's noise law and planned counter check live. Not covered here: the noise law itself, and why it sets a fit's weights, is wanted instead of the counting decision built on it. See [Weighted least squares](weighted-least-squares.md).
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
 > defines every term and symbol used anywhere in this repository.
 
-## What it is
+## Definition
 
 A detector that turns light into a number can do it two ways. An analog
 chain integrates the photocurrent continuously: a photodiode or
@@ -95,7 +84,7 @@ practice, drive harder while the physics allows, add repeats, and set the
 scan rate from drift at the slow end and the detection chain's response
 time at the fast end.
 
-## What problem it solves
+## The problem it addresses
 
 It replaces a habit or an equipment default with a computation. Given a
 detection chain's measured noise law and the signal level in use, the
@@ -104,7 +93,7 @@ dominant term there, and the dead time says whether a counter can keep up
 with the peak rate. Both answers come from the same measured numbers, so
 the choice does not rest on which detector happened to be on the bench.
 
-## Where this repository uses it
+## Application in this repository
 
 The committed noise law lives in
 [`results/noise_model.csv`](../../results/noise_model.csv), one row per
@@ -129,7 +118,7 @@ instrument, not a result.
 sets the crossover above. No counting hardware has been installed here
 yet.*
 
-## What can go wrong
+## Failure modes
 
 The clearest model failure is treating "below the crossover, counting
 wins" as "counting is worth switching to regardless of what it costs,"
@@ -216,8 +205,7 @@ a reader.
 - [Weighted least squares](weighted-least-squares.md), the noise law this
   page inverts and the fit the same coefficients ultimately weight.
 
-## See also
-
+## Related pages
 - [Weighted least squares](weighted-least-squares.md) for the noise law
   this page inverts and where its coefficients come from.
 - [Sweep rate and detection lag](sweep-rate-and-detection-lag.md), the

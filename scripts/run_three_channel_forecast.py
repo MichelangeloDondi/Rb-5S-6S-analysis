@@ -57,6 +57,7 @@ sys.path.insert(0, str(ROOT))
 from rb5s6s import config as C                                    # noqa: E402
 from rb5s6s import constants as K                                  # noqa: E402
 from rb5s6s import density as D                                    # noqa: E402
+from rb5s6s.lineshape import ramp_mean_over_s0                     # noqa: E402  (O27)
 from rb5s6s.forecast import build_world_trace                      # noqa: E402
 from rb5s6s.fringe_tail import COHERENCE_TRANSIT, fringe_shift_density
 from rb5s6s import stark                                           # noqa: E402
@@ -512,7 +513,7 @@ def _cell(item):
     quiet = np.array([_k357(r[1], cfg["window"], r[0]) for r in qt])
     # THE PULL FACTOR (2026-09-08): with the collection window and the fringe
     # tail threaded, the mean pull per unit coefficient is the mixture's and
-    # not the pure ramp's -2/3, so the centre channel inverts through the
+    # not the pure ramp's 2/3 on the package's side, so the centre channel inverts through the
     # quiet curve's own centroid slope against power. The ratio to the pure
     # ramp's is written on the row as pull_factor_quiet: it is the
     # factor a campaign supplies from its collection geometry, to the
@@ -521,7 +522,7 @@ def _cell(item):
     kappa_true_cell = float(qt[0][2])
     if cfg.get("ladder", "power") == "power":
         slope_quiet = float(np.polyfit(np.asarray(P, float), c_quiet, 1)[0])
-        pull_factor_quiet = slope_quiet / (-(2.0 / 3.0) * kappa_true_cell)
+        pull_factor_quiet = slope_quiet / (ramp_mean_over_s0() * kappa_true_cell)
     else:
         slope_quiet, pull_factor_quiet = float("nan"), float("nan")
     k3_quiet, k5_quiet, k7_quiet = quiet[:, 0], quiet[:, 1], quiet[:, 2]
@@ -629,7 +630,7 @@ def _cell(item):
     # ---- pull channel: centre against power with the drift as a nuisance in order
     kap_pull = []
     for row, pos in zip(c_sets, o_sets):
-        # centre = c0 - (2/3) kappa P + d * (acquisition index): the lock's
+        # centre = c0 + (the ramp's signed 2/3) kappa P + d * (acquisition index): the lock's
         # residual drift is linear in ORDER, and the drawn order is what makes
         # it separable from the pull, which is linear in POWER
         # on the depth ladder the abscissa is the depth and the slope is the

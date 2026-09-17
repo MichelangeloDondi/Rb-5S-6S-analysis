@@ -345,10 +345,10 @@ to seven times over their static size, and the 6s continuum computed
 dynamically instead of statically, so it corrects an error rather than refining
 an estimate; results/polarizability_deep.csv carries the derivation.
 
-The earlier value, -1145.0, is confined to history: it stands here and in the
-correction record and in no live code, docstring or claim surface. The wave that
-moved it moved every producer reading the chain in the same landing, which is
-what the deferral in this docstring had been waiting for since 2026-09-12.
+The earlier static-tail value is confined to the history record,
+private/history/01_bounds-and-the-light-shift.md, and appears in no live code, docstring,
+committed row or claim surface of this repository; tests/test_docs_canonical.py refuses it
+anywhere else.
 
 The Rabi conversion rides with it: 2T/|Delta_alpha| is 1416.02/1131.8 = 1.2511
 (stark.COMPANIONS["ratio"]), against 1.2367 on the retired value. Omega itself
@@ -358,10 +358,9 @@ together or a committed S0 written under the old constant shifts Omega by
 +1.17 per cent for nothing.
 
 alpha(6S) - alpha(5S) at 993 nm, atomic units. THIS RECORD'S OWN
-value. The static construction -- results/polarizability.csv's delta_alpha_993
-row at -1145, band -1151 to -1140, reproducible as delta_alpha(993.4) = -1144.6
-from alpha_6s - alpha_5s -- is the earlier one, replaced 2026-09-15 by the
-dynamic sum above and kept here only as the history of the value. The sign was
+value. The static construction, reproducible as rb5s6s.polarizability.delta_alpha(993.4)
+from alpha_6s - alpha_5s, is the earlier one, replaced 2026-09-15 by the dynamic sum above;
+its value and its account are in the history record. The sign was
 adopted by the 2026-08-24 adjudication of the dispute below and is unchanged.
 The negative sign is a BLUE shift of the two-photon transition.
 
@@ -378,12 +377,11 @@ THE SIGN IS DISPUTED WITH THE LITERATURE, AND THIS PACKAGE NOW CARRIES
 THIS RECORD'S. The two values, both of alpha(6S) - alpha(5S) at 993 nm:
 
   * this constant, the package default:  -1131.8
-    (the dynamic sum; its earlier static form was -1145.0, reproducible as
-     delta_alpha(993.4) = -1144.6 = alpha_6s(993.4) - alpha_5s(993.4)
-     = -312.2 - 832.5. The sign dispute below is about the sign alone and
-     neither value's magnitude moves it.)
+    (the dynamic sum; its earlier static form is reproducible as
+     delta_alpha(993.4) = alpha_6s(993.4) - alpha_5s(993.4). The sign dispute
+     below is about the sign alone and neither value's magnitude moves it.)
   * DELTA_ALPHA_AU_ORSON2021, the cited: +1093.0
-    the same quantity by the same definition, opposite sign, 4.7 per
+    the same quantity by the same definition, opposite sign, 3.5 per
     cent apart in magnitude.
 
 docs/THEORY_NOTE.md section 5 lays the disagreement out in full and does
@@ -394,35 +392,20 @@ by Orson's sign would place about 210 sigma from the measured
 45.57(17) ns. Orson's own AC-Stark search was a null at 6 MHz
 resolution, so no experiment has set the sign either way.
 
-WHAT THE ADOPTION MOVES, stated because it is not nothing: every BOUND
-in this record uses |Delta_alpha| and is untouched, but the PREDICTED
-light shift is computed from this constant and rises 4.8 per cent, from
-0.348 to 0.364 MHz at 225 mW (kappa_pred 1.545 -> 1.618 MHz/W). The ratio is
-of the CONSTANTS, 1145/1093 = 1.04758, and this line said 4.6 until 2026-09-04
-because it had been taken from the printed cells instead: 0.364 over 0.348 is
-4.598. Both figures appear in this record and neither is loose. results/README
-says the two FILES disagree by 4.6 per cent, which is the printed cells and is
-right for what it claims. The 4.7 per cent elsewhere in this file and in
-hyperpolarizability.py is a third statement and its denominator is not
-ambiguous: it is the UNROUNDED line-list value against Orson's, and
-delta_alpha(993.4) = -1144.6461 over 1093 gives 4.7252. Rounding that
-magnitude to -1145 first is what turns it into 4.758. A ratio is only
-checkable beside its denominator and its precision, which is why this one now
-carries both. Both sit
-inside the predicted band 0.30-0.38 MHz that the measured waist already
-implies, and the bound at 0.258 excludes the prediction either way, with
-the margin widening from 1.35x to 1.41x. The joint fit's committed
-prediction cells lag until that producer runs again: it needs about five
-hours and a data tree outside this repository.
+WHAT THE VALUE MOVES: every width-channel BOUND uses |Delta_alpha| and is untouched by it; the
+PREDICTED light shift is computed from this constant through stark.kappa_pred_per_watt, which
+carries the aperture's on-axis factor, and results/stark_sweep.csv holds it as S0_225mW_pred.
+The account of the static-tail value this replaced, with the ratios and margins of its day, is
+private/history/01_bounds-and-the-light-shift.md.
 
 WHAT IS NOT IN DISPUTE: the magnitude. It cross-checks against Orson (1093 * ATOMIC_POLARIZABILITY_SI =
 1.80e-38 J m^2/V^2, and stark_shift_S0_mhz(0.8 W, 63 um, rho=0) = 0.66
 MHz reproduces their predicted |Df| to the digit, see
 tests/test_lineshape.py::test_stark_S0_reproduces_orson2021).
 
-The resolution is an open owner item, and until it lands a caller who
-needs the SIGN should take it from delta_alpha() and read section 5,
-while a caller who needs the magnitude may use either.
+The sign was ruled on 2026-09-17 (owner order O27), a decision on the theory and not a
+measurement: a caller who needs the SIGN takes it from DELTA_ALPHA_AU and reads section 5,
+and a caller who needs the magnitude may use either.
 
 CONVENTION (pinned 2026-07-12, so the coefficient is no longer factor-of-2
 ambiguous). Standard AMO light-shift convention (Grimm, Weidemueller &
@@ -439,8 +422,8 @@ with I_eff = (1+rho) * 2P/(pi w0^2) the TIME-AVERAGED on-axis intensity
    S0(225 mW, w0=16 um, rho=0.94) = 5.56 MHz transition (why the fixed-lock
    session's small waist makes the skew, ~S0^3, measurable). See
    stark_shift_S0_mhz().
-The 2025 ramp SHAPE is convention-free regardless: f(s) ∝ |s| on [-S0,0];
-mean pull -(2/3) S0; third cumulant +S0^3/135 (the fringe-mean, focal Z->0 limit;
+The 2025 ramp SHAPE is convention-free regardless: f(s) ∝ s on [0,S0] on the blue side
+(lineshape.RAMP_SIDE); mean pull +(2/3) S0; third cumulant -S0^3/135 (the fringe-mean, focal Z->0 limit;
 the small-waist collection geometry and the fringe tail below both modify the
 skew -- see stark_ramp_axial and fringe_tail).
 
@@ -453,7 +436,7 @@ fringe-immune. But the Doppler-free line accepts ALL v_z: near-transverse atoms
 (small v_z) sit at a frozen fringe and sample the node-antinode arcsine -- a
 fringe-RESOLVED tail. It is NOT benign: the fringe MULTIPLIES the shift,
 s -> s(1+x) with x arcsine (mean 0), so it leaves the mean but SUPPRESSES the ramp
-skew -- kappa3 -> S0^3 (1/135 - f_res*sigma_x^2/5) (= 1/135 - f_res/10 at rho=1),
+skew -- kappa3 -> -S0^3 (1/135 - f_res*sigma_x^2/5) (= -1/135 + f_res/10 at rho=1),
 a -13.5*f_res*contrast^2 fractional leverage (contrast = 2 sqrt(rho)/(1+rho); only
 the product P = f_res*sigma_x^2 is observable). It is negligible at the w0=64 um
 prior, where the whole ramp skew is below the 2025 noise anyway, and material
@@ -463,7 +446,7 @@ Its SIZE is not restated here. rb5s6s/fringe_tail.py computes it and
 results/fringe_tail.csv commits it, as d_skew: the change in the standardized
 skew, per waist, retro ratio and coherence-window end. The percentages the prose
 quotes (RESULTS.md C3c, THEORY_NOTE.md section 5, LITERATURE.md) are that
-|d_skew| over the intrinsic triangular-ramp skew g1 = 18^1.5/135 = +0.566, and
+|d_skew| over the intrinsic triangular-ramp skew's magnitude 18^1.5/135 = 0.566, and
 that is the only normalisation any of them use. Remaining measured input
 before an absolute Stark coefficient: the retro ratio rho (measured in a fixed-lock session, per
 config) and the Delta_alpha magnitude. Novelty delineation: docs/LITERATURE.md
@@ -574,8 +557,20 @@ corrected it twice (2026-09-10, 2026-09-15).** w0 is NOT measured on this bench.
 Two independent disqualifiers, and the second was missing from this note until
 2026-09-16: Nieddu profiled a DIFFERENT LASER SOURCE (a Coherent MBR 110, where
 this campaign runs a SolsTiS), and his path carried NO 3 mm EOM APERTURE, which
-this beam passes before the focusing lens. Both push the effective waist of THIS
-beam above 64 um. `W0_CONVENTION_M` is what this should be called; the rename
+this beam passes before the focusing lens. THE SECOND ONE'S DIRECTION WAS WRONG
+UNTIL 2026-09-17 (F105), and its correction has two halves that were separated
+the same evening: at a FIXED input radius the bore WIDENS the focus,
+because it throws away the outer rays that carry the convergence; ACROSS input
+radii it FLOORS it, because the wider the input the more of it the bore removes.
+The floor is what bears on this record's waist and the widening is what a bench
+reading of one beam would show. Computed
+as a finite Hankel transform through the 1.5 mm radius, the focal 1/e^2 radius
+reads 52.6 um for a 1.0 mm input radius at the lens, 45.4 for 1.5 and 42.4 for
+2.5, against 47.4, 31.6 and 19.0 unclipped, so any beam of a millimetre or more
+lands between 42 and 53 um and only an input under 0.8 mm reaches 60. A 64 um
+focus needs an unclipped 0.74 mm input. The owner's own reading, 2026-09-17, is
+40 to 45 um. What no document states is the beam radius at the focusing lens on
+this bench, which is an open apparatus item. `W0_CONVENTION_M` is what this should be called; the rename
 touches 179 sites over 70 files and is owed as its own wave, because a name a
 reader autocompletes is read more often than the note under it.
 
@@ -771,6 +766,11 @@ DRIVE_LENS_F_M = 150e-3
 W0_REFERENCE_LAMBDA_NM. ESTABLISHED: stated by Nieddu 2019 for the profiled
 configuration and by APPARATUS section 1.2 for this bench's numbered component
 (4), whose twin (8) re-collimates toward the retro mirror."""
+EOM_APERTURE_RADIUS_M = 1.5e-3
+"""The modulator's 3 mm clear bore, ahead of the drive lens, as a radius. Owner-stated bench
+fact (the plan's deferred aperture term, 2026-09-16); the on-axis part of the diffraction it
+imposes at the focus is `lineshape.aperture_onaxis_factor`, and the profile part of the same term
+(the side-lobe fraction, the effective M2, the change in the transit kernel) stays deferred."""
 
 DRIVE_LENS_IS_SINGLET = True
 """Whether L1 is treated as a single element, so its focal length disperses.

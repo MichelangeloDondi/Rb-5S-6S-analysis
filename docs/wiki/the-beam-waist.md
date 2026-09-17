@@ -2,20 +2,12 @@
 
 *[wiki index](README.md) · concept*
 
-**The question.** What the beam waist is, why it stands between a measured
-power and the intensity an atom feels, and how confidently this repository
-knows its value.
-**Takes.** Nothing beyond the idea of a focused beam, and no fitted data of
-its own.
-**Gives.** The waist's defining relations, its opposite-signed pull on the
-light shift and the transit width, and the value of record's provenance.
-**Skip if.** You want what the waist does to the line shape, not the length
-itself, covered in [the AC-Stark shift](ac-stark-shift.md).
+What the beam waist is, why it stands between a measured power and the intensity an atom feels, and how confidently this repository knows its value. This page is self-contained and sets out the waist's defining relations, its opposite-signed pull on the light shift and the transit width, and the value of record's provenance. beyond the idea of a focused beam, and no fitted data of its own. Not covered here: what the waist does to the line shape, not the length itself, covered in [the AC-Stark shift](ac-stark-shift.md).
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
 > defines every term and symbol used anywhere in this repository.
 
-## What it is
+## Definition
 
 A focused beam narrows to a minimum radius before spreading out again. That
 minimum, $w_0$, is the beam waist, the radius at which the on-axis
@@ -52,7 +44,7 @@ absolute power units. A camera scan images the transverse profile over the
 same range, also recovering shape: ellipticity, astigmatism, whether the
 profile is Gaussian at all. The two check each other.
 
-## What problem it solves
+## The problem it addresses
 
 Because $I_0 \propto 1/w_0^2$, the waist multiplies every
 intensity-dependent quantity by a different power, so the same fractional
@@ -79,11 +71,23 @@ parameter, and about a five percent shift in the transit width the other
 way. An unresolved waist dominates a two-photon campaign's propagated
 uncertainty out of proportion to its own fractional size.
 
-## Where this repository uses it
+## Application in this repository
 
 [`rb5s6s/constants.py`](../../rb5s6s/constants.py) holds `W0_MEASURED_M` and
 `W0_BAND_M`, the accepted value and working band every $w_0$-dependent
-quantity reads from. **This waist is not measured on this bench.** The 64 µm
+quantity reads from. **This waist is not measured on this bench.** Nor is it recovered from the
+line. The joint fit was closed on its own forward model, injecting a known [52.00](../../results/noiseless_floor.csv "ref:noiseless_floor:injected_truth:w0") µm on the
+archive's own axes and levels, and the likelihood prefers **[52.37](../../results/noiseless_floor.csv "ref:noiseless_floor:recovered_w0:nfev_6000") µm at zero noise**, with
+$\chi^2$ at the injected truth [14.4](../../results/noiseless_floor.csv "ref:noiseless_floor:chi2_at_injected_truth:nfev_6000") where a self-recovering fit returns zero. The profile is
+identical to four decimals at 1200 and at 6000 optimiser iterations, so the fit is converged and
+the preference belongs to the model: a parameter set half a micron above the truth reproduces the injected
+data better than the true parameters do. The forward map is not injective over this grid, and w₀ is absorbed
+by whatever the refit leaves free.
+
+The transit goes as $1/w_0$, $S_0$ as $1/w_0^2$ and
+$\Omega^2$ as $1/w_0^4$, so the compensating term is a nuisance with one of those exponents.
+Every waist this estimator reports is conditional on that degeneracy before any noise argument
+is reached, which is why the knife-edge settles the question instead of confirming it. The 64 µm
 of record is one profiling of the OIST lineage, reported in both [Rajasree
 2020](../lit/rajasree2020thesis.md) and [Nieddu 2019](../lit/nieddu2019.md) in
 its $1/e^2$ convention, and taken on the laser generation preceding the one this
@@ -113,7 +117,7 @@ the geometric relation $z_R = \pi w_0^2/\lambda$. The fourth-power
 saturation dependence is in [`docs/GLOSSARY.md`](../GLOSSARY.md) and [the
 saturation companion](../notes/two_photon_saturation_companion.md).
 
-## What a band on the waist has to be paired with
+## The pairing a band on the waist requires
 
 The record's widest credible interval pairs the tight-waist edge with the high
 retro ratio, since the shift rises with both, and a band that moves the waist
@@ -122,7 +126,8 @@ producer carried that second convention until 2026-09-08, where it read nine
 per cent of the shift against the record's eleven, in the direction that reads
 as licence.
 
-## Values that moved
+## Revised values
+
 The 64 µm value of record replaced a chain of earlier estimates. First a
 design figure, retracted once a missing crossing-flux weighting in the
 transit Monte Carlo was found and fixed, which is the same implementation
@@ -132,7 +137,7 @@ validated against Lehmann's worked example. Then a stand-in used in three
 documents before the waist was stated as measured. the private correction record
 carries each with its date.
 
-## A ratio you can know, and a scale you cannot
+## A knowable ratio and an unknowable scale
 
 The waist is hard to measure absolutely and easy to move by a known factor.
 An adjustable expander scales it by its magnification, a ratio of focal
@@ -159,9 +164,9 @@ growth that eventually turns the peak height over, at a waist inside the range
 the campaign proposes.
 [The ramp chapter](../methods/03_the_ac_stark_ramp.md) derives both.
 
-## And the drive wavelength is a knob on it, not a setting beside it
+## The drive wavelength as a knob on the waist
 
-The expander's magnification is not the only ratio you can know. The focused
+The expander's magnification is not the only knowable ratio. The focused
 waist through a lens is
 
 $$w_0 = \frac{\lambda f}{\pi w_{\rm in}}$$
@@ -182,8 +187,10 @@ singlet, so its own focal length disperses as $1/(n-1)$, worth 150.00 mm at
 turn on a fact the record lacks. The focus also moves 1.17 mm toward the lens,
 which is an eighth of a Rayleigh range and harmless for the waist but a
 third of the collection window, so the collection optics are refocused per
-wavelength or the axial-window correction is wrong by that much. **That
-fraction read a fourteenth until 2026-09-10**, which is what 1.17 mm is
+wavelength or the axial-window correction is wrong by that much.
+
+That
+fraction read a fourteenth until 2026-09-10, which is what 1.17 mm is
 against the 993.4 nm waist's 16.93 mm Rayleigh range, and this page is the one
 that says the waist does not stay put: at the 760 nm rung's own 48.589 um the
 range is 9.758 mm. The mixed geometry the page exists to correct had survived
@@ -201,7 +208,7 @@ ratio between two drives is 1.317 in one regime and 1.152 in the other, a
 quoted without that measurement carries an unstated beam assumption, which is
 what happened here until 2026-09-09.
 
-## What can go wrong
+## Failure modes
 
 The commonest error is a convention trap, not a measurement error: a bare
 "diameter" with no $1/e^2$ stated, a $1/e^2$ diameter halved incorrectly, or
@@ -273,8 +280,7 @@ print("intensity and the light shift both run as 1/w0^2: the same band "
 - [Transit-time broadening](transit-time-broadening.md) for the width that
   depends on the same length with the opposite sign.
 
-## See also
-
+## Related pages
 - [The campaign page](../quantities/campaign.md), where the waist is the hub
   of the coupled system.
 - [The AC-Stark shift](ac-stark-shift.md) for the shift distribution this
@@ -286,7 +292,7 @@ print("intensity and the light shift both run as 1/w0^2: the same band "
 
 ---
 
-## The waist is a self-calibrated quantity too, and it is the worst-conditioned one
+## The waist as the worst-conditioned self-calibrated quantity
 
 **Added 2026-09-11 on the owner's reading.** Every other nuisance on this bench
 is read from the trace that carries the signal: the frequency axis and the
@@ -305,7 +311,7 @@ refitting the archive at each value instead of importing a lineage number.
 default sharing lets a free laser width absorb the temperature lever, so a
 profile from it would have had to be retracted.
 
-**And it is graded, because the grade is the useful part.** The other
+And it is graded, because the grade is the useful part. The other
 calibrations are well conditioned. This one is read through kernel shape, and
 three things make that weak here:
 
@@ -321,15 +327,17 @@ three things make that weak here:
   differential, and it is read by comparing peaks, which is exactly what was
   taken at different vertical zoom.
 
-**The model also assumes a perfect Gaussian, which the apparatus note denies in
-the same paragraph that states the waist**: the lineage value was measured with
-a 3 mm aperture truncating the input beam, and a truncated Gaussian carries
-ring structure and does not obey `w0 = lam f / (pi w_in)`. Beam quality above
+The model also assumes a perfect Gaussian, which the apparatus note denies in
+the same paragraph that states the waist: the lineage profile carried NO 3 mm
+aperture while this campaign's beam passes one, and a truncated Gaussian carries
+ring structure and does not obey `w0 = lam f / (pi w_in)`. Computed through this
+bore the focus is floored near 42 µm and not widened (F105), which is why the
+owner's own reading of 2026-09-17 is 40 to 45 µm. Beam quality above
 one, astigmatism and the retro overlap are absent from every model here. The
 transit reads an effective radius and the light shift reads a peak intensity,
 so for a non-Gaussian beam the two are not related by one waist at all.
 
-**So the claim is the architecture and not the number.** This apparatus carries
+So the claim is the architecture and not the number. This apparatus carries
 its own metrology for every nuisance including the geometry, and the geometry
 is the one where the conditioning is poor. That says which calibration to
 improve and by how much: a knife edge good to a few per cent, one afternoon,

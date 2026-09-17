@@ -71,7 +71,7 @@ from .lineshape import local_ramp_density, model_profile, ramp_mixture
 
 __all__ = ["doppler_pedestal_fwhm_mhz", "residual_doppler_fwhm_mhz",
            "saturation_companion_mhz",
-           "collection_z_ratio_m2", "full_profile",
+           "collection_z_ratio_m2", "transit_collection_factor", "full_profile",
            "convolution_licence", "ultra_joint_covariance"]
 
 
@@ -242,7 +242,7 @@ def full_profile(nu: np.ndarray, *, gamma_coll: float, sigma_laser_fwhm: float,
     # refuses_to_be_a_no_op` passes on the window term alone until it lands.
     if float(m2) != 1.0 and "profile" not in model_kw:
         z_ratio = collection_z_ratio_m2(float(w0_m), float(m2))
-        _xg = np.linspace(-1.0, 0.0, 4001)
+        _xg = np.linspace(0.0, 1.0, 4001)      # BLUE support (O27)
         _gx = local_ramp_density(_xg)
         _memo: dict = {}
 
@@ -417,10 +417,10 @@ DEFAULT_WINDOWS = (3.25, 6.0, 12.0)
 #: Measured on the twin's world under the noise model's own correlation time
 #: (`tau_int = 2.515`), 42 statistics over these orders and windows split
 #: exactly by parity at a per-trace SNR of 3: every even order and even ratio
-#: runs 23.23 [ref:moment_admission:snr_admitted_min:] to
-#: 1832 [ref:moment_admission:snr_admitted_max:] and every odd one runs
-#: 0.0004582 [ref:moment_admission:snr_refused_min:] to
-#: 1.279 [ref:moment_admission:snr_refused_max:]. The tuple was
+#: runs 34.69 [ref:moment_admission:snr_admitted_min:] to
+#: 2647 [ref:moment_admission:snr_admitted_max:] and every odd one runs
+#: 0.0032500 [ref:moment_admission:snr_refused_min:] to
+#: 0.658 [ref:moment_admission:snr_refused_max:]. The tuple was
 #: `(2, 3, 5, 7)` until 2026-09-12, carrying ONE even order and no even ratio,
 #: so the statistic set that holds the width information could not be produced
 #: by this module at all. The odd orders stay in the tuple because they are the
@@ -554,6 +554,25 @@ def _ratio_admitted(k: dict, lo: int, half_width: float) -> bool:
     return abs(v) > RATIO_FLOOR_REL * scale ** lo
 
 
+def transit_collection_factor(w0_m: float, m2: float = 1.0, n: int = 4001) -> float:
+    """The collected transit kernel's width over the closed form at the waist (2026-09-16, F12).
+
+    The detector collects a column of half-length L = z_ratio z_R around the focus, and along
+    it the beam radius grows as w(z) = w0 sqrt(1 + (z/z_R)^2): each slice's transit width goes as
+    1/w and its two-photon signal as the integral of I^2 over the slice, w^-2 at unit power, so
+    the collected kernel is that mixture and its width, to first order, the signal-weighted mean
+    of 1/w: <w^-3> / <w^-2> over z uniform on [-L, L]. It reads 0.9892 at 64 um and M2 = 1
+    (z_ratio 0.2605) and 0.9971 at 90 um; the kernel Monte Carlo of `scripts/run_kernel_mc.py`
+    reads -0.96 +- 0.2 per cent at 64 um against this -1.08. Below one always, one as the ratio
+    goes to zero. The ramp carries the same mixture through `stark_ramp_axial`; the transit did
+    not until this factor, so a fit at cycles zero read a kernel one per cent too wide at 64 um.
+    """
+    from ._compat import trapezoid
+    zr = collection_z_ratio_m2(float(w0_m), float(m2))
+    z = np.linspace(-1.0, 1.0, int(n)); w = np.sqrt(1.0 + (zr * z) ** 2)
+    return float(trapezoid(w ** -3, z) / trapezoid(w ** -2, z))
+
+
 def convolution_licence(w0_m: float, m2: float = 1.0, **kw) -> dict:
     """Whether `S = f * L` is licensed at this waist and beam quality.
 
@@ -615,9 +634,9 @@ def ultra_joint_covariance(nu: np.ndarray, *, n_real: int = 400,
 
     **THE SNR SPLITS THE LADDER BY PARITY, AND IT NO LONGER GATES ANYTHING.**
     Over 42 statistics at the archive's parameters, the 21 even ones carry a
-    per-trace SNR of 23.23 [ref:moment_admission:snr_admitted_min:] to
-    1832 [ref:moment_admission:snr_admitted_max:] and the 21 odd ones reach only
-    1.279 [ref:moment_admission:snr_refused_max:], so a floor at 3 refused the
+    per-trace SNR of 34.69 [ref:moment_admission:snr_admitted_min:] to
+    2647 [ref:moment_admission:snr_admitted_max:] and the 21 odd ones reach only
+    0.658 [ref:moment_admission:snr_refused_max:], so a floor at 3 refused the
     odd ladder entirely -- the shift channel, and the half of the owner's
     specification that opens with "in particular the ODD ones". Owner order O17
     of 2026-09-15 forbids admitting by SNR at all, and the reasoning is in the
@@ -851,7 +870,7 @@ FIT_TERMS = {
     "retro_tilt_rad":       (0.0, 5e-3, 0.0),
     #: THE CENTRE IS A TERM AND NOT A CONVENIENCE, and which side of the fit it
     #: sits on decides what the asymmetry is worth. The ramp makes the line
-    #: asymmetric by a FORWARD-MODEL amount: its density is |s| on [-S0, 0],
+    #: asymmetric by a FORWARD-MODEL amount: its density is s on [0, S0], the blue side,
     #: fixed by the beam geometry and the polarizability, with no free shape.
     #: Expanding, P(nu; S0) = P0 - (2 S0/3) P0' + (S0^2/36) P0'' + ..., a free
     #: centre spans the first-order term EXACTLY, so freeing it removes the

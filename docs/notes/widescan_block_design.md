@@ -7,19 +7,10 @@ status: DESIGN
 
 # The wide-scan block, sized so the next session can run it cold
 
-**The question.** What acquisition settings turn the 2025 dead ends into
-measurements, and what should the traces look like on the day?
-**Takes.** [PLAN section 10a](../PLAN.md), and the 2026-08-15 analysis of the
-out-of-window residuals.
-**Gives.** A record length, a span, a piezo shape, a forward-modelled trace,
-and six go/no-go checks.
-**Skip if.** You are not planning bench time. The short version is that the
-2025 span, not its resolution, is what bounded the analysis, and span is a
-knob.
+What acquisition settings turn the 2025 dead ends into measurements, and what should the traces look like on the day? This page builds on [PLAN section 10a](../PLAN.md), and the 2026-08-15 analysis of the out-of-window residuals and sets out A record length, a span, a piezo shape, a forward-modelled trace, and six go/no-go checks. Anyone not planning bench time can leave it unread. The short version is that the 2025 span, not its resolution, is what bounded the analysis, and span is a knob.
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
-> explains the measurement in six sentences, then defines every term
-> and symbol used anywhere in this repository.
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
+> defines every term and symbol used anywhere in this repository.
 
 Computed by `scripts/run_widescan_design.py`, which writes nothing and reads
 every input from the record. Run it rather than trusting the numbers copied

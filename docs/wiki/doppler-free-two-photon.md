@@ -2,21 +2,12 @@
 
 *[wiki index](README.md) · technique*
 
-**The question.** What makes a two-photon transition immune to the
-first-order Doppler shift, and what that immunity costs.
-**Takes.** The general wavevector-closure rule from
-[Doppler-free geometries](doppler-free-geometries.md). No fitting, no data.
-**Gives.** The retro-reflected cancellation worked out for two photons, the
-same-beam pedestal it leaves behind, and the doubled laser-noise sensitivity
-that follows from summing both photons' detuning.
-**Skip if.** You want the general closure rule for any photon count and
-colour combination, not this apparatus's two-photon case. That is
-[Doppler-free geometries](doppler-free-geometries.md).
+What makes a two-photon transition immune to the first-order Doppler shift, and what that immunity costs. This page builds on the general wavevector-closure rule from [Doppler-free geometries](doppler-free-geometries.md). No fitting, no data. It sets out the retro-reflected cancellation worked out for two photons, the same-beam pedestal it leaves behind, and the doubled laser-noise sensitivity that follows from summing both photons' detuning. Not covered here: the general closure rule for any photon count and colour combination, not this apparatus's two-photon case. That is [Doppler-free geometries](doppler-free-geometries.md).
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
 > defines every term and symbol used anywhere in this repository.
 
-## What it is
+## Definition
 
 In a warm vapour, atoms move, and a moving atom sees a shifted laser
 frequency. Since the velocities span a thermal distribution, an ordinary
@@ -52,14 +43,14 @@ retro-reflected onto itself, so the same fluctuation reaches both photons and
 adds where the Doppler shift cancels. A two-photon line is twice as sensitive
 to laser noise as a single-pass one.
 
-## What problem it solves
+## The problem it addresses
 
 It makes sub-megahertz structure visible in a room-temperature vapour cell,
 without a trap, a beam, or any cooling. The linewidth is set by the atom and
 the apparatus, not by the temperature, which is why two-photon transitions
 are used for so many optical frequency standards.
 
-## Where this repository uses it
+## Application in this repository
 
 It is the measurement. The 5S to 6S transition in rubidium is driven by two
 993 nm photons in a retro-reflected beam through a warm cell, and the
@@ -82,9 +73,9 @@ linewidth enters the line shape with a factor of two already applied, which
 matters because no independent diagnostic of that laser's jitter exists for
 this epoch.
 
-## Crossover resonances, and why this geometry has none
+## The absence of crossover resonances in this geometry
 
-**One word, three meanings, and they are unrelated.** This repository uses
+One word, three meanings, and they are unrelated. This repository uses
 "crossover" for three different things, and mixing them is easy because two
 of them live on neighbouring pages. A *crossover resonance* is the spurious
 extra line of saturated-absorption spectroscopy, and it is this section's
@@ -108,14 +99,16 @@ by both beams at once. The pump burns a population hole in it, the probe
 reads the hole, and a signal appears at the arithmetic midpoint of the two
 real lines, $(\nu_1+\nu_2)/2$, where no transition exists. Crossovers are
 often taller than the lines they sit between, and the reason is not the one
-usually given. The class they select sits at nonzero speed, so it is less
+usually given.
+
+The class they select sits at nonzero speed, so it is less
 populated than the zero-velocity class the ordinary saturated-absorption dip
 addresses. What makes them tall is that two classes feed one feature, moving
 at plus and minus that speed, where the dip has only the single class at
 rest. That is a factor of two before the Boltzmann reduction takes some of it
 back, and optical pumping adds more in an open system.
 
-**The mechanism needs two ingredients and this geometry supplies neither.**
+The mechanism needs two ingredients and this geometry supplies neither.
 It needs a *shared level*, so that a hole burnt by one transition is visible
 to the other. And it needs *velocity selection*, so that one velocity class
 can link two different frequencies. In Doppler-free two-photon spectroscopy
@@ -128,7 +121,7 @@ The absence is structural. It is not a matter of the crossovers being weak
 or unresolved, and a line found at the midpoint of two of these would need a
 different explanation entirely.
 
-**This is a feature and not only a curiosity.** A saturated-absorption
+This is a feature and not only a curiosity. A saturated-absorption
 spectrum of four lines carries six crossovers on top of them, and telling
 the two kinds apart is a standing chore. Every peak in the spectra this
 record fits is a real transition, which is why the four-line assignment
@@ -143,7 +136,7 @@ crossover pathways of the second meaning above, and
 [the two-photon comb](the-two-photon-comb.md) works out what happens to
 them when the retro delay stops them interfering cleanly.
 
-## What can go wrong
+## Failure modes
 
 The retro-reflection is an experimental limitation as much as a technique.
 The cancellation is exact only if the two beams are truly counter-propagating,
@@ -198,8 +191,7 @@ print("counter-propagating pair: cancels to first order, for every atom")
 - [Transit-time broadening](transit-time-broadening.md) for what sets the
   width once the Doppler width is gone.
 
-## See also
-
+## Related pages
 - [Doppler-free geometries](doppler-free-geometries.md), the general
   closure rule this page specialises to two photons.
 - [Standing waves](standing-waves.md), what the same retro-reflected beams

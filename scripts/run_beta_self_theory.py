@@ -98,9 +98,15 @@ def main() -> int:
         f"{(a['beta6_first_principles_khz'] - b['beta6_khz']) / b['err_khz']:.2f} of the "
         "adopted bar above it, which is the consistency and not a second measurement",
         "ENVELOPE")
+    _terms = b["terms_rel"]
+    _terms = _terms if isinstance(_terms, dict) else {}
+    _lead = max(_terms, key=_terms.get) if _terms else "anchor_measurement"
     add("beta_self_6s", "rel_uncertainty", f"{100 * b['rel']:.2f}", "", "per cent",
         "the quadrature sum of the measured budget rows below",
-        "8.8 per cent, of which 8.5 is the anchor measurement alone",
+        # the basis is built from the budget's own rows, never typed (a typed 8.8 outlived two
+        # derivations and reached the thesis appendix, 2026-09-17)
+        (f"{100 * b['rel']:.2f} per cent, of which {100 * _terms[_lead]:.2f} is the {_lead.replace('_', ' ')} alone"
+         if _terms else f"{100 * b['rel']:.2f} per cent"),
         "ENVELOPE")
     add("beta_self_6s_mhz", "anchored", *cells(b["beta6_khz"] / 1e3, b["err_khz"] / 1e3),
         "MHz per 1e12 cm^-3 at 403.15 K",

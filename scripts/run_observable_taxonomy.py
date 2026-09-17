@@ -89,6 +89,7 @@ from pathlib import Path
 import numpy as np
 
 from rb5s6s import config as C
+from rb5s6s.lineshape import ramp_mean_over_s0  # noqa: E402  (O27: the ramp's side, stated once)
 from rb5s6s.fibre import HE11Field, solve_he11, transit_fwhm as onf_transit_fwhm
 from rb5s6s.stark import stark_shift_S0_mhz
 
@@ -235,7 +236,7 @@ def onf_power_scale(waist_um: float, trap_nm: float = ONF_TRAP_NM) -> float:
     THE TWO PLATFORMS CANNOT SHARE A POWER LADDER AND THE FACTOR IS ABOUT A
     HUNDRED. A nanofibre confines the same light to a mode area of about half
     a square micron, so its shift coefficient is 2430 MHz/W against the cell's
-    1.618 at the archive waist. Run at the cell's 225 mW the guided shift would
+    `stark.kappa_pred_per_watt()`, about 1.5, at the convention waist. Run at the cell's 225 mW the guided shift would
     be 547 MHz on a transit kernel of 109, which is not a lineshape at all. The
     ladder is therefore scaled so the guided SHIFT matches the cell's at the
     same row, which is the comparison the taxonomy is for: same physics regime,
@@ -571,8 +572,8 @@ def _centre_kappa(res: dict) -> float:
 
     Per condition block the centre is regressed on [1, power, acquisition
     order], so the lock's residual drift is a nuisance the drawn rung order
-    separates from the pull, and kappa = -(3/2) times the power slope because
-    the ramp's mean pull is -2 S0 / 3. The blocks are then averaged, every one
+    separates from the pull, and kappa = the power slope over the ramp's signed mean pull per
+    unit S0 (+2/3 on the blue side, `lineshape.ramp_mean_over_s0`). The blocks are then averaged, every one
     of them being an estimate of the same coefficient.
     """
     # INVERSE-VARIANCE, NOT EQUAL WEIGHT (2026-09-10). The inventory crosses
@@ -603,14 +604,16 @@ def _centre_kappa(res: dict) -> float:
             var_slope = float("nan")
         weights.append(1.0 / var_slope if np.isfinite(var_slope) and var_slope > 0
                        else 0.0)
-        # THE PURE RAMP'S -3/2, AND THE WINDOWED PULL IS NOT IN IT.
+        # THE PURE RAMP'S INVERSE MEAN, SIGNED BY ITS SIDE, AND THE WINDOWED PULL IS NOT IN IT.
+        # It was a literal -3/2 until the ramp's side was stated once (O27, P3), which returned the
+        # coefficient with the wrong sign for the hours after the kernel flipped.
         # The forecast this producer imports measures what the window
         # costs: pull_factor_quiet runs 0.9775 at 64 um to 0.5752 at 16,
         # so at the campaign's own waist this reports about 0.575 of the
         # coefficient. Applying it needs a quiet CENTROID, which
         # _quiet_curve does not yet carry, so the factor is owed and this
         # column is a lower bound on the coefficient until it lands.
-        slopes.append(-1.5 * beta[1])
+        slopes.append(beta[1] / ramp_mean_over_s0())
     if not slopes:
         return float("nan")
     w = np.asarray(weights, float)

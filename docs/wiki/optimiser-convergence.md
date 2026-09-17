@@ -2,21 +2,12 @@
 
 *[wiki index](README.md) · method*
 
-**The question.** Does a fit's convergence flag mean it found the surface's
-true minimum, or only a stationary point nearby.
-**Takes.** A parameter fit and its optimiser's stopping report. No prior
-wiki page is required.
-**Gives.** Three defences against a trapped scan: starting from several
-places, chaining in both directions, and a refitted audit, and why only
-the audit tests the result itself.
-**Skip if.** The reader wants the correlated-parameter valleys a fit gets
-trapped inside, ahead of the trapping mechanism itself. That is
-[identifiability](identifiability.md).
+Does a fit's convergence flag mean it found the surface's true minimum, or only a stationary point nearby. This page builds on a parameter fit and its optimiser's stopping report. No prior wiki page is required. It sets out three defences against a trapped scan: starting from several places, chaining in both directions, and a refitted audit, and why only the audit tests the result itself. Not covered here: the correlated-parameter valleys a fit gets trapped inside, ahead of the trapping mechanism itself. That is [identifiability](identifiability.md).
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
 > defines every term and symbol used anywhere in this repository.
 
-## What it is
+## Definition
 
 A fit reports success once its optimiser's stopping rule is satisfied: the
 step size or gradient fell below a tolerance, or the objective stopped
@@ -47,7 +38,7 @@ to fail identically. Refitting a sample from fresh, uncontaminated seeds
 and checking that none improves is the only defence that examines the
 result itself, not the process that produced it.
 
-## What problem it solves
+## The problem it addresses
 
 A converged fit is not automatically a correct one. A smooth run of
 results looks like confirmation: nothing jumps, every fit reports
@@ -56,7 +47,7 @@ is not evidence the scan is trustworthy. Treating convergence and
 correctness as one question removes the one signal that would otherwise
 flag it, an isolated fit failing to converge.
 
-## Where this repository uses it
+## Application in this repository
 
 The joint Stark-shift profile in
 [`scripts/run_stark_joint.py`](../../scripts/run_stark_joint.py) scans
@@ -88,7 +79,7 @@ Both usages sit underneath [the profile likelihood](profile-likelihood.md):
 a profile is a chain of fits, one per grid point, and its trustworthiness
 reduces to exactly this question.
 
-## What can go wrong
+## Failure modes
 
 The central failure is a warm-started scan whose first cell fell into
 the wrong valley: the resulting surface is smooth, consistent, and wrong
@@ -151,8 +142,7 @@ suite instead of misleading a reader.
 - [The profile likelihood](profile-likelihood.md), the construction this
   question reduces to.
 
-## See also
-
+## Related pages
 - [Identifiability](identifiability.md), the valleys a fit can be trapped
   inside.
 - [The profile likelihood](profile-likelihood.md), the chain of fits this

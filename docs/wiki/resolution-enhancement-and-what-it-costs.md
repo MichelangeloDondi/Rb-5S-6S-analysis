@@ -2,21 +2,12 @@
 
 *[wiki index](README.md) · technique*
 
-**The question.** Where the extra bits come from when an eight-bit instrument
-delivers twelve, what they cost, and why the same feature on two makes of
-oscilloscope behaves differently enough to change an experiment's design.
-**Takes.** An instrument, a smoothing setting, and a signal slower than the
-converter.
-**Gives.** The two different rates at which averaging increases resolution,
-the reason a smoothed trace can still export as eight bits, and the one case
-where smoothing shifts a line centre.
-**Skip if.** The question is how many bits the measurement needs at all, which
-is [digitisation and dynamic range](digitisation-and-dynamic-range.md).
+Where the extra bits come from when an eight-bit instrument delivers twelve, what they cost, and why the same feature on two makes of oscilloscope behaves differently enough to change an experiment's design. This page builds on an instrument, a smoothing setting, and a signal slower than the converter and sets out the two different rates at which averaging increases resolution, the reason a smoothed trace can still export as eight bits, and the one case where smoothing shifts a line centre. Not covered here: the question is how many bits the measurement needs at all, which is [digitisation and dynamic range](digitisation-and-dynamic-range.md).
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
 > defines every term and symbol used anywhere in this repository.
 
-## What it is
+## Definition
 
 Every oscilloscope in ordinary laboratory use has an eight-bit converter, and
 eight bits is 256 levels across the screen. That is far too coarse for a
@@ -39,7 +30,7 @@ the other doubles the claimed improvement.*
 Word length grows by one bit for every factor of two. Averaging two eight-bit
 readings can land halfway between codes, so the result needs a ninth bit to
 be written down. This is the number that sets the quantisation grid in an
-exported file, and it is what you recover by looking at the smallest voltage
+exported file, and it is what is recovered by looking at the smallest voltage
 step present in the data.
 
 Noise falls by one bit for every factor of four. Averaging $N$ independent
@@ -82,7 +73,7 @@ were taken. The bits are unspent headroom, and the place they would be spent
 is holding one vertical range across a power ladder instead of switching
 range at every rung.
 
-## Where the feature lives
+## Location of the feature
 
 The same capability is an acquisition mode on one make and a math function on
 the other, and the difference decides what ends up in the file.
@@ -132,8 +123,8 @@ running at gigasamples per second, this cost is unreachable. Bandwidth is not
 the scarce resource in this experiment and it is not a reason to leave
 smoothing off.
 
-**But the filter is also a kernel, and whether that matters depends on the rate
-it runs at.** Where the average is disjoint, one output per group of input
+But the filter is also a kernel, and whether that matters depends on the rate
+it runs at. Where the average is disjoint, one output per group of input
 samples, the kernel is exactly one stored sample wide, which is the sampling
 the model already carries, and the cost is nil. Where it is a moving average
 across stored samples, the kernel is wider than the sampling and adds a
@@ -147,7 +138,7 @@ and the LeCroy's enhanced resolution, which is not.
 | 10 | 3.9 per cent | 0.19 per cent |
 | 24 | 21.6 per cent | 1.1 per cent |
 
-**Twenty per cent is larger than every width signal the light shift produces**,
+Twenty per cent is larger than every width signal the light shift produces,
 and the 2025 analysis failed on a degeneracy between three widths, so a fourth
 that is not in the model is the one cost of smoothing that binds here. It is
 avoidable in two ways: take the disjoint mode where the instrument offers one,
@@ -170,7 +161,7 @@ midpoint of the two recovers the true centre while the splitting measures the
 lag. Under a zero-phase filter there is no such splitting, because there is
 no lag, and the two halves are simply two independent crossings.
 
-## What can go wrong
+## Failure modes
 
 The most common error is the one above, reading a word-length figure as a
 noise figure and claiming twice the improvement actually obtained. The
@@ -190,7 +181,7 @@ can still be independent, and where it filters without decimating they are
 not, so the setting alone does not settle it and the autocorrelation has to
 be measured.
 
-## Where this repository uses it
+## Application in this repository
 
 The instrument comparison and the per-rung range analysis are in
 [the acquisition settings chapter](../plan/07_acquisition-settings.md). The
@@ -205,8 +196,7 @@ actually ran in, in [APPARATUS.md](../APPARATUS.md).
 - The Teledyne LeCroy WaveSurfer operator's manual, the ERes filter
   specification the boxcar comparison above is read against.
 
-## See also
-
+## Related pages
 - [Digitisation and dynamic range](digitisation-and-dynamic-range.md), the
   quantiser this page's modes spend sample rate on.
 - [Photon counting](photon-counting.md), the shot-noise floor no

@@ -48,8 +48,8 @@ import sys
 import numpy as np
 
 from rb5s6s import cascade
+from rb5s6s.stark import kappa_pred_per_watt  # noqa: E402  (SSOT: one predicted coefficient)
 from rb5s6s import constants as C
-from rb5s6s.lineshape import stark_shift_S0_mhz
 from rb5s6s import blackbody
 from rb5s6s import stark
 from rb5s6s.amplitudes import predicted_shares
@@ -64,14 +64,14 @@ C_M_S = 299792458.0
 # (results/linefit_conditions). The transit and the coefficient are NOT, and
 # stood here as though they were: that file has gamma_coll and sigma_laser
 # columns and no transit column at all. Both are taken from the constants
-# (2026-09-04), where the transit at the measured waist and 130 C is 0.9575
-# MHz and the predicted coefficient is 1.618 MHz per W, against the 1.8 and
-# the 1.556 written here before.
+# (2026-09-04), where the transit at the convention waist and 130 C is 0.9575
+# MHz and the predicted coefficient is `stark.kappa_pred_per_watt`, against the
+# 1.8 and the 1.556 written here before.
 GAMMA_COLL_MHZ = 0.55
 SIGMA_LASER_MHZ = 1.6
 TRANSIT_FWHM_MHZ = C.transit_fwhm_from_w0(C.W0_MEASURED_M, T_C=130.0)
 # The prediction under test, kappa in MHz per W on the transition axis.
-KAPPA_PRED = stark_shift_S0_mhz(1.0, C.W0_MEASURED_M, rho=C.RHO_RETRO)
+KAPPA_PRED = kappa_pred_per_watt(C.W0_MEASURED_M, C.RHO_RETRO)
 # The 2025 ladder, watts.
 POWERS_W = np.array([0.025, 0.075, 0.125, 0.175, 0.225])
 # Session drift, MHz over the whole session (plan/06's confound scale).
@@ -89,15 +89,14 @@ CYCLES_AT_225MW = 3.0        # pumping cycles an atom completes at full power
 def _pull_per_s0() -> float:
     """The ramp's first moment per unit S0, MEASURED from the library kernel.
 
-    The derivation gives -2/3 for the density f(s) ∝ |s| on [-s0, 0], but this
+    The derivation gives +2/3 for the density f(s) ∝ s on [0, s0], the blue side, but this
     is measured rather than written down because a literal here is exactly what
     went wrong before: the file carried 0.5, the mean of a UNIFORM density, and
     the estimator built on it read kappa 33 per cent high while its own
     null-versus-prediction check passed, injection and recovery sharing the
     error. Reading the constant off `stark_ramp` means the twin cannot disagree
-    with the kernel it convolves, in magnitude or in SIDE -- and the side is an
-    open question (`tests/test_ramp_side_matches_the_polarizability.py`), so it
-    is inherited here and never re-chosen.
+    with the kernel it convolves, in magnitude or in SIDE -- the side the ruling of
+    2026-09-17 settled as blue (`lineshape.RAMP_SIDE`), inherited here and never re-chosen.
     """
     from rb5s6s._compat import trapezoid
     from rb5s6s.lineshape import stark_ramp
@@ -111,14 +110,14 @@ PULL_PER_S0 = _pull_per_s0()
 
 
 def line_positions_mhz() -> dict:
-    """Transition-axis positions from the PEAKS wavelengths themselves, so a
-    wrong hand-typed spacing cannot enter. Referenced to the highest-frequency
-    line (the smallest wavelength, 993.4121), so every position is at or
-    below zero and the four span about minus 5.2 GHz."""
-    ref_nm = min(p["lambda_nm"] for p in PEAKS.values())
-    return {k: 2.0 * (C_M_S / (v["lambda_nm"] * 1e-9)
-                      - C_M_S / (ref_nm * 1e-9)) / 1e6
-            for k, v in PEAKS.items()}
+    """The package's own hyperfine-built positions, imported and not re-derived.
+
+    This file carried a SECOND copy that read the uncalibrated wavelength labels,
+    which is both the duplication the record forbids and the label-as-ruler defect
+    the package's version now documents. One routine, one test.
+    """
+    from rb5s6s.twin import line_positions_mhz as _pos
+    return _pos()
 
 
 def build_rung(power_w: float, kappa: float, t_c: float, order_idx: int,
@@ -203,9 +202,9 @@ def run_world(kappa: float, layers: dict, seed: int) -> dict:
     # The centre channel reads the ramp's MEAN, and for the density this record
     # derives, f(s) = 2s/S0^2, that mean is (2/3) S0 and not S0/2 (corrected
     # 2026-08-30; S0/2 is the mean of a UNIFORM density). lineshape.stark_ramp
-    # codes the pull NEGATIVE, so the fitted slope of centre against power is
-    # -(2/3) kappa and the estimator is -3/2 times it. The factor is written as
-    # -1/PULL_PER_S0 rather than as a literal so it cannot drift from the
+    # codes the pull on its RAMP_SIDE, positive since the ruling of 2026-09-17, so the fitted
+    # slope of centre against power is PULL_PER_S0 kappa and the estimator is its inverse. The
+    # factor is written as 1/PULL_PER_S0 rather than as a literal so it cannot drift from the
     # library again.
     # The first version of this file compared the raw slope to kappa and
     # under-read its own injection by exactly that factor, which the twin's

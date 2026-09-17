@@ -96,6 +96,8 @@ def main() -> int:
         # carry a published digit". They were CALIB, which is the tag for an
         # instrument calibration, and a 95 per cent significance was computed
         # against them.
+        w.writerow(["kappa_pred", "shared", f"{res['kappa_pred']:.3f}", "",
+                    f"MHz per W: the predicted coefficient behind S0_225mW_pred, one function (stark.kappa_pred_per_watt) at this record's polarizability with the aperture's on-axis factor (w0={C.W0_MEASURED_M*1e6:.0f}um convention, rho={C.RHO_RETRO}). ENVELOPE for the reasons the next row gives"])
         w.writerow(["S0_225mW_pred", "shared", f"{res['S0_225_pred']:.3f}", "",
                     f"predicted S0 at 225 mW (w0={C.W0_MEASURED_M*1e6:.0f}um prior, rho={C.RHO_RETRO}). ENVELOPE: conditional on an effective waist not measured in the cell and on an assumed retro ratio, so its band is an envelope over two opposite vertices of the +-1 sigma box and NOT a sigma band, and a sigma distance measured from it is not a sigma"])
         w.writerow(["S0_225mW_pred_lo", "shared", f"{res['S0_225_pred_lo']:.3f}", "",

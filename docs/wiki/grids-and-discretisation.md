@@ -2,20 +2,12 @@
 
 *[wiki index](README.md) · method*
 
-**The question.** How many grid points across a feature's own width are
-enough to recover that feature with a fit, not merely to draw it on a
-plot.
-**Takes.** A general sense of what a grid and a fit are. No prior wiki
-page is required.
-**Gives.** The points-per-feature-width ratio that governs a fit's
-precision, and the simulation test that checks it instead of assuming it.
-**Skip if.** The reader wants the three-setting acquisition design problem
-this ratio feeds into: [designing an acquisition](designing-an-acquisition.md).
+How many grid points across a feature's own width are enough to recover that feature with a fit, not merely to draw it on a plot. This page builds on a general sense of what a grid and a fit are. No prior wiki page is required. It sets out the points-per-feature-width ratio that governs a fit's precision, and the simulation test that checks it instead of assuming it. Not covered here: the three-setting acquisition design problem this ratio feeds into: [designing an acquisition](designing-an-acquisition.md).
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
 > defines every term and symbol used anywhere in this repository.
 
-## What it is
+## Definition
 
 A spacing of 0.05 MHz says nothing about whether a grid is fine or coarse:
 fineness is set by comparison with the narrowest feature the grid
@@ -38,7 +30,7 @@ for instance to convolve two kernels together, meets the identical question
 in miniature: how many grid points fall across the narrowest kernel being
 convolved, not how many points the grid carries in total.
 
-## What problem it solves
+## The problem it addresses
 
 Stating a requirement as a record length, a span, or a sampling rate on
 its own treats three coupled quantities as independent, so a design can
@@ -47,7 +39,7 @@ the feature width collapses all three into the ratio that actually sets a
 fit's precision, a number tested by simulation, recovering a known truth
 at the proposed density, instead of assumed because it sounds generous.
 
-## What can go wrong
+## Failure modes
 
 Too coarse a step biases a fitted width: samples that miss the peak
 understate the sampled maximum, so a half-maximum criterion crosses
@@ -68,7 +60,7 @@ a feature's own edge is fitted against a baseline it cannot itself
 determine, so the result depends on the assumed form of that baseline as
 much as on the data inside the window.
 
-## Where this repository uses it
+## Application in this repository
 
 The wide-scan record length in
 [chapter 7 of the plan](../plan/07_acquisition-settings.md) was set by
@@ -178,8 +170,7 @@ here.
 - [Chapter 7 of the plan](../plan/07_acquisition-settings.md), the record
   length case worked through in full.
 
-## See also
-
+## Related pages
 - [Designing an acquisition](designing-an-acquisition.md), the acquisition
   problem this ratio resolves for a physical scan.
 - [Injection-recovery testing](injection-recovery.md), the technique a

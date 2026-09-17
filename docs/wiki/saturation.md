@@ -2,20 +2,12 @@
 
 *[wiki index](README.md) · physical effect*
 
-**The question.** Where the two-photon I-squared law this analysis leans on
-stops holding, and what that costs a tightly focused beam.
-**Takes.** The two-photon Rabi frequency and the natural linewidth, and no
-fitted data of its own.
-**Gives.** The saturation parameter, its fourth-power waist scaling, and the
-size of the bound available if a saturation term is folded into the fit.
-**Skip if.** You want the light shift itself. That is covered in
-[the AC-Stark shift](ac-stark-shift.md). This page covers the ceiling on the
-drive that produces it.
+Where the two-photon I-squared law this analysis leans on stops holding, and what that costs a tightly focused beam. This page builds on the two-photon Rabi frequency and the natural linewidth, and no fitted data of its own and sets out the saturation parameter, its fourth-power waist scaling, and the size of the bound available if a saturation term is folded into the fit. Not covered here: the light shift itself. That is covered in [the AC-Stark shift](ac-stark-shift.md). This page covers the ceiling on the drive that produces it.
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
 > defines every term and symbol used anywhere in this repository.
 
-## What it is
+## Definition
 
 A two-photon transition absorbs two photons at once: the excitation
 amplitude scales with the square of the field, the rate with the square of
@@ -60,7 +52,7 @@ Saturation compresses it asymmetrically: the strongest teeth sit
 nearest the excited-state ceiling, the weakest barely move it, so a
 saturating comb reads out with its strong teeth pulled toward its weak ones.
 
-## What problem it solves
+## The problem it addresses
 
 It sets the boundary of validity for every I-squared argument this analysis
 makes, from the light-shift distribution to a modulation comb's amplitude
@@ -69,14 +61,14 @@ the comb's amplitude law from an assumption into a checkable claim, by
 driving the modulator at more than one depth and testing whether the law
 holds at all of them.
 
-## Where this repository uses it
+## Application in this repository
 
 The weak-field limit and its cost are discussed in
 [BIG_PICTURE, the method and its limits](../big_picture/02_the-method-and-its-limits.md),
 with the committed panel at [fig24](../../figures/fig24_weak_field_limit.png).
 [`two_photon_rabi_hz`](../../rb5s6s/hyperpolarizability.py) computes the
 two-photon coupling from bench quantities, compared against
-[`GAMMA_NAT_HZ`](../../rb5s6s/constants.py) using the measured waist
+[`GAMMA_NAT_HZ`](../../rb5s6s/constants.py) using the waist convention
 [`W0_MEASURED_M`](../../rb5s6s/constants.py). The
 [`stark_ramp`](../../rb5s6s/lineshape.py) docstring states the same caveat
 and points at `scripts/run_saturation_probe.py`, which measures the
@@ -95,7 +87,7 @@ Bessel law and once free, reading the residual as the saturation and
 depletion diagnostic. It runs the modulator at several depths so the
 amplitude law is tested at more than one point.
 
-## What can go wrong
+## Failure modes
 
 The first failure is a model one: treating the I-squared law, or the pure
 Bessel comb it implies, as exact instead of the small $s$ limit it is.
@@ -198,8 +190,7 @@ changed the committed number.
 - [The AC-Stark shift](ac-stark-shift.md) for the effect the fourth-power
   scaling contrasts against.
 
-## See also
-
+## Related pages
 - [The AC-Stark dossier](../quantities/ac-stark-light-shift.md), where
   saturation shares the light shift's power law with the mechanisms the
   width channel cannot separate.

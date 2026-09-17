@@ -131,3 +131,55 @@ def test_load_noise_model_reads_the_committed_law():
     assert sig[1] > sig[0], "the law grows with level"
     with pytest.raises(ValueError, match="matched"):
         load_noise_model(csv_path, role="p_sweep")
+
+
+def test_the_sokal_time_reads_one_on_white_noise_and_the_ar1_value_on_correlated_noise():
+    """F36: the estimator that whitens a fit is measured on residuals; white noise reads one within
+    a tenth at twenty thousand samples, and an AR(1) series at rho = 0.5 reads (1 + rho)/(1 - rho) = 3
+    within fifteen per cent, with the window past the correlation's own length."""
+    import numpy as np
+    from rb5s6s.noise import integrated_time_sokal, effective_tau
+    rng = np.random.default_rng(3)
+    w = integrated_time_sokal(rng.standard_normal(20000))
+    assert abs(w["tau"] - 1.0) < 0.1 and w["window"] <= 8, w
+    e = rng.standard_normal(40000); a = np.empty_like(e); a[0] = e[0]
+    for i in range(1, e.size):
+        a[i] = 0.5 * a[i - 1] + e[i]
+    c = integrated_time_sokal(a)
+    assert abs(c["tau"] - 3.0) / 3.0 < 0.15 and c["window"] >= 10, c
+    # the seam: the residual time when the table has it, the raw time otherwise, floored at one
+    assert effective_tau({"tau_int": 3.8}, {"k": 1.2}, "k") == 1.2
+    assert effective_tau({"tau_int": 3.8}, {"k": 0.9}, "k") == 1.0
+    assert effective_tau({"tau_int": 3.8}, {}, "k") == 3.8
+
+
+def test_every_whitening_site_reads_the_effective_time_and_the_loader_attaches_it():
+    """F36: sixteen producers divided their residuals by the raw-segment tau_int, which the record's
+    own measurement says is the line's curvature; the loader now attaches `tau_eff` (the post-fit
+    residuals' own time, floored at one) and every whitening site reads it. The guard is a text
+    scan of the sites that were repaired, so a site that regresses to the raw column goes red."""
+    import re
+    from pathlib import Path
+    from rb5s6s import noise as N
+    root = Path(__file__).resolve().parents[1]
+    law = N.load_noise_model(root / "results" / "noise_model.csv", role="p_sweep", peak="4192", temperature_C=130.0, power_mW=225.0)
+    assert "tau_eff" in law and law["tau_eff"] >= 1.0 and law["tau_eff"] <= law["tau_int"] + 1e-9
+    raw = re.compile(r"tau\s*=\s*max\(\s*law(\.get\(\s*\"tau_int\"|\[\"tau_int\"\])")
+    offenders = []
+    for rel in ("rb5s6s/linefit.py", "scripts/run_far_wing_level.py", "scripts/run_full_dataset_fit.py",
+                "scripts/run_global_dataset_fit.py", "scripts/run_stark_joint.py", "scripts/run_ultra_joint.py"):
+        for i, line in enumerate((root / rel).read_text(encoding="utf-8").splitlines(), 1):
+            if raw.search(line):
+                offenders.append(f"{rel}:{i}")
+    assert not offenders, f"whitening by the raw tau_int again: {offenders}"
+
+
+def test_the_condition_key_reads_a_blank_power_as_the_temperature_arm():
+    """F43: the manifest's temperature-arm rows carry no power; an unresolved key sent that arm's
+    fits back to the raw tau. A blank power with a finite temperature is 225 mW; a blank
+    temperature is no condition."""
+    from rb5s6s.noise import condition_key
+    assert condition_key("4154", "110", "") == "4154_110C_225mW"
+    assert condition_key("4154", "110", None) == "4154_110C_225mW"
+    assert condition_key("4154", 130.0, 25) == "4154_130C_25mW"
+    assert condition_key("4154", "", 225) is None

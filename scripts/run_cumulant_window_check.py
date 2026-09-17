@@ -10,7 +10,7 @@ and every prose surface quotes these rows instead of a hand computation.
 
 WHAT THE RATIO IS. kappa_3 of the observed line, windowed at +/-W about the
 window's own mean (fixed point, twenty passes), divided by the ramp's own
-kappa_3 = +S0^3/135. One at no truncation loss; below one when the window
+kappa_3, -S0^3/135 on the blue side (lineshape.ramp_kappa3). One at no truncation loss; below one when the window
 clips the composite's tails; it can exceed one when a kernel is comparable
 to the window, so the suppression is truncation-limited, not guaranteed.
 
@@ -30,9 +30,11 @@ sys.path.insert(0, str(ROOT / "scripts"))
 
 from _producer_lock import take_producer_lock                     # noqa: E402
 from rb5s6s import config as C                                    # noqa: E402
+from rb5s6s.stark import kappa_pred_per_watt  # noqa: E402  (SSOT: one predicted coefficient)
 from rb5s6s._compat import trapezoid as tz                        # noqa: E402
 from rb5s6s.constants import GAMMA_NAT_HZ                         # noqa: E402
-from rb5s6s.lineshape import model_grid_step_mhz, model_profile, stark_shift_S0_mhz   # noqa: E402
+from rb5s6s.lineshape import model_grid_step_mhz, model_profile   # noqa: E402
+from rb5s6s.lineshape import RAMP_SIDE, ramp_kappa3, ramp_mean_over_s0  # noqa: E402  (O27: the ramp's side, stated once)
 
 OUT = C.RESULTS_DIR / "cumulant_window_check.csv"
 
@@ -42,12 +44,12 @@ S0 = 3.0                 # MHz, the REFERENCE shift; the ratio depends on the sh
                          # archive's shift read 0.478 under-resolved and 0.498 resolved)
 W = 8.0                  # MHz, window half-width about the self-centre
 SIGMA_LASER_FWHM = 1.6   # MHz FWHM (the twin's own laser kernel)
-# MHz FWHM at the archive's 130 C from the measured waist, the value
+# MHz FWHM at the archive's 130 C from the waist convention, the value
 # twin_realism.csv carries as TRUTH; the config placeholder is the same function
 # at 110 C and the archive's line is not at 110 C. Never a literal.
 TRANSIT_FWHM = C.transit_fwhm_from_w0(C.W0_MEASURED_M, 130.0)
 GAMMAS = (0.2, 0.55, 1.1)   # MHz, gamma_coll grid spanning the record's range
-S0_2025 = round(float(stark_shift_S0_mhz(0.225, C.W0_MEASURED_M, rho=C.RHO_RETRO)), 3)   # the 2025 campaign's shift, sourced (0.364)
+S0_2025 = round(float(kappa_pred_per_watt(C.W0_MEASURED_M, C.RHO_RETRO) * 0.225), 3)   # the 2025 campaign's shift, sourced from the one predicted coefficient
 S0_GRID = (S0_2025, 1.0, 3.0)  # MHz: the archive's shift, one, the reference
 # 160001 points and twenty fixed-point passes. At four passes the gc=0.55 ratio
 # reads 0.60 and RISES with gamma at 80001 points and at 160001 alike, so that
@@ -128,13 +130,17 @@ def _line(gc: float, full: bool, s0: float = S0, steps: float = GRID_STEPS,
     h = (GAMMA_NAT_HZ / 1e6 + gc) / 2.0
     lor = (h / np.pi) / (amb ** 2 + h ** 2)
     ds = amb[1] - amb[0]
-    ramp = np.where((amb >= -s0) & (amb <= 0.0), -2.0 * amb / s0 ** 2, 0.0)
+    # O27 (2026-09-17): the ramp is built on the library's own side, read from its benchmark
+    # mean, so this textbook variant and the model_profile variant cannot sit on opposite sides
+    # again, which they did for the hours between the kernel's flip and this line's.
+    lo, hi = (0.0, s0) if RAMP_SIDE > 0 else (-s0, 0.0)
+    ramp = np.where((amb >= lo) & (amb <= hi), 2.0 * np.abs(amb) / s0 ** 2, 0.0)
     return np.convolve(lor, ramp, mode="same") * ds
 
 
 def main() -> int:
     take_producer_lock("run_cumulant_window_check")
-    ramp = S0 ** 3 / 135.0
+    ramp = ramp_kappa3(S0)
     gnat = GAMMA_NAT_HZ / 1e6
     unrounded: dict[tuple[str, str], float] = {}   # the self-check compares these, not the printed cells
     rows = []
@@ -175,10 +181,13 @@ def main() -> int:
         cells = s0 / dnu_model
         if cells < MIN_RAMP_CELLS:
             raise SystemExit(f"survival_vs_S0 at {s0}: the ramp spans {cells:.1f} model cells, below {MIN_RAMP_CELLS}; not written")
-        r = _selfcentred_k3(_line(0.55, True, s0), W) / (s0 ** 3 / 135.0)
+        r = _selfcentred_k3(_line(0.55, True, s0), W) / ramp_kappa3(s0)
         survival_at[s0] = r
-        unrounded[("survival_vs_S0", f"S0_{s0:g}")] = r
-        rows.append(["survival_vs_S0", f"S0_{s0:g}", f"{r:.3f}", "",
+        # THE KEY NAMES THE SHIFT'S ROLE, never its value: the campaign row was keyed S0_0.364 and then
+        # S0_0.348, so every bound reference to it dangled each time the prediction moved (2026-09-17)
+        _key = "S0_campaign_2025" if s0 == S0_2025 else f"S0_{s0:g}"
+        unrounded[("survival_vs_S0", _key)] = r
+        rows.append(["survival_vs_S0", _key, f"{r:.3f}", "",
                      f"full-line ratio at gamma_coll 0.55 MHz, same kernels and window, the ramp on "
                      f"{cells:.0f} model grid cells (resolve_shift, {GRID_STEPS:g} steps per kernel and per shift)"])
     # the two smallest shifts must agree: the ratio carries the fixed window's
@@ -197,7 +206,7 @@ def main() -> int:
     if gap > 0.01:
         raise SystemExit(f"survival at S0 {s_lo:g} and {s_mid:g} differ by {gap*100:.1f} per cent: the ramp is not resolved; not written")
     # the first-cumulant pull's own window effect, for the 03 clause: the
-    # windowed mean pull against the exact -2 S0/3, SIGNED (positive is an
+    # windowed mean pull against the exact signed 2 S0/3 on the ramp's side (O27), SIGNED (positive is an
     # excess), on the resampled window with the same twenty fixed-point passes
     # as the third cumulant. Four masked passes gave 0.104 as a shortfall and
     # the sign was hidden by abs(): an unconverged fixed point read as a
@@ -206,11 +215,11 @@ def main() -> int:
                       transit_fwhm=TRANSIT_FWHM, s0=S0, resolve_shift=True,
                       grid_steps_per_kernel=GRID_STEPS)
     c = _selfcentred_mean(y, W)
-    excess = 100 * (c / (-2 * S0 / 3) - 1)
+    excess = 100 * (c / (ramp_mean_over_s0() * S0) - 1)
     unrounded[("kappa1_window_excess_pct", "gc0.55")] = excess
     rows.append(["kappa1_window_excess_pct", "gc0.55",
                  f"{excess:.3f}", "",
-                 "per cent EXCESS of the windowed mean pull over the exact -2 S0/3 "
+                 "per cent EXCESS of the windowed mean pull over the exact 2 S0/3 on the ramp's side "
                  "(a negative value would be a shortfall), same window and kernels "
                  "as above, twenty fixed-point passes on the resampled window, "
                  "agreeing at twice the grid and passes to half the last digit. "
@@ -232,19 +241,19 @@ def main() -> int:
         if not r[0].startswith(("survival_", "kappa1_")):
             continue
         if r[0] == "survival_vs_S0":
-            s0v = float(r[1].split("_")[1])
+            s0v = S0_2025 if r[1] == "S0_campaign_2025" else float(r[1].split("_")[1])
             v2 = _selfcentred_k3(_line(0.55, True, s0v, 2 * GRID_STEPS, COARSE), W,
-                                 2 * M_WINDOW - 1, 40, COARSE) / (s0v ** 3 / 135.0)
+                                 2 * M_WINDOW - 1, 40, COARSE) / ramp_kappa3(s0v)
         elif r[0] == "kappa1_window_excess_pct":
             y2 = model_profile(COARSE, gamma_coll=0.55, sigma_laser_fwhm=SIGMA_LASER_FWHM,
                                transit_fwhm=TRANSIT_FWHM, s0=S0, resolve_shift=True,
                                grid_steps_per_kernel=2 * GRID_STEPS)
-            v2 = 100 * (_selfcentred_mean(y2, W, 2 * M_WINDOW - 1, 40, COARSE) / (-2 * S0 / 3) - 1)
+            v2 = 100 * (_selfcentred_mean(y2, W, 2 * M_WINDOW - 1, 40, COARSE) / (ramp_mean_over_s0() * S0) - 1)
         else:
             gcv = float(r[1][2:])
             full = r[0].endswith("full_line")
             v2 = _selfcentred_k3(_line(gcv, full, S0, 2 * GRID_STEPS, COARSE), W,
-                                 2 * M_WINDOW - 1, 40, COARSE) / (S0 ** 3 / 135.0)
+                                 2 * M_WINDOW - 1, 40, COARSE) / ramp_kappa3(S0)
         v1 = unrounded[(r[0], r[1])]
         if abs(v2 - v1) > 5e-4:   # half the last printed digit, unrounded on both sides
             raise SystemExit(f"UNCONVERGED: {r[0]}/{r[1]} moves "

@@ -165,8 +165,7 @@ def synthetic_traces(gamma_coll: float, sigma_laser: float, transit_fwhm: float,
     skewness of about 1e-16. That matters more than it sounds: the AC-Stark
     ramp is the only asymmetric term in the model, and the asymmetry it puts
     into the line is the observable this record is built on. Its third
-    cumulant is +S0^3/135 (sign per docs/methods/03 and stark_ramp's own
-    axis), and the statement of what a windowed readout keeps of it was
+    cumulant is -S0^3/135 on the blue side (lineshape.RAMP_SIDE, docs/methods/03), and the statement of what a windowed readout keeps of it was
     replaced (the account is in the private correction record): the Lorentzian's even
     cumulants diverge, its odd moments cancel under a window symmetric about
     the line's own centre, so a SELF-CENTRED windowed kappa_3 keeps a
@@ -205,10 +204,9 @@ def synthetic_traces(gamma_coll: float, sigma_laser: float, transit_fwhm: float,
     # kernels would be a statement about a world the question is not about.
     # The same argument is why s0 reaches the generator, one term later.
     if s0 > 0.0:
-        # model_profile convolves lineshape.stark_ramp, so the -2/3 S0 pull and
+        # model_profile convolves lineshape.stark_ramp, so the 2/3 S0 pull and
         # the skew both come from the library rather than from a literal here,
-        # and the ramp's coded SIDE is inherited rather than re-chosen (it is
-        # an open question: tests/test_ramp_side_matches_the_polarizability).
+        # and the ramp's coded SIDE (lineshape.RAMP_SIDE) is inherited rather than re-chosen.
         shape = model_profile(nu - centre_mhz, gamma_coll=gamma_coll,
                               sigma_laser_fwhm=sigma_laser,
                               transit_fwhm=transit_fwhm, s0=s0,
@@ -315,7 +313,7 @@ def build_world_trace(power_w: float, kappa: float, t_c: float,
     makes the internal convolution grid resolve the light shift as well as
     the kernels: left off, a shift well below the kernel widths sits inside
     one grid cell, which overstates the third cumulant by 68 per cent at
-    0.18 MHz and misreads it by a few per cent at 0.364, while at 1.0 MHz
+    0.18 MHz and misreads it by a few per cent at the archive's shift of about 0.35, while at 1.0 MHz
     and above the two settings agree to every printed digit. Set it for any
     small-shift moment study. ``tooth_of`` maps a position key to the physical
     peak it is a tooth of, for an EOM comb; None is the identity.
@@ -360,7 +358,7 @@ def build_world_trace(power_w: float, kappa: float, t_c: float,
         profile = stark_ramp
     else:
         if fringe_density is None:
-            _xg = np.linspace(-1.0, 0.0, 4001)
+            _xg = np.linspace(0.0, 1.0, 4001)      # BLUE support (O27)
             _gx = local_ramp_density(_xg)
         else:
             _xg, _gx = fringe_density

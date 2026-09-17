@@ -2,23 +2,12 @@
 
 *[wiki index](README.md) · technique*
 
-**The question.** What separates an absolute frequency reference from a
-differential one, and why the accuracy ordering runs atoms first, comb
-second, wavemeter last.
-**Takes.** What a phase-modulated sideband comb is, from
-[EOM sidebands](eom-sidebands.md), the differential reference compared
-here against a wavemeter.
-**Gives.** The ordering of reference types by what a systematic error does
-under a comparison, four calibration practices for a nonlinear piezo scan,
-and where this repository's wavemeter numbers sit outside the frequency
-axis.
-**Skip if.** The comb's mechanics without the comparison to a wavemeter:
-covered by [EOM sidebands](eom-sidebands.md).
+What separates an absolute frequency reference from a differential one, and why the accuracy ordering runs atoms first, comb second, wavemeter last. This page builds on what a phase-modulated sideband comb is, from [EOM sidebands](eom-sidebands.md), the differential reference compared here against a wavemeter and sets out the ordering of reference types by what a systematic error does under a comparison, four calibration practices for a nonlinear piezo scan, and where this repository's wavemeter numbers sit outside the frequency axis. Not covered here: the comb's mechanics without the comparison to a wavemeter: covered by [EOM sidebands](eom-sidebands.md).
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
 > defines every term and symbol used anywhere in this repository.
 
-## What it is
+## Definition
 
 A spectroscopy trace has no frequency axis attached: what gets recorded
 is a detector signal against a ramp voltage or a time, and converting
@@ -52,7 +41,7 @@ that:
 - an [Allan deviation](allan-deviation.md) of line positions across many
   sweeps, turning repeatability into a number
 
-## What problem it solves
+## The problem it addresses
 
 A plotted trace always has a frequency axis. The question is whether it
 is the right one: whether a width or shift in volts or milliseconds
@@ -62,7 +51,7 @@ knowing where a sweep starts and ends says nothing about how it moved in
 between. The differential references answer it, leaving the wavemeter to
 fix the offset a differential measurement cannot see on its own.
 
-## Where this repository uses it
+## Application in this repository
 
 No committed frequency axis here comes from a wavemeter: every width,
 shift and bound is built on the [EOM comb](eom-sidebands.md), the
@@ -73,15 +62,15 @@ known to a couple of kilohertz, established by
 [Ayachitula and co-workers](../lit/ayachitula2024.md), carried in
 `A_6S_RB87_HZ` and `A_6S_RB85_HZ` in `rb5s6s/constants.py`.
 
-**Each ruler is a difference, so it has two ends, and the other one is an
-atomic constant.** A pair's separation is the ground-state hyperfine splitting
+Each ruler is a difference, so it has two ends, and the other one is an
+atomic constant. A pair's separation is the ground-state hyperfine splitting
 minus the excited-state splitting for that isotope. The ground-state side
 comes from [Steck's D-line data](../lit/steck_rb.md), held for both isotopes,
 whose magnetic dipole constants multiplied by `(I + 1/2)` give the two 5S
 splittings the record carries to the digit. Subtracting the 6S splittings
 above reproduces both ruler separations to better than a kilohertz.
 
-**So the axis is sourced end to end**, a sub-hertz atomic constant on one side
+So the axis is sourced end to end, a sub-hertz atomic constant on one side
 and a kilohertz-level measurement on the other, and the "couple of kilohertz"
 above is the excited-state measurement's error and nothing else. That is why
 the axis is an anchor and not a fit: neither end of it comes from this
@@ -159,7 +148,7 @@ excess, so the result is a limit, the non-repeating excursion below
 fractional, set by the tooth-centre precision of about 96 kHz, not the
 laser.
 
-**Periodic disturbances alias into the fit.** A disturbance near a
+Periodic disturbances alias into the fit. A disturbance near a
 multiple of the tooth-crossing rate aliases to a low frequency the fit
 absorbs into its offset and slope: a 60 Hz mains line against a 6.8 Hz
 tooth rate aliases to about 1.2 Hz, so a periodogram of the residuals
@@ -177,7 +166,7 @@ on the model form, not only the axis. See
 [the Allan deviation](allan-deviation.md) for how the width channel and
 the reproducibility statistic use it.
 
-## What can go wrong
+## Failure modes
 
 The first failure treats a single wavemeter reading as though it
 certified an entire sweep, not the one point it was taken from.
@@ -205,7 +194,7 @@ own anchors. A comb also reaches only a couple of islands of teeth per
 line, so a wide span needs the ramp channel and atomic separations to
 carry the scale between them.
 
-## How linear the axis must be, for the moment channel
+## Axis linearity required by the moment channel
 
 This page's calibration practices say how to correct a nonlinear scan. This
 section says how well, and the tolerance is far tighter than a centre fit
@@ -220,9 +209,9 @@ composed line the campaign forecasts:
 
 | configuration | window | the light shift's own third cumulant | rate variation that fakes it |
 |---|---|---|---|
-| 2025, 64 microns | 6 MHz | [0.00010447](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:k3_light_shift") MHz cubed | [0.00196](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:rate_variation_tolerance") per cent |
-| campaign, 40 microns, the tightest licensed | 6 MHz | [0.00069510](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:k3_light_shift") MHz cubed | [0.0131](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:rate_variation_tolerance") per cent |
-| campaign, 16 microns, outside the model's licence | 12 MHz | [-0.666476](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_16um:k3_light_shift") MHz cubed | [1.44](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_16um:rate_variation_tolerance") per cent |
+| 2025, 64 microns | 6 MHz | [-0.00010447](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:k3_light_shift") MHz cubed | [0.00196](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:rate_variation_tolerance") per cent |
+| campaign, 40 microns, the tightest licensed | 6 MHz | [-0.00069510](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:k3_light_shift") MHz cubed | [0.0131](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:rate_variation_tolerance") per cent |
+| campaign, 16 microns, outside the model's licence | 12 MHz | [0.666476](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_16um:k3_light_shift") MHz cubed | [1.44](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_16um:rate_variation_tolerance") per cent |
 
 Each tolerance carries a band: the producer scans the collisional and laser
 width bands, the waist band paired with the retro-ratio error, and the two
@@ -233,13 +222,13 @@ largest excursion from the tolerance. That is
 and [0.48](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_16um:rate_variation_tolerance_err")
 per cent for the three rows above.
 
-**A bow of two parts in a thousand of the actuator's travel already reaches
-two parts in a hundred thousand across a 6 MHz window**, so the 2025 third
+A bow of two parts in a thousand of the actuator's travel already reaches
+two parts in a hundred thousand across a 6 MHz window, so the 2025 third
 cumulant was unavailable on its frequency axis whatever its counts had been. The
 campaign's licensed waist asks for a bow under about two per cent, which is a
 different matter and a measurable one.
 
-**The nonlinearity is the actuator's and not the scan's**, which the first
+The nonlinearity is the actuator's and not the scan's, which the first
 version of this section had backwards. A piezo's bow is a fraction of its
 travel, so the same actuator scanned over a narrow sub-span at the same
 position has the same rate variation across the same window: the producer's
@@ -257,8 +246,8 @@ a 6 GHz travel a bow of two per cent gives [0.0240](../../results/sweep_linearit
 moment channel at the campaign's licensed waist needs an actuator linear to
 about two per cent of its travel, or the bow taken out from the anchors.
 
-**A short-scale departure does not dilute, and above a small amplitude it
-reverses the sweep.** A ripple of N cycles across the travel replaces the
+A short-scale departure does not dilute, and above a small amplitude it
+reverses the sweep. A ripple of N cycles across the travel replaces the
 twelve by the square of two pi N. At fifty cycles a tenth of a per cent gives
 [10.0664](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:eps_ripple50_eta0.1_p95_over_phase") per cent, and above about a third of a per cent the
 sweep runs backwards inside the window and no rate variation exists. The cubic
@@ -283,6 +272,7 @@ import numpy as np
 # A monotonic nonlinear voltage-to-frequency map: a linear response, a
 # cubic bow from the actuator, and a small ripple no low-order polynomial
 # captures exactly.
+
 def true_map(v):
     return 11000.0 * v + 900.0 * v ** 3 + 50.0 * np.sin(6.0 * v)
 
@@ -291,14 +281,17 @@ f_true = true_map(v_dense)
 
 # A handful of anchors, the way section 10c.3a pins the axis: known
 # frequencies, atomic separations or comb islands, at known ramp voltages.
+
 v_anchor = np.array([-1.0, -0.5, 0.0, 0.5, 1.0])
 f_anchor = true_map(v_anchor)
 
 # The naive calibration: one straight line through the two endpoints.
+
 linear_coef = np.polyfit(v_anchor[[0, -1]], f_anchor[[0, -1]], 1)
 f_linear = np.polyval(linear_coef, v_dense)
 
 # The anchored calibration: a low-order polynomial through all five anchors.
+
 poly_coef = np.polyfit(v_anchor, f_anchor, 3)
 f_poly = np.polyval(poly_coef, v_dense)
 
@@ -323,8 +316,7 @@ misleading a reader.
 - [Wikipedia: Wavemeter](https://en.wikipedia.org/wiki/Wavemeter), a short
   orientation on the instrument.
 
-## See also
-
+## Related pages
 - [EOM sidebands](eom-sidebands.md), the comb mechanics treated here as
   the differential reference.
 - [Allan deviation](allan-deviation.md), the reproducibility statistic

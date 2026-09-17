@@ -19,7 +19,7 @@ Coverage of `kappa_ub95_profile` in the over-dispersed arm, target 0.95:
 |---|---|---|---|
 | 0.00, the boundary the construction exists for | 0 | **1.0000** | 0 |
 | 1.15, the joint C3f bound | 0.259 | **1.0000** | 0 |
-| 2.81, the width-only C3d bound | 0.632 | **0.9954** | 0.0027 |
+| 2.81, the width-only C3d bound | 0.632 | **0.9954** | 0.0027 <!-- other-quantity: the S0 bound as committed when this record was written, since moved by the sweep's regeneration --> |
 | 4.00 | 0.900 | 0.9692 | 0.0068 |
 | 5.50 | 1.238 | **0.9354** | 0.0096 |
 | 7.00 | 1.575 | **0.9338** | 0.0097 |
@@ -122,7 +122,7 @@ different parameter, which no per-session nuisance in that fit absorbs.
 
 The committed `results/stark_joint.csv` shows part of the exposure and cannot
 show the rest. Among rows that are the same construction, the pooled kappa bound
-of 1.147 becomes 1.626 with peak 4192 dropped, which removes the entire pilot, so
+of 1.147 becomes [1.626](../../results/stark_joint.csv "ref:stark_joint:kappa_ub95_drop4192:robustness") with peak 4192 dropped, which removes the entire pilot, so
 a leave-one-peak-out alone moves it by a factor of 1.42.
 
 **The spread cannot be widened using `kappa_ub95_camponly`.** Its value is the

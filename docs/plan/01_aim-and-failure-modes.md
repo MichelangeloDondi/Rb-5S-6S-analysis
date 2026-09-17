@@ -34,8 +34,8 @@ record stands unchanged.
 
 ## 2. The objections a referee would raise
 
-**"Orson (2021) already published nulls on this line. Your bounds say 'we also
-saw nothing', slower."** True as pure numbers: this record's bounds are
+"Orson (2021) already published nulls on this line. Your bounds say 'we also
+saw nothing', slower." True as pure numbers: this record's bounds are
 confirmatory of Orson's nulls, same direction, tighter. The increment is by
 channel. The method (a closed-form two-photon ramp lineshape law plus a
 reference-free moment readout) is not pursued elsewhere. The S₀ bound
@@ -47,11 +47,13 @@ sits [18](../lit/orson2021.md "ref:lit:orson2021:null_over_own_prediction")
 times above the shift its own Δα predicts, so it tests neither size nor
 sign, where this bound sits below the shift predicted at its own
 conditions) was extracted from shape alone
-under a drifting lock. And a fixed-lock session would give the first measured
+under a drifting lock.
+
+And a fixed-lock session would give the first measured
 light shift on this line, plus the collisional self-shift: positive
 observables, not sharper nulls.
 
-**"The lock drifted MHz-scale all night in 2025. What stops a repeat?"** The
+"The lock drifted MHz-scale all night in 2025. What stops a repeat?" The
 root cause is cavity-lock dropouts during the ~2 h etalon thermal transient,
 with held-lock drift only ~0.02 MHz/min ([`APPARATUS.md`](../APPARATUS.md) §6).
 The etalon discipline in §7h is the procedural fix, and what remains asserted
@@ -77,6 +79,7 @@ construction, so a single block's centre cannot beat what the averaged shape
 bounds already deliver. Averaging reaches it only in numbers: about 24 blocks
 to bring 0.62 MHz below the joint-fit pull and about 4 to bring it below the
 width-only one, and only if the residual is independent from block to block.
+
 The floor is what a fixed lock has to beat, and it is the number the go/no-go
 of stage 0 should be read against, not the 0.19 MHz/min straight line the same
 record was once read as.
@@ -97,39 +100,43 @@ their difference:
 [99.8](../../results/window_attribution.csv "ref:window_attribution:window_attributed_pct:peak_power")
 per cent of the steps' mean square is the window setting, so line offsets
 are meaningful only within one scope-knob epoch, and shapes survive where
-centres do not. The held-lock drift is bounded at order 0.02 MHz/min on the
+centres do not.
+
+The held-lock drift is bounded at order 0.02 MHz/min on the
 laser axis with the sign undetermined. Bottom: what each way of running the
 measurement leaves on the light shift, in units of the predicted shift, with
 measured values filled and forecasts open. As taken, the free drift leaves
-[3.48](../../results/centre_fisher.csv "ref:centre_fisher:sigma_amplitude:linear_per_epoch").
+[3.64](../../results/centre_fisher.csv "ref:centre_fisher:sigma_amplitude:linear_per_epoch").
 Re-ordering the powers through the epoch is forecast to leave
-[0.48](../../results/centre_fisher.csv "ref:centre_fisher:sigma_amplitude_forecast:linear_drift_cycled"),
+[0.51](../../results/centre_fisher.csv "ref:centre_fisher:sigma_amplitude_forecast:linear_drift_cycled"),
 a factor of two from a lock whose drift is known. The 2025 lock
 supported the shape-only bounds reported here, and a fixed lock of the class
 already demonstrated on this transition would make the centre channel
 usable, converting the bounds into the measured pull, the collisional
 self-shift, and a 3–12σ β_self.*
 
-**"Drift does not stay out of the shape. It skews the line within a scan, and
-skew is your observable."** Right in principle, answered by timescale. A scan
+"Drift does not stay out of the shape. It skews the line within a scan, and
+skew is your observable." Right in principle, answered by timescale. A scan
 is ~1 s, and even the drift envelope is ~0.017 MHz/s, so within-scan drift is
 ~0.01 MHz against a ~5.25 MHz line (`results/power_sweep.csv`), and each block
 carries its own EOM ruler. Drift acts between blocks, which is exactly why
 β_self is a bound today. The closure test (inject a within-scan ramp, confirm
 unbiased moments) is committed: `tests/test_intrascan_drift.py`.
 
-**"A Δα bracket that wide discriminates nothing."** Partly answered by the
+"A Δα bracket that wide discriminates nothing." Partly answered by the
 joint three-session bound: S₀(225 mW) < 0.26 MHz sits below the predicted
-shift at the accepted geometry. Two files carry that prediction and they
-disagree: `results/stark_sweep.csv` has 0.360 at the polarizability this
-record now pins, while `results/stark_joint.csv` still has 0.348 from
-before that decision, because its five-hour producer has not re-run, so the record constrains the (Δα, intensity)
+shift at the accepted geometry. Two files carry that prediction:
+`results/stark_sweep.csv` holds the current one,
+[0.348](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred:shared") MHz, at the polarizability this record
+pins with the aperture's on-axis factor, while `results/stark_joint.csv` holds a cell computed before that decision
+which matches it to three digits by coincidence, and its bound was taken on the red-sided ramp the ruling of
+2026-09-17 replaced, with the refit running. So the record constrains the (Δα, intensity)
 pair. What it cannot do is split the pair: either the intensity or |Δα| sits
 modestly below the values of record, and the most conservative data subset
 reaches the prediction itself and needs no headroom at all. A beam-profile
 measurement decides which. The measured coefficient needs the session.
 
-**"That bound is looser than you think."** Correct, and by a measured factor
+"That bound is looser than you think." Correct, and by a measured factor
 rather than by argument. Two effects broaden the line with the ramp's own
 square-of-power signature and are absent from the forward model behind both
 bounds: atomic saturation, and hyperfine pumping through the real 5P cascade,
@@ -143,7 +150,9 @@ relieve it. Neither number moves in the record, because the injected law is the
 two-level homogeneous form used with a two-photon Rabi frequency, which is
 standard practice and not a derivation for this level structure. For this plan
 the consequence is a session requirement rather than a caveat, and it points at
-the same item this plan already ranks first. The three terms are degenerate in
+the same item this plan already ranks first.
+
+The three terms are degenerate in
 every knob the width channel has: all three grow as the square of the power,
 and all three grow as the inverse fourth power of the waist, the ramp because
 its increment goes as the square of a shift that goes as the inverse square,
@@ -155,22 +164,24 @@ lock. And the line INDEX, found 2026-08-10: the ramp and the saturation are
 identical on all four lines while the pumping is not, since its branching runs
 0.223 to 0.372 across the four (a two-step cascade product, not a degeneracy
 weight, because the scalar two-photon operator leaves 6S in one hyperfine
-level). That is a lever of 1.67 on the pumping term, 3.1 kHz of width at the
+level).
+
+That is a lever of 1.67 on the pumping term, 3.1 kHz of width at the
 committed $S_0$ bound and 7.8 kHz at the predicted one, against an
 88 kHz single-block scatter, so it is real and this record cannot spend it. A session that controls the block scatter gets a second
 separation without needing a lock.
 Until then the width channel yields a bound with a known direction of error,
 which is what it is quoted as.
 
-**"Your own recompute flips the sign of Δα against the published computation.
-Bug?"** Not a bug. The recompute is validated on anchors it does not fit (the
+"Your own recompute flips the sign of Δα against the published computation.
+Bug?" Not a bug. The recompute is validated on anchors it does not fit (the
 measured 5S tune-out to ~2 pm, the static polarizabilities) and agrees with
 Orson's magnitude within 5%. The sign disagreement has an identified mechanism,
 every result in this record is sign-immune (bounds and the asymmetry null use |Δα|),
 and the item is flagged for external theory adjudication
 ([`THEORY_NOTE.md`](../THEORY_NOTE.md) §5). It blocks nothing.
 
-**"Put a student on this and it strands them with un-analysed shots."** The
+"Put a student on this and it strands them with un-analysed shots." The
 handover is a project commitment and belongs in a direct conversation. What the
 document can put against that objection: the pipeline is built to a handover
 standard with a documented ingest path, it ingests session data unchanged, and the
@@ -178,7 +189,7 @@ smallest tranche has a defined standalone deliverable, so a truncated session
 yields a finished result rather than orphaned data. An adaptation guide
 ([`ADAPTING.md`](../ADAPTING.md)) names the seams for other lines and species.
 
-**"The numbers keep moving. How do I know they are frozen?"** Every headline is
+"The numbers keep moving. How do I know they are frozen?" Every headline is
 generated from the committed CSVs, a registry test forces every quoted copy to
 match its source, and releases are tagged. The audit report logs every revision
 with its cause ([`PREREGISTRATION_RESULTS.md`](../PREREGISTRATION_RESULTS.md)).

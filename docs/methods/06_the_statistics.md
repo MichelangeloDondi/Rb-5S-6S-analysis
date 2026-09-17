@@ -1,18 +1,9 @@
 *Chapter 6 of 8 · [methods index](../methods.md)*
 
-**The question.** What makes a width taken from this dataset an honest number
-rather than a confident one?
-**Takes.** The lineshape, AC-Stark and composite-model chapters, whose
-parameters are the ones being fitted.
-**Gives.** The pre-registered rule that decides measurement against bound, and
-the error budget every result in the next chapter carries.
-**Skip if.** You are reading for the physics rather than the inference. This
-is the longest chapter in the set, and §4.5 alone carries the rule the
-headline results turn on.
+What makes a width taken from this dataset an honest number rather than a confident one? This chapter builds on the lineshape, AC-Stark and composite-model chapters, whose parameters are the ones being fitted and sets out the pre-registered rule that decides measurement against bound, and the error budget every result in the next chapter carries. For the physics rather than the inference, it is the wrong page. This is the longest chapter in the set, and §4.5 alone carries the rule the headline results turn on.
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
-> explains the measurement in six sentences, then defines every term
-> and symbol used anywhere in this repository.
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
+> defines every term and symbol used anywhere in this repository.
 
 ## 4a. The pipeline, end to end
 
@@ -44,7 +35,7 @@ a reader has least time for.
 
 A fit minimizes $\chi^2=\sum_i \big(d_i-m_i\big)^2/\sigma_i^2$. The correct
 $\sigma_i$ is the real per-sample noise, which here is *not* constant: PMT shot
-noise grows with signal. We measured (module M1, §4.4)
+noise grows with signal. The measurement (module M1, §4.4) gives
 
 $$\sigma^2(V)=a^2+bV$$
 
@@ -60,7 +51,7 @@ it sits.
 ### 4.2 Hierarchical fitting: share what physics shares, free what drifts
 
 Each condition has five back-to-back repeats of the *same* physical line, but
-the drifting 2025 laser moves the line center and the PMT gain wanders. So we
+the drifting 2025 laser moves the line center and the PMT gain wanders, so
 fit the repeats **jointly**, sharing the physics and freeing the nuisances:
 
 - **shared** across repeats: the lineshape parameters $\gamma_\text{coll}$,
@@ -77,12 +68,12 @@ Treating $\beta_\text{self}$ as $T$-independent here is an approximation.
 coefficient scaling for an $n=6$ potential, a rise of about 5% from 70 to
 130 °C, checked directly by refitting each peak's four raw widths with that
 scaling folded into the density axis. The result shifts $\chi^2$ by less than 0.4
-against a between-block scatter of 140–250 kHz, roughly an order of
+against a between-block scatter of 140–250 kHz, roughly an order of <!-- other-quantity: a between-block scatter in kilohertz, not the dilute-gas margin of docs/methods/02 -->
 magnitude larger than the predicted effect, so today's dataset has no power
 to test the exponent. The assumption of a flat $\beta_\text{self}$ is unresolved,
 not confirmed.
 
-**The full hierarchy** (`fit_global()`, module M4b) fits *all* peaks and
+The full hierarchy (`fit_global()`, module M4b) fits *all* peaks and
 temperatures at once, sharing each parameter at the level the physics licenses
 and the choice of level is where the physics really enters:
 
@@ -95,7 +86,7 @@ and the choice of level is where the physics really enters:
   detection. See §4.5. For a stable lock, global sharing becomes
   correct.)
 - $\beta_\text{self}$ is shared **per isotope**, not globally: collision
-  cross-sections need not be equal for ⁸⁵Rb and ⁸⁷Rb, so we *test*
+  cross-sections need not be equal for ⁸⁵Rb and ⁸⁷Rb, so the record *tests*
   $\beta_{85}$ vs $\beta_{87}$ rather than assume them equal.
 - the transit width is shared globally (same beam, same $\sqrt T$ law),
   amplitude, center, baseline stay per-trace.
@@ -105,7 +96,7 @@ arm *and* the four peaks pinning one $\sigma_\text{laser}(T)$, and it comes with
 a leave-one-condition-out check that no single block drives a shared
 parameter. *Code:* `fit_condition()`, `fit_beta_self()`, `fit_global()`.
 
-**The lever cross-check** (`lever_crosscheck_beta()`, module M4d) is the packaged form of
+The lever cross-check (`lever_crosscheck_beta()`, module M4d) is the packaged form of
 this hierarchy, the value and the *full error budget* the paper quotes. Its
 headline is the **internally-consistent 70/90/110 °C cooling sweep** (one
 session, monotonic cooling), fit across a model-form grid of transit cusp
@@ -137,7 +128,7 @@ results ledger (`docs/RESULTS.md`).
 
 Because of the Voigt near-degeneracy ([§2.4](02_the_lineshape.md)), a single-condition fit returns
 $\sigma_\text{laser}$ and $\gamma_\text{coll}$ with correlation
-$\approx-0.85$: individually shaky, sum robust. We therefore (i) always report
+$\approx-0.85$: individually shaky, sum robust. The record therefore (i) always reports
 the full covariance, and (ii) design $\beta_\text{self}$ to ride on the
 $\gamma_\text{coll}$ **difference** across densities, where the shared laser
 contribution cancels. Reported errors are additionally inflated by
@@ -149,7 +140,7 @@ different scales. *Code:* `fitutil.cov_from_jac()`.
 
 ### 4.4 The noise model and the second-difference estimator
 
-To measure $\sigma(V)$ without contamination from the signal's slope, we use
+To measure $\sigma(V)$ without contamination from the signal's slope, this record uses
 **second differences**,
 
 $$e_i=\frac{v_{i+1}-2v_i+v_{i-1}}{\sqrt{6}}$$
@@ -159,8 +150,10 @@ flank contributes nothing) while having unit response to white noise, so for
 white noise of standard deviation $\sigma$, $e_i$ also has standard deviation
 $\sigma$. Binning $e_i$ by local signal level and fitting the variance law
 $\sigma^2=a^2+bV$ then gives $a$ (a floor by construction of the model, though measured on this dataset it is neither a dark term nor a property of the drive alone: it rises with power with a logarithmic slope of [0.85](../../results/detection_budget.csv "ref:detection_budget:floor_power_scaling:p_sweep") and, at one power, differs across the four lines by up to a factor [2.97](../../results/detection_budget.csv "ref:detection_budget:floor_peak_spread:p_sweep_175mW"), and against the condition's own peak height its slope is [0.44](../../results/detection_budget.csv "ref:detection_budget:floor_vs_peak_height:p_sweep") pooled, running from [0.18](../../results/detection_budget.csv "ref:detection_budget:floor_vs_peak_height:p_sweep_25mW") to [0.795](../../results/detection_budget.csv "ref:detection_budget:floor_vs_peak_height:p_sweep_175mW") by rung, so no single term fits it and an electronic component is bounded rather than excluded) and $b$ (the
-shot-noise, "Fano", term). **The digitiser is not in this budget and the
-measurement is not quantisation-limited**: the committed files carry 11.86
+shot-noise, "Fano", term).
+
+The digitiser is not in this budget and the
+measurement is not quantisation-limited: the committed files carry 11.86
 effective bits across their own swing, so the step at the median peak is about
 150 microvolts and its standard deviation about 43, against a fitted floor
 between 1.3 and 15.5 millivolts. That is thirty to three hundred and sixty times
@@ -168,7 +161,7 @@ below the floor, a hundred-thousandth to a thousandth of the variance, and the
 moment study found the same from the other side, the instrument axis moving the
 fitted exponent least of the four it varied. Wing-noise **correlation** is measured separately
 by the blocking method and summarized as an integrated correlation time
-$\tau_\text{int}$, which inflates the fit errors as above. We found $b$ flat in
+$\tau_\text{int}$, which inflates the fit errors as above. The fitted $b$ is flat in
 $T$ (the trapping test of [§2.7](04_the_composite_model.md)) and $\tau_\text{int}$ small.
 
 **What $\tau_\text{int}$ measures is the line, not the noise**, and the
@@ -183,11 +176,13 @@ quadratic instead of a straight line takes the archive to one, a Lorentzian wing
 over a short segment being quadratic to that order. **The archive's noise is
 white at sample scale**, which this repository's own 2026-07-11 verification had
 already said in words and which nothing had reconciled with the committed
-column. The consequence runs toward caution and not against it: a fit that
+column.
+
+The consequence runs toward caution and not against it: a fit that
 divides its residuals by $\sqrt{\tau_\text{int}}$ widens every interval it
 reports for a correlation the post-fit residuals do not carry.
 
-**And every estimator of $\sigma$ here is a high-pass**, the one named *direct*
+And every estimator of $\sigma$ here is a high-pass, the one named *direct*
 included, being built from first differences. Second differences annihilate a
 linear trend, which is what they are for, and they also annihilate the slow
 components of the noise itself, so they under-read it whenever the noise is not
@@ -200,10 +195,10 @@ what they are for, and not as a measurement of the detection chain. *Code:*
 ### 4.5 Statistics versus systematics: the measurement-vs-bound rule
 
 A large shared fit can return a very small formal error that is
-nonetheless *wrong*. If you share $\sigma_\text{laser}$ across blocks recorded
+nonetheless *wrong*. Sharing $\sigma_\text{laser}$ across blocks recorded
 hours apart and the laser width actually drifted between them, the fit will
 absorb that drift into $\gamma_\text{coll}$ and report a confident collisional
-signal that is really instrument drift. Our guard is **pre-registered** and
+signal that is really instrument drift. This record's guard is **pre-registered** and
 model-independent:
 
 1. Collisional broadening *must* be monotonic in density. So take **raw**
@@ -225,7 +220,7 @@ No fitter is allowed near real data until it recovers *known* injected truths
 from campaign-like synthetics, checking bias, error coverage, and the
 degeneracy. Then every headline conclusion is re-derived by
 an **independent method** (for instance the sweep rate by FFT and autocorrelation, and the
-noise law by differencing sibling repeats). Several of our own bugs were caught
+noise law by differencing sibling repeats). Several of this record's own bugs were caught
 exactly this way, and the verification records live in the module docstrings.
 
 **What a same-model closure test does and does not establish.** Generating
@@ -247,7 +242,7 @@ to earn its place separately.
 ### 4.7 Choosing between competing lineshapes: the BIC
 
 To ask *which* model form the data prefer, a smooth Gaussian extra-broadening
-(a Voigt) against the cusped transit exponential (the Lehmann shape, [§2.5](02_the_lineshape.md)), we
+(a Voigt) against the cusped transit exponential (the Lehmann shape, [§2.5](02_the_lineshape.md)),
 compare the **Bayesian information criterion**, $\text{BIC}=\chi^2+k\ln N$,
 whose definition and reading scale are in
 [information criteria](../wiki/information-criteria.md).
@@ -256,7 +251,7 @@ Voigt and Lehmann have the *same* $k$, so their comparison is
 essentially which shape fits better. This is the tool for the Lehmann-cusp
 test, and [what we found](07_what_we_found.md) reports what it returned.
 
-### 4.7a Which criterion, and why the answer depends on $N$
+### 4.7a Choice of criterion and its dependence on $N$
 
 BIC is not the only way to penalise a parameter, and the choice is not a matter of
 taste here because $N$ varies by four orders of magnitude across the places
@@ -308,7 +303,9 @@ motivation. Every comparison quotes the numerical difference under every
 member. Where all agree, the selection is robust across the panel. Where they
 split, the ranking is convention-sensitive at this sample size, that fact is
 itself reported, and a split alone never justifies adopting the richer model:
-adoption then needs an independent, predeclared basis. The one known split in
+adoption then needs an independent, predeclared basis.
+
+The one known split in
 this record is the $\sigma_\text{laser}$ sharing of §4.13, where the BIC taken
 over $N_\text{eff}$ favours sharing by $+61$ and AIC opposes it by $-6.6$, the
 record's own "underpowered data" caveat made quantitative.
@@ -326,12 +323,16 @@ that mirror as unmodelled signal and let it bias the baseline and width. So the
 line fits are restricted to a window around each trace's peak, wide enough to
 keep the fat Lorentzian wings (where $\gamma_\text{coll}$ lives, since cutting too
 tight would bias it) but tight enough to exclude the mirror: $\pm3.5\times$ the
-trace's own measured FWHM, clipped to $[9,25]$ MHz. That choice is no longer
+trace's own measured FWHM, clipped to $[9,25]$ MHz.
+
+That choice is no longer
 treated as settled: the window scan of §4.14 and
 [`results/fit_window_scan.csv`](../../results/fit_window_scan.csv) re-runs
 every condition across this multiplier and finds a coherent width drift the
 goodness of fit cannot see, so the committed window is a stated convention
-with a measured robustness axis, not a solved problem. The rulers need no such cut
+with a measured robustness axis, not a solved problem.
+
+The rulers need no such cut
 on the same grounds. A symmetric triangle has the same rate magnitude on both
 ramps, so a fold preserves the tooth *spacing* of a correctly labelled comb,
 while a single line simply appears twice. That argument covers the spacing and
@@ -348,7 +349,9 @@ contamination, and the window gets there first. The trimmer walks outward only
 within the fitted samples, so a trim census reading zero on line fits is a fact
 about the order of the guards and not about the data. Line traces with a rising
 tail exist: three of the five repeats of the 993.4207 nm line at 130 °C and
-25 mW carry an unmistakable one. Whether the window sits in the right place was
+25 mW carry an unmistakable one.
+
+Whether the window sits in the right place was
 open until it was measured directly: neither clip is active on the dataset (the
 25 MHz cap binds on 0 of 159 canonical traces and the 9 MHz floor on 0 of 159),
 the recorded crossings sit 7.64 to 8.54 fitted widths out against a window edge
@@ -357,11 +360,10 @@ direction is the 9 MHz floor rather than the cap
 ([DATA](../DATA.md) §7, [the ruler specification](../notes/ruler_validity_and_trim_prereg.md)
 §G3). *Code:* `linefit.adaptive_halfwidth()`.
 
-### 4.9 Is each component warranted? The nested model ladder
-
+### 4.9 The nested model ladder
 §4.7's BIC compares two *shapes* with the same parameter count. A stricter
 question is whether each physical *component* is warranted, or
-whether a simpler model fits as well. So we fit a nested ladder of increasing
+whether a simpler model fits as well. So the fit takes a nested ladder of increasing
 physics and compare by BIC ($\text{BIC}=\chi^2+k\ln N$, summed over conditions
 since BIC is additive over independent data):
 
@@ -389,7 +391,7 @@ dataset is a property of the drift, not of the method: a fixed-lock session
 would flip C→D positive. *Code:* `rb5s6s/model_ladder.py`, `run_model_ladder.py`,
 closure `tests/test_model_ladder.py`, numbers `results/model_ladder.csv`.
 
-### 4.10 Is the decomposition identifiable? Covariance, condition number, and the profile-likelihood map
+### 4.10 Identifiability of the decomposition
 
 The degeneracy asserted throughout, that $\gamma_\text{coll}$,
 $\sigma_\text{laser}$ and transit all broaden the same line, so the main fit
@@ -399,7 +401,7 @@ profile-likelihood map that first corrected and then certified it. Both on one
 bright condition (993.4192 nm, 130 °C, 225 mW), all three widths free plus the
 per-trace nuisances.
 
-**The map found the fit's second local minimum first.** A single-start three-width fit
+The map found the fit's second local minimum first. A single-start three-width fit
 lands in a Gaussian-dominated local minimum ($\sigma_\text{laser}\approx2.4$ MHz,
 transit railed at zero, $\chi^2 = 5026$). The profile map exposed a **deeper,
 cusp-dominated local minimum**, at $\gamma_\text{coll}\approx0.22$,
@@ -412,7 +414,9 @@ is a tension the dataset owns rather than resolves: the shape prefers
 $w_0\approx43$ µm where the beamline-lineage measurement puts it at the accepted
 **64 µm**, which is 1.43 MHz of transit width against 0.96 MHz at 130 °C.
 Taken at face value the shape data
-*prefer* the physical decomposition (real transit cusp, narrow laser). But
+*prefer* the physical decomposition (real transit cusp, narrow laser).
+
+But
 $\Delta\chi^2 = 475$ over about 4400 points is a $\chi^2$ change of about 10%
 ($\chi^2_\text{red}$ 1.15 → 1.04), the territory where transit-kernel
 model-form imperfection also lives, a **consistency indication and not a
@@ -431,7 +435,7 @@ At the anchored branch, the covariance (SVD of the Jacobian,
   $1\sigma\approx0.003$ MHz, while the worst-constrained direction (dominated
   by $\sigma_\text{laser}$) is $\approx0.06$ MHz, about **20× looser**.
 
-**The global map** (the standard referee demand: profile, not just covariance)
+The global map (the standard referee demand: profile, not just covariance)
 fixes ($\gamma_\text{coll}$, $\sigma_\text{laser}$) on a grid and re-minimises
 $\chi^2$ over transit and every per-trace nuisance at each point (variable
 projection, each cell fit from two independent warm-start lineages, with a
@@ -450,7 +454,7 @@ arithmetic environment changed, the slope by 18 per cent and the prediction by
 shape of the valley, not the value of either number.
 
 The whole neighbourhood moves together under an environment change: the
-condition number and the valley-floor RMS are now 345.1 and 0.0020 against the
+condition number and the valley-floor RMS are now [345.1](../../results/identifiability.csv "ref:identifiability:condition_number:width_block") and 0.0020 against the
 pre-migration 389.7 and 0.0032, and the map-minimum certification changed
 character, from a free fit that was the map's optimum to a zoom map that finds
 a point 1.3 below it. The pre-migration values and the reason they moved are
@@ -508,15 +512,15 @@ What a free per-trace centre removes, and why the information for the shift
 vanishes at the boundary, is derived once on the
 [identifiability wiki page](../wiki/identifiability.md) and not repeated here.
 
-### 4.11 Does the 95% bound actually cover? An injection-recovery study
+### 4.11 Coverage of the 95 per cent bound
 
 The collisional bound's 95% is built from a between-block scatter estimated on
 a small number of residual degrees of freedom, so it uses the Student-t
 quantile rather than the Gaussian 2 (§4.5): $t(0.95,2)=2.92$ for the current
 four-point headline (70/90/110/130 °C, since 2026-08-02, and the replaced
 three-point 70–110 °C headline used $t(0.95,1)=6.31$). A bound is only worth
-its coverage, so we check it by simulation rather than assert it: at a grid
-of *known* true $\beta$ we generate 2000 synthetic four-point cooling+130 °C
+its coverage, so it is checked by simulation rather than asserted: at a grid
+of *known* true $\beta$ the study generates 2000 synthetic four-point cooling+130 °C
 sweeps each, with the dataset's own structure, a between-block scatter
 mimicking the drift wander plus the small within-block SEM, run the
 **shipped** estimator `beta.collisional_slope` on every one, and measure
@@ -539,14 +543,14 @@ So the headline is empirically calibrated: unbiased estimate, a 95%
 monotonicity guard suppresses. *Code:* `rb5s6s/coverage.py`, `run_coverage.py`,
 closure `tests/test_coverage.py`, numbers `results/coverage.csv`.
 
-### 4.12 Why a profile likelihood, not a posterior
+### 4.12 The profile likelihood against a posterior
 
 Three features of this dataset drive the choice:
 
 1. **The headline is a bound, and a bound is only worth its frequentist
    coverage**, which §4.11 buys by simulation. A credible interval would need
    the same injection study to earn the same trust, and the profile construction is
-   the one we can, and do, calibrate directly.
+   the ones one can, and does, calibrate directly.
 2. **The dominant systematic is deliberately OPEN.** A posterior needs a prior
    on $w_0$, and marginalizing folds that prior invisibly into the quoted
    number. Keeping $w_0$ out of the likelihood and quoting an explicit
@@ -561,7 +565,7 @@ Three features of this dataset drive the choice:
 Bayesian machinery is used where it is the right tool, model *selection*, as
 the BIC ladder of §4.9.
 
-**A profile is only as good as its local minimum.** A profile scan inherits every
+A profile is only as good as its local minimum. A profile scan inherits every
 weakness of the optimizer that walks it: a chain that starts cold and parks
 in a false minimum produces a smooth, confident, wrong curve, and nothing
 in the profile itself reveals the parking. This analysis learned that twice
@@ -573,7 +577,7 @@ variant is seeded from its solution in addition to running cold, the
 pointwise minimum over chains is what enters the profile, and no cold-start
 profile is quoted without a seeded twin (docs/RESEARCH_DECISIONS.md §11).
 
-### 4.13 How much evidence for the $\sigma_\text{laser}$ sharing? A BIC, and a cautionary one
+### 4.13 Evidence for $\sigma_\text{laser}$ sharing
 
 The hierarchical fit (§4.2) shares one $\sigma_\text{laser}(T)$ across the four
 peaks at each temperature (Model A, per $T$). The conservative alternative frees
@@ -642,7 +646,7 @@ model does not carry is absorbed by the free width while the core, where
 the counts and therefore the misspecified fit's compromise live, stays
 well described.
 
-**Two structural facts favour the moments, and both carry their limits.**
+Two structural facts favthe moments, and both carry their limits.
 Parity: a symmetric kernel contributes nothing to a **self-centred** odd
 moment, the Lorentzian to a truncation-limited remainder
 ([the condition](../wiki/third-cumulant.md)). The remainder is a regime,
@@ -682,13 +686,13 @@ bias is not the laser width. A control row repeats it with the true
 $\sigma$ and gets $-0.978$ against $-0.990$, and the remainder is
 consistent with window placement, though no committed row yet isolates
 placement from the $\gamma$ float, so that attribution is plausible rather
-than measured. At the duel's injected 0.35 MHz, near the archive's predicted $S_0$ of [0.360](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred:shared") MHz (an envelope, not a measurement), the picture inverts:
+than measured. At the duel's injected 0.35 MHz, near the archive's predicted $S_0$ of [0.348](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred:shared") MHz (an envelope, not a measurement), the picture inverts:
 the fit's spread grows to [0.2030](../../results/estimator_duel.csv "ref:estimator_duel:bias_profile_mle:S0_0.35_clean:err") where the cumulants' is [0.0102](../../results/estimator_duel.csv "ref:estimator_duel:bias_odd_cumulants:S0_0.35_clean:err") (the same producer's cells, re-read with it), and the two
 gap between the defect sensitivities narrows from a factor of 23 to a factor of 1.9, 0.0798 against 0.1503. And the twin is
 one defect shape with white noise and no baseline, so it speaks to a
 mechanism and not to this dataset.
 
-**The use that survives all three.** The two estimators disagree by one
+The use that survives all three. The two estimators disagree by one
 amount when the model is right and by another when it is not, so their
 difference tests the model, at a sensitivity the table's own shift column
 measures.

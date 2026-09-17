@@ -1,13 +1,9 @@
 *Chapter 5 of 12 of [the plan](../PLAN.md)*
 
-**The question.** How would the collisional coefficient be separated from the laser width, and what does the amplitude channel add?
-**Takes.** The intensity axis of chapter 4.
-**Gives.** The width and collision blocks, and the amplitude programme.
-**Skip if.** You want acquisition settings, which is chapter 7.
+This chapter builds on the intensity axis of chapter 4 and sets out the width and collision blocks, and the amplitude programme. Acquisition settings is chapter 7.
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
-> explains the measurement in six sentences, then defines every term
-> and symbol used anywhere in this repository.
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
+> defines every term and symbol used anywhere in this repository.
 
 > **Question.** How would the collisional coefficient be separated from the laser width, and what does the amplitude channel add?
 > **Design.** An interleaved density ladder with an independent laser-width measurement.
@@ -17,8 +13,8 @@
 
 ## 7. The width and collision program
 
-**7a. Temperature grid at L only, twice, on different days, in opposite
-directions.** Cancels every drift component monotonic in time in the mean, and
+7a. Temperature grid at L only, twice, on different days, in opposite
+directions. Cancels every drift component monotonic in time in the mean, and
 the difference measures the residual. Jump-like drift does not average out. It
 gets cut.
 **Needs.** The fixed lock, configuration L metrology complete, and the oven
@@ -60,7 +56,9 @@ separately. A pooled estimator with one shared slope and per-line floors is
 pre-registered in
 [`docs/notes/beta_self_pooling_prereg.md`](../notes/beta_self_pooling_prereg.md),
 which brackets its own net gain at 1.1 to 1.8 because the between-block scatter
-that dominates the error is strongly shared across the four lines. Whether the
+that dominates the error is strongly shared across the four lines.
+
+Whether the
 session sizing changes under that estimator is not settled here, and it should
 be settled before the shot list is frozen, since a pooled slope changes what a
 fifth block buys.
@@ -75,7 +73,9 @@ least-squares response to a line that barely moves across a 52.5× density span
 resolved collisions" a demonstrated conclusion rather than an assumption. The
 2026-08-02 decision that promoted the four-point fold-in to the record's
 headline, and the reasoning behind it, are recorded in
-[`PREREGISTRATION_RESULTS.md`](../PREREGISTRATION_RESULTS.md). What a same-session
+[`PREREGISTRATION_RESULTS.md`](../PREREGISTRATION_RESULTS.md).
+
+What a same-session
 150–170 °C extension still buys, on top of that fold-in: it removes the
 cross-epoch calibration step entirely rather than relying on it being handled
 correctly after the fact, and it is the only route to densities where a genuine
@@ -129,7 +129,8 @@ item that measures it worth more than its duration suggests. A caution on that
 item's range: at a 70 °C coldest block a lag beyond about 31 K would put the
 cold spot below the rubidium melting point, which would be a different physical
 regime rather than a larger correction.
-**Needs.** An oven that reaches and holds 170 °C, and the cold-spot lag
+
+Needs. An oven that reaches and holds 170 °C, and the cold-spot lag
 characterised (§8 item 3). **Shots.** The top of the grid taken inside the same
 locked session as the rest of it, in interleaved temperature order. **Go/no-go.**
 The oven must hold each set point long enough for the dwell without the cold
@@ -151,11 +152,13 @@ The trace drawn is the one that clears every clause of §7 of the same note, wit
 the weakest of its seven heights at 0.63 of the fit residual and a reduced χ² of
 1.01 against the ceiling of 2.0. In the right panel the sweep non-linearity and
 any tooth-dependent pull together stay within 0.3%, and that bound is set by the
-well-sampled windows alone. The open markers at the scan edges have an
+well-sampled windows alone.
+
+The open markers at the scan edges have an
 uncertainty larger than the bound, so they do not constrain it. The session keeps
 the comb and fixes its two hardware mismatches, below.*
 
-**7D. The matched-PM ruler, and the two knobs a seven-tooth comb needs.** In
+7D. The matched-PM ruler, and the two knobs a seven-tooth comb needs. In
 2025 the ruler light differed from the science light (the half-wave-plate
 carrier-suppression trick), so tooth widths could not serve as a drift
 compensator. The fix is to drive the EOM at modulation index β ≈ 1.202, where
@@ -178,7 +181,9 @@ certificates, and it records that the generator's 25 MHz ceiling constrains any
 higher-frequency tank. Whether the 12.5 MHz tank reaches β ≈ 1.2 is therefore an
 open item for this block and is the first thing to test on the bench. The
 new RF drive reaches a higher depth without residual amplitude modulation
-and can sit at another resonance (owner statement, 2026-09-06). Which
+and can sit at another resonance (owner statement, 2026-09-06).
+
+Which
 resonances and depths it offers is the apparatus item
 [chapter 12](12_open-apparatus-items.md) carries, and the forecast measures
 the spacing's cost before it is chosen. The depth is a lever in its own right: a
@@ -189,7 +194,9 @@ Bessel weight, so a depth ladder at fixed power moves the rate-driven terms
 The fitted centre against depth at fixed power is a null test of the light
 shift that a power ladder cannot give, and one comb trace carries the ladder
 tooth by tooth. The twin measures it with the forecast's file, whose
-depletion now follows each tooth's own rate. Second,
+depletion now follows each tooth's own rate.
+
+Second,
 the ramp is too short: no recorded ruler covers both outer tooth windows, the
 k = −3 window is clipped on 52 of the 104 fitted combs and the k = +3 window on
 36, and at the measured depth a fully covered third-order tooth still stands at
@@ -199,7 +206,9 @@ is what would give every calibration trace seven standing teeth instead of six.
 **Needs.** An EOM tank able to reach the prescribed index at 993 nm, a generator
 inside its own frequency ceiling, and a ramp about one tooth spacing wider per
 side. **Shots.** Ruler blocks interleaved with science blocks at the cadence
-§10.5 measures, at science polarization and power. **Go/no-go.** Monitor
+§10.5 measures, at science polarization and power.
+
+**Go/no-go.** Monitor
 modulation purity live through the A₊ₖ = A₋ₖ symmetry, and through the summed
 height of every tooth, which is exact in the depth and in the spacing and so
 must hold constant across ruler blocks: it draws on the whole peak where the
@@ -209,7 +218,9 @@ where the scan covers them, since truncating at five biased the 2025 rate by
 per trace rather than assuming it. Calibrate any control-variate coefficient on
 dedicated dither data, and freeze all decision rules before first data. A
 correction may widen a bound. It may never, by itself, flip a bound into a
-measurement. **Empty.** If the tank cannot reach the index, the ruler still runs
+measurement.
+
+**Empty.** If the tank cannot reach the index, the ruler still runs
 as a bracket and the drift-compensator role is lost, which is the 2025 outcome.
 **Record.** The achieved index per session, the tooth coverage per trace, and
 the interleaved rate series.
@@ -228,7 +239,7 @@ near-repetition tests nothing. **Empty.** One block settles the direction and
 not the magnitude, so a null here is weak evidence rather than a clean answer.
 **Record.** The repeat block beside its original, and the difference.
 
-**7F. Four peaks interleaved within every block**, minutes apart, with
+7F. Four peaks interleaved within every block, minutes apart, with
 per-trace power logging. Cross-peak systematics drop from 30–50% to 2–4% and
 the amplitude discriminators (§8) become possible. Amplitude-ratio blocks get
 12–16 repeats (gain-limited), width blocks 8, with the power order randomized.
@@ -248,7 +259,9 @@ per-segment trigger times (`APPARATUS.md` §4.1 identifies the export signature)
 Either path also needs a loader, since `rb5s6s/ingest.py` reads only the
 two-column 2000-row CSV export and has no `.h5` reader. That is the one place
 this programme knowingly buys software as well as shots.
-**Shots.** Every science trace. **Go/no-go.** Set the scope clock at session
+**Shots.** Every science trace.
+
+**Go/no-go.** Set the scope clock at session
 start and note block starts independently, so that the external log can
 reconstruct the order if the metadata path fails. **Empty.** If neither path
 works the block order is again the only time coordinate, which is the 2025
@@ -269,7 +282,9 @@ lock state. **Shots.** One long off-resonance capture for the noise spectrum.
 **Go/no-go.** No science block starts inside the transient. **Empty.** The
 transient may run longer on the day than the dataset measured, which costs
 setup time rather than data. **Record.** The lock state on its spare channel,
-and the noise spectrum. The 2025 chain carried a 61 Hz line at 0.2% of peak,
+and the noise spectrum.
+
+The 2025 chain carried a 61 Hz line at 0.2% of peak,
 harmless on a 60 ms line and not harmless on the narrower lines this session is
 for.
 
@@ -295,8 +310,10 @@ dataset has no route to at all.
 grid, with centres retained. **Go/no-go.** The centre channel must survive the
 §10.6 sentinel at the densities in question. **Empty.** The pressure shift may
 stay under the block scatter across the whole grid, leaving the ratio a bound.
-7k. **A separation that needs no lineshape model, and it runs on traces
-already taken.** A Lorentzian has no finite variance, so its second moment truncated
+7k.
+
+A separation that needs no lineshape model, and it runs on traces
+already taken. A Lorentzian has no finite variance, so its second moment truncated
 at a half-window grows linearly in that window while every bounded kernel
 saturates. The second moment plotted against the window therefore has a slope
 that measures the homogeneous width alone, with the Gaussian and the ramp in
@@ -306,7 +323,9 @@ evaluated on a grid wider than the window. The same estimator on the model's
 own internal grid reads several per cent low, because that grid truncates the
 wings inside the window, which is a property of the call and not of the
 method. Two conditions before it is
-quoted. The intercept is not the Gaussian's variance by itself, since the
+quoted.
+
+The intercept is not the Gaussian's variance by itself, since the
 asymptotic form carries a Lorentzian constant beside the linear term, and that
 expansion is owed. And a window wide enough for the slope reaches the
 modulation comb's own teeth at their spacing and the Doppler pedestal long
@@ -319,7 +338,9 @@ limit and the wings are not. It pins the
 collisional width for the waist ladder of chapter 4 item 3c, which needs it
 from outside its own fit. **Needs.** Nothing on the bench: the archived
 traces, with the comb's teeth, the Doppler pedestal and the residual baseline
-subtracted first. **Shots.** None. **Go/no-go.** The slope must return the homogeneous
+subtracted first.
+
+**Shots.** None. **Go/no-go.** The slope must return the homogeneous
 width the composite fits already carry, within the accuracy the owed
 asymptotic expansion establishes. **Empty.** The residual baseline may dominate the second
 moment at every window wide enough to matter, which would leave the slope a
@@ -452,8 +473,8 @@ independently, so the test is on the order and on the spacing pattern rather
 than on the absolute depletion, which the transit time and the excitation
 probability jointly set.
 
-**The 2025 archive cannot lift that second condition, and what stops it is the
-acquisition structure and not the statistics.** Each trace carries one
+The 2025 archive cannot lift that second condition, and what stops it is the
+acquisition structure and not the statistics. Each trace carries one
 peak, so four peaks are four separate acquisitions and whatever drifts between
 them does not cancel in a ratio. `results/amplitude_ratios.csv` measures that
 drift as a between-block systematic worth about half the ratio's own value.
@@ -464,7 +485,7 @@ ladder, and it moves by about the size of the systematic it is aliased with,
 while the second isotope's pair stays flat where the same mechanism requires it
 to move. **So the archive gives the ordering test and nothing beyond it.**
 
-**Putting all four peaks in a single trace is what lifts it**, which the campaign
+Putting all four peaks in a single trace is what lifts it, which the campaign
 already plans for its hysteresis diagnostic and its shift-immune ruler pairs.
 With the four sharing an acquisition the inter-trace drift cancels by
 construction, and with the power rungs crossed against the blocks instead of
@@ -477,7 +498,7 @@ already predicts it. If they follow brightness the effect belongs to the
 detection chain, and the dual-chain recording of chapter 7 is what localises
 it. Either outcome closes the question, which is the property worth having.
 
-## The laser kernel is the largest assumption the width channel rests on
+## The laser kernel as the width channel's largest assumption
 
 Measured 2026-08-20 and worth stating before the session is designed, because
 it changes what the density ladder is buying.
@@ -509,7 +530,7 @@ improvement falls below that and the data there do not settle it. The
 assumption the record makes is supported, on a firmer test than the one first
 reported.
 
-**What the session should carry from this.** The comparison run here is
+**The session's carry-over from this.** The comparison run here is
 between two extremes. A laser kernel with a fitted Lorentzian fraction turns
 that binary into a bound on the Lorentzian content, and that bound is the
 model-form error bar on $\beta_{\rm self}$ the paper should quote beside the
@@ -517,7 +538,7 @@ transit-kind one. It costs no beam time, only a fit, and it should be run
 before the session rather than after
 (`scripts/run_laser_kernel.py`, `results/laser_kernel.csv`).
 
-## One term the density ladder cannot separate, and what would
+## The term the density ladder cannot separate
 
 The density ladder is the instrument for $\beta_{\rm self}$, so it is worth
 naming a term that shares its signature exactly and therefore hides inside
@@ -528,7 +549,7 @@ momentum a single $J=1/2$ atom must refuse
 in density, since it needs a second atom, and so is its contribution to the
 measured width.
 
-**Linear in density is what $\beta_{\rm self}$ is.** The two are degenerate
+Linear in density is what $\beta_{\rm self}$ is. The two are degenerate
 under the ladder, and no number of temperature blocks separates them. The
 term is absorbed into the collisional coefficient.
 
@@ -546,7 +567,7 @@ more than housekeeping. It is the only axis along which a term of this class
 is separable at all, and any future term that turns out to be
 field-dependent inherits the same argument.
 
-## The asymmetry budget, and how the model earns a new term
+## The asymmetry budget and new model terms
 
 The record measures an asymmetry it does not explain. C3g is the open
 finding, a same-side near-core asymmetry in both sessions, absorbed neither
@@ -582,13 +603,13 @@ $\beta_\text{self}$ and to $\kappa$, so the cost of leaving a term out is a
 number rather than a fear. That injection layer is the twin's next scheduled
 extension.
 
-## What the twin says the width programme can and cannot buy
+## The twin's verdict on the width programme
 
 Measured 2026-08-19 on synthetic data whose truth is known, through
 `rb5s6s.forecast`, and recorded here because it changes which levers are
 worth session time.
 
-**More of the same measurement does not separate the widths.** The
+More of the same measurement does not separate the widths. The
 regenerable form of the search
 ([`twin_span_sweep.csv`](../../results/twin_span_sweep.csv), truth from a
 named committed condition, seed fixed): the correlation between the laser
@@ -600,8 +621,8 @@ observable cannot see stays invisible either way: the degeneracy is a
 property of the lineshape rather than of the sample size, so no scan
 design breaks it.
 
-**An external constraint is worth a factor of two to three and a half, and
-it is the only thing that is.** Pinning one member of a correlated pair
+An external constraint is worth a factor of two to three and a half, and
+it is the only thing that is. Pinning one member of a correlated pair
 reduces the other's variance to $(1-\rho^2)$ of its joint value, so the
 uncertainty falls by $\sqrt{1-\rho^2}$. That factor depends on $\rho$ and on
 nothing else, which is why it is not a single number here: 2.29 at the

@@ -1,13 +1,6 @@
 *Chapter 8 of 8 · [methods index](../methods.md)*
 
-**The question.** What is everything above resting on, and what would a second
-epoch of data lift?
-**Takes.** All seven chapters before it, since each assumption belongs to one
-of them.
-**Gives.** The list a referee should attack first, and the measurements that
-would turn the record's bounds into values.
-**Skip if.** Nothing. This is the shortest chapter in the set and it is the one
-that says what the other seven are conditional on.
+What is everything above resting on, and what would a second epoch of data lift? This chapter builds on all seven chapters before it, since each assumption belongs to one of them and sets out the list a referee should attack first, and the measurements that would turn the record's bounds into values. This is the shortest chapter in the set and it is the one that says what the other seven are conditional on.
 
 ## 6. Load-bearing assumptions (the ones to challenge)
 
@@ -33,10 +26,10 @@ that says what the other seven are conditional on.
    shape: how much Lorentzian content the line tolerates is a fitted width
    that has not been measured yet. The laser shape is therefore tested at one end-member and unmeasured in between.
 4. The beam waist $w_0=64$ µm is **accepted from the lineage measurement,
-   not measured on this bench**. Rajasree 2020 recorded a 128 µm $1/e^2$
-   diameter with a beam profiler on the same laser model, the same $f=150$ mm
-   lens, the same 130 °C cell and the same $2f$ retro geometry, and Nieddu
-   2019 quotes the same number on the older laser. Transferring it assumes the
+   not measured on this bench**. Rajasree 2020 reprints Nieddu's 128 µm $1/e^2$
+   diameter, profiled on the predecessor laser through the same $f=150$ mm
+   lens, the same 130 °C cell and the same $2f$ retro geometry, and without this
+   beam's 3 mm modulator bore. Transferring it assumes the
    2025 alignment matched. Two documented effects push the *effective* waist
    above 64 µm and neither is fitted: residual clipping at the 3 mm EOM
    aperture, and imperfect superposition of the retro beam. A direct
@@ -73,7 +66,7 @@ that says what the other seven are conditional on.
 
 ---
 
-## 7. Where this can go next
+## 7. Directions for further work
 
 *The 2025 dataset, done conditional on $w_0$.* Every module of the 2025
 analysis is built, tested, and reported in

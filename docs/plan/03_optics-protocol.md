@@ -1,13 +1,9 @@
 *Chapter 3 of 12 of [the plan](../PLAN.md)*
 
-**The question.** What configurations the cell runs in, how the waist and the retro ratio are measured, and what has to be redone when either the focus or the drive wavelength changes.
-**Takes.** The aim of chapter 1 and the priority order of chapter 2.
-**Gives.** The configuration set, the two-instrument waist measurement, the realignment protocol for a retune, and the creep detectors.
-**Skip if.** You want what the measurements buy and not how they are taken.
+This chapter builds on the aim of chapter 1 and the priority order of chapter 2 and sets out the configuration set, the two-instrument waist measurement, the realignment protocol for a retune, and the creep detectors. What the measurements buy and not how they are taken.
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
-> explains the measurement in six sentences, then defines every term
-> and symbol used anywhere in this repository.
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
+> defines every term and symbol used anywhere in this repository.
 
 ## 4. Configurations and optics protocol
 
@@ -54,7 +50,7 @@ defined at the cell with a polarizer, not merely logged (§4.4).
 
 ### 4.2 Two instruments for the waist
 
-w₀ is the dominant systematic of the whole analysis, and the one thing you do
+w₀ is the dominant systematic of the whole analysis, and the one thing done
 not do to a dominant systematic is measure it once with an instrument that has
 a single failure mode. The knife-edge gives absolute size in true power units,
 down to the smallest waist, but integrates away the 2D shape: a clipped or
@@ -68,7 +64,7 @@ knife-edge. The camera pixel scale is also a third independent length ruler
 beside the knife stage and z_R = πw₀²/λ, so a scale error must fool three
 unrelated instruments to pass.
 
-**Needs.** Knife-edge stage, camera, and the configuration's telescope already
+Needs. Knife-edge stage, camera, and the configuration's telescope already
 installed. No atoms and no lock. **Shots.** Knife-edge w(z) at five or more z
 positions in two orientations, and a camera z-scan through the same focus.
 **Go/no-go.** The knife-edge waist, the camera waist and z_R = πw₀²/λ must agree
@@ -90,7 +86,9 @@ produces across the temperature range. The retro leg as installed
 (`APPARATUS.md`). **Shots.** The stable part, lens² times mirror, once per
 configuration before science. The drifting part, window transmission before and
 after the cell, at every temperature condition. Where the wide-scan pedestal of
-§5 runs, its area ratio gives a second ρ on the same traces. **Go/no-go.** The
+§5 runs, its area ratio gives a second ρ on the same traces.
+
+**Go/no-go.** The
 pick-off ρ and the pedestal ρ must agree within the pedestal route's own weak
 sensitivity, and the pick-off must resolve the outgoing from the returning beam
 at all, which is the thing the geometry can refuse. **Empty.** A pick-off that
@@ -101,21 +99,21 @@ condition, the window transmission before and after the cell at each, the
 stable lens and mirror term, and the pedestal ρ beside the pick-off ρ where both
 exist.
 
-### 4.2b Realignment when the waist or the transition changes
+### 4.2b Realignment after a waist or transition change
 
-**This block fires on any change of the expander setting and on any change of
+This block fires on any change of the expander setting and on any change of
 the drive wavelength, and the second case is the one the record missed until
-2026-09-09.** The waist is not a property of the bench alone. Through a fixed
+2026-09-09. The waist is not a property of the bench alone. Through a fixed
 lens and a fixed input beam it is `w0 = λf/(πw_in)`, so retuning the laser
-moves the waist with nothing touched: the measured 64 µm at 993.4 nm becomes
+moves the waist with nothing touched: the 64 µm convention at 993.4 nm becomes
 [48.589](../../results/transition_ladder.csv "ref:transition_ladder:7S:waist_aperture_limited") µm at
 760.1 nm and [44.455](../../results/transition_ladder.csv "ref:transition_ladder:6D:waist_aperture_limited") µm
 at 697.5. The light shift goes as the inverse square of that, so the same power
 is a different experiment. Nothing downstream of this block may be carried
 across a retune.
 
-**The order matters and it is not the obvious one.** Refocus before you
-re-collimate, re-collimate before you re-retro, and measure the waist last, so
+The order matters and it is not the obvious one. Refocus before
+re-collimating, re-collimate before re-retroing, and measure the waist last, so
 that what is measured is what the science blocks will run on.
 
 1. **Refocus the cell lens.** L1 is a singlet, so its focal length disperses as
@@ -145,8 +143,8 @@ that what is measured is what the science blocks will run on.
    §4.2's, unchanged.
 5. **Re-measure ρ** on the same afternoon, per §4.2's block.
 
-**Go/no-go for the retune itself, and it is a physics check and not an
-optical one.** The transit width carries the geometry to the first power while
+Go/no-go for the retune itself, and it is a physics check and not an
+optical one. The transit width carries the geometry to the first power while
 the light shift carries it to the second, so the ratio of transit widths between
 the two drives is a prediction the bench has to meet: about
 [1.261](../../results/transition_ladder.csv "ref:transition_ladder:7S:transit_fwhm") MHz at 760.1 nm against
@@ -156,13 +154,13 @@ alignment.** It says the input beam is not what the waist model assumed, which
 is the open item §12 carries, and the measurement it delivers is worth more
 than the alignment it was checking. Record the ratio whether or not it agrees.
 
-**What it costs.** An afternoon per drive and per expander setting, with no
+**The cost.** An afternoon per drive and per expander setting, with no
 atoms and no lock for steps 1 to 4. It is the same afternoon §4.2 already
 schedules, run again, and a campaign that drives two lines schedules it twice.
 
-### 4.2c The slit that sets the axial window, and the scan that measures it
+### 4.2c The axial-window slit and its scan
 
-**Why it is hardware and not a fit.** The collected axial half-length `L`
+**Grounds for hardware, not a fit.** The collected axial half-length `L`
 divided by the Rayleigh range is the `z_ratio` of the ramp's own closed form,
 and it enters every moment the campaign reads. `docs/methods/03` derives what
 it does: the mean pull falls from the pure ramp's value as the window
@@ -174,7 +172,7 @@ of the pull at 25 microns and 42 at 16. **A number that large, known that
 poorly, and sitting inside the observable is a hardware problem and not an
 analysis one.**
 
-**Why a slit and not the detector's own aperture.** The R636-10's cathode is
+**Grounds for a slit, not the detector's own aperture.** The R636-10's cathode is
 taken as 3 by 12 mm with the 12 mm axis along the beam, and **that geometry is
 ASSUMED and not measured**: the attribution comes from Nieddu 2019, a different
 bench, while an in-campaign photograph of 2025-07-18 shows the cell detector
@@ -184,8 +182,12 @@ portrait divides the window by four in one discrete step, which keeps 25.5 per
 cent of the light at 64 microns, 38.8 at 25 and 60.4 at 16, the loss shrinking
 as the waist tightens because the collected share goes as `arctan(L/z_R)` and
 saturates. It is still not worth doing, for three reasons that do not depend on
-the exact cathode size. It lands at `z_ratio` 1.042 at 16 microns, seven per
-cent from the null, which zeroes the third cumulant. It is a discrete step
+the exact cathode size.
+
+It lands at `z_ratio` 1.042 at 16 microns, seven per
+cent from the null, which zeroes the third cumulant.
+
+It is a discrete step
 where the useful variable is continuous. And the tube is side-on, so its
 cathode's long axis stands in a fixed relation to the dynode chain and a
 ninety-degree rotation puts the light on a different part of the cathode
@@ -195,7 +197,7 @@ response and not only the geometry.
 **The block.** An adjustable slit at the real image plane of the two-lens relay
 of chapter 4, long axis across the beam and narrow dimension along it.
 
-**Needs.** The relay and a slit reading 0.3 to 12 mm. The relay must be
+Needs. The relay and a slit reading 0.3 to 12 mm. The relay must be
 telecentric enough that closing the slit does not change the collection solid
 angle, or the scan measures the product of the two and not the window. At the
 present conjugates the magnification is 1.78, so that slit range covers
@@ -213,7 +215,7 @@ within the block scatter. **A disagreement is worth more than the check**: it
 says the collection weight is not uniform across the window, which chapter 9
 carries as an open item and which the ramp's derivation assumes.
 
-**The sharp test it makes available.** At 16 microns the slit range crosses
+The sharp test it makes available. At 16 microns the slit range crosses
 `z_ratio` 1.117, where the windowed third cumulant changes sign. That crossing
 is a prediction of the geometry with no free parameter, and walking the slit
 through it is the strongest single check of the axial model this bench can

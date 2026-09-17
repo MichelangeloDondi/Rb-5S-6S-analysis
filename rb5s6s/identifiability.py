@@ -6,7 +6,7 @@ A referee's sharpest statistical question about the composite line is not "what
 are gamma_coll, sigma_laser, transit?" but "are they *separately* identifiable,
 or does the data only constrain some combination of them?". The three widths all
 broaden the same ~5 MHz line, so they are near-degenerate -- which is exactly why
-the main analysis FIXES transit from the measured w0 and reports sigma_laser as a
+the main analysis FIXES transit from the w0 convention and reports sigma_laser as a
 bound. This module makes that degeneracy quantitative instead of asserted.
 
 It fits ONE condition with all three homogeneous/quasi-homogeneous widths free

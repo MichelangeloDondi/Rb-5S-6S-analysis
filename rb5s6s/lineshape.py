@@ -22,7 +22,8 @@ Design rules
   faster and exact.
 * Fixed by physics, not fit: Gamma_nat (constants.GAMMA_NAT_HZ); the transit
   kernel SHAPE and its sqrt(T) scaling; the Stark ramp SHAPE (density
-  f(s) ∝ |s| on [-S0, 0], from the I^2-excitation / I-shift derivation).
+  f(s) ∝ s on [0, S0] (BLUE, the adopted Delta alpha being negative; O27),
+  from the I^2-excitation / I-shift derivation).
   Free per condition: amplitude, center, background, gamma_coll, and (per
   block) sigma_laser; S0 is FIXED per power from the prediction in the
   archival fits (it is a MEASUREMENT only in the fixed-lock data).
@@ -50,7 +51,28 @@ import numpy as np
 
 from ._compat import trapezoid
 from .constants import (GAMMA_NAT_HZ, DELTA_ALPHA_AU, ATOMIC_POLARIZABILITY_SI,
-                        EPS0_F_PER_M, C_M_PER_S, H_PLANCK_JS)
+                        EPS0_F_PER_M, C_M_PER_S, H_PLANCK_JS, LAMBDA_LASER_M)
+
+
+#: THE SIDE OF THE LINE THE AC-STARK RAMP SITS ON, stated once (owner order O27, 2026-09-17): +1 for
+#: the blue side, the density on [0, s0], because this record's differential polarizability is
+#: negative. Every construction of the ramp outside `stark_ramp` reads it -- the benchmark moments
+#: below, `ramp_transit`, `fringe_tail`'s mirror, the producers that build a textbook ramp -- so the
+#: convention is one token and `tests/test_ramp_sign_convention.py` refuses a restatement of it and
+#: a kernel that disagrees with it. It was restated in 46 lines of 29 files when the kernel flipped,
+#: and four of the code sites kept the old side for hours (F90, F92).
+RAMP_SIDE = +1.0
+
+
+def ramp_mean_over_s0() -> float:
+    """The triangle's mean in units of s0: +2/3 on the blue side, -2/3 on the red."""
+    return RAMP_SIDE * 2.0 / 3.0
+
+
+def ramp_kappa3(s0: float) -> float:
+    """The triangle's third cumulant: -s0^3/135 on the blue side and its opposite on the red. Every odd
+    cumulant flips with the side and every even one does not (kappa_4 = -s0^4/540 on both)."""
+    return -RAMP_SIDE * float(s0) ** 3 / 135.0
 
 
 # ---------------------------------------------------------------------------
@@ -94,17 +116,19 @@ def two_sided_exponential(nu: np.ndarray, fwhm: float) -> np.ndarray:
 
 def stark_ramp(nu: np.ndarray, s0: float) -> np.ndarray:
     """Signal-weighted AC-Stark shift distribution: a triangular ramp with
-    density f(s) ∝ |s| on s in [-s0, 0] (red shifts), area-normalized on the
+    density f(s) ∝ s on s in [0, s0] (BLUE shifts), area-normalized on the
     grid. Derivation (cell and evanescent geometry alike): two-photon signal
     ∝ I^2, shift ∝ I, volume measure gives du/u, so dS/du ∝ u -> linear ramp.
-    s0 > 0 is the on-axis (maximum) shift in MHz, and THE SIDE IS AN OPEN
-    QUESTION rather than a settled convention. The adopted DELTA_ALPHA_AU
-    implies a BLUE shift while this ramp is coded red-sided;
-    tests/test_ramp_side_matches_the_polarizability.py holds the
-    disagreement as a strict xfail pending the owner's adjudication. Every
-    bound this record quotes is unaffected because it reads the magnitude,
-    but a caller using this function for a DIRECTIONAL shift should read
-    that test before trusting the side. Returns a delta-like
+    s0 > 0 is the on-axis (maximum) shift in MHz, and THE SIDE FOLLOWS THE
+    ADOPTED POLARIZABILITY, which is the owner's ruling of 2026-09-17 (O27,
+    in his words: "use the SSOT of 1131.8 +- 5.9"). A level shifts by
+    dE = -alpha E^2 / 4, so a NEGATIVE differential polarizability moves the
+    transition BLUE and the signal-weighted ramp carries its mass at positive
+    detuning. This kernel was coded red-sided until that ruling, which is the
+    side the cited +1093 a.u. implies and which this record does not adopt;
+    tests/test_ramp_side_matches_the_polarizability.py asserts the agreement
+    and was a strict xfail while the two disagreed. Every bound this record
+    quotes is unaffected because it reads the magnitude. Returns a delta-like
     unit spike at nu=0 when s0 <= 0 (no shift).
 
     THE I^2 IS A WEAK-FIELD STATEMENT (2026-08-10). The signal weight above is
@@ -112,7 +136,7 @@ def stark_ramp(nu: np.ndarray, s0: float) -> np.ndarray:
     weight (s/2)/(1+s) reduces to I^2 only while the saturation parameter s is
     small. That is safe here and not safe everywhere: s carries the two-photon
     Rabi frequency squared, so it scales as the FOURTH power of the inverse
-    waist while s0 scales only as the second. At the archive's measured 64 um
+    waist while s0 scales only as the second. At the archive's 64 um convention
     and 225 mW s is 0.033. At the 16 um a future session proposes it is 8.5,
     and re-integrating the moments with the saturated weight moves the
     predicted axial skew from -0.36 to -1.07. The sign flip survives, the
@@ -125,22 +149,22 @@ def stark_ramp(nu: np.ndarray, s0: float) -> np.ndarray:
     from ramp to spike — a false-minimum trap for any fit that floats s0
     (fixed-lock data will). Now: exact per-cell integrals of the ramp density
     (area exactly 1, continuous in s0 at every scale), plus a one-node
-    first-moment transfer so the discrete mean equals the exact -2/3 s0 even
+    first-moment transfer so the discrete mean equals the exact +2/3 s0 even
     when s0 is far below the grid step — d(profile)/d(s0) never dies."""
     dnu = nu[1] - nu[0]
     out = np.zeros_like(nu)
     if s0 <= 0:
         out[np.argmin(np.abs(nu))] = 1.0 / dnu
         return out
-    # exact integral of f(s) = 2|s|/s0^2 over each grid cell intersected
-    # with the support [-s0, 0]:  F([a,b]) = (a^2 - b^2)/s0^2
-    lo = np.clip(nu - 0.5 * dnu, -s0, 0.0)
-    hi = np.clip(nu + 0.5 * dnu, -s0, 0.0)
-    w = (lo ** 2 - hi ** 2) / s0 ** 2          # >= 0, sums to exactly 1
+    # exact integral of f(s) = 2 s / s0^2 over each grid cell intersected
+    # with the support [0, s0]:  F([a,b]) = (b^2 - a^2)/s0^2
+    lo = np.clip(nu - 0.5 * dnu, 0.0, s0)
+    hi = np.clip(nu + 0.5 * dnu, 0.0, s0)
+    w = (hi ** 2 - lo ** 2) / s0 ** 2          # >= 0, sums to exactly 1
     # first-moment correction: move a little mass between adjacent nodes so
-    # the discrete mean is exactly -(2/3) s0 (sub-grid shift information)
+    # the discrete mean is exactly +(2/3) s0 (sub-grid shift information)
     mean = float(np.sum(nu * w))
-    target = -(2.0 / 3.0) * s0
+    target = +(2.0 / 3.0) * s0
     j = int(np.argmax(w))
     eps = (mean - target) / dnu   # >0: move eps redward; <0: move |eps| blueward
     if 0.0 <= eps <= w[j] and j >= 1:
@@ -150,6 +174,116 @@ def stark_ramp(nu: np.ndarray, s0: float) -> np.ndarray:
         w[j] += eps
         w[j + 1] -= eps
     return w / dnu
+
+
+def aperture_onaxis_factor(w0_m: float, a_m: float = None, f_m: float = None,
+                           lam_m: float = LAMBDA_LASER_M) -> float:
+    """The on-axis focal intensity per RECORDED watt of a Gaussian clipped by a circular bore of
+    radius `a_m` ahead of a lens of focal length `f_m`, relative to the unclipped beam.
+
+    The input radius at the lens is w = lam f / (pi w0) for a focus w0; the clipped field's
+    on-axis amplitude at the focus integrates the truncated Gaussian, (1 - e^{-a^2/w^2}), and the
+    power meter reads BEHIND the cell, so the recorded power is the transmitted one,
+    (1 - e^{-2 a^2/w^2}). Hence factor = (1 - e^{-a^2/w^2})^2 / (1 - e^{-2 a^2/w^2}), rung 2 (a
+    closed form, F39, 2026-09-17, the thesis session's aperture harness): 0.716 at 42.4 um, 0.876 at
+    52.1, 0.967 at 64 and 0.994 at 76. WHAT IT IS: the leading, on-axis part of the DIFFRACTION of
+    the clipped focus, not a bookkeeping of the recorded watt (the transmission alone is 0.03 per
+    cent at 64 um); the profile part of the same term (the side lobes, the effective M2, the change
+    in the transit kernel and in the ramp's f(s)) is the deferred `eom_aperture` term, and the
+    width channel's bound reads the SPREAD of the shift distribution under the rate weighting,
+    which a clipped focus moves by a factor that differs from this one, appreciably below about
+    50 um. It scales the light shift's S0 per recorded watt and the S0-to-delta-alpha conversion
+    at every waist as a first correction; it is NOT yet inside `stark_shift_S0_mhz`, which the
+    re-run wave wires with the whitening's correlation time (F36), so no committed cell moves
+    before that wave lands.
+    """
+    from .constants import EOM_APERTURE_RADIUS_M, DRIVE_LENS_F_M
+    a = EOM_APERTURE_RADIUS_M if a_m is None else float(a_m)
+    f = DRIVE_LENS_F_M if f_m is None else float(f_m)
+    w0 = np.asarray(w0_m, dtype=float)
+    w = float(lam_m) * f / (np.pi * w0)
+    x = a * a / (w * w)
+    out = (1.0 - np.exp(-x)) ** 2 / (1.0 - np.exp(-2.0 * x))
+    return float(out) if out.ndim == 0 else out
+
+
+#: A draw of this size or smaller is evaluated exactly; above it the nodes-and-interpolate
+#: path runs, with its bound asserted on every call (2026-09-17).
+_SPREAD_EXACT_MAX = 64
+_SPREAD_NODES = 257
+_SPREAD_INTERP_TOL = 1e-6
+
+
+def aperture_spread_factor(w0_m: float, a_m: float = None, f_m: float = None,
+                           lam_m: float = LAMBDA_LASER_M,
+                           n_r: int = 1200, n_rho: int = 600) -> float:
+    """The factor by which the clipped focus changes the SPREAD of the light-shift distribution
+    under the two-photon rate weighting, relative to the unclipped Gaussian at the same recorded
+    power: what the width channel's bound reads, against `aperture_onaxis_factor`, which is what the
+    on-axis shift reads (F39, reproduced here to 0.3 per cent against an independent quadrature).
+
+    The Fraunhofer focal field of the Gaussian truncated at the bore, E(rho) = int_0^a
+    e^{-r^2/w^2} J0(k r rho / f) r dr, its intensity normalised to the transmitted power; the shift
+    goes as I and the rate as I^2, so the rms shift is sqrt(<I^4>/<I^2> - (<I^3>/<I^2>)^2) over the
+    focal plane. Unclipped, that rms over the peak is 1/sqrt(18) = 0.2357, the test's anchor. Rung
+    3 by quadrature, the focal plane only: the axial collection window and the kernel changes are
+    the deferred profile part. 0.70 at 42.4 um, 0.86 at 52.1, 0.96 at 64, 0.99 at 76; F over the
+    on-axis factor is 0.974, 0.982, 0.992 and 0.998, so the on-axis shortcut overstates the width
+    channel's factor by 0.8 per cent at 64 um and 2.6 at 42.4.
+    """
+    from scipy.special import j0
+    # A GRID OF WAISTS IS A GRID OF QUADRATURES, not a broadcast: the focal field is built on its
+    # own radial grid per waist, so this maps rather than vectorises. Wired without it on
+    # 2026-09-17, the producer of the polarizability posterior passes its whole waist grid here and
+    # died on `float()` of an array, leaving `delta_alpha_posterior.csv` holding its header alone
+    # (F57, and the fourteen dangling references that is how it surfaced).
+    if np.ndim(w0_m) > 0:
+        w = np.asarray(w0_m, dtype=float)
+        if w.size <= _SPREAD_EXACT_MAX:
+            return np.array([aperture_spread_factor(float(x), a_m, f_m, lam_m, n_r, n_rho)
+                             for x in w])
+        # A MONTE CARLO DRAW IS NOT A GRID. `run_delta_alpha_posterior.py` passes 200 000 prior
+        # draws of the waist, and one quadrature is 29 ms, so mapping over them is 1.6 hours for a
+        # function that is smooth and monotone in w0. Evaluated on nodes and interpolated it is
+        # eight seconds. The interpolation is ASSERTED and not assumed: three interior probes are
+        # compared against the exact quadrature and the call raises rather than returning a
+        # silently interpolated number if the bound is missed.
+        lo, hi = float(w.min()), float(w.max())
+        if not np.isfinite(lo) or not np.isfinite(hi) or hi <= lo:
+            return np.full(w.shape, aperture_spread_factor(lo, a_m, f_m, lam_m, n_r, n_rho))
+        nodes = np.linspace(lo, hi, _SPREAD_NODES)
+        vals = np.array([aperture_spread_factor(float(x), a_m, f_m, lam_m, n_r, n_rho)
+                         for x in nodes])
+        for frac in (0.25, 0.5, 0.75):
+            x = lo + frac * (hi - lo)
+            exact = aperture_spread_factor(x, a_m, f_m, lam_m, n_r, n_rho)
+            got = float(np.interp(x, nodes, vals))
+            if abs(got - exact) > _SPREAD_INTERP_TOL:
+                raise ValueError(
+                    f"aperture_spread_factor: interpolation over [{lo:.3e}, {hi:.3e}] missed its "
+                    f"bound at w0={x:.3e} ({got:.6f} against {exact:.6f}); widen _SPREAD_NODES "
+                    f"or call scalar-wise")
+        return np.interp(w, nodes, vals)
+    from .constants import EOM_APERTURE_RADIUS_M, DRIVE_LENS_F_M
+    a = EOM_APERTURE_RADIUS_M if a_m is None else float(a_m)
+    f = DRIVE_LENS_F_M if f_m is None else float(f_m)
+    w_in = float(lam_m) * f / (np.pi * float(w0_m))
+    k = 2.0 * np.pi / float(lam_m)
+    rho = np.linspace(0.0, 4.0 * float(w0_m), n_rho)
+
+    def _spread(rmax):
+        r = np.linspace(0.0, rmax, n_r)
+        E = np.array([trapezoid(np.exp(-r * r / w_in ** 2) * j0(k * r * p / f) * r, r) for p in rho])
+        I = E * E
+        I = I / trapezoid(I * 2.0 * np.pi * rho, rho)
+        m2 = trapezoid(I ** 2 * 2.0 * np.pi * rho, rho)
+        m3 = trapezoid(I ** 3 * 2.0 * np.pi * rho, rho)
+        m4 = trapezoid(I ** 4 * 2.0 * np.pi * rho, rho)
+        return float(np.sqrt(m4 / m2 - (m3 / m2) ** 2)), float(I[0])
+
+    s_clip, _ = _spread(a)
+    s_open, _ = _spread(6.0 * w_in)
+    return s_clip / s_open
 
 
 def stark_shift_S0_mhz(power_w: float, w0_m: float, rho: float = 1.0,
@@ -168,7 +302,7 @@ def stark_shift_S0_mhz(power_w: float, w0_m: float, rho: float = 1.0,
     Delta_alpha); the archival ramp SHAPE does not depend on it."""
     i_eff = (1.0 + rho) * 2.0 * power_w / (np.pi * w0_m ** 2)
     # S0 is the ramp's DEPTH, a magnitude, which is how every consumer
-    # uses it: the ramp runs on [-S0, 0], every bound here is one-sided
+    # uses it: the ramp runs on [0, S0], every bound here is one-sided
     # positive, and every fit bounds S0 >= 0. The docstring above has
     # always defined it with |dE_6S - dE_5S|; the implementation dropped
     # the modulus and agreed only while Delta_alpha happened to be
@@ -305,8 +439,8 @@ def stark_ramp_axial(nu: np.ndarray, s0: float, z_ratio: float,
         f(s) ∝ |s|^(n-1) * [ zeta_m + zeta_m^3 / 3 ],
         zeta_m(s) = min( z_ratio, sqrt(s0/|s| - 1) )
 
-    on s in [-s0, 0]. z_ratio -> 0 recovers the pure transverse law
-    (triangle for n=2); the hard edge at -s0 softens to zero (only the
+    on s in [0, s0] (BLUE; O27). z_ratio -> 0 recovers the pure transverse law
+    (triangle for n=2); the hard edge at +s0 softens to zero (only the
     focal plane reaches the full shift). Uniform collection weight is
     assumed on the window — replace with the measured collection profile
     in a fixed-lock session before quoting coefficients (OPEN)."""
@@ -317,8 +451,8 @@ def stark_ramp_axial(nu: np.ndarray, s0: float, z_ratio: float,
         return out
     # integrate the closed-form density over each grid cell (8-point
     # midpoint sub-sampling; the density is bounded and piecewise smooth)
-    lo = np.clip(nu - 0.5 * dnu, -s0, 0.0)
-    hi = np.clip(nu + 0.5 * dnu, -s0, 0.0)
+    lo = np.clip(nu - 0.5 * dnu, 0.0, s0)
+    hi = np.clip(nu + 0.5 * dnu, 0.0, s0)
     sub = (np.arange(8) + 0.5) / 8.0
     s_sub = lo[:, None] + (hi - lo)[:, None] * sub[None, :]   # (ncell, 8)
     a = np.abs(s_sub)
@@ -336,10 +470,14 @@ def stark_ramp_axial(nu: np.ndarray, s0: float, z_ratio: float,
 
 
 def local_ramp_density(x: np.ndarray, n_photon: int = 2) -> np.ndarray:
-    """The transverse law on the dimensionless shift x = s/S: n |x|^(n-1) on
-    [-1, 0], area one; the local density every axial mixture starts from."""
+    """The transverse law on the dimensionless shift x = s/S: n x^(n-1) on
+    [0, 1], area one; the local density every axial mixture starts from.
+
+    BLUE-SIDED since O27: the adopted Delta alpha is negative, so the shift
+    carries its mass at positive detuning. |x| is kept in the power so the
+    law reads the same for either support."""
     x = np.asarray(x, float)
-    inside = (x <= 0.0) & (x >= -1.0)
+    inside = (x >= 0.0) & (x <= 1.0)
     return np.where(inside, n_photon * np.abs(x) ** (n_photon - 1), 0.0)
 
 
@@ -351,7 +489,7 @@ def trapped_ramp_density(x: np.ndarray, eta: float, n_photon: int = 2) -> np.nda
     makes, so it samples the intensity with a Boltzmann weight and the density
     gains `exp(eta |x|)` with ``eta = U0 / kT`` the trap depth over the sample
     temperature -- `platforms.trap_eta` returns it. Normalised to area one on
-    [-1, 0], so it drops into `build_world_trace(fringe_density=...)` and into
+    [0, 1] (BLUE; O27), so it drops into `build_world_trace(fringe_density=...)` and into
     `ramp_mixture` wherever the free law goes.
 
     ``eta = 0`` returns `local_ramp_density` exactly: an untrapped sample is the
@@ -367,7 +505,7 @@ def trapped_ramp_density(x: np.ndarray, eta: float, n_photon: int = 2) -> np.nda
     """
     x = np.asarray(x, float)
     eta = float(eta)
-    inside = (x <= 0.0) & (x >= -1.0)
+    inside = (x >= 0.0) & (x <= 1.0)          # BLUE; O27, as local_ramp_density
     u = np.abs(x)
     w = np.where(inside, u ** (n_photon - 1) * np.exp(eta * u), 0.0)
     area = trapezoid(w, x)
@@ -401,15 +539,15 @@ def _require_density_grid(x_grid: np.ndarray, g_x: np.ndarray) -> None:
         raise ValueError(
             "ramp_mixture: x_grid must ascend; the support's lower edge is read "
             "as x_grid[0], so a descending grid returns a delta at the origin")
-    # the upper edge is zero shift, to within one grid step: the fringe
-    # density is a histogram whose last BIN CENTRE sits half a step below zero
-    # (its grid ends at -0.0015 with a step of 0.0031), which this refused on
-    # its first run, so the tolerance is the grid's own step and not an
-    # absolute epsilon
+    # BLUE SINCE O27: the LOWER edge is zero shift, to within one grid step, and the
+    # support's edge is positive. The tolerance is the grid's own step and not an absolute
+    # epsilon, because the fringe density is a histogram whose first BIN CENTRE sits half a
+    # step above zero (a step of 0.0031), which the red-sided version of this check refused
+    # on its first run for the mirrored reason.
     step = float(np.max(np.diff(x)))
-    if x[-1] > 1e-9 or x[-1] < -1.5 * step or x[0] >= 0.0:
+    if x[0] < -1e-9 or x[0] > 1.5 * step or x[-1] <= 0.0:
         raise ValueError(
-            f"ramp_mixture: x_grid must run from the support's negative edge up to 0 "
+            f"ramp_mixture: x_grid must run from 0 up to the support's positive edge "
             f"(within one grid step), got [{x[0]:.4g}, {x[-1]:.4g}] with step {step:.4g}")
     if np.any(g < 0):
         raise ValueError("ramp_mixture: a density may not be negative")
@@ -449,8 +587,8 @@ def ramp_mixture(nu: np.ndarray, s0: float, z_ratio: float,
     if s0 <= 0:
         out[np.argmin(np.abs(nu))] = 1.0 / dnu
         return out
-    x_lo = float(x_grid[0])                          # the support's lower edge in x
-    lo_s, hi_s = x_lo * s0, 0.0
+    x_hi = float(x_grid[-1])                         # the support's upper edge in x (BLUE; O27)
+    lo_s, hi_s = 0.0, x_hi * s0
     cells = np.nonzero((nu + 0.5 * dnu > lo_s) & (nu - 0.5 * dnu < hi_s))[0]
     if cells.size == 0:
         out[np.argmin(np.abs(nu))] = 1.0 / dnu
@@ -481,8 +619,8 @@ def stark_ramp_axial_moments(s0: float, z_ratio: float, n_photon: int = 2,
     """Moments of stark_ramp_axial on a fine internal grid: mean, variance,
     and the dimensionless standardized skewness g1 = mu3 / var^(3/2).
     Pure-transverse (z_ratio -> 0) benchmarks: n=2 triangle gives
-    mean = -(2/3) s0, var/mean^2 = 1/8, g1 = 18^1.5/135 ~ +0.5657;
-    n=1 uniform gives mean = -s0/2, g1 = 0. THAT NULL IS THE z_ratio -> 0
+    mean = +(2/3) s0, var/mean^2 = 1/8, g1 = -18^1.5/135 ~ -0.5657;
+    n=1 uniform gives mean = +s0/2, g1 = 0. THAT NULL IS THE z_ratio -> 0
     LIMIT AND NOT A PROPERTY OF ONE-PHOTON EXCITATION (2026-09-09): the
     transverse law is uniform at each slice, and the axial mixture of uniforms
     with a common lower endpoint and falling upper endpoints is not uniform and
@@ -497,7 +635,7 @@ def stark_ramp_axial_moments(s0: float, z_ratio: float, n_photon: int = 2,
         # "undefined" about two moments that are exactly defined.
         return {"mean": 0.0, "var": 0.0,
                 "skew_standardized": float("nan")}
-    s = np.linspace(-s0, 0.0, n_grid)
+    s = np.linspace(0.0, s0, n_grid)
     a = np.abs(s)
     with np.errstate(divide="ignore", invalid="ignore"):
         zm = np.sqrt(np.maximum(s0 / np.where(a > 0, a, np.inf) - 1.0, 0.0))
@@ -535,8 +673,8 @@ def ramp_moment_contributions(s0: float, z_ratio: float = 0.0,
     third-cumulant measured from the data are mutually consistent with it
     (a chi^2). One S0, three moments -- a spurious asymmetry that is not a
     real ramp will not also reproduce the correct lower-order pull and
-    variance. Pure triangle (z_ratio->0): pull -2/3 S0, excess_var S0^2/18,
-    kappa3 +S0^3/135. NOT three extraction methods -- one fitted S0, three
+    variance. Pure triangle (z_ratio->0): pull +2/3 S0, excess_var S0^2/18,
+    kappa3 -S0^3/135. NOT three extraction methods -- one fitted S0, three
     consistency projections."""
     m = stark_ramp_axial_moments(s0, max(z_ratio, 1e-6), n_photon)
     return {"pull": m["mean"], "excess_var": m["var"],
@@ -575,7 +713,7 @@ def stark_from_intensity_profile(nu: np.ndarray, s0: float,
         return out
     ii = np.asarray(intensity, float)
     w = np.asarray(measure, float) * np.maximum(ii, 0.0) ** n_photon
-    s = -s0 * ii / ii.max()
+    s = +s0 * ii / ii.max()          # BLUE: the adopted Delta alpha is negative (O27)
     idx = np.clip(np.round((s - nu[0]) / dnu).astype(int), 0, len(nu) - 1)
     np.add.at(out, idx, w)
     area = out.sum() * dnu

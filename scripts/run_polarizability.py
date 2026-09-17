@@ -20,8 +20,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from rb5s6s import config as C  # noqa: E402
-from rb5s6s.constants import DELTA_ALPHA_AU  # noqa: E402
-from rb5s6s.polarizability import (alpha_5s, alpha_6s, delta_alpha,  # noqa: E402
+from rb5s6s.polarizability import (alpha_5s, alpha_6s,  # noqa: E402
                                    TAIL_6S,
                                    tuneout_5s, magic_wavelengths, mc_band,
                                    _alpha, LINES_5S, LINES_6S, E_6S_CM,
@@ -70,7 +69,6 @@ def main() -> int:
     # arithmetic, which is the reason to get it right rather than to shrug.
     LAM_DRIVE_NM = 2e7 / E_6S_CM
 
-    da993 = delta_alpha(LAM_DRIVE_NM)
     a6_1064 = alpha_6s(1064.0)
     magic = magic_wavelengths()
 
@@ -91,17 +89,12 @@ def main() -> int:
     print(f"    alpha_5S(0)  = {a5s:8.2f} au   (measured 318.79(1.42))")
     print(f"    alpha_6S(0)  = {a6s:8.1f} au   (Safronova-group 5167(22); tail calibrated)")
     print(f"    5S tune-out  = {t0:9.3f} nm  (measured 790.032326(32))")
-    print("\n  THE DIFFERENTIAL AT 993 nm (the independent recompute):")
-    b = mc_band(lambda k5, k6: _a6(k6, LAM_DRIVE_NM) - _a5(k5, LAM_DRIVE_NM))
-    print(f"    Delta_alpha(993) = {da993:+.0f} au  [band {b['lo']:+.0f} .. {b['hi']:+.0f}]")
-    # The label said Orson's while reading the record's own constant, and the
-    # abs() numerator over a signed denominator printed -200% after the
-    # 2026-08-24 sign adjudication. Both sides are magnitudes now.
-    print(f"    |Delta_alpha| vs the package default {abs(DELTA_ALPHA_AU):.0f}: "
-          f"{abs(da993) / abs(DELTA_ALPHA_AU) - 1.0:+.2%} -- magnitude CONFIRMED;")
-    print("    the SIGN is opposite (alpha_6S(993) < 0: 6S pushed up, 5S down =>")
-    print("    BLUE shift). Flagged for adjudication; archival results are")
-    print("    sign-immune (they use |Delta_alpha|). See THEORY_NOTE section 5.")
+    # THE DIFFERENTIAL AT THE DRIVE IS NOT PRINTED HERE (owner, 2026-09-17). This module stops the 6S list at
+    # 8P and carries the omitted states with a static tail, and that sum is the retired value, which stands
+    # in private/history/ alone. The value of record is the dynamic sum of run_polarizability_deep.py.
+    print("\n  THE DIFFERENTIAL AT 993 nm: results/polarizability_deep.csv, the dynamic sum")
+    print("    to 12P with the 6s continuum, is the value of record; this module's static-tail sum")
+    print("    is not printed. The sign (6S pushed up, a blue shift) is the owner's ruling O27.")
     print("\n  DESIGN NUMBERS (unpublished; ENVELOPE):")
     print(f"    alpha_6S(1064) = {a6_1064:+.1f} au  (a 1064 trap arm is NOT line-neutral)")
     bands = {}
@@ -124,13 +117,13 @@ def main() -> int:
                     "status"])
         w.writerow(["alpha_5s_static", "model", f"{a5s:.2f}",
                     f"{b_a5s['lo']:.2f}", f"{b_a5s['hi']:.2f}",
-                    "au; validation vs measured 318.79(1.42) (Holmgren 2010)", "DIAGNOSTIC"])
+                    "au, validation vs measured 318.79(1.42) (Holmgren 2010)", "DIAGNOSTIC"])
         w.writerow(["alpha_6s_static", "model", f"{a6s:.1f}",
                     f"{b_a6s['lo']:.1f}", f"{b_a6s['hi']:.1f}",
-                    "au; tail calibrated to the Safronova-group 5167(22)", "DIAGNOSTIC"])
+                    "au, tail calibrated to the Safronova-group 5167(22)", "DIAGNOSTIC"])
         w.writerow(["tuneout_5s", "model", f"{t0:.4f}",
                     f"{b_t0['lo']:.4f}", f"{b_t0['hi']:.4f}",
-                    "nm; validation vs measured 790.032326(32) "
+                    "nm, validation vs measured 790.032326(32) "
                     "(Leonard 2015 as corrected by the 2017 erratum)", "DIAGNOSTIC"])
         # The two states SEPARATELY at 993 nm. These carry the sign argument:
         # 993 nm lies in the gap between the 6S->5P cascade (1324/1367 nm) and
@@ -140,10 +133,10 @@ def main() -> int:
         # whatever the matrix elements do.
         w.writerow(["alpha_5s_993", "model", f"{alpha_5s(LAM_DRIVE_NM):.1f}",
                     f"{b_a5_993['lo']:.1f}", f"{b_a5_993['hi']:.1f}",
-                    "au; POSITIVE -- 993 nm is red of the D1/D2 lines (795/780 nm)", "DIAGNOSTIC"])
+                    "au, POSITIVE -- 993 nm is red of the D1/D2 lines (795/780 nm)", "DIAGNOSTIC"])
         w.writerow(["alpha_6s_993", "model", f"{alpha_6s(LAM_DRIVE_NM):.1f}",
                     f"{b_a6_993['lo']:.1f}", f"{b_a6_993['hi']:.1f}",
-                    "au; NEGATIVE -- 993 nm is blue of the 6S->5P cascade "
+                    "au, NEGATIVE -- 993 nm is blue of the 6S->5P cascade "
                     "(1324/1367 nm), the dominant 6S term", "DIAGNOSTIC"])
         # THE TAIL'S FREQUENCY DEPENDENCE, a ONE-SIDED systematic the
         # Monte-Carlo band cannot see. TAIL_6S stands for every 6S->nP state
@@ -169,31 +162,20 @@ def main() -> int:
             (e_cm - E_6S_CM) ** 2 - _w_cm ** 2)
         _lo_corr = TAIL_6S * (_enh(33690.798) - 1.0)   # ionisation limit
         _hi_corr = TAIL_6S * (_enh(30958.91) - 1.0)    # 9P1/2, the nearest
-        w.writerow(["delta_alpha_993_tail_dispersion", "systematic",
-                    f"{_lo_corr:.1f}", f"{_lo_corr:.1f}", f"{_hi_corr:.1f}",
-                    "au, ONE-SIDED and additive to delta_alpha_993, making it "
-                    "less negative. The 6S tail is added flat while the drive "
-                    "sits inside the 6S->nP series, so every omitted state is "
-                    "enhanced and all of one sign. Range spans the ionisation "
-                    "limit to 9P1/2. NOT APPLIED: needs the 6S->9P..12P "
-                    "reduced matrix elements, which no held paper carries",
-                    "ENVELOPE"])
-        w.writerow(["delta_alpha_993", "model", f"{da993:.0f}",
-                    f"{b['lo']:.0f}", f"{b['hi']:.0f}",
-                    "au (alpha_6S - alpha_5S); |value| within ~5% of Orson "
-                    "2021's 1093 but OPPOSITE sign (6S pushed up at 993 nm "
-                    "=> blue shift) -- ADJUDICATED 2026-08-24 and now the package default, a decision on the theory and not a measurement, the sign being unset by experiment, archival results sign-immune. "
-                    "One defect is open and it is the size of the band: the 6S line list stops at 8P where the 5S list runs to 12P, and the tail that stands in for the omitted states is calibrated at the static limit while the drive sits between 8P and 9P, where the first omitted term is enhanced sevenfold. See delta_alpha_993_tail_dispersion, which sizes it and is deliberately not applied", "DIAGNOSTIC"])
+        # Delta-alpha(993) LIVES IN results/polarizability_deep.csv (2026-09-17, P7): the static-tail
+        # sum this file used to publish was replaced by the dynamic one, and a second published
+        # value of one quantity is what the single source exists to prevent. The static sum stays
+        # reproducible as rb5s6s.polarizability.delta_alpha(993.4181).
         w.writerow(["alpha_6s_1064", "model", f"{a6_1064:.1f}",
                     f"{b_a6_1064['lo']:.1f}", f"{b_a6_1064['hi']:.1f}",
-                    "au; small and negative -- a 1064 nm trap arm adds nearly the "
+                    "au, small and negative -- a 1064 nm trap arm adds nearly the "
                     "full alpha_5S(1064) ~ +687 au to the differential shift", "ENVELOPE"])
         for lam, aval in magic:
             cb = bands[lam]
             w.writerow(["magic_5s6s", f"{lam:.0f}nm", f"{lam:.2f}",
                         f"{cb['lo']:.2f}", f"{cb['hi']:.2f}",
-                        f"nm; alpha there {aval:.0f} au (trapping both states); "
-                        f"unpublished (searched 2026-07-17); scalar only -- "
+                        f"nm, alpha there {aval:.0f} au (trapping both states), "
+                        f"unpublished (searched 2026-07-17), scalar only -- "
                         f"vector shifts near the 6S-5P lines need their own "
                         f"treatment before a trap design", "ENVELOPE"])
     print("\n  Wrote results/polarizability.csv.")

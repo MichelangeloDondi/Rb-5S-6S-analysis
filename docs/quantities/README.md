@@ -4,20 +4,9 @@ One page per physical quantity this experiment tries to measure, constrain or
 calibrate, written to answer a single question about that quantity rather than
 to describe it.
 
-**The question.** For one physical quantity: what is it, what has the field
-already achieved, what does this dataset establish, why not more, and exactly
-what would have to change at the bench to do better.
-**Takes.** A quantity and a construction. Nothing else, and in particular no
-new fitting: every number on these pages is read from a committed artefact.
-**Gives.** A literature benchmark, the current result with its epistemic
-class, the named limitation, three defined levels of improvement with their
-bench recipes, the failure modes, and what remains impossible.
-**Skip if.** The question is what a term means, which is
-[the glossary](../GLOSSARY.md), or how a method works, which is
-[the wiki](../wiki/README.md), or what the whole programme found, which is
-[the synthesis](../BIG_PICTURE.md).
+For one physical quantity: what is it, what has the field already achieved, what does this dataset establish, why not more, and exactly what would have to change at the bench to do better. This page builds on a quantity and a construction. Nothing else, and in particular no new fitting: every number on these pages is read from a committed artefact. It sets out A literature benchmark, the current result with its epistemic class, the named limitation, three defined levels of improvement with their bench recipes, the failure modes, and what remains impossible. Not covered here: the question is what a term means, which is [the glossary](../GLOSSARY.md), or how a method works, which is [the wiki](../wiki/README.md), or what the whole programme found, which is [the synthesis](../BIG_PICTURE.md).
 
-## What a dossier is, and what it is not
+## Scope of a dossier
 
 The rest of this repository is organised by theme, by method and by
 re-centring. A reader who arrives holding a quantity, wanting to know where
@@ -42,7 +31,7 @@ a decision if better measured, and contributes to one integrated campaign. A
 quantity failing most of those is a section inside another dossier, which is
 the difference between a quantity layer and one page per variable.
 
-## The unit is a quantity and a construction
+## The unit as quantity and construction
 
 A number here is never quoted as belonging to a symbol alone. The AC-Stark
 coefficient alone has seven committed constructions, from the full archive
@@ -60,17 +49,17 @@ quote it as a value.
 Every dossier defines three targets for a future measurement. They are levels
 of scientific standing, not of decimal places.
 
-**An improved bound** tightens the present constraint or removes a named
+An improved bound tightens the present constraint or removes a named
 ambiguity. It need not produce a measurement. Turning an upper bound into a
 tighter one, breaking one degeneracy, establishing a sign, or excluding a model
 all qualify.
 
-**A measurement** makes the quantity separately identifiable under a model that
+A measurement makes the quantity separately identifiable under a model that
 has been tested and a calibration that has been supplied independently. The
 distinction from the level above is identifiability, not precision: a small
 error bar on a quantity that exchanges freely with another is not a measurement.
 
-**A competitive measurement** reaches an uncertainty, a coverage and a
+A competitive measurement reaches an uncertainty, a coverage and a
 systematic control comparable with the literature benchmark in that dossier's
 own second section. The benchmark is what makes the word mean anything, so a
 level defined against this experiment's current state instead is not written.
@@ -84,7 +73,7 @@ Each level also states its minimum viable version, the smallest campaign that
 would already be worth running, so that a programme can be entered rather than
 committed to.
 
-## What is not on these pages
+## Material excluded from these pages
 
 Numbers typed by hand. Every value is read from a named committed artefact,
 and where a target cannot yet be supported by a simulation or by the literature

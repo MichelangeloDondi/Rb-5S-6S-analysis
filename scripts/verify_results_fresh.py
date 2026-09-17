@@ -138,6 +138,12 @@ CHEAP = {
 # Minutes each, or needing data_raw/ traces, or both - everything the
 # per-pass cheap set must not pay for.
 EXPENSIVE = {
+    # about six minutes: two optimiser budgets over one nine-node grid, one core
+    "run_noiseless_floor": ["noiseless_floor.csv"],
+    # the window surface at its full noiseless size: 32 conditions by eight windows on the twin,
+    # about ten minutes on eight workers; its size and noise rungs live under the current cache
+    "run_window_surface": ["window_surface.csv"],
+    "run_kernel_mc --collect": ["kernel_mc.csv"],   # the grid first, then the collect: the artefacts under the cache are its input
     # about two minutes on one core: the rungs are replica studies and not cells, and the
     # archive arm pools the wing residuals of eight conditions before resampling them
     "run_residual_resampling": ["residual_resampling.csv"],
@@ -273,7 +279,10 @@ EXPENSIVE = {
     "run_fibre_twin": ["fibre_twin.csv"],
     "run_laser_kernel": ["laser_kernel.csv"],
     "run_kernel_headline": ["kernel_headline.csv"],
-    "run_linefit": ["linefit_conditions.csv"],
+    # all three of this producer's outputs, since two were committed unregistered in the wave
+    # that added them and `test_every_committed_result_is_checked_or_registered` is the only
+    # thing that would have said so (2026-09-17).
+    "run_linefit": ["linefit_conditions.csv", "linefit_pulls.csv", "linefit_traces.csv"],
     # noise_law_swap.csv is this same run's third output, free to check here.
     "run_beta_self": ["beta_self.csv", "beta_self_probe.csv", "noise_law_swap.csv"],
     "run_centre_stark": ["centre_stark.csv"],
@@ -323,6 +332,10 @@ UNCOVERED = {
         "Its cheap check is the same code path: the arm is exercised by "
         "tests/test_ultra_joint_producer.py, which runs the statistic and the admission "
         "rule on a synthetic condition without touching the archive."),
+    "ultra_joint_treatments.csv": (
+        "run_ultra_joint_treatments.py runs the treatment matrix's L stage through run_ultra_joint's "
+        "forward model on the twin (two hours on eight workers for six worlds at thirty-two conditions) "
+        "and reads data_raw/ for the design; its rows are DIAGNOSTIC until the whitening re-run (F36)."),
     "ultra_joint_closure.csv": (
         "run_ultra_joint_closure.py injects through run_ultra_joint's OWN forward model and "
         "walks the same waist grid three times over -- the real traces as its control, and two "

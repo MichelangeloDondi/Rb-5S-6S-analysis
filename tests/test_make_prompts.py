@@ -43,6 +43,11 @@ def _repo(tmp_path: Path) -> Path:
     _ledger = ROOT / "private" / "checks" / "board_ledger.py"
     if _ledger.is_file():
         (tmp_path / "private" / "checks" / "board_ledger.py").write_text(_ledger.read_text())
+        # the ledger imports the seat-model chooser from its own directory since 2026-09-17, so
+        # the copy carries it too: a copy missing a dependency fails every prompt test at once
+        _metrics = _ledger.with_name("seat_metrics.py")
+        if _metrics.is_file():
+            (tmp_path / "private" / "checks" / "seat_metrics.py").write_text(_metrics.read_text())
     for name in ("seat_brief.py", "reader_brief.py"):
         # stubs standing in for the brief emitters: each prints a marker the
         # positive test looks for, so an empty section cannot pass as a full one
@@ -109,12 +114,16 @@ def test_it_emits_the_model_first_and_files_the_prompt(tmp_path):
     repo = _repo(tmp_path)
     tree = _tree(repo)
     _marker(repo, tree, ["physics", "rules", "concision"], opus=["rules"])
-    # EVERY SEAT IS OPUS AND THE PHYSICS CHAIR ALONE IS FABLE (owner, 2026-09-15:
-    # "the board has to be done with all agents on opus 5, apart physics which
-    # should have a main agent on fable 5.1"). The Sonnet branch of `seat_model`
-    # was DELETED rather than left unreachable, so a test still expecting it was
-    # asserting a model the code cannot return.
-    for seat, model in (("physics", "fable"), ("rules", "opus"), ("concision", "opus")):
+    # THE PHYSICS CHAIR IS FABLE AND EVERY OTHER SEAT IS OPUS 5 OR SONNET 5 PER ROUND BY THE
+    # METRICS (owner, 2026-09-16 evening: "let the metrics talk"), so the expected model of a
+    # non-physics seat is the chooser's own answer in this copy, read through the same module
+    # the emitter imports, never a constant typed here.
+    import importlib.util
+    _spec = importlib.util.spec_from_file_location("_seat_metrics_copy", repo / "private" / "checks" / "seat_metrics.py")
+    _sm = importlib.util.module_from_spec(_spec); _spec.loader.exec_module(_sm)
+    for seat in ("physics", "rules", "concision"):
+        model = "fable" if seat == "physics" else _sm.choose(seat)[0]
+        assert model in ("fable", "opus", "sonnet")
         r = _run(repo, seat)
         assert r.returncode == 0, r.stderr
         assert r.stdout.splitlines()[0] == f"MODEL: {model}"

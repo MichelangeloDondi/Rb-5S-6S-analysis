@@ -10,6 +10,14 @@ from pathlib import Path
 import numpy as np
 import pytest
 
+from rb5s6s import constants as K
+from rb5s6s.stark import kappa_pred_per_watt
+
+#: The world's coefficient and its shift at 225 mW, read from the package so a test input cannot
+#: carry a retired prediction (these read 1.618 and 0.364, the static-tail values, until 2026-09-17).
+KAPPA_PRED = kappa_pred_per_watt(K.W0_MEASURED_M, K.RHO_RETRO)
+S0_PRED_MHZ = KAPPA_PRED * 0.225
+
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = ROOT / "scripts" / "run_three_channel_forecast.py"
 
@@ -30,11 +38,11 @@ def _kw():
 def test_tooth_of_default_is_byte_identical_and_a_comb_changes_the_trace():
     from rb5s6s.forecast import build_world_trace
     L = {"cascade": True, "saturation": True, "stark": True, "bbr": True, "drift": False, "quantise": True, "randomise": False}
-    a = build_world_trace(1.0, 0.364, 130.0, 0, 1, np.random.default_rng(7), L, **_kw())[1]
-    b = build_world_trace(1.0, 0.364, 130.0, 0, 1, np.random.default_rng(7), L, tooth_of=None, **_kw())[1]
+    a = build_world_trace(1.0, S0_PRED_MHZ, 130.0, 0, 1, np.random.default_rng(7), L, **_kw())[1]
+    b = build_world_trace(1.0, S0_PRED_MHZ, 130.0, 0, 1, np.random.default_rng(7), L, tooth_of=None, **_kw())[1]
     assert np.array_equal(a, b)
     kw = _kw(); kw["positions"] = {"4192": 0.0, "4192@+1": 12.5}; kw["shares"] = {"4192": 0.6, "4192@+1": 0.2}
-    c = build_world_trace(1.0, 0.364, 130.0, 0, 1, np.random.default_rng(7), L, tooth_of={"4192@+1": "4192"}, **kw)[1]
+    c = build_world_trace(1.0, S0_PRED_MHZ, 130.0, 0, 1, np.random.default_rng(7), L, tooth_of={"4192@+1": "4192"}, **kw)[1]
     assert not np.array_equal(a, c)
 
 
@@ -43,7 +51,7 @@ def test_a_tooth_without_a_physical_peak_refuses_rather_than_guessing():
     L = {"cascade": True, "saturation": False, "stark": True, "bbr": False, "drift": False, "quantise": False, "randomise": False}
     kw = _kw(); kw["positions"] = {"4192": 0.0, "4192@+1": 12.5}; kw["shares"] = {"4192": 0.6, "4192@+1": 0.2}
     with pytest.raises((KeyError, ValueError, RuntimeError)):
-        build_world_trace(1.0, 0.364, 130.0, 0, 1, np.random.default_rng(7), L, **kw)
+        build_world_trace(1.0, S0_PRED_MHZ, 130.0, 0, 1, np.random.default_rng(7), L, **kw)
 
 
 def test_the_comb_heights_follow_the_bessel_law_and_sum_to_the_line():
@@ -83,8 +91,8 @@ def test_every_lever_varies_one_field_from_the_base_except_the_named_depth_cells
 
 
 def test_the_pull_channel_reads_the_ramps_mean_from_the_fitted_centre():
-    """The ramp's mean is -2 S0/3: a centre fitted with s0 = 0 shifts by that
-    amount, so kappa = -(3/2) d centre / dP. Checked here on the model's own
+    """The ramp's mean is 2 S0/3 on its side (+ on the blue side since O27): a centre fitted
+    with s0 = 0 shifts by that amount, so kappa = (d centre / dP) / (the signed 2/3). Checked here on the model's own
     first moment; the producer's fitted centre on its quiet traces returns
     the same to about a per cent at 16 um and better at 40 and 64."""
     from rb5s6s.lineshape import model_profile
@@ -95,7 +103,8 @@ def test_the_pull_channel_reads_the_ramps_mean_from_the_fitted_centre():
         y = y / y.sum()
         cs.append(float(np.sum(nu * y)))
     slope = (cs[2] - cs[0]) / 2.0
-    assert slope == pytest.approx(-2.0 / 3.0, rel=0.05)
+    # +2/3 under O27's blue-sided density (2026-09-17): the centroid moves WITH the shift.
+    assert slope == pytest.approx(+2.0 / 3.0, rel=0.05)
 
 
 def test_the_worker_cap_and_the_flag_refusal_hold(monkeypatch):
@@ -202,7 +211,7 @@ def test_the_grid_span_is_opt_in_and_symmetric_under_a_comb():
     the wing the baseline is read from."""
     from rb5s6s.forecast import build_world_trace
     L = {"cascade": True, "saturation": True, "stark": True, "bbr": True, "drift": False, "quantise": True, "randomise": False}
-    args = (1.0, 0.364, 130.0, 0, 1)
+    args = (1.0, S0_PRED_MHZ, 130.0, 0, 1)
     kw = _kw()
     nu0, y0, _ = build_world_trace(*args, np.random.default_rng(7), L, **kw)
     nu1, y1, _ = build_world_trace(*args, np.random.default_rng(7), L, grid_span=None, **kw)
@@ -237,7 +246,7 @@ def test_a_tooth_is_depleted_at_its_own_rate_and_the_identity_map_stays_a_no_op(
     kw["positions"] = {"4192": 0.0, "4192@+1": 25.0}
     kw["shares"] = {"4192": 0.44, "4192@+1": 0.11}
     tmap = {"4192@+1": "4192"}
-    _, _, truth = build_world_trace(1.0, 0.364, 130.0, 0, 1, np.random.default_rng(7), L,
+    _, _, truth = build_world_trace(1.0, S0_PRED_MHZ, 130.0, 0, 1, np.random.default_rng(7), L,
                                     tooth_of=tmap, **kw)
     own = 0.44 + 0.11
     for key, share in kw["shares"].items():
@@ -247,16 +256,16 @@ def test_a_tooth_is_depleted_at_its_own_rate_and_the_identity_map_stays_a_no_op(
 
     # an identity map over a scaled share changes nothing
     kw1 = _kw(); kw1["cycles_at_max"] = 4.0; kw1["shares"] = {"4192": 0.31}
-    a = build_world_trace(1.0, 0.364, 130.0, 0, 1, np.random.default_rng(7), L, **kw1)[1]
-    b = build_world_trace(1.0, 0.364, 130.0, 0, 1, np.random.default_rng(7), L,
+    a = build_world_trace(1.0, S0_PRED_MHZ, 130.0, 0, 1, np.random.default_rng(7), L, **kw1)[1]
+    b = build_world_trace(1.0, S0_PRED_MHZ, 130.0, 0, 1, np.random.default_rng(7), L,
                           tooth_of={"4192": "4192"}, **kw1)[1]
     assert np.array_equal(a, b)
 
     # with depletion off, the teeth carry exactly the line's own signal
     Loff = {**L, "cascade": False}
-    _, _, one = build_world_trace(1.0, 0.364, 130.0, 0, 1, np.random.default_rng(7), Loff,
+    _, _, one = build_world_trace(1.0, S0_PRED_MHZ, 130.0, 0, 1, np.random.default_rng(7), Loff,
                                   **{**_kw(), "shares": {"4192": 0.55}, "cycles_at_max": 4.0})
-    _, _, many = build_world_trace(1.0, 0.364, 130.0, 0, 1, np.random.default_rng(7), Loff,
+    _, _, many = build_world_trace(1.0, S0_PRED_MHZ, 130.0, 0, 1, np.random.default_rng(7), Loff,
                                    tooth_of=tmap, **kw)
     assert sum(many.values()) == pytest.approx(one["4192"], rel=1e-12)
 
@@ -281,7 +290,7 @@ def test_the_light_shift_does_not_move_with_the_modulation_depth():
 
     def trace(shares, positions, tooth_of=None):
         kw = {**_kw(), **quiet, "positions": positions, "shares": shares}
-        return build_world_trace(1.0, 0.364, 130.0, 0, 1, np.random.default_rng(7), L,
+        return build_world_trace(1.0, S0_PRED_MHZ, 130.0, 0, 1, np.random.default_rng(7), L,
                                  tooth_of=tooth_of, grid_span=(-60.0, 60.0), **kw)[1]
 
     a = trace({"4192": 0.22}, {"4192": 0.0})
@@ -303,7 +312,7 @@ def test_the_light_shift_does_not_move_with_the_modulation_depth():
 
     def trace_w(shares, positions, tooth_of=None):
         kw = {**_kw(), **quiet, "positions": positions, "shares": shares}
-        return build_world_trace(1.0, 0.364, 130.0, 0, 1, np.random.default_rng(7), Lw,
+        return build_world_trace(1.0, S0_PRED_MHZ, 130.0, 0, 1, np.random.default_rng(7), Lw,
                                  tooth_of=tooth_of, grid_span=(-60.0, 60.0), **kw)[1]
 
     carrier = trace_w({"4192": 0.22}, {"4192": 0.0})
@@ -393,7 +402,7 @@ def test_the_area_sum_rule_is_flat_in_depth_and_quadratic_in_power():
         pos = {"4192": 0.0, "4192@+1": 40.0, "4192@-1": -40.0}
         sh = {k: 0.44 * float(w[i]) / tot for i, k in enumerate(pos)}
         kwr = {**kw, "positions": pos, "shares": sh}
-        nu, y, _ = build_world_trace(power, 1.618, 130.0, 0, 1, np.random.default_rng(5), L,
+        nu, y, _ = build_world_trace(power, KAPPA_PRED, 130.0, 0, 1, np.random.default_rng(5), L,
                                      tooth_of={"4192@+1": "4192", "4192@-1": "4192"},
                                      grid_span=(-140.0, 140.0), **kwr)
         return mod._area(nu, y)

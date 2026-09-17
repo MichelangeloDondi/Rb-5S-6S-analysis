@@ -2,19 +2,9 @@
 
 *[wiki index](README.md) · concept*
 
-**The question.** What changes when the atoms and the light are held in the
-same waveguide instead of crossing in free space, and which of this
-measurement's limits that fixes?
-**Takes.** [The beam waist](the-beam-waist.md) for what an intensity is,
-[transit-time broadening](transit-time-broadening.md) for the width a
-crossing costs, and [the AC-Stark shift](ac-stark-shift.md) for what a field
-does to the levels.
-**Gives.** The two guided geometries, their trade-offs, and why a guided
-platform is a different lever on this record's degeneracies.
-**Skip if.** You have no fibre. Nothing on the record's main path depends on
-it.
+This page asks what changes when the atoms and the light are held in the same waveguide instead of crossing in free space, and which of this measurement's limits that fixes? This page builds on [The beam waist](the-beam-waist.md) for what an intensity is, [transit-time broadening](transit-time-broadening.md) for the width a crossing costs, and [the AC-Stark shift](ac-stark-shift.md) for what a field does to the levels and sets out the two guided geometries, their trade-offs, and why a guided platform is a different lever on this record's degeneracies. Not covered here: you have no fibre. Nothing on the record's main path depends on it.
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
 > defines every term and symbol used anywhere in this repository.
 
 ## The two geometries
@@ -39,7 +29,7 @@ the surface.
 | what limits coherence | collisions with the wall, guided-mode light shifts | the surface, through van der Waals and its thermal field |
 | what it is good at | long interrogation of a dense guided sample | strong coupling of a few atoms to a single mode |
 
-## Where this repository uses it
+## Application in this repository
 
 From [`results/onf_candidate.csv`](../../results/onf_candidate.csv), which
 sizes a nanofibre candidate alongside this vapour cell:
@@ -86,7 +76,7 @@ ladder. Each moves a different term in the width budget.
 
 ## Two structural facts a free-space intuition gets wrong
 
-**A guided mode has no Rayleigh range.** A focused beam concentrates a
+A guided mode has no Rayleigh range. A focused beam concentrates a
 two-photon rate within about one Rayleigh range of its waist, so its useful
 length is a millimetre or so and tightening the focus shortens it. A guided
 mode keeps its waist for the whole fibre. That turns the interaction length
@@ -110,8 +100,8 @@ vapour in the mode is resolved by any photodiode, while
 a cold loaded column is a part-per-million measurement and needs a
 correspondingly quiet laser.
 
-**That cold number rests on an atom count the host group's own measurement
-scales down.** The row puts about a hundred and thirteen thousand atoms in the
+That cold number rests on an atom count the host group's own measurement
+scales down. The row puts about a hundred and thirteen thousand atoms in the
 mode. [Xin and co-workers](../lit/xin2018.md) load a hollow-core fibre and use
 about ten thousand, read in transmission. The dip counts the atoms the mode
 drives and not their spacing along the fibre, so the row is optimistic by
@@ -120,8 +110,8 @@ The arm survives it slowly: the dip falls to about two parts in a hundred
 million and a signal-to-noise of ten takes about half an hour, against
 sixteen seconds at the row's own assumed number.
 
-**And the nanofibre runs out of power headroom before it runs out of
-atoms.** The evanescent mode is tight enough that one milliwatt through a
+And the nanofibre runs out of power headroom before it runs out of
+atoms. The evanescent mode is tight enough that one milliwatt through a
 400 nm fibre reaches a peak light shift of
 [40.948](../../results/platform_twins.csv "ref:platform_twins:onf:onf:s0_mhz") MHz
 and a saturation parameter of
@@ -176,7 +166,7 @@ measured.
 * [Chapter 6 of the big picture](../big_picture/06_next-nanofibre.md), the
   fibre thread in full.
 
-## See also
+## Related pages
 
 * [Identifiability](identifiability.md), the degeneracy a second platform
   breaks.

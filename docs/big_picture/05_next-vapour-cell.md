@@ -1,6 +1,6 @@
 *Chapter 5 of 9 of [the big picture](../BIG_PICTURE.md)*
 
-## 5. What new vapour-cell measurements would add
+## 5. Gains from further vapour-cell measurements
 
 A cell session with a stable lock (the cavity lock was repaired on
 2026-08-16, with minutes-scale stability still to be measured at the bench)
@@ -40,6 +40,7 @@ physics:
    correlation squared, so the purchase is between 2.3 and 3.2 across the
    conditions this record covers, larger than any other item here and
    available without spending a single shot on the atoms.
+
    [Chapter 7](07_limitations-and-identifiability.md) carries the
    constructions.
 3. **Line centre vs power (the "pull").**
@@ -78,7 +79,9 @@ physics:
    [The ramp chapter](../methods/03_the_ac_stark_ramp.md) derives the
    exponents and names the two cautions: the retro ratio has to be measured at
    each setting, and the axial collection window moves with the knob.
-4. **Same-session high-density points (150–170 °C).**
+4.
+
+   **Same-session high-density points (150–170 °C).**
    Converts reach on the density lever, rather than combinability, which the
    record has already settled. It rides the temperature-grid days if the oven
    allows, and could come back empty if the oven will not reach or hold the
@@ -95,7 +98,9 @@ physics:
    0.07–0.25 MHz, against a ~20 kHz signal in 2025. **The hot points are
    necessary and not sufficient**: measured against the block-to-block width
    reproducibility that actually limits the comparison, they reach only
-   0.9–3.0σ per block (`results/resolving_power.csv`). Interleaving the peaks
+   0.9–3.0σ per block (`results/resolving_power.csv`).
+
+   Interleaving the peaks
    and logging the power per trace would cut that floor, and would take the
    same signal to 3.4–12.2σ. The two halves are co-limiting, not a headline and
    a refinement. Interleaving also fixes a second problem: in 2025 temperature
@@ -123,8 +128,8 @@ Three acquisition changes would make those four *trustworthy*, not merely
 *possible*. Each closes a gap the 2025 dataset could only bound around, and
 each is stated on the same four points as the items above.
 
-**Interleaving the four peaks within minutes, with a logged per-scan
-timestamp**, which the analysed exports do not carry. It converts cross-peak
+Interleaving the four peaks within minutes, with a logged per-scan
+timestamp, which the analysed exports do not carry. It converts cross-peak
 systematics from something assumed into something checked, rides inside every
 dwell at no cost of its own, and fails only if the scope will not export
 per-trace times, in which case an external log carries it
@@ -149,7 +154,7 @@ curve rather than measures, and the cold-spot audit puts that scale at ×1.4 to
 systematic than the beam waist. It also gates item 3 above, because the
 high-temperature grid cannot be read until the cold-spot lag is characterised.
 
-**Reading the 6S→5P ~1.3 µm cascade** instead of the reabsorbed 795 nm
+Reading the 6S→5P ~1.3 µm cascade instead of the reabsorbed 795 nm
 fluorescence. It converts the degeneracy law into something measured with the
 trapping confound suppressed by about two orders of magnitude rather than
 removed, and could come back empty if the cascade photon rate sits under the
@@ -161,6 +166,7 @@ by trapped D-line photons, re-excites at 1.07 per cent of the primary
 two-photon rate at 130 °C, a band of 0.49 to 1.85 per cent over the unmeasured
 detector standoff and nothing at 70 °C
 ([`scripts/run_trapping_channels.py`](../../scripts/run_trapping_channels.py)).
+
 The approach is established on the sibling 5S–5D line
 ([Hassanin 2023](../lit/hassanin2023.md),
 [Beard 2024](../lit/beard2024.md)) and plausibly feasible with the IR receiver

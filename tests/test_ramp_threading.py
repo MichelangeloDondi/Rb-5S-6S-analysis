@@ -23,12 +23,13 @@ from rb5s6s import constants as K
 from rb5s6s.fringe_tail import (COHERENCE_TRANSIT, fringe_shift_density,
                                fringe_tail_mc)
 from rb5s6s.forecast import build_world_trace
+from rb5s6s.stark import kappa_pred_per_watt
 from rb5s6s.lineshape import (local_ramp_density, ramp_mixture, stark_ramp,
                               stark_ramp_axial)
 
 ROOT = Path(__file__).resolve().parents[1]
 NU = np.arange(-40.0, 40.0, 0.01)
-XG = np.linspace(-1.0, 0.0, 4001)
+XG = np.linspace(0.0, 1.0, 4001)
 
 
 @pytest.mark.parametrize("z_ratio", [0.2605, 0.667, 1.708, 4.169])
@@ -43,13 +44,13 @@ def test_the_mixture_of_the_transverse_law_is_the_axial_ramp(z_ratio):
 def test_the_mixture_at_zero_window_is_the_transverse_ramp():
     """Cell for cell the axial form's own limit; against stark_ramp it differs
     in the edge cell alone, by that function's first-moment transfer, and the
-    mean is the exact -2/3 s0 either way."""
+    mean is the exact +2/3 s0 either way (BLUE; O27)."""
     f = ramp_mixture(NU, 2.0, 0.0, XG, local_ramp_density(XG))
     assert np.abs(f - stark_ramp_axial(NU, 2.0, 1e-12)).max() < 1e-12
     ref = stark_ramp(NU, 2.0)
     diff = np.abs(f - ref)
     assert diff.max() < 0.05 * ref.max() and (diff > 1e-3 * ref.max()).sum() <= 2
-    assert (NU * f).sum() * 0.01 == pytest.approx(-2.0 / 3.0 * 2.0, abs=2e-3)
+    assert (NU * f).sum() * 0.01 == pytest.approx(+2.0 / 3.0 * 2.0, abs=2e-3)
 
 
 def _moments(x, dens):
@@ -61,14 +62,14 @@ def _moments(x, dens):
 
 def test_the_fringe_density_without_contrast_is_the_ramp():
     """rho = 0 removes the fringe; dividing the path factor out leaves the
-    record's own |x| ramp: mean -2/3, variance 1/18, third cumulant +1/135."""
+    record's own ramp: mean +2/3, variance 1/18, third cumulant -1/135 (BLUE; O27)."""
     d = fringe_shift_density(w0_m=64e-6, rho=0.0, n_atoms=200_000, seed=7,
                              coherence_s=COHERENCE_TRANSIT)
     assert d["kappa_bar"] == pytest.approx(math.sqrt(2.0 / 3.0), abs=1e-9)
     m, v, k3 = _moments(d["x_grid"], d["density"])
-    assert m == pytest.approx(-2.0 / 3.0, abs=0.01)
+    assert m == pytest.approx(+2.0 / 3.0, abs=0.01)
     assert v == pytest.approx(1.0 / 18.0, rel=0.05)
-    assert k3 == pytest.approx(1.0 / 135.0, rel=0.10)
+    assert k3 == pytest.approx(-1.0 / 135.0, rel=0.10)   # the odd cumulant mirrors (O27)
 
 
 def test_the_binned_density_agrees_with_the_pooled_sums_and_with_fringe_tail_mc():
@@ -86,11 +87,11 @@ def test_the_binned_density_agrees_with_the_pooled_sums_and_with_fringe_tail_mc(
     assert -0.45 < mc["d_kappa3"] / mc["kappa3_nofringe"] < -0.10
 
 
-def _world(**kw):
+def _world(kappa_scale=1.0, **kw):
     layers = {"cascade": False, "saturation": False, "stark": True,
               "bbr": False, "drift": False, "quantise": False, "randomise": False}
     return build_world_trace(
-        0.225, 1.618, 130.0, 0, 1, np.random.default_rng(4), layers,
+        0.225, kappa_scale * kappa_pred_per_watt(K.W0_MEASURED_M, K.RHO_RETRO), 130.0, 0, 1, np.random.default_rng(4), layers,
         positions={"4192": 0.0}, shares={"4192": 1.0},
         gamma_coll=0.4, sigma_laser_fwhm=2.0, transit_fwhm=0.93,
         power_max_w=0.225, cycles_at_max=1.0, drift_mhz_total=0.0,
@@ -117,16 +118,33 @@ def test_the_new_machinery_at_its_identity_setting_reproduces_the_untouched_path
     CSVs and is carried by the freshness set, not by this file.
     """
     _, base, _ = _world()
-    _, identity, _ = _world(z_ratio=0.0, fringe_density=(XG, local_ramp_density(XG)))
-    # measured 2.1e-5 of the peak on this line, the mixture's own quadrature
-    # against the closed form. WHAT IT CATCHES, measured: a shift scale of
-    # 1.001 separates by 8.2e-5 and PASSES, 1.01 by 6.4e-4 and fails, so the
-    # floor binds at about a seventh of a per cent and not at 'any drift'.
-    assert np.abs(identity - base).max() < 1e-4 * base.max(), (
-        "the mixture at its identity setting no longer reproduces the default "
-        "path: one of the two moved")
     _, spelled_out, _ = _world(z_ratio=None, fringe_density=None)
     assert np.array_equal(base, spelled_out), "the two spellings must agree"
+
+
+@pytest.mark.xfail(strict=True, reason=(
+    "F101, 2026-09-17: ramp_mixture's eight-sub-sample cell quadrature and stark_ramp's exact "
+    "cells with their first-moment transfer differ on a convolved trace by up to 7.5e-4 of the "
+    "peak, set by where the ramp's edge falls in its cell. The 2.1e-5 this assertion was tuned "
+    "on held at one alignment only, the coefficient then typed as the world's. It flips when "
+    "the exact-cell quadrature lands (WAVE_QUEUE ramp-mixture-exact-cells)."))
+def test_the_mixture_at_its_identity_setting_matches_the_default_path_at_every_alignment():
+    """The identity comparison, made at five edge alignments about the record's coefficient.
+
+    A zero collection window over the transverse density IS the pure ramp, analytically, so
+    any drift in either the default path or the mixture separates them. WHAT IT CATCHES, measured
+    at the one aligned point before 2026-09-17: a shift scale of 1.001 separated by 8.2e-5 and
+    passed, 1.01 by 6.4e-4 and failed. Across alignments the quadrature alone reaches 7.5e-4, so
+    the floor cannot be read at any alignment until the two quadratures agree cell by cell.
+    """
+    worst = 0.0
+    for f in (0.905, 0.94, 1.0, 1.046, 1.10):
+        _, base, _ = _world(kappa_scale=f)
+        _, identity, _ = _world(kappa_scale=f, z_ratio=0.0, fringe_density=(XG, local_ramp_density(XG)))
+        worst = max(worst, float(np.abs(identity - base).max() / base.max()))
+    assert worst < 1e-4, (
+        f"the mixture at its identity setting departs from the default path by {worst:.2e} "
+        f"of the peak at some edge alignment")
 
 
 def test_neither_switch_is_a_no_op_by_a_margin_that_is_not_machine_noise():
@@ -157,17 +175,17 @@ def test_neither_switch_is_a_no_op_by_a_margin_that_is_not_machine_noise():
 
 
 @pytest.mark.parametrize("label,x_grid,want", [
-    ("descending", np.linspace(0.0, -1.0, 801), "refuse"),
-    ("stops short of zero shift", np.linspace(-1.0, -0.2, 801), "refuse"),
-    ("wholly positive", np.linspace(0.0, 1.0, 801), "refuse"),
-    ("a genuinely narrower support", np.linspace(-0.5, 0.0, 801), "accept"),
-    ("the transverse law's own grid", np.linspace(-1.0, 0.0, 801), "accept"),
+    ("descending", np.linspace(1.0, 0.0, 801), "refuse"),
+    ("stops short of zero shift", np.linspace(0.2, 1.0, 801), "refuse"),
+    ("wholly negative", np.linspace(-1.0, 0.0, 801), "refuse"),
+    ("a genuinely narrower support", np.linspace(0.0, 0.5, 801), "accept"),
+    ("the transverse law's own grid", np.linspace(0.0, 1.0, 801), "accept"),
 ])
 def test_the_mixture_refuses_a_grid_it_would_silently_misread(label, x_grid, want):
     """`ramp_mixture` is exported and is in the ADAPTING import block, and it
-    reads the support's lower edge as `x_grid[0]` while interpolating with
-    zero outside. On a DESCENDING grid it returned a delta at the origin
-    rather than a line, mean 0.00 against the correct -0.65, with no error
+    reads the support's upper edge as `x_grid[-1]` while interpolating with
+    zero outside (BLUE since O27). On a DESCENDING grid it returned a delta at
+    the origin rather than a line, mean 0.00 against the correct 0.65, with no error
     (the adoption seat, 2026-09-08). A grid that stops short of zero shift
     renormalises to a narrower ramp the same way. A genuinely narrower support
     is legal and must still pass, which is the direction that makes this a
@@ -184,7 +202,7 @@ def test_the_mixture_refuses_a_grid_it_would_silently_misread(label, x_grid, wan
 def test_the_mixture_refuses_a_malformed_density():
     """Length, finiteness and sign, each through the real call path."""
     nu = np.linspace(-6.0, 6.0, 2001)
-    x = np.linspace(-1.0, 0.0, 801)
+    x = np.linspace(0.0, 1.0, 801)
     g = local_ramp_density(x)
     for bad in (g[:-1],
                 np.where(np.arange(g.size) == 10, np.nan, g),

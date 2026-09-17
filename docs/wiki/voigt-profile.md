@@ -2,22 +2,12 @@
 
 *[wiki index](README.md) · concept*
 
-**The question.** What line shape results when a homogeneous broadening
-mechanism and an inhomogeneous one act together, and why splitting the two
-is so fragile.
-**Takes.** Nothing beyond a Lorentzian and a Gaussian kernel. No fitting, no
-data.
-**Gives.** The convolution form, the Olivero-Longbothum width
-approximation, and the anti-correlation a free fit finds between the
-Gaussian and Lorentzian widths.
-**Skip if.** You want the non-Gaussian kernel transit time contributes,
-covered in [Transit-time broadening](transit-time-broadening.md), instead
-of the two-kernel convolution here.
+What line shape results when a homogeneous broadening mechanism and an inhomogeneous one act together, and why splitting the two is so fragile. This page is self-contained and sets out the convolution form, the Olivero-Longbothum width approximation, and the anti-correlation a free fit finds between the Gaussian and Lorentzian widths. beyond a Lorentzian and a Gaussian kernel. No fitting, no data. Not covered here: the non-Gaussian kernel transit time contributes, covered in [Transit-time broadening](transit-time-broadening.md), instead of the two-kernel convolution here.
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
 > defines every term and symbol used anywhere in this repository.
 
-## What it is
+## Definition
 
 Real spectral lines are broadened by more than one mechanism at once, and
 when the mechanisms are independent their effects convolve. The Voigt
@@ -53,7 +43,7 @@ width change the profile in very similar ways, so a fit that frees both
 finds them strongly anti-correlated. The total width is determined well
 and the split between the two components is fragile.
 
-## What problem it solves
+## The problem it addresses
 
 It lets one model account for two broadening mechanisms at once. Fitting a
 Lorentzian alone to a line that also carries Gaussian broadening returns a
@@ -61,7 +51,7 @@ width that is wrong, with the residuals showing little sign of the error.
 The Voigt form fits both contributions as separate parameters, so neither
 is silently absorbed into the other.
 
-## Where this repository uses it
+## Application in this repository
 
 The composite line here is a Voigt with a third kernel added. The natural
 and collisional widths give the Lorentzian, the laser jitter gives the
@@ -158,7 +148,7 @@ with a fitted Lorentzian fraction, turning the choice between two
 end-members into a bound on the Lorentzian content and a proper error bar
 (`results/laser_kernel.csv`, `scripts/run_laser_kernel.py`).
 
-## What can go wrong
+## Failure modes
 
 The degeneracy is a data-insufficiency failure, and it is easy to mistake
 for a result. A fit will always return a split between the Gaussian and
@@ -213,8 +203,7 @@ a reader.
 - [Transit-time broadening](transit-time-broadening.md) for the kernel this
   experiment convolves in beyond the Voigt.
 
-## See also
-
+## Related pages
 - [Transit-time broadening](transit-time-broadening.md), the non-Gaussian
   kernel this experiment convolves in beyond the Voigt.
 - [Identifiability](identifiability.md), why the Gaussian and Lorentzian

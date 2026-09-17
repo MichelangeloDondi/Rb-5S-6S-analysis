@@ -2,22 +2,12 @@
 
 *[wiki index](README.md) · physical effect*
 
-**The question.** Why an atom's radiating phase, interrupted by collisions,
-shows up as a linear, density-dependent Lorentzian width and not a change of
-line shape.
-**Takes.** The impact approximation's regime: collision duration far
-shorter than the interval between collisions. No fitting, no data.
-**Gives.** The self-broadening coefficient $\beta_\text{self}$, the
-linear-in-density law it sets, and why this repository reports a bound
-instead of a value.
-**Skip if.** You want the general Lorentzian-plus-Gaussian convolution this
-coefficient feeds into, not the collisional mechanism itself. That is
-[The Voigt profile](voigt-profile.md).
+Why an atom's radiating phase, interrupted by collisions, shows up as a linear, density-dependent Lorentzian width and not a change of line shape. This page builds on the impact approximation's regime: collision duration far shorter than the interval between collisions. No fitting, no data. It sets out the self-broadening coefficient $\beta_\text{self}$, the linear-in-density law it sets, and why this repository reports a bound instead of a value. Not covered here: the general Lorentzian-plus-Gaussian convolution this coefficient feeds into, not the collisional mechanism itself. That is [The Voigt profile](voigt-profile.md).
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
 > defines every term and symbol used anywhere in this repository.
 
-## What it is
+## Definition
 
 An atom radiating in a gas is interrupted: a close encounter with another
 atom shifts the emitter's levels for its duration, scrambling the light's
@@ -50,7 +40,7 @@ one, $\Gamma_\text{nat}+\gamma_\text{coll}$, with no change of shape.
 Density is therefore the only signature of collisions, and must be varied
 to measure the coefficient.
 
-## What problem it solves
+## The problem it addresses
 
 The coefficient connects a measured lineshape to an interatomic potential,
 since $\beta_\text{self}$ depends on the long-range $C_6$ coefficient
@@ -58,8 +48,7 @@ between the two states involved. It is also a nuisance term to bound, not a
 target, in any experiment raising vapour density for signal, since doing so
 broadens the line being measured.
 
-## Where this repository uses it
-
+## Application in this repository
 $\beta_\text{self}$ on the 5S to 6S transition is the repository's first
 deliverable, built on the linear-in-density law above.
 [Methods chapter 2](../methods/02_the_lineshape.md) sets out the mechanism
@@ -79,7 +68,8 @@ so the fitted $\gamma_\text{coll}$ reads as a residual floor, not resolved
 collisions. The rule that decides measurement against bound was set before
 the data were examined. Current numbers are in [RESULTS.md](../RESULTS.md).
 
-## Values that moved
+## Revised values
+
 This bound has been rebuilt twice, and neither time on new data. The first
 rebuild replaced a hard-coded multiplier, which silently assumed more
 degrees of freedom than the fit had, with the Student-t quantile for the
@@ -159,7 +149,9 @@ measured 4688(198) (Stewart et al. 2022), 11 per cent low, the size of the
 dropped core polarizability. For the excited pair the integral is not the
 sum: its identity $1/(a+b)$ holds for positive $a$ and $b$ only, and a
 downward line has $a \lt 0$, so it returns $-1/(|a|+b)$ where the sum has
-$1/(b-|a|)$. The module used the integral for every pair until this
+$1/(b-|a|)$.
+
+The module used the integral for every pair until this
 section was written, and undercounted $C_6(5S+6S)$ by a factor 1.87 and
 $C_6(5S+7S)$ by 1.94 (measured here, planted). The corrected values:
 
@@ -180,7 +172,9 @@ $nP$ legs follow from the off-diagonal Thomas-Reiche-Kuhn rule,
 $\sum_k (\Delta_k(5S) + \Delta_k(6S))  d(5S,k)  d(6S,k) = 0$ for orthogonal
 states. That rule does not constrain the legs equally, and the sentence this page
 carried until 2026-09-15 -- that the elements satisfy it "for one pattern only"
--- claimed more than it had. The per-group terms are 5P 1.308, 6P 1.284, 7P
+-- claimed more than it had.
+
+The per-group terms are 5P 1.308, 6P 1.284, 7P
 0.069 and 8P 0.017, so every $6P$-positive pattern leaves 2.5 to 2.7 against
 0.03 to 0.11 for the $6P$-negative ones: **the $6P$ sign is fixed at about fifty
 tail widths and the $7P$ and $8P$ signs are not.** The tail from $9P$ to $12P$ is 0.02
@@ -189,7 +183,9 @@ patterns, so two patterns close inside the tail. Across them the exchange
 coefficient runs 17.4 to 17.5 thousand a.u. and the fraction 0.348 to 0.352, so
 0.35 of $\Delta C_6$ for 6S stands to its two figures and a five-figure
 coefficient does not. On the $7S$ rung two patterns are degenerate outright and
-4.5 per cent is one of two readings. It splits the
+4.5 per cent is one of two readings.
+
+It splits the
 potential into two branches $C_6(1 \pm f)$ sampled with equal weight (an
 equal superposition of the two exchange eigenstates), and since the width
 goes as $C_6^{2/5}$ the factor is $((1+f)^{2/5} + (1-f)^{2/5})/2$, 0.985 for
@@ -221,7 +217,7 @@ of a power is not the power of the average: over the Maxwell distribution
 of the relative speed, $\langle v^{3/5}\rangle/\bar v^{3/5} = 0.9775$
 (`speed_average_factor`), so the mean-speed form is 2.3 per cent high.
 
-**Step 5, the number, and the two temperatures it has to keep apart.** A rate
+Step 5, the number, and the two temperatures it has to keep apart. A rate
 per millitorr becomes a rate per density only through $n = P/kT$ at the cell
 temperature of the measurement itself, and the impact width then goes as
 $\langle v^{3/5}\rangle$ and so as $T^{0.3}$ at fixed density. Those are two
@@ -233,7 +229,7 @@ physics seat retracted both the same day, against the source:
 > The temperature of the cell ranged from 353 K to 438 K.  *(figure 7 caption, the
 > plot the 129 kHz mTorr⁻¹ slope is fitted from)*
 
-**The rate is a slope across 85 K and has no single temperature.** The 393 K
+The rate is a slope across 85 K and has no single temperature. The 393 K
 belongs to a table note giving the self-broadening contribution for a different
 experiment's linewidth budget at that experiment's temperature, a number about
 another quantity that happened to agree with the reading. Where the slope's
@@ -262,13 +258,15 @@ under one part in five hundred. This is still not two independent estimates
 agreeing -- the anchored route takes its scale from the measurement and the
 first-principles route does not -- but a recipe reproducing an experiment it
 never saw, to better than one per cent, is the strongest statement this page has
-been able to make about the impact calculation. The exchange branches, computed on
+been able to make about the impact calculation.
+
+The exchange branches, computed on
 2026-09-14 in place of the hand estimate and signed by the sum rule, lower the
 6S value by 1.5 per cent. Before the sign correction the recipe read 18 per
 cent low on $7S$ and the module's docstring blamed the dropped core for the
 gap, which the corrected sum refutes.
 
-**Step 6, what the bar really is, and every row of it is measured.**
+Step 6, what the bar really is, and every row of it is measured.
 `vanderwaals.beta_self_budget` displaces one input at a time and reads the
 fractional move in $\beta$, so no row below is an exponent typed into a
 comment. In falling order:
@@ -281,8 +279,8 @@ comment. In falling order:
 | the matrix elements, 2 per cent (Safronova's stated accuracy) | applied to the 6S sum alone, a common-mode error cancelling in the ratio | [1.71](../../results/beta_self_theory.csv "ref:beta_self_theory:budget:matrix_elements_2pc_differential") per cent |
 | the truncated ground-pair sum | this module's 4180 a.u. swapped for the literature 4691, a 12 per cent move | [0.28](../../results/beta_self_theory.csv "ref:beta_self_theory:budget:ground_pair_truncation") per cent |
 
-**So the coefficient is known exactly as well as that one measurement is, and
-no better.** The quadrature sum is [10.64](../../results/beta_self_theory.csv "ref:beta_self_theory:beta_self_6s:rel_uncertainty") per cent,
+So the coefficient is known exactly as well as that one measurement is, and
+no better. The quadrature sum is [10.64](../../results/beta_self_theory.csv "ref:beta_self_theory:beta_self_6s:rel_uncertainty") per cent,
 of which the anchor measurement alone is [10.08](../../results/beta_self_theory.csv "ref:beta_self_theory:budget:anchor_measurement") per cent. Everything the
 recipe contributes is 2.0 per cent in quadrature, and that is the whole distance
 between those two numbers. The
@@ -290,7 +288,7 @@ value of record is $3.50 \pm 0.37$ kHz per $10^{12}$ cm⁻³, ENVELOPE, written 
 the form this repository uses for every bar, two significant digits with the
 value matching its decimals.
 
-**And the row this record deleted as a double count was not one.** On
+And the row this record deleted as a double count was not one. On
 2026-09-15 it read section 2.5 -- "For the self-broadening and shift rates, a 5%
 uncertainty is used for the temperature dependent vapor pressure (density)" --
 as putting that term inside the $\pm 11$, and removed it, taking the bar from 11
@@ -298,7 +296,9 @@ per cent to 8.8. **The paper prints two bars and the larger is the total.**
 Section 2.5 quotes $129 \pm 11$, Table 3 quotes $129 \pm 13$, and Table 4's
 $107 \pm 11$ is $0.83 \times 13$. The arithmetic closes both ways on his own
 stated recipe: $\sqrt{11^2 + 6.45^2 + 1.29^2} = 12.8$, printed 13, and
-$\sqrt{13^2 - 6.45^2 - 1.29^2} = 11.2$, printed 11. So the $\pm 11$ is the
+$\sqrt{13^2 - 6.45^2 - 1.29^2} = 11.2$, printed 11.
+
+So the $\pm 11$ is the
 linear-fit interval without the density term and the $\pm 13$ is the total with
 it: the 5 per cent is the difference between them, deleting it narrowed a bar
 that was already right, and **the source's total is what this page now carries.**
@@ -306,8 +306,8 @@ One convention does survive from that paragraph, and the record has been bitten
 by its kind before: his rates are on the atomic axis, $\nu = 2\nu_L$, which is
 the axis this page wants.
 
-**And the size of the conservatism is known, because he states what his bar is
-made of.** It is a 95 per cent linear-fit interval, a 1 per cent transducer
+And the size of the conservatism is known, because he states what his bar is
+made of. It is a 95 per cent linear-fit interval, a 1 per cent transducer
 calibration and the 5 per cent density term, in quadrature. Solving for the fit
 half gives [8.69](../../results/beta_self_theory.csv "ref:beta_self_theory:anchor_bar_one_sigma:fit_half_95pc") per
 cent, and dividing that by the t-factor of a fit over a handful of pressure points
@@ -316,7 +316,9 @@ leaves a total of [5.78](../../results/beta_self_theory.csv "ref:beta_self_theor
 to 0.27 kHz. So the coefficient carried here is about 1.3 times wider than a one-sigma
 reading of the same measurement. That reading is recorded and not taken: the division
 needs his degrees of freedom and the paper does not give them, and a bar a reader
-cannot rebuild from the source is worse than one that is wide. What it does say is
+cannot rebuild from the source is worse than one that is wide.
+
+What it does say is
 where the precision is: not in the recipe, and not in anything this repository can
 compute, but in one 2014 linear fit.
 
@@ -333,7 +335,7 @@ on the target rung, releases 777 cm⁻¹ and largely cancels
 ([the note](../notes/vdw_difference_potential_and_4d_channel.md)). And the
 recipe's absolute scale error carrying an $n$-dependence.
 
-**Step 7, what the archive says about it.** Nothing yet. At 130 C the
+Step 7, what the archive says about it. Nothing yet. At 130 C the
 collisional width this coefficient predicts is 0.10 MHz, against per-session
 laser widths of 0.3 to 3.7 MHz that no instrument calibrated, and the
 archive's own bound is ten times above the value. The ultra-joint gate's
@@ -356,7 +358,7 @@ print(f"the recipe on 7S over the measurement: {r['prefactor_discrepancy']:.3f}"
 print(f"FWHM prefactor {impact_prefactors()['fwhm']:.4f}, speed average {speed_average_factor():.4f}")
 ```
 
-## What can go wrong
+## Failure modes
 
 The impact approximation is a physical assumption with a checkable validity
 condition. Outside it the lineshape is not Lorentzian: in the quasistatic
@@ -400,8 +402,7 @@ for N in (1.0e13, 2.9e13):
 - [Wikipedia: pressure broadening](https://en.wikipedia.org/wiki/Spectral_line_shape#Pressure_broadening),
   the family of mechanisms this one belongs to.
 
-## See also
-
+## Related pages
 - [The self-broadening dossier](../quantities/self-broadening.md), the
   literature ladder, current bound, and improvement levels on one page.
 - [The Voigt profile](voigt-profile.md), the Lorentzian kernel this

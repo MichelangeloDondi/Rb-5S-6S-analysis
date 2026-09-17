@@ -2,21 +2,12 @@
 
 *[wiki index](README.md) · method*
 
-**The question.** What has to be written down and dated before a result
-exists for a criterion to mean anything.
-**Takes.** The idea of a statistical threshold and a detection claim. No
-other wiki page is required first.
-**Gives.** The criterion, census and analysis-chain framework, and the null
-test and ceiling test that bracket what a frozen criterion is allowed to
-claim.
-**Skip if.** You want the test that validates the estimator a criterion is
-built on, not the act of freezing the criterion itself. That is
-[injection-recovery testing](injection-recovery.md).
+What has to be written down and dated before a result exists for a criterion to mean anything. This page builds on the idea of a statistical threshold and a detection claim. No other wiki page is required first. It sets out the criterion, census and analysis-chain framework, and the null test and ceiling test that bracket what a frozen criterion is allowed to claim. Not covered here: the test that validates the estimator a criterion is built on, not the act of freezing the criterion itself. That is [injection-recovery testing](injection-recovery.md).
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
 > defines every term and symbol used anywhere in this repository.
 
-## What it is
+## Definition
 
 Preregistration is a written commitment, made and dated before a result is
 available, to the exact quantity a procedure will report, the exclusion
@@ -41,7 +32,7 @@ commitment about what the first look counts as, so that later exploration
 is labelled as exploration and does not borrow the standing of a confirmed
 result.
 
-## What problem it solves
+## The problem it addresses
 
 Preregistration solves the correlation between having many defensible
 analysis choices and getting to keep only the ones that flatter the
@@ -73,7 +64,7 @@ experiment's error bars to clear at all, is too tight to be satisfied at
 the achievable precision. Either way it decides nothing regardless of the
 truth.
 
-## Where this repository uses it
+## Application in this repository
 
 Every dated preregistration in this repository lives under
 [`docs/notes/`](../notes/README.md), written and committed before the run
@@ -107,7 +98,7 @@ A frozen criterion still needs the validation
 comparison scored against a preregistered threshold is one member of the
 panel [information criteria](information-criteria.md) describes.
 
-## What can go wrong
+## Failure modes
 
 The commonest failure is an amendment made after seeing partial results
 and folded into the original text instead of added as a dated, visible
@@ -182,8 +173,7 @@ misleading a reader.
   [`docs/PREREGISTRATION_RESULTS.md`](../PREREGISTRATION_RESULTS.md) for how
   each one was scored.
 
-## See also
-
+## Related pages
 - [Injection-recovery testing](injection-recovery.md), the estimator
   validation a preregistered criterion still needs after it is frozen.
 - [Information criteria](information-criteria.md), the panel a

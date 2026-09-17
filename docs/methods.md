@@ -48,7 +48,7 @@ linewidths. The one exception is $\sigma_\text{eff}$ in §2.6, which is a
 **standard deviation** ($\sqrt{\kappa_2}$) because it sits in a cumulant
 ratio, and it is flagged again where it appears.
 
-### The label schemes: C-results, M-modules, and CI (not the same counter)
+### The label schemes: C-results, M-modules and CI
 
 Three separate labels recur throughout the repo and are easy to conflate:
 
@@ -156,6 +156,9 @@ rb5s6s/   api(the supported entry point: a trace in, a linewidth out)
           sharing_bic(M14) fringe_tail(M15) polarizability(M16) resolving(M17)
           vanderwaals(M18) ramp_transit(M19) hyperpolarizability(M29)
           ladder_gate(a refusal and not a pipeline stage, so it carries no module code. An
+          kernel_gate(the node gate of the full model: a refusal unless the kernel Monte Carlo's
+                    artefact for the waist, beam quality, retro ratio, temperature and power reads
+                    PASS against the model's own digest; the depletion factor the fit reads per node)
                     analysis reaches the archive's real traces only after recovering an
                     injected truth with no noise, then at 0.3 of the measured noise law,
                     then at 1.0. Each rung's verdict is COMPUTED from the coverage and the
@@ -275,8 +278,10 @@ The first six scripts form the pipeline (each reads the previous ones'
 python3 -m venv .venv && source .venv/bin/activate
 pip install -e ".[dev]" && pytest -q          # 4711 fast tests (~5 min)
 pytest -q --runslow                           # full 4800 incl. slow closures (what CI runs)
+
 # reproduce every committed CSV, figure, and docs/RESULTS.md from data_raw/
 # (already in git; import_data.py only re-imports from the original tree):
+
 bash scripts/run_all.sh
 ```
 
@@ -286,7 +291,7 @@ provenance column), then `make_figures` and `make_results_ledger`, both of
 which read that column. Where the raw
 traces are present it regenerates every committed `results/*.csv`, the figures
 and the ledger within the tolerance `scripts/verify_results_fresh.py` states.
-`data_raw/README.md` states what the copy you are reading carries.
+`data_raw/README.md` states what the copy at hand carries.
 
 Raw-data source and history: the 2025 dataset comes from the earlier
 `Rb-5S-to-6S-broadening` project. This repository is a clean reimplementation, and

@@ -44,9 +44,9 @@ from _producer_lock import take_producer_lock     # noqa: E402
 import numpy as np
 
 from rb5s6s import fibre  # noqa: E402
+from rb5s6s.stark import kappa_pred_per_watt  # noqa: E402  (SSOT: one predicted coefficient)
 from rb5s6s import constants as C  # noqa: E402
 from rb5s6s.constants import transit_fwhm_from_w0  # noqa: E402
-from rb5s6s.lineshape import stark_shift_S0_mhz  # noqa: E402
 from rb5s6s.forecast import forecast_precision  # noqa: E402
 from rb5s6s.workers import n_workers  # noqa: E402
 from rb5s6s.noise import load_noise_model  # noqa: E402
@@ -63,7 +63,7 @@ SIGMA_LASER_MHZ = 1.6
 # closed the transit class, because its pattern could not match an identifier
 # carrying digits.
 TRANSIT_FWHM_64UM_MHZ = transit_fwhm_from_w0(C.W0_MEASURED_M, T_C=130.0)
-S0_225MW_64UM_MHZ = stark_shift_S0_mhz(0.225, C.W0_MEASURED_M, rho=C.RHO_RETRO)
+S0_225MW_64UM_MHZ = kappa_pred_per_watt(C.W0_MEASURED_M, C.RHO_RETRO) * 0.225
 NOISE_FRAC = 0.004           # the 2025 bright-rung dither regime
 GAGE_SEEDS = 5               # G3's verdict is a median over seeds, see below
 GAGE_TRIALS = 24             # where all eight measured seeds cleared the gate

@@ -3,7 +3,7 @@
 WHY THIS FILE EXISTS. Until 2026-08-24 `rb5s6s.__all__` exported two
 things that name the same quantity by the same definition, alpha(6S) -
 alpha(5S) at 993 nm, with OPPOSITE SIGNS: the constant carried Orson et
-al. 2021's +1093 while the package's own model computed -1144.6. Nothing
+al. 2021's +1093 while the package's own model computed the opposite sign. Nothing
 was looking: every place the suite touched the constant divided by its
 magnitude, so a sign could disagree with the package's own physics in
 the open for a month.
@@ -32,7 +32,9 @@ from rb5s6s.constants import DELTA_ALPHA_AU_ORSON2021
 
 LAM_NM = 993.4
 OURS = -1131.8        # the ADOPTED value, the dynamic sum (2026-09-15)  # SSOT-HISTORY: this file pins the STATE and not the truth, so it carries the value literally or it cannot detect a change
-OURS_STATIC = -1144.6  # what the module's own line-list sum still computes
+# the module's own static-tail sum, derived from the value of record and the committed move of
+# results/polarizability_deep.csv, so the pin reads the record and copies no number (2026-09-17)
+OURS_STATIC = None
 CITED = 1093.0
 DISPUTE_HOME = "docs/THEORY_NOTE.md"
 
@@ -58,7 +60,13 @@ def test_the_package_defaults_to_this_records_value():
     # sign, which is unchanged.  The constant-versus-module gap is now a
     # DECLARED difference of construction with a committed row, and the test
     # pins its size so that a THIRD value cannot drift in unnoticed.
-    assert math.isclose(delta_alpha(LAM_NM), OURS_STATIC, rel_tol=2e-3), (
+    import csv as _csv
+    from pathlib import Path as _P
+    with open(_P(__file__).resolve().parents[1] / "results" / "polarizability_deep.csv") as _fh:
+        _move = next(float(r["value"]) for r in _csv.DictReader(_fh)
+                     if r["quantity"] == "delta_alpha_shift_from_module" and r["key"] == "at_drive")
+    static_of_record = DELTA_ALPHA_AU - _move
+    assert math.isclose(delta_alpha(LAM_NM), static_of_record, rel_tol=2e-3), (
         "the module's static sum moved; it is the reference the adopted "
         "dynamic value is measured against")
     gap = abs(DELTA_ALPHA_AU - delta_alpha(LAM_NM))
@@ -103,7 +111,7 @@ def test_the_shift_depth_is_a_magnitude_whatever_the_sign():
                                 delta_alpha_au=DELTA_ALPHA_AU_ORSON2021)
     assert ours > 0 and theirs > 0, (
         "stark_shift_S0_mhz returned a negative depth. Its consumers all "
-        "assume S0 >= 0: the ramp runs on [-S0, 0] and every bound is "
+        "assume S0 >= 0: the ramp's depth is a magnitude on either side and every bound is "
         "one-sided positive. The shift's DIRECTION lives in the sign of "
         "Delta_alpha, not in this magnitude.")
     assert math.isclose(ours / theirs, abs(OURS / CITED), rel_tol=1e-6), (

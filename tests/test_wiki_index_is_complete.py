@@ -140,8 +140,15 @@ _WORDS = {
 # corpus grows a new one, so this list is checked whenever a page gains a
 # section heading that names a value.
 _CORRECTION_SECTION = re.compile(
+    # THE VOCABULARY FOLLOWS THE HEADINGS, and both spellings stay: the wiki's headings were
+    # restyled to plainer nouns on 2026-09-17 ("Values that moved" became "Revised values"),
+    # the index kept quoting the old name, and this guard counted zero correction sections on
+    # nine pages that all still carried one. A vocabulary guard fails silently in exactly this
+    # direction -- it reports an absence when it has merely been out-spelled.
     r"^## (What this repository got wrong.*"
+    r"|Two errors in this repository.s earlier treatment.*"
     r"|Values that moved.*"
+    r"|Revised values.*"
     r"|.*, 20\d\d-\d\d-\d\d"
     r"|A .*that was not .*"
     r"|A .*that was actually .*"

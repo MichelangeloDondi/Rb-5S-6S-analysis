@@ -1,13 +1,9 @@
 *Chapter 4 of 12 of [the plan](../PLAN.md)*
 
-**The question.** How is the drive intensity pinned, and how would the light shift be measured rather than bounded?
-**Takes.** The optics of chapter 3.
-**Gives.** The intensity axis, the light-shift blocks, and the geometry that sets both.
-**Skip if.** You want the width programme, which is chapter 5.
+This chapter builds on the optics of chapter 3 and sets out the intensity axis, the light-shift blocks, and the geometry that sets both. The width programme is chapter 5.
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
-> explains the measurement in six sentences, then defines every term
-> and symbol used anywhere in this repository.
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
+> defines every term and symbol used anywhere in this repository.
 
 > **Question.** How is the drive intensity pinned, and how would the light shift be measured rather than bounded?
 > **Design.** A randomised power ladder under a fixed lock, with per-sweep normalisation and a measured beam profile.
@@ -41,14 +37,16 @@ collection variants at the small waists this figure excludes, so how far the
 boundary would move there is not settled by it. The S−L width difference reads
 ~2.7 MHz off the
 steep part of this curve, which is what makes it an intensity calibration
-independent of the knife-edge stage. The abscissa is not a measured quantity:
+independent of the knife-edge stage.
+
+The abscissa is not a measured quantity:
 the beam waist has not been measured and the knife-edge scan is pending, which
 is what this section's anchor exists to work around. The shaded region is
 excluded, because waists below about 40 µm would put the transit and natural
 widths together above the observed total on their own. The laser and collisional
 contributions are not in the curve, so the true waist is higher still.*
 
-**The block that delivers the anchor, and the region it runs in.** The anchor
+The block that delivers the anchor, and the region it runs in. The anchor
 and the composite model's transit-kernel choice come off the same data, taken
 cold and at low drive power at the small waist. That region is where transit
 dominates the core, which is what makes the S minus L difference large against
@@ -58,7 +56,9 @@ composite model uses, the closed-form transit-limit lineshape of
 referee would reach for. Lehmann's form predicts a **cusp**, a discontinuous
 slope at exact resonance, which the Voigt does not have and which needs a
 transit-dominated core to show at all. Every mention of the cusp in this
-document means that feature. Running the anchor and the model-form
+document means that feature.
+
+Running the anchor and the model-form
 comparison on one set of blocks is not a saving of convenience: the comparison
 decides which kernel the width difference is read through, so reading the anchor
 through an untested kernel would leave the absolute intensity axis conditional
@@ -69,7 +69,9 @@ grid, and drive power low enough that the ramp does not broaden the core, which
 puts this block below the power ceiling §3 item 7 discusses rather than near it.
 **Shots.** Matched low-power blocks at S and at L at one cold condition, deep
 enough that the core width is photon-limited rather than block-limited. Runs as
-§9 D6. **Go/no-go.** The S minus L width difference must be resolved to the
+§9 D6.
+
+**Go/no-go.** The S minus L width difference must be resolved to the
 ±5–7% the ~15% intensity axis above needs, and the two kernels must be separated
 by the BIC of [`methods/06_the_statistics.md`](../methods/06_the_statistics.md)
 §4.7 rather than by eye. **Empty.** The cusp may sit under the detection
@@ -79,7 +81,7 @@ kernel left as a stated assumption. **Record.** The two core widths and their
 difference, the implied intensity scale beside the knife-edge one, and the BIC
 between the transit kernel and the Voigt.
 
-**The wide-scan Doppler pedestal, an in-situ thermometer and an in-situ ρ.**
+The wide-scan Doppler pedestal, an in-situ thermometer and an in-situ ρ.
 The retro-reflected drive makes two kinds of two-photon event. One photon from
 each beam gives the Doppler-free line every number in the record is
 fitted to. Two photons from the same beam give a line broadened at the
@@ -91,12 +93,14 @@ record adopts rather than measures, and both are quantities this
 session otherwise spends stage 0 time on by other routes
 (§3 item 2 for ρ) or adopts outright (temperature). The 2025 windows span a
 tenth of the pedestal, so every trace in the 2025 dataset samples its flat
-top and the linear baseline absorbs it as an offset. The record can
+top and the linear baseline absorbs it as an offset.
+
+The record can
 therefore bound ρ through that offset and can say nothing about the width,
 which needs the
 session.
 
-**Needs.** Nothing new. A gigahertz-wide feature does not care about a
+Needs. Nothing new. A gigahertz-wide feature does not care about a
 megahertz of lock drift, so the block needs no lock quality, no new source and
 no new detection path (`FUTURE_TRANSITIONS_titsapph.md`, the decision-maker
 table). As a rider it costs only the wider scan setting on dwells this document
@@ -107,7 +111,9 @@ this block. **Shots.** Wide scans over several GHz on the laser axis, stacked, r
 as an acquisition setting on whatever else the session is doing. **Go/no-go.**
 The pedestal must separate from the scattered-light background, which is not
 modelled. If it does not, the block yields nothing and costs no bench time that
-was not already being spent. **Empty.** The area ratio peaks at ρ = 1 where its
+was not already being spent.
+
+**Empty.** The area ratio peaks at ρ = 1 where its
 slope in ρ vanishes and is symmetric under ρ → 1/ρ, so it is a weak lever near
 the value of record and could return no useful constraint on ρ even with a clean
 pedestal. **Record.** The stacked wide traces, the fitted pedestal width and
@@ -119,7 +125,7 @@ hyperfine comb and on a single component.
 ## 6. The light-shift program
 
 The triangular ramp predicts a parameter-free moment hierarchy: mean pull
-−(2/3)S₀, variance/mean² = 1/8, standardized skew ≈ 0.566. The one-photon
++(2/3)S₀ on the blue side, variance/mean² = 1/8, standardized skew ≈ −0.566. The one-photon
 case predicts zero skew, so the skew exists at all only because the signal
 goes as I².
 
@@ -133,7 +139,7 @@ whole content of the construction. Radius is in units of the beam radius w, wher
 the intensity has fallen to 1/e² of its on-axis value. In (b) the number of atoms
 diverges towards low intensity while the two-photon rate suppresses them faster,
 and the product is linear in intensity. The density in (c) is normalised to unit
-area and its standardized skew is +0.566, which exists at all because of the I²
+area and its standardized skew is −0.566, which exists at all because of the I²
 weighting. Panel (d) is drawn at a light shift of 3 MHz so the asymmetry is
 visible. Every item below is a functional of this one construction.*
 
@@ -246,12 +252,12 @@ this section, which has to be in place before any of them runs.
    ([`results/three_channel_forecast.csv`](../../results/three_channel_forecast.csv)),
    **and it is available at one spacing and not the other**. On the 40 MHz comb
    the fitted centre's slope against depth comes back at the expected null,
-   [0.009](../../results/three_channel_forecast.csv "ref:three_channel_forecast:depth_ladder_40MHz::kappa_pull")
+   [-0.010](../../results/three_channel_forecast.csv "ref:three_channel_forecast:depth_ladder_40MHz::kappa_pull")
    against its own scatter of
-   [0.024](../../results/three_channel_forecast.csv "ref:three_channel_forecast:depth_ladder_40MHz::sd_pull"),
+   [0.018](../../results/three_channel_forecast.csv "ref:three_channel_forecast:depth_ladder_40MHz::sd_pull"),
    which is under half a standard error from zero. On the 25 MHz comb the same
    test reads
-   [13](../../results/three_channel_forecast.csv "ref:three_channel_forecast:depth_ladder_25MHz::kappa_pull")
+   [-13](../../results/three_channel_forecast.csv "ref:three_channel_forecast:depth_ladder_25MHz::kappa_pull")
    against a scatter of
    [52](../../results/three_channel_forecast.csv "ref:three_channel_forecast:depth_ladder_25MHz::sd_pull"),
    which is no measurement. The window is the reason and it is arithmetic: the
@@ -271,7 +277,9 @@ this section, which has to be in place before any of them runs.
    nineteen. The gap is an open item with that measurement attached, and the
    area null is a test for the archive's saturation regime and not the
    campaign's.
-3c. **The waist ladder through an adjustable expander, and the absolute axis it
+3c.
+
+   **The waist ladder through an adjustable expander, and the absolute axis it
    buys.** Section 5 of this chapter says the collapse across configurations
    catches only relative waist errors and that a common scale error passes
    silently. An expander of magnification $M$ ahead of the cell scales the
@@ -283,7 +291,9 @@ this section, which has to be in place before any of them runs.
    $M^{-2}$, the excitation cycles of a crossing $M^{-3}$ and the rate per atom
    $M^{-4}$. Five exponents against a power ladder's two.
    [The ramp chapter](../methods/03_the_ac_stark_ramp.md) derives them and
-   names the code that carries each. The fit then measures the reference waist
+   names the code that carries each.
+
+   The fit then measures the reference waist
    twice, through the transit's $1/M$ and the shift's $1/M^2$, and their
    agreement tests the transit law where the present one-setting anchor has to
    assume it. **Where the abscissa's precision comes from.** A ratio of focal lengths
@@ -292,7 +302,9 @@ this section, which has to be in place before any of them runs.
    half a per cent where the waist band this record commits spans about five:
    the scaling is known about ten times better than the band, and better than
    the systematic the band does not cover, and the image is the one the needs
-   line already asks for. **And the fit that uses it attacks the width
+   line already asks for.
+
+   **And the fit that uses it attacks the width
    degeneracy.** Variances add under convolution for any kernel that has one,
    so the total Gaussian variance is the laser's plus the transit's and the
    transit's goes as the inverse square of the magnification: a regression of
@@ -304,7 +316,9 @@ this section, which has to be in place before any of them runs.
    exponential, so a Voigt fit's Gaussian parameter is not that variance and a
    ladder regressed through it returns both terms high by of order seventy per
    cent. The variance the fit needs is the one the window-moment scan of
-   chapter 5 measures, which is why the two are one proposal. It needs the collisional width pinned
+   chapter 5 measures, which is why the two are one proposal.
+
+   It needs the collisional width pinned
    independently, which the same scan of
    [chapter 5](05_width-collision-amplitude.md) supplies. **What the twin still owes**: the conditioning of that
    two-parameter fit at three or four settings under this record's own block
@@ -318,7 +332,9 @@ this section, which has to be in place before any of them runs.
    knife-edge or camera measurement taken at each. **Go/no-go.** The transit
    width scales as $1/M$ across the settings within its own error. If it does
    not, the geometry is not what the magnification says and nothing further is
-   quoted from the ladder. **Empty.** The reference waist comes back with a
+   quoted from the ladder.
+
+   **Empty.** The reference waist comes back with a
    band no tighter than the record already carries, which would say the
    settings were too few or too close. **Record.** Per setting: the
    magnification, the measured waist, the retro ratio, the fitted transit and
@@ -329,27 +345,31 @@ this section, which has to be in place before any of them runs.
    collected signal goes as $\arctan(L/z_R)$ with the axial window fixed, so
    tightening the beam fourfold buys about five in integrated signal and about
    three in peak height, the line broadening by well under a factor of two
-   because the transit is a small part of it. The peak height turns over inside
+   because the transit is a small part of it.
+
+   The peak height turns over inside
    the proposed range, where the light shift's own width overtakes the
    collection gain, so the settings are chosen with that in view.
 4. **The geometry sign flip, the cleanest test in the program.** The z-average
    over the collection window has the closed form
    f(s) ∝ |s|^(n−1)·[ζₘ + ζₘ³/3] with ζₘ = min(Z_c/z_R, √(S₀/|s|−1))
    (`lineshape.stark_ramp_axial`). At configuration L the ramp stays clean
-   (g₁ ≈ +0.56), and the 2025 dataset's M geometry carries only a few-percent
-   correction (g1 +0.558). At configuration S the skew flips sign, with the
+   (g₁ ≈ −0.56), and the 2025 dataset's M geometry carries only a few-percent
+   correction (g1 −0.558). At configuration S the skew flips sign, with the
    crossover at Z_c/z_R ≈ 1.12. The flip condition is Z_c > 1.12 z_R ≈ 0.9 mm at
    S, while at L it would need Z_c > 12.7 mm, beyond any achievable field of
    view. With the cathode long axis along the beam (L∥ = 12 mm, the 2025 orientation)
    Z_c = 6/M mm, and the flip holds for every M < 6.6: secured by hardware,
-   not tuning. Numbers from `scripts/run_ramp_geometry.py`:
+   not tuning.
+
+   Numbers from `scripts/run_ramp_geometry.py`:
 
    | orientation | M | Z_c | g₁ @ L (64 µm) | g₁ @ S (16 µm) | flip |
    |---|---|---|---|---|---|
-   | long axis along the beam (`landscape` in `run_ramp_geometry.py`, 12 mm) | 1.9 | 3.16 mm | +0.555 | **−0.421** | yes |
-   | long axis along the beam (12 mm) | 2.8 | 2.14 mm | +0.563 | **−0.367** | yes |
-   | portrait (3 mm) | 1.9 | 0.79 mm | +0.566 | +0.103 | no |
-   | portrait (3 mm) | 2.8 | 0.54 mm | +0.566 | +0.367 | no |
+   | long axis along the beam (`landscape` in `run_ramp_geometry.py`, 12 mm) | 1.9 | 3.16 mm | −0.555 | **+0.421** | yes |
+   | long axis along the beam (12 mm) | 2.8 | 2.14 mm | −0.563 | **+0.367** | yes |
+   | portrait (3 mm) | 1.9 | 0.79 mm | −0.566 | −0.103 | no |
+   | portrait (3 mm) | 2.8 | 0.54 mm | −0.566 | −0.367 | no |
 
    The upright mounting removes the test at every plausible M. Keep the long axis along the beam.
    **The same window seen from the model's side (owner statement, 2026-09-06).** The
@@ -363,13 +383,15 @@ this section, which has to be in place before any of them runs.
    at the archive's fraction of the Rayleigh range, which removes the
    flip and costs about seven in collected light on the collected fraction's
    arctangent law, a factor 2.6 in signal-to-noise on a peak that is already
-   shot-limited. **It does not restore the convolution, and this page said it
+   shot-limited.
+
+   **It does not restore the convolution, and this page said it
    did until 2026-09-09.** A magnification shortens the collected axial length,
    and the mechanism that breaks the convolution for the shape channels is
    radial: the saturation companion follows the local light shift. The
    archive's own waist, which is the geometry this remedy reproduces, is where
    the measured cost is largest, at
-   [106.911](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w64um:k3_error") per cent. One
+   [106.742](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w64um:k3_error") per cent. One
    choice, two faces, and chapter 12 carries it as open, with the volume model
    the route that costs no light.
 
@@ -382,7 +404,9 @@ this section, which has to be in place before any of them runs.
    at every waist, and the magnification's cost falls entirely on it, since a
    symmetric spread does not move a centre but shot noise does. The fractional
    precision on the coefficient runs 2.7 per cent at 64 microns, 1.2 at 40,
-   0.52 at 24 and 0.27 at 16. **These four carry an owed correction that bites
+   0.52 at 24 and 0.27 at 16.
+
+   **These four carry an owed correction that bites
    hardest exactly where the argument turns.** The producer's
    `build_world_trace` call passes neither the collection window nor the
    fringe-resolved tail, and the forecast's own `pull_factor_quiet` puts the
@@ -399,7 +423,9 @@ this section, which has to be in place before any of them runs.
    terms threaded. Paying the factor 2.6 that the restoring
    magnification costs takes 16 microns to 0.70 per cent, which still beats 64
    microns by 3.8 times and 40 microns, the tightest waist inside the licence
-   as it stands, by 1.7. **So for the fitted centre the magnification route survives its own
+   as it stands, by 1.7.
+
+   **So for the fitted centre the magnification route survives its own
    cost**: it buys a factor of sixteen in the coefficient and
    pays a factor of 2.6 in the noise.
 
@@ -444,18 +470,18 @@ the 795 nm bandpass in the collimated segment, and an adjustable slit at the
 image plane. Then M = f₂/f₁ decouples field of view from collection, the
 slit sets Z_c as hardware, and scanning the slit measures the collection
 profile, an input the imaging formula cannot supply. The slit scan doubles
-as a skew observable: at S alone, g₁ walks from +0.40 through zero
-(Z_c ≈ 0.90 mm) to −0.42 on the slit, with atoms, power, lock and waist all
+as a skew observable: at S alone, g₁ walks from −0.40 through zero
+(Z_c ≈ 0.90 mm) to +0.42 on the slit, with atoms, power, lock and waist all
 fixed. No instrumental asymmetry, blind to z_R, can mimic either flip.
 
    | slit → Z_c | g₁ @ L | g₁ @ S | signal @ S |
    |---|---|---|---|
-   | 0.5 mm | +0.566 | **+0.402** | 35% |
-   | 1.0 mm | +0.566 | −0.071 | 57% |
-   | 2.0 mm | +0.564 | −0.354 | 76% |
-   | 3.0 mm | +0.557 | −0.416 | 83% |
+   | 0.5 mm | −0.566 | **−0.402** | 35% |
+   | 1.0 mm | −0.566 | +0.071 | 57% |
+   | 2.0 mm | −0.564 | +0.354 | 76% |
+   | 3.0 mm | −0.557 | +0.416 | 83% |
 
-**Needs.** The f = 18 mm L1 in place, an L2 in the stated range, the 795 nm
+Needs. The f = 18 mm L1 in place, an L2 in the stated range, the 795 nm
 bandpass, and an adjustable slit with a readable setting. **Shots.** No science
 shots of its own. It is a §9 D1 build. **Go/no-go.** The image plane must be
 reachable with the available focal lengths, and the slit setting must be
@@ -464,7 +490,7 @@ be built, §6 item 4 loses its instrument and items 1 to 3 run at the 2025
 collection geometry with Z_c unknown. **Record.** f₁, f₂, the measured
 conjugates u and v, M, and the slit calibration.
 
-**One fit, pre-registered.** The four items are one fit, not four: per
+One fit, pre-registered. The four items are one fit, not four: per
 condition, fit a single ramp amplitude S₀ and compare the pull, excess
 variance and third cumulant as three analytic functionals of it
 (`lineshape.ramp_moment_contributions`), with a χ² for their mutual
@@ -477,11 +503,13 @@ Any bounded amplitude that can exchange against the core is fitted from a spread
 of starting values, and convergence is checked before an outlier is
 interpreted. A single zero start once parked a wing amplitude at twenty times
 the true optimum's χ² and read as physics for two days
-([audit addendum 20](../PREREGISTRATION_RESULTS.md)). At S the sign is the robust
+([audit addendum 20](../PREREGISTRATION_RESULTS.md)).
+
+At S the sign is the robust
 observable, since saturation bends the n = 2 magnitudes. The magnitudes belong
 to L and M.
 
-### The per-line lever, and the waist that makes it spendable
+### The per-line lever and its waist
 
 Three effects broaden the line with the same square-of-power signature: the
 AC-Stark ramp, atomic saturation, and hyperfine pumping. They are degenerate in
@@ -521,7 +549,7 @@ the weak-field ramp law is least valid, since the saturation parameter reaches
 rather than carry it as a companion, which is the construction the refit
 preregisters.
 
-**There is a second catch, and it is a precondition rather than a caution.** The
+There is a second catch, and it is a precondition rather than a caution. The
 refit ran, and it found that the per-line scale is not merely poorly determined
 on this dataset but *unidentifiable*
 ([postscript](../notes/companion_inclusive_refit_prereg.md)). The pumping companion
@@ -543,8 +571,8 @@ noise floor when $S_0$ exceeds about 2.5 MHz, and the 16 micron configuration's
 predicted 5.56 MHz clears that threshold by design, which is why the skew
 channel is dead in this archive and central to that proposal.
 
-**Two ways of spending statistics on the skew were considered and neither
-rescues the channel here.** Averaging over the repeats is the first, and the
+Two ways of spending statistics on the skew were considered and neither
+rescues the channel here. Averaging over the repeats is the first, and the
 pooled regression above already takes it: a hundred traces buy a factor of ten
 on the skew's standard error, which is the whole of what independent repeats can
 give. Against a shortfall near one thousand between the resolved per-trace
@@ -553,7 +581,9 @@ still to find, so the arithmetic settles the question rather than leaving it
 open. Smoothing the residuals before taking the third cumulant is the second,
 and it does not work for a reason worth stating, because the same reasoning
 recurs whenever a higher moment looks noisy. A moving average is a convolution,
-and a convolution acts on the signal as well as on the noise. The third cumulant
+and a convolution acts on the signal as well as on the noise.
+
+The third cumulant
 is not linear in the data, so the smoothed residual's third cumulant is not an
 estimate of the unsmoothed one with a smaller error, it is an estimate of a
 different quantity. What the kernel removes from the variance it also removes
@@ -572,9 +602,9 @@ did. The general form is worth carrying into any future separation of this kind:
 a term entering only as a multiple of another constrains nothing until the term
 it multiplies is measured.
 
-### Measure the waist in every session, and two analysis steps that come first
+### Per-session waist measurement and its two prerequisites
 
-**A design requirement this plan did not previously carry.** The light-shift
+A design requirement this plan did not previously carry. The light-shift
 coefficient goes as one over the beam waist squared, so pooling sessions asserts
 that they shared a focus. The 2025 archive cannot support that assertion, because
 no session measured its own waist, which is argued in
@@ -582,8 +612,8 @@ no session measured its own waist, which is argued in
 block of a future session records a waist measurement**, and a session that
 cannot is analysed alone rather than pooled.
 
-**The waist measurement is taken at several powers, with the EOM in the beam
-and thermalised at each.** The 2026-08-17 mechanism sweep left exactly two
+The waist measurement is taken at several powers, with the EOM in the beam
+and thermalised at each. The 2026-08-17 mechanism sweep left exactly two
 candidates able to produce the measured non-monotone width-against-power
 structure, and both are power-dependent geometry. The EOM crystal clips the raw
 laser beam at its 3 mm aperture and sits before the focusing lens
@@ -594,7 +624,9 @@ slow-thermalisation branch through the five consecutive repeats of every
 campaign block and found no within-block drift, minus 7.7 plus or minus 6.4 kHz
 per repeat, which kills the slow branch only: a lens that equilibrates within
 one sweep is untouched by that null and is discriminated exactly by measuring
-w0 against power. The second candidate is the retro ratio rho drifting with
+w0 against power.
+
+The second candidate is the retro ratio rho drifting with
 power, which moves the standing-wave contrast and the pedestal-to-line ratio
 together, so **rho is measured against power in the same session**, closing the
 one loophole the pedestal analysis names.
@@ -602,8 +634,8 @@ one loophole the pedestal analysis names.
 Two analysis steps precede the next session and run on data already in hand, in
 this order.
 
-**First, resolve which model component carries the power dependence the fit
-cannot absorb.** The summary widths are concave in power, with an apex near 120 mW
+First, resolve which model component carries the power dependence the fit
+cannot absorb. The summary widths are concave in power, with an apex near 120 mW
 and a fall from there to the top of the ladder that is about fifty times the whole
 range the light-shift term can produce at its bound. The structure survives a
 model-free half-max width, so it is in the data rather than in the fit. The
@@ -613,25 +645,30 @@ range of the smoothing setting, while at the narrowest setting the estimator
 fails its control for a measured reason, a single-sample level bias, and is not
 read. Every
 component in the production model is pinned against power already, so that
-structure has nowhere to go and is sitting in the residual. The test frees one
+structure has nowhere to go and is sitting in the residual.
+
+The test frees one
 component at a time per condition with the other two held at their physical
 values, since all three at once is degenerate at a condition number of 345, and
 the three kernels have different shapes so the comparison was expected to
 identify the missing term as well as locate it.
 
-**That test has since run as a diagnostic, and the expectation in the previous
-sentence did not hold.** Freeing each component in turn across the campaign's
+That test has since run as a diagnostic, and the expectation in the previous
+sentence did not hold. Freeing each component in turn across the campaign's
 hundred traces, all three absorb the concavity at the same chi-square, 0.355
-against 0.357 against 0.360, and none is singled out. Read as a curvature of the
+against 0.357 against 0.360, and none is singled out. Read as a curvature of the <!-- other-quantity: a chi-square per degree of freedom, not the light-shift prediction -->
 total width, so that a Gaussian laser width, a two-sided-exponential transit
 width and a Lorentzian collisional width become comparable, the three land
 between minus 2.6 and minus 4.0 MHz per watt squared at about two standard
 deviations, where the model-free summary statistic gives about minus 11 at four.
+
 Two things follow, and the second was not anticipated. The kernels are
 interchangeable against this structure rather than distinguishable by shape, so
 the width degeneracy already recorded at condition number 345 governs the power
 channel too. And the two constructions disagree about the size of the concavity
-by a factor near three. Two follow-up diagnostics narrowed that second finding
+by a factor near three.
+
+Two follow-up diagnostics narrowed that second finding
 without closing it. Pinning the per-trace baseline slope to zero, the mechanism
 that could most easily have manufactured the gap, left both the reduced
 chi-square and the recovered curvature unmoved, so the free slope was fitting
@@ -643,8 +680,8 @@ deviations, where the naive comparison of the two published numbers had
 suggested nearly minus 7. The direction survives and the size does not reach
 the threshold this record would need to act on it.
 
-**And on 2026-08-18 the concavity itself was withdrawn to provisional, which
-settles the question above.** The archive holds two further power ladders
+And on 2026-08-18 the concavity itself was withdrawn to provisional, which
+settles the question above. The archive holds two further power ladders
 outside the frozen record, and tested against them the concavity does not
 reproduce: it reaches 4.8 standard deviations only on within-cell errors and
 1.4 under the between-block treatment, the pilot's independent non-monotone
@@ -655,14 +692,16 @@ that this variation is block scatter, stands. The estimator disagreement above
 therefore concerns the size of an effect whose existence is not established,
 the thermal-lens hypothesis is demoted accordingly, and the measurement that
 would settle both is an interleaved power ladder rather than any further
-analysis of a monotone one. Breaking the
+analysis of a monotone one.
+
+Breaking the
 first finding needs a channel where the kernels are not interchangeable, which
 is what the waist measurement below and an independent laser-width calibration
 supply. The diagnostics promote no number and the record's own concavity
 statement is unchanged.
 
-**Second, and only afterwards, free the transit reference so the cusp measures
-the waist.** The transit kernel goes as the square root of temperature divided by
+Second, and only afterwards, free the transit reference so the cusp measures
+the waist. The transit kernel goes as the square root of temperature divided by
 the waist, and the repository currently sets its reference by computing it from
 the waist, which spends the information rather than collecting it. Run the other
 way it becomes a waist measurement internal to the lineshape and independent of
@@ -680,7 +719,9 @@ independent of the chord's own Fourier width. Two things are settled. On rung
 the rate-weighted mean of the instantaneous shift at every dephasing, which is
 the static composition's mean exactly, so the mean pull the standard channel
 reads is untouched by the chirp at every waist and the collection window of
-chapter 12 is the composition failure that matters there. On rung 3, a chord
+chapter 12 is the composition failure that matters there.
+
+On rung 3, a chord
 harness with the dephasing carried, checked at zero shift against the record's
 own kernel to half a per cent at its own grid, puts the chirp's effect in the
 shape alone: at the archive's waist the line's width is unchanged and the

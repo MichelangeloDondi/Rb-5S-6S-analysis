@@ -212,7 +212,7 @@ def fit_condition(freqs: List[np.ndarray], volts: List[np.ndarray], *,
                   transit_fwhm: float = C.TRANSIT_FWHM_PLACEHOLDER_MHZ, fit_transit: bool = False,
                   laser_kind: str = "gaussian", trim_tails: bool = False,
                   gamma_l: float = 0.0, fit_gamma_l: bool = False,
-                  halfwidth_mult: float = 1.0,
+                  halfwidth_mult: float = 1.0, fix_sigma_laser: float = None, fix_gamma_coll: float = None,
                   profile: Callable[[np.ndarray, float], np.ndarray] = stark_ramp) -> Dict:
     """Joint fit of one condition's repeats. `freqs` already in transition MHz.
 
@@ -272,7 +272,7 @@ def fit_condition(freqs: List[np.ndarray], volts: List[np.ndarray], *,
             sigmas.append(sigma_of_v(np.maximum(lev, 0.0), law))
         else:
             sigmas.append(np.full_like(v, max(np.std(np.diff(v)) / np.sqrt(2.0), 1e-6)))
-    tau = max(law.get("tau_int", 1.0), 1.0) if law is not None else 1.0
+    tau = max(law.get("tau_eff", law.get("tau_int", 1.0)), 1.0) if law is not None else 1.0   # F36: the residuals' own time when the loader carries it
 
     # Window each trace about its seed center, EXCLUDING any off-center-sweep
     # mirror crossing (~40 MHz away) that the full-window single-line fit would
@@ -316,6 +316,15 @@ def fit_condition(freqs: List[np.ndarray], volts: List[np.ndarray], *,
     hi = ([50.0, 50.0] + ([10.0] if fit_transit else [])
           + ([50.0] if fit_gamma_l else []) + [np.inf] * (4 * ntr))
     lo = np.array(lo, float); hi = np.array(hi, float)
+    if fix_sigma_laser is not None:
+        # THE PER-TRACE MODE (F36, the per-parameter calibration): one trace cannot carry
+        # the laser width and the collisional width apart, so a single-trace fit pins the width at
+        # the condition's pooled value and reads the rest; the bounds are pinched to the value, the
+        # seed sits on it, and the returned sigma_laser_err is the pinch and not a measurement.
+        _v = float(fix_sigma_laser); lo[1] = _v - 1e-9; hi[1] = _v + 1e-9; p0[1] = _v
+    if fix_gamma_coll is not None:
+        # the complementary pass: the collisional width pinned, the laser width read per trace
+        _v = float(fix_gamma_coll); lo[0] = _v - 1e-9; hi[0] = _v + 1e-9; p0[0] = _v
     # keep amplitudes non-negative, widths in-range
     for i in range(ntr):
         lo[nshared + 4 * i] = 0.0  # A_i >= 0
@@ -392,7 +401,20 @@ def fit_condition(freqs: List[np.ndarray], volts: List[np.ndarray], *,
     # choice: model imperfection inflates errors, but chi2_red < 1 (noise
     # model overestimates sigma, or overfitting) does NOT shrink them -- the
     # noise model then sets the error floor. That state is flagged below.
-    cov = cov_from_jac(sol.jac) * max(chi2_red, 1.0)
+    if fix_sigma_laser is not None or fix_gamma_coll is not None:
+        # THE CONDITIONAL COVARIANCE (F42, 10:55): a width pinned by pinched bounds still has its
+        # column in the Jacobian, so the full inverse is the MARGINAL covariance carrying the
+        # sigma_laser-gamma_coll anticorrelation (-0.96) while the repeats' scatter is conditional
+        # on the pinned width; the pinned column leaves the inverse and its own bar reads zero
+        _drop = 1 if fix_sigma_laser is not None else 0
+        _J = np.delete(sol.jac, _drop, axis=1)
+        _c = cov_from_jac(_J) * max(chi2_red, 1.0)
+        cov = np.zeros((sol.jac.shape[1], sol.jac.shape[1])); _keep = [k for k in range(sol.jac.shape[1]) if k != _drop]
+        cov[np.ix_(_keep, _keep)] = _c
+        _cov_marginal = cov_from_jac(sol.jac) * max(chi2_red, 1.0)   # the full inverse, kept for the Schur check (F44)
+    else:
+        cov = cov_from_jac(sol.jac) * max(chi2_red, 1.0)
+        _cov_marginal = cov
 
     # Per-trace residual diagnostics (audit request, 2026-07-11): a good
     # joint fit must be good for EVERY trace, not on average. For each trace
@@ -421,6 +443,12 @@ def fit_condition(freqs: List[np.ndarray], volts: List[np.ndarray], *,
     gc, sl, tr, gl = unpack(sol.x)
     err = np.sqrt(np.clip(np.diag(cov), 0, None))
     corr_gs = float(cov[0, 1] / np.sqrt(cov[0, 0] * cov[1, 1])) if cov[0, 0] > 0 and cov[1, 1] > 0 else np.nan
+    # the final shared profile and its full width, for the core check's mask (F42)
+    _gc_f, _sl_f, _tr_f, _gl_f = unpack(sol.x)
+    _g_final, _prof_final = _shared_profile_grid(_gc_f, _sl_f, transit_fwhm_at_T(T_C, _tr_f) if fit_transit else _tr_f,
+                                                 s0, laser_kind, _gl_f, profile=profile)
+    _half = 0.5 * float(np.max(_prof_final)); _idx = np.where(_prof_final >= _half)[0]
+    _fwhm_final = float(_g_final[_idx[-1]] - _g_final[_idx[0]]) if _idx.size else float("nan")
     return {
         "gamma_coll": float(gc), "gamma_coll_err": float(err[0]),
         "sigma_laser": float(sl), "sigma_laser_err": float(err[1]),
@@ -443,7 +471,18 @@ def fit_condition(freqs: List[np.ndarray], volts: List[np.ndarray], *,
         "sigma_laser_at_bound": bool(sl <= 1e-9),
         "corr_laser_coll": corr_gs,
         "centers": [float(sol.x[nshared + 4 * i + 1]) for i in range(ntr)],
+        # the per-trace bars from the same covariance (F42: their pulls pool like the width's)
+        "amps_err": [float(np.sqrt(max(cov[nshared + 4 * i, nshared + 4 * i], 0.0))) if cov.shape[0] > nshared + 4 * i else float("nan") for i in range(ntr)],
+        "centers_err": [float(np.sqrt(max(cov[nshared + 4 * i + 1, nshared + 4 * i + 1], 0.0))) if cov.shape[0] > nshared + 4 * i + 1 else float("nan") for i in range(ntr)],
         "amps": [float(sol.x[nshared + 4 * i]) for i in range(ntr)],
+        "gamma_coll_err_marginal": float(np.sqrt(max(_cov_marginal[0, 0], 0.0))), "sigma_laser_err_marginal": float(np.sqrt(max(_cov_marginal[1, 1], 0.0))),
+        "corr_marginal": float(_cov_marginal[0, 1] / np.sqrt(_cov_marginal[0, 0] * _cov_marginal[1, 1])) if _cov_marginal[0, 0] > 0 and _cov_marginal[1, 1] > 0 else float("nan"),
+        # THE CORE CHECK OF THE NOISE LAW (F42, 2026-09-17): the whitened residual per trace at the
+        # solution and, per sample, whether it lies within one fitted full width of the trace's
+        # centre; a law fitted on the wings and extrapolated to the core through bV + cV^2 is read
+        # against the core's own residual variance by the producer, per condition
+        "whitened_residuals": [np.asarray((volts[i] - (sol.x[nshared + 4 * i] * np.interp(freqs[i] - sol.x[nshared + 4 * i + 1], _g_final, _prof_final, left=0.0, right=0.0) + sol.x[nshared + 4 * i + 2] + sol.x[nshared + 4 * i + 3] * freqs[i])) / sigmas[i]) for i in range(ntr)],
+        "core_masks": [np.abs(freqs[i] - sol.x[nshared + 4 * i + 1]) <= _fwhm_final for i in range(ntr)],
         # BASELINES COMPLETE THE SET (2026-08-22). centers and amps alone do
         # not let a caller rebuild the fitted model, because each trace also
         # carries its own linear background, so any consumer wanting residuals

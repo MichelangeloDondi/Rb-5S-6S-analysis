@@ -92,7 +92,7 @@ def test_the_noiseless_resolved_limit_returns_the_cubic_law():
               "bbr": False, "drift": False, "quantise": False,
               "randomise": False}
     xs, ys = [], []
-    for s0 in (0.364, 1.0, 2.0):
+    for s0 in (0.364, 1.0, 2.0):   # the producer's ladder rungs, a design of its date
         nu, y, _ = build_world_trace(
             1.0, s0, mod.T_C, 0, 1, np.random.default_rng(4), layers,
             positions={mod.PEAK: 0.0}, shares={mod.PEAK: 1.0},
@@ -111,7 +111,7 @@ def test_the_unresolved_grid_biases_small_shifts_and_not_the_campaign():
 
     The fitted slope alone would mislead: it mixes rungs. Rung by rung the
     unresolved grid overstates the third cumulant by 68 per cent at S0 = 0.18,
-    reads 5 per cent low at the archive's 0.364, and is exact at 1.0 and above
+    reads 5 per cent low at the ladder's 0.364 rung (the archive's prediction of its date), and is exact at 1.0 and above
     -- so the campaign's own regime is untouched and the archive's is not.
     Guarding the structure rather than one number is what stops this being
     restated as "the twin is biased", which is the overstatement it replaced.
@@ -170,7 +170,8 @@ def test_the_rung_status_reads_the_sign_against_the_true_sign_and_never_against_
     rule now keys on the fraction with the WRONG sign, published to three
     decimals, and is re-derived from the file's own columns below."""
     mod = _load()
-    assert mod.TRUE_SIGN == {3: 1.0, 5: -1.0, 7: 1.0}
+    from rb5s6s.lineshape import RAMP_SIDE
+    assert mod.TRUE_SIGN == {3: -RAMP_SIDE, 5: +RAMP_SIDE, 7: -RAMP_SIDE}
     assert mod.rung_status(0.004) == "DIAGNOSTIC"          # a settled sign
     assert mod.rung_status(0.349) == "DIAGNOSTIC"
     assert mod.rung_status(0.35) == "NULL"                 # the bar itself is not admitted
@@ -183,12 +184,15 @@ def test_the_rung_status_reads_the_sign_against_the_true_sign_and_never_against_
 
 def test_the_true_signs_are_the_ramps_own():
     """Failure: the sign table drifts from the physics it encodes. The ramp's
-    density 2|s|/S0^2 on [-S0, 0] gives kappa_3 positive, kappa_5 negative,
-    kappa_7 positive (docs/methods/03)."""
+    density 2|s|/S0^2 on the package's side (lineshape.RAMP_SIDE, blue since the ruling of
+    2026-09-17) gives kappa_3 negative, kappa_5 positive, kappa_7 negative (docs/methods/03).
+    The density is built on RAMP_SIDE and not by hand: this test built the red side itself
+    and so agreed with a table the kernel had left (P3)."""
     from rb5s6s.cumulants import cumulants_from_central_moments
     from rb5s6s._compat import trapezoid          # the seam, never the numpy name
     mod = _load()
-    x = np.linspace(0.0, 1.0, 200001); f = 2.0 * x; f /= trapezoid(f, x); s = -x
+    from rb5s6s.lineshape import RAMP_SIDE
+    x = np.linspace(0.0, 1.0, 200001); f = 2.0 * x; f /= trapezoid(f, x); s = RAMP_SIDE * x
     m1 = trapezoid(s * f, x)
     mu = [trapezoid((s - m1) ** k * f, x) for k in range(1, 8)]
     kap = cumulants_from_central_moments(mu)

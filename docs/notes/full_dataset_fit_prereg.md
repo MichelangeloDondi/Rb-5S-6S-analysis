@@ -8,18 +8,10 @@ that the run can only confirm or fail them.
 `provenance: results/full_dataset_fit.csv` - The preregistered construction is realised in this CSV and the headline quantities match it. **Sixteen further numeric claims on the page have no row in it**, and paying that down means checking each against the producer rather than relabelling the file. **16 numeric claims on this page remain unaccounted for.** Recorded by an audit that read every numeric claim on this page against `results/` and `scripts/`. See the private correction record.
 
 
-**The question.** What will the cross-campaign joint fit do, decided before it
-was written?
-**Takes.** [methods/06_the_statistics.md](../methods/06_the_statistics.md), for
-the fitting machinery this specialises.
-**Gives.** The trace census, the parameter hierarchy, the priors, the grid, the
-QC gates and the stop conditions, each fixed in advance so the run can only
-confirm or fail them.
-**Skip if.** You want the result rather than the contract it was run under.
+What will the cross-campaign joint fit do, decided before it was written? This page builds on [methods/06_the_statistics.md](../methods/06_the_statistics.md), for the fitting machinery this specialises and sets out the trace census, the parameter hierarchy, the priors, the grid, the QC gates and the stop conditions, each fixed in advance so the run can only confirm or fail them. Not covered here: the result rather than the contract it was run under.
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
-> explains the measurement in six sentences, then defines every term
-> and symbol used anywhere in this repository.
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
+> defines every term and symbol used anywhere in this repository.
 
 Producer: `scripts/run_full_archive_fit.py`. Output: `results/full_archive_fit.csv`.
 
@@ -274,7 +266,7 @@ as much as its stated reason.
 A sane result, stated in advance: profile minimum at or near kappa = 0 with no
 appreciable preference, a 95% upper limit of the same order as M23's 1.192 MHz
 per W and plausibly tighter given 59 more traces on the core, all four
-leave-one-peak-out rows positive and similar **[criterion corrected 2026-08-27: positivity was never the test, the threshold is 2.706. On this construction all four arms clear it at 3.17 to 11.48, so this prereg's verdict stands. On the three-session joint fit no count of arms is quotable, since the arms are separate likelihoods and carrying them to 1.618 leaves one inside that profile's own scatter of the threshold]**, direction indifference at the tens
+leave-one-peak-out rows positive and similar **[criterion corrected 2026-08-27: positivity was never the test, the threshold is 2.706. On this construction all four arms clear it at 3.17 to 11.48, so this prereg's verdict stands. On the three-session joint fit no count of arms is quotable, since the arms are separate likelihoods and carrying them to 1.618, the static-tail coefficient retired on 2026-09-17, left one inside that profile's own scatter of the threshold. At the current coefficient that arm fails at both ends of its bracket (RESULTS.md C3f)]**, direction indifference at the tens
 of chi-squared, and posterior collisional widths within 3 sigma of their priors.
 
 Stop conditions: B1, B3 or B5 failing. Also any of the following, which are

@@ -1,29 +1,18 @@
 *Chapter 3 of 8 · [methods index](../methods.md)*
 
-**The question.** What does a focused beam do to the light shift, once you
-notice that the atoms it shifts sit at every intensity in the beam rather than
-at one?
-**Takes.** The lineshape chapter, for the symmetric kernels the ramp is
-convolved with, and the measurement chapter for the retro geometry.
-**Gives.** The triangular ramp law and its cumulants, the diverging-beam closed
-form and its sign flip, which the collection geometry sets (the axial window
-crossing 1.12 of the Rayleigh range), and the pinned intensity convention
-behind $S_0$.
-**Skip if.** You want the record's result rather than the physics. The ramp is
-not resolved in the 2025 data and its bound is in the results chapter.
+This chapter asks what a focused beam does to the light shift, once the atoms it shifts are seen to sit at every intensity in the beam rather than at one? This chapter builds on the lineshape chapter, for the symmetric kernels the ramp is convolved with, and the measurement chapter for the retro geometry and sets out the triangular ramp law and its cumulants, the diverging-beam closed form and its sign flip, which the collection geometry sets (the axial window crossing 1.12 of the Rayleigh range), and the pinned intensity convention behind $S_0$. Not covered here: the record's result rather than the physics. The ramp is not resolved in the 2025 data and its bound is in the results chapter.
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
-> explains the measurement in six sentences, then defines every term
-> and symbol used anywhere in this repository.
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
+> defines every term and symbol used anywhere in this repository.
 
 ### 2.6 AC-Stark shift: derivation of the triangular "ramp law"
 
 Intense light shifts atomic levels (the AC-Stark or light shift) by an amount
 proportional to the local intensity $I$. This chapter takes the shift toward the
-**red** (lower frequency), following [Orson *et al.*](../lit/orson2021.md) 2021's
-published $\Delta\alpha$ for this line. An independent recompute here
-returns the same magnitude but the *opposite* sign, an open question flagged for
-adjudication in [`THEORY_NOTE.md`](../THEORY_NOTE.md) §5. Nothing in the record's
+**blue** (higher frequency), because this record's differential polarizability is
+negative. [Orson *et al.*](../lit/orson2021.md) 2021 print a magnitude within four
+per cent of it with the opposite sign, and the ruling of 2026-09-17 set the
+record's own value ([`THEORY_NOTE.md`](../THEORY_NOTE.md) §5 carries the dispute). Nothing in the record's
 results depends on the choice, because the shape below and every bound drawn
 from it are sign-immune ("The coefficient", below). Different atoms sit at
 different radii in the beam and so feel different shifts. What does the *line*
@@ -31,8 +20,8 @@ show? Two facts set it up:
 
 - **Two-photon excitation rate** $\propto I^2$ (each photon contributes one
   power of $I$).
-- **Shift** $s = -\kappa I$ for some positive constant $\kappa$ (red $\Rightarrow$
-  minus, per the convention fixed above).
+- **Shift** $s = +\kappa I$ for some positive constant $\kappa$ (blue $\Rightarrow$
+  plus, per the convention fixed above).
 
 Take a Gaussian beam, $I(r)=I_0e^{-2r^2/w_0^2}$, and let $u\equiv I/I_0\in(0,1]$.
 The signal contributed by the annulus between $r$ and $r+dr$ is
@@ -47,45 +36,48 @@ so
 
 $$dS \propto  u^2\cdot\frac{du}{u} = udu$$
 
-The shift at intensity $u$ is $s=-\kappa I_0u \equiv -S_0u$, where
-the positive quantity $S_0=\kappa I_0$ is the on-axis (maximum) shift magnitude. Substituting
-$u=-s/S_0$, the **signal-weighted distribution of shifts** is
+The shift at intensity $u$ is $s=\kappa I_0u \equiv S_0u$, where
+the positive quantity $S_0=\kappa I_0$ is the on-axis (maximum) shift. Substituting
+$u=s/S_0$, the **signal-weighted distribution of shifts** is
 
-$$\boxed{f(s) \propto |s|\quad\text{on}\quad s\in[-S_0,0]}$$
+$$\boxed{f(s) \propto s\quad\text{on}\quad s\in[0,S_0]}$$
 
 which is a triangular **ramp**. (The same law holds for a nanofibre's
 evanescent field, because the intensity is exponential in the flat coordinate
 there too, and that shared law is the physics bridge to the nanofibre extension.) Normalizing,
-$f(s)=2|s|/S_0^2$, we get the moments by direct integration:
+$f(s)=2s/S_0^2$, the moments follow by direct integration:
 
-$$\langle s\rangle=\int_{-S_0}^{0}  sf(s)ds=-\tfrac{2}{3}S_0,
+$$\langle s\rangle=\int_{0}^{S_0}  sf(s)ds=+\tfrac{2}{3}S_0,
 \qquad
 \mathrm{Var}(s)=\tfrac{1}{18}S_0^2,
 \qquad
-\kappa_3=\langle(s-\langle s\rangle)^3\rangle=+\tfrac{1}{135}S_0^3$$
+\kappa_3=\langle(s-\langle s\rangle)^3\rangle=-\tfrac{1}{135}S_0^3$$
 
-So the **mean red pull is $\tfrac23 S_0$**, and the distribution is
-positively skewed (peak pulled red, thin tail toward the blue). Here
+So the **mean blue pull is $\tfrac23 S_0$**, and the distribution is
+negatively skewed (the peak pulled blue, the thin tail back toward the unshifted line). Here
 $\kappa_2\equiv\mathrm{Var}$ and $\kappa_3$ are the second and third
 *cumulants*. The ramp's own **standardized** skewness, the scale-free shape
-number, is $\kappa_3/\kappa_2^{3/2}=18^{3/2}/135\approx0.566$, independent
+number, is $\kappa_3/\kappa_2^{3/2}=-18^{3/2}/135\approx-0.566$, independent
 of $S_0$ (a property of the triangle, not of the power). That fixed number is
-the target of the form test below. The ramp's cumulants continue
-$\kappa_4 = -S_0^4/540$ and $\kappa_5 = -S_0^5/567$, with the seventh
-positive again (`rb5s6s.cumulants.cumulants_from_central_moments` on the
+the target of the form test below.
+
+The ramp's cumulants continue
+$\kappa_4 = -S_0^4/540$ and $\kappa_5 = +S_0^5/567$, with the seventh
+negative again (`rb5s6s.cumulants.cumulants_from_central_moments` on the
 density's moments, and `tests/test_cumulants.py` pins the third), so the odd
 orders alternate in sign, and a statistic built on the sign of a windowed
 cumulant is read against each order's own sign and never against zero. The
-signs are the coded red side's, and on the blue side every odd one flips. What varies with power is the
-*observed line's* asymmetry, which we get by folding the ramp into the rest
+signs are the coded blue side's, settled by the ruling of 2026-09-17 on the single-source
+differential polarizability of [-1131.8](../../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive") a.u. On the red side every odd one flips. What varies with power is the
+*observed line's* asymmetry, which follows by folding the ramp into the rest
 of the line.
 
-**[Cumulants add under convolution](../wiki/third-cumulant.md)** (the cumulant of a sum of independent
+[Cumulants add under convolution](../wiki/third-cumulant.md) (the cumulant of a sum of independent
 variables is the sum of the cumulants), and the Gaussian and transit kernels
 have $\kappa_1=\kappa_3=0$ exactly. **The Lorentzian is the qualified case.** Its even cumulants diverge, so
 whole-line $\kappa_2$ and any standardised skew exist only at a fixed
 window, and the caveat below stands. The whole line's pre-window third
-cumulant is still $\kappa_3^{\text{tot}} = S_0^3/135$, since the odd
+cumulant is still $\kappa_3^{\text{tot}} = -S_0^3/135$, since the odd
 moments of every kernel cancel. What a windowed, self-centred readout keeps
 of it is the truncation-limited fraction the `survival` rows of
 [`results/cumulant_window_check.csv`](../../results/cumulant_window_check.csv)
@@ -97,6 +89,7 @@ first among them. Derivation and numbers are on
 the history. The mean
 pull is the primary fixed-lock-session observable
 ([where this can go](08_assumptions_and_outlook.md)).
+
 (The dataset's centre channel supplies no bound of its own. A peak position is
 a frequency only within a run of traces taken at one scope horizontal setting,
 so each run carries a free offset, and the pull comes out unidentifiable rather
@@ -113,16 +106,16 @@ deviation, $\sim 2$ MHz, set mostly by the $\sim 5$ MHz total FWHM and
 nearly power-independent), against which the asymmetry reads as
 
 $$g_1^{\text{obs}} \sim \frac{\kappa_3^{\text{tot}}}{\sigma_\text{eff}^3}
-=\frac{S_0^3/135}{\sigma_\text{eff}^3} \propto S_0^3 \propto P^3$$
+=\frac{-S_0^3/135}{\sigma_\text{eff}^3} \propto S_0^3 \propto P^3$$
 
 since $S_0\propto$ power $P$. This is a self-centred construction, the
 window riding the fitted centre, which is what licenses using
-$\kappa_3^{\text{tot}} = S_0^3/135$ here at all (remark above). (No contradiction with the fixed $0.566$: that
+$\kappa_3^{\text{tot}} = -S_0^3/135$ here at all (remark above). (No contradiction with the fixed $0.566$ magnitude: that
 is the standardized skew of the ramp *alone*, where here the same $\kappa_3$ is
 divided by a much larger and nearly fixed symmetric width.)
 
 **Two consequences for the 2025 data.** First, the ramp predicts the FWHM
-should move $\lesssim2$% across our power sweep, and the dataset shows no
+should move $\lesssim2$% across the power sweep, and the dataset shows no
 significant power trend. The observed 3 to 8% spread is non-monotonic block
 scatter, an order above the predicted ramp contribution, so the dataset cannot
 resolve the ramp term. The old "power null" is therefore a null the ramp law is
@@ -132,10 +125,10 @@ unmeasurable, so all AC-Stark *coefficients* move to a fixed-lock session, where
 the shift itself ($\propto P$) is measured directly against a stable lock.
 
 *Code:* `stark_ramp()`, built from exact per-cell integrals so the area is
-exactly 1 and the mean exactly $-\tfrac23 S_0$ even for shifts far below the
+exactly 1 and the mean exactly $+\tfrac23 S_0$ even for shifts far below the
 grid step.
 
-#### The general law: the signal exponent sets the ramp shape
+#### The general law and the signal exponent
 
 *General framing: [the AC-Stark shift](../wiki/ac-stark-shift.md). The
 derivation below stays here.*
@@ -145,15 +138,15 @@ $u^n$. For a signal $\propto I^n$ the same steps give
 
 $$dS  \propto  u^n\frac{du}{u}  =  u^{n-1}du
 \qquad\Longrightarrow\qquad
-f(s) \propto |s|^{n-1}\ \ \text{on}\ [-S_0,0]$$
+f(s) \propto s^{n-1}\ \ \text{on}\ [0,S_0]$$
 
 For a **one-photon** transition ($n=1$, for instance the Stark-induced
 forbidden lines of the parity-violation literature) the transverse
-distribution is **uniform**: mean $-S_0/2$ and, being symmetric about its own
+distribution is **uniform**: mean $+S_0/2$ and, being symmetric about its own
 mean, $\kappa_3=0$, which is **zero skew**.
 
-**That null is a thin-window statement and not a property of one-photon
-excitation** (owner, 2026-09-09). The uniform density above is the law at a
+That null is a thin-window statement and not a property of one-photon
+excitation (owner, 2026-09-09). The uniform density above is the law at a
 single axial slice. What a detector collects is the mixture over slices, and
 those uniforms share a lower endpoint at zero while their upper endpoints
 $S(\zeta)$ fall as the beam expands, so the mixture is neither uniform nor
@@ -162,7 +155,9 @@ subsection carries it: at $n=1$ the density is $\propto \zeta_m + \zeta_m^3/3$,
 constant only below $u_c = S_0/(1+(L/z_R)^2)$ and rolling to zero above it.
 The null is recovered as $L/z_R \to 0$, which is a wide waist and a large
 collection magnification, and the record's own configurations do not all sit
-there. Measured through the same window, the one-photon third cumulant against
+there.
+
+Measured through the same window, the one-photon third cumulant against
 the two-photon one runs
 [0.0129](../../results/waist_ladder.csv "ref:waist_ladder:rung:1.000000:k3_one_photon_over_two"),
 [0.5005](../../results/waist_ladder.csv "ref:waist_ladder:rung:0.625000:k3_one_photon_over_two"),
@@ -170,8 +165,8 @@ the two-photon one runs
 [1.7626](../../results/waist_ladder.csv "ref:waist_ladder:rung:0.250000:k3_one_photon_over_two")
 at 64, 40, 25 and 16 microns, crossing unity near $L/z_R = 0.78$.
 
-**So the delineation from the nearest prior art holds at this bench and not at
-every geometry.** ([Stalnaker *et al.*](../lit/stalnaker2006.md), PRA **73**,
+So the delineation from the nearest prior art holds at this bench and not at
+every geometry. ([Stalnaker *et al.*](../lit/stalnaker2006.md), PRA **73**,
 043416 (2006), extracted an AC-Stark parameter from asymmetric standing-wave
 lineshapes numerically, in the $n=1$, fringe-resolved regime, with the full
 delineation in `docs/LITERATURE.md`.) At the 2025 waist the one-photon
@@ -184,10 +179,10 @@ toward the prior art's regime and not away from it**, and what continues to
 separate the two is the power law, cubic in the drive for the ramp and not for
 a geometric asymmetry, and not the existence of the asymmetry.
 
-#### The trapped limit, and why it is not the limit this bench reaches
+#### The trapped limit and its inapplicability here
 
-**The prior derivation is [`docs/notes/guided_mode_two_photon_design.md`](../notes/guided_mode_two_photon_design.md)
-section 1.2**, which reached the same weight by a different route and whose
+The prior derivation is [`docs/notes/guided_mode_two_photon_design.md`](../notes/guided_mode_two_photon_design.md)
+section 1.2, which reached the same weight by a different route and whose
 result is reconciled with this one below. What this section adds is the
 regime: the limit that matters here is not the deep-trap one.
 
@@ -205,8 +200,8 @@ $$w_\text{trap}(u)\ \propto\ u \mathrm{e}^{\eta u}\qquad\text{on}\ [0,1].$$
 Neither is computed in prose here, because a hand-computed depth shipped wrong
 by a factor of eight on 2026-09-11 and no guard could see it.
 
-**The *radial* temperature is the one that enters, and in a fibre that is the
-hot axis.** The shift an atom samples is fixed by its radial position through
+The *radial* temperature is the one that enters, and in a fibre that is the
+hot axis. The shift an atom samples is fixed by its radial position through
 $I(r)=I_0\mathrm{e}^{-2r^2/w_0^2}$, and the axial coordinate enters only through a
 standing-wave fringe. In a hollow-core fibre the published cooling is radial
 *or* axial and not both, so a realistic sample is a few microkelvin along the
@@ -223,7 +218,7 @@ retro-reflected lattice confines all three, so three applies, and any text
 that invokes an antinode has already assumed axial confinement and owes the
 $\tfrac32$.
 
-**And the deep-trap limit is not this bench's.** Quadrature of
+And the deep-trap limit is not this bench's. Quadrature of
 $u \mathrm{e}^{\eta u}$, with the free ramp recovered exactly at $\eta=0$:
 
 | $\eta$ | mean of $u$ | sd | standardized skew | $\kappa_3/\kappa_3^\text{free}$ |
@@ -255,8 +250,7 @@ are equal so the displacement and its spread vanish together. The open item is i
 the free ramp only, so none of it is a forecast. Threading $w_\text{trap}$ with
 $\eta$ as its parameter is owed before any of it forecasts a campaign.
 
-#### $n=2$ is a weak-field statement, and the dataset sits near its edge
-
+#### Weak-field validity of $n=2$
 ![the weak-field limit and what leaving it costs the predicted skewness](../../figures/fig24_weak_field_limit.png)
 
 *Left, the weight the atom carries against the square law that stands in for
@@ -270,10 +264,10 @@ $s=2\Omega^2/\Gamma^2$, which reduces to $I^2$ only while $s\ll1$, since
 $\Omega$ itself is two-photon and quadratic in the field. That matters here
 because $s$ scales as the *fourth* power of the inverse waist while $S_0$
 scales only as the second, so the two do not move together. At the dataset's
-measured 64 µm and 225 mW, $s=0.033$ and the weak-field law is safe to well
+64 µm convention and 225 mW, $s=0.033$ and the weak-field law is safe to well
 under a percent. At the 16 µm the small-waist session proposes, $s=8.5$, the
 weight is nearly flat in intensity, and re-integrating the moments with the
-saturated weight moves the predicted axial skew from $-0.36$ to $-1.07$. The
+saturated weight moves the predicted axial skew from $+0.36$ to $+1.07$. The
 sign flip survives, the magnitude does not, so the tight-focus prediction is a
 factor-of-three statement and the reason is a modelling assumption rather than
 an unmeasured input. Computed by `scripts/run_geometry_design.py`, written up
@@ -286,7 +280,7 @@ Dividing out $S_0$, the ramp component predicts *pure numbers*:
 $$\frac{\mathrm{Var}(s)}{\langle s\rangle^2}=\frac{1/18}{4/9}=\frac18,
 \qquad
 g_1\equiv\frac{\kappa_3}{\mathrm{Var}(s)^{3/2}}
-=\frac{1/135}{(1/18)^{3/2}}=\frac{18^{3/2}}{135}\approx+0.566$$
+=\frac{-1/135}{(1/18)^{3/2}}=-\frac{18^{3/2}}{135}\approx-0.566$$
 
 A fixed-lock session would test them in order of statistical cost.
 
@@ -321,7 +315,7 @@ $$f(s) \propto |s|^{n-1}\left[\zeta_m+\frac{\zeta_m^3}{3}\right],
 \qquad
 \zeta_m(s)=\min \left(\frac{Z_c}{z_R},\ \sqrt{\frac{S_0}{|s|}-1}\right)$$
 
-$Z_c/z_R\to0$ recovers the triangle, and the hard edge at $-S_0$ softens to
+$Z_c/z_R\to0$ recovers the triangle, and the hard edge at $+S_0$ softens to
 zero because only the focal plane reaches the full shift. Numerically, on a
 uniform window at $Z_c=2$ mm, which was a placeholder when this table was first
 computed and is now supported by the magnification estimate below at 2.0 to
@@ -330,13 +324,13 @@ measurement:
 
 | config | $Z_c/z_R$ | $\text{mean}/S_0$ | $\text{Var}/\text{mean}^2$ | $g_1$ |
 |---|---|---|---|---|
-| pure triangle | 0 | $-0.667$ | 0.125 | $+0.566$ |
-| 60 µm (proposed config L) | 0.18 | $-0.660$ | 0.125 | $+0.564$ |
-| 64 µm (2025 dataset) | 0.15 | $-0.661$ | 0.125 | $+0.565$ |
-| 16 µm (proposed config S) | 2.47 | $-0.431$ | 0.333 | $-0.354$ * |
+| pure triangle | 0 | $+0.667$ | 0.125 | $-0.566$ |
+| 60 µm (proposed config L) | 0.18 | $+0.660$ | 0.125 | $-0.564$ |
+| 64 µm (2025 dataset) | 0.15 | $+0.661$ | 0.125 | $-0.565$ |
+| 16 µm (proposed config S) | 2.47 | $+0.431$ | 0.333 | $+0.354$ * |
 
 \* At 225 mW config S is already saturated (PLAN §3), so the effective
-signal exponent $n$ there is below 2: that *strengthens* the negative skew but the
+signal exponent $n$ there is below 2: that *strengthens* the positive skew but the
 $n=2$ magnitudes in this row are no longer parameter-free. At config S the
 sign is the robust observable, and the magnitudes belong to L and M.
 
@@ -348,9 +342,9 @@ matches this module's numerics to every printed digit at every geometry
 tested, with the crossover at $Z_c/z_R = 1.1172$. The closed forms are held as
 tests (`test_axial_ramp_matches_the_independent_closed_form`).
 
-**The skewness flips sign** (crossover at $Z_c/z_R = 1.1172$): a long
+The skewness flips sign (crossover at $Z_c/z_R = 1.1172$): a long
 window piles signal into weak out-of-focus shifts, leaving a tail toward
-$-S_0$. Whether config S lands past the crossover is a question about the
+$+S_0$. Whether config S lands past the crossover is a question about the
 collection optics, and $Z_c$ is not a free parameter: for the side-viewing
 $f=18$ mm lens imaging the beam onto the PMT it is the axial field of view in
 object space, $Z_c=L_\parallel/2M$ with magnification $M=v/u$ ($u$ = lens–beam
@@ -370,18 +364,18 @@ the whole plausible range of magnification:
 
 | $M$ | $Z_c$ (mm) | $g_1$ at 64 µm | $g_1$ at 16 µm | flips |
 |---|---|---|---|---|
-| 0.5 | 12.0 | $+0.142$ | $-0.510$ | yes |
-| 1.0 | 6.0 | $+0.498$ | $-0.476$ | yes |
-| 2.0 | 3.0 | $+0.560$ | $-0.416$ | yes |
-| 4.0 | 1.5 | $+0.565$ | $-0.277$ | yes |
-| 6.0 | 1.0 | $+0.566$ | $-0.071$ | yes |
+| 0.5 | 12.0 | $-0.142$ | $+0.510$ | yes |
+| 1.0 | 6.0 | $-0.498$ | $+0.476$ | yes |
+| 2.0 | 3.0 | $-0.560$ | $+0.416$ | yes |
+| 4.0 | 1.5 | $-0.565$ | $+0.277$ | yes |
+| 6.0 | 1.0 | $-0.566$ | $+0.071$ | yes |
 
 So the sign-flip test does not require $M$ to be known: it holds for every $M$
 from 0.5 to 6, and a magnification near forty, which the plan hub now offers
 as one route at the tight waist, removes it with the window that makes it. Portrait would have forfeited it, because $Z_c = 1.5/M$ mm sits
 below the 0.90 mm flip threshold for any $M$ above 1.7 (PLAN §6 #4).
 
-**The magnification is roughly known too.** The collection lens was the
+The magnification is roughly known too. The collection lens was the
 $f=18$ mm one and nothing else, with $M$ estimated at 2.5–3 (recollection,
 2026-07-29, an estimate and not a measurement, with $u$ and $v$ still wanting
 a ruler).
@@ -389,7 +383,7 @@ That gives $Z_c = 6/M = 2.0$ to $2.4$ mm, and it hangs together: $1/u+1/v=1/f$ w
 $M=2.5$–3 puts the lens 24–25 mm from the beam and the photocathode 63–72 mm
 behind it, an ordinary side-viewing layout.
 
-**A second recollection, 2026-09-04, states the distances with tolerances**:
+A second recollection, 2026-09-04, states the distances with tolerances:
 $f = 18 \pm 1$ mm and the photocathode in focus at $v = 50 \pm 10$ mm with no
 second element, so $M = (v-f)/f = 1.8$, the lens 28 mm from the beam and
 $Z_c = 3.4$ mm. The two recollections overlap at one sigma, the July one
@@ -430,24 +424,24 @@ in the top 6 per cent of the shift range. Three consequences:
    [0.97](../../results/prediction_band.csv "ref:prediction_band:collection_window:transit_kernel_rms_spread_pct")
    per cent over the same window, which is the size of the non-convolution
    the composite of [chapter 4](04_the_composite_model.md) neglects.
-3. **The proposed flip is near the best the geometry allows**: $+0.56$ at 64 µm
-   against $-0.35$ to $-0.39$ at 16 µm, a swing of $\approx0.92$ to $0.95$ in a
+3. **The proposed flip is near the best the geometry allows**: $-0.56$ at 64 µm
+   against $+0.35$ to $+0.39$ at 16 µm, a swing of $\approx0.92$ to $0.95$ in a
    quantity whose full range is $\pm0.57$.
 
 The remaining measurement is $u$ and $v$ (PLAN §4, §6 #4). The solid-angle
 weighting varies by under 2% across any such window, so the top-hat form is
 fair and the *width* is the only unknown. Geometry permitting, a proposed
 session's skew program is then a **sign-flip test between beam
-configurations**, $g_1$ positive at the large waist and negative at the small
+configurations**, $g_1$ negative at the large waist and positive at the small
 one, a signature no instrumental asymmetry can mimic because the instrument
-depends on $z_R$. At the measured 64 µm 2025 waist the coefficients above
+depends on $z_R$. At the 64 µm convention for the 2025 waist the coefficients above
 carry only a few-% geometry caveat: its longer $z_R$ makes the ramp nearly the
-pure-triangle $Z_c\to0$ limit at $g_1\approx+0.56$, where it was 10 to 40% at
+pure-triangle $Z_c\to0$ limit at $g_1\approx-0.56$, where it was 10 to 40% at
 the old 32 µm nominal, and the wider waist only strengthens the
 approximation). *Code:*
 `stark_ramp_axial()`, table from `scripts/run_ramp_geometry.py`.
 
-#### The density is right and the composition was not
+#### Density and composition of the mixture
 
 *Added 2026-09-09.* Everything above derives the shift density, and none of it
 is disturbed by what follows. What the pipeline then did with that density was
@@ -461,19 +455,19 @@ independent.
 
 `scripts/run_kernel_inhomogeneity.py` measures the cost.
 The centroid is untouched at every waist,
-[0.000](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w64um:centroid_pull_error") per cent, because the first
+[-0.000](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w64um:centroid_pull_error") per cent, because the first
 moment of a mixture of symmetric kernels is the density's own mean whatever
 the kernels are. Nothing else is: the fitted centre moves by
 [-0.265](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w64um:fitted_centre_error") per cent here and
-[-56.972](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w16um:fitted_centre_error") at 16 microns, and the
+[-57.023](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w16um:fitted_centre_error") at 16 microns, and the
 windowed third cumulant by
-[106.911](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w64um:k3_error") per cent at this bench's own waist,
+[106.742](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w64um:k3_error") per cent at this bench's own waist,
 where it also inverts the sign.
 [The composite chapter](04_the_composite_model.md) carries the boundary and
 [the odd-moments chapter](10_the_odd_moments.md) carries what it costs the
 ladder.
 
-**The one-atom reading of the same fact, which is the intuition.** An atom
+The one-atom reading of the same fact, which is the intuition. An atom
 does not sit at one shift. It crosses the beam, so its shift rises and falls
 during the crossing, and what it contributes is the excitation-rate-weighted
 average along its own trajectory. That single trajectory sets its shift and
@@ -481,13 +475,13 @@ its transit width together. Treating the ramp as a distribution to be
 convolved with a separate kernel is exactly the step that forgets they came
 from the same path.
 
-#### What the mixture costs, in closed form
+#### Closed-form cost of the mixture
 
 *Added 2026-09-09.* The section above says the composition fails and the
 producer measures what it costs. Both are now derivable, and the derivation
 says which channel pays and which does not.
 
-**The ramp's shape does not vary along the beam. Its range does.** At axial
+The ramp's shape does not vary along the beam. Its range does. At axial
 position $z$ write $\zeta = z/z_R$ and substitute $t = 2r^2/w(z)^2$, so that
 $2\pi r dr = (\pi w^2/2) dt$. With $u = S(\zeta)e^{-t}$ and
 $S(\zeta) = S_0/(1+\zeta^2)$ this gives $dt = -du/u$, and an $n$-photon signal
@@ -502,7 +496,7 @@ of the previous subsection. The distinction matters because it says where the
 inhomogeneity enters: not in the density's shape, but in which slices reach a
 given shift.
 
-**So the kernel's spread at a given shift is fixed by that same geometry.**
+So the kernel's spread at a given shift is fixed by that same geometry.
 A shift $u$ is reached only where $S(\zeta) \ge u$, that is
 $|\zeta| \le \zeta_m = \sqrt{S_0/u - 1}$, truncated by the collection window at
 $\zeta_m \le L/z_R$. The transit width goes as the inverse local beam radius,
@@ -516,7 +510,7 @@ from the focal plane outward. At this bench's own collection ratio that is
 is keyed on $u/S_0$, which is the ramp's own variable, and that is the
 correlation a convolution cannot represent.**
 
-**The cost is then a covariance, exactly.** Let the observed frequency be
+The cost is then a covariance, exactly. Let the observed frequency be
 $X = -u + K$, with the kernel $K$ conditional on $u$, symmetric about zero and
 of variance $V(u)$. Expanding the third central moment,
 
@@ -541,6 +535,7 @@ cumulant itself. **The shortfall is the analysis window truncating a
 Lorentzian**, whose second moment does not exist, so the windowed stand-in for
 $V$ over-states the covariance by the reciprocal factor $2.594$. That factor
 belongs to the estimator and not to the physics.
+
 `scripts/run_kernel_inhomogeneity.py` measures it: `covariance_identity_ratio`
 in [`results/kernel_inhomogeneity.csv`](../../results/kernel_inhomogeneity.csv)
 carries it at each waist beside the covariance itself, with nothing fitted, and
@@ -548,7 +543,7 @@ the identity above is what the column divides by. Its constancy is what makes it
 wavelength can be computed from geometry alone, without rebuilding the
 mixture.
 
-#### The drive wavelength moves the waist, and everything the waist carries
+#### Dependence on the drive wavelength
 
 *Added 2026-09-09.* Every law above takes $w_0$ as given. It is not a property
 of the bench alone. A collimated input of radius $w_{\rm in}$ through a lens of
@@ -577,7 +572,7 @@ the second, a separation the width precision resolves. A ratio of light shifts
 quoted across two drives without that measurement carries an unstated
 assumption about the beam.
 
-#### The axial mixture: one form carries the window and the fringes together
+#### The axial mixture, window and fringes
 
 The closed form above is one member of a family. Write the local shift density
 on the dimensionless shift $x = s/S(\zeta)$ as $g(x)$, area one on $[-1, 0]$,
@@ -600,7 +595,9 @@ one over the number of axial samples at the local edge),
 retro ratio and temperature, independent of $S_0$, with the path factor
 divided out so its no-contrast limit is the transverse law), and
 `forecast.build_world_trace(z_ratio=..., fringe_density=...)`, off by default
-so every committed trace is unchanged. `tests/test_ramp_threading.py` holds
+so every committed trace is unchanged.
+
+`tests/test_ramp_threading.py` holds
 the mixture against `stark_ramp_axial` at the four bench windows and the
 density against the pooled moments of the same draws.
 
@@ -643,7 +640,9 @@ back through L2 and re-forms the original 64 µm cell waist. The forward and
 return modes therefore match **by construction**, and $\rho$ falls below 1
 through losses (two further L2 passes, two further window passes, mirror
 reflectivity) and through whatever superposition imperfection the alignment
-leaves. Since v3.0.0 the code assumes $\rho=0.94\pm0.04$ rather than the
+leaves.
+
+Since v3.0.0 the code assumes $\rho=0.94\pm0.04$ rather than the
 design value 1, because the design argument covers mode matching and not
 loss. The arrangement is also forgiving:
 that intermediate beam has $z_R'\approx2.8$ m, so the "mirror at the waist"
@@ -667,7 +666,9 @@ Doppler-free *rate* scales as $\rho$ itself (it needs one photon from each
 direction, so the signal $\propto I_\text{fwd}I_\text{bwd}$), not as $1+\rho$:
 a badly mismatched retro would have destroyed the signal long before it
 appreciably moved the shift, so the dataset's strong, clean lines are
-evidence that $\rho$ is not small. The asymmetry is worth
+evidence that $\rho$ is not small.
+
+The asymmetry is worth
 remembering: the retro threatens the *signal* far more than the *coefficient*.
 It matters for a fixed-lock session precisely because the coefficient is then the point:
 $\rho$ is measured in situ, per configuration (return-path clipping differs
@@ -678,7 +679,7 @@ with waist), before any $\Delta\alpha$ in physical units is quoted.
 The ramp *shape* and its centred moments are convention-free, but the
 *magnitude* of $S_0$, which converts a measured centroid pull into the
 differential polarizability $\Delta\alpha=\alpha_{6S}-\alpha_{5S}$, needs the
-$\langle E^2\rangle$ convention fixed. We adopt the standard AMO one ([Grimm
+$\langle E^2\rangle$ convention fixed. This record uses the standard AMO convention ([Grimm
 *et al.*](../lit/grimm2000.md) 2000, [Steck](../lit/steck_rb.md)): for $E(t)=E_0\cos\omega t$, $\langle E^2\rangle=E_0^2/2$,
 so $\Delta E_i=-\tfrac14\alpha_i E_0^2=-\alpha_i I/(2\varepsilon_0 c)$ and
 
@@ -693,17 +694,18 @@ scaling above is the *pure transverse triangle*. At a small waist the axial
 average over the collection window changes the third cumulant's magnitude and,
 past $Z_c/z_R\approx1.12$, its sign, so the small-waist gain is not the naive
 $\times 64$ (see the geometry discussion below and PLAN §6 #4). The **sign** is
-convention-independent, set by $\text{sign}(\Delta\alpha)$, red for Orson's
-published positive $\Delta\alpha$. That sign is itself under adjudication: an
-independent sum-over-states recompute here agrees on magnitude to within 5% but
-returns a negative $\Delta\alpha$, which is a **blue** shift
-([`THEORY_NOTE.md`](../THEORY_NOTE.md) §5). Every recorded result quoted in this
+convention-independent, set by $\text{sign}(\Delta\alpha)$: **blue** for this
+record's negative $\Delta\alpha$, which the ruling of 2026-09-17 chose over
+Orson's published positive value, the two agreeing on magnitude to within 5 per cent
+([`THEORY_NOTE.md`](../THEORY_NOTE.md) §5).
+
+Every recorded result quoted in this
 repository is unaffected, because the asymmetry null is symmetric and both the
 $S_0$ bound and its prediction band use $|\Delta\alpha|$. *Code:* `lineshape.stark_shift_S0_mhz()`. The full
 theorist-facing derivation, novelty position, and the open diverging-beam
 question are in [`docs/THEORY_NOTE.md`](../THEORY_NOTE.md).
 
-#### What the sum's matrix elements rest on, and why the two sides differ
+#### Matrix elements of the sum and their divergence
 
 The elements entering that sum are tabulated atomic data, so a reader is
 entitled to ask what fixes them. They are not free, and the answer is
@@ -729,14 +731,14 @@ branching instead of the sum is tagged as theory for exactly this reason.
 None of this bears on the sign, which the $6S$ lifetime settles by a route
 passing through none of these elements.
 
-#### One dressing, many teeth: what the modulation depth can and cannot move
+#### Modulation depth and the dressed teeth
 
 The ramp above is set by the intensity, and an electro-optic phase modulator
 changes the spectrum of the light without changing its intensity. That is one
 sentence of physics with a campaign design inside it, so the derivation
 follows.
 
-**The dressing is common to every tooth and independent of the depth.** Write
+The dressing is common to every tooth and independent of the depth. Write
 the modulated field as $E(t)=E_0e^{i(\omega t+\beta\sin\Omega t)}$. Its modulus
 is $E_0$ at every instant, so the intensity is constant in time and constant in
 $\beta$, and a shift proportional to intensity cannot move when only $\beta$
@@ -763,8 +765,8 @@ to one as well, which gives the second sum rule: **in the linear regime the
 summed signal over all teeth is the same at every depth**, and the distribution
 over teeth is what the depth chooses.
 
-**So the depth axis splits the model into families with three different
-scalings, and that is more than it first appears.** The light shift and its
+So the depth axis splits the model into families with three different
+scalings, and that is more than it first appears. The light shift and its
 ramp shape are set by the whole spectrum, so they do not move with depth at
 all. The tooth amplitude, the cascade depletion of
 [the cascade](../wiki/the-cascade-and-f-depletion.md) and radiation trapping
@@ -773,8 +775,10 @@ broadening sits between them**: the resonant two-photon Rabi frequency of the
 tooth at order $k$ is $J_k(2\beta)$ of the line's, being an amplitude and not a
 rate, so the companion width the saturation adds moves as the square root of
 the rate share. The transit, laser and collisional widths follow none of the
-three. **On a ladder in power the shift and the power broadening move together and
-not apart**: a
+three.
+
+On a ladder in power the shift and the power broadening move together and
+not apart: a
 two-photon Rabi frequency goes as the intensity, the same power of $P$ as the
 shift, so the power broadening is proportional to the shift along the whole
 ladder and no exponent separates them. The rate is the only one with a
@@ -813,12 +817,12 @@ This section is physics and mathematics, the first two rungs. What each test
 buys in coefficient units is a twin question, and the campaign case takes it
 there.
 
-#### The waist as the second axis, and what a known magnification buys
+#### The waist as the second axis
 
 The depth moves the spectrum of the light. The other knob moves its geometry,
 and the two are complementary because they separate different terms.
 
-**The problem it attacks is the one this record calls its largest.** Every
+The problem it attacks is the one this record calls its largest. Every
 absolute quantity here is conditional on $w_0$, which was never measured on
 this bench, and a scan across configurations catches only relative waist
 errors while a common scale error passes silently
@@ -858,7 +862,7 @@ light shift as $1/M^2$, and the two must agree. Their agreement is a test of
 the transit law where the record's present anchor, a differential transit width
 at one setting, has to assume it.
 
-**And the collected signal does not scale the way the naive count says.** The
+And the collected signal does not scale the way the naive count says. The
 two-photon signal collected through an axial half-window $L$ is
 
 $$S \propto \int_{-L}^{L} \int I^2 dA dz = \frac{2P^2}{\lambda}\arctan\left(\frac{L}{z_R}\right),$$
@@ -870,7 +874,7 @@ fourfold tightening multiplies the integrated signal by about five, and it
 saturates from there, since a window that already swallows the beam cannot
 swallow more of it.
 
-**The peak height is the interesting one, and it turns over.** The line does not
+The peak height is the interesting one, and it turns over. The line does not
 broaden with the transit alone, and at these conditions the transit is about a
 fifth of the composite width, so quadrupling it widens the line by well under a
 factor of two and the peak height rises, by about three over the same span.
@@ -879,7 +883,9 @@ below a waist near a third of the record's it broadens the line faster than the
 collection gains photons, and the peak height falls again. The maximum sits
 inside the range the campaign proposes while the integrated signal is still
 climbing, so **a tight waist is a shift lever and a signal lever both**, and the
-two do not want quite the same waist. Computed through the record's own
+two do not want quite the same waist.
+
+Computed through the record's own
 composite profile at its measured collisional and laser widths, which is the
 correction a first draft of this section needed: it divided the collected
 signal by the transit width instead of the line's, and concluded that the peak

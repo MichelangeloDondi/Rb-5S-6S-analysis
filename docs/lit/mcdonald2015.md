@@ -83,9 +83,9 @@ close in form. Neither derivation reaches the other.
 
 **The observable differs, and that difference cuts this record's way.** They
 invert the carrier FWHM, a WIDTH. On this line the width channel's WHOLE signal
-at the predicted shift is 6.48 kHz on the Gaussian branch and 7.23 on the cusp
+at the predicted shift is [6.48](../../results/identifiability.csv "ref:identifiability:width_signature_broadening_khz:gaussian_branch") kHz on the Gaussian branch and [7.23](../../results/identifiability.csv "ref:identifiability:width_signature_broadening_khz:cusp_branch") on the cusp
 branch (`results/identifiability.csv`, `width_signature_broadening_khz`),
-against a line of about 5.4 MHz: about one part in eight hundred, and the same
+against a line of about 5.4 MHz: under one part in eight hundred, and the same
 widths carry the collisional and laser nuisances at full strength. So the
 construction that works in their lattice would, on this line, read the
 nuisances and report them as the answer. That the shift lives in the odd

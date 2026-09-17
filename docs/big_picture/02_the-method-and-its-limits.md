@@ -1,19 +1,9 @@
 *Chapter 2 of 9 of [the big picture](../BIG_PICTURE.md)*
 
-**The question.** What is the drift-immune method, immune through its free
-per-scan centres, and what does it cost to
-use it?
-**Takes.** The motivation of chapter 1, or nothing if you already accept that
-the line is worth measuring.
-**Gives.** The method itself, the shape channels it reads, the size the
-coefficients are expected to have, and the limits that follow from reading
-shapes rather than positions.
-**Skip if.** You want what the data delivered rather than how, in which case
-[what the 2025 dataset delivered](04_what-2025-delivered.md) is the chapter.
+This page sets out the drift-immune method, immune through its free per-scan centres, and what it costs to use. This page builds on the motivation of chapter 1, or nothing if you already accept that the line is worth measuring and sets out the method itself, the shape channels it reads, the size the coefficients are expected to have, and the limits that follow from reading shapes rather than positions. Not covered here: what the data delivered rather than how, in which case [what the 2025 dataset delivered](04_what-2025-delivered.md) is the chapter.
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
-> explains the measurement in six sentences, then defines every term
-> and symbol used anywhere in this repository.
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
+> defines every term and symbol used anywhere in this repository.
 
 ### 1.3 The method outlives the line
 
@@ -79,14 +69,14 @@ here first. **What is demonstrated so far is a bound, on one line, in one
 geometry.** The claim is that the observable exists and is drift-immune, not
 that it has yet beaten anything.
 
-### 1.3a Why measuring the light shift is harder than it looks, in plain terms
+### 1.3a Difficulty of the light-shift measurement
 
 Five findings from 2026-08-09 and 10 sit behind the numbers in section 4, and
 none of them needs the machinery to follow. They are put here in the order a
 reader meets the difficulty.
 
-**1. Shining more light on the atoms stops helping, and it stops sooner at a
-tight focus.** The signal is a two-photon event, so at low power it grows as
+1. Shining more light on the atoms stops helping, and it stops sooner at a
+tight focus. The signal is a two-photon event, so at low power it grows as
 the square of the intensity. That square is what makes the whole method work:
 it is the reason the distribution of light shifts across the atoms comes out
 lopsided in a calculable way. But an atom that is already excited cannot be
@@ -101,7 +91,7 @@ fast as it gains signal. At the 64 µm spot of the 2025 sitting the parameter is
 8.5, and the predicted lopsidedness changes by a factor of three
 ([fig24](../../figures/fig24_weak_field_limit.png)).
 
-**2. An atom can fall out of the experiment mid-flight, and not come back.**
+2. An atom can fall out of the experiment mid-flight, and not come back.
 The rubidium ground state is split in two by the interaction with the nucleus,
 and the laser is tuned to one half of it. An excited atom returns to the ground
 state through an intermediate level, and that intermediate decay does not care
@@ -116,8 +106,8 @@ fraction is the pumping number quoted later in this document. That shortens
 the effective time an atom spends contributing, and a shorter time means a
 broader line ([fig23](../../figures/fig23_hyperfine_pumping.png)).
 
-**3. Those two effects broaden the line in exactly the same way the light shift
-does, and nothing this dataset can vary tells them apart.** All three grow as
+3. Those two effects broaden the line in exactly the same way the light shift
+does, and nothing this dataset can vary tells them apart. All three grow as
 the square of the drive power. All three also grow as the fourth power of the
 inverse spot size. A power sweep cannot separate them and neither can a change
 of focus, because they move together under both knobs. This is not a
@@ -136,8 +126,8 @@ looseness and its size attached, rather than tightened by injecting a
 saturation law that is standard practice but not derived for this level
 structure.
 
-**4. The mirror behind the cell is read differently by the two things it
-does.** The beam is sent through the vapour and reflected straight back, so the
+4. The mirror behind the cell is read differently by the two things it
+does. The beam is sent through the vapour and reflected straight back, so the
 atoms sit in a standing wave. The light shift follows the local brightness, and
 an atom crossing many bright and dark fringes feels their average. The
 two-photon excitation is different: only the pairing of one photon from each
@@ -149,8 +139,8 @@ asymmetry is that the rate does not care where the fringes sit and the shift
 does, which is what a future design exploits by making the fringes move
 ([fig25](../../figures/fig25_retro_combination.png)).
 
-**5. Three more things could have done the same damage, and were computed
-rather than waved away.** Each was a real candidate and each came out small, but
+5. Three more things could have done the same damage, and were computed
+rather than waved away. Each was a real candidate and each came out small, but
 the sizes are the point, because "negligible" without a number is not a result.
 
 The atoms radiate on two infrared lines as well as the one we detect, at 1324
@@ -182,14 +172,14 @@ experiment is for. It reaches 0.4 per cent of one error bar.
 A fourth candidate is elliptical polarisation, computed 2026-08-20 from this
 package's own line lists. The differential vector polarizability is 1.7 per
 cent of the differential scalar one at the drive wavelength, so an imperfectly
-polarised beam spreads the magnetic sublevels by 6.3 kHz at the campaign's
+polarised beam spreads the magnetic sublevels by 6.0 kHz at the campaign's
 highest power even for fully circular light, against per-condition width
 errors near 30 kHz. It is small enough to leave every current bound untouched.
 It is named here because it stops being small once centres rather than widths
 are the channel being read, which is exactly what the next campaign proposes
 to do.
 
-### 1.3b How much model the data is allowed to buy
+### 1.3b Model complexity the data supports
 
 Every result here rests on a model with a definite number of parts, and
 somebody had to decide how many. Add too few and the missing physics does not
@@ -219,7 +209,9 @@ same model the choice is robust across the conventions the panel spans, and
 when they split, the model ranking is sensitive to the selection convention
 at this sample size, which is a fact about the data worth publishing rather
 than a tie to be broken by taste. A split cannot by itself justify adopting
-the richer model. Adoption then needs an independent basis, a synthetic
+the richer model.
+
+Adoption then needs an independent basis, a synthetic
 recovery, a residual structure, a physical constraint, stated as such.
 
 Two honest limits on how much this can matter. Where two candidate shapes carry
@@ -240,7 +232,7 @@ The mechanics, with the arithmetic worked, are in
 Self-broadening coefficients are published for the 5D and 7S states, and 6S is
 the missing entry. A measured β_self(6S) closes that series.
 
-**The expected size is now computed rather than borrowed**
+The expected size is now computed rather than borrowed
 (`rb5s6s/vanderwaals.py`). Both 5S and 6S are S states, so there is no resonant
 dipole-dipole term and the leading interaction is van der Waals, which means
 the coefficient follows from the same matrix elements that produced Δα(993),
@@ -259,7 +251,9 @@ addendum 23 of [PREREGISTRATION_RESULTS.md](../PREREGISTRATION_RESULTS.md)
 records an earlier, larger gap and the coding error behind it). The
 (C₆/ħ)^0.4 v^0.6 scaling itself is [Lewis 1980](../lit/lewis1980.md)'s
 (*Phys. Rep.* **58**, 1 (1980)) primary phase-shift derivation for an n=6
-potential, specialised from his eq. (4.15)–(4.18). His own quoted ~4%
+potential, specialised from his eq.
+
+(4.15)–(4.18). His own quoted ~4%
 Lindholm-Foley error bound is for a different comparison (a J=1 excited-state
 angular average our S–S pair does not have) and is far too small to be the
 18% seen here, so it rules that approximation out as the cause of the
@@ -279,10 +273,10 @@ through the (ΔC₆/ħ)^0.4 scaling and scales the *measured* 7S rate of
 the ratio of the two rungs' exchange-branch factors (0.985 for 6S against 1.000 for 7S, the signs from the sum rule (A253), computed on
 2026-09-14, register A251), giving
 
-**β_self(6S) = [3.50](../../results/beta_self_theory.csv "ref:beta_self_theory:beta_self_6s:anchored") ± [0.37](../../results/beta_self_theory.csv "ref:beta_self_theory:beta_self_6s:anchored:err") kHz per 10¹² cm⁻³**, where the
+β_self(6S) = [3.50](../../results/beta_self_theory.csv "ref:beta_self_theory:beta_self_6s:anchored") ± [0.37](../../results/beta_self_theory.csv "ref:beta_self_theory:beta_self_6s:anchored:err") kHz per 10¹² cm⁻³, where the
 bar is the whole measured budget and not the anchor alone: the anchor
-measurement supplies 8.5 per cent of the 8.8, and every term of the recipe
-together adds 0.22,
+measurement supplies [10.08](../../results/beta_self_theory.csv "ref:beta_self_theory:budget:anchor_measurement") per cent of the [10.64](../../results/beta_self_theory.csv "ref:beta_self_theory:beta_self_6s:rel_uncertainty"), and every term of the recipe
+together adds the rest in quadrature,
 
 an expectation anchored on a measurement of the same observable on the
 neighbouring state. That anchor is contested, and the number above is the

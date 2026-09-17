@@ -38,8 +38,8 @@ def _g1(z_ratio: float) -> float:
 
 def test_pure_triangle_benchmark():
     m = stark_ramp_axial_moments(1.0, 1e-6)
-    assert m["mean"] == pytest.approx(-2.0 / 3.0, abs=2e-3)
-    assert m["skew_standardized"] == pytest.approx(18**1.5 / 135, abs=2e-3)
+    assert m["mean"] == pytest.approx(+2.0 / 3.0, abs=2e-3)   # BLUE (O27)
+    assert m["skew_standardized"] == pytest.approx(-(18**1.5) / 135, abs=2e-3)   # mirrored (O27)
 
 
 def test_crossover_location_and_flip_condition():
@@ -61,14 +61,20 @@ DOC_TOKENS = [
     # file where all seven co-occur.
     ("docs/plan/03_optics-protocol.md", ["3 × 12 mm"]),
     ("docs/plan/04_intensity-and-light-shift.md",
-     ["g1 +0.558", "Z_c/z_R ≈ 1.12", "Z_c > 1.12 z_R", "two-lens relay",
-      "landscape", "+0.402", "−0.421"]),
-    # "$+0.558$" was replaced by "$+0.565$" on 2026-08-04: the archival row of
+     # the three signed tokens MIRROR with the ramp support (O27, 2026-09-17); the
+     # geometry tokens beside them do not, which is what makes this registry the
+     # check that the flip was applied to the document and not only to the code.
+     ["g1 −0.558", "Z_c/z_R ≈ 1.12", "Z_c > 1.12 z_R", "two-lens relay",
+      "landscape", "−0.402", "+0.421"]),
+    # The signed cells here MIRROR with the ramp's support (O27, 2026-09-17), and the
+    # registry is the check that a flip reached the DOCUMENT and not only the code.
+    # Before 2026-09-17 these read +0.565, -0.354 and +0.564; before 2026-08-04 the
+    # first was +0.558, from the archival row of
     # methods/03's geometry table and its reading paragraph were still computed
     # at the replaced 50 um waist, which printed a LARGER Z_c/z_R than the
     # 60 um row directly above it. Recomputed at the measured 64 um prior.
     ("docs/methods/03_the_ac_stark_ramp.md",
-     ["$+0.565$", "$-0.354$", "$+0.564$", "1.12"]),
+     ["$-0.565$", "$+0.354$", "$-0.564$", "1.12"]),
     ("scripts/run_ramp_geometry.py", ["1.12", "Z_c > ~0.9 mm"]),
     ("rb5s6s/config.py", ["1.12", "L_par/(2M)", "R636-10", "3 x 12 mm"]),
     ("docs/THEORY_NOTE.md", ["$Z_c/z_R\\approx1.12$", "L_\\parallel/2M"]),
@@ -87,8 +93,9 @@ def test_docs_quote_current_coefficients(relpath, tokens):
     )
 
 
-@pytest.mark.parametrize("w0_um,doc_g1", [(60.0, 0.564), (64.0, 0.565),
-                                          (16.0, -0.354)])
+# the g1 values MIRROR with the ramp support (O27, 2026-09-17)
+@pytest.mark.parametrize("w0_um,doc_g1", [(60.0, -0.564), (64.0, -0.565),
+                                          (16.0, +0.354)])
 def test_tabulated_g1_match_computation(w0_um, doc_g1):
     assert _g1(_z_ratio(w0_um)) == pytest.approx(doc_g1, abs=2e-3)
 
@@ -340,10 +347,10 @@ def test_no_naive_s0cubed_measurability_claim(relpath):
 # --------------------------------------------------------------------------
 # (L_par mm, M, Z_c mm, g1 at 60 um, g1 at 16 um)
 ORIENTATION_ROWS = [
-    (12.0, 1.9, 3.16, +0.555, -0.421),
-    (12.0, 2.8, 2.14, +0.563, -0.367),
-    (3.0, 1.9, 0.79, +0.566, +0.103),
-    (3.0, 2.8, 0.54, +0.566, +0.367),
+    (12.0, 1.9, 3.16, -0.555, +0.421),
+    (12.0, 2.8, 2.14, -0.563, +0.367),
+    (3.0, 1.9, 0.79, -0.566, -0.103),
+    (3.0, 2.8, 0.54, -0.566, -0.367),
 ]
 
 
@@ -367,13 +374,15 @@ def test_portrait_really_forfeits_the_flip():
     re-argued."""
     z_r16 = np.pi * (16e-6) ** 2 / LAMBDA_M
     for mag in (1.9, 2.8):
-        assert _g1(3.0 / (2 * mag) * 1e-3 / z_r16) > 0, "portrait would flip"
-        assert _g1(12.0 / (2 * mag) * 1e-3 / z_r16) < 0, "landscape would not"
+        # the SIGNS mirror with the ramp support (O27); the flip itself is unchanged
+        assert _g1(3.0 / (2 * mag) * 1e-3 / z_r16) < 0, "portrait would flip"
+        assert _g1(12.0 / (2 * mag) * 1e-3 / z_r16) > 0, "landscape would not"
 
 
 # (Z_c mm, g1 at 60 um, g1 at 16 um, collected fraction at 16 um)
-SLIT_ROWS = [(0.5, +0.566, +0.402, 0.35), (1.0, +0.566, -0.071, 0.57),
-             (2.0, +0.564, -0.354, 0.76), (3.0, +0.557, -0.416, 0.83)]
+# the two g1 columns MIRROR with the ramp support (O27); the collected fraction does not
+SLIT_ROWS = [(0.5, -0.566, -0.402, 0.35), (1.0, -0.566, +0.071, 0.57),
+             (2.0, -0.564, +0.354, 0.76), (3.0, -0.557, +0.416, 0.83)]
 
 
 @pytest.mark.parametrize("zc_mm,g1_l,g1_s,frac", SLIT_ROWS)
@@ -393,7 +402,7 @@ def test_slit_scan_actually_crosses_zero_within_its_range():
     """The scan is worth doing only if the predicted g1 changes SIGN inside the
     slit range PLAN sends the experimenter to (0.5-3 mm at 16 um)."""
     z_r16 = np.pi * (16e-6) ** 2 / LAMBDA_M
-    assert _g1(0.5e-3 / z_r16) > 0 and _g1(3.0e-3 / z_r16) < 0
+    assert _g1(0.5e-3 / z_r16) < 0 and _g1(3.0e-3 / z_r16) > 0   # mirrored (O27)
     crossing = brentq(lambda zc: _g1(zc / z_r16), 0.5e-3, 3.0e-3, xtol=1e-9)
     assert crossing * 1e3 == pytest.approx(0.90, abs=0.02)
 

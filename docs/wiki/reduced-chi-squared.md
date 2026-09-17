@@ -2,21 +2,12 @@
 
 *[wiki index](README.md) · method*
 
-**The question.** What a fit's reduced chi-squared tells you, what it cannot
-tell you, and what to do when it is not one.
-**Takes.** A completed least-squares fit, its chi-squared, and the number of
-degrees of freedom that produced it. No new data.
-**Gives.** The expected value and the expected spread, the two readings of a
-value away from one and why the number alone cannot separate them, what
-inflating the errors does and does not repair, and what a misfit costs a
-confidence interval.
-**Skip if.** The question is how to build the interval itself once the model
-is trusted. That is [the profile likelihood](profile-likelihood.md).
+This page sets out what a fit's reduced chi-squared establishes, what it cannot, and what to do when it is not one. This page builds on a completed least-squares fit, its chi-squared, and the number of degrees of freedom that produced it. No new data. It sets out the expected value and the expected spread, the two readings of a value away from one and why the number alone cannot separate them, what inflating the errors does and does not repair, and what a misfit costs a confidence interval. Not covered here: the question is how to build the interval itself once the model is trusted. That is [the profile likelihood](profile-likelihood.md).
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
 > defines every term and symbol used anywhere in this repository.
 
-## What it is
+## Definition
 
 For a least-squares fit of $N$ points with $p$ free parameters,
 
@@ -31,7 +22,7 @@ $$\mathbb{E}[\chi^2_\nu] = 1, \qquad
 
 Both conditions are load-bearing, and that is the whole subject of this page.
 
-## A bare value means nothing without its degrees of freedom
+## The necessity of the degrees of freedom
 
 The spread collapses as $\sqrt{2/\nu}$, so the same number is unremarkable
 in one fit and decisive in another. On ten degrees of freedom the standard
@@ -58,7 +49,7 @@ opposite responses:
 
 The conventional response is to inflate every error by $\sqrt{\chi^2_\nu}$,
 which sets the number to one by construction. That is a choice about which
-of the two readings you believe, not a repair, and it leaves any structure
+of the two readings is believed, not a repair, and it leaves any structure
 in the residuals exactly where it was.
 
 ![Two columns, the same synthetic points fitted with the same model, differing only in the size of the quoted errors](figures/wiki_reduced_chi_squared_2.png)
@@ -87,7 +78,7 @@ print(f"with an unmodelled component: {chi2b / nu:.3f}")
 print(f"inflating errors by its square root returns it to 1.000")
 ```
 
-## Below one is also a statement
+## Values below one
 
 A value materially below one means the errors are larger than the scatter
 they describe. Over-estimated uncertainties are the usual cause, and a model
@@ -95,7 +86,7 @@ flexible enough to follow the noise is the other. Neither is harmless: the
 first makes every derived interval too wide, and the second means some of
 what the fit calls signal is noise it has absorbed.
 
-## Why it decides what a bound is worth
+## Its bearing on the worth of a bound
 
 A confidence interval from a likelihood is a statement **conditional on the
 model being correct**. When $\chi^2_\nu$ says the model is not correct, the
@@ -128,7 +119,7 @@ offset, and the joint fit carries per-peak nuisances that absorb exactly
 that, while the summary regression has nothing to absorb it with. **Two fits,
 two thresholds, and only one of them is the one the headline rests on.**
 
-## Where it is used here
+## Application in this repository
 
 The fit gallery in the [README](../../README.md) states the per-condition
 values. [RESULTS.md](../RESULTS.md) states the over-dispersion carried into

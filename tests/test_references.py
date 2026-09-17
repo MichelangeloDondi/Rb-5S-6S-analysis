@@ -133,3 +133,35 @@ def test_an_ambiguous_coordinate_is_refused_not_resolved_to_the_first_row(tmp_pa
     assert mod._csv_cell("amb", "cell", "absent") is None, (
         "a coordinate naming no row is DANGLING, which is a different "
         "finding from AMBIGUOUS and must stay distinguishable")
+
+
+def test_a_constant_reference_resolves_to_the_package_and_refuses_a_wrong_digit():
+    """`ref:constant:<NAME>[:<unit>]` binds a page's number to `rb5s6s/constants.py`.
+
+    WHY THIS EXISTS. The natural width on two platform-neutral pages was bound
+    on 2026-09-17 to a fibre-only file's row that merely echoes
+    `GAMMA_NAT_HZ`, and the platform lane refused the citation. The constant's
+    module is that quantity's SSOT, so the checker resolves it there. Both
+    directions are planted: the right digits at the page's unit resolve, a
+    moved digit is a finding, a name the module lacks and a unit the scheme
+    lacks resolve to nothing rather than to something.
+    """
+    import importlib.util
+    spec = importlib.util.spec_from_file_location(
+        "check_references", ROOT / "scripts" / "check_references.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    from rb5s6s import constants as K
+
+    src = mod._constant_value("GAMMA_NAT_HZ", "MHz")
+    assert src is not None and mod._matches(f"{K.GAMMA_NAT_HZ * 1e-6:.4f}", src), (
+        "the constant at the page's unit must resolve at the page's own digits")
+    assert not mod._matches(f"{K.GAMMA_NAT_HZ * 1e-6 + 0.01:.4f}", src), (
+        "a number one hundredth off the constant must be a finding")
+    assert mod._constant_value("GAMMA_NAT_HZ", "") is not None
+    assert mod._constant_value("GAMMA_NAT_HZ", "1e-6") == src, (
+        "a numeric scale is the same binding as its unit word")
+    assert mod._constant_value("NOT_A_CONSTANT_OF_THIS_PACKAGE", "MHz") is None, (
+        "a name the module lacks resolves to nothing, never to a default")
+    assert mod._constant_value("GAMMA_NAT_HZ", "furlongs") is None, (
+        "a unit the scheme lacks resolves to nothing")

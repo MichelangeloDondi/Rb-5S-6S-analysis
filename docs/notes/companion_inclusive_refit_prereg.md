@@ -7,21 +7,10 @@ the run can only confirm it or fail it.
 `provenance: NO_PRODUCER` - Lines 1 to 181 preregister. The postscript reports what `run_companion_refit.py` returned, and that script contains exactly one `open()` call, a read, with every output a `print()`. The note says so itself: "prints its results and persists none of them". It is also absent from `run_all.sh`. Two prereg-side factors (2.8 and 2.21) come from `run_saturation_probe.py`, which since 2026-08-23 persists its C3d half into `results/saturation_companion.csv` and deliberately persists no joint figure, since that fit needs trees outside this repository. **15 numeric claims on this page remain unaccounted for.** Recorded by an audit that read every numeric claim on this page against `results/` and `scripts/`. See the private correction record.
 
 
-**The question.** The fits of record quote the light-shift bounds with a stated
-looseness, because three width-adding effects sit outside the forward model on
-purpose. What happens when they go inside it?
-**Takes.** [notes/two_photon_saturation_companion.md](two_photon_saturation_companion.md)
-for the two companions and their measured sizes,
-[methods/06_the_statistics.md](../methods/06_the_statistics.md) for the fitting
-machinery, and [notes/full_archive_fit_prereg.md](full_dataset_fit_prereg.md)
-for the trace census this reuses unchanged.
-**Gives.** The model change, the construction that could separate the pumping
-term from the other two, five numbered predictions, and the stop conditions.
-**Skip if.** You want the result rather than the contract it was run under.
+The fits of record quote the light-shift bounds with a stated looseness, because three width-adding effects sit outside the forward model on purpose. What happens when they go inside it? This page builds on [notes/two_photon_saturation_companion.md](two_photon_saturation_companion.md) for the two companions and their measured sizes, [methods/06_the_statistics.md](../methods/06_the_statistics.md) for the fitting machinery, and [notes/full_archive_fit_prereg.md](full_dataset_fit_prereg.md) for the trace census this reuses unchanged and sets out the model change, the construction that could separate the pumping term from the other two, five numbered predictions, and the stop conditions. Not covered here: the result rather than the contract it was run under.
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
-> explains the measurement in six sentences, then defines every term
-> and symbol used anywhere in this repository.
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
+> defines every term and symbol used anywhere in this repository.
 
 Producers when it runs: `scripts/run_stark_sweep.py` (the five-trace and
 twenty-trace fits behind fig21 and fig22), `scripts/run_stark_joint.py` (C3f),
@@ -201,15 +190,15 @@ list did not cover.
 
 ### Stop condition 1 passed, and it was checked first
 
-The committed $S_0(225)$ bound is 0.632 MHz and the run with the option present
-and off returns 0.632 MHz, a difference of zero at the precision the file
+The committed $S_0(225)$ bound is 0.632 MHz and the run with the option present <!-- other-quantity: the S0 bound as committed when this record was written, since moved by the sweep's regeneration -->
+and off returns 0.632 MHz, a difference of zero at the precision the file <!-- other-quantity: the S0 bound as committed when this record was written, since moved by the sweep's regeneration -->
 stores. The stronger form also holds: `scripts/run_stark_sweep.py` reproduces
 the whole committed CSV byte for byte on the tree that carries the option. So
 the option is inert by default, which is what every number below depends on.
 
 One correction to a first version of the check, recorded because it is the kind
 of error that reads as a result. It compared at a tolerance of $10^{-6}$ against
-a value the CSV stores to three decimals, and stopped on 0.632 against 0.63250.
+a value the CSV stores to three decimals, and stopped on 0.632 against 0.63250. <!-- other-quantity: the S0 bound as committed when this record was written, since moved by the sweep's regeneration -->
 That was the file's formatting and not the model.
 
 ### Prediction 1: the archive cannot see the companion at all

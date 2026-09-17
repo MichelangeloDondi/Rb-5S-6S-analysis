@@ -10,9 +10,9 @@ and prints the moment coefficients the fits would need.
 
 CONDITIONAL PREDICTION (2026-07-12; conditionality made explicit
 2026-07-22): the standardized skewness g1 changes sign at Z_c/z_R ~ 1.12.
-The pure transverse triangle gives g1 = +0.566; a long collection window
+The pure transverse triangle gives g1 = -0.566; a long collection window
 mixes in out-of-focus (weak-shift) regions, piling weight near zero shift
-with a tail toward -S0, driving g1 negative (~ -0.35 at the 16 um config
+with a tail toward +S0, driving g1 positive (~ +0.35 at the 16 um config
 with the +/-2 mm placeholder window). Whether config S sits past the
 crossover is set by the collection geometry: Z_c is the imaging field of
 view L_par/2M (M = v/u for the side-viewing f = 18 mm lens), so the flip
@@ -23,11 +23,11 @@ L_par = 12 mm and Z_c = 6/M mm, which clears 0.9 mm for every M < 6.6. The
 flip therefore holds across the whole plausible magnification range rather
 than depending on how the bench is laid out; measuring u and v pins the
 magnitude, not the sign, and near the crossover moving the PMT (changing M)
-remains a design knob. A session sees POSITIVE skew at the large waist and
-NEGATIVE at the small one — a sign flip no instrumental asymmetry (none of
+remains a design knob. A session sees NEGATIVE skew at the large waist and
+POSITIVE at the small one — a sign flip no instrumental asymmetry (none of
 which depends on z_R) can mimic. The naive "skew scales as S0^3 = x64" reading of the small
 waist is wrong in SIGN at the placeholder geometry; the third cumulant
-there is ~ -0.35 in units of the 2025 on-axis S0^3 (vs +0.0074 for the
+there is ~ +0.35 in units of the 2025 on-axis S0^3 (vs -0.0074 for the
 2025 triangle).
 
 Caveats: uniform collection weight on |z| <= Z_c is a placeholder (the
@@ -59,8 +59,8 @@ TRIANGLE_G1 = 18.0 ** 1.5 / 135.0
 def main() -> int:
     print("=" * 78)
     print("RAMP-LAW MOMENTS vs COLLECTION GEOMETRY  (predictions for PLAN §6)")
-    print(f"pure transverse triangle: mean/S0 = -2/3, var/mean^2 = 1/8, "
-          f"g1 = +{TRIANGLE_G1:.4f}")
+    print(f"pure transverse triangle: mean/S0 = +2/3, var/mean^2 = 1/8, "
+          f"g1 = -{TRIANGLE_G1:.4f}")
     print(f"{'config':>24s} {'z_R(mm)':>8s} {'Z/z_R':>6s} {'mean/S0':>8s} "
           f"{'var/mean^2':>10s} {'g1':>8s}")
     for name, w0_um in C.RAMP_GEOMETRY_CONFIGS_UM.items():
@@ -72,7 +72,7 @@ def main() -> int:
                   f"{m['var'] / m['mean'] ** 2:10.4f} "
                   f"{m['skew_standardized']:+8.4f}")
         print()
-    print(f"Reading: g1 stays ~ +0.56 at BOTH the 60 um config and the "
+    print(f"Reading: g1 stays ~ -0.56 at BOTH the 60 um config and the "
           f"{W0_MEASURED_M * 1e6:.0f} um 2025")
     print("archival geometry (clean form test -- the measured waist makes the")
     print("archival ramp nearly a pure triangle), and FLIPS SIGN only at the 16 um")
@@ -97,7 +97,7 @@ def main() -> int:
                       for w in (w_l, w_s))
             print(f"{label + ' (' + str(l_par) + ' mm)':>20s} {mag:4.1f} "
                   f"{z_c * 1e3:8.2f} {a_:+9.3f} {b_:+9.3f} "
-                  f"{'YES' if a_ > 0 > b_ else 'no':>5s}")
+                  f"{'YES' if a_ < 0 < b_ else 'no':>5s}")
     print()
     print("Portrait falls BELOW the 0.90 mm flip threshold at every plausible M:")
     print("it does not weaken the sign-flip test, it removes it. Landscape also")
@@ -117,7 +117,7 @@ def main() -> int:
         frac = 2 * np.arctan(z_c / zr[w_s]) / np.pi
         print(f"{z_c_mm:9.1f} {a_:+9.3f} {b_:+9.3f} {frac:11.0%}")
     print()
-    print("g1 walks from POSITIVE to NEGATIVE through zero on a slit alone, at one")
+    print("g1 walks from NEGATIVE to POSITIVE through zero on a slit alone, at one")
     print("waist -- a cleaner test than the two-waist flip, which unavoidably moves")
     print("S0, transit time and sampled density together. The same scan MEASURES the")
     print("collection profile, so it calibrates its own axis. Caveat: the top-hat")

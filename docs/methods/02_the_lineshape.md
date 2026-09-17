@@ -1,20 +1,9 @@
 *Chapter 2 of 8 · [methods index](../methods.md)*
 
-**The question.** What sets the width of a line this narrow, mechanism by
-mechanism, and which of those mechanisms the dataset can actually separate.
-**Takes.** The measurement chapter for the apparatus and the Doppler
-cancellation. It forward-references the AC-Stark ramp and the results chapter
-inside the transit section.
-**Gives.** The four kernels the composite model convolves, the Voigt
-degeneracy the statistics chapter has to manage, and the measured waist every
-absolute number is conditional on.
-**Skip if.** You want the results rather than their derivation. The one thing
-to carry away is that transit and laser width exchange against each other through
-$w_0$.
+What sets the width of a line this narrow, mechanism by mechanism, and which of those mechanisms the dataset can actually separate. This chapter builds on the measurement chapter for the apparatus and the Doppler cancellation. It forward-references the AC-Stark ramp and the results chapter inside the transit section. It sets out the four kernels the composite model convolves, the Voigt degeneracy the statistics chapter has to manage, and the open waist every absolute number is conditional on. Not covered here: the results rather than their derivation. The one thing to carry away is that transit and laser width exchange against each other through $w_0$.
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
-> explains the measurement in six sentences, then defines every term
-> and symbol used anywhere in this repository.
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
+> defines every term and symbol used anywhere in this repository.
 
 ## 2. The lineshape, derived mechanism by mechanism
 
@@ -45,7 +34,7 @@ laser frequency and transit *would* break the convolution, but there is no
 mechanism here to produce one. A drifting *centre* is separate and is handled
 per-trace, §4.2, not as a broadening.)
 
-We now build each factor.
+Each factor is built in turn.
 
 ![the four kernels drawn separately, and the line built one convolution at a time](../../figures/fig26_lineshape_kernels.png)
 
@@ -57,7 +46,7 @@ time. The natural width is about two thirds of the observed 5.37 MHz and
 everything above it is apparatus, which is why the sections below spend most of
 their length on the apparatus terms.*
 
-### 2.1 Natural width: a finite lifetime is a Lorentzian
+### 2.1 Natural width
 
 An excited state that decays with lifetime $\tau$ has a radiating dipole whose
 field is a damped oscillation,
@@ -98,18 +87,20 @@ $$\gamma_\text{coll}=\beta_\text{self}N$$
 The derivation is in [collisional self-broadening](../wiki/self-broadening.md).
 
 Baranger's own dilute-gas/binary-collision validity condition (his interaction
-volume $U\ll n^{-1}$) holds by a margin of about 140× at our densest point,
-130 °C ($2.9\times10^{13}\ \text{cm}^{-3}$), so this Lorentzian, $N$-linear
-form is not in question anywhere in our sweep. What remains open is only the
+volume $U\ll n^{-1}$) holds by a margin of about five hundred thousand in volume at the densest point of this record,
+130 °C ($2.9\times10^{13}\ \text{cm}^{-3}$): the mean spacing is about 130 times the Weisskopf
+radius ([2.5219](../../results/cooperative_channel.csv "ref:cooperative_channel:size:rate ratio at 130 C:aux") nm),
+and the cube of that length ratio is the volume margin, so this Lorentzian, $N$-linear
+form is not in question anywhere in the sweep. What remains open is only the
 separate, later step from a $-C_6/R^6$ potential to a cross-section
 ([Lewis 1980](../lit/lewis1980.md), `rb5s6s/vanderwaals.py`, M18), a step
 Baranger's theorem does not itself supply.
 
 Because the convolution of two Lorentzians is a Lorentzian whose **widths
 add**, the natural and collisional contributions combine analytically into a
-single Lorentzian of width $\Gamma_\text{nat}+\gamma_\text{coll}$, which we
+single Lorentzian of width $\Gamma_\text{nat}+\gamma_\text{coll}$, which
 exploit in the code rather than convolving numerically. The density itself
-follows the saturated-vapour curve, and across our sweep
+follows the saturated-vapour curve, and across the sweep
 
 $$\frac{N(130\ ^\circ\mathrm{C})}{N(70\ ^\circ\mathrm{C})}\approx 50$$
 
@@ -133,7 +124,9 @@ note or self-heterodyne measurement was recorded, so $\sigma_\text{laser}$ is
 inferred purely from the fitted lineshape, never benchmarked against a
 separate instrument. The closest external anchor is in-house: the group's own
 nanofibre study on this same line ([Gokhroo 2022](../lit/gokhroo2022.md), J. Phys. B) describes the
-same laser system (M Squared SolsTis) as having sub-MHz linewidth. That is a quoted
+same laser system (M Squared SolsTis) as having sub-MHz linewidth.
+
+That is a quoted
 figure, not a recorded diagnostic, and it speaks to the laser's intrinsic
 linewidth rather than to the 2025 lock's behaviour, but it is consistent with
 the shape-based bound $\sigma_\text{laser}$ below 1.2 MHz (laser axis) found
@@ -184,13 +177,13 @@ information when one model cannot fit worse than the other by construction.
 
 Convolving the homogeneous Lorentzian with the Gaussian laser kernel gives the
 **Voigt profile**, a Gaussian-like core with Lorentzian wings and no closed
-form, so we build it on a fine grid. Its definition, the Olivero-Longbothum
+form, so it is built on a fine grid. Its definition, the Olivero-Longbothum
 width approximation used for seeds, and the reason the two widths exchange
 against each other are in [the Voigt profile](../wiki/voigt-profile.md).
 
-**The property that dominates the statistics** is that exchange: in any real fit
+The property that dominates the statistics is that exchange: in any real fit
 $\sigma_\text{laser}$ and $\gamma_\text{coll}$ are strongly anti-correlated,
-and here we measure $\mathrm{corr}\approx-0.85$. The *total* width is well
+and the measured value here is $\mathrm{corr}\approx-0.85$. The *total* width is well
 determined and the *split between the two* is fragile. Section 4 covers how
 this split is handled. *Code:* `model_profile()`, `voigt_fwhm()`.
 
@@ -201,18 +194,18 @@ Maxwell-Boltzmann speed distribution gives a width scaling as
 
 $$\boxed{ \Delta\nu_\text{transit} \propto \frac{\sqrt{T}}{w_0} }$$
 
-with our estimate $\sim0.9$ MHz at 110 °C. The **shape** matters as much as
+against an estimate of $\sim0.9$ MHz at 110 °C. The **shape** matters as much as
 the width. The thermal average of many Gaussians is not a Gaussian: it is a cusped
 profile with exponential wings, derived as a Lorentzian convolved with a
 two-sided exponential, and
 [transit-time broadening](../wiki/transit-time-broadening.md) carries that
-derivation with its Biraben, Borde and Lehmann lineage. Our transit kernel is
+derivation with its Biraben, Borde and Lehmann lineage. The transit kernel used here is
 that established two-sided exponential,
 
 $$K_\text{transit}(\nu)\propto e^{-|\nu|/b},\qquad \text{FWHM}=2b\ln 2$$
 
-**And the derivation states a condition on the geometry, which this chapter
-carried only implicitly until the source was read (2026-09-10).**
+And the derivation states a condition on the geometry, which this chapter
+carried only implicitly until the source was read (2026-09-10).
 [Biraben, Bassini and Cagnac](../lit/biraben1979.md) observe the atoms "over a
 length L which is small compared to the Rayleigh length", so the analytic form
 is a thin-slice result. `constants.collection_z_ratio` returns that ratio, and
@@ -228,7 +221,7 @@ at the campaign's 16 um, where it does not. The same ratio
 already governs the collection window's effect on the ramp moments, so one
 geometric number decides both questions.
 
-Module **M9** (`transit_mc.py`) computes the kernel for *our* exact
+Module **M9** (`transit_mc.py`) computes the kernel for this record's exact
 conditions, a Monte-Carlo of 3D Maxwell–Boltzmann atoms crossing the full
 $w(z)$ with $I^2$ weighting and the collection profile, i.e. it *builds in*
 the two idealizations the analytic forms make. The first is a beam of constant
@@ -240,18 +233,20 @@ than a Gaussian (excess kurtosis $\sim3$, close to the two-sided exponential's
 value), and a **finite** cusp once the crossing-flux weight is included (an
 earlier version omitted it, weighting $\propto1/v$ near $v=0$, and produced a
 spurious log-divergence, fixed 2026-07-13 and validated against
-[Lehmann's](../lit/lehmann2021.md) 41.2 kHz NNO example). We quote the width the kernel *adds to the natural line* once
+[Lehmann's](../lit/lehmann2021.md) 41.2 kHz NNO example).
+
+The width quoted is the one the kernel *adds to the natural line* once
 convolved. Second, the added width is $\sim2.1$ MHz at $w_0=32$ µm and
 $\sim0.88$ MHz at 65 µm, the Monte-Carlo grid point beside the accepted
-64 µm measured waist (it was $\sim1.2$ MHz at the replaced 50 µm prior). At
+64 µm waist convention (it was $\sim1.2$ MHz at the replaced 50 µm prior). At
 32 µm that is large enough that
 natural⊗transit already exceeds the observed $\sim5.25$ MHz line, which
 is why **$w_0=32$ µm is excluded** and why transit and the laser are degenerate
 through $w_0$ ([what we found](07_what_we_found.md)).
 
-**A direct beam measurement, and whose it is matters. The owner retired this
+A direct beam measurement, and whose it is matters. The owner retired this
 paragraph's claim on 2026-09-10, and the retirement is stated here instead of
-being edited away.** The waist authority was taken to be the
+being edited away. The waist authority was taken to be the
 [Rajasree-KP](../lit/rajasree2020.md) 2020 OIST thesis, which reports the
 $1/e^2$ beam diameter as 128 µm with the same $f=150$ mm focusing lens, so
 $w_0=64$ µm, and with the same 3 mm EOM aperture truncating the input beam
@@ -260,8 +255,8 @@ that the naive (untruncated) estimate misses.
 the same figure, and this page preferred the thesis to the paper on the ground
 that the paper's bench carried an earlier laser generation.
 
-**That preference was empty, because the thesis credits its underlying data
-collection to T. Nieddu.** The two reports are one measurement, taken on the
+That preference was empty, because the thesis credits its underlying data
+collection to T. Nieddu. The two reports are one measurement, taken on the
 older laser, and choosing between them cannot recover a beam this campaign
 ever had. The 2019 path ran a Coherent MBR 110 where the 2025 campaign ran an
 M-Squared SolsTiS, and it carried no EOM where this one carries a 3 mm
@@ -270,8 +265,8 @@ of the input beam and not of the lens, and the input beam is exactly what
 changed.** So the record has no measurement of this bench's waist at all, and
 what stood in its place was a transfer of somebody else's.
 
-**A correction to a correction, 2026-08-27, on the owner's own
-statement.** This paragraph previously credited the measurement to Nieddu and
+A correction to a correction, 2026-08-27, on the owner's own
+statement. This paragraph previously credited the measurement to Nieddu and
 demoted the thesis to a reprint, and carried a note saying that form was
 itself a correction made on 2026-08-14 from an earlier "two independent
 measurements". Collapsing the two reports into one removed the distinction
@@ -282,7 +277,8 @@ independently excludes 32 µm, agreeing with the corrected transit physics. The 
 is $w_0=64$ µm with a 62–68 µm band (`constants.W0_BAND_M`, narrowed from
 60 and 70 on 2026-08-10), and the wider ranges this section reached on the way
 there, 45 to 70 and then 50 to 64 µm, are replaced by it for that purpose.
-**The band's width is now the weakest part of the statement**: 62 to 68 µm
+
+The band's width is now the weakest part of the statement: 62 to 68 µm
 expresses confidence in a transfer whose lineage the paragraph above retires,
 so it is a working convention and not a measured interval, and every absolute
 result that rides on it stays BOUND.
@@ -298,7 +294,7 @@ locked laser, consistent with the 2025 $\approx5.25$ MHz line.
 
 The cusp is a *falsifiable prediction*: at the coldest, dimmest condition
 (where transit is the largest fraction of a narrow line) a BIC comparison of a
-Voigt against a Lorentzian⊗exponential can detect it, and to our
+Voigt against a Lorentzian⊗exponential can detect it, and to this record's
 knowledge it is not cleanly resolved as a *cusp* in a thermal two-photon line
 anywhere (a target for a fixed-lock session with a narrow laser). Caveat: $w_0$
 is not measured on this beam, 64 µm with a 62–68 µm band, accepted from the beamline
@@ -310,8 +306,7 @@ beam-profile measurement** (below), so every *absolute* width built on it is
 preliminary. *Code:* `two_sided_exponential()`, and `transit_fwhm_at_T()`
 enforces the $\sqrt T$ law.
 
-#### The two isotopes do not share a transit width
-
+#### Isotope dependence of the transit width
 ![the two transit kernels, and the gap against the density lever](../../figures/fig29_isotope_transit.png)
 
 *The effect is real and the reason it is not corrected is the right-hand panel.
@@ -357,11 +352,10 @@ The default of `transit_fwhm_at_T()` is the shared behaviour, so no committed
 number moves. *Code:* `transit_fwhm_at_T(..., isotope=)`. Check 5 of
 `scripts/run_zeeman_depletion.py` produces every number in this subsection.
 
-#### What "the knife-edge $w_0$" means
-
+#### Definition of the knife-edge $w_0$
 $w_0$ is the beam waist, the radius at which the intensity falls to $1/e^2$ of
 its on-axis value at the focus. A **knife-edge measurement** is the standard
-way to measure it: you translate a sharp opaque edge (literally a
+way to measure it: a sharp opaque edge is translated (literally a
 razor blade, hence "knife-edge") across the beam, perpendicular to its
 propagation, and record the transmitted power $P(x)$ versus the blade position
 $x$. For a Gaussian beam the blade integrates a Gaussian, so $P(x)$ traces an
@@ -383,7 +377,9 @@ comes from the translation stage (sub-µm) and is indifferent to how tight the
 focus is. The knife-edge also reads a power meter, with large dynamic range and
 no saturation, where a camera at these powers needs attenuation that can itself
 distort the mode. The trade-off is real, though: the knife-edge *assumes* a
-Gaussian, returning a best-fit $w$ whether or not the beam is one. A camera
+Gaussian, returning a best-fit $w$ whether or not the beam is one.
+
+A camera
 image is the natural complement, since it shows astigmatism, ellipticity, and
 any diffraction structure from aperture clipping, which is the very effect that
 makes the 2025 $w_0$ uncertain, and [§2.6](03_the_ac_stark_ramp.md) derives the ramp law from a Gaussian
@@ -426,5 +422,68 @@ Library code:
 disagreed with the transit width the fits return at the accepted prior. Every
 absolute width in this chapter is conditional on that one number, and the
 measurement can fall either side of it.
+
+### 2.5b Hyperfine depletion along the chord
+
+The cusp above weights every chord by its flux and its excitation probability and lets every
+atom contribute its whole crossing. It is not what a two-photon line at this power sees, because
+the atoms that cross are not a closed system: each excitation ends in a cascade, and a cascade
+ends in the *other* ground hyperfine level with a probability $q$ this record computes on the
+full Zeeman manifold (`cascade.BRANCHING_F`: [0.372](../../results/cascade_branching.csv "ref:cascade_branching:branching_f:993.4121"), [0.348](../../results/cascade_branching.csv "ref:cascade_branching:branching_f:993.4154"), [0.248](../../results/cascade_branching.csv "ref:cascade_branching:branching_f:993.4192"), [0.223](../../results/cascade_branching.csv "ref:cascade_branching:branching_f:993.4207") for the lines 4121, 4154,
+4192, 4207). An atom that has cascaded into the other level is no longer resonant and is lost to
+the signal for the rest of its crossing.
+
+**The chord equation.** An atom enters the beam with the thermal populations (the wall relaxes
+the hyperfine levels between crossings. the gas-phase refill is 180 times slower than one
+transit, `docs/lit/jarrett1964.md`) and crosses on a chord at impact parameter $b$ with speed
+$v$, seeing the intensity profile $u(t) = (w_0/w)^2 \exp[-2(b^2 + v^2 t^2)/w^2]$ at the beam
+radius $w = w(z)$ of its slice. Its excitable population obeys
+
+$$\frac{dN}{dt} = -q G(P u(t)) N,$$
+
+with $G$ the 6S production rate per atom at the local power, the cascade's saturation carried
+(`platforms.excitation_rate_per_atom`). The signal the chord contributes is $\int G N dt$ and
+not $\int G dt$. the cycles it completes are $\int G dt \propto w/v$.
+
+**Why the mean cycle count is the wrong guide.** The cycles go as $1/v$, so the slowest atoms
+complete the most, and the slowest atoms are exactly the cusp's narrow core (their per-atom
+width goes as $v/w$). Depletion therefore removes the narrow contributions preferentially and the
+*surviving* kernel is wider than the cusp by far more than the mean cycle count suggests: at the
+archive's shared condition (64 µm, 225 mW, 130 °C) the flux-weighted mean over chords is [0.012](../../results/kernel_mc.csv "ref:kernel_mc:w64.0_m1.00_r0.940_T130_P225:cycles_mean_over_chords:mc") cycles, the
+on-axis chord [0.081](../../results/kernel_mc.csv "ref:kernel_mc:w64.0_m1.00_r0.940_T130_P225:cycles_on_axis:mc"), and the surviving kernel is wider by a fraction [0.050](../../results/kernel_mc.csv "ref:kernel_mc:w64.0_m1.00_r0.940_T130_P225:depletion_fwhm_rel_4121:mc") on the line with the largest
+$q$, [0.024](../../results/kernel_mc.csv "ref:kernel_mc:w90.0_m1.00_r0.940_T130_P225:depletion_fwhm_rel_4121:mc") at 90 µm.
+
+Along the power arm the fraction runs [0.0015](../../results/kernel_mc.csv "ref:kernel_mc:w64.0_m1.00_r0.940_T130_P25:depletion_fwhm_rel_4121:mc"), [0.0093](../../results/kernel_mc.csv "ref:kernel_mc:w64.0_m1.00_r0.940_T130_P75:depletion_fwhm_rel_4121:mc"), [0.021](../../results/kernel_mc.csv "ref:kernel_mc:w64.0_m1.00_r0.940_T130_P125:depletion_fwhm_rel_4121:mc"), [0.035](../../results/kernel_mc.csv "ref:kernel_mc:w64.0_m1.00_r0.940_T130_P175:depletion_fwhm_rel_4121:mc"), [0.050](../../results/kernel_mc.csv "ref:kernel_mc:w64.0_m1.00_r0.940_T130_P225:depletion_fwhm_rel_4121:mc") at
+25 to 225 mW, faster than $P$ and slower than $P^2$ (the kernel Monte Carlo of `scripts/run_kernel_mc.py`, 100 000 chords
+per node, importance-sampled in the speed and the impact parameter so the weights are flat in
+the weak field, measured here at rung 3, the closed-form limit of the cusp recovered
+with the window closed and the drive weak, to a third of a per cent). It is an *even* term in the transit's width with
+a power of $P$ between one and two in the exponent table, which the exponent table of
+the identifiability page did not have, and on the power arm a fit without it reads the transit
+as a waist that shrinks with power, by far less than the FWHM says.
+
+Depletion removes the
+slowest atoms, which are the cusp's core, and leaves its wings: the surviving kernel sits three per cent
+under the bare one at zero detuning and level with it at the half-width point, so a cusp fitted to it reads
+only [0.0050](../../results/kernel_mc.csv "ref:kernel_mc:w64.0_m1.00_r0.940_T130_P225:depletion_widening_rel_4121:mc") wider after the natural Lorentzian at the same condition
+(a third of a micron at 64 µm), and that fitted ratio, not the FWHM's, is the factor the fit
+carries. The FWHM stays the core-flattening diagnostic.
+
+**What it does not do.** The four lines' shares move by [0.0008](../../results/kernel_mc.csv "ref:kernel_mc:w64.0_m1.00_r0.940_T130_P225:shares_shift_abs:mc") from the thermal law at the record's own
+cycle count (the reading against the model's per-crossing factor agrees to [0.0003](../../results/kernel_mc.csv "ref:kernel_mc:w64.0_m1.00_r0.940_T130_P225:shares_abs:mc")), because the shares follow the mean depletion and not its slow tail. The measured
+hyperfine-pair contrast the record measured at 225 mW is therefore not depletion, and a per-crossing
+scalar at three mean cycles, which the twin and one fit arm carried, is excluded by the shares it
+would move. Depletion is symmetric in the detuning to this order and enters the odd channel only
+through the chirp's weighting.
+
+**How the model carries it.** Not as a fitted parameter, which would be absorbed by the
+saturation companion: the fit's transit at every node is the cusp's closed form, times the
+collected column's window factor $\langle w^{-3} \rangle / \langle w^{-2} \rangle$
+(`fullmodel.transit_collection_factor`: the collected kernel reads [0.948](../../results/kernel_mc.csv "ref:kernel_mc:w64.0_m1.00_r0.940_T130_P225:transit_fwhm_rel:mc") MHz against the form's [0.947](../../results/kernel_mc.csv "ref:kernel_mc:w64.0_m1.00_r0.940_T130_P225:transit_fwhm_rel:model") at 64 µm and 225 mW), times the Monte Carlo's own
+fitted-width factor at the trace's node (`kernel_gate.depletion_factor`, half a per cent at the
+shared condition), read from an artefact the gate refuses to be without. Two approximations are named in every artefact: the per-atom pulse stays
+Gaussian and depletion reweights atoms without reshaping it, and the loss rate is the line-centre
+rate, seven per cent high at the transit's half-width. The detuning-resolved, non-convolutional
+profile is the next refinement.
 
 [← The measurement](01_the_measurement.md) · [The AC-Stark ramp →](03_the_ac_stark_ramp.md)

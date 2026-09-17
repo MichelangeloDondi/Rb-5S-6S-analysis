@@ -1,13 +1,6 @@
 *Chapter 1 of 8 · [methods index](../methods.md)*
 
-**The question.** What was measured, on what apparatus, and why does driving a
-two-photon transition from both sides remove the Doppler width?
-**Takes.** Nothing. This is the first chapter.
-**Gives.** The apparatus, the four hyperfine lines and the labels used for them
-everywhere else, and the Doppler-cancellation condition every later chapter
-assumes.
-**Skip if.** You already know the OIST 993 nm two-photon bench, in which case
-start at the lineshape chapter.
+This chapter sets out what was measured, on what apparatus, and why driving a two-photon transition from both sides removes the Doppler width? This chapter is self-contained and sets out the apparatus, the four hyperfine lines and the labels used for them everywhere else, and the Doppler-cancellation condition every later chapter assumes. This is the first chapter. Not covered here: you already know the OIST 993 nm two-photon bench, in which case start at the lineshape chapter.
 
 ## 1. The measurement
 
@@ -22,13 +15,15 @@ resulting fluorescence is recorded versus time, and one such record is a
 "trace" (mapped onto a frequency axis in
 [the frequency-ruler chapter](05_the_frequency_ruler.md)). The observed narrow resonance
 arises from atoms absorbing one photon from each counter-propagating beam, for
-which the first-order Doppler shifts cancel (§1.1). The excited $6S_{1/2}$
-state can decay through several channels, and here we detect only the
+which the first-order Doppler shifts cancel (§1.1).
+
+The excited $6S_{1/2}$
+state can decay through several channels, and the detection here takes only the
 $6S\to 5P_{1/2}\to 5S$ cascade, collecting the emitted 795 nm photons on a PMT
 behind 50 dB of 795 nm filtering. Four hyperfine components are measured,
 labelled by wavelength: 993.4207 nm (⁸⁷Rb $F{=}2\to2$), 993.4192 nm
 (⁸⁵Rb $F{=}3\to3$), 993.4154 nm (⁸⁵Rb $F{=}2\to2$), 993.4121 nm
-(⁸⁷Rb $F{=}1\to1$). Throughout we write these full labels, and in code and
+(⁸⁷Rb $F{=}1\to1$). These full labels are used throughout, and in code and
 filenames the last four digits ("4207") are the key, and `constants.peak_label()`
 renders the full form for all output. The readings come from an uncalibrated
 wavemeter, so they identify the lines rather than measure them, and the
@@ -45,7 +40,9 @@ cascade, the 780 nm arm being suppressed by about 50 dB. **That arm is the
 minority one**, which is worth stating because the factor multiplies every
 absolute rate here: the 6S → 5P₃/₂ leg is the stronger of the two by an Einstein
 A ratio of 1.93, so 66 per cent of 6S decays leave by 1367 nm and then 780 nm,
-and the 795 nm the detector counts is the remaining 34 per cent. Since 5P is the
+and the 795 nm the detector counts is the remaining 34 per cent.
+
+Since 5P is the
 lowest excited state, each first leg reaches the ground state with unit
 probability, so the same fraction labels both photons of an arm. The branching
 is drawn on every arrow of fig13 and computed there from the line data rather
@@ -53,7 +50,9 @@ than quoted. The 5P fine-structure
 splitting is enlarged for legibility rather than drawn to scale. Right: the four
 hyperfine components measured, two per isotope, all F → F, labelled by
 uncalibrated wavemeter reading, logged to four decimals in nanometres. That logging step is 60.8 MHz on the transition axis, larger than the instrument's own accuracy. Each is crossed once per sweep direction, so the
-down-sweep repeats the same four mirrored about the ramp apex. Their relative
+down-sweep repeats the same four mirrored about the ramp apex.
+
+Their relative
 strengths follow the ground-state populations, abundance × (2F+1)/G_iso, which
 predicts ⁸⁵Rb F = 3 at 7/5 = 1.40 times F = 2 against 1.42 integrated from the
 digitised record on the up-sweep, 1.34 to 1.42 across integration rules, and the
@@ -62,7 +61,7 @@ measured. The photographed display compresses the tallest spikes and the whole
 down-sweep, so peak heights are not read for ratios. The integration rules and
 their caveats are [APPARATUS §6](../APPARATUS.md).*
 
-### 1.1 Why two counter-propagating photons kill the Doppler width
+### 1.1 Doppler cancellation by counter-propagating photons
 
 An atom moving with velocity component $v$ along the beam sees a photon of lab
 frequency $\nu$ shifted to $\nu(1+v/c)$ if it travels toward the source and
@@ -74,7 +73,7 @@ $$\nu\Big(1+\tfrac{v}{c}\Big) + \nu\Big(1-\tfrac{v}{c}\Big) = 2\nu$$
 and the velocity term cancels **exactly to first order in $v/c$, for every
 atom**. Without this trick the line would be Doppler-broadened to
 $\sim 500$ MHz (the thermal spread). With it, the ~500 MHz smear collapses
-and we are left with a line only a few MHz wide, whose residual width is the
+and what remains is a line only a few MHz wide, whose residual width is the
 stack of mechanisms below. (A second-order Doppler term $\propto (v/c)^2$
 survives but is $\sim$ kHz here, which is negligible.)
 
@@ -85,7 +84,7 @@ experimentally (*Phys. Rev. Lett.* **32**, 643 (1974)): driving the analogous
 when the atom is forced to take one photon from each counter-propagating
 beam, not merely by illuminating with a standing wave. That founding result
 covers the demonstration and the algebra above. The transit-time lineshape
-our line actually has, once a finite crossing time is added, is a separate,
+the line actually has, once a finite crossing time is added, is a separate,
 later result, covered next in [§2, the lineshape kernel by
 kernel](02_the_lineshape.md).
 

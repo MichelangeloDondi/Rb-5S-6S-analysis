@@ -1,20 +1,9 @@
 # The big picture
 
-**The question.** What is this line, what did the 2025 measurement actually
-establish, what does it still not determine, and what would a further session
-convert?
-**Takes.** Nothing.
-**Gives.** The epistemic map of the experiment, quantity by quantity, and the
-route into the chapters that argue each part of it.
-**Skip if.** You want the numbers rather than the map, in which case
-[RESULTS.md](RESULTS.md) is the ledger and [CLAIMS.md](CLAIMS.md) the register.
-If you arrived holding one quantity and want its literature benchmark, its
-constructions, its limiting mechanism and the recipes that would improve it,
-that is [quantities/](quantities/README.md).
+This page asks what this line is, what the 2025 measurement established, what it leaves undetermined, and what a further session would convert. This page is self-contained and sets out the epistemic map of the experiment, quantity by quantity, and the route into the chapters that argue each part of it. Not covered here: the numbers rather than the map, in which case [RESULTS.md](RESULTS.md) is the ledger and [CLAIMS.md](CLAIMS.md) the register. If you arrived holding one quantity and want its literature benchmark, its constructions, its limiting mechanism and the recipes that would improve it, that is [quantities/](quantities/README.md).
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](GLOSSARY.md)
-> explains the measurement in six sentences, then defines every term
-> and symbol used anywhere in this repository.
+> [GLOSSARY.md](GLOSSARY.md) states the measurement in six sentences and
+> defines every term and symbol used anywhere in this repository.
 
 This page is the information structure of one experiment. A Doppler-free
 two-photon measurement of the rubidium 5S to 6S line at 993 nm, taken in 2025
@@ -26,7 +15,7 @@ it carries provenance for.
 
 ---
 
-## Part I. What the 2025 measurement established
+## Part I. Established results of the 2025 measurement
 
 The headline is not a number. It is that the DATA constrain the light shift and
 the collision rate without identifying either independently of the other
@@ -60,7 +49,7 @@ shape of a dataset taken under a drifting lock.
 Three things are undetermined for three different reasons, and the distinction
 decides what a further measurement has to do.
 
-**The width split is undetermined by degeneracy.** The collisional and laser
+The width split is undetermined by degeneracy. The collisional and laser
 widths enter the profile almost interchangeably, so the fit determines the
 total width fifty times better than it determines how the total divides. No
 amount of the same data fixes this, because the information is not in the
@@ -78,14 +67,16 @@ this record covers, and
 [chapter 7](big_picture/07_limitations-and-identifiability.md) carries the
 constructions, together with the second limitation hiding inside this one:
 the fit assigns the laser a kernel shape, and the wrong shape biases the
-collisional width rather than widening its error bar. What the record measures
+collisional width rather than widening its error bar.
+
+What the record measures
 about the laser's noise brackets the question from both sides, 0.62 MHz of
 slow wander below half a hertz from the digitised wavemeter record and under
 28 kHz at seven hertz from the comb clock, leaving exactly the band the width
 integrates as the unmeasured middle.
 
-**That shape is no longer unmeasured, as of 2026-08-20, and the answer came
-from the line rather than from the laser.** The switch selecting it had been
+That shape is no longer unmeasured, as of 2026-08-20, and the answer came
+from the line rather than from the laser. The switch selecting it had been
 wired through four modules and never thrown. Thrown, it moves the headline
 coefficient by 45 to 67 per cent, which is nine to eighteen sigma on the
 statistical error quoted beside it (`results/kernel_headline.csv`).
@@ -100,6 +91,7 @@ The number that had been quoted was the position the optimiser happened to
 stop at along that flat direction. What separates the two is density, which
 the headline estimator varies and a single condition does not, which is why
 the headline figure survives and the per-condition one never had a referent.
+
 The correction is in `results/kernel_identifiability.csv`. That makes it the largest single
 assumption the width channel rests on, larger than the width degeneracy above
 it, and it means the quoted error bar omits a term about ten times its own
@@ -125,8 +117,8 @@ comparison of end-members into the error bar
 ([`run_laser_kernel.py`](../scripts/run_laser_kernel.py),
 [the Voigt profile](wiki/voigt-profile.md)).
 
-**That remaining work was done on 2026-08-21, and it stops one level short of
-the sentence a reader will want.** Fitting the Lorentzian-equivalent width
+That remaining work was done on 2026-08-21, and it stops one level short of
+the sentence a reader will want. Fitting the Lorentzian-equivalent width
 inside the containing model at each peak, against the pinned-Gaussian arm,
 gives a component present at every peak by $\Delta\chi^2$ of 176 to 961, with
 peak-conditioned values of 0.315 to 0.449 MHz (`results/kernel_k3.csv`). The
@@ -137,12 +129,12 @@ against the statistical error on a matched footing, the kernel choice is
 $R_\text{kernel} = 3.24$ times larger (`results/kernel_budget.csv`), so the
 model form, not the noise, is what limits that coefficient now.
 
-**The estimator was made to fail before it was believed.** Five hostile
+The estimator was made to fail before it was believed. Five hostile
 synthetic worlds, 500 trials each, returned **0 false positives per world**,
 including one world that varies only the numerical grid and so tests the
 arithmetic rather than the physics (`results/kernel_worlds.csv`).
 
-**And the record stops there deliberately.** Whether the four peaks share one
+And the record stops there deliberately. Whether the four peaks share one
 value is neither rejected nor established at $p = 0.097$, so their
 inverse-variance mean is never written on its own. Attributing the component to
 the laser is a separate claim that no measurement yet taken licenses, since the
@@ -153,7 +145,7 @@ identified is not a common parameter identified is not an origin identified is
 not a model class shown adequate, and this result sits at the first of those
 four.
 
-**The atlas detects, and the detection is qualified where it stands.**
+The atlas detects, and the detection is qualified where it stands.
 Stacked per-condition residuals, tested against a null that flips each
 condition's sign, show a common
 structure at the permutation floor in both arms, surviving the removal of
@@ -165,12 +157,12 @@ reconstruction's open question and the two-runs record are all in
 [chapter 7](big_picture/07_limitations-and-identifiability.md), with the
 figure.
 
-**The absolute frequency axis is undetermined by construction.** The lock
+The absolute frequency axis is undetermined by construction. The lock
 drifted and the wavemeter was photographed rather than logged, so every axis in
 the archive is differential. Line shapes survive this and line positions do
 not, which is why the analysis reads shapes.
 
-**The waist is undetermined by absence.** It was never measured on this bench.
+The waist is undetermined by absence. It was never measured on this bench.
 Every intensity-denominated quantity is conditional on it, which is why the
 light-shift row above is a bound with a condition attached rather than a
 measurement.
@@ -222,7 +214,9 @@ interleaved session and 3.0 at the archive's own noise level means. Panel B
 carries a genuine tension rather than a gap: the primary bound on the light
 shift sits below the predicted value, and the robustness fit that drops one
 peak does not, so the ordering is subset-dependent. Both bounds are drawn for
-that reason. The exclusion holds on the full fit, its strength is a range
+that reason.
+
+The exclusion holds on the full fit, its strength is a range
 and not a single two-sigma, and on the three-session construction it does not
 survive leaving one peak out: one arm clearly excludes, two clearly do not, and
 the fourth sits inside the profile's own scatter of the threshold, so no count
@@ -267,7 +261,7 @@ For the derivations, [methods.md](methods.md) owns every one. For the general
 concepts, the [wiki](wiki/README.md) explains each technique on its own page.
 For the proposed session, [PLAN.md](PLAN.md) is the measurement plan.
 
-### What each piece buys
+### Contributions of each component
 
 ```
   2025 dataset (done)          model + bounds + method, w0-conditional

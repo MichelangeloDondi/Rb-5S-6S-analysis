@@ -2,19 +2,12 @@
 
 *[wiki index](README.md) · concept*
 
-**The question.** How a cell temperature becomes a number density, why a set
-point is not a temperature, and its effect on every density-linked
-quantity.
-**Takes.** A vapour-pressure curve and a cell.
-**Gives.** The conversion, its steepness, and the in-situ measurement
-replacing an accepted number with a measured one.
-**Skip if.** The question is what density does to a lineshape, covered in
-[self-broadening](self-broadening.md).
+How a cell temperature becomes a number density, why a set point is not a temperature, and its effect on every density-linked quantity. This page builds on a vapour-pressure curve and a cell and sets out the conversion, its steepness, and the in-situ measurement replacing an accepted number with a measured one. Not covered here: the question is what density does to a lineshape, covered in [self-broadening](self-broadening.md).
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
 > defines every term and symbol used anywhere in this repository.
 
-## What it is
+## Definition
 
 A vapour cell holds liquid or solid metal in equilibrium with its vapour.
 The vapour pressure follows an Antoine-type law,
@@ -31,14 +24,14 @@ the internal temperature the formula needs.
 *Number density against temperature over the pilot's working range, showing
 the factor-3.2 span a 20-degree uncertainty produces.*
 
-## What problem it solves
+## The problem it addresses
 
 Every collisional quantity in this record is a slope against density.
 Density is never measured directly. It is computed through the
 vapour-pressure curve from a temperature, so a modest temperature question
 becomes a factor-level density question.
 
-## Where this repository uses it
+## Application in this repository
 
 The density conversion enters the self-broadening and trapping channels. The
 pedestal thermometer is a campaign lever in
@@ -46,7 +39,7 @@ pedestal thermometer is a campaign lever in
 cost and failure conditions in
 [the sizing chapter](../plan/06_sizing-and-spending-rules.md).
 
-## A set point is not a temperature
+## A set point against a temperature
 
 A variac setting, a controller dial and a heater current are all set
 points, determined by the oven's own transfer function, which depends on
@@ -72,7 +65,7 @@ Four thermocouples sat between the vapour cell and its case. The dataset
 carries the set point per block, not a logged thermocouple series. Logging
 that channel is the fix for the next campaign.
 
-## The in-situ measurement that removes the problem
+## The in-situ measurement removing the problem
 
 The Doppler pedestal carries the temperature directly. Atoms moving along
 the beam see the two counter-propagating photons shifted in opposite
@@ -95,8 +88,7 @@ The pedestal may not separate cleanly from scattered light, and its area
 ratio is flat near a retro-reflection ratio of one, so an area-based
 estimator loses sensitivity where the geometry is best.
 
-## What can go wrong
-
+## Failure modes
 - Quoting a set point as a temperature, the most frequent error, covered
   above.
 - Using a temperature from the wrong point (oven body or cell wall) or the
@@ -131,8 +123,7 @@ print(f"110 to 130 C moves the density by a factor {ratio:.2f}")
 - [`../lit/steck_rb.md`](../lit/steck_rb.md), the vapour-pressure model in
   the form most laboratories quote.
 
-## See also
-
+## Related pages
 - [Collisional self-broadening](self-broadening.md), the channel dividing
   by this density.
 - [Doppler-free two-photon](doppler-free-two-photon.md), source of the

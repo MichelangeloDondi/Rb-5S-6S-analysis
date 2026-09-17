@@ -2,23 +2,14 @@
 
 *[wiki index](README.md) · concept, supporting topic*
 
-**The question.** How can a record's own wander identify which noise
-process produced it, and how long is worth averaging.
-**Takes.** An evenly sampled time series. No other wiki page is required
-first.
-**Gives.** The Allan variance definition, the slope that separates white
-noise from a random walk on a log-log plot, and why an ordinary standard
-deviation fails on a drifting record.
-**Skip if.** You want the reason this repository has no timestamped record
-to run this statistic on. That is
-[designing an acquisition](designing-an-acquisition.md).
+How can a record's own wander identify which noise process produced it, and how long is worth averaging. This page builds on an evenly sampled time series. No other wiki page is required first. It sets out the Allan variance definition, the slope that separates white noise from a random walk on a log-log plot, and why an ordinary standard deviation fails on a drifting record. Not covered here: the reason this repository has no timestamped record to run this statistic on. That is [designing an acquisition](designing-an-acquisition.md).
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
 > defines every term and symbol used anywhere in this repository.
 
-## What it is
+## Definition
 
-The Allan deviation measures how much a quantity wanders when you average it
+The Allan deviation measures how much a quantity wanders under averaging
 over a window of length $\tau$, as a function of $\tau$. Take a record,
 divide it into consecutive blocks of $\tau$ samples, average each block, and
 look at the differences between neighbouring block averages. The Allan
@@ -37,7 +28,7 @@ neighbouring windows from the record's total excursion.
 separated cleanly by slope once read as an Allan deviation.*
 
 The ordinary standard deviation cannot do this: for a record whose mean is
-drifting it depends on how long you watched, and grows without limit as you
+drifting it depends on the length of the record, and grows without limit as that
 keep watching. The Allan deviation is finite for those records and its shape
 identifies the noise: on a log-log plot, white frequency noise falls as
 $\tau^{-1/2}$, because averaging longer helps, a random walk rises as
@@ -45,7 +36,7 @@ $\tau^{+1/2}$, because averaging longer hurts, and flicker noise is flat. A
 minimum in the curve marks the averaging time beyond which drift overtakes
 the benefit of averaging.
 
-## What problem it solves
+## The problem it addresses
 
 An oscillator, a laser lock or any reference has more than one noise process
 acting at once, and they matter over different timescales. The question a
@@ -53,7 +44,7 @@ measurement actually asks is "how long should I average", and that has an
 answer only if the noise types can be told apart. The Allan deviation turns
 that into a reading off a slope.
 
-## Where this repository uses it
+## Application in this repository
 
 Not in the committed analysis: the 2025 campaign saved no long-term
 wavemeter logs, so the laser-frequency record is dated screen photographs,
@@ -77,7 +68,7 @@ deviation of the tooth width across a session would then be the check on
 whether the ruler itself is stable over the times the fits assume, a
 question no current dataset can answer.
 
-## The estimator that saturates
+## Saturation of the estimator
 
 The reason this statistic exists is that the obvious one has no limit.
 Under $1/f$ noise the variance of a record grows with the record, because
@@ -92,7 +83,7 @@ improving with data is the signature to watch for. See
 [laser frequency noise and the linewidth](laser-frequency-noise-and-the-linewidth.md)
 for where this decided a design question.
 
-## What can go wrong
+## Failure modes
 
 The commonest error mistakes data insufficiency for a real drift branch: a
 curve computed from too few blocks at long $\tau$ has enormous scatter, and
@@ -151,8 +142,7 @@ a reader.
 - [Wikipedia: Allan variance](https://en.wikipedia.org/wiki/Allan_variance)
   for the slope table at a glance.
 
-## See also
-
+## Related pages
 - [Designing an acquisition](designing-an-acquisition.md), the per-sweep
   timestamp channel this statistic needs and this repository's own record
   lacks.

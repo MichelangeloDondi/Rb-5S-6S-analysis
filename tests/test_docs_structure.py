@@ -43,7 +43,12 @@ _EXEMPT = {
     "PREREGISTRATION_RESULTS.md",
 }
 
+#: THE LEGACY FORM, kept so a page that still carries it is not refused mid-transition.
 _HEADER_LINES = ("**The question.**", "**Takes.**", "**Gives.**", "**Skip if.**")
+
+#: The orienting paragraph's minimum length. Below this a "paragraph" is a caption or a
+#: one-line pointer, which does not let a reader decide whether this is their document.
+_ORIENT_WORDS = 30
 
 
 def _docs():
@@ -63,15 +68,53 @@ def _ids():
     return [rel for rel, _ in _docs()]
 
 
+def _orienting_paragraph(text: str) -> str | None:
+    """The first prose paragraph of at least `_ORIENT_WORDS` words in the opening 60 lines."""
+    head = text.splitlines()[:60]
+    i = 0
+    while i < len(head):
+        s = head[i].strip()
+        if not s or s.startswith(("#", "|", ">", "```", "[!", "<!--", "*", "-", "$$", "!")):
+            i += 1
+            continue
+        par = []
+        while i < len(head) and head[i].strip():
+            par.append(head[i].strip())
+            i += 1
+        p = " ".join(par)
+        if len(p.split()) >= _ORIENT_WORDS:
+            return p
+    return None
+
+
 @pytest.mark.parametrize("rel,text", list(_docs()), ids=_ids())
-def test_a_long_document_opens_with_the_reader_header(rel, text):
-    """The four lines that let a reader decide whether this is their document."""
-    head = "\n".join(text.splitlines()[:60])
-    missing = [ln for ln in _HEADER_LINES if ln not in head]
-    assert not missing, (
-        f"docs/{rel} runs past {WORD_THRESHOLD} words without the reader "
-        f"header in its first 60 lines. Missing: {missing}. See docs/STYLE.md, "
-        f"'Document structure', and any methods chapter for the pattern.")
+def test_a_long_document_opens_by_orienting_its_reader(rel, text):
+    """A long document says what it is before it says anything else.
+
+    THE FORM CHANGED ON 2026-09-17 AND THE PURPOSE DID NOT. This checked for four exact
+    bold labels, `**The question.** / **Takes.** / **Gives.** / **Skip if.**`, carried by
+    all 57 long documents. The owner reported four times that the record reads as written
+    by an assistant rather than by a physicist, naming the register directly, and that card
+    is the single most assistant-like artefact in the corpus. It was replaced across the
+    documents by an orienting paragraph in ordinary academic prose.
+
+    WHAT THIS COSTS, said plainly rather than left to be discovered: a phrase match is a
+    STRONGER test than a structural one. The old rule could not be satisfied by accident;
+    this one can be, by any document that happens to open with thirty words of prose. What
+    it still catches is the real regression, a long document that opens straight into its
+    sections, tables or figures with nothing telling a reader whether it is theirs -- which
+    is what four documents briefly did during that pass, and how this weakening was found.
+
+    The legacy card is still accepted, so a page that has not been converted is not refused.
+    """
+    if all(ln in "\n".join(text.splitlines()[:60]) for ln in _HEADER_LINES):
+        return                                  # the legacy form, still honoured
+    para = _orienting_paragraph(text)
+    assert para is not None, (
+        f"docs/{rel} runs past {WORD_THRESHOLD} words without an orienting paragraph of "
+        f"{_ORIENT_WORDS}+ words in its first 60 lines: it opens straight into its "
+        f"structure. See docs/STYLE.md, 'Document structure'.")
+
 
 
 @pytest.mark.parametrize("rel,text", list(_docs()), ids=_ids())

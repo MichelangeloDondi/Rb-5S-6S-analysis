@@ -130,7 +130,7 @@ comparison, and the record is stronger with them than without.
 
 A LAST RAISE, for the referent. The leave-one-out rows are evaluated at the
 pre-adjudication predicted coefficient of 1.545 and not at this record's own
-1.618, where each would sit higher, so the count of arms below threshold is
+1.618 (the static-tail coefficient, retired on 2026-09-17), where each would sit higher, so the count of arms below threshold is
 provisional until a five-hour refit runs. Saying which coefficient a number
 is at costs a clause and is the difference between a finding and a claim.
 

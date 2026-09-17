@@ -2,20 +2,12 @@
 
 *[wiki index](README.md) · technique*
 
-**The question.** How finely an analogue signal must be digitised before the
-digitiser stops mattering, and what changing the vertical range mid-experiment
-costs.
-**Takes.** A signal, a range setting and a noise level.
-**Gives.** The number of levels a measurement needs, the reason a vertical
-range is a physics setting and not a display preference, and why a range
-changed between points turns one measurement into several.
-**Skip if.** The question is whether to count photons instead of digitising a
-current at all, which is [photon counting](photon-counting.md).
+How finely an analogue signal must be digitised before the digitiser stops mattering, and what changing the vertical range mid-experiment costs. This page builds on a signal, a range setting and a noise level and sets out the number of levels a measurement needs, the reason a vertical range is a physics setting and not a display preference, and why a range changed between points turns one measurement into several. Not covered here: the question is whether to count photons instead of digitising a current at all, which is [photon counting](photon-counting.md).
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
 > defines every term and symbol used anywhere in this repository.
 
-## What it is
+## Definition
 
 A digitiser maps a voltage range onto a finite number of integers. With $b$
 bits there are $2^b$ of them, so the step between adjacent codes is the range
@@ -38,14 +30,14 @@ A useful rule of thumb, and it is only that: a feature needs roughly thirty
 codes across it before quantisation stops contributing meaningfully to a
 width or an area estimate.
 
-## What problem it solves
+## The problem it addresses
 
 It converts a knob into an arithmetic problem. Given the dynamic range a
 measurement must span and the noise it must not be dominated by, the number of
 bits required is fixed, and so is the answer to whether one range setting can
 serve a whole measurement.
 
-## The trap: a range that moves under the measurement
+## The trap of a range moving under the measurement
 
 Autoscaling, whether by the instrument or by a careful operator, keeps each
 individual trace beautifully filling the screen. It does so by changing the
@@ -73,7 +65,7 @@ cannot be held, deliberately measure one point on both ranges wherever the
 range changes: the ratio of the two readings of one physical signal measures
 the range-to-range gain ratio, turning an unknown into a calibration.
 
-## Where this repository uses it
+## Application in this repository
 
 The 2025 sessions did not hold the range, and the cost was measured on
 2026-08-18 by reading the quantisation step out of the stored samples, since
@@ -100,14 +92,14 @@ power spans eighty-one in amplitude, and holding one range with the top point
 at 80 per cent of full scale leaves an eight-bit digitiser about two and a
 half codes at the bottom rung and a twelve-bit one about forty.
 
-## What can go wrong
+## Failure modes
 
 **Confusing effective bits with nominal bits.** Averaging and
 high-resolution modes convert bandwidth into resolution, so a nominally
 eight-bit instrument can deliver far finer steps than its specification while
 its response time lengthens. The two figures move against each other.
 
-**Assuming dither is present.** The argument that noise rescues resolution
+Assuming dither is present. The argument that noise rescues resolution
 requires noise larger than a step. A quiet baseline digitised coarsely does
 not dither, and its average is biased toward the nearest code instead of
 converging on the truth.
@@ -155,8 +147,7 @@ a reader.
 - B. Widrow and I. Kollár, *Quantization Noise* (Cambridge, 2008), for when
   the uniform-error model holds and when dither is required to make it hold.
 
-## See also
-
+## Related pages
 - [Photon counting](photon-counting.md), for the regime where the analogue
   chain is abandoned instead of digitised better.
 - [Designing an acquisition](designing-an-acquisition.md), where span,

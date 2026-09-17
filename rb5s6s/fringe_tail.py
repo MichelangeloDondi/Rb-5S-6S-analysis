@@ -13,7 +13,7 @@ which modulates the instantaneous light shift an atom feels while it is being
 excited. constants.DELTA_ALPHA_AU pins the on-axis, fast-fringe-averaged peak
 shift S0 = Delta_alpha I_eff / (2 eps0 c h) with I_eff = (1+rho) 2P/(pi w0^2)
 the standing-wave MEAN; the archival ramp uses S0 and its symmetric transverse
-wedge (lineshape.stark_ramp, mean pull -(2/3) S0, third cumulant +S0^3/135).
+wedge (lineshape.stark_ramp: mean pull +(2/3) S0 and third cumulant -S0^3/135 on its blue side).
 
 This module quantifies the ONE piece that mean picture drops: a slow-v_z tail.
 An atom whose axial speed is small crosses the fringes slowly, sits near a
@@ -66,7 +66,7 @@ flux and the Gaussian crossing time), exactly the transit_mc convention.
 
 COHERENCE WINDOW. tau_c is the ONE open modelling choice. The coherent
 excitation amplitude lives at most one 6S lifetime (tau_6S ~ 46 ns), but the
-beam crossing may be shorter or longer: at the MEASURED 64 um waist the transit
+beam crossing may be shorter or longer: at the 64 um waist convention the transit
 is ~260 ns (transit-limited, tau_c -> inf is the right cap), at the small
 16 um waist it is ~65 ns, comparable to tau_6S, so the two bracket the fringe
 survival. Both are w0/v at the 2D Maxwell-Boltzmann mean transverse speed,
@@ -107,6 +107,14 @@ import numpy as np
 
 from . import config as C
 from .constants import K_B_J_PER_K, LAMBDA_LASER_M, M_RB87_KG
+from .lineshape import RAMP_SIDE
+
+# The Monte Carlo below samples the wedge on the red side and MIRRORS every odd moment and the
+# binned density at its output (O27). That mirror is the blue side's and nothing else's, so a
+# change of the package's side must remove it rather than pass through it unnoticed.
+if RAMP_SIDE != +1.0:
+    raise ImportError("fringe_tail mirrors its red-side sampling to the blue support; "
+                      "lineshape.RAMP_SIDE is no longer +1, so the mirror must be rewritten")
 
 _K_WAVE = 2.0 * pi / LAMBDA_LASER_M          # laser wavenumber (rad/m)
 
@@ -190,7 +198,7 @@ def _one_block(w0_m: float, s0_mhz: float, rho: float, T_C: float,
     kappa_path = np.sqrt(a_den / a_num)
     F = np.exp(-_K_WAVE ** 2 * vz ** 2 / a_num)
 
-    s_env = -s0_mhz * u0 * kappa_path                   # symmetric transverse wedge
+    s_env = -s0_mhz * u0 * kappa_path                   # the wedge sampled red-side, mirrored at output (O27)
     s_signed = s_env * (1.0 + contrast * np.cos(theta0) * F)
     W = u0 ** 2                                         # flux x integrated rate
 
@@ -241,7 +249,7 @@ def fringe_tail_mc(*, w0_m: float, s0_mhz: float, rho: float = 1.0,
                  the coherence-window fraction (the fringe-survival moments are
                  T-independent).
 
-    Returns a dict, on the signed shift s in [-S0, 0] (red = negative):
+    Returns a dict, on the signed shift s in [0, S0] (BLUE = positive; O27):
       mean_over_s0, mean_nofringe_over_s0: signal-weighted centroid pull / S0
                                           with and without the fringe (equal to
                                           ~2e-3: the symmetric fringe preserves
@@ -318,14 +326,17 @@ def fringe_tail_mc(*, w0_m: float, s0_mhz: float, rho: float = 1.0,
         "coherence_ns": (np.inf if coherence_s is None else coherence_s * 1e9),
         "sigma_v": sv, "t_window_ns": t_window * 1e9, "vz_thr": vz_thr,
         "n_atoms": n_atoms, "n_blocks": n_blocks,
-        "mean_over_s0": mean / s0_mhz, "mean_nofringe_over_s0": mean_n / s0_mhz,
+        # ODD moments mirror with the support and EVEN ones do not (O27): the sampling
+        # below is unchanged and only the reported sign moves, so this stays one Monte
+        # Carlo and does not become two.
+        "mean_over_s0": -mean / s0_mhz, "mean_nofringe_over_s0": -mean_n / s0_mhz,
         "kappa_path": w_kappa / w_tot,
         "var": var, "var_nofringe": var_n,
         "excess_var_frac": (var - var_n) / var if var > 0 else 0.0,
         "f_res_var": w_fvar / w_tot,
-        "kappa3": mu3, "kappa3_nofringe": mu3_n, "d_kappa3": mu3 - mu3_n,
+        "kappa3": -mu3, "kappa3_nofringe": -mu3_n, "d_kappa3": -(mu3 - mu3_n),
         "d_kappa3_mc_err": d_kappa3_mc_err,
-        "skew": skew, "skew_nofringe": skew_n, "d_skew": skew - skew_n,
+        "skew": -skew, "skew_nofringe": -skew_n, "d_skew": -(skew - skew_n),
         "d_skew_mc_err": d_skew_mc_err,
         "excess_var_frac_mc_err": excess_var_frac_mc_err,
         "frac_resolved": w_res / w_tot,
@@ -356,7 +367,7 @@ def fringe_shift_density(*, w0_m: float, coherence_s, rho: float = 1.0,
     reaches x = -2 kappa_bar / kappa_bar = -2 at a perfect retro, where a slow
     atom at an antinode sees twice the fringe-averaged intensity.
 
-    Returns x_grid (bin centres, ascending, on [-2/kappa_bar, 0]), density
+    Returns x_grid (bin centres, ascending, on [0, 2/kappa_bar]), density
     (area one on that grid), kappa_bar, and the SAME draws' raw moments of
     x_raw = s / S0 (mean_raw, var_raw, kappa3_raw) so a test can hold the
     binned density against the pooled power sums and against fringe_tail_mc
@@ -382,10 +393,17 @@ def fringe_shift_density(*, w0_m: float, coherence_s, rho: float = 1.0,
     centres = 0.5 * (edges[:-1] + edges[1:]) / kappa_bar
     dx = (edges[1] - edges[0]) / kappa_bar
     density = hist / hist.sum() / dx
+    # MIRRORED TO THE BLUE SUPPORT (O27). The sampling above is unchanged: it bins a
+    # magnitude-like x on [-2, 0] as it always did, and only the reported grid moves, so the
+    # density that leaves here ascends on [0, 2/kappa_bar] like every other local density in
+    # the package. Reversing both arrays keeps the pairing exact.
+    centres = -centres[::-1]
+    density = density[::-1]
     return {
         "x_grid": centres, "density": density, "kappa_bar": float(kappa_bar),
-        "mean_raw": float(mean_raw), "var_raw": float(var_raw),
-        "kappa3_raw": float(mu3_raw),
+        # the ODD raw moments mirror with the support; the even one does not (O27)
+        "mean_raw": float(-mean_raw), "var_raw": float(var_raw),
+        "kappa3_raw": float(-mu3_raw),
         "w0_um": w0_m * 1e6, "rho": rho, "T_C": T_C, "contrast": contrast,
         "n_atoms": n_atoms, "n_blocks": n_blocks, "n_bins": n_bins,
     }

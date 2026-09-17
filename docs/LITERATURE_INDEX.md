@@ -198,7 +198,7 @@ The `loci` column says which thread of the programme a reference bears on. **P1*
 | [`sargsyan2025`](lit/sargsyan2025.md) | VERIFIED | CITE | P2:§IV | Extracts the atom-surface red shift (estimates C3) of the Cs 6S-7P line from a nanocell selective-reflection lineshape (below 400 nm thickness) — the experimental analogue of reading a surface shift from the line for the nanofibre extension sec IV. |
 | [`ton2026`](lit/ton2026.md) | VERIFIED | CITE | P2:§IV | Reads the kHz Casimir-Polder shift of ultracold Sr 189 nm from a dielectric out of the spectroscopic lineshape, across the near-field-to- retarded crossover. |
 
-### The host group's own platforms: guided fibre, MOT, molasses and lattice
+### The host group's platforms: guided fibre, MOT, molasses, lattice
 
 | citekey | status | routing | loci | why it matters |
 |---|---|---|---|---|

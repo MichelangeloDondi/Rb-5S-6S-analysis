@@ -53,7 +53,7 @@ Eq. (45) gives $\alpha_0^{ac}(^3D_1) + \alpha_2^{ac}(^3D_1) - \alpha_0^{ac}(^1S_
 | Transition | 1-photon Stark-induced (signal proportional to $I$) | 2-photon (signal proportional to $I^2$) |
 | Ensemble | collimated beam, velocity-selective | thermal vapor cell |
 | Regime | fringe-resolved: FM index $\xi/\Omega \gtrsim 1$, Bessel sidebands, sub-Doppler features | fringe-averaged: $\xi/\Omega \sim 10^{-3}$, atoms see the time-averaged envelope |
-| Lineshape | numerical Bloch, per-condition | closed-form shift density $f(s) \propto \vert s\vert $ on $[-S_0,0]$ |
+| Lineshape | numerical Bloch, per-condition | closed-form shift density $f(s) \propto s$ on $[0,S_0]$ |
 | Extraction | full-shape fit, needing $\beta$, cavity field, velocity model, per-scan free center | closed-form ramp fit with a per-trace free center, which absorbs the ramp shift, so $S_0$ is read from the drift-invariant shape asymmetry (skew) |
 | Saturation | saturating, with hole-burning entangled with the asymmetry | unsaturated throughout (amplitude proportional to $P^2$ confirmed) |
 
@@ -61,7 +61,7 @@ Both regimes reduce to the same quasi-static law: signal weight proportional to 
 
 ## The fringe-modulation regime
 
-Section IV and Fig. 6 give the fringe-modulation framework used here. An atom crossing standing-wave fringes sees frequency modulation of depth $\xi = \tfrac12\alpha\varepsilon_0^2$ at rate $\Omega/2\pi = 2v/\lambda$. For a fringe spacing $\lambda/2 \approx 0.50 \mu\text{m}$ and axial thermal speed $\approx 280$ m/s, $\Omega/2\pi \approx 0.56$ GHz and $\xi = S_0 \lesssim 1$ MHz, giving a modulation index $\xi/\Omega \lesssim 2\times10^{-3}$: a pure carrier at the fringe-averaged intensity $I_1+I_2=(1+\rho)I_1$, with no coherent fringe enhancement of the shift. Near-transverse atoms, with small axial speed, instead sample the node-antinode arcsine distribution, which suppresses the ramp skew: $\kappa_3 \to S_0^3(1/135 - f_{res}/10)$ at $\rho=1$, a $-13.5 f_{res}$ fractional leverage. As a fraction of the intrinsic $+0.566$ triangle skew, this is small at $w_0=64 \mu\text{m}$ (7-14% of an already-below-noise skew) and reaches 26-28% at $w_0=16 \mu\text{m}$, additive in sign to the beam-divergence correction.
+Section IV and Fig. 6 give the fringe-modulation framework used here. An atom crossing standing-wave fringes sees frequency modulation of depth $\xi = \tfrac12\alpha\varepsilon_0^2$ at rate $\Omega/2\pi = 2v/\lambda$. For a fringe spacing $\lambda/2 \approx 0.50 \mu\text{m}$ and axial thermal speed $\approx 280$ m/s, $\Omega/2\pi \approx 0.56$ GHz and $\xi = S_0 \lesssim 1$ MHz, giving a modulation index $\xi/\Omega \lesssim 2\times10^{-3}$: a pure carrier at the fringe-averaged intensity $I_1+I_2=(1+\rho)I_1$, with no coherent fringe enhancement of the shift. Near-transverse atoms, with small axial speed, instead sample the node-antinode arcsine distribution, which suppresses the ramp skew: $\kappa_3 \to -S_0^3(1/135 - f_{res}/10)$ at $\rho=1$, a $-13.5 f_{res}$ fractional leverage. As a fraction of the intrinsic $0.566$ triangle skew magnitude, this is small at $w_0=64 \mu\text{m}$ (7-14% of an already-below-noise skew) and reaches 26-28% at $w_0=16 \mu\text{m}$, additive in sign to the beam-divergence correction.
 
 ## Use in this record
 

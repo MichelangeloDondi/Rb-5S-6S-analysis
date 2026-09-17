@@ -151,6 +151,11 @@ ACCOUNT_MARKERS = (
     # how a skip list ends up wrong on the day it is written.
     "used to", "in place of", "hardcoded", "it asserted", "that band read",
     "assumed_parameter", "legacy", "before the solve", "replaced",
+    # THE LINE-LEVEL "ANOTHER QUANTITY" MARKER, which the precheck's stale-copy check has honoured
+    # since 2026-09-15 and this scan did not (2026-09-17): a carrier's height ratio of 0.360 tagged
+    # as not the light-shift prediction was exempt from one guard and a stale copy to the other,
+    # so the same line needed two different vocabularies to state one fact.
+    "<!-- other-quantity:",
 )
 
 # Under private/: captured process output and regenerable bulk, not claims.
@@ -159,6 +164,10 @@ ACCOUNT_MARKERS = (
 # the stale value on purpose.
 _PRIVATE_SKIP = {".git", "cache", "run_logs", "internal", "Manuals",
                  "qc_gallery", "qc_gallery_prev_layout", "__pycache__"}
+# THE HISTORY HUB'S CHAPTERS STAY IN THE SCAN, under the now-cell rule; what leaves it is
+# `private/history/records/`, the 598 archives, prompts, snapshots and transcripts the sweep of
+# 2026-09-17 moved there, which carry their marker file instead (a record quotes retired values
+# because that is what a record is, and grading it reports the record for being one).
 
 BINARY_SUFFIXES = (".png", ".pdf", ".jpg", ".jpeg", ".npz", ".npy", ".gz",
                    ".zip", ".ico", ".woff", ".woff2", ".ttf", ".xlsx")
@@ -427,7 +436,7 @@ def scannable() -> list[Path]:
             if not q.is_file() or q.suffix not in _SCANNED_SUFFIXES:
                 continue
             rel_parts = q.relative_to(priv).parts
-            if rel_parts and rel_parts[0] in _skip:
+            if any(part in _skip for part in rel_parts[:-1]):
                 continue
             if _declares_record(q):
                 continue
@@ -450,8 +459,15 @@ cannot be excluded by accident of naming."""
 
 
 def _unscanned_dirs(priv) -> set:
-    """The directories that have declared themselves outside the scan."""
-    return {q.parent.name for q in priv.glob("*/" + _UNSCANNED_MARK)}
+    """The directory NAMES that have declared themselves outside the scan, at any depth.
+
+    THE MARKER WAS READ ONE LEVEL DEEP AND THE SKIP LIST WAS DEAD CODE (2026-09-17). The glob was
+    `*/.unscanned`, so a marker under `history/records/` did nothing, and `_PRIVATE_SKIP` -- the list
+    this module's own comment calls its exclusions -- was referenced nowhere: a constant no code reads
+    is a comment, which is this repository's own rule. Both are honoured now, and the population is
+    still DERIVED rather than enumerated.
+    """
+    return {q.parent.name for q in priv.rglob(_UNSCANNED_MARK)} | set(_PRIVATE_SKIP)
 
 
 _RECORD_MARK = "<!-- kind: record -->"

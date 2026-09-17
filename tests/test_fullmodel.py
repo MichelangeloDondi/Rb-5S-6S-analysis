@@ -10,13 +10,17 @@ from __future__ import annotations
 import numpy as np
 import pytest
 
+from rb5s6s import constants as K
 from rb5s6s import stark
 from rb5s6s.lineshape import model_profile
 from rb5s6s.fullmodel import (doppler_pedestal_fwhm_mhz, saturation_companion_mhz,
                               collection_z_ratio_m2, full_profile)
 
 NU = np.linspace(-40, 40, 8001)
-B = dict(gamma_coll=0.55, sigma_laser_fwhm=1.6, transit_fwhm=0.9575, gamma_l=0.40, s0=0.364)
+#: The record's own shift at 225 mW, read from the package: these worlds typed 0.364, the
+#: static-tail prediction, until 2026-09-17.
+S0 = stark.kappa_pred_per_watt(K.W0_MEASURED_M, K.RHO_RETRO) * 0.225
+B = dict(gamma_coll=0.55, sigma_laser_fwhm=1.6, transit_fwhm=0.9575, gamma_l=0.40, s0=S0)
 
 
 def test_the_default_path_is_byte_identical_to_model_profile():
@@ -98,8 +102,8 @@ def test_m2_enters_the_collection_ratio_and_refuses_to_be_a_no_op():
     # combination and then ignored the good one, so the refusal concealed a
     # no-op. Both halves, as every switch in this module is checked.
     ideal = full_profile(NU, **B)
-    assert np.array_equal(ideal, full_profile(NU, m2=1.0, w0_m=64e-6, **B))
-    worse = full_profile(NU, m2=3.0, w0_m=64e-6, **B)
+    assert np.array_equal(ideal, full_profile(NU, m2=1.0, w0_m=K.W0_MEASURED_M, **B))
+    worse = full_profile(NU, m2=3.0, w0_m=K.W0_MEASURED_M, **B)
     assert not np.array_equal(ideal, worse)
     assert np.max(np.abs(worse - ideal)) / np.max(ideal) > 1e-3
 
@@ -114,12 +118,12 @@ def test_the_twin_carries_the_two_campaign_terms_in_both_directions():
               sigma_laser_fwhm=1.6, transit_fwhm=0.9575, power_max_w=1.0,
               cycles_at_max=1.0, drift_mhz_total=0.0, noise_frac_bright=0.004,
               adc_levels=4096)
-    base = build_world_trace(1.0, 0.364, 130.0, 0, 1, np.random.default_rng(7), L, **kw)[1]
-    same = build_world_trace(1.0, 0.364, 130.0, 0, 1, np.random.default_rng(7), L,
+    base = build_world_trace(1.0, S0, 130.0, 0, 1, np.random.default_rng(7), L, **kw)[1]
+    same = build_world_trace(1.0, S0, 130.0, 0, 1, np.random.default_rng(7), L,
                              pedestal_height_frac=0.0, retro_tilt_rad=0.0, **kw)[1]
     assert np.array_equal(base, same)
     for extra in (dict(pedestal_height_frac=3e-3), dict(retro_tilt_rad=2.36e-3)):
-        moved = build_world_trace(1.0, 0.364, 130.0, 0, 1, np.random.default_rng(7),
+        moved = build_world_trace(1.0, S0, 130.0, 0, 1, np.random.default_rng(7),
                                   L, **extra, **kw)[1]
         assert not np.array_equal(base, moved), extra
 
@@ -157,9 +161,9 @@ def test_the_generalised_fringe_mc_reproduces_fringe_tails_own_answer():
     from rb5s6s.fullmodel import fringe_survival_mc
     a, b = [], []
     for s in range(6):
-        a.append(fringe_tail_mc(w0_m=64e-6, s0_mhz=0.364, rho=0.94, T_C=130.0,
+        a.append(fringe_tail_mc(w0_m=K.W0_MEASURED_M, s0_mhz=S0, rho=0.94, T_C=130.0,
                                 n_atoms=120_000, seed=s)["frac_resolved"])
-        b.append(fringe_survival_mc(w0_m=64e-6, rho=0.94, T_C=130.0,
+        b.append(fringe_survival_mc(w0_m=K.W0_MEASURED_M, rho=0.94, T_C=130.0,
                                     n_atoms=120_000, seed=s,
                                     half_window_m=0.0)["frac_resolved"])
     a, b = np.array(a), np.array(b)
@@ -172,7 +176,7 @@ def test_frac_resolved_reports_an_effective_sample_size_far_below_the_draw():
     by more than an order of magnitude. Quoting it to three digits off one seed
     is what that shortfall punishes."""
     from rb5s6s.fullmodel import fringe_survival_mc
-    r = fringe_survival_mc(w0_m=64e-6, rho=0.94, n_atoms=200_000, seed=7)
+    r = fringe_survival_mc(w0_m=K.W0_MEASURED_M, rho=0.94, n_atoms=200_000, seed=7)
     assert 0.0 < r["n_eff"] < 0.2 * 200_000, r["n_eff"]
     assert r["frac_resolved_se"] > 0.05 * r["frac_resolved"]
 
@@ -182,7 +186,7 @@ def test_the_contrast_carries_the_polarisation_overlap():
     wave interferes only to the extent the two fields share a polarisation. The
     parallel case is an upper bound, not a neutral default."""
     from rb5s6s.fullmodel import fringe_survival_mc
-    base = dict(w0_m=64e-6, rho=0.94, n_atoms=120_000, seed=7)
+    base = dict(w0_m=K.W0_MEASURED_M, rho=0.94, n_atoms=120_000, seed=7)
     par = fringe_survival_mc(**base)["mean_contrast"]
     for f in (0.8, 0.5, 0.0):
         got = fringe_survival_mc(**base, e1_dot_e2=f)["mean_contrast"]
@@ -198,7 +202,7 @@ def test_the_contrast_carries_the_polarisation_overlap():
 ])
 def test_each_new_axis_moves_the_right_quantity_the_right_way(kw, key, direction):
     from rb5s6s.fullmodel import fringe_survival_mc
-    base = dict(w0_m=64e-6, rho=0.94, n_atoms=200_000, seed=7)
+    base = dict(w0_m=K.W0_MEASURED_M, rho=0.94, n_atoms=200_000, seed=7)
     a = fringe_survival_mc(**base)[key]
     b = fringe_survival_mc(**base, **kw)[key]
     assert (b > a) if direction == "up" else (b < a), (a, b)
@@ -209,7 +213,7 @@ def test_the_tilt_angle_alone_is_negligible_and_the_offset_is_not():
     four orders below the axial 2k, so the tilt ANGLE barely washes fringes out.
     What a tilt does to this bench it does through the OFFSET it produces."""
     from rb5s6s.fullmodel import fringe_survival_mc
-    base = dict(w0_m=64e-6, rho=0.94, n_atoms=200_000, seed=7)
+    base = dict(w0_m=K.W0_MEASURED_M, rho=0.94, n_atoms=200_000, seed=7)
     ideal = fringe_survival_mc(**base)["mean_F"]
     tilted = fringe_survival_mc(**base, tilt_rad=5e-4)["mean_F"]
     offset = fringe_survival_mc(**base, offset_m=64e-6)["mean_contrast"]
@@ -224,7 +228,7 @@ def test_the_ultra_joint_statistics_carry_the_shift_free_ratios():
     assert any(k.startswith("k5/k3@") for k in s)
     assert any(k.startswith("k7/k5@") for k in s)
     # k5/k3 is shift-free: move S0 and the ratio must barely move
-    a = ultra_joint_statistics(grid, **{**B, "s0": 0.364})["k5/k3@6"]
+    a = ultra_joint_statistics(grid, **{**B, "s0": S0})["k5/k3@6"]
     b = ultra_joint_statistics(grid, **{**B, "s0": 2.0})["k5/k3@6"]
     assert abs(b / a - 1.0) < 0.10, (a, b)
     assert a < 0, a                       # and opposite in sign to k3
@@ -270,12 +274,12 @@ def test_the_twin_carries_beam_quality_and_the_rabi_parameterisation():
               sigma_laser_fwhm=1.6, transit_fwhm=0.9575, power_max_w=1.0,
               cycles_at_max=1.0, drift_mhz_total=0.0, noise_frac_bright=0.004,
               adc_levels=4096)
-    g = lambda **e: build_world_trace(1.0, 0.364, 130.0, 0, 1,
+    g = lambda **e: build_world_trace(1.0, S0, 130.0, 0, 1,
                                       np.random.default_rng(3), L, **e, **kw)[1]
     base = g()
     assert np.array_equal(base, g(m2=1.0))
     for m2 in (2.0, 3.0):
-        v = g(m2=m2, w0_m=64e-6)
+        v = g(m2=m2, w0_m=K.W0_MEASURED_M)
         assert not np.array_equal(base, v), m2
         assert np.max(np.abs(v - base)) / np.max(base) > 1e-3, m2
     with pytest.raises(ValueError, match="needs w0_m"):
@@ -288,7 +292,7 @@ def test_the_twin_carries_beam_quality_and_the_rabi_parameterisation():
     with pytest.raises(ValueError, match="double counts"):
         g(omega_mhz=0.45)
     L_off = dict(L, saturation=False)
-    h = lambda **e: build_world_trace(1.0, 0.364, 130.0, 0, 1,
+    h = lambda **e: build_world_trace(1.0, S0, 130.0, 0, 1,
                                       np.random.default_rng(3), L_off, **e, **kw)[1]
     assert not np.array_equal(h(), h(omega_mhz=0.45))
 
@@ -298,7 +302,7 @@ def test_the_fitter_recovers_what_the_world_injects_when_the_terms_match():
     same term list on both sides, so a recovery means something."""
     from rb5s6s.fullmodel import fit_full
     truth = dict(gamma_coll=0.55, sigma_laser_fwhm=1.6, transit_fwhm=0.9575,
-                 gamma_l=0.40, s0=0.364)
+                 gamma_l=0.40, s0=S0)
     y = full_profile(NU, peak="4192", **truth)
     y = 2.5 * y / y.max() + 0.01                      # amplitude and offset
     for free in (("transit_fwhm",), ("transit_fwhm", "gamma_l")):
@@ -315,12 +319,12 @@ def test_the_fitter_flags_a_start_dependent_degeneracy_instead_of_hiding_it():
     what makes it readable is that it says the number depends on the start."""
     from rb5s6s.fullmodel import fit_full
     truth = dict(gamma_coll=0.55, sigma_laser_fwhm=1.6, transit_fwhm=0.9575,
-                 gamma_l=0.40, s0=0.364, omega_mhz=0.45)
+                 gamma_l=0.40, s0=S0, omega_mhz=0.45)
     y = full_profile(NU, peak="4192", **truth)
     y = 2.5 * y / y.max() + 0.01
     r = fit_full(NU, y, free=("transit_fwhm", "gamma_l", "omega_mhz"),
                  peak="4192", fixed={"gamma_coll": 0.55, "sigma_laser_fwhm": 1.6,
-                                     "s0": 0.364}, n_starts=4)
+                                     "s0": S0}, n_starts=4)
     assert r["start_dependent"], r["start_spread"]
 
 
@@ -368,7 +372,7 @@ def test_a_pinned_term_takes_the_generators_default_and_not_its_fitting_start():
 def test_a_free_centre_absorbs_the_first_order_shift_and_the_fit_says_so():
     """The asymmetry is a FORWARD-MODEL quantity, not a free shape.
 
-    The ramp's density is |s| on [-S0, 0], fixed by the beam geometry and the
+    The ramp's density is s on [0, S0], the blue side, fixed by the beam geometry and the
     polarizability. Expanding, a free centre spans the O(S0) term exactly, so
     freeing it removes that channel and leaves O(S0^2): the information becomes
     quartic at the origin. On noiseless data both fits still find the truth,
@@ -378,14 +382,14 @@ def test_a_free_centre_absorbs_the_first_order_shift_and_the_fit_says_so():
     """
     from rb5s6s.fullmodel import fit_full
     truth = dict(gamma_coll=0.55, sigma_laser_fwhm=1.6, transit_fwhm=0.9575,
-                 gamma_l=0.40, s0=0.364)
+                 gamma_l=0.40, s0=S0)
     y = full_profile(NU, peak="4192", **truth)
     y = 2.5 * y / y.max() + 0.01
     fixed = {k: v for k, v in truth.items() if k != "s0"}
     pinned = fit_full(NU, y, free=("s0",), fixed=fixed, peak="4192", n_starts=4)
     freed = fit_full(NU, y, free=("s0", "centre_mhz"), fixed=fixed,
                      peak="4192", n_starts=4)
-    assert pinned["s0"] == pytest.approx(0.364, rel=1e-6)
+    assert pinned["s0"] == pytest.approx(S0, rel=1e-6)
     assert not pinned["start_dependent"]
     # the centre is what changes, not the optimum
     assert freed["start_spread"]["s0"] > 1e4 * pinned["start_spread"]["s0"]
@@ -405,7 +409,7 @@ def test_the_widened_orders_reproduce_the_retired_tuple_exactly():
     from rb5s6s.fullmodel import ultra_joint_statistics, DEFAULT_ORDERS
     grid = np.linspace(-25.0, 25.0, 1501)
     B = dict(gamma_coll=0.55, sigma_laser_fwhm=1.6, transit_fwhm=0.9575,
-             gamma_l=0.40, s0=0.364, peak="4192", T_C=110.0)
+             gamma_l=0.40, s0=S0, peak="4192", T_C=110.0)
     assert set(DEFAULT_ORDERS) == {2, 3, 4, 5, 6, 7, 8, 9}
     old = ultra_joint_statistics(grid, orders=(2, 3, 5, 7), **B)
     wide = ultra_joint_statistics(grid, **B)
@@ -445,7 +449,7 @@ def test_the_likelihood_carries_the_odd_ladder_and_refuses_only_what_has_no_mome
     from rb5s6s.fullmodel import ultra_joint_covariance
     grid = np.linspace(-25.0, 25.0, 1501)
     B = dict(gamma_coll=0.55, sigma_laser_fwhm=1.6, transit_fwhm=0.9575,
-             gamma_l=0.40, s0=0.364, peak="4192", T_C=110.0)
+             gamma_l=0.40, s0=S0, peak="4192", T_C=110.0)
     r = ultra_joint_covariance(grid, n_real=120, tau_int=2.515, **B)
     order_of = lambda k: int(k[1:k.index("@")])            # noqa: E731
 
@@ -475,7 +479,7 @@ def test_the_covariance_refuses_too_few_realisations():
     from rb5s6s.fullmodel import ultra_joint_covariance
     grid = np.linspace(-25.0, 25.0, 801)
     B = dict(gamma_coll=0.55, sigma_laser_fwhm=1.6, transit_fwhm=0.9575,
-             gamma_l=0.40, s0=0.364, peak="4192", T_C=110.0)
+             gamma_l=0.40, s0=S0, peak="4192", T_C=110.0)
     with pytest.raises(ValueError, match="singular by construction"):
         ultra_joint_covariance(grid, n_real=10, **B)
 
@@ -564,7 +568,7 @@ def test_the_covariance_keys_and_columns_cannot_misalign():
     grid = np.linspace(-25.0, 25.0, 801)
     base = dict(gamma_coll=0.55, sigma_laser_fwhm=1.6, transit_fwhm=0.9575,
                 gamma_l=0.40, peak="4192", T_C=110.0)
-    for s0 in (0.364, 0.0):
+    for s0 in (S0, 0.0):
         r = ultra_joint_covariance(grid, n_real=60, s0=s0, **base)
         assert len(r["keys"]) == len(r["mean"]) == len(r["sd"]) == len(r["snr"])
         assert r["cov"].shape[0] == len(r["keys"])
@@ -576,7 +580,7 @@ def test_the_covariance_keys_and_columns_cannot_misalign():
     # returned none, so the runner dropped nothing and the licence fired on a
     # correct tree (escape E71). The emitter now admits against a dimensionless
     # floor, so every odd-denominator ratio drops here and everywhere.
-    n_full = len(ultra_joint_covariance(grid, n_real=60, s0=0.364, **base)["keys"])
+    n_full = len(ultra_joint_covariance(grid, n_real=60, s0=S0, **base)["keys"])
     n_zero = len(ultra_joint_covariance(grid, n_real=60, s0=0.0, **base)["keys"])
     assert n_zero < n_full, (n_zero, n_full)
 

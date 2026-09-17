@@ -2,23 +2,12 @@
 
 *[wiki index](README.md) · method*
 
-**The question.** Which input actually drives an output's variance, at one
-point through a derivative or globally across the whole range every input
-could plausibly take.
-**Takes.** A model or a projection that can be evaluated repeatedly, or a fit
-whose Jacobian is already in hand, and no assumption about which input
-matters most.
-**Gives.** Local sensitivity through error propagation and the Jacobian, why
-one-at-a-time sweeps miss interactions, and the Sobol first-order and
-total-effect indices that catch them.
-**Skip if.** You want to know which single data point drives an
-already-fitted result, not which input drives a projection. That is
-[influence diagnostics](influence-diagnostics.md).
+Which input actually drives an output's variance, at one point through a derivative or globally across the whole range every input could plausibly take. This page builds on a model or a projection that can be evaluated repeatedly, or a fit whose Jacobian is already in hand, and no assumption about which input matters most and sets out local sensitivity through error propagation and the Jacobian, why one-at-a-time sweeps miss interactions, and the Sobol first-order and total-effect indices that catch them. Not covered here: to know which single data point drives an already-fitted result, not which input drives a projection. That is [influence diagnostics](influence-diagnostics.md).
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
 > defines every term and symbol used anywhere in this repository.
 
-## What it is
+## Definition
 
 Sensitivity analysis asks how much an output changes when the inputs that
 feed it change, and that question is answered in two different ways depending on how far the inputs are allowed to move.
@@ -65,7 +54,9 @@ from learning input $i$'s true value and nothing else. The total-effect
 index $S_{T_i}$ is $S_i$ plus every interaction term $x_i$ takes part in
 with any other input, so it is the share of variance that would remain if
 every input other than $x_i$ were fixed, the variance still coming from
-$x_i$'s own movement including everything it interacts with. Summed over all
+$x_i$'s own movement including everything it interacts with.
+
+Summed over all
 inputs, the first-order indices add to at most one, with equality only when
 there is no interaction at all, and the total-effect indices add to at least
 one whenever interactions exist, since a shared piece of variance counts
@@ -85,7 +76,7 @@ does not, which is why global sensitivity suits the cheap calculation and
 local sensitivity, via the Jacobian a fit already computes, suits the
 expensive one.
 
-## What problem it solves
+## The problem it addresses
 
 Local sensitivity and one-at-a-time sweeps both rank inputs by how the
 output moves at a single point or along single axes, and that ranking can
@@ -100,7 +91,7 @@ across the whole stated range of every input and every interaction among
 them, which is what a design or a projection needs to decide where its
 uncertainty budget should be spent.
 
-## Where this repository uses it
+## Application in this repository
 
 A variance-based study has been run here, on the projected precision of the
 next campaign, not a committed 2025 number. It decomposes the projection's
@@ -152,7 +143,7 @@ most of the projected precision's variance across the range those parameters
 could plausibly take, a different ranking than reading the formulas by eye
 or nudging one parameter at a time.
 
-## What can go wrong
+## Failure modes
 
 The indices are a property of the chosen input distributions, not of the
 model alone. Widening or narrowing the assumed range of an input changes its
@@ -284,8 +275,7 @@ instead of sitting here misleading a reader.
 - [`scripts/run_projections.py`](../../scripts/run_projections.py), the
   projection machinery a global sensitivity study would be run against.
 
-## See also
-
+## Related pages
 - [Influence diagnostics](influence-diagnostics.md), the same which-input-
   matters question, asked locally of a fit already run, not globally
   of a projection.

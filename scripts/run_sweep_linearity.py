@@ -83,8 +83,8 @@ CASES = (("archive", 64e-6, 0.3599, 6.0, True),
          ("campaign_40um", 40e-6, 0.9213, 6.0, True),
          ("campaign_16um", 16e-6, 5.7584, 12.0, False))
 # MOVED 2026-09-15 from 0.364, 0.932 and 5.826, all by the same 1.16 per cent,
-# when the replaced DELTA_ALPHA_AU of -1145.0 was replaced by the dynamic
-# sum's -1131.8: S0 goes as
+# when DELTA_ALPHA_AU's static-tail value was replaced by the dynamic
+# sum's: S0 goes as
 # |Delta_alpha| and these are its value at the campaign's top power. The literals
 # stay literals ON PURPOSE -- deriving them would make the check below vacuous,
 # and the check firing at the floor is exactly how this drift was found.
@@ -116,7 +116,10 @@ def _refuse_unless_isolated() -> None:
                          f"set PYTHONPATH to this tree's root before running")
 
 
-_X_GRID = np.linspace(-2.0, 0.0, 4001)
+# The normalised shift grid runs 0 to 2 under O27's blue-sided density (2026-09-17); it
+# ran -2 to 0 until then, which after the flip interpolated the density onto empty support
+# and the mixture's own grid guard refused the producer outright (F92).
+_X_GRID = np.linspace(0.0, 2.0, 4001)
 _MIX: dict = {}
 
 

@@ -3,7 +3,7 @@
 M15: fringe-tail imprint on the standing-wave AC-Stark ramp.
 
 Samples the 3D Maxwell-Boltzmann + fringe-phase ensemble (rb5s6s.fringe_tail)
-at the measured waist (config.W0_MEASURED_M) and small-waist config S (16 um)
+at the waist convention (config.W0_MEASURED_M) and small-waist config S (16 um)
 geometries -- both S0 from lineshape.stark_shift_S0_mhz at 225 mW, so neither
 waist nor shift can go stale here -- over the three retro ratios, and reports
 how the slow-axial-speed fringe tail
@@ -24,12 +24,13 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from rb5s6s import config as C  # noqa: E402
+from rb5s6s.stark import kappa_pred_per_watt  # noqa: E402  (SSOT: one predicted coefficient)
 from rb5s6s.constants import TAU_6S_S  # noqa: E402
 from rb5s6s.fringe_tail import fringe_tail_mc  # noqa: E402
 from rb5s6s.lineshape import stark_shift_S0_mhz  # noqa: E402
 
 # (label, w0 in m, S0 in MHz): the measured waist and the small-waist (config S) target
-_S0_RECORD = stark_shift_S0_mhz(0.225, C.W0_MEASURED_M, rho=C.RHO_RETRO)
+_S0_RECORD = kappa_pred_per_watt(C.W0_MEASURED_M, C.RHO_RETRO) * 0.225
 _S0_SMALL = stark_shift_S0_mhz(0.225, 16e-6, rho=C.RHO_RETRO)
 REGIMES = (
     (f"2025 ({C.W0_MEASURED_M*1e6:.0f}um, {_S0_RECORD:.2f}MHz)",
@@ -37,7 +38,8 @@ REGIMES = (
     (f"S    (16um, {_S0_SMALL:.1f}MHz)", 16e-6, _S0_SMALL),
 )
 RHOS = (1.0, C.RHO_RETRO, 0.75)
-# the intrinsic standardized skew of the triangular ramp, 18^1.5/135 = +0.566:
+# the intrinsic standardized skew's MAGNITUDE for the triangular ramp, 18^1.5/135 = 0.566
+# (its sign is negative on the blue side, O27; only the magnitude is used below):
 # the denominator every prose site normalizes d_skew by (constants.py says so)
 G1_TRIANGLE = 18 ** 1.5 / 135
 # coherence window: transit-limited (None) and 6S-lifetime-capped -> the bracket

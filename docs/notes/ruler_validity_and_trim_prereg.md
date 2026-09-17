@@ -8,17 +8,10 @@ note was chosen after seeing a fit.
 `provenance: results/ruler_campaign.csv` - The body thresholds are true preregistration and every one was confirmed present in `rb5s6s/config.py`, `rb5s6s/ruler.py` or `make_figures.py`. The eight dated amendments report outcomes, and the four quantities section 9 exists to police match this CSV exactly. **Ten claims remain unaccounted**, among them the Bessel inversion table, the CUSUM null calibration, the per-member estimator family and amendment 8's adjudication statistics, which live in an unpublished audit note rather than in `results/`. **10 numeric claims on this page remain unaccounted for.** Recorded by an audit that read every numeric claim on this page against `results/` and `scripts/`. See the private correction record.
 
 
-**The question.** How can the frequency ruler be wrong in a way the data can
-detect, and what rule catches each way?
-**Takes.** [methods/05_the_frequency_ruler.md](../methods/05_the_frequency_ruler.md).
-**Gives.** The validity rules, the residual-tail trimmer, the quarantine
-vocabulary and the amendments that record what each rule returned when run.
-**Skip if.** You are not auditing the frequency axis. The opening table is the
-current state of every rule if you want only that.
+How can the frequency ruler be wrong in a way the data can detect, and what rule catches each way? This page builds on [methods/05_the_frequency_ruler.md](../methods/05_the_frequency_ruler.md) and sets out the validity rules, the residual-tail trimmer, the quarantine vocabulary and the amendments that record what each rule returned when run. Anyone not auditing the frequency axis can leave it unread. The opening table is the current state of every rule if you want only that.
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
-> explains the measurement in six sentences, then defines every term
-> and symbol used anywhere in this repository.
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
+> defines every term and symbol used anywhere in this repository.
 
 Producers: [`rb5s6s/ruler.py`](../../rb5s6s/ruler.py) and
 [`scripts/run_ruler.py`](../../scripts/run_ruler.py). Outputs:
@@ -37,7 +30,7 @@ the current state can read this table and the amendment named in it.
 | rule | where it is fixed | what it now says |
 |---|---|---|
 | tooth-labelling test | section 2, amendment 5, correction gate in amendment 6 section F4 | both first-order teeth must rank in the top three by height. It is diagnostic and does not gate the spacing, on the measurement of section E2. It is not the gate on the drawn numbering either: a panel corrects its numbering when the second-to-first height ratio the fit produced is unphysical or displaced and a whole-slot shift brings that ratio into the measured band, with the recorded numbering shown alongside |
-| the modulation index | amendment A2, criterion sharpened in amendment 5 section E5, measured cleanly in amendment 6 section F1 | a tooth height is a two-photon signal, so it goes as J_k(2 beta) squared, and inverting the second-to-first height ratio through that law gives 2 beta = 1.569 median over the 41 correctly numbered well-resolved combs, standard deviation 0.058, range 2 beta = 1.449 to 2 beta = 1.730. One drive depth to four per cent, and second-order teeth at 0.159 to 0.249 of the first order across it. Any depth below the crossing at 2 beta = 2.630 makes a second-order tooth taller than a first-order tooth impossible, which identifies 54 displaced grids. What varies instead is the carrier, from 0.360 to 1.188 of the first order, which is residual amplitude modulation and identifies nothing |
+| the modulation index | amendment A2, criterion sharpened in amendment 5 section E5, measured cleanly in amendment 6 section F1 | a tooth height is a two-photon signal, so it goes as J_k(2 beta) squared, and inverting the second-to-first height ratio through that law gives 2 beta = 1.569 median over the 41 correctly numbered well-resolved combs, standard deviation 0.058, range 2 beta = 1.449 to 2 beta = 1.730. One drive depth to four per cent, and second-order teeth at 0.159 to 0.249 of the first order across it. Any depth below the crossing at 2 beta = 2.630 makes a second-order tooth taller than a first-order tooth impossible, which identifies 54 displaced grids. What varies instead is the carrier, from 0.360 to 1.188 of the first order, which is residual amplitude modulation and identifies nothing <!-- other-quantity: the carrier's height against the first-order tooth, not the light-shift prediction --> |
 | the re-index ladder | section 3, amendment A4 | a relabelled fit is accepted only if it passes the test and its chi-squared stays inside a noise-aware ceiling. The ceiling was too tight by a factor of thirty in the first version and rejected correct relabellings |
 | the residual-tail trimmer | section 5, amendments B1 and B5.2, read correctly in amendment 7 section G1 | a one-sided cumulative sum on signed smoothed residuals, with a hard core guard and a refusal that routes to quarantine rather than eating signal. It acted on two calibration traces and on no line fit. That census is a fact about the order of the guards, not about the data: the line fit sets its own window inside the retrace crossing, so a rising tail is already outside the fitted samples before the trimmer is asked. Line traces with such a tail exist |
 | the outlier rule | amendment B4, recalibrated in amendment 3 | median and median absolute deviation, thresholds calibrated against forty million null draws rather than a t-quantile. It removes three calibration traces and no lines |
@@ -877,7 +870,7 @@ sigma line as `n` grows.
 | 4 | 5.392 | 6.895 |
 | 5 | 4.604 | 5.598 |
 | 6 | 4.219 | 4.983 |
-| 7 | 3.997 | 4.632 |
+| 7 | 3.997 | 4.632 <!-- other-quantity: a trim-ladder row, not far_wing_level's level. The digits coincide --> |
 | 8 | 3.855 | 4.408 |
 
 **Population A, the radio frequency on rulers.** The group is the ruler block.
@@ -1238,7 +1231,7 @@ what every number in amendment 2's B5.7 census was measured against.
 | 4 | 5.392 | 6.895 |
 | 5 | 4.604 | 5.598 |
 | 6 | 4.219 | 4.983 |
-| 7 | 3.997 | 4.632 |
+| 7 | 3.997 | 4.632 <!-- other-quantity: a trim-ladder row, not far_wing_level's level. The digits coincide --> |
 | 8 | 3.855 | 4.408 |
 
 **The calibrated thresholds, group scaling.** Population A.
@@ -1709,7 +1702,7 @@ can produce, which is a second, independent signature of displacement.
 ## F3. What actually varies is the carrier, and that is amplitude modulation
 
 At 2 beta = 1.569 pure phase modulation predicts a carrier-to-first height
-ratio of 0.696. On the same 41 clean combs the measured ratio runs 0.360 to
+ratio of 0.696. On the same 41 clean combs the measured ratio runs 0.360 to <!-- other-quantity: the carrier's height against the first-order tooth, not the light-shift prediction -->
 1.188, and on ten of them the carrier stands taller than the first-order
 mean. The fig8 winner, `rulers_p/4192nm_T130C_Punknown_RFon_after_r1.csv`, is one of the ten,
 carrier 0.704 V over first-order teeth of 0.677 and 0.691 V. The

@@ -17,7 +17,7 @@ So we quote sigma_laser(2025) <~ 1 MHz (laser axis) as an upper bound, with that
 w0-degeneracy band, and note slow drift is not the cause (~0.01 MHz within a
 scan). A knife-edge measurement of w0 on this bench, fixing the transit term,
 turns this bound into a measurement. (History: w0 was re-centred 32 -> 50 um on
-2026-07-12 when the transit physics was corrected, and later to the measured
+2026-07-12 when the transit physics was corrected, and later to the lineage-profile
 64 um; 32 um overshoots the observed line and is excluded -- see
 constants.W0_MEASURED_M.)
 
@@ -136,7 +136,7 @@ def main() -> int:
         w.writerow(["sigma_laser_bound", "over_w0_band", f"{bound:.1f}", "",
                     f"MHz, laser axis. One-sided upper limit, so the value is "
                     f"the limit itself and carries no plus-or-minus. Taken over "
-                    f"the measured w0 band "
+                    f"the w0 convention's band "
                     f"({C.W0_BAND_M[0]*1e6:.0f}-{C.W0_BAND_M[1]*1e6:.0f}um) and "
                     f"rising with w0, reaching zero near w0=16um, so it is "
                     f"formally unconstrained below and quoted to one significant "

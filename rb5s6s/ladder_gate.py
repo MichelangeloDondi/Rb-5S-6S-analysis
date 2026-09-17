@@ -18,7 +18,9 @@ The rungs, and what each has to show before it writes PASS:
              an arithmetic or a convention error and nothing further is worth running.
   low        at 0.3 times the archive's own noise law, the truth is recovered with coverage
              inside [nominal - 0.10, nominal + 0.10] in BOTH directions; over-coverage is an
-             inflated bar and is as much a failure as under-coverage.
+             inflated bar and is as much a failure as under-coverage; and the coverage is a
+             statement only at the realisation count where two binomial standard errors fit
+             inside the band (88 at 0.68), UNRESOLVED below it (F32.3).
   archive    the same at 1.0 times the law, per condition, with the twin's bias subtracted and
              its spread validated against the five repeats.
 
@@ -149,6 +151,16 @@ LEVEL_TOL = 1.30              # a rung's injected noise against the record's own
 SPECTRUM_TOL = 1.60           # and its SHAPE: a rung at the right level may still be the wrong noise
 CHI2_BAND = (0.8, 1.3)        # the gage's own band
 MIN_REALISATIONS = 8          # the fewest realisations a coverage can be read on (halves of four)
+RESOLVE_SE = 2.0              # a coverage is RESOLVED when this many binomial standard errors fit inside COVER_TOL
+
+
+def coverage_resolved_n(nominal: float = 0.68, tol: float = COVER_TOL, k: float = RESOLVE_SE) -> int:
+    """The fewest realisations at which a coverage inside the band is a statement: k standard
+    errors of a binomial proportion at `nominal` fit inside `tol`, n >= k^2 nominal (1 - nominal) / tol^2,
+    88 at 0.68 and 0.10 (F32.3: at eight the standard error is 0.15 and a PASS tests
+    nothing; about 20 at a nominal 0.95)."""
+    import math
+    return int(math.ceil(k * k * nominal * (1.0 - nominal) / (tol * tol) - 1e-9))   # 19.000000000000004 is nineteen
 
 
 def _need(detail, key, reasons):
@@ -179,6 +191,13 @@ def _judge(rung: str, detail: Dict[str, Any]) -> tuple:
             reasons.append(f"{int(nr)} realisation(s) is under the floor of {MIN_REALISATIONS}: a coverage read on "
                            "fewer cannot be inside or outside any band")
         c = _need(detail, "coverage", reasons)
+        # A COVERAGE INSIDE THE BAND AT TOO FEW REALISATIONS IS UNRESOLVED, NOT PASSED (F32.3): the
+        # binomial standard error at eight is 0.15 against a band of 0.10, so an eight-realisation
+        # 0.75 is compatible with 0.45 and with 1.0. The count decides, before the value is read.
+        if nr is not None and int(nr) >= MIN_REALISATIONS and int(nr) < coverage_resolved_n(nominal):
+            se = (nominal * (1.0 - nominal) / int(nr)) ** 0.5
+            reasons.append(f"coverage UNRESOLVED at {int(nr)} realisations: {RESOLVE_SE:g} binomial standard errors "
+                           f"({RESOLVE_SE * se:.2f}) exceed the {COVER_TOL:g} band; {coverage_resolved_n(nominal)} realisations resolve it")
         if c is not None and not (nominal - COVER_TOL <= float(c) <= nominal + COVER_TOL):
             reasons.append(
                 f"coverage {float(c):.3f} is outside [{nominal - COVER_TOL:.2f}, {nominal + COVER_TOL:.2f}] "
@@ -503,6 +522,31 @@ def real_traces(analysis_id: str, harness: Optional[str] = None, *,
 # see the ladder was climbed. Stage 0 is the smallest world in which the question can be asked.
 SIZE_AXES = ("conditions", "windows", "orders", "free", "realisations", "forms", "truths")
 SIZE_GROWTH = 4.0
+
+
+def busy_workers() -> int:
+    """Pool workers running on this machine now, counted from the process table by the spawn entry
+    point every `ProcessPoolExecutor` child carries (this record kills a pool by matching
+    `spawn_main`, never the script name). Zero when the table cannot be read, because a refusal
+    that fires on a missing instrument is worse than no refusal."""
+    import subprocess
+    try:
+        out = subprocess.run(["ps", "-A", "-o", "command="], capture_output=True,
+                             text=True, timeout=10).stdout
+    except (OSError, subprocess.SubprocessError):
+        return 0
+    return sum(1 for line in out.splitlines() if "spawn_main" in line)
+
+
+def cores() -> int:
+    """This machine's physical cores, performance and efficiency together."""
+    import subprocess
+    try:
+        out = subprocess.run(["sysctl", "-n", "hw.physicalcpu"], capture_output=True,
+                             text=True, timeout=10).stdout
+        return max(int(out.strip()), 1)
+    except (OSError, ValueError, subprocess.SubprocessError):
+        return 10
 SIZE_BUDGET_S = {0: 120.0, 1: 480.0, 2: 1800.0, 3: 3600.0, 4: 8 * 3600.0}
 SIZE_STAGE0_CAP = {"conditions": 1, "windows": 3, "orders": 3, "free": 8, "realisations": 1,
                    "forms": 1, "truths": 1}
@@ -532,7 +576,18 @@ def _size_judge(evidence: Dict[str, Any]) -> tuple:
             why.append(f"recovery off by {float(evidence['max_abs_rel_error']):.3g}, over {NOISELESS_TOL}")
     elif "coverage" in evidence:
         nom = float(evidence.get("nominal", 0.68))
-        if abs(float(evidence["coverage"]) - nom) > COVER_TOL:
+        nr = evidence.get("n_realisations")
+        # AN UNRESOLVED COVERAGE IS NOT A FAILED WORLD (F32.3, F35): growing the realisation count is
+        # how a coverage gets resolved, so a size rung whose coverage is under the resolving count is
+        # judged on its bias against the realised scatter instead, and licenses the next stage on
+        # that axis; a resolved coverage is judged on the band as before
+        if nr is not None and int(nr) < coverage_resolved_n(nom):
+            b, sd = evidence.get("bias_um"), evidence.get("scatter_um")
+            if b is None or sd is None:
+                why.append(f"coverage unresolved at {int(nr)} realisations and no bias_um/scatter_um to judge instead")
+            elif abs(float(b)) > 3.0 * float(sd) / max(int(nr), 1) ** 0.5:
+                why.append(f"bias {float(b):.3g} um is over three standard errors of the realised scatter at {int(nr)} realisations")
+        elif abs(float(evidence["coverage"]) - nom) > COVER_TOL:
             why.append(f"coverage {float(evidence['coverage']):.2f} outside {nom} +- {COVER_TOL}")
     else:
         why.append("no evidence: a size rung carries max_abs_rel_error or coverage")
@@ -557,8 +612,12 @@ def size_rung(analysis_id: str, stage: int, size: Dict[str, Any], cost_s: float,
 
 
 def launch(analysis_id: str, stage: int, size: Dict[str, Any], *, pool_speedup: float = 1.0,
-           cache: Optional[pathlib.Path] = None, reason: str = "") -> Dict[str, Any]:
+           cache: Optional[pathlib.Path] = None, reason: str = "", workers: int = 0) -> Dict[str, Any]:
     """The refusal. Returns the admission with its cost prediction, or raises SizeRefused.
+
+    THE CORES ARE PART OF THE SIZE (0g, F50, 2026-09-17). Pass `workers` and a pool that would
+    put more workers on this machine than it has cores, counting what already runs, is refused
+    unless `reason` names the trade.
 
     Stage 0 is admitted only inside SIZE_STAGE0_CAP on every axis. A later stage needs a recorded
     PASS at a lower stage with every axis at least size/SIZE_GROWTH, and the cost predicted from
@@ -566,6 +625,14 @@ def launch(analysis_id: str, stage: int, size: Dict[str, Any], *, pool_speedup: 
     stage's budget. A skipped stage, a failed predecessor or an eightfold jump on one axis is a
     refusal with the reason in words.
     """
+    if workers:
+        _busy, _cores = busy_workers(), cores()
+        if int(workers) + _busy > _cores and not reason:
+            raise SizeRefused(
+                f"stage {stage} of '{analysis_id}' refused: {int(workers)} workers on top of "
+                f"{_busy} already running exceeds this machine's {_cores} cores, so every pool "
+                f"runs at part speed and the wall clock is longer than serialising. Wait for the "
+                f"cores, ask for fewer, or pass reason= naming the trade.")
     stage = int(stage)
     bad = [ax for ax in size if ax not in SIZE_AXES]
     if bad:
@@ -584,6 +651,16 @@ def launch(analysis_id: str, stage: int, size: Dict[str, Any], *, pool_speedup: 
     # looked only at lower stages, so the four-realisation PASS licensed nothing and the eight
     # were refused as an eightfold jump over one realisation. The same-stage record counts when
     # it is smaller on some axis and larger on none; the growth rule is then read against it.
+    # A PASSED SUPERSET LICENSES ITS SUBSETS OUTRIGHT (F37, 2026-09-17): a two-world diagnostic at
+    # 32 conditions was refused as an eightfold jump over the four-condition record while a PASS at
+    # 32 conditions and six worlds stood at a higher stage. A recorded PASS that is larger or equal
+    # on EVERY axis has already run the asked world inside it, so the size question is answered.
+    for f in sorted(d.glob("S*.json")):
+        row = json.loads(f.read_text())
+        psize = row.get("size", {})
+        if row.get("verdict") == "PASS" and all(float(psize.get(ax, 1)) >= float(size.get(ax, 1)) for ax in SIZE_AXES):
+            return dict({"stage": stage, "cells": _size_cells(size), "predicted_s": None,
+                         "licensed_by": row.get("stage"), "per_cell_s": None, "superset": True}, reason=reason)
     for st in range(stage, -1, -1):
         f = d / f"S{st}.json"
         if f.is_file():
@@ -634,11 +711,19 @@ def _self_test() -> List[str]:
     # field existed -- caught within the hour by `instrument_msa`, which runs every
     # plant, which is the whole reason that harness exists. A guard gaining a
     # requirement must carry its own plant forward in the same edit.
-    OK_C = {"coverage": 0.68, "chi2_red": 1.02, "odd_sign_agreement": True, "n_realisations": 8,
+    OK_C = {"coverage": 0.68, "chi2_red": 1.02, "odd_sign_agreement": True, "n_realisations": 100,
             "injected_over_record": 1.0, "injected_tau_over_record": 1.0,
             "blame": "twin reproduces k2 and k4; k3 open"}
     OK_A = dict(OK_C, bias_subtracted=True, spread_validated=True)
     bad = []
+    # THE RESOLUTION COUNT (F32.3): eight realisations inside the band are UNRESOLVED, a hundred PASS
+    _v8, _why8 = _judge("low", dict(OK_C, n_realisations=8))
+    if _v8 == "PASS" or not any("UNRESOLVED" in w for w in _why8):
+        bad.append("resolution: a coverage on eight realisations was admitted as a statement")
+    if _judge("low", dict(OK_C, n_realisations=coverage_resolved_n()))[0] != "PASS":
+        bad.append("resolution: a coverage at the resolving count was refused")
+    if coverage_resolved_n(0.68, 0.10, 2.0) != 88 or coverage_resolved_n(0.95, 0.10, 2.0) != 19:
+        bad.append("resolution: the resolving count is not the binomial arithmetic (88 at 0.68, 19 at 0.95)")
     # THE REALISATION FLOOR: a coverage read on six is refused whatever it reads
     _v6, _why6 = _judge("low", dict(OK_C, n_realisations=6))
     if _v6 == "PASS" or not any("floor" in w for w in _why6):
@@ -684,6 +769,36 @@ def _self_test() -> List[str]:
         if status("plant", str(harness), cache):
             bad.append("noise-ladder: three passing rungs were still refused")
 
+        # 5d. THE CORES ARE PART OF THE SIZE (0g, F50): a pool over-subscribing the machine is
+        # refused, and a reason naming the trade admits it; the counters read the live table, so
+        # the plant asks for a pool larger than any machine
+        try:
+            launch("plant_cores", 0, {"conditions": 1, "forms": 1}, cache=cache, workers=10_000)
+            bad.append("cores: a pool of ten thousand workers was admitted")
+        except SizeRefused as _e:
+            if "cores" not in str(_e):
+                bad.append(f"cores: the refusal did not name the cores: {_e}")
+        try:
+            launch("plant_cores", 0, {"conditions": 1, "forms": 1}, cache=cache, workers=10_000,
+                   reason="the trade is named: this pool runs alone overnight")
+        except SizeRefused:
+            bad.append("cores: a reason naming the trade did not admit the pool")
+        if busy_workers() < 0 or cores() < 1:
+            bad.append("cores: the counters returned a value no machine can have")
+        # 5c. A PASSED SUPERSET LICENSES A SUBSET, and a world larger on any axis is still refused
+        sup_id = "plant_superset"
+        size_rung(sup_id, 4, {"conditions": 32, "forms": 6}, 100.0, {"max_abs_rel_error": 0.0}, cache=cache)
+        try:
+            adm_sub = launch(sup_id, 3, {"conditions": 32, "forms": 2}, cache=cache)
+            if not adm_sub.get("superset"):
+                bad.append("size-ladder: a subset of a passed world was admitted without the superset licence")
+        except SizeRefused:
+            bad.append("size-ladder: a subset of a passed larger world was refused")
+        try:
+            launch(sup_id, 4, {"conditions": 32, "forms": 40}, cache=cache)   # 40/6 is over the 4x growth, and no superset holds it
+            bad.append("size-ladder: a world growing past the rule on one axis with no superset was admitted")
+        except SizeRefused:
+            pass
         # 6. TWO-SIDED coverage: probe just outside the catch region in EACH direction
         for cov, side in ((0.55, "under"), (0.81, "over")):
             r = json.loads(record("plant", "low", detail=dict(OK_C, coverage=cov),

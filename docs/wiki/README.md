@@ -1,15 +1,8 @@
-# The wiki: one page per concept, method, effect or technique
+# The wiki: one page per concept, method or effect
 
-**The question.** What does a reader need to understand, concept by concept,
-to follow this experiment, and where does each concept live?
-**Takes.** Nothing. Every page stands alone and states its own prerequisites.
-**Gives.** Fifty-five pages in eight clusters, the routes through them by what
-the reader came for, and the connection map between them.
-**Skip if.** You want the experiment's own record instead of the concepts,
-which is [BIG_PICTURE.md](../BIG_PICTURE.md), or one quantity's complete
-position, which is [the quantities layer](../quantities/README.md).
+What does a reader need to understand, concept by concept, to follow this experiment, and where does each concept live? This page is self-contained and sets out fifty-five pages in eight clusters, the routes through them by what the reader came for, and the connection map between them. Every page stands alone and states its own prerequisites. Not covered here: the experiment's own record instead of the concepts, which is [BIG_PICTURE.md](../BIG_PICTURE.md), or one quantity's complete position, which is [the quantities layer](../quantities/README.md).
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
 > defines every term and symbol used anywhere in this repository.
 
 This folder is the repository's general-knowledge layer, abstracting the
@@ -19,13 +12,13 @@ chapters, a thesis and any future reusable package. Each page states what a
 thing is, what problem it solves, where this repository uses it, what can go
 wrong, and where to read more.
 
-## Where to start, by what you came for
+## Entry points by subject
 
 The clusters further down group the pages by subject. This table gives
 reading orders instead, one per purpose, each in the order its pages build
 on one another.
 
-| if you came for | start here, in order |
+| subject | start here, in order |
 |---|---|
 | **the physics of the transition** | [selection rules](selection-rules.md), [multiphoton transitions](multiphoton-transitions.md), [hyperfine structure](hyperfine-structure.md), [Doppler-free geometries](doppler-free-geometries.md), [magnetic sublevels](magnetic-sublevels.md), [the cascade and F-depletion](the-cascade-and-f-depletion.md) |
 | **guided-mode or nanofibre spectroscopy**, where the same atom is driven in an evanescent field | [Doppler-free two-photon](doppler-free-two-photon.md), [standing waves](standing-waves.md), [transit-time broadening](transit-time-broadening.md), [the beam waist](the-beam-waist.md), [saturation](saturation.md) |
@@ -35,7 +28,7 @@ on one another.
 | **background for a thesis chapter**, the platform-neutral concept pages written to be citable on their own | any single page stands alone by construction, states its prerequisites in its header, and closes with its literature, so the shortest route is the page for the concept the chapter needs, and the clusters below group them by subject |
 | **the decision record behind the analysis** | [preregistration](preregistration.md) for the commitments made before looking, [identifiability](identifiability.md) and [the profile likelihood](profile-likelihood.md) for what the data actually determine, [influence diagnostics](influence-diagnostics.md) for which points the answer rests on, then leave the wiki for [RESEARCH_DECISIONS.md](../RESEARCH_DECISIONS.md), where every rejected alternative is argued, and [CLAIMS.md](../CLAIMS.md), which states what is deliberately not claimed |
 | **taking the analysis over, or reproducing it** | [weighted least squares](weighted-least-squares.md), [the joint fit](joint-fit.md), [identifiability](identifiability.md) and [injection recovery](injection-recovery.md) for the methodology the pipeline runs, then [START_HERE.md](../../START_HERE.md) for the code layout, [tests/README.md](../../tests/README.md) for what the guards check and why, and [REPRODUCING.md](../REPRODUCING.md) for what runs from a clone |
-| **reusing the code on your own line** | [the Voigt profile](voigt-profile.md), [weighted least squares](weighted-least-squares.md), [identifiability](identifiability.md), [injection recovery](injection-recovery.md), then [the tutorial](../TUTORIAL.md) to build a twin of your own apparatus, and [docs/ADAPTING.md](../ADAPTING.md) for the seams |
+| **reusing the code on another line** | [the Voigt profile](voigt-profile.md), [weighted least squares](weighted-least-squares.md), [identifiability](identifiability.md), [injection recovery](injection-recovery.md), then [the tutorial](../TUTORIAL.md) to build a twin of your own apparatus, and [docs/ADAPTING.md](../ADAPTING.md) for the seams |
 | **what the data determine, and how far** | [identifiability](identifiability.md), [profile likelihood](profile-likelihood.md), [preregistration](preregistration.md), [influence diagnostics](influence-diagnostics.md), [sensitivity analysis](sensitivity-analysis.md), [reversal tests](reversal-tests.md) |
 | **working out what limits a measurement, and what would help** | [laser frequency noise and the linewidth](laser-frequency-noise-and-the-linewidth.md), [the noise law](the-noise-law.md), [shot noise and technical noise](shot-noise-and-technical-noise.md), [correlated samples and effective sample size](correlated-samples-and-effective-sample-size.md), then [digitisation and dynamic range](digitisation-and-dynamic-range.md) and [photon counting](photon-counting.md) for the two instrument choices |
 | **designing the next measurement** | [the digital twin](the-digital-twin.md), [reversal tests](reversal-tests.md), [designing an acquisition](designing-an-acquisition.md), [grids and discretisation](grids-and-discretisation.md), [sweep rate and detection lag](sweep-rate-and-detection-lag.md), [photon counting](photon-counting.md), [digitisation and dynamic range](digitisation-and-dynamic-range.md), [confounding by acquisition order](confounding-by-acquisition-order.md) |
@@ -50,12 +43,12 @@ thread in full is [chapter 6](../big_picture/06_next-nanofibre.md), the second
 scenario of [chapter 9](../big_picture/09_the-campaign-cases.md), and
 [the sized candidate](../notes/onf_candidate.md).
 
-**Every page opens with the same four lines**: the question it answers, what
+Every page opens with the same four lines: the question it answers, what
 it assumes, what it gives, and when to skip it. Every page ends with a
 "See also".
 
 Nine of these pages record a value that has moved since it was first
-published. Eight carry a short "Values that moved" section naming what
+published. Eight carry a short "Revised values" section naming what
 changed and why, and linking to the private correction record, which is the
 single home of every retired number. The ninth is the digital twin, which
 carries its correction in full, because being wrong twice is part of what
@@ -136,7 +129,7 @@ truth, and freeze the criterion before reading the answer.
 | [Pooling across groups](pooling-across-groups.md) | method | when combining groups adds information, and when it only adds freedom |
 | [Information criteria](information-criteria.md) | method | when is a better fit worth its extra parameters |
 | [Identifiability](identifiability.md) | method | when does the data actually determine the parameter we want |
-| [Reduced chi-squared](reduced-chi-squared.md) | method | what a misfit does and does not tell you, and what it costs a confidence interval |
+| [Reduced chi-squared](reduced-chi-squared.md) | method | what a misfit does and does not establish, and what it costs a confidence interval |
 | [The profile likelihood](profile-likelihood.md) | method | an interval that keeps its shape when nuisance parameters are degenerate |
 | [Injection-recovery testing](injection-recovery.md) | method | no fitter touches real data before it recovers known truth from synthetic data |
 | [Preregistration](preregistration.md) | method | the criterion, the null test and the ceiling test, frozen before any number is read |
@@ -194,7 +187,7 @@ noise is irreducible, and the two instrument choices that decide the rest.
 | [Resolution enhancement and what it costs](resolution-enhancement-and-what-it-costs.md) | technique | where the extra bits come from, why a smoothed screen can export raw eight-bit data, and the one case where smoothing moves a line centre |
 | [Photon counting](photon-counting.md) | technique | when counting beats an analog chain, and the level where they cross |
 
-## How the pages connect
+## Connections between the pages
 
 ```mermaid
 flowchart LR
@@ -235,7 +228,7 @@ flowchart LR
 *Solid arrows are the measurement path, dotted arrows the supporting tools
 each step needs.*
 
-## What governs what
+## The governing relations
 
 For experimental outcomes the order of authority is:
 the committed data and `results/*.csv`, then [RESULTS.md](../RESULTS.md),
@@ -266,7 +259,7 @@ failure modes, distinguishing model failure, data insufficiency,
 implementation failure and experimental limitation), Try it where the package
 can demonstrate the idea in a few lines, and Further reading.
 
-**The snippets run.** Every `python` block on these pages is executed by
+The snippets run. Every `python` block on these pages is executed by
 `tests/test_wiki_snippets_run.py` in a clean subprocess with only the
 repository on the path, and it must print something. A block that stops
 working fails the suite. They use only the public API, so they are also a

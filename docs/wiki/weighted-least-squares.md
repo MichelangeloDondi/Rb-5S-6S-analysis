@@ -2,19 +2,12 @@
 
 *[wiki index](README.md) · method*
 
-**The question.** How should each measurement be weighted in a fit so that
-noisy points do not dominate and the resulting chi-squared means something.
-**Takes.** Familiarity with an ordinary least-squares fit and nothing more.
-**Gives.** The variance law that gives each point its weight, where the law
-comes from, and the correlation-time correction a real detector needs.
-**Skip if.** The question is how several repeats of the same measurement get
-combined into one estimate, not how one measurement is weighted. That is
-[the joint fit](joint-fit.md).
+How should each measurement be weighted in a fit so that noisy points do not dominate and the resulting chi-squared means something. This page builds on familiarity with an ordinary least-squares fit and nothing more and sets out the variance law that gives each point its weight, where the law comes from, and the correlation-time correction a real detector needs. Not covered here: the question is how several repeats of the same measurement get combined into one estimate, not how one measurement is weighted. That is [the joint fit](joint-fit.md).
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
 > defines every term and symbol used anywhere in this repository.
 
-## What it is
+## Definition
 
 An ordinary least-squares fit minimizes the sum of squared residuals between
 a model and a set of measurements, treating every point as equally
@@ -61,7 +54,7 @@ electronics and dark current, independent of how much light arrives, plus a
 term that grows with the signal because photon detection is a counting
 process and counting noise scales with the count. In variance,
 
-**On this dataset the floor is not the dark term that form describes.**
+On this dataset the floor is not the dark term that form describes.
 Fitted per condition it rises with the drive, d ln a / d ln P = [0.85](../../results/detection_budget.csv "ref:detection_budget:floor_power_scaling:p_sweep") over the
 power arm's five rungs, 8.1 sigma from the 0 a dark floor gives and 1.4 from
 the 1 a purely light-proportional one gives, so a dark floor is refused and an
@@ -69,7 +62,9 @@ electronic component is bounded, not excluded. Nor is it a property of the drive
 alone: fitted line by line the slope runs from [0.60](../../results/detection_budget.csv "ref:detection_budget:floor_power_scaling:p_sweep_4121") to
 [1.04](../../results/detection_budget.csv "ref:detection_budget:floor_power_scaling:p_sweep_4192"), a range consistent with one common slope, and at one power the floor
 differs across the four lines by up to a factor [2.97](../../results/detection_budget.csv "ref:detection_budget:floor_peak_spread:p_sweep_175mW"), and the per-line exponents are consistent with one
-common slope. Against the condition's own peak height the pooled slope is
+common slope.
+
+Against the condition's own peak height the pooled slope is
 [0.44](../../results/detection_budget.csv "ref:detection_budget:floor_vs_peak_height:p_sweep"), but by rung the across-line slope runs from
 [0.18](../../results/detection_budget.csv "ref:detection_budget:floor_vs_peak_height:p_sweep_25mW") to [0.795](../../results/detection_budget.csv "ref:detection_budget:floor_vs_peak_height:p_sweep_175mW"), so no single term, constant or
 proportional to the signal, fits every rung, and the pooled slope names no
@@ -107,7 +102,7 @@ analog chain only reaches near or above the crossover. Above it the two
 converge: both are shot-noise limited and the floor is negligible either
 way.
 
-## What problem it solves
+## The problem it addresses
 
 It turns measurements of unequal quality into a single estimate that neither
 lets the noisiest points dominate nor discards the informative ones. It also
@@ -115,7 +110,7 @@ turns a converged fit into a genuine statistical statement: a $\chi^2$
 evaluated against real, measured weights tests whether the model describes
 the data, not just whether the fit produced a set of numbers.
 
-## Where this repository uses it
+## Application in this repository
 
 [`results/noise_model.csv`](../../results/noise_model.csv) holds the fitted
 per-condition coefficients, one row per peak, temperature and, for the power
@@ -145,7 +140,7 @@ its two terms are equal, and states that a new termination, gain or
 instrument needs its own noise law measured before any weighted fit
 downstream of it can be believed.
 
-## What can go wrong
+## Failure modes
 
 The clearest failure is weighting by the residuals of a preliminary fit. It
 is circular by construction, and worst exactly where a model failure would
@@ -203,7 +198,7 @@ print(f"  range   {crossover_mV.min():7.3f} to {crossover_mV.max():7.3f} mV")
 print("below V*, the electronic floor dominates and a counting detector wins")
 ```
 
-## When least squares is not enough
+## The insufficiency of least squares
 
 Weighting by the true noise law fixes the case where every point's stated
 uncertainty is correct and the noise follows a smooth, measured law. It does
@@ -225,7 +220,8 @@ as a diagnostic: fit both ways. Agreement leaves the standard fit more
 credible than it was alone. Disagreement names which points to examine
 before trusting either answer.
 
-## Values that moved
+## Revised values
+
 The collisional-slope parameter $\beta_\text{self}$ carries one entry
 relevant to this page. Its interval was once built from between-block
 scatter with a hard-coded multiplier, and the private correction record
@@ -249,8 +245,7 @@ the private correction record labels the change interval construction, not new d
 - [Identifiability](identifiability.md), for what a correctly weighted
   covariance still cannot tell apart.
 
-## See also
-
+## Related pages
 - [The joint fit](joint-fit.md), for how these weights carry across repeated
   traces of one condition.
 - [Identifiability](identifiability.md), for what a correctly weighted fit

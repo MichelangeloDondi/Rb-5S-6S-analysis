@@ -1,13 +1,9 @@
 *Chapter 2 of 12 of [the plan](../PLAN.md)*
 
-**The question.** If the session loses a day, what gets cut, and what must never be cut?
-**Takes.** The aim of chapter 1, and the block costs of chapter 6.
-**Gives.** A four-stage ranking of every observable, from the systematic floor that cutting cannot reach to the sampling that only refines.
-**Skip if.** You want what each block does rather than what survives a shrinking budget.
+This chapter builds on the aim of chapter 1, and the block costs of chapter 6 and sets out a four-stage ranking of every observable, from the systematic floor that cutting cannot reach to the sampling that only refines. What each block does, against what survives a shrinking budget.
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
-> explains the measurement in six sentences, then defines every term
-> and symbol used anywhere in this repository.
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
+> defines every term and symbol used anywhere in this repository.
 
 ## 3. Priorities if the budget shrinks
 
@@ -28,7 +24,7 @@ why they sit at the top of this one.
 **stage 0, the systematic floor. Protect first. None of these is a
 more-data knob.**
 
-**The fixed lock, the epoch condition, which the cut rule cannot reach.** Every
+The fixed lock, the epoch condition, which the cut rule cannot reach. Every
 item ranked below assumes a laser held to an absolute reference for the length
 of a block, so the lock is the premise of the session rather than a line in it,
 and cutting from the bottom can never reach it: cutting removes days, while
@@ -37,7 +33,9 @@ removing this removes the epoch and with it every item above. `APPARATUS.md`
 SolsTiS control page show the etalon and reference-cavity locks holding the
 laser short-term and the ECD row reading Not Locked in all three, and that
 section's 2026-07-25 correction identifies ECD as the external cavity doubler
-rather than a frequency reference. So the deficiency those photographs
+and not a frequency reference.
+
+So the deficiency those photographs
 establish, and the one this session exists to fix, is the missing outer loop:
 no lock against an absolute reference was ever closed, and the cavity set point
 was moved by hand whenever drift walked the line out of the window, which is
@@ -49,6 +47,7 @@ below is the stability measurement that licenses spending science shots on it.
 **Needs.** The etalon and reference-cavity locks engaged and past the thermal
 transient of §7h, the wavemeter link engaged, and a spare channel carrying the
 lock state. No new hardware (`APPARATUS.md` §1.1). **Shots.** No science shots.
+
 One continuous wavemeter record at a fixed set point before the first science
 block, and another after any pause long enough to reopen the transient.
 **Go/no-go.** Engage the lock chain and hold it thirty minutes. It passes if
@@ -59,7 +58,9 @@ which is above the dataset's own held-lock bound. That bound is of order
 directional reading of 0.016 with a 0.007 to 0.025 interval that the
 window-reference audit retracted. The criterion therefore asks the new epoch
 to be no worse than the bound the record still defends, and it is stated
-against that bound rather than against the retracted interval. On fail the
+against that bound rather than against the retracted interval.
+
+On fail the
 session falls back to the drifting-lock protocol and every block keeps its
 per-block ruler calibration, which is the record's own licensed mode, so the
 day is degraded and not lost. **Empty.** No empty case. The half-hour record
@@ -152,7 +153,9 @@ the protocol selected. Runs first in §9 D1, ahead of the export below.
    widths and none of this reaches it.** What it reaches is every amplitude
    comparison taken in the same session, which is where M7 and M10 live, and at
    a third of the primary rate the argument that the halo merely rescales the
-   amplitude is being asked to hold well past where it was derived. Two
+   amplitude is being asked to hold well past where it was derived.
+
+   Two
    consequences for the session plan, neither of which costs drive time: take
    the **amplitude** work at the cold end and the **width** work at the hot end,
    and **vary the standoff deliberately at one hot condition**, since that is
@@ -164,7 +167,9 @@ the protocol selected. Runs first in §9 D1, ahead of the export below.
    condition above, not a ranked item. What the ranking contains is the
    observable it brings back, the line centre against power, which is the
    first-order light shift, the strongest handle in the programme and the one
-   [`BIG_PICTURE.md`](../BIG_PICTURE.md) §5 ranks second overall. It needs
+   [`BIG_PICTURE.md`](../BIG_PICTURE.md) §5 ranks second overall.
+
+   It needs
    minutes-scale stability rather than all-night stability, which makes it the
    least exposed of the three conversions. Runs as §6 item 1.
 5. **An absorption channel for N(T).** The collisional bound is denominated in
@@ -187,13 +192,15 @@ the protocol selected. Runs first in §9 D1, ahead of the export below.
    and by 0.0000 at ten times the traces
    ([`twin_span_sweep.csv`](../../results/twin_span_sweep.csv)). Every other
    item on this list buys precision on a pair the fit still cannot separate.
-   Pinning one member reduces the other's variance to $(1-\rho^2)$ of its
+
+Pinning one member reduces the other's variance to $(1-\rho^2)$ of its
    joint value, so an external laser width is worth $1/\sqrt{1-\rho^2}$ on
    the collisional width, which is 2.29 at this record's median correlation of
    $-0.90$ and 2.97 at the bright condition where
    `scripts/run_width_pinning.py` measures a scatter ratio of 3.18 plus or
    minus 0.20 across nine seeds directly.
-   Anywhere in that band it is larger than any design change in this chapter,
+
+Anywhere in that band it is larger than any design change in this chapter,
    and it is available from an instrument that never sees the cell. **Needs.** A heterodyne beat against a second laser, a delayed
    self-heterodyne line, or a cavity ring-down width, whichever the lab
    already has. No cell time. **Shots.** None on the atoms. **Empty.** If the
@@ -208,7 +215,7 @@ the protocol selected. Runs first in §9 D1, ahead of the export below.
 
 **stage 2, handle strength (S₀ ∝ (1+ρ)P/w₀²), served by two waists.**
 
-**Why two and not simply a tighter one, which this chapter had never said.**
+The grounds for two rather than one tighter constraint, which this chapter had never said.
 A single waist cannot separate the atomic physics from the geometry: the
 width channel constrains κ ∝ Δα(1+ρ)/w₀², so Δα and the beam enter as one
 product and no amount of signal splits them. Measuring κ at two waists in the
@@ -219,8 +226,8 @@ same session does split them, because
 and **Δα cancels exactly**, so the ratio is a statement about the beam that
 does not depend on the atomic physics.
 
-**What the ratio does not buy, stated because an earlier draft of this
-passage claimed all three.** It is a ratio, so it fixes w₂/w₁ and no
+The ratio's limits, stated because an earlier draft of this
+passage claimed all three. It is a ratio, so it fixes w₂/w₁ and no
 absolute waist. It cancels Δα but **not (1+ρ)**: the correct identity is
 κ(w₁)/κ(w₂) = [(1+ρ₁)/(1+ρ₂)]·(w₂/w₁)², and reaching a second waist means
 changing the focusing optics, which is exactly what moves the retro overlap
@@ -234,8 +241,8 @@ At 16 µm the weak-field statement that underwrites that scaling has itself
 broken down, the saturation parameter having risen from a few per cent at
 64 µm to well above one.
 
-**What the pair does buy, which is still the argument for the second
-configuration.** It falsifies a mis-scaled geometry: if the effective waists
+The pair's gain, which is still the argument for the second
+configuration. It falsifies a mis-scaled geometry: if the effective waists
 do not stand in the ratio the bench implies, the two κ values say so
 directly, and that is the one systematic the 2025 record could not touch
 from inside its own data. **And the handle that finishes the job is the
@@ -276,11 +283,14 @@ demonstration of what any one of them leaves behind: a null on a product.
    energetically open** and no committed row bounds its rate, so no claim that this
    probe cannot ionize rests on the single-photon margin alone.
    Two-photon saturation leaves 1–2 W of headroom at
-   the measured waist, where the on-axis saturation parameter is 0.033 at
+   the waist convention, where the on-axis saturation parameter is 0.033 at
    225 mW and falls as the inverse fourth power of the waist, so a wider
-   focus only adds headroom. The predicted on-axis shift at 225 mW is 0.36 MHz at the accepted
-   measured waist, with an envelope of 0.32 to 0.40 MHz across the waist and retro
-   priors (`results/stark_sweep.csv`), against Γ = 3.49 MHz, and the 2025
+   focus only adds headroom. The predicted on-axis shift at 225 mW is
+   [0.348](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred:shared") MHz at the accepted
+   waist convention, with an envelope of
+   [0.306](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred_lo:shared") to
+   [0.375](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred_hi:shared") MHz across the
+   waist and retro priors, against Γ = 3.49 MHz, and the 2025
    dataset's amplitude ∝ P² to 225 mW confirms the headroom. At 16 µm the
    line is already saturated at 225 mW, so power is not the knob there. The
    one in-beam part with a plausible sub-watt limit is the EOM: check its

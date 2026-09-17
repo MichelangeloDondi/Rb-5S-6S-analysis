@@ -2,23 +2,12 @@
 
 *[wiki index](README.md) · method*
 
-**The question.** How do you find out what an apparatus would measure before
-the apparatus exists?
-**Takes.** A forward model of the measurement and a fitter that consumes it.
-[Monte Carlo methods](monte-carlo-methods.md) supplies the sampling, and
-[injection-recovery testing](injection-recovery.md) is the closure test this
-builds on.
-**Gives.** The achievable uncertainty on each parameter at a proposed design,
-which pairs stay degenerate no matter how the design is changed, and the
-false-alarm behaviour of the design when there is nothing to find.
-**Skip if.** You want to know whether an analysis is correct, which is
-[injection recovery](injection-recovery.md). This page is about whether an
-experiment is worth building.
+This page asks how to find out what an apparatus would measure before the apparatus exists. This page builds on a forward model of the measurement and a fitter that consumes it. [Monte Carlo methods](monte-carlo-methods.md) supplies the sampling, and [injection-recovery testing](injection-recovery.md) is the closure test this builds on. It sets out the achievable uncertainty on each parameter at a proposed design, which pairs stay degenerate no matter how the design is changed, and the false-alarm behaviour of the design when there is nothing to find. Not covered here: to know whether an analysis is correct, which is [injection recovery](injection-recovery.md). This page is about whether an experiment is worth building.
 
-> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
 > defines every term and symbol used anywhere in this repository.
 
-## What it is
+## Definition
 
 A digital twin is the forward model of a measurement, run to generate data
 instead of to fit it, then fitted back with the same machinery real data
@@ -37,7 +26,7 @@ would meet.
 Steps 1 to 4 are an injection-recovery test. Step 5 makes it a twin: the
 object under study stops being the analysis and becomes the experiment.
 
-## What problem it solves
+## The problem it addresses
 
 Designing a measurement means choosing among options that all sound
 reasonable: more power, a wider span, more repeats, a hotter cell, a
@@ -56,7 +45,7 @@ form "this change improves the coefficient by a factor of two" is either
 backed by a simulation that produced the two, or it is an unverified
 projection.
 
-## The arithmetic that decides whether a twin is even needed
+## The arithmetic behind the need for a twin
 
 The single most useful thing a twin reports is a correlation, not an
 uncertainty, because a correlation says whether more data can help at
@@ -85,7 +74,7 @@ never reveal that the pair stays degenerate.
 identifiability page carries what it is worth on this experiment's own
 degenerate pair.
 
-## What it cannot establish
+## Limits of the method
 
 A twin never validates the physics it was given. It generates data from a
 model and fits them with the same model, so agreement shows the code is
@@ -108,14 +97,16 @@ made under it is a lower bound on the uncertainty, not an estimate (see
 [correlated samples and effective sample size](correlated-samples-and-effective-sample-size.md)).
 A twin reports what its fitter can do, not what is possible: a different
 estimator might extract more, so the forecast describes the pipeline that
-will analyse the data, not an information-theoretic bound. Asked whether
+will analyse the data, not an information-theoretic bound.
+
+Asked whether
 an apparatus can serve some new purpose, a magnetometer say, a twin
 computes each channel's response and reports sensitivities, which is
 design work, but it cannot make a dataset sensitive to something its
 channels never coupled to, since a simulation of the data adds no
 information to the data.
 
-## Where this repository uses it
+## Application in this repository
 
 `rb5s6s/forecast.py` is the layer: `synthetic_traces` generates data
 under either a constant noise fraction or a measured noise law, with the
@@ -172,7 +163,7 @@ search that [identifiability](identifiability.md) records.
 choosing, and every code block in it runs as
 `examples/tutorial_forecast.py`.
 
-## The redesign: an instrument, a trace kind, and a platform
+## The redesign: instrument, trace kind and platform
 
 The twin above answers how well an estimator recovers a known truth. It
 now also answers what a named instrument at named settings would
@@ -213,7 +204,7 @@ It does not fit, deliberately. It emits traces in the form
 `fit_condition` accepts, so the estimator under test is the production
 one.
 
-## What can go wrong
+## Failure modes
 
 Running only the injected world is one failure: injecting an effect and
 detecting it shows the design responds to a signal, not that it stays
@@ -254,7 +245,7 @@ python examples/campaign_twin.py
 which runs the same method on a real planned campaign, with an injected
 truth and with a null.
 
-## What this repository got wrong, twice
+## Two errors in this repository's earlier treatment
 
 `rb5s6s/cascade.py` shipped with a table assigning which isotope and
 which ground hyperfine level each of the four lines drives, and three of
@@ -283,7 +274,7 @@ the private correction record.
   result for a multivariate normal, in any regression text under partial
   correlation.
 
-## Is it complete? The one test, and what it found
+## Completeness: the one test and its result
 
 Completeness cannot be settled by an information criterion
 ([why](information-criteria.md)), so it is settled by comparing what a fit
@@ -303,7 +294,7 @@ law's own integrated time suggests: driving the simulation at that value gives
 [2.09](../../results/twin_completeness.csv "ref:twin_completeness:twin_at_measured_tau_tau_int:"),
 which the archive does not show.
 
-**Two terms were missing and one is now carried.** The real wings hold a slow
+Two terms were missing and one is now carried. The real wings hold a slow
 baseline tilt within each trace, measured at
 [2.46](../../results/twin_completeness.csv "ref:twin_completeness:twin_baseline_tilt_sigma_measured:")
 of the wing's own noise across the grid. They also sit on a signal-independent
@@ -313,7 +304,7 @@ does, so the simulated wings had almost no noise at all. Both are terms now,
 each defaulting to zero so nothing earlier moves, and the floor is taken per
 condition because `a` runs a factor of three across the power arm.
 
-**The test is held out, and it is not all passing.** The tilt is MEASURED from
+The test is held out, and it is not all passing. The tilt is MEASURED from
 the real wings and never fitted to the statistic it is judged on, so every
 comparison below is a real one. An earlier version solved the tilt amplitude to
 make the correlation times agree and then reported that they agreed, which was
@@ -334,14 +325,14 @@ close the second row and the amplitude needed is about seven times what the
 wings actually show, which is the evidence that something else contributes.
 **Two terms remain open, named, and not papered over.**
 
-**And the tail shape's cost is measured now, not only named.** Saying a term is
+And the tail shape's cost is measured now, not only named. Saying a term is
 open says nothing about what it is worth. Resampling the archive's own wing
 residuals in moving blocks, so the distribution comes off the bench and not out
 of a model of it, and comparing against a Gaussian draw at the *same* sigma with
 only the shape differing: the twin's fourth-cumulant spread is
-[5.5](../../results/residual_resampling.csv
+[4.9](../../results/residual_resampling.csv
 "ref:residual_resampling:sd_k4_over_gaussian_corrected:real") times too narrow,
-and its variance spread [1.5](../../results/residual_resampling.csv
+and its variance spread [1.4](../../results/residual_resampling.csv
 "ref:residual_resampling:sd_k2_over_gaussian:real") times. The covariance that
 weights the moment likelihood is estimated from those replicas, so **every
 higher-moment bar the twin quotes is that much too tight**. That direction
@@ -350,6 +341,7 @@ two rows. The number is a lower bound: a bootstrap can only resample the tail it
 pool contains, and the arm measures its own under-read at
 [0.85](../../results/residual_resampling.csv
 "ref:residual_resampling:bootstrap_carries_of_truth:archive") of a fresh draw.
+
 `run_residual_resampling.py` produces it, and it climbs the noiseless and
 scaled-noise rungs before it is allowed to read a real trace.
 
@@ -360,8 +352,7 @@ noise law's. Over a short window it recovers 1.33 from a synthetic process whose
 true integrated time is 2.515, so its numbers are read archive-against-simulation
 and never against the committed law.
 
-## See also
-
+## Related pages
 - [Injection-recovery testing](injection-recovery.md), the closure test
   this extends.
 - [Identifiability](identifiability.md), the quantity a twin is most

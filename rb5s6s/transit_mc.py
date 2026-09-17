@@ -17,7 +17,7 @@ PHYSICS. In the weak-excitation (low-saturation) limit the two-photon excited
 amplitude for one atom is the Fourier transform of its two-photon coupling
 along its trajectory, and the two-photon Rabi frequency is proportional to the
 INTENSITY, Omega_2ph(t) ∝ I(r(t)). For a straight-line crossing of a Gaussian
-beam (w ~ constant during the ~260 ns transit at the measured 64 um waist,
+beam (w ~ constant during the ~260 ns transit at the 64 um waist convention,
 since an atom moves only tens of um in z << zR ~ 13 mm; and the crossing is
 collisionless -- even at the densest 130 C the Rb-Rb mean free path ~1-2 cm
 dwarfs the waist by more than two orders, so an atom crosses the beam hundreds

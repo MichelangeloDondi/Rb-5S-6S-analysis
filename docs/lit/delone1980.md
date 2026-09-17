@@ -158,12 +158,12 @@ with the shipped implementation (`rb5s6s.lineshape.stark_ramp`) to a maximum
 absolute difference of $7\times10^{-12}$ on the normalised profile. Because
 $P$ is fixed by beam geometry rather than by unknown laser statistics, the
 resulting lineshape has analytic cumulants, including an intrinsic skewness
-$g_1 = +0.566$ at $n=2$ on the bounded support $[-S_0,0]$. The third cumulant
+$g_1 = -0.566$ at $n=2$ on the bounded support $[0,S_0]$, this record's blue side. The third cumulant
 is used as a drift-immune channel for measuring $S_0$.
 
-At the measured beam waist in this experiment, the Section 5 validity
-condition holds with about a factor of ten to spare: the ramp edge is 0.364
-MHz against a natural width of 3.4925 MHz. For the resonance-enhanced case of
+At the beam waist convention of this experiment, the Section 5 validity
+condition holds with about a factor of ten to spare: the ramp edge is
+[0.348](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred:shared") MHz against a natural width of 3.4925 MHz. For the resonance-enhanced case of
 Section 6c, applied to a third 993 nm photon reaching the real 6S population
 through a 2+1 process: the intermediate state lies 345 cm⁻¹ from the
 6S–8P₃⁄₂ transition, the 8P admixture is $1.7\times10^{-9}$ at the campaign

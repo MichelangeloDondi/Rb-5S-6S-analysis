@@ -48,6 +48,7 @@ sys.path.insert(0, str(REPO))
 
 from rb5s6s import config as _CFG                                  # noqa: E402
 from rb5s6s.fullmodel import ultra_joint_covariance                # noqa: E402
+from rb5s6s import noise  # noqa: E402
 from rb5s6s.noise import load_noise_model                          # noqa: E402
 from rb5s6s.pmfmt import in_plain_band, pm_cells                   # noqa: E402
 
@@ -99,6 +100,9 @@ def _power_arm_traces() -> int:
     with src.open(encoding="utf-8") as fh:
         return sum(1 for r in _csv.DictReader(fh) if r["role"] == ROLE)
 # the archive's own working point, the values the record fits to
+# THE SHIFT OF THIS WORKING POINT IS A DESIGN VALUE OF ITS DATE: 0.364 MHz was the archive's
+# prediction when the point was set (the static-tail polarizability, retired 2026-09-17), and the
+# record's own is stark_sweep.csv's S0_225mW_pred. The re-run at it is queued as twin-working-point-ssot.
 POINT = dict(gamma_coll=0.55, sigma_laser_fwhm=1.6, transit_fwhm=0.9575,
              gamma_l=0.40, s0=0.364, peak="4192", T_C=110.0)
 
@@ -107,8 +111,14 @@ def main() -> int:
     POWER_ARM_TRACES = _power_arm_traces()
     law = load_noise_model(str(_CFG.RESULTS_DIR / "noise_model.csv"),
                            role=ROLE, pool="median")
+    # F36 (2026-09-17): the twin's draw carries the RESIDUALS' own correlation time, not the raw
+    # wing segments' (the line's curvature seen through a window that is not signal-free); the
+    # pooled median law carries the median of the residual times when the resampler's rows exist
     tau_int, rho1 = law["tau_int"], law["rho1"]
-    a_ar = (tau_int - 1.0) / (tau_int + 1.0)
+    _tab = noise.residual_tau_table()
+    tau_eff = float(np.median(list(_tab.values()))) if _tab else float(law.get("tau_eff", tau_int))
+    tau_eff = max(tau_eff, 1.0)
+    a_ar = (tau_eff - 1.0) / (tau_eff + 1.0)
 
     # THE SPREAD IS MEASURED, NOT TYPED. The note beside these rows says the
     # uncertainty is the spread over realisation counts of 600, 1200 and 4000,
@@ -118,7 +128,7 @@ def main() -> int:
     # counts the note names are the counts the code runs.
     ranks, ranks_all = [], []
     for _n in N_REAL_SWEEP:
-        _r = ultra_joint_covariance(NU, n_real=_n, tau_int=tau_int,
+        _r = ultra_joint_covariance(NU, n_real=_n, tau_int=tau_eff,
                                     snr_report_floor=SNR_FLOOR, seed=4_000_000, **POINT)
         ranks.append(_r["effective_rank"]); ranks_all.append(_r["effective_rank_all"])
         if _n == N_REAL:
@@ -194,8 +204,9 @@ def main() -> int:
                 "finite number that keeps moving with the replica count",
                 "DIAGNOSTIC"])
     # THE RANGES ARE CELLS SO A DOCSTRING CAN CITE THEM. Three surfaces
-    # quoted "30 to 2332 against 0.01 to 0.22" from an earlier run; the
-    # committed maximum is 1832 and no cell held 2332. A range stated in prose
+    # quoted "30 to 2332 against 0.01 to 0.22" from an earlier run and no cell
+    # held 2332; the committed maximum is the cell itself, which has moved twice
+    # since (the whitening of F36 among them). A range stated in prose
     # and held nowhere is unciteable by construction, so `check_references`
     # could not see it. It can now.
     _adm = [s for k, s in zip(r["keys"], r["snr"]) if k in snr_adm]

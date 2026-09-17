@@ -59,8 +59,22 @@ def test_every_index_entry_has_a_page():
         "exist:\n  " + "\n  ".join(dangling))
 
 
+#: What a dossier's opening must DO, and the spellings each is allowed. The labelled
+#: four-field block was the mechanism until 2026-09-17, when the front matter was
+#: rewritten as flowing prose for a reader who arrives cold; the INTENT the docstring
+#: below states did not change, so the guard now grades the intent and accepts either
+#: spelling. A dossier that opens without its question, or without saying what it
+#: leaves out, still fails -- which is what this guard is for.
+OPENING = (
+    ("the question it answers", ("**The question.**", "?")),
+    ("what it builds on", ("**Takes.**", "builds on")),
+    ("what it gives", ("**Gives.**", "It sets out", "sets out")),
+    ("what it leaves to another page", ("**Skip if.**", "Not covered here:")),
+)
+
+
 def test_every_dossier_states_its_question_and_routes_to_the_glossary():
-    """The four-field header and a glossary link, on every dossier.
+    """The opening's four jobs and a glossary link, on every dossier.
 
     `test_docs_structure` requires these only above its word threshold. A
     dossier is defined by opening with the question it answers, whatever its
@@ -68,12 +82,13 @@ def test_every_dossier_states_its_question_and_routes_to_the_glossary():
     """
     bad = []
     for p in sorted(_dossiers()):
-        head = "\n".join(p.read_text(encoding="utf-8").splitlines()[:60])
-        for field in ("**The question.**", "**Takes.**", "**Gives.**",
-                      "**Skip if.**"):
-            if field not in head:
-                bad.append(f"{p.name}: header is missing {field}")
-        if "GLOSSARY.md" not in p.read_text(encoding="utf-8"):
+        text = p.read_text(encoding="utf-8")
+        head = "\n".join(text.splitlines()[:60])
+        for job, spellings in OPENING:
+            if not any(sp in head for sp in spellings):
+                bad.append(f"{p.name}: the opening does not state {job} "
+                           f"(in any of {', '.join(repr(sp) for sp in spellings)})")
+        if "GLOSSARY.md" not in text:
             bad.append(f"{p.name}: no link to the glossary")
     assert not bad, "\n  ".join([""] + bad)
 

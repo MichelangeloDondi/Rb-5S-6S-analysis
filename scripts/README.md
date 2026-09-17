@@ -109,13 +109,17 @@ committed table holds. The `M` codes below are the pipeline stage labels of
 | `run_cross_arm_ratios.py` | ratios and differences of the windowed second cumulant across the design's axes (power, temperature, window, isotope, hyperfine level), each on two grids and against the model's prediction at 42, 64 and 85 um. Writes `cross_arm_ratios.csv` |
 | `run_density_laws.py` | three vapour-pressure laws at the archive's temperatures, their ratios as thermometry offsets, their literature supports, and the temperature ladder fitted with each. Writes `density_laws.csv` |
 | `run_ultra_joint.py` | the waist scanned over the archive's 159 canonical traces under three laser-kernel forms with everything else refit at every point, the collection window on at every M2 through the profile seam, depletion and the density law as arms, and the power-arm refusal per row, per session and pooled, with beta profiled at every waist. `--coarse` is the 10 um grid, `--all-sessions` adds the two sessions outside the manifest through `run_stark_joint.py`'s loaders, `--with-excluded` the manifest's excluded attempt, `--sigma-l shared` one laser width across sessions, `--power-scale` a power factor per session under a prior, `--arms-only` the second stage on a saved base grid, `--time-cells` times one cell at each end and the middle, `--plant` runs one worker against two. Writes `ultra_joint_fit.csv` and a rung gate file |
+| `run_ultra_joint_treatments.py` | the treatment matrix of the main aim on the twin: one row per laser-width world (pinned at a value, at the injected truth, or free) with the shift and the waist tied through the exponent table and the theory constants pinned, the recovered waist, its bar, the verdict and the three waist meters where the free-waist angle ran; on the size ladder and the noise ladder under its own analysis id; about two hours on eight workers for the L stage |
 | `run_ultra_joint_closure.py` | the waist estimator closed on its own model at a known 52 um over eight noise steps from zero to the archive's own law, reading each realisation off the same three-cell parabola the producer uses, and recording the noiseless, low and archive rungs through `rb5s6s.ladder_gate` so the real arm is refused unless they pass |
+| `run_noiseless_floor.py` | one noiseless closure cell walked at two optimiser budgets on a refined grid around the injected waist: the profile, the recovered value and the chi-squared at the injected truth, which separates a convergence floor from a degeneracy in the forward map |
 | `run_residual_resampling.py` | the archive's own wing residuals as the twin's noise source, resampled in moving blocks instead of modelled, against a Gaussian draw at the same sigma: the one arm whose noise is not the model's, so it can see a defect the generator and the estimator share. Climbs its rungs on a pool whose kurtosis is fixed by construction first |
+| `run_window_surface.py` | the twin's windowed cumulants of orders 2 to 7 at eight half-windows from half a megahertz to 21 MHz, per condition, at one declared noise level per run: the noiseless rung is the package's estimator against the direct truncated moments of the same de-baselined line on a tenfold grid, judged per statistic (the unresolved ones refused from the vector with their reason), and each noisy level records the replica mean, spread and the bias the likelihood subtracts. Registered on the ladder's moments profile and on the size gate; about a minute at the full noiseless size on eight workers |
+| `run_kernel_mc.py` | the kernel Monte Carlo behind the model gate: at each node (waist, beam quality, retro ratio, temperature, power) the wall-sourced chords through the beam with the cascade's saturation and the hyperfine depletion along the chord, read against the forms the fit uses (the transit's width and cusp shape, the axial ramp's second and third cumulants with the grid movement, the amplitude's power law, the four lines' shares, the depletion-widened kernel's convergence); writes the gate's artefacts under the current cache and, with `--collect`, `kernel_mc.csv` from them; a few seconds a node, the grid on eight workers in minutes |
 | `run_detection_budget.py` | the detection budget: the collection geometry and the waist power the integrated two-photon signal realises in it, the chain's factors, the archive's photoelectron rate from the noise law, the predicted rate with its inputs drawn, and the gap. Writes `detection_budget.csv` |
 | `run_resolving_power.py` (M17) | each observable's dynamic range over the temperature sweep divided by its scatter at fixed conditions, into `resolving_power.csv` |
 | `run_projections.py` | what a further campaign would buy, computed from the record's own precision, into `projections.csv` |
 
-## Run on their own
+## Scripts run on their own
 
 These are not in `run_all.sh`, either because they take too long, or because
 they read a session outside the frozen record, or because they print a
@@ -181,7 +185,7 @@ diagnostic rather than write a table.
 | `publish_recovered.py` | copies the backup-recovered acquisitions into `data_recovered/` under hash-suffixed names, since nine of the original names collide with different bytes |
 | `run_timestamp_audit.py` | scores the preregistered timestamp criteria against a excluded copy of the recovered backup and the committed manifest |
 
-## What runs from a clone
+## Scripts running from a clone
 
 The 297 raw traces are held privately and are not in this repository, so any
 stage that opens one cannot run here. What that leaves is set out in
@@ -207,7 +211,9 @@ places `docs/methods.md` advertises the suite size, reading them from a
 pytest collection rather than from memory. It exists because that number went
 stale five times in three days: several tests are parametrized over
 documentation files, so adding a page changes the count, and one wiki wave
-moved it by more than a hundred. Run it after adding or removing tests or
+moved it by more than a hundred.
+
+Run it after adding or removing tests or
 documents, or `--check` to ask whether the file is current. `run_geometry_design.py` computes the two
 geometry designs of `docs/notes/running_wave_and_waist_design.md`, the
 frequency-shifted retro arm and the waist, and its weak-field branch
