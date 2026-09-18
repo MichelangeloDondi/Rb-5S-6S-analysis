@@ -216,4 +216,4 @@ a reader.
 
 ---
 
-[← Standing waves](standing-waves.md) · *Experimental spectroscopy, 3 of 11* · [Transit-time broadening →](transit-time-broadening.md)
+[← Standing waves](standing-waves.md) · *Experimental spectroscopy, 3 of 12* · [Transit-time broadening →](transit-time-broadening.md)

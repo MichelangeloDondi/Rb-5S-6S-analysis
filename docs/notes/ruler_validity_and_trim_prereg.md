@@ -560,7 +560,7 @@ injector improves chi2_red by 84 to 96 standard deviations, so guarding it
 costs nothing there while blocking it on a clean comb where it would delete
 signal.
 
-The regression case is synthetic and its answer is known. Of 336 clean
+The regression case is synthetic and its answer is known. <!-- other-quantity: a count of regression cases, not a drive power in mW --> Of 336 clean
 seven-tooth combs placed around one spacing off the window centre, 23 had their
 correct relabelling rejected by the old tolerance, fell through to excision, and
 had a real first-order tooth of 22 to 23 fit residual RMS deleted at a

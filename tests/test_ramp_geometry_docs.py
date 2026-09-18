@@ -72,7 +72,7 @@ DOC_TOKENS = [
     # first was +0.558, from the archival row of
     # methods/03's geometry table and its reading paragraph were still computed
     # at the replaced 50 um waist, which printed a LARGER Z_c/z_R than the
-    # 60 um row directly above it. Recomputed at the measured 64 um prior.
+    # 60 um row directly above it. Recomputed at the 64 um convention.
     ("docs/methods/03_the_ac_stark_ramp.md",
      ["$-0.565$", "$+0.354$", "$-0.564$", "1.12"]),
     ("scripts/run_ramp_geometry.py", ["1.12", "Z_c > ~0.9 mm"]),
@@ -446,7 +446,7 @@ def test_cathode_geometry_is_flagged_as_assumed():
 
 def test_small_waist_S0_factor_tracks_the_waist_prior():
     """The "small waist makes S0 N-times larger" factor is not a constant: it is
-    S0(16 um)/S0(W0_MEASURED_M), so it moves whenever the measured waist moves. It once
+    S0(16 um)/S0(W0_MEASURED_M), so it moves whenever the waist convention moves. It once
     said 4x, which is exactly (32/16)^2 -- the ratio at the 32 um nominal that
     constants.py itself marks excluded. Recompute it and require the docs to
     quote the current value, so the factor cannot outlive the prior again."""

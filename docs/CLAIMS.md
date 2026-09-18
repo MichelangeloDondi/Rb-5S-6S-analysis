@@ -382,7 +382,7 @@ Calculated (anchored, not fitted to this data):
 - No independent calculation of the 5D differential polarizability. The
   778 nm value section 3 quotes is anchored on a published magic
   wavelength and shaped by one near-resonant term, scalar only, so it
-  sizes a drive-power ceiling and does not stand as a polarizability.
+  sizes the drive-power arithmetic and does not stand as a polarizability.
 - No measured trap-design coefficient. At the magic crossings the
   fourth-order and vector shifts are calculated to within a factor of
   two, and the scattering rate to the same margin except at the two
@@ -512,53 +512,50 @@ and it would need the perturbing beam mode matched to the drive before
 the closed-form shift distribution applies at all.
 
 Those three projections assume the drive can run at the dataset's own
-225 mW, and on two of the three rungs it cannot. The differential
-polarizability is about 1130 atomic units at 993 nm ([-1131.8](../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive") ± [5.9](../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive:err") with the dynamic tail), 4372 at 760 nm and
-about 28600 at 778 nm, so the power at which the shift stops being a
-correction to the width and becomes a feature of the lineshape differs
-by twenty-five across the ladder. Reading that ceiling as the power
-where the on-axis shift reaches one tenth of the measured width, at
-the retro ratio of record and at each rung's own drive waist, gives
-the 993 nm ceiling of 336 mW, the 760 nm ceiling of 50 mW and the
-778 nm ceiling of 8 mW.
+225 mW on every rung. The differential polarizability is about 1130
+atomic units at 993 nm ([-1131.8](../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive"))
+about 4372 at 760 nm and about 28600 at 778 nm, twenty-five times as much,
+so the same power
+imprints a much larger light shift on the upper rungs than on this one.
 
-The first sits above the campaign maximum. The
-other two do not, and the two-photon rate falls as the square of the
-intensity, so a width precision measured at the dataset's power
-degrades in proportion once the drive is capped. On the 7S rung it
-goes from about 8 to about 31 kHz per mTorr, the adjudication keeps a
-ceiling margin of 1.2, and 20 repeats of the five-block design would
-buy the uncapped precision back. On the 778 nm rung it goes from about
-8 to about 179, the factor-two test drops to a ceiling margin of 0.07,
-and the calibration rung loses the one test it had power for.
-Recovering that needs about 181 repeats and the uncapped precision
-about 787.
+That is a term of the model here and not a limit on the bench. This
+record derives the shift distribution the focused beam imprints, carries
+it as a component of the fitted line, and reads its higher moments as
+the channel the main aim is built on, so a shift comparable with the
+width is signal, not a ceiling to stay under. What does bound the
+drive power is saturation, the companion line, depletion of the excited
+population along the chord, and the ruler's own span, each of which the
+model carries and each of which is accounted for in its own place.
 
-The waist there is each rung's own, corrected 2026-09-09:
-`w0 = λf/(πw_in)`, so the 64 µm measured at 993.4 nm is 48.59 at
-760.1 through the same lens, and holding all three at 64 µm, which
-gave the retired ceilings of 87 and 13 mW, described a focus no single
-lens reaches. The input beam brackets the capped pair at 50 to 65 and
-8 to 10 mW. All of this is envelope class, conditional on the dataset's
-block scatter being signal limited at the ladder maximum, which is the
-conservative reading of a scatter averaged over a whole ladder. The
-ceiling goes as the square of the waist, so a looser focus raises it at
-the cost of transit width and of the density lever, an exchange the
-778 nm rung would have to make and this projection does not quantify.
+The waist is per rung and not per bench. A drive of wavelength λ focused by
+the same f = 150 mm lens with the same input beam reaches `w0 = λf/(πw_in)`,
+so the 64 µm convention at 993.4 nm is 48.59 µm at 760.1 nm through that same
+lens, and the on-axis shift, going as the inverse square of the waist, is
+larger than a common-waist reading gives. That geometric point is why a
+per-rung quantity is computed at that rung's own waist, and it is separate
+from what follows.
 
-For an experimentalist choosing a source rather than a line, those
-ceilings decide the hardware. At 993 nm the ceiling sits above what
-the bench delivers, so the titanium sapphire stays necessary, and the
+Until 2026-09-18 this section published a per-rung "light-shift ceiling"
+at one tenth of the line width, with the 7S and 778 precisions derated
+to it. It is retracted: it treated the record's own measurement channel
+as a nuisance to be capped, and it inverted with the waist, falling below
+the archive's own 225 mW in the 40 to 45 µm region the campaign is now
+aimed at.
+
+For an experimentalist choosing a source rather than a line, what
+decides the hardware is the power each class delivers. At 993 nm the
+titanium sapphire on the bench is the source of record, and the
 diode-seeded ytterbium fibre alternative would be working at the
 short-wavelength edge of its gain band with a reach this repository
-cannot confirm. At 760 nm the ceiling is a third of what the bench
-already delivers, so an extended-cavity diode with a tapered amplifier
-is enough and the titanium sapphire is not required, although no held
-source here states that amplifier's output at this wavelength. At
-778 nm the compact-clock community's own architecture, a 1556 nm fibre
-amplifier with second-harmonic generation, puts 30 mW on a cell in a
-held demonstration, which is 3.7 times the 778 nm ceiling, so the
-titanium sapphire is not required there either.
+cannot confirm. At 760 nm an extended-cavity diode with a tapered
+amplifier delivers ample power and the titanium sapphire is not
+required, although no held source here states that amplifier's output
+at this wavelength. At 778 nm the compact-clock community's own
+architecture, a 1556 nm fibre amplifier with second-harmonic
+generation, puts 30 mW on a cell in a held demonstration, so the
+titanium sapphire is not required there either. The delivered powers
+are the `proj_source_delivered_power` rows of
+[`projections.csv`](../results/projections.csv).
 
 Those source figures
 are calibration class, conditional on the delivered powers being read

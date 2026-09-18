@@ -47,12 +47,14 @@ import sys
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from rb5s6s import config as C                                    # noqa: E402
-from rb5s6s.constants import transit_fwhm_from_w0                 # noqa: E402
+from rb5s6s.constants import W0_MEASURED_M, transit_fwhm_from_w0  # noqa: E402
 from rb5s6s.forecast import forecast_precision                    # noqa: E402
 
 OUT = C.RESULTS_DIR / "twin_span_sweep.csv"
 REF = ("p_sweep", "4154", "130", "225")     # brightest condition, reference peak
-W0_M = 64e-6                                # the committed measured waist
+W0_M = W0_MEASURED_M                        # the committed waist convention, read from the
+                                            # constant so it follows a change rather than
+                                            # standing as a copy of it (ssot-guard, 2026-09-18)
 SEED = 0
 N_TRIALS = 6
 

@@ -285,3 +285,39 @@ def test_the_density_ladder_is_what_identifies_gamma_l():
     assert out["beta_self"] == pytest.approx(beta_true, abs=0.03), (
         f"beta_self moved to {out['beta_self']:.3f} for {beta_true:.3f} while "
         "Gamma_L was free: the two are trading against each other")
+
+# --------------------------------------------------------------------------
+# The permeated gases are the SAME PARAMETER as gamma_l (2026-09-18)
+# --------------------------------------------------------------------------
+def test_the_permeated_family_is_exactly_degenerate_with_gamma_l():
+    """A permeated-gas width and the laser's Lorentzian arm cannot be told apart at one temperature.
+
+    WHY THIS EXISTS. The owner asked for all the gases in the model, not only helium. They enter as a
+    CONSTANT Lorentzian, and `_kernel_widths` already builds
+    ``homog = gamma_nat + gamma_coll + max(gamma_l, 0) + ...``, so by the convolution identity a gas
+    width put anywhere in that sum is indistinguishable from the same number put in `gamma_l`. This
+    test asserts that directly, because the consequence decides the DESIGN: the family is a PRIOR on
+    `gamma_l` and never a second fitted term, and adding it to `homog` beside a free `gamma_l` would
+    double-count it.
+
+    It also fixes what may NOT be concluded from a fit: `gamma_l` coming back non-zero is not a
+    measurement of the gases, and the gases being computed is not a measurement of the laser's
+    Lorentzian arm. Only a dependence one has and the other lacks separates them, and at fixed
+    pressure that is T^-1/2 across a 70 to 130 C arm -- a few per cent, against beta_self's steep
+    rise. This data cannot do it.
+    """
+    from rb5s6s.lineshape import model_profile, permeated_gas_width_mhz
+
+    nu = np.linspace(-20.0, 20.0, 2001)
+    # a SCALE, explicitly: one MHz per Torr for each species (F138: the record holds no 5S-6S
+    # coefficient, and the degeneracy below does not depend on the number)
+    gas, _shift, _detail = permeated_gas_width_mhz({"he": (1.0, 0.0), "ne": (1.0, 0.0)}, equilibrated=("he", "ne"))
+    assert gas > 0.0, "the family must have a width or the test proves nothing"
+
+    kw = dict(sigma_laser_fwhm=1.5, transit_fwhm=2.0, s0=0.0)
+    in_gamma_l = model_profile(nu, gamma_coll=0.30, gamma_l=gas, **kw)
+    in_gamma_coll = model_profile(nu, gamma_coll=0.30 + gas, gamma_l=0.0, **kw)
+
+    assert np.allclose(in_gamma_l, in_gamma_coll, rtol=0, atol=1e-12), (
+        "a constant Lorentzian must be indistinguishable whichever slot it enters; if this fails the "
+        "degeneracy argument is wrong and the family may be a term of its own")

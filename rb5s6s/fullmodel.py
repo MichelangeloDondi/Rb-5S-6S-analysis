@@ -624,8 +624,20 @@ def ultra_joint_covariance(nu: np.ndarray, *, n_real: int = 400,
                            noise_frac: float = 0.004, tau_int: float = 1.0,
                            snr_report_floor: float = 3.0, seed: int = 0,
                            windows=DEFAULT_WINDOWS, orders=DEFAULT_ORDERS,
-                           with_ratios: bool = True, **profile_kw) -> dict:
+                           with_ratios: bool = True, residual_source=None,
+                           **profile_kw) -> dict:
     """The statistic vector's empirical covariance, and which statistics survive.
+
+    THE NOISE DRAW IS A SEAM (PLAN v2 Phase 3, 2026-09-18). By default each realisation draws
+    white or AR(1) Gaussian noise at `noise_frac` of the shot-like law, the form every committed
+    cell was made with (byte-identical with `residual_source=None`). With `residual_source`, a
+    callable `(rng, n) -> array` of n UNIT-VARIANCE samples, the draw is the caller's: the
+    moving-block resamples of the archive's own pooled post-fit residuals
+    (`scripts/run_residual_resampling.py`, block 16, pool at least 20 000), so the covariance the
+    moment block is judged against carries the archive's residual SHAPE, not a Gaussian's. The
+    amplitude law `noise_frac * sqrt(y0 * peak)` is applied to the samples either way; a source
+    that is not unit-variance mis-scales every statistic's sigma by its sd, which is what the
+    pooled sd ratio of Phase 3 reads (0.85 to 1.30 admits).
 
     `ultra_joint_nll` says a diagonal sigma understates the uncertainty and
     names this function as the thing that did not exist. It does now, and what
@@ -682,14 +694,19 @@ def ultra_joint_covariance(nu: np.ndarray, *, n_real: int = 400,
     rows = []
     for r in range(n_real):
         rng = np.random.default_rng(seed + r)
-        w = rng.standard_normal(y0.size)
-        if a > 0.0:
-            x = np.empty_like(w)
-            x[0] = w[0]
-            for i in range(1, w.size):
-                x[i] = a * x[i - 1] + root * w[i]
+        if residual_source is not None:
+            x = np.asarray(residual_source(rng, y0.size), float)
+            if x.shape != y0.shape:
+                raise ValueError(f"residual_source returned {x.shape}, not {y0.shape}")
         else:
-            x = w
+            w = rng.standard_normal(y0.size)
+            if a > 0.0:
+                x = np.empty_like(w)
+                x[0] = w[0]
+                for i in range(1, w.size):
+                    x[i] = a * x[i - 1] + root * w[i]
+            else:
+                x = w
         yn = y0 + noise_frac * np.sqrt(np.clip(y0, 0.0, None) * peak) * x
         from .cumulants import windowed_cumulants
         # KEYED, NEVER POSITIONAL. `keys` comes from a function that emits a
@@ -797,8 +814,8 @@ def ultra_joint_covariance(nu: np.ndarray, *, n_real: int = 400,
     }
 
 
-def ultra_joint_nll(observed: dict, sigma: dict, nu: np.ndarray,
-                    **profile_kw) -> float:
+def ultra_joint_nll(observed: dict, sigma: dict, nu: np.ndarray, *,
+                    cov: Optional[dict] = None, **profile_kw) -> float:
     """-2 ln L of the statistic vector under a Gaussian error model.
 
     `observed` and `sigma` are keyed as `ultra_joint_statistics` returns. Keys
@@ -807,13 +824,30 @@ def ultra_joint_nll(observed: dict, sigma: dict, nu: np.ndarray,
 
     THIS IS A LIKELIHOOD OVER SUMMARY STATISTICS AND NOT OVER THE TRACE. Its
     statistics are correlated, strongly so between orders at one window, so a
-    DIAGONAL sigma understates the uncertainty and this function still takes
-    one. `ultra_joint_covariance` exists now and returns the real thing, with
-    the admitted set and the condition number a caller needs to read before
-    quoting an interval from it. Until a caller threads that covariance through
-    here, what this returns ranks models and does not calibrate an interval.
+    DIAGONAL sigma understates the uncertainty. With `cov`, a dict carrying
+    `keys` and `matrix` as `ultra_joint_covariance` returns them (PLAN v2 Phase 3,
+    2026-09-18), the value is r^T C^-1 r + ln det C over the keys present in
+    `observed`, the model and `cov` -- the log-determinant carried, because a
+    covariance that depends on the parameters is not a likelihood without it
+    (the rule file). The sub-matrix is inverted through its eigen-decomposition
+    with eigenvalues under 1e-12 of the largest refused, never pseudo-inverted
+    into a confident interval. Without `cov` it is the diagonal form, which ranks
+    models and does not calibrate an interval.
     """
     model = ultra_joint_statistics(nu, **profile_kw)
+    if cov is not None:
+        keys = [k for k in cov["keys"] if k in observed and k in model]
+        if not keys:
+            raise ValueError("no statistic was comparable through the covariance")
+        idx = [list(cov["keys"]).index(k) for k in keys]
+        C = np.asarray(cov["matrix"], float)[np.ix_(idx, idx)]
+        r = np.array([observed[k] - model[k] for k in keys], float)
+        evals, evecs = np.linalg.eigh(C)
+        if evals[-1] <= 0 or evals[0] < 1e-12 * evals[-1]:
+            raise ValueError(f"the covariance over {len(keys)} statistics is singular "
+                             f"(eigenvalues {evals[0]:.3g} to {evals[-1]:.3g}); no interval through it")
+        z = evecs.T @ r
+        return float(np.sum(z * z / evals) + np.sum(np.log(evals)))
     chi2, used = 0.0, 0
     for key, obs in observed.items():
         s = sigma.get(key)

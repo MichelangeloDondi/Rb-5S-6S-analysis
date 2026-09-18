@@ -197,7 +197,7 @@ def _judge(rung: str, detail: Dict[str, Any]) -> tuple:
         if nr is not None and int(nr) >= MIN_REALISATIONS and int(nr) < coverage_resolved_n(nominal):
             se = (nominal * (1.0 - nominal) / int(nr)) ** 0.5
             reasons.append(f"coverage UNRESOLVED at {int(nr)} realisations: {RESOLVE_SE:g} binomial standard errors "
-                           f"({RESOLVE_SE * se:.2f}) exceed the {COVER_TOL:g} band; {coverage_resolved_n(nominal)} realisations resolve it")
+                           f"({RESOLVE_SE * se:.2f}) exceed the {COVER_TOL:g} band. {coverage_resolved_n(nominal)} realisations resolve it")
         if c is not None and not (nominal - COVER_TOL <= float(c) <= nominal + COVER_TOL):
             reasons.append(
                 f"coverage {float(c):.3f} is outside [{nominal - COVER_TOL:.2f}, {nominal + COVER_TOL:.2f}] "

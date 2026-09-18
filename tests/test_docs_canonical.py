@@ -115,15 +115,6 @@ def _beta_bound_range():
     return f"{min(vals):.2f}", f"{max(vals):.2f}"
 
 
-def _source_headroom(rung: str) -> float:
-    """The source-class headroom row for one rung. Its key carries the rung and
-    then the class name, so it is matched on the rung prefix rather than on the
-    whole key: the class wording is prose that may be rewritten, and pinning a
-    number to a sentence would make the pin the thing that breaks."""
-    for r in csv.DictReader(open(RESULTS / "projections.csv")):
-        if r["quantity"] == "proj_source_headroom" and r["key"].startswith(rung):
-            return float(r["value"])
-    raise KeyError(f"no proj_source_headroom row for {rung}")
 
 
 def _const(name):
@@ -367,65 +358,6 @@ CANONICAL = [
         # \s+ throughout: the docs wrap, so a hard space in the pattern would
         # miss a citation that happens to straddle a line break
         find=re.compile(r"five\s+sigma\s+needs\s+([0-9]+)\s+kHz\s+per\s+mTorr"),
-        mode="all",
-        docs=["docs/CLAIMS.md", "docs/FUTURE_TRANSITIONS_titsapph.md"],
-    ),
-    dict(
-        # The per-rung light-shift ceilings and the two readings that hang off
-        # them. Same reason as the block above: each is quoted in the claims
-        # ledger and in the transitions map, and each rides on the dataset's
-        # measured line width and on a differential polarizability, so a
-        # recompute of either moves all three and a stale copy would read as a
-        # drive power the physics does not allow.
-        #
-        # THE CELL MOVED ON 2026-09-09 and the move is the point (A137). These
-        # pinned `proj_light_shift_ceiling`, which holds every rung at the
-        # waist measured on the 993 nm line. The waist is `lambda f/(pi w_in)`,
-        # so that geometry is unreachable off 993 nm and two of the three rows
-        # described a focus no lens makes. The doc-facing quantity is what a
-        # bench runs at, so these now pin the drive-waist row; the common-waist
-        # row stays in the CSV as the polarizability-only comparison and is not
-        # quoted outward.
-        name="993 nm light-shift ceiling at its own drive waist",
-        value=lambda: f"{float(_cell('projections.csv', 'proj_light_shift_ceiling_at_drive_waist', '993 nm, 5S to 6S')):.0f}",
-        # \s+ throughout: the docs wrap, so a hard space would miss a
-        # citation that happens to straddle a line break
-        find=re.compile(r"993\s+nm\s+ceiling\s+of\s+([0-9]+)\s+mW"),
-        mode="all",
-        docs=["docs/CLAIMS.md", "docs/FUTURE_TRANSITIONS_titsapph.md"],
-    ),
-    dict(
-        name="760 nm light-shift ceiling at its own drive waist",
-        value=lambda: f"{float(_cell('projections.csv', 'proj_light_shift_ceiling_at_drive_waist', '760 nm, 5S to 7S')):.0f}",
-        find=re.compile(r"760\s+nm\s+ceiling\s+of\s+([0-9]+)\s+mW"),
-        mode="all",
-        docs=["docs/CLAIMS.md", "docs/FUTURE_TRANSITIONS_titsapph.md"],
-    ),
-    dict(
-        name="778 nm light-shift ceiling at its own drive waist",
-        value=lambda: f"{float(_cell('projections.csv', 'proj_light_shift_ceiling_at_drive_waist', '778 nm, 5S to 5D5/2')):.0f}",
-        find=re.compile(r"778\s+nm\s+ceiling\s+of\s+([0-9]+)\s+mW"),
-        mode="all",
-        docs=["docs/CLAIMS.md", "docs/FUTURE_TRANSITIONS_titsapph.md"],
-    ),
-    dict(
-        name="7S adjudication margin at the 760 nm ceiling",
-        value=lambda: f"{float(_cell('projections.csv', 'proj_7s_margin_at_ceiling', 'Wang read as FWHM')):.1f}",
-        find=re.compile(r"adjudication\s+keeps\s+a\s+ceiling\s+margin\s+of\s+([0-9.]+)"),
-        mode="all",
-        docs=["docs/CLAIMS.md", "docs/FUTURE_TRANSITIONS_titsapph.md"],
-    ),
-    dict(
-        name="778 nm factor-two test margin at the 778 nm ceiling",
-        value=lambda: f"{float(_cell('projections.csv', 'proj_778_margin_at_ceiling', 'factor-two convention error at 3 sigma')):.2f}",
-        find=re.compile(r"factor-two\s+test\s+drops\s+to\s+a\s+ceiling\s+margin\s+of\s+([0-9.]+)"),
-        mode="all",
-        docs=["docs/CLAIMS.md", "docs/FUTURE_TRANSITIONS_titsapph.md"],
-    ),
-    dict(
-        name="778 nm source-class headroom over its ceiling",
-        value=lambda: f"{_source_headroom('778 nm, 5S to 5D5/2'):.1f}",
-        find=re.compile(r"([0-9.]+)\s+times\s+the\s+778\s+nm\s+ceiling"),
         mode="all",
         docs=["docs/CLAIMS.md", "docs/FUTURE_TRANSITIONS_titsapph.md"],
     ),

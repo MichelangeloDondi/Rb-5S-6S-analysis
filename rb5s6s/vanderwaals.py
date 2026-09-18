@@ -63,7 +63,8 @@ to eight digits on the ground pair, where every transition is upward. The
 integral stays as the ground-state validation path. The 18 per cent gap the
 docstring below used to attribute to the dropped core and tail was this sign
 error: with the direct sum the first-principles 7S rate sits 4 per cent ABOVE
-Zameroski's measurement, inside its 8.5 per cent bar. The anchored 6S value
+Zameroski's measurement, inside its 10.08 per cent bar (his Table 3 total,
+not the 8.5 per cent this line read until 2026-09-18). The anchored 6S value
 barely moves (3.38 to 3.40 kHz per 1e12 cm^-3), because the error is common
 to both rungs and cancels in the ratio, which is what the anchor was for.
 
@@ -96,13 +97,29 @@ M_RB87 = _C.M_RB87_KG   # one home: constants.py (2026-09-13)
 
 # Literature Rb2 ground-state C6, for the validation path only. SOURCED
 # 2026-08-26, having stood uncited while the module's other SOURCED values
-# carry their journal and section. Stewart, Shen, Booth and Madison,
-# Phys. Rev. A 106, 052812 (2022), arXiv:2208.12805, measure the Rb-Rb
-# ground-state coefficient at 4688(198)(95) E_h a_0^6 from atom-trap
-# loss-rate diffractive-collision universality. That is an EXPERIMENTAL
-# determination rather than a sum-over-states one, so it is an independent
-# check on the calibration point this module's own machinery is validated
-# against, and 4691 sits well inside its first error bar.
+# carry their journal and section.
+#
+# WHOSE NUMBER THIS IS, corrected 2026-09-18 after the thesis session read the
+# attribution and this side audited it against the held PDF. 4691 is a
+# CALCULATION: Derevianko, Johnson, Safronova and Babb, Phys. Rev. Lett. 82,
+# 3589 (1999), whose own words are "Our result C6 = 4691(23) is in excellent
+# agreement with this experiment" -- journal page 3592, the letter's last, read
+# from PDF_papers/derevianko1999.pdf. (This side first wrote that quote as "Our
+# value" on "page 3", both wrong, from memory rather than from the page; the
+# rule that a value read from a two-column PDF is read twice covers the words
+# around it too.) The block used to open on Stewart, which read
+# as though 4691 were his measurement; it is the value he TABULATES beside his
+# own. Stewart, Shen, Booth and Madison, Phys. Rev. A 106, 052812 (2022),
+# arXiv:2208.12805, measure 4688(198)(95) E_h a_0^6 from atom-trap loss-rate
+# diffractive-collision universality, which is an independent EXPERIMENTAL check
+# that 4691 sits well inside -- and at 4.7 per cent it is the least precise
+# determination in the literature, so it is a check and not an anchor.
+#
+# OPEN: van Kempen et al., Phys. Rev. Lett. 88, 093201 (2002) give 4703(9) from a
+# molecular fit, twenty-two times tighter, which would make this module's own
+# truncated sum decisively low rather than in tension. That determination is not
+# held here and is queued as `c6-anchor-audit`; nothing moves on it until its PDF
+# is read, because the errors in this class have been in the READING.
 C6_RB2_GROUND_LIT_AU = 4691.0
 
 # Zameroski 2014 (J. Phys. B 47, 225205), section 2.5: the MEASURED self-
@@ -509,7 +526,7 @@ def beta_self_budget(T_K: float = 403.15, n_cm3: float = 1e12) -> dict:
 
     WHAT IS IN THE QUADRATURE and why each enters where it does:
 
-      * Zameroski's quoted bar, 11 on 129, which enters LINEARLY because the
+      * Zameroski's quoted bar, 13 on 129 (TABLE 3's total), which enters LINEARLY because the
         anchor takes its whole scale from that measurement. It dominates: every
         other row together is 2.0 per cent in quadrature, which moves the total
         from 8.5 to 8.8, so the coefficient
@@ -539,7 +556,7 @@ def beta_self_budget(T_K: float = 403.15, n_cm3: float = 1e12) -> dict:
 
     WHAT WAS REMOVED, because it was counted twice: the 5 per cent vapour-
     pressure(density) uncertainty the wiki's budget carried as OPEN. His paper
-    states it is already inside the +-11 (see ZAMEROSKI_7S_CELL_T_K's note), so
+    states it is already inside the +-13 (see ZAMEROSKI_7S_CELL_T_K's note), so
     the budget's one open row closed by DELETION and the bar fell from the 11
     per cent that double count gave to 8.8.
 

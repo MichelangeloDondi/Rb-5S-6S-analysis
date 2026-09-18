@@ -300,6 +300,49 @@ state mid-flight and the effective transit width rises. The ratio of the two
 widths is exactly the branching fraction $f$, because $\Gamma_{6S}/2\pi$ is
 the natural width.
 
+Two more the composite does not carry, and both were measured in September
+2026. They are named here because the census now carries them as rows, and a
+term absent from the model is a term the record has to state and not one a
+reader discovers.
+
+The first is the **modulator aperture's profile**. The drive passes a 3 mm bore
+before the focusing lens, and the bore does two things. Its on-axis part is a
+closed form in the package, `lineshape.aperture_onaxis_factor`, and it is small
+at the convention waist. Its profile part is not small at a tight focus: computed
+through the trajectory integration and not a convolution, a clipped focus
+whose $1/e^2$ radius reads 42.4 µm gives a transit-integrated third cumulant of
+$-0.00066$ against a Gaussian's $+0.00994$ at the same reading, opposite in sign,
+and the reversal survives the Maxwell-Boltzmann speed mixture. The transit width
+differs by one to four per cent and not monotonically in the reading, so it
+cannot be absorbed into a rescaled waist either. At the 64 µm convention this is
+a small correction. In the 40 to 45 µm region the campaign is aimed at, a
+Gaussian of the same measured radius gives the odd channel the wrong sign.
+
+The second is a **permeated gas**, and it is a family and not one species.
+Permeation carries a sealed cell to the atmosphere's own partial pressure of
+everything small enough to cross the glass, so abundance sets the destination and
+permeability sets only the clock. Helium is 5.24 parts per million of air and
+reaches about 4 mTorr. Neon is 18.2 and reaches 13.8, so the species this record
+first named is the smaller of the two. Zameroski's rates put of order 0.2 and 0.34
+MHz of Lorentzian width there, with shifts of opposite sign, but those rates are
+his 5S-5D values and the upper states differ, so they are estimates of scale and
+not widths on this line.
+
+ Argon would reach 7.1 Torr at equilibrium and 324 MHz of
+width, which a 5.37 MHz line excludes outright, so the line itself bounds the
+heavy species below three parts in a thousand of equilibrium. Helium equilibrates
+in about eight days and neon in two to twenty years, so where the family actually
+sits rides on the glass type and the fill date, both open in the apparatus record.
+
+Density separates a constant term in principle, but only if the fit
+carries a free term of the right shape: the free constant here is a Gaussian
+standing for the laser, a permeated-gas width is a Lorentzian, and the two do not
+substitute. So the omitted constant Lorentzian is absorbed by the one Lorentzian
+that has a density slope, $\beta_\text{self}N(T)$ itself, and the coefficient is
+biased upward. The remedy is a free constant of Lorentzian shape, not a finer
+density ladder, and enumerating the family adds no parameter to that fit: it puts
+a prior on the one it already needs.
+
 The committed per-line values run 0.223, 0.248, 0.348 and
 0.372 across 993.4207, 993.4192, 993.4154 and 993.4121 nm, so $f$ straddles
 $1/3$ and the older bracket of $1/3$ to $2/3$ quoted here was too high at the

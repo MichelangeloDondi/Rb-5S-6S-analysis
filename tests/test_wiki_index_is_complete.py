@@ -125,6 +125,9 @@ _WORDS = {
     "sixteen": 16, "seventeen": 17, "eighteen": 18, "nineteen": 19,
     "twenty": 20, "forty-nine": 49, "fifty": 50, "fifty-one": 51,
     "fifty-two": 52, "fifty-three": 53, "fifty-four": 54, "fifty-five": 55,
+    # the map ends where the wiki last was, so the page that grows past it reads None and the guard
+    # says "says None pages" instead of naming the drift (2026-09-18, the fifty-sixth page)
+    "fifty-six": 56, "fifty-seven": 57, "fifty-eight": 58, "fifty-nine": 59, "sixty": 60,
 }
 
 # A correction section says where THIS project got the concept wrong. "What can go

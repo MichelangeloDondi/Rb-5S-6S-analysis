@@ -145,8 +145,15 @@ def synthetic_traces(gamma_coll: float, sigma_laser: float, transit_fwhm: float,
                      tau_int: Optional[float] = None,
                      s0: float = 0.0, halo_fraction: float = 0.0,
                      rng: Optional[np.random.Generator] = None,
+                     residual_source=None,
                      ) -> Tuple[List[np.ndarray], List[np.ndarray]]:
     """Generate the traces your instrument would record for this line.
+
+    ``residual_source`` (PLAN v2 Phase 3, 2026-09-18): a callable ``(rng, n) -> array`` of n
+    unit-variance samples that REPLACES the Gaussian draw, so a twin can carry the archive's own
+    residual shape (the moving-block resamples of `scripts/run_residual_resampling.py`). The
+    amplitude law (`noise` as a float or as the measured law) is applied to the samples either
+    way; ``None`` is the Gaussian draw every committed cell was made with, byte-identical.
 
     The pattern is `examples/synthetic_recovery.py`'s, promoted to the public
     API: the composite profile on a fine grid, interpolated onto the chosen
@@ -242,7 +249,8 @@ def synthetic_traces(gamma_coll: float, sigma_laser: float, transit_fwhm: float,
         _tau = (tau_int if tau_int is not None
                 else (float(noise.get("tau_int", 1.0))
                       if isinstance(noise, dict) else 1.0))
-        _w = _correlate(rng.standard_normal(nu.size), _tau)
+        _w = (np.asarray(residual_source(rng, nu.size), float) if residual_source is not None
+              else _correlate(rng.standard_normal(nu.size), _tau))
         if isinstance(noise, dict):
             sig = np.asarray([sigma_of_v(v, noise) for v in clean])
             v = clean + sig * _w
@@ -449,13 +457,30 @@ def build_world_trace(power_w: float, kappa: float, t_c: float,
         # saturation below is tied to the fitted shift, and passing Omega
         # frees it from that, which is what lets it survive the zero this
         # archive drives the shift to.
-        _fm = (pedestal_height_frac > 0.0 or retro_tilt_rad > 0.0
-               or float(m2) != 1.0 or omega_mhz is not None)
-        _prof = full_profile if _fm else model_profile
+        # THE TWIN IS ALWAYS ON THE FULL MODEL (owner, 2026-09-18: "make sure that
+        # the twin is using the full and correct model (so, with also the gases)").
+        # Until today this read `full_profile if _fm else model_profile`, taking the
+        # full path only when a pedestal, tilt, m2 or Omega was asked for, and
+        # otherwise staying on model_profile "for byte-identical committed output".
+        # THAT BYTE-IDENTITY IS REAL AND IT IS WHY THE FALLBACK BOUGHT NOTHING:
+        # measured 2026-09-18, full_profile at its defaults equals model_profile to
+        # 0.0 of peak on this record's own axes. So the fallback never protected a
+        # number; it only kept a SECOND PATH that could diverge from the first
+        # without any caller noticing, which is the defect this record calls a
+        # switch that is thrown and does nothing. One path now.
+        #
+        # AND REMOVING IT IS NOT, BY ITSELF, THE FULL MODEL. A term is live only
+        # when its PARAMETER is non-default: the pedestal, the tilt, m2, Omega and
+        # `gamma_l` (the permeated-gas family's Lorentzian, which is the same
+        # parameter as the laser's Lorentzian arm because Lorentzians add) all
+        # reach the line through this call and all default to off. What makes the
+        # twin full is a CALLER that sets them, and `results/twin_term_census.csv`
+        # regenerated from this source is the instrument that says which are set.
+        _prof = full_profile
         _extra = dict(pedestal_height_frac=pedestal_height_frac,
                       retro_tilt_rad=retro_tilt_rad, T_C=t_c,
-                      peak=peak, m2=m2, w0_m=w0_m) if _fm else {}
-        if _fm and omega_mhz is not None:
+                      peak=peak, m2=m2, w0_m=w0_m)
+        if omega_mhz is not None:
             # REFUSE THE DOUBLE COUNT (2026-09-12). The
             # `saturation` layer already adds `companion_gamma_mhz` above,
             # and `full_profile` would add `saturation_companion_mhz` here:

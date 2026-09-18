@@ -148,7 +148,7 @@ def test_mean_relative_speed_uses_the_reduced_mass():
 def test_first_principles_rate_agrees_with_the_one_measured_nS_rate():
     """The independent test: on 7S, the only nS state in Rb with a measured
     self-broadening rate, the first-principles prediction now sits within
-    Zameroski's own 8.5 per cent bar (it read 18 per cent low while the
+    Zameroski's own 10.08 per cent bar (it read 18 per cent low while the
     integral undercounted the downward terms). Locked as a band, so a
     regression in either direction fires."""
     r = beta_self_anchored()

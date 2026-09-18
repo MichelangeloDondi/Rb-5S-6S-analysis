@@ -30,9 +30,24 @@ STALE = [
     ("the measured waist named as the record's",
      re.compile(r"\b(?:from|at|using|rides|on)\s+(?:the|its|this record's)\s+(?:accepted\s+)?measured\s+"
                 r"(?:beam\s+)?(?:waist|\$?w_?\{?0\}?\$?)", re.I)),
+    # THE ADJECTIVE MOVED AND THE SCAN DID NOT (2026-09-18). "at the COMMITTED measured waist" and
+    # "the measured waist makes" both name this record's own number and neither matches the line
+    # above: the first because only "accepted" was allowed between the article and the word, the
+    # second because it needs no preposition at all. The population had holes to match -- `tests/`
+    # was not in it. A possessive or a determiner naming THIS record's waist is the form to catch;
+    # a FUTURE campaign's measurement is admitted by the exemptions and by the plant below.
+    ("the record's own waist called measured, with an adjective between",
+     re.compile(r"\b(?:from|at|using|rides|on)\s+the\s+(?:committed|adopted|accepted|current|record's)\s+"
+                r"measured\s+(?:beam\s+)?(?:waist|\$?w_?\{?0\}?\$?)", re.I)),
+    ("the committed measured waist as a noun phrase",
+     re.compile(r"\bthe\s+committed\s+measured\s+(?:beam\s+)?(?:waist|\$?w_?\{?0\}?\$?)", re.I)),
 ]
 EXEMPT_FILES = ("docs/PREREGISTRATION_RESULTS.md", "docs/notes/transit_width_resolved.md",
-                "docs/lit/bruvelis2012.md")
+                "docs/lit/bruvelis2012.md",
+                # A WAIST-LANGUAGE GUARD MUST QUOTE THE FORMS IT CATCHES, and adding `tests/` to the
+                # population on 2026-09-18 made both of them their own first offenders. This is the
+                # same self-match that made an expensive-producer check find its own shell in `ps`.
+                "tests/test_waist_is_a_convention.py", "tests/test_waist_language.py")
 
 
 def stale_waist_lines(files, reader):
@@ -57,8 +72,10 @@ def stale_waist_lines(files, reader):
 
 
 def _reader_surfaces():
+    # `tests/` JOINS THE POPULATION (2026-09-18): a test's own comment called the record's waist
+    # measured while every reader page had stopped, which is the same defect one layer down.
     out = subprocess.run(["git", "ls-files", "README.md", "START_HERE.md", "docs", "results/README.md",
-                          "rb5s6s", "scripts", "examples"],
+                          "rb5s6s", "scripts", "examples", "tests"],
                          cwd=ROOT, capture_output=True, text=True).stdout.split()
     return [f for f in out if f.endswith((".md", ".py")) and f not in EXEMPT_FILES and "prereg" not in f]
 

@@ -151,4 +151,4 @@ for w0_um in (32, 64, 90):
 
 ---
 
-[← The Voigt profile](voigt-profile.md) · *Experimental spectroscopy, 4 of 11* · [The beam waist →](the-beam-waist.md)
+[← The Voigt profile](voigt-profile.md) · *Experimental spectroscopy, 4 of 12* · [The beam waist →](the-beam-waist.md)

@@ -512,6 +512,103 @@ def trapped_ramp_density(x: np.ndarray, eta: float, n_photon: int = 2) -> np.nda
     return w / area if area > 0.0 else w
 
 
+def saturated_ramp_density(x: np.ndarray, power_w: float, w0_m: float, T_C: float,
+                           rho: float = 0.94, n_table: int = 240) -> np.ndarray:
+    """The transverse shift law WITH SATURATION: p_sat(x) proportional to G(P x) / x on [0, 1].
+
+    DERIVATION (F133, 2026-09-17, the physics rung). The shift at a point is s = S0 x with x the local
+    intensity in units of the peak, and the excitation weight is the rate at the local power, G(P x).
+    In the weak field G goes as the square of the power, so the weight is x^2, and with the Gaussian
+    beam's own area element r dr = -(w^2/4) dx/x the density is 2x on [0, 1]: `local_ramp_density`,
+    the triangle with mean 2/3 S0 and third cumulant -S0^3/135 (`ramp_kappa3`). Saturation changes
+    ONLY the weight, so the same algebra gives G(P x)/x, one quadrature over the package's own rate
+    `platforms.excitation_rate_per_atom` (tabulated log-log on `n_table` points as the kernel Monte
+    Carlo tabulates it, then interpolated), area-normalised. G(P x) -> 0 as x^2, so the density is
+    exactly 0 at x = 0 and the grid may start there. S0 cancels out of every dimensionless ratio.
+
+    WHAT IT WAS MEASURED TO DO. Against 813 kernel Monte Carlo nodes the ratio k3_sat / k3_weak of this
+    density agrees with the Monte Carlo's own to a median of 0.0000 and a worst of 0.0382 (40 um,
+    225 mW); it takes the gate's `ramp_k3_rel` reading at that node from 0.1534 to 0.0478 and brings
+    39 of 39 nodes of the 40 to 46 um band under the 0.05 tolerance (F133). In the weak field
+    (P -> 0) it returns the triangle: `tests/test_saturated_ramp.py` asks for 1e-6.
+
+    ITS STATED ERROR, MEASURED AGAINST THE EXACT FORM AND NOT AGAINST THE MONTE CARLO (the physics
+    chair, 2026-09-18). The derivation is TRANSVERSE: one rate table at the on-axis power. The gate's
+    reference is the AXIAL mixture (`ramp_mixture` at the node's z_ratio), where the local peak power
+    falls as 1/(1 + zeta^2) along the column and the saturation with it. Because the rate depends on the
+    absolute local intensity alone, that mixture HAS a one-line closed form,
+
+        f(s) proportional to G(P s / S0) / s * [zeta_m + zeta_m^3 / 3],  zeta_m = min(Z, sqrt(S0/s - 1)),
+
+    and the path here instead applies the weak-field zeta weight to a density saturated at the on-axis
+    power, which coincides with it only where G goes as the square of the power. Against that exact form
+    the shipped factorisation reads 1.9 per cent low in the third cumulant at z_ratio 0.667 and 1.3 per
+    cent at 0.5. **The 4 per cent and the "under 0.3 per cent at 0.5" this docstring carried until
+    2026-09-18 were F133a's TRANSVERSE residual against the Monte Carlo, measured with no mixture at all,
+    and the second was wrong by four times in the unsafe direction.** The exact form is the named
+    refinement and it is queued as `saturated-mixture-exact-form`; the agreement the gate records at the
+    node (0.44 per cent) is partly a cancellation, the factorisation sitting 1.9 per cent below the exact
+    form and the Monte Carlo 1.4 per cent below it, with the same sign. The side is `RAMP_SIDE`'s and is
+    never restated here: x is the magnitude of the shift over S0.
+
+    ITS REGIME, WHICH IS NOT STATED BY THE RATE IT CALLS. `platforms.excitation_rate_per_atom` carries the
+    steady-state two-level saturation parameter s = 2 (Omega/Gamma_nat)^2, whose coherence decays at the
+    NATURAL width alone. This bench's coherence decays faster: at 40 um and 130 C the transit rate 1/tau is
+    0.56 of Gamma/2 before the laser's own width (0.1 to 2.8 MHz, a scanned nuisance of the MLE) is added,
+    so the true saturation intensity is at least 1.6 times the one this weight uses. Measured on this density
+    at the deepest node, rescaling s by 1/1.56 and 1/2.1 moves the mixture's saturated-over-weak third
+    cumulant from 0.843 to 0.896 and 0.922, six to nine per cent, ABOVE the kernel gate's own 0.05
+    tolerance. **The gate cannot see it**, because `scripts/run_kernel_mc.py` tabulates the same function:
+    model and Monte Carlo agree whatever the true depth, which is one approximation integrated two ways.
+    Carrying the coherence rate into the rate and recording `gamma_coh * tau` per node is queued as
+    `saturation-regime-term`; until it lands, every k3 this density carries is conditional on the
+    natural-width saturation and says so here.
+
+    FAILURE MODE: a `power_w` in milliwatts or a `w0_m` in microns puts the table five decades away
+    from saturation and returns the triangle with no error; the kernel Monte Carlo's node key carries
+    both in the units the gate reads, and the test at 40 um and 225 mW is the plant."""
+    import dataclasses
+    from .platforms import PLATFORMS, excitation_rate_per_atom
+    x = np.asarray(x, float)
+    inside = (x > 0.0) & (x <= 1.0)
+    plat = dataclasses.replace(PLATFORMS["cell_130C"], w0_m=float(w0_m), temperature_k=float(T_C) + 273.15)
+    p_tab = np.exp(np.linspace(np.log(1e-4), 0.0, int(n_table))) * float(power_w)
+    g_tab = np.array([excitation_rate_per_atom(float(p), plat, rho=float(rho)) for p in p_tab])
+    logp, logg = np.log(p_tab), np.log(np.maximum(g_tab, 1e-300))
+    px = float(power_w) * np.where(inside, x, 1.0)
+    lp = np.log(px)
+    lg = np.interp(lp, logp, logg)
+    lg = np.where(lp < logp[0], logg[0] + 2.0 * (lp - logp[0]), lg)      # below the table: the weak field, G ~ P^2
+    g = np.exp(lg)
+    w = np.where(inside, g / np.where(inside, x, 1.0), 0.0)
+    area = trapezoid(w, x)
+    return w / area if area > 0.0 else w
+
+
+def ramp_mixture_moments(s0: float, z_ratio: float, x_grid: np.ndarray, g_x: np.ndarray,
+                         n_photon: int = 2, n_grid: int = 4001) -> dict:
+    """Mean, variance and third cumulant of `ramp_mixture` on a fine internal grid, for the kernel
+    gate's model side: the same object `stark_ramp_axial_moments` returns for the weak-field law,
+    for ANY local density (the saturated one above, the fringe's, the trapped one). At z_ratio 0 with
+    `local_ramp_density` it reproduces the triangle's 2/3 and 1/135 to the grid's rounding; at a
+    finite z_ratio with that law it reproduces `stark_ramp_axial_moments` (the test).
+
+    THE GRID IS MEMORY (2026-09-18): `ramp_mixture` holds an (n_grid, 8, n_zeta) array, 1.3 GB at
+    20 001 cells and the default 1000 zeta nodes, which is what took a ten-worker kernel re-run to
+    the fan-out runner's emergency floor in three seconds. 4001 cells is 256 MB and the moments
+    agree with the closed form to 1e-6."""
+    if s0 <= 0:
+        return {"mean": 0.0, "var": 0.0, "k3": 0.0}
+    x_hi = float(x_grid[-1])
+    s = np.linspace(0.0, x_hi * s0, int(n_grid))
+    f = ramp_mixture(s, float(s0), float(z_ratio), x_grid, g_x, n_photon=n_photon)
+    a = trapezoid(f, s)
+    m = trapezoid(s * f, s) / a
+    var = trapezoid((s - m) ** 2 * f, s) / a
+    k3 = trapezoid((s - m) ** 3 * f, s) / a
+    return {"mean": float(m), "var": float(var), "k3": float(k3)}
+
+
 def _require_density_grid(x_grid: np.ndarray, g_x: np.ndarray) -> None:
     """Refuse a local-density grid this routine would silently misread.
 
@@ -727,6 +824,112 @@ def stark_from_intensity_profile(nu: np.ndarray, s0: float,
 def _grid(span: float, dnu: float) -> np.ndarray:
     n = int(np.ceil(span / dnu))
     return (np.arange(-n, n + 1)) * dnu
+
+
+# --------------------------------------------------------------------------
+# The permeated gases: a constant Lorentzian the cell cannot exclude
+# --------------------------------------------------------------------------
+ATMOSPHERE_TORR = 760.0
+"""Total pressure the cell equilibrates towards, Torr."""
+
+PERMEATED_GASES = {
+    # species: mole fraction of air (the atmosphere's own partial pressure is where permeation ends)
+    "he": 5.24e-6,
+    "ne": 18.2e-6,
+    "ar": 9340e-6,
+}
+"""Atmospheric abundance by species, and NO broadening coefficient (F138, 2026-09-18).
+
+THE ABUNDANCES ARE THE LOAD-BEARING HALF and they owe nothing to any paper here: permeation carries
+a sealed cell to the atmosphere's own PARTIAL PRESSURE of every species small enough to cross the
+glass, so ABUNDANCE fixes where it ends and permeability fixes only how long it takes. Neon is 3.5
+times helium in air, so the species this record named first is the smaller of the two that matter.
+
+THE COEFFICIENTS ARE NOT IN THIS TABLE, BY RETRACTION. The version of 2026-09-18 morning carried
+Zameroski's 5S-5D foreign-gas rates here and printed widths from them (0.2035 and 0.5452 MHz), which
+F136 and F137 then quoted as fractions of the fitted collisional width. `docs/lit/zameroski2014.md`
+refuses those rates as transferable ("the upper states differ, so the coefficients are not
+transferable, and nothing here can be adopted as a value"), so a width computed from them is not a
+width on this line, and F138 retracts every such number. The mechanism stands: a permeated gas is a
+constant Lorentzian, exactly `gamma_l`. `permeated_gas_width_mhz` therefore takes its coefficients
+as an ARGUMENT and refuses to run without them, so no width can be printed from a number the record
+does not hold; a caller passing a 5S-5D coefficient is computing a SCALE and says so.
+"""
+
+
+def permeated_gas_width_mhz(coefficients, equilibrated=("he",), fractions=None):
+    """The permeated family's constant Lorentzian width and net shift, MHz, at the CALLER'S
+    coefficients: `coefficients[species] = (broadening MHz/Torr, shift MHz/Torr)`, required.
+
+    Returns ``(width, shift, detail)``: the FWHM the family adds to the homogeneous width, the net
+    centre shift, and a per-species breakdown. `equilibrated` names the species taken to have
+    reached equilibrium; `fractions` overrides with an explicit 0-to-1 fraction per species, which
+    is how the span is walked.
+
+    **THIS IS A PRIOR ON `gamma_l`, NOT A SECOND TERM.** `_kernel_widths` builds
+    ``homog = gamma_nat + gamma_coll + max(gamma_l, 0) + ...``, and Lorentzians of FWHM a and b
+    convolve to one of FWHM a+b identically, so a permeated-gas width is EXACTLY DEGENERATE with
+    `gamma_l` at one temperature. They separate only through a dependence the gas has and the laser
+    does not -- at fixed pressure broadening goes as T^-1/2, a few per cent across this record's 70
+    to 130 C arm, against `beta_self`'s steep rise -- so THIS DATA CANNOT SPLIT THEM. Adding the
+    family to `homog` beside a free `gamma_l` would double-count it. The family's width is the
+    centre of `gamma_l`'s prior and its span the prior's width.
+
+    **THE TWO-TEMPERATURE CONVERSION IS NOT APPLIED, and the reason is that it cannot be.** A rate
+    per pressure carries to another cell temperature as T^-1/2, and our Zameroski note records NO
+    cell temperature. That is an OPEN item needing a read of the held PDF, not a small correction:
+    a rate per pressure carries two temperatures, the source's and this record's, and the record
+    has already paid for carrying one.
+
+    **ARGON IS EXCLUDED BY OUR OWN LINE, which is the only part measured rather than borrowed.**
+    Equilibrium would put 7.10 Torr in the cell, and a width from the borrowed 5S-5D coefficient is a
+    SCALE and not a width on this line (F138), so the number that belongs here is the BOUND and not the
+    width. Re-derived here from a
+    COMMITTED cell rather than a remembered one: `results/linefit_conditions.csv`'s widest
+    `total_fwhm` over its 32 rows is 5.741 MHz, so the line bounds argon below 1.8e-2 of equilibrium,
+    and nitrogen and oxygen follow a fortiori by kinetic diameter. **The figure carried into this
+    record from the thesis side was "under three parts in a thousand"; our own committed width gives
+    1.8e-2, six times looser, and the tighter number is not reproducible from anything here.** The
+    conclusion is unchanged. Argon is therefore never in the default
+    `equilibrated` set; naming it asks for the excluded case deliberately.
+
+    DEFAULT: helium alone, the conservative end this record can defend -- its time constant is about
+    eight days against a cell's age, where neon's is two to twenty years and depends on the glass
+    type and the fill date, both OPEN in `docs/plan/12_open-apparatus-items.md`.
+    """
+    if fractions is None:
+        fractions = {k: (1.0 if k in equilibrated else 0.0) for k in PERMEATED_GASES}
+    if not coefficients:
+        raise ValueError("permeated_gas_width_mhz needs coefficients {species: (MHz/Torr broadening, MHz/Torr shift)}: "
+                         "this record holds none for 5S-6S (F138), and a width from a borrowed one is a scale")
+    width = shift = 0.0
+    detail = {}
+    for name, x_air in PERMEATED_GASES.items():
+        f = float(fractions.get(name, 0.0))
+        if f == 0.0:
+            detail[name] = {"fraction": 0.0, "p_torr": 0.0, "width_mhz": 0.0, "shift_mhz": 0.0}
+            continue
+        if name not in coefficients:
+            raise ValueError(f"no coefficient for {name!r}; every equilibrated species needs one")
+        beta, delta = (float(x) for x in coefficients[name])
+        p_torr = x_air * ATMOSPHERE_TORR * f
+        w, d = p_torr * beta, p_torr * delta
+        width += w
+        shift += d
+        detail[name] = {"fraction": f, "p_torr": p_torr, "width_mhz": w, "shift_mhz": d}
+    return width, shift, detail
+
+
+def permeated_gas_span_mhz(coefficients):
+    """The width's span, helium-only against helium-and-neon equilibrated, at the caller's
+    coefficients (a scale unless the coefficient is this line's own).
+
+    The record spans a fact nobody has rather than picking the midpoint of an unknown: neon's
+    equilibration fraction is not measured and its time constant straddles a cell's age.
+    """
+    lo, _, _ = permeated_gas_width_mhz(coefficients, equilibrated=("he",))
+    hi, _, _ = permeated_gas_width_mhz(coefficients, equilibrated=("he", "ne"))
+    return lo, hi
 
 
 def _kernel_widths(gamma_coll, sigma_laser_fwhm, transit_fwhm, gamma_nat_mhz, laser_kind, gamma_l):

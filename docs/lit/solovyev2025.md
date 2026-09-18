@@ -14,7 +14,7 @@ pages: 1--40
 year: 2025
 doi: 10.1016/j.physrep.2025.02.001
 arxiv: '2204.12199'
-pdf: PDF_papers/1-s2.0-S037015732500064X-main.pdf
+pdf: PDF_papers/Solovyev_2025_line-profile-asymmetry-precision-spectroscopy-review.pdf
 held: true
 status: VERIFIED
 routing:

@@ -203,4 +203,4 @@ print("counter-propagating pair: cancels to first order, for every atom")
 
 ---
 
-[← wiki index](README.md) · *Experimental spectroscopy, 1 of 11* · [Standing waves →](standing-waves.md)
+[← wiki index](README.md) · *Experimental spectroscopy, 1 of 12* · [Standing waves →](standing-waves.md)

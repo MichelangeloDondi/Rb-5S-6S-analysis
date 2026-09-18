@@ -133,4 +133,4 @@ print(f"110 to 130 C moves the density by a factor {ratio:.2f}")
 
 ---
 
-[← Collisional self-broadening](self-broadening.md) · *Experimental spectroscopy, 10 of 11* · [Guided atoms and nanofibres →](guided-atoms-and-nanofibres.md)
+[← Collisional self-broadening](self-broadening.md) · *Experimental spectroscopy, 11 of 12* · [Guided atoms: hollow cores and nanofibres →](guided-atoms-and-nanofibres.md)

@@ -157,7 +157,7 @@ from rb5s6s.fullmodel import collection_z_ratio_m2, convolution_licence, full_pr
 from rb5s6s import kernel_gate                                                          # noqa: E402
 from rb5s6s import noise                                                                # noqa: E402
 from rb5s6s.hyperpolarizability import two_photon_rabi_hz          # noqa: E402
-from rb5s6s.lineshape import (aperture_onaxis_factor, local_ramp_density, ramp_mixture,   # noqa: E402
+from rb5s6s.lineshape import (aperture_onaxis_factor, local_ramp_density, ramp_mixture, saturated_ramp_density,   # noqa: E402
                               stark_shift_S0_mhz)
 from rb5s6s.noise import condition_noise_model, sigma_of_v         # noqa: E402
 from rb5s6s.qc import contiguous_fwhm_ms                           # noqa: E402
@@ -169,7 +169,7 @@ OUT = C.RESULTS_DIR / "ultra_joint_fit.csv"
 GATE_DIR = ROOT / "private" / "cache" / "ultra_joint_2026-09-14"
 
 # ------------------------------------------------------------------ the design
-W0_GRID_UM = tuple(float(w) for w in range(64, 91, 2))   # the ansatz grid (owner, 2026-09-16 19:40) and the kernel gate's validated nodes; 40-62 was read before the gate
+W0_GRID_UM = tuple(float(w) for w in range(40, 57, 2))   # 2026-09-18: the 40-45 um band with its upper margin; 40 is the lowest waist whose kernel nodes all pass on the waist set (38 fails depleted_line_abs, 34-36 the transit's width)
 W0_COARSE_UM = (64.0, 70.0, 80.0, 90.0)   # inside the validated nodes of the kernel gate
 FORMS = ("gaussian", "lorentzian", "mixed")
 M2_ARMS = (1.0, 1.5, 2.0)
@@ -200,7 +200,7 @@ CENTRE_TOL_MHZ = 0.02
 CENTRE_FINE_MHZ = 0.15
 _BETA = beta_self_anchored()
 # THE BAR IS THE WHOLE BUDGET, not the anchor measurement's share of it.
-# `beta6_err_khz` carries Zameroski's 8.5 per cent alone; a pull of a fitted
+# `beta6_err_khz` carries Zameroski's 10.08 per cent alone; a pull of a fitted
 # coefficient against theory has to divide by the theory's own bar, which
 # `beta_self_budget` measures at 10.64 per cent by displacing each input in
 # turn. The difference is small here BECAUSE the anchor dominates, and that
@@ -424,7 +424,7 @@ def _init_worker(session_traces):
 _T95 = {1: 12.706, 2: 4.303, 3: 3.182, 4: 2.776, 5: 2.571, 6: 2.447,
         7: 2.365, 8: 2.306, 9: 2.262, 10: 2.228}
 
-MOMENT_WINDOWS = (3.25, 6.0, 12.0)
+MOMENT_WINDOWS = (2.0, 8.0, 13.0)    # 2026-09-18: on the window surface's grid, so the twin's bias is subtractable; (3.25, 6, 12) intersected it nowhere
 MOMENT_ORDERS = (2, 3, 4, 5, 6, 7)
 
 
@@ -567,13 +567,27 @@ def _load(spec: dict) -> list[dict]:
 
 
 # ------------------------------------------------------------------ the model
-def window_profile(w0_m: float, m2: float):
+def window_profile(w0_m: float, m2: float, power_w: float = None, T_C: float = None, rho: float = None,
+                   density=None):
     """The axial collection window as a `profile` closure for model_profile,
     ON at every M2 including exactly 1, memoised on the grid it is asked for.
-    The z_ratio is on the closure for the tests."""
+    The z_ratio is on the closure for the tests.
+
+    THE LOCAL DENSITY IS SATURATED WHEN THE POWER IS GIVEN (F133, PLAN v2 Phase 1, 2026-09-18):
+    with `power_w`, `T_C` and `rho` the transverse law is `lineshape.saturated_ramp_density` at
+    the trace's own conditions, which is what the kernel gate's nodes are now judged against
+    (`run_kernel_mc.py`); without them it is the weak-field triangle, the pre-2026-09-18 form,
+    kept for the comparison arm and for callers that carry no power. The Cell builds one per
+    trace (`_per_trace`), memoised on its own grid."""
     zr = collection_z_ratio_m2(float(w0_m), float(m2))
-    xg = np.linspace(0.0, 1.0, 4001)
-    gx = local_ramp_density(xg)
+    if density is not None:                       # a WORLD's own local density (the mismatch worlds, K5a)
+        xg, gx = (np.asarray(density[0], float), np.asarray(density[1], float))
+    else:
+        xg = np.linspace(0.0, 1.0, 4001)
+        if power_w is None:
+            gx = local_ramp_density(xg)
+        else:
+            gx = saturated_ramp_density(xg, float(power_w), float(w0_m), float(T_C), float(rho))
     memo: dict = {}
 
     def prof(g, s0):
@@ -660,6 +674,15 @@ class Cell:
         # that predates the gate, and it is printed once per Cell.
         self.depletion = str(spec.get("depletion", "mc"))
         self.kernel_gate = str(spec.get("kernel_gate", "require"))
+        # THE READING SET (D1 of PLAN v2, 2026-09-18). This Cell fits one free amplitude, offset and
+        # slope per trace (`linear`), so it never reads the amplitude's local power law and the gate is
+        # asked for `kernel_gate.WAIST_READINGS`; `spec["readings"] = "all"` asks for every reading, for
+        # an analysis that ties amplitudes across powers. Nothing here loosens a tolerance.
+        self.readings = None if str(spec.get("readings", "waist")) == "all" else kernel_gate.WAIST_READINGS
+        # THE RAMP'S LOCAL DENSITY (F133, PLAN v2 Phase 1): "saturated" builds the transverse law from
+        # the trace's own power through `lineshape.saturated_ramp_density`, which is what the kernel
+        # nodes are judged against; "weak" is the triangle, the pre-2026-09-18 form, the comparison arm.
+        self.ramp = str(spec.get("ramp", "saturated"))
         if self.kernel_gate == "legacy" and not spec.get("_legacy_said"):
             print("  Cell: kernel gate LEGACY, no node validated (reproduction of a pre-gate CSV only)", flush=True)
             spec["_legacy_said"] = True
@@ -794,10 +817,20 @@ class Cell:
         if self.kernel_gate == "legacy":
             dep = 1.0
         else:
-            dep = kernel_gate.depletion_factor(self.w0 * 1e6, t["peak"], self.m2, self.rho, float(t["T"]), t["P_W"] * 1e3)
+            dep = kernel_gate.depletion_factor(self.w0 * 1e6, t["peak"], self.m2, self.rho, float(t["T"]), t["P_W"] * 1e3,
+                                               readings=self.readings)
             if self.depletion != "mc":
                 dep = 1.0                          # the node is still required; the factor is the form's
-        return dict(transit=bare, dep=dep, cond=self._condition_key(t),
+        # A WORLD'S OWN INGREDIENTS (PLAN v2 Phase 5a, the mismatch worlds): `spec["world_density"]`
+        # is a (x_grid, g_x) local density that replaces the model's, `spec["transit_scale"]` multiplies
+        # the bare transit; both default to nothing and exist so a TWIN can be generated from a
+        # world the fit's model is not (the clipped focus), never for fitting real traces.
+        wd = self.spec.get("world_density")
+        prof = (window_profile(self.w0, self.m2, density=wd) if wd is not None
+                else window_profile(self.w0, self.m2, t["P_W"], float(t["T"]), self.rho) if self.ramp == "saturated"
+                else self.profile)
+        bare = bare * float(self.spec.get("transit_scale", 1.0))
+        return dict(transit=bare, dep=dep, cond=self._condition_key(t), profile=prof,
                     # F39: the meter reads behind the cell, so the recorded watt buys the clipped
                     # focus's on-axis intensity, c(w0) of the ideal Gaussian's (0.967 at 64 um)
                     s0=stark_shift_S0_mhz(t["P_W"], self.w0, rho=self.rho, delta_alpha_au=self.delta_alpha)
@@ -831,7 +864,7 @@ class Cell:
                             sigma_laser_fwhm=self.sigma_l_of(d, sess), transit_fwhm=transit,
                             s0=f * d["alpha_rel"] * per["s0"] * d.get(f"s0_scale_{per['cond']}", 1.0) * d.get("w0_shift_rel", 1.0) ** -2,
                             gamma_l=d["gamma_l"], laser_kind=self.kind, peak=peak,
-                            omega_mhz=omega, profile=self.profile)
+                            omega_mhz=omega, profile=per.get("profile", self.profile))
 
     def linear(self, t, nu, m):
         """Amplitude, offset and slope by weighted least squares under the
@@ -934,16 +967,25 @@ class Cell:
             pred = {k: float(np.mean([pm[k] for pm in per_model])) for k in per_model[0]}
             n_rep = len(per_trace)
             tfac = _T95.get(n_rep - 1, 2.0)
+            # THE TWIN'S BIAS, SUBTRACTED ONCE AND WRITTEN BESIDE THE RESULT (PLAN v2 Phase 2, the
+            # main aim's "using the twin to compute and factor out biases"). `spec["twin_bias"]` is a
+            # `rb5s6s.twin_bias.TwinBias` over the window surface at THIS fit's noise level; a cell the
+            # surface lacks RAISES here, in the producer, and is never read as zero.
+            tb = self.spec.get("twin_bias")
+            case = f"{sess}_{peak}_{p_mw}mW_{t_c}C"
             for k in sorted(pred):
                 vals = np.array([r[k] for r in per_trace], float)
                 if not np.all(np.isfinite(vals)):
                     continue
                 mu, sd = float(vals.mean()), float(vals.std(ddof=1))
                 sem = sd / math.sqrt(n_rep)
-                pull = (mu - pred[k]) / sem if sem > 0 else float("nan")
+                b, b_se = (tb.bias(case, k, float(self.noise_scale)) if tb is not None else (0.0, 0.0))
+                mu_c, sem_c = mu - b, math.sqrt(sem * sem + b_se * b_se)
+                pull = (mu_c - pred[k]) / sem_c if sem_c > 0 else float("nan")
                 out.append(dict(session=sess, peak=peak, p_mw=p_mw, t_c=t_c,
-                                statistic=k, n_rep=n_rep, data=mu, sem=sem,
+                                statistic=k, n_rep=n_rep, data=mu_c, sem=sem_c,
                                 t95=tfac, model=pred[k], pull=pull,
+                                twin_bias=b, twin_bias_se=b_se,
                                 admitted=True, why=""))
             # CROSS-RUNG RATIOS, admitted on having a population moment
             for w in MOMENT_WINDOWS:

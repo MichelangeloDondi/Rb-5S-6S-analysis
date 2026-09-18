@@ -346,4 +346,4 @@ several measured waists, the acquisition factorial that already separates
 drift, laser noise and the axis, and a vertical zoom held constant across the
 peaks would turn the worst-conditioned self-calibration into an ordinary one.
 
-[← Transit-time broadening](transit-time-broadening.md) · *Experimental spectroscopy, 5 of 11* · [The AC-Stark shift →](ac-stark-shift.md)
+[← Transit-time broadening](transit-time-broadening.md) · *Experimental spectroscopy, 5 of 12* · [Beam delivery and the waist ratio →](beam-delivery-and-the-waist-ratio.md)

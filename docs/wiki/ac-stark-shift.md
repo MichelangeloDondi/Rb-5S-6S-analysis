@@ -219,4 +219,4 @@ the private correction record carries both rows and the live figures.
 
 ---
 
-[← The beam waist](the-beam-waist.md) · *Experimental spectroscopy, 6 of 11* · [The inhomogeneous light shift →](the-inhomogeneous-light-shift.md)
+[← Beam delivery and the waist ratio](beam-delivery-and-the-waist-ratio.md) · *Experimental spectroscopy, 7 of 12* · [The inhomogeneous light shift →](the-inhomogeneous-light-shift.md)

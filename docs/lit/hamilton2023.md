@@ -10,16 +10,23 @@ authors:
   - Ginges, J. S. M.
   - Perrella, C.
 title: 'Experimental and theoretical study of dynamic polarizabilities in the 5S₁/₂–5D₅/₂ clock transition in rubidium-87 and determination of E1 matrix elements'
-journal: Phys. Rev. A
+journal: Phys. Rev. Applied
+volume: 19
+pages: '054059'
 year: 2023
-doi: null
+doi: 10.1103/PhysRevApplied.19.054059
 arxiv: 2212.10743
 pdf: PDF_papers/Hamilton_2023_Rb-5D-dynamic-polarizability-E1-elements.pdf
 held: true
 status: VERIFIED
 routing: []
 verify_flags:
-  - Journal vol/page/DOI VERIFY at submission
+  - 'The journal, volume, article number and DOI were read from the held PDF's
+    own header line on 2026-09-18 (Phys. Rev. Applied 19, 054059, DOI
+    10.1103/PhysRevApplied.19.054059), replacing a bare "Phys. Rev. A" and a null
+    DOI that had stood since the note was written. The issue number is still
+    unread: 054059 encodes it, but reading a field out of an article number is
+    inference and not a journal line, so number stays null.'
 verified_date: null
 summary: >
   Rigor template for the polarizability side (+ magic-lambda idea).

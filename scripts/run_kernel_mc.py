@@ -32,8 +32,11 @@ node and not about the sampler:
                         at w0 (what `run_ultra_joint.Cell` passes as `transit_fwhm`)
   transit_shape_rel     the kernel's shape against the two-sided exponential AT ITS OWN FWHM
   ramp_k2_rel, ramp_k3_rel   the rate-weighted instantaneous-shift distribution's cumulants, at the
-                        node's saturation, against `lineshape.stark_ramp`'s (weak-field) ramp;
-                        the weak-field Monte Carlo is recorded beside them so a failure names
+                        node's saturation, against the model's ramp: since 2026-09-18 (F133, PLAN v2
+                        Phase 1) `lineshape.saturated_ramp_density` at the node's own power, waist,
+                        temperature and rho, mixed axially by `lineshape.ramp_mixture` at the node's
+                        z_ratio (`ramp_mixture_moments`), which is what `run_ultra_joint.Cell` fits
+                        with; the weak-field Monte Carlo is recorded beside them so a failure names
                         the saturation and not the sampling; k3 carries its grid movement
   amplitude_power_law_abs   d ln A / d ln P at the node, with saturation and depletion, against
                         the model's law P^2 x `cascade.amplitude_factor` at the on-axis cycles
@@ -86,7 +89,7 @@ B_CUT = 3.0                   # impact parameters out to three beam radii
 TAU_EDGE = 3.0                # the chord in units of w/v, the wings carried
 N_TAU = 41                    # points along the chord; the grid movement halves it
 POWER_STEP = 0.05             # the central difference for d ln A / d ln P
-GRID_W0_UM = tuple(range(62, 94, 2))                      # the ansatz grid 64-90 with one node beyond each end, so a fine band at an edge truth has both bracketing nodes
+GRID_W0_UM = tuple(range(34, 59, 2))                      # the 36-56 um scan grid with one node beyond each end, so a fine band at an edge truth has both bracketing nodes; 62-92 was the grid of the 16th
 GRID_CONDITIONS = tuple((130.0, p) for p in (25.0, 75.0, 125.0, 175.0, 225.0)) + \
                   tuple((t, 225.0) for t in (70.0, 90.0, 110.0)) + \
                   tuple((130.0, p) for p in (90.0, 180.0, 270.0))   # the L's eight conditions, and the LeCroy evening's three
@@ -184,6 +187,15 @@ def _ramp_reference(n=20001):
     return _cumulants(s, f)
 
 
+def _cycles_axis(tab, P_W: float, w0_m: float, T_C: float) -> float:
+    """The on-axis cycles per crossing at power P_W: the chord's time-integrated rate at the node's
+    own saturation (`_rate_table` at that power), over the thermal crossing time. F134's known half:
+    the cycles come from the SATURATED rate, so the depletion's law departs from P^2 as the rate does."""
+    tau = np.linspace(-TAU_EDGE, TAU_EDGE, 4001)
+    return float(trapezoid(_rate(*tab, P_W * np.exp(-2.0 * tau ** 2)), tau)
+                 * w0_m / math.sqrt(math.pi * K.K_B_J_PER_K * (T_C + 273.15) / (2.0 * K.M_RB87_KG)))
+
+
 def run_node(w0_um, m2, rho, T_C, P_mW, *, n_atoms=100_000, half_window_m=None,
              cycles_model=0.0, seed=0, n_tau=N_TAU, depletion_form="mc"):
     t0 = time.time()
@@ -211,12 +223,27 @@ def run_node(w0_um, m2, rho, T_C, P_mW, *, n_atoms=100_000, half_window_m=None,
     wt_sat = (G * dt) * flux_len[:, None]; wt_weak = (Gw * dt) * flux_len[:, None]
     m_s, k2_s, k3_s = _cumulants(shift, wt_sat); m_w, k2_w, k3_w = _cumulants(shift, wt_weak)
     Gh, _, dth, uh = _chord(P_W, u_b, w, v, tab, (n_tau - 1) // 2 + 1)
-    _, k2_h, k3_h = _cumulants(-uh, (Gh * dth) * flux_len[:, None])
-    if zr > 0:                                    # the fit's ramp is the AXIAL mixture at the node's ratio
-        mm = lineshape.stark_ramp_axial_moments(1.0, zr, n_photon=2)
-        m_ref, k2_ref, k3_ref = -abs(mm["mean"]), mm["var"], mm["skew_standardized"] * mm["var"] ** 1.5
-    else:
-        m_ref, k2_ref, k3_ref = _ramp_reference()
+    # THE SAME SIDE AS THE FULL GRID, and it was not (2026-09-18). When the ramp's side was flipped
+    # to blue (O27) line 210 above became `shift = +u` and this halved-grid twin kept `-uh`. k3 is
+    # ODD, so the convergence check has been differencing k3 against MINUS ITSELF ever since, and
+    # `grid_movement` read |2 k3| / |k3_ref| ~ 1.9 at every node instead of the movement. Measured on
+    # w38.0_m1.00_r0.940_T130_P75: reported 1.92288 against |2 k3|/|k3_ref| = 1.92477, agreeing to
+    # 0.1 per cent, so the true movement was the residue, 0.0019. k2 is EVEN and was immune, which is
+    # why its own movement read 6e-6 and nothing looked odd. Nothing caught it because `judge` tested
+    # that the field was PRESENT and never what it said.
+    shift_h = +uh                                                       # BLUE-sided (O27), as above
+    _, k2_h, k3_h = _cumulants(shift_h, (Gh * dth) * flux_len[:, None])
+    # THE MODEL'S RAMP IS THE SATURATED DENSITY IN THE AXIAL MIXTURE (F133, 2026-09-18). Until this
+    # day the reference was the weak-field law (`stark_ramp_axial_moments`), and every node with
+    # P/w0^2 over 0.078 mW/um^2 failed k3 by 8 to 15 per cent (F131, F132): the Monte Carlo's chord
+    # saturates and the reference did not. The density is the Cell's own (`window_profile` with the
+    # trace's power), so a PASS here certifies the model the fit uses. The sign convention follows
+    # `shift = +u` above: the reference mean is POSITIVE (blue) as the Monte Carlo's is; the old
+    # `-abs(mean)` in the detail was a leftover of the red-sided kernel.
+    _xg = np.linspace(0.0, 1.0, 4001)
+    _gx = lineshape.saturated_ramp_density(_xg, P_W, w0_m, T_C, rho)
+    mm = lineshape.ramp_mixture_moments(1.0, zr, _xg, _gx, n_photon=2)
+    m_ref, k2_ref, k3_ref = mm["mean"], mm["var"], mm["k3"]
     # --- depletion per line: the surviving signal, the surviving kernel's width, the shares
     per_line, dep = {}, {}
     for peak, q in BRANCHING_F.items():
@@ -224,8 +251,7 @@ def run_node(w0_um, m2, rho, T_C, P_mW, *, n_atoms=100_000, half_window_m=None,
         sig = (Gq * Nq * dtq).sum(axis=1) * flux_len
         per_line[peak] = float(sig.sum() / sig0.sum())                   # surviving fraction of the signal
         dep[peak] = _fwhm(nu, _kernel(nu, sig, w, v))
-    cycles_axis = float(trapezoid(_rate(*tab, P_W * np.exp(-2.0 * np.linspace(-TAU_EDGE, TAU_EDGE, 4001) ** 2)),
-                                  np.linspace(-TAU_EDGE, TAU_EDGE, 4001)) * w0_m / math.sqrt(math.pi * K.K_B_J_PER_K * (T_C + 273.15) / (2.0 * K.M_RB87_KG)))
+    cycles_axis = _cycles_axis(tab, P_W, w0_m, T_C)
     # THE FLUX-WEIGHTED MEAN BY QUADRATURE (2026-09-17, the physics chair): as a sample mean it
     # carried the b-weight e^{4b^2/w^2}, whose mean over a finite half-normal draw is set by the
     # largest draw and scattered 7 per cent between seeds while every ratio scattered under 0.3;
@@ -255,7 +281,12 @@ def run_node(w0_um, m2, rho, T_C, P_mW, *, n_atoms=100_000, half_window_m=None,
         tab_s = _rate_table(P_W * scale, w0_m, T_C, rho)
         lu = np.linspace(math.log(1e-4), 0.0, 2001); uu = np.exp(lu)
         a_plane = float(trapezoid(_rate(*tab_s, P_W * scale * uu), lu))          # du/u = d(ln u)
-        c = cycles_axis * scale ** 2                                              # the weak-field law of the cycles
+        # F134's known half (2026-09-18): the cycles at the scaled power come from the SATURATED rate,
+        # not from `cycles_axis * scale**2`, the weak-field law that was here. Measured on the band
+        # before the change: 21 of 39 nodes inside 0.02 with this repair, the worst at 0.0502; the
+        # other half, the velocity-resolved depletion along the chord, is not a one-line term and is
+        # why the waist analyses read the gate on `kernel_gate.WAIST_READINGS` (D1).
+        c = _cycles_axis(tab_s, P_W * scale, w0_m, T_C)
         return a_plane * amplitude_factor("4207", c)
     expo_model = math.log(model_amp(1.0 + POWER_STEP) / model_amp(1.0 - POWER_STEP)) / math.log((1.0 + POWER_STEP) / (1.0 - POWER_STEP))
     # --- the shares
@@ -415,6 +446,9 @@ def main(argv=None) -> int:
     ap.add_argument("--rhos", default=None, help="a comma list of retro ratios for --grid (default the single --rho)")
     ap.add_argument("--window-mm", type=float, default=None, help="the collected half-window; default the record's own, z_ratio x z_R")
     ap.add_argument("--workers", type=int, default=1); ap.add_argument("--seed", type=int, default=0)
+    ap.add_argument("--nodes", default=None,
+                    help="a text file of nodes to run, one 'w0_um m2 rho T_C P_mW' per line (# comments), for the "
+                         "pooled re-run of every recorded node after a model edit (PLAN v2 Phase 1 step 5)")
     ap.add_argument("--out", default=None, help="a CSV of the readings per node (cache class)")
     ap.add_argument("--collect", action="store_true",
                     help="write results/kernel_mc.csv from the artefacts on disk at the record's retro ratio (no Monte Carlo is run): the committed readings")
@@ -426,8 +460,15 @@ def main(argv=None) -> int:
     kw = dict(n_atoms=a.n_atoms, half_window_m=(None if a.window_mm is None else a.window_mm * 1e-3), cycles_model=a.cycles_model,
               seed=a.seed, depletion_form=a.depletion_form)
     rhos = [float(x) for x in a.rhos.split(",")] if a.rhos else [a.rho]
-    nodes = ([(float(w), a.m2, r, T, P) for r in rhos for w in GRID_W0_UM for (T, P) in GRID_CONDITIONS] if a.grid
-             else [(a.w0, a.m2, a.rho, a.T, a.P)])
+    if a.nodes:
+        nodes = []
+        for ln in open(a.nodes):
+            if ln.strip() and not ln.lstrip().startswith("#"):
+                w, m2, r, T, P = (float(x) for x in ln.split()[:5])
+                nodes.append((w, m2, r, T, P))
+    else:
+        nodes = ([(float(w), a.m2, r, T, P) for r in rhos for w in GRID_W0_UM for (T, P) in GRID_CONDITIONS] if a.grid
+                 else [(a.w0, a.m2, a.rho, a.T, a.P)])
     jobs = [(n, kw) for n in nodes]
     # SUBMIT AND PRINT AS EACH NODE LANDS (the rule file: a progress line is not an instrument, and
     # `map` yields in task order): a grid stopped at minute thirteen had printed nothing and lost

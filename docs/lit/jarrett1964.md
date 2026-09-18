@@ -11,7 +11,7 @@ pages: A111--A117
 year: 1964
 doi: null
 arxiv: null
-pdf: PDF_papers/jarrett1964.pdf
+pdf: PDF_papers/Jarrett_1964_spin-exchange-cross-section-Rb85-Rb87.pdf
 held: true
 status: VERIFIED
 routing:

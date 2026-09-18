@@ -1,6 +1,6 @@
 # The wiki: one page per concept, method or effect
 
-What does a reader need to understand, concept by concept, to follow this experiment, and where does each concept live? This page is self-contained and sets out fifty-five pages in eight clusters, the routes through them by what the reader came for, and the connection map between them. Every page stands alone and states its own prerequisites. Not covered here: the experiment's own record instead of the concepts, which is [BIG_PICTURE.md](../BIG_PICTURE.md), or one quantity's complete position, which is [the quantities layer](../quantities/README.md).
+What does a reader need to understand, concept by concept, to follow this experiment, and where does each concept live? This page is self-contained and sets out fifty-six pages in eight clusters, the routes through them by what the reader came for, and the connection map between them. Every page stands alone and states its own prerequisites. Not covered here: the experiment's own record instead of the concepts, which is [BIG_PICTURE.md](../BIG_PICTURE.md), or one quantity's complete position, which is [the quantities layer](../quantities/README.md).
 
 > [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
 > defines every term and symbol used anywhere in this repository.
@@ -86,6 +86,7 @@ or widens it.
 | [The Voigt profile](voigt-profile.md) | concept | the Lorentzian-Gaussian convolution every real line becomes, and the width degeneracy it carries |
 | [Transit-time broadening](transit-time-broadening.md) | physical effect | a finite crossing time broadens the line, and the thermal average makes a cusp, not a Gaussian |
 | [The beam waist](the-beam-waist.md) | concept | the one number that turns a power into an intensity, and why every other quantity depends on it |
+| [Beam delivery and the waist ratio](beam-delivery-and-the-waist-ratio.md) | concept | a mode-cleaned delivery makes the waist a scanned parameter, and a ratio of two rungs divides out the mode radius, the focusing lens, the wavelength and the beam quality |
 | [The AC-Stark shift](ac-stark-shift.md) | physical effect | the drive light moves the levels it probes, and a focused beam turns one shift into a distribution |
 | [The inhomogeneous light shift](the-inhomogeneous-light-shift.md) | concept | the distribution of shifts a structured beam imposes, the object a lineshape reads and a guided design is graded by |
 | [Saturation](saturation.md) | physical effect | where the square law stops, and why a tighter focus leaves the safe regime faster than it gains signal |

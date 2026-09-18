@@ -159,6 +159,9 @@ rb5s6s/   api(the supported entry point: a trace in, a linewidth out)
           kernel_gate(the node gate of the full model: a refusal unless the kernel Monte Carlo's
                     artefact for the waist, beam quality, retro ratio, temperature and power reads
                     PASS against the model's own digest; the depletion factor the fit reads per node)
+          twin_bias(the window surface's one reader: the twin's bias on a windowed statistic per
+                    condition, statistic and noise level, with its standard error, raising on a
+                    cell the surface does not carry and never interpolating)
                     analysis reaches the archive's real traces only after recovering an
                     injected truth with no noise, then at 0.3 of the measured noise law,
                     then at 1.0. Each rung's verdict is COMPUTED from the coverage and the

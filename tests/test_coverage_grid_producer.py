@@ -2,8 +2,8 @@
 
 WHY THIS EXISTS. `results/coverage_grid.csv` carries the coverage collapse the
 analysis plan is built on, and until 2026-09-05 its producer typed a transit
-width some 88 per cent above the one the record derives from the measured
-waist. Nothing caught it: the file sits in `verify_results_fresh`'s EXPENSIVE
+width some 88 per cent above the one the record derives from the waist
+convention. Nothing caught it: the file sits in `verify_results_fresh`'s EXPENSIVE
 set, which the gate does not run, and a physics literal inside a producer is
 invisible to the freshness check by construction -- that check proves a CSV
 matches its producer, never that the producer matches the record.

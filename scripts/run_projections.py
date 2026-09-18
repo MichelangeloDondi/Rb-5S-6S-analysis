@@ -8,19 +8,22 @@ into measurements", "3 to 12 sigma"). This script replaces each of those
 sentences with a number derived from the dataset's own measured precision and
 the design parameters `docs/PLAN.md` already states, so the decision is read off
 a table instead of off an adjective. Eight families are projected: the fixed-lock
-pull channel, beta_self, the per-rung light-shift ceiling and the sources that
-reach it, the Doppler pedestal as a wide-scan add-on, the 7S adjudication, the
-778 nm calibration rung, the magic-wavelength scan, and the guided-mode option.
+pull channel, beta_self, the drive sources and what they deliver, the Doppler
+pedestal as a wide-scan add-on, the 7S adjudication, the 778 nm calibration
+rung, the magic-wavelength scan, and the guided-mode option.
 
-THE CEILING AND THE SECOND READING OF EVERY MULTI-LINE ROW. The 7S and 778 nm
-projections were first written at the dataset's own drive power. That power is
-not available on every rung: the differential polarizability differs by a factor
-of twenty-five across the three, so the power at which the light shift stops
-being a correction to the width differs by the same factor. Section 3 computes
-that ceiling per rung and sections 4 and 5 then carry a second reading of their
-delivered precision, taken at the ceiling rather than at the dataset's power.
-Both readings ship, because the first says what the instrument can do and the
-second says what the physics of the line allows it to do.
+THERE IS NO LIGHT-SHIFT CEILING HERE, AND THERE WAS ONE UNTIL 2026-09-18 (owner
+order O32). Sections 3 to 5 published a drive power at which the on-axis shift
+reaches a tenth of the line width, called it a ceiling the bench must stay under,
+and carried a second reading of the 7S and 778 precisions derated to it. The
+construct is retracted. This record MODELS the light shift: the ramp is a term of
+the forward model, its higher moments are the main aim's own channel, and the S0
+channel is a measurement rather than a nuisance, so a tenth of a width is signal
+and not a limit. It also inverted with the waist -- at 40 to 45 microns the
+"ceiling" falls below the archive's own 225 mW, which would make the dataset
+illegal by its own table. What does bound the drive power is saturation, the
+companion line, depletion and the ruler, each of which the model carries, and
+each of which is accounted for in its own place rather than as one number here.
 
 WHAT THIS IS NOT. Nothing here is a measurement, and no row is evidence about
 the atom. Every row is a projection of an instrument's reach under a stated
@@ -116,19 +119,6 @@ CAO_CM3_PER_MTORR = 2.28e13                    # at 423 K, docs/lit/cao2025.md
 # Hamilton's magic wavelength and the pole that bounds a scan across it.
 HAMILTON_MAGIC_NM, HAMILTON_MAGIC_ERR_NM = 776.179, 0.005   # docs/lit/hamilton2023.md
 POLE_5P32_5D52_NM = 776.0        # FUTURE_TRANSITIONS_titsapph.md 3.3
-
-# --------------------------------------------------------------------------- #
-# The light-shift ceiling, preregistered before the numbers were computed.      #
-#                                                                               #
-# THE FRACTION IS ONE TENTH OF THE LINE WIDTH. Below a tenth the on-axis shift  #
-# is a correction to a fitted width, absorbed by the width fit at the cost of a #
-# small bias. At a tenth it stops being a correction: the shift distribution is #
-# a feature of the lineshape that the width fit has to carry explicitly, and    #
-# the self-broadening reading of the width no longer stands on its own. That is #
-# the point this projection is asked to locate, so the fraction is fixed here   #
-# rather than chosen after seeing which rungs it favours.                       #
-# --------------------------------------------------------------------------- #
-CEILING_WIDTH_FRACTION = 0.10
 
 # --------------------------------------------------------------------------- #
 # The Doppler pedestal: the wide-scan add-on and its two observables.           #
@@ -354,7 +344,7 @@ def project_pull(rows, inp) -> dict:
         _add(rows, "proj_pull_S0_over_prediction", label, s0_pred / sigma, None,
              "sigma",
              "predicted S0(225 mW) divided by the projected uncertainty",
-             common + ". prediction at the committed measured waist",
+             common + ". prediction at the committed waist convention",
              "results/stark_joint.csv S0_225mW_pred")
         _add(rows, "proj_deltaalpha_frac", label, frac_da, None, "fraction, 1 sigma",
              "quadrature sum of the fractional shift uncertainty and the "
@@ -481,142 +471,24 @@ def project_beta(rows, inp) -> dict:
 
 
 # --------------------------------------------------------------------------- #
-# 3. The light-shift ceiling on each rung, and the sources that reach it        #
+# 3. The drive sources on each rung and the power each class delivers          #
 # --------------------------------------------------------------------------- #
-def project_ceilings(rows, inp) -> dict:
-    """The drive power at which the on-axis shift reaches CEILING_WIDTH_FRACTION
-    of the line width, in free space at the dataset's own geometry, one value
-    per rung. S0 is linear in power, so the ceiling is one division."""
-    width = inp["width_mean"]
-
-    _add(rows, "input_line_total_width", "archive geometry", width, None, "MHz",
-         "mean total width over the 70-130 C sweep and the 130 C power ladder",
-         "measured on the 993 nm line and carried unchanged to the other two "
-         "rungs, because at this waist the transit and laser terms that "
-         "dominate it are set by the geometry and the instrument rather than "
-         "by the rung. The upper-state natural widths do differ, and the "
-         "carry is an assumption and not a derivation. THIS SENTENCE SAID THE "
-         "REPOSITORY HOLDS NO 7S LIFETIME until 2026-09-10: it holds 88.07(40) "
-         "ns as constants.TAU_7S_S, from the Safronova 2011 table this record "
-         "already reads, and the transition ladder now carries the width in "
-         "its ceiling rows. What stays an assumption here is the TOTAL "
-         "homogeneous width, which the transit and laser terms dominate at "
-         "this waist. It runs against the 778 nm rung: that upper state "
-         "is narrower than 6S, so its true width is smaller and its true "
-         "ceiling lower than the row below",
-         "results/linefit_conditions.csv")
-
-    out = {}
-    for label, e_upper_cm, d_alpha_fn, source in RUNGS:
-        lam = rung_wavelength_nm(e_upper_cm)
-        d_alpha = abs(float(d_alpha_fn(lam)))
-        # The waist is a function of the drive wavelength, not a property of
-        # the bench alone: w0 = lambda f / (pi w_in). Until 2026-09-09 every
-        # rung here was evaluated at K.W0_MEASURED_M, the waist measured at
-        # 993 nm, so two of the three ceilings described a focus no single
-        # lens reaches (A137). Both readings are emitted: the common-waist one
-        # isolates the polarizability, the drive-waist one is what this bench
-        # would actually run at, and the latter is what feeds the margins.
-        w0_drive = K.waist_at_drive(lam, input_beam="aperture")
-        w0_drive_alt = K.waist_at_drive(lam, input_beam="resonator")
-        s0_per_w_common = lineshape.stark_shift_S0_mhz(
-            1.0, K.W0_MEASURED_M, K.RHO_RETRO, d_alpha)
-        ceiling_common_w = CEILING_WIDTH_FRACTION * width / s0_per_w_common
-        ceiling_w = CEILING_WIDTH_FRACTION * width / lineshape.stark_shift_S0_mhz(
-            1.0, w0_drive, K.RHO_RETRO, d_alpha)
-        ceiling_alt_w = CEILING_WIDTH_FRACTION * width / lineshape.stark_shift_S0_mhz(
-            1.0, w0_drive_alt, K.RHO_RETRO, d_alpha)
-        derate = max(1.0, QUOTE_P_W / ceiling_w)
-        geometry = (f"free space at the dataset geometry, waist "
-                    f"{K.W0_MEASURED_M * 1e6:.0f} um and retro ratio "
-                    f"{K.RHO_RETRO:.2f}, counter-propagating drive")
-
-        _add(rows, "input_rung_delta_alpha", label, d_alpha, None, "a.u.",
-             "magnitude of alpha(upper) minus alpha(5S) at the rung's own "
-             "two-photon drive wavelength",
-             f"drive wavelength {lam:.3f} nm from the NIST term energy. The "
-             "993 nm value is the module's own recompute, whose sign is under "
-             "dispute and whose magnitude sits 5 percent above the pinned "
-             f"{K.DELTA_ALPHA_AU:.0f} a.u. of record, so the ceiling below is "
-             "5 percent low if the pinned value is right. The 778 nm value is "
-             "scalar only",
-             source)
-        _add(rows, "proj_light_shift_ceiling", label, ceiling_common_w * 1e3,
-             None, "mW",
-             f"{CEILING_WIDTH_FRACTION:.2f} x the line width divided by the "
-             "on-axis shift per watt, every rung held at the reference waist",
-             geometry + f", and the preregistered fraction of "
-             f"{CEILING_WIDTH_FRACTION:.2f} fixed in the producer before any "
-             "rung was evaluated. The common waist is a comparison and not a "
-             "configuration: it holds the geometry so the rungs differ only by "
-             "their polarizability, and no single lens reaches it away from "
-             f"{K.W0_REFERENCE_LAMBDA_NM:.1f} nm. The row below is the one a "
-             "bench runs at",
-             "rb5s6s.lineshape.stark_shift_S0_mhz, results/linefit_conditions.csv")
-        _add(rows, "input_rung_waist_at_drive", label, w0_drive * 1e6, None, "um",
-             "the reference waist scaled to this rung's own drive wavelength "
-             "through the same lens and the same input beam",
-             f"rb5s6s.constants.waist_at_drive, aperture-limited input beam, "
-             f"the f = {K.DRIVE_LENS_F_M * 1e3:.0f} mm plano-convex L1 with its "
-             f"own dispersion, focal length {K.drive_lens_focal_m(lam) * 1e3:.2f} "
-             f"mm here. The unclipped-resonator reading is "
-             f"{w0_drive_alt * 1e6:.2f} um and the pair brackets the input-beam "
-             "regime the record does not pin (A136)",
-             "rb5s6s.constants.waist_at_drive, docs/APPARATUS.md 1.2")
-        _add(rows, "proj_light_shift_ceiling_at_drive_waist", label,
-             ceiling_w * 1e3, None, "mW",
-             f"{CEILING_WIDTH_FRACTION:.2f} x the line width divided by the "
-             "on-axis shift per watt at this rung's own achievable waist",
-             "the bench-facing ceiling, and the one the derating and the "
-             "margins below are computed from. It is never above the "
-             "common-waist row away from the reference wavelength, because a "
-             "shorter drive focuses tighter through the same lens and the "
-             "shift goes as the inverse square of the waist. The "
-             "unclipped-resonator bracket gives "
-             f"{ceiling_alt_w * 1e3:.2f} mW, so the regime the record does not "
-             "pin moves this row by "
-             f"{abs(ceiling_alt_w / ceiling_w - 1.0) * 100:.0f} per cent",
-             "rb5s6s.constants.waist_at_drive, rb5s6s.lineshape.stark_shift_S0_mhz")
-        _add(rows, "proj_ceiling_signal_derating", label, derate, None,
-             "dimensionless",
-             "the dataset's quoted drive power divided by the ceiling, floored "
-             "at one",
-             "the two-photon rate goes as the square of the intensity and a "
-             "shot-noise-limited width uncertainty goes as the inverse square "
-             "root of the rate, so a width precision measured at the dataset's "
-             "own power degrades by exactly this factor at the ceiling. The "
-             f"reference power is the ladder maximum of {QUOTE_P_W * 1e3:.0f} "
-             "mW, which is the conservative end, because the dataset's block "
-             "scatter is an average over a ladder whose lower rungs deliver "
-             "less signal than that",
-             "results/linefit_conditions.csv")
-        _add(rows, "proj_ceiling_averaging_factor", label, derate ** 2, None,
-             "dimensionless",
-             "the square of the derating, which is the session-length factor "
-             "that recovers the uncapped precision",
-             "both terms of the per-block width uncertainty average over "
-             "repeats of the five-block design, so the recovery factor is the "
-             "square of the derating exactly rather than approximately",
-             "results/projections.csv proj_ceiling_signal_derating")
-
-        out[label] = dict(lam=lam, d_alpha=d_alpha, ceiling_w=ceiling_w,
-                          ceiling_common_w=ceiling_common_w,
-                          ceiling_alt_w=ceiling_alt_w,
-                          w0_drive=w0_drive, derate=derate)
-    return out
 
 
-def project_sources(rows, ceilings) -> None:
-    """One row per rung naming the viable source class and its headroom over
-    that rung's ceiling. The question these answer is whether the ceiling makes
-    the titanium sapphire unnecessary."""
+def project_sources(rows) -> None:
+    """One row per rung naming the viable source class and the power it delivers.
+
+    The question these answer is which rungs need the titanium sapphire and which a
+    diode class already reaches. Until 2026-09-18 the row divided that power by a
+    retracted "light-shift ceiling" (O32), which made the answer a ratio to a limit
+    this record does not have; it is the delivered power itself now."""
     classes = (
         ("993 nm, 5S to 6S",
          "the titanium sapphire on the bench, or a diode-seeded ytterbium "
          "fibre amplifier at its band edge",
          QUOTE_P_W, "the dataset's own delivered ladder maximum",
-         "The ceiling sits above what the bench delivers, so power still buys "
-         "signal here and the titanium sapphire is not made unnecessary. The "
+         "Power still buys signal on this rung, so the titanium sapphire is not "
+         "made unnecessary. The "
          "ytterbium fibre alternative would run at the short-wavelength edge "
          "of its gain band, and no held source in this repository states a "
          "delivered power there, so that reach is UNCERTAIN and the headroom "
@@ -625,9 +497,8 @@ def project_sources(rows, ceilings) -> None:
         ("760 nm, 5S to 7S",
          "an extended-cavity diode with a tapered amplifier",
          QUOTE_P_W, "the dataset's own delivered ladder maximum",
-         "The bench's existing delivery already exceeds this ceiling by the "
-         "headroom below, so the ceiling and not the source sets the power, "
-         "and the titanium sapphire is unnecessary on this rung. The named "
+         "The delivered power below is already ample on this rung, so the "
+         "titanium sapphire is unnecessary here. The named "
          "class is established practice at 760 nm rather than a claim from a "
          "held source: no note in docs/lit states a tapered-amplifier output "
          "at this wavelength, which is the LIT GAP here, so what is quantified "
@@ -646,13 +517,16 @@ def project_sources(rows, ceilings) -> None:
          "docs/lit/feng2026.md, docs/lit/li2024b.md, docs/lit/poulin2002.md"),
     )
     for label, source_class, delivered_w, power_source, note, cite in classes:
-        ceiling_w = ceilings[label]["ceiling_w"]
-        _add(rows, "proj_source_headroom", f"{label}, {source_class}",
-             delivered_w / ceiling_w, None, "times the ceiling",
-             "the class's delivered drive power divided by that rung's "
-             "light-shift ceiling",
-             f"delivered power {delivered_w * 1e3:.0f} mW, {power_source}. "
-             + note, cite)
+        # WHAT THE BENCH DELIVERS, AND NOT WHAT IT MAY NOT EXCEED (owner, 2026-09-17, O32). This row
+        # divided the delivered power by a "light-shift ceiling" until 2026-09-18. That construct is
+        # retracted: this record MODELS the light shift, its ramp is a term of the forward model and
+        # its higher moments are the main aim's own channel, so a tenth of a line width is signal and
+        # not a limit. What actually bounds the drive power is saturation, the companion line,
+        # depletion and the ruler, each of which the model carries and none of which is a ceiling.
+        _add(rows, "proj_source_delivered_power", f"{label}, {source_class}",
+             delivered_w * 1e3, None, "mW",
+             "the class's demonstrated drive power on the cell",
+             f"{power_source}. " + note, cite)
 
 
 def doppler_pedestal_fwhm_mhz(t_c: float, mass_kg: float) -> float:
@@ -684,9 +558,49 @@ def d_ratio_d_rho(rho: float) -> float:
 
 
 # --------------------------------------------------------------------------- #
+# 2b. The rungs' own drive wavelength: polarizability and waist                 #
+# --------------------------------------------------------------------------- #
+def project_rungs(rows) -> None:
+    """Per rung, the differential polarizability at its own drive and the waist that drive reaches.
+
+    RESTORED 2026-09-18. These two rows predate the light-shift ceiling and are
+    independent of it, but they were emitted from inside the loop that computed it,
+    so stripping the retracted ceiling (O32) took them out with it and left RUNGS
+    consumed by nothing. A reference in FUTURE_TRANSITIONS went DANGLING and that is
+    how the loss was found, which is the anti-staleness contract doing its job on its
+    author. The waist is a function of the drive wavelength and not a property of the
+    bench alone, w0 = lambda f / (pi w_in), so a rung evaluated at the 993 nm waist
+    describes a focus no single lens reaches (A137)."""
+    for label, _e_cm, d_alpha_fn, source in RUNGS:
+        lam = 1e7 / _e_cm * 2.0
+        d_alpha = abs(float(d_alpha_fn(lam)))
+        w0_drive = K.waist_at_drive(lam, input_beam="aperture")
+        w0_drive_alt = K.waist_at_drive(lam, input_beam="resonator")
+        _add(rows, "input_rung_delta_alpha", label, d_alpha, None, "a.u.",
+             "magnitude of alpha(upper) minus alpha(5S) at the rung's own "
+             "two-photon drive wavelength",
+             f"drive wavelength {lam:.3f} nm from the NIST term energy. The "
+             "993 nm value is the module's own recompute, whose sign is under "
+             "dispute and whose magnitude sits 5 percent above the pinned "
+             f"{K.DELTA_ALPHA_AU:.0f} a.u. of record. The 778 nm value is "
+             "scalar only",
+             source)
+        _add(rows, "input_rung_waist_at_drive", label, w0_drive * 1e6, None, "um",
+             "the reference waist scaled to this rung's own drive wavelength "
+             "through the same lens and the same input beam",
+             f"rb5s6s.constants.waist_at_drive, aperture-limited input beam, "
+             f"the f = {K.DRIVE_LENS_F_M * 1e3:.0f} mm plano-convex L1 with its "
+             f"own dispersion, focal length {K.drive_lens_focal_m(lam) * 1e3:.2f} "
+             f"mm here. The unclipped-resonator reading is "
+             f"{w0_drive_alt * 1e6:.2f} um and the pair brackets the input-beam "
+             "regime the record does not pin (A136)",
+             "rb5s6s.constants.waist_at_drive, docs/APPARATUS.md 1.2")
+
+
+# --------------------------------------------------------------------------- #
 # 4. The Doppler pedestal as a campaign observable                              #
 # --------------------------------------------------------------------------- #
-def project_pedestal(rows, inp, ceilings) -> None:
+def project_pedestal(rows, inp) -> None:
     """Two observables from one wide scan: the pedestal width as an in-situ
     thermometer, and the narrow-to-pedestal area ratio as an in-situ retro
     ratio. Both are quoted per single one-second scan and as the stacking time
@@ -745,9 +659,8 @@ def project_pedestal(rows, inp, ceilings) -> None:
         f"{span_mhz / 1e3:.0f} GHz on the transition axis and covers the "
         "hyperfine comb with about one pedestal width of clean wing on each "
         "side, at the dataset's own per-point dwell and at its quoted drive "
-        f"power, which sits at "
-        f"{QUOTE_P_W / ceilings['993 nm, 5S to 6S']['ceiling_w']:.2f} of the "
-        "993 nm light-shift ceiling and so needs no derating. White noise at "
+        f"power, which is bounded by saturation, the companion line, depletion and "
+        "the ruler rather than by any light-shift limit. White noise at "
         "the dataset's own per-trace level and nothing else: a broad low "
         "feature also has to be separated from the scattered-light background, "
         "which this projection does not model")
@@ -848,22 +761,14 @@ def project_pedestal(rows, inp, ceilings) -> None:
 # --------------------------------------------------------------------------- #
 # 5. The 7S adjudication                                                        #
 # --------------------------------------------------------------------------- #
-def project_7s(rows, inp, beta_out, ceilings) -> None:
+def project_7s(rows, inp, beta_out) -> None:
     zam, zam_err = ZAMEROSKI_7S_KHZ_PER_MTORR
     wang, wang_err = WANG_7S_KHZ_PER_MTORR
     published_err = max(zam_err, wang_err)
 
     khz_per_mtorr_per_mhz_per_1e12 = ZAMEROSKI_CM3_PER_MTORR / 1e12 * 1e3
     delivered = beta_out["sigma_beta_mhz"] * khz_per_mtorr_per_mhz_per_1e12
-    derate = ceilings["760 nm, 5S to 7S"]["derate"]
-    ceiling_mw = ceilings["760 nm, 5S to 7S"]["ceiling_w"] * 1e3
-    capped = delivered_rate(inp, beta_out, derate, ZAMEROSKI_CM3_PER_MTORR)
-    at_ceiling = (
-        f"the same design run at the {ceiling_mw:.0f} mW light-shift ceiling of "
-        "this rung rather than at the dataset's own drive power, with the "
-        "signal-limited part of the per-block width uncertainty scaled by the "
-        f"derating of {derate:.2f} and the ruler axis term held")
-
+    
     for wang_fwhm, label in ((wang, "Wang read as FWHM"),
                              (2 * wang, "Wang read as HWHM")):
         gap = abs(wang_fwhm - zam)
@@ -882,20 +787,13 @@ def project_7s(rows, inp, beta_out, ceilings) -> None:
              assumptions + ". the projection is the same five-block design as "
              "the 993 nm row, run on the 760 nm line",
              "results/projections.csv proj_7s_precision_delivered")
-        _add(rows, "proj_7s_margin_at_ceiling", label, needed / capped, None,
-             "dimensionless",
-             "the required precision divided by the precision delivered at the "
-             "light-shift ceiling, above one where the adjudication holds",
-             assumptions + ". " + at_ceiling,
-             "results/projections.csv proj_7s_precision_delivered_at_ceiling")
         _add(rows, "proj_7s_averaging_to_margin_one", label,
-             max(1.0, (capped / needed) ** 2), None, "sessions",
+             max(1.0, (delivered / needed) ** 2), None, "sessions",
              "the square of the shortfall in margin, floored at one, which is "
              "the number of repeats of the five-block design that brings the "
              "margin to one",
-             at_ceiling + ", and one where the ceiling costs the test no "
-             "session length at all",
-             "results/projections.csv proj_7s_margin_at_ceiling")
+             "the same five-block design at the dataset's own drive power",
+             "results/projections.csv proj_7s_margin")
 
     _add(rows, "proj_7s_precision_delivered", "same-instrument session", delivered,
          None, "kHz/mTorr",
@@ -907,29 +805,16 @@ def project_7s(rows, inp, beta_out, ceilings) -> None:
          "20 K cold-spot lag applied",
          "results/ruler_blocks.csv, results/linefit_conditions.csv, "
          "docs/lit/zameroski2014.md")
-    _add(rows, "proj_7s_precision_delivered_at_ceiling", "same-instrument session",
-         capped, None, "kHz/mTorr",
-         "the same conversion with the signal-limited width uncertainty scaled "
-         "by the ceiling derating",
-         at_ceiling, "results/projections.csv proj_ceiling_signal_derating")
 
 
 # --------------------------------------------------------------------------- #
 # 6. The 778 nm calibration rung                                                #
 # --------------------------------------------------------------------------- #
-def project_778(rows, inp, beta_out, ceilings) -> None:
+def project_778(rows, inp, beta_out) -> None:
     cao, cao_err = CAO_5D_KHZ_PER_MTORR
     khz_per_mtorr_per_mhz_per_1e12 = CAO_CM3_PER_MTORR / 1e12 * 1e3
     delivered = beta_out["sigma_beta_mhz"] * khz_per_mtorr_per_mhz_per_1e12
-    derate = ceilings["778 nm, 5S to 5D5/2"]["derate"]
-    ceiling_mw = ceilings["778 nm, 5S to 5D5/2"]["ceiling_w"] * 1e3
-    capped = delivered_rate(inp, beta_out, derate, CAO_CM3_PER_MTORR)
-    at_ceiling = (
-        f"the same design run at the {ceiling_mw:.0f} mW light-shift ceiling of "
-        "this rung rather than at the dataset's own drive power, with the "
-        "signal-limited part of the per-block width uncertainty scaled by the "
-        f"derating of {derate:.1f} and the ruler axis term held")
-
+    
     tests = (
         ("factor-two convention error at 3 sigma",
          sigma_new_for_separation(cao, cao_err, 3.0),
@@ -961,20 +846,13 @@ def project_778(rows, inp, beta_out, ceilings) -> None:
              "the required precision divided by the projected precision, above "
              "one where the test would have power",
              assumptions, "results/projections.csv proj_778_precision_delivered")
-        _add(rows, "proj_778_margin_at_ceiling", label, needed / capped, None,
-             "dimensionless",
-             "the required precision divided by the precision delivered at the "
-             "light-shift ceiling, above one where the test would have power",
-             assumptions + ". " + at_ceiling,
-             "results/projections.csv proj_778_precision_delivered_at_ceiling")
         _add(rows, "proj_778_averaging_to_margin_one", label,
-             max(1.0, (capped / needed) ** 2), None, "sessions",
+             max(1.0, (delivered / needed) ** 2), None, "sessions",
              "the square of the shortfall in margin, floored at one, which is "
              "the number of repeats of the five-block design that brings the "
              "margin to one",
-             at_ceiling + ", and one where the ceiling costs the test no "
-             "session length at all",
-             "results/projections.csv proj_778_margin_at_ceiling")
+             "the same five-block design at the dataset's own drive power",
+             "results/projections.csv proj_778_margin")
 
     _add(rows, "proj_778_precision_delivered", "same-instrument session", delivered,
          None, "kHz/mTorr",
@@ -988,17 +866,6 @@ def project_778(rows, inp, beta_out, ceilings) -> None:
          delivered / cao, None, "fraction of the published value",
          "the projected precision divided by the published coefficient",
          "as above, against Cao's 1.3 percent",
-         "docs/lit/cao2025.md")
-    _add(rows, "proj_778_precision_delivered_at_ceiling", "same-instrument session",
-         capped, None, "kHz/mTorr",
-         "the same conversion with the signal-limited width uncertainty scaled "
-         "by the ceiling derating",
-         at_ceiling, "results/projections.csv proj_ceiling_signal_derating")
-    _add(rows, "proj_778_precision_delivered_frac_at_ceiling",
-         "same-instrument session", capped / cao, None,
-         "fraction of the published value",
-         "the ceiling-capped precision divided by the published coefficient",
-         at_ceiling + ", against Cao's 1.3 percent",
          "docs/lit/cao2025.md")
 
 
@@ -1049,7 +916,7 @@ def project_magic(rows, inp) -> None:
              "half span, from the zero-crossing error of a centred linear fit",
              assumptions + ". quoted as a fraction because this repository "
              "computes no independent 5D differential polarizability. The "
-             "Hamilton-anchored construction this file uses for the ceiling is "
+             "Hamilton-anchored polarizability construction this file uses is "
              "evaluated at the drive wavelength, two nanometres from the "
              "near-resonant pole, and it is not carried to the span edge, "
              "which sits a fifth of a nanometre from that pole where the "
@@ -1098,11 +965,11 @@ def main() -> int:
 
     pull = project_pull(rows, inp)
     beta = project_beta(rows, inp)
-    ceilings = project_ceilings(rows, inp)
-    project_sources(rows, ceilings)
-    project_pedestal(rows, inp, ceilings)
-    project_7s(rows, inp, beta, ceilings)
-    project_778(rows, inp, beta, ceilings)
+    project_sources(rows)
+    project_rungs(rows)
+    project_pedestal(rows, inp)
+    project_7s(rows, inp, beta)
+    project_778(rows, inp, beta)
     project_magic(rows, inp)
     project_guided(rows)
 
@@ -1126,12 +993,6 @@ def main() -> int:
           f"S0(225 mW), against a predicted {pull['s0_pred']:.3f}")
     print(f"  beta_self, five blocks       {beta['sigma_beta_mhz'] * 1e3:.3f} kHz "
           f"per 1e12, a {beta['detect']:.1f} sigma reach on the expected 3.5")
-    print(f"  light-shift ceilings at w0 = {K.W0_MEASURED_M * 1e6:.0f} um, S0 at "
-          f"{CEILING_WIDTH_FRACTION:.0%} of the width")
-    for label, c in ceilings.items():
-        print(f"    {label:<22} {c['ceiling_w'] * 1e3:7.1f} mW  "
-              f"(delta_alpha {c['d_alpha']:.0f} a.u., width precision derated "
-              f"{c['derate']:.2f}x, session {c['derate'] ** 2:.0f}x)")
     print()
     print(f"wrote {out.relative_to(ROOT)} with {len(rows)} rows")
     return 0

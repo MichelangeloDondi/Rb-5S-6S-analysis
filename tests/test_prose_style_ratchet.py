@@ -750,7 +750,14 @@ def test_no_lowered_state_notation_in_prose():
     # number zero, and the governance rule families 0d and 0f matched the
     # old pattern the day GOVERNANCE.md first cited them. Physics decides
     # the population: n starts at one.
-    lowered = re.compile(r"\b[1-9][spdf]\b(?!\))")
+    # AND A DOTTED SECTION NUMBER IS NOT A STATE (2026-09-18, found by the thesis session).
+    # A sub-level written 4.2d put "2d" inside a word boundary and this guard called it a lowered
+    # d state, so the scheme was safe at 4.2b and 4.2c -- b and c are not orbital letters -- and
+    # broke the moment it reached d, and would break again at f, p and s. The peer renumbered to
+    # 4.5 instead of widening an allowlist that was not theirs to widen, which was right, and left
+    # the defect for its owner. The lookbehind refuses a match whose digit follows a digit and a
+    # dot, because no atomic state is ever written with a decimal prefix.
+    lowered = re.compile(r"(?<!\d\.)\b[1-9][spdf]\b(?!\))")
     hits = {}
     for rel in _tracked_markdown():
         if rel.startswith("docs/lit/") or not (ROOT / rel).exists():

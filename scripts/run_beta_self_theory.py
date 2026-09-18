@@ -22,7 +22,7 @@ WHAT IT COMPUTES, and the two steps that were one wrong step before:
     an exponent typed into a comment.
 
 THE HEADLINE THE BUDGET RETURNS: the coefficient is known as well as that one
-measurement is and no better. Zameroski's own bar is 8.5 per cent of the value;
+measurement is and no better. Zameroski's own bar is 10.08 per cent of the value;
 every term of the recipe together is 2.0 per cent in quadrature, which moves the
 total from 8.5 to 8.8.
 

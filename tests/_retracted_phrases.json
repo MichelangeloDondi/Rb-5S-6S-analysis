@@ -1,113 +1,125 @@
 {
-  "_comment": [
-    "A retraction is not complete until the retracted string is absent from the",
-    "tree. Each entry is one retirement. `pattern` is a regex matched against",
-    "WHITESPACE-FLATTENED text, so a wrapped phrase cannot slip through a",
-    "line-based grep. `marker_window` is how many characters around a hit are",
-    "searched for a retraction marker: a hit that sits inside an explicit",
-    "withdrawal is the record doing its job, not a survival.",
-    "Seed the bank when a claim is retired, in the same commit that retires it."
-  ],
-  "markers": [
-    "withdrawn",
-    "withdraw",
-    "retired",
-    "retracted",
-    "used to read",
-    "used to say",
-    "no longer",
-    "until 2026-",
-    "corrected 2026-",
-    "intermediate draft",
-    "earlier draft",
-    "an earlier version",
-    "first draft",
-    "NOT a stable summary",
-    "no count of arms",
-    "is not quotable",
-    "do NOT summarise",
-    "criterion corrected",
-    "replaced by",
-    "was replaced"
-  ],
-  "entries": [
-    {
-      "pattern": "all[ -]?positive[ -]?and[ -]?similar",
-      "retired": "2026-08-27",
-      "why": "positivity was never the test for the leave-one-out arms; the threshold is 2.706 and the arms span a factor of fourteen",
-      "marker_window": 400
-    },
-    {
-      "pattern": "three of (?:the )?four[a-z ,-]{0,40}(?:arms|below|threshold|clear)",
-      "retired": "2026-08-27",
-      "why": "a binary count of leave-one-out arms is not a stable summary: the arms are separate likelihoods and carrying them to the adopted kappa leaves one inside the profile's own scatter of the threshold",
-      "marker_window": 400
-    },
-    {
-      "pattern": "(?:survives|survive) dropping any one peak",
-      "retired": "2026-08-27",
-      "why": "withdrawn on the same rows it cited",
-      "marker_window": 400
-    },
-    {
-      "pattern": "only the DIFFERENTIAL[a-z ]{0,40}can bias a width",
-      "retired": "2026-08-27",
-      "why": "beta.py floats a centre per trace and density is constant within a trace, so a collisional shift is absorbed whether or not it varies across the sweep",
-      "marker_window": 400
-    },
-    {
-      "pattern": "closer to five to eight",
-      "retired": "2026-08-27",
-      "why": "an intermediate draft of the Orson density-null comparison; the committed like-for-like figure is about 24",
-      "marker_window": 400
-    },
-    {
-      "pattern": "(?:homogeneous terms|these four|components of th\\w+ response|transit[^.]{0,60}) adds? exactly|adds? exactly[^.]{0,60}transit",
-      "retired": "2026-08-28",
-      "why": "the guided transit kernel is a squared Lorentzian entering the width at second order (results/transit_additivity.csv temperature_exponent_band 0.97 to 0.98), so the four-term exact-additivity model is retired; exact additivity survives for the Lorentzian pair alone. Survived 14 board rounds in files no round was pointed at, and two clean-sweep greps missed it on grammatical number",
-      "marker_window": 400
-    },
-    {
-      "pattern": "odd cumulants pass(?:es)? through[a-z ,-]{0,30}untouched",
-      "retired": "2026-08-31",
-      "why": "the whole-line odd cumulants survive only as the truncation-limited, self-centred fraction results/cumulant_window_check.csv measures; the unqualified pass-through claim is the retracted form",
-      "marker_window": 400
-    },
-    {
-      "pattern": "gamma\\s*/\\s*W[ -]suppressed|γ\\s*/\\s*W[ -]suppressed",
-      "retired": "2026-08-31",
-      "why": "suppression wording implies a ratio below one; the measured quantity is a truncation-limited fraction and the correct wording names the fraction and its rows",
-      "marker_window": 400
-    },
-    {
-      "pattern": "floor[ -]dominated",
-      "retired": "2026-08-31",
-      "why": "the small-shift ratio is finite (survival_vs_S0 rows); the floor-domination story was grid noise from edge-snapped windows, and floor already means the noise floor in this record",
-      "marker_window": 400
-    },
-    {
-      "pattern": "rules out a chirp",
-      "retired": "2026-09-14",
-      "why": "E73: the pedestal is symmetric by construction and the data's own symmetry at |k| = 3 refuses only an antisymmetric excess of that size; the phrase asserted more than either",
-      "marker_window": 400
-    },
-    {
-      "pattern": "rather than electronics or dark current",
-      "retired": "2026-09-14",
-      "why": "E72: the floor scales with the peak height, an electronic component is bounded and not excluded",
-      "marker_window": 400
-    },
-    {
-      "pattern": "independent 64 (um|µm|\\\\mu m|micron) waist measurement",
-      "retired": "2026-09-14",
-      "why": "E76: the lineage waist is a working convention (owner, 2026-09-10), and the results ledger's generator still called it an independent measurement",
-      "marker_window": 400
-    },
-    {
-      "pattern": "attributed to the dropped core",
-      "retired": "2026-09-14",
-      "marker_window": 400,
-      "why": "E78: the van der Waals module blamed its 18 per cent miss on the 7S rate on the dropped core polarizability, where the cause was its integral's sign error on an excited atom's downward lines (A250)"
-    }
-  ]
+ "_comment": [
+  "A retraction is not complete until the retracted string is absent from the",
+  "tree. Each entry is one retirement. `pattern` is a regex matched against",
+  "WHITESPACE-FLATTENED text, so a wrapped phrase cannot slip through a",
+  "line-based grep. `marker_window` is how many characters around a hit are",
+  "searched for a retraction marker: a hit that sits inside an explicit",
+  "withdrawal is the record doing its job, not a survival.",
+  "Seed the bank when a claim is retired, in the same commit that retires it."
+ ],
+ "markers": [
+  "withdrawn",
+  "withdraw",
+  "retired",
+  "retracted",
+  "used to read",
+  "used to say",
+  "no longer",
+  "until 2026-",
+  "corrected 2026-",
+  "intermediate draft",
+  "earlier draft",
+  "an earlier version",
+  "first draft",
+  "NOT a stable summary",
+  "no count of arms",
+  "is not quotable",
+  "do NOT summarise",
+  "criterion corrected",
+  "replaced by",
+  "was replaced"
+ ],
+ "entries": [
+  {
+   "pattern": "all[ -]?positive[ -]?and[ -]?similar",
+   "retired": "2026-08-27",
+   "why": "positivity was never the test for the leave-one-out arms; the threshold is 2.706 and the arms span a factor of fourteen",
+   "marker_window": 400
+  },
+  {
+   "pattern": "three of (?:the )?four[a-z ,-]{0,40}(?:arms|below|threshold|clear)",
+   "retired": "2026-08-27",
+   "why": "a binary count of leave-one-out arms is not a stable summary: the arms are separate likelihoods and carrying them to the adopted kappa leaves one inside the profile's own scatter of the threshold",
+   "marker_window": 400
+  },
+  {
+   "pattern": "(?:survives|survive) dropping any one peak",
+   "retired": "2026-08-27",
+   "why": "withdrawn on the same rows it cited",
+   "marker_window": 400
+  },
+  {
+   "pattern": "only the DIFFERENTIAL[a-z ]{0,40}can bias a width",
+   "retired": "2026-08-27",
+   "why": "beta.py floats a centre per trace and density is constant within a trace, so a collisional shift is absorbed whether or not it varies across the sweep",
+   "marker_window": 400
+  },
+  {
+   "pattern": "closer to five to eight",
+   "retired": "2026-08-27",
+   "why": "an intermediate draft of the Orson density-null comparison; the committed like-for-like figure is about 24",
+   "marker_window": 400
+  },
+  {
+   "pattern": "(?:homogeneous terms|these four|components of th\\w+ response|transit[^.]{0,60}) adds? exactly|adds? exactly[^.]{0,60}transit",
+   "retired": "2026-08-28",
+   "why": "the guided transit kernel is a squared Lorentzian entering the width at second order (results/transit_additivity.csv temperature_exponent_band 0.97 to 0.98), so the four-term exact-additivity model is retired; exact additivity survives for the Lorentzian pair alone. Survived 14 board rounds in files no round was pointed at, and two clean-sweep greps missed it on grammatical number",
+   "marker_window": 400
+  },
+  {
+   "pattern": "odd cumulants pass(?:es)? through[a-z ,-]{0,30}untouched",
+   "retired": "2026-08-31",
+   "why": "the whole-line odd cumulants survive only as the truncation-limited, self-centred fraction results/cumulant_window_check.csv measures; the unqualified pass-through claim is the retracted form",
+   "marker_window": 400
+  },
+  {
+   "pattern": "gamma\\s*/\\s*W[ -]suppressed|\u03b3\\s*/\\s*W[ -]suppressed",
+   "retired": "2026-08-31",
+   "why": "suppression wording implies a ratio below one; the measured quantity is a truncation-limited fraction and the correct wording names the fraction and its rows",
+   "marker_window": 400
+  },
+  {
+   "pattern": "floor[ -]dominated",
+   "retired": "2026-08-31",
+   "why": "the small-shift ratio is finite (survival_vs_S0 rows); the floor-domination story was grid noise from edge-snapped windows, and floor already means the noise floor in this record",
+   "marker_window": 400
+  },
+  {
+   "pattern": "rules out a chirp",
+   "retired": "2026-09-14",
+   "why": "E73: the pedestal is symmetric by construction and the data's own symmetry at |k| = 3 refuses only an antisymmetric excess of that size; the phrase asserted more than either",
+   "marker_window": 400
+  },
+  {
+   "pattern": "rather than electronics or dark current",
+   "retired": "2026-09-14",
+   "why": "E72: the floor scales with the peak height, an electronic component is bounded and not excluded",
+   "marker_window": 400
+  },
+  {
+   "pattern": "independent 64 (um|\u00b5m|\\\\mu m|micron) waist measurement",
+   "retired": "2026-09-14",
+   "why": "E76: the lineage waist is a working convention (owner, 2026-09-10), and the results ledger's generator still called it an independent measurement",
+   "marker_window": 400
+  },
+  {
+   "pattern": "attributed to the dropped core",
+   "retired": "2026-09-14",
+   "marker_window": 400,
+   "why": "E78: the van der Waals module blamed its 18 per cent miss on the 7S rate on the dropped core polarizability, where the cause was its integral's sign error on an excited atom's downward lines (A250)"
+  },
+  {
+   "pattern": "light[ -]shift[ -]ceiling",
+   "retired": "2026-09-18",
+   "why": "owner order O32: this record MODELS the light shift -- the ramp is a term of the forward model, its higher moments are the main aim's own channel and the S0 channel is a measurement -- so a drive power at which the shift reaches a tenth of the line width is not a ceiling the bench must stay under. It also inverts with the waist: at 40 to 45 um the construct falls below the archive's own 225 mW, which would make the dataset illegal by its own table. What bounds the drive power is saturation, the companion, depletion and the ruler, each priced where it belongs",
+   "marker_window": 400
+  },
+  {
+   "pattern": "993\\s*nm\\s*ceiling",
+   "retired": "2026-09-18",
+   "why": "the same construct named by its rung (O32). The phrase returned twice from its own prose after the rows were first questioned, which is why it is banned by pattern and not by memory",
+   "marker_window": 400
+  }
+ ]
 }

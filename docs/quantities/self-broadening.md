@@ -50,7 +50,7 @@ rubidium.
 
 | reference | value as published | state | convention |
 |---|---|---|---|
-| [Zameroski 2014](../lit/zameroski2014.md) | $129 \pm 11$ kHz/mTorr | 85Rb 5S to 7S, cascade fluorescence | FWHM, stated |
+| [Zameroski 2014](../lit/zameroski2014.md) | $129 \pm 13$ kHz/mTorr | 85Rb 5S to 7S, cascade fluorescence | FWHM, stated |
 | [Cao 2025](../lit/cao2025.md) | $40 \pm 0.54$ kHz/mTorr | 85Rb 5S to 5D 3/2, cascade fluorescence | FWHM, stated |
 | [Wang 2025](../lit/wang2025.md) | $0.32 \pm 0.01$ MHz/mTorr | 85Rb 5S to 7S, five-channel fluorescence | **Not stated** |
 

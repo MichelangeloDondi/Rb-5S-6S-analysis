@@ -17,6 +17,18 @@ arxiv: 2412.04809
 pdf: PDF_papers/Vylegzhanin_2026_fictitious-magnetic-trap-tweezer-nanofiber-hybrid.pdf
 held: true
 status: VERIFIED
+verify_flags:
+  - 'The journal line is not on the held file. Volume 113 and pages 023111 were
+    never read from a journal page: the held PDF is the arXiv version (2412.04809)
+    and its first page carries no journal line at all. The board report of
+    2026-08-31 recorded this ("PRA 113 023111 -- not on held PDF") and the note
+    kept its bare verified status anyway, so the gap was known and invisible for three
+    weeks. The thesis side holds the same volume and pages in its bibliography
+    with the same unknown origin, and two libraries agreeing is not a cross-check
+    when neither was read from the journal -- the shape that let a rule file and
+    its backup agree on a retracted reading. The verified status here covers the physics,
+    read in full from the preprint. It does not cover the volume, the pages or
+    the DOI. Read the published version before either side quotes them'
 verified_date: 2026-08-22
 section: oist-lineage
 summary: >

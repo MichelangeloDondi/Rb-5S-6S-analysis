@@ -86,8 +86,29 @@ def _norm(nstar: float, l: int) -> float:
     return 1.0 / np.sqrt(val)
 
 
+class CoreCutUnvalidated(ValueError):
+    """Raised for an angular momentum this module's core cut has never been calibrated for."""
+
+
 def radial_integral(e_a_cm: float, l_a: int, e_b_cm: float, l_b: int, power: int = 1) -> float:
-    """int P_a r^power P_b dr in atomic units, both functions normalised on [R_MIN, inf)."""
+    """int P_a r^power P_b dr in atomic units, both functions normalised on [R_MIN, inf).
+
+    REFUSES l >= 2 (2026-09-18, the thesis session's finding, reproduced here). `R_MIN = 0.02 a0` is
+    calibrated for s and p, where moving the cut from 0.02 to 3 a0 moves a representative integral by
+    5 per cent. For d and f it is not a small parameter at all: the same scan moves a D-to-F integral
+    from 0.0259 to 8.2, a factor of three hundred, because the Coulomb function with a non-integer
+    effective quantum number carries an r^-l piece that a cut inside the core does not remove. The
+    module's own calibration is against ns-n'p elements and says so, and nothing in this record calls
+    it with l >= 2, so no committed number moves; what this refusal prevents is the next caller
+    getting 0.0259 and no warning. A validated cut for d and f is a piece of work, not a constant to
+    guess: it needs a held element at that l to calibrate against.
+    """
+    if max(int(l_a), int(l_b)) >= 2:
+        raise CoreCutUnvalidated(
+            f"radial_integral was asked for l_a={l_a}, l_b={l_b}: this module's core cut R_MIN="
+            f"{R_MIN} a0 is calibrated for s and p only. At l >= 2 the result moves by a factor of "
+            f"three hundred across cuts from 0.02 to 3 a0, so the number would be meaningless. "
+            f"Calibrate the cut against a held element at that l before removing this refusal.")
     na, nb = n_star(e_a_cm), n_star(e_b_cm)
     Na, Nb = _norm(na, l_a), _norm(nb, l_b)
     f = lambda r: Na * radial_function(na, l_a, r) * r ** power * Nb * radial_function(nb, l_b, r)

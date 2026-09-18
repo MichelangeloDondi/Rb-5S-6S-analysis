@@ -101,6 +101,11 @@ NOT_WIRED = {
         "instrument as science_alarm.py and convergence_alarm.py: it reads the performance "
         "cores' occupancy and prints a verdict to act on, and wiring it into a gate would "
         "grade the gate's own idle cores at the exact moment the gate is running.",
+    "private/checks/cells_naming_a_callee.py":
+        "a MEASURE of which committed cells name the package function that produced them, so that "
+        "uncovered_constants' registry has a population to be read against instead of a list someone "
+        "remembered to extend. It evaluates nothing and can refuse nothing: promoting a candidate is "
+        "a judgement made once, with the arguments read from the producer rather than from the note.",
     "private/checks/chapter7_readiness.py":
         "a measurement the advancement seat reads at every board --begin, yellow and never a "
         "refusal by the plan's own design: it prints a count for a reader, and wiring it into "

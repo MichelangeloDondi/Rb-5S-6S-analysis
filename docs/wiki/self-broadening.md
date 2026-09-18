@@ -124,6 +124,100 @@ it, so density does separate it from this coefficient. That separation is
 what makes the headline kernel comparison a measurement while its
 per-condition version is not ([the Voigt profile](voigt-profile.md)).
 
+A foreign gas is the other constant term, and a glass cell cannot exclude
+one. Laboratory air carries helium at 5.24 parts per million, so a sealed
+cell reaches equilibrium near 4 mTorr of it, a density about
+$1.3\times10^{14}\ \mathrm{cm}^{-3}$ that no run changes, since permeation through
+the wall has a time constant of days. Against a rubidium density the oven
+moves over more than a factor of fifty, that is 109 helium atoms per
+rubidium atom at 70 °C and 2 at 130 °C. Zameroski and co-workers measure the
+noble gases against a rubidium two-photon line and give helium at
+$51.1(4)$ MHz per Torr of broadening and $2.06(7)$ of shift
+([`../lit/zameroski2014.md`](../lit/zameroski2014.md)).
+
+Those rates belong to
+their line and not to this one. Their upper state is $5D$ and this record's is
+the more compact $6S$, and the literature note's own verdict is that the upper
+states differ, so the coefficients cannot carry across and no value there can be
+taken as one here. **No width on the 5S-6S line follows from them**, which is
+why the widths this page carried until 2026-09-18 are withdrawn and why
+`lineshape.permeated_gas_width_mhz` refuses to run without coefficients its
+caller supplies. What survives the change of upper state is the order of the
+species by size and the sign of each shift.
+
+Density separates it from this coefficient in principle, exactly as it
+separates the laser's contribution. What decides whether the separation
+happens is the shape, and that is where a foreign gas differs from the laser.
+A helium width is a Lorentzian, and the constant the fit leaves free is
+usually a Gaussian, for the laser. Lorentzian and Gaussian widths do not substitute for
+one another, so a constant Lorentzian the model omits is absorbed by the one
+Lorentzian the model does have, which is $\beta_\text{self}N(T)$ itself. A
+term with no density dependence at all therefore biases a density slope, and
+it biases it upward. The remedy is a free constant of the right shape, not a
+finer density ladder.
+
+Helium is not the only gas the wall admits, and it is not the largest.
+Permeation carries the cell to the atmosphere's own partial pressure of every
+species small enough to cross the glass, so abundance fixes where it ends and
+permeability fixes only how long it takes to get there. Neon is 18.2 parts per
+million of air against helium's 5.24, so its equilibrium pressure is 13.8
+mTorr, and the same measurement gives it 24.7 MHz per Torr of broadening and a
+shift of $-5.23$. On the source's own line that pressure makes neon the larger
+of the two by about 1.7 and reverses the sign of the shift against helium's.
+Both rates are measured on 5S-5D, so neither is carried to this line, and the
+sign reversal is what survives the change of upper state.
+
+Neon's permeability through a silicate wall is a hundredth to a thousandth of
+helium's, so its time constant is years where helium's is days, and how far a
+given cell has travelled toward equilibrium depends on its fill date and its
+glass.
+
+The heavier gases are ruled out by the line itself. Argon is 9340 parts per
+million, so at equilibrium it would put 7.1 Torr in the cell and 324 MHz on the
+line at 45.7 MHz per Torr. An observed line a few MHz wide therefore holds
+argon below a few parts in a thousand of its equilibrium, a permeation bound
+read off the data instead of assumed, and nitrogen and oxygen follow with
+larger kinetic diameters still. Hydrogen sits an order below helium in partial
+pressure and is removed chemically by the rubidium, so its steady state is
+lower again.
+
+One property of the family is worth stating precisely, because it is easy to
+over-claim. The cell sits between two regimes and they differ in sign. Held at a fixed
+count, as it is within any one session, the density is the figure above and the
+width *rises* as $T^{3/10}$, five per cent across a 70 to 130 C ladder, since an
+impact cross-section goes as the two-fifths power of the interaction
+coefficient. Equilibrated at temperature it is the *pressure* that equalises,
+so the density falls as one over the cell temperature, $1.30\times10^{14}$ per
+cubic centimetre at room temperature against $9.54\times10^{13}$ at 130 C, and
+the width *falls* as $T^{-7/10}$, 10.7 per cent across the same ladder.
+Equilibration at temperature takes weeks, so a campaign of days sits between
+the two and the figures are a band.
+
+The family is flat where the
+coefficient is steep, against a rubidium term that rises fifty-five fold over
+the same span, and that is the separation the temperature ladder rests on.
+
+The practical consequence is that the free constant above absorbs the whole
+family at once. Enumerating the species adds no parameter. What it adds is the
+shape of the prior on the parameter already there, a constant Lorentzian with no
+temperature slope, and the order of the species inside it. Its centre is not
+computable from what this record holds, because that would need the two
+coefficients on the 5S-6S line and the note withholds the ones it has. The width
+the fit returns for that constant is therefore a measurement and not a check
+against a number derived here.
+
+The two gases also separate, because their signatures are independent. Helium
+broadens at 51.1 MHz per Torr and shifts at $+2.06$, neon at 24.7 and $-5.23$,
+a pair whose determinant is $-318$ in those units at a condition number of 10.
+A constant width and a constant shift measured together therefore separate the
+two gases, the independence being structural. Inverting to partial pressures
+needs the two coefficients on the line in question, which this record does not
+hold for 5S-6S (the source's are 5S-5D and are not transferable), and on the
+source's own line the inversion closes on its weak limit: a helium-only forward
+pair returns the helium partial pressure it was built from and zero neon. The shift is the sharper of the two observables, swinging
+59 kHz across the neon fill where the width only doubles, so an absolute
+frequency reference measures the fill as a by-product.
+
 ## The coefficient from first principles, step by step
 
 Written 2026-09-14, the day the question "is the theory value trustable" was
@@ -416,4 +510,4 @@ for N in (1.0e13, 2.9e13):
 
 ---
 
-[← Saturation](saturation.md) · *Experimental spectroscopy, 9 of 11* · [Vapour density and temperature →](vapour-density-and-temperature.md)
+[← Saturation](saturation.md) · *Experimental spectroscopy, 10 of 12* · [Vapour density and temperature →](vapour-density-and-temperature.md)

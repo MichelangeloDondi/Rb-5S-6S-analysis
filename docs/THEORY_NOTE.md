@@ -317,8 +317,8 @@ maximum is $S_0/2$ exactly, with no grid and no fit.
 The extra width it puts on the line is read from a producer, never composed
 here. `run_identifiability.py` evaluates the profile at the fitted widths and
 reports the whole width-channel signal at the predicted shift as
-[6.48](../results/identifiability.csv "ref:identifiability:width_signature_broadening_khz:gaussian_branch") kHz on the Gaussian branch and
-[7.23](../results/identifiability.csv "ref:identifiability:width_signature_broadening_khz:cusp_branch") kHz on the cusp. **Composing it
+[6.33](../results/identifiability.csv "ref:identifiability:width_signature_broadening_khz:gaussian_branch") kHz on the Gaussian branch and
+[7.06](../results/identifiability.csv "ref:identifiability:width_signature_broadening_khz:cusp_branch") kHz on the cusp. **Composing it
 instead, by adding the kernel width to the line in quadrature, understates it
 by about a factor of two**, because quadrature addition of full widths is a
 Gaussian rule and this line is roughly two thirds Lorentzian. That composition

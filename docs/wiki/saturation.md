@@ -203,4 +203,4 @@ changed the committed number.
 
 ---
 
-[← The inhomogeneous light shift](the-inhomogeneous-light-shift.md) · *Experimental spectroscopy, 8 of 11* · [Collisional self-broadening →](self-broadening.md)
+[← The inhomogeneous light shift](the-inhomogeneous-light-shift.md) · *Experimental spectroscopy, 9 of 12* · [Collisional self-broadening →](self-broadening.md)

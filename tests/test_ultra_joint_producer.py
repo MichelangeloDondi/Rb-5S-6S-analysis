@@ -190,7 +190,10 @@ def test_the_window_is_on_at_every_m2_including_exactly_one():
     src = SCRIPT.read_text(encoding="utf-8")
     calls = [m.group(0) for m in re.finditer(r"full_profile\([^)]*\)", src, re.S)]
     assert calls and all("m2=" not in c for c in calls), "the producer must not use full_profile's m2 switch"
-    assert "profile=self.profile" in src
+    # THE PROFILE REACHES `full_profile` PER TRACE SINCE 2026-09-18, because the saturated shift density
+    # is built at each trace's own power, so the Cell passes `per["profile"]` and falls back to the
+    # cell-wide one. The assertion is on the WIRING and not on one spelling of it.
+    assert "profile=per.get(\"profile\", self.profile)" in src or "profile=self.profile" in src
 
 
 def test_the_producer_model_carries_the_window_the_isotope_and_the_tie():
@@ -538,8 +541,12 @@ def test_the_moment_statistic_takes_a_fitted_baseline_and_not_a_wing_strip():
                      s0=0.36, gamma_l=0.28, peak="4192", T_C=130.0)
     stats = m._moment_stats(nu, y)
     assert set(stats) == {f"k{n}@{w:g}" for n in m.MOMENT_ORDERS for w in m.MOMENT_WINDOWS}
-    k_wing, _ = windowed_cumulants(nu, y, 12.0, orders=(2,), baseline="wings")
-    assert stats["k2@12"] > k_wing[2], (stats["k2@12"], k_wing[2])
+    # THE WINDOW IS READ FROM THE PRODUCER, never typed: `MOMENT_WINDOWS` moved from (3.25, 6, 12) to
+    # (2, 8, 13) on 2026-09-18 so the vector sits on the window surface's own grid, and a typed 12 here
+    # raised a KeyError on a statistic the producer no longer emits.
+    w_hi = max(m.MOMENT_WINDOWS)
+    k_wing, _ = windowed_cumulants(nu, y, w_hi, orders=(2,), baseline="wings")
+    assert stats[f"k2@{w_hi:g}"] > k_wing[2], (stats[f"k2@{w_hi:g}"], k_wing[2])
     # both parities are produced, which the arm that ran at orders [2, 4] was not
     assert {2, 3, 4, 5, 6, 7} == set(m.MOMENT_ORDERS)
 

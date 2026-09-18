@@ -273,6 +273,55 @@ factor-of-three statement and the reason is a modelling assumption rather than
 an unmeasured input. Computed by `scripts/run_geometry_design.py`, written up
 in [`docs/notes/running_wave_and_waist_design.md`](../notes/running_wave_and_waist_design.md).
 
+#### The saturated shift density
+
+The weak-field law above stops being safe inside the 40 to 45 µm band the 2025
+waist is now placed in. The shift at a point is $s = S_0 u$ with $u$ the local
+intensity in units of the on-axis peak, and the excitation weight is the rate at
+the local power, $G(Pu)$, whatever its form. In the weak field $G \propto (Pu)^2$
+and the Gaussian beam's own area element, $r dr = -(w^2/4) du/u$, gives the
+density $p(u) \propto u$: the triangle, mean $2S_0/3$, third cumulant
+$-S_0^3/135$. Saturation changes only the weight, so the same algebra gives
+
+$$p_{\rm sat}(u) \propto \frac{G(Pu)}{u}, \qquad u \in (0, 1],$$
+
+one quadrature over the package's own rate (`platforms.excitation_rate_per_atom`,
+which carries the two-photon saturation), with $S_0$ cancelling out of every
+dimensionless ratio. `lineshape.saturated_ramp_density` is that function.
+`lineshape.ramp_mixture` mixes it axially over the collected column exactly as it
+mixes the triangle, and `lineshape.ramp_mixture_moments` returns the moments the
+kernel gate compares with its Monte Carlo (`scripts/run_kernel_mc.py`). The
+weak-drive limit returns the triangle to better than $10^{-6}$, which
+`tests/test_saturated_ramp.py` asks for.
+
+The term was derived first and tested against the kernel Monte Carlo before it
+entered the model: over eight hundred nodes the ratio of the saturated to the
+weak-field third cumulant of this density agrees with the Monte Carlo's own to a
+median of zero and a worst of 3.8 per cent at the most saturated node, 40 µm
+and 225 mW. At that node the gate now reads the Monte Carlo's third cumulant at
+[-0.00329](../../results/kernel_mc.csv "ref:kernel_mc:w40.0_m1.00_r0.940_T130_P225:ramp_k3_rel:mc")
+against the model's
+[-0.00328](../../results/kernel_mc.csv "ref:kernel_mc:w40.0_m1.00_r0.940_T130_P225:ramp_k3_rel:model"),
+where the weak-field reference had been fifteen per cent off. The on-axis
+intensity $P/w_0^2$, not the temperature, is the variable that separates the
+nodes that needed the term from the ones that did not.
+
+Its stated error is measured against the exact form, not against the Monte
+Carlo. The derivation is transverse, one rate at the on-axis power, while the
+column's local peak power falls as $1/(1+\zeta^2)$ and the saturation with it.
+That mixture has a one-line closed form of its own, because the rate depends on
+the absolute local intensity alone, and against it the shipped factorisation
+reads 1.9 per cent low in the third cumulant at a collection ratio of two thirds
+and 1.3 per cent at one half. The exact form is the named refinement.
+
+A second condition rides underneath, and this page states it before a reader
+meets it in a number. The rate this density weights by carries the steady-state
+saturation parameter of a two-level atom whose coherence decays at the natural
+width alone, while this bench's transit alone contributes half as much again at
+40 µm. So every third cumulant here is conditional on that regime, and the
+kernel gate cannot test it, because its own Monte Carlo calls the same function.
+Rung: physics (a derivation), checked by simulation.
+
 #### The parameter-free moment hierarchy (the form test)
 
 Dividing out $S_0$, the ramp component predicts *pure numbers*:

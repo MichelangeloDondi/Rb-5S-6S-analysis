@@ -6,7 +6,7 @@ Why this file exists. A hand-authored SVG is invisible to every other guard:
 test_figure_register and test_figures_fresh cover only scripts/make_figures.py
 outputs, and test_docs_canonical scans only markdown. So numbers drawn on the
 bench schematic went stale unseen. It quoted w0 ~ 50 um, a value matching
-neither the replaced 32 um naive estimate nor the measured 64 um prior, and
+neither the replaced 32 um naive estimate nor the 64 um convention, and
 asserted rho ~ 1 where the analysis of record assumes 0.94 +- 0.04. This file
 closes the class. Every tracked *.svg under docs/ is scanned for the quantities
 a drawing is likely to quote (the waist, the retro ratio rho, MHz comb
@@ -138,7 +138,7 @@ def _violations(runs):
 
 def test_the_scan_reaches_the_schematic_and_reads_its_waist():
     """Vacuity guard doubling as an extraction self-test. If the schematic is
-    moved, renamed or stops quoting the measured waist (the one number every
+    moved, renamed or stops quoting the waist convention (the one number every
     absolute result rides on), or if the text extraction silently breaks, the
     whole file would otherwise pass while checking nothing."""
     svgs = _tracked_svgs()

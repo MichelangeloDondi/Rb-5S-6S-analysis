@@ -1729,9 +1729,13 @@ def fig_ramp_construction():
     # them. Right aligning it clipped it on the left instead, and wrapping it
     # to two lines put the curve through both. The panel is 298 px wide and
     # that sentence is 244 of them, so no placement was ever going to work.
-    # The title already says s = -S_0 u, so the marker only needs naming.
+    # THE TEXT DRAWN INSIDE A FIGURE IS A SURFACE TOO (2026-09-18). Panels (c) and (d) read
+    # RAMP_SIDE and drew the blue side while this panel's title and marker still printed the red
+    # one as literals, so the figure stated one convention and drew the other. The O27 sweep
+    # reached the code and the data panels and stopped at the words painted on the canvas.
+    _sgn = "+" if RAMP_SIDE > 0 else "-"
     for rr, lab, dx, dy, ha in (
-            (0.0, "on axis the shift is $-S_0$", 14, 7, "left"),
+            (0.0, "on axis the shift is $%sS_0$" % _sgn, 14, 7, "left"),
             (1.18, r"$s \to 0$ far out", 8, 8, "left")):
         ax[0].plot([rr], [np.exp(-2 * rr ** 2)], "o", color="#D55E00", ms=6)
         ax[0].annotate(lab, (rr, np.exp(-2 * rr ** 2)), fontsize=7, ha=ha,
@@ -1742,7 +1746,7 @@ def fig_ramp_construction():
     # sides and reached the source line under the figure.
     ax[0].set_xlabel("radius $r/w$", fontsize=8.5)
     ax[0].set_ylabel("$u = I/I_0$")
-    ax[0].set_title("(a) the beam sets the shift\n$s = -S_0\\,u$", fontsize=9)
+    ax[0].set_title("(a) the beam sets the shift\n$s = %sS_0\\,u$" % _sgn, fontsize=9)
 
     # (b) the two competing weights
     uu = np.linspace(0.02, 1.0, 300)

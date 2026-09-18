@@ -26,6 +26,7 @@ next session inventing a value, or asking for one nobody has.
 | **repaired lock, residual drift** | not measured. The lock was repaired 2026-08-16 and no longer drifts. Its rate is unknown, and [chapter 9](09_the-fixed-lock.md) section 10c.2 already calls for measuring it | every centre-channel measurement on either platform. Absolute line centres become available with a stable lock, which is what the 2025 campaign could not do | spanned from 0 to 40 kHz per minute, with the recovered precision reported at each point, in `results/projections.csv` and its guided-platform counterpart |
 | **repaired lock, per-sweep excursion** | not measured. The same characterisation run [chapter 9](09_the-fixed-lock.md) calls for reads it beside the drift | every centre measurement on either platform rides it, as the drift row above | spanned in the fibre thread ([the campaign chapter](../big_picture/09_the-campaign-cases.md)): its paired-acquisition forecast covers the comb best-fit class to the wavemeter ceiling and the acquisition-geometry verdict there turns on exactly this item. The cell-side three-channel forecast now spans the drift over a tenfold range and finds the pull channel's spread unmoved, because the twin generates the drift as strictly linear in acquisition order and the fit carries that order as a free nuisance, so the term is a column of the design matrix and costs nothing. **The lever's worth cannot be established until the world's drift has structure**, which is the modelling item below |
 | **the cell's own dimensions** | owner-stated 2026-09-09 as about 25 mm bore and 100 mm long, a standard size not measured precisely, with the beam about 2.0 plus or minus 1.0 mm from the wall; carried in [the apparatus chapter](../APPARATUS.md) | they set how often an atom returns to the beam against how often it reaches a wall, which decides whether the vapour around the beam is hyperfine-pumped in steady state; the cascade model assumes each atom arrives unpumped | no forecast rests on it, and the span is why: over every plausible cell an atom reaches a wall many hundreds of times between beam crossings, and an uncoated glass wall relaxes the hyperfine state on adsorption, so atoms arrive reset whatever the dimensions are. The item is recorded because the argument for that needs a number the record does not carry, not because a result does |
+| **beam radius at the focusing lens** | not stated in any document. It is the one input the Gaussian-optics estimate of the focus needs and the only one nothing on this bench measures, so the 42 to 53 micron band the finite-Hankel calculation returns through the 3 mm bore spans an input and does not resolve it | it sets the focus, and with it every intensity-denominated number, through the bore's truncation. It also sets how much of the beam the bore removes, which is a power loss of a third to a half over the same range | no forecast rests on it: every forecast spans the waist band the bore returns, not the input radius behind it. [Chapter 4 section 4.5](03_optics-protocol.md) proposes the delivery that removes the question instead of answering it: behind a single-mode fibre the focus is the mode radius times the ratio of two focal lengths, so the input radius stops being an input |
 | **beam waist in the interaction volume** | not measured in this cell. The working 64 um is a same-conditions measurement from an earlier thesis on this apparatus lineage | the largest open systematic in the record. Every intensity-denominated number rides it | spanned across the band the data allow in `results/transit_mc.csv`, and [chapter 5](05_width-collision-amplitude.md) specifies the profile measurement that closes it. A second, atom-based route in the cell itself: a 778 nm diode driving 5S to 5D through the same optics reads the waist from the measured light-shift coefficient of that line, 2.5(2) e-13 per mW per square millimetre ([Martin 2019](../lit/martin2019.md), held), a twenty-linewidth shift at this bench's power on a 330 kHz line, so the waist follows to about four per cent from a number that imports none of the disputed theory, with the waist at 778 nm scaling as the wavelength for the same optics |
 | **cell temperature against the cold spot** | instrumented but the gradient is not resolved | the density lever, and through it the collisional coefficient. And the meaning of any Doppler thermometer: with the record's densities the mean free path exceeds the cell below about 110 C and falls to millimetres at 130, so the vapour is a flux-weighted mixture of the walls' Maxwellians at the cold end and a local temperature at the hot end, and a pedestal fitted as one Gaussian reads a temperature that moves against the thermocouple across the lever by up to the gradient itself | carried as a stated systematic in `results/beta_self_probe.csv`, and the thermometer's regime dependence is an item for the deep-trace producer's landing |
 | **retro-reflection intensity ratio** | not measured. The working value is a stated prior, carried with its spread in `results/delta_alpha_posterior.csv`'s notes, and [chapter 7](07_acquisition-settings.md) records one in-record reading that contradicts it outright | the effective intensity, and through it every light-shift prediction. [Chapter 6](06_sizing-and-spending-rules.md) already schedules turning the assumption into a measurement | carried as the prior in `results/delta_alpha_posterior.csv`, whose limit row states how far the priors move it, and inside the predicted envelope of `results/stark_joint.csv` |
@@ -189,10 +190,46 @@ that and `results/prediction_band.csv` carries it in its worst-case edges.
 
 What his number does not cover, and what is still owed here, is the chain
 between the meter and the atoms: the meter's calibration certificate, the loss
-budget from meter to cell, and the window transmission at 993 nm. Those are
+budget between meter and cell, and the window transmission at 993 nm. Those are
 systematic offsets of the power at the atoms and not the drive's stability,
 so they bias $\kappa_\mathrm{pred}$ in one direction where the 0.5 per cent
 merely widens it.
+
+The direction is upward, and the first form of this item had the geometry the
+other way about. It read "the loss budget from meter to cell", which puts the
+meter upstream of the atoms. The meter is downstream of them. [APPARATUS](../APPARATUS.md)
+section 1.2 has the second $f = 150$ mm lens re-collimating the beam "toward the
+flip-in power meter and the retro mirror", tagged PHOTO against the annotated
+bench photograph, so the exit window and that lens sit between the focus and the
+meter. The recorded watt is therefore smaller than the watt at the atoms, and
+the correction multiplies $\kappa_\mathrm{pred}$ up and not down.
+
+Its size is computable from the record's own numbers, and it is larger than the
+aperture term it sits beside. [Priorities](02_priorities.md) item 2 writes the
+retro leg as exit-window, lens, mirror, lens, exit-window, so
+$\rho = T_\mathrm{window}^2 T_\mathrm{lens}^2 R_\mathrm{mirror}$. That names the
+same two surfaces for the round trip. The forward leg from the focus out to the
+meter crosses them once each and is carried in no module.
+
+At the clean values of
+that item, 0.99 each, the missing factor is $1/0.980 = 1.020$. At its filmed
+scenario, 0.90 per pass, it is $1/0.891 = 1.122$. The EOM aperture's on-axis
+factor moves the same prediction by $-3.3$ per cent at the convention waist, so
+this uncarried term is between two thirds and four times its size and opposite
+in sign. Which end applies is unmeasured: [the sizing rules](06_sizing-and-spending-rules.md)
+row 8 records the 0.99-to-0.90 film as an assumption and "not observed on
+these windows". The condensation that was actually seen was on a cooled,
+unwrapped cell, which says nothing about the film during operation.
+
+And it is monotone in temperature, which is the axis the analysis uses as a
+lever. The film grows as the cell cools, so this multiplier drifts across the
+70 to 130 °C arm that separates the collisional term from the laser width. The
+hazard is already stated one item below for $\rho$, an optics drift that
+"uncorrected reads as a temperature-dependent light shift", and the same two
+surfaces enter the forward normalisation a second time, in the same direction.
+A systematic monotone in the lever's own axis is the one shape that can
+manufacture the lever's signal, so the transmission is measured per condition
+and not once.
 
 What it would change: whether the prediction band reaches the bound, and the
 guided arm's per-run power ruler, since a calibrated power at the fibre is the

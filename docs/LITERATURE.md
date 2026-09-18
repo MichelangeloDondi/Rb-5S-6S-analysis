@@ -107,7 +107,7 @@ narrowed to the fringe-averaged closed form and the drift-immune moment.
 [Zameroski et al., J. Phys. B 47, 225205 (2014)](lit/zameroski2014.md),
 full text HELD and read 2026-07-27, correcting this entry's central number.
 Zameroski measures the 5S→7S **self-BROADENING** rate directly:
-**129 ± 11 kHz/mTorr**, i.e. **[5.62](../results/beta_self_theory.csv "ref:beta_self_theory:beta_self_7s:measured") ± 0.45 kHz per 10¹² cm⁻³** at their cell
+**129 ± 13 kHz/mTorr**, his Table 3 total, i.e. **[5.62](../results/beta_self_theory.csv "ref:beta_self_theory:beta_self_7s:measured") ± 0.57 kHz per 10¹² cm⁻³** at their cell
 temperature. It is the only measured self-broadening rate for an nS state in Rb, and
 exactly the observable β_self is. Their 7S self-*shift* "could not be extracted
 from the experimental data". The −17.82(81) kHz/mTorr this entry previously
@@ -198,7 +198,7 @@ recomputed here.
 
 | Source | Transition | Measured coefficient | Status | Comparability |
 |---|---|---|---|---|
-| [Zameroski 2014](lit/zameroski2014.md) | Rb 5S→7S (self) | 129 ± 11 kHz/mTorr = [5.62](../results/beta_self_theory.csv "ref:beta_self_theory:beta_self_7s:measured") ± 0.45 kHz per 10¹² cm⁻³ | VERIFIED | one state above the 6S pair studied here, C₆-scaled to the β_self(6S) anchor of 3.4 ± 0.3 kHz per 10¹² cm⁻³ used throughout this ledger |
+| [Zameroski 2014](lit/zameroski2014.md) | Rb 5S→7S (self) | 129 ± 13 kHz/mTorr = [5.62](../results/beta_self_theory.csv "ref:beta_self_theory:beta_self_7s:measured") ± 0.57 kHz per 10¹² cm⁻³ | VERIFIED | one state above the 6S pair studied here, C₆-scaled to the β_self(6S) anchor of 3.4 ± 0.3 kHz per 10¹² cm⁻³ used throughout this ledger |
 | [Rahaman & Dutta 2022](lit/rahaman2022.md) | Cs 6S→7d₃/₂ (self) | −32.6 ± 2.0 kHz/mTorr collisional shift | VERIFIED | different alkali and a d state rather than an S–S pair, but the same two-photon vapour-cell class and the same convention as this work |
 | [Lee et al. 2010](lit/lee2010.md) | Cs 6S→8S | −7.25 ± 0.45 Hz/(mW/mm²) light shift | VERIFIED | an AC-Stark coefficient, not a collisional one, kept here because it is the closest analogue experiment there is, the same retro-reflected two-photon vapour-cell architecture as this work |
 | Lee et al., *J. Phys. B* (2010, the sibling to lee2010, not yet held) | Cs 6S→8S (self) | −588 ± 387 Hz/mPa pressure shift | REPORTED, abstract only | the direct collisional analogue to β_self, same group and line as lee2010, cite nothing further from it until the full text is read |
@@ -347,8 +347,8 @@ A number here is an identifier, not a position.
    and the $w_0 = 64$ µm convention the ramp kernel's own width is $S_0/2$ exactly
    (its density peaks at $|s|=S_0$ and halves at $|s|=S_0/2$). The extra width
    that puts on the line is read from `run_identifiability.py`, not composed
-   here: [6.48](../results/identifiability.csv "ref:identifiability:width_signature_broadening_khz:gaussian_branch")
-   kHz on the Gaussian branch and [7.23](../results/identifiability.csv "ref:identifiability:width_signature_broadening_khz:cusp_branch")
+   here: [6.33](../results/identifiability.csv "ref:identifiability:width_signature_broadening_khz:gaussian_branch")
+   kHz on the Gaussian branch and [7.06](../results/identifiability.csv "ref:identifiability:width_signature_broadening_khz:cusp_branch")
    kHz on the cusp, a part in some 800 of the line. No width measurement
    reaches this signal at any precision.
    The same comparison settles a loose end in [lee2010](lit/lee2010.md): their

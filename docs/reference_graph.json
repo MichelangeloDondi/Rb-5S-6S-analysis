@@ -48,7 +48,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/self-broadening.md",
-    "line": 241,
+    "line": 335,
     "writes": "429"
    }
   ],
@@ -60,7 +60,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/self-broadening.md",
-    "line": 312,
+    "line": 406,
     "writes": "8.69"
    }
   ],
@@ -72,7 +72,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/self-broadening.md",
-    "line": 315,
+    "line": 409,
     "writes": "6.76"
    }
   ],
@@ -84,7 +84,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/self-broadening.md",
-    "line": 314,
+    "line": 408,
     "writes": "5.78"
    }
   ],
@@ -136,7 +136,7 @@
    },
    {
     "file": "docs/wiki/self-broadening.md",
-    "line": 247,
+    "line": 341,
     "writes": "3.50"
    },
    {
@@ -173,7 +173,7 @@
    },
    {
     "file": "docs/wiki/self-broadening.md",
-    "line": 247,
+    "line": 341,
     "writes": "0.37"
    },
    {
@@ -190,7 +190,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/self-broadening.md",
-    "line": 248,
+    "line": 342,
     "writes": "3.49"
    }
   ],
@@ -212,7 +212,7 @@
    },
    {
     "file": "docs/wiki/self-broadening.md",
-    "line": 283,
+    "line": 377,
     "writes": "10.64"
    }
   ],
@@ -244,7 +244,7 @@
    },
    {
     "file": "docs/wiki/self-broadening.md",
-    "line": 249,
+    "line": 343,
     "writes": "5.62"
    }
   ],
@@ -256,7 +256,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/self-broadening.md",
-    "line": 249,
+    "line": 343,
     "writes": "5.61"
    }
   ],
@@ -268,7 +268,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/self-broadening.md",
-    "line": 251,
+    "line": 345,
     "writes": "-0.17"
    }
   ],
@@ -280,7 +280,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/self-broadening.md",
-    "line": 278,
+    "line": 372,
     "writes": "2.51"
    }
   ],
@@ -297,12 +297,12 @@
    },
    {
     "file": "docs/wiki/self-broadening.md",
-    "line": 276,
+    "line": 370,
     "writes": "10.08"
    },
    {
     "file": "docs/wiki/self-broadening.md",
-    "line": 284,
+    "line": 378,
     "writes": "10.08"
    }
   ],
@@ -314,7 +314,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/self-broadening.md",
-    "line": 277,
+    "line": 371,
     "writes": "1.52"
    }
   ],
@@ -326,7 +326,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/self-broadening.md",
-    "line": 280,
+    "line": 374,
     "writes": "0.28"
    }
   ],
@@ -338,7 +338,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/self-broadening.md",
-    "line": 279,
+    "line": 373,
     "writes": "1.71"
    }
   ],
@@ -350,7 +350,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 239,
+    "line": 276,
     "writes": "2994.39"
    },
    {
@@ -740,7 +740,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 290,
+    "line": 339,
     "writes": "0.051"
    },
    {
@@ -977,7 +977,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 867,
+    "line": 904,
     "writes": "18.59"
    }
   ],
@@ -989,7 +989,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 817,
+    "line": 854,
     "writes": "6.75"
    }
   ],
@@ -1001,7 +1001,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 819,
+    "line": 856,
     "writes": "1.69"
    }
   ],
@@ -1013,7 +1013,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 837,
+    "line": 874,
     "writes": "0.606"
    },
    {
@@ -1030,7 +1030,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 832,
+    "line": 869,
     "writes": "-1.838"
    },
    {
@@ -1047,7 +1047,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 835,
+    "line": 872,
     "writes": "-0.340"
    }
   ],
@@ -1059,7 +1059,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 829,
+    "line": 866,
     "writes": "-1.914"
    },
    {
@@ -1076,7 +1076,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 830,
+    "line": 867,
     "writes": "-1.994"
    }
   ],
@@ -1207,7 +1207,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 858,
+    "line": 895,
     "writes": "3.97"
    },
    {
@@ -1224,7 +1224,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 859,
+    "line": 896,
     "writes": "0.22"
    }
   ],
@@ -1236,7 +1236,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 855,
+    "line": 892,
     "writes": "2.78"
    },
    {
@@ -1253,7 +1253,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 856,
+    "line": 893,
     "writes": "0.22"
    }
   ],
@@ -1265,7 +1265,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 861,
+    "line": 898,
     "writes": "3.38"
    }
   ],
@@ -1277,7 +1277,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 860,
+    "line": 897,
     "writes": "2.18"
    }
   ],
@@ -1289,7 +1289,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 849,
+    "line": 886,
     "writes": "8.97"
    }
   ],
@@ -1301,7 +1301,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 850,
+    "line": 887,
     "writes": "0.90"
    }
   ],
@@ -1313,7 +1313,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 815,
+    "line": 852,
     "writes": "28.12"
    }
   ],
@@ -1325,7 +1325,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 843,
+    "line": 880,
     "writes": "7.8"
    }
   ],
@@ -1571,7 +1571,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 542,
+    "line": 579,
     "writes": "0.15713"
    }
   ],
@@ -1583,7 +1583,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 546,
+    "line": 583,
     "writes": "0.08685"
    }
   ],
@@ -1595,7 +1595,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 541,
+    "line": 578,
     "writes": "0.01546"
    }
   ],
@@ -1619,7 +1619,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 552,
+    "line": 589,
     "writes": "2.98e-08"
    }
   ],
@@ -1631,7 +1631,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 553,
+    "line": 590,
     "writes": "0.9671"
    }
   ],
@@ -1643,7 +1643,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 554,
+    "line": 591,
     "writes": "0.8314"
    }
   ],
@@ -2094,26 +2094,26 @@
    {
     "file": "docs/LITERATURE.md",
     "line": 351,
-    "writes": "7.23"
+    "writes": "7.06"
    },
    {
     "file": "docs/THEORY_NOTE.md",
     "line": 321,
-    "writes": "7.23"
+    "writes": "7.06"
    },
    {
     "file": "docs/lit/mcdonald2015.md",
     "line": 86,
-    "writes": "7.23"
+    "writes": "7.06"
    },
    {
     "file": "docs/wiki/identifiability.md",
     "line": 820,
-    "writes": "7.23"
+    "writes": "7.06"
    }
   ],
   "source_file": "results/identifiability.csv",
-  "source_value": "7.23"
+  "source_value": "7.06"
  },
  "identifiability:width_signature_broadening_khz:gaussian_branch": {
   "producer": "run_identifiability.py",
@@ -2121,26 +2121,26 @@
    {
     "file": "docs/LITERATURE.md",
     "line": 350,
-    "writes": "6.48"
+    "writes": "6.33"
    },
    {
     "file": "docs/THEORY_NOTE.md",
     "line": 320,
-    "writes": "6.48"
+    "writes": "6.33"
    },
    {
     "file": "docs/lit/mcdonald2015.md",
     "line": 86,
-    "writes": "6.48"
+    "writes": "6.33"
    },
    {
     "file": "docs/wiki/identifiability.md",
     "line": 820,
-    "writes": "6.48"
+    "writes": "6.33"
    }
   ],
   "source_file": "results/identifiability.csv",
-  "source_value": "6.48"
+  "source_value": "6.33"
  },
  "identifiability:width_signature_centre_over_width:cusp_branch": {
   "producer": "run_identifiability.py",
@@ -2148,11 +2148,11 @@
    {
     "file": "docs/wiki/identifiability.md",
     "line": 820,
-    "writes": "33.6"
+    "writes": "34.0"
    }
   ],
   "source_file": "results/identifiability.csv",
-  "source_value": "33.6"
+  "source_value": "34.0"
  },
  "identifiability:width_signature_centre_over_width:gaussian_branch": {
   "producer": "run_identifiability.py",
@@ -2160,11 +2160,11 @@
    {
     "file": "docs/wiki/identifiability.md",
     "line": 820,
-    "writes": "37.4"
+    "writes": "37.9"
    }
   ],
   "source_file": "results/identifiability.csv",
-  "source_value": "37.4"
+  "source_value": "37.9"
  },
  "identifiability:width_signature_fwhm_mhz:cusp_branch": {
   "producer": "run_identifiability.py",
@@ -2234,7 +2234,7 @@
    },
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 462,
+    "line": 511,
     "writes": "-57.023"
    },
    {
@@ -2244,7 +2244,7 @@
    },
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 117,
+    "line": 118,
     "writes": "-57.023"
    },
    {
@@ -2288,7 +2288,7 @@
    },
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 111,
+    "line": 112,
     "writes": "89.925"
    },
    {
@@ -2356,7 +2356,7 @@
    },
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 110,
+    "line": 111,
     "writes": "96.532"
    }
   ],
@@ -2414,7 +2414,7 @@
    },
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 458,
+    "line": 507,
     "writes": "-0.000"
    },
    {
@@ -2429,7 +2429,7 @@
    },
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 114,
+    "line": 115,
     "writes": "-0.000"
    },
    {
@@ -2451,12 +2451,12 @@
    },
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 461,
+    "line": 510,
     "writes": "-0.265"
    },
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 116,
+    "line": 117,
     "writes": "-0.265"
    },
    {
@@ -2478,7 +2478,7 @@
    },
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 464,
+    "line": 513,
     "writes": "106.742"
    },
    {
@@ -2503,7 +2503,7 @@
    },
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 109,
+    "line": 110,
     "writes": "106.742"
    },
    {
@@ -2531,6 +2531,30 @@
   ],
   "source_file": "results/kernel_inhomogeneity.csv",
   "source_value": "0.3599"
+ },
+ "kernel_mc:w40.0_m1.00_r0.940_T130_P225:ramp_k3_rel:mc": {
+  "producer": null,
+  "quoting_sites": [
+   {
+    "file": "docs/methods/03_the_ac_stark_ramp.md",
+    "line": 302,
+    "writes": "-0.00329"
+   }
+  ],
+  "source_file": "results/kernel_mc.csv",
+  "source_value": "-0.00329324"
+ },
+ "kernel_mc:w40.0_m1.00_r0.940_T130_P225:ramp_k3_rel:model": {
+  "producer": null,
+  "quoting_sites": [
+   {
+    "file": "docs/methods/03_the_ac_stark_ramp.md",
+    "line": 304,
+    "writes": "-0.00328"
+   }
+  ],
+  "source_file": "results/kernel_mc.csv",
+  "source_value": "-0.00327889"
  },
  "kernel_mc:w64.0_m1.00_r0.940_T130_P125:depletion_fwhm_rel_4121:mc": {
   "producer": null,
@@ -2595,7 +2619,7 @@
    },
    {
     "file": "docs/methods/04_the_composite_model.md",
-    "line": 309,
+    "line": 352,
     "writes": "0.050"
    }
   ],
@@ -2612,7 +2636,7 @@
    },
    {
     "file": "docs/methods/04_the_composite_model.md",
-    "line": 313,
+    "line": 356,
     "writes": "0.0050"
    }
   ],
@@ -2641,7 +2665,7 @@
    },
    {
     "file": "docs/methods/04_the_composite_model.md",
-    "line": 313,
+    "line": 356,
     "writes": "0.0008"
    }
   ],
@@ -2682,7 +2706,7 @@
    },
    {
     "file": "docs/methods/04_the_composite_model.md",
-    "line": 310,
+    "line": 353,
     "writes": "0.0015"
    }
   ],
@@ -2898,7 +2922,7 @@
    },
    {
     "file": "rb5s6s/fullmodel.py",
-    "line": 638,
+    "line": 650,
     "writes": "2647"
    }
   ],
@@ -2920,7 +2944,7 @@
    },
    {
     "file": "rb5s6s/fullmodel.py",
-    "line": 637,
+    "line": 649,
     "writes": "34.69"
    }
   ],
@@ -2966,7 +2990,7 @@
    },
    {
     "file": "rb5s6s/fullmodel.py",
-    "line": 639,
+    "line": 651,
     "writes": "0.658"
    }
   ],
@@ -4107,11 +4131,6 @@
     "writes": "5.9"
    },
    {
-    "file": "docs/CLAIMS.md",
-    "line": 516,
-    "writes": "5.9"
-   },
-   {
     "file": "docs/FUTURE_TRANSITIONS_titsapph.md",
     "line": 455,
     "writes": "5.9"
@@ -4245,7 +4264,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 406,
+    "line": 455,
     "writes": "0.9610"
    }
   ],
@@ -4257,7 +4276,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 408,
+    "line": 457,
     "writes": "0.9279"
    }
   ],
@@ -4269,7 +4288,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 413,
+    "line": 462,
     "writes": "-2.46"
    }
   ],
@@ -4286,12 +4305,12 @@
    },
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 410,
+    "line": 459,
     "writes": "-1.97"
    },
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 218,
+    "line": 255,
     "writes": "-1.97"
    }
   ],
@@ -4303,12 +4322,17 @@
   "quoting_sites": [
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 417,
+    "line": 466,
     "writes": "1.117"
    },
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 222,
+    "line": 259,
+    "writes": "1.117"
+   },
+   {
+    "file": "docs/wiki/beam-delivery-and-the-waist-ratio.md",
+    "line": 104,
     "writes": "1.117"
    }
   ],
@@ -4320,7 +4344,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 424,
+    "line": 473,
     "writes": "0.97"
    },
    {
@@ -4337,12 +4361,12 @@
   "quoting_sites": [
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 420,
+    "line": 469,
     "writes": "1.691"
    },
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 220,
+    "line": 257,
     "writes": "1.691"
    }
   ],
@@ -4354,12 +4378,12 @@
   "quoting_sites": [
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 393,
+    "line": 442,
     "writes": "0.26"
    },
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 215,
+    "line": 252,
     "writes": "0.26"
    }
   ],
@@ -4407,24 +4431,12 @@
   "quoting_sites": [
    {
     "file": "docs/FUTURE_TRANSITIONS_titsapph.md",
-    "line": 497,
+    "line": 496,
     "writes": "48.59"
    }
   ],
   "source_file": "results/projections.csv",
   "source_value": "48.5895"
- },
- "projections:input_rung_waist_at_drive:778 nm, 5S to 5D5/2": {
-  "producer": "run_projections.py",
-  "quoting_sites": [
-   {
-    "file": "docs/FUTURE_TRANSITIONS_titsapph.md",
-    "line": 497,
-    "writes": "49.78"
-   }
-  ],
-  "source_file": "results/projections.csv",
-  "source_value": "49.7754"
  },
  "projections:proj_guided_power_ceiling:S0 equals the natural width": {
   "producer": "run_projections.py",
@@ -4636,7 +4648,7 @@
    },
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 1129,
+    "line": 1166,
     "writes": "6.11"
    },
    {
@@ -4699,7 +4711,7 @@
    },
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 1131,
+    "line": 1168,
     "writes": "0.0479"
    }
   ],
@@ -4752,7 +4764,7 @@
    },
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 1143,
+    "line": 1180,
     "writes": "0.58"
    }
   ],
@@ -4781,7 +4793,7 @@
    },
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 1135,
+    "line": 1172,
     "writes": "-0.0001"
    }
   ],
@@ -4858,7 +4870,7 @@
    },
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 1146,
+    "line": 1183,
     "writes": "5.51"
    }
   ],
@@ -6127,7 +6139,7 @@
    },
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 78,
+    "line": 79,
     "writes": "0.5754"
    },
    {
@@ -6221,7 +6233,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 78,
+    "line": 79,
     "writes": "0.5524"
    }
   ],
@@ -6293,7 +6305,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 78,
+    "line": 79,
     "writes": "0.4824"
    }
   ],

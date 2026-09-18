@@ -9,14 +9,13 @@ waist for rungs at 760 and 778 nm.
 """
 from __future__ import annotations
 
-import csv
-import re
 import math
 from pathlib import Path
 
 import pytest
 
 from rb5s6s import constants as K
+from rb5s6s.config import RESULTS_DIR as RESULTS
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -144,55 +143,46 @@ def test_the_sellmeier_range_is_guarded(lam):
 # --------------------------------------------------------------------------
 # the guard for the defect itself
 # --------------------------------------------------------------------------
-def test_every_ceiling_row_names_the_waist_its_own_rung_can_reach():
-    """A137. `run_projections.py` computed all three drive-power ceilings from
-    `W0_MEASURED_M`, the 993 nm waist, while varying only the polarizability,
-    so two of the three rows described a bench no single lens realises. The
-    common-waist row is a legitimate comparison and stays; what this asserts is
-    that it is not the only row, and that the achievable-waist ceiling sits
-    below it on every rung away from the reference."""
-    path = ROOT / "results" / "projections.csv"
-    rows = [r for r in csv.DictReader(path.open())]
-    common = {r["key"]: float(r["value"]) for r in rows
-              if r["quantity"] == "proj_light_shift_ceiling"}
-    own = {r["key"]: float(r["value"]) for r in rows
-           if r["quantity"] == "proj_light_shift_ceiling_at_drive_waist"}
-    assert common, "the producer emits no ceiling rows at all"
-    assert set(own) == set(common), (
-        "every common-waist ceiling needs the achievable-waist ceiling beside "
-        f"it; missing {sorted(set(common) - set(own))}")
-    moves = {k: abs(v / common[k] - 1.0) for k, v in own.items()}
-    ref = next(k for k in moves if "993" in k)
-    # The reference rung is not asserted equal: its label wavelength is 993.4
-    # and its term-energy drive is 993.418, so the two ceilings differ by four
-    # parts in a hundred thousand. What must hold is that this residual is
-    # negligible against the effect the guard exists for, which is a factor of
-    # a few on the other rungs.
-    assert moves[ref] < 1e-3, (
-        f"the reference rung moved by {moves[ref]:.2e}, which is too much to "
-        "be the label-against-term-energy residual")
-    for key, value in own.items():
-        if key == ref:
+
+# THE DRIVE-POWER CEILING TEST IS GONE WITH ITS SUBJECT (O32, 2026-09-18). It guarded
+# `proj_light_shift_ceiling` and its achievable-waist sibling: that a common-waist ceiling was not
+# the only row, and that the achievable-waist one sat below it away from the reference rung. A137's
+# defect was real and the guard was right about it, but the construct it guarded is retracted -- this
+# record models the light shift rather than capping the power at a tenth of a width -- so the rows it
+# read no longer exist. The waist-against-polarizability lesson it carries survives in this module's
+# other tests, which assert that a per-rung quantity is computed at that rung's own waist.
+
+def test_the_producer_still_emits_a_waist_and_a_polarizability_per_rung():
+    """RUNGS is consumed, and the two rows that ride on it reach the CSV.
+
+    WHY THIS EXISTS (2026-09-18). Stripping the retracted light-shift ceiling (owner order O32)
+    deleted the loop that emitted the ceiling rows, and `input_rung_delta_alpha` and
+    `input_rung_waist_at_drive` were emitted from INSIDE it, so two row families that have nothing to
+    do with a ceiling went with it and `RUNGS` was left consumed by nothing. Nothing failed. The loss
+    surfaced only because `docs/FUTURE_TRANSITIONS_titsapph.md` happened to bind one of the values and
+    `check_references` reported it DANGLING -- which is luck, not coverage: a row nothing quotes can be
+    deleted in silence.
+
+    This asserts the rows EXIST, one per rung, and that each waist is the reference waist scaled by the
+    drive wavelength, so a future strip cannot take them quietly again.
+    """
+    import csv as _csv
+    rows = [r for r in _csv.DictReader(open(RESULTS / "projections.csv"))]
+    for quantity in ("input_rung_delta_alpha", "input_rung_waist_at_drive"):
+        got = [r for r in rows if r["quantity"] == quantity]
+        assert got, (
+            f"{quantity} is absent from projections.csv. RUNGS is defined in run_projections.py and "
+            "something has stopped consuming it; the rows are not a ceiling concept and do not leave "
+            "with one.")
+        assert len(got) == 3, f"{quantity}: {len(got)} rows against the three rungs"
+    waists = {r["key"]: float(r["value"]) for r in rows
+              if r["quantity"] == "input_rung_waist_at_drive"}
+    ref = [k for k in waists if k.startswith("993")]
+    assert ref, "no 993 nm rung among the waist rows"
+    assert waists[ref[0]] == pytest.approx(K.W0_MEASURED_M * 1e6, rel=1e-3), (
+        "the 993 nm rung's drive waist should reproduce the measured waist")
+    for key, value in waists.items():
+        if key.startswith("993"):
             continue
-        assert value < common[key], (
-            f"{key}: the achievable waist is tighter than the reference "
-            "one, so its ceiling must be lower")
-        assert moves[key] > 100 * moves[ref], (
-            f"{key}: the drive-waist correction is not distinguishable from "
-            "the reference rung's rounding residual")
-        # AND THE SIZE OF THE MOVE, not only its direction. Asserting only
-        # `own < common` passes for ANY law in which the waist falls with the
-        # wavelength, so it could not tell the aperture-limited w0 ~ lambda
-        # from the resonator-mode w0 ~ sqrt(lambda), which differ by 14 per
-        # cent on this ladder. The ceiling is a POWER, and a given shift is
-        # reached at a power going as the waist squared, so the ratio is
-        # pinned to (w0_drive / w0_ref)^2 and the guard now reads the same
-        # function the producer calls.
-        lam = float(re.match(r"\s*([0-9.]+)\s*nm", key).group(1))
-        predicted = (K.waist_at_drive(lam, input_beam="aperture")
-                     / K.W0_MEASURED_M) ** 2
-        assert value / common[key] == pytest.approx(predicted, rel=2e-3), (
-            f"{key}: the ceiling ratio is {value / common[key]:.4f} against "
-            f"the aperture law's {predicted:.4f}. The resonator law would give "
-            f"{(K.waist_at_drive(lam, input_beam='resonator') / K.W0_MEASURED_M) ** 2:.4f}, "
-            "and this guard exists to tell them apart")
+        assert value < waists[ref[0]], (
+            f"{key} drives at a shorter wavelength than 993 nm, so its waist must be smaller")

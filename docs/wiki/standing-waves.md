@@ -269,4 +269,4 @@ the private correction record carries the figure that was replaced.
 
 ---
 
-[← Doppler-free two-photon spectroscopy](doppler-free-two-photon.md) · *Experimental spectroscopy, 2 of 11* · [The Voigt profile →](voigt-profile.md)
+[← Doppler-free two-photon spectroscopy](doppler-free-two-photon.md) · *Experimental spectroscopy, 2 of 12* · [The Voigt profile →](voigt-profile.md)

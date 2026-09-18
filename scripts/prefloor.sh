@@ -82,6 +82,12 @@ $PY private/checks/ssot_guard.py --scan; ssc=$?
 # They ran by hand all day while their own docstrings said they were wired.
 $PY private/checks/prior_art.py --self-test; pac=$?
 $PY private/checks/prune_guard.py --self-test; pgc=$?
+# THE HOOK'S OWN PLANT, beside the guard's (2026-09-18). `prune_hook.py` is driven by the editor's own
+# before-and-after-write hooks, whose settings file is gitignored by design, so a scan of the tracked tree
+# cannot see that wiring and `test_checkers_are_wired` called it an orphan -- rightly, on what it can read.
+# Running its plant here makes it a guard this floor exercises every time, which is the wiring that matters,
+# and the tracked copy of those settings is private/checks/claude_settings.json.
+$PY private/checks/prune_hook.py --self-test; phc=$?
 # AND THE GUARD MUST GRADE THE TREE, NOT ONLY ITSELF (2026-09-16). The line above
 # runs the PLANT; until today nothing ran the guard. A guard wired to its own
 # self-test passes for ever, which is why a 30,000-word plan could be cut to 913
@@ -133,7 +139,7 @@ fi   # end of the real stages; a plant supplies rc, prc and agc instead
 # it and on nothing narrower (the guards' self-test used to sit outside this `if`, so a deleted
 # guard printed GREEN and stamped while the exit code alone said otherwise, and the stamp on disk
 # is what idle_audit and the landing loop read).
-ALL_RC=$(( rc != 0 || prc != 0 || agc != 0 || ${ssc:-0} != 0 || ${pac:-0} != 0 || ${pgc:-0} != 0 || ${pgs:-0} != 0 || ${scc:-0} != 0 || ${sdc:-0} != 0 || ${tnc:-0} != 0 || ${vgc:-0} != 0 || ${nlc:-0} != 0 || ${hrc:-0} != 0 || ${pwc:-0} != 0 || ${bhc:-0} != 0 || ${stc:-0} != 0 || ${sgc:-0} != 0 || ${ucc:-0} != 0 || ${ppd:-0} != 0  || ${foc:-0} != 0 || ${rvc:-0} != 0 || ${slc:-0} != 0  || ${sqc:-0} != 0 || ${mac:-0} != 0 ))
+ALL_RC=$(( rc != 0 || prc != 0 || agc != 0 || ${ssc:-0} != 0 || ${pac:-0} != 0 || ${pgc:-0} != 0 || ${phc:-0} != 0 || ${pgs:-0} != 0 || ${scc:-0} != 0 || ${sdc:-0} != 0 || ${tnc:-0} != 0 || ${vgc:-0} != 0 || ${nlc:-0} != 0 || ${hrc:-0} != 0 || ${pwc:-0} != 0 || ${bhc:-0} != 0 || ${stc:-0} != 0 || ${sgc:-0} != 0 || ${ucc:-0} != 0 || ${ppd:-0} != 0  || ${foc:-0} != 0 || ${rvc:-0} != 0 || ${slc:-0} != 0  || ${sqc:-0} != 0 || ${mac:-0} != 0 ))
 if [ $ALL_RC -eq 0 ]; then
   # THE FAST STAMP. A reading stage reads a tree, it does not run one, so the
   # expensive question about that tree is answered by the gate running BESIDE
@@ -151,6 +157,6 @@ if [ $ALL_RC -eq 0 ]; then
   echo "prefloor: GREEN, stamped ${TREE:0:12}. The reading stage may open on this; the gate runs beside it."
 else
   rm -f "$STAMP"
-  echo "prefloor: RED (pytest $rc, precheck $prc, guards $agc, prior-art $pac, prune $pgc, prune-scan ${pgs:-0}, coverage $scc, deps $sdc, trace-names ${tnc:-0}, variac ${vgc:-0}, ssot-literals ${slc:-0}, ssot-quotations ${sqc:-0}, main-aim ${mac:-0}, noise-ladder ${nlc:-0}, headings ${hrc:-0}, walls ${pwc:-0}, plan-prune ${ppd:-0}, retired-values ${rvc:-0}). No stamp. Fix these before anything expensive."
+  echo "prefloor: RED (pytest $rc, precheck $prc, guards $agc, prior-art $pac, prune $pgc, prune-hook ${phc:-0}, prune-scan ${pgs:-0}, coverage $scc, deps $sdc, trace-names ${tnc:-0}, variac ${vgc:-0}, ssot-literals ${slc:-0}, ssot-quotations ${sqc:-0}, main-aim ${mac:-0}, noise-ladder ${nlc:-0}, headings ${hrc:-0}, walls ${pwc:-0}, plan-prune ${ppd:-0}, retired-values ${rvc:-0}). No stamp. Fix these before anything expensive."
 fi
 exit $ALL_RC

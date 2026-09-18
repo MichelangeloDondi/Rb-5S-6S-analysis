@@ -278,6 +278,66 @@ Prescriptions:
   bound it with a magnetometer, and measure dν/dB at one condition with a
   known applied field.
 
+
+### 4.5 Mode-cleaned delivery, and the waist as a scanned parameter
+
+The order, and why the fibre is last. Isolator, then modulator, then a
+single-mode fibre, with the collimator behind it. A fibre transmits its own mode
+and nothing else, so whatever the modulator does to the transverse profile is
+cleaned after it, and the modulator becomes free to be a free-space device or a
+fibre-coupled one on grounds of convenience. The isolator stays first so the
+fibre's own back-reflection never reaches the laser. The present order is the
+opposite one, and its cost is section 1.2's 3 mm clear aperture: it removes a
+third to a half of the power, it floors the focus near 42 microns whatever the
+input radius, and it replaces the Gaussian profile every kernel in this
+repository assumes with a ringed one.
+
+The bore also sets a floor, and the floor is where the waist was ruled. Solved by diffraction through the 3 mm aperture, which the unclipped Gaussian formula does not describe under heavy truncation, the focal radius reads 65.0 microns at an input radius of 0.741 mm, 51.1 at 1.06, 45.4 at 1.5, 43.3 at 2.0 and 41.4 at 4.0, against 0.0, 1.8, 13.5, 32.5 and 75.5 per cent of the power clipped. So the focus saturates at 41 to 43 microns whatever is done upstream, the beam that reaches the floor is the beam that gives up a third to a half of its power, and the owner's ruled 40 to 45 micron band is the bore's own diffraction limit. The aperture's cost and the waist's value are one fact on this bench.
+
+The waist becomes a rung. A fibre of mode radius `w_f` diverges at
+`lambda / pi w_f`, so a collimator `f_c` returns `f_c lambda / pi w_f` and the
+focusing lens `f_L` brings it to `w_0 = w_f f_L / f_c`. The wavelength cancels.
+One rung of a scan is one collimating lens, and nothing downstream moves. Two
+magnetic camera stations at fixed separations along the collimated beam hold the
+axis: with each lens placed so the beam centre falls at the camera centre in
+both stations, the pointing is the same on every rung.
+
+The ratio is the precise quantity, and it is worth more than the value. Two
+rungs stand in the ratio of their collimator focal lengths and nothing else, so
+the mode radius, the focusing lens, the wavelength and the beam quality all
+divide out, leaving a catalogue tolerance of about one per cent. The cameras
+give the same ratio a second time from the measured radius and divergence, on
+inputs the catalogue route does not share. 
+
+What that buys is the term list:
+`S0` goes as one over the square of the waist, the transit as its inverse, and
+the laser and collisional widths not at all, so a scan of known ratios separates
+those four by their scaling. One lineshape cannot, which is why chapter 12
+carries the waist as the largest open systematic and every absolute result is a
+bound. A power ladder is no substitute, since saturation and depletion follow
+one ray in the drive while their ratio goes as the crossing time.
+
+One mode means one shape on every rung. Every rung presents the same profile
+at a different scale, so every dimensionless shape number of the light-shift
+distribution takes one value across the scan, the standardised third cumulant
+`-2 sqrt2 / 5` and the normalised fourth `-3/5`, both read off the ramp's own
+density and checkable from it. A shape
+number that moves is a systematic and can be nothing else. A truncated beam has
+no such test, and the third-order diagnostics respond several times more
+strongly than the width to the same degradation, which puts an uncleaned beam
+directly in the way of the moment channel the main aim rests on.
+
+Two constraints. The collimated radius goes as `f_c`, so the long rungs
+present the widest beam downstream and the scan is clean only while the widest
+of them sits well inside the clear aperture of the focusing lens and the cell
+windows. The shape numbers measure that, so they are read on every rung before
+the fit. The second is section 4.2c's and is not repeated here: the Rayleigh
+range goes as the square of the waist while the imaged length is set by the
+collection optics, so their ratio moves by four across a factor of two in waist
+and the third cumulant crosses zero at `z_ratio` 1.117. Holding the imaged
+length proportional to the square of the waist keeps every rung at one axial
+mixture, which is what the slit of 4.2c is for.
+
 ---
 
 *[Priorities if the budget shrinks](02_priorities.md) · [Intensity and the light shift](04_intensity-and-light-shift.md)*

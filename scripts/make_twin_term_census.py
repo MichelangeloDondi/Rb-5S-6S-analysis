@@ -26,7 +26,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from rb5s6s import blackbody, cascade, detection, fibre, forecast, stark  # noqa: E402
+from rb5s6s import blackbody, cascade, detection, fibre, forecast, lineshape, stark  # noqa: E402
 
 # resolved through the config so RB5S6S_RESULTS_DIR redirects this producer;
 # a hand-built path is not redirected, so the freshness verifier compares a
@@ -99,6 +99,10 @@ _CENSUS_TERM_TO_PARAM = {
     "beam_quality_m2": "m2",
     "radiation_temperature_separate": "t_bbr_k",
     "saturation_parameterised_by_rabi": "omega_mhz",
+    # A permeated gas is a constant Lorentzian and Lorentzians convolve
+    # additively, so it IS gamma_l -- the same parameter as the laser's
+    # Lorentzian arm, never a second term (2026-09-18).
+    "foreign_gas_permeated": "gamma_l",
 }
 
 
@@ -123,6 +127,20 @@ def _fitter_verdict(term: str) -> str:
 #: which parameter comes back wrong. A term NEITHER carries is invisible, so the
 #: loop recovers what it injects and says nothing about this bench -- the
 #: failure this record already met once on the collection window.
+def _argon_bound() -> tuple:
+    """(widest fitted total_fwhm MHz, argon's equilibrium partial pressure Torr, the 5S-5D coefficient
+    MHz/Torr used as a SCALE, the fraction of equilibrium the line excludes), computed from the record's
+    own cells and not typed (F138, PLAN v2 Phase 0): the note carried "three parts in a thousand" while
+    its own inputs give about 1.8e-2."""
+    with (ROOT / "results" / "linefit_conditions.csv").open() as fh:
+        fwhm = max(float(r["total_fwhm"]) for r in csv.DictReader(fh) if r.get("total_fwhm") not in ("", "nan", None))
+    torr = lineshape.PERMEATED_GASES["ar"] * lineshape.ATMOSPHERE_TORR
+    coef = 45.7            # Zameroski 2014, 5S-5D, argon broadening MHz/Torr: a scale, refused as a value (F138)
+    return fwhm, torr, coef, fwhm / (torr * coef)
+
+
+_ARGON = _argon_bound()
+
 _RECOVERY_BIAS = {
     "lorentzian_core_collisional": "none: both sides carry it",
     "laser_kernel_both_forms": "none: both sides carry it",
@@ -185,6 +203,43 @@ _RECOVERY_BIAS = {
                                         "saturation from the fitted shift, so it "
                                         "survives the zero this archive drives "
                                         "kappa to",
+    "eom_aperture_profile":
+        "INVISIBLE, and at the ruled waist it REVERSES A SIGN. At a clipped focus whose 1/e^2 radius "
+        "READS 42.4 um the transit-integrated ramp's third cumulant is -0.00066 against a Gaussian's "
+        "+0.00994 at the same reading, and the reversal survives the Maxwell-Boltzmann speed mixture "
+        "(F114, F116). A loop that injects and fits the same Gaussian recovers its own injection and "
+        "would not recover this bench's odd channel. The transit width differs by one to four per "
+        "cent and not monotonically, so it cannot be absorbed into a rescaled waist either",
+    "recorded_power_normalisation":
+        "IT CANCELS IN A CLOSED LOOP AND BITES ONLY AT A COMPARISON, which is why nothing has caught "
+        "it. Inject with a kappa per recorded watt and fit with the same convention and the factor "
+        "divides out, so every closure test this twin has passed is silent about it. It bites in the "
+        "two places the twin is actually used for: a THEORY prediction compared with a measured "
+        "coefficient, where the prediction needs the watt at the atoms and the measurement is per "
+        "recorded watt, and a forecast quoting an absolute S0 at a stated recorded power. The sign is "
+        "UPWARD, +2.0 per cent at the record's clean transmissions and +12.2 at its filmed scenario, "
+        "against the EOM aperture's -3.3, so the uncarried term is the larger of the two and opposite. "
+        "And it is MONOTONE IN TEMPERATURE, because the exit window films as the cell cools, on the "
+        "very arm that separates the collisional width from the laser width",
+    "foreign_gas_permeated":
+        "INVISIBLE, and it biases a density slope UPWARD. Density separates a constant term only if "
+        "the fit carries a free term of the RIGHT SHAPE: the free constant here is a Gaussian standing "
+        "for the laser, a permeated-gas width is a Lorentzian, and the two do not substitute, so the "
+        "omitted constant Lorentzian is absorbed by the one Lorentzian that carries a density slope, "
+        "beta_self N(T) itself. The remedy is a free constant of Lorentzian shape, not a finer ladder. "
+        "NEON IS THE LARGER MEMBER AND WAS MISSED WHEN THIS ROW SAID HELIUM (2026-09-18, the thesis "
+        "session): permeation carries a sealed cell to the atmosphere's own PARTIAL PRESSURE of every "
+        "species small enough to cross the glass, so abundance sets the destination and permeability "
+        "only the clock. Neon is 18.2 ppm of air against helium's 5.24, so 13.8 mTorr at equilibrium "
+        f"against 3.98, and its shift runs the other way. Argon at 9340 ppm would put {_ARGON[1]:.1f} Torr in "
+        f"the cell, which the widest fitted line ({_ARGON[0]:.2f} MHz, `linefit_conditions.csv` total_fwhm) "
+        f"excludes outright: at Zameroski's 5S-5D coefficient of {_ARGON[2]:.1f} MHz/Torr, a SCALE and not "
+        f"a value (F138), the line bounds the heavy species at under {_ARGON[3]:.1e} of equilibrium, "
+        "COMPUTED from those inputs (the row typed 3e-3 until 2026-09-18). THE COEFFICIENTS ARE NOT TRANSFERABLE: "
+        "Zameroski measured them on 5S-5D, our own note states the upper states differ so nothing "
+        "there can be adopted as a value, and the resulting widths are estimates of scale and not "
+        "widths on this line. Enumerating the family adds NO parameter, it puts a prior on the one "
+        "free constant already owed",
 }
 
 
@@ -202,6 +257,22 @@ def main() -> int:
                     ("solve_he11", "evanescent_intensity", "transit_fwhm",
                      "homogeneous_width")),
         "noise_law": (_CFG_RESULTS / "noise_model.csv").is_file(),
+        # THE TWO TERMS THE 40 TO 45 MICRON WORK ADDED (2026-09-18). Both are inspected on the
+        # twin's OWN source rather than asserted: the aperture has an on-axis closed form in the
+        # package and nothing in the forecast path, and helium appears nowhere at all.
+        "aperture_fn": hasattr(lineshape, "aperture_onaxis_factor"),
+        "aperture_in_twin": "aperture" in inspect.getsource(forecast),
+        "helium_in_twin": any(g in inspect.getsource(forecast).lower()
+                             for g in ("helium", "neon", "argon", "buffer gas")),
+        # F129 (2026-09-18). The meter is BEHIND the cell, so the watt a trace is labelled with is
+        # read through the exit window and L2. Nothing in the forecast path converts it to the watt
+        # at the focus; `build_world_trace` takes s0 = kappa * power_w and asks no question of either.
+        # AND THE PROBE IS WORD-BOUNDED, because the first one was not: the bare substring "t_win"
+        # matched inside "cumulant_window_check" on line 173 of the forecast's own docstring and the
+        # census published "in twin: yes" for a term the twin does not carry. A matcher that can be
+        # out-spelled reports compliance; this is that class caught inside its own repair.
+        "power_norm_in_twin": bool(re.search(r"\b(transmission|t_win|window_loss)\b",
+                                             inspect.getsource(forecast), re.I)),
     }
 
     def yes(b): return "yes" if b else "no"
@@ -348,6 +419,33 @@ def main() -> int:
          "fullmodel.py", _fitter_verdict("saturation_parameterised_by_rabi"),
          "Omega as its own parameter, so the companion survives the zero this "
          "archive drives the fitted shift to"),
+        ("eom_aperture_profile", yes(have["aperture_in_twin"]), "no",
+         "lineshape.aperture_onaxis_factor (the on-axis half only)"
+         if have["aperture_fn"] else "MISSING", "no",
+         "inspected: the forecast's own source carries no aperture. The bore's ON-AXIS factor is a "
+         "closed form in the package. The profile it makes -- the side lobes, the effective M2, the "
+         "transit kernel and the ramp's f(s) -- is measured only in the cache (F104, F108, F114, F116)"),
+        ("recorded_power_normalisation", yes(have["power_norm_in_twin"]), "no", "MISSING", "no",
+         "inspected: the forecast's own source carries no transmission term, and build_world_trace "
+         "takes s0 = kappa * power_w with no statement of where that watt was read. APPARATUS 1.2 "
+         "puts the flip-in meter behind the cell (PHOTO), so the exit window and L2 sit between the "
+         "focus and the meter, and priorities item 2 names the same two surfaces for the retro leg's "
+         "T_win^2 T_lens^2 and the forward pass is carried nowhere (F129)"),
+        ("foreign_gas_permeated",
+         yes("gamma_l" in _params(forecast.build_world_trace)),
+         "no", "lineshape.permeated_gas_width_mhz (mechanism only, see note)",
+         _fitter_verdict("foreign_gas_permeated"),
+         "THE MECHANISM IS PRESENT AND THE COEFFICIENT IS NOT. A permeated gas is a constant "
+         "Lorentzian, and Lorentzians convolve additively, so it IS gamma_l, which build_world_trace "
+         "carries and full_profile fits: no new term and no new parameter is needed or wanted. What "
+         "is missing is a VALUE. The widths this record computed on 2026-09-18 (0.2035 MHz helium, "
+         "0.5452 with neon) came from Zameroski's 5S-5D rates, which docs/lit/zameroski2014.md "
+         "refuses as transferable across a differing upper state, and they are RETRACTED (F136, "
+         "F137). No replacement is derivable here: vanderwaals.c6_coefficient needs line lists for "
+         "both partners and this record holds none for helium or neon, and beta_self_anchored runs "
+         "through c6_exchange, which is homonuclear. So the twin carries the family as the gamma_l "
+         "knob and its value comes from the fit, never from literature. No committed world sets it "
+         "yet, which is why example_world reads no"),
     ]
 
     _ = _RECOVERY_BIAS  # the writer below reads it

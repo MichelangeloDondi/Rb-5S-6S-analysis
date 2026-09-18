@@ -77,3 +77,26 @@ def test_the_deep_derivation_bounds_the_multipole_channels_and_moves_the_constan
     assert abs(float(d["value"]) - K.DELTA_ALPHA_AU) < 30.0
     assert 0 < float(d["err"]) < 15.0
     assert abs(float(rows[("static_tail_pull", "computed_vs_SS2011")]["value"])) < 2.0
+
+
+def test_the_core_cut_refuses_the_angular_momenta_it_was_never_calibrated_for():
+    """R_MIN is a calibrated parameter, not a small one, and above l = 1 it is neither.
+
+    Moving the cut from 0.02 to 3 a0 moves an s-to-p integral by 5 per cent and a d-to-f integral
+    by a factor of three hundred, from 0.0259 to 8.2: the Coulomb function at a non-integer
+    effective quantum number carries an r^-l piece that a cut inside the core does not remove. The
+    module is calibrated against ns-n'p elements and nothing in this record calls it above l = 1, so
+    no committed number depends on this; what the refusal prevents is the next caller receiving
+    0.0259 with no warning (the thesis session, 2026-09-18, reproduced here before adoption).
+    """
+    from rb5s6s.coulomb_approx import CoreCutUnvalidated, E_ION_CM, RYD_RB_CM, radial_integral
+
+    def e_of(nstar):
+        return E_ION_CM - RYD_RB_CM / nstar ** 2
+
+    # the calibrated side still computes
+    assert radial_integral(e_of(2.6), 0, e_of(3.0), 1) > 1.0
+    # and each uncalibrated side refuses, whichever of the two carries the high l
+    for la, lb in ((2, 3), (3, 2), (2, 1), (0, 2)):
+        with pytest.raises(CoreCutUnvalidated):
+            radial_integral(e_of(2.8), la, e_of(3.9), lb)

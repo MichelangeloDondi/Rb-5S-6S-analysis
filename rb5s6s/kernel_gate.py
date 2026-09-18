@@ -213,10 +213,38 @@ class KernelUnvalidated(RuntimeError):
     """Raised when the full model is asked for a node no Monte Carlo has validated."""
 
 
-def judge(readings: Dict[str, Any]) -> tuple:
-    """(verdict, reasons): every reading present and inside its tolerance, or FAIL naming each."""
+#: THE WAIST ANALYSES' READING SET (D1 of PLAN v2, 2026-09-18). The closure and the joint MLE fit ONE
+#: FREE AMPLITUDE PER TRACE (`Cell.linear`: amplitude, offset and slope by weighted least squares), so
+#: they never consume the amplitude's local power law; requiring `amplitude_power_law_abs` of them
+#: blocked the whole 40 to 46 um band on a reading no waist fit reads (F134: 21 of 39 band nodes pass
+#: it after the saturated-cycles repair, the worst at 0.0502 against 0.02). Any analysis that TIES
+#: amplitudes across powers (the amplitude channel, the shares against the density law) keeps the
+#: default, which is every reading. A caller names the set; nothing here loosens a tolerance.
+WAIST_READINGS = tuple(n for n in READINGS if n != "amplitude_power_law_abs")
+
+
+def _names(readings_wanted) -> tuple:
+    """The reading names a caller asks for: None is every reading; a subset must be known names."""
+    if readings_wanted is None:
+        return tuple(READINGS)
+    names = tuple(readings_wanted)
+    unknown = [n for n in names if n not in READINGS]
+    if unknown:
+        raise ValueError(f"unknown kernel-gate readings {unknown}; the readings are {list(READINGS)}")
+    if not names:
+        raise ValueError("an empty reading set gates nothing; name the readings or pass None for all")
+    return names
+
+
+def judge(readings: Dict[str, Any], names=None) -> tuple:
+    """(verdict, reasons): every reading present and inside its tolerance, or FAIL naming each.
+
+    `names` restricts the judgement to a subset of `READINGS` (D1: `WAIST_READINGS` for the waist
+    analyses); the artefact's RECORDED verdict is always over every reading."""
     why = []
     for name, tol in READINGS.items():
+        if name not in _names(names):
+            continue
         if name not in readings:
             why.append(f"{name} absent"); continue
         r = readings[name]
@@ -226,13 +254,39 @@ def judge(readings: Dict[str, Any]) -> tuple:
             why.append(f"{name} malformed"); continue
         if dev > tol:
             why.append(f"{name} off by {dev:.3g} against {tol}")
-        if name == "ramp_k3_rel" and "grid_movement" not in r:
-            why.append("ramp_k3_rel carries no grid movement")
+        if name == "ramp_k3_rel":
+            gm = r.get("grid_movement")
+            if gm is None:
+                why.append("ramp_k3_rel carries no grid movement")
+            elif not (float(gm) <= K3_GRID_TOL):
+                why.append(f"ramp_k3_rel grid movement {float(gm):.3g} over {K3_GRID_TOL}")
     return ("PASS" if not why else "FAIL"), why
+
+
+#: THE DIGEST PIN OF A POOLED RUN (2026-09-18, PLAN v2 C1). A pooled re-run of 976 nodes took 17 minutes,
+#: and two package edits made under it moved the digest twice, so the artefacts came out in THREE
+#: populations, the deepest nodes stale, and `--collect` refused the table. Nothing said so until the
+#: end. A launcher that sets `RB5S6S_MODEL_DIGEST_PIN` to the digest at its start makes every later
+#: `record_node` REFUSE when the model has moved, so an edit under a running pool fails the node it is
+#: about to write instead of poisoning the population; the run's log names the moved digest and the
+#: edit is the thing to undo or to wait out. Unset, nothing changes.
+DIGEST_PIN_ENV = "RB5S6S_MODEL_DIGEST_PIN"
+
+
+class ModelMovedUnderRun(RuntimeError):
+    """The model's digest moved while a pinned pooled run was writing artefacts."""
 
 
 def record_node(key: str, readings: Dict[str, Any], *, detail: Optional[Dict[str, Any]] = None,
                 cache: Optional[pathlib.Path] = None) -> pathlib.Path:
+    pin = os.environ.get(DIGEST_PIN_ENV)
+    if pin:
+        now = model_digest()
+        if now != pin:
+            raise ModelMovedUnderRun(
+                f"node {key} not written: the model's digest is {now} and this run was pinned at {pin}; "
+                f"a package edit landed under the running pool. Undo it or wait it out, then re-run the "
+                f"nodes written since the edit.")
     verdict, why = judge(readings)
     d = mc_dir(cache); d.mkdir(parents=True, exist_ok=True)
     out = d / f"{key}.json"
@@ -244,8 +298,9 @@ def record_node(key: str, readings: Dict[str, Any], *, detail: Optional[Dict[str
 
 
 def status_node(key: str, cache: Optional[pathlib.Path] = None,
-                model_file: Optional[pathlib.Path] = None) -> list:
-    """Empty when the node is admitted; otherwise the reasons."""
+                model_file: Optional[pathlib.Path] = None, readings=None) -> list:
+    """Empty when the node is admitted; otherwise the reasons. `readings` names the subset of
+    `READINGS` the caller consumes (None: all of them; `WAIST_READINGS` for a free-amplitude fit)."""
     f = mc_dir(cache) / f"{key}.json"
     if not f.is_file():
         return [f"no Monte Carlo artefact for node {key}: run scripts/run_kernel_mc.py for it first"]
@@ -256,7 +311,7 @@ def status_node(key: str, cache: Optional[pathlib.Path] = None,
     missing = [k for k in REQUIRED_DETAIL if k not in row.get("detail", {})]
     if missing:
         return [f"node {key}'s artefact lacks {missing}: written by another producer version, re-run its Monte Carlo"]
-    again, why = judge(row.get("readings", {}))            # re-judged against the rules in force now
+    again, why = judge(row.get("readings", {}), readings)   # re-judged against the rules in force now, on the caller's set
     if again != "PASS":
         return [f"node {key} does not pass the current gate: " + "; ".join(why)]
     if row.get("model_sha") != model_digest(model_file):
@@ -265,15 +320,16 @@ def status_node(key: str, cache: Optional[pathlib.Path] = None,
     return []
 
 
-def require_node(key: str, cache: Optional[pathlib.Path] = None) -> None:
-    bad = status_node(key, cache)
+def require_node(key: str, cache: Optional[pathlib.Path] = None, readings=None) -> None:
+    bad = status_node(key, cache, readings=readings)
     if bad:
         raise KernelUnvalidated("; ".join(bad))
 
 
-def reading(key: str, cache: Optional[pathlib.Path] = None) -> Dict[str, Any]:
-    """The node's artefact, refused unless it reads PASS and was written against the model file's own digest."""
-    require_node(key, cache)
+def reading(key: str, cache: Optional[pathlib.Path] = None, readings=None) -> Dict[str, Any]:
+    """The node's artefact, refused unless it reads PASS on the caller's reading set and was written
+    against the model file's own digest."""
+    require_node(key, cache, readings)
     return json.loads((mc_dir(cache) / f"{key}.json").read_text())
 
 
@@ -282,8 +338,9 @@ MAX_SPAN_UM = 8.0         # the widest gap the interpolation may bridge (coarse 
 CURVATURE_TOL = 2e-3      # the second difference across three neighbouring nodes, a bound on the linear error
 
 
-def _validated_waists(m2: float, rho: float, T_C: float, P_mW: float, cache: Optional[pathlib.Path] = None) -> list:
-    """The waists with a PASSING, fresh artefact at these conditions, sorted."""
+def _validated_waists(m2: float, rho: float, T_C: float, P_mW: float, cache: Optional[pathlib.Path] = None,
+                      readings=None) -> list:
+    """The waists with a PASSING, fresh artefact at these conditions (on the caller's reading set), sorted."""
     d = mc_dir(cache)
     if not d.is_dir():
         return []
@@ -294,13 +351,13 @@ def _validated_waists(m2: float, rho: float, T_C: float, P_mW: float, cache: Opt
             w = float(f.name[1:].split("_", 1)[0])
         except ValueError:
             continue
-        if not status_node(f.stem, cache):
+        if not status_node(f.stem, cache, readings=readings):
             out.append(w)
     return sorted(out)
 
 
 def depletion_factor(w0_um: float, line: str, m2: float = 1.0, rho: float = 0.94, T_C: float = 130.0,
-                     P_mW: float = 225.0, cache: Optional[pathlib.Path] = None) -> float:
+                     P_mW: float = 225.0, cache: Optional[pathlib.Path] = None, readings=None) -> float:
     """The surviving transit kernel's width over the bare collected kernel at this node, for
     the fit: `transit_fwhm x depletion_factor`. Read from the node's artefact when the waist
     sits on a validated node; between two validated nodes it is interpolated linearly, whatever
@@ -310,11 +367,11 @@ def depletion_factor(w0_um: float, line: str, m2: float = 1.0, rho: float = 0.94
     across the three nearest nodes where a third exists (`CURVATURE_TOL`), and a waist outside the
     validated span, a gap wider than the bound, or a curvature over the tolerance is refused."""
     w = float(w0_um)
-    ws = _validated_waists(m2, rho, T_C, P_mW, cache)
+    ws = _validated_waists(m2, rho, T_C, P_mW, cache, readings)
     if not ws:
         raise KernelUnvalidated(f"no validated node at m2 {m2}, rho {rho}, T {T_C}, P {P_mW}: run scripts/run_kernel_mc.py first")
     def _f(x):
-        return 1.0 + float(reading(node_key(x, m2, rho, T_C, P_mW), cache)["detail"]["depletion_widening_rel"][line])
+        return 1.0 + float(reading(node_key(x, m2, rho, T_C, P_mW), cache, readings)["detail"]["depletion_widening_rel"][line])
     for x in ws:
         if abs(w - x) < 1e-9:
             return _f(x)
@@ -336,7 +393,7 @@ def depletion_factor(w0_um: float, line: str, m2: float = 1.0, rho: float = 0.94
 
 
 def preflight(conditions, w0_lo: float, w0_hi: float, *, line: str = "4121",
-              cache: Optional[pathlib.Path] = None) -> list:
+              cache: Optional[pathlib.Path] = None, readings=None) -> list:
     """Every refusal a long run over this waist span would meet, found in seconds.
 
     THE DEFECT THIS EXISTS FOR (F91, 2026-09-17): the closure ran for eight hours and died on
@@ -354,13 +411,13 @@ def preflight(conditions, w0_lo: float, w0_hi: float, *, line: str = "4121",
     lo, hi = float(w0_lo), float(w0_hi)
     for cond in conditions:
         m2, rho, T_C, P_mW = cond
-        ws = _validated_waists(m2, rho, T_C, P_mW, cache)
+        ws = _validated_waists(m2, rho, T_C, P_mW, cache, readings)
         probes = [lo, hi] + [0.5 * (a + b) for a, b in zip(ws, ws[1:]) if b > lo and a < hi]
         for w in sorted(set(round(x, 6) for x in probes)):
             if not (lo - 1e-9 <= w <= hi + 1e-9):
                 continue
             try:
-                depletion_factor(w, line, m2, rho, T_C, P_mW, cache)
+                depletion_factor(w, line, m2, rho, T_C, P_mW, cache, readings)
             except KernelUnvalidated as e:
                 out.append(f"m2 {m2} rho {rho} T {T_C} P {P_mW} at {w:g} um: {e}")
                 break
@@ -368,14 +425,30 @@ def preflight(conditions, w0_lo: float, w0_hi: float, *, line: str = "4121",
 
 
 def require_span(conditions, w0_lo: float, w0_hi: float, *, line: str = "4121",
-                 cache: Optional[pathlib.Path] = None) -> None:
-    """`preflight` as a refusal, for a producer to call BEFORE its first expensive cell."""
-    bad = preflight(conditions, w0_lo, w0_hi, line=line, cache=cache)
+                 cache: Optional[pathlib.Path] = None, readings=None) -> None:
+    """`preflight` as a refusal, for a producer to call BEFORE its first expensive cell. `readings`
+    names the subset of `READINGS` the producer consumes (`WAIST_READINGS` for a free-amplitude fit)."""
+    bad = preflight(conditions, w0_lo, w0_hi, line=line, cache=cache, readings=readings)
     if bad:
         raise KernelUnvalidated(
             f"{len(bad)} condition(s) cannot serve waists {w0_lo:g}-{w0_hi:g} um; "
             f"validate the nodes first (scripts/run_kernel_mc.py --w0 <um> --T <C> --P <mW>):\n  "
             + "\n  ".join(bad[:8]))
+
+
+K3_GRID_TOL = 0.01
+"""How far the third cumulant may move when the chord grid is halved, as a fraction of the
+reference k3. The rule file asks for both halves -- "Compute it on a halved grid too and refuse
+the row when the two disagree" -- and until 2026-09-18 this file did only the first: `judge`
+tested that `grid_movement` was PRESENT and never what it said. So a diagnostic pinned at ~1.9 by
+a sign defect in the producer's halved-grid path rode through 744 validated nodes without comment,
+and the third cumulant -- the odd channel this whole record turns on -- had never actually had its
+convergence read. A number a mechanism computes and no mechanism grades is a comment.
+
+0.01 is set from the MEASUREMENT and not from taste: with the sign repaired, 25 nodes spanning
+40 to 90 um and every one of the L's conditions read 1.3e-4 to 1.6e-3, median 7e-4, so this sits
+about six times above the worst observed and two orders below the defect it would have caught.
+Widen it only against a re-measured distribution, never to admit one node."""
 
 
 _DETAIL_OK = {"node": {}, "depletion_widening_rel": {"4121": 0.005}, "depletion_fwhm_rel": {"4121": 0.05}, "depletion_note": "plant"}
@@ -415,6 +488,52 @@ def _self_test() -> list:
             require_node(key, c)
         except KernelUnvalidated as exc:
             bad.append(f"kernel-mc: a PASS artefact was refused: {exc}")
+        # D1 (2026-09-18): a node failing ONLY the amplitude's power law is refused by default and
+        # admitted on the waist set; a node failing a waist reading is refused on both; an unknown
+        # or empty reading set is a ValueError, never a silent admission.
+        amp = json.loads(json.dumps(ok)); amp["amplitude_power_law_abs"] = {"mc": 1.05, "model": 1.0}
+        record_node(key, amp, detail=_DETAIL_OK, cache=c)
+        try:
+            require_node(key, c); bad.append("kernel-mc: a node failing the amplitude law was admitted on the default set")
+        except KernelUnvalidated:
+            pass
+        try:
+            require_node(key, c, readings=WAIST_READINGS)
+        except KernelUnvalidated as exc:
+            bad.append(f"kernel-mc: a node failing only the amplitude law was refused on the waist set: {exc}")
+        k3off = json.loads(json.dumps(ok)); k3off["ramp_k3_rel"] = {"mc": 1.2, "model": 1.0, "grid_movement": 1e-4}
+        record_node(key, k3off, detail=_DETAIL_OK, cache=c)
+        try:
+            require_node(key, c, readings=WAIST_READINGS); bad.append("kernel-mc: a node failing k3 was admitted on the waist set")
+        except KernelUnvalidated:
+            pass
+        for wrong in (("no_such_reading",), ()):
+            try:
+                require_node(key, c, readings=wrong); bad.append(f"kernel-mc: the reading set {wrong} was accepted")
+            except ValueError:
+                pass
+            except KernelUnvalidated:
+                bad.append(f"kernel-mc: the reading set {wrong} refused as a gate verdict instead of a ValueError")
+        # THE DIGEST PIN (2026-09-18): a pinned run whose model moved refuses to write; the same pin
+        # at the current digest writes; no pin writes.
+        _saved = os.environ.get(DIGEST_PIN_ENV)
+        try:
+            os.environ[DIGEST_PIN_ENV] = "0000000000000000"
+            try:
+                record_node(key, ok, detail=_DETAIL_OK, cache=c); bad.append("kernel-mc: a node was written under a pin the model has moved from")
+            except ModelMovedUnderRun:
+                pass
+            os.environ[DIGEST_PIN_ENV] = model_digest()
+            try:
+                record_node(key, ok, detail=_DETAIL_OK, cache=c)
+            except ModelMovedUnderRun:
+                bad.append("kernel-mc: a node was refused under a pin equal to the current digest")
+        finally:
+            if _saved is None:
+                os.environ.pop(DIGEST_PIN_ENV, None)
+            else:
+                os.environ[DIGEST_PIN_ENV] = _saved
+        record_node(key, ok, detail=_DETAIL_OK, cache=c)
         newer = c / "model.py"; time.sleep(0.02); newer.write_text("# a newer model\n")
         if not status_node(key, c, model_file=newer):
             bad.append("kernel-mc: an artefact written against another model was admitted")

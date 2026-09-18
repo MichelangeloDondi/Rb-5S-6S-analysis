@@ -181,15 +181,15 @@ def main() -> int:
         w = csv.writer(f)
         w.writerow(["quantity", "key", "value", "unit"])
         w.writerow(["condition_number", "width_block", f"{r['condition_number']:.1f}",
-                    "eigenvalue ratio of the (gamma_coll,sigma_laser,transit) covariance; >>1 = degenerate"])
+                    "eigenvalue ratio of the (gamma_coll,sigma_laser,transit) covariance, where >>1 is degenerate"])
         for i in range(3):
             for j in range(i, 3):
                 w.writerow(["corr", f"{WIDTHS[i]}_{WIDTHS[j]}", f"{r['corr'][i][j]:.3f}",
                             "width-width correlation coefficient"])
         w.writerow(["best_constrained_sigma", "total_width", f"{r['best_constrained_sigma']:.4f}",
-                    "MHz; 1sigma on the best-constrained width combination (~the total)"])
+                    "MHz, 1sigma on the best-constrained width combination (~the total)"])
         w.writerow(["worst_constrained_sigma", "split", f"{r['worst_constrained_sigma']:.4f}",
-                    "MHz; 1sigma on the degenerate split direction"])
+                    "MHz, 1sigma on the degenerate split direction"])
         # The width channel's whole signal at the predicted shift, per fitted
         # branch, so the wiki's identifiability page quotes producer cells and
         # not prose arithmetic (a pure-Gaussian estimate of 3.9 kHz stood in a
@@ -264,12 +264,12 @@ def main() -> int:
             w.writerow(["width_signature_centre_over_width", name, f"{(2.0 * s0_pred / 3.0) / (f1 - f0):.1f}",
                         "ratio, the centre pull 2 s0/3 over the broadening, what a free centre throws away"])
         w.writerow(["banana_rms", "zoom_profile", f"{zfl['banana_rms']:.4f}",
-                    f"MHz; RMS of the zoom-map valley floor about a straight line, "
-                    f"transit-unpinned rows only (vs gc grid step {zfl['gc_step']:.4f}; "
+                    f"MHz, RMS of the zoom-map valley floor about a straight line, "
+                    f"transit-unpinned rows only (vs gc grid step {zfl['gc_step']:.4f}, "
                     f"the trust verdict needs this AND the slope agreement below)"])
         w.writerow(["ridge_slope", "zoom_profile", f"{zfl['ridge_slope']:.3f}",
                     "d(gamma_coll)/d(sigma_laser) along the profile valley (compare "
-                    "ridge_slope_covariance_pred; agreement = the Gaussian "
+                    "ridge_slope_covariance_pred, where agreement is the Gaussian "
                     "profile<->ellipse correspondence holds where transit is unpinned)"])
         # The covariance-side prediction used to live INSIDE the row above's
         # note string, so when the 2026-08-21 environment re-measure moved it
@@ -281,10 +281,10 @@ def main() -> int:
                     "ellipse at the constrained minimum, the other half of the "
                     "ridge_slope agreement check"])
         w.writerow(["profile_free_gap", "zoom_profile", f"{dmin:.2f}",
-                    "profile chi2_min minus the free-fit chi2 (same model space; ~0 = consistent)"])
+                    "profile chi2_min minus the free-fit chi2 (same model space, ~0 is consistent)"])
         w.writerow(["audit_max_gain", "zoom_profile", f"{zoom['audit_max_gain']:.3f}",
                     "largest chi2 improvement when every 5th cell is refit from the fresh "
-                    "seed (warm-start trapping bound; <<2.30 certifies the surface)"])
+                    "seed (warm-start trapping bound, <<2.30 certifies the surface)"])
         w.writerow(["audit_max_gain", "wide_profile", f"{wide['audit_max_gain']:.3f}",
                     "same fresh-seed audit on the wide map"])
         w.writerow(["transit_railed_frac", "zoom_profile", f"{zoom['transit_railed'].mean():.2f}",
@@ -292,23 +292,23 @@ def main() -> int:
                     "(there the Gaussian ellipse equivalence does not apply)"])
         for nm, rb in (("gaussian", r_gauss), ("cusp", r_cusp)):
             w.writerow(["branch", nm, f"{rb['chi2']:.1f}",
-                        f"raw chi2; gc={rb['fit']['gamma_coll']:.6f}, "
+                        f"raw chi2, gc={rb['fit']['gamma_coll']:.6f}, "
                         f"sl={rb['fit']['sigma_laser']:.6f}, tr={rb['fit']['transit']:.6f} MHz "
-                        f"(two-start local fit, printed at six decimals as the reproduction seed of the width rows, not a resolved precision; the analysis anchors at the deeper branch)"])
+                        f"(two-start local fit, printed at six decimals as the reproduction seed of the width rows, not a resolved precision. The analysis anchors at the deeper branch)"])
         w.writerow(["branch_gap", "local", f"{branch_gap:.1f}",
                     "chi2 gap between the Gaussian- and cusp-dominated local minima "
                     "(the branch choice was invisible to a single-start fit)"])
         w.writerow(["wide_free_gap", "wide_profile", f"{gap_wide:.1f}",
-                    "free-fit chi2 minus the wide-map chi2_min; >6 means the free fit "
+                    "free-fit chi2 minus the wide-map chi2_min, and >6 means the free fit "
                     "(and hence the local covariance analysis above) sits at a LOCAL "
                     "optimum and the global valley is deeper -- the map-level statement "
                     "of the split's non-identifiability"])
         closed_scaled = wide["edge_min_dchi2"] > 5.99 * max(chi2_red, 1.0)
         w.writerow(["closed_95", "wide_profile", str(wide["closed_95"]),
                     f"does the dchi2=5.99 region (raw, shape diagnostic) close inside the "
-                    f"wide grid (sub-grid edge minima; edge min dchi2 = "
+                    f"wide grid (sub-grid edge minima, edge min dchi2 = "
                     f"{wide['edge_min_dchi2']:.1f})? open edges: "
-                    f"{','.join(wide['edges_open']) or 'none'}; at the chi2_red-scaled "
+                    f"{','.join(wide['edges_open']) or 'none'}. At the chi2_red-scaled "
                     f"threshold 5.99x{max(chi2_red, 1.0):.2f} the verdict is "
                     f"{'the same' if closed_scaled == wide['closed_95'] else 'DIFFERENT'}"])
 

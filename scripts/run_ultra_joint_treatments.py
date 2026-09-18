@@ -37,7 +37,7 @@ UJ = CL.UJ
 
 ANALYSIS_ID = "ultra_joint_treatments"
 WORLDS = (0.1, 0.6, 1.5, 2.8)            # coarse first (owner 02:40); the free fit beside them
-GRID = (64.0, 68.0, 72.0, 76.0, 80.0, 84.0, 88.0, 90.0)
+GRID = (40.0, 42.0, 44.0, 46.0, 48.0, 52.0, 56.0)   # the scan grid about the 40 to 45 um band, from the lowest waist whose kernel nodes all pass (38 um fails depleted_line_abs)
 
 
 def _spec(form, w0, treat, truth_sigma=None):
@@ -105,7 +105,7 @@ NOTE = ("one treatment of the matrix at one truth and one noise level. The shift
 
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--form", default="mixed"); ap.add_argument("--truth", type=float, default=76.0)
+    ap.add_argument("--form", default="mixed"); ap.add_argument("--truth", type=float, default=42.0)
     ap.add_argument("--worlds", default=",".join(str(w) for w in WORLDS) + ",free")
     ap.add_argument("--s0", default="tied", choices=("tied", "free")); ap.add_argument("--w0", default="tied", choices=("tied", "free"))
     ap.add_argument("--noise", type=float, default=0.0); ap.add_argument("--reals", type=int, default=1)

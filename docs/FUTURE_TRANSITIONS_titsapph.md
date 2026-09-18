@@ -475,7 +475,7 @@ and which is itself steep here because the drive sits 2 nm from the D2 line.
 Every slowly varying part of α(5D₅/₂) cancels between the two evaluations, so it
 never has to be known. The construction is scalar only, it drops the tensor term
 and the hyperfine dependence Hamilton measures, and it is evaluated at the drive
-and nowhere near the pole. It sizes a drive-power ceiling.
+and nowhere near the pole. It sizes the drive-power arithmetic.
 
 It is not a
 polarizability and nothing else in this file uses it as one. Computed in
@@ -483,42 +483,31 @@ polarizability and nothing else in this file uses it as one. Computed in
 assumption set in [results/projections.csv](../results/projections.csv).
 
 **What the three differentials cost in drive power.** They span a factor of
-twenty-five, and the light shift is what limits the drive long before the
-available power does. Fixing the ceiling at the power where the on-axis shift
-reaches one tenth of the width the dataset measures, at 0.94 retro ratio and at
-**each rung's own achievable waist**, gives the 993 nm ceiling of 336 mW, the
-760 nm ceiling of 50 mW and the 778 nm ceiling of 8 mW. The 993 nm
-figure sits above the campaign's own 225 mW maximum, so that rung is not capped
-at all.
+twenty-five, so at one power the light shift the upper rungs imprint is far
+larger than this one's. That is a term of the model and not a cap on the bench. This record derives the
+shift distribution a focused beam imprints, carries it as a component of the
+fitted line and reads its higher moments as a measurement channel, so a shift
+comparable with the width is signal. What bounds the drive power is saturation,
+the companion line, depletion along the chord and the ruler's span.
 
 The waist is per rung and not per bench, and this paragraph said otherwise
 until 2026-09-09. A drive of wavelength λ focused by the same f = 150 mm lens
 with the same input beam reaches `w0 = λf/(πw_in)`, so the 64 µm convention at
-993.4 nm becomes [48.59](../results/projections.csv "ref:projections:input_rung_waist_at_drive:760 nm, 5S to 7S") µm at 760.1 nm and [49.78](../results/projections.csv "ref:projections:input_rung_waist_at_drive:778 nm, 5S to 5D5/2") µm at 778.1 nm, and the
+993.4 nm becomes [48.59](../results/projections.csv "ref:projections:input_rung_waist_at_drive:760 nm, 5S to 7S") µm at 760.1 nm, and the
 on-axis shift, going as the inverse square of the waist, is larger than a
-common-waist reading gives by 1.74 and 1.65. The earlier ceilings of 87 and
-13 mW held all three rungs at the 993 nm waist, which no single lens reaches
-away from that wavelength. `results/projections.csv` now carries both readings:
-`proj_light_shift_ceiling` holds the geometry so the rungs differ only by their
-polarizability, and `proj_light_shift_ceiling_at_drive_waist` is what a bench
-runs at.
+common-waist reading gives by 1.74 and 1.65. That geometric point stands, and it
+is why a per-rung quantity is computed at that rung's own waist.
 
-The residual uncertainty is the input beam, which the record does not
-pin: an unclipped resonator mode in place of an aperture-limited one raises the
-two capped ceilings to 65 and 10 mW, so the correction is bounded and one-signed.
-
-Because the two-photon rate goes as the square of the intensity, a width
-precision measured at the dataset's power degrades in proportion when the drive
-is capped. On the 760 nm rung the projected self-broadening precision goes from
-about 8 to about **31** kHz per mTorr and the adjudication keeps a ceiling
-margin of **1.2**, so it still holds, by less than the earlier reading of 2.0
-suggested, and **20** repeats of the design would buy the uncapped precision
-back. On the 778 nm rung it goes from about 8 to about **179** kHz per mTorr and
-the factor-two test drops to a ceiling margin of **0.07**, which is the one
-result in this file the ceiling takes away. About **181** repeats would restore
-its power. The ceiling goes as the square of the waist, so a looser focus raises
-it, at the cost of transit width and of the density lever, and this file does not
-cost that exchange.
+**Retracted 2026-09-18 (owner order O32).** This section published a per-rung
+"light-shift ceiling" at one tenth of the line width, capped the 760 and 778
+projections to it, and reported an adjudication margin and a factor-two test
+margin derated accordingly. All of it is withdrawn. The construct treated this
+record's own measurement channel as a nuisance to be capped. It made the answer
+to "which source do I need" a ratio to a limit the record does not have. And it
+inverts with the waist, falling below the archive's own 225 mW in the 40 to
+45 µm region the campaign is now aimed at. The projections at each rung's own
+drive power stand. The capped second readings are gone from
+`results/projections.csv`, which now reports what each source class delivers.
 
 Magic wavelengths: a family that moves along the ladder. The way the zero
 crossings of Δα move with n is a map in its own right, and the three rungs this
@@ -856,7 +845,7 @@ afterthought.
 
 Everything above is a physics menu. Deciding bench time takes cost, yield
 and failure mode instead, so this section restates the same items in
-those columns, with the last naming the source class that reaches each rung's light-shift ceiling. Nothing below is scheduled, agreed or assigned. Every
+those columns, with the last naming the source class each rung needs and the power it delivers. Nothing below is scheduled, agreed or assigned. Every
 duration is [PLAN.md](PLAN.md)'s own where PLAN.md costs the block, and is
 marked as an estimate with its basis where PLAN.md does not. Every entry in
 the last column is a projection rather than a result, computed in
@@ -865,15 +854,15 @@ dataset's own measured precision and PLAN.md's own session parameters, with
 the assumption set behind each figure carried in
 [results/projections.csv](../results/projections.csv).
 
-| item | bench cost | what it would return | what could come back empty | projected precision | source that reaches the ceiling |
+| item | bench cost | what it would return | what could come back empty | projected precision | the source class and what it delivers |
 |---|---|---|---|---|---|
 | beam profile w₀ | about an afternoon, no physics run (`PLAN.md` §9 D4, §4.1) | measured geometry under every absolute number in the record, applied retroactively | nothing, but the number may not carry back to the 2025 bench | an intensity axis good to about 15 percent once the differential transit width is folded in | no line is driven, so no source question |
-| fixed-lock cell session | about eight days at the cell, ordered so any prefix is useful (`PLAN.md` §9) | three bounds converted into measured coefficients (`PLAN.md` §1) | β_self may stay a bound, and the shape channel may stay below noise | 0.09 MHz on S₀(225 mW) from one morning of power cycling, and the expected β_self resolved at about 10 sigma | the Ti:Sapph on the bench, at 0.68 of the 993 nm ceiling of 336 mW, so this is the one rung the ceiling does not make it unnecessary. A diode-seeded ytterbium fibre amplifier would be at its band edge and that reach is unconfirmed here |
-| 7S rung, 760 nm | a laser retune, and no new detection path if two datasheet questions answer favourably (§3.2) | a self-broadening rate that adjudicates two published values differing by 2.6 | a bound rather than a rate, and a blue detection build if the filter answer goes the other way | about 8 kHz per mTorr at the dataset's own drive power, a fourfold margin over what the adjudication needs, and about 31 at the light-shift ceiling where the adjudication keeps a ceiling margin of 1.2 | an extended-cavity diode laser with a tapered amplifier clears the 760 nm ceiling of 50 mW, so the Ti:Sapph is unnecessary. No note in `lit/` states that amplifier's output at 760 nm, so the class is established practice rather than a held citation |
-| 778 nm rung | a detection change plus a second source for the scan (§3.1) | the method tested against coefficients published to better than 2% | no new coefficient by design, and the scan needs two mode-matched beams | about 8 kHz per mTorr at the dataset's own drive power, which is 20 percent of the published coefficient, and about 179 at the light-shift ceiling where the factor-two test drops to a ceiling margin of 0.07 | a 1556 nm fibre amplifier with second-harmonic generation, the compact-clock architecture of [feng2026](lit/feng2026.md) and [li2024b](lit/li2024b.md), at 3.7 times the 778 nm ceiling on that demonstration's own 30 mW, so the Ti:Sapph is unnecessary |
-| O-band null at 1297.5 nm | one telecom-band diode and its wavemeter, no Ti:Sapph time, riding any cell session (§5.1, Paper D) | the 6S to 7P matrix element by frequency metrology where no measurement exists, a sign-reversal test of the asymmetry channel, and a calibrated shift injector | the delivered perturber intensity at the cell could undershoot, stretching the localization beyond the useful range | root located to about 26 pm at the projected 92 kHz shift precision, reading the 7P residue near 3% | a commodity O-band diode, no ceiling issue at these powers |
+| fixed-lock cell session | about eight days at the cell, ordered so any prefix is useful (`PLAN.md` §9) | three bounds converted into measured coefficients (`PLAN.md` §1) | β_self may stay a bound, and the shape channel may stay below noise | 0.09 MHz on S₀(225 mW) from one morning of power cycling, and the expected β_self resolved at about 10 sigma | the Ti:Sapph on the bench, which is the source of record on this rung. A diode-seeded ytterbium fibre amplifier would be at its band edge and that reach is unconfirmed here |
+| 7S rung, 760 nm | a laser retune, and no new detection path if two datasheet questions answer favourably (§3.2) | a self-broadening rate that adjudicates two published values differing by 2.6 | a bound rather than a rate, and a blue detection build if the filter answer goes the other way | about 8 kHz per mTorr at the dataset's own drive power, a fourfold margin over what the adjudication needs | an extended-cavity diode laser with a tapered amplifier delivers ample power here, so the Ti:Sapph is unnecessary. No note in `lit/` states that amplifier's output at 760 nm, so the class is established practice rather than a held citation |
+| 778 nm rung | a detection change plus a second source for the scan (§3.1) | the method tested against coefficients published to better than 2% | no new coefficient by design, and the scan needs two mode-matched beams | about 8 kHz per mTorr at the dataset's own drive power, which is 20 percent of the published coefficient | a 1556 nm fibre amplifier with second-harmonic generation, the compact-clock architecture of [feng2026](lit/feng2026.md) and [li2024b](lit/li2024b.md), putting 30 mW on a cell in that demonstration, so the Ti:Sapph is unnecessary |
+| O-band null at 1297.5 nm | one telecom-band diode and its wavemeter, no Ti:Sapph time, riding any cell session (§5.1, Paper D) | the 6S to 7P matrix element by frequency metrology where no measurement exists, a sign-reversal test of the asymmetry channel, and a calibrated shift injector | the delivered perturber intensity at the cell could undershoot, stretching the localization beyond the useful range | root located to about 26 pm at the projected 92 kHz shift precision, reading the 7P residue near 3% | a commodity O-band diode, ample at these powers |
 | wide-scan Doppler pedestal | an acquisition setting on any session that runs at all, no hardware and no lock quality | an in-situ gas thermometer, and the retro ratio only under an attenuator scan, on the same traces | the pedestal may not separate from the scattered-light background, and the area ratio is flat in ρ near one | the design reaches both in about two hours each, and section 8 gives the arithmetic and the assumptions | the drive itself, swept wide. The pedestal is 942 MHz wide on the transition axis at 130 °C, so no new source and no lock is involved |
-| doubling stage | new hardware, none on the bench, unpriced | a resonant 420 nm source and an independent density read (§3.4) | nothing publishable on its own | not projected, since nothing here models its rates | the doubling stage is its own source, and a one-photon line carries no two-photon light-shift ceiling |
+| doubling stage | new hardware, none on the bench, unpriced | a resonant 420 nm source and an independent density read (§3.4) | nothing publishable on its own | not projected, since nothing here models its rates | the doubling stage is its own source, and a one-photon line carries no two-photon light shift at all |
 
 **How long the pedestal row takes, since the cell above only gives the total.**
 The design pins the temperature in about 1.9 hours, to where the vapour curve's
@@ -995,7 +984,7 @@ path. Both are datasheet questions rather than physics, and they are the
 first thing to settle. `PLAN.md` costs no session beyond 993 nm, so no
 duration is quoted for this row. The yield is an adjudication. The record's
 expected β_self at 6S rides on one external number, and that number has two
-published values disagreeing by a factor 2.6, Zameroski's 129 ± 11 kHz/mTorr
+published values disagreeing by a factor 2.6, Zameroski's 129 ± 13 kHz/mTorr
 against Wang's 0.32 ± 0.01 MHz/mTorr, with no HWHM or FWHM convention stated
 in the second.
 
@@ -1143,7 +1132,7 @@ ride on is the one carried in
 [results/projections.csv](../results/projections.csv) for a day of randomized
 power cycling.
 
-**How it could come back empty.** The delivered perturber intensity at the cell
+How it could come back empty. The delivered perturber intensity at the cell
 could undershoot, which stretches the localization beyond the range where it
 reads a matrix element. Every conversion also rides the waist convention, so these
 are envelope numbers and would sharpen with the beam profile.
@@ -1186,14 +1175,13 @@ is needed. The 778 nm rung would additionally need the detection change.
 **Projected precision.** The decision-maker table above costs the 7S and 778 nm
 rows, with the assumption set behind each figure in
 [results/projections.csv](../results/projections.csv). The 7S adjudication
-carries a fourfold margin at the dataset's own drive power and holds at the
-light-shift ceiling.
+carries a fourfold margin at the dataset's own drive power.
 
 **How it could come back empty.** β_self is intrinsically a few kHz per 10¹²
 cm⁻³ and could stay a bound, which would still separate the two published 7S
 values if the bound landed below the higher of them. The 778 nm rung is the
-exposed one, because its light-shift ceiling leaves the factor-two test short
-and [CLAIMS.md](CLAIMS.md) §4 states the consequence, that at this waist the
+exposed one, because its differential polarizability is twenty-five times this
+rung's, and [CLAIMS.md](CLAIMS.md) §4 states the consequence, that at this waist the
 calibration would need about a hundred and eighty times the session length before it could
 catch even a convention error.
 
@@ -1310,9 +1298,9 @@ neighbouring 5P₃/₂ to 5D₅/₂ pole leaves on the blue side, each point goo
 about 8 per cent of the shift at the edge of that span. The limitation is the
 per-point precision on the shift observable rather than the wavelength axis.
 
-**How it could come back empty.** The most exposed of the four. The light-shift
-ceiling at this rung leaves the factor-two test short, so on the design as it
-stands the calibration would need about a hundred and eighty times the session length before
+**How it could come back empty.** The most exposed of the four. Its differential
+polarizability is twenty-five times this rung's, so the same drive imprints a much
+larger shift, and the design as it stands would need a longer session before
 it could catch even a convention error, and [CLAIMS.md](CLAIMS.md) §4 states
 that the audience is served by a longer session or a looser focus rather than by
 this design. The skew is contamination-prone, from shot noise and from

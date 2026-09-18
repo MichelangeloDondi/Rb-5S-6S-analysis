@@ -305,8 +305,9 @@ def mc_band(fn, n: int = 1500, seed: int = 0) -> Dict:
 # 5D5/2 is NOT recomputed from scratch: it is a J=5/2 state with SCALAR + TENSOR
 # polarizability and nP AND nF couplings, and its magic wavelength sits on the
 # near-resonant 5P3/2-5D5/2 line whose matrix element is itself contested. That
-# full calculation is Hamilton et al. 2023 (Phys. Rev. A 108, 023111; PDF in
-# hand), who MEASURE the 5S1/2-5D5/2 magic wavelength = 776.179(5) nm (theory
+# full calculation is Hamilton et al. 2023 (Phys. Rev. Applied 19, 054059; the
+# held PDF's own header line, arXiv 2212.10743; this comment read Phys. Rev. A
+# 108, 023111 until 2026-09-18, which is a different paper), who MEASURE the 5S1/2-5D5/2 magic wavelength = 776.179(5) nm (theory
 # 776.21) and the 5P3/2-5D5/2 element = 1.80(6) a.u. We ADOPT their magic (=
 # the transition-shift sign-flip) as authoritative and only illustrate the
 # near-776 Delta_alpha shape from the one verified near-resonant pole; a full

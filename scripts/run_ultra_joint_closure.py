@@ -74,8 +74,8 @@ from rb5s6s.noise import sigma_of_v         # noqa: E402
 
 FORM = "mixed"                  # the form the archive's own fit prefers on chi2
 SESSIONS = ("P", "T")           # the canonical L; E and M live off this machine
-TRUTH_UM = 76.0          # the ansatz grid's centre (owner, 19:40: start on w0 >= 64 um); 52 was the estimator's arithmetic, done
-GRID_UM = (64.0, 68.0, 72.0, 76.0, 80.0, 84.0, 88.0, 90.0)   # the validated nodes of the kernel gate, 64-90
+TRUTH_UM = 42.0          # the 40 to 45 um band (2026-09-17); the 64 um convention stood until then
+GRID_UM = (40.0, 42.0, 44.0, 46.0, 48.0, 52.0, 56.0)   # the scan grid from the lowest waist whose kernel nodes all pass (2026-09-18): at 38 um five of eight nodes fail depleted_line_abs, at 34-36 the transit's width too; the fine band lives in GRID_NOISELESS
 # THE NOISELESS RUNG NEEDS A FINER GRID, AND THE TOLERANCE IS NOT THE THING TO MOVE.
 # `ladder_gate.NOISELESS_TOL` is 1e-3, which on a 52 um truth is 0.052 um -- and a
 # parabola through three points of a 4 um grid cannot localise to that however good
@@ -90,7 +90,7 @@ GRID_NOISELESS = tuple(sorted(set(GRID_UM) | {TRUTH_UM + k * 0.5 for k in range(
 
 def grid_noiseless(truth: float) -> tuple:
     return tuple(sorted(set(GRID_UM) | {truth + k * 0.5 for k in range(-4, 5)}))
-WIDE_UM = (76.0, 90.0)          # tests the asymptote instead of extrapolating it
+WIDE_UM = (48.0, 56.0)          # tests the asymptote instead of extrapolating it (was 76 and 90 on the 64-90 grid)
 SEED = 1000
 # THE SWEEP, AND IT IS THE RULE READ LITERALLY. The owner's words are "first on noiseless
 # synthetic traces, then on INCREASINGLY NOISY synthetic traces up to the archive noise
@@ -379,6 +379,18 @@ def _task(args):
     pts = _fit_grid(syn, grid_noiseless(truth), max_nfev=(NOISELESS_NFEV if scale <= 0.0 else None),
                     logdet=ld, noise_scale=wscale)
     w, bar, why = parabola(pts)
+    # THE NOISELESS RUNG READS THE GRID'S OWN MINIMUM, NOT THE PARABOLA'S VERTEX (2026-09-18, the
+    # confirmed against the recorded profile). With no noise the profile is
+    # asymmetric by construction -- steep below the truth, flat above it, which is why F41 keeps the
+    # parabola a diagnostic at the noisy rungs -- so a symmetric quadratic over a 3 um window puts its
+    # vertex on the flat side. Measured at 4 conditions: the walk bottoms ON the truth at chi2 3.7e-05
+    # and the parabola read 42.4374 for 42.000, a 1.04 per cent "failure" of an estimator that had
+    # recovered the truth to better than half a grid step. The artefact is monotone in the window
+    # (42.12 over three nodes, 42.23 over five, 42.44 over the full one), which is the signature of the
+    # window and not of the fit. The discrete question gets the discrete answer, and the parabola stays
+    # in `bar` as the diagnostic column it is.
+    if scale <= 0.0:
+        w = float(min(pts, key=lambda q: q[1])[0])
     lo_hw, hi_hw = crossings(pts)                 # the profile's own interval (F41)
     # THE SPLIT AT THE INJECTED VECTOR, at every rung: data, prior and log-determinant blocks. The
     # rung is judged on the data block (zero for a generator equal to the fitter at zero noise,
@@ -467,9 +479,11 @@ def main() -> int:
         _conds = sorted({(1.0, float(_rho), float(t["T"]), float(t["P_W"]) * 1e3) for t in _src})
         _lo = min(list(GRID_UM) + list(GRID_NOISELESS) + [x - 2.0 for x in truths])
         _hi = max(list(GRID_UM) + list(GRID_NOISELESS) + [x + 2.0 for x in truths])
+        # ON THE WAIST READING SET (D1 of PLAN v2, 2026-09-18): this closure fits one free amplitude per
+        # trace, so the amplitude's power law is not consumed and the gate is asked for every other reading.
         for _line in sorted({str(t["peak"]) for t in _src}):
-            _kg.require_span(_conds, _lo, _hi, line=_line)
-        print(f"  kernel preflight: {len(_conds)} conditions x {_lo:g}-{_hi:g} um admitted", flush=True)
+            _kg.require_span(_conds, _lo, _hi, line=_line, readings=_kg.WAIST_READINGS)
+        print(f"  kernel preflight: {len(_conds)} conditions x {_lo:g}-{_hi:g} um admitted on {len(_kg.WAIST_READINGS)} readings", flush=True)
         size = {"conditions": n_cond, "truths": len(truths), "realisations": max(1, a.reals), "forms": 1}
         cells = n_cond * len(truths) * max(1, a.reals)
         stage = 0 if cells <= 1 else int(math.ceil(math.log(cells, 4) - 1e-9))   # a stage per factor of four in cells: 1, 4, 16, 64, ...
@@ -549,6 +563,11 @@ def main() -> int:
                           recovered=[float(x[1]) for x in sorted(by[(canon, sc)])], bars=[float(x[2]) for x in sorted(by[(canon, sc)])],
                           half_widths=[[float(v) for v in x[8]] if len(x) > 8 else [float('nan'), float('nan')] for x in sorted(by[(canon, sc)])],
                           max_abs_rel_error=worst, coverage=d["coverage"],
+                          # the noiseless rung's own two-part evidence: the grid's argmin (which IS
+                          # `recovered` at that rung since 2026-09-18) and the objective's data block at
+                          # the truth, so a reader can tell "the optimiser did not converge" from "the
+                          # minimum is in the wrong place" without re-walking the grid
+                          chi2_floor_at_truth=(splits.get(canon) or {}).get("data") if sc <= 0.0 else None,
                           chi2_data_at_truth=(splits.get(canon) or {}).get("data"),
                           chi2_prior_at_truth=(splits.get(canon) or {}).get("prior"),
                           truth_at_prior_means=bool(a.prior_mean), logdet=bool(a.logdet),
