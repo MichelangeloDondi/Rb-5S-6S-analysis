@@ -240,7 +240,7 @@ up, and the statement to carry is the regime and not the limit.
 **What the trap costs instead is an inhomogeneous shift of its own, and that is
 the dominant term.** The trap light shifts 5S and 6S by different amounts, so
 at depths that hold the sample the line acquires a mean displacement of several
-megahertz and a spread of one to four, against a natural width of 3.493 MHz.
+megahertz and a spread of one to four, against a natural width of [3.493](../../rb5s6s/constants.py "ref:constant:GAMMA_NAT_HZ:1e-6") MHz.
 That is the term a guided design has to answer, and the answer the record has
 not yet evaluated is a *magic* trap, a wavelength where the two polarizabilities
 are equal so the displacement and its spread vanish together. The open item is in

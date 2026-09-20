@@ -217,7 +217,7 @@ Calculated (anchored, not fitted to this data):
   It is opposite in sign to the published computation it is compared against,
   and [+6.5](../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha_vs_orson:at_drive") sigma from its magnitude on this derivation's bar alone (the cited value states none, at one per cent of it the pair is unresolved). The sign rests on the
   measured 6S lifetime: the published sign would require 9.9 ns against
-  the measured 45.57(17) ns, an exclusion at about 210 sigma, with the
+  the measured [45.57](../rb5s6s/constants.py "ref:constant:TAU_6S_S:1e9")(17) ns, an exclusion at about 210 sigma, with the
   measured static polarizability and tune-out anchoring the 5S side.
   The disagreement is established as real rather than a convention
   artifact. Which side is right remains open until an external

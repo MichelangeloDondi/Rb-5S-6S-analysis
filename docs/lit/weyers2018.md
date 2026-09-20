@@ -11,7 +11,7 @@ pages: 789-805
 year: 2018
 doi: 10.1088/1681-7575/aae008
 arxiv: null
-pdf: PDF_papers/Weyers_2018_Metrologia_55_789.pdf
+pdf: PDF_papers/Weyers_2018_PTB-primary-fountain-clocks-accuracy-stability.pdf
 held: true
 status: VERIFIED
 routing:

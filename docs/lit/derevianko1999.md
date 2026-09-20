@@ -14,7 +14,7 @@ pages: 3589-3592
 year: 1999
 doi: 10.1103/PhysRevLett.82.3589
 arxiv: null
-pdf: PDF_papers/derevianko1999.pdf
+pdf: PDF_papers/Derevianko_1999_dispersion-coefficients-polarizabilities-atom-wall-alkali.pdf
 held: true
 status: VERIFIED
 routing:
@@ -41,7 +41,7 @@ summary: >
 # derevianko1999
 
 Held, four journal pages, read in full on 2026-09-18 against
-`PDF_papers/derevianko1999.pdf`.
+`PDF_papers/Derevianko_1999_dispersion-coefficients-polarizabilities-atom-wall-alkali.pdf`.
 
 ## What it covers
 

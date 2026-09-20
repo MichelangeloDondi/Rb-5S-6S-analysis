@@ -13,7 +13,7 @@ pages: 309--313
 year: 1984
 doi: null
 arxiv: null
-pdf: PDF_papers/alcock1984.pdf
+pdf: PDF_papers/Alcock_1984_vapour-pressure-equations-metallic-elements.pdf
 held: true
 status: VERIFIED
 routing:

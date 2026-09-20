@@ -411,6 +411,52 @@ tenth of a per cent gives [10.0664](../../results/sweep_linearity.csv "ref:sweep
 [the frequency axis](the-wavemeter-and-the-frequency-axis.md) treats the ramp
 monitor as a requirement of this channel and not a convenience.
 
+## Why a cumulant and not a moment, and what a window does to the choice
+
+This page computes a cumulant throughout. The reason is one property and its exact reverse.
+
+**Under convolution cumulants add and moments do not.** For a line that is a convolution of independent
+broadening mechanisms, which this one is, $\kappa_n$ of the whole is the sum of the $\kappa_n$ of the
+parts at every order, while the $n\text{th}$ moment of the whole is a binomial sum over every pairing of the
+parts' moments. So in cumulants the forward model is a sum over terms and each term's contribution can be
+read on its own. That is the entire reason the skew channel is $\kappa_3$ and not $\mu_3$, even though
+the two are equal at third order: the equality is a coincidence of that order and the additivity is not.
+
+**Under a mixture the relation reverses exactly.** If the collected signal averages a kernel over some
+latent variable, the moments of the average are the average of the moments and the cumulants are not.
+
+**Signs, which is where the two are most often confused.** An even central moment of a non-negative line
+is positive at every window, always. An even cumulant from the fourth order up is a difference,
+$\kappa_4 = \mu_4 - 3\mu_2^2$, and carries no sign constraint: negative where the truncated line is
+flat-topped, positive where heavy wings dominate. A $\kappa_4$ that changes sign across windows is the
+object's own algebra and not an artefact of the machinery, and where the crossing falls moves with the
+line's parameters, so a window sitting at a crossing is a poor place to quote anything. The record's
+habit of calling this channel "the higher moments" is a name and not a claim. Every number in it is a
+cumulant.
+
+**A truncated window is not a further convolution.** Truncating multiplies the density by a rect and
+renormalises. Multiplication in frequency is convolution in the conjugate domain, so what a window
+convolves is the characteristic function, with a sinc of width $1/W$, and never the lineshape. Two things
+follow for this page. Cumulants do not add under truncation, because the window multiplies in the domain
+where the terms add, so a windowed $\kappa_3$ is a statistic of the whole line and is never the ramp's
+own third cumulant. And the renormalisation is nonlinear, so the number depends on the window through the
+retained mass as well as the retained shape. The sound use is forward: compare the windowed statistic
+against the model put through the same window, which is what the sections above do.
+
+**And the convolution itself is an approximation here.** Its first-order cost is a dropped covariance
+between the kernel's shift and its width across the collected volume, which is why the windowed third
+cumulant is misstated by about a factor of two at every waist. The derivation, the law of total cumulance
+that makes it exact, and the first-order correction for a clipped non-cylindrical beam are in
+[methods/11](../methods/11_the_window_limits.md) sections 11.7 to 11.9 and in the thesis appendix F.11.
+
+A cumulant computed from finite data also carries a bias of its own, apart from any truncation. Above
+second order the moment-based and cumulant-based routes stop agreeing, and a moment-based fourth-order
+estimate can show a false offset even under white Gaussian noise ([sifft2026](../lit/sifft2026.md)). This
+record's windowed cumulants integrate a density instead of averaging samples, so the usual k-statistic
+repair does not carry over directly, and the bias survives as a term scaling with the square of the noise.
+[Methods chapter 6 section 5](../methods/06_the_statistics.md) has the size of that term and the test that
+tells it apart from a structural offset in the model.
+
 ## Further reading
 
 - M. G. Kendall and A. Stuart, *The Advanced Theory of Statistics*,

@@ -13,7 +13,7 @@ pages: 059901
 year: 2017
 doi: 10.1103/PhysRevA.95.059901
 arxiv: null
-pdf: PDF_papers/Leonard_2017_ERRATUM_Rb87-D-line-tune-out-wavelength.pdf
+pdf: PDF_papers/Leonard_2017_erratum-Rb87-D-line-tune-out-wavelength.pdf
 held: true
 status: VERIFIED
 routing:

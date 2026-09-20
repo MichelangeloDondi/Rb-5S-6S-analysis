@@ -1,0 +1,24 @@
+# THE FORTY-SECOND FLOOR'S MODULES, in ONE place because two readers must never disagree about them.
+#
+# `scripts/prefloor.sh` runs these before a board is summoned and again before a commit, repeating until
+# green, so by the time the gate starts they are green BY CONSTRUCTION. The gate therefore skips them and
+# grades everything else: that is the REDUCED GATE (owner, 2026-09-19), and the minutes it saves are
+# minutes the machine spends on science instead of on a verdict already in hand.
+#
+# THE SPLIT IS ONLY LEGAL WITH ITS PLANT. This record's own rule is that a gate grading a different
+# population is worse than a slow gate, so `gate_split.py --verify` collects the floor's nodes and the
+# reduced gate's nodes and refuses unless their union is the whole suite and their intersection is empty.
+# Removing a line here moves a module INTO the gate, which is safe; adding one moves a module OUT of the
+# gate and into a set that must actually be run before every board and every commit, which is the only
+# direction that can lose coverage.
+tests/test_repo_hygiene.py
+tests/test_prose_style_ratchet.py
+tests/test_references.py
+tests/test_reference_coverage.py
+tests/test_history_form.py
+tests/test_agonistic_ratchet.py
+tests/test_docs_math_render.py
+tests/test_docs_links.py
+tests/test_docstring_counts.py
+tests/test_tqm_report.py
+tests/test_lit_consistency.py

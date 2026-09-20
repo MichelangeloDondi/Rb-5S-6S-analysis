@@ -89,6 +89,22 @@ def _cell(args):
     truth_sigma = {k: float(v) for k, v in d_truth.items() if k.startswith("sigma_l")}
     pts = _fit_grid(syn, form, treat, grid, scale if scale > 0 else 1.0, truth_sigma, noisy=scale > 0)
     w, bar, why = CL.parabola([(a, b) for a, b, _ in pts])
+    if scale <= 0.0:
+        # THE NOISELESS RUNG READS THE GRID'S OWN ARGMIN, not the parabola's vertex (amendment A3, applied
+        # to the closure on 2026-09-18 and owed here for the same reason: the one rung whose whole job is to
+        # show the arithmetic is exact must not report a fitting artefact as a bias).
+        #
+        # MEASURED HERE RATHER THAN INHERITED (2026-09-19). A3's motivating asymmetry -- a factor 2.9
+        # between the two sides at +-0.5 um, which pulled the closure's vertex to 42.4374 for a walk
+        # bottoming ON the truth -- is the CLOSURE's profile and is NOT this producer's. On this grid and
+        # this spec the walk is very nearly symmetric (1.2997 and 1.2312 at +-1 um at four conditions), so
+        # the vertex sits 42.0385 and the repair moves the reading by 0.039 um at one condition and 0.039 at
+        # four. It is worth making anyway, because it takes `max_abs_rel_error` from 9.2e-4 to exactly 0
+        # against a tolerance of 1e-3, so the stage gate stops passing by a fifth of its margin; but the
+        # number that motivated it belongs to the other producer and saying otherwise would be inheriting a
+        # measurement instead of taking one. The parabola stays the diagnostic it already is at the noisy
+        # rungs, where the bar is what it reads.
+        w = float(min(pts, key=lambda q: q[1])[0])
     best = min(pts, key=lambda q: q[1])[2]
     meters = {k: float(best.get(k, float("nan"))) for k in ("w0_transit_rel", "w0_shift_rel", "w0_sat_rel")}
     return dict(form=form, treat=treat, truth=truth, scale=scale, real=r, w0=w, bar=bar, why=why, level=level, profile=[(a, b) for a, b, _ in pts],

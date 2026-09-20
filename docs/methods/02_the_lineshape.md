@@ -1,6 +1,6 @@
 *Chapter 2 of 8 · [methods index](../methods.md)*
 
-What sets the width of a line this narrow, mechanism by mechanism, and which of those mechanisms the dataset can actually separate. This chapter builds on the measurement chapter for the apparatus and the Doppler cancellation. It forward-references the AC-Stark ramp and the results chapter inside the transit section. It sets out the four kernels the composite model convolves, the Voigt degeneracy the statistics chapter has to manage, and the open waist every absolute number is conditional on. Not covered here: the results rather than their derivation. The one thing to carry away is that transit and laser width exchange against each other through $w_0$.
+What sets the width of a line this narrow, mechanism by mechanism, and which of those mechanisms the dataset can actually separate. This chapter builds on the measurement chapter for the apparatus and the Doppler cancellation. It forward-references the AC-Stark ramp and the results chapter inside the transit section. It sets out the four kernels the composite model convolves, the Voigt degeneracy the statistics chapter has to manage, and the open waist every absolute number is conditional on. Not covered here: the results and not their derivation. The one thing to carry away is that transit and laser width exchange against each other through $w_0$.
 
 > [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
 > defines every term and symbol used anywhere in this repository.
@@ -61,7 +61,7 @@ $$|\tilde E(\omega)|^2  \propto  \frac{1}{(\omega-\omega_0)^2+(1/2\tau)^2}$$
 a **Lorentzian** $L(\nu)$. Its FWHM in ordinary frequency is
 
 $$\boxed{ \Gamma_\text{nat}=\frac{1}{2\pi\tau} }
- = \frac{1}{2\pi(45.57\ \text{ns})}=3.4925\ \text{MHz}$$
+ = \frac{1}{2\pi([45.57](../../rb5s6s/constants.py "ref:constant:TAU_6S_S:1e9")\ \text{ns})}=3.4925\ \text{MHz}$$
 
 Two features matter later: the Lorentzian has slowly-decaying **wings**
 ($\propto 1/\nu^2$, far fatter than a Gaussian), and, as a subtlety worth
@@ -99,7 +99,7 @@ Baranger's theorem does not itself supply.
 Because the convolution of two Lorentzians is a Lorentzian whose **widths
 add**, the natural and collisional contributions combine analytically into a
 single Lorentzian of width $\Gamma_\text{nat}+\gamma_\text{coll}$, which
-exploit in the code rather than convolving numerically. The density itself
+exploit in the code and not convolving numerically. The density itself
 follows the saturated-vapour curve, and across the sweep
 
 $$\frac{N(130\ ^\circ\mathrm{C})}{N(70\ ^\circ\mathrm{C})}\approx 50$$
@@ -128,11 +128,11 @@ same laser system (M Squared SolsTis) as having sub-MHz linewidth.
 
 That is a quoted
 figure, not a recorded diagnostic, and it speaks to the laser's intrinsic
-linewidth rather than to the 2025 lock's behaviour, but it is consistent with
-the shape-based bound $\sigma_\text{laser}$ below 1.2 MHz (laser axis) found
+linewidth and not to the 2025 lock's behaviour, but it is consistent with
+the shape-based BOUND $\sigma_\text{laser}$ below 1.2 MHz (laser axis) found
 here, and it is the only published number for this laser on this line. The 2025
 lock was misconfigured, and one deliverable (C2) is to characterize that epoch's
-$\sigma_\text{laser}$, which from the 2025 data is an **upper bound**,
+$\sigma_\text{laser}$, which from the 2025 data is an **upper BOUND**,
 because it is degenerate with the transit width (see §2.5 and
 [what we found](07_what_we_found.md)).
 A direct beam-profile measurement of $w_0$ turns this into a measurement by
@@ -142,19 +142,19 @@ itself, so $\sigma_\text{laser}$ stays a lineshape-fit result throughout.
 factor 2.
 
 **What a Lorentzian laser component is, and what one condition can say about
-it.** If the jitter is fast rather than slow, the laser contributes a
-lorentzian width rather than a Gaussian one. Two Lorentzians of FWHM $a$ and
+it.** If the jitter is fast and not slow, the laser contributes a
+lorentzian width and not a Gaussian one. Two Lorentzians of FWHM $a$ and
 $b$ convolve to a single Lorentzian of FWHM $a+b$ exactly, so a Lorentzian
 laser contribution and the collisional width enter the fixed-condition model
 only through their sum. This is an identity, not an approximation, and the code
-imposes it by adding the two widths rather than convolving them: done by
+imposes it by adding the two widths and not convolving them: done by
 convolution on a finite grid the truncated tails made the profile depend on how
 a fixed total was split, at up to $3.7\times10^{-3}$ of peak, which is a
 numerically manufactured separability pointing along exactly the direction a
 laser-width inference has to measure.
 
 The consequence is that **$\Gamma_{L,\text{equiv}}$ is not identifiable at a
-single condition at all**, and this is measured rather than argued: injecting
+single condition at all**, and this is measured and not argued: injecting
 six values from 0 to 2.5 MHz into synthetic data and fitting them back recovers
 the sum to about one part in a thousand every time while the split is
 arbitrary. The separating lever is density, because the collisional width is
@@ -169,7 +169,7 @@ Switching the kernel wholesale moves the hierarchical $\beta_\text{self}$ by
 45 to 67 per cent, nine to eighteen sigma on its statistical error, which is
 the sensitivity of the coefficient to the choice. Whether the data prefer one
 kernel is a different question, and it is answered by a nested likelihood
-ratio rather than by counting wins, because the pure-Lorentzian model is
+ratio and not by counting wins, because the pure-Lorentzian model is
 contained in the mixed one: a win count across conditions carries no
 information when one model cannot fit worse than the other by construction.
 
@@ -298,7 +298,7 @@ Voigt against a Lorentzian⊗exponential can detect it, and to this record's
 knowledge it is not cleanly resolved as a *cusp* in a thermal two-photon line
 anywhere (a target for a fixed-lock session with a narrow laser). Caveat: $w_0$
 is not measured on this beam, 64 µm with a 62–68 µm band, accepted from the beamline
-lineage measurement above rather than measured on this beam (it was re-centred
+lineage measurement above and not measured on this beam (it was re-centred
 from 32 to 50 µm when the transit physics was corrected, then from 50 to 64 µm
 when that measurement was accepted, and the beam is clipped by a 3 mm aperture,
 so it stays uncertain at the tens-of-% level) **until the
@@ -322,7 +322,7 @@ kernel is wider by that same 1.169 per cent. Every fit in this record shares one
 transit width between the isotopes, which means the shared value misassigns
 11.4 kHz at 130 °C.
 
-That is stated rather than corrected, and the reason is worth giving because it
+That is stated and not corrected, and the reason is worth giving because it
 is not "the effect is small". Against density, which is the lever the
 collisional coefficient is read from, the misassignment is almost entirely a
 constant offset: it runs 10.53 to 11.42 kHz across the 52-fold density range, so
@@ -367,7 +367,7 @@ whose width gives the local radius $w$. Repeating at several positions along
 the propagation axis $z$ near the focus and finding the minimum locates the
 waist $w_0$. It is direct, needs no lineshape model, and is good to about a µm.
 
-**Why a knife-edge rather than a camera?** Both are beam-profile measurements
+**Why a knife-edge and not a camera?** Both are beam-profile measurements
 that end in a Gaussian fit, and they differ only in the transducer, so this is a
 choice of instrument, not of method. A camera's resolution is set by its pixel
 spacing (typically 3–5 µm): at the fixed-lock session's small-waist config ($w_0\approx16$ µm,
@@ -398,7 +398,7 @@ Why $w_0$ matters most here: $w_0$ sets the **transit width**
 split and all absolute coefficients stay preliminary. Measuring $w_0$ directly
 in a fixed-lock session would collapse that degeneracy: transit becomes fixed, the leftover
 Gaussian is then unambiguously the laser (turning the $\sigma_\text{laser}$
-*bound* of [what we found](07_what_we_found.md) into a measurement,
+*BOUND* of [what we found](07_what_we_found.md) into a measurement,
 retroactively for the 2025 data too), and $\beta_\text{self}$
 and the Stark coefficient acquire their absolute scale. It constrains more
 downstream numbers than any other single measurement, which is why the
@@ -485,5 +485,52 @@ shared condition), read from an artefact the gate refuses to be without. Two app
 Gaussian and depletion reweights atoms without reshaping it, and the loss rate is the line-centre
 rate, seven per cent high at the transit's half-width. The detuning-resolved, non-convolutional
 profile is the next refinement.
+
+
+## The F statistics, and the velocity selection the model does not carry (2026-09-19)
+
+The record treats the transit and the F statistics as one non-equilibrium process: atoms arrive from the
+walls with thermal hyperfine populations, are excited along the chord, and cascade with a calculated
+branching into the other ground level, depleting the excitable population as they cross. Examined
+with numbers, three of its assumptions hold and one consequence is missing from the model.
+
+**Holds: the F state an atom carries is the one it left the wall with.** Rubidium-rubidium spin exchange
+at the hot end runs at about 6.3e3 per second against a transit time of 134 nanoseconds at a mean speed
+of 313 metres per second, so the probability of exchanging hyperfine state during a crossing is 8.4e-4.
+Hyperfine redistribution within one transit is negligible and the wall sets the entering population.
+
+**Holds, conditionally: that entering population is statistical.** An uncoated glass wall is strongly
+depolarising and hyperfine-randomising, so $(2F+1)/\sum_F(2F+1)$ is the right entering ratio. That is a
+statement about an uncoated cell and it is the zero-power law besides: it describes atoms arriving, never
+atoms in the beam, where the drive has already pumped. A surface treatment or a coating would break it,
+and the record should say which cell it is describing wherever it uses the statistical ratio.
+
+**Holds: the depletion is permanent within a crossing.** The two ground levels are split by gigahertz
+against a line of megahertz, so an atom pumped into the other level is out of resonance for the rest of
+its transit and cannot be pumped back. Recovery happens at the next wall collision, which begins a new
+crossing.
+
+**missing, and it acts on the waist: depletion velocity-selects.** Dwell time goes as one over the speed,
+so a slow atom accumulates more excitation and is pumped out more readily than a fast one. If the mean
+atom forfeits a tenth per crossing, an atom at half the mean speed forfeits 0.19 and one at twice the mean
+forfeits 0.05. at a mean loss of a half those become 0.75 and 0.29. **The surviving excitable population is
+therefore biased fast, and a fast-biased velocity distribution produces a wider transit profile than the
+thermal one.** Since the transit width goes as the speed over the waist, a width inflated by selection
+reads as a waist that is too small, and the effect grows with drive power because the depletion does. The
+model carries the depletion as a loss of amplitude. it does not carry the reshaping of the velocity
+distribution that the same loss imposes, so the transit kernel it convolves is the undepleted one.
+
+**And the selection is radial as well as axial, which couples it to the convolution problem.** Atoms
+crossing the bright core depletes fastest, so the surviving population is also biased toward low
+intensity, which is the same reweighting of the mixture that the first-order correction of the
+convolution needs. The two effects are one effect seen in two coordinates, and treating either without
+the other double-counts or misses depending on which is fitted.
+
+**What to do, in order of cost.** The velocity reshaping is a one-line weight inside the chord integral
+already in the model, the survival factor at each speed, so the corrected transit kernel costs no new
+physics. Its size is then measured and not argued, by comparing the transit width with and without
+the weight at the archive's own powers. And the comb gives the experimental handle: its orders drive the
+same line at rates spanning a factor of twelve at fixed power, so the predicted power-dependence of the
+selection is testable within one trace against everything else held fixed.
 
 [← The measurement](01_the_measurement.md) · [The AC-Stark ramp →](03_the_ac_stark_ramp.md)

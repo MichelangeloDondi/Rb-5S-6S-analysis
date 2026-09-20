@@ -112,3 +112,4 @@ results/*.annotating
 # transient stamps, like .targeted_ok: they name the index tree a guard graded
 .prefloor_ok
 .gate_started_for
+pcore_queue.log

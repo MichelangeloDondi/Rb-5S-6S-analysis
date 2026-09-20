@@ -19,6 +19,7 @@ archive's own residual resampling (`spread_validated`), which is step 2's covari
 """
 from __future__ import annotations
 import argparse
+import os
 import importlib.util
 import json
 import math
@@ -29,7 +30,8 @@ import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
-from rb5s6s import config as C, ladder_gate                       # noqa: E402
+from rb5s6s import config as C
+from rb5s6s import windows as _WINDOWS, ladder_gate                       # noqa: E402
 from rb5s6s.cumulants import windowed_cumulants                   # noqa: E402
 
 _s = importlib.util.spec_from_file_location("closure_for_surface", ROOT / "scripts" / "run_ultra_joint_closure.py")
@@ -37,7 +39,10 @@ CL = importlib.util.module_from_spec(_s); _s.loader.exec_module(CL)   # ladder-e
 UJ = CL.UJ
 
 ANALYSIS_ID = "window_surface"
-ALL_WINDOWS = (0.5, 1.0, 2.0, 3.0, 5.0, 8.0, 13.0, 21.0)
+# BOUND TO THE ONE SOURCE (2026-09-19). These eight half-widths were a literal identical to
+# `windows.SURFACE`, which is the shape that lets a set drift silently: nothing compared them and
+# a change to either would have gone unnoticed until a producer and a consumer disagreed.
+ALL_WINDOWS = _WINDOWS.SURFACE
 ALL_ORDERS = (2, 3, 4, 5, 6, 7)
 STRIPS = ((28.0, 36.0), (-36.0, -28.0))    # mirror-free (the mirror band starts near 38 MHz); clear of a 21 MHz window
 NOISELESS_TOL = ladder_gate.NOISELESS_TOL
@@ -183,9 +188,16 @@ def _spread_check(vals, refused_keys, half, reps, scale, has_pool):
     if scale < 1.0 or not has_pool:
         out["reason"] = "below the archive's level" if scale < 1.0 else "the draw is Gaussian, not the archive's residual shape"
         return out
-    p = Path(C.RESULTS_DIR) / "ultra_joint_moments.csv"
+    # THE REFERENCE IS ITS OWN ARTEFACT (A286, 2026-09-19): `results/ultra_joint_moments.csv` became the
+    # twin's vector with D11, so the repeats' scatter it used to carry is read from the file named by
+    # RB5S6S_SPREAD_REFERENCE (columns case, quantity, se_mean, null_median; `p18_repeat_noise.py` writes
+    # it), and from the moments file only when no reference is named. A check that compares nothing says
+    # ABSENT, which the ladder gate prints as the reason, distinct from a ratio outside the band.
+    ref = os.environ.get("RB5S6S_SPREAD_REFERENCE", "")
+    p = Path(ref) if ref else Path(C.RESULTS_DIR) / "ultra_joint_moments.csv"
     if not p.is_file():
         p = ROOT / "results" / "ultra_joint_moments.csv"
+    out["reference"] = str(p)
     # THE NULL IS NOT ONE (a reading of 2026-09-17 03:40): the repeats' standard error comes
     # from four or five traces, so sigma/s has a median of sqrt(nu / median chi2_nu), 1.092 for
     # five repeats and 1.127 for four, and a twin whose scale is exactly right reads 1.09 here.
@@ -196,6 +208,13 @@ def _spread_check(vals, refused_keys, half, reps, scale, has_pool):
     from scipy.stats import chi2 as _chi2
     rec, null = {}, {}
     for row in _csv.DictReader(p.open()):
+        if "se_mean" in row and "null_median" in row:                  # the reference artefact's own columns
+            try:
+                rec[(row["case"], row["quantity"])] = float(row["se_mean"])
+                null[(row["case"], row["quantity"])] = float(row["null_median"])
+            except (TypeError, ValueError):
+                pass
+            continue
         m = _re.search(r"(\d+) repeats.*t-factor ([\d.]+)", row.get("basis", ""))
         if not m or not row.get("err"):
             continue
@@ -212,6 +231,7 @@ def _spread_check(vals, refused_keys, half, reps, scale, has_pool):
         ratios.setdefault(n, []).append(sd_twin / rec[(k, q)] / null[(k, q)])
     allr = [x for xs in ratios.values() for x in xs]
     out["n_compared"] = len(allr)
+    out["absent"] = not allr
     out["null_median_note"] = "each ratio divided by sqrt(nu / median chi2_nu) of its row's repeat count (1.092 at five repeats, 1.127 at four)"
     out["ratios_by_order_raw"] = {int(n): float(np.median(xs)) for n, xs in raw.items()}
     out["ratios_by_order"] = {int(n): float(np.median(xs)) for n, xs in ratios.items()}

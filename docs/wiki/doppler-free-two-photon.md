@@ -203,4 +203,13 @@ print("counter-propagating pair: cancels to first order, for every atom")
 
 ---
 
+
+## Depletion velocity-selects, so the transit kernel is not the thermal one (2026-09-19)
+Dwell time goes as one over the speed, so optical pumping removes slow atoms preferentially and the
+surviving excitable population is biased fast. A fast-biased distribution gives a wider transit
+profile, and since the transit width goes as the speed over the waist, an inflated width reads as a
+waist that is too small. The effect grows with drive power. The repair is a survival weight inside
+the chord integral, and its size is measured by comparing the transit width with and without it at
+the archive's own powers. See the hyperfine populations page for the numbers.
+
 [← wiki index](README.md) · *Experimental spectroscopy, 1 of 12* · [Standing waves →](standing-waves.md)

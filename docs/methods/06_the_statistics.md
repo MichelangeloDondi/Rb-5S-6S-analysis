@@ -720,4 +720,85 @@ higher-statistics injection run in which the Student-t upper limit missed the
 injected $\beta$ more often than five times in a hundred would retire the rule
 rather than qualify it.
 
+## 5. The estimator's own biases
+
+Everything above concerns what the data can say. This section concerns what the
+estimator adds on its own, because two distinct finite-sample biases sit in the
+machinery and conflating them has cost this record time.
+
+A cumulant estimated from a finite sample is biased, and the bias appears as
+structure and not as scatter. The second cumulant's correction is the
+familiar Bessel factor. Above second order no such single factor exists, and the
+moment-based and cumulant-based formulations, equivalent for an average-free
+signal at second and third order, stop being equivalent at fourth
+([sifft2026](../lit/sifft2026.md)). The consequence named there is the one to
+carry: a moment-based fourth-order spectrum can show an offset or other
+structure that is not in the signal, and can do so for white Gaussian noise. The
+repair in that literature is the multivariate k-statistics, which are unbiased
+and consistent at finite sample size.
+
+Where this record sits. The cumulants here are computed by integrating a
+density over the frequency axis, in `rb5s6s/cumulants.py`, not by averaging $m$
+samples, so there is no $m$ and no k-statistic analogue to apply directly. The
+bias does not vanish for that reason: the conversion from central moments to
+cumulants is nonlinear, so $E[\hat\kappa_4] = \kappa_4 - 3\mathrm{Var}(\hat\mu_2)$
+to leading order, and centring on the estimated mean adds a second term. Both
+are uncorrected at present and both scale as the square of the noise, which is
+the property that makes them testable: a bias that grows as $s^2$ up the noise
+ladder is of this kind, and one that does not is not.
+
+The second bias belongs to the fit, not to the statistic. A waist, or any
+scalar this record quotes out of a joint fit that also carries nuisances, is a
+focus parameter in the sense of [benussi2026](../lit/benussi2026.md): a smooth
+transformation of a reference parameterisation whose maximum-likelihood estimate
+carries a finite-sample median bias of its own. That work gives an explicit
+third-order median-unbiased correction requiring only the fit, the
+transformation's gradient and Hessian, and expectations of products of
+log-likelihood derivatives, and it places itself against the jackknife and the
+bootstrap, which is the route this record actually runs, injecting through the
+twin and subtracting the measured offset. It also reports near-nominal
+finite-sample interval coverage under median bias control, which is the reading
+the closure ladder judges its rungs on.
+
+The distinction that matters, and it is how a measured offset is assigned to
+one of them. Both biases above decay as the information accumulates, so both
+vanish at zero noise and both should grow as the square of the noise scale. An
+offset present at the noiseless rung therefore cannot be either, and is evidence
+about the model and its kernels instead. An offset absent at the noiseless rung
+and appearing with noise is a candidate for exactly these corrections. The test
+is the growth law, not the magnitude: a bias tracking $s^2$ up the noise ladder
+belongs to this section, and one that does not belongs to the blame ordering
+this record keeps, the model and its missing terms first.
+
+Measured on the waist, 2026-09-20, at one condition. The noiseless rung
+returns a bias of +0.009 and +0.010 micron on two trees differing only in the
+profile grid step, against a fitted bar of 1.81 micron, so there is no offset. At 0.3 of
+the archive's noise the same pair returns +0.521 and +0.505 micron against a bar
+of 0.585. So the waist offset is absent without noise and appears with it, which
+places it in this section and not in the model, and halving the grid step
+moves it by 0.016 micron, three per cent of the bias and well inside the bar,
+which retires the discretisation hypothesis. An earlier series that appeared to
+show a noiseless offset is withdrawn: its cells straddle a whitening repair, so
+it was confounded by construction and is evidence of nothing.
+
+And the $s^2$ law is then refused at the archive rung, so the classification
+above does not resolve this offset either. Walking the same pair to the
+archive's own noise returns +0.796 and +0.831 micron, against the +5.8 micron
+that a bias quadratic in the noise scale would give from the 0.3 reading. Four
+realisations put a standard error near 1 micron on the archive point, so the
+quadratic law is excluded while the exponent itself is not resolved: what is
+established is that the growth is far slower than $s^2$, not what power it is.
+
+So the waist offset is neither a model term present without noise nor a
+finite-sample bias of the form this section describes, and it is carried as
+open. The coverage is the sharper reading and points the same way: zero of four
+and one of four at the two noisy levels, against a nominal 0.68, so the
+intervals are not covering and the bar is the quantity to interrogate next.
+
+What would falsify this section. A waist bias that fails to grow as $s^2$
+between the 0.3 and the 1.0 rungs. Neither correction has a term that survives
+at zero noise or that grows in any other power, so a bias flat in the noise, or
+one growing faster, would put the cause back in the generator whatever its
+magnitude at any single rung.
+
 [← From volts to a frequency axis](05_the_frequency_ruler.md) · [What we found →](07_what_we_found.md)

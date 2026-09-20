@@ -296,7 +296,7 @@ equation above makes $\Delta U/h$ negative, so the surface pulls the line
 **red**. This record has twice printed a magnitude where a direction was
 meant, and both times an `abs()` hid it.
 
-Against a natural width of 3.4925 MHz this is a leading term within 100 nm and
+Against a natural width of [3.4925](../../rb5s6s/constants.py "ref:constant:GAMMA_NAT_HZ:1e-6") MHz this is a leading term within 100 nm and
 a small correction beyond 400 nm. **The factor of two spanned by the $C_3$
 ratio does not shrink with integration time**, which is what makes it a
 measurement target and not a systematic to average down.

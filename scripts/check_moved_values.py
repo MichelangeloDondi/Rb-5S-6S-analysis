@@ -195,7 +195,11 @@ _XREF = re.compile(
     r"(?:\u00a7\s*|(?:Figure|Table|Section|Fig\.|Eq\.|Appendix)\s+)\d+(?:\.\d+)*"
     r"|^\s*#{1,6}\s+\d+(?:\.\d+)*"
     r"|^\s*\*{0,2}Figure\s+\d+(?:\.\d+)*")
-_NUM_ONLY = re.compile(r"-?\d+(?:\.\d+)?")
+# SCIENTIFIC NOTATION IS A NUMBER (2026-09-19). Without the exponent branch every value written as
+# `3.44e+22` was invisible to this scanner: `_literals` returned nothing for it, so a retired
+# exponential cell produced no stale literal and the sweep fell through to its "nothing to check"
+# refusal. Measured on results/moment_admission.csv, whose retired 3.44e+22 this guard could not see.
+_NUM_ONLY = re.compile(r"-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?")
 _BAND_ONLY = re.compile(r"(-?\d+(?:\.\d+)?)\s+to\s+(-?\d+(?:\.\d+)?)")
 
 
@@ -233,6 +237,10 @@ def _batch_blobs(specs: list[str]) -> dict[str, str]:
 
 def _sig_digits(s: str) -> int:
     """Significant digits, so distinctiveness is measured and not guessed."""
+    # THE EXPONENT IS NOT SIGNIFICANCE (2026-09-19): an exponential carries the digits of its mantissa and
+    # this counted seven, because it stripped only the sign and the point. A count that high sailed
+    # over every precision gate keyed on it.
+    s = re.sub(r"[eE][+-]?\d+$", "", s.strip())
     return len(re.sub(r"[-.]", "", s).lstrip("0")) or 1
 
 

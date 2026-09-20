@@ -51,7 +51,8 @@ import numpy as np
 
 from ._compat import trapezoid
 
-__all__ = ["wing_baseline", "linear_baseline", "windowed_cumulant", "windowed_cumulants", "cumulants_from_central_moments"]
+__all__ = ["wing_baseline", "linear_baseline", "windowed_cumulant", "windowed_cumulants",
+           "windowed_moments", "cumulants_from_central_moments"]
 
 
 def linear_baseline(grid: np.ndarray, y: np.ndarray, strip_a, strip_b) -> np.ndarray:
@@ -98,11 +99,18 @@ def cumulants_from_central_moments(mu: np.ndarray) -> np.ndarray:
     return kappa
 
 
-def windowed_cumulants(grid: np.ndarray, y: np.ndarray, half_width: float, orders=(3, 5, 7), *,
-                       baseline: Union[str, float, None] = "wings", n_points: int = 4001,
-                       tol: float = 1e-7, max_passes: int = 400,
-                       centre0: Optional[float] = None) -> Tuple[Dict[int, float], Dict[str, float]]:
-    """The self-centred windowed cumulants of several orders from ONE centring.
+def _centred_window_moments(grid: np.ndarray, y: np.ndarray, half_width: float, top: int, *,
+                            baseline: Union[str, float, None] = "wings", n_points: int = 4001,
+                            tol: float = 1e-7, max_passes: int = 400,
+                            centre0: Optional[float] = None) -> Tuple[Optional[np.ndarray], Dict[str, float]]:
+    """The quadrature shared by `windowed_cumulants` and `windowed_moments`: recentre the
+    window on its own first moment by the fixed-point iteration, then return the central
+    moments mu_1..mu_top (mu_1 ~ 0 by construction) of the normalised trace inside it. `top`
+    is the HIGHEST order either caller wants; both build their own return from this ONE array,
+    so the centring and the interpolation run once regardless of how the caller's `orders` is
+    shaped. Returns `(None, info)` on any failure (a non-positive window, or a centring that
+    walks the window off the trace) so a caller can build its own NaN dict for its own orders;
+    `info` is passed straight through either way.
 
     `baseline` is "wings" (the default: `wing_baseline` of this trace), a number
     to subtract, None to take the trace as it is, or ("linear", (lo, hi),
@@ -112,10 +120,8 @@ def windowed_cumulants(grid: np.ndarray, y: np.ndarray, half_width: float, order
     zero-mean baseline manufactures a positive pedestal of about 0.4 sigma,
     which is the dilution this module removes. The window is recentred until
     the centre moves by less than `tol` (in the grid's units) or `max_passes`
-    is reached; the second return carries `centre`, `passes`, `converged` (1.0
+    is reached; the info dict carries `centre`, `passes`, `converged` (1.0
     or 0.0) and `baseline` (the level removed, or the linear baseline's median).
-    A window whose integral is not positive returns NaN for every order, as the
-    copies did.
     """
     grid = np.asarray(grid, dtype=float)
     y = np.asarray(y, dtype=float)
@@ -134,11 +140,9 @@ def windowed_cumulants(grid: np.ndarray, y: np.ndarray, half_width: float, order
     if baseline != "applied":
         y = y - b
     w = float(half_width)
-    orders = tuple(int(o) for o in orders)
     c = float(centre0) if centre0 is not None else float(grid[np.argmax(y)])
     converged = False
     passes = 0
-    nan = {o: float("nan") for o in orders}
 
     def _outside(centre: float) -> bool:
         """True when the window would reach past the trace.
@@ -155,21 +159,21 @@ def windowed_cumulants(grid: np.ndarray, y: np.ndarray, half_width: float, order
         return (centre - w) < grid[0] or (centre + w) > grid[-1]
 
     if _outside(c):
-        return nan, {"centre": c, "passes": 0.0, "converged": 0.0,
-                     "baseline": b, "in_span": 0.0}
+        return None, {"centre": c, "passes": 0.0, "converged": 0.0,
+                      "baseline": b, "in_span": 0.0}
     for passes in range(1, max_passes + 1):
         g = np.linspace(c - w, c + w, n_points)
         yy = np.interp(g, grid, y)
         s = trapezoid(yy, g)
         if s <= 0:
-            return nan, {"centre": c, "passes": float(passes), "converged": 0.0, "baseline": b}
+            return None, {"centre": c, "passes": float(passes), "converged": 0.0, "baseline": b}
         c_new = trapezoid(g * yy, g) / s
         moved = abs(c_new - c)
         c = c_new
         if _outside(c):
             # the centring wandered until the window left the trace
-            return nan, {"centre": c, "passes": float(passes),
-                         "converged": 0.0, "baseline": b, "in_span": 0.0}
+            return None, {"centre": c, "passes": float(passes),
+                          "converged": 0.0, "baseline": b, "in_span": 0.0}
         if moved < tol:
             converged = True
             break
@@ -177,16 +181,64 @@ def windowed_cumulants(grid: np.ndarray, y: np.ndarray, half_width: float, order
     yy = np.interp(g, grid, y)
     s = trapezoid(yy, g)
     if s <= 0:
-        return nan, {"centre": c, "passes": float(passes), "converged": 0.0, "baseline": b}
+        return None, {"centre": c, "passes": float(passes), "converged": 0.0, "baseline": b}
     yy = yy / s
     m1 = trapezoid(g * yy, g)
-    top = max(orders)
     mu = np.array([trapezoid((g - m1) ** k * yy, g) for k in range(1, top + 1)])
+    return mu, {"centre": c, "passes": float(passes),
+                "converged": 1.0 if converged else 0.0, "baseline": b,
+                "in_span": 1.0}
+
+
+def windowed_cumulants(grid: np.ndarray, y: np.ndarray, half_width: float, orders=(3, 5, 7), *,
+                       baseline: Union[str, float, None] = "wings", n_points: int = 4001,
+                       tol: float = 1e-7, max_passes: int = 400,
+                       centre0: Optional[float] = None) -> Tuple[Dict[int, float], Dict[str, float]]:
+    """The self-centred windowed cumulants of several orders from ONE centring.
+
+    See `_centred_window_moments` for the window, the baseline conventions and the
+    convergence report; this function converts its central-moment array to cumulants
+    through `cumulants_from_central_moments`. A window whose integral is not positive
+    returns NaN for every order, as the copies this module replaced did.
+    """
+    orders = tuple(int(o) for o in orders)
+    nan = {o: float("nan") for o in orders}
+    top = max(orders)
+    mu, info = _centred_window_moments(grid, y, half_width, top, baseline=baseline,
+                                       n_points=n_points, tol=tol, max_passes=max_passes,
+                                       centre0=centre0)
+    if mu is None:
+        return nan, info
     kappa = cumulants_from_central_moments(mu)
     values = {o: float(kappa[o - 1]) for o in orders}
-    return values, {"centre": c, "passes": float(passes),
-                    "converged": 1.0 if converged else 0.0, "baseline": b,
-                    "in_span": 1.0}
+    return values, info
+
+
+def windowed_moments(grid: np.ndarray, y: np.ndarray, half_width: float, orders=(3, 5, 7), *,
+                     baseline: Union[str, float, None] = "wings", n_points: int = 4001,
+                     tol: float = 1e-7, max_passes: int = 400,
+                     centre0: Optional[float] = None) -> Tuple[Dict[int, float], Dict[str, float]]:
+    """The self-centred windowed CENTRAL MOMENTS of several orders from ONE centring
+    (owner order O33, 2026-09-20): the same window, centring, baseline and convergence
+    machinery as `windowed_cumulants`, through the shared `_centred_window_moments`, so
+    there is no second quadrature -- only the final step differs, selecting mu_n directly
+    rather than converting it to kappa_n. mu_2 == kappa_2 and mu_3 == kappa_3 exactly (the
+    conversion is the identity at those two orders), so this and `windowed_cumulants` agree
+    there to machine precision; they diverge at order 4 and above, where kappa_n is a
+    cancelling combination of mu_n and lower moments (F211: k4 crosses zero across the
+    window grid for a Lorentzian while mu4, an absolute even moment, cannot). Same
+    arguments and same second return as `windowed_cumulants`.
+    """
+    orders = tuple(int(o) for o in orders)
+    nan = {o: float("nan") for o in orders}
+    top = max(orders)
+    mu, info = _centred_window_moments(grid, y, half_width, top, baseline=baseline,
+                                       n_points=n_points, tol=tol, max_passes=max_passes,
+                                       centre0=centre0)
+    if mu is None:
+        return nan, info
+    values = {o: float(mu[o - 1]) for o in orders}
+    return values, info
 
 
 def windowed_cumulant(grid: np.ndarray, y: np.ndarray, half_width: float, order: int = 3, *,

@@ -13,7 +13,7 @@ pages: 1478--1483
 year: 1988
 doi: null
 arxiv: null
-pdf: PDF_papers/vanderspek1988.pdf
+pdf: PDF_papers/VanDerSpek_1988_Rb-vapour-pressure-250-298K-fluorescence-absorption.pdf
 held: true
 status: VERIFIED
 routing: []

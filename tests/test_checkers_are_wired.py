@@ -133,6 +133,16 @@ NOT_WIRED = {
     "private/checks/driver.py":
         "the unattended driver: it POPS the queue and runs the jobs, so it is "
         "the thing that calls, not a thing to be called",
+    "private/checks/launch.py":
+        "the sanctioned LAUNCHER, driver.py's shape exactly: its exit code is the runner's own "
+        "admission and it starts the background jobs, so it is the thing that calls. Its self-test "
+        "really does launch through fanout, so a floor that ran it would spawn processes under a "
+        "gate, which is the one thing the gate stack asks nothing to do (2026-09-20)",
+    "private/checks/quote_census.py":
+        "a read-only CENSUS of every quoted span in the held notes, cells_naming_a_callee.py's shape: "
+        "it evaluates nothing and can refuse nothing. What it measured is tests/_quote_baseline.json, "
+        "and the guard that enforces that baseline is test_lit_quotes_are_verbatim.py, which the floor "
+        "runs; re-counting 187 quotations at every floor would grade nothing the guard does not",
     "private/checks/run_ledger.py":
         "read by the driver before it spends cores on a computation already on "
         "the ledger with its artefact on disk; its caller is therefore the "

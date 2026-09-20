@@ -100,8 +100,15 @@ NOISE_SCALE = {"noiseless": 0.0, "low": 0.3, "archive": 1.0}
 # The 300 per cent rung is the single-trace case and sits ABOVE the archive: it is recorded after
 # real traces are admitted and never gates them.
 PROFILES = {
+    # THE WAIST PROFILE GAINS AN OPTIONAL 3.0 RUNG (PLAN v3 D10, 2026-09-19). Its measured scatter at
+    # 0.3x is 0.065 um and at 1.0x about 0.2, two orders inside the +-8 um stopping bar, so the three
+    # required rungs sit deep inside the regime where the waist information survives and never find
+    # the edge -- and the edge is the campaign lever. A rung at three times the law brackets both the
+    # real archive level (A8: the repeats scatter 1.8 to 4.1 times the twin's) and the start of the
+    # death curve. It is NOT in REQUIRED: real traces open on the three, and this one is read after.
     "default": RUNGS,
     "moments": ("noiseless", "n01", "n03", "n10", "low", "archive", "n300"),
+    "waist": RUNGS + ("n300",),
 }
 NOISE_SCALE.update({"n01": 0.01, "n03": 0.03, "n10": 0.1, "n300": 3.0})
 REAL_GATE_RUNG = "archive"     # the rung real traces wait for, in every profile
@@ -114,9 +121,11 @@ REAL_GATE_RUNG = "archive"     # the rung real traces wait for, in every profile
 # reads PASS, and the nearest recorded rung below it does not read FAIL.
 REQUIRED = {
     "default": RUNGS,
+    "waist": RUNGS,                     # real traces open on the three; the 3.0 rung is read after, never required
     "moments": ("noiseless", "n10", "archive"),
 }
 ANALYSIS_PROFILE = {
+    "ultra_joint_waist": "waist",       # the three required rungs plus the optional 3.0 (PLAN v3 D10)
     "moment_mle": "moments", "ultra_joint_moments": "moments", "ultra_joint_treatments": "moments",
     "twin_windows": "moments", "window_surface": "moments", "odd_channel": "moments",
     "plant_moments": "moments",   # the self-test's own id
@@ -190,6 +199,11 @@ def _judge(rung: str, detail: Dict[str, Any]) -> tuple:
         if nr is not None and int(nr) < MIN_REALISATIONS:
             reasons.append(f"{int(nr)} realisation(s) is under the floor of {MIN_REALISATIONS}: a coverage read on "
                            "fewer cannot be inside or outside any band")
+        # THE COVERAGE JUDGED IS THE ESTIMATOR AS USED (owner, 2026-09-19 02:40; plan D6, A16): a harness
+        # that subtracts the twin's bias downstream records the jackknife-corrected coverage here and
+        # carries the raw one as `coverage_raw`, which this verdict reads for nothing and keeps on the
+        # artefact so the raw number is never lost. A harness that does not correct records its raw
+        # coverage as `coverage` and no `coverage_raw`; both forms are legal and the artefact says which.
         c = _need(detail, "coverage", reasons)
         # A COVERAGE INSIDE THE BAND AT TOO FEW REALISATIONS IS UNRESOLVED, NOT PASSED (F32.3): the
         # binomial standard error at eight is 0.15 against a band of 0.10, so an eight-realisation
@@ -276,12 +290,41 @@ def _judge(rung: str, detail: Dict[str, Any]) -> tuple:
         b = _need(detail, "blame", reasons)
         if b is not None and not str(b).strip():
             reasons.append("the blame verdict is empty: say what the twin reproduces and what it does not")
+        # THE BIAS IS TESTED BESIDE THE CORRECTED COVERAGE (the C2 physics chair, 2026-09-19): a coverage
+        # judged on the jackknife-corrected estimate has mean exactly the truth for a bias of ANY size, so
+        # it tests the bar against the scatter and carries no accuracy at all -- a 2 um bias passed it in
+        # simulation. A harness that records `coverage_raw` has corrected, and must then also record the
+        # bias with its jackknife SE; the rung refuses when the bias exceeds the median bar, which is the
+        # estimator's own claimed uncertainty failing to cover its own systematic. A harness that has not
+        # corrected records no `coverage_raw` and its raw coverage already carries the bias.
+        if "coverage_raw" in detail:
+            bb, bse, mb = detail.get("bias"), detail.get("bias_se"), detail.get("median_bar")
+            if bb is None or bse is None or mb is None:
+                reasons.append("a corrected coverage was recorded without `bias`, `bias_se` and `median_bar` "
+                               "beside it: the correction removes the bias from the coverage, so the bias "
+                               "must be tested on its own")
+            else:
+                try:
+                    if abs(float(bb)) > float(mb):
+                        reasons.append(f"the bias {float(bb):+.4g} exceeds the median bar {float(mb):.4g}: the "
+                                       f"estimator's own uncertainty does not cover its systematic, and a "
+                                       f"corrected coverage cannot see that")
+                except (TypeError, ValueError):
+                    reasons.append(f"bias, bias_se or median_bar is not a number: {bb!r}, {bse!r}, {mb!r}")
         if rung == "archive":
             for k in ("bias_subtracted", "spread_validated"):
                 v = _need(detail, k, reasons)
                 if v is not None and not bool(v):
-                    reasons.append(f"{k} is false: the archive rung needs the twin's bias removed "
-                                   "and its spread checked against the repeats")
+                    sc = detail.get("spread_check") if isinstance(detail.get("spread_check"), dict) else None
+                    if k == "spread_validated" and sc is not None and int(sc.get("n_compared", 1) or 0) == 0:
+                        # ABSENT IS NOT OUTSIDE THE BAND (A286): a spread check that compared nothing has no
+                        # reference, and the rung's FAIL says so instead of reading as the twin's spread
+                        reasons.append("spread_validated is false because the spread check compared NOTHING: "
+                                       f"the repeats' reference is ABSENT ({sc.get('reason', 'no reason recorded')}); "
+                                       "this is a missing reference, not a ratio outside the band")
+                    else:
+                        reasons.append(f"{k} is false: the archive rung needs the twin's bias removed "
+                                       "and its spread checked against the repeats")
     return ("PASS" if not reasons else "FAIL"), reasons
 
 
@@ -877,7 +920,9 @@ def _self_test() -> List[str]:
                 pass
         record("plant", "low", detail=OK_C, cache=cache)
         for det, what in ((dict(OK_A, bias_subtracted=False), "an unsubtracted twin bias"),
-                          (dict(OK_A, spread_validated=False), "an unvalidated spread")):
+                          (dict(OK_A, spread_validated=False), "an unvalidated spread"),
+                          (dict(OK_A, spread_validated=False, spread_check={"n_compared": 0, "reason": "no rows"}),
+                           "a spread check that compared nothing")):
             r = json.loads(record("plant", "archive", detail=det, cache=cache).read_text())
             if r["verdict"] != "FAIL":
                 bad.append(f"noise-ladder: {what} was admitted at the archive rung")
@@ -903,6 +948,16 @@ def _self_test() -> List[str]:
             bad.append(f"noise-ladder: restoring the plant's artefact left the ladder refusing: "
                        f"{status('plant', None, cache)}")
 
+        # 8b. A CORRECTED COVERAGE CANNOT SEE A BIAS, so the bias is tested beside it (finding of 2026-09-19)
+        okc = dict(OK_C, coverage_raw=0.2, bias=0.05, bias_se=0.01, median_bar=0.3)
+        if _judge("low", okc)[0] != "PASS":
+            bad.append("noise-ladder: a corrected rung with a bias inside its bar was refused: " + str(_judge("low", okc)[1]))
+        badb = dict(okc, bias=0.5)
+        if _judge("low", badb)[0] == "PASS":
+            bad.append("noise-ladder: a corrected rung whose bias exceeds its bar passed")
+        nob = dict(OK_C, coverage_raw=0.2)
+        if _judge("low", nob)[0] == "PASS":
+            bad.append("noise-ladder: a corrected rung with no bias recorded passed")
         # 8. a harness edited after its ladder no longer has it
         time.sleep(0.01)
         harness.write_text("# plant, edited after the ladder\n")

@@ -781,7 +781,7 @@ given, so a reader checking a number ends up here rather than in a module.
   quotes it. **[CITE]**
 - **An independent matrix-element set.** [Arora & Sahoo
   2012](lit/arora2012.md), coupled-cluster 6S-5P reduced elements and a 6S
-  lifetime of 45.44(8) ns against the 45.57(17) ns measurement, the cross-check
+  lifetime of 45.44(8) ns against the [45.57](../rb5s6s/constants.py "ref:constant:TAU_6S_S:1e9")(17) ns measurement, the cross-check
   on the sum this analysis builds. **[FEED]**
 - **Matrix elements for the 6S polarizability.**
   [Herold et al. 2012](lit/herold2012.md) supplies the 5S→6P reduced matrix
@@ -1026,7 +1026,7 @@ the reference against which ONF surface/pushing effects are read.
 - [patterson2018](lit/patterson2018.md), Patterson, Solano, Julienne, Orozco
   & Rolston, *PRA* **97**, 032509 (2018), held and read. It stands to the
   nanofibre extension as [wieman1987](lit/wieman1987.md) does to this
-  analysis: cold Rb around a 240 nm nanofibre, where a static van der Waals
+  analysis: cold Rb around a 240 nm nanofibre, where a static van der Waals <!-- other-quantity: a nanofibre diameter in nm, not the withdrawn 240 uW guided power -->
   surface potential red-shifts atoms nearer the silica and the transmission
   spectrum is built as a Lorentzian of position-dependent centre averaged
   over a density-times-coupling weight, the same shift-distribution

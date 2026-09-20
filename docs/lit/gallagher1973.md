@@ -12,7 +12,7 @@ pages: 864--869
 year: 1973
 doi: null
 arxiv: null
-pdf: PDF_papers/gallagher1973.pdf
+pdf: PDF_papers/Gallagher_1973_rubidium-vapour-pressure-by-optical-absorption.pdf
 held: true
 status: VERIFIED
 routing:

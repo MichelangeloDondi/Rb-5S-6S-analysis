@@ -163,7 +163,7 @@ slope in intensity falls below $n$, and **the whole family above moves with it**
 $g_1$ shrinks toward its $n=1$ value of zero.
 
 This matters because $s$ scales as the fourth power of the inverse waist. At
-the dataset's 64 µm convention and 225 mW it is 0.033, so the weak-field law is
+the dataset's [64](../rb5s6s/constants.py "ref:constant:W0_MEASURED_M:1e6") µm convention and 225 mW it is 0.033, so the weak-field law is
 good to a per cent and nothing here is affected. At the 16 µm the fixed-lock
 session proposes it is 8.5, and integrating the moments with the saturated
 weight instead moves the predicted axial skew from $+0.36$ to $+1.07$. So the
@@ -185,9 +185,14 @@ extension.
 
 The derivation above is quasi-static. Each atom sits at one intensity and
 carries one shift. Real atoms cross the beam, sweeping their own shift from
-zero to the on-axis maximum and back within a transit time (about 0.2 µs at
-$w_0\approx 64$ µm) that is only a few times the natural response
-$1/\Gamma\approx 45$ ns. [Camparo and Lambropoulos](lit/camparo1992.md) (*JOSA
+zero to the on-axis maximum and back within a transit time that is only a few times the natural
+response $1/\Gamma\approx 45$ ns. **That margin depends on the waist and this paragraph was written at
+a waist the record has left.** At $w_0 = 64$ µm the transit is 0.204 µs and the ratio is 4.5. Across the
+working band of 40 to 45 µm taken on 2026-09-17 it is 0.128 to 0.144 µs and the ratio is 2.8 to 3.2, a
+reduction of about a third in the very separation of timescales the argument rests on. The justification
+below still holds, since it turns on a change of variables and not on the size of the ratio, but the
+regime it holds in is tighter than the number quoted here suggested, and any claim that the quasi-static
+ramp is safe *because* the timescales separate is quoted with the waist it assumes or not at all. [Camparo and Lambropoulos](lit/camparo1992.md) (*JOSA
 B* **9**, 2163 (1992)) show for a two-photon transition in a fluctuating field
 that this ratio decides the answer. Slowly-varying intensity gives an
 asymmetric line, rapidly-varying intensity averages to a symmetric one at the
@@ -913,7 +918,7 @@ per second. Every channel together, from `hyperpolarizability.scattering_rates`
 rescaled to the campaign field, reaches 0.122 per second and is dominated by the
 *downward* 6S to 5P Raman channels rather than by 8P at all. Against the 6S decay
 rate $2.194\times10^{7}$ per second that is a branching of $6\times10^{-9}$, and
-the width it adds is 0.04 Hz against a 3.4925 MHz natural width. No power law in
+the width it adds is 0.04 Hz against a [3.4925](../rb5s6s/constants.py "ref:constant:GAMMA_NAT_HZ:1e-6") MHz natural width. No power law in
 the data can see it.
 
 It cannot ionize, and the fourth photon can. 6S sits 13558.30 cm^-1 below the

@@ -14,7 +14,7 @@ pages: 012057
 year: 2017
 doi: 10.1088/1742-6596/869/1/012057
 arxiv: null
-pdf: PDF_papers/Boustimi_2017_J._Phys.__Conf._Ser._869_012057.pdf
+pdf: PDF_papers/Boustimi_2017_van-der-Waals-dispersion-energy-atoms-nanoparticles.pdf
 held: true
 status: VERIFIED
 routing:

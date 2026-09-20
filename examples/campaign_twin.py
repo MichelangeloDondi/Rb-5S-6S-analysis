@@ -69,6 +69,18 @@ C_M_S = 299792458.0
 # 1.8 and the 1.556 written here before.
 GAMMA_COLL_MHZ = 0.55
 SIGMA_LASER_MHZ = 1.6
+# THE PERMEATED GAS, WHICH IS A CONSTANT LORENTZIAN AND IS THEREFORE `gamma_l` (owner, repeatedly:
+# "include the gas permeation in the model and use the full model, either in the twin and in general").
+# The mechanism was already here -- `build_world_trace` has taken `gamma_l` throughout -- and what was
+# missing was a VALUE, so the census read `example_world = no` for the term and the exhibit's traces
+# carried no permeated gas at all. The value is NOT from literature: the widths computed from Zameroski's
+# 5S-5D rates are retracted (F136, F137) because the upper states differ, and no route here derives a
+# helium or neon coefficient. It is the record's OWN fitted constant Lorentzian, read from its committed
+# cell and never typed, and it is quoted with the span its note demands.
+_KB = {r[0]: r[1] for r in __import__("csv").reader(
+    (C.RESULTS_DIR / "kernel_budget.csv").open(encoding="utf-8"))}
+GAMMA_L_MHZ = float(_KB["gamma_l_weighted_mean"])          # span 0.315 to 0.449, per that row's own note
+del _KB
 TRANSIT_FWHM_MHZ = C.transit_fwhm_from_w0(C.W0_MEASURED_M, T_C=130.0)
 # The prediction under test, kappa in MHz per W on the transition axis.
 KAPPA_PRED = kappa_pred_per_watt(C.W0_MEASURED_M, C.RHO_RETRO)
@@ -146,7 +158,8 @@ def build_rung(power_w: float, kappa: float, t_c: float, order_idx: int,
         gamma_coll=GAMMA_COLL_MHZ, sigma_laser_fwhm=SIGMA_LASER_MHZ,
         transit_fwhm=TRANSIT_FWHM_MHZ, power_max_w=POWERS_W.max(),
         cycles_at_max=CYCLES_AT_225MW, drift_mhz_total=DRIFT_MHZ_TOTAL,
-        noise_frac_bright=NOISE_FRAC_BRIGHT, adc_levels=ADC_LEVELS)
+        noise_frac_bright=NOISE_FRAC_BRIGHT, adc_levels=ADC_LEVELS,
+        gamma_l=GAMMA_L_MHZ)
 
 
 def fit_rung(nu, v, rng) -> dict:

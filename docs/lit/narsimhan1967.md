@@ -11,7 +11,7 @@ pages: 230--233
 year: 1967
 doi: null
 arxiv: null
-pdf: PDF_papers/narsimhan1967.pdf
+pdf: PDF_papers/Narsimhan_1967_new-vapour-pressure-equation-derivation-application.pdf
 held: true
 status: VERIFIED
 routing: []

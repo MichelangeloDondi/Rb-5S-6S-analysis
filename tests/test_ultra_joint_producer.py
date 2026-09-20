@@ -551,6 +551,102 @@ def test_the_moment_statistic_takes_a_fitted_baseline_and_not_a_wing_strip():
     assert {2, 3, 4, 5, 6, 7} == set(m.MOMENT_ORDERS)
 
 
+def test_moment_cumulant_conditioning_matches_orders_two_and_three_being_unmoved():
+    """O33's vector, read off the producer's own function: for order >= 4, `mu` and `k` differ
+    and `conditioning` is exactly `abs(k) / abs(mu)` from the SAME central-moment array (no
+    second quadrature -- planted by checking `k` against an independent `windowed_cumulants`
+    call, which must agree to floating-point precision if both routes are consistent)."""
+    from rb5s6s.cumulants import windowed_cumulants
+    m = _uj
+    nu = np.linspace(-42.5, 42.5, 4001)
+    from rb5s6s.fullmodel import full_profile
+    y = full_profile(nu, gamma_coll=0.26, sigma_laser_fwhm=1.0, transit_fwhm=1.28,
+                     s0=0.36, gamma_l=0.28, peak="4192", T_C=130.0)
+    rows = m.moment_cumulant_conditioning(nu, y, windows=(5.0, 8.0), orders=m.MOMENT_ORDERS)
+    assert {r["order"] for r in rows} == {4, 5, 6, 7}          # orders 2, 3 are not returned
+    assert {r["window"] for r in rows} == {5.0, 8.0}
+    for r in rows:
+        k_indep, _ = windowed_cumulants(nu, y, r["window"], orders=(r["order"],), baseline=None)
+        assert r["k"] == pytest.approx(k_indep[r["order"]], rel=1e-9, abs=1e-12)
+        assert r["conditioning"] == pytest.approx(abs(r["k"]) / abs(r["mu"]), rel=1e-12)
+        assert r["mu"] > 0.0 or r["order"] % 2 == 1            # every even order's moment is non-negative
+
+
+def test_the_moment_vector_is_not_wired_into_the_arms_own_admission():
+    """The 2026-09-20 invariance check of O33's switch, planted so a future edit that DOES flip
+    `_moment_stats` or `moment_arm` onto `mu<n>@<w>` keys is caught here rather than discovered
+    downstream. `moment_arm`'s own docstring says its covariance is diagonal; central moments at
+    order >= 4 are strongly auto-correlated with mu2, so wiring them into that arm's per-statistic
+    exceedance test would over-weight correlated evidence (see `moment_cumulant_conditioning`'s
+    docstring). Until that arm carries a full covariance or the owner rules the marginal
+    treatment acceptable, `_moment_stats` keeps quoting cumulants and nothing it returns is
+    prefixed `mu`."""
+    m = _uj
+    nu = np.linspace(-42.5, 42.5, 4001)
+    from rb5s6s.fullmodel import full_profile
+    y = full_profile(nu, gamma_coll=0.26, sigma_laser_fwhm=1.0, transit_fwhm=1.28,
+                     s0=0.36, gamma_l=0.28, peak="4192", T_C=130.0)
+    stats = m._moment_stats(nu, y)
+    assert all(k.startswith("k") for k in stats), stats
+    assert not any(k.startswith("mu") for k in stats), stats
+
+
+def test_the_moment_and_cumulant_vectors_carry_the_same_information():
+    """THE INVARIANCE ADDITION TO O33 (2026-09-20): moments and cumulants are related by an
+    invertible map, so a fit carrying the FULL covariance of its statistic vector extracts
+    IDENTICAL information from either -- what the switch buys is conditioning, not new
+    information, and F211's SNR ratios (384x at mu4@8) are a MARGINAL, per-statistic reading
+    that does not carry over to a joint, full-covariance treatment.
+
+    Planted on a pure Lorentzian (nu grid, one window, orders 2 and 4): draw many noisy
+    replicas of the noiseless truth (same construction as `fullmodel.ultra_joint_covariance`),
+    estimate the FULL 2x2 covariance of (mu2, mu4) and of (k2, k4) from them, then whiten one
+    held-out noisy realisation's departure from the truth by each vector's own covariance. THE
+    TWO WHITENED CHI-SQUAREDS MUST AGREE TO WITHIN A FEW PER CENT (the map is exact only in the
+    noiseless limit; away from it a small residual from the map's own nonlinearity at order 4 is
+    expected and is not the effect under test), while the MOMENT covariance's condition number
+    must be substantially worse than the CUMULANT covariance's -- that gap, and not the SNR
+    ratio, is the number the switch is licensed by for a diagonal-admission arm."""
+    from rb5s6s.cumulants import cumulants_from_central_moments, windowed_moments
+    from rb5s6s.lineshape import lorentzian
+
+    nu = np.linspace(-30.0, 30.0, 4001)
+    y0 = lorentzian(nu, 3.0)
+    peak = float(np.max(y0))
+    w = 5.0
+    orders_full = (1, 2, 3, 4)
+
+    def stats(y):
+        mu, _ = windowed_moments(nu, y, w, orders=orders_full, baseline=None, centre0=0.0,
+                                 n_points=801, max_passes=30)
+        mu_arr = np.array([mu[o] for o in range(1, 5)])
+        kappa = cumulants_from_central_moments(mu_arr)
+        return np.array([mu[2], mu[4]]), np.array([kappa[1], kappa[3]])
+
+    truth_mu, truth_k = stats(y0)
+    noise_frac, n_real = 0.02, 4000
+    X_mu = np.empty((n_real, 2)); X_k = np.empty((n_real, 2))
+    for r in range(n_real):
+        rng = np.random.default_rng(20260920 + r)
+        x = rng.standard_normal(y0.size)
+        yn = y0 + noise_frac * np.sqrt(np.clip(y0, 0.0, None) * peak) * x
+        X_mu[r], X_k[r] = stats(yn)
+    cov_mu = np.cov(X_mu, rowvar=False)
+    cov_k = np.cov(X_k, rowvar=False)
+
+    rng = np.random.default_rng(7770)
+    x = rng.standard_normal(y0.size)
+    y_data = y0 + noise_frac * np.sqrt(np.clip(y0, 0.0, None) * peak) * x
+    data_mu, data_k = stats(y_data)
+    r_mu, r_k = data_mu - truth_mu, data_k - truth_k
+    chi2_mu = float(r_mu @ np.linalg.solve(cov_mu, r_mu))
+    chi2_k = float(r_k @ np.linalg.solve(cov_k, r_k))
+
+    assert chi2_mu == pytest.approx(chi2_k, rel=0.05), (chi2_mu, chi2_k)
+    cond_mu, cond_k = np.linalg.cond(cov_mu), np.linalg.cond(cov_k)
+    assert cond_mu > 10.0 * cond_k, (cond_mu, cond_k)
+
+
 def test_a_ratio_whose_denominator_flips_sign_across_repeats_is_refused_by_name():
     """The arm admits on having a population moment, never on size (O17).
 
@@ -569,16 +665,75 @@ def test_a_ratio_whose_denominator_flips_sign_across_repeats_is_refused_by_name(
     rows = _rows("ultra_joint_moments.csv")
     if not rows:
         pytest.skip("the moment arm has not been run in this tree")
-    refused = [r for r in rows if r["status"] == "ARTIFACT"]
+    # THREE KINDS OF REFUSAL SHARE THE ARTIFACT STATUS SINCE 2026-09-19 (the C2 board's CRITICAL): the
+    # sign-flip rule this test is about, the per-statistic numerical floor (F144), and the diagnostic
+    # windows (D9). Only the first is a RATIO refusal, so the selection reads the rule's own note and not
+    # the status, which the other two kinds now share. A row refused for another reason names it.
+    artefacts = [r for r in rows if r["status"] == "ARTIFACT"]
+    # THE FILE CARRIES ARCHIVE ROWS ONLY WHEN THE MOMENT LADDER'S ARCHIVE RUNG IS RECORDED PASS
+    # (D11, 2026-09-19); until then it holds the twin's vector at the passed levels and a refused row
+    # per absent rung, and the sign-flip rule has no archive population to fire on. The planted
+    # `flips` above is the rule's own test; the committed file is read only where it has the rows.
+    real_rows = [r for r in artefacts if not r["case"].startswith("twin@")]
+    if not real_rows:
+        assert any("rung has not been run" in r["note"] for r in artefacts), \
+            "no archive rows and no refused-rung row: the file says neither why it lacks the archive nor that it does"
+        return
+    refused = [r for r in artefacts if "no population moment" in r["note"]]
     assert refused, "no ratio was refused, so the rule never fired on the archive"
     for r in refused:
         assert "/" in r["quantity"], r["quantity"]
-        assert "no population moment" in r["note"], r["note"]
+    for r in artefacts:
+        assert any(k in (r["note"] + r["basis"]) for k in ("no population moment", "under the floor",
+                                                            "DIAGNOSTIC window", "refused", "rung ")), r
     # and the refusal row may not quote a sigma on a statistic that has no
     # variance: at five repeats Var(t^2) does not exist
     for r in rows:
         if r["quantity"] == "mean_square_pull":
             assert "sigma" in r["note"] and "no sigma" in r["note"], r["note"]
+
+
+def test_the_jackknife_corrects_the_anchor_and_not_the_parabola_vertex():
+    """F179: `coverage_as_used` jackknifed the PARABOLA VERTEX and handed the bias to `_covered`, which
+    anchors the interval at the grid argmin, so a reference-anchored interval was shifted by a different
+    estimator's bias. That is the mis-anchoring F164 repaired, re-entering through the correction. F164
+    measured the two points 0.163 um apart at the low rung against a half-width of 0.027.
+
+    Planted four ways, the third of them the NEGATIVE: the old shift put the interval nowhere near the
+    truth, so a green here cannot be produced by the defect this replaces."""
+    import importlib.util
+    from pathlib import Path
+    spec = importlib.util.spec_from_file_location(
+        "closure_anchor_test", Path(__file__).resolve().parents[1] / "scripts" / "run_ultra_joint_closure.py")
+    cl = importlib.util.module_from_spec(spec); spec.loader.exec_module(cl)
+
+    def cell(est, ref, lo_hw, hi_hw, bar=0.5):
+        x = [None] * 9
+        x[1], x[2], x[8] = est, bar, (lo_hw, hi_hw, ref)
+        return x
+
+    truth = 42.0
+    # 1. the interval is the REFERENCE's, whatever the vertex says
+    far = cell(est=43.5, ref=42.0, lo_hw=0.1, hi_hw=0.1)
+    assert cl._covered(far, truth), "a reference-anchored interval on the truth was reported uncovered"
+    assert cl._anchor(far) == 42.0, cl._anchor(far)
+
+    # 2. a correction shifts that interval by the bias OF THE ANCHOR
+    off = cell(est=99.0, ref=42.30, lo_hw=0.05, hi_hw=0.05)
+    assert not cl._covered(off, truth)
+    assert cl._covered(off, truth, centre=cl._anchor(off) - 0.30)
+
+    # 3. THE NEGATIVE: the old rule shifted by (centre - est), which with a distant vertex is absurd
+    old_shift = (cl._anchor(off) - 0.30) - off[1]
+    lo, hi = 42.30 + old_shift - 0.05, 42.30 + old_shift + 0.05
+    assert not (lo <= truth <= hi), "the OLD pairing covered the truth, so this test cannot see F179"
+
+    # 4. and the jackknife removes a common bias from the anchors, never from the vertices
+    g = [cell(est=99.0 + i, ref=42.0 + 0.30 + 0.01 * i, lo_hw=0.05, hi_hw=0.05) for i in range(8)]
+    corrected, raw, bias, _se = cl.coverage_as_used(g, truth)
+    assert raw == 0.0, raw
+    assert corrected == 1.0, corrected
+    assert abs(bias - 0.335) < 0.01, bias          # the ANCHOR's bias, not the vertex's +57
 
 
 def test_the_closure_reads_its_interval_from_the_profile_crossings_on_a_skewed_profile():
@@ -591,12 +746,42 @@ def test_the_closure_reads_its_interval_from_the_profile_crossings_on_a_skewed_p
     spec = importlib.util.spec_from_file_location("closure_for_test", Path(__file__).resolve().parents[1] / "scripts" / "run_ultra_joint_closure.py")
     cl = importlib.util.module_from_spec(spec); spec.loader.exec_module(cl)
     w = np.arange(70.0, 82.5, 0.5); c = np.where(w < 76, 4.0 * (w - 76) ** 2, (w - 76) ** 2) + 100.0
-    lo, hi = cl.crossings(list(zip(w, c)))
+    lo, hi, _ref = cl.crossings(list(zip(w, c)))   # crossings carries its reference since F164
     assert abs(lo - 0.5) < 0.02 and abs(hi - 1.0) < 0.02, (lo, hi)
     _, bar, why = cl.parabola(list(zip(w, c)))
     assert why == "interior" and 0.5 < bar < 1.0, (bar, why)
+    # THE INTERVAL CARRIES ITS OWN ANCHOR SINCE F164 (2026-09-19). This block asserted the interval was
+    # centred on the reported ESTIMATE, which is the pairing F164 found wrong: `crossings()` measures its
+    # half-widths from the grid's argmin, and anchoring them at the parabola vertex tested the profile's
+    # WIDTH placed somewhere else. The row's interval is now (lo, hi, reference) and coverage is a property
+    # of that interval; the estimate is a separate diagnostic point.
     # the stored row is (r, w, bar, why, pts, level, shape, parts, half_widths): the interval is index 8
-    row = (0, 76.3, 0.1, "interior", None, None, None, None, (0.5, 1.0))
-    assert cl._covered(row, 76.0)
-    assert not cl._covered((0, 77.2, 0.1, "interior", None, None, None, None, (0.5, 1.0)), 76.0)
-    assert cl._covered((0, 76.3, 0.1, "interior", None, None, None, None), 76.0) is False or True  # no interval falls back to the bar
+    row = (0, 76.3, 0.1, "interior", None, None, None, None, (0.5, 1.0, 76.3))
+    assert cl._covered(row, 76.0), "an interval anchored at 76.3 spans [75.8, 77.3] and holds the truth"
+    assert not cl._covered((0, 77.2, 0.1, "interior", None, None, None, None, (0.5, 1.0, 77.2)), 76.0)
+    # the ANCHOR is what decides it, not the estimate: the same widths and estimate, a reference one
+    # micron away, and the verdict flips. This is the defect F164 repaired, planted.
+    assert not cl._covered((0, 76.3, 0.1, "interior", None, None, None, None, (0.5, 1.0, 77.3)), 76.0)
+    # an OLD dump carries a two-element interval and must fall back to the symmetric bar, never re-anchor
+    assert not cl._covered((0, 76.3, 0.1, "interior", None, None, None, None, (0.5, 1.0)), 76.0)
+    assert cl._covered((0, 76.05, 0.1, "interior", None, None, None, None, (0.5, 1.0)), 76.0)
+    # the jackknife moves the estimate, and the interval travels with it
+    assert not cl._covered(row, 76.0, centre=76.3 + 5.0)
+
+
+def test_the_window_sets_are_disjoint_on_the_surface_grid_and_ordered_by_measured_snr():
+    """The quoted windows and the diagnostic windows are two sets of one grid, and the constants say so.
+
+    Failure mode: a window quoted in both sets would be admitted as a measurement and refused as a diagnostic
+    in the same CSV; a window off the surface's grid would have no twin bias to subtract; and a floor of zero
+    would admit numerical dust as a channel (F144 read k7@13 at 6.6e-7 of its own scale with the fit exact).
+    The numbers here are read from the producer, never typed, so a re-measured choice moves them with it.
+    """
+    m = _uj
+    quoted, diag = set(m.MOMENT_WINDOWS), set(m.DIAGNOSTIC_WINDOWS)
+    assert quoted and diag and not (quoted & diag), (quoted, diag)
+    surface = {0.5, 1.0, 2.0, 3.0, 5.0, 8.0, 13.0, 21.0}
+    assert (quoted | diag) <= surface, (quoted | diag) - surface
+    assert 0.0 < m.CUMULANT_FLOOR_REL < 1e-3, m.CUMULANT_FLOOR_REL
+    # the two windows the measurement of 2026-09-19 found dead for one order each are NOT quoted
+    assert 8.0 not in quoted and 21.0 not in quoted

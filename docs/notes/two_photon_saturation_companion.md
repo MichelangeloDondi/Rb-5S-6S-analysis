@@ -76,7 +76,7 @@ and is kept as history, not as a current reading. The matrix element itself, T =
 campaign maximum, was confirmed independently to 0.04 per cent and does not
 move.
 
-Against the 3.4925 MHz natural width, 450 kHz is a saturation parameter s = 0.033
+Against the [3.4925](../../rb5s6s/constants.py "ref:constant:GAMMA_NAT_HZ:1e-6") MHz natural width, 450 kHz is a saturation parameter s = 0.033
 on axis and 0.0146 signal-weighted. The atom reaches steady state at this waist, since the 456 ns
 beam chord is about ten natural lifetimes (at the campaign's 16 micron waist
 the chord is a quarter of that and the steady-state form becomes an

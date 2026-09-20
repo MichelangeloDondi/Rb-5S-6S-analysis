@@ -44,7 +44,7 @@ before the aperture's on-axis factor, of
 [0.3599](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w64um:on_axis_shift") MHz
 (`lineshape.stark_shift_S0_mhz(0.225, 64e-6, 0.94)`)
 on the transition axis, at the record's own pinned `DELTA_ALPHA_AU`. An
-earlier version of this line passed `1093.0` explicitly and got 0.3476,
+earlier version of this line passed `[1093.0](../../rb5s6s/constants.py "ref:constant:DELTA_ALPHA_AU_ORSON2021:1")` explicitly and got 0.3476,
 which matched `results/stark_joint.csv` only because that file's five-hour
 producer has not re-run since this record pinned its own polarizability. A guided mode of radius 15 µm reaches the same intensity at
 **11.45 mW**, and a 10 µm mode at **5.09 mW**. That is the first and largest
@@ -262,7 +262,7 @@ Whatever the launch puts in is still there at the atoms.
 The rate chain below was validated against four independent anchors before
 being used: an independent rebuild of `polarizability.alpha_5s` agreeing to
 1.000000 at four wavelengths, an Einstein-A route to the 6S lifetime giving
-45.42 ns against the repository's `TAU_6S_S` = 45.57 ns (0.3 %), a computed
+45.42 ns against the repository's `TAU_6S_S` = [45.57](../../rb5s6s/constants.py "ref:constant:TAU_6S_S:1e9") ns (0.3 %), a computed
 6S → 5P1/2 branch of 0.341 against the 34/66 split held in `docs/lit/`, and
 `lineshape.stark_shift_S0_mhz` reproducing the C3d prediction at the pinned constant.
 
@@ -300,12 +300,9 @@ filled fibre, line width natural plus transit plus ramp.
 | `Δα` (a.u.) | [-1131.8](../../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive") | 4371.7 | 28649 (ENVELOPE) |
 | natural FWHM | 3.4925 MHz | 1.802 MHz | 0.410 MHz (ENVELOPE) |
 | `S0` at 100 mW | 6.75 MHz | 26.1 MHz | 171 MHz |
-| power at which `S0` = natural width | **[51.7](../../results/projections.csv "ref:projections:proj_guided_power_ceiling:S0 equals the natural width") mW** | **6.91 mW** | **240 µW** |
 | power at which `S0` = the cell's [0.348](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred:shared") MHz | 5.09 mW | 0.68 mW | 0.0049 mW |
 | peak rate per atom at 100 mW | 6.22e6 /s | 5.48e6 /s | 1.29e6 /s |
 | counts/s, 1e4 cold atoms, 100 mW | 2.7e5 | 1.6e5 | 9.9e3 |
-| counts/s, cold, at the usable power | 1.2e5 | 2.2e4 | 4.2e3 |
-| counts/s, hot fill, at the usable power | 2.8e5 | 3.4e6 | 3.0e5 |
 
 The `Δα` values come from `polarizability.delta_alpha(993.4181)` and
 `polarizability.delta_alpha_7s(760.1257)`. The module returns them with the
@@ -317,12 +314,22 @@ verified pole plus an offset fixed at a measured magic wavelength, and on an
 assumed 5D → 6P reduced matrix element. It is ENVELOPE grade throughout, and
 its 420 nm branch is directly proportional to that assumption.
 
-**The one-line reading of the table: light shift, not available power, sets the
-ceiling.** All three lines would deliver 4e3 to 3e6 counts/s at a power low
-enough to keep the shift under the natural width, and all three run out of
-usable power long before they run out of laser. The 5D line runs out at
-240 µW, which is why an experiment on that line suppresses the shift actively
-rather than passively.
+**The reading of the table, as this record models the line.** The shift `S0`
+is a term of the forward model in the fibre exactly as in the cell: the ramp
+it imprints is fitted, its higher moments are the higher-order channel this
+record reads, and the shift grows with power at a known rate, so a shift
+comparable with the width is signal and not a limit. Until 2026-09-19 this
+table carried a row "power at which `S0` = natural width" (51.7, 6.91 and
+0.240 mW for the three lines) and two count-rate rows evaluated at that power,
+and read them as "light shift, not available power, sets the ceiling". Those
+three rows are withdrawn under the same order that retired the cell's
+light-shift construct (O32, F147), and their values stand in the history. What
+bounds the guided drive power is saturation of the two-photon rate, depletion
+of the excitable population along the guide, the trap's own differential shift
+(section 1.3) and, for the 1324 / 1367 nm readout, the guide's reabsorption
+bound (section 3). The 5D line's 171 MHz shift at 100 mW is the one case where
+the shift exceeds every width in the table by two orders, which is why an
+experiment on that line suppresses it actively rather than fitting it.
 
 ### 2.3 The signal photon is resonant with the gas it has to cross
 

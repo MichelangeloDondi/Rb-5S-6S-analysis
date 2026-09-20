@@ -108,6 +108,22 @@ def _column(kind, which, gc, sl, tr):
             - _profile(dn["gamma_coll"], dn["sigma_laser"], dn["transit_fwhm"], kind)) / (2 * h)
 
 
+def _pin(v):
+    """A singular vector's SIGN IS ARBITRARY, so it is pinned before it reaches a committed cell.
+
+    LAPACK returns whichever sign it returns, and the choice flips under a perturbation far below
+    any tolerance the freshness check carries. Measured 2026-09-19: row 8 of this file drifted from
+    +0.630090 to -0.630090 with BOTH components flipped and every magnitude identical to six
+    decimals, so the freshness check went red on a convention and read as a physics move.
+
+    The convention: the component of largest magnitude is positive. It is deterministic under any
+    perturbation that does not reorder the magnitudes, and a direction and its negative are the
+    same direction, so nothing is lost. The `note` columns already report `abs(...)`.
+    """
+    v = np.asarray(v, float)
+    return v if v[int(np.argmax(np.abs(v)))] >= 0 else -v
+
+
 def main() -> int:
     rows = []
 
@@ -120,13 +136,13 @@ def main() -> int:
         sv = np.linalg.svd(J, compute_uv=False)
         ratio = float(sv[1] / sv[0])
         # the null direction, as the right singular vector of the smallest sv
-        v = np.linalg.svd(J, full_matrices=False)[2][-1]
+        v = _pin(np.linalg.svd(J, full_matrices=False)[2][-1])
         rows.append(dict(
             block="fixed_condition_jacobian", kind=kind,
             corr_gamma_sigma=f"{corr:.10f}",
             sv_ratio=f"{ratio:.3e}",
             null_dir_gamma=f"{v[0]:+.6f}", null_dir_sigma=f"{v[1]:+.6f}",
-            note=(f"null direction weight on (gamma,sigma); "
+            note=(f"null direction weight on (gamma,sigma). "
                   f"1/sqrt(2)={1/np.sqrt(2):.4f} is the SUM degeneracy"),
             status="DIAGNOSTIC"))
 
@@ -190,7 +206,7 @@ def main() -> int:
             block="mixed_model_validation", kind=limit,
             corr_gamma_sigma="", sv_ratio=f"{dev:.3e}",
             null_dir_gamma="", null_dir_sigma="",
-            note=(f"reimplementation vs shipped composite_profile in this limit; "
+            note=(f"reimplementation vs shipped composite_profile in this limit. "
                   f"{'AGREES' if dev < 1e-3 else 'DISAGREES, do not read the next block'}"),
             status="DIAGNOSTIC"))
 
@@ -216,14 +232,14 @@ def main() -> int:
     J = np.column_stack(cols)
     sv = np.linalg.svd(J, compute_uv=False)
     Vt = np.linalg.svd(J, full_matrices=False)[2]
-    v = Vt[-1]
+    v = _pin(Vt[-1])
     rows.append(dict(
         block="mixed_model_jacobian", kind="G+L",
         corr_gamma_sigma=f"{float(np.corrcoef(cols[0], cols[2])[0, 1]):.10f}",
         sv_ratio=f"{float(sv[-1] / sv[0]):.3e}",
         null_dir_gamma=f"{v[0]:+.6f}", null_dir_sigma=f"{v[2]:+.6f}",
         note=("4 params (gamma_coll, sigma_G, Gamma_L_equiv, transit) at ONE "
-              "condition; corr column is gamma_coll vs Gamma_L_equiv"),
+              "condition. The corr column is gamma_coll against Gamma_L_equiv"),
         status="DIAGNOSTIC"))
 
     # --- 2. the hierarchical Fisher matrix, intercept slots FREE ------------
@@ -239,7 +255,7 @@ def main() -> int:
             J = np.column_stack([cols[p] for p in params])
             U, sv, Vt = np.linalg.svd(J, full_matrices=False)
             ratio = float(sv[-1] / sv[0])
-            v = Vt[-1]
+            v = _pin(Vt[-1])
             # how much of the worst-determined direction lies in the laser slot
             i_laser = params.index("sigma_laser")
             i_gamma = params.index("gamma_coll")
@@ -248,8 +264,8 @@ def main() -> int:
                 corr_gamma_sigma="",
                 sv_ratio=f"{ratio:.3e}",
                 null_dir_gamma=f"{v[i_gamma]:+.6f}", null_dir_sigma=f"{v[i_laser]:+.6f}",
-                note=(f"n_params={len(params)}; "
-                      f"laser weight in worst direction {abs(v[i_laser]):.4f}"),
+                note=(f"n_params={len(params)}. "
+                      f"Laser weight in worst direction {abs(v[i_laser]):.4f}"),
                 status="DIAGNOSTIC"))
 
     # --- 3. THE JOINT CELL+ONF FISHER BLOCK (design forecast) --------------

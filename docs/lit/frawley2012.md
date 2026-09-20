@@ -12,7 +12,7 @@ pages: 058103
 year: 2012
 doi: 10.1088/0031-8949/85/05/058103
 arxiv: null
-pdf: PDF_papers/Frawley_2012_Phys._Scr._85_058103.pdf
+pdf: PDF_papers/Frawley_2012_van-der-Waals-atom-convex-surface-nanocylinder.pdf
 held: true
 status: VERIFIED
 routing:

@@ -175,7 +175,7 @@ from rb5s6s.constants import PEAKS, ABUNDANCE_RB85, ABUNDANCE_RB87
 # I + 1/2, so the two F levels together carry (2*I + 1) * 2 sublevels.
 
 NUCLEAR_SPIN = {87: 1.5, 85: 2.5}
-ABUNDANCE = {87: ABUNDANCE_RB87, 85: ABUNDANCE_RB85}
+abundance = {87: ABUNDANCE_RB87, 85: ABUNDANCE_RB85}
 
 
 def ground_sublevels(isotope: int) -> int:
@@ -186,7 +186,7 @@ def ground_sublevels(isotope: int) -> int:
 weight = {}
 for label, info in PEAKS.items():
     isotope, F = info["isotope"], info["F"]
-    weight[label] = ABUNDANCE[isotope] * (2 * F + 1) / ground_sublevels(isotope)
+    weight[label] = abundance[isotope] * (2 * F + 1) / ground_sublevels(isotope)
 
 total = sum(weight.values())
 share = {label: w / total for label, w in weight.items()}
@@ -204,6 +204,32 @@ print(f"4192/4154 (same isotope, abundance cancels): {r_85:.4f} (= 7/5)")
 print(f"4192/4207 (cross isotope, abundance also enters): {r_cross:.4f}")
 ```
 
+## What the assumptions rest on, and the one thing the model omits (2026-09-19)
+
+**The F state an atom carries is the one it left the wall with.** Rubidium-rubidium spin exchange at the
+hot end runs at about 6.3e3 per second against a transit time of 134 nanoseconds at a mean speed of 313
+metres per second, so the chance of exchanging hyperfine state during a crossing is 8.4e-4. The wall sets
+the entering population and nothing inside the beam redistributes it.
+
+**The statistical ratio is a statement about arriving atoms and about an uncoated cell.** An uncoated
+glass wall is strongly depolarising, so the entering ratio is the degeneracy one. It is not the ratio in
+the beam, where the drive has already pumped, and a coating would break even the entering form.
+
+**Depletion is permanent within a crossing**, the ground levels being split by gigahertz against a line
+of megahertz, so a pumped atom cannot be pumped back before it reaches a wall.
+
+**And depletion velocity-selects, which the model does not carry.** Dwell time goes as one over the
+speed, so slow atoms are pumped out preferentially. At a mean loss of a tenth per crossing an atom at
+half the mean speed forfeits 0.19 and one at twice the mean forfeits 0.05, and at a mean loss of a half those
+become 0.75 and 0.29. The surviving excitable population is biased fast, a fast-biased distribution gives
+a wider transit profile, and since the transit width goes as the speed over the waist an inflated width
+reads as a waist too small. The effect grows with drive power because the depletion does. The model
+carries the depletion as a loss of amplitude and convolves the undepleted transit kernel, so the
+reshaping is absent. The selection is radial as well, biasing the survivors toward low intensity, which
+is the same mixture reweighting the convolution's first-order correction needs: one effect in two
+coordinates. Treating either alone double-counts or misses, and the repair is one survival weight inside
+the chord integral already in the model.
+
 ## Further reading
 
 - C. J. Foot, *Atomic Physics* (Oxford University Press, 2005), chapter 6,
@@ -219,7 +245,7 @@ print(f"4192/4207 (cross isotope, abundance also enters): {r_cross:.4f}")
   calculations draw on.
 
 ## Related pages
-- [The AC-Stark dossier](../quantities/ac-stark-light-shift.md), where the
+- [The AC-Stark dossier](../quantities/AC-stark-light-shift.md), where the
   pumping branching is one of the mechanisms sharing the light shift's power
   signature.
 - [Hyperfine structure](hyperfine-structure.md), the levels this page

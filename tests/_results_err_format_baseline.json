@@ -47,7 +47,7 @@
   "results/twin_closed_loop.csv": 1,
   "results/twin_completeness.csv": 0,
   "results/ultra_joint_closure.csv": 0,
-  "results/ultra_joint_moments.csv": 112,
+  "results/ultra_joint_moments.csv": 1,
   "results/wavemeter_reconstruction.csv": 2,
   "results/window_attribution.csv": 0,
   "results/window_laws.csv": 0,

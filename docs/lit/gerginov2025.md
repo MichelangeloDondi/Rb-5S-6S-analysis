@@ -11,7 +11,7 @@ pages: 035002
 year: 2025
 doi: 10.1088/1681-7575/adbf99
 arxiv: null
-pdf: PDF_papers/Gerginov_2025_Metrologia_62_035002.pdf
+pdf: PDF_papers/Gerginov_2025_accuracy-evaluation-primary-frequency-standard-NIST-F4.pdf
 held: true
 status: VERIFIED
 routing:

@@ -5,7 +5,7 @@ moment before it enters the joint fit ("using the twin to compute and factor out
 this file nothing could: `scripts/run_ultra_joint.py` took its moments at windows 3.25, 6 and 12 MHz
 while `results/window_surface.csv` was tabulated on 0.5, 1, 2, 3, 5, 8, 13 and 21, an EMPTY
 intersection, so the surface was computed, climbed through its noise ladder, and read by nothing.
-The windows now agree (2, 8 and 13 MHz) and this is the one reader.
+The windows agree (1, 2, 5 and 13 MHz quoted since 2026-09-19, with 3, 8 and 21 diagnostic, all on the surface's grid) and this is the one reader.
 
 WHAT A BIAS IS HERE. At a noise level the surface carries, per (case, statistic), the replica mean of
 the statistic over the twin's realisations and its standard error; at the noiseless level it carries
@@ -13,6 +13,12 @@ the statistic of the noise-free trace, the truth. The bias at a level is `mean(l
 its standard error is the replica mean's. It is subtracted ONCE from the data statistic, the
 standard error added in quadrature, and both written as columns beside the result so the
 subtraction is visible and reversible.
+
+STATISTIC KEYS ARE `k<n>@<window>` (a cumulant, e.g. `k4@8`) OR `mu<n>@<window>` (a central
+moment, e.g. `mu4@8`) AND THEIR RATIOS (owner order O33, 2026-09-20: central moments are the
+producer's primary vector at fourth order and above, with the cumulant retained beside them as a
+diagnostic). Both prefixes are read from the same surface files; a cell under one prefix says
+nothing about the other, and each is looked up under its own key.
 
 REFUSALS. A (case, statistic, level) absent from the surface RAISES `KeyError`: no interpolation
 across windows, orders, conditions or levels, ever, because a bias read between cells is a number
@@ -32,7 +38,7 @@ def _read(path: pathlib.Path) -> Dict[Tuple[str, str], Tuple[float, float]]:
     with pathlib.Path(path).open() as fh:
         for row in csv.DictReader(fh):
             q = row.get("quantity", "")
-            if "@" not in q or not q.startswith("k"):
+            if "@" not in q or not q.startswith(("k", "mu")):
                 continue
             try:
                 v = float(row["value"])
@@ -59,7 +65,7 @@ class TwinBias:
             raise ValueError(f"{self.noiseless_path}: no k<n>@<window> rows; not a window surface")
 
     def bias(self, case: str, statistic: str, level: float) -> Tuple[float, float]:
-        """(bias, standard error) of `statistic` (a key like 'k4@8') for `case` at `level`.
+        """(bias, standard error) of `statistic` (a key like 'k4@8' or 'mu4@8') for `case` at `level`.
 
         `level` 0 returns (0.0, 0.0) if the cell exists in the noiseless file (a noiseless trace has
         no bias by definition), and raises otherwise, so a missing case is never read as unbiased."""

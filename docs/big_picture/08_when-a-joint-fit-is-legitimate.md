@@ -312,7 +312,7 @@ Each is answerable from artefacts this pipeline already writes.
    in which case constraining that channel buys nothing.
 
 Question 6 is the one most often skipped. For this dataset: the fixed natural
-Lorentzian width is 3.493 ± 0.013 MHz on the transition axis, from the measured
+Lorentzian width is [3.493](../../rb5s6s/constants.py "ref:constant:GAMMA_NAT_HZ:1e-6") ± 0.013 MHz on the transition axis, from the measured
 6S lifetime of 45.57 ± 0.17 ns ([Gomez 2005](../lit/gomez2005.md)), against an
 observed composite width near
 5.4 MHz, a linear ratio of about 0.65. That is a ratio of two defined widths and not an additive share,

@@ -67,7 +67,6 @@ _s = importlib.util.spec_from_file_location("uj_for_closure", ROOT / "scripts" /
 UJ = importlib.util.module_from_spec(_s)
 _s.loader.exec_module(UJ)
 
-from rb5s6s import config as C              # noqa: E402
 from rb5s6s import ladder_gate             # noqa: E402
 from rb5s6s.forecast import _correlate      # noqa: E402
 from rb5s6s.noise import sigma_of_v         # noqa: E402
@@ -88,8 +87,44 @@ GRID_UM = (40.0, 42.0, 44.0, 46.0, 48.0, 52.0, 56.0)   # the scan grid from the 
 GRID_NOISELESS = tuple(sorted(set(GRID_UM) | {TRUTH_UM + k * 0.5 for k in range(-4, 5)}))
 
 
-def grid_noiseless(truth: float) -> tuple:
-    return tuple(sorted(set(GRID_UM) | {truth + k * 0.5 for k in range(-4, 5)}))
+#: THE FINE BAND'S STEP, SET BY MEASUREMENT (F175, 2026-09-19). `local_min` interpolates over the three
+#: nodes nearest the argmin, and on a profile whose curvature JUMPS at its minimum that error is FIRST order
+#: in the spacing. **THE COEFFICIENT IS NOT A CONSTANT** (F182, 2026-09-19, and the measurement is
+#: below): it grows with the curvature ratio at the kink AND with where the truth happens to sit inside its
+#: cell, and F175's 0.20 is ONE position on a ratio-4 caricature, not that caricature's coefficient. Swept
+#: across the cell, the error over the step reads
+#:
+#:      ratio  2.0   2.7   3.0   3.7   5.0
+#:      mean  0.140 0.199 0.220 0.261 0.320
+#:      worst 0.173 0.247 0.273 0.325 0.397
+#:
+#: The real profile's ratio is measured between 2.7 and 3.7, so the coefficient runs 0.20 to 0.26 typically
+#: and 0.25 to 0.32 at the worst position in the cell. `NOISELESS_TOL` of 1e-3 is 0.042 um at a 42 um truth,
+#: At the 0.125 um step the worst case predicted 0.041 um against 0.042, a margin of THREE PER CENT, and
+#: the eight-condition rung then FAILED at 0.073 um (F183), where four conditions had passed at 0.0238. So
+#: more than half that failure could have been the grid, and the rung could not say whether it was grading
+#: the estimator or the spacing. The step is 0.0625 um from 2026-09-19 for that reason: the worst case
+#: falls to 0.020 um, a factor of two under tolerance, and what the rung then reads is the estimator's. This wave does not make that change, because it would invalidate the recorded noiseless rung,
+#: and the queue entry `closure-fine-step-has-three-per-cent-of-margin` carries it with that trigger.
+GRID_FINE_STEP_UM = 0.0625
+#: the fine band is offset by HALF a step. The code has always divided by two and this line said "a
+#: quarter" until 2026-09-19, which is the shape of a comment drifting from the arithmetic beneath it. Half
+#: a step puts the truth at the midpoint between two nodes, the position where the argmin is worst and the
+#: centring bias is therefore hardest to fake
+GRID_OFFSET_UM = GRID_FINE_STEP_UM / 2
+
+
+def grid_noiseless(truth: float, offset: float = GRID_OFFSET_UM, step: float = GRID_FINE_STEP_UM) -> tuple:
+    """The scan grid, with the truth guaranteed OFF it (F154, 2026-09-19).
+
+    Until this repair the fine band was `truth + k * 0.5`, so the truth was always a node and at the low
+    rung every realisation's argmin landed exactly on it: its bias read 0.000 BY CONSTRUCTION and the
+    closure could not measure a centring bias at all. The band is offset by HALF a step and any node
+    landing on the truth is dropped, so the argmin must always be wrong by something and that something is
+    the measurement.
+    """
+    g = set(GRID_UM) | {truth + offset + k * step for k in range(-6, 7)}
+    return tuple(w for w in sorted(g) if abs(w - truth) > 1e-9)
 WIDE_UM = (48.0, 56.0)          # tests the asymptote instead of extrapolating it (was 76 and 90 on the 64-90 grid)
 SEED = 1000
 # THE SWEEP, AND IT IS THE RULE READ LITERALLY. The owner's words are "first on noiseless
@@ -103,7 +138,20 @@ SEED = 1000
 NOISE_SWEEP = (0.0, 0.1, 0.3, 1.0)      # coarse first (owner, 2026-09-17 02:40): the waist profile's rungs and one decade below; 0.05, 0.2, 0.5, 0.7 are refinements a reading must ask for
 RUNG_OF_SCALE = {0.0: "noiseless", 0.3: "low", 1.0: "archive"}
 ANALYSIS_ID = "ultra_joint_waist"
-OUT = C.RESULTS_DIR / "ultra_joint_closure.csv"
+def _out_path():
+    """The output, resolved at CALL time (F170, 2026-09-19).
+
+    `out_path = C.RESULTS_DIR / ...` bound the directory at IMPORT, and `config.RESULTS_DIR` reads
+    `RB5S6S_RESULTS_DIR` when the package loads, so any invocation that had not set the variable BEFORE the
+    import wrote the canonical results tree. On 2026-09-19 that tree was rewritten at 08:11 by a run nobody
+    could name afterwards. Resolving here lets a launcher set the variable at any point, and a run that
+    dumps or combines waves refuses the canonical directory outright.
+    """
+    import os as _os
+    import pathlib as _pl
+    from rb5s6s import config as _c
+    root = _pl.Path(_os.environ.get("RB5S6S_RESULTS_DIR") or _c.RESULTS_DIR)
+    return root / "ultra_joint_closure.csv"
 
 _W: dict = {}
 
@@ -287,6 +335,47 @@ def _cell(exc) -> str:
     return t[:380]
 
 
+def local_min(pts):
+    """The minimum interpolated over the THREE NODES NEAREST THE ARGMIN (F169, 2026-09-19).
+
+    WHY NOT THE ARGMIN. Once the injected truth is off its own grid (F154) the argmin cannot be exactly
+    right, and its error is bounded by half the fine step: 0.0625 um at the 0.125 um step, against a
+    `NOISELESS_TOL` of 1e-3 which is 0.042 um at a 42 um truth. So the argmin is refused AT THIS STEP, and
+    that is a statement about the step and not an impossibility -- the bound falls in proportion, and a step
+    under 0.084 um would let the argmin meet the tolerance on its own. What makes the interpolation the
+    right estimator is the other half: the argmin's error is set by the grid, so a check reading it grades
+    the grid's spacing rather than anything the estimator did.
+
+    WHY NOT `parabola()`. That fits over a 3 MICRON window, and A3 rejected it for the noiseless rung
+    because the profile is asymmetric by 2.9 at +-0.5 um, so a fit that wide reads the average curvature and
+    reports a vertex the walk does not have. This is a fit over 3 NODES, which is local by construction: on
+    a quadratic it is exact, and on a smooth minimum its vertex is in error at SECOND order in the node
+    spacing. The parabola matches a smooth function to third order, but the position of a minimum is one
+    derivative further out than the value, so the vertex converges one order more slowly than the fit.
+
+    The vertex is clamped into the bracketing interval, so a flat or non-convex triple returns its own
+    argmin and never a point outside the data. Returns (w, how) with `how` naming which branch answered.
+    """
+    q = sorted((float(a), float(b)) for a, b in pts if np.isfinite(b))
+    if len(q) < 3:
+        return (float(q[0][0]) if q else float("nan")), "too-few-nodes"
+    w = np.array([a for a, _ in q]); c = np.array([b for _, b in q])
+    i = int(np.argmin(c))
+    if i == 0 or i == len(w) - 1:
+        return float(w[i]), "edge"                     # the walk ended on its grid; say so, do not extrapolate
+    x0, x1, x2 = w[i - 1], w[i], w[i + 1]
+    y0, y1, y2 = c[i - 1], c[i], c[i + 1]
+    d = (x0 - x1) * (x0 - x2) * (x1 - x2)
+    if d == 0:
+        return float(x1), "degenerate-nodes"
+    a2 = (x2 * (y1 - y0) + x1 * (y0 - y2) + x0 * (y2 - y1)) / d
+    b2 = (x2 * x2 * (y0 - y1) + x1 * x1 * (y2 - y0) + x0 * x0 * (y1 - y2)) / d
+    if a2 <= 0:
+        return float(x1), "not-convex"
+    v = -b2 / (2 * a2)
+    return float(min(max(v, x0), x2)), "interpolated"
+
+
 def crossings(pts):
     """The profile's OWN interval: the half-widths to the delta-chi2 = 1 crossings on each side of
     the lowest node, by linear interpolation between nodes (F41, 2026-09-17). The waist's profile
@@ -305,8 +394,14 @@ def crossings(pts):
         return float("nan")
     left = _cross([(k, k - 1) for k in range(i, 0, -1)])
     right = _cross([(k, k + 1) for k in range(i, len(w) - 1)])
+    # THE REFERENCE RIDES WITH THE WIDTHS (F164, 2026-09-19). These half-widths are measured from the
+    # grid's own argmin `w[i]`, and `_covered` used to pair them with the PARABOLA VERTEX, so the interval
+    # it tested was this interval's width placed at a different point: at the low rung the two anchors sat
+    # 0.163 um apart against a half-width of 0.027, six times. An interval whose reference is not carried
+    # beside it will be re-anchored by whoever reads it, so the reference is returned.
     return (float(w[i] - left) if np.isfinite(left) else float("nan"),
-            float(right - w[i]) if np.isfinite(right) else float("nan"))
+            float(right - w[i]) if np.isfinite(right) else float("nan"),
+            float(w[i]))
 
 
 def parabola(pts, window_um: float = 3.0):
@@ -357,6 +452,9 @@ def _W_traces():
 
 def _init():
     _W["real"] = _synthetic_source()
+    # THE GRID CHOICE TRAVELS BY ENVIRONMENT (A18): a spawned worker starts with an empty _W, so a flag set
+    # in the parent's _W alone would silently leave every worker on the full grid while the log said fine.
+    _W["grid"] = os.environ.get("RB5S6S_CLOSURE_GRID", "full")
 
 
 def _truth(truth: float, prior_mean: bool):
@@ -368,15 +466,24 @@ def _truth(truth: float, prior_mean: bool):
 
 def _task(args):
     """One realisation at one noise scale: inject, walk the grid, read the parabola."""
-    scale, r, correlated, truth, prior_mean, logdet = args
+    scale, r, correlated, truth, prior_mean, logdet, pool = (list(args) + [None])[:7]
     cell, ptr = _truth(truth, prior_mean)
-    syn, level, shape = inject(cell, ptr, SEED + r, correlated=correlated, noise_scale=scale)
+    src = None
+    if pool and scale >= 1.0:
+        z = np.load(pool); pools = {k: np.asarray(z[k], float) for k in z.files}
+        def src(t, n, rng, _p=pools):
+            key = f"cond_{t['peak']}_{t['T']:.0f}C_{1e3 * t['P_W']:.0f}mW"; p = _p.get(key, _p["shared"])
+            nb = int(np.ceil(n / 16)); st = rng.integers(0, len(p) - 16, size=nb)
+            o = np.concatenate([p[s:s + 16] for s in st])[:n]; return o / max(float(np.std(p)), 1e-300)
+    syn, level, shape = inject(cell, ptr, SEED + r, correlated=correlated, noise_scale=scale, residual_source=src)
     wscale = scale if scale > 0.0 else 1.0          # the rung whitens at its own scale (F7)
     ld = bool(logdet and scale > 0.0)               # no log-determinant at zero noise
     # EVERY RUNG WALKS THE FINE BAND (F14, 2026-09-17): the noisy rungs walked the 4 um grid alone,
     # and a parabola through 4 um nodes of a profile that is not a parabola read +0.56 um at the
     # first noisy level and railed a 64 um truth that had no interior triple there.
-    pts = _fit_grid(syn, grid_noiseless(truth), max_nfev=(NOISELESS_NFEV if scale <= 0.0 else None),
+    _grid = grid_noiseless(truth) if _W.get("grid", "full") == "full" else \
+        tuple(sorted({min(GRID_UM), max(GRID_UM)} | {truth + k * 0.5 for k in range(-4, 5)}))
+    pts = _fit_grid(syn, _grid, max_nfev=(NOISELESS_NFEV if scale <= 0.0 else None),
                     logdet=ld, noise_scale=wscale)
     w, bar, why = parabola(pts)
     # THE NOISELESS RUNG READS THE GRID'S OWN MINIMUM, NOT THE PARABOLA'S VERTEX (2026-09-18, the
@@ -390,25 +497,99 @@ def _task(args):
     # window and not of the fit. The discrete question gets the discrete answer, and the parabola stays
     # in `bar` as the diagnostic column it is.
     if scale <= 0.0:
-        w = float(min(pts, key=lambda q: q[1])[0])
-    lo_hw, hi_hw = crossings(pts)                 # the profile's own interval (F41)
+        # THE NOISELESS RUNG READS AN INTERPOLATED MINIMUM (F169), not the grid's argmin: with the truth
+        # off its own grid (F154) the argmin's error is quantised to half a step, six times the tolerance,
+        # so the recovery check would grade the grid and not the estimator.
+        w, _how = local_min(pts)
+    lo_hw, hi_hw, ref_hw = crossings(pts)         # the profile's own interval AND where it was measured (F41, F164)
     # THE SPLIT AT THE INJECTED VECTOR, at every rung: data, prior and log-determinant blocks. The
     # rung is judged on the data block (zero for a generator equal to the fitter at zero noise,
     # n_eff +- sqrt(2 n_eff) at a noisy rung whitened at its own scale); the objective's own
     # minimum carries the log-determinant residual and its offset and is not a chi-squared.
     c = UJ.Cell(dict(UJ._spec(FORM, truth, beta_profile=False), logdet=ld, noise_scale=wscale), syn)
     parts = c.chi2_parts(ptr, np.zeros(len(syn)))
-    return scale, r, w, bar, why, pts, level, shape, float(truth), parts, (lo_hw, hi_hw)
+    return scale, r, w, bar, why, pts, level, shape, float(truth), parts, (lo_hw, hi_hw, ref_hw)
 
 
-def _covered(x, truth):
-    """One realisation covers the truth on the profile's own interval (the crossings) where both
-    crossings exist, on the parabola's symmetric bar otherwise (F41)."""
-    w, bar = x[1], x[2]
+def _anchor(x):
+    """The point a realisation's interval is anchored at, and therefore the point its bias belongs to.
+
+    F179 (2026-09-19). `coverage_as_used` jackknifed `x[1]`, the PARABOLA VERTEX,
+    and handed the result to `_covered`, which anchors the interval at the grid argmin `hw[2]`. So a
+    ref-anchored interval was being shifted by a different estimator's bias -- the same mis-anchoring F164
+    had just repaired, re-entering through the correction rather than through the interval. F164 measured
+    those two points 0.163 um apart at the low rung against a half-width of 0.027, six times, so the
+    substitution is not small.
+
+    One anchor, used by both: the crossings' own reference where the dump carries it, the parabola vertex
+    where it does not, which is exactly the branch `_covered` falls back to.
+    """
     hw = x[8] if len(x) > 8 else (float("nan"), float("nan"))
-    if np.isfinite(hw[0]) and np.isfinite(hw[1]):
-        return w - hw[0] <= truth <= w + hw[1]
+    if len(hw) > 2 and np.isfinite(hw[2]) and np.isfinite(hw[0]) and np.isfinite(hw[1]):
+        return float(hw[2])
+    return float(x[1])
+
+
+def _covered(x, truth, centre=None):
+    """One realisation covers the truth on the profile's OWN interval, anchored where the profile put it.
+
+    THE INTERVAL AND ITS ANCHOR TRAVEL TOGETHER (F164, 2026-09-19). `crossings()` measures its half-widths
+    from the grid's argmin and now returns that point as a third element. Until this repair `_covered`
+    paired those widths with `x[1]`, the PARABOLA VERTEX, so the interval it tested was the profile's width
+    re-anchored at a different point -- neither the profile's interval nor a parabola's. Measured on the
+    eight stopped waves of 2026-09-19 the two anchors sat 0.163 um apart at the low rung against a
+    half-width of 0.027, six times, which is why that rung's raw coverage read 0.125.
+
+    Coverage is a property of the INTERVAL, and the parabola vertex is a separate diagnostic point
+    estimate that does not have to be its centre. A `centre` supplied by the jackknife corrects the
+    ESTIMATE, so the interval is shifted by the same amount and keeps its own width and asymmetry.
+
+    An old dump whose crossings carry no reference falls back to the symmetric bar, which is the one
+    reading that cannot be silently mis-anchored.
+    """
+    est, bar = x[1], x[2]
+    hw = x[8] if len(x) > 8 else (float("nan"), float("nan"))
+    ref = float(hw[2]) if len(hw) > 2 and np.isfinite(hw[2]) else None
+    if ref is not None and np.isfinite(hw[0]) and np.isfinite(hw[1]):
+        # the shift is measured against the ANCHOR, never against the vertex (F179)
+        shift = 0.0 if centre is None else (float(centre) - ref)
+        lo, hi = ref + shift - hw[0], ref + shift + hw[1]
+        return lo <= truth <= hi
+    w = est if centre is None else centre
     return abs(w - truth) <= bar
+
+
+def coverage_as_used(g, truth):
+    """(corrected coverage, raw coverage, bias, jackknife SE of the bias) over one rung's realisations.
+
+    THE RUNG JUDGES THE ESTIMATOR THE RECORD QUOTES (owner, 2026-09-19 02:40, plan D6 and A16). Phase 4
+    step 4 subtracts the archive rung's bias from every real estimate, so a rung scoring the RAW estimate
+    scores a different estimator, and at the L it fails by construction: the bias (+0.142 um) is about twice
+    the bar and does not shrink with n while the bar does. Forecast on the L's own 44 realisations before
+    this was written: raw 0.23 to 0.32, corrected 0.66 to 0.77.
+
+    The correction is a JACKKNIFE, the closure's analogue of run_window_surface.py's split half: realisation
+    i is corrected by the bias measured on the OTHER n-1, so no realisation corrects itself. Each keeps its
+    own interval, so the correction moves only the centre. The jackknife also returns the bias's SE, which
+    is what is added in quadrature when the bias is subtracted downstream. Both coverages are recorded and
+    the band is unchanged; `bias_subtracted` is EARNED by this function and no longer typed.
+    """
+    ws = np.array([_anchor(x) for x in g], float)     # the anchor, not the vertex (F179)
+    ok = np.isfinite(ws)
+    n = int(ok.sum())
+    raw = float(np.mean([_covered(x, truth) for x, o in zip(g, ok) if o])) if n else 0.0
+    if n < 3:
+        # TOO FEW TO CORRECT (finding of 2026-09-19): the noiseless rung has one realisation by
+        # construction, and a nan there turned a real coverage into nothing. The raw reading IS the
+        # reading when no correction can be made, and the bias is the single deviation.
+        return raw, raw, (float(ws[ok].mean() - truth) if n else float("nan")), float("nan")
+    total = float(ws[ok].sum())
+    loo_bias = np.full(ws.shape, np.nan)
+    loo_bias[ok] = (total - ws[ok]) / (n - 1) - truth
+    corrected = float(np.mean([_covered(x, truth, centre=_anchor(x) - b) for x, o, b in zip(g, ok, loo_bias) if o]))
+    loo_means = (total - ws[ok]) / (n - 1)
+    bias_se = float(np.sqrt((n - 1) / n * np.sum((loo_means - loo_means.mean()) ** 2)))
+    return corrected, raw, float(ws[ok].mean() - truth), bias_se
 
 
 def _run(jobs, workers):
@@ -445,8 +626,41 @@ def main() -> int:
     ap.add_argument("--levels", default=None, help="a comma list of noise levels to walk instead of the sweep (0 is always walked first)")
     ap.add_argument("--truths", default=str(TRUTH_UM), help="comma-separated truth waists in um; the first is the ladder's canonical one")
     ap.add_argument("--prior-mean", action="store_true", help="inject the truth at the prior means (beta_rel, omega_scale, alpha_rel = 1)")
-    ap.add_argument("--logdet", action="store_true", help="carry sum ln sigma^2 in the objective")
+    # THE LOG-DETERMINANT IS ON BY DEFAULT (2026-09-19). It was `store_true`, so the DEFAULT objective
+    # omitted `sum ln sigma^2` and was therefore not a likelihood at all by this record's own rule: an
+    # objective whose weights depend on its own parameters rewards whatever inflates the level until the
+    # term is carried. Every invocation in the plan passed the flag, so nothing was wrong in practice and
+    # everything was wrong in the default, which is the shape that bites the next reader. It is now
+    # opt-OUT, and the opt-out is named for the one case that legitimately wants it: comparing against an
+    # artefact computed before the term existed.
+    ap.add_argument("--no-logdet", dest="logdet", action="store_false",
+                    help="DROP sum ln sigma^2 from the objective, which makes it not a likelihood; only "
+                         "for reproducing an artefact computed before the term was carried")
+    ap.add_argument("--logdet", dest="logdet", action="store_true",
+                    help="carry sum ln sigma^2 in the objective (the default since 2026-09-19)")
+    ap.set_defaults(logdet=True)
     ap.add_argument("--correlated", action="store_true", help="filter the injected noise to each condition's measured tau_int (the comparison arm, F36: the archive's post-fit residuals are near white, so the white arm is the one that matches the record)")
+    # WAVES (owner, 2026-09-19): "when you have to run long computations split them in waves of about half
+    # an hour ... 1) preventing loss of work in case there is any issue that kills the run 2) let analyse
+    # the preliminary results to check them, and amend and restart the computation if it was flawed
+    # 3) it allows to run the gates in between in case of need". A wave computes a SLICE of the
+    # realisations and DUMPS its raw cells; it does not touch the ladder, because a slice has not earned a
+    # rung. `--combine` reads every dump, declares the full size to the size gate, and records once. So a
+    # kill costs one wave, the preliminary cells are on disk for inspection after each wave, and a gate can
+    # run in the gap. This replaces the eleven-hour single pool that wrote nothing until it finished.
+    ap.add_argument("--reals-from", type=int, default=0, help="the first realisation index of this wave")
+    ap.add_argument("--dump", default=None, help="write this wave's raw cells here and record NOTHING")
+    ap.add_argument("--combine", default=None, help="a glob of wave dumps to aggregate and record as one rung")
+    # THE REAL TRACES' NOISE, DIRECTLY (owner, 2026-09-19, A23): at and above the archive's level the
+    # injection draws moving-block resamples of the pooled post-fit residuals instead of white noise at the
+    # fitted law, through the seam `inject` already carries. The construction is the treatments producer's
+    # own (its `--pool`), copied rather than re-derived. The law still sets the LEVEL; the pool sets the shape.
+    ap.add_argument("--pool", default=None, help="residual pools (.npz) for the injection at scale >= 1.0")
+    # THE GRID CANDIDATE (PLAN v3 A18 (i)): the fine band about the truth plus the two sentinels that catch a
+    # railing landscape, 13 points to 11. Measured before it is adopted: the pre-wave times one cell on each
+    # grid and the plan takes whichever the numbers license. The default stays the full grid.
+    ap.add_argument("--grid", default="full", choices=("full", "fine"),
+                    help="'fine': the +-2 um band at 0.5 plus the 40 and 56 sentinels; 'full': grid_noiseless")
     a = ap.parse_args()
     from _producer_lock import producer_lock
     with producer_lock("run_ultra_joint_closure"):
@@ -460,10 +674,16 @@ def main() -> int:
         # long task to a free worker at the start rather than at the end.
         if a.conditions is not None:
             os.environ["RB5S6S_CLOSURE_CONDITIONS"] = str(a.conditions)
+        _W["grid"] = a.grid; os.environ["RB5S6S_CLOSURE_GRID"] = a.grid   # the workers read the env in _init
         truths = [float(x) for x in a.truths.split(",")]
         sweep = tuple(sorted({0.0} | {float(x) for x in a.levels.split(",")})) if a.levels else NOISE_SWEEP
-        jobs = [(sc, r, bool(a.correlated), t, a.prior_mean, a.logdet) for t in truths for sc in sweep
-                for r in range(1 if sc <= 0.0 else a.reals)]     # noiseless is deterministic
+        # A WAVE'S REALISATIONS ARE AN OFFSET SLICE, and the noiseless cell is deterministic, so it belongs
+        # to the FIRST wave alone -- recomputing it in every wave would spend the longest cell of the run
+        # (fifteen grid points against seven) once per wave for an identical answer.
+        _r0 = max(0, int(a.reals_from))
+        jobs = [(sc, r, bool(a.correlated), t, a.prior_mean, a.logdet, a.pool) for t in truths for sc in sweep
+                for r in (range(1) if sc <= 0.0 else range(_r0, _r0 + a.reals))
+                if not (sc <= 0.0 and _r0 > 0)]
         jobs.sort(key=lambda j: (j[0] > 0.0, j[0]))      # the noiseless walks (the longest) first
         # THE SIZE LADDER (owner, 2026-09-16): this run declares its size and is refused unless a
         # smaller stage passed. Stage 0 is one truth and one realisation, which the probes of
@@ -484,15 +704,62 @@ def main() -> int:
         for _line in sorted({str(t["peak"]) for t in _src}):
             _kg.require_span(_conds, _lo, _hi, line=_line, readings=_kg.WAIST_READINGS)
         print(f"  kernel preflight: {len(_conds)} conditions x {_lo:g}-{_hi:g} um admitted on {len(_kg.WAIST_READINGS)} readings", flush=True)
-        size = {"conditions": n_cond, "truths": len(truths), "realisations": max(1, a.reals), "forms": 1}
-        cells = n_cond * len(truths) * max(1, a.reals)
+        # A WAVE DOES NOT TOUCH THE SIZE LADDER. It computes a slice and has earned no rung, so the gate is
+        # declared by `--combine` alone, at the FULL realisation count the dumps actually carry -- never at
+        # a wave's own count, which would let a run climb a stage it never ran.
+        if a.combine:
+            import glob as _glob
+            files = sorted(_glob.glob(a.combine))
+            if not files:
+                print(f"REFUSED: --combine matched no dump at {a.combine}", flush=True); return 2
+            res = []
+            for f in files:
+                res.extend(json.loads(Path(f).read_text()))
+            res = [tuple(x) for x in res]
+            # PER LEVEL, AND THE MINIMUM (finding of 2026-09-19): an average across levels declared a
+            # count neither level had run when one wave was partial. Each noisy level's realisations are
+            # counted on their own, the size gate is told the SMALLEST, and levels that disagree are refused
+            # outright, because a combine over unequal levels is two runs and not one.
+            _per_level = {}
+            for x in res:
+                if x[0] > 0.0:
+                    _per_level.setdefault((x[8], x[0]), set()).add(x[1])
+            _counts = {k: len(v) for k, v in _per_level.items()}
+            if len(set(_counts.values())) > 1:
+                print(f"REFUSED: the dumps carry unequal realisation counts per level: {_counts}; a combine over "
+                      f"unequal levels is two runs, not one -- finish the short level's waves first", flush=True)
+                return 2
+            n_real = max(1, min(_counts.values()) if _counts else 1)
+            print(f"  combining {len(files)} wave dumps, {len(res)} cells, {n_real} realisations per noisy level", flush=True)
+        else:
+            n_real = max(1, a.reals)
+        size = {"conditions": n_cond, "truths": len(truths), "realisations": n_real, "forms": 1}
+        cells = n_cond * len(truths) * n_real
         stage = 0 if cells <= 1 else int(math.ceil(math.log(cells, 4) - 1e-9))   # a stage per factor of four in cells: 1, 4, 16, 64, ...
-        adm = ladder_gate.launch(ANALYSIS_ID + "_closure", stage, size, pool_speedup=(5.5 if a.workers >= 8 else max(1.0, a.workers)))
-        print(f"  size ladder: stage {stage} admitted {adm}", flush=True)
-        res = _run(jobs, a.workers)
+        if not a.dump:
+            adm = ladder_gate.launch(ANALYSIS_ID + "_closure", stage, size, pool_speedup=(5.5 if a.workers >= 8 else max(1.0, a.workers)))
+            print(f"  size ladder: stage {stage} admitted {adm}", flush=True)
+        if not a.combine:
+            res = _run(jobs, a.workers)
+        if a.dump:
+            Path(a.dump).parent.mkdir(parents=True, exist_ok=True)
+            Path(a.dump).write_text(json.dumps(res, default=float))
+            print(f"  wave {_r0}..{_r0 + a.reals - 1} dumped {len(res)} cells to {a.dump} "
+                  f"in {time.time() - t0:.0f} s; NOTHING recorded, which is what a wave is", flush=True)
+            return 0
+        _seen_rows: set = set()
         by: dict = {}
         splits = {}
         for sc, r, w, bar, why, pts, level, shape, truth, parts, hw in res:
+            # ONE ROW PER (truth, level, realisation), F178 (2026-09-19). The dedupe below this used to
+            # serve only the COUNT handed to the size gate, while the statistics were built from the raw
+            # concatenation, so an overlapping wave dump weighted four of eight realisations twice and the
+            # same invocation printed "8 realisations per noisy level" and recorded "n_realisations": 12.
+            # The sibling mismatch harness learned this the same night; the producer had not.
+            _seen_key = (truth, sc, r)
+            if _seen_key in _seen_rows:
+                continue
+            _seen_rows.add(_seen_key)
             by.setdefault((truth, sc), []).append((r, w, bar, why, pts, level, shape, parts, hw))
             if sc <= 0.0:
                 splits[truth] = parts
@@ -507,10 +774,16 @@ def main() -> int:
             bs = np.array([x[2] for x in g], float)
             ok = np.isfinite(ws)
             rel = np.abs(ws - truth) / truth
+            _cov_used = coverage_as_used(g, truth)         # (corrected, raw, bias, bias_se); D6
             d = dict(n=len(g), interior=int(ok.sum()),
+                     # THE SCOPE TRAVELS WITH THE VERDICT (F180, 2026-09-19): a
+                     # PASS here is a PASS at THESE truths on THESE conditions, and a reader of the
+                     # artefact could not tell a one-truth four-condition rung from the L at nine truths.
+                     # A verdict whose scope is not on its own artefact gets read as the general claim.
+                     scope_truths=len(truths), scope_conditions=n_cond, scope_truth_um=float(truth),
                      max_abs_rel_error=(float(np.max(rel[ok])) if ok.any() else float("inf")),
                      bias=(float(np.mean(ws[ok])) - truth if ok.any() else float("nan")),
-                     coverage=(float(np.mean([_covered(x, truth) for x in g if np.isfinite(x[1])])) if ok.any() else 0.0),
+                     coverage=_cov_used[0], coverage_raw=_cov_used[1], bias_se=_cov_used[3],
                      coverage_parabola=(float(np.mean(np.abs(ws[ok] - truth) <= bs[ok])) if ok.any() else 0.0),
                      half_widths=[list(x[8]) if len(x) > 8 else [float("nan"), float("nan")] for x in g],
                      median_bar=(float(np.median(bs[ok])) if ok.any() else float("nan")),
@@ -595,7 +868,12 @@ def main() -> int:
                           # of trace -- the record's time carries the line's wing curvature
                           # (2026-09-16) and a rung reproducing the archive reproduces that too.
                           injected_tau_over_record=float(np.median([x[6] for x in sorted(by[(canon, sc)])])),
-                          bias_subtracted=False, spread_validated=False)
+                          coverage_raw=d.get("coverage_raw"), bias_se=d.get("bias_se"),
+                          # EARNED, not typed (D6): the coverage above is the jackknife-corrected reading
+                          # EARNED ONLY WHEN THE CORRECTION RAN ON ENOUGH TO MEAN SOMETHING (the physics chair):
+                          # n >= 3 let three cells 57 um off pass the flag; the gate's own floor is eight.
+                          bias_subtracted=bool(d["n"] >= 8 and np.isfinite(d.get("bias_se", float("nan")))),
+                          spread_validated=False)
             if sc > 0.0 and n_cond < 32:
                 # ONE CONDITION CANNOT ASK THE WAIST QUESTION (2026-09-17, stage 0 on the corner
                 # alone: not convex at 0.1x, -2.9 um at 0.3x, a rail at 1.0x): the small stages
@@ -656,12 +934,13 @@ def main() -> int:
                      "w0 in results/ultra_joint_fit.csv is conditional and none is a measurement "
                      "(register A274, A276)", "CALIB"])
 
-        OUT.parent.mkdir(parents=True, exist_ok=True)
-        with OUT.open("w", newline="") as fh:
+        out_path = _out_path()
+        out_path.parent.mkdir(parents=True, exist_ok=True)
+        with out_path.open("w", newline="") as fh:
             w = csv.writer(fh)
             w.writerow(["quantity", "key", "value", "err", "unit", "note", "status"])
             w.writerows(rows)
-        print(f"  {(time.time()-t0)/60:.1f} min; wrote {OUT} ({len(rows)} rows)")
+        print(f"  {(time.time()-t0)/60:.1f} min; wrote {out_path} ({len(rows)} rows)")
         # THE SIZE LADDER'S RECORD (owner: start small): the stage's cost and its evidence, the
         # noiseless recovery at the small stages and the archive rung's coverage on the L.
         # the evidence is read at the HIGHEST WALKED level (a --levels run may stop below the archive),

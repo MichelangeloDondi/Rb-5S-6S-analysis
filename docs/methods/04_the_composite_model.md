@@ -255,6 +255,25 @@ every waist and for the shape channels at none of them, and
 [the odd-moments chapter](10_the_odd_moments.md) section 1 carries the
 boundary.
 
+That cost is half the reason behind the owner's ruling of 2026-09-20 that the
+record's shape channels use central moments, not cumulants, at fourth order
+and above. A cumulant buys exactly one property, additivity under
+convolution, and this record collects it nowhere: a truncated window is a
+multiplication and not a convolution, and the kernel above is inhomogeneous
+across the illuminated volume, which is why the windowed third cumulant is
+already over 100 per cent wrong at the archive's own 64 microns.
+
+The other
+half is arithmetic: $\kappa_4=\mu_4-3\mu_2^2$ is a small difference of large
+numbers, on a Lorentzian at 5 MHz $\mu_4=46.75$ against $3\mu_2^2=48.67$, so
+$\kappa_4=-1.914$ is a four per cent residue of the two terms that build it,
+which costs it roughly that factor in relative precision once noise enters.
+Central moments carry neither defect, positive at every even order, no
+conversion bias, and linear under a mixture, which is what an ensemble of
+atoms sampling different intensities actually is. Nothing below fourth order
+changes, since $\kappa_2=\mu_2$ and $\kappa_3=\mu_3$ exactly, so the third
+cumulant above and everything argued from it stands.
+
 The convolution's numerical evaluation
 was separately tested on 2026-09-06 against the two-time correlation spectrum of a
 chirped chord with the homogeneous dephasing carried, on rung 3, and the plan
@@ -315,8 +334,19 @@ $-0.00066$ against a Gaussian's $+0.00994$ at the same reading, opposite in sign
 and the reversal survives the Maxwell-Boltzmann speed mixture. The transit width
 differs by one to four per cent and not monotonically in the reading, so it
 cannot be absorbed into a rescaled waist either. At the 64 µm convention this is
-a small correction. In the 40 to 45 µm region the campaign is aimed at, a
-Gaussian of the same measured radius gives the odd channel the wrong sign.
+a small correction.
+
+The reversal does not hold across the whole 40 to 45 µm region, and an earlier
+version of this page said it did. The same table's second row, a reading of
+45.4 µm, gives $+0.00133$ against the same Gaussian $+0.00994$: the same sign.
+The crossing therefore sits inside the region, at 43.4 µm by the speed-mixed
+rows and 44.6 µm by the one-speed rows, so what the region contains is a sign
+change and not a uniform reversal. And the sign cannot be read off a fitted
+waist: at the archive's noise the closure's own waist carries a bias of
+$+1.5$ µm with a bar of $2.1$ µm, both larger than the 1.0 µm that separates
+the quoted reading from the crossing. The odd channel discriminates a clipped
+focus from a Gaussian one only where an independent waist measurement places
+the beam below the crossing, which is one more thing the knife-edge buys.
 
 The second is a **permeated gas**, and it is a family and not one species.
 Permeation carries a sealed cell to the atmosphere's own partial pressure of

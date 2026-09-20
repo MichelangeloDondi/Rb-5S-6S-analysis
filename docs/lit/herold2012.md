@@ -15,9 +15,9 @@ number: 24
 pages: 243003
 year: 2012
 doi: 10.1103/PhysRevLett.109.243003
-arxiv: null
-pdf: null
-held: false
+arxiv: '1208.4291'
+pdf: PDF_papers/Herold_2012_5s-6p-matrix-elements-light-shift-cancellation.pdf
+held: true
 status: REPORTED
 routing:
   - FEED
@@ -27,6 +27,15 @@ verify_flags:
     matrix elements below are quoted from the module docstring of
     rb5s6s/polarizability.py, which is the source of record in this repository
     until the PDF is held.'
+  - 'Pages 1 and 2 of the held PDF (the arXiv:1208.4291v1 preprint, 21 Aug
+    2012, with the published PRL typeset version not separately held) read
+    against the record on 2026-09-20. The preprint abstract gives 0.3236(9)
+    ea0 for the 5s-6p1/2 matrix element, one unit in the last digit above the
+    0.3235(9) the rb5s6s/polarizability.py docstring quotes. The 5s-6p3/2
+    value, 0.5230(8) ea0, matches exactly. Status stays REPORTED: only the
+    introduction and the start of the experimental section (through the
+    polarization-cancellation procedure) have been read, not the fit or the
+    uncertainty budget that produced the final two numbers.'
 verified_date: null
 summary: >
   Source of the 5S to 6P reduced dipole matrix elements
@@ -46,21 +55,37 @@ section: method-anchors
 
 # herold2012
 
-REPORTED. Not held. Bibliographic record confirmed from the publisher listing
-and two independent indexes. Content not verified against the paper.
+REPORTED. Held (the arXiv:1208.4291v1 preprint). Pages 1-2 read against the
+record on 2026-09-20. The fit and uncertainty budget in the later pages are
+not yet read, so status stays REPORTED, not VERIFIED.
 
 ## The method
 
 The atomic ground-state light shift passes through zero near 421 nm and
-423 nm. At each such zero the ratio of the two contributing matrix elements
-is fixed by the wavelength alone, turning a matrix-element measurement into
-a wavelength measurement.
+423 nm ("magic-zero" wavelengths, distinct from the magic wavelengths used
+in clocks, where two states share a shift instead of one vanishing). At
+each such zero the ratio of the two contributing matrix elements is fixed by
+the wavelength alone, turning a matrix-element measurement into a wavelength
+measurement, with no need to calibrate the absolute light intensity.
+
+The measurement applies a sequence of up to 15 standing-wave (optical
+lattice) pulses to a small 87Rb Bose-Einstein condensate, so the diffracted
+population builds up coherently as the pulse count squared. The diffracted
+fraction after 40 ms time of flight gives the light shift. The lattice light
+is tunable between 419 and 424 nm, calibrated to 50 fm (90 MHz) against known
+5s-6p transition frequencies, with a beam waist of about 110 µm. To remove a
+systematic shift of the zero crossing from a small (about 1%) window-induced
+ellipticity in the otherwise linear polarization, the light shift is
+measured for two orthogonal linear input polarizations and averaged, which
+cancels the vector light-shift contribution.
 
 ## The numbers
 
-Reduced dipole matrix elements for 5S to 6P: 0.3235(9) ea0 (5s-6p1/2) and
-0.5230(8) ea0 (5s-6p3/2), quoted from the `rb5s6s/polarizability.py`
-docstring, the source of record until the PDF is held.
+The `rb5s6s/polarizability.py` docstring quotes 0.3235(9) ea0 (5s-6p1/2) and
+0.5230(8) ea0 (5s-6p3/2) as the reduced dipole matrix elements for 5S to 6P.
+The held preprint's own abstract gives 0.3236(9) ea0 and 0.5230(8) ea0 for
+the same two elements: the 6p3/2 value matches exactly, and the 6p1/2 value
+differs by one unit in the last digit (0.3235 against 0.3236).
 
 ## Use in this record
 

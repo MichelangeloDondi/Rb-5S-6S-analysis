@@ -153,8 +153,6 @@ GUIDED_RHO = 1.0
 GUIDED_DELTA_ALPHA_AU = abs(K.DELTA_ALPHA_AU)   # read by NAME, never copied:
 # this line was a literal copy of the static-tail value for months and was one of the twelve edits
 # the 2026-09-15 polarizability move needed. ssot_guard.py refuses the copy now.
-GUIDED_HOT_FILL_COUNTS_PER_S = 2.8e5   # carried, not recomputable here
-GUIDED_ANCHOR_GAP = (16, 47)
 
 
 def _rows_out():
@@ -936,26 +934,21 @@ def project_magic(rows, inp) -> None:
 # 8. The guided-mode option                                                     #
 # --------------------------------------------------------------------------- #
 def project_guided(rows) -> None:
+    # THE GUIDED ARM CARRIES ITS SHIFT AS SIGNAL (F147, owner order O32, 2026-09-19). The two rows this
+    # function wrote until 2026-09-19 -- the drive power at which the on-axis shift equals the natural
+    # width, and a hot-fill count rate carried at that power -- were the light-shift construct the order
+    # strips from the cell, under another name in the fibre. Their values stand in private/history/ and
+    # in the git history; what remains here is the shift itself at the note's geometry, a quantity of the
+    # forward model, so a reader of the guided case sees the size of the term and not a bound on it.
     s0_at_power = lineshape.stark_shift_S0_mhz(
         GUIDED_POWER_W, GUIDED_MODE_RADIUS_M, GUIDED_RHO, GUIDED_DELTA_ALPHA_AU)
-    gamma_nat_mhz = K.GAMMA_NAT_HZ / 1e6
-    ceiling_mw = 1e3 * GUIDED_POWER_W * gamma_nat_mhz / s0_at_power
-
-    _add(rows, "proj_guided_count_rate", "hot fill at the usable power",
-         GUIDED_HOT_FILL_COUNTS_PER_S, None, "counts per s",
-         "the design note's first-principles rate chain at 100 C over 10 cm of "
-         "filled fibre, carried rather than recomputed",
-         "a 10 um mode radius, perfect counter-propagating overlap, and the "
-         f"note's own open anchor gap of {GUIDED_ANCHOR_GAP[0]} to "
-         f"{GUIDED_ANCHOR_GAP[1]} between the first-principles rate and the "
-         "archive's detected photons, which divides this figure",
-         "docs/notes/guided_mode_two_photon_design.md 2.2")
-    _add(rows, "proj_guided_power_ceiling", "S0 equals the natural width",
-         ceiling_mw, None, "mW",
-         "the power at which the on-axis shift equals the 6S natural width, "
-         "recomputed from the module the note used",
-         "a 10 um mode radius and unit overlap, and the note's reading that "
-         "light shift rather than available power sets the ceiling",
+    _add(rows, "proj_guided_s0", f"{1e3 * GUIDED_POWER_W:.0f} mW per direction, {1e6 * GUIDED_MODE_RADIUS_M:.0f} um mode radius",
+         s0_at_power, None, "MHz",
+         "the on-axis AC-Stark shift of the 6S line at the design note's guided geometry, from the module "
+         "the cell's own ramp uses. It is a term of the forward model in the fibre exactly as in the cell",
+         "a 10 um mode radius, perfect counter-propagating overlap (rho = 1 against the cell's 0.94) and "
+         "the pinned polarizability. The drive power is bounded by saturation, depletion, the trap's own "
+         "differential shift and the readout's reabsorption, never by this term",
          "rb5s6s.lineshape, docs/notes/guided_mode_two_photon_design.md 2.2")
 
 

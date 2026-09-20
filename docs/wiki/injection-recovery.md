@@ -200,6 +200,77 @@ whether the result is sound. Applied to the confirmatory cohort, it would
 have flagged the two pilot-derived entries before the 7 of 7 count was
 reported.
 
+## The waist closure is not validated at any noise level (2026-09-19)
+
+The waist estimator's closure was climbed to three noise levels on the repaired whitening, and the result
+is negative in a way that bears on every absolute number here.
+
+| level | bias | median bar | realisation scatter | bar over scatter |
+|---|---|---|---|---|
+| noiseless | +0.0082 um | - | - | - |
+| 0.1 of the law | +0.2656 um | 0.0295 | 0.1463 | 0.20 |
+| 0.3 of the law | +0.3136 um | 0.0891 | 0.0525 | 1.70 |
+
+Two readings follow and neither is about coverage, which is where this investigation started.
+
+The bias does not grow as the square of the noise. The ratio between the two noisy levels is 1.18 where a
+square law predicts 9.00 and a linear law 3.00. It switches on at about a quarter of a micron with any
+noise at all and then saturates. The rule this record set in advance is that a bias not growing as the
+square of the noise is structural, to be diagnosed and never subtracted, so the twin-subtraction route
+that the bias-correction machinery exists to provide is refused at this rung by the rung's own evidence.
+
+The bars are calibrated at the lower level and too wide at the higher. One of the five realisations at
+0.1 carried a bar ten times its neighbours', the signature of a degenerate fit, and removing it gives a
+bias of +0.3300 with a scatter of 0.0294 against a bar of 0.0294: a ratio of 1.00, perfectly calibrated.
+At 0.3 the ratio is 1.70. So the scatter rises with the noise as it must, and what is wrong is that the
+bars grow faster than the scatter does. An earlier reading of this row, that the scatter inverted with
+the noise, was that single degenerate fit and is retracted.
+
+The bias is flatter still on the corrected numbers, +0.3300 against +0.3136, a ratio of 0.95 where the
+uncorrected reading gave 1.18. Prior shrinkage remains the hypothesis under test for the offset itself,
+and the same rung with the prior removed is running.
+
+Until that returns, no waist from a noisy rung is quoted and no twin-subtracted waist is quoted at all.
+The noiseless rung stands: the estimator recovers an off-grid truth to 0.0082 um at eight conditions.
+
+## The bar and the scatter scale differently, and that names the cause (2026-09-19)
+
+The corrected closure numbers, with the one degenerate fit removed, carry a signature that names its own
+cause. The bar and the scatter scale differently with the injected noise:
+
+| | 0.1 of the law | 0.3 of the law | ratio | exponent in the noise |
+|---|---|---|---|---|
+| median bar | 0.0294 | 0.0891 | 3.03 | **1.01** |
+| realisation scatter | 0.0294 | 0.0525 | 1.79 | **0.53** |
+
+The bar scales linearly with the noise, which is what a likelihood curvature does and is therefore
+correct. The scatter scales as roughly the square root of it, so the estimate's actual spread is
+Suppressed at high noise relative to what the likelihood alone would give: at 0.3 of the law the scatter
+retains 59 per cent of the bar.
+
+A prior pulling on a weak likelihood produces exactly this and produces all three readings at once. It
+shrinks the estimate toward its own mean, which adds bias and removes variance, and it acts more strongly
+the weaker the likelihood is. That gives a bias which is large as soon as any noise is present and then
+saturates, a scatter which grows more slowly than the noise, and a bar-over-scatter ratio which rises
+from one to 1.70 across the two levels because the bar is computed from the likelihood while the scatter
+is what the posterior actually delivers.
+
+The test is the same rung with the prior removed, and it is running. If the bias collapses and the
+scatter's exponent rises toward one, the defect is in how the prior is applied where the likelihood is
+weak and the repair is code. If both persist, the prior is exonerated and the offset belongs to the
+generator against the model, which is a physics repair. Either outcome is a result and neither permits a
+noisy-rung waist to be quoted in the meantime.
+
+A separate reading applies to the bias itself, not only to its cause. A waist read out of a joint fit
+that also carries nuisances is a focus parameter, and a focus parameter's maximum-likelihood estimate
+carries a finite-sample median bias of its own, one that vanishes as the information accumulates and
+should scale with the square of the noise ([benussi2026](../lit/benussi2026.md)). That growth law, not the
+size of an offset at any one rung, is what tells this bias apart from a structural one: an offset absent
+at the noiseless rung and growing as the noise squared is a candidate for it, one present without noise or
+growing some other way belongs to the model instead. [Methods chapter 6 section 5](../methods/06_the_statistics.md)
+carries the current reading, including a paired closure run that is testing exactly this and still needs
+the archive rung before either cause is settled.
+
 ## Further reading
 
 - S. R. Cook, A. Gelman and D. B. Rubin, "Validation of software for
@@ -224,5 +295,30 @@ reported.
   wrong.
 
 ---
+
+
+
+**Answered, and the answer splits the repair in two.** The same rung with the prior removed leaves the
+bias untouched at +0.3202 and +0.3240 at the two levels, a ratio of 1.01, so the prior does not cause it.
+Removing the prior does take the scatter exponent from 0.53 to 1.00 and the bar-over-scatter ratio from
+1.70 to 0.97, which is what a well-conditioned estimator gives, so the prior does cause the variance
+anomaly. The prior is therefore switched off at the noisy rungs, where it suppresses spread without
+touching the offset, and kept at the noiseless one, where it reduces the bias from +0.0806 to +0.0082: it
+earns its place where the likelihood is sharp and forfeits it where the likelihood is weak. **The offset
+survives and belongs to the forward model or the injection, not to the estimator's regularisation, so it
+is diagnosed and never subtracted and no twin-subtracted waist is quoted.**
+
+Withdrawn on 2026-09-20, with the reading that replaces it. The series above straddles a repair to the
+whitening, so the two noisy biases it compares were taken under different weights and the ratio of 1.01 is
+an artefact of that comparison. Re-measured on two snapshots of one commit differing only in the profile
+grid step, the noiseless rung shows NO offset (+0.009 and +0.010 micron against a fitted bar of 1.81), and
+the offset appears only with noise (+0.521 and +0.505 at 0.3 of the law, +0.796 and +0.831 at the archive's
+own).
+
+It therefore does not belong to the forward model by the argument above, which rested on its surviving at
+zero noise. It does not belong to the estimator's finite-sample bias either: that class must grow as the
+square of the noise scale and the measured growth is far slower, +0.80 where the square law predicts +5.8.
+The offset is carried as OPEN, its coverage read at 0 of 4 and 1 of 4 against a nominal 0.68, and no
+twin-subtracted waist is quoted, which is the one clause above that still holds.
 
 [← The profile likelihood](profile-likelihood.md) · *Statistical inference, 8 of 9* · [Preregistration →](preregistration.md)

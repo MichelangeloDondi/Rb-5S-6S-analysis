@@ -433,7 +433,12 @@ def main() -> int:
          "T_win^2 T_lens^2 and the forward pass is carried nowhere (F129)"),
         ("foreign_gas_permeated",
          yes("gamma_l" in _params(forecast.build_world_trace)),
-         "no", "lineshape.permeated_gas_width_mhz (mechanism only, see note)",
+         # INSPECTED, NOT ASSERTED (2026-09-19). This cell was the literal "no" while every sibling
+         # row reads the example's own source, which is the defect `_example_calls`' docstring already
+         # records once: a row that states its answer cannot notice when the answer changes, and
+         # emptying the example would not have moved it. It now asks the exhibit.
+         yes("gamma_l" in _example_calls()),
+         "lineshape.permeated_gas_width_mhz, the mechanism, with the value the record's own fit",
          _fitter_verdict("foreign_gas_permeated"),
          "THE MECHANISM IS PRESENT AND THE COEFFICIENT IS NOT. A permeated gas is a constant "
          "Lorentzian, and Lorentzians convolve additively, so it IS gamma_l, which build_world_trace "
@@ -444,8 +449,10 @@ def main() -> int:
          "F137). No replacement is derivable here: vanderwaals.c6_coefficient needs line lists for "
          "both partners and this record holds none for helium or neon, and beta_self_anchored runs "
          "through c6_exchange, which is homonuclear. So the twin carries the family as the gamma_l "
-         "knob and its value comes from the fit, never from literature. No committed world sets it "
-         "yet, which is why example_world reads no"),
+         "knob and its value comes from the fit, never from literature. The exhibit's world SETS it "
+         "since 2026-09-19, from the committed gamma_l_weighted_mean of results/kernel_budget.csv, "
+         "0.398 MHz over a span of 0.315 to 0.449, read from that cell and never typed, so the "
+         "permeated Lorentzian is in the synthetic traces a reader is shown"),
     ]
 
     _ = _RECOVERY_BIAS  # the writer below reads it

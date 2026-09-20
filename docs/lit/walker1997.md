@@ -12,7 +12,7 @@ pages: 629--642
 year: 1997
 doi: null
 arxiv: null
-pdf: PDF_papers/walker1997.pdf
+pdf: PDF_papers/Walker_1997_spin-exchange-optical-pumping-noble-gas-nuclei.pdf
 held: true
 status: VERIFIED
 routing: []

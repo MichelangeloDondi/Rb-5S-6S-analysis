@@ -137,6 +137,152 @@ the ladder already in this archive returns 0.599 with a spread of 0.013
 (`tests/test_gamma_l_identity.py`). The lever was already in the data. The
 question was which measurements to compare, not which fit to run.
 
+## The permeated gas against the waist
+
+The same shape appears once more, and it is the one that holds every absolute
+result here. The constant Lorentzian `gamma_l` is the permeated gas: a gas that
+worked through the cell wall broadens the line by the same amount at every drive
+power, which is part of the structural signature the fit uses when it carries
+`gamma_l` free and shared across all conditions.
+
+Across temperature it is not constant, and an earlier version of this page said
+it was. A gas sealed in a fixed volume and swept over hours does not
+re-equilibrate, so its number density is fixed and its broadening rises with
+temperature through the thermal speed, by of order ten per cent across the
+record's own temperature arm. Which law applies depends on the permeation time
+constant against the acquisition time, and the record states neither. The
+practical consequence points the same way as the paragraph below and makes it
+stronger: the permeated gas and the transit have different temperature
+exponents, so the temperature arm separates them, and the separation costs no
+new measurement at all. The transit
+width, by contrast, is set by the beam waist. Both broaden the same line, so a
+wider assumed waist buys a narrower transit and the fit makes the width back up
+out of constant Lorentzian.
+
+Read off the committed joint fit over the power and temperature sessions, the
+fitted `gamma_l` climbs monotonically with the assumed waist across the whole
+scanned range while the fit quality does not move at all: the reduced
+chi-squared sits at the same value from one end of the grid to the other. The
+conditional bar at any one waist is a statement about the noise there and says
+nothing about the range the waist axis carries the value across.
+
+The lever runs both ways, and the second direction is the new one. A waist in the
+region the bench suggests implies a permeated width in a correspondingly narrow
+range. Equally, an independent measurement of the permeated-gas width fixes
+the waist. That second measurement is one of the cell and not of the beam, so it
+does not need a knife edge: the same cell on a line whose foreign-gas
+coefficients transfer, or an aged cell against a fresh one, separates a constant
+Lorentzian from everything that scales with the drive. The numbers and the
+grid they are read from are in the private finding F153, and they enter this
+page when the joint fit's own row is a committed result.
+
+## The kink at the profile's minimum
+
+A profile likelihood is a minimum over everything else, and where the minimising
+nuisance changes branch the profile's curvature can jump. This one does. Reading
+the minimum by interpolating the three grid nodes nearest it, the error falls
+only in proportion to the node spacing, which is what a kink gives. A
+smooth minimum would give a far faster fall. Measured on a caricature with a
+deliberate jump in curvature and then on the real profile, the two agree to a few
+per cent at two spacings a factor of four apart.
+
+The practical consequence is a grid rule, not a caution: the band around
+the minimum has to be about a tenth of the coarse grid's step and not a half.
+A closure whose injected value sits on a node of its own scan grid cannot
+measure a centring bias at all, because the quantised estimate is right by
+construction. The value has to be placed where the grid cannot land on it.
+
+The sentence that stood here until 2026-09-19, that the estimator then recovers
+an injected waist to well inside the record's own tolerance, held at four
+conditions and does not hold at eight. At four it returns the truth to 0.024
+micron against a tolerance of 0.042. At eight the same rung reads 0.073 micron
+and fails. The centring error therefore grows with the amount of data, which is
+the signature of a structural term and not of noise.
+
+Two things follow, and the second is the sharper. Above zero noise the error
+grows as the noise to the power of about 1.2, where a stochastic origin would
+give its square, and a bias that survives at zero noise has nothing stochastic
+to blame at all. And the interpolation's own error at the present node spacing
+reaches 0.041 micron at the least favourable position, so at eight conditions
+the reading cannot yet separate what the estimator does from what the grid does.
+The spacing has to fall before that rung means anything.
+
+Read up the noise ladder, the waist is localised to 0.3 of the archive's own
+law and rails above it: at the archive level the estimate sits 11.7 microns from
+the truth with no realisation covering it, while the reduced chi-squared of the
+same fits is 1.00. **That reading is held pending a re-run and is not yet a
+statement about the physics.** It was computed while twelve of the thirty-two
+conditions were whitened by a raw correlation time instead of their own post-fit
+one, up to fourteen against a correct one near unity, and all twelve are the
+temperature arm. The arm that was down-weighted is the one this page says
+separates the transit width from the laser width, so a railing waist is exactly
+what that defect would produce and exactly what a genuine degeneracy would
+produce, and the two are not separated until the rung is re-run. Repaired
+2026-09-19. The arm now carries 37 per cent of the weight against 16, and on the
+noiseless rung, where the answer is known, the recovery improved from 0.0121 to
+0.0082 micron.
+
+Read up the ladder on that repaired whitening, the noiseless rung passes and the low rung returns a
+coverage of 0.50 against a nominal 0.68. That is recorded as a failure and it is not one. At four
+realisations the binomial standard error on a coverage is 0.233, so two of them are 0.466 against an
+acceptance band of 0.10, and the measured value sits less than one standard error from nominal. Two
+standard errors first fit inside the band at eighty-seven realisations, which is where this record's
+figure of eighty-eight comes from. A coverage quoted below that count is a statement about the count,
+not about the estimator, and the same arithmetic governs every coverage this record reports.
+
+A model that describes the data and a parameter that cannot
+be recovered from it is identifiability, not misfit, and it is the reason this
+page exists.
+
+This closure's bias is an identifiability statement as much as a statistics one. The waist is never fitted
+directly: it is read out of the joint fit as a smooth transformation of the parameters that are fitted,
+the width-block nuisances above riding along, which is what a focus parameter is
+([benussi2026](../lit/benussi2026.md)). Its finite-sample median bias is therefore a property of that
+transformation and of the nuisance block and not of the beam, and it should vanish at zero information and
+grow with the square of the noise, the test that separates it from a structural offset in the model.
+[Methods chapter 6 section 5](../methods/06_the_statistics.md) has the general statement and the closure
+run that is currently testing it.
+
+## Three meters, and their disagreement
+
+The waist reaches the data through three independent routes: the transit time
+an atom takes to cross the beam, the light shift the beam imprints, and the rate
+at which the transition saturates with drive power. A fit that scans the waist
+can let each route carry its own effective waist, and when the model is right
+they agree. On twin traces built from the fitting model itself they close to
+within a few hundredths of a micron.
+
+When a term is missing they disagree, and by how much is ordered. A focus
+clipped by the modulator's bore spreads the three by about a micron. A drive
+power some ten per cent below the recorded watt spreads them by three and a
+half. A constant Lorentzian the fit has no parameter for spreads them by
+sixteen and sends the scan to the edge of its own grid.
+
+Which of the three survives depends on which term is missing, so no one
+meter is the reliable one and the diagnostic is the pattern. That is what makes
+this worth running on the real traces: the split is a fingerprint of the term
+list, and it is measured before the data are read instead of argued about
+afterwards.
+
+## The cost of a missing width
+
+The degeneracy above is not only a widening of the interval. If the fit has no
+constant Lorentzian the line actually carries, the waist does not merely become
+uncertain, it moves. Twin traces generated with such a term, fitted by a
+model pinned to lack it, return a waist about nine microns too large at the
+archive's own noise level, over sixteen realisations, with the scan nowhere near
+its grid's edge. The beam-shape mismatch the bench also has, a focus clipped by
+the modulator's bore and not a clean Gaussian, is a far smaller effect at
+zero noise and has no archive-level number on the present scan grid, because
+those fits walk past the grid's end.
+
+The reading to carry is the ordering, not the second number: **the term list
+costs the waist more than the beam profile does.** It is also why the form that
+carries a free constant Lorentzian is the primary one and a form that pins it to
+zero is an arm: a Gaussian laser width cannot absorb a Lorentzian, so in a
+pinned form the missing constant does not go into the free width at all. It goes
+into the density slope, which is the collisional coefficient.
+
 More generally, two quantities that reach the data only through their
 product cannot be separated by any fit at a fixed setting: a control
 scaling one factor and not the other turns repeated measurements into a
@@ -799,8 +945,8 @@ the natural-seeming handle and the wrong one: in this repository the
 light-shift term moves the composite width by a few kilohertz at its bound
 but the line centre by a hundred and fifty kilohertz against an
 eighty-eight kilohertz block scatter, a factor of forty in the same fit.
-The fixed natural linewidth alone, 3.493 ± 0.013 MHz on the transition axis
-from the measured 6S lifetime of 45.57 ± 0.17 ns
+The fixed natural linewidth alone, [3.493](../../rb5s6s/constants.py "ref:constant:GAMMA_NAT_HZ:1e-6") ± 0.013 MHz on the transition axis
+from the measured 6S lifetime of [45.57](../../rb5s6s/constants.py "ref:constant:TAU_6S_S:1e9") ± 0.17 ns
 ([Gomez 2005](../lit/gomez2005.md)), is about 0.65 of the observed 5.4 MHz
 composite, a ratio of two defined widths, not an additive share, since a
 convolution's width does not decompose additively.
@@ -1103,6 +1249,68 @@ fluctuation is common to both and cancels, which is why an interval can be read
 at unity while the absolute statistic is uncertain by tens. Conflating the two
 is the error that produced an uncalibrated waist interval on this page's own
 subject.
+
+## Self-calibration, and the one quantity that has no internal reference
+
+A self-calibration is a measurement whose reference sits inside the same data, so it survives a drift in
+anything outside it. This bench has several, and collecting them is useful for the gap they leave rather
+than for the list itself: what is self-calibrated is what a systematic cannot quietly move.
+
+The frequency axis calibrates itself twice over, once from the radio-frequency comb on the trace and again
+from the four hyperfine splittings, which are known far better than this line's width, so a scale error
+appears as those four disagreeing on the same trace. The repeats calibrate the noise with no model in the
+reference at all, since the difference of two repeats of one condition cancels the line exactly and leaves
+noise alone. The twin calibrates the estimator, which is what the injection ladder is, and two refinements
+were paid for in failures: the injected value must sit off the scan grid, or a quantised estimate is right
+by construction, and the grid must be fine enough that its own interpolation error is small against the
+tolerance, or the rung grades the grid.
+
+### The permeated gas is a clock, and its asymptote is an absolute pressure
+
+A sealed cell admits helium and neon through the glass, and each partial pressure climbs toward the
+atmosphere's own as one minus an exponential. A permeated gas is a constant Lorentzian, so it is
+`gamma_l`, and the fitted value sits inside the band that atmospheric composition and this cell's
+approximate age predict. Read once, that is a consistency check. Read as a log over months it becomes
+three things at once.
+
+The slope isolates neon by itself, because helium saturates within days against an age of years and a
+saturated species contributes nothing to a derivative. The ratio of the first derivative to the second
+returns the permeation time constant with the amplitude cancelled, so the glass and the geometry come out
+of the shape of the log and never from a coefficient the record does not hold. The level against the
+slope then gives the cell's age, as an exposure-weighted age and never a manufacturing date. And the
+fitted asymptote is an absolute pressure that needs no gauge, since the mixing ratios are known to well
+under a per cent and the barometric pressure is read, so the amplitude returns the broadening coefficient
+itself. That inverts the usual arrangement, where a literature coefficient is used to infer a pressure.
+
+The log is also a test and not only an estimate. A constant Lorentzian could be permeation, a width the
+model lacks, or a calibration offset, and no single measurement separates them because all three are
+constants. Only permeation must rise monotonically and decelerate, with its curvature tied to its level
+and slope.
+
+### Two thermometers that read different temperatures, and why that is the point
+
+The rubidium density follows an exponential vapour-pressure law, so it is an exquisitely sensitive inverse
+thermometer, and it reports the coldest point in the cell, where the metal sits. The motional widths carry
+the square root of the temperature and report the vapour in the interaction volume, with no vapour-pressure
+law in them, though they are calibrated only as well as the waist is known. A thermocouple reports a third
+thing, the wall where it is attached. Their differences are not error to average away: they map the
+gradient that a heated cell with a cold finger actually has.
+
+The temperature arm also separates the widths by the steepness of their temperature dependence and not
+by their size. Within a session the cell is closed, permeation running in years against a ramp of hours,
+so the foreign gas holds a fixed count and its width carries only the collision rate, rising as the square
+root of the temperature. The self-broadening carries the rate and the density together and is
+exponentially steep. Where that lever is silent is worth as much: the permeated width and the transit
+width share the same square-root dependence, so temperature cannot split those two, and what splits them
+is the Lorentzian against the non-Lorentzian shape and the transit's dependence on the waist.
+
+### And the gap, which is the reason this section sits on this page
+
+The waist cannot be self-calibrated. Every route to it runs through the line, the transit and laser widths
+are degenerate through it, and a model-form error in the beam's shape is absorbed by it with a healthy
+reduced chi-squared instead of appearing as a residual. There is no internal reference, because nothing
+else in the data knows the answer. That is the structural reason a beam profile measured outside the line
+unlocks more than any reanalysis, and why every absolute result here is conditional on it.
 
 ## Failure modes
 

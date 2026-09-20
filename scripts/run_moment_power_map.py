@@ -50,6 +50,7 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
+from rb5s6s import windows
 from rb5s6s import config as C                                    # noqa: E402
 from rb5s6s.lineshape import RAMP_SIDE                             # noqa: E402  (O27)
 from rb5s6s.forecast import build_world_trace                      # noqa: E402
@@ -100,7 +101,7 @@ SCOPES = (("lecroy_ws3104z", "raw", 8.0),
 # is the scope: the ADC step is uniform and does not fall with the signal,
 # while the shot-like sigma does, so the three depths span that contrast on
 # the production path instead of beside it.
-WINDOW = (3.25, 4.0, 6.0, 8.0, 12.0, 16.0)   # 3.25 is the measured optimum
+WINDOW = tuple(sorted(set(windows.LEGACY) | {4.0, 8.0, 16.0}))   # the legacy set plus this map's own octaves
 S0_LADDER = ((0.364, 0.5, 0.73, 1.0, 2.0) if os.environ.get("RB5S6S_MPM_DEEP")
              else (0.18, 0.364, 0.73, 1.0, 2.0))    # archive 0.364 when set (0.348 since 2026-09-17), campaign 1.0
 # THE DEEP LADDER STARTS AT THE ARCHIVE. The 0.18 rung's signal-to-scatter was

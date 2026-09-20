@@ -281,7 +281,7 @@ cumulant's own power is 3.00 on the noiseless model at a wide window, and it fal
 truncation, recoverable by a wider window or by a comb, and not a failure of the law.
 
 This transition cannot reach that cell, and the reason is a constant. The
-natural width of the upper state is 3.493 MHz and is Lorentzian. The Gaussian
+natural width of the upper state is [3.493](../../rb5s6s/constants.py "ref:constant:GAMMA_NAT_HZ:1e-6") MHz and is Lorentzian. The Gaussian
 widths of the archive's line, the laser at 1.6 and the transit at 0.958 in
 quadrature, come to 1.865 MHz. So the archive sits at a Lorentzian fraction of
 **0.68**, and with the collisional term driven to zero the floor is still

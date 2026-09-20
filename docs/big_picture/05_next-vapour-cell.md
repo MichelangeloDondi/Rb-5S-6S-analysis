@@ -112,8 +112,8 @@ physics:
    pessimistic end and is not a promised result. Runs as
    [`PLAN.md`](../PLAN.md) §6 items 3 and 4.
 
-   S₀ grows ~16× over the 2025 dataset's 64 µm waist (×14 against the planned
-   64 µm configuration), and the third cumulant grows
+   S₀ grows ~16× over the 2025 dataset's [64](../../rb5s6s/constants.py "ref:constant:W0_MEASURED_M:1e6") µm waist (×14 against the planned
+   [64](../../rb5s6s/constants.py "ref:constant:W0_MEASURED_M:1e6") µm configuration), and the third cumulant grows
    faster still, though not by the naive $S_0^3$ cube of that gain, a reading
    that [THEORY_NOTE.md](../THEORY_NOTE.md) §3 and [RESULTS.md](../RESULTS.md) C3c
    both record as replaced. The axial average over the

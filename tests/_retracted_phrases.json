@@ -74,7 +74,7 @@
    "marker_window": 400
   },
   {
-   "pattern": "gamma\\s*/\\s*W[ -]suppressed|\u03b3\\s*/\\s*W[ -]suppressed",
+   "pattern": "gamma\\s*/\\s*W[ -]suppressed|γ\\s*/\\s*W[ -]suppressed",
    "retired": "2026-08-31",
    "why": "suppression wording implies a ratio below one; the measured quantity is a truncation-limited fraction and the correct wording names the fraction and its rows",
    "marker_window": 400
@@ -98,7 +98,7 @@
    "marker_window": 400
   },
   {
-   "pattern": "independent 64 (um|\u00b5m|\\\\mu m|micron) waist measurement",
+   "pattern": "independent 64 (um|µm|\\\\mu m|micron) waist measurement",
    "retired": "2026-09-14",
    "why": "E76: the lineage waist is a working convention (owner, 2026-09-10), and the results ledger's generator still called it an independent measurement",
    "marker_window": 400
@@ -119,6 +119,12 @@
    "pattern": "993\\s*nm\\s*ceiling",
    "retired": "2026-09-18",
    "why": "the same construct named by its rung (O32). The phrase returned twice from its own prose after the rows were first questioned, which is why it is banned by pattern and not by memory",
+   "marker_window": 400
+  },
+  {
+   "pattern": "power at which\\W{0,12}S0\\W{0,12}=\\W{0,3}natural width|light shift, not available power, sets the ceiling|(hot fill|cold), at the usable power",
+   "retired": "2026-09-19",
+   "why": "F147, owner order O32 in the guided geometry: the row 'proj_guided_power_ceiling' (the drive power at which the on-axis shift equals the 6S natural width) and the two 'usable power' count rates computed at it were the same construct the order strips from the cell, carried into the fibre arm under another name; the shift is a term of the forward model and its higher moments are the main aim's channel there too. What bounds the guided drive power is saturation, depletion, the trap's own differential shift and, for the 1324/1367 nm readout, the guide's reabsorption bound, each priced where it belongs",
    "marker_window": 400
   }
  ]

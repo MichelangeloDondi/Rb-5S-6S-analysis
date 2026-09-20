@@ -12,7 +12,7 @@ pages: 095501
 year: 2026
 doi: 10.1088/1361-6455/ae6161
 arxiv: null
-pdf: PDF_papers/Zhang_2026_J._Phys._B__At._Mol._Opt._Phys._59_095501.pdf
+pdf: PDF_papers/Zhang_2026_beam-geometry-temperature-frequency-stability-Rb-two-photon.pdf
 held: true
 status: VERIFIED
 routing:

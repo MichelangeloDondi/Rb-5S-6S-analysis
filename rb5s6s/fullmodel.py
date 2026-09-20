@@ -57,6 +57,41 @@ as an area where a height is meant is wrong by the width ratio, about 300 here,
 so the argument is named for what it is. And the pedestal is added at the
 SAMPLED points rather than convolved on the internal grid, which is exact
 because it is already a smooth function of `nu` and carries no kernel of its own.
+
+
+THE BETWEEN-TRACE JITTER SEAM, SPECIFIED HERE ON 2026-09-19 AND IMPLEMENTED IN THE NEXT CODE WINDOW
+(PLAN v3 A23, owner: "use more directly the true noise of the real traces instead of the intermediate
+approximation of such a noise"). The specification lives in this docstring because the digest the kernel
+gate hashes strips docstrings and a code edit re-opens every validated node, which cannot happen while a
+scientific run holds the model; the code lands with its own node re-run.
+
+  WHAT IS MISSING. `ultra_joint_covariance` and `forecast.synthetic_traces` draw the noise WITHIN a trace,
+  white at the law or through `residual_source` (the pooled post-fit residuals, moving blocks of 16). A8
+  measured the archive's REPEATS scattering 1.8 to 4.1 times the twin's in the moment channel, worst at
+  the narrowest window and on the power arm (4.06 against 0.79 on the temperature arm), and a sweep of the
+  twin's amplitude jitter moved the statistic not at all, because a windowed cumulant is exactly invariant
+  under a per-trace amplitude. So the missing term is BETWEEN traces and is a centre or a width jitter.
+
+  THE SEAM. `synthetic_traces(..., centre_jitter_mhz=0.0, width_jitter_rel=0.0)` and the same two keywords
+  on `ultra_joint_covariance`: per trace, the centre is displaced by N(0, centre_jitter_mhz) and every
+  homogeneous width scaled by (1 + N(0, width_jitter_rel)), drawn from the trace's own rng so the pairing
+  by seed is preserved. Both default to zero and the draw is then byte-identical to today's (the plant:
+  zero jitter reproduces the committed draw to 1e-12). `rb5s6s/twin.py` already carries
+  `acquire(centre_jitter_mhz=...)` in a different generator; this ports the construction, not a new idea.
+
+  THE CALIBRATION, MODEL-FREE. The amplitude of the jitter is not a guess: it is fitted so that the twin's
+  repeat scatter of k_n(W) reproduces the archive's, per window, where the archive's is read from the
+  DIFFERENCES of its five repeats -- which cancel the model entirely and leave the noise, within and
+  between trace, with no law and no residual in them. That is the gage the twin must pass, and A8's ratio
+  goes to one by construction of the term. The law sigma^2 = a^2 + bV (+ cV^2) then sets only the LEVEL the
+  ladder's rungs are labelled by; the shape is the pool's and the between-trace part is the jitter's.
+
+  THE CIRCULARITY, NAMED. A post-fit residual is data minus MODEL, so an incomplete model leaves model
+  error in the pool; F36 measured the pool near white, so the within-trace part is mostly noise, but the
+  between-trace excess is exactly what an incomplete model or a missing jitter leaves. Calibrating to the
+  repeats' differences is what breaks the circle: no model enters a difference of two repeats of one
+  condition. A time-ordered drift across the five would inflate that reference, and
+  `run_intrablock_trend.py`'s reading is taken first.
 """
 from __future__ import annotations
 

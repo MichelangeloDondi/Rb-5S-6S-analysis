@@ -326,7 +326,17 @@ def noise_law_for(rows, role, peak, T, P_mW):
     c = _f(r["c"])
     return dict(a=_f(r["a_V"]), b=_f(r["b_V"]), c=c if np.isfinite(c) else 0.0, lev_max=float("inf"),
                 tau_int=_f(r["tau_int"]), source="results/noise_model.csv",
-                tau_eff=noise.effective_tau({"tau_int": _f(r["tau_int"])}, tau_resid_table(), _tau_key_of_row(r)))
+                # THE KEY COMES FROM THE CALLER'S OWN CONDITION, NOT FROM THE ROW (F186, 2026-09-19).
+                # `_tau_key_of_row` needs the row's power and the t_sweep rows carry a BLANK one, as this
+                # function's own docstring says, so it returned None for all twelve temperature-arm
+                # conditions, `effective_tau` took its documented fallback, and those twelve whitened by the
+                # RAW segment time: 14.080 against a post-fit 0.950 at 4154 110 C. The relative weights of
+                # the conditions therefore moved, which moves the estimates and not only the bars, and the
+                # arm that was down-weighted is the one that separates the transit from the laser width.
+                # The caller holds peak, T and P_mW; the row is the fallback and no longer the source.
+                tau_eff=noise.effective_tau({"tau_int": _f(r["tau_int"])}, tau_resid_table(),
+                                            _tau_key(peak, T, float(P_mW) / 1e3) if P_mW is not None
+                                            and np.isfinite(_f(P_mW)) else _tau_key_of_row(r)))
 
 
 def _law_from_traces(volts):
@@ -424,7 +434,35 @@ def _init_worker(session_traces):
 _T95 = {1: 12.706, 2: 4.303, 3: 3.182, 4: 2.776, 5: 2.571, 6: 2.447,
         7: 2.365, 8: 2.306, 9: 2.262, 10: 2.228}
 
-MOMENT_WINDOWS = (2.0, 8.0, 13.0)    # 2026-09-18: on the window surface's grid, so the twin's bias is subtractable; (3.25, 6, 12) intersected it nowhere
+# THE WINDOWS, MEASURED AT THE ARCHIVE'S NOISE before they were chosen (PLAN v3 D9, 2026-09-19). Per-trace
+# signal-to-noise of each order against the window, at the archive's own law: the odd orders read <= 1.0 at
+# EVERY window and are dead; k4 reads 0.3 at 8 MHz (its zero crossing) and k6 reads 7.8 at 21 (its collapse);
+# the even-order sum ranks 3 > 2 > 5 > 1 > 13 > 8 > 0.5 > 21. The quoted set is log-spaced at 2.0/2.5/2.6,
+# spans thirteenfold so four windows are not four readings of one thing (the covariance below is DIAGONAL
+# by construction, so span is what makes a fourth window worth having), and avoids both poisoned cells.
+# THE TWIN'S SNR IS OPTIMISTIC BY A8's OWN EXCESS (the C2 physics chair, 2026-09-19): the archive's repeats
+# scatter 4.06x the twin's at 3.25 MHz, 2.95 at 6 and 1.82 at 12, so the per-trace table divided by those
+# factors reads k4 about 11, 15, 13, 29 and k6 about 7, 9, 5, 17 at 1, 2, 5, 13 MHz -- six of twelve even cells
+# under 15, and the wide end relatively stronger, not weaker. The set stands on its span and its avoidance
+# of the two deaths; no cell is claimed above a threshold the archive's own scatter does not support. The diagnostic set holds the SNR peak (3) and the two deaths (8, 21), computed
+# and written with admitted=False so a reader can SEE where each channel dies and never quotes it there.
+# Both sets are on the window surface's grid, so the twin's bias is subtractable at every one. The set this
+# replaces, (2, 8, 13) of 2026-09-18, sat on k4's zero; (3.25, 6, 12) before it intersected the surface nowhere.
+MOMENT_WINDOWS = (1.0, 2.0, 5.0, 13.0)
+DIAGNOSTIC_WINDOWS = (3.0, 8.0, 21.0)
+#: THE FLOOR IS DERIVED FROM THE ARM'S OWN PRECISION, never tuned to pass a rung (2026-09-19, the moments
+#: ladder's fourth stage-0 run). With the fit exact the arm still reproduces a statistic only to an ABSOLUTE
+#: error of about epsilon times its dimensional scale k2^(n/2): measured on k7/k5@2, a ratio whose numerator
+#: sits at 1.3e-4 of its scale, the relative error was 3.6e-3, so epsilon is about 4.7e-7. The noiseless
+#: rung's tolerance is 1e-3 relative (`ladder_gate.NOISELESS_TOL`), so a statistic whose normalised size is
+#: under epsilon / 1e-3 = 5e-4 cannot meet it for arithmetic reasons whatever the physics, and is refused as
+#: BELOW THE ARM'S PRECISION with that number in its reason. F144's k7@13 read 6.6e-7, three decades under
+#: this; the median live row reads 4.1e-4 relative error and is untouched. EPSILON IS ONE POINT, measured on
+#: k7, and the grid-movement error spans 2.3e-8 to 2.9e-4 across orders 3 to 7 and windows 1 to 21 (the C2
+#: physics chair): k6's margin under this floor is 1.7x, not k7's three decades. Every odd order on this archive
+#: sits under the floor at every quoted window, which agrees with the SNR measurement of 02:20 (odd orders
+#: <= 1.0 at every window): the odd block is a test of the model's zero, and the floor is what says so.
+CUMULANT_FLOOR_REL = 5e-4
 MOMENT_ORDERS = (2, 3, 4, 5, 6, 7)
 
 
@@ -448,6 +486,60 @@ def _moment_stats(nu, y, windows=MOMENT_WINDOWS, orders=MOMENT_ORDERS):
         k, _ = windowed_cumulants(nu, y, w, orders=tuple(orders), baseline=None)
         for n in orders:
             out[f"k{n}@{w:g}"] = float(k[n])
+    return out
+
+
+#: OWNER ORDER O33 (2026-09-20), AND WHY THIS ARM IS NOT WHERE IT IS WIRED. O33 asks the moment
+#: arm above to quote central moments mu_n as its PRIMARY vector at n >= 4, with k_n retained
+#: beside them as a flagged diagnostic carrying its conditioning number |k_n| / mu_n; F211
+#: measured the SNR gain (384x at mu4@8) that licenses the switch. A same-day check of the
+#: switch (2026-09-20) found the reason it cannot be wired into `moment_arm` AS IS: that arm's
+#: own docstring says "THE COVARIANCE IS DIAGONAL AND SAYS SO" -- five repeats cannot estimate an
+#: eighteen-by-eighteen covariance, so every statistic there is judged against its OWN bar,
+#: independently, and the session verdict COUNTS how many clear their own 95 per cent point.
+#: Central moments at order >= 4 are strongly auto-correlated with mu2 (mu4 = k4 + 3 mu2^2, so
+#: mu4 tracks 3 mu2^2 plus a small remainder), which cumulants are built to remove; feeding a
+#: marginal, per-statistic decision rule a vector whose entries move together counts the SAME
+#: excursion once per window as if it were independent evidence, over-weighting exactly the
+#: statistics F211's SNR ratio is largest for. A moments-and-cumulants invariance plant with the
+#: FULL replica covariance (`test_the_moment_and_cumulant_vectors_carry_the_same_information`,
+#: tests/test_ultra_joint_producer.py) shows the two vectors' whitened chi-squared agree to
+#: about 0.3 per cent while their covariance's condition numbers differ by a factor of order 40:
+#: the SNR gain is the conditioning of the two covariance inversions, not new information, which
+#: is exactly what a diagonal admission rule cannot tell apart from a real gain. So this function
+#: computes the vector O33 asks for, for the record and for `docs/methods`, and stops there:
+#: `moment_arm`'s admitted rows, its ratios, its numerical floor and its exceedance verdict are
+#: UNCHANGED and still run on cumulants. Wiring the moment vector into that arm's own admission
+#: waits on either a full covariance for it (`rb5s6s.fullmodel.ultra_joint_covariance` and
+#: `ultra_joint_nll` already carry one, over cumulants, and are the natural home for this vector)
+#: or an owner ruling that the marginal treatment is acceptable here. Neither this stop-short nor
+#: its reason is silent: it is this comment, the function's own docstring and the report of the
+#: wave that added it.
+def moment_cumulant_conditioning(nu, y, windows=MOMENT_WINDOWS + DIAGNOSTIC_WINDOWS, orders=MOMENT_ORDERS):
+    """The central moment beside its retained cumulant diagnostic, one (window, order) cell at a
+    time, for every order 4 and above that `orders` carries (O33's vector; orders 2 and 3 are not
+    returned here because mu_2 == k_2 and mu_3 == k_3 exactly, so nothing about them moves).
+
+    BOTH `mu` AND `k` COME FROM ONE QUADRATURE per (window, trace): `windowed_moments` returns
+    the central-moment array once, and `k` is read off `cumulants_from_central_moments` applied
+    to that SAME array, never from a second call to `windowed_cumulants`. Returns a list of
+    dicts, one per (window, order), with keys `window`, `order`, `mu`, `k` and `conditioning`
+    (`abs(k) / abs(mu)`, `inf` where `mu` is exactly zero).
+    """
+    from rb5s6s.cumulants import cumulants_from_central_moments, windowed_moments
+    orders = tuple(int(o) for o in orders)
+    top = max(orders)
+    out = []
+    for w in windows:
+        mu, _ = windowed_moments(nu, y, w, orders=tuple(range(1, top + 1)), baseline=None)
+        mu_arr = np.array([mu[o] for o in range(1, top + 1)])
+        kappa = cumulants_from_central_moments(mu_arr)
+        for n in orders:
+            if n < 4:
+                continue
+            mu_n, k_n = float(mu[n]), float(kappa[n - 1])
+            cond = abs(k_n) / abs(mu_n) if mu_n != 0.0 else float("inf")
+            out.append(dict(window=w, order=n, mu=mu_n, k=k_n, conditioning=cond))
     return out
 
 
@@ -954,14 +1046,14 @@ class Cell:
                 if not (cf[0] > 0):
                     continue
                 y = (t["v"] - cf[1] * t["ones"] - cf[2] * nu) / cf[0]
-                per_trace.append(_moment_stats(nu - centres[i], y))
+                per_trace.append(_moment_stats(nu - centres[i], y, windows=MOMENT_WINDOWS + DIAGNOSTIC_WINDOWS))
                 # THE MODEL IS AVERAGED OVER THE REPEATS TOO. Each repeat has its
                 # own centre and its own grid, so the model's windowed cumulant
                 # differs across them; taking the first and discarding four put
                 # that difference into every one of the condition's statistics as
                 # a COMMON OFFSET -- the block-systematic signature, manufactured
                 # inside the producer that went looking for it.
-                per_model.append(_moment_stats(nu - centres[i], m))
+                per_model.append(_moment_stats(nu - centres[i], m, windows=MOMENT_WINDOWS + DIAGNOSTIC_WINDOWS))
             if len(per_model) < 1 or len(per_trace) < 2:
                 continue
             pred = {k: float(np.mean([pm[k] for pm in per_model])) for k in per_model[0]}
@@ -977,6 +1069,31 @@ class Cell:
                 vals = np.array([r[k] for r in per_trace], float)
                 if not np.all(np.isfinite(vals)):
                     continue
+                # THE NUMERICAL FLOOR (F144, 2026-09-19): a cumulant of order n is a small difference of large
+                # numbers to the n-th power, and k7@13 read 6.6e-07 of its own dimensional scale k2^(n/2) with
+                # the fit exact -- both sides reporting the fit's residual, not the line. A row whose model
+                # sits under the floor is REFUSED with the reason, never admitted as a measurement. A window
+                # in DIAGNOSTIC_WINDOWS is refused as a measurement whatever its floor, with its reason.
+                _ord, _win = k[1:].split("@") if k.startswith("k") and "@" in k and "/" not in k else (None, None)
+                if _ord is not None:
+                    _n = int(_ord); _k2 = abs(float(pred.get(f"k2@{_win}", 0.0)))
+                    _scale = _k2 ** (_n / 2.0) if _k2 > 0 else 0.0
+                    _rel = abs(pred[k]) / _scale if _scale > 0 else float("inf")
+                    _why = None
+                    if float(_win) in DIAGNOSTIC_WINDOWS:
+                        _why = (f"a DIAGNOSTIC window: {_win} MHz shows where the channel dies (the SNR peak at 3, "
+                                f"k4's zero at 8, k6's collapse at 21) and is never quoted as a measurement")
+                    elif _n > 2 and _rel < CUMULANT_FLOOR_REL:
+                        _why = (f"the model's {k} is {_rel:.2g} of its own scale k2^{_n / 2:g}, under the floor "
+                                f"{CUMULANT_FLOOR_REL:g} = the arm's precision over the noiseless tolerance: "
+                                f"below what the arithmetic can resolve, not a channel")
+                    if _why:
+                        _mu = float(vals.mean())
+                        out.append(dict(session=sess, peak=peak, p_mw=p_mw, t_c=t_c, statistic=k, n_rep=n_rep,
+                                        data=_mu, sem=float(vals.std(ddof=1)) / math.sqrt(n_rep), t95=tfac,
+                                        model=pred[k], pull=float("nan"), twin_bias=0.0, twin_bias_se=0.0,
+                                        admitted=False, why=_why))
+                        continue
                 mu, sd = float(vals.mean()), float(vals.std(ddof=1))
                 sem = sd / math.sqrt(n_rep)
                 b, b_se = (tb.bias(case, k, float(self.noise_scale)) if tb is not None else (0.0, 0.0))
@@ -988,10 +1105,25 @@ class Cell:
                                 twin_bias=b, twin_bias_se=b_se,
                                 admitted=True, why=""))
             # CROSS-RUNG RATIOS, admitted on having a population moment
-            for w in MOMENT_WINDOWS:
+            # THE PLAIN ROWS' OWN VERDICTS, so a ratio never admits a member the floor refused: the moments
+            # ladder's stage 0 read 0.284 on k7/k5@13 with k7@13 itself refused, because this loop had its
+            # own admission and consulted nobody (2026-09-19, the second half of F144's repair). The
+            # diagnostic windows are walked too, and refused as diagnostics through their members.
+            _refused_plain = {r_["statistic"]: r_["why"] for r_ in out
+                              if r_["session"] == sess and r_["peak"] == peak and r_["p_mw"] == p_mw
+                              and r_["t_c"] == t_c and not r_["admitted"] and "/" not in r_["statistic"]}
+            for w in MOMENT_WINDOWS + DIAGNOSTIC_WINDOWS:
                 for lo in MOMENT_ORDERS:
                     hi = lo + 2
                     if hi not in MOMENT_ORDERS:
+                        continue
+                    _member = next((k_ for k_ in (f"k{hi}@{w:g}", f"k{lo}@{w:g}") if k_ in _refused_plain), None)
+                    if _member is not None:
+                        out.append(dict(session=sess, peak=peak, p_mw=p_mw, t_c=t_c,
+                                        statistic=f"k{hi}/k{lo}@{w:g}", n_rep=n_rep, data=float("nan"),
+                                        sem=float("nan"), t95=tfac, model=float("nan"), pull=float("nan"),
+                                        admitted=False,
+                                        why=f"its member {_member} is refused: {_refused_plain[_member]}"))
                         continue
                     den = np.array([r[f"k{lo}@{w:g}"] for r in per_trace], float)
                     num = np.array([r[f"k{hi}@{w:g}"] for r in per_trace], float)
@@ -1015,7 +1147,12 @@ class Cell:
                     rat = num / den
                     mu, sd = float(rat.mean()), float(rat.std(ddof=1))
                     sem = sd / math.sqrt(n_rep)
-                    pm = pred[f"k{hi}@{w:g}"] / pred[f"k{lo}@{w:g}"]
+                    # THE MODEL SIDE THROUGH THE DATA SIDE'S FUNCTIONAL (F144's second half): the data is
+                    # the MEAN OF PER-REPEAT RATIOS, so the model is too, not the ratio of the means --
+                    # two different functionals that disagree by a Jensen gap of about 4e-4 at zero noise.
+                    _pm_per = [pm_[f"k{hi}@{w:g}"] / pm_[f"k{lo}@{w:g}"] for pm_ in per_model
+                               if pm_[f"k{lo}@{w:g}"] != 0.0]
+                    pm = float(np.mean(_pm_per)) if _pm_per else pred[f"k{hi}@{w:g}"] / pred[f"k{lo}@{w:g}"]
                     k2_term = -10.0 * pred[f"k2@{w:g}"] if lo % 2 else None
                     out.append(dict(session=sess, peak=peak, p_mw=p_mw, t_c=t_c,
                                     statistic=name, n_rep=n_rep, data=mu, sem=sem,
@@ -2239,7 +2376,66 @@ def plant_determinism(workers_many: int = 2) -> bool:
     return repr(strip(seq)) == repr(strip(par))
 
 
-def moment_arm_run(w0_um: float = 64.0, out_name: str = "ultra_joint_moments.csv") -> int:
+
+def _moment_arm_twin(w0_um: float, out_name: str) -> int:
+    """THE MOMENT VECTOR ON THE TWIN, at every level whose rung is recorded PASS, and a REFUSED row for
+    every level that is not (owner, 2026-09-19 02:40; PLAN v3 D11).
+
+    The archive arm above is gated on `ladder_gate.real_traces("ultra_joint_moments")`, which nothing in
+    the tree could climb until 2026-09-19 (F142) and which fails at its noiseless rung on k7@13 (F144)
+    until the floor in `moment_arm` admits the vector. This arm reads NO real trace: the traces are
+    injected through the closure's own route at the band's waist, so it is ladder-exempt in the same sense
+    `_synthetic_source` is -- it is what the ladder is climbed ON. What it may WRITE is gated all the same:
+    a level whose rung is not PASS gets one row that says so, with the recorded reason, and no moment is
+    quoted above the last level that passed, which is the form in which the order's archive half can be delivered.
+    """
+    import importlib.util as _iu
+    from rb5s6s import ladder_gate as _lg
+    _s = _iu.spec_from_file_location("closure_for_twin_arm", ROOT / "scripts" / "run_ultra_joint_closure.py")
+    CL = _iu.module_from_spec(_s); _s.loader.exec_module(CL)      # ladder-exempt: the injection's own route
+    CL._W["real"] = CL._synthetic_source()
+    cell_t, ptr = CL._truth(float(w0_um), True)
+    out = [["case", "quantity", "value", "err", "unit", "basis", "note", "status"]]
+    profile = _lg.PROFILES[_lg.profile_of("ultra_joint_moments")]
+    for rung in profile:
+        level = float(_lg.NOISE_SCALE[rung])
+        art = _lg.ladder_dir("ultra_joint_moments") / f"{rung}.json"
+        verdict, reasons = "ABSENT", ["no artefact: the rung has not been run"]
+        if art.is_file():
+            _d = json.loads(art.read_text()); verdict, reasons = _d.get("verdict", "?"), _d.get("reasons", [])
+        if verdict != "PASS":
+            out.append([f"twin@x{level:g}", "REFUSED", "", "", "", f"rung {rung} reads {verdict}",
+                        " -- ".join(str(r).replace(";", ",") for r in reasons)[:400] or "no reason recorded", "ARTIFACT"])
+            print(f"  twin x{level:g}: REFUSED ({rung} {verdict})", flush=True)
+            continue
+        syn, lv, sh = CL.inject(cell_t, ptr, CL.SEED, noise_scale=level)
+        spec = dict(_spec("mixed", float(w0_um), beta_profile=False), noise_scale=(level if level > 0 else 1.0),
+                    logdet=bool(level > 0))
+        cell = Cell(spec, syn)
+        fits = [cell.fit(list(p0), max_nfev=spec.get("max_nfev", MAX_NFEV)) for p0 in cell.starts()]
+        best = min(fits, key=lambda f: f["chi2"])
+        for r in cell.moment_arm(best["p"], best["centres"]):
+            case = f"twin@x{level:g}_{r['session']}_{r['peak']}_{r['p_mw']}mW_{r['t_c']}C"
+            if not r["admitted"]:
+                out.append([case, r["statistic"], "", "", "", "refused by the arm's own admission", r["why"].replace(";", ","), "ARTIFACT"])
+                continue
+            out.append([case, r["statistic"], *pm_cells(r["data"], r["sem"] * r["t95"]),
+                        "MHz^n" if "/" not in r["statistic"] else "dimensionless",
+                        f"{r['n_rep']} twin repeats at x{level:g} of the law, rung {rung} PASS, the bar on the mean "
+                        f"at the two-sided 95 per cent t-factor {r['t95']:g}",
+                        f"this fit predicts {r['model']:.6g} at the same window, so the pull is {r['pull']:+.2f}. "
+                        f"The statistic is compared against its own forward prediction and is not an estimator "
+                        f"of an untruncated cumulant", "DIAGNOSTIC"])
+        print(f"  twin x{level:g}: {sum(1 for o in out if o[0].startswith(f'twin@x{level:g}_'))} rows", flush=True)
+    dest = os.path.join(str(C.RESULTS_DIR), out_name)
+    # LIST ROWS, LIKE THE ARCHIVE ARM: `write_csv` is the fit's dict-row writer over COLUMNS, and calling it
+    # here on 2026-09-19 wrote the fit's header into the moments file (restored from HEAD the same minute).
+    with open(dest, "w", newline="", encoding="utf-8") as fh:
+        csv.writer(fh).writerows(out)
+    print(f"  wrote {dest}: {len(out) - 1} rows", flush=True)
+    return 0
+
+def moment_arm_run(w0_um: float = 42.0, out_name: str = "ultra_joint_moments.csv", twin: bool = False) -> int:
     """The moment arm at one waist: fit, then read orders 2 to 7 per condition.
 
     Owner orders O12, O13 and O17 in one arm. What it writes, per condition and
@@ -2257,6 +2453,8 @@ def moment_arm_run(w0_um: float = 64.0, out_name: str = "ultra_joint_moments.csv
     """
     rows = design()
     dspec = design_spec(rows, ("P", "T"))
+    if twin:
+        return _moment_arm_twin(w0_um, out_name)
     traces = _load(dspec)
     print(f"  loaded {len(traces)} traces", flush=True)
     spec = _spec("mixed", w0_um, da=deep_delta_alpha(), beta_profile=False)
@@ -2461,7 +2659,7 @@ def time_cells(workers_for_queue: int = 10) -> dict:
 
 
 def main() -> int:
-    known = {"--coarse", "--time-cells", "--plant", "--no-stage2", "--all-sessions", "--with-excluded", "--power-scale", "--accept-stale-walls", "--moment-arm"}
+    known = {"--coarse", "--time-cells", "--plant", "--no-stage2", "--all-sessions", "--with-excluded", "--power-scale", "--accept-stale-walls", "--moment-arm", "--moment-twin"}
     valued = {"--form": None, "--sigma-l": "session", "--run-name": None, "--arms-only": None, "--out": None, "--drop-session": "", "--accept-stale-walls": None, "--moment-w0": None}
     args = sys.argv[1:]
     for key in list(valued):
@@ -2487,6 +2685,10 @@ def main() -> int:
         if "--plant" in sys.argv or "--time-cells" in sys.argv:
             print("PLANT NOT RUN: the raw traces are absent", flush=True); return 3
         return 0
+    if "--moment-twin" in args:
+        # THE TWIN ARM READS NO REAL TRACE and is therefore not behind `real_traces`; what it may WRITE is
+        # gated per level inside `_moment_arm_twin` (PLAN v3 D11).
+        return moment_arm_run(float(valued.get("--moment-w0") or 42.0), twin=True)
     if "--moment-arm" in args:
         # THE MOMENT ARM READS THE ARCHIVE AND IS GATED ON ITS OWN LADDER (2026-09-16): before this
         # line it returned ahead of the real_traces call below and read the archive ungated.
@@ -2494,7 +2696,7 @@ def main() -> int:
         # so the arm runs on real traces only after the twin has climbed them.
         from rb5s6s import ladder_gate
         ladder_gate.real_traces("ultra_joint_moments", __file__)
-        return moment_arm_run(float(valued.get("--moment-w0") or 64.0))
+        return moment_arm_run(float(valued.get("--moment-w0") or 42.0))
     if "--time-cells" in args:
         time_cells()
         return 0

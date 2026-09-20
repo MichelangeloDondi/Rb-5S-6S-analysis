@@ -350,7 +350,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 276,
+    "line": 284,
     "writes": "2994.39"
    },
    {
@@ -408,7 +408,7 @@
    },
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 148,
+    "line": 294,
     "writes": "-0.9411"
    }
   ],
@@ -706,6 +706,80 @@
   "source_file": "results/collisional_shift_bound.csv",
   "source_value": "0.03335"
  },
+ "constant:DELTA_ALPHA_AU_ORSON2021:1": {
+  "producer": null,
+  "quoting_sites": [
+   {
+    "file": "docs/notes/guided_mode_two_photon_design.md",
+    "line": 47,
+    "writes": "1093.0"
+   }
+  ],
+  "source_file": "rb5s6s/constants.py",
+  "source_value": "1093"
+ },
+ "constant:GAMMA_NAT_HZ:1e-6": {
+  "producer": null,
+  "quoting_sites": [
+   {
+    "file": "docs/THEORY_NOTE.md",
+    "line": 921,
+    "writes": "3.4925"
+   },
+   {
+    "file": "docs/big_picture/06_next-nanofibre.md",
+    "line": 366,
+    "writes": "3.493"
+   },
+   {
+    "file": "docs/big_picture/08_when-a-joint-fit-is-legitimate.md",
+    "line": 315,
+    "writes": "3.493"
+   },
+   {
+    "file": "docs/methods.md",
+    "line": 100,
+    "writes": "3.4925"
+   },
+   {
+    "file": "docs/methods/03_the_ac_stark_ramp.md",
+    "line": 243,
+    "writes": "3.493"
+   },
+   {
+    "file": "docs/methods/09_the_guided_geometry.md",
+    "line": 299,
+    "writes": "3.4925"
+   },
+   {
+    "file": "docs/methods/10_the_odd_moments.md",
+    "line": 284,
+    "writes": "3.493"
+   },
+   {
+    "file": "docs/notes/centre_channel_cannot_be_revived.md",
+    "line": 113,
+    "writes": "3.4925"
+   },
+   {
+    "file": "docs/notes/two_photon_saturation_companion.md",
+    "line": 79,
+    "writes": "3.4925"
+   },
+   {
+    "file": "docs/plan/09_the-fixed-lock.md",
+    "line": 22,
+    "writes": "3.4925"
+   },
+   {
+    "file": "docs/wiki/identifiability.md",
+    "line": 948,
+    "writes": "3.493"
+   }
+  ],
+  "source_file": "rb5s6s/constants.py",
+  "source_value": "3.49253770226"
+ },
  "constant:GAMMA_NAT_HZ:MHz": {
   "producer": null,
   "quoting_sites": [
@@ -722,6 +796,95 @@
   ],
   "source_file": "rb5s6s/constants.py",
   "source_value": "3.49253770226"
+ },
+ "constant:TAU_6S_S:1e9": {
+  "producer": null,
+  "quoting_sites": [
+   {
+    "file": "docs/CLAIMS.md",
+    "line": 220,
+    "writes": "45.57"
+   },
+   {
+    "file": "docs/LITERATURE.md",
+    "line": 784,
+    "writes": "45.57"
+   },
+   {
+    "file": "docs/big_picture/01_why-this-line.md",
+    "line": 26,
+    "writes": "45.57"
+   },
+   {
+    "file": "docs/big_picture/03_goals-and-prior-art.md",
+    "line": 45,
+    "writes": "45.57"
+   },
+   {
+    "file": "docs/methods/02_the_lineshape.md",
+    "line": 64,
+    "writes": "45.57"
+   },
+   {
+    "file": "docs/notes/guided_mode_two_photon_design.md",
+    "line": 265,
+    "writes": "45.57"
+   },
+   {
+    "file": "docs/wiki/blackbody-radiation.md",
+    "line": 129,
+    "writes": "45.57"
+   },
+   {
+    "file": "docs/wiki/identifiability.md",
+    "line": 949,
+    "writes": "45.57"
+   }
+  ],
+  "source_file": "rb5s6s/constants.py",
+  "source_value": "45.57"
+ },
+ "constant:W0_MEASURED_M:1e6": {
+  "producer": null,
+  "quoting_sites": [
+   {
+    "file": "docs/THEORY_NOTE.md",
+    "line": 166,
+    "writes": "64"
+   },
+   {
+    "file": "docs/big_picture/02_the-method-and-its-limits.md",
+    "line": 89,
+    "writes": "64"
+   },
+   {
+    "file": "docs/big_picture/04_what-2025-delivered.md",
+    "line": 20,
+    "writes": "64"
+   },
+   {
+    "file": "docs/big_picture/04_what-2025-delivered.md",
+    "line": 27,
+    "writes": "64"
+   },
+   {
+    "file": "docs/big_picture/04_what-2025-delivered.md",
+    "line": 31,
+    "writes": "64"
+   },
+   {
+    "file": "docs/big_picture/05_next-vapour-cell.md",
+    "line": 115,
+    "writes": "64"
+   },
+   {
+    "file": "docs/big_picture/05_next-vapour-cell.md",
+    "line": 116,
+    "writes": "64"
+   }
+  ],
+  "source_file": "rb5s6s/constants.py",
+  "source_value": "64"
  },
  "cooperative_channel:size:rate ratio at 130 C:aux": {
   "producer": "run_cooperative_channel.py",
@@ -853,7 +1016,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/04_what-2025-delivered.md",
-    "line": 41,
+    "line": 54,
     "writes": "0.0114"
    }
   ],
@@ -865,7 +1028,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/04_what-2025-delivered.md",
-    "line": 70,
+    "line": 83,
     "writes": "0.0406"
    },
    {
@@ -899,7 +1062,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/04_what-2025-delivered.md",
-    "line": 37,
+    "line": 50,
     "writes": "0.35"
    },
    {
@@ -916,7 +1079,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/04_what-2025-delivered.md",
-    "line": 65,
+    "line": 78,
     "writes": "1.231"
    },
    {
@@ -933,7 +1096,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/04_what-2025-delivered.md",
-    "line": 35,
+    "line": 48,
     "writes": "1076"
    },
    {
@@ -955,7 +1118,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/04_what-2025-delivered.md",
-    "line": 33,
+    "line": 46,
     "writes": "868"
    },
    {
@@ -977,7 +1140,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 904,
+    "line": 916,
     "writes": "18.59"
    }
   ],
@@ -989,7 +1152,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 854,
+    "line": 866,
     "writes": "6.75"
    }
   ],
@@ -1001,7 +1164,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 856,
+    "line": 868,
     "writes": "1.69"
    }
   ],
@@ -1013,12 +1176,12 @@
   "quoting_sites": [
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 874,
+    "line": 886,
     "writes": "0.606"
    },
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 785,
+    "line": 931,
     "writes": "0.606"
    }
   ],
@@ -1030,12 +1193,12 @@
   "quoting_sites": [
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 869,
+    "line": 881,
     "writes": "-1.838"
    },
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 783,
+    "line": 929,
     "writes": "-1.838"
    }
   ],
@@ -1047,7 +1210,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 872,
+    "line": 884,
     "writes": "-0.340"
    }
   ],
@@ -1059,12 +1222,12 @@
   "quoting_sites": [
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 866,
+    "line": 878,
     "writes": "-1.914"
    },
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 781,
+    "line": 927,
     "writes": "-1.914"
    }
   ],
@@ -1076,7 +1239,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 867,
+    "line": 879,
     "writes": "-1.994"
    }
   ],
@@ -1207,12 +1370,12 @@
   "quoting_sites": [
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 895,
+    "line": 907,
     "writes": "3.97"
    },
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 788,
+    "line": 934,
     "writes": "3.97"
    }
   ],
@@ -1224,7 +1387,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 896,
+    "line": 908,
     "writes": "0.22"
    }
   ],
@@ -1236,12 +1399,12 @@
   "quoting_sites": [
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 892,
+    "line": 904,
     "writes": "2.78"
    },
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 787,
+    "line": 933,
     "writes": "2.78"
    }
   ],
@@ -1253,7 +1416,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 893,
+    "line": 905,
     "writes": "0.22"
    }
   ],
@@ -1265,7 +1428,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 898,
+    "line": 910,
     "writes": "3.38"
    }
   ],
@@ -1277,7 +1440,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 897,
+    "line": 909,
     "writes": "2.18"
    }
   ],
@@ -1289,7 +1452,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 886,
+    "line": 898,
     "writes": "8.97"
    }
   ],
@@ -1301,7 +1464,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 887,
+    "line": 899,
     "writes": "0.90"
    }
   ],
@@ -1313,7 +1476,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 852,
+    "line": 864,
     "writes": "28.12"
    }
   ],
@@ -1325,7 +1488,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 880,
+    "line": 892,
     "writes": "7.8"
    }
   ],
@@ -1439,7 +1602,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 757,
+    "line": 903,
     "writes": "0.1517"
    }
   ],
@@ -1451,7 +1614,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 758,
+    "line": 904,
     "writes": "0.0055"
    }
   ],
@@ -1463,7 +1626,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 759,
+    "line": 905,
     "writes": "-0.248"
    }
   ],
@@ -1475,7 +1638,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 760,
+    "line": 906,
     "writes": "0.050"
    }
   ],
@@ -1487,7 +1650,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 765,
+    "line": 911,
     "writes": "0.0669"
    }
   ],
@@ -1499,7 +1662,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 755,
+    "line": 901,
     "writes": "0.00863"
    }
   ],
@@ -1511,7 +1674,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 771,
+    "line": 917,
     "writes": "0.086"
    }
   ],
@@ -1523,7 +1686,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 772,
+    "line": 918,
     "writes": "0.028"
    }
   ],
@@ -1535,7 +1698,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 774,
+    "line": 920,
     "writes": "0.050"
    }
   ],
@@ -1547,7 +1710,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 775,
+    "line": 921,
     "writes": "0.032"
    }
   ],
@@ -1559,7 +1722,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 751,
+    "line": 897,
     "writes": "0.0814"
    }
   ],
@@ -1571,7 +1734,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 579,
+    "line": 587,
     "writes": "0.15713"
    }
   ],
@@ -1583,7 +1746,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 583,
+    "line": 591,
     "writes": "0.08685"
    }
   ],
@@ -1595,7 +1758,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 578,
+    "line": 586,
     "writes": "0.01546"
    }
   ],
@@ -1607,7 +1770,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 718,
+    "line": 864,
     "writes": "2.98e-08"
    }
   ],
@@ -1619,7 +1782,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 589,
+    "line": 597,
     "writes": "2.98e-08"
    }
   ],
@@ -1631,7 +1794,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 590,
+    "line": 598,
     "writes": "0.9671"
    }
   ],
@@ -1643,7 +1806,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 591,
+    "line": 599,
     "writes": "0.8314"
    }
   ],
@@ -2035,12 +2198,12 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 872,
+    "line": 1018,
     "writes": "18.6"
    },
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 872,
+    "line": 1018,
     "writes": "18.6"
    }
   ],
@@ -2052,7 +2215,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 872,
+    "line": 1018,
     "writes": "0.0032"
    }
   ],
@@ -2081,7 +2244,7 @@
    },
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 204,
+    "line": 350,
     "writes": "-0.958"
    }
   ],
@@ -2098,7 +2261,7 @@
    },
    {
     "file": "docs/THEORY_NOTE.md",
-    "line": 321,
+    "line": 326,
     "writes": "7.06"
    },
    {
@@ -2108,7 +2271,7 @@
    },
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 820,
+    "line": 966,
     "writes": "7.06"
    }
   ],
@@ -2125,7 +2288,7 @@
    },
    {
     "file": "docs/THEORY_NOTE.md",
-    "line": 320,
+    "line": 325,
     "writes": "6.33"
    },
    {
@@ -2135,7 +2298,7 @@
    },
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 820,
+    "line": 966,
     "writes": "6.33"
    }
   ],
@@ -2147,7 +2310,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 820,
+    "line": 966,
     "writes": "34.0"
    }
   ],
@@ -2159,7 +2322,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 820,
+    "line": 966,
     "writes": "37.9"
    }
   ],
@@ -2171,7 +2334,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 820,
+    "line": 966,
     "writes": "5.3179"
    }
   ],
@@ -2183,7 +2346,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 820,
+    "line": 966,
     "writes": "5.4036"
    }
   ],
@@ -2195,7 +2358,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 872,
+    "line": 1018,
     "writes": "0.0588"
    }
   ],
@@ -2619,7 +2782,7 @@
    },
    {
     "file": "docs/methods/04_the_composite_model.md",
-    "line": 352,
+    "line": 382,
     "writes": "0.050"
    }
   ],
@@ -2636,7 +2799,7 @@
    },
    {
     "file": "docs/methods/04_the_composite_model.md",
-    "line": 356,
+    "line": 386,
     "writes": "0.0050"
    }
   ],
@@ -2665,7 +2828,7 @@
    },
    {
     "file": "docs/methods/04_the_composite_model.md",
-    "line": 356,
+    "line": 386,
     "writes": "0.0008"
    }
   ],
@@ -2706,7 +2869,7 @@
    },
    {
     "file": "docs/methods/04_the_composite_model.md",
-    "line": 353,
+    "line": 383,
     "writes": "0.0015"
    }
   ],
@@ -2806,7 +2969,7 @@
   "quoting_sites": [
    {
     "file": "docs/THEORY_NOTE.md",
-    "line": 805,
+    "line": 810,
     "writes": "45.57(17)"
    }
   ],
@@ -2818,7 +2981,7 @@
   "quoting_sites": [
    {
     "file": "docs/THEORY_NOTE.md",
-    "line": 765,
+    "line": 770,
     "writes": "790.032326(32)"
    }
   ],
@@ -2830,7 +2993,7 @@
   "quoting_sites": [
    {
     "file": "docs/THEORY_NOTE.md",
-    "line": 740,
+    "line": 745,
     "writes": "-1093"
    }
   ],
@@ -2854,7 +3017,7 @@
   "quoting_sites": [
    {
     "file": "docs/big_picture/04_what-2025-delivered.md",
-    "line": 97,
+    "line": 110,
     "writes": "18"
    },
    {
@@ -2871,7 +3034,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 633,
+    "line": 779,
     "writes": "5.46"
    }
   ],
@@ -2883,7 +3046,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 639,
+    "line": 785,
     "writes": "8.42"
    }
   ],
@@ -2895,7 +3058,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 616,
+    "line": 762,
     "writes": "33"
    },
    {
@@ -2917,12 +3080,12 @@
    },
    {
     "file": "rb5s6s/fullmodel.py",
-    "line": 421,
+    "line": 456,
     "writes": "2647"
    },
    {
     "file": "rb5s6s/fullmodel.py",
-    "line": 650,
+    "line": 685,
     "writes": "2647"
    }
   ],
@@ -2939,12 +3102,12 @@
    },
    {
     "file": "rb5s6s/fullmodel.py",
-    "line": 420,
+    "line": 455,
     "writes": "34.69"
    },
    {
     "file": "rb5s6s/fullmodel.py",
-    "line": 649,
+    "line": 684,
     "writes": "34.69"
    }
   ],
@@ -2956,7 +3119,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 619,
+    "line": 765,
     "writes": "2485"
    }
   ],
@@ -2968,7 +3131,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 621,
+    "line": 767,
     "writes": "0.04850"
    }
   ],
@@ -2985,12 +3148,12 @@
    },
    {
     "file": "rb5s6s/fullmodel.py",
-    "line": 423,
+    "line": 458,
     "writes": "0.658"
    },
    {
     "file": "rb5s6s/fullmodel.py",
-    "line": 651,
+    "line": 686,
     "writes": "0.658"
    }
   ],
@@ -3007,7 +3170,7 @@
    },
    {
     "file": "rb5s6s/fullmodel.py",
-    "line": 422,
+    "line": 457,
     "writes": "0.0032500"
    }
   ],
@@ -3886,7 +4049,7 @@
   "quoting_sites": [
    {
     "file": "docs/THEORY_NOTE.md",
-    "line": 763,
+    "line": 768,
     "writes": "318.28"
    },
    {
@@ -3903,7 +4066,7 @@
   "quoting_sites": [
    {
     "file": "docs/THEORY_NOTE.md",
-    "line": 697,
+    "line": 702,
     "writes": "-312.2"
    }
   ],
@@ -3915,7 +4078,7 @@
   "quoting_sites": [
    {
     "file": "docs/THEORY_NOTE.md",
-    "line": 764,
+    "line": 769,
     "writes": "790.0339"
    }
   ],
@@ -3932,7 +4095,7 @@
    },
    {
     "file": "docs/THEORY_NOTE.md",
-    "line": 688,
+    "line": 693,
     "writes": "1e-04"
    }
   ],
@@ -3949,7 +4112,7 @@
    },
    {
     "file": "docs/THEORY_NOTE.md",
-    "line": 688,
+    "line": 693,
     "writes": "6e-06"
    }
   ],
@@ -3961,7 +4124,7 @@
   "quoting_sites": [
    {
     "file": "docs/THEORY_NOTE.md",
-    "line": 733,
+    "line": 738,
     "writes": "832.4"
    }
   ],
@@ -3973,12 +4136,12 @@
   "quoting_sites": [
    {
     "file": "docs/THEORY_NOTE.md",
-    "line": 733,
+    "line": 738,
     "writes": "-299.4"
    },
    {
     "file": "docs/THEORY_NOTE.md",
-    "line": 774,
+    "line": 779,
     "writes": "-299.4"
    }
   ],
@@ -4025,22 +4188,22 @@
    },
    {
     "file": "docs/THEORY_NOTE.md",
-    "line": 686,
+    "line": 691,
     "writes": "-1131.8"
    },
    {
     "file": "docs/THEORY_NOTE.md",
-    "line": 734,
+    "line": 739,
     "writes": "-1131.8"
    },
    {
     "file": "docs/THEORY_NOTE.md",
-    "line": 741,
+    "line": 746,
     "writes": "-1131.8"
    },
    {
     "file": "docs/THEORY_NOTE.md",
-    "line": 830,
+    "line": 835,
     "writes": "-1131.8"
    },
    {
@@ -4050,12 +4213,12 @@
    },
    {
     "file": "docs/big_picture/04_what-2025-delivered.md",
-    "line": 79,
+    "line": 92,
     "writes": "-1131.8"
    },
    {
     "file": "docs/big_picture/04_what-2025-delivered.md",
-    "line": 83,
+    "line": 96,
     "writes": "-1131.8"
    },
    {
@@ -4147,12 +4310,12 @@
    },
    {
     "file": "docs/THEORY_NOTE.md",
-    "line": 686,
+    "line": 691,
     "writes": "5.9"
    },
    {
     "file": "docs/THEORY_NOTE.md",
-    "line": 734,
+    "line": 739,
     "writes": "5.9"
    },
    {
@@ -4162,7 +4325,7 @@
    },
    {
     "file": "docs/big_picture/04_what-2025-delivered.md",
-    "line": 83,
+    "line": 96,
     "writes": "5.9"
    },
    {
@@ -4201,7 +4364,7 @@
    },
    {
     "file": "docs/THEORY_NOTE.md",
-    "line": 688,
+    "line": 693,
     "writes": "+6.5"
    }
   ],
@@ -4218,7 +4381,7 @@
    },
    {
     "file": "docs/THEORY_NOTE.md",
-    "line": 688,
+    "line": 693,
     "writes": "15.0"
    }
   ],
@@ -4235,7 +4398,7 @@
    },
    {
     "file": "docs/THEORY_NOTE.md",
-    "line": 688,
+    "line": 693,
     "writes": "1.3"
    }
   ],
@@ -4252,7 +4415,7 @@
    },
    {
     "file": "docs/THEORY_NOTE.md",
-    "line": 688,
+    "line": 693,
     "writes": "-0.81"
    }
   ],
@@ -4310,7 +4473,7 @@
    },
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 255,
+    "line": 263,
     "writes": "-1.97"
    }
   ],
@@ -4327,7 +4490,7 @@
    },
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 259,
+    "line": 267,
     "writes": "1.117"
    },
    {
@@ -4366,7 +4529,7 @@
    },
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 257,
+    "line": 265,
     "writes": "1.691"
    }
   ],
@@ -4383,7 +4546,7 @@
    },
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 252,
+    "line": 260,
     "writes": "0.26"
    }
   ],
@@ -4438,18 +4601,6 @@
   "source_file": "results/projections.csv",
   "source_value": "48.5895"
  },
- "projections:proj_guided_power_ceiling:S0 equals the natural width": {
-  "producer": "run_projections.py",
-  "quoting_sites": [
-   {
-    "file": "docs/notes/guided_mode_two_photon_design.md",
-    "line": 303,
-    "writes": "51.7"
-   }
-  ],
-  "source_file": "results/projections.csv",
-  "source_value": "51.7078"
- },
  "residual_resampling:bootstrap_carries_of_truth:archive": {
   "producer": "run_residual_resampling.py",
   "quoting_sites": [
@@ -4496,7 +4647,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 940,
+    "line": 1086,
     "writes": "5.50"
    }
   ],
@@ -4508,7 +4659,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 945,
+    "line": 1091,
     "writes": "-0.034"
    }
   ],
@@ -4520,7 +4671,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 945,
+    "line": 1091,
     "writes": "0.061"
    }
   ],
@@ -4532,7 +4683,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 946,
+    "line": 1092,
     "writes": "-0.019"
    }
   ],
@@ -4544,7 +4695,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 946,
+    "line": 1092,
     "writes": "0.018"
    }
   ],
@@ -4556,7 +4707,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 950,
+    "line": 1096,
     "writes": "-0.17"
    }
   ],
@@ -4568,7 +4719,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 950,
+    "line": 1096,
     "writes": "0.13"
    }
   ],
@@ -4580,7 +4731,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 943,
+    "line": 1089,
     "writes": "1.378"
    },
    {
@@ -4597,7 +4748,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 943,
+    "line": 1089,
     "writes": "0.027"
    }
   ],
@@ -4648,7 +4799,7 @@
    },
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 1166,
+    "line": 1177,
     "writes": "6.11"
    },
    {
@@ -4711,7 +4862,7 @@
    },
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 1168,
+    "line": 1179,
     "writes": "0.0479"
    }
   ],
@@ -4764,7 +4915,7 @@
    },
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 1180,
+    "line": 1191,
     "writes": "0.58"
    }
   ],
@@ -4793,7 +4944,7 @@
    },
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 1172,
+    "line": 1183,
     "writes": "-0.0001"
    }
   ],
@@ -4870,7 +5021,7 @@
    },
    {
     "file": "docs/plan/12_open-apparatus-items.md",
-    "line": 1183,
+    "line": 1194,
     "writes": "5.51"
    }
   ],
@@ -5488,12 +5639,12 @@
    },
    {
     "file": "docs/THEORY_NOTE.md",
-    "line": 313,
+    "line": 318,
     "writes": "0.348"
    },
    {
     "file": "docs/THEORY_NOTE.md",
-    "line": 654,
+    "line": 659,
     "writes": "0.348"
    },
    {
@@ -5528,7 +5679,7 @@
    },
    {
     "file": "docs/notes/guided_mode_two_photon_design.md",
-    "line": 304,
+    "line": 303,
     "writes": "0.348"
    },
    {
@@ -5553,7 +5704,7 @@
    },
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 820,
+    "line": 966,
     "writes": "0.348"
    },
    {
@@ -5600,7 +5751,7 @@
    },
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 820,
+    "line": 966,
     "writes": "0.375"
    },
    {
@@ -5627,7 +5778,7 @@
    },
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 820,
+    "line": 966,
     "writes": "0.306"
    },
    {
@@ -7048,7 +7199,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 694,
+    "line": 840,
     "writes": "-0.241"
    }
   ],
@@ -7060,7 +7211,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 692,
+    "line": 838,
     "writes": "-0.127"
    }
   ],
@@ -7072,7 +7223,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 686,
+    "line": 832,
     "writes": "-0.87"
    }
   ],
@@ -7084,7 +7235,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 666,
+    "line": 812,
     "writes": "0.62"
    }
   ],
@@ -7096,7 +7247,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 668,
+    "line": 814,
     "writes": "0.97"
    }
   ],
@@ -7108,7 +7259,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 662,
+    "line": 808,
     "writes": "1.92"
    }
   ],
@@ -7120,7 +7271,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 660,
+    "line": 806,
     "writes": "1.713"
    }
   ],
@@ -7132,7 +7283,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 654,
+    "line": 800,
     "writes": "3.213"
    }
   ],
@@ -7144,7 +7295,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 656,
+    "line": 802,
     "writes": "5.559"
    }
   ],
@@ -7156,7 +7307,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 658,
+    "line": 804,
     "writes": "0.90"
    }
   ],
@@ -7168,7 +7319,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 680,
+    "line": 826,
     "writes": "0.0447"
    }
   ],
@@ -7180,7 +7331,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 682,
+    "line": 828,
     "writes": "0.0653"
    }
   ],
@@ -7192,7 +7343,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 672,
+    "line": 818,
     "writes": "0.0385"
    }
   ],
@@ -7204,7 +7355,7 @@
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
-    "line": 684,
+    "line": 830,
     "writes": "0.1234"
    }
   ],

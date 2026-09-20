@@ -52,7 +52,7 @@ snr_refused_max,single_valued,0.6585,,single_valued because it is one end of a s
 n_admitted,,33,,"of 42 statistics over three windows, admitted on having a population moment. The retired SNR floor would have taken 21",DIAGNOSTIC
 effective_rank_admitted,,5.464,0.038,"participation ratio of the admitted correlation matrix: the admitted set carries about three independent numbers and not its column count. The uncertainty is the spread over realisation counts of (600, 1200, 4000)",DIAGNOSTIC
 effective_rank_all,,8.418,0.057,"the same over every statistic including the refused ones. It reads higher because pure noise is nearly full rank, and quoting it as the information content is the trap",DIAGNOSTIC
-condition_number_admitted,,3.44e+22,,an interval taken through a pseudo-inverse of a matrix this ill-conditioned is only quotable where it is stable against the cutoff. The width is and the shift is not,DIAGNOSTIC
+condition_number_admitted,,3.84e+22,,an interval taken through a pseudo-inverse of a matrix this ill-conditioned is only quotable where it is stable against the cutoff. The width is and the shift is not,DIAGNOSTIC
 tau_int,,2.515,,"integrated correlation time in samples, from noise_model.csv pooled over the p_sweep role",DIAGNOSTIC
 rho1_measured_vs_ar1,,0.52,,"the AR(1) first lag matching tau_int is 0.051 against a measured rho1 of 0.098. The two committed numbers are not mutually consistent, the autocorrelation has a long tail, and matching tau_int is the conservative branch",DIAGNOSTIC
 power_arm_traces,,101,,"counted from the manifest at role=p_sweep, and read back from this row by a clone without raw traces",DIAGNOSTIC

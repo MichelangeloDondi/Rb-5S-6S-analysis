@@ -128,6 +128,15 @@ def _const(name):
 # --------------------------------------------------------------------------- #
 def _normalize(text: str) -> str:
     text = re.sub(r"```.*?```", "", text, flags=re.S)          # drop fenced code
+    # A BOUND NUMBER IS STILL A CITATION. The SSOT binding writes a value as
+    # [64](../../rb5s6s/constants.py "ref:constant:W0_MEASURED_M:1e6"), so the
+    # characters between the digits and their unit stop being whitespace and
+    # every `find` here stops matching -- which is how d5c36a9d, whose whole
+    # purpose was binding the prose to its constants, silently unbound this
+    # page from THIS guard while binding it to the other one. Unwrap the ref
+    # form ONLY, so an ordinary markdown link is untouched: the visible text is
+    # what a reader sees, and it is what the value patterns are written for.
+    text = re.sub(r"\[([^\]]+)\]\([^()]*\"ref:[^\"]*\"\)", r"\1", text)
     text = re.sub(r"\\text\{([^{}]*)\}", r"\1", text)          # \text{ mW} -> " mW"
     text = re.sub(r"\\mathrm\{([^{}]*)\}", r"\1", text)
     repl = {r"\lesssim": "≲", r"\Delta\alpha": "Δα", r"\beta": "β",

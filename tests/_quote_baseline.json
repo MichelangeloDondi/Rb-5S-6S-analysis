@@ -1,0 +1,85 @@
+{
+ "_reason": "seeded 2026-09-20 from the shelf census (F217): every quotation in a held note's body is graded from tonight, and these are the ones known not to match on the day the guard was widened, each leaving when fixed against its PDF or marked not-from-pdf",
+ "_seeded": "2026-09-20",
+ "_what": "digests of (note, quotation) pairs known NOT to match their PDF; may only shrink",
+ "members": {
+  "afanasiev2010": [
+   "97e9e7a07634589f"
+  ],
+  "balko1997": [
+   "16983c3a46a2d002",
+   "bbce6edab5c9e91b",
+   "ed6ae63e355d46d7"
+  ],
+  "bandi2025": [
+   "5aa9937b95f178f0",
+   "afa6962b5785ebd4",
+   "e82a45a319b2f07b"
+  ],
+  "baranger1958": [
+   "074f20eb52b19493"
+  ],
+  "bennett1999": [
+   "551d0a59e0a67cac"
+  ],
+  "biraben1974": [
+   "65ea24c6b6636ecc",
+   "fb5fd80396e1e2d5"
+  ],
+  "bohdansky1965": [
+   "bd88caec822d389e"
+  ],
+  "borde1976b": [
+   "bc7f8ea33fb85533"
+  ],
+  "camparo1992": [
+   "c56b382770e45a48"
+  ],
+  "chen2020": [
+   "09160b9ce69a640f",
+   "2646a75a02982af1"
+  ],
+  "delone1980": [
+   "0f8fb83360ba5237",
+   "1b95926238b2aa53",
+   "33c600aa83f1779f"
+  ],
+  "derevianko1999": [
+   "75358ff935f8b85f"
+  ],
+  "gallagher1973": [
+   "3b05bc2b391387e4"
+  ],
+  "jarrett1964": [
+   "ed476b182d2deee1"
+  ],
+  "kischkel1991": [
+   "71e8495123686f61"
+  ],
+  "kischkel1992": [
+   "7c5b414bc8ab63cb"
+  ],
+  "klimovducloy2004": [
+   "40e0f2dcc920d187"
+  ],
+  "lewis1980": [
+   "1d3b2f564805e5c8",
+   "778591794fde81ca"
+  ],
+  "mcdonald2015": [
+   "12cc68fb8e334b70"
+  ],
+  "orson2021": [
+   "82d2d74fd6ccd9c0"
+  ],
+  "raj2026": [
+   "c83343e3c367a14c"
+  ],
+  "vylegzhanin2025": [
+   "00ff3a20bb6a1f79"
+  ],
+  "wall2014": [
+   "6467395ce162a20d"
+  ]
+ }
+}

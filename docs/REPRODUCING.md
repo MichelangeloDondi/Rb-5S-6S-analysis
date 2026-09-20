@@ -122,7 +122,7 @@ Point `RB5S6S_SESSION_20250704_DIR` and `RB5S6S_SESSION_20250717_DIR` at the tre
 independent base seeds per configuration and concatenates them, and is
 byte-identical at every worker count. Measured on a ten-core machine on
 2026-09-02, three times and independently, spanning 668 to 789 s
-sequential, about 240 s at three workers, 153 to 170 s at six and 142 s
+sequential, about 240 s at three workers, 153 to 170 s at six and 142 s <!-- other-quantity: a run time in seconds, not the withdrawn 240 uW guided power -->
 at eight, the spread being other load. The replication multiplied the
 cost by about five, and the figures before it are not comparable).
 

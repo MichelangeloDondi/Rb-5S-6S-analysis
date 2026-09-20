@@ -110,7 +110,7 @@ one feature is 330 to 405 ms wide, and the other is 5 to 8 ms wide at about
 60 per cent of the amplitude. A genuine second crossing of the same line by the
 same ramp must match in both width and height. It does not. At the 4 July
 evening session's sweep rate a 6 ms feature is some tens of kilohertz
-across, more than fifty times narrower than the 3.4925 MHz natural width, so
+across, more than fifty times narrower than the [3.4925](../../rb5s6s/constants.py "ref:constant:GAMMA_NAT_HZ:1e-6") MHz natural width, so
 it cannot be an atomic line at all. The 5 s record therefore contains one
 crossing, and the record's own segmentation rule, which keeps the widest
 excursion, was right to keep one.

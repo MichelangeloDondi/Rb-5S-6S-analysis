@@ -171,6 +171,22 @@ INTENTIONAL_PREFIX_PAIRS = {
     # same first author, same year, different papers: JOSA B 9 2163
     # (with Lambropoulos) and Opt. Commun. 91 343 (with Klimcak)
     ("camparo1992", "camparo1992b"),
+    # Bordé published two distinct 1976 transit-time papers. borde1976 is the
+    # short, general two-photon Doppler-free treatment (C. R. Acad. Sci. Ser. B
+    # 282, 341), placeholder-titled and held as a scan; borde1976b is the long,
+    # single-photon saturated-absorption perturbation calculation with Gaussian
+    # beams (Phys. Rev. A 14, 236). Same first author, same year, disjoint
+    # papers -- the suffix distinguishes them rather than marking a duplicate.
+    ("borde1976", "borde1976b"),
+    # same first author, same year, different journals: lee2010 is the Opt.
+    # Commun. 283, 1788 light-shift/Voigt-decomposition paper; lee2010b is the
+    # J. Phys. B 43, 235003 polarization-and-pressure paper. Both are held.
+    ("lee2010", "lee2010b"),
+    # same two authors, same year, same TIFR apparatus family, different
+    # states: rahaman2022 is the Cs 7D3/2 hyperfine/ac-Stark paper (Phys. Rev.
+    # A 106, 042811); rahaman2022b is the Cs 7D5/2 hyperfine-octupole paper
+    # (Opt. Lett. 47, 4612), matching the "b" suffix already on its held PDF.
+    ("rahaman2022", "rahaman2022b"),
 }
 
 # A backtick token shaped like a bibtex key: >=2 leading letters, a 4-digit year,
@@ -338,6 +354,94 @@ def test_held_pdf_filesystem(key):
                 f"{key}: held:true, pdf '{pdf}' does not exist on disk")
     elif pdf:  # not held but a path given -> must be well-formed
         assert pdf.startswith("PDF_papers/"), f"{key}: pdf '{pdf}' not under PDF_papers/"
+
+
+# --------------------------------------------------------------------------- #
+# (C2) the OTHER direction: every shelved PDF has a note, and is named for it   #
+#                                                                               #
+# WHY THIS EXISTS (2026-09-20). test_held_pdf_filesystem above grades note ->   #
+# file and nothing graded file -> note, so a PDF dropped into the shelf was     #
+# invisible to every index and check -- LAYOUT.md says so in words and no       #
+# guard read it. Measured the day this was written: 41 of 194 top-level PDFs    #
+# had no note, and 26 were off the Author_Year_topic convention, several        #
+# carrying a journal volume where the topic belongs and four carrying a bare    #
+# lowercase citekey. Two of the 41 were papers this record already held under   #
+# their proper names, so the shelf was also hiding its own duplicates.          #
+#                                                                               #
+# THE FALSE-PASS DIRECTION, stated first: green means every shelved PDF is      #
+# claimed by some note and named conventionally. It does NOT mean the note has  #
+# been read against the paper -- that is `status: VERIFIED` and its own flags.  #
+# --------------------------------------------------------------------------- #
+
+# Named, with the reason each is exempt. A set, never a count: a new unnoted
+# PDF fails whatever happens to these, and an exemption that stops being true
+# is removed rather than re-counted.
+_SHELF_EXEMPT = {
+    # LAYOUT.md named a Steck companion volume here until 2026-09-20. It was stale twice over:
+    # the file is Steck_2021_Rb85-D-line-data.pdf, not Steck_Rb85_D-line-data.pdf, and it has
+    # had its own note (steck_rb87) for some time, so it needs no exemption. The plant below
+    # found that, which is the whole reason an exemption list is checked against the disk.
+    "Klimov_2001b_spontaneous-emission-near-nanobodies-KvantElektr-russian.pdf":
+        "the Russian original of the English translation klimov2001 points at; one note covers both",
+    "Hamilton_2023_Rb-5D-dynamic-polarizability-E1-elements.pdf":
+        "the arXiv:2212.10743v1 preprint of the same paper hamilton2023 points at "
+        "(the published Phys. Rev. Applied PDF); confirmed identical title, authors, "
+        "abstract and results on 2026-09-20, one note covers both",
+}
+
+_SHELF_NAME = re.compile(
+    r"^[A-Z][A-Za-z'\u2019-]*(?:-[A-Z][A-Za-z]*)?"   # Surname, or Double-Barrelled
+    r"_\d{4}[a-z]?"                                   # _Year, with an optional disambiguating letter
+    r"_[^_]+\.pdf$"                                   # _kebab-topic.pdf, and no further underscore
+)
+
+
+def _shelf():
+    return sorted(p.name for p in (ROOT / "PDF_papers").glob("*.pdf"))
+
+
+@pytest.mark.skipif(not _PDFS_PRESENT, reason="the gitignored PDF shelf is not on this disk")
+def test_every_shelved_pdf_has_a_note():
+    claimed = {e["pdf"] for e in bli.load_lit() if e.get("pdf")}
+    orphans = [n for n in _shelf()
+               if f"PDF_papers/{n}" not in claimed and n not in _SHELF_EXEMPT]
+    assert not orphans, (
+        "PDF_papers holds papers that no docs/lit note points at, so they are invisible to the "
+        "bibliography, the index and every check that reads the literature (LAYOUT.md states this "
+        "and nothing enforced it until 2026-09-20). Write the note, or add the file to "
+        "_SHELF_EXEMPT with its reason:\n  " + "\n  ".join(orphans))
+
+
+@pytest.mark.skipif(not _PDFS_PRESENT, reason="the gitignored PDF shelf is not on this disk")
+def test_every_shelved_pdf_is_named_author_year_topic():
+    bad = [n for n in _shelf() if not _SHELF_NAME.match(n) and n not in _SHELF_EXEMPT]
+    assert not bad, (
+        "PDF_papers names its holdings Author_Year_topic.pdf (LAYOUT.md). These do not parse -- a "
+        "journal volume in the topic slot, a bare citekey, or an extra underscore:\n  "
+        + "\n  ".join(bad))
+
+
+@pytest.mark.skipif(not _PDFS_PRESENT, reason="the gitignored PDF shelf is not on this disk")
+def test_the_shelf_guards_can_see_their_own_defects():
+    """PLANTED BOTH WAYS, at the two shapes that actually occurred.
+
+    Without this the pair above pass vacuously the moment `_shelf()` or the regex stops
+    matching anything, which is the `_literals` class of 2026-09-19 exactly."""
+    assert _shelf(), "the shelf reads empty, so both guards above are no-ops"
+    # the naming regex refuses what was on disk before 2026-09-20 ...
+    for planted in ("Lee_2010_J._Phys._B__At._Mol._Opt._Phys._43_235003.pdf",   # volume in the topic slot
+                    "alcock1984.pdf",                                           # bare citekey
+                    "Leonard_2017_ERRATUM_Rb87-D-line-tune-out.pdf"):           # extra underscore
+        assert not _SHELF_NAME.match(planted), f"the naming regex admits {planted}"
+    # ... and admits what replaced them
+    for planted in ("Lee_2010_Cs-6S-8S-two-photon-polarization-pressure-effects.pdf",
+                    "Alcock_1984_vapour-pressure-equations-metallic-elements.pdf",
+                    "Li_2024c_atom-light-interactions-optical-nanofibres-perspective.pdf",
+                    "Rahaman-Dutta_2022b_Cs-7D52-hyperfine-octupole.pdf"):
+        assert _SHELF_NAME.match(planted), f"the naming regex refuses {planted}"
+    # an exemption that no longer names a file on disk is dead weight and hides nothing
+    stale = [n for n in _SHELF_EXEMPT if not (ROOT / "PDF_papers" / n).exists()]
+    assert not stale, f"_SHELF_EXEMPT names files that are not on the shelf: {stale}"
 
 
 # --------------------------------------------------------------------------- #

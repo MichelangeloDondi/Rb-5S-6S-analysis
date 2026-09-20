@@ -10,8 +10,8 @@ import numpy as np
 import pytest
 
 from rb5s6s._compat import trapezoid
-from rb5s6s.cumulants import cumulants_from_central_moments, linear_baseline, windowed_cumulant, windowed_cumulants, wing_baseline
-from rb5s6s.lineshape import RAMP_SIDE, ramp_kappa3, ramp_mean_over_s0
+from rb5s6s.cumulants import cumulants_from_central_moments, linear_baseline, windowed_cumulant, windowed_cumulants, windowed_moments, wing_baseline
+from rb5s6s.lineshape import RAMP_SIDE, lorentzian, ramp_kappa3, ramp_mean_over_s0
 
 GRID = np.linspace(-60.0, 60.0, 6001)
 
@@ -171,6 +171,39 @@ def test_a_window_wider_than_the_trace_is_refused_not_clamped():
         assert np.isnan(k[3]), f"half_width {half} past the grid returned a number"
         assert info["in_span"] == 0.0
         assert info["converged"] == 0.0
+
+
+def test_windowed_moments_agrees_with_windowed_cumulants_at_orders_two_and_three():
+    """Owner order O33 (2026-09-20): central moments are primary at fourth order and above,
+    because kappa_2 == mu_2 and kappa_3 == mu_3 EXACTLY (the conversion is the identity there),
+    so nothing about the second and third order moves under the switch. Failure: the two
+    functions' shared quadrature (`_centred_window_moments`) drifts apart, or `windowed_moments`
+    recentres on a different point than `windowed_cumulants` for the same trace and window."""
+    y = _ramp_line(0.5, 1.0, pedestal=0.01)
+    k, info_k = windowed_cumulants(GRID, y, 12.0, (2, 3, 4, 5, 6, 7))
+    mu, info_mu = windowed_moments(GRID, y, 12.0, (2, 3, 4, 5, 6, 7))
+    assert abs(k[2] - mu[2]) < 1e-9, (k[2], mu[2])
+    assert abs(k[3] - mu[3]) < 1e-9, (k[3], mu[3])
+    assert info_k["centre"] == info_mu["centre"] and info_k["converged"] == info_mu["converged"] == 1.0
+    # and they diverge from order 4, or this test would not be exercising the switch at all
+    assert abs(k[4] - mu[4]) > 1e-3 * abs(mu[4])
+
+
+def test_mu4_is_positive_everywhere_a_lorentzians_k4_changes_sign():
+    """F211's finding, planted the way A35 read it: on a pure Lorentzian, `windowed_cumulants`'
+    k4 = mu4 - 3 mu2^2 crosses zero somewhere in the window ladder (a small difference of large
+    numbers), while `windowed_moments`' mu4, an absolute even central moment, cannot. A guard
+    whose plant could pass on the OLD, cumulant-only estimator tests nothing about the switch, so
+    both signs of k4 are asserted and mu4's sign is asserted at every one of them."""
+    y = lorentzian(GRID, 2.0)
+    windows = (1.0, 2.0, 3.0, 5.0, 8.0, 13.0, 21.0)
+    k4s, mu4s = [], []
+    for w in windows:
+        k, _ = windowed_cumulants(GRID, y, w, (2, 4), baseline=None, centre0=0.0)
+        mu, _ = windowed_moments(GRID, y, w, (2, 4), baseline=None, centre0=0.0)
+        k4s.append(k[4]); mu4s.append(mu[4])
+    assert any(v < 0.0 for v in k4s) and any(v > 0.0 for v in k4s), k4s
+    assert all(v > 0.0 for v in mu4s), mu4s
 
 
 def test_windows_inside_the_trace_are_untouched_by_that_guard():

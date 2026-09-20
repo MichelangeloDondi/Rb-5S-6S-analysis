@@ -97,7 +97,7 @@ which is exactly twice the laser frequency the atom sees. Anything expressed
 per-photon (on the "laser axis") carries a `_LASER` suffix in the code. The
 factor of two is a recurring trap (it appears again for the laser linewidth in
 §2.3 and the ruler in §3), so we state it once and never mix silently. The
-natural width, for example, is $\Gamma_\text{nat}=3.4925$ MHz on the transition
+natural width, for example, is $\Gamma_\text{nat}=[3.4925](../rb5s6s/constants.py "ref:constant:GAMMA_NAT_HZ:1e-6")$ MHz on the transition
 axis and would read $1.746$ MHz on the laser axis.
 
 ---
@@ -159,6 +159,9 @@ rb5s6s/   api(the supported entry point: a trace in, a linewidth out)
           kernel_gate(the node gate of the full model: a refusal unless the kernel Monte Carlo's
                     artefact for the waist, beam quality, retro ratio, temperature and power reads
                     PASS against the model's own digest; the depletion factor the fit reads per node)
+          windows(the half-widths this record takes its windowed cumulants at, defined once:
+           the quoted set, the diagnostic set, the surface grid and the legacy set, so a
+           producer reads them from one place and never carries a copy)
           twin_bias(the window surface's one reader: the twin's bias on a windowed statistic per
                     condition, statistic and noise level, with its standard error, raising on a
                     cell the surface does not carry and never interpolating)
@@ -255,7 +258,7 @@ scripts/  import_data (+ annotate_manifest_qc: qc_reason provenance)
           run_geometry_design (the running-wave and waist designs, whose
           weak-field branch reproduces lineshape.stark_ramp_axial_moments)
 data_raw/ MANIFEST.csv, and the 297 traces where the copy carries them
-tests/    4800-test battery (4711 fast ~5 min + 89 `slow` high-statistics
+tests/    5299-test battery (5113 fast ~5 min + 186 `slow` high-statistics
           closure tests via --runslow, incl. the M4d synthetic-β and M4e
           synthetic-κ closures, the MANIFEST qc_reason guards, and the
           docs-consistency gates: canonical numbers, links+anchors, math
@@ -279,8 +282,8 @@ The first six scripts form the pipeline (each reads the previous ones'
 
 ```bash
 python3 -m venv .venv && source .venv/bin/activate
-pip install -e ".[dev]" && pytest -q          # 4711 fast tests (~5 min)
-pytest -q --runslow                           # full 4800 incl. slow closures (what CI runs)
+pip install -e ".[dev]" && pytest -q          # 5113 fast tests (~5 min)
+pytest -q --runslow                           # full 5299 incl. slow closures (what CI runs)
 
 # reproduce every committed CSV, figure, and docs/RESULTS.md from data_raw/
 # (already in git; import_data.py only re-imports from the original tree):

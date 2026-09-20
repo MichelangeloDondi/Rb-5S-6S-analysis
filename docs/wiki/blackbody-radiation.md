@@ -126,7 +126,7 @@ second, so the thermal field empties 6S and does not fill it.
 
 Neither rate depletes the state, and the comparison that shows it is one
 division. The total rate out of 6S is $1/\tau_{6S}$, and
-`constants.TAU_6S_S` holds the measured lifetime, 45.57 ns, so that rate is
+`constants.TAU_6S_S` holds the measured lifetime, [45.57](../../rb5s6s/constants.py "ref:constant:TAU_6S_S:1e9") ns, so that rate is
 $2.19\times10^{7}$ per second. The blackbody transfer above is 44.3 per
 second, which is **two parts in a million** of it. So the thermal field removes
 a negligible fraction of the excited population per lifetime, and the term that

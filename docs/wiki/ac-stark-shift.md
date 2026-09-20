@@ -190,6 +190,33 @@ same-bench measurement. The prediction has not been recomputed against the
 replacement, so it stands at a retired input.
 the private correction record carries both rows and the live figures.
 
+## The quasi-static margin depends on the waist, and it has narrowed (2026-09-19)
+
+The note justifies the quasi-static ramp by separating two timescales: the transit, during which an atom
+sweeps its own shift up and back, against the natural response of 45 nanoseconds. It quotes the transit as
+about 0.2 microsecond, a ratio of 4.5, and calls that "only a few times". **That number was computed at a
+waist the record has left.**
+
+| $w_0$ | transit | transit over natural response |
+|---|---|---|
+| 64 µm | 0.204 µs | 4.5 |
+| 45 µm | 0.144 µs | 3.2 |
+| 42 µm | 0.134 µs | 3.0 |
+| 40 µm | 0.128 µs | 2.8 |
+
+Across the working band taken on 2026-09-17 the ratio falls to 2.8 to 3.2, **a reduction of about a
+third in the very separation the argument rests on**. The argument itself survives, because it turns on a
+change of variables and not on the size of the ratio, but the regime it holds in is tighter than the
+quoted figure implied, and a claim that the quasi-static ramp is safe because the timescales separate is
+quoted with the waist it assumes or not at all.
+
+**And the two approximations weaken together, which is the part worth carrying.** The same move to a
+tighter waist that shrinks this margin also worsens the convolution: the kernel's dependence on the
+mixture variable grows as the beam closes, and the windowed third cumulant is already misstated by about
+a factor of two at every waist the record has examined. So at 40 to 45 micron the composite model rests
+on two approximations that each hold over a narrower range than the surfaces describing them suggest, and
+neither surface said so because both were written at 64.
+
 ## Further reading
 
 - [`../lit/stalnaker2006.md`](../lit/stalnaker2006.md), the nearest prior art,

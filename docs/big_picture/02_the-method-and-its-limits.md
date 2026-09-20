@@ -86,7 +86,7 @@ parameter. The awkward part is how it scales. Focusing the beam tighter raises
 the shift as the square of the inverse spot size, but it raises the saturation
 parameter as the **fourth** power, because the two-photon coupling itself is
 quadratic in the field. So tightening the focus leaves the safe regime twice as
-fast as it gains signal. At the 64 µm spot of the 2025 sitting the parameter is
+fast as it gains signal. At the [64](../../rb5s6s/constants.py "ref:constant:W0_MEASURED_M:1e6") µm spot of the 2025 sitting the parameter is
 0.033 and the square law is safe. At the 16 µm a future sitting proposes it is
 8.5, and the predicted lopsidedness changes by a factor of three
 ([fig24](../../figures/fig24_weak_field_limit.png)).

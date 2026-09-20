@@ -363,7 +363,7 @@ factor.
 The size of it is the problem. In the 313 microkelvin trap of that paper's
 first column the displacement is about seven megahertz, and the spread over a
 sample at one to two hundred microkelvin across the fibre is one to one and a
-half. Against a natural width of 3.493 MHz that is a dominant inhomogeneous
+half. Against a natural width of [3.493](../../rb5s6s/constants.py "ref:constant:GAMMA_NAT_HZ:1e-6") MHz that is a dominant inhomogeneous
 term, not a correction, and a ten millikelvin trap exchanges it for a two hundred
 megahertz displacement with a two to four megahertz spread.
 

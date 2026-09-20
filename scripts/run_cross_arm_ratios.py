@@ -89,6 +89,7 @@ REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO))
 sys.path.insert(0, str(REPO / "scripts"))
 from _producer_lock import take_producer_lock                      # noqa: E402
+from rb5s6s import windows
 from rb5s6s import config as _CFG                                  # noqa: E402
 from rb5s6s import constants as K                                  # noqa: E402
 from rb5s6s.cumulants import windowed_cumulants                    # noqa: E402
@@ -100,7 +101,7 @@ from rb5s6s.lineshape import stark_shift_S0_mhz                    # noqa: E402
 from rb5s6s.pmfmt import pm_cells                                  # noqa: E402
 from rb5s6s.workers import n_workers                               # noqa: E402
 
-WINDOWS = (3.25, 6.0, 12.0)
+WINDOWS = windows.LEGACY      # the pre-2026-09-19 set, named once (rb5s6s/windows.py); this producer is historical
 MAIN_WINDOW = 6.0
 STRIP = (30.0, 40.0)          # the baseline strips, MHz from the centre, each side
 N_FULL, N_HALF = 4001, 2001

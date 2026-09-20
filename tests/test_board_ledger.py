@@ -36,6 +36,7 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import re
 import os
 import pathlib
 import subprocess
@@ -877,6 +878,35 @@ def test_the_delta_hatch_covers_the_post_round_delta(bl, repo):
         (repo / ".board_ledger.jsonl").read_text().splitlines()[-1])
     assert row["delta_from"] == round_tree
     assert "1 file" in row["diff_scale"]
+
+
+def test_a_shipped_post_board_delta_above_the_ceiling_is_recorded_not_refused(bl, repo):
+    """The rule of 2026-09-14: a tree that moved after the board commits on its own floor and
+    its delta is derived, never argued for. A pending delta naming the boarded tree, whose commit
+    is already in history, is RECORDED whatever its file count; the ceiling still refuses an
+    unshipped hatch of the same size (the test above)."""
+    for n in "abcd":
+        (repo / f"{n}.txt").write_text(n)
+    _run(repo, "add", "-A")
+    _point_at(bl, repo)
+    bl.begin(FULL, expect=0)
+    round_tree = bl.staged_tree()
+    bl.record(FULL, CONFIRMS)
+    for n in "abcdefgh":                      # eight files past the round, well over the ceiling
+        (repo / f"{n}.txt").write_text(n + "2")
+    _run(repo, "add", "-A")
+    _run(repo, "commit", "-q", "-m", "eight files, all past the round")
+    (repo / ".ci_gate_verdict").write_text("FAIL 1\n")
+    (repo / "private").mkdir(exist_ok=True)
+    (repo / "private" / ".pending_delta").write_text(f"{round_tree}\t{bl.staged_tree()}\n")
+    bl.declare_gate_covered("HEAD", "probe", delta_from=round_tree)
+    import json as _json
+    row = _json.loads((repo / ".board_ledger.jsonl").read_text().splitlines()[-1])
+    assert row["delta_from"] == round_tree
+    # -A sweeps the fixture's ledger and verdict files in too, so the count is read, not typed
+    n_files = int(re.search(r"(\d+) files? changed", row["diff_scale"]).group(1))
+    assert n_files > bl.GATE_COVERED_FILE_CEILING, row["diff_scale"]
+    assert not (repo / "private" / ".pending_delta").is_file()
 
 
 def test_the_delta_hatch_refuses_an_unread_tree(bl, repo):

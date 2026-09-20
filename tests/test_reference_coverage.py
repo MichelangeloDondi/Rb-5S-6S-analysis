@@ -212,6 +212,28 @@ def _counts() -> dict[str, int]:
     # caught by reading the instrument after. The rule that survives:
     # the note is written in a separate step after the output prints,
     # never alongside the command that produces it.)
+    # Re-seeded 2026-09-19 (F147, owner order O32 in the guided geometry), movement
+    # pasted from the instrument after it printed:
+    #   docs/notes/guided_mode_two_photon_design.md: 324 -> 321
+    # the note's three light-shift-ceiling rows were withdrawn, one of them the
+    # inline reference to the retired `proj_guided_power_ceiling` row. A fall.
+    # Re-seeded again 2026-09-19 for a NEW page, movement pasted from the instrument after it
+    # printed:
+    #   docs/methods/11_the_window_limits.md: ADDED -> 6
+    # the six are the page's section numbers 11.1 to 11.5 and its chapter number; the page
+    # quotes no measured decimal until its artefacts are tracked results (F148).
+    # Re-seeded again 2026-09-19 on the same page, movement pasted from the instrument after it
+    # printed:
+    #   docs/methods/11_the_window_limits.md: 6 -> 13
+    # the page gained section 11.6 and the cumulant algebra of 11.1; the seven new decimals are a
+    # section number and the rect window's own coefficients, which are derived in the page itself
+    # (2/15, 16/63, 8/175, 2/5) and belong to no committed cell. A RISE, and its reason.
+    # Re-seeded once more 2026-09-19 after the C3 physics chair's repairs, movement pasted from the
+    # instrument after it printed:
+    #   docs/methods/11_the_window_limits.md: 13 -> 15
+    # the two are the counts in the k4 crossing's own distribution (22 of 32 conditions at one
+    # interval, 10 at the other), which are measured on a cache artefact and belong to no committed
+    # cell until the surface is a tracked result. A RISE, and its reason.
     # Re-seeded 2026-08-31 across the board-2 fix wave. Measured against
     # HEAD, every moved key (the two blocks this replaces described the
     # movement from intention and got both the direction and the

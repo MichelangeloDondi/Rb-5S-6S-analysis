@@ -114,15 +114,15 @@ def test_it_emits_the_model_first_and_files_the_prompt(tmp_path):
     repo = _repo(tmp_path)
     tree = _tree(repo)
     _marker(repo, tree, ["physics", "rules", "concision"], opus=["rules"])
-    # THE PHYSICS CHAIR IS FABLE AND EVERY OTHER SEAT IS OPUS 5 OR SONNET 5 PER ROUND BY THE
-    # METRICS (owner, 2026-09-16 evening: "let the metrics talk"), so the expected model of a
-    # non-physics seat is the chooser's own answer in this copy, read through the same module
-    # the emitter imports, never a constant typed here.
+    # THE PHYSICS CHAIR IS OPUS 5 AND EVERY OTHER SEAT IS SONNET 5 (owner, 2026-09-19), and the
+    # expected model of EVERY seat is the chooser's own answer in this copy, read through the same
+    # module the emitter imports, never a constant typed here: the constant this test carried for
+    # the physics seat outlived two changes of the rule.
     import importlib.util
     _spec = importlib.util.spec_from_file_location("_seat_metrics_copy", repo / "private" / "checks" / "seat_metrics.py")
     _sm = importlib.util.module_from_spec(_spec); _spec.loader.exec_module(_sm)
     for seat in ("physics", "rules", "concision"):
-        model = "fable" if seat == "physics" else _sm.choose(seat)[0]
+        model = _sm.choose(seat)[0]
         assert model in ("fable", "opus", "sonnet")
         r = _run(repo, seat)
         assert r.returncode == 0, r.stderr

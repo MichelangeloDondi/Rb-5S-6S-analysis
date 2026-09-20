@@ -12,7 +12,7 @@ pages: 015004
 year: 2011
 doi: 10.1088/0953-4075/44/1/015004
 arxiv: null
-pdf: PDF_papers/Schmidt_2011_J._Phys._B__At._Mol._Opt._Phys._44_015004.pdf
+pdf: PDF_papers/Schmidt_2011_van-der-Waals-atom-metal-dielectric-nanosphere.pdf
 held: true
 status: VERIFIED
 routing:

@@ -17,14 +17,27 @@ as a bound. Concretely:
   ramp at zero, and the shared ramp coefficient of the width-versus-power
   fit rails at zero, so the ramp is a component the record bounds rather
   than one these fits resolve. The beam waist
-  is **a convention taken from the apparatus lineage**: 64 µm, the value
+  is **a convention taken from the apparatus lineage**: [64](../../rb5s6s/constants.py "ref:constant:W0_MEASURED_M:1e6") µm, the value
   [Rajasree 2020](../lit/rajasree2020thesis.md) reprints from Nieddu's profile of the
   predecessor laser, through the same f = 150 mm lens and retro geometry and without
   this beam's 3 mm modulator bore. The 32 µm figure this
   work started from was a Gaussian-optics estimate that cannot account for how
   much of the beam the 3 mm EOM aperture removed, and transit physics excludes
   it. Residual clipping and imperfect retro overlap both push the *effective*
-  waist above 64 µm, so the working band is 62–68 µm and ρ = 0.94 ± 0.04.
+  waist above [64](../../rb5s6s/constants.py "ref:constant:W0_MEASURED_M:1e6") µm, so that reading gave a 62–68 µm band with ρ = 0.94 ± 0.04.
+
+  **That band no longer stands.** The working region since 2026-09-17 is **40 to 45 µm**, on the
+  reading that the beam is clipped by the 3 mm modulator bore and carries M² greater than one,
+  both of which the [64](../../rb5s6s/constants.py "ref:constant:W0_MEASURED_M:1e6") µm lineage value predates. Every number on this page that is conditional
+  on the waist is therefore conditional on a region this page no longer names, and the
+  conditional statements stand while their conditioning value has moved.
+
+  **And the waist cannot be recovered from the line.** Closed on synthetic traces at three noise
+  levels on 2026-09-19, the estimator carries a structural offset of about +0.32 µm that appears
+  with any noise, saturates immediately, and survives the removal of its prior, so it is not a
+  regularisation artefact and it may not be subtracted. The consequence for this page is direct:
+  **a direct beam-waist measurement is load-bearing and not merely desirable**, and no
+  twin-subtracted waist is quoted anywhere in this record.
   Derived in [the lineshape chapter](../methods/02_the_lineshape.md) and
   assembled in [the composite model](../methods/04_the_composite_model.md).
 - **The width channel returns the differential polarizability itself, and it
