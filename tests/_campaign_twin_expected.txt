@@ -5,17 +5,17 @@ CHECK 3 blackbody: 0.161 kHz at 130 C against MHz widths -> negligible = True
 
 CHECK 2 one-range dither at the dim rung: 2.46 (2025 measured 0.99 at a 1.0x-snug range; this twin ranges at 1.25x, usable above ~0.9)
 CHECK 4 the centre channel (M21 says it cannot measure the pull):
-           injected kappa 1.547 -> centres recover 1.931 +/- 2.386 over 5 seeds, spanning -0.20 to 5.60
-           each world quoted only +/-0.685, so the per-world error understates the scatter by 3.5x
+           injected kappa 1.547 -> centres recover 1.840 +/- 2.413 over 5 seeds, spanning -0.24 to 5.63
+           each world quoted only +/-0.682, so the per-world error understates the scatter by 3.5x
            -> the channel's own error bar is not trustworthy, M21 confirmed = True
-           null world: -0.843 +/- 3.084 (0.3 sigma) -> null stays null = True
+           null world: -0.859 +/- 3.099 (0.3 sigma) -> null stays null = True
            the bound construction of record is the joint width likelihood over 172 traces, not this channel
 
 CHECK 1 pumping signature in the amplitude ratios (vs shares, ref 4192):
-           4121: fitted deviation 0.804, pumping predicts 0.802 -> agrees
-           4154: fitted deviation 0.859, pumping predicts 0.839 -> agrees
+           4121: fitted deviation 0.805, pumping predicts 0.802 -> agrees
+           4154: fitted deviation 0.857, pumping predicts 0.839 -> agrees
            4192: fitted deviation 1.000, pumping predicts 1.000 -> agrees
-           4207: fitted deviation 1.056, pumping predicts 1.043 -> agrees
+           4207: fitted deviation 1.055, pumping predicts 1.043 -> agrees
            orderings do NOT flip at these cycle counts; the signature is this deviation pattern, and it holds
 
 VERDICT: PASS. The twin confirms the record against itself: the pumping signature appears in the amplitude ratios, the centre channel cannot see the pull exactly as M21 states, the null does not false-alarm, one vertical range stays dithered at the dim rung, and blackbody is negligible where the boundary model says it is.

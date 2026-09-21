@@ -50,6 +50,11 @@ import numpy as np
 from rb5s6s import cascade
 from rb5s6s.stark import kappa_pred_per_watt  # noqa: E402  (SSOT: one predicted coefficient)
 from rb5s6s import constants as C
+# RESULTS_DIR LIVES IN config, NOT constants (2026-09-20). It is redirectable through
+# RB5S6S_RESULTS_DIR so the suite never writes the committed tree, which is why it cannot be
+# a constant and cannot be joined to a root by hand. `CFG.RESULTS_DIR` raised AttributeError
+# here and took the twin example, and the gate cell that runs it, down with it.
+from rb5s6s import config as CFG
 from rb5s6s import blackbody
 from rb5s6s import stark
 from rb5s6s.amplitudes import predicted_shares
@@ -78,7 +83,7 @@ SIGMA_LASER_MHZ = 1.6
 # helium or neon coefficient. It is the record's OWN fitted constant Lorentzian, read from its committed
 # cell and never typed, and it is quoted with the span its note demands.
 _KB = {r[0]: r[1] for r in __import__("csv").reader(
-    (C.RESULTS_DIR / "kernel_budget.csv").open(encoding="utf-8"))}
+    (CFG.RESULTS_DIR / "kernel_budget.csv").open(encoding="utf-8"))}
 GAMMA_L_MHZ = float(_KB["gamma_l_weighted_mean"])          # span 0.315 to 0.449, per that row's own note
 del _KB
 TRANSIT_FWHM_MHZ = C.transit_fwhm_from_w0(C.W0_MEASURED_M, T_C=130.0)
