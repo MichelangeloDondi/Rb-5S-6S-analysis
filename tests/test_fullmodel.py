@@ -7,6 +7,8 @@ record has hit twice (`stark.COMPANIONS` unwired, `tooth_of` unthreaded).
 """
 from __future__ import annotations
 
+import re
+
 import numpy as np
 import pytest
 
@@ -225,11 +227,11 @@ def test_the_ultra_joint_statistics_carry_the_shift_free_ratios():
     from rb5s6s.fullmodel import ultra_joint_statistics
     grid = np.linspace(-60, 60, 120001)
     s = ultra_joint_statistics(grid, **B)
-    assert any(k.startswith("k5/k3@") for k in s)
-    assert any(k.startswith("k7/k5@") for k in s)
+    assert any(k.startswith("diag_k5/mu3@") for k in s)   # A93: outside the vector, under its own prefix
+    assert any(k.startswith("mu7/mu5@") for k in s)
     # k5/k3 is shift-free: move S0 and the ratio must barely move
-    a = ultra_joint_statistics(grid, **{**B, "s0": S0})["k5/k3@6"]
-    b = ultra_joint_statistics(grid, **{**B, "s0": 2.0})["k5/k3@6"]
+    a = ultra_joint_statistics(grid, **{**B, "s0": S0})["diag_k5/mu3@6"]
+    b = ultra_joint_statistics(grid, **{**B, "s0": 2.0})["diag_k5/mu3@6"]
     assert abs(b / a - 1.0) < 0.10, (a, b)
     assert a < 0, a                       # and opposite in sign to k3
 
@@ -239,10 +241,12 @@ def test_the_joint_likelihood_refuses_an_empty_comparison():
     fit. That is the shrinking-population failure this record keeps finding."""
     from rb5s6s.fullmodel import ultra_joint_nll
     grid = np.linspace(-40, 40, 8001)
+    # THE KEY MUST EXIST IN THE MODEL or this passes for the wrong reason: the refusal under test is
+    # a ZERO SIGMA, not a missing name, and a retired key would trip the missing-name branch instead.
     with pytest.raises(ValueError, match="no statistic was comparable"):
-        ultra_joint_nll({"k3@6": 1.0}, {"k3@6": 0.0}, grid, **B)
-    obs = {"k3@6": 1e-4}
-    assert ultra_joint_nll(obs, {"k3@6": 1e-5}, grid, **B) >= 0.0
+        ultra_joint_nll({"mu3@6": 1.0}, {"mu3@6": 0.0}, grid, **B)
+    obs = {"mu3@6": 1e-4}
+    assert ultra_joint_nll(obs, {"mu3@6": 1e-5}, grid, **B) >= 0.0
 
 
 def test_aic_bic_reproduce_the_grids_own_preference_for_the_cusp():
@@ -415,14 +419,17 @@ def test_the_widened_orders_reproduce_the_retired_tuple_exactly():
     wide = ultra_joint_statistics(grid, **B)
     # the retired tuple still yields its two shift-free ratios at every window
     for w in ("3.25", "6", "12"):
-        assert f"k5/k3@{w}" in old and f"k7/k5@{w}" in old
+        assert f"mu5/mu3@{w}" in old and f"mu7/mu5@{w}" in old
     # and every key it returns survives the widening, bit for bit
     assert set(old) <= set(wide)
     for k, v in old.items():
         assert wide[k] == v, k
     # the widening is not a no-op: the even ratios appear and could not before
-    assert {"k4/k2@6", "k6/k4@6", "k8/k6@6"} <= set(wide)
-    assert len(wide) == 42 and len(old) == 18
+    assert {"mu4/mu2@6", "mu6/mu4@6", "mu8/mu6@6"} <= set(wide)
+    # the diagnostics are NOT vector members and are excluded from its count (A72, A93)
+    wide_v = {k for k in wide if not k.startswith("diag_")}
+    old_v = {k for k in old if not k.startswith("diag_")}
+    assert len(wide_v) == 42 and len(old_v) == 18
 
 
 def test_the_likelihood_carries_the_odd_ladder_and_refuses_only_what_has_no_moment():
@@ -451,7 +458,9 @@ def test_the_likelihood_carries_the_odd_ladder_and_refuses_only_what_has_no_mome
     B = dict(gamma_coll=0.55, sigma_laser_fwhm=1.6, transit_fwhm=0.9575,
              gamma_l=0.40, s0=S0, peak="4192", T_C=110.0)
     r = ultra_joint_covariance(grid, n_real=120, tau_int=2.515, **B)
-    order_of = lambda k: int(k[1:k.index("@")])            # noqa: E731
+    order_of = lambda k: int(re.match(r"[a-z]+(\d+)@", k).group(1))   # noqa: E731
+    # THE PREFIX IS NO LONGER ONE LETTER (O33, A72): the vector is mu2..mu8, so a parser that
+    # strips a single character reads "u2" and raises. It is read by pattern, not by position.
 
     # EVERY cumulant is in the likelihood, both parities
     in_like = {order_of(k) for k in r["admitted"] if "/" not in k}
@@ -618,3 +627,20 @@ def test_a_ratio_is_admitted_against_a_floor_and_not_against_exact_zero():
     # and without order 2 the window half-width is the scale, never exact zero
     assert not _ratio_admitted({3: 1e-18}, 3, 6.0)
     assert _ratio_admitted({3: 1.0}, 3, 6.0)
+
+
+def test_a_ratio_whose_denominator_no_row_holds_is_refused_by_name():
+    """CRITICAL 1 (2026-09-20, verified 2026-09-21), planted both ways through the function the
+    real path calls: the old spelling `diag_k5/k3@6` names a denominator no replica row holds and
+    must RAISE; the respelled `diag_k5/mu3@6` is graded; a genuine sign flip is counted; and
+    `ultra_joint_covariance` really calls the helper, so the plant grades the real path."""
+    import inspect
+    from rb5s6s.fullmodel import sign_flip_denominators, ultra_joint_covariance
+    rows = [{"mu3@6": 1.0, "mu5@6": 2.0}, {"mu3@6": 1.1, "mu5@6": 2.2}, {"mu3@6": 0.9, "mu5@6": 1.8}]
+    with pytest.raises(KeyError, match=r"names a denominator 'k3@6' that no replica row holds"):
+        sign_flip_denominators(["diag_k5/k3@6"], rows)                     # the defect's own shape
+    assert sign_flip_denominators(["diag_k5/mu3@6", "mu5@6"], rows) == {"diag_k5/mu3@6": 0}
+    flipped = [dict(r) for r in rows]
+    flipped[1]["mu3@6"] = -1.0
+    assert sign_flip_denominators(["diag_k5/mu3@6"], flipped) == {"diag_k5/mu3@6": 1}
+    assert "sign_flip_denominators(keys, rows)" in inspect.getsource(ultra_joint_covariance)

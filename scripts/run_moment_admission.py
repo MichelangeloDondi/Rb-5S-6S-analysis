@@ -36,6 +36,7 @@ information, which is the direction that flatters.
 STATUS. Every row is a twin measurement about what the archive's data COULD
 support, not a fit to the 2025 traces, so every row is DIAGNOSTIC.
 """
+import re
 import csv
 import os
 import sys
@@ -69,6 +70,20 @@ N_REAL = 600
 N_REAL_SWEEP = (600, 1200, 4000)
 SNR_FLOOR = 3.0
 ROLE = "p_sweep"          # the arm this producer loads its noise law for
+
+
+def _order_of(key: str) -> int:
+    """The moment or cumulant ORDER in a vector key, whatever the prefix spells.
+
+    `k[1:k.index("@")]` assumed a ONE-CHARACTER prefix and broke the day the vector moved from
+    `k2@13` to `mu2@13` (O33): it returned "u2" and int() raised, taking this producer and the
+    gate's freshness cell down with it. The order is the digits before the window, so read the
+    digits rather than slicing past a prefix whose length is a naming decision.
+    """
+    m = re.match(r"[A-Za-z]+(\d+)", key)
+    if not m:
+        raise ValueError(f"no order in vector key {key!r}")
+    return int(m.group(1))
 
 
 def _power_arm_traces() -> int:
@@ -179,8 +194,8 @@ def main() -> int:
             f"it reaches {pooled:.4g}.{se_txt}",
             "DIAGNOSTIC"])
 
-    even = sorted({int(k[1:k.index("@")]) for k in snr_adm if "/" not in k})
-    odd = sorted({int(k[1:k.index("@")]) for k in r["keys"]
+    even = sorted({_order_of(k) for k in snr_adm if "/" not in k})
+    odd = sorted({_order_of(k) for k in r["keys"]
                   if "/" not in k and k not in snr_adm})
     out.append(["admitted_orders", "", ",".join(map(str, even)), "",
                 "the orders clearing the SNR floor at every window. A "
@@ -190,7 +205,7 @@ def main() -> int:
                 "the orders below that floor at every window. The split is "
                 "exactly by parity and that is the result. They are IN the "
                 "likelihood all the same, per owner order O17", "DIAGNOSTIC"])
-    in_like = sorted({int(k[1:k.index("@")]) for k in admitted if "/" not in k})
+    in_like = sorted({_order_of(k) for k in admitted if "/" not in k})
     out.append(["orders_in_likelihood", "", ",".join(map(str, in_like)), "",
                 "the orders the ultra-joint likelihood carries: every one, "
                 "because a likelihood weights a noisy statistic by its own "
@@ -221,16 +236,37 @@ def main() -> int:
                     "docstring or a page cites it instead of restating it",
                     "DIAGNOSTIC"])
 
+    # THE DENOMINATORS ARE CELLS, NEVER PROSE (CRITICAL 2, 2026-09-20). Two wiki pages published
+    # "36 of 42 enter" with the 36 ref-tagged and the 42 bare: the 42 is the VECTOR (every key not
+    # under the diag_ prefix), the 45 is the vector plus the three diagnostics that enter no
+    # likelihood, and the admitted count over each is a different number. Each population is
+    # written as its own cell so a sentence can bind the pair it means and the next basis change
+    # cannot leave a stale count in prose.
+    vector = [k for k in r["keys"] if not k.startswith("diag_")]
+    adm_vector = [k for k in r["admitted"] if not k.startswith("diag_")]
+    even = [k for k in vector if _order_of(k) % 2 == 0]
+    out.append(["n_statistics", "", str(len(r["keys"])), "",
+                "every statistic the producer emits over three windows, the diagnostics included",
+                "DIAGNOSTIC"])
+    out.append(["n_vector", "", str(len(vector)), "",
+                "the statistics that ENTER the likelihood: n_statistics minus the diag_ rows, which "
+                "enter none by construction", "DIAGNOSTIC"])
+    out.append(["n_even", "", str(len(even)), "", "even-order members of the vector", "DIAGNOSTIC"])
+    out.append(["n_odd", "", str(len(vector) - len(even)), "", "odd-order members of the vector",
+                "DIAGNOSTIC"])
+    out.append(["n_admitted_vector", "", str(len(adm_vector)), "",
+                f"of the {len(vector)} that enter the likelihood, admitted on having a population "
+                "moment. This is the pair a sentence about the LIKELIHOOD binds", "DIAGNOSTIC"])
     out.append(["n_admitted", "", str(len(r["admitted"])), "",
-                f"of {len(r['keys'])} statistics over three windows, admitted "
-                f"on having a population moment. The retired SNR floor would "
+                f"of {len(r['keys'])} statistics over three windows, the diagnostics included, "
+                f"admitted on having a population moment. The retired SNR floor would "
                 f"have taken {len(snr_adm)}", "DIAGNOSTIC"])
     er_v, er_e = pm_cells(float(r["effective_rank"]), er_spread)
     out.append(["effective_rank_admitted", "", er_v, er_e,
                 "participation ratio of the admitted correlation matrix: the "
-                "admitted set carries about three independent numbers and "
-                "not its column count. The uncertainty is the spread over "
-                f"realisation counts of {N_REAL_SWEEP}", "DIAGNOSTIC"])
+                f"admitted set carries about {float(r['effective_rank']):.0f} independent numbers "
+                f"and not its column count of {len(r['admitted'])}. The uncertainty is the spread "
+                f"over realisation counts of {N_REAL_SWEEP}", "DIAGNOSTIC"])
     era_v, era_e = pm_cells(float(r["effective_rank_all"]), era_spread)
     out.append(["effective_rank_all", "", era_v, era_e,
                 "the same over every statistic including the refused ones. "

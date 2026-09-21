@@ -759,12 +759,12 @@ the spread is a floor on the mean that was realised, which is admission by the
 data. What is refused now is a statistic with no population moment, a statement
 about its distribution and not about its size, and on this archive that is
 exactly the odd ratios, whose denominators change sign from replica to replica:
-[33](../../results/moment_admission.csv "ref:moment_admission:n_admitted:") of 42 enter, with every cumulant
+[33](../../results/moment_admission.csv "ref:moment_admission:n_admitted_vector:") of the [42](../../results/moment_admission.csv "ref:moment_admission:n_vector:") that enter the likelihood are admitted, with every cumulant
 `k2` through `k9` among them. The
 second cumulant at the six-megahertz window carries
-[2485](../../results/moment_admission.csv "ref:moment_admission:snr_k2:6") per
+[2485](../../results/moment_admission.csv "ref:moment_admission:snr_mu2:6") per
 trace. The third carries
-[0.04850](../../results/moment_admission.csv "ref:moment_admission:snr_k3:6"),
+[0.04850](../../results/moment_admission.csv "ref:moment_admission:snr_mu3:6"),
 and it is carried at that weight, not dropped. `k5/k3`, `k7/k5` and
 `k9/k7` are the ones genuinely refused, at every window, because a denominator
 that changes sign leaves the ratio with no mean to be weighted against.
@@ -776,13 +776,13 @@ a joint fit inverts the answer -- is an argument about an average and not about 
 likelihood, which is where it was being applied.
 
 Two things follow that a rank count hides. The admitted set carries about
-[5.46](../../results/moment_admission.csv "ref:moment_admission:effective_rank_admitted:")
-independent numbers and not thirty-three, so "three equations or one equation
-three times" is answered, and the answer is nearer five. It was 2.85 while the
+[6.80](../../results/moment_admission.csv "ref:moment_admission:effective_rank_admitted:")
+independent numbers and not [33](../../results/moment_admission.csv "ref:moment_admission:n_admitted_vector:"), so "three equations or one equation
+three times" is answered, and the answer is nearer seven than three. It was 2.85 while the
 floor refused the odd ladder, so carrying that ladder buys information and does
 not merely add columns, which is the test a change like this has to pass. And the same measure
 over every statistic including the refused ones reads
-[8.42](../../results/moment_admission.csv "ref:moment_admission:effective_rank_all:")
+[11.27](../../results/moment_admission.csv "ref:moment_admission:effective_rank_all:")
 which is higher, because pure noise is nearly full rank. Quoting that one as the
 information content is the trap this page would otherwise set.
 

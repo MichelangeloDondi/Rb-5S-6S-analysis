@@ -18,7 +18,8 @@ doi: 10.1103/PhysRevLett.109.243003
 arxiv: '1208.4291'
 pdf: PDF_papers/Herold_2012_5s-6p-matrix-elements-light-shift-cancellation.pdf
 held: true
-status: REPORTED
+status: VERIFIED
+audit: ../../../PhD-Thesis/private/lit_audits_2026-09-21/herold2012.md  # every claim checks against the held PDF, 2026-09-21. the paper prints 0.3236(9) where rb5s6s/polarizability.py carries 0.3235 (T0aq)
 routing:
   - FEED
 verify_flags:
@@ -36,7 +37,7 @@ verify_flags:
     introduction and the start of the experimental section (through the
     polarization-cancellation procedure) have been read, not the fit or the
     uncertainty budget that produced the final two numbers.'
-verified_date: null
+verified_date: 2026-09-21
 summary: >
   Source of the 5S to 6P reduced dipole matrix elements
   rb5s6s/polarizability.py uses, 0.3235(9) and 0.5230(8) ea0 for 5s-6p1/2 and

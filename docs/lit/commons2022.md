@@ -23,7 +23,7 @@ routing:
   - CITE
 verify_flags:
   - 'the arXiv v1 of 11 May 2022 is held, only the abstract and the first introduction paragraph were read'
-verified_date: 2026-09-13
+verified_date: null
 summary: >
   Up- against down-chirp asymmetry of the optical response in chirped
   saturated-absorption spectroscopy of an atomic vapour, treated

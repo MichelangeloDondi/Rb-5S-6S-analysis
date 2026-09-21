@@ -49,7 +49,7 @@ section: unsorted
 | number of ions in the string | 5 | p. 1, abstract |
 | rf trap drive | 600 V peak-peak, 3.894 MHz | p. 1 |
 | radial trap frequency | about 2 pi x 550 kHz | p. 1 |
-| axial trap frequency | about 2 pi x 350 kHz | p. 1 |
+| axial trap frequency | about 2 pi x 50 kHz (corrected 2026-09-21 against the PDF's page 1, which prints 2 pi x 550 kHz radial and 2 pi x 50 kHz axial; the note carried 350) | p. 1 |
 | oven temperature (Ca source) | 420 C | p. 1 |
 | chamber pressure at load / after 1 h | 6.0e-11 Torr / about 3.6e-11 Torr | p. 1 |
 | Doppler-cooling transition and power | 4s 2S1/2 -> 4p 2P1/2 at 397 nm, about 15 mW | p. 1 |

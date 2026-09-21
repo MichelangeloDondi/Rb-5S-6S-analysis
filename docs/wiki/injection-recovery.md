@@ -321,4 +321,30 @@ square of the noise scale and the measured growth is far slower, +0.80 where the
 The offset is carried as OPEN, its coverage read at 0 of 4 and 1 of 4 against a nominal 0.68, and no
 twin-subtracted waist is quoted, which is the one clause above that still holds.
 
+### The closure at 42.3 µm (2026-09-20)
+
+Two cells, run at the injected truth the campaign band names, with the profile read from the grid itself
+and not from a recorded artefact.
+
+| conditions | noise | recovered | bias |
+|---|---|---|---|
+| 1 | 0 | 42.3140 µm | +0.014 µm |
+| 1 | 0.3x the law | 42.7164 µm | +0.42 µm |
+| 4 | 0 | 42.3127 µm | +0.013 µm |
+
+Every one of these has an interior minimum, so the estimator locates a waist inside the grid at this
+truth and does not run to an edge.
+
+The prior's pull is the term to watch here, and it is large. The same noiseless cell at four conditions
+returns 43.3272 µm when the objective's prior is left centred elsewhere, a bias of +1.03 µm, against
++0.013 µm when it is centred on the truth. At zero noise the data term is about 5e-25 either way,
+so the whole of that displacement is the prior locating the minimum where the data does not. A closure
+scored without that centring measures the prior and not the estimator.
+
+The 0.3x profile is also numerically shallow. Its objective sits near 3.9e6 at one condition while
+the total variation across 40 to 56 µm is about 167, so the waist signal is around 4e-5 of the
+baseline. The constant is the log-determinant, which the record's own rule keeps out of the noiseless
+rung and admits here. A minimum that shallow relative to its own baseline is the part of this closure
+most likely to stop being locatable as conditions are added, and it is where the next diagnosis goes.
+
 [← The profile likelihood](profile-likelihood.md) · *Statistical inference, 8 of 9* · [Preregistration →](preregistration.md)

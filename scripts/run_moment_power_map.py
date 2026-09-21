@@ -54,7 +54,10 @@ from rb5s6s import windows
 from rb5s6s import config as C                                    # noqa: E402
 from rb5s6s.lineshape import RAMP_SIDE                             # noqa: E402  (O27)
 from rb5s6s.forecast import build_world_trace                      # noqa: E402
-from rb5s6s.cumulants import windowed_cumulants                     # noqa: E402
+# MOMENTS, NOT CUMULANTS (owner order O33, A72). At orders 5 and 7 a cumulant is a difference
+# of large terms and carries a cancellation the moment does not; below fourth order the two are
+# identical (k2 = mu2, k3 = mu3 exactly), so switching changes only where it should.
+from rb5s6s.cumulants import windowed_moments                     # noqa: E402
 from rb5s6s.qc import median_standard_error                        # noqa: E402
 
 OUT = C.RESULTS_DIR / ("moment_power_map_deep.csv" if os.environ.get("RB5S6S_MPM_DEEP")
@@ -145,7 +148,7 @@ WRONG_SIGN_MAX = 0.35
 
 def windowed_orders(y, w, grid, orders=ORDERS):
     """Every order from ONE centring through the package estimator
-    (`rb5s6s.cumulants.windowed_cumulants`): the window recentred until it
+    (`rb5s6s.cumulants.windowed_moments`): the window recentred until it
     stops moving, the pedestal removed from the trace's own far wings, the
     window started at the line's position rather than the trace's maximum.
     An unconverged fixed point returns NaN for every order. The copy this
@@ -153,7 +156,7 @@ def windowed_orders(y, w, grid, orders=ORDERS):
     which converged at this producer's bright fixed power on the wide windows
     and not on the narrow ones (the top rung at a 3.25 MHz half-window moved by
     two of its own standard errors between twenty and eighty passes)."""
-    v, info = windowed_cumulants(grid, y, w, orders, centre0=0.0)
+    v, info = windowed_moments(grid, y, w, orders, centre0=0.0)
     if not info["converged"]:
         return {o: float("nan") for o in orders}
     return v

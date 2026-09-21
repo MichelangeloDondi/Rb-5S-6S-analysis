@@ -15,7 +15,8 @@ doi: 10.1103/PhysRevA.106.052812
 arxiv: '2208.12805'
 pdf: PDF_papers/Stewart_2022_Rb-Rb-C6-quantum-diffractive-collision-universality.pdf
 held: true
-status: REPORTED
+status: VERIFIED
+audit: ../../../PhD-Thesis/private/lit_audits_2026-09-21/stewart2022.md  # line-by-line against the held PDF, 2026-09-21. the two-bracket caption (statistical, systematic) confirmed on the page
 routing:
   - CITE
 verify_flags:
@@ -26,7 +27,7 @@ verify_flags:
     no journal reference or DOI on the pages read. The journal, volume, page and DOI above are
     the published record, confirmed via the APS journals listing (journals.aps.org) on
     2026-09-20: Phys. Rev. A 106, 052812 (2022).
-verified_date: null
+verified_date: 2026-09-21
 summary: >
   A UBC Madison-group measurement of the ground-state Rb-Rb van der Waals coefficient, C6 =
   4688(198)(95) atomic units, obtained from the trap-depth dependence of collisional loss in a
@@ -70,8 +71,7 @@ universality already underlies a self-calibrating, atom-based vacuum-pressure st
 **This paper's contribution.** Rather than use the universal function to infer a pressure from
 a known C6, the paper runs the inference the other way: it measures the trapped-Rb loss rate
 as a function of trap depth in a controlled background gas, fits the universal function, and
-extracts ⟨σ_tot v⟩ and hence C6 for the Rb-Rb pair itself (the trapped atoms colliding with
-each other, effectively probing the ground-state Rb2 potential's leading dispersion term).
+extracts ⟨σ_tot v⟩ and hence C6 for the Rb-Rb pair itself (the trapped ⁸⁷Rb atoms colliding with the room-temperature background Rb gas, both isotopes. Intra-trap collisions between trapped atoms are the systematic the method removes, not the signal, corrected 2026-09-21 against the PDF).
 
 **The result.** C6 = 4688(198)(95) E_h a0^6, stated to be "in excellent agreement with
 predictions based upon ab initio calculated and previously measured C6 values" (p. 1,

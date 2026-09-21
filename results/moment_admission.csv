@@ -1,58 +1,66 @@
 quantity,window_mhz,value,err,note,status
-snr_k2,3.25,2647,76,"ADMITTED by the likelihood, ABOVE the retired SNR floor of 3. Mean 2.7526, per-trace sd 0.00104. Pooled over 101 traces it reaches 2.661e+04.",DIAGNOSTIC
-snr_k3,3.25,0.03030,0.00087,"ADMITTED by the likelihood, BELOW the retired SNR floor of 3. Mean 5.26952e-05, per-trace sd 0.001739. Pooled over 101 traces it reaches 0.3045.",DIAGNOSTIC
-snr_k4,3.25,776,22,"ADMITTED by the likelihood, ABOVE the retired SNR floor of 3. Mean -7.00667, per-trace sd 0.009025. Pooled over 101 traces it reaches 7802.",DIAGNOSTIC
-snr_k5,3.25,0.03017,0.00087,"ADMITTED by the likelihood, BELOW the retired SNR floor of 3. Mean -0.000875658, per-trace sd 0.02902. Pooled over 101 traces it reaches 0.3032.",DIAGNOSTIC
-snr_k6,3.25,451,13,"ADMITTED by the likelihood, ABOVE the retired SNR floor of 3. Mean 88.6999, per-trace sd 0.1965. Pooled over 101 traces it reaches 4537.",DIAGNOSTIC
-snr_k7,3.25,0.03028,0.00087,"ADMITTED by the likelihood, BELOW the retired SNR floor of 3. Mean 0.0274078, per-trace sd 0.9053. Pooled over 101 traces it reaches 0.3043.",DIAGNOSTIC
-snr_k8,3.25,323.8,9.3,"ADMITTED by the likelihood, ABOVE the retired SNR floor of 3. Mean -2542.63, per-trace sd 7.852. Pooled over 101 traces it reaches 3254.",DIAGNOSTIC
-snr_k9,3.25,0.03030,0.00087,"ADMITTED by the likelihood, BELOW the retired SNR floor of 3. Mean -1.41802, per-trace sd 46.81. Pooled over 101 traces it reaches 0.3045.",DIAGNOSTIC
-snr_k4/k2,3.25,1068,31,"ADMITTED by the likelihood, ABOVE the retired SNR floor of 3. Mean -2.54547, per-trace sd 0.002382. Pooled over 101 traces it reaches 1.074e+04.",DIAGNOSTIC
-snr_k5/k3,3.25,0.1253,0.0036,"REFUSED by the likelihood, BELOW the retired SNR floor of 3. Mean -34.7499, per-trace sd 277.3. Pooled over 101 traces it reaches 1.26.",DIAGNOSTIC
-snr_k6/k4,3.25,1063,31,"ADMITTED by the likelihood, ABOVE the retired SNR floor of 3. Mean -12.6593, per-trace sd 0.0119. Pooled over 101 traces it reaches 1.069e+04.",DIAGNOSTIC
-snr_k7/k5,3.25,0.658,0.019,"REFUSED by the likelihood, BELOW the retired SNR floor of 3. Mean -28.0881, per-trace sd 42.66. Pooled over 101 traces it reaches 6.618.",DIAGNOSTIC
-snr_k8/k6,3.25,1139,33,"ADMITTED by the likelihood, ABOVE the retired SNR floor of 3. Mean -28.6655, per-trace sd 0.02516. Pooled over 101 traces it reaches 1.145e+04.",DIAGNOSTIC
-snr_k9/k7,3.25,0.3216,0.0093,"REFUSED by the likelihood, BELOW the retired SNR floor of 3. Mean -46.6835, per-trace sd 145.1. Pooled over 101 traces it reaches 3.232.",DIAGNOSTIC
-snr_k2,6,2485,72,"ADMITTED by the likelihood, ABOVE the retired SNR floor of 3. Mean 6.60177, per-trace sd 0.002656. Pooled over 101 traces it reaches 2.498e+04.",DIAGNOSTIC
-snr_k3,6,0.0485,0.0014,"ADMITTED by the likelihood, BELOW the retired SNR floor of 3. Mean -0.000434767, per-trace sd 0.008965. Pooled over 101 traces it reaches 0.4874.",DIAGNOSTIC
-snr_k4,6,443,13,"ADMITTED by the likelihood, ABOVE the retired SNR floor of 3. Mean -18.7204, per-trace sd 0.0423. Pooled over 101 traces it reaches 4448.",DIAGNOSTIC
-snr_k5,6,0.0462,0.0013,"ADMITTED by the likelihood, BELOW the retired SNR floor of 3. Mean 0.0127915, per-trace sd 0.277. Pooled over 101 traces it reaches 0.464.",DIAGNOSTIC
-snr_k6,6,57.9,1.7,"ADMITTED by the likelihood, ABOVE the retired SNR floor of 3. Mean 95.1378, per-trace sd 1.644. Pooled over 101 traces it reaches 581.6.",DIAGNOSTIC
-snr_k7,6,0.0409,0.0012,"ADMITTED by the likelihood, BELOW the retired SNR floor of 3. Mean -0.565964, per-trace sd 13.83. Pooled over 101 traces it reaches 0.4113.",DIAGNOSTIC
-snr_k8,6,84.6,2.4,"ADMITTED by the likelihood, ABOVE the retired SNR floor of 3. Mean 8893.14, per-trace sd 105.1. Pooled over 101 traces it reaches 850.1.",DIAGNOSTIC
-snr_k9,6,0.03277,0.00095,"ADMITTED by the likelihood, BELOW the retired SNR floor of 3. Mean 31.812, per-trace sd 970.7. Pooled over 101 traces it reaches 0.3293.",DIAGNOSTIC
-snr_k4/k2,6,512,15,"ADMITTED by the likelihood, ABOVE the retired SNR floor of 3. Mean -2.83566, per-trace sd 0.005539. Pooled over 101 traces it reaches 5145.",DIAGNOSTIC
-snr_k5/k3,6,0.1671,0.0048,"REFUSED by the likelihood, BELOW the retired SNR floor of 3. Mean -23.6431, per-trace sd 141.5. Pooled over 101 traces it reaches 1.68.",DIAGNOSTIC
-snr_k6/k4,6,65.7,1.9,"ADMITTED by the likelihood, ABOVE the retired SNR floor of 3. Mean -5.08189, per-trace sd 0.07738. Pooled over 101 traces it reaches 660.",DIAGNOSTIC
-snr_k7/k5,6,0.410,0.012,"REFUSED by the likelihood, BELOW the retired SNR floor of 3. Mean -52.2336, per-trace sd 127.3. Pooled over 101 traces it reaches 4.122.",DIAGNOSTIC
-snr_k8/k6,6,34.7,1.0,"ADMITTED by the likelihood, ABOVE the retired SNR floor of 3. Mean 93.5225, per-trace sd 2.696. Pooled over 101 traces it reaches 348.6.",DIAGNOSTIC
-snr_k9/k7,6,0.437,0.013,"REFUSED by the likelihood, BELOW the retired SNR floor of 3. Mean -72.4137, per-trace sd 165.9. Pooled over 101 traces it reaches 4.388.",DIAGNOSTIC
-snr_k2,12,1304,38,"ADMITTED by the likelihood, ABOVE the retired SNR floor of 3. Mean 14.0547, per-trace sd 0.01077. Pooled over 101 traces it reaches 1.311e+04.",DIAGNOSTIC
-snr_k3,12,0.01503,0.00043,"ADMITTED by the likelihood, BELOW the retired SNR floor of 3. Mean -0.000862984, per-trace sd 0.05743. Pooled over 101 traces it reaches 0.151.",DIAGNOSTIC
-snr_k4,12,556,16,"ADMITTED by the likelihood, ABOVE the retired SNR floor of 3. Mean 179.775, per-trace sd 0.3231. Pooled over 101 traces it reaches 5592.",DIAGNOSTIC
-snr_k5,12,0.01880,0.00054,"ADMITTED by the likelihood, BELOW the retired SNR floor of 3. Mean 0.0371591, per-trace sd 1.977. Pooled over 101 traces it reaches 0.1889.",DIAGNOSTIC
-snr_k6,12,302.9,8.7,"ADMITTED by the likelihood, ABOVE the retired SNR floor of 3. Mean -14284, per-trace sd 47.16. Pooled over 101 traces it reaches 3044.",DIAGNOSTIC
-snr_k7,12,0.00983,0.00028,"ADMITTED by the likelihood, BELOW the retired SNR floor of 3. Mean 4.82036, per-trace sd 490.2. Pooled over 101 traces it reaches 0.09882.",DIAGNOSTIC
-snr_k8,12,98.8,2.9,"ADMITTED by the likelihood, ABOVE the retired SNR floor of 3. Mean -483036, per-trace sd 4890. Pooled over 101 traces it reaches 992.7.",DIAGNOSTIC
-snr_k9,12,0.01908,0.00055,"ADMITTED by the likelihood, BELOW the retired SNR floor of 3. Mean -1929.48, per-trace sd 1.012e+05. Pooled over 101 traces it reaches 0.1917.",DIAGNOSTIC
-snr_k4/k2,12,633,18,"ADMITTED by the likelihood, ABOVE the retired SNR floor of 3. Mean 12.7912, per-trace sd 0.02019. Pooled over 101 traces it reaches 6366.",DIAGNOSTIC
-snr_k5/k3,12,0.003250,0.000094,"REFUSED by the likelihood, BELOW the retired SNR floor of 3. Mean 1.62638, per-trace sd 500.4. Pooled over 101 traces it reaches 0.03266.",DIAGNOSTIC
-snr_k6/k4,12,399,12,"ADMITTED by the likelihood, ABOVE the retired SNR floor of 3. Mean -79.4545, per-trace sd 0.1994. Pooled over 101 traces it reaches 4005.",DIAGNOSTIC
-snr_k7/k5,12,0.02011,0.00058,"REFUSED by the likelihood, BELOW the retired SNR floor of 3. Mean -102.015, per-trace sd 5072. Pooled over 101 traces it reaches 0.2021.",DIAGNOSTIC
-snr_k8/k6,12,86.2,2.5,"ADMITTED by the likelihood, ABOVE the retired SNR floor of 3. Mean 33.8174, per-trace sd 0.3925. Pooled over 101 traces it reaches 865.8.",DIAGNOSTIC
-snr_k9/k7,12,0.01599,0.00046,"REFUSED by the likelihood, BELOW the retired SNR floor of 3. Mean 136.428, per-trace sd 8534. Pooled over 101 traces it reaches 0.1607.",DIAGNOSTIC
+snr_mu2,3.25,2647,76,"ADMITTED by the likelihood, ABOVE the retired SNR floor of 3. Mean 2.7526, per-trace sd 0.00104. Pooled over 101 traces it reaches 2.661e+04.",DIAGNOSTIC
+snr_mu3,3.25,0.03030,0.00087,"ADMITTED by the likelihood, BELOW the retired SNR floor of 3. Mean 5.26952e-05, per-trace sd 0.001739. Pooled over 101 traces it reaches 0.3045.",DIAGNOSTIC
+snr_mu4,3.25,1743,50,"ADMITTED by the likelihood, ABOVE the retired SNR floor of 3. Mean 15.7238, per-trace sd 0.00902. Pooled over 101 traces it reaches 1.752e+04.",DIAGNOSTIC
+snr_mu5,3.25,0.02923,0.00084,"ADMITTED by the likelihood, BELOW the retired SNR floor of 3. Mean 0.00057439, per-trace sd 0.01965. Pooled over 101 traces it reaches 0.2937.",DIAGNOSTIC
+snr_mu6,3.25,1378,40,"ADMITTED by the likelihood, ABOVE the retired SNR floor of 3. Mean 112.241, per-trace sd 0.08143. Pooled over 101 traces it reaches 1.385e+04.",DIAGNOSTIC
+snr_mu7,3.25,0.02915,0.00084,"ADMITTED by the likelihood, BELOW the retired SNR floor of 3. Mean 0.0057971, per-trace sd 0.1988. Pooled over 101 traces it reaches 0.293.",DIAGNOSTIC
+snr_mu8,3.25,1170,34,"ADMITTED by the likelihood, ABOVE the retired SNR floor of 3. Mean 891.326, per-trace sd 0.7615. Pooled over 101 traces it reaches 1.176e+04.",DIAGNOSTIC
+snr_mu9,3.25,0.03008,0.00087,"ADMITTED by the likelihood, BELOW the retired SNR floor of 3. Mean 0.0594274, per-trace sd 1.976. Pooled over 101 traces it reaches 0.3023.",DIAGNOSTIC
+snr_mu4/mu2,3.25,4.1e+03,,"ADMITTED by the likelihood, ABOVE the retired SNR floor of 3. Mean 5.71234, per-trace sd 0.001392. Pooled over 101 traces it reaches 4.124e+04. Its standard error is 1.2e+02, outside the plain-decimal band.",DIAGNOSTIC
+snr_mu5/mu3,3.25,0.02605,0.00075,"REFUSED by the likelihood, BELOW the retired SNR floor of 3. Mean -7.22382, per-trace sd 277.3. Pooled over 101 traces it reaches 0.2618.",DIAGNOSTIC
+snr_mu6/mu4,3.25,5.03e+03,,"ADMITTED by the likelihood, ABOVE the retired SNR floor of 3. Mean 7.1383, per-trace sd 0.001418. Pooled over 101 traces it reaches 5.059e+04. Its standard error is 1.5e+02, outside the plain-decimal band.",DIAGNOSTIC
+snr_mu7/mu5,3.25,0.664,0.019,"REFUSED by the likelihood, BELOW the retired SNR floor of 3. Mean 10.1116, per-trace sd 15.24. Pooled over 101 traces it reaches 6.669.",DIAGNOSTIC
+snr_mu8/mu6,3.25,5.87e+03,,"ADMITTED by the likelihood, ABOVE the retired SNR floor of 3. Mean 7.94116, per-trace sd 0.001353. Pooled over 101 traces it reaches 5.9e+04. Its standard error is 1.7e+02, outside the plain-decimal band.",DIAGNOSTIC
+snr_mu9/mu7,3.25,0.2232,0.0064,"REFUSED by the likelihood, BELOW the retired SNR floor of 3. Mean 8.05384, per-trace sd 36.09. Pooled over 101 traces it reaches 2.243.",DIAGNOSTIC
+snr_diag_k5/mu3,3.25,0.1253,0.0036,"REFUSED by the likelihood, BELOW the retired SNR floor of 3. Mean -34.7499, per-trace sd 277.3. Pooled over 101 traces it reaches 1.26.",DIAGNOSTIC
+snr_mu2,6,2485,72,"ADMITTED by the likelihood, ABOVE the retired SNR floor of 3. Mean 6.60177, per-trace sd 0.002656. Pooled over 101 traces it reaches 2.498e+04.",DIAGNOSTIC
+snr_mu3,6,0.0485,0.0014,"ADMITTED by the likelihood, BELOW the retired SNR floor of 3. Mean -0.000434767, per-trace sd 0.008965. Pooled over 101 traces it reaches 0.4874.",DIAGNOSTIC
+snr_mu4,6,1478,43,"ADMITTED by the likelihood, ABOVE the retired SNR floor of 3. Mean 112.03, per-trace sd 0.07581. Pooled over 101 traces it reaches 1.485e+04.",DIAGNOSTIC
+snr_mu5,6,0.0480,0.0014,"ADMITTED by the likelihood, BELOW the retired SNR floor of 3. Mean -0.0159288, per-trace sd 0.3315. Pooled over 101 traces it reaches 0.4829.",DIAGNOSTIC
+snr_mu6,6,1121,32,"ADMITTED by the likelihood, ABOVE the retired SNR floor of 3. Mean 2557.24, per-trace sd 2.282. Pooled over 101 traces it reaches 1.126e+04.",DIAGNOSTIC
+snr_mu7,6,0.0447,0.0013,"ADMITTED by the likelihood, BELOW the retired SNR floor of 3. Mean -0.498459, per-trace sd 11.16. Pooled over 101 traces it reaches 0.4488.",DIAGNOSTIC
+snr_mu8,6,936,27,"ADMITTED by the likelihood, ABOVE the retired SNR floor of 3. Mean 66855.5, per-trace sd 71.41. Pooled over 101 traces it reaches 9409.",DIAGNOSTIC
+snr_mu9,6,0.0419,0.0012,"ADMITTED by the likelihood, BELOW the retired SNR floor of 3. Mean -15.557, per-trace sd 371.6. Pooled over 101 traces it reaches 0.4207.",DIAGNOSTIC
+snr_mu4/mu2,6,3059,88,"ADMITTED by the likelihood, ABOVE the retired SNR floor of 3. Mean 16.9697, per-trace sd 0.005548. Pooled over 101 traces it reaches 3.074e+04.",DIAGNOSTIC
+snr_mu5/mu3,6,0.2996,0.0086,"REFUSED by the likelihood, BELOW the retired SNR floor of 3. Mean 42.3746, per-trace sd 141.5. Pooled over 101 traces it reaches 3.011.",DIAGNOSTIC
+snr_mu6/mu4,6,3.73e+03,,"ADMITTED by the likelihood, ABOVE the retired SNR floor of 3. Mean 22.8264, per-trace sd 0.006114. Pooled over 101 traces it reaches 3.752e+04. Its standard error is 1.1e+02, outside the plain-decimal band.",DIAGNOSTIC
+snr_mu7/mu5,6,0.3390,0.0098,"REFUSED by the likelihood, BELOW the retired SNR floor of 3. Mean 33.5272, per-trace sd 98.9. Pooled over 101 traces it reaches 3.407.",DIAGNOSTIC
+snr_mu8/mu6,6,4.41e+03,,"ADMITTED by the likelihood, ABOVE the retired SNR floor of 3. Mean 26.1436, per-trace sd 0.005928. Pooled over 101 traces it reaches 4.432e+04. Its standard error is 1.3e+02, outside the plain-decimal band.",DIAGNOSTIC
+snr_mu9/mu7,6,0.494,0.014,"REFUSED by the likelihood, BELOW the retired SNR floor of 3. Mean 31.3665, per-trace sd 63.48. Pooled over 101 traces it reaches 4.965.",DIAGNOSTIC
+snr_diag_k5/mu3,6,0.1671,0.0048,"REFUSED by the likelihood, BELOW the retired SNR floor of 3. Mean -23.6431, per-trace sd 141.5. Pooled over 101 traces it reaches 1.68.",DIAGNOSTIC
+snr_mu2,12,1304,38,"ADMITTED by the likelihood, ABOVE the retired SNR floor of 3. Mean 14.0547, per-trace sd 0.01077. Pooled over 101 traces it reaches 1.311e+04.",DIAGNOSTIC
+snr_mu3,12,0.01503,0.00043,"ADMITTED by the likelihood, BELOW the retired SNR floor of 3. Mean -0.000862984, per-trace sd 0.05743. Pooled over 101 traces it reaches 0.151.",DIAGNOSTIC
+snr_mu4,12,701,20,"ADMITTED by the likelihood, ABOVE the retired SNR floor of 3. Mean 772.377, per-trace sd 1.101. Pooled over 101 traces it reaches 7050.",DIAGNOSTIC
+snr_mu5,12,0.01110,0.00032,"ADMITTED by the likelihood, BELOW the retired SNR floor of 3. Mean -0.0841255, per-trace sd 7.578. Pooled over 101 traces it reaches 0.1116.",DIAGNOSTIC
+snr_mu6,12,529,15,"ADMITTED by the likelihood, ABOVE the retired SNR floor of 3. Mean 65260.6, per-trace sd 123.3. Pooled over 101 traces it reaches 5319.",DIAGNOSTIC
+snr_mu7,12,0.00779,0.00022,"ADMITTED by the likelihood, BELOW the retired SNR floor of 3. Mean -7.49486, per-trace sd 962.7. Pooled over 101 traces it reaches 0.07824.",DIAGNOSTIC
+snr_mu8,12,446,13,"ADMITTED by the likelihood, ABOVE the retired SNR floor of 3. Mean 6.58151e+06, per-trace sd 1.475e+04. Pooled over 101 traces it reaches 4486.",DIAGNOSTIC
+snr_mu9,12,0.00473,0.00014,"ADMITTED by the likelihood, BELOW the retired SNR floor of 3. Mean -588.328, per-trace sd 1.243e+05. Pooled over 101 traces it reaches 0.04756.",DIAGNOSTIC
+snr_mu4/mu2,12,1403,41,"ADMITTED by the likelihood, ABOVE the retired SNR floor of 3. Mean 54.9552, per-trace sd 0.03916. Pooled over 101 traces it reaches 1.41e+04.",DIAGNOSTIC
+snr_mu5/mu3,12,0.2841,0.0082,"REFUSED by the likelihood, BELOW the retired SNR floor of 3. Mean 142.173, per-trace sd 500.4. Pooled over 101 traces it reaches 2.855.",DIAGNOSTIC
+snr_mu6/mu4,12,1852,53,"ADMITTED by the likelihood, ABOVE the retired SNR floor of 3. Mean 84.493, per-trace sd 0.04562. Pooled over 101 traces it reaches 1.861e+04.",DIAGNOSTIC
+snr_mu7/mu5,12,0.1338,0.0039,"REFUSED by the likelihood, BELOW the retired SNR floor of 3. Mean 151.165, per-trace sd 1130. Pooled over 101 traces it reaches 1.344.",DIAGNOSTIC
+snr_mu8/mu6,12,2287,66,"ADMITTED by the likelihood, ABOVE the retired SNR floor of 3. Mean 100.85, per-trace sd 0.04409. Pooled over 101 traces it reaches 2.299e+04.",DIAGNOSTIC
+snr_mu9/mu7,12,0.717,0.021,"REFUSED by the likelihood, BELOW the retired SNR floor of 3. Mean 133.517, per-trace sd 186.3. Pooled over 101 traces it reaches 7.203.",DIAGNOSTIC
+snr_diag_k5/mu3,12,0.003250,0.000094,"REFUSED by the likelihood, BELOW the retired SNR floor of 3. Mean 1.62638, per-trace sd 500.4. Pooled over 101 traces it reaches 0.03266.",DIAGNOSTIC
 admitted_orders,,"2,4,6,8",,the orders clearing the SNR floor at every window. A DIAGNOSTIC and no longer a gate: see orders_in_likelihood,DIAGNOSTIC
 refused_orders,,"3,5,7,9",,"the orders below that floor at every window. The split is exactly by parity and that is the result. They are IN the likelihood all the same, per owner order O17",DIAGNOSTIC
 orders_in_likelihood,,"2,3,4,5,6,7,8,9",,"the orders the ultra-joint likelihood carries: every one, because a likelihood weights a noisy statistic by its own variance and dropping it is a decision that can bias",DIAGNOSTIC
-refused_no_population_moment,,9,,"the statistics the likelihood genuinely cannot carry: odd ratios whose denominator changes sign across the replicas, so they are Cauchy-like and a replica covariance returns a finite number that keeps moving with the replica count",DIAGNOSTIC
-snr_admitted_min,single_valued,34.69,,single_valued because it is one end of a span and an extreme has no spread of its own. The per-statistic rows above carry the distribution. Written as a cell so a docstring or a page cites it instead of restating it,DIAGNOSTIC
-snr_admitted_max,single_valued,2647,,single_valued because it is one end of a span and an extreme has no spread of its own. The per-statistic rows above carry the distribution. Written as a cell so a docstring or a page cites it instead of restating it,DIAGNOSTIC
+refused_no_population_moment,,12,,"the statistics the likelihood genuinely cannot carry: odd ratios whose denominator changes sign across the replicas, so they are Cauchy-like and a replica covariance returns a finite number that keeps moving with the replica count",DIAGNOSTIC
+snr_admitted_min,single_valued,446.3,,single_valued because it is one end of a span and an extreme has no spread of its own. The per-statistic rows above carry the distribution. Written as a cell so a docstring or a page cites it instead of restating it,DIAGNOSTIC
+snr_admitted_max,single_valued,5871,,single_valued because it is one end of a span and an extreme has no spread of its own. The per-statistic rows above carry the distribution. Written as a cell so a docstring or a page cites it instead of restating it,DIAGNOSTIC
 snr_refused_min,single_valued,0.00325,,single_valued because it is one end of a span and an extreme has no spread of its own. The per-statistic rows above carry the distribution. Written as a cell so a docstring or a page cites it instead of restating it,DIAGNOSTIC
-snr_refused_max,single_valued,0.6585,,single_valued because it is one end of a span and an extreme has no spread of its own. The per-statistic rows above carry the distribution. Written as a cell so a docstring or a page cites it instead of restating it,DIAGNOSTIC
-n_admitted,,33,,"of 42 statistics over three windows, admitted on having a population moment. The retired SNR floor would have taken 21",DIAGNOSTIC
-effective_rank_admitted,,5.464,0.038,"participation ratio of the admitted correlation matrix: the admitted set carries about three independent numbers and not its column count. The uncertainty is the spread over realisation counts of (600, 1200, 4000)",DIAGNOSTIC
-effective_rank_all,,8.418,0.057,"the same over every statistic including the refused ones. It reads higher because pure noise is nearly full rank, and quoting it as the information content is the trap",DIAGNOSTIC
-condition_number_admitted,,3.84e+22,,an interval taken through a pseudo-inverse of a matrix this ill-conditioned is only quotable where it is stable against the cutoff. The width is and the shift is not,DIAGNOSTIC
+snr_refused_max,single_valued,0.7167,,single_valued because it is one end of a span and an extreme has no spread of its own. The per-statistic rows above carry the distribution. Written as a cell so a docstring or a page cites it instead of restating it,DIAGNOSTIC
+n_statistics,,45,,"every statistic the producer emits over three windows, the diagnostics included",DIAGNOSTIC
+n_vector,,42,,"the statistics that ENTER the likelihood: n_statistics minus the diag_ rows, which enter none by construction",DIAGNOSTIC
+n_even,,21,,even-order members of the vector,DIAGNOSTIC
+n_odd,,21,,odd-order members of the vector,DIAGNOSTIC
+n_admitted_vector,,33,,"of the 42 that enter the likelihood, admitted on having a population moment. This is the pair a sentence about the LIKELIHOOD binds",DIAGNOSTIC
+n_admitted,,33,,"of 45 statistics over three windows, the diagnostics included, admitted on having a population moment. The retired SNR floor would have taken 21",DIAGNOSTIC
+effective_rank_admitted,,6.7986,0.0063,"participation ratio of the admitted correlation matrix: the admitted set carries about 7 independent numbers and not its column count of 33. The uncertainty is the spread over realisation counts of (600, 1200, 4000)",DIAGNOSTIC
+effective_rank_all,,11.267,0.039,"the same over every statistic including the refused ones. It reads higher because pure noise is nearly full rank, and quoting it as the information content is the trap",DIAGNOSTIC
+condition_number_admitted,,2.39e+23,,an interval taken through a pseudo-inverse of a matrix this ill-conditioned is only quotable where it is stable against the cutoff. The width is and the shift is not,DIAGNOSTIC
 tau_int,,2.515,,"integrated correlation time in samples, from noise_model.csv pooled over the p_sweep role",DIAGNOSTIC
 rho1_measured_vs_ar1,,0.52,,"the AR(1) first lag matching tau_int is 0.051 against a measured rho1 of 0.098. The two committed numbers are not mutually consistent, the autocorrelation has a long tail, and matching tau_int is the conservative branch",DIAGNOSTIC
 power_arm_traces,,101,,"counted from the manifest at role=p_sweep, and read back from this row by a clone without raw traces",DIAGNOSTIC

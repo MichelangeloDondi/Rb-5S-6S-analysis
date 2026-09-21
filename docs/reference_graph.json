@@ -420,7 +420,7 @@
   "quoting_sites": [
    {
     "file": "README.md",
-    "line": 145,
+    "line": 146,
     "writes": "0.015"
    }
   ],
@@ -3035,11 +3035,11 @@
    {
     "file": "docs/wiki/identifiability.md",
     "line": 779,
-    "writes": "5.46"
+    "writes": "6.80"
    }
   ],
   "source_file": "results/moment_admission.csv",
-  "source_value": "5.464"
+  "source_value": "6.7986"
  },
  "moment_admission:effective_rank_all:": {
   "producer": "run_moment_admission.py",
@@ -3047,18 +3047,23 @@
    {
     "file": "docs/wiki/identifiability.md",
     "line": 785,
-    "writes": "8.42"
+    "writes": "11.27"
    }
   ],
   "source_file": "results/moment_admission.csv",
-  "source_value": "8.418"
+  "source_value": "11.267"
  },
- "moment_admission:n_admitted:": {
+ "moment_admission:n_admitted_vector:": {
   "producer": "run_moment_admission.py",
   "quoting_sites": [
    {
     "file": "docs/wiki/identifiability.md",
     "line": 762,
+    "writes": "33"
+   },
+   {
+    "file": "docs/wiki/identifiability.md",
+    "line": 780,
     "writes": "33"
    },
    {
@@ -3070,27 +3075,44 @@
   "source_file": "results/moment_admission.csv",
   "source_value": "33"
  },
+ "moment_admission:n_vector:": {
+  "producer": "run_moment_admission.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/identifiability.md",
+    "line": 762,
+    "writes": "42"
+   },
+   {
+    "file": "docs/wiki/third-cumulant.md",
+    "line": 290,
+    "writes": "42"
+   }
+  ],
+  "source_file": "results/moment_admission.csv",
+  "source_value": "42"
+ },
  "moment_admission:snr_admitted_max:": {
   "producer": "run_moment_admission.py",
   "quoting_sites": [
    {
     "file": "docs/wiki/third-cumulant.md",
     "line": 283,
-    "writes": "2647"
+    "writes": "5871"
    },
    {
     "file": "rb5s6s/fullmodel.py",
     "line": 456,
-    "writes": "2647"
+    "writes": "5871"
    },
    {
     "file": "rb5s6s/fullmodel.py",
-    "line": 685,
-    "writes": "2647"
+    "line": 757,
+    "writes": "5871"
    }
   ],
   "source_file": "results/moment_admission.csv",
-  "source_value": "2647"
+  "source_value": "5871"
  },
  "moment_admission:snr_admitted_min:": {
   "producer": "run_moment_admission.py",
@@ -3098,23 +3120,23 @@
    {
     "file": "docs/wiki/third-cumulant.md",
     "line": 283,
-    "writes": "34.69"
+    "writes": "446.30"
    },
    {
     "file": "rb5s6s/fullmodel.py",
     "line": 455,
-    "writes": "34.69"
+    "writes": "446.30"
    },
    {
     "file": "rb5s6s/fullmodel.py",
-    "line": 684,
-    "writes": "34.69"
+    "line": 756,
+    "writes": "446.30"
    }
   ],
   "source_file": "results/moment_admission.csv",
-  "source_value": "34.69"
+  "source_value": "446.3"
  },
- "moment_admission:snr_k2:6": {
+ "moment_admission:snr_mu2:6": {
   "producer": "run_moment_admission.py",
   "quoting_sites": [
    {
@@ -3126,7 +3148,7 @@
   "source_file": "results/moment_admission.csv",
   "source_value": "2485"
  },
- "moment_admission:snr_k3:6": {
+ "moment_admission:snr_mu3:6": {
   "producer": "run_moment_admission.py",
   "quoting_sites": [
    {
@@ -3144,21 +3166,21 @@
    {
     "file": "docs/wiki/third-cumulant.md",
     "line": 283,
-    "writes": "0.658"
+    "writes": "0.717"
    },
    {
     "file": "rb5s6s/fullmodel.py",
     "line": 458,
-    "writes": "0.658"
+    "writes": "0.717"
    },
    {
     "file": "rb5s6s/fullmodel.py",
-    "line": 686,
-    "writes": "0.658"
+    "line": 758,
+    "writes": "0.717"
    }
   ],
   "source_file": "results/moment_admission.csv",
-  "source_value": "0.6585"
+  "source_value": "0.7167"
  },
  "moment_admission:snr_refused_min:": {
   "producer": "run_moment_admission.py",
@@ -4153,7 +4175,7 @@
   "quoting_sites": [
    {
     "file": "README.md",
-    "line": 121,
+    "line": 122,
     "writes": "-1131.8"
    },
    {
@@ -4285,7 +4307,7 @@
   "quoting_sites": [
    {
     "file": "README.md",
-    "line": 121,
+    "line": 122,
     "writes": "5.9"
    },
    {
@@ -4354,7 +4376,7 @@
   "quoting_sites": [
    {
     "file": "README.md",
-    "line": 121,
+    "line": 122,
     "writes": "+6.5"
    },
    {
@@ -4630,7 +4652,7 @@
   "quoting_sites": [
    {
     "file": "README.md",
-    "line": 122,
+    "line": 123,
     "writes": "4.9"
    },
    {
@@ -6911,7 +6933,7 @@
   "quoting_sites": [
    {
     "file": "README.md",
-    "line": 122,
+    "line": 123,
     "writes": "0.00287"
    }
   ],
@@ -6923,7 +6945,7 @@
   "quoting_sites": [
    {
     "file": "README.md",
-    "line": 122,
+    "line": 123,
     "writes": "0.00020"
    }
   ],
@@ -6959,7 +6981,7 @@
   "quoting_sites": [
    {
     "file": "README.md",
-    "line": 122,
+    "line": 123,
     "writes": "0.00300"
    }
   ],
@@ -6971,7 +6993,7 @@
   "quoting_sites": [
    {
     "file": "README.md",
-    "line": 122,
+    "line": 123,
     "writes": "0.00022"
    }
   ],
@@ -7013,78 +7035,6 @@
   ],
   "source_file": "results/twin_completeness.csv",
   "source_value": "0.823"
- },
- "ultra_joint_closure:closure_verdict:waist_recovered": {
-  "producer": "run_ultra_joint_closure.py",
-  "quoting_sites": [
-   {
-    "file": "docs/RESULTS.md",
-    "line": 10,
-    "writes": "False"
-   }
-  ],
-  "source_file": "results/ultra_joint_closure.csv",
-  "source_value": "False"
- },
- "ultra_joint_closure:noise_where_the_waist_dies:largest_scale_still_localised": {
-  "producer": "run_ultra_joint_closure.py",
-  "quoting_sites": [
-   {
-    "file": "docs/RESULTS.md",
-    "line": 10,
-    "writes": "0.5"
-   }
-  ],
-  "source_file": "results/ultra_joint_closure.csv",
-  "source_value": "0.5"
- },
- "ultra_joint_closure:real_arm_reached:boolean": {
-  "producer": "run_ultra_joint_closure.py",
-  "quoting_sites": [
-   {
-    "file": "docs/RESULTS.md",
-    "line": 10,
-    "writes": "False"
-   }
-  ],
-  "source_file": "results/ultra_joint_closure.csv",
-  "source_value": "False"
- },
- "ultra_joint_closure:sweep_x0.5:interior_fraction": {
-  "producer": "run_ultra_joint_closure.py",
-  "quoting_sites": [
-   {
-    "file": "docs/RESULTS.md",
-    "line": 10,
-    "writes": "1.000"
-   }
-  ],
-  "source_file": "results/ultra_joint_closure.csv",
-  "source_value": "1.000"
- },
- "ultra_joint_closure:sweep_x0.7:interior_fraction": {
-  "producer": "run_ultra_joint_closure.py",
-  "quoting_sites": [
-   {
-    "file": "docs/RESULTS.md",
-    "line": 10,
-    "writes": "0.000"
-   }
-  ],
-  "source_file": "results/ultra_joint_closure.csv",
-  "source_value": "0.000"
- },
- "ultra_joint_closure:sweep_x1:interior_fraction": {
-  "producer": "run_ultra_joint_closure.py",
-  "quoting_sites": [
-   {
-    "file": "docs/RESULTS.md",
-    "line": 10,
-    "writes": "0.000"
-   }
-  ],
-  "source_file": "results/ultra_joint_closure.csv",
-  "source_value": "0.000"
  },
  "waist_ladder:rung:0.250000:k3_one_photon_over_two": {
   "producer": "run_waist_ladder.py",

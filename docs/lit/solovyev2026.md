@@ -21,7 +21,7 @@ routing:
   - CITE
 verify_flags:
   - 'the arXiv v1 of 23 July 2026 is held, only the abstract was read here'
-verified_date: 2026-09-13
+verified_date: null
 summary: >
   A revision of the line-contour asymmetry of the hydrogen 1s-2s two-photon
   transition, concluding, verbatim from the abstract, that "the asymmetry of

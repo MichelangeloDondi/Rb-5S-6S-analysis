@@ -26,7 +26,9 @@
 # PRECONDITION: the mirror worktree is CLEAN. The script refuses otherwise,
 # because a port onto strays carries them forward invisibly.
 set -e
-A=~/Documents/GitHub/Rb-5S-6S-analysis
+# PORT_SOURCE (2026-09-21, F265): the landing ports HEAD's TREE through an ephemeral worktree, so the
+# archive may hold the next wave staged while the certified commit is ported; the default is the checkout.
+A=${PORT_SOURCE:-$HOME/Documents/GitHub/Rb-5S-6S-analysis}
 M=~/Documents/GitHub/Rb-5S-6S-public
 
 MODE=port

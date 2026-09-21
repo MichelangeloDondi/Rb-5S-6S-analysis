@@ -339,6 +339,39 @@ def test_frontmatter_well_typed(key):
         assert _LOCI_RE.match(locus), f"{key}: locus '{locus}' fails the controlled vocabulary"
 
 
+@pytest.mark.parametrize("key", sorted(_lit_keys()))
+def test_inventory_status_matches_holdings_and_dates(key):
+    """T0ao (2026-09-21): VERIFIED is a claim about a PDF that was read here, so it needs `held: true`
+    and a pdf path; REPORTED is a note nobody has verified against a PDF, so it carries no
+    `verified_date`. Measured before the guard: hassanin2023 read VERIFIED with `held: false`,
+    `pdf: null` and 'PDF not held' in its own body; anikin2022, solovyev2026, kozlov2009 and
+    commons2022 read REPORTED with a date. Planted both ways by `test_the_shelf_guards_can_see_their_own_defects`'s
+    sibling below."""
+    fm = _fm(key)
+    _assert_inventory_consistent(key, fm)
+
+
+def _assert_inventory_consistent(key, fm):
+    status = fm.get("status")
+    if status == "VERIFIED":
+        assert fm.get("held") is True and fm.get("pdf"), (
+            f"{key}: VERIFIED needs `held: true` and a pdf path (held={fm.get('held')!r}, pdf={fm.get('pdf')!r})")
+    if status == "REPORTED":
+        assert fm.get("verified_date") in (None, "null", ""), (
+            f"{key}: REPORTED carries verified_date {fm.get('verified_date')!r}; a note nobody verified has no date")
+
+
+def test_the_inventory_guard_sees_both_defects():
+    """Both ways: a VERIFIED note without a holding and a REPORTED note with a date are refused; a
+    consistent pair passes."""
+    with pytest.raises(AssertionError, match="VERIFIED needs"):
+        _assert_inventory_consistent("x", {"status": "VERIFIED", "held": False, "pdf": None})
+    with pytest.raises(AssertionError, match="REPORTED carries"):
+        _assert_inventory_consistent("x", {"status": "REPORTED", "verified_date": "2026-09-13"})
+    _assert_inventory_consistent("x", {"status": "VERIFIED", "held": True, "pdf": "PDF_papers/a.pdf"})
+    _assert_inventory_consistent("x", {"status": "REPORTED", "verified_date": None})
+
+
 # --------------------------------------------------------------------------- #
 # (C) held <-> pdf <-> filesystem                                              #
 # --------------------------------------------------------------------------- #
@@ -521,6 +554,7 @@ def test_every_held_note_points_at_a_pdf_that_is_actually_there():
 #: 2026-09-10, carrying a real reading that was already stated twice elsewhere.
 #: A key nothing reads is a claim nothing checks.
 KNOWN_FRONTMATTER_KEYS = {
+    "audit",   # the line-by-line audit that licenses a VERIFIED status (M6, 2026-09-21): a path, read by test_a_verified_note_names_an_audit_that_exists
     "citekey", "type", "authors", "title", "journal", "volume", "number",
     "pages", "year", "doi", "arxiv", "pdf", "held", "status", "routing",
     "verify_flags", "verified_date", "summary", "loci", "section",
@@ -998,3 +1032,27 @@ def test_citekey_matches_its_first_author():
     assert not undocumented, (
         "these keys are allowlisted as not-first-author but their notes carry no "
         f"verify_flag explaining it: {sorted(undocumented)}")
+
+
+def test_a_verified_note_names_an_audit_that_exists():
+    """M6 (plan v4): an agent-written note is unpublishable until its audit is filed beside it. The
+    `audit:` key names the audit file, relative to docs/lit/; the file lives in the sibling thesis
+    repository's private tree, so this skips when that tree is absent and refuses when a named audit
+    is missing. A note that carries the key with a file that does not exist has claimed a reading
+    nobody made."""
+    import pytest
+    missing = []
+    checked = 0
+    for p in sorted((ROOT / "docs" / "lit").glob("*.md")):
+        text = p.read_text(encoding="utf-8")
+        m = re.search(r"^audit:\s*([^\s#]+)", text, re.M)
+        if not m:
+            continue
+        target = (p.parent / m.group(1)).resolve()
+        if not any(part == "PhD-Thesis" for part in target.parts) or not (ROOT.parent / "PhD-Thesis").exists():
+            pytest.skip("the sibling thesis repository is absent; the audit files live there")
+        checked += 1
+        if not target.exists():
+            missing.append(f"{p.name}: {m.group(1)}")
+    assert not missing, "a note names an audit that does not exist:\n  " + "\n  ".join(missing)
+    assert checked >= 0

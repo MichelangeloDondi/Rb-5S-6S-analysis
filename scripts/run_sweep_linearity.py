@@ -65,7 +65,10 @@ import numpy as np
 from rb5s6s import config as C
 from rb5s6s import constants as K
 from rb5s6s import stark
-from rb5s6s.cumulants import windowed_cumulants
+# MOMENTS, NOT CUMULANTS (O33). This producer asks only for orders 2 and/or 3, where the two
+# bases are the SAME NUMBER (k2 = mu2 and k3 = mu3 identically), so the switch cannot move a
+# committed cell -- it removes the retired name, which is the point of doing it everywhere.
+from rb5s6s.cumulants import windowed_moments
 from rb5s6s.constants import collection_z_ratio
 from rb5s6s.fringe_tail import COHERENCE_TRANSIT, fringe_shift_density
 from rb5s6s.lineshape import model_profile, ramp_mixture
@@ -167,7 +170,7 @@ def induced_k3(eps, W, s0, transit, gamma_coll=GAMMA_COLL, sigma_laser=SIGMA_LAS
                       sigma_laser_fwhm=sigma_laser, transit_fwhm=transit,
                       s0=s0, gamma_nat_mhz=GAMMA_NAT, resolve_shift=True,
                       **({} if prof is None else {"profile": prof}))
-    v, info = windowed_cumulants(NU, y, W, (3,), centre0=0.0, baseline="wings")
+    v, info = windowed_moments(NU, y, W, (3,), centre0=0.0, baseline="wings")
     if not info["converged"] or not info.get("in_span", True):
         return float("nan")
     return float(v[3])

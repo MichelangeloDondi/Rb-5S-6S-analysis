@@ -20,7 +20,7 @@ routing:
   - CITE
 verify_flags:
   - 'the journal volume and article number are taken from the arXiv listing and not read off the held copy, which is the arXiv v2, only the abstract was read'
-verified_date: 2026-09-13
+verified_date: null
 summary: >
   The selection rule forbidding two-photon transitions between J = 0 and
   J = 1 states with two photons of the same energy, its relaxation by the

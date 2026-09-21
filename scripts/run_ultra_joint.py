@@ -143,6 +143,8 @@ import time
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from pathlib import Path
 
+import re
+
 import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -470,7 +472,7 @@ def _moment_stats(nu, y, windows=MOMENT_WINDOWS, orders=MOMENT_ORDERS):
     """Windowed cumulants of one trace, keyed `k<order>@<window>`.
 
     `baseline=None` ON PURPOSE, and it is the repair of a measured bias rather
-    than a convenience.  `windowed_cumulants` defaults to a WINGS baseline, and
+    than a convenience.  `windowed_moments` defaults to a WINGS baseline, and
     on this sweep the line itself contributes 0.878 per cent of peak at the
     +-20 to 28 MHz strips, which biases k2 by -7.6 per cent and k3 by -20.9 at
     the 12 MHz window -- and the sweep cannot be widened, because the model puts
@@ -480,12 +482,22 @@ def _moment_stats(nu, y, windows=MOMENT_WINDOWS, orders=MOMENT_ORDERS):
     first, which is what the profile fit already estimates, and hands this
     function a trace whose baseline is a fitted parameter and not a strip.
     """
-    from rb5s6s.cumulants import windowed_cumulants
+    # MOMENTS ARE THE VECTOR (O33, A72). One quadrature per (window, trace): the moments are the
+    # primitive and the cumulants are derived from that same array, which is what keeps this emitter
+    # and `fullmodel`'s agreeing on names. A half-switched likelihood -- some keys mu, some k -- is
+    # worse than either basis, because the covariance's columns stop corresponding to the model's.
+    from rb5s6s.cumulants import cumulants_from_central_moments, windowed_moments
     out = {}
+    top = max(orders)
     for w in windows:
-        k, _ = windowed_cumulants(nu, y, w, orders=tuple(orders), baseline=None)
+        mu, _ = windowed_moments(nu, y, w, orders=tuple(range(1, top + 1)), baseline=None)
+        mu_arr = np.array([mu[o] for o in range(1, top + 1)])
+        kap = cumulants_from_central_moments(mu_arr)
         for n in orders:
-            out[f"k{n}@{w:g}"] = float(k[n])
+            out[f"mu{n}@{w:g}"] = float(mu[n])
+        # A93's one named exception, outside the vector under a prefix it does not select.
+        if 5 in orders and 3 in orders and float(kap[2]) != 0.0:
+            out[f"diag_k5/mu3@{w:g}"] = float(kap[4]) / float(kap[2])   # mu3 is k3: a key the rows hold (CRITICAL 1)
     return out
 
 
@@ -1069,14 +1081,30 @@ class Cell:
                 vals = np.array([r[k] for r in per_trace], float)
                 if not np.all(np.isfinite(vals)):
                     continue
+                # A DIAGNOSTIC IS NEVER ADMITTED (A93; 2026-09-21, F264): `diag_k5/mu3@W` carries a `/`, so the
+                # floor's regex skipped it, no flip refused it at zero noise, and it fell through as admitted;
+                # the moments ladder then failed its noiseless rung on a statistic that enters no likelihood.
+                if k.startswith("diag_"):
+                    _mu = float(vals.mean())
+                    out.append(dict(session=sess, peak=peak, p_mw=p_mw, t_c=t_c, statistic=k, n_rep=n_rep,
+                                    data=_mu, sem=float(vals.std(ddof=1)) / math.sqrt(n_rep), t95=tfac,
+                                    model=pred[k], pull=float("nan"), twin_bias=0.0, twin_bias_se=0.0,
+                                    admitted=False,
+                                    why="a DIAGNOSTIC (A93): computed from the same moments, enters no "
+                                        "likelihood and gates no cell; its sign is the asymmetry discriminator"))
+                    continue
                 # THE NUMERICAL FLOOR (F144, 2026-09-19): a cumulant of order n is a small difference of large
                 # numbers to the n-th power, and k7@13 read 6.6e-07 of its own dimensional scale k2^(n/2) with
                 # the fit exact -- both sides reporting the fit's residual, not the line. A row whose model
                 # sits under the floor is REFUSED with the reason, never admitted as a measurement. A window
                 # in DIAGNOSTIC_WINDOWS is refused as a measurement whatever its floor, with its reason.
-                _ord, _win = k[1:].split("@") if k.startswith("k") and "@" in k and "/" not in k else (None, None)
+                _ord, _win = (re.match(r"mu(\d+)@(.+)$", k).groups()
+                               if re.match(r"mu\d+@", k) and "/" not in k else (None, None))
                 if _ord is not None:
-                    _n = int(_ord); _k2 = abs(float(pred.get(f"k2@{_win}", 0.0)))
+                    # A HARD LOOKUP ON THE EMITTER'S OWN KEY (2026-09-21, F264): `.get("k2@W", 0.0)` read
+                    # zero on every row since the mu rename, so `_scale` was 0, `_rel` inf, and EVERY
+                    # moment was refused on the floor with no error raised. mu2 is k2 identically.
+                    _n = int(_ord); _k2 = abs(float(pred[f"mu2@{_win}"]))
                     _scale = _k2 ** (_n / 2.0) if _k2 > 0 else 0.0
                     _rel = abs(pred[k]) / _scale if _scale > 0 else float("inf")
                     _why = None
@@ -1117,19 +1145,22 @@ class Cell:
                     hi = lo + 2
                     if hi not in MOMENT_ORDERS:
                         continue
-                    _member = next((k_ for k_ in (f"k{hi}@{w:g}", f"k{lo}@{w:g}") if k_ in _refused_plain), None)
+                    _member = next((k_ for k_ in (f"mu{hi}@{w:g}", f"mu{lo}@{w:g}") if k_ in _refused_plain), None)
                     if _member is not None:
                         out.append(dict(session=sess, peak=peak, p_mw=p_mw, t_c=t_c,
-                                        statistic=f"k{hi}/k{lo}@{w:g}", n_rep=n_rep, data=float("nan"),
+                                        statistic=f"mu{hi}/mu{lo}@{w:g}", n_rep=n_rep, data=float("nan"),
                                         sem=float("nan"), t95=tfac, model=float("nan"), pull=float("nan"),
                                         admitted=False,
                                         why=f"its member {_member} is refused: {_refused_plain[_member]}"))
                         continue
-                    den = np.array([r[f"k{lo}@{w:g}"] for r in per_trace], float)
-                    num = np.array([r[f"k{hi}@{w:g}"] for r in per_trace], float)
+                    den = np.array([r[f"mu{lo}@{w:g}"] for r in per_trace], float)
+                    num = np.array([r[f"mu{hi}@{w:g}"] for r in per_trace], float)
                     flips = min(int((den > 0).sum()), int((den < 0).sum()))
-                    name = f"k{hi}/k{lo}@{w:g}"
-                    if flips > 0 or pred[f"k{lo}@{w:g}"] == 0.0:
+                    name = f"mu{hi}/mu{lo}@{w:g}"
+                    # THE MODEL'S KEY IS THE EMITTER'S (2026-09-21, K-C's first cell raised KeyError 'k2@1'):
+                    # the prediction is keyed `mu` since O33 and this admission still asked for `k`, the
+                    # half-switched likelihood A72 warned of. The exact-zero test stays T0ad's (E71).
+                    if flips > 0 or pred[f"mu{lo}@{w:g}"] == 0.0:
                         out.append(dict(session=sess, peak=peak, p_mw=p_mw, t_c=t_c,
                                         statistic=name, n_rep=n_rep, data=float("nan"),
                                         sem=float("nan"), t95=tfac, model=float("nan"),
@@ -1150,10 +1181,10 @@ class Cell:
                     # THE MODEL SIDE THROUGH THE DATA SIDE'S FUNCTIONAL (F144's second half): the data is
                     # the MEAN OF PER-REPEAT RATIOS, so the model is too, not the ratio of the means --
                     # two different functionals that disagree by a Jensen gap of about 4e-4 at zero noise.
-                    _pm_per = [pm_[f"k{hi}@{w:g}"] / pm_[f"k{lo}@{w:g}"] for pm_ in per_model
-                               if pm_[f"k{lo}@{w:g}"] != 0.0]
-                    pm = float(np.mean(_pm_per)) if _pm_per else pred[f"k{hi}@{w:g}"] / pred[f"k{lo}@{w:g}"]
-                    k2_term = -10.0 * pred[f"k2@{w:g}"] if lo % 2 else None
+                    _pm_per = [pm_[f"mu{hi}@{w:g}"] / pm_[f"mu{lo}@{w:g}"] for pm_ in per_model
+                               if pm_[f"mu{lo}@{w:g}"] != 0.0]
+                    pm = float(np.mean(_pm_per)) if _pm_per else pred[f"mu{hi}@{w:g}"] / pred[f"mu{lo}@{w:g}"]
+                    k2_term = -10.0 * pred[f"mu2@{w:g}"] if lo % 2 else None   # k2 = mu2 exactly
                     out.append(dict(session=sess, peak=peak, p_mw=p_mw, t_c=t_c,
                                     statistic=name, n_rep=n_rep, data=mu, sem=sem,
                                     t95=tfac, model=pm,

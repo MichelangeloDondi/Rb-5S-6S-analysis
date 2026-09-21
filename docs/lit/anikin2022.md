@@ -21,7 +21,7 @@ routing:
   - CITE
 verify_flags:
   - 'the arXiv v1 of 26 April 2022 is held, its published form is the Physics Reports review of 2025 (Solovyev, Zalialiutdinov, Anikin and Labzowsky, Phys. Rep. 1114, 1), which is not held, only the contents page was read here'
-verified_date: 2026-09-13
+verified_date: null
 summary: >
   A QED treatment of line-profile asymmetry in one- and two-photon precision
   spectroscopy of hydrogen and helium: nonresonant corrections, quantum

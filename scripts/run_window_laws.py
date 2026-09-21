@@ -44,7 +44,10 @@ import numpy as np
 REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO))
 from rb5s6s import config as _CFG                                  # noqa: E402
-from rb5s6s.cumulants import windowed_cumulants                    # noqa: E402
+# MOMENTS, NOT CUMULANTS (owner order O33, A72). At orders 5 and 7 a cumulant is a difference
+# of large terms and carries a cancellation the moment does not; below fourth order the two are
+# identical (k2 = mu2, k3 = mu3 exactly), so switching changes only where it should.
+from rb5s6s.cumulants import windowed_moments                    # noqa: E402
 from rb5s6s.fullmodel import full_profile                          # noqa: E402
 from rb5s6s.noise import load_noise_model                          # noqa: E402
 from rb5s6s.pmfmt import pm_cells                                  # noqa: E402
@@ -75,7 +78,7 @@ def _prof(**kw):
 def _cums(y, orders=ORDERS):
     out = {}
     for w in W:
-        k, _ = windowed_cumulants(NU, y, w, orders=orders, baseline="wings")
+        k, _ = windowed_moments(NU, y, w, orders=orders, baseline="wings")
         for n in orders:
             out[(n, w)] = k[n]
     return out
