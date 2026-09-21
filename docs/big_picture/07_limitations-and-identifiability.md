@@ -498,7 +498,7 @@ power ladder failed to detect one at any size up to a hundred times the
 point's own error bar.
 
 The committed diagnostics already show the same thing from the other side.
-Dropping one temperature moves the coefficient by up to 0.1338 MHz per 1e12
+Dropping one temperature moves the coefficient by up to 0.1338 MHz per 1e12 <!-- other-quantity: a self-broadening coefficient in MHz per 1e12 cm-3, which shares four digits with a moment_admission SNR and is unrelated to it -->
 per cubic centimetre, while dropping one peak moves it by at most 0.0070, a
 factor of nineteen between removing a density point and removing a whole
 spectral line.
@@ -529,6 +529,87 @@ sessions, given that the coefficient goes as one over the beam waist squared and
 no session measured its own waist. That question has its own chapter, [when a
 joint fit is legitimate](08_when-a-joint-fit-is-legitimate.md), which also
 generalises it into six questions to ask of any pooled fit.
+
+---
+
+## Term suppression and common-mode cancellation
+
+The sections above treat identifiability as a property of the model and the
+conditions swept. That is one mechanism and there is a second, independent of
+it, and the two are worth keeping apart because they cost different things.
+
+The first is **term suppression**. Each platform removes a different subset of
+the model. A vapour cell carries a large collisional width and a transit set by
+the waist and the temperature, so it isolates nothing alone. A magneto-optical
+trap suppresses both by orders of magnitude and leaves the laser width standing
+alone. A vapour-filled hollow-core fibre keeps the collisional physics and
+replaces a free focus with a manufactured mode diameter. The asymmetry is the
+point: each platform kills a different set, which is the condition for breaking
+a degeneracy no single-platform sweep can break.
+
+The second is **common-mode cancellation**, and it is a statement about how the
+measurements are taken. If two arms run on one laser, driven by one frequency
+sweep, and in the strongest form are read as two channels of one oscilloscope on
+one scan, their nuisance parameters are the same parameter, and
+not only a similar one. The scan non-linearity is one function, the laser frequency noise one
+process, the drift one drift. The comparison becomes differential, and a
+systematic that bounds either arm alone cancels in the pair.
+
+What cancels has to be named, because the generous reading is the one that gets
+reached for. Exactly common are the frequency axis with its non-linearity,
+hysteresis and drift, together with the laser's own frequency and phase noise,
+since both arms see one field. Not common are the power at the atoms, the
+alignment and the beam geometry, and therefore the whole intensity distribution,
+because the two arms travel different paths to different samples. The pairing
+buys the scan and the laser outright and buys nothing on the geometry, which is
+the term the waist question turns on.
+
+This second mechanism comes from another field. Running two systems on
+shared lasers so that vibration and laser noise cancel is standard practice in
+precision atom interferometry, where dual-species comparisons have used it for
+two decades. What is unusual is applying it to lineshape systematics, where the
+quantity transferred is not a phase but a model term measured against a
+reference that shared the laser. That is also what a collaborator keeps after
+the work ends.
+
+## Locating a magic wavelength
+
+A magic wavelength is where the differential polarizability of a level pair
+crosses zero. The peak light shift is proportional to it, so it crosses zero and
+changes sign there, and the moments of the shift distribution carry known powers
+of that shift. The odd orders carry odd powers and **reverse sign through the
+crossing**. The even orders do not. The line's asymmetry flips, and the flip
+locates the crossing.
+
+A sign survives what limits the conventional route. The
+standard determination scans the trap laser, measures a small light shift at each
+wavelength against an absolute frequency reference, and interpolates to the zero,
+and it is the calibration of that small shift that limits it. A sign survives an
+uncalibrated detection gain, an unknown absolute frequency and a drifting lock,
+which is the combination that reduced the 2025 dataset here to bounds.
+
+The limit applies to the sign and to the standard route in opposite directions,
+and the difference decides where each should measure. Write the differential
+polarizability near the crossing as a straight line through it, of slope s. A
+determination at distance d locates the crossing with an uncertainty equal to
+the error on the polarizability divided by that slope, and that error has two
+parts: a fractional one carried by the trap-intensity calibration, and an
+additive floor from frequency resolution and counting statistics. The fractional
+part shrinks as the crossing is approached, because a fractional error on a
+vanishing shift is a vanishing error. So for the standard route, measuring
+closer genuinely improves the answer, until the additive floor takes over. The
+best standoff is where the two parts meet, and it sits closer in than the signal
+alone would suggest.
+
+The sign behaves the other way. It carries no calibration term at all, which is
+its advantage, and a sign is undetermined where the quantity it reads is zero,
+so the odd orders have to be sampled far enough out for their sign to be
+established against the noise. The two want different sampling, which is what
+makes them complementary: the sign brackets from a standoff with no calibration,
+and the calibrated measurement refines inside the bracket where its own error is
+smallest. On the 2025 traces the odd orders sit at or below unit signal-to-noise
+at the archive's own noise, which makes the sign half a campaign lever, with no
+result yet in hand.
 
 ---
 

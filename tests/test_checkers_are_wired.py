@@ -133,11 +133,11 @@ NOT_WIRED = {
     "private/checks/driver.py":
         "the unattended driver: it POPS the queue and runs the jobs, so it is "
         "the thing that calls, not a thing to be called",
-    "private/checks/launch.py":
-        "the sanctioned LAUNCHER, driver.py's shape exactly: its exit code is the runner's own "
-        "admission and it starts the background jobs, so it is the thing that calls. Its self-test "
-        "really does launch through fanout, so a floor that ran it would spawn processes under a "
-        "gate, which is the one thing the gate stack asks nothing to do (2026-09-20)",
+    # launch.py LEFT this list on 2026-09-21: its self-test is wired into scripts/prefloor.sh, which
+    # runs BEFORE the gate opens and never beside it, and the jobs the plant spawns are `true` in a
+    # temp directory; the entry's reason ("a floor that ran it would spawn processes under a gate")
+    # described the gate's population, and the plant is not in it (gate_split keeps the floor's
+    # modules out of the reduced gate).
     "private/checks/quote_census.py":
         "a read-only CENSUS of every quoted span in the held notes, cells_naming_a_callee.py's shape: "
         "it evaluates nothing and can refuse nothing. What it measured is tests/_quote_baseline.json, "

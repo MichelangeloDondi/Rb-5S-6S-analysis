@@ -143,6 +143,8 @@ import time
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from pathlib import Path
 
+import re
+
 import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -470,7 +472,7 @@ def _moment_stats(nu, y, windows=MOMENT_WINDOWS, orders=MOMENT_ORDERS):
     """Windowed cumulants of one trace, keyed `k<order>@<window>`.
 
     `baseline=None` ON PURPOSE, and it is the repair of a measured bias rather
-    than a convenience.  `windowed_cumulants` defaults to a WINGS baseline, and
+    than a convenience.  `windowed_moments` defaults to a WINGS baseline, and
     on this sweep the line itself contributes 0.878 per cent of peak at the
     +-20 to 28 MHz strips, which biases k2 by -7.6 per cent and k3 by -20.9 at
     the 12 MHz window -- and the sweep cannot be widened, because the model puts
@@ -480,12 +482,22 @@ def _moment_stats(nu, y, windows=MOMENT_WINDOWS, orders=MOMENT_ORDERS):
     first, which is what the profile fit already estimates, and hands this
     function a trace whose baseline is a fitted parameter and not a strip.
     """
-    from rb5s6s.cumulants import windowed_cumulants
+    # MOMENTS ARE THE VECTOR (O33, A72). One quadrature per (window, trace): the moments are the
+    # primitive and the cumulants are derived from that same array, which is what keeps this emitter
+    # and `fullmodel`'s agreeing on names. A half-switched likelihood -- some keys mu, some k -- is
+    # worse than either basis, because the covariance's columns stop corresponding to the model's.
+    from rb5s6s.cumulants import cumulants_from_central_moments, windowed_moments
     out = {}
+    top = max(orders)
     for w in windows:
-        k, _ = windowed_cumulants(nu, y, w, orders=tuple(orders), baseline=None)
+        mu, _ = windowed_moments(nu, y, w, orders=tuple(range(1, top + 1)), baseline=None)
+        mu_arr = np.array([mu[o] for o in range(1, top + 1)])
+        kap = cumulants_from_central_moments(mu_arr)
         for n in orders:
-            out[f"k{n}@{w:g}"] = float(k[n])
+            out[f"mu{n}@{w:g}"] = float(mu[n])
+        # A93's one named exception, outside the vector under a prefix it does not select.
+        if 5 in orders and 3 in orders and float(kap[2]) != 0.0:
+            out[f"diag_k5/mu3@{w:g}"] = float(kap[4]) / float(kap[2])   # mu3 is k3: a key the rows hold (CRITICAL 1)
     return out
 
 
@@ -1074,7 +1086,8 @@ class Cell:
                 # the fit exact -- both sides reporting the fit's residual, not the line. A row whose model
                 # sits under the floor is REFUSED with the reason, never admitted as a measurement. A window
                 # in DIAGNOSTIC_WINDOWS is refused as a measurement whatever its floor, with its reason.
-                _ord, _win = k[1:].split("@") if k.startswith("k") and "@" in k and "/" not in k else (None, None)
+                _ord, _win = (re.match(r"mu(\d+)@(.+)$", k).groups()
+                               if re.match(r"mu\d+@", k) and "/" not in k else (None, None))
                 if _ord is not None:
                     _n = int(_ord); _k2 = abs(float(pred.get(f"k2@{_win}", 0.0)))
                     _scale = _k2 ** (_n / 2.0) if _k2 > 0 else 0.0
@@ -1117,18 +1130,18 @@ class Cell:
                     hi = lo + 2
                     if hi not in MOMENT_ORDERS:
                         continue
-                    _member = next((k_ for k_ in (f"k{hi}@{w:g}", f"k{lo}@{w:g}") if k_ in _refused_plain), None)
+                    _member = next((k_ for k_ in (f"mu{hi}@{w:g}", f"mu{lo}@{w:g}") if k_ in _refused_plain), None)
                     if _member is not None:
                         out.append(dict(session=sess, peak=peak, p_mw=p_mw, t_c=t_c,
-                                        statistic=f"k{hi}/k{lo}@{w:g}", n_rep=n_rep, data=float("nan"),
+                                        statistic=f"mu{hi}/mu{lo}@{w:g}", n_rep=n_rep, data=float("nan"),
                                         sem=float("nan"), t95=tfac, model=float("nan"), pull=float("nan"),
                                         admitted=False,
                                         why=f"its member {_member} is refused: {_refused_plain[_member]}"))
                         continue
-                    den = np.array([r[f"k{lo}@{w:g}"] for r in per_trace], float)
-                    num = np.array([r[f"k{hi}@{w:g}"] for r in per_trace], float)
+                    den = np.array([r[f"mu{lo}@{w:g}"] for r in per_trace], float)
+                    num = np.array([r[f"mu{hi}@{w:g}"] for r in per_trace], float)
                     flips = min(int((den > 0).sum()), int((den < 0).sum()))
-                    name = f"k{hi}/k{lo}@{w:g}"
+                    name = f"mu{hi}/mu{lo}@{w:g}"
                     if flips > 0 or pred[f"k{lo}@{w:g}"] == 0.0:
                         out.append(dict(session=sess, peak=peak, p_mw=p_mw, t_c=t_c,
                                         statistic=name, n_rep=n_rep, data=float("nan"),

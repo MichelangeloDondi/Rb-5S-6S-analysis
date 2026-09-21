@@ -393,3 +393,19 @@ def test_the_correction_records_chapters_reach_the_scan_and_their_was_cells_do_n
     kept = {row[i] for i in graded}
     assert "0.615" in kept, "the now cell is what the scan must grade"
     assert "0.611" not in kept, "the was cell is the account and must be exempt"
+
+
+def test_a_digit_glued_to_a_label_a_fraction_or_a_footer_counter_is_not_a_prose_value(mv):
+    """2026-09-21: when the refused count moved from 9 to 12, the three `k9` order labels of
+    docs/wiki/identifiability.md, a LaTeX `1/36`, and a footer's "5 of 9*" page counter were all
+    reported as stale copies. A guard's population is a notation as well as a file set; a guard
+    whose hits are mostly labels trains the eye to skip it. Both ways: the labels are excluded
+    and a bare numeral on the same line is still read."""
+    probe = "k9 and mu4 and $\\tfrac{S_0^2}{36}$ and $1/36$ and *Statistical inference, 5 of 9* beside a real 36 and 9 and 0.94"
+    struck = mv._XREF.sub(" ", probe)
+    got = {m.group(0) for m in mv._NUM_PROSE.finditer(struck)}
+    assert "36" in got and "9" in got and "0.94" in got            # the bare values are still read
+    assert got <= {"1", "36", "9", "0.94"}, got                     # k9, mu4, {36}, /36 and the counter are not
+    assert "5 of 9*" not in struck
+    # and the CSV-cell matcher is untouched: a cell is a value by construction
+    assert mv._NUM_ONLY.fullmatch("36") and mv._NUM_ONLY.fullmatch("3.44e+22")

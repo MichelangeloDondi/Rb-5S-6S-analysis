@@ -64,7 +64,10 @@ from rb5s6s import stark                                           # noqa: E402
 from rb5s6s.lineshape import stark_shift_S0_mhz                    # noqa: E402
 from rb5s6s.linefit import fit_condition                           # noqa: E402
 from rb5s6s.qc import median_standard_error                        # noqa: E402
-from rb5s6s.cumulants import windowed_cumulants                     # noqa: E402
+# MOMENTS AT ORDERS 5 AND 7 (O33, A72): this producer asks for (3, 5, 7), and while
+# k3 = mu3 exactly, k5 and k7 are differences of large terms whose cancellation the
+# moments do not carry. Orders 2 and 3 are basis-independent; these are not.
+from rb5s6s.cumulants import windowed_moments                     # noqa: E402
 from rb5s6s.ruler import bessel_tooth_weights                      # noqa: E402
 from rb5s6s.amplitudes import predicted_shares                     # noqa: E402
 
@@ -395,7 +398,7 @@ def _k357(y, w, grid, centre0=0.0, baseline="wings"):
     modulation depth the first-order teeth stand higher than the carrier
     (J_1^2 = 0.32 against J_0^2 = 0.22), so a window started at the maximum
     sits on a tooth and reads the wrong line."""
-    v, info = windowed_cumulants(grid, y, w, (3, 5, 7), centre0=centre0, baseline=baseline)
+    v, info = windowed_moments(grid, y, w, (3, 5, 7), centre0=centre0, baseline=baseline)
     if not info["converged"]:
         return float("nan"), float("nan"), float("nan")
     return v[3], v[5], v[7]

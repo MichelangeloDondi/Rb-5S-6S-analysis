@@ -204,7 +204,35 @@ number as a reading on where a statistic may be quoted, a reading, not yet a rul
 `p18_window_limits.py` and `p18_window_derivatives.py` with their artefacts under
 `private/cache/plan_2026-09-18/`, whose decimals enter this page when they enter `results/`.
 
-## 11.7 Why cumulants, why not moments, and the one place the choice reverses
+## 11.7 Moments, not cumulants
+
+The record's vector is central moments at fourth order and above (owner order O33, 2026-09-20).
+This section argued the other way until that ruling, and the argument is kept below and not
+deleted. It is correct about the algebra. It is wrong only about which property this bench collects.
+
+Why the reversal. A cumulant is bought for one thing, additivity under convolution, and this
+record collects it nowhere: a truncated window is a multiplication and not a convolution, and the
+kernel is inhomogeneous across the illuminated volume at the waist the campaign is aimed at. What is
+paid for it is cancellation. $\kappa_4 = \mu_4 - 3\mu_2^2$ is a difference of large numbers, and on a
+Lorentzian at a 5 MHz half-window $\mu_4 = 46.75$ against $3\mu_2^2 = 48.67$, so the cumulant is a
+four per cent residue of the terms that build it and pays roughly that factor in relative precision
+once noise enters. A ratio of two cumulants pays it twice.
+
+The even orders also lose a pole. An even central moment of a non-negative line is strictly
+positive, so it has no zero to sit near. A $\kappa_4$ carries no sign constraint and crosses zero.
+Measured on this record's own composite at the archive's parameters, $\mu_4/\sigma^4$ runs 2.12, 2.54,
+2.77, 3.26, 4.32 across half-windows 3, 5, 6, 8 and 12 MHz and never approaches zero, while
+$\kappa_4/\sigma^4$ runs $-0.88$, $-0.46$, $-0.23$, $+0.26$, $+1.32$ and **changes sign between 6 and
+8 MHz**. A ratio whose denominator crosses zero inside the quoted window set has a pole there, and
+moving to moments removes it instead of guarding it.
+
+Nothing below fourth order moves, since $\kappa_2 = \mu_2$ and $\kappa_3 = \mu_3$ identically, so
+the third-order skew channel and everything argued from it stands unchanged. A cumulant is an exact
+function of the moments, so it is still computed, and it rides as a DIAGNOSTIC with its cancellation
+conditioning $|\kappa_n|/\mu_n$ beside it -- which is the number that explains why a cumulant died at
+a window. It gates no cell.
+
+### The argument as it stood
 
 The two objects carry the same information and behave oppositely under the two operations this bench
 performs, which is the whole of the matter.

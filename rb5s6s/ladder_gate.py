@@ -109,8 +109,15 @@ PROFILES = {
     "default": RUNGS,
     "moments": ("noiseless", "n01", "n03", "n10", "low", "archive", "n300"),
     "waist": RUNGS + ("n300",),
+    # THE OWNER'S OWN GRID FOR THE BIAS SURFACE (O34, A37), and it departs from `moments` twice, both
+    # deliberately. It starts at 0.1 PER CENT, a decade below this ladder's previous floor, because the
+    # bias the surface reports is the replica mean minus the noiseless value at the same window and its
+    # growth law is what says whether the bias is the estimator's or the model's -- a law read from
+    # three decades is a law, read from one it is a slope. And it carries NO 3.0 rung: the surface is a
+    # bias table, not a death curve, and a level above the archive's own never gates a real trace.
+    "moment_window_bias": ("noiseless", "n001", "n003", "n01", "n03", "n10", "low", "archive"),
 }
-NOISE_SCALE.update({"n01": 0.01, "n03": 0.03, "n10": 0.1, "n300": 3.0})
+NOISE_SCALE.update({"n01": 0.01, "n03": 0.03, "n10": 0.1, "n300": 3.0, "n001": 0.001, "n003": 0.003})
 REAL_GATE_RUNG = "archive"     # the rung real traces wait for, in every profile
 # COARSE FIRST, REFINE ON A REASON (owner, 2026-09-17 02:40: "maybe I was too extreme to ask to run
 # all cases 1-3-10-30-100-300 per cent ... think which order of computations would allow us to
@@ -123,12 +130,18 @@ REQUIRED = {
     "default": RUNGS,
     "waist": RUNGS,                     # real traces open on the three; the 3.0 rung is read after, never required
     "moments": ("noiseless", "n10", "archive"),
+    # COARSE FIRST on the owner's grid: 0 -> 0.01 -> 0.1 -> 1.0 are required and the three between
+    # them (0.001, 0.003, 0.03, 0.3) are refinements a pass-then-fail asks for, which is the same
+    # discipline the `moments` profile already runs on.
+    "moment_window_bias": ("noiseless", "n01", "n10", "archive"),
 }
 ANALYSIS_PROFILE = {
     "ultra_joint_waist": "waist",       # the three required rungs plus the optional 3.0 (PLAN v3 D10)
     "moment_mle": "moments", "ultra_joint_moments": "moments", "ultra_joint_treatments": "moments",
     "twin_windows": "moments", "window_surface": "moments", "odd_channel": "moments",
     "plant_moments": "moments",   # the self-test's own id
+    "moment_window_bias": "moment_window_bias",   # O34's bias surface over window and noise
+    "plant_window_bias": "moment_window_bias",    # its plant's own id
 }
 
 
@@ -1033,6 +1046,37 @@ def _self_test() -> List[str]:
                        + "; ".join(status("plant_moments", cache=_c))[:200])
         if rungs_of("no_such_analysis") != RUNGS:
             bad.append("profiles: an unregistered analysis did not get the default rungs")
+
+        # O34'S BIAS SURFACE, PLANTED BOTH WAYS (T0c). RT18's defect is the one that matters here and
+        # it is silent: an id nobody registers falls through to `default`, so the climber records three
+        # rungs, the gate admits, and a surface the owner asked for over EIGHT levels is certified on
+        # a chain that never saw 0.001 -- a wall that reads exactly like a gate holding the line.
+        want = ("noiseless", "n001", "n003", "n01", "n03", "n10", "low", "archive")
+        if rungs_of("moment_window_bias") != want:
+            bad.append(f"window-bias: the profile is {rungs_of('moment_window_bias')}, not the owner's grid")
+        if "n300" in rungs_of("moment_window_bias"):
+            bad.append("window-bias: a 3.0 rung entered a surface that is a bias table and not a death curve")
+        for r, v in (("n001", 0.001), ("n003", 0.003)):
+            if NOISE_SCALE.get(r) != v:
+                bad.append(f"window-bias: rung {r} scales {NOISE_SCALE.get(r)}, not {v}")
+        record("plant_window_bias", "noiseless", detail=OKN, cache=_c)
+        # the REQUIRED chain is 0 -> 0.01 -> 0.1 -> 1.0, so 0.1 may not be recorded before 0.01.
+        # `_refused` above catches SizeRefused and this refusal is a LadderRefused, so it is asked
+        # for by name: a helper reused for the wrong exception would let the raise escape and the
+        # plant would read as an error rather than as the refusal it is testing for.
+        try:
+            record("plant_window_bias", "n10", detail=OK_C, cache=_c)
+            bad.append("window-bias: 0.1 was recorded with 0.01 absent, so the required chain is not read")
+        except LadderRefused:
+            pass
+        record("plant_window_bias", "n01", detail=OK_C, cache=_c)
+        record("plant_window_bias", "n10", detail=OK_C, cache=_c)
+        if status("plant_window_bias", cache=_c) == []:
+            bad.append("window-bias: a surface short of the archive rung was admitted")
+        record("plant_window_bias", "archive", detail=OK_A, cache=_c)
+        if status("plant_window_bias", cache=_c):
+            bad.append("window-bias: the full required chain was refused: "
+                       + "; ".join(status("plant_window_bias", cache=_c))[:200])
     return bad
 
 

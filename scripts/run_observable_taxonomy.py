@@ -391,8 +391,10 @@ def _one_set(waist_um: float, arm: str, betas: dict, seed: int,
 
 def _windowed_k2(grid, y, W_mhz) -> float:
     """The windowed second cumulant, NaN when the estimator refuses."""
-    from rb5s6s.cumulants import windowed_cumulants
-    v, info = windowed_cumulants(grid, y, W_mhz, (2,), centre0=0.0,
+    # MOMENTS, NOT CUMULANTS (O33). Order 2 only, where k2 = mu2 identically, so the switch cannot
+    # move a committed cell; it removes the retired name, which is the point of doing it everywhere.
+    from rb5s6s.cumulants import windowed_moments
+    v, info = windowed_moments(grid, y, W_mhz, (2,), centre0=0.0,
                                  baseline="wings")
     if not info["converged"] or not info.get("in_span", True):
         return float("nan")

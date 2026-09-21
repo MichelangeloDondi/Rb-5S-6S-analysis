@@ -4,7 +4,7 @@ For ONE declared noise level per run (the level is the serial axis; windows, ord
 replicas fan out), the windowed cumulants of orders 2 to 7 at half-windows 0.5 to 21 MHz on traces
 the model itself generated with the archive's own axes, levels and noise laws. Two things per row:
 
-* at the noiseless rung, the package's self-centred estimator (`cumulants.windowed_cumulants` on the
+* at the noiseless rung, the package's self-centred estimator (`cumulants.windowed_moments` on the
   archive's grid) against the DIRECT truncated moments of the same model line on a tenfold finer
   grid, self-centred the same way: the estimator recovers what the model's own line carries at that
   window, or it does not. That is the rung's `max_abs_rel_error`, each order scaled by k2^(n/2);
@@ -32,7 +32,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 from rb5s6s import config as C
 from rb5s6s import windows as _WINDOWS, ladder_gate                       # noqa: E402
-from rb5s6s.cumulants import windowed_cumulants                   # noqa: E402
+from rb5s6s.cumulants import windowed_moments                     # noqa: E402
 
 _s = importlib.util.spec_from_file_location("closure_for_surface", ROOT / "scripts" / "run_ultra_joint_closure.py")
 CL = importlib.util.module_from_spec(_s); _s.loader.exec_module(CL)   # ladder-exempt: the injection's own source, the closure's route
@@ -89,7 +89,11 @@ def _direct(nu: np.ndarray, m: np.ndarray, W: float, orders) -> dict:
 
 
 def _estimate(x: np.ndarray, y: np.ndarray, W: float, orders) -> dict:
-    vals, _info = windowed_cumulants(x, _debaseline(x, y), W, tuple(orders), baseline=None)
+    # MOMENTS ARE THE SURFACE'S STATISTIC (O33, A72). This producer fills the bias table the owner
+    # asked for, and a bias measured on a cumulant carries that cumulant's cancellation into the
+    # correction: near its zero, k4 is a four per cent residue of mu4 and 3 mu2^2, so the bias and
+    # its standard error both inherit a precision loss the moments simply do not have.
+    vals, _info = windowed_moments(x, _debaseline(x, y), W, tuple(orders), baseline=None)
     return {n: float(vals[n]) for n in orders}
 
 
@@ -223,7 +227,7 @@ def _spread_check(vals, refused_keys, half, reps, scale, has_pool):
         null[(row["case"], row["quantity"])] = math.sqrt(nu / float(_chi2.median(nu)))
     ratios, raw = {}, {}
     for (k, W, n), v in vals.items():
-        q = f"k{n}@{W:g}"
+        q = f"mu{n}@{W:g}"
         if (k, W, n) in refused_keys or (k, q) not in rec or rec[(k, q)] <= 0:
             continue
         v = np.asarray(v); sd_twin = float(v.std(ddof=1))
@@ -321,7 +325,7 @@ def main() -> int:
             else:
                 refused.append([k, W, n, rel])
             b = bare[(k, W)][n]
-            rows.append([k, f"k{n}@{W:g}", f"{e[n]:.6g}", "", f"MHz^{n}",
+            rows.append([k, f"mu{n}@{W:g}", f"{e[n]:.6g}", "", f"MHz^{n}",
                          f"estimator on the archive grid against the direct truncated moment {r[n]:.6g} of the same de-baselined line on a {FINE}x finer grid, both self-centred, scaled error {rel:.2e}. the bare model's truncated moment is {b:.6g}, so the strip baseline's bias at this window is {e[n] - b:+.4g} ({((e[n] - b) / max(abs(b), 1e-300) * 100) if n % 2 == 0 else (e[n] - b) / sc:+.3g} {'per cent' if n % 2 == 0 else 'in units of k2^(n/2), the odd orders of a symmetric line being zero'})",
                          f"noiseless, truth {a.truth:g} um at the prior means, {CL.FORM} form, strips {STRIPS[0]} MHz"
                          + ("" if rel <= NOISELESS_TOL else ". REFUSED from the vector: unresolved at the archive's sampling"), "DIAGNOSTIC"])
@@ -329,7 +333,7 @@ def main() -> int:
           f"unresolved at the archive's sampling: " + ", ".join(sorted({f'k{n}@{W:g}' for _, W, n, _ in refused})), flush=True)
     detail = {"n_truths": 1, "n_statistics": len(ref) * len(orders), "max_abs_rel_error": worst,
               "n_admitted": len(admitted), "n_refused": len(refused),
-              "refused_statistics": sorted({f"k{n}@{W:g}" for _, W, n, _ in refused}),
+              "refused_statistics": sorted({f"mu{n}@{W:g}" for _, W, n, _ in refused}),
               "admission_rule": f"a statistic enters only where the estimator meets the direct truncated moment within {NOISELESS_TOL:g} of k2^(n/2) on every condition",
               "windows": list(windows), "orders": list(orders), "conditions": n_cond}
     refused_keys = {(k, W, n) for k, W, n, _ in refused}
@@ -377,7 +381,7 @@ def main() -> int:
             # replica mean resolves the sign at 3e-5 per statistic, so a flip there is a defect.
             if n % 2 == 1 and abs(e0) > 4.0 * sd / math.sqrt(reps):
                 odd_n += 1; odd_ok += int(np.sign(v.mean()) == np.sign(e0))
-            rows.append([k, f"k{n}@{W:g}", f"{v.mean():.6g}", f"{sd:.3g}", f"MHz^{n}",
+            rows.append([k, f"mu{n}@{W:g}", f"{v.mean():.6g}", f"{sd:.3g}", f"MHz^{n}",
                          f"replica mean over {reps} at x{scale:g} of the law. noise bias {bias:+.4g} against the noiseless {e0:.6g}; sd {sd:.3g}",
                          f"rung {rung}, truth {a.truth:g} um at the prior means, {CL.FORM} form", "DIAGNOSTIC"])
         sv = _spread_check(vals, refused_keys, half, reps, scale, bool(a.noise_source))

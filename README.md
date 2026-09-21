@@ -5,11 +5,12 @@
 [![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 A forward-model analysis of the rubidium **5S₁/₂ → 6S₁/₂** two-photon transition
-at **993 nm**, from Doppler-free spectroscopy in a hot vapour cell at OIST in
-2025. The line serves as an instrument, not as a frequency reference: its
-width is a sum of mechanisms that respond differently to the two available knobs,
-cell temperature and drive power, and separating them is the measurement. The 2025 campaign bounds three of them and measures none, because
-the cavity lock drifted and absolute centres were lost while shapes survived.
+at **993 nm**, from Doppler-free spectroscopy in a hot vapour cell, OIST 2025.
+Two Lorentzian widths convolve to their sum exactly, so no fit splits them at
+any signal-to-noise: only a changed experiment does. Sweeping temperature,
+power and waist pins each term by a different power of a different knob. Orders
+and windows turn one trace into many rows, and every invariance is enumerated,
+never assumed. This bounds every absolute result and measures none.
 
 <p align="center">
   <img src="figures/fig0_spectrum.png" width="720" alt="The four hyperfine-resolved 5S-6S peaks in one scan, each labelled with its wavemeter reading">

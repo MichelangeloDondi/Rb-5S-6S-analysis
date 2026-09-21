@@ -92,7 +92,10 @@ from _producer_lock import take_producer_lock                      # noqa: E402
 from rb5s6s import windows
 from rb5s6s import config as _CFG                                  # noqa: E402
 from rb5s6s import constants as K                                  # noqa: E402
-from rb5s6s.cumulants import windowed_cumulants                    # noqa: E402
+# MOMENTS, NOT CUMULANTS (O33). This producer asks only for orders 2 and/or 3, where the two
+# bases are the SAME NUMBER (k2 = mu2 and k3 = mu3 identically), so the switch cannot move a
+# committed cell -- it removes the retired name, which is the point of doing it everywhere.
+from rb5s6s.cumulants import windowed_moments                    # noqa: E402
 from rb5s6s.fullmodel import full_profile                          # noqa: E402
 from rb5s6s.hyperpolarizability import two_photon_rabi_hz          # noqa: E402
 from rb5s6s.ingest import load_manifest, load_trace, trace_path    # noqa: E402
@@ -161,8 +164,8 @@ def k2_checked(nu, y, half_width, centre0):
     did not converge, or a baseline strip is outside the trace."""
     baseline = ("linear", (centre0 - STRIP[1], centre0 - STRIP[0]), (centre0 + STRIP[0], centre0 + STRIP[1]))
     try:
-        full, info = windowed_cumulants(nu, y, half_width, (2,), baseline=baseline, n_points=N_FULL, centre0=centre0)
-        half, info_h = windowed_cumulants(nu, y, half_width, (2,), baseline=baseline, n_points=N_HALF, centre0=centre0)
+        full, info = windowed_moments(nu, y, half_width, (2,), baseline=baseline, n_points=N_FULL, centre0=centre0)
+        half, info_h = windowed_moments(nu, y, half_width, (2,), baseline=baseline, n_points=N_HALF, centre0=centre0)
     except ValueError:
         return float("nan"), float("nan")
     a, b = full[2], half[2]

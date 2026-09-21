@@ -280,14 +280,14 @@ measurable at all, which is a stronger statement than carrying no extra
 information and was measured separately: under the correlation time
 `results/noise_model.csv` reports, the third, fifth, seventh and ninth
 cumulants and every ratio among them sit at a per-trace signal-to-noise
-between [0.0032500](../../results/moment_admission.csv "ref:moment_admission:snr_refused_min:") and [0.658](../../results/moment_admission.csv "ref:moment_admission:snr_refused_max:"), against [34.69](../../results/moment_admission.csv "ref:moment_admission:snr_admitted_min:") to [2647](../../results/moment_admission.csv "ref:moment_admission:snr_admitted_max:") for the even orders and the even
+between [0.0032500](../../results/moment_admission.csv "ref:moment_admission:snr_refused_min:") and [0.717](../../results/moment_admission.csv "ref:moment_admission:snr_refused_max:"), against [446.30](../../results/moment_admission.csv "ref:moment_admission:snr_admitted_min:") to [5871](../../results/moment_admission.csv "ref:moment_admission:snr_admitted_max:") for the even orders and the even
 ratios.
 
 An admission floor of three would refuse 21 of the 42 statistics and the
 refused set would be exactly the odd one, which is why this record no longer has
 one: admission is on having a population moment and
-[33](../../results/moment_admission.csv "ref:moment_admission:n_admitted:")
-of 42 enter, the odd cumulants among them
+[33](../../results/moment_admission.csv "ref:moment_admission:n_admitted_vector:")
+of the [42](../../results/moment_admission.csv "ref:moment_admission:n_vector:") that enter the likelihood are admitted, the odd orders among them
 (`results/moment_admission.csv`). That is still the reason to read a windowed
 cumulant's measured scatter before its derivation: a cumulant of pure noise is
 largest exactly where the signal is smallest, so the odd ladder does not

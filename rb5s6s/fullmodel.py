@@ -452,10 +452,10 @@ DEFAULT_WINDOWS = (3.25, 6.0, 12.0)
 #: Measured on the twin's world under the noise model's own correlation time
 #: (`tau_int = 2.515`), 42 statistics over these orders and windows split
 #: exactly by parity at a per-trace SNR of 3: every even order and even ratio
-#: runs 34.69 [ref:moment_admission:snr_admitted_min:] to
-#: 2647 [ref:moment_admission:snr_admitted_max:] and every odd one runs
+#: runs 446.30 [ref:moment_admission:snr_admitted_min:] to
+#: 5871 [ref:moment_admission:snr_admitted_max:] and every odd one runs
 #: 0.0032500 [ref:moment_admission:snr_refused_min:] to
-#: 0.658 [ref:moment_admission:snr_refused_max:]. The tuple was
+#: 0.717 [ref:moment_admission:snr_refused_max:]. The tuple was
 #: `(2, 3, 5, 7)` until 2026-09-12, carrying ONE even order and no even ratio,
 #: so the statistic set that holds the width information could not be produced
 #: by this module at all. The odd orders stay in the tuple because they are the
@@ -504,14 +504,22 @@ def ultra_joint_statistics(nu: np.ndarray, *, windows=DEFAULT_WINDOWS,
     a pedestal degenerate with the detector offset. Keep the windows inside the
     trace.
     """
-    from .cumulants import windowed_cumulants
+    # MOMENTS ARE THE VECTOR (owner order O33, A35, A72). Both bases come from ONE quadrature per
+    # (window, trace): `windowed_moments` returns the central moments and the cumulants are DERIVED
+    # from that same array, never from a second call. A cumulant is an exact function of the moments,
+    # so carrying it costs no information and adds no evidence -- it rides as a diagnostic with its
+    # cancellation conditioning, which is what explains why a cumulant dies at a window.
+    from .cumulants import cumulants_from_central_moments, windowed_moments
     y = full_profile(nu, **profile_kw)
     orders = tuple(orders)
+    top = max(orders)
     out: dict = {}
     for w in windows:
-        k, _ = windowed_cumulants(nu, y, w, orders=orders)
+        mu, _ = windowed_moments(nu, y, w, orders=tuple(range(1, top + 1)))
+        mu_arr = np.array([mu[o] for o in range(1, top + 1)])
+        k = {n: float(cumulants_from_central_moments(mu_arr)[n - 1]) for n in orders}
         for n in orders:
-            out[f"k{n}@{w:g}"] = k[n]
+            out[f"mu{n}@{w:g}"] = float(mu[n])
         if not with_ratios:
             continue
         # EVERY ADJACENT SAME-PARITY PAIR, not two hard-coded odd ones. The
@@ -520,8 +528,22 @@ def ultra_joint_statistics(nu: np.ndarray, *, windows=DEFAULT_WINDOWS,
         # it divides out. Pairing across parities would not.
         for lo in orders:
             hi = lo + 2                      # by VALUE, never by tuple position
-            if hi in orders and _ratio_admitted(k, lo, w):
-                out[f"k{hi}/k{lo}@{w:g}"] = k[hi] / k[lo]
+            if hi in orders and _ratio_admitted(mu, lo, w):
+                # THE RATIO IS A MOMENT RATIO (O33, A72, A86). The main aim names "the higher order
+                # moments and on their combinations and ratios", and a ratio of CUMULANTS carries the
+                # cancellation of both its members: k4 = mu4 - 3 mu2^2 is a four per cent residue of
+                # its own terms on a Lorentzian at 5 MHz, so a ratio built on it pays that factor
+                # twice for nothing. The moment ratio has no cancellation and no sign constraint to
+                # trip over. The admission floor is read on the DENOMINATOR that is actually used.
+                out[f"mu{hi}/mu{lo}@{w:g}"] = float(mu[hi]) / float(mu[lo])
+        # THE ONE CUMULANT RATIO THAT KEEPS ITS FORM (A93): k5/k3 is shift-free and its sign is the
+        # instrumental-asymmetry discriminator, both measured in that form. It is a DIAGNOSTIC and
+        # enters no likelihood, which is why it is emitted under a name the vector does not select.
+        if 5 in orders and 3 in orders and _ratio_admitted(k, 3, w):
+            # THE DENOMINATOR IS SPELLED AS THE ROW KEY THE REPLICAS HOLD (CRITICAL 1, 2026-09-21):
+            # mu3 is k3 identically, so the ratio is unchanged and the sign-flip guard can now find
+            # its denominator instead of grading NaN. The physics name stays k5/k3 (A93).
+            out[f"diag_k5/mu3@{w:g}"] = k[5] / k[3]
     return out
 
 
@@ -571,16 +593,34 @@ def _ratio_admitted(k: dict, lo: int, half_width: float) -> bool:
     """Is `k[lo]` resolved above the numerical floor of its own construction?
 
     A NUMERICAL-ZERO DETECTOR FOR THE ODD ORDERS, and nothing more. The odd
-    cumulants vanish identically at zero shift and this floor separates that
-    zero from a live value by five decades (E71). The EVEN orders have
-    PHYSICAL zeros the floor admits by design: at the archive's parameters
-    k4 changes sign between windows 6 and 12, so k6/k4 passes through a pole
-    near w = 8, and inside a shipped window the pole sits on the parameter
-    axis instead (k6 at window 6 crosses zero between gamma_coll 0.22 and 0.27
-    MHz depending on the grid span, from +-80 to +-30 MHz, because the windowed
-    estimator subtracts a wing baseline). A
-    caller forming an even ratio across a scan owes a distance-from-zero test
-    on the denominator's own forward prediction; this function cannot make it.
+    orders vanish identically at zero shift and this floor separates that
+    zero from a live value by five decades (E71).
+
+    IT IS CALLED ON BOTH BASES AND THE CALIBRATION DIFFERS, which the caller
+    must know (O33, A72). The dimensionless quantity is `|v[lo]| / sigma**lo`:
+
+    * ODD orders: the calibration below is UNCHANGED and exact at order 3,
+      because `mu3 == k3` identically -- the floor is comparing the same
+      number. At 5 and 7 the moment is the better-conditioned member of the
+      pair and vanishes on the same symmetry, so the zero it must catch is
+      the same zero.
+    * EVEN orders under MOMENTS: the quantity is O(1), not the 4.0e-06 to
+      3.1e-04 the cumulant calibration below reports, so the floor admits
+      essentially always -- AND THAT IS CORRECT RATHER THAN A GAP. An even
+      central moment of a non-negative line is strictly positive, so it has
+      no zero to sit near and no pole to cross.
+    * EVEN orders under CUMULANTS: the hazard the paragraph after this one
+      describes is real and belongs to that basis alone. `k4 = mu4 - 3 mu2^2`
+      carries no sign constraint, so it changes sign between windows 6 and 12
+      at the archive's parameters and `k6/k4` passes through a POLE near
+      w = 8; inside a shipped window the pole sits on the parameter axis
+      instead (k6 at window 6 crosses zero between gamma_coll 0.22 and 0.27
+      MHz depending on the grid span, because the windowed estimator subtracts
+      a wing baseline). A caller forming an even CUMULANT ratio across a scan
+      owes a distance-from-zero test on the denominator's own forward
+      prediction; this function cannot make it. **A caller forming an even
+      MOMENT ratio owes no such test**, and removing that pole is one of the
+      things the switch to moments buys.
     """
     v = k.get(lo)
     if v is None or not np.isfinite(v):
@@ -655,6 +695,38 @@ def convolution_licence(w0_m: float, m2: float = 1.0, **kw) -> dict:
             "w0_min_m": 40e-6 * math.sqrt(float(m2))}
 
 
+def sign_flip_denominators(keys, rows) -> dict:
+    """For every ratio statistic, how many replicas put its DENOMINATOR on the minority sign.
+
+    A ratio whose denominator crosses zero across the replicas has no population moment, so the
+    admission refuses it. THE PARSED DENOMINATOR MUST EXIST IN THE ROWS, or the guard is grading
+    nothing (a defect found on 2026-09-20 and verified from the staged CSV on 2026-09-21):
+    O33's rename left `diag_k5/k3@W` spelled with a `k` while every row key became `mu`, so the
+    lookup returned NaN for every replica, the flip count came out zero, and the one statistic
+    built on a cumulant denominator was ADMITTED at all three windows while `mu5/mu3` -- the same
+    denominator, mu3 being k3 identically -- was REFUSED on byte-identical numbers. A guard whose
+    population silently excludes its own subject reads exactly like a guard that passes.
+    Membership is checked because a spelling can be out-spelled by the next rename and a key set
+    cannot. Factored out of `ultra_joint_covariance` so the refusal can be planted both ways
+    through the function the real path calls.
+    """
+    denom_flips = {}
+    for k in keys:
+        if "/" not in k:
+            continue
+        lo_name = k.split("/")[1]                       # "mu3@6" from "diag_k5/mu3@6"
+        if not any(lo_name in r for r in rows):
+            raise KeyError(
+                f"the ratio {k!r} names a denominator {lo_name!r} that no replica row holds, so its "
+                "sign-flip admission cannot be evaluated. Fix the emitter's key spelling; do not widen "
+                "this parse.")
+        vals = [r.get(lo_name, float("nan")) for r in rows]
+        pos = sum(1 for v in vals if np.isfinite(v) and v > 0)
+        neg = sum(1 for v in vals if np.isfinite(v) and v < 0)
+        denom_flips[k] = min(pos, neg)
+    return denom_flips
+
+
 def ultra_joint_covariance(nu: np.ndarray, *, n_real: int = 400,
                            noise_frac: float = 0.004, tau_int: float = 1.0,
                            snr_report_floor: float = 3.0, seed: int = 0,
@@ -681,9 +753,9 @@ def ultra_joint_covariance(nu: np.ndarray, *, n_real: int = 400,
 
     **THE SNR SPLITS THE LADDER BY PARITY, AND IT NO LONGER GATES ANYTHING.**
     Over 42 statistics at the archive's parameters, the 21 even ones carry a
-    per-trace SNR of 34.69 [ref:moment_admission:snr_admitted_min:] to
-    2647 [ref:moment_admission:snr_admitted_max:] and the 21 odd ones reach only
-    0.658 [ref:moment_admission:snr_refused_max:], so a floor at 3 refused the
+    per-trace SNR of 446.30 [ref:moment_admission:snr_admitted_min:] to
+    5871 [ref:moment_admission:snr_admitted_max:] and the 21 odd ones reach only
+    0.717 [ref:moment_admission:snr_refused_max:], so a floor at 3 refused the
     odd ladder entirely -- the shift channel, and the half of the owner's
     specification that opens with "in particular the ODD ones". Owner order O17
     of 2026-09-15 forbids admitting by SNR at all, and the reasoning is in the
@@ -743,7 +815,7 @@ def ultra_joint_covariance(nu: np.ndarray, *, n_real: int = 400,
             else:
                 x = w
         yn = y0 + noise_frac * np.sqrt(np.clip(y0, 0.0, None) * peak) * x
-        from .cumulants import windowed_cumulants
+        from .cumulants import cumulants_from_central_moments, windowed_moments
         # KEYED, NEVER POSITIONAL. `keys` comes from a function that emits a
         # ratio only when its denominator is non-zero, while this loop always
         # appended, so at a light shift of zero the odd cumulants vanish, three
@@ -753,14 +825,24 @@ def ultra_joint_covariance(nu: np.ndarray, *, n_real: int = 400,
         # and intersecting the names makes the alignment structural.
         row = {}
         for half_width in windows:
-            kk, _ = windowed_cumulants(nu, yn, half_width, orders=tuple(orders))
+            _top = max(orders)
+            mm, _ = windowed_moments(nu, yn, half_width, orders=tuple(range(1, _top + 1)))
+            _mu_arr = np.array([mm[o] for o in range(1, _top + 1)])
+            _kap = cumulants_from_central_moments(_mu_arr)
+            kk = {n: float(_kap[n - 1]) for n in orders}
             for n in orders:
-                row[f"k{n}@{half_width:g}"] = kk[n]
+                row[f"mu{n}@{half_width:g}"] = float(mm[n])
             if with_ratios:
                 for lo in orders:
                     hi = lo + 2
-                    if hi in orders and _ratio_admitted(kk, lo, half_width):
-                        row[f"k{hi}/k{lo}@{half_width:g}"] = kk[hi] / kk[lo]
+                    # MOMENT RATIOS, and the floor is read on the denominator actually divided by
+                    # (O33, A72). The replica loop and `ultra_joint_statistics` must emit the SAME
+                    # names or the covariance's columns and the model's keys stop corresponding,
+                    # which is the misalignment this function's own comment above already records.
+                    if hi in orders and _ratio_admitted(mm, lo, half_width):
+                        row[f"mu{hi}/mu{lo}@{half_width:g}"] = float(mm[hi]) / float(mm[lo])
+                if 5 in orders and 3 in orders and _ratio_admitted(kk, 3, half_width):
+                    row[f"diag_k5/mu3@{half_width:g}"] = kk[5] / kk[3]   # mu3 is k3: the key names a row that exists (CRITICAL 1)
         rows.append(row)
     # the names every realisation produced, in the reference order
     common = [k for k in keys if all(k in r for r in rows)]
@@ -796,15 +878,7 @@ def ultra_joint_covariance(nu: np.ndarray, *, n_real: int = 400,
     # population mean or variance, and a replica covariance would return a
     # finite number that keeps moving with the replica count.  That is the
     # failure that does not announce itself, and it is what this refuses.
-    denom_flips = {}
-    for k in keys:
-        if "/" not in k:
-            continue
-        lo_name = k.split("/")[1]                       # "k3@6" from "k5/k3@6"
-        vals = [r.get(lo_name, float("nan")) for r in rows]
-        pos = sum(1 for v in vals if np.isfinite(v) and v > 0)
-        neg = sum(1 for v in vals if np.isfinite(v) and v < 0)
-        denom_flips[k] = min(pos, neg)
+    denom_flips = sign_flip_denominators(keys, rows)    # CRITICAL 1: a missing denominator RAISES
     admitted, refused, why = [], [], {}
     for k, m, d in zip(keys, mean, sd):
         if not (np.isfinite(m) and np.isfinite(d) and d > 0.0):

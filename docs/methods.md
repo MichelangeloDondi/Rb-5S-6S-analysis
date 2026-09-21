@@ -173,6 +173,17 @@ rb5s6s/   api(the supported entry point: a trace in, a linewidth out)
                     Marinescu-Sadeghpour-Dalgarno potential, the 6S continuum's share of the polarizability)
           coulomb_approx(M41: Bates-Damgaard radial functions for the 6s-nP elements
                     above 8P, calibrated on the held 6S-8P pair with the 6S-7P step as its spread)
+          report(the only sanctioned printer of a bias: it refuses without a
+                    coverage beside the bias, on a non-finite value, and on fewer
+                    than two realisations, which is what carries the standard
+                    error. At the NOISELESS rung the realisations are identical
+                    by construction, so the error is zero and the bias is printed
+                    as exactly that and is not refused. Saying it refuses without
+                    a standard error was false at rung one of every ladder. It
+                    raises before it prints, since a printer that emits and then
+                    raises has already published the number. The uncertainty
+                    carries two significant digits and the value follows its
+                    decimals)
           cumulants(M39: the windowed self-centred cumulants of a line, recentred to
                     a tolerance with the converged flag returned, the pedestal
                     removed from the trace's own far wings, any order by the
@@ -258,7 +269,7 @@ scripts/  import_data (+ annotate_manifest_qc: qc_reason provenance)
           run_geometry_design (the running-wave and waist designs, whose
           weak-field branch reproduces lineshape.stark_ramp_axial_moments)
 data_raw/ MANIFEST.csv, and the 297 traces where the copy carries them
-tests/    5299-test battery (5113 fast ~5 min + 186 `slow` high-statistics
+tests/    5391-test battery (5205 fast ~5 min + 186 `slow` high-statistics
           closure tests via --runslow, incl. the M4d synthetic-β and M4e
           synthetic-κ closures, the MANIFEST qc_reason guards, and the
           docs-consistency gates: canonical numbers, links+anchors, math
@@ -282,8 +293,8 @@ The first six scripts form the pipeline (each reads the previous ones'
 
 ```bash
 python3 -m venv .venv && source .venv/bin/activate
-pip install -e ".[dev]" && pytest -q          # 5113 fast tests (~5 min)
-pytest -q --runslow                           # full 5299 incl. slow closures (what CI runs)
+pip install -e ".[dev]" && pytest -q          # 5205 fast tests (~5 min)
+pytest -q --runslow                           # full 5391 incl. slow closures (what CI runs)
 
 # reproduce every committed CSV, figure, and docs/RESULTS.md from data_raw/
 # (already in git; import_data.py only re-imports from the original tree):

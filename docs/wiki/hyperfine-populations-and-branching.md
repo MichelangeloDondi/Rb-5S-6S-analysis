@@ -245,7 +245,7 @@ the chord integral already in the model.
   calculations draw on.
 
 ## Related pages
-- [The AC-Stark dossier](../quantities/AC-stark-light-shift.md), where the
+- [The AC-Stark dossier](../quantities/ac-stark-light-shift.md), where the
   pumping branching is one of the mechanisms sharing the light shift's power
   signature.
 - [Hyperfine structure](hyperfine-structure.md), the levels this page

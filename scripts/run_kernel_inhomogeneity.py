@@ -46,7 +46,10 @@ import numpy as np
 from rb5s6s import constants as K
 from rb5s6s import stark
 from rb5s6s.constants import collection_z_ratio
-from rb5s6s.cumulants import windowed_cumulants
+# MOMENTS, NOT CUMULANTS (O33). This producer asks only for orders 2 and/or 3, where the two
+# bases are the SAME NUMBER (k2 = mu2 and k3 = mu3 identically), so the switch cannot move a
+# committed cell -- it removes the retired name, which is the point of doing it everywhere.
+from rb5s6s.cumulants import windowed_moments
 from rb5s6s.linefit import fit_condition
 from rb5s6s.lineshape import RAMP_SIDE, model_profile
 
@@ -318,7 +321,7 @@ def observables(prof, window):
     cumulant. The centroid is the profile's own first moment, which is what a
     free per-trace centre fits to at leading order."""
     m = float((NU * prof).sum() / prof.sum())
-    v, info = windowed_cumulants(NU, prof, window, (3,), centre0=0.0,
+    v, info = windowed_moments(NU, prof, window, (3,), centre0=0.0,
                                  baseline="wings")
     k3 = float(v[3]) if info["converged"] and info.get("in_span", True) else float("nan")
     return m, k3

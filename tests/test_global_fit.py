@@ -113,3 +113,77 @@ def test_fit_global_runs_on_real_data():
     for iso in fit["beta_keys"]:
         assert np.isfinite(fit["beta_by_isotope"][iso])
         assert np.isfinite(fit["beta_err_by_isotope"][iso])
+
+
+# ---- the three guards of 2026-09-21 (F250, F252, F253), planted both ways -------------------
+
+_BETA = {85: 0.05, 87: 0.02}
+_SIGMA = {90.0: 1.4}
+
+
+def test_a_density_outside_the_vapour_band_is_refused_with_its_units():
+    """F250: a harness passed Kelvin to a callee that takes Celsius and handed fit_global
+    N_units = 55468 (0.56 is right at 70 C); the first residual built 1.3 million grid points and
+    hung for 7h50m. The refusal names the units; the same blocks with a physical density fit."""
+    blocks = synth_blocks(_BETA, _SIGMA, temps=(90.0,))
+    # EVERY block carries the wrong density, which is F250's own shape (the harness's density
+    # helper was wrong for all of them); a single bad block trips the older per-temperature
+    # consistency refusal first, which is correct and is not this plant's subject
+    bad = [dict(b, N_units=55468.3) for b in blocks]
+    with pytest.raises(ValueError, match=r"N_units=5\.547e\+04.*units defect"):
+        fit_global(bad, transit_ref_mhz=0.9)
+    fit = fit_global(blocks, transit_ref_mhz=0.9)          # the positive: the band admits the record's cells
+    assert fit["chi2_red"] < 5.0 and not fit["worse_than_start"]
+
+
+def test_a_warm_start_of_the_shared_prefix_is_honoured_and_its_shape_checked():
+    """F253: a profile by continuation needs a start it can hand over; the shared prefix is the
+    caller's, the per-trace seeds stay data-derived, and a wrong length is refused by name."""
+    blocks = synth_blocks(_BETA, _SIGMA, temps=(90.0,))
+    cold = fit_global(blocks, transit_ref_mhz=0.9)
+    shared = list(cold["sigma_laser"]) + [cold["beta_by_isotope"][iso] for iso in cold["beta_keys"]]
+    warm = fit_global(blocks, transit_ref_mhz=0.9, p0_shared=shared)
+    assert abs(warm["chi2_red"] - cold["chi2_red"]) < 1e-6      # the same minimum, reached from it
+    assert warm["cost_at_start"] >= warm["cost"] - 1e-9 and not warm["worse_than_start"]
+    with pytest.raises(ValueError, match="shared prefix"):
+        fit_global(blocks, transit_ref_mhz=0.9, p0_shared=shared[:-1])
+
+
+def test_the_start_cost_and_the_budget_are_carried():
+    """F252: a minimiser that ends above its own start is named, never returned silently. The
+    True branch's live instance is the T0l harness (0.19 MHz at chi2 4.30 against 0.98 at the
+    truth); it is not constructible here without a fake solver, so this plant asserts the
+    reading's arithmetic on a converged fit and that the budget reaches the solver."""
+    blocks = synth_blocks(_BETA, _SIGMA, temps=(90.0,))
+    fit = fit_global(blocks, transit_ref_mhz=0.9)
+    assert {"cost_at_start", "cost", "worse_than_start"} <= fit.keys()
+    assert fit["cost"] <= fit["cost_at_start"] and fit["worse_than_start"] is False
+    assert abs(fit["cost"] - 0.5 * fit["chi2_whitened"]) < 1e-6   # one definition, stated twice
+    with pytest.raises(RuntimeError, match="global fit failed"):
+        fit_global(blocks, transit_ref_mhz=0.9, max_nfev=1)       # a budget of one cannot converge
+
+
+def test_a_solver_that_ends_worse_than_its_start_or_not_stationary_is_named(monkeypatch):
+    """The True branches (F252, F258), manufactured with a fake solver rather than left to a docstring:
+    the C3 advancement and twin seats both found them unplanted. The fake returns the start itself
+    with a cost above the start's and a large optimality; both flags must read True and neither
+    may raise. The False branch is the converged fit the tests above already exercise."""
+    import numpy as np
+    from rb5s6s import global_fit as G
+    blocks = synth_blocks(_BETA, _SIGMA, temps=(90.0,))
+
+    class _Sol:
+        def __init__(self, x, cost):
+            self.x = x; self.cost = cost; self.success = True; self.message = "fake"
+            self.fun = np.zeros(1); self.jac = np.eye(len(x)); self.optimality = 5.4e4; self.nfev = 25
+
+    real = G.least_squares
+
+    def fake(fun, x0, **kw):
+        r = real(fun, x0, **kw)                       # the real answer, then a worse cost reported
+        return _Sol(r.x, 1e12)                     # above ANY start's cost, whatever the seed
+
+    monkeypatch.setattr(G, "least_squares", fake)
+    fit = G.fit_global(blocks, transit_ref_mhz=0.9)
+    assert fit["worse_than_start"] is True and fit["not_stationary"] is True
+    assert fit["nfev"] == 25 and fit["optimality"] == 5.4e4

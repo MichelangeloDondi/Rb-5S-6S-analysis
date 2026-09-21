@@ -55,6 +55,33 @@ fi
 printf '%s\n' "$$" > "$GATE_LOCK/pid"
 trap 'rm -rf "$GATE_LOCK"' EXIT
 
+# ONE GATE PER COMMIT, REFUSED HERE AND NOT IN A WRAPPER (2026-09-21).
+# This script already WRITES .gate_started_for so the rule can be enforced; the enforcement lived
+# only in landing.sh, which is not on $PATH and sits under private/cache (the plan's own RT13).
+# Measured on 2026-09-20: SSOT_OWED.md logged 74 distinct ci_gate.sh pids in one day while
+# .gate_started_for carried TWO entries, and core_watch read the performance cores RED in 185 of
+# 282 samples. A rule that lives only in an unreachable wrapper is not a rule, so it moves into
+# the script that is actually invoked. CI_GATE_SECOND_REASON is the logged exception and it is
+# deliberately NOT a silent one: it prints, so a second gate is always visible in the log.
+# $PWD is the repository root here (line 14 cd's to it); GATE_ROOT is defined further down, and
+# reading it here was an unbound variable under set -u that killed the gate at once (2026-09-21).
+_GSF="$PWD/.gate_started_for"
+if [ -f "$_GSF" ]; then
+  _HEAD_NOW=$(git -C "$PWD" rev-parse HEAD 2>/dev/null)
+  _HEAD_LAST=$(awk 'END{print $1}' "$_GSF" 2>/dev/null)
+  if [ -n "$_HEAD_NOW" ] && [ "$_HEAD_NOW" = "$_HEAD_LAST" ]; then
+    if [ -n "${CI_GATE_SECOND_REASON:-}" ]; then
+      echo "ci-gate: SECOND gate on HEAD ${_HEAD_NOW:0:12}, on a stated reason: $CI_GATE_SECOND_REASON" >&2
+    else
+      echo "ci-gate: REFUSED. A gate already ran for HEAD ${_HEAD_NOW:0:12} (.gate_started_for)." >&2
+      echo "  One gate per commit. A gate failure is a thing to FIX, never a thing to re-earn:" >&2
+      echo "  re-run the failing node ids alone and commit on the forty-second floor stamp." >&2
+      echo "  CI_GATE_SECOND_REASON=\"<why>\" overrides, and prints when it does." >&2
+      exit 9
+    fi
+  fi
+fi
+
 # The verdict file is anchored to the MAIN checkout's root -- the parent
 # of the common git dir -- which from a linked worktree is the main tree
 # and from the main tree is itself, so the gate and the ledger can never read

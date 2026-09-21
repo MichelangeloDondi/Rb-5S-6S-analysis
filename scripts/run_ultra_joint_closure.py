@@ -794,10 +794,14 @@ def main() -> int:
                   f"bias {d['bias']:+7.3f} um  max|rel| {d['max_abs_rel_error']:.4g}  "
                   f"coverage {d['coverage']:.2f}  chi2_red {d['chi2_red']:.3f}  {','.join(d['verdicts'])}",
                   flush=True)
+            # SEVEN FIELDS, NOT EIGHT (2026-09-20). These two rows carried a spurious empty field
+            # between the note and the status, so 32 of 370 rows parsed as 8 against a 7-field
+            # header and the status guard read an empty status. The header is
+            # quantity, key, value, err, unit, note, status; count them before adding one.
             rows.append([f"sweep_x{sc:g}" + ("" if truth == canon else f"_truth{truth:g}"), "median_bar_um", f"{d['median_bar']:.4f}", "", "um",
-                         "the median over realisations of the vertex's delta-chi2 = 1 half-width at this level, whitened at the level's own scale", "", "DIAGNOSTIC"])
+                         "the median over realisations of the vertex's delta-chi2 = 1 half-width at this level, whitened at the level's own scale", "DIAGNOSTIC"])
             rows.append([f"sweep_x{sc:g}" + ("" if truth == canon else f"_truth{truth:g}"), "bias_um", f"{d['bias']:.4f}", "", "um",
-                         "the mean recovered waist minus the truth over the interior realisations at this level", "", "DIAGNOSTIC"])
+                         "the mean recovered waist minus the truth over the interior realisations at this level", "DIAGNOSTIC"])
             rows.append([f"sweep_x{sc:g}" + ("" if truth == canon else f"_truth{truth:g}"), "interior_fraction", f"{d['interior']/d['n']:.3f}", "", "",
                          f"{d['interior']} of {d['n']} realisations found an INTERIOR minimum at "
                          f"{sc:g} times each condition's own noise law. bias {d['bias']:+.3f} um, "

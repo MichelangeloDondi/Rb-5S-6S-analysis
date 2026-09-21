@@ -194,12 +194,21 @@ _DATED = re.compile(r"20\d\d-\d\d-\d\d")
 _XREF = re.compile(
     r"(?:\u00a7\s*|(?:Figure|Table|Section|Fig\.|Eq\.|Appendix)\s+)\d+(?:\.\d+)*"
     r"|^\s*#{1,6}\s+\d+(?:\.\d+)*"
-    r"|^\s*\*{0,2}Figure\s+\d+(?:\.\d+)*")
+    r"|^\s*\*{0,2}Figure\s+\d+(?:\.\d+)*"
+    r"|\b\d+\s+of\s+\d+\*")   # a wiki footer's italic page counter, "5 of 9*", is navigation and not a value
 # SCIENTIFIC NOTATION IS A NUMBER (2026-09-19). Without the exponent branch every value written as
 # `3.44e+22` was invisible to this scanner: `_literals` returned nothing for it, so a retired
 # exponential cell produced no stale literal and the sweep fell through to its "nothing to check"
 # refusal. Measured on results/moment_admission.csv, whose retired 3.44e+22 this guard could not see.
 _NUM_ONLY = re.compile(r"-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?")
+# A DIGIT GLUED TO A LETTER OR A BRACE IS A LABEL, NOT A VALUE (2026-09-21). `k9`, `mu4`, `S_0^{3}`
+# and `\\tfrac{2S_0}{3}` all read as bare numerals to `_NUM_ONLY`, so when the refused count moved
+# from 9 to 12 the three `k9` labels of docs/wiki/identifiability.md and one LaTeX fraction were
+# reported as stale copies of it. A guard's population is a notation as well as a file set, and a
+# guard whose hits are mostly labels trains the eye to skip it. PROSE tokens require a boundary
+# before the sign or digit that is not a letter, digit, underscore, brace or caret; CSV cells keep
+# the full match, because a cell is a value by construction.
+_NUM_PROSE = re.compile(r"(?<![A-Za-z0-9_{^\\/])-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?")   # and a fraction's denominator after /
 _BAND_ONLY = re.compile(r"(-?\d+(?:\.\d+)?)\s+to\s+(-?\d+(?:\.\d+)?)")
 
 
@@ -562,6 +571,9 @@ _UNITS = frozenset("""
 """.split())
 
 
+_BOUND_UNIT = re.compile(r"^\s*[A-Z][A-Z0-9_]*_([A-Z]+[0-9]*)\s*[:=]")
+
+
 def _unit_clash(line: str, lit: str, cell_unit: str | None) -> bool:
     """True when the literal carries a unit and the retired cell carries
     a DIFFERENT one, and both are recognised.
@@ -575,20 +587,41 @@ def _unit_clash(line: str, lit: str, cell_unit: str | None) -> bool:
     """
     if cell_unit is None:
         return False                       # cell not found, so nothing known
-    cu = cell_unit.strip().lower().split()[0] if cell_unit.strip() else ""
+    # A DIMENSIONLESS CELL IS DIMENSIONLESS WHEREVER THE WORD SITS (F230). This took the
+    # FIRST token only, so a cell whose unit reads "whitened chi2" was parsed as "whitened",
+    # which is in no unit table, and the function bailed before it could rule. A chi-squared
+    # carries no dimension, exactly like the ratio and sigma already named below, and the
+    # word that says so is not always first. Read every token.
+    _toks = cell_unit.strip().lower().split()
+    _NONDIM = ("ratio", "count", "counts", "sigma", "chi2", "chi-squared", "dimensionless")
+    cu = next((t for t in _toks if t in _NONDIM), _toks[0] if _toks else "")
     i = line.find(lit)
     if i < 0:
         return False
     m = _UNIT_AFTER.match(line, i + len(lit))
     if not m:
-        return False
-    written = m.group(1).lower()
+        # THE UNIT MAY BE IN THE BINDING'S NAME AND NOT BESIDE THE NUMBER (F230,
+        # 2026-09-20). `GRID_UM = (40.0, 42.0, 44.0, 46.0, 48.0, 52.0, 56.0)` is a
+        # grid of WAISTS IN MICRONS, and it blocked a commit by colliding with a
+        # DIMENSIONLESS chi-squared on a row merely named `w0_48um`. No count of
+        # significant digits separates a length from a test statistic, and the unit
+        # that does separate them is written once, on the name, for the whole tuple.
+        # A guard's population is a notation as well as a file set: this reads the
+        # notation the subject actually uses. Conservative in the same way as the
+        # rest of this function -- an unrecognised suffix returns False and every
+        # later check still runs.
+        b = _BOUND_UNIT.match(line)
+        if not b:
+            return False
+        written = b.group(1).lower()
+    else:
+        written = m.group(1).lower()
     head = written.split("/")[0].split("^")[0]
     if head not in _UNITS:
         return False                       # not a unit, so no clash known
     cell_head = cu.split("/")[0].split("^")[0]
-    if cell_head in ("", "ratio", "count", "counts", "sigma"):
-        return head not in ("ratio", "count", "counts", "sigma")
+    if cell_head in ("",) + _NONDIM:
+        return head not in _NONDIM
     if cell_head not in _UNITS:
         return False                       # cell unit unrecognised
     return head != cell_head
@@ -640,7 +673,7 @@ def scan(stale: dict[str, dict[str, tuple[str, str]]],
             # than the gate step this sits in; the tokens on a line are a
             # handful, so the comparison is a set lookup.
             probe = _XREF.sub(" ", probe)
-            written = {m.group(0) for m in _NUM_ONLY.finditer(probe)}
+            written = {m.group(0) for m in _NUM_PROSE.finditer(probe)}   # labels excluded
             written |= {f"{m.group(1)} to {m.group(2)}"
                         for m in _BAND_ONLY.finditer(probe)}
             if not written:

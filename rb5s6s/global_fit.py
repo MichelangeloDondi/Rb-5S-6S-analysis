@@ -52,12 +52,23 @@ from .linefit import transit_fwhm_at_T, adaptive_halfwidth
 from .noise import signal_level, sigma_of_v
 from .fitutil import cov_from_jac, feasible_p0
 
+#: A first-order optimality above this at exit is a stop on a tolerance, not a minimum (F258).
+OPTIMALITY_CEILING = 1e3
+
 
 def fit_global(blocks: List[Dict], *, transit_ref_mhz: float = C.TRANSIT_FWHM_PLACEHOLDER_MHZ,
                fit_transit: bool = False, T_ref_C: float = 110.0,
                transit_kind: str = "exp", sigma_sharing: str = "per_T",
-               laser_kind: str = "gaussian", gamma_l: float = 0.0) -> Dict:
+               laser_kind: str = "gaussian", gamma_l: float = 0.0,
+               p0_shared=None, max_nfev: int = 80000) -> Dict:
     """Hierarchical fit over many (peak, T) blocks.
+
+    p0_shared : optional start for the SHARED prefix of the parameter vector, in its own order
+        (sigma_laser per group, beta per isotope, then transit_ref if fit_transit). A profile by
+        continuation warm-starts each point from its neighbour's solution (A11); without this
+        argument every point starts from the fixed seed and a pinned point far from the minimum
+        crawls for minutes (F253). The per-trace seeds stay data-derived. None = the fixed seed.
+    max_nfev : the optimiser's evaluation budget, exposed so a harness can bound a cell (F253).
 
     blocks: list of dicts, each
         {'peak','isotope','T_C','N_units','freqs':[arr...],'volts':[arr...],'law'}
@@ -107,6 +118,19 @@ def fit_global(blocks: List[Dict], *, transit_ref_mhz: float = C.TRANSIT_FWHM_PL
     for blk in blocks:
         si = sig_keys.index(_skey(blk)); bi = beta_keys.index(blk["isotope"])
         law = blk.get("law")
+        # A DENSITY OUTSIDE THE VAPOUR'S PHYSICAL BAND IS A UNITS DEFECT, NOT A FIT (F250, 2026-09-21).
+        # N_units is the Rb number density in 1e12 cm^-3: 0.56 at 70 C, 29.4 at 130 C, and the
+        # record's cells all sit inside [0.01, 500]. A harness passed Kelvin to a callee that takes
+        # Celsius and handed this function 55468, so the first residual built gamma_coll = 5547 MHz,
+        # a 66 000 MHz span and 1.3 million grid points, and hung for 7h50m. Refusing here names the
+        # units; hanging names nothing.
+        _N = float(blk["N_units"])
+        if not (0.01 <= _N <= 500.0):
+            raise ValueError(
+                f"block {blk.get('peak')!r} at {blk.get('T_C')} C carries N_units={_N:.4g}, outside the "
+                f"Rb vapour's physical band [0.01, 500] in 1e12 cm^-3 (0.56 at 70 C, 29.4 at 130 C). "
+                f"That is a units defect in the caller (F250: Celsius given as Kelvin gives 5.5e4), and a "
+                f"fit on it would not return.")
         tau_b = max(law.get("tau_int", 1.0), 1.0) if law else 1.0
         for nu, v in zip(blk["freqs"], blk["volts"]):
             lev, base = signal_level(v)
@@ -164,10 +188,43 @@ def fit_global(blocks: List[Dict], *, transit_ref_mhz: float = C.TRANSIT_FWHM_PL
             out.append((t[1] - model) / t[2])
         return np.concatenate(out)
 
+    if p0_shared is not None:
+        # a warm start for a profile by continuation (A11, F253): only the shared prefix is the
+        # caller's to set; the per-trace seeds are read from the traces and stay so
+        p0_shared = np.asarray(p0_shared, float)
+        if p0_shared.shape != (nshared,):
+            raise ValueError(f"p0_shared has shape {p0_shared.shape}; the shared prefix is {nshared} long "
+                             f"({nS} sigma, {nB} beta{', 1 transit' if fit_transit else ''})")
+        p0[:nshared] = p0_shared
     p0 = feasible_p0(p0, lo, hi)  # project seed into bounds
-    sol = least_squares(residuals, p0, bounds=(lo, hi), max_nfev=80000)
+    cost0 = 0.5 * float(np.sum(residuals(p0) ** 2))
+    sol = least_squares(residuals, p0, bounds=(lo, hi), max_nfev=max_nfev)
     if not sol.success:
         raise RuntimeError(f"global fit failed: {sol.message}")
+    # A SOLUTION WORSE THAN ITS OWN START IS REPORTED, NEVER RETURNED SILENTLY (F252, 2026-09-21):
+    # on data generated at the truth, the free-transit arm returned 0.19 MHz at chi2 4.30 where
+    # the truth reads 0.98, and nothing in the return said the minimiser had failed. This is
+    # not a bias and not a rail; it is start dependence, which A45 says enters no result
+    # without a check. The reading rides in the result and is printed, so a harness that
+    # ignores it does so in the open.
+    worse = bool(sol.cost > cost0)
+    # A SOLUTION THAT IMPROVED ON ITS START BUT IS NOT STATIONARY IS NAMED TOO (2026-09-21; F258): the free-transit arm stopped after 25 evaluations at optimality 5.4e4 where the
+    # pinned control sat at 12, and `worse_than_start` was False. The ceiling is stated, not tuned:
+    # scipy's default gtol is 1e-8 on a scaled gradient, and a first-order optimality above 1e3 is
+    # a stop on ftol or xtol with the gradient still large, which is not a minimum.
+    stalled = bool(sol.optimality > OPTIMALITY_CEILING)
+    if stalled:
+        import sys as _sys
+        print(f"fit_global: the solver stopped at first-order optimality {sol.optimality:.3g}, above "
+              f"the ceiling {OPTIMALITY_CEILING:g}: it improved on its start but is not at a stationary "
+              f"point (F258). Tighten the tolerances or warm-start; do not read this fit as a result.",
+              file=_sys.stderr)
+    if worse:
+        import sys as _sys
+        print(f"fit_global: the solution's cost {sol.cost:.6g} EXCEEDS the cost at its start "
+              f"{cost0:.6g}; the minimiser did not find its own minimum (start dependence, "
+              f"F252). Scan the parameter or warm-start it; do not read this fit as a result.",
+              file=_sys.stderr)
     ndata = sum(len(t[1]) for t in tr)
     dof = max(ndata - len(p0), 1)
     # raw chi2 for diagnostics (undo the per-sample sqrt(tau) whitening)
@@ -193,6 +250,9 @@ def fit_global(blocks: List[Dict], *, transit_ref_mhz: float = C.TRANSIT_FWHM_PL
         "chi2_whitened": float(2.0 * sol.cost),                      # sum of whitened resid^2
         "ndata_eff": float(sum(len(t[0]) / t[10] for t in tr)),      # sum n_block / tau_block
         "noise_floor_limited": bool(chi2_red < 0.8),
+        "cost_at_start": float(cost0), "cost": float(sol.cost),   # 0.5 * sum of whitened resid^2
+        "worse_than_start": worse, "not_stationary": stalled,   # F258: an early stop, named                                 # F252: a failed minimiser, named
+        "nfev": int(sol.nfev), "optimality": float(sol.optimality),   # K-D: how the solver stopped, not only where
         "params_at_bound": sorted(
             [f"sigma_{k}" for i, k in enumerate(sig_keys) if sol.x[i] <= 1e-9]
             + [f"beta_{iso}" for bi, iso in enumerate(beta_keys)

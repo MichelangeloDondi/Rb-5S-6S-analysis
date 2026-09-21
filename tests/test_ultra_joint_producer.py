@@ -540,13 +540,14 @@ def test_the_moment_statistic_takes_a_fitted_baseline_and_not_a_wing_strip():
     y = full_profile(nu, gamma_coll=0.26, sigma_laser_fwhm=1.0, transit_fwhm=1.28,
                      s0=0.36, gamma_l=0.28, peak="4192", T_C=130.0)
     stats = m._moment_stats(nu, y)
-    assert set(stats) == {f"k{n}@{w:g}" for n in m.MOMENT_ORDERS for w in m.MOMENT_WINDOWS}
+    assert {k for k in stats if not k.startswith("diag_")} == {
+        f"mu{n}@{w:g}" for n in m.MOMENT_ORDERS for w in m.MOMENT_WINDOWS}
     # THE WINDOW IS READ FROM THE PRODUCER, never typed: `MOMENT_WINDOWS` moved from (3.25, 6, 12) to
     # (2, 8, 13) on 2026-09-18 so the vector sits on the window surface's own grid, and a typed 12 here
     # raised a KeyError on a statistic the producer no longer emits.
     w_hi = max(m.MOMENT_WINDOWS)
     k_wing, _ = windowed_cumulants(nu, y, w_hi, orders=(2,), baseline="wings")
-    assert stats[f"k2@{w_hi:g}"] > k_wing[2], (stats[f"k2@{w_hi:g}"], k_wing[2])
+    assert stats[f"mu2@{w_hi:g}"] > k_wing[2], (stats[f"mu2@{w_hi:g}"], k_wing[2])
     # both parities are produced, which the arm that ran at orders [2, 4] was not
     assert {2, 3, 4, 5, 6, 7} == set(m.MOMENT_ORDERS)
 
@@ -587,8 +588,11 @@ def test_the_moment_vector_is_not_wired_into_the_arms_own_admission():
     y = full_profile(nu, gamma_coll=0.26, sigma_laser_fwhm=1.0, transit_fwhm=1.28,
                      s0=0.36, gamma_l=0.28, peak="4192", T_C=130.0)
     stats = m._moment_stats(nu, y)
-    assert all(k.startswith("k") for k in stats), stats
-    assert not any(k.startswith("mu") for k in stats), stats
+    # O33/A72 INVERTED: this guard asserted the moment vector stays UNWIRED. The owner's
+    # ruling reverses it, and a guard left asserting the retired state is how a reversed
+    # decision silently un-reverses itself.
+    assert all(k.startswith("mu") or k.startswith("diag_") for k in stats), stats
+    assert any(k.startswith("mu") for k in stats), stats   # the vector IS the moments now
 
 
 def test_the_moment_and_cumulant_vectors_carry_the_same_information():

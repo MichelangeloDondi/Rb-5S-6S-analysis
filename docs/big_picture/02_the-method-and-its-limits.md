@@ -318,4 +318,40 @@ has the design for this one, and it needs only the higher-density points of §5.
 
 ---
 
+## The standard techniques and their hybrids
+
+The preceding sections describe an estimator. Set beside the methods already in
+use, the account below has three columns. The third exists because these
+methods are more often combined than exchanged. A standard technique carries an absolute scale, a long
+record of validation, and a community that knows its failure modes. This one
+carries a distribution where the other carries a number. The third part is what
+the first becomes once the second feeds it.
+
+| standard technique | what it assumes | this analysis alone | the two together |
+|---|---|---|---|
+| centroid with a zero-power extrapolation | the shift is linear in power and uniform over the sample | reads the shift distribution at one power, so no extrapolation is needed | each centroid is corrected by its own measured asymmetry, so the extrapolation runs on corrected points and needs fewer of them |
+| width fit for the collisional term | the remaining widths are known and subtract in quadrature | separates the terms by their differing powers of temperature, power and waist | the density ladder supplies the absolute scale the shape channel cannot reach alone |
+| magic wavelength by scanning the shift to zero | a small shift calibrated against an absolute frequency | brackets the zero by the sign reversal of the odd moments, with no calibration | the sign brackets it cheaply, and the calibrated measurement refines inside the bracket |
+| Doppler thermometry from the Gaussian width | the transit contribution is known or negligible | separates transit from Doppler by their differing waist and temperature exponents | thermometry with the transit removed by measurement instead of assumed away |
+| shared-laser differential designs | common-mode cancellation of laser and vibration noise | measures the residual inhomogeneous shift from the line itself | a design already built for cancellation gains a per-run monitor of the one systematic it cannot cancel |
+
+Reading down the fourth column, the pattern repeats. The standard method keeps
+what it is good at, an absolute scale tied to a reference this work does not
+carry, and sheds the assumption that was doing the hidden labour: that the shift
+is uniform, that the other widths are known, that the transit is negligible. The
+advantage claimed here is narrow and it is real. An assumption is replaced by a
+measurement, taken on data the standard method was already collecting.
+
+Where it adds nothing belongs in the same place, because a comparison that finds
+an advantage everywhere has not been run honestly. This analysis carries no
+absolute frequency of its own and inherits whatever the ruler gives it, so it
+improves no absolute measurement of a transition frequency. On a line that is
+already homogeneous it has nothing to read, the distribution having collapsed to
+the number the standard method reports. And it is expensive: a bias surface over
+statistic, window, noise level and condition costs orders of magnitude more
+computation than a centroid, which is affordable now and was not, and which buys
+nothing where the first two columns agree.
+
+---
+
 *[Why this line](01_why-this-line.md) · [Goals and prior art](03_goals-and-prior-art.md)*

@@ -76,6 +76,28 @@ _ANCHORS = {
 }
 
 
+def _case_exact(fp, root) -> bool:
+    """True only if EVERY component of ``fp`` under ``root`` matches its directory listing exactly.
+
+    E82 (2026-09-21): a wiki page linked ``AC-stark-light-shift.md`` where the file is
+    ``ac-stark-light-shift.md``. ``Path.exists()`` answers yes on this machine's case-insensitive
+    disk and no on the Linux runner, so the suite passed here (5028) and the public mirror's hosted
+    run went red -- E71's class, a licence resting on the platform, on the link checker. Walking
+    each component against ``os.listdir`` asks the question with Linux semantics on any disk.
+    """
+    import os
+    try:
+        rel = fp.relative_to(root)
+    except ValueError:
+        return True                      # outside the tree: not this guard's population
+    cur = root
+    for part in rel.parts:
+        if not cur.is_dir() or part not in os.listdir(cur):
+            return False
+        cur = cur / part
+    return True
+
+
 @pytest.mark.parametrize("doc", DOCS, ids=lambda p: str(p.relative_to(ROOT)))
 def test_doc_references_resolve(doc):
     rel = doc.relative_to(ROOT)
@@ -101,6 +123,11 @@ def test_doc_references_resolve(doc):
             if not fp.exists():
                 problems.append(f"link -> {tgt} (missing file)")
                 continue
+            # THE SPELLING MUST MATCH THE DISK EXACTLY (E82): exists() is a claim about THIS
+            # filesystem, and the public mirror runs on one that is case-sensitive.
+            if ROOT in fp.parents and not _case_exact(fp, ROOT):
+                problems.append(f"link -> {tgt} (case differs from the file on disk; Linux will not resolve it)")
+                continue
             key = str(fp.relative_to(ROOT)) if ROOT in fp.parents else None
         else:
             key = str(rel)                      # same-file anchor
@@ -120,6 +147,28 @@ def test_doc_references_resolve(doc):
                     problems.append(f"command -> {script} (not found from cwd)")
 
     assert not problems, f"{rel}: unresolved references:\n  " + "\n  ".join(problems)
+
+
+def test_a_link_that_matches_its_file_only_by_case_is_refused(tmp_path):
+    """The plant for E82, both ways, on a temp tree.
+
+    On this machine's case-insensitive disk ``AC-x.md`` EXISTS as a path to ``ac-x.md``, which is
+    the true positive: the guard must say no where ``exists()`` says yes. On a case-sensitive
+    runner the same call is refused for the plainer reason, so the plant holds on both."""
+    root = tmp_path
+    (root / "docs" / "quantities").mkdir(parents=True)
+    (root / "docs" / "quantities" / "ac-x.md").write_text("# x\n")
+    wrong = root / "docs" / "quantities" / "AC-x.md"
+    right = root / "docs" / "quantities" / "ac-x.md"
+    # NEGATIVE: the case-only spelling is refused whether or not this disk resolves it
+    assert not _case_exact(wrong, root), "a case-only match was accepted (E82's own defect)"
+    # POSITIVE: the exact spelling is accepted
+    assert _case_exact(right, root)
+    # a genuinely missing file is refused, and a path outside the root is not this guard's business
+    assert not _case_exact(root / "docs" / "quantities" / "nothing.md", root)
+    assert _case_exact(tmp_path.parent / "elsewhere.md", root)
+    # the companion reading, recorded and never asserted: whether this disk is the flattering one
+    print(f"this disk resolves the wrong case: {wrong.exists()}")
 
 
 # ---------------------------------------------------------------------------
