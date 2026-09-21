@@ -89,7 +89,7 @@ described on [self-broadening](self-broadening.md) and in
 [methods chapter 7](../methods/07_what_we_found.md), alone at the far end of
 the density axis, the same span [the chapter on the method and its
 limits](../big_picture/02_the-method-and-its-limits.md) describes as
-extending the density lever from a ×16.2 to a ×52.5 arm once that point is
+extending the density lever from a ×15.2 to a ×48.1 (Alcock) arm once that point is
 folded in. A straight line through four points shaped like that leaves the
 anchor almost nothing to be checked against, and the audit's leverage
 computation confirmed it directly: on every one of the four peaks, the
@@ -100,8 +100,8 @@ one from its own fit.
 That sharpens something the record already reports. It does not contradict
 it. [`results/lever_crosscheck.csv`](../../results/lever_crosscheck.csv)
 carries the same comparison read the other way: folding the 130 °C point
-into the joint fit moves $\beta_\text{self}$ from 0.0534 to 0.0198 MHz per
-$10^{12} \mathrm{cm^{-3}}$ for $^{85}\text{Rb}$, and from 0.0534 to 0.0219 for
+into the joint fit moves $\beta_\text{self}$ from 0.0433 to 0.0164 MHz per
+$10^{12} \mathrm{cm^{-3}}$ for $^{85}\text{Rb}$, and from 0.0433 to 0.0181 for
 $^{87}\text{Rb}$, a shift the file logs directly and one comparable in size to
 the coefficient itself. That is what a leverage close to one predicts: a
 point that anchors a fit moves the fit by close to its own scale whenever it

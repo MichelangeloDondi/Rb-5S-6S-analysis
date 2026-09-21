@@ -285,9 +285,9 @@ first lag, the integrated correlation time and the excess kurtosis.
 
 Read under a single estimator, archive against simulation, the correlation time
 comes out
-[0.960](../../results/twin_completeness.csv "ref:twin_completeness:measured_tau_int:")
+[0.979](../../results/twin_completeness.csv "ref:twin_completeness:measured_tau_int:")
 on the real wings after a linear baseline is removed and
-[0.823](../../results/twin_completeness.csv "ref:twin_completeness:twin_white_tau_int:")
+[0.824](../../results/twin_completeness.csv "ref:twin_completeness:twin_white_tau_int:")
 on simulated wings with independent samples. **So independent samples reproduce
 the archive's detrended residual**, which is the opposite of what the noise
 law's own integrated time suggests: driving the simulation at that value gives
@@ -296,7 +296,7 @@ which the archive does not show.
 
 Two terms were missing and one is now carried. The real wings hold a slow
 baseline tilt within each trace, measured at
-[2.46](../../results/twin_completeness.csv "ref:twin_completeness:twin_baseline_tilt_sigma_measured:")
+[3.04](../../results/twin_completeness.csv "ref:twin_completeness:twin_baseline_tilt_sigma_measured:")
 of the wing's own noise across the grid. They also sit on a signal-independent
 dark floor, which the committed noise law carries as its `a` coefficient and
 which the generator did not: its shot-like term goes to zero where the signal
@@ -312,10 +312,10 @@ an interpolation residual wearing the clothes of a test.
 
 | held-out statistic | real against simulated |
 |---|---|
-| noise level | [0.5](../../results/twin_completeness.csv "ref:twin_completeness:heldout_noise_level_pull_sigma:") sigma — reproduced |
-| first lag | [0.1](../../results/twin_completeness.csv "ref:twin_completeness:heldout_first_lag_pull_sigma:") sigma — reproduced |
-| tail shape | [5.6](../../results/twin_completeness.csv "ref:twin_completeness:heldout_tail_shape_pull_sigma:") sigma — **not** reproduced |
-| correlation time, at the measured tilt | [6.6](../../results/twin_completeness.csv "ref:twin_completeness:residual_gap_tilt_correlation_sigma:") sigma — **not** closed |
+| noise level | [0.2](../../results/twin_completeness.csv "ref:twin_completeness:heldout_noise_level_pull_sigma:") sigma — reproduced |
+| first lag | [0.7](../../results/twin_completeness.csv "ref:twin_completeness:heldout_first_lag_pull_sigma:") sigma — reproduced |
+| tail shape | [4.8](../../results/twin_completeness.csv "ref:twin_completeness:heldout_tail_shape_pull_sigma:") sigma — **not** reproduced |
+| correlation time, at the measured tilt | [8.1](../../results/twin_completeness.csv "ref:twin_completeness:residual_gap_tilt_correlation_sigma:") sigma — **not** closed |
 
 So the simulation reproduces the real noise level and its first lag, and does
 not reproduce the tail shape or the full correlation time. The real wings are

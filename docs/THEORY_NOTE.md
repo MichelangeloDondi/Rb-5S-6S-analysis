@@ -323,7 +323,7 @@ The extra width it puts on the line is read from a producer, never composed
 here. `run_identifiability.py` evaluates the profile at the fitted widths and
 reports the whole width-channel signal at the predicted shift as
 [6.33](../results/identifiability.csv "ref:identifiability:width_signature_broadening_khz:gaussian_branch") kHz on the Gaussian branch and
-[7.06](../results/identifiability.csv "ref:identifiability:width_signature_broadening_khz:cusp_branch") kHz on the cusp. **Composing it
+[7.15](../results/identifiability.csv "ref:identifiability:width_signature_broadening_khz:cusp_branch") kHz on the cusp. **Composing it
 instead, by adding the kernel width to the line in quadrature, understates it
 by about a factor of two**, because quadrature addition of full widths is a
 Gaussian rule and this line is roughly two thirds Lorentzian. That composition
@@ -1035,7 +1035,8 @@ computed quantity.
 *The uncertainty is dominated by the excitation profile, not by the temperature
 and no longer by the radius.* The instinct is that a bath estimate is dominated by
 the ground-state density, which runs exponentially in temperature. It is not. The
-density carries the documented 20 per cent correlation systematic and the
+density carries the vapour-pressure correlation systematic, now derived from
+the model-form spread (24.3 per cent), and the
 cold-spot offset, a factor of a few at worst. The escape factor was the largest
 term while the cell radius was unknown, and with the radius recorded it
 contributes only the recollection's ten per cent, amplified logarithmically. What

@@ -272,8 +272,8 @@ def main() -> int:
                     "ridge_slope_covariance_pred, where agreement is the Gaussian "
                     "profile<->ellipse correspondence holds where transit is unpinned)"])
         # The covariance-side prediction used to live INSIDE the row above's
-        # note string, so when the 2026-08-21 environment re-measure moved it
-        # from 0.080 to 0.110 the drift surfaced as a UNIT-COLUMN text change,
+        # note string, so when the 2026-08-21 environment re-measure moved it,
+        # the drift surfaced as a UNIT-COLUMN text change,
         # the one place a numeric comparison cannot grade. A quantity two
         # public documents quote gets its own row.
         w.writerow(["ridge_slope_covariance_pred", "zoom_profile", f"{slope_pred:.3f}",
@@ -328,11 +328,11 @@ def main() -> int:
             for i in range(len(p["sl_grid"])):
                 for j in range(len(p["gc_grid"])):
                     w.writerow([f"{name}_transit", f"{i}|{j}", f"{p['transit'][i][j]:.4f}",
-                                "MHz; profiled transit at this cell (<0.02 = pinned at "
+                                "MHz, profiled transit at this cell (<0.02 = pinned at "
                                 "the 0 bound, where the ellipse equivalence fails)"])
         for a, b, nm in ((0, 0, "gc_gc"), (1, 1, "sl_sl"), (0, 1, "gc_sl")):
             w.writerow(["cov", nm, f"{r['cov'][a][b]:.6e}",
-                        "MHz^2; local (gamma_coll, sigma_laser) covariance for the ellipse overlay"])
+                        "MHz^2, local (gamma_coll, sigma_laser) covariance for the ellipse overlay"])
         w.writerow(["fit", "gamma_coll", f"{gc0:.5f}", "MHz free-fit gamma_coll"])
         w.writerow(["fit", "sigma_laser", f"{sl0:.5f}", "MHz free-fit sigma_laser"])
         # raw chi2 anchors, so the wide-vs-free gap is reproducible from this

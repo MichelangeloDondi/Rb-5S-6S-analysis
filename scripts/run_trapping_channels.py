@@ -288,14 +288,14 @@ def main() -> int:
         ("ir_branching", "5P3/2", 1.0 - b12, "", "",
          "fraction of 6S decays through the 1367 nm leg", "DIAGNOSTIC"),
         ("line_data_closure", "sum_A_times_tau6S", closure, "", "",
-         "dimensionless; 6S has no allowed decay to 5S so this closes the "
+         "dimensionless, 6S has no allowed decay to 5S so this closes the "
          "line data against an independently measured lifetime", "DIAGNOSTIC"),
         ("sigma_peak", "1324nm", s12, "", "",
-         "cm^2; Doppler-broadened at 130 C", "DIAGNOSTIC"),
+         "cm^2, Doppler-broadened at 130 C", "DIAGNOSTIC"),
         ("sigma_peak", "1367nm", s32, "", "",
-         "cm^2; Doppler-broadened at 130 C", "DIAGNOSTIC"),
+         "cm^2, Doppler-broadened at 130 C", "DIAGNOSTIC"),
         ("inversion_in_beam", "1324nm", (n6s / 2) / (n5p12 / 2), "", "",
-         "degeneracy-weighted population ratio; above 1 means trapped light "
+         "degeneracy-weighted population ratio. Above 1 means trapped light "
          "stimulates 6S down and cannot re-excite 5P", "DIAGNOSTIC"),
         ("inversion_in_beam", "1367nm", (n6s / 2) / (n5p32 / 4), "", "",
          "degeneracy-weighted population ratio", "DIAGNOSTIC"),

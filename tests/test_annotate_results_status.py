@@ -33,8 +33,8 @@ def _annotator():
 
 
 GOOD = ("quantity,key,value,unit\n"
-        "condition_number,width_block,345.1,eigenvalue ratio\n"
-        "corr,gamma_coll_transit,-0.958,width-width correlation coefficient\n")
+        "condition_number,width_block,345.19,eigenvalue ratio\n"
+        "corr,gamma_coll_transit,-0.9581,width-width correlation coefficient\n")
 RAGGED = GOOD + "best_constrained_sigma,total_width,0.0032,MHz, an unquoted comma in the note\n"
 
 
@@ -66,7 +66,7 @@ def test_a_quoted_comma_in_a_note_survives(tmp_path, monkeypatch):
     one field and the annotator must pass it, since the producers quote what
     needs quoting. Probed by a reader on 2026-09-04 and asserted here so a
     tightening of the ragged-row check cannot break legitimate notes."""
-    text = GOOD + 'width_signature_fwhm_mhz,gaussian_branch,5.4036,"MHz, FWHM with s0=0 at this branch"\n'
+    text = GOOD + 'width_signature_fwhm_mhz,gaussian_branch,5.40361,"MHz, FWHM with s0=0 at this branch"\n'
     rc, target = _run_on(tmp_path, text, monkeypatch)
     assert rc == 0
     rows = list(csv.DictReader(open(target)))

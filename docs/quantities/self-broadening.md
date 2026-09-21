@@ -6,11 +6,11 @@ How much self-broadening does this experiment resolve independently of the laser
 **Where it stands.** A bound.
 
 The pooled four-temperature construction gives
-$\beta_{\rm self} \lt$ [0.030](../../results/beta_self_probe.csv "ref:beta_self_probe:pooled_slope::bound95_nscale") MHz per 1e12 per cubic centimetre, which is the
+$\beta_{\rm self} \lt$ [0.026](../../results/beta_self_probe.csv "ref:beta_self_probe:pooled_slope::bound95_nscale") MHz per 1e12 per cubic centimetre, which is the
 figure the rest of the record quotes, and the reason it is a
-bound is measured rather than assumed: across a factor of 52.5 in density the
+bound is measured rather than assumed: across a factor of 48.1 (Alcock) in density the
 fitted collisional width rises only by a factor of 1.5. Without the
-vapour-pressure scale systematic the same construction gives [0.0249](../../results/beta_self_probe.csv "ref:beta_self_probe:pooled_slope::bound95"), and
+vapour-pressure scale systematic the same construction gives [0.0205](../../results/beta_self_probe.csv "ref:beta_self_probe:pooled_slope::bound95"), and
 section 4 says why that column is not the one to quote.
 
 > [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
@@ -85,25 +85,25 @@ cent.
 ## 3. Results established by this dataset
 | construction | value | status | source |
 |---|---|---|---|
-| Four-temperature width slope, pooled, dof 2 | $\lt$ [0.030](../../results/beta_self_probe.csv "ref:beta_self_probe:pooled_slope::bound95_nscale") MHz per 1e12 per cubic centimetre, the headline; [0.0249](../../results/beta_self_probe.csv "ref:beta_self_probe:pooled_slope::bound95") before the density-scale systematic | BOUND | [`beta_self_probe.csv`](../../results/beta_self_probe.csv) |
-| Four-temperature width slope, per peak | $\lt 0.0239$ to $\lt 0.0411$ | BOUND | `beta_self_probe.csv` |
+| Four-temperature width slope, pooled, dof 2 | $\lt$ [0.026](../../results/beta_self_probe.csv "ref:beta_self_probe:pooled_slope::bound95_nscale") MHz per 1e12 per cubic centimetre, the headline; [0.0205](../../results/beta_self_probe.csv "ref:beta_self_probe:pooled_slope::bound95") before the density-scale systematic | BOUND | [`beta_self_probe.csv`](../../results/beta_self_probe.csv) |
+| Four-temperature width slope, per peak | $\lt 0.0246$ to $\lt 0.0423$ | BOUND | `beta_self_probe.csv` |
 | Model-independent per-peak central values | 0.0131 to 0.0181 | PRELIM | [`beta_self.csv`](../../results/beta_self.csv) |
-| Hierarchical joint fit, cooling sweep | $0.0534 \pm 0.0043$ (85Rb) | BOUND | [`global_fit.csv`](../../results/global_fit.csv) |
-| Same fit with the 130 C anchor folded in | 0.0198 (85Rb), 0.0219 (87Rb) | BOUND | [`lever_crosscheck.csv`](../../results/lever_crosscheck.csv) |
+| Hierarchical joint fit, cooling sweep | $0.0433 \pm 0.0035$ (85Rb) | BOUND | [`global_fit.csv`](../../results/global_fit.csv) |
+| Same fit with the 130 C anchor folded in | 0.0164 (85Rb), 0.0181 (87Rb) | BOUND | [`lever_crosscheck.csv`](../../results/lever_crosscheck.csv) |
 | $\kappa$ and $\beta_{\rm self}$ both free | 0.0183, interval 0.0177 to 0.0187 | PRELIM | [`global_dataset_fit.csv`](../../results/global_dataset_fit.csv) |
 
 **The measurement that turns the value into a bound.** The fitted collisional
-width across the temperature ladder is 0.401, 0.391, 0.444 and 0.594 MHz at 70,
-90, 110 and 130 C, against densities of 0.56, 2.45, 9.10 and 29.43 in units of
-1e12 per cubic centimetre. That is a factor of [1.48](../../results/lever_crosscheck.csv "ref:lever_crosscheck:gamma_rise_factor:70to130") in width across a factor of 52.5
+width across the temperature ladder is 0.393, 0.391, 0.444 and 0.594 MHz at 70,
+90, 110 and 130 C, against densities of 0.74, 3.11, 11.23 and 35.59 (Alcock) in units of
+1e12 per cubic centimetre. That is a factor of [1.51](../../results/lever_crosscheck.csv "ref:lever_crosscheck:gamma_rise_factor:70to130") in width across a factor of 48.1
 in density. A genuine collisional width would rise linearly. **A width that
-rises by 1.5 while the density rises by 52 is a floor with a small collisional
+rises by 1.5 while the density rises by 48 is a floor with a small collisional
 component on top, not a resolved collision rate**, so the quantity the data
 support is an upper limit and that is what the record reports.
 
 The hierarchical construction is a cross-check and is not settled. Its
-central value of 0.0534 moves to 0.0198 and 0.0219 when the 130 C anchor
-extends the density lever from 16 to 52. A cross-check estimator that moves by
+central value of 0.0433 moves to 0.0164 and 0.0181 when the 130 C anchor
+extends the density lever from 15 to 48 (Alcock). A cross-check estimator that moves by
 a factor of 2.6 when one condition is added is reporting its own model
 dependence, which is precisely why the model-independent slope is the headline
 and this is not.
@@ -117,7 +117,7 @@ numbers carry it explicitly as a separate systematic column, and it is the
 reason a `bound95_nscale` variant exists beside every `bound95`.
 
 Experimental: the temperature lever is short and one-ended. Four
-temperatures spanning a factor of 52 in density sounds generous and is not,
+temperatures spanning a factor of 48 in density sounds generous and is not,
 because the width response is 1.5 over that span. Most of the density lever
 buys almost no width.
 
@@ -136,8 +136,8 @@ free in each peak. The hierarchical fit that `docs/RESULTS.md` heads its table
 with publishes a model-form bar built from a grid of transit form and sharing
 only, and holds the component at zero. Set instead to the weighted mean that
 same file fits, 0.398 MHz, the hierarchical coefficient reads
-[0.0057](../../results/lever_crosscheck.csv) against 0.0534, a move of
-[0.0477](../../results/lever_crosscheck.csv) where the published bar is 0.0142,
+[0.0057](../../results/lever_crosscheck.csv) against 0.0433, a move of
+[0.0387](../../results/lever_crosscheck.csv) where the published bar is 0.0115,
 and the whitened $\chi^2$ prefers the fitted component on all four
 transit-and-sharing forms by 28 to 46. `beta_err_kernel` carries the axis in
 that file now, beside `beta_err_transit` and `beta_err_sharing`, and outside
@@ -148,7 +148,7 @@ And the reason it moves is the shape of the fit, not a wide bar on a good
 number. The homogeneous width is $\Gamma_\text{nat} + \beta N + \gamma_l$.
 Holding $\gamma_l$ at zero forces the density line through the origin against a
 floor this same file reports: `gamma_coll_mean_vs_T` reads
-[0.401](../../results/lever_crosscheck.csv) MHz at the lowest density, where
+[0.393](../../results/lever_crosscheck.csv) MHz at the lowest density, where
 $\beta N$ would be 0.030. A line through the origin fitted to a floor $c$ has
 slope offset by $c \sum wN / \sum wN^2$, so the fitted coefficient is *linear*
 in $\gamma_l$. It is, to half a per cent, until it reaches its lower bound.
@@ -156,10 +156,10 @@ The two ladders predict $-0.136$ and $-0.0435$ per MHz and measure $-0.120$ and
 $-0.035$, the per-temperature Gaussian taking the remaining fifth.
 
 Three things follow. The floor and the fitted component are the same
-quantity by two constructions, 0.401 from the density intercept against the
+quantity by two constructions, 0.393 from the density intercept against the
 weighted mean the kernel chain fits. The lever dependence that makes this
 coefficient a BOUND, the width rising only
-[1.48](../../results/lever_crosscheck.csv "ref:lever_crosscheck:gamma_rise_factor:70to130")-fold across a 52.5-fold density span,
+[1.51](../../results/lever_crosscheck.csv "ref:lever_crosscheck:gamma_rise_factor:70to130")-fold across a 48.1-fold density span,
 is that floor forced through the origin, so modelling it removes the lever
 dependence instead of explaining it. And the dip in $\sigma_\text{laser}(T)$ at
 110 °C, which `docs/RESULTS.md` attributes to the

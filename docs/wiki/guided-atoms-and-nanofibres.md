@@ -94,9 +94,9 @@ is reached from 6S only by blackbody excitation. A fibre is
 read in transmission, so what is measured is a dip in a large transmitted
 power and the noise is the shot noise of the whole beam and not of the
 signal. Those scale differently, and the dip is what decides feasibility:
-[0.00604294](../../results/platform_twins.csv "ref:platform_twins:hcpcf_warm:hcpcf:absorbed_fraction") with
+[0.00604289](../../results/platform_twins.csv "ref:platform_twins:hcpcf_warm:hcpcf:absorbed_fraction") with
 vapour in the mode is resolved by any photodiode, while
-[2.05542e-07](../../results/platform_twins.csv "ref:platform_twins:hcpcf_cold:hcpcf:absorbed_fraction") for
+[2.05541e-07](../../results/platform_twins.csv "ref:platform_twins:hcpcf_cold:hcpcf:absorbed_fraction") for
 a cold loaded column is a part-per-million measurement and needs a
 correspondingly quiet laser.
 
@@ -115,7 +115,7 @@ atoms. The evanescent mode is tight enough that one milliwatt through a
 400 nm fibre reaches a peak light shift of
 [40.948](../../results/platform_twins.csv "ref:platform_twins:onf:onf:s0_mhz") MHz
 and a saturation parameter of
-[429.623](../../results/platform_twins.csv "ref:platform_twins:onf:onf:saturation_s"),
+[429.620](../../results/platform_twins.csv "ref:platform_twins:onf:onf:saturation_s"),
 with only
 [2.51327](../../results/platform_twins.csv "ref:platform_twins:onf:onf:n_atoms_probe") atoms
 in the probe at a tenth of the cell's density. Both are `ENVELOPE` rows and the

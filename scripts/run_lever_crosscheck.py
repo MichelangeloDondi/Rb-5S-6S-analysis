@@ -272,7 +272,7 @@ def main() -> int:
                         f"largest |dbeta| dropping one TEMPERATURE -- lever leverage ({wt or 'n/a'})"])
             b130v, shift = probe[iso]
             w.writerow(["beta_lever_probe_130", f"{iso}Rb", f"{b130v:.4f}", f"{shift:.4f}",
-                        "value=joint beta with the x53 130C lever; err=shift vs x16 cooling (lever-dependence)"])
+                        "value=joint beta with the x53 130C lever. Err=shift vs x16 cooling (lever-dependence)"])
         for cell in GRID_CELLS:
             key = f"{cell[0]}|{cell[1]}"
             for iso in res["isotopes"]:
@@ -307,7 +307,7 @@ def main() -> int:
                     continue
                 w.writerow(["beta_loo_drop", f"{pk}|{iso}Rb", f"{b:.4f}",
                             f"{b - res['headline'][iso]:+.4f}",
-                            "beta with this peak dropped; err=shift vs headline"])
+                            "beta with this peak dropped. Err=shift vs headline"])
             for T, s in sorted(d_["sigma_laser_by_T"].items()):
                 w.writerow(["sigma_loo_drop", f"{pk}|{T:.0f}C", f"{s:.3f}", "",
                             "sigma_laser(T) with this peak dropped (MHz transition)"])
@@ -317,10 +317,10 @@ def main() -> int:
         mg = subl["mean_gamma"]
         for T in (70, 90, 110, 130):
             w.writerow(["gamma_coll_mean_vs_T", f"{T}C", f"{mg[T]:.3f}",
-                        f"{density_units(T):.2f}", "value=mean gamma_coll over 4 peaks (MHz); err=density N (1e12 cm^-3)"])
+                        f"{density_units(T):.2f}", "value=mean gamma_coll over 4 peaks (MHz). Err=density N (1e12 cm^-3)"])
         w.writerow(["gamma_rise_factor", "70to130", f"{subl['gamma_rise_factor']:.2f}",
                     f"{subl['density_factor']:.1f}",
-                    "value=gamma(130)/gamma(70); err=density ratio -- far sub-linear => floor, beta is a BOUND"])
+                    "value=gamma(130)/gamma(70). Err=density ratio -- far sub-linear => floor, beta is a BOUND"])
 
     print(f"\n{'-'*74}\nWrote results/lever_crosscheck.csv. Model-based cross-check + isotope test")
     print("with the full audited budget; the raw-width BOUND stays the archival headline.")

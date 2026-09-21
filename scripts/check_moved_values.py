@@ -120,6 +120,7 @@ from __future__ import annotations
 import csv
 import io
 import re
+import tokenize
 from decimal import Decimal, ROUND_HALF_UP
 import subprocess
 import sys
@@ -636,6 +637,66 @@ def _sourced_elsewhere(line: str, lit: str, csv_rel: str) -> bool:
     return False
 
 
+# A NUMERIC LITERAL IN CODE IS NOT A QUOTED CLAIM (2026-09-21). An axis limit, a label's
+# y-coordinate multiplier and a tuple of design constants are plotting geometry, never a
+# sentence a reader could act on, and scanning them as prose turned every code literal that
+# happened to equal a retired cell into a false finding -- seven such
+# hits in `scripts/make_figures.py` alone on one run, none of them a stale copy of anything.
+# What a human WROTE as prose is a comment or a string; `ast`/`tokenize` answers that exactly,
+# the same argument `ssot_literals.py` already makes for its own population. Markdown is
+# untouched: it has no code/prose distinction to draw.
+#
+# AND, SINCE PEP 701 (Python 3.12+), AN F-STRING'S LITERAL TEXT IS A THIRD TOKEN TYPE, found and
+# planted the same day this scan was narrowed (2026-09-21): `tokenize`
+# no longer folds an f-string's non-brace text into STRING, it emits it as its own
+# `FSTRING_MIDDLE` token, with `FSTRING_START`/`FSTRING_END` carrying only the quote delimiters
+# and a `{expr}` interior tokenizing as ordinary code (NAME, NUMBER, OP, ...). A hand-written
+# claim inside an f-string -- `f"...was 0.611 um^2"` -- is exactly the prose this scan exists to
+# catch, and reads identically to a human whether it sits in an f-string or a plain one; only the
+# INTERPRETER'S tokenisation differs. `.venv/bin/python` on this checkout is 3.14, so the gap was
+# not hypothetical: `grep -rlP 'f["\x27][^"\x27]*\d\.\d'` found the shape live in `scripts/` and
+# `rb5s6s/`. `getattr` guards the lookup because `FSTRING_MIDDLE` does not exist before 3.12 --
+# an interpreter without it simply keeps the COMMENT/STRING pair this scan always had.
+_KEEP_TOKEN_TYPES = (tokenize.COMMENT, tokenize.STRING) + tuple(
+    t for t in (getattr(tokenize, "FSTRING_MIDDLE", None),) if t is not None)
+
+
+def _prose_only_py(text: str) -> str:
+    """`.py` source with every character outside a COMMENT, STRING or (3.12+) FSTRING_MIDDLE
+    token blanked to a space, line and column positions preserved so line numbers and the rest of
+    this scan are unchanged. Falls back to the untouched text on a tokenize failure (a file this
+    parser cannot read is scanned as before rather than silently skipped)."""
+    lines = text.splitlines(keepends=True)
+    keep = [[False] * len(ln) for ln in lines]
+    try:
+        for tok in tokenize.generate_tokens(io.StringIO(text).readline):
+            if tok.type not in _KEEP_TOKEN_TYPES:
+                continue
+            (sr, sc), (er, ec) = tok.start, tok.end
+            if sr < 1 or er > len(keep):
+                continue
+            if sr == er:
+                row = keep[sr - 1]
+                for i in range(sc, min(ec, len(row))):
+                    row[i] = True
+            else:
+                row = keep[sr - 1]
+                for i in range(sc, len(row)):
+                    row[i] = True
+                for r in range(sr, er - 1):
+                    keep[r] = [True] * len(keep[r])
+                row = keep[er - 1]
+                for i in range(0, min(ec, len(row))):
+                    row[i] = True
+    except (tokenize.TokenError, IndentationError, SyntaxError, UnicodeDecodeError):
+        return text
+    out = []
+    for ln, km in zip(lines, keep):
+        out.append("".join(ch if (ch in "\r\n" or (i < len(km) and km[i])) else " "
+                           for i, ch in enumerate(ln)))
+    return "".join(out)
+
+
 def scan(stale: dict[str, dict[str, tuple[str, str]]],
          paths: list[Path]) -> tuple[list[str], list[str]]:
     findings: list[str] = []
@@ -646,6 +707,8 @@ def scan(stale: dict[str, dict[str, tuple[str, str]]],
             text = path.read_text(encoding="utf-8", errors="replace")
         except OSError:
             continue
+        if path.suffix == ".py":
+            text = _prose_only_py(text)
         try:
             rel = path.relative_to(ROOT).as_posix()
         except ValueError:
@@ -730,7 +793,7 @@ def scan(stale: dict[str, dict[str, tuple[str, str]]],
                     # A RETIRED ROW IS NOT A STALE COPY. When the row itself
                     # is gone the record is SUPPOSED to keep quoting its old
                     # value, in the chapter explaining why it went: the
-                    # `neff_band = 1.08 to 1.25` retirement alone produced
+                    # `neff_band` row's own retirement alone produced
                     # most of one clean run's findings, every one of them a
                     # sentence doing its job. Reported, never blocking.
                     distinctive = blocks and (" to " in lit

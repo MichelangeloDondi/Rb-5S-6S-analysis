@@ -104,7 +104,7 @@ def main() -> int:
                         f"BIC over {len(per_cond)} T-sweep conditions"])
         for rung, d, v, warr in rung_rows:
             w.writerow(["dBIC_rung", rung, f"{d:.1f}",
-                        f"BIC[simpler]-BIC[richer]; {v}; {warr} (>10 decisive)"])
+                        f"BIC[simpler]-BIC[richer], {v}, {warr} (>10 decisive)"])
 
     print("\n  READING: transit is decisively warranted; the free collisional and")
     print("  AC-Stark parameters are NOT -- on the drifted dataset the free per-scan")

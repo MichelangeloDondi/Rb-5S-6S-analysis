@@ -148,7 +148,7 @@ def main() -> int:
         exponents.append(e)
         errors.append(ee)
         out.append(["skew_amp_exponent", pk, f"{e:.3f}", f"{ee:.3f}",
-                    "dimensionless; skew = scale x amp**exponent, linear-space "
+                    "dimensionless, skew = scale x amp**exponent, linear-space "
                     "weighted fit over the power sweep's own amplitude lever",
                     "DIAGNOSTIC"])
         out.append(["skew_amp_fit_chi2_red", pk, f"{chi2 / dof:.2f}", "",
@@ -161,7 +161,7 @@ def main() -> int:
     sem = scatter / np.sqrt(len(ex))
     out.append(["skew_amp_exponent", "mean over the four lines", f"{mean:.3f}",
                 f"{sem:.3f}",
-                "dimensionless; the error is the SCATTER of the four lines "
+                "dimensionless, the error is the SCATTER of the four lines "
                 "divided by root four, which is wider than their individual "
                 "errors because they disagree beyond them", "DIAGNOSTIC"])
     out.append(["skew_amp_exponent_line_scatter", "four lines", f"{scatter:.3f}",

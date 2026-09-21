@@ -828,7 +828,7 @@ def test_sigma_laser_panel_numbers_match_the_csvs():
     gf = {r["key"]: float(r["value"])
           for r in csv.DictReader(open(ROOT / "results" / "global_fit.csv"))
           if r["quantity"] == "sigma_laser"}
-    assert [round(gf[k], 1) for k in ("70C", "90C", "110C")] == [2.1, 2.2, 1.5], (
+    assert [round(gf[k], 1) for k in ("70C", "90C", "110C")] == [2.0, 2.2, 1.5], (
         "tied sigma_laser(T) moved; requote methods/07 and this test together")
     rows = list(csv.DictReader(open(ROOT / "results" / "linefit_conditions.csv")))
     means = []
@@ -853,7 +853,7 @@ def test_sigma_laser_panel_numbers_match_the_csvs():
     # where the `$` follows a line start, whitespace, `(` or `*`, so the `$`
     # after the en-dash never opened one and the range reached the page as raw
     # source. Same two numbers pinned, one less punctuation between them.
-    assert "2.1/2.2/1.5" in m07
+    assert "2.0/2.2/1.5" in m07
 
 
 # --------------------------------------------------------------------------

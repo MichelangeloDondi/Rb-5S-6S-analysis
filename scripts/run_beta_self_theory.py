@@ -73,10 +73,26 @@ T_REF = 403.15          # 130 C, the temperature every theory row here is quoted
 T_COLD = 343.15         # 70 C, the cold end of the archive's temperature arm
 
 
+def dataset_fit_ratio_range(theory_mhz: float) -> tuple[float, float]:
+    """min/max of the archive's four per-peak `beta_self.csv` fits, each divided by the anchored
+    theory value, both in the estimator's own MHz-per-1e12-cm^-3 units. COMPUTED from the
+    committed table, never typed: "3.9 to 5.5 times" outlived the 2026-09-21 Alcock density-law
+    switch (O42), which moved every per-peak fit through its 1/N dependence, and the regenerated
+    table gives 3.1 to 4.3 -- a different range this function reads rather than restates by hand,
+    so the next law switch cannot leave it stale the same way."""
+    path = os.path.join(str(_CFG.RESULTS_DIR), "beta_self.csv")
+    with open(path, newline="", encoding="utf-8") as fh:
+        ratios = [float(row["beta_self"]) / theory_mhz for row in csv.DictReader(fh)]
+    return min(ratios), max(ratios)
+
+
 def main() -> int:
     take_producer_lock("run_beta_self_theory")
     a = V.beta_self_anchored(T_REF)
     b = V.beta_self_budget(T_REF)
+    fit_lo, fit_hi = dataset_fit_ratio_range(b["beta6_khz"] / 1e3)
+    fit_ratio_words = f"{fit_lo:.1f} to {fit_hi:.1f} times"
+    fit_ratio_compact = f"{fit_lo:.1f}-{fit_hi:.1f}x"
 
     rows: list[dict] = []
 
@@ -112,7 +128,7 @@ def main() -> int:
         "MHz per 1e12 cm^-3 at 403.15 K",
         "the same number in the estimator's own units",
         "what `rb5s6s.beta.fit_beta_self` returns and what `results/beta_self.csv` "
-        "is compared against. The archive's fits sit 3.9 to 5.5 times above it",
+        f"is compared against. The archive's fits sit {fit_ratio_words} above it",
         "ENVELOPE")
 
     add("beta_self_7s", "measured", f"{a['beta7_measured_khz']:.4f}",
@@ -207,7 +223,7 @@ def main() -> int:
         "`rb5s6s.beta` regresses gamma_coll on N(T) with ONE beta across 70 to 130 C, "
         "so it treats the coefficient as temperature-independent while the impact width "
         "goes as T^0.3. That is 4.9 per cent of model form on the fitted coefficient, "
-        "small against the 3.9-5.5x the fits sit above theory but not zero, and it is "
+        f"small against the {fit_ratio_compact} the fits sit above theory but not zero, and it is "
         "not in any bar the fits quote",
         "ENVELOPE")
 

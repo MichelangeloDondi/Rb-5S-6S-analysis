@@ -1,5 +1,7 @@
 # The production environment of the committed numbers
 
+<!-- kind: record -->
+
 Every CSV in this directory was produced by the versions below. This file
 exists because "the numbers reproduce" is not a property of the code alone, and
 on 2026-08-12 that stopped being an abstract point: raising the tested Python

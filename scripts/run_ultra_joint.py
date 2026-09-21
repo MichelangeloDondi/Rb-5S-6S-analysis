@@ -154,7 +154,6 @@ from rb5s6s import config as C                                     # noqa: E402
 from rb5s6s import constants as K                                  # noqa: E402
 from rb5s6s import stark                                           # noqa: E402
 from rb5s6s.pmfmt import pm_cells                                  # noqa: E402
-from rb5s6s.density import number_density_cm3                      # noqa: E402
 from rb5s6s.fullmodel import collection_z_ratio_m2, convolution_licence, full_profile, transit_collection_factor   # noqa: E402
 from rb5s6s import kernel_gate                                                          # noqa: E402
 from rb5s6s import noise                                                                # noqa: E402
@@ -165,7 +164,7 @@ from rb5s6s.noise import condition_noise_model, sigma_of_v         # noqa: E402
 from rb5s6s.qc import contiguous_fwhm_ms                           # noqa: E402
 from rb5s6s.vanderwaals import beta_self_anchored, beta_self_budget                  # noqa: E402
 from rb5s6s.workers import n_workers                               # noqa: E402
-from run_density_laws import n_aih, n_smi                          # noqa: E402
+from run_density_laws import n_aih, n_nes, n_smi                          # noqa: E402
 
 OUT = C.RESULTS_DIR / "ultra_joint_fit.csv"
 GATE_DIR = ROOT / "private" / "cache" / "ultra_joint_2026-09-14"
@@ -211,12 +210,21 @@ BETA_THEORY_KHZ = float(_BETA["beta6_khz"])
 BETA_THEORY_ERR_KHZ = float(beta_self_budget()["err_khz"])
 #: beta_self's own budget, relative: beta_self_budget()['err_khz'] / BETA_THEORY_KHZ.
 BETA_PRIOR_FRAC = float(beta_self_budget()["err_khz"]) / BETA_THEORY_KHZ
+# THE PERMEATED GAS CARRIES ITS SEALED-CELL LAW (F245, owner order O41, 2026-09-21). A sealed cell holds a
+# fixed AMOUNT of permeated gas, so its density is fixed and its Lorentzian width goes as n sigma v, T^+0.5
+# for hard spheres and T^+0.3 with the van der Waals velocity dependence; the constant width it replaces is
+# the p = 0 arm. `gamma_l` is the permeated width at the corner, GAMMA_L_T_REF_K, and each condition reads
+# it through (T / T_ref)^p. Across 70 to 130 C that is 8.4 per cent at p = 0.5, a drift of the SAME sign as
+# the self-broadening's, which is why a density slope fitted without it hands the gas's drift to beta_self.
+GAMMA_L_EXP = 0.5
+GAMMA_L_EXP_ARMS = (0.0, 0.3, 0.5)
+GAMMA_L_T_REF_K = 403.15
 #: Delta_alpha's, relative: the committed +-5.9 a.u. on -1131.8.
 ALPHA_PRIOR_FRAC = abs(K.DELTA_ALPHA_ERR_AU / K.DELTA_ALPHA_AU)
 
-LAWS = {"Steck": number_density_cm3, "AIH": n_aih, "SMI": n_smi}
+LAWS = {"AIH": n_aih, "Nesmeyanov": n_nes, "SMI": n_smi}   # AIH central since O42 (F259); the others are arms
 PROPAGATIONS = (("delta_alpha", +1), ("delta_alpha", -1), ("rho", +1), ("rho", -1), ("rho_floor", 0),
-                ("law", "AIH"), ("law", "SMI"))
+                ("law", "Nesmeyanov"), ("law", "SMI"))
 SESSIONS = {"P": "the 130 C power sweep, canonical p_sweep",
             "T": "the 70/90/110 C sweep at 225 mW, canonical t_sweep",
             "E": "the 2025-07-04 LeCroy evening, 90/180/270 mW, internal 130 C, gain 1e6, ms axis with a fitted rate per peak",
@@ -777,6 +785,7 @@ class Cell:
         # still gated. `kernel_gate="legacy"` is the one door, for reproducing a committed CSV
         # that predates the gate, and it is printed once per Cell.
         self.depletion = str(spec.get("depletion", "mc"))
+        self.gamma_l_exp = float(spec.get("gamma_l_exp", GAMMA_L_EXP))
         self.kernel_gate = str(spec.get("kernel_gate", "require"))
         # THE READING SET (D1 of PLAN v2, 2026-09-18). This Cell fits one free amplitude, offset and
         # slope per trace (`linear`), so it never reads the amplitude's local power law and the gate is
@@ -791,7 +800,7 @@ class Cell:
             print("  Cell: kernel gate LEGACY, no node validated (reproduction of a pre-gate CSV only)", flush=True)
             spec["_legacy_said"] = True
         da, da_err = spec["delta_alpha"], spec["delta_alpha_err"]
-        self.delta_alpha, self.rho, law = da, RHO, "Steck"
+        self.delta_alpha, self.rho, law = da, RHO, "AIH"
         prop = spec.get("propagation")
         if prop is not None:
             what, val = prop
@@ -941,7 +950,8 @@ class Cell:
                        * aperture_onaxis_factor(self.w0),
                     omega_ref=two_photon_rabi_hz(t["P_W"], self.w0, self.rho) / 1e6,
                     n12=float(LAWS[self.law_name](np.array([t["T"]]))[0]) / 1e12,
-                    sess=t["session"], peak=t["peak"], axis=t.get("axis", "mhz"))
+                    sess=t["session"], peak=t["peak"], axis=t.get("axis", "mhz"),
+                    T_K=float(t["T"]) + 273.15)
 
     def sigma_l_of(self, d, sess):
         return d["sigma_l_shared"] if self.shared_sigma else d[f"sigma_l_{sess}"]
@@ -967,7 +977,8 @@ class Cell:
         return full_profile(nu, gamma_coll=d["beta_rel"] * self.beta_theory_mhz * per["n12"],
                             sigma_laser_fwhm=self.sigma_l_of(d, sess), transit_fwhm=transit,
                             s0=f * d["alpha_rel"] * per["s0"] * d.get(f"s0_scale_{per['cond']}", 1.0) * d.get("w0_shift_rel", 1.0) ** -2,
-                            gamma_l=d["gamma_l"], laser_kind=self.kind, peak=peak,
+                            gamma_l=d["gamma_l"] * (per["T_K"] / GAMMA_L_T_REF_K) ** self.gamma_l_exp,
+                            laser_kind=self.kind, peak=peak,
                             omega_mhz=omega, profile=per.get("profile", self.profile))
 
     def linear(self, t, nu, m):
@@ -2691,7 +2702,7 @@ def time_cells(workers_for_queue: int = 10) -> dict:
 
 def main() -> int:
     known = {"--coarse", "--time-cells", "--plant", "--no-stage2", "--all-sessions", "--with-excluded", "--power-scale", "--accept-stale-walls", "--moment-arm", "--moment-twin"}
-    valued = {"--form": None, "--sigma-l": "session", "--run-name": None, "--arms-only": None, "--out": None, "--drop-session": "", "--accept-stale-walls": None, "--moment-w0": None}
+    valued = {"--form": None, "--sigma-l": "session", "--run-name": None, "--arms-only": None, "--out": None, "--drop-session": "", "--accept-stale-walls": None, "--moment-w0": None, "--gamma-l-exp": None, "--m2-arms": None}
     args = sys.argv[1:]
     for key in list(valued):
         if key in args:
@@ -2790,6 +2801,13 @@ def main() -> int:
         rows = design(with_excluded="Q" in sessions)
         dspec = design_spec(rows, sessions)
         common = dict(sigma_l=valued["--sigma-l"], power_scale="--power-scale" in args, rate_seeds=evening_rate_seeds())
+        if valued["--gamma-l-exp"] is not None:        # an ARM of the permeation law (GAMMA_L_EXP_ARMS); the default is F245's 0.5
+            common["gamma_l_exp"] = float(valued["--gamma-l-exp"])
+        if valued["--m2-arms"] is not None:            # M2 PROFILED ON THE DATA'S OWN REASON (O41): coarse arms first,
+            global M2_ARMS                             # then a finer grid between two whose chi-squared differs
+            M2_ARMS = tuple(float(x) for x in valued["--m2-arms"].split(","))
+            if min(M2_ARMS) < 1.0:
+                raise SystemExit(f"--m2-arms {M2_ARMS}: a beam quality factor is at least 1")
         session_traces, dropped = load_sessions(sessions)
         _init_worker(session_traces)
         traces = _load(dspec)

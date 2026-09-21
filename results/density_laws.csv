@@ -1,62 +1,62 @@
 quantity,key,value,err,unit,note,status
-N_Steck,T70,5.6029e+11,,cm^-3,number density from the named law at the set point,DIAGNOSTIC
+N_Nesmeyanov,T70,5.6029e+11,,cm^-3,number density from the named law at the set point,DIAGNOSTIC
 N_AIH,T70,7.3971e+11,,cm^-3,number density from the named law at the set point,DIAGNOSTIC
 N_SMI,T70,6.7306e+11,,cm^-3,number density from the named law at the set point,DIAGNOSTIC
-ratio_AIH_over_Steck,T70,1.3202,,,the two laws' ratio at this temperature,DIAGNOSTIC
-ratio_as_kelvin_AIH,T70,3.55,,K,the temperature offset at which Steck's law gives the other's density (ln ratio over d ln N/dT). the laws' disagreement is a thermometry offset of this size between the experiments supporting each,DIAGNOSTIC
-ratio_SMI_over_Steck,T70,1.2013,,,the two laws' ratio at this temperature,DIAGNOSTIC
-ratio_as_kelvin_SMI,T70,2.34,,K,the temperature offset at which Steck's law gives the other's density (ln ratio over d ln N/dT). the laws' disagreement is a thermometry offset of this size between the experiments supporting each,DIAGNOSTIC
-dlnN_dT,T70,7.83,,per cent per K,the density's sensitivity to the temperature at this set point,DIAGNOSTIC
-N_Steck,T90,2.4487e+12,,cm^-3,number density from the named law at the set point,DIAGNOSTIC
+ratio_AIH_over_Nesmeyanov,T70,1.3202,,,the two laws' ratio at this temperature,DIAGNOSTIC
+ratio_as_kelvin_AIH,T70,3.55,,K,the temperature offset at which Nesmeyanov's law gives the other's density (ln ratio over d ln N/dT). the laws' disagreement is a thermometry offset of this size between the experiments supporting each,DIAGNOSTIC
+ratio_SMI_over_Nesmeyanov,T70,1.2013,,,the two laws' ratio at this temperature,DIAGNOSTIC
+ratio_as_kelvin_SMI,T70,2.34,,K,the temperature offset at which Nesmeyanov's law gives the other's density (ln ratio over d ln N/dT). the laws' disagreement is a thermometry offset of this size between the experiments supporting each,DIAGNOSTIC
+dlnN_dT,T70,7.61,,per cent per K,the density's sensitivity to the temperature at this set point,DIAGNOSTIC
+N_Nesmeyanov,T90,2.4487e+12,,cm^-3,number density from the named law at the set point,DIAGNOSTIC
 N_AIH,T90,3.1107e+12,,cm^-3,number density from the named law at the set point,DIAGNOSTIC
 N_SMI,T90,2.9283e+12,,cm^-3,number density from the named law at the set point,DIAGNOSTIC
-ratio_AIH_over_Steck,T90,1.2704,,,the two laws' ratio at this temperature,DIAGNOSTIC
-ratio_as_kelvin_AIH,T90,3.45,,K,the temperature offset at which Steck's law gives the other's density (ln ratio over d ln N/dT). the laws' disagreement is a thermometry offset of this size between the experiments supporting each,DIAGNOSTIC
-ratio_SMI_over_Steck,T90,1.1959,,,the two laws' ratio at this temperature,DIAGNOSTIC
-ratio_as_kelvin_SMI,T90,2.58,,K,the temperature offset at which Steck's law gives the other's density (ln ratio over d ln N/dT). the laws' disagreement is a thermometry offset of this size between the experiments supporting each,DIAGNOSTIC
-dlnN_dT,T90,6.94,,per cent per K,the density's sensitivity to the temperature at this set point,DIAGNOSTIC
-N_Steck,T110,9.0953e+12,,cm^-3,number density from the named law at the set point,DIAGNOSTIC
+ratio_AIH_over_Nesmeyanov,T90,1.2704,,,the two laws' ratio at this temperature,DIAGNOSTIC
+ratio_as_kelvin_AIH,T90,3.45,,K,the temperature offset at which Nesmeyanov's law gives the other's density (ln ratio over d ln N/dT). the laws' disagreement is a thermometry offset of this size between the experiments supporting each,DIAGNOSTIC
+ratio_SMI_over_Nesmeyanov,T90,1.1959,,,the two laws' ratio at this temperature,DIAGNOSTIC
+ratio_as_kelvin_SMI,T90,2.58,,K,the temperature offset at which Nesmeyanov's law gives the other's density (ln ratio over d ln N/dT). the laws' disagreement is a thermometry offset of this size between the experiments supporting each,DIAGNOSTIC
+dlnN_dT,T90,6.78,,per cent per K,the density's sensitivity to the temperature at this set point,DIAGNOSTIC
+N_Nesmeyanov,T110,9.0953e+12,,cm^-3,number density from the named law at the set point,DIAGNOSTIC
 N_AIH,T110,1.1227e+13,,cm^-3,number density from the named law at the set point,DIAGNOSTIC
 N_SMI,T110,1.0896e+13,,cm^-3,number density from the named law at the set point,DIAGNOSTIC
-ratio_AIH_over_Steck,T110,1.2344,,,the two laws' ratio at this temperature,DIAGNOSTIC
-ratio_as_kelvin_AIH,T110,3.40,,K,the temperature offset at which Steck's law gives the other's density (ln ratio over d ln N/dT). the laws' disagreement is a thermometry offset of this size between the experiments supporting each,DIAGNOSTIC
-ratio_SMI_over_Steck,T110,1.1980,,,the two laws' ratio at this temperature,DIAGNOSTIC
-ratio_as_kelvin_SMI,T110,2.91,,K,the temperature offset at which Steck's law gives the other's density (ln ratio over d ln N/dT). the laws' disagreement is a thermometry offset of this size between the experiments supporting each,DIAGNOSTIC
-dlnN_dT,T110,6.20,,per cent per K,the density's sensitivity to the temperature at this set point,DIAGNOSTIC
-N_Steck,T130,2.9433e+13,,cm^-3,number density from the named law at the set point,DIAGNOSTIC
+ratio_AIH_over_Nesmeyanov,T110,1.2344,,,the two laws' ratio at this temperature,DIAGNOSTIC
+ratio_as_kelvin_AIH,T110,3.40,,K,the temperature offset at which Nesmeyanov's law gives the other's density (ln ratio over d ln N/dT). the laws' disagreement is a thermometry offset of this size between the experiments supporting each,DIAGNOSTIC
+ratio_SMI_over_Nesmeyanov,T110,1.1980,,,the two laws' ratio at this temperature,DIAGNOSTIC
+ratio_as_kelvin_SMI,T110,2.91,,K,the temperature offset at which Nesmeyanov's law gives the other's density (ln ratio over d ln N/dT). the laws' disagreement is a thermometry offset of this size between the experiments supporting each,DIAGNOSTIC
+dlnN_dT,T110,6.08,,per cent per K,the density's sensitivity to the temperature at this set point,DIAGNOSTIC
+N_Nesmeyanov,T130,2.9433e+13,,cm^-3,number density from the named law at the set point,DIAGNOSTIC
 N_AIH,T130,3.5585e+13,,cm^-3,number density from the named law at the set point,DIAGNOSTIC
 N_SMI,T130,3.5495e+13,,cm^-3,number density from the named law at the set point,DIAGNOSTIC
-ratio_AIH_over_Steck,T130,1.2090,,,the two laws' ratio at this temperature,DIAGNOSTIC
-ratio_as_kelvin_AIH,T130,3.41,,K,the temperature offset at which Steck's law gives the other's density (ln ratio over d ln N/dT). the laws' disagreement is a thermometry offset of this size between the experiments supporting each,DIAGNOSTIC
-ratio_SMI_over_Steck,T130,1.2059,,,the two laws' ratio at this temperature,DIAGNOSTIC
-ratio_as_kelvin_SMI,T130,3.37,,K,the temperature offset at which Steck's law gives the other's density (ln ratio over d ln N/dT). the laws' disagreement is a thermometry offset of this size between the experiments supporting each,DIAGNOSTIC
-dlnN_dT,T130,5.56,,per cent per K,the density's sensitivity to the temperature at this set point,DIAGNOSTIC
-typed_spread,density_py,20,,per cent,N_SCALE_FRAC_SYST as density.py carries it,DIAGNOSTIC
+ratio_AIH_over_Nesmeyanov,T130,1.2090,,,the two laws' ratio at this temperature,DIAGNOSTIC
+ratio_as_kelvin_AIH,T130,3.41,,K,the temperature offset at which Nesmeyanov's law gives the other's density (ln ratio over d ln N/dT). the laws' disagreement is a thermometry offset of this size between the experiments supporting each,DIAGNOSTIC
+ratio_SMI_over_Nesmeyanov,T130,1.2059,,,the two laws' ratio at this temperature,DIAGNOSTIC
+ratio_as_kelvin_SMI,T130,3.37,,K,the temperature offset at which Nesmeyanov's law gives the other's density (ln ratio over d ln N/dT). the laws' disagreement is a thermometry offset of this size between the experiments supporting each,DIAGNOSTIC
+dlnN_dT,T130,5.48,,per cent per K,the density's sensitivity to the temperature at this set point,DIAGNOSTIC
+derived_spread,density_py,24,,per cent,N_SCALE_FRAC_SYST as density.py derives it: the largest displacement an arm makes at the ladder temperatures,DIAGNOSTIC
 support_siddons2008,law,"Nesmeyanov (Steck), their appendix A. absolute D-line absorption at room temperature and above",,,absolute absorption in excellent agreement with theory at the measured temperature. no per cent on the density is stated,DIAGNOSTIC
 support_achar2025,law,"Alcock-Itkin-Horrigan. single-pass absorption in MEMS cells, 293 to 353 K",,,densities follow the relation closely over the range. 2.0 per cent systematic per point. no directional offset reported,DIAGNOSTIC
-support_zameroski2014,law,Alcock-Itkin-Horrigan. the self-broadening anchor's pressure axis at 393 K,,,the anchor's rate per mTorr is on this law. converted with Steck's it is 22 per cent lower,DIAGNOSTIC
+support_zameroski2014,law,"Alcock-Itkin-Horrigan. the self-broadening anchor's pressure axis at 428.9 K (the anchor's own effective temperature, vanderwaals.ZAMEROSKI_7S_EFF_T_K)",,,the anchor's rate per mTorr is on this law. converted with Nesmeyanov's instead it is 19 per cent higher (the pressure and the density it implies are 16 per cent lower),DIAGNOSTIC
 support_alcock1984,law,the law's own claim,,,better than 5 per cent for the practical equations,DIAGNOSTIC
-ladder_fit_Steck,beta_at_dT0,0.0073,,MHz per 1e12 cm^-3,"beta with the cold spot fixed at 0 K and the floor free (0.380 MHz). chi2 12.18 for 14 dof. theory 0.0034971763177723573 per 1e12, so this reads 2 times theory, the Lorentzian-sum degeneracy the record names (lever_crosscheck.csv)",DIAGNOSTIC
-ladder_fit_Steck,beta_at_dT10,0.0126,,MHz per 1e12 cm^-3,"beta with the cold spot fixed at 10 K and the floor free (0.385 MHz). chi2 12.20 for 14 dof. theory 0.0034971763177723573 per 1e12, so this reads 4 times theory, the Lorentzian-sum degeneracy the record names (lever_crosscheck.csv)",DIAGNOSTIC
-ladder_fit_Steck,dT_with_beta_pinned,0.0,,K,"the cold spot with beta pinned at theory and the floor free (0.464 MHz). chi2 42.5 for 14 dof (the floor free and dT scanned, and dT sits on its rail at 0, so the one-parameter test below is approximate at a boundary), and the profile rises monotonically to the scan's 30 K edge (chi2 42.5 at dT = 0 against 106.8 at 30 K), so the pinned model sits on the dT = 0 rail rather than being unconstrained in dT. Over the L design's 4 temperatures, 16 rows",DIAGNOSTIC
-ladder_fit_Steck,pinned_vs_free_dchi2,30.30,,,"the pinned-beta fit's chi2 minus the free fit's (42.49 against 12.18). The free fit adds beta ALONE, since dT is scanned in the pinned fit too, so this is a likelihood ratio on ONE parameter: p = 0.000. The theory value is disfavoured and not refused",DIAGNOSTIC
-ladder_fit_AIH,beta_at_dT0,0.0061,,MHz per 1e12 cm^-3,"beta with the cold spot fixed at 0 K and the floor free (0.379 MHz). chi2 12.18 for 14 dof. theory 0.0034971763177723573 per 1e12, so this reads 2 times theory, the Lorentzian-sum degeneracy the record names (lever_crosscheck.csv)",DIAGNOSTIC
-ladder_fit_AIH,beta_at_dT10,0.0104,,MHz per 1e12 cm^-3,"beta with the cold spot fixed at 10 K and the floor free (0.383 MHz). chi2 12.19 for 14 dof. theory 0.0034971763177723573 per 1e12, so this reads 3 times theory, the Lorentzian-sum degeneracy the record names (lever_crosscheck.csv)",DIAGNOSTIC
-ladder_fit_AIH,dT_with_beta_pinned,0.0,,K,"the cold spot with beta pinned at theory and the floor free (0.447 MHz). chi2 32.3 for 14 dof (the floor free and dT scanned, and dT sits on its rail at 0, so the one-parameter test below is approximate at a boundary), and the profile rises monotonically to the scan's 30 K edge (chi2 32.3 at dT = 0 against 102.7 at 30 K), so the pinned model sits on the dT = 0 rail rather than being unconstrained in dT. Over the L design's 4 temperatures, 16 rows",DIAGNOSTIC
-ladder_fit_AIH,pinned_vs_free_dchi2,20.09,,,"the pinned-beta fit's chi2 minus the free fit's (32.27 against 12.18). The free fit adds beta ALONE, since dT is scanned in the pinned fit too, so this is a likelihood ratio on ONE parameter: p = 0.000. The theory value is disfavoured and not refused",DIAGNOSTIC
-ladder_fit_SMI,beta_at_dT0,0.0060,,MHz per 1e12 cm^-3,"beta with the cold spot fixed at 0 K and the floor free (0.381 MHz). chi2 12.19 for 14 dof. theory 0.0034971763177723573 per 1e12, so this reads 2 times theory, the Lorentzian-sum degeneracy the record names (lever_crosscheck.csv)",DIAGNOSTIC
-ladder_fit_SMI,beta_at_dT10,0.0105,,MHz per 1e12 cm^-3,"beta with the cold spot fixed at 10 K and the floor free (0.385 MHz). chi2 12.20 for 14 dof. theory 0.0034971763177723573 per 1e12, so this reads 3 times theory, the Lorentzian-sum degeneracy the record names (lever_crosscheck.csv)",DIAGNOSTIC
-ladder_fit_SMI,dT_with_beta_pinned,0.0,,K,"the cold spot with beta pinned at theory and the floor free (0.448 MHz). chi2 31.9 for 14 dof (the floor free and dT scanned, and dT sits on its rail at 0, so the one-parameter test below is approximate at a boundary), and the profile rises monotonically to the scan's 30 K edge (chi2 31.9 at dT = 0 against 103.4 at 30 K), so the pinned model sits on the dT = 0 rail rather than being unconstrained in dT. Over the L design's 4 temperatures, 16 rows",DIAGNOSTIC
-ladder_fit_SMI,pinned_vs_free_dchi2,19.71,,,"the pinned-beta fit's chi2 minus the free fit's (31.89 against 12.19). The free fit adds beta ALONE, since dT is scanned in the pinned fit too, so this is a likelihood ratio on ONE parameter: p = 0.000. The theory value is disfavoured and not refused",DIAGNOSTIC
-ladder_fit_Steck,beta,0.0073,,MHz per 1e12 cm^-3,"gamma_coll(T) of the t_sweep (16 rows) fitted as beta N(T - dT) + floor with dT on [0, 30] K. chi2 12.2 for 13 dof",DIAGNOSTIC
-ladder_fit_Steck,dT,0.0,,K,the cold-spot offset the fit prefers under this law (30 is the scan's edge),DIAGNOSTIC
-ladder_fit_Steck,floor,0.3804,,MHz,the density-independent floor the fit prefers,DIAGNOSTIC
-ladder_fit_Steck,chi2,12.18,,,for 13 degrees of freedom,DIAGNOSTIC
-ladder_fit_AIH,beta,0.0062,,MHz per 1e12 cm^-3,"gamma_coll(T) of the t_sweep (16 rows) fitted as beta N(T - dT) + floor with dT on [0, 30] K. chi2 12.2 for 13 dof",DIAGNOSTIC
-ladder_fit_AIH,dT,0.6,,K,the cold-spot offset the fit prefers under this law (30 is the scan's edge),DIAGNOSTIC
-ladder_fit_AIH,floor,0.3791,,MHz,the density-independent floor the fit prefers,DIAGNOSTIC
-ladder_fit_AIH,chi2,12.18,,,for 13 degrees of freedom,DIAGNOSTIC
-ladder_fit_SMI,beta,0.0060,,MHz per 1e12 cm^-3,"gamma_coll(T) of the t_sweep (16 rows) fitted as beta N(T - dT) + floor with dT on [0, 30] K. chi2 12.2 for 13 dof",DIAGNOSTIC
+ladder_fit_Nesmeyanov,beta_at_dT0,0.0073,,MHz per 1e12 cm^-3,"beta with the cold spot fixed at 0 K and the floor free (0.380 MHz). chi2 11.00 for 14 dof. theory 0.0034971775372426043 per 1e12, so this reads 2 times theory, the Lorentzian-sum degeneracy the record names (lever_crosscheck.csv)",DIAGNOSTIC
+ladder_fit_Nesmeyanov,beta_at_dT10,0.0126,,MHz per 1e12 cm^-3,"beta with the cold spot fixed at 10 K and the floor free (0.384 MHz). chi2 11.03 for 14 dof. theory 0.0034971775372426043 per 1e12, so this reads 4 times theory, the Lorentzian-sum degeneracy the record names (lever_crosscheck.csv)",DIAGNOSTIC
+ladder_fit_Nesmeyanov,dT_with_beta_pinned,0.0,,K,"the cold spot with beta pinned at theory and the floor free (0.464 MHz). chi2 41.7 for 14 dof (the floor free and dT scanned, and dT sits on its rail at 0, so the one-parameter test below is approximate at a boundary), and the profile rises monotonically to the scan's 30 K edge (chi2 41.7 at dT = 0 against 106.2 at 30 K), so the pinned model sits on the dT = 0 rail rather than being unconstrained in dT. Over the L design's 4 temperatures, 16 rows",DIAGNOSTIC
+ladder_fit_Nesmeyanov,pinned_vs_free_dchi2,30.67,,,"the pinned-beta fit's chi2 minus the free fit's (41.67 against 11.00). The free fit adds beta ALONE, since dT is scanned in the pinned fit too, so this is a likelihood ratio on ONE parameter: p = 0.000. The theory value is disfavoured and not refused",DIAGNOSTIC
+ladder_fit_AIH,beta_at_dT0,0.0061,,MHz per 1e12 cm^-3,"beta with the cold spot fixed at 0 K and the floor free (0.378 MHz). chi2 10.99 for 14 dof. theory 0.0034971775372426043 per 1e12, so this reads 2 times theory, the Lorentzian-sum degeneracy the record names (lever_crosscheck.csv)",DIAGNOSTIC
+ladder_fit_AIH,beta_at_dT10,0.0104,,MHz per 1e12 cm^-3,"beta with the cold spot fixed at 10 K and the floor free (0.383 MHz). chi2 11.02 for 14 dof. theory 0.0034971775372426043 per 1e12, so this reads 3 times theory, the Lorentzian-sum degeneracy the record names (lever_crosscheck.csv)",DIAGNOSTIC
+ladder_fit_AIH,dT_with_beta_pinned,0.0,,K,"the cold spot with beta pinned at theory and the floor free (0.447 MHz). chi2 31.4 for 14 dof (the floor free and dT scanned, and dT sits on its rail at 0, so the one-parameter test below is approximate at a boundary), and the profile rises monotonically to the scan's 30 K edge (chi2 31.4 at dT = 0 against 102.1 at 30 K), so the pinned model sits on the dT = 0 rail rather than being unconstrained in dT. Over the L design's 4 temperatures, 16 rows",DIAGNOSTIC
+ladder_fit_AIH,pinned_vs_free_dchi2,20.40,,,"the pinned-beta fit's chi2 minus the free fit's (31.39 against 10.99). The free fit adds beta ALONE, since dT is scanned in the pinned fit too, so this is a likelihood ratio on ONE parameter: p = 0.000. The theory value is disfavoured and not refused",DIAGNOSTIC
+ladder_fit_SMI,beta_at_dT0,0.0060,,MHz per 1e12 cm^-3,"beta with the cold spot fixed at 0 K and the floor free (0.380 MHz). chi2 11.00 for 14 dof. theory 0.0034971775372426043 per 1e12, so this reads 2 times theory, the Lorentzian-sum degeneracy the record names (lever_crosscheck.csv)",DIAGNOSTIC
+ladder_fit_SMI,beta_at_dT10,0.0105,,MHz per 1e12 cm^-3,"beta with the cold spot fixed at 10 K and the floor free (0.385 MHz). chi2 11.04 for 14 dof. theory 0.0034971775372426043 per 1e12, so this reads 3 times theory, the Lorentzian-sum degeneracy the record names (lever_crosscheck.csv)",DIAGNOSTIC
+ladder_fit_SMI,dT_with_beta_pinned,0.0,,K,"the cold spot with beta pinned at theory and the floor free (0.448 MHz). chi2 31.0 for 14 dof (the floor free and dT scanned, and dT sits on its rail at 0, so the one-parameter test below is approximate at a boundary), and the profile rises monotonically to the scan's 30 K edge (chi2 31.0 at dT = 0 against 102.8 at 30 K), so the pinned model sits on the dT = 0 rail rather than being unconstrained in dT. Over the L design's 4 temperatures, 16 rows",DIAGNOSTIC
+ladder_fit_SMI,pinned_vs_free_dchi2,20.01,,,"the pinned-beta fit's chi2 minus the free fit's (31.01 against 11.00). The free fit adds beta ALONE, since dT is scanned in the pinned fit too, so this is a likelihood ratio on ONE parameter: p = 0.000. The theory value is disfavoured and not refused",DIAGNOSTIC
+ladder_fit_Nesmeyanov,beta,0.0073,,MHz per 1e12 cm^-3,"gamma_coll(T) of the t_sweep (16 rows) fitted as beta N(T - dT) + floor with dT on [0, 30] K. chi2 11.0 for 13 dof",DIAGNOSTIC
+ladder_fit_Nesmeyanov,dT,0.0,,K,the cold-spot offset the fit prefers under this law (30 is the scan's edge),DIAGNOSTIC
+ladder_fit_Nesmeyanov,floor,0.3798,,MHz,the density-independent floor the fit prefers,DIAGNOSTIC
+ladder_fit_Nesmeyanov,chi2,11.00,,,for 13 degrees of freedom,DIAGNOSTIC
+ladder_fit_AIH,beta,0.0061,,MHz per 1e12 cm^-3,"gamma_coll(T) of the t_sweep (16 rows) fitted as beta N(T - dT) + floor with dT on [0, 30] K. chi2 11.0 for 13 dof",DIAGNOSTIC
+ladder_fit_AIH,dT,0.0,,K,the cold-spot offset the fit prefers under this law (30 is the scan's edge),DIAGNOSTIC
+ladder_fit_AIH,floor,0.3781,,MHz,the density-independent floor the fit prefers,DIAGNOSTIC
+ladder_fit_AIH,chi2,10.99,,,for 13 degrees of freedom,DIAGNOSTIC
+ladder_fit_SMI,beta,0.0060,,MHz per 1e12 cm^-3,"gamma_coll(T) of the t_sweep (16 rows) fitted as beta N(T - dT) + floor with dT on [0, 30] K. chi2 11.0 for 13 dof",DIAGNOSTIC
 ladder_fit_SMI,dT,0.0,,K,the cold-spot offset the fit prefers under this law (30 is the scan's edge),DIAGNOSTIC
-ladder_fit_SMI,floor,0.3809,,MHz,the density-independent floor the fit prefers,DIAGNOSTIC
-ladder_fit_SMI,chi2,12.19,,,for 13 degrees of freedom,DIAGNOSTIC
+ladder_fit_SMI,floor,0.3802,,MHz,the density-independent floor the fit prefers,DIAGNOSTIC
+ladder_fit_SMI,chi2,11.00,,,for 13 degrees of freedom,DIAGNOSTIC

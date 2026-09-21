@@ -20,7 +20,7 @@ The bottleneck is the lock. The 2025 session ran under a lock that drifted, so l
 positions carried no information and only shapes did. Reading shapes alone
 leaves the collisional width degenerate with the laser width, and leaves the
 light shift bounded at below 0.26 MHz at 225 mW against 0.35 MHz predicted,
-with the collisional coefficient bounded at 0.03-0.05 MHz per 10¹² cm⁻³.
+with the collisional coefficient bounded at 0.02-0.04 MHz per 10¹² cm⁻³.
 
 And the degeneracy has a second face, measured 2026-08-20. It is not only
 the laser width that competes with the collisional one. The laser kernel's

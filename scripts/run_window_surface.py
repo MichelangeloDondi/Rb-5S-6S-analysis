@@ -80,12 +80,13 @@ def _direct(nu: np.ndarray, m: np.ndarray, W: float, orders) -> dict:
             c = c_new; break
         c = c_new
     w = _weights(c); x = nu - c; w = w / np.sum(w)
-    mu = {k: float(np.sum(x ** k * w)) for k in range(1, 8)}      # every order to 7, the cumulant map needs them
-    # central moments to cumulants (mean zero by the centring)
-    k = {2: mu[2], 3: mu[3], 4: mu[4] - 3 * mu[2] ** 2, 5: mu[5] - 10 * mu[3] * mu[2],
-         6: mu[6] - 15 * mu[4] * mu[2] - 10 * mu[3] ** 2 + 30 * mu[2] ** 3,
-         7: mu[7] - 21 * mu[5] * mu[2] - 35 * mu[4] * mu[3] + 210 * mu[3] * mu[2] ** 2}
-    return {n: k[n] for n in orders}
+    mu = {k: float(np.sum(x ** k * w)) for k in range(1, 8)}
+    # THE REFERENCE IS THE ESTIMATOR'S OWN QUANTITY (F274, 2026-09-21): the central MOMENT of order n,
+    # which is what `_estimate` returns since O33 and what every row is keyed `mu<n>@W` by. This
+    # function returned the CUMULANT map here, so the noiseless admission compared mu_n with kappa_n
+    # (negative for mu4 at 0.5 to 5 MHz and mu6 at 8 and 13) and refused or admitted on a quantity
+    # mismatch; mu2 = kappa2 and mu3 = kappa3 identically, so nothing below fourth order moves.
+    return {n: mu[n] for n in orders}
 
 
 def _estimate(x: np.ndarray, y: np.ndarray, W: float, orders) -> dict:

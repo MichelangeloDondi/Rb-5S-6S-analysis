@@ -19,7 +19,7 @@ arxiv: '1208.4291'
 pdf: PDF_papers/Herold_2012_5s-6p-matrix-elements-light-shift-cancellation.pdf
 held: true
 status: VERIFIED
-audit: ../../../PhD-Thesis/private/lit_audits_2026-09-21/herold2012.md  # every claim checks against the held PDF, 2026-09-21. the paper prints 0.3236(9) where rb5s6s/polarizability.py carries 0.3235 (T0aq)
+audit: ../../../PhD-Thesis/private/lit_audits_2026-09-21/herold2012.md  # every claim checks against the held PDF, 2026-09-21. rb5s6s/polarizability.py carries 0.3236(9), matching the paper's abstract, its Table I ("our results") and its text. The paper's own Table II (supplemental, the per-term polarizability breakdown) prints a different 0.3235(11) for the same matrix element (T0aq)
 routing:
   - FEED
 verify_flags:
@@ -37,10 +37,27 @@ verify_flags:
     introduction and the start of the experimental section (through the
     polarization-cancellation procedure) have been read, not the fit or the
     uncertainty budget that produced the final two numbers.'
+  - 'Supersedes the reading above on the 0.3235/0.3236 gap, not the REPORTED
+    status: `rb5s6s/polarizability.py` was corrected to 0.3236(9) after
+    2026-09-20 (T0aq), and the held PDF''s page 4 confirms the code now
+    matches the paper''s own abstract, main text and results table exactly,
+    with no residual one-digit gap: the main text reads "The matrix elements
+    are d6p1/2 = 0.3236(9)", and Table I''s own-results row, separately,
+    reads the same 0.3236(9). Reading
+    further, page 6, Table II of the Supplemental Material, the per-term
+    polarizability breakdown at the two magic-zero wavelengths, finds a
+    third, separate printing of the same 6p1/2 matrix element, one unit
+    lower in the last digit than the abstract/text/Table I value and with a
+    wider stated uncertainty: 0.3235(11) against the abstract''s 0.3236(9).
+    The paper prints both. This record''s code matches the
+    abstract/text/Table I reading, not Table II''s. Still REPORTED: the fit
+    and uncertainty-budget sections (pages 2-4) were read for this
+    reconciliation but not line by line for their own sake, and the
+    Supplemental Material beyond Tables II and III is unread.'
 verified_date: 2026-09-21
 summary: >
   Source of the 5S to 6P reduced dipole matrix elements
-  rb5s6s/polarizability.py uses, 0.3235(9) and 0.5230(8) ea0 for 5s-6p1/2 and
+  rb5s6s/polarizability.py uses, 0.3236(9) and 0.5230(8) ea0 for 5s-6p1/2 and
   5s-6p3/2. Measured by locating the magic zeros of the light shift near 421 and
   423 nm, where the shift vanishes and the ratio of the contributing matrix
   elements is fixed by that condition alone. The 6P group is one of the two
@@ -82,11 +99,19 @@ cancels the vector light-shift contribution.
 
 ## The numbers
 
-The `rb5s6s/polarizability.py` docstring quotes 0.3235(9) ea0 (5s-6p1/2) and
+The `rb5s6s/polarizability.py` docstring quotes 0.3236(9) ea0 (5s-6p1/2) and
 0.5230(8) ea0 (5s-6p3/2) as the reduced dipole matrix elements for 5S to 6P.
-The held preprint's own abstract gives 0.3236(9) ea0 and 0.5230(8) ea0 for
-the same two elements: the 6p3/2 value matches exactly, and the 6p1/2 value
-differs by one unit in the last digit (0.3235 against 0.3236).
+The held preprint prints the 5s-6p1/2 value in three places, and they agree
+with each other and with the code: the abstract ("we find 0.3236(9) ea0"),
+the main text ("The matrix elements are d6p1/2 = 0.3236(9)"), and the row
+of Table I labelled with the paper's own results, which also reads
+0.3236(9). The 5s-6p3/2 value, 0.5230(8) ea0, matches
+exactly in all three places too. The preprint's Supplemental Material,
+Table II, the per-term breakdown of the polarizability at the two
+magic-zero wavelengths, prints a different value for the same 5s-6p1/2
+element, on its own row labelled 6p1/2: 0.3235(11), one unit lower in the
+last digit and with a wider uncertainty (11 against the abstract's 9). The
+code matches the abstract, text and Table I. It does not match Table II.
 
 ## Use in this record
 

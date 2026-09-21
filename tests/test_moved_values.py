@@ -409,3 +409,70 @@ def test_a_digit_glued_to_a_label_a_fraction_or_a_footer_counter_is_not_a_prose_
     assert "5 of 9*" not in struck
     # and the CSV-cell matcher is untouched: a cell is a value by construction
     assert mv._NUM_ONLY.fullmatch("36") and mv._NUM_ONLY.fullmatch("3.44e+22")
+
+
+def test_a_moved_value_in_a_py_comment_is_found_and_in_code_is_not(mv, tmp_path, capsys):
+    """GUARD ssot-narrowing (2026-09-21): a numeric literal in CODE -- `ax.set_xlim(0.0, 1.08)`,
+    `ymax * 1.08`, a tuple of powers -- is not a quoted claim, and scanning it as prose turned
+    every code literal that happened to equal a retired cell into a false finding
+    (`scripts/make_figures.py` carried seven on one run). The scan now reads only comments and
+    string literals in `.py` files, via `tokenize`, so a moved value quoted in a comment is still
+    caught and the same literal written as bare code is not."""
+    r = tmp_path / "pyscratch"
+    (r / "results").mkdir(parents=True)
+    (r / "scripts").mkdir()
+    _run(r, "init", "-q")
+    _run(r, "config", "commit.gpgsign", "false")
+    (r / "results" / "m.csv").write_text(
+        HEADER + "mode_area,0.611,um^2,the azimuthal-mean convention,CALIB\n")
+    (r / "scripts" / "note.py").write_text(
+        "# quoting results/m.csv: the old area was 0.611 um^2\n"
+        "YMAX = 0.611  # a bare code expression, not a quoted claim\n")
+    _run(r, "add", "-A")
+    _run(r, "commit", "-q", "-m", "base")
+    (r / "results" / "m.csv").write_text(
+        HEADER + "mode_area,0.615,um^2,the azimuthal-mean convention,CALIB\n")
+    _run(r, "add", "-A")
+    _run(r, "commit", "-q", "-m", "the value moves, the script does not")
+    _point_at(mv, r)
+    assert mv.main(["check_moved_values.py", "HEAD~1"]) == 1
+    out = capsys.readouterr().out
+    assert "scripts/note.py:1" in out, "a moved value quoted in a COMMENT must still be reported"
+    assert "scripts/note.py:2" not in out, (
+        "a moved value written as a bare CODE expression must not be reported: "
+        "it was never a quoted claim")
+
+
+def test_a_moved_value_inside_an_fstrings_literal_text_is_found_and_its_braces_are_not(mv, tmp_path, capsys):
+    """GUARD fstring-blind (2026-09-21). PEP 701 (Python 3.12+)
+    tokenizes an f-string's literal text as `FSTRING_MIDDLE`, a THIRD token type beside COMMENT
+    and STRING, so `_prose_only_py`'s original two-type keep-set blanked a hand-written claim
+    sitting inside an f-string exactly as it would blank bare code -- reproduced directly against
+    `tokenize.generate_tokens` on `.venv/bin/python` (3.14 here). Planted both ways in one file:
+    the f-string's own literal text carries the moved value and must be caught; a second f-string
+    on the next line carries the SAME value inside its `{expr}` braces, which tokenizes as an
+    ordinary NUMBER token (bare code, not prose) and must not be."""
+    r = tmp_path / "pyscratch"
+    (r / "results").mkdir(parents=True)
+    (r / "scripts").mkdir()
+    _run(r, "init", "-q")
+    _run(r, "config", "commit.gpgsign", "false")
+    (r / "results" / "m.csv").write_text(
+        HEADER + "mode_area,0.611,um^2,the azimuthal-mean convention,CALIB\n")
+    (r / "scripts" / "note.py").write_text(
+        'print(f"the old area was 0.611 um^2, see results/m.csv")\n'
+        'SCALE = f"{0.611 * 2}"  # bare code inside the braces, not a quoted claim\n')
+    _run(r, "add", "-A")
+    _run(r, "commit", "-q", "-m", "base")
+    (r / "results" / "m.csv").write_text(
+        HEADER + "mode_area,0.615,um^2,the azimuthal-mean convention,CALIB\n")
+    _run(r, "add", "-A")
+    _run(r, "commit", "-q", "-m", "the value moves, the script does not")
+    _point_at(mv, r)
+    assert mv.main(["check_moved_values.py", "HEAD~1"]) == 1
+    out = capsys.readouterr().out
+    assert "scripts/note.py:1" in out, (
+        "a moved value quoted in an F-STRING's literal text must still be reported")
+    assert "scripts/note.py:2" not in out, (
+        "a moved value inside an f-string's {expression} braces is bare CODE, not a quoted "
+        "claim, and must not be reported")

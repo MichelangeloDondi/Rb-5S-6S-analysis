@@ -869,7 +869,7 @@ sigma line as `n` grows.
 |---|---|---|
 | 4 | 5.392 | 6.895 |
 | 5 | 4.604 | 5.598 |
-| 6 | 4.219 | 4.983 |
+| 6 | 4.219 | 4.983 <!-- other-quantity: a trim-ladder row, not an identifiability-profile cell. The digits coincide --> |
 | 7 | 3.997 | 4.632 <!-- other-quantity: a trim-ladder row, not far_wing_level's level. The digits coincide --> |
 | 8 | 3.855 | 4.408 |
 
@@ -959,7 +959,7 @@ the reading taken, and it lands on 8.
 | condition fit | 159 canonical lines | 0 | 1 | 158 |
 
 **The ruler stage moves two traces and nothing else.**
-`rulers_t/4207nm_T110C_P225mWi_RFon_r5.csv` gains 0.181 ms of spacing and
+`rulers_t/4207nm_T110C_P225mWi_RFon_r5.csv` gains 0.181 ms of spacing <!-- other-quantity: a ruler-trim spacing gain in milliseconds, not an identifiability-profile cell --> and
 `rulers_t/4207nm_T90C_P225mWi_RFon_r6.csv` gains 0.016 ms. Both move up, which is the
 direction removing contamination that contracted the grid predicts. Every other
 fitted ruler is byte-identical to the untrimmed fit. The refusals are the
@@ -1043,7 +1043,7 @@ cannot yet measure.
 The two fractional terms combine to 0.287 per cent, and that is what
 `load_block_rates` and `load_t_rates` fold into their block-coherent relative
 rate errors. Before the fold those errors ran from 0.146 to 1.67 per cent with a
-median of 0.401 per cent. After it they run from 0.322 to 1.69 per cent with a
+median of 0.401 per cent. <!-- other-quantity: a block-coherent rate-error median in per cent, not the self-broadening coefficient --> After it they run from 0.322 to 1.69 per cent with a
 median of 0.493 per cent. The growth is between 1.01 and 2.21 times, largest on
 the tightest blocks, which is the expected shape: a systematic floor matters
 most where the statistics are best. The 993.4154 nm power-session bracket grows
@@ -1230,7 +1230,7 @@ what every number in amendment 2's B5.7 census was measured against.
 |---|---|---|
 | 4 | 5.392 | 6.895 |
 | 5 | 4.604 | 5.598 |
-| 6 | 4.219 | 4.983 |
+| 6 | 4.219 | 4.983 <!-- other-quantity: a trim-ladder row, not an identifiability-profile cell. The digits coincide --> |
 | 7 | 3.997 | 4.632 <!-- other-quantity: a trim-ladder row, not far_wing_level's level. The digits coincide --> |
 | 8 | 3.855 | 4.408 |
 
@@ -1678,7 +1678,7 @@ of freedom, which is noise. The derivation settles the law. The one place the
 data speak is the carrier, and they agree with the derivation: at
 2 beta = 1.569 the signal law puts the carrier at 0.696 of the first order,
 which is where the measured carriers sit and scatter, while the amplitude
-reading would put it at 2.45 and demand that every recorded trace be
+reading would put it at 2.45 and demand that every recorded trace be <!-- other-quantity: a modulation-carrier amplitude reading, not a density -->
 suppressed by more than a factor of two.
 
 ## F2. The displaced-grid criterion is safe, twice over

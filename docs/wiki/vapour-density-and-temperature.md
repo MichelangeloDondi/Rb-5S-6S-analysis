@@ -119,7 +119,9 @@ print(f"110 to 130 C moves the density by a factor {ratio:.2f}")
 ## Further reading
 
 - A. N. Nesmeyanov, *Vapor Pressure of the Chemical Elements* (Elsevier,
-  1963), source of the rubidium vapour-pressure parameters.
+  1963), a model-form arm for the rubidium vapour-pressure parameters. The
+  central law since 2026-09-21 is Alcock, Itkin and Horrigan 1984
+  ([`../lit/alcock1984.md`](../lit/alcock1984.md)).
 - [`../lit/steck_rb.md`](../lit/steck_rb.md), the vapour-pressure model in
   the form most laboratories quote.
 

@@ -38,7 +38,7 @@ summary: >
   parameter A = (L-R)/(L+R) rising to 0.36 and back down as the desorption laser
   is powered, and an UNEXPLAINED ~2 MHz of excess width (their Gamma_0 = 8.1(3)
   MHz is the total homogeneous width; the Rb D2 natural 6.065 MHz is supplied
-  here, not by them) after Doppler, collective, Purcell, continuum-atom and
+  here, not by them) <!-- other-quantity: the D2 natural linewidth, not an identifiability-profile cell --> after Doppler, collective, Purcell, continuum-atom and
   Zeeman explanations are each excluded.
 loci:
   - P2

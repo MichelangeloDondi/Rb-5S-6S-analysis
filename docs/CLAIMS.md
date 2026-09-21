@@ -24,14 +24,14 @@ two-photon sum frequency, twice the laser frequency.
 Bounds (95%, each with its own conditionality stated):
 
 - Collisional self-broadening of the 993 nm line:
-  β_self < 0.03-0.05 MHz per 10¹² cm⁻³ across the four hyperfine
-  components, from a 52.5-fold density lever at four temperatures. This is
+  β_self < 0.02-0.04 MHz per 10¹² cm⁻³ across the four hyperfine
+  components, from a 48.1-fold density lever at four temperatures. This is
   the model-independent construction: it does not lean
-  on the beam waist, and the 20% density-scale systematic is applied in
-  the direction that raises the bound, since the cold-spot direction of
-  the vapour-pressure spread makes the fitted β an underestimate. The
+  on the beam waist, and the 24.3 per cent density-scale systematic is applied in
+  the direction that raises the bound, since the cold-spot direction
+  makes the fitted β an underestimate. The
   fitted collisional width grows only 1.47
-  times across that 52.5-fold span, so it is read as a floor, not as
+  times across that 48.1-fold span, so it is read as a floor, not as
   resolved collisions, and that observation is what licenses the bound
   framing. The hierarchical cross-check quoted beside it carries a measured
   model-form systematic the section-2 kernel entry states: the laser-kernel
@@ -110,14 +110,14 @@ Bounds (95%, each with its own conditionality stated):
 
 ![line width against Rb density at four temperatures, with the four hyperfine components separated](../figures/fig1_width_vs_density.png)
 
-*The evidence behind the first bound. The density rises 52.5-fold across the
+*The evidence behind the first bound. The density rises 48.1-fold across the
 four temperatures while the total width plotted here rises by at most
 12 per cent on any one component. The fitted collisional part of that total
 rises 1.47-fold over the same range, which fig6 draws, and between them that is
 what makes the collisional coefficient a bound and a floor rather than a
 resolved slope. The density axis is logarithmic, and the four oven settings happen to
 fall at nearly equal spacing on it, which reads as categorical unless the scale
-is stated. It also carries a 20 per cent scale systematic from the
+is stated. It also carries a 24.3 per cent scale systematic from the
 vapour-pressure model, the largest single uncertainty on the figure, and it is
 common to every point, so it slides the abscissa bodily. The 6S natural width
 is 3.49 MHz, below the bottom of the ordinate, so most of the width shown here
@@ -160,8 +160,8 @@ within the plotted uncertainties.
 Tying the collisional term to the density
 instead forces the laser width down to its lowest value at 110 °C, and that is
 the trade-off between the two widths inside the fit rather than a change in the
-laser. The density axis is logarithmic and carries the same 20 per cent scale
-systematic as fig1.*
+laser. The density axis is logarithmic and carries the same 24.3 per cent
+scale systematic as fig1.*
 
 **Nulls and scaling laws:**
 
@@ -445,11 +445,11 @@ would add:
   co-limits the dataset's density lever. The projection, on five
   temperature blocks per peak reaching 170 °C with the block scatter
   cut fourfold, is the expected [3.50](../results/beta_self_theory.csv "ref:beta_self_theory:beta_self_6s:anchored") kHz per 10¹² cm⁻³ rate resolved
-  at about 10 sigma,
+  at about 12 sigma,
   and 3 sigma if the block scatter is not cut, so the interleaving and
   the temperature reach are co-limiting rather than one refining the
   other. Resolving the rate is not the same as knowing it: the
-  20 percent density scale would leave the coefficient itself known to
+  24.3 per cent density-scale systematic would leave the coefficient itself known to
   about 22 percent until the absorption channel of [PLAN.md](PLAN.md) §8
   measures the density directly.
 - A demonstration of the self-centred third-cumulant readout
@@ -571,7 +571,7 @@ so one wide trace carries both. For everyone using the
 density-conditioned numbers, the projection is that stacking wide scans
 pins the temperature in about 1.9 hours well enough that the vapour
 curve's 22-fold leverage leaves the implied density inside the
-20 percent scale systematic it would check, and about 31 hours if only
+24.3 per cent scale systematic it would check, and about 31 hours if only
 one hyperfine component's pedestal is fitted rather than the comb of
 four.
 

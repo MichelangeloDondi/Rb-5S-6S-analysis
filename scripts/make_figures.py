@@ -822,8 +822,9 @@ def fig_pooled_width():
         freeT.append(T); freeS.append(float(np.sum(w * s) / np.sum(w)))
         # The inverse-variance mean carries an uncertainty, and at 70 C it is
         # larger than the excursion the panel calls flat (one of the four
-        # per-peak values there is 0.32 +/- 1.48 and constrains nothing).
-        # Drawing the series with plot() instead of errorbar() hid that.
+        # per-peak values there has an error several times its own size and
+        # constrains nothing). Drawing the series with plot() instead of
+        # errorbar() hid that.
         freeE.append(float(1.0 / np.sqrt(np.sum(w))))
     a2.errorbar(freeT, freeS, yerr=freeE, fmt="-s", color="#0072B2", ms=6, lw=1.6,
                 capsize=3, label="free per-condition (inverse-variance mean\nof the "

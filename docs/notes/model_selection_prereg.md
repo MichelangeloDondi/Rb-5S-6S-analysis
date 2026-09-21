@@ -126,8 +126,8 @@ demonstrably flips an answer.
 | rung | dBIC | under AIC | flips? |
 |---|---|---|---|
 | A Voigt -> B +transit | +878.9 | unchanged | no: B adds NO free parameter, so no penalty term exists to change |
-| B -> C +collisional width | +1090.8 | about +1167 | no, and more decisive |
-| C -> D +AC-Stark ramp | -100.1 | about -24 | no: the chi-squared gain from the Stark term is about 0.33 in total, so nothing buys it |
+| B -> C +collisional width | +[1091.3](../../results/model_ladder.csv "ref:model_ladder:dBIC_rung:B_transit->C_collisions") | about +1167 | no, and more decisive |
+| C -> D +AC-Stark ramp | -94.6 | about -18 | no: the chi-squared gain from the Stark term is about 5.6 in total, so nothing buys it |
 
 The C to D rung is the one that matters for the headline, because it is the
 statement that the AC-Stark parameter is not warranted on the drifted data and

@@ -137,9 +137,23 @@ def main() -> int:
             w.writerow(["beta_nscale_syst", f"{iso}Rb",
                         f"{abs(fit['beta_by_isotope'][iso]) * N_SCALE_FRAC_SYST:.4f}",
                         "",
-                        f"MHz per 1e12 cm^-3 (density-SCALE systematic: beta ~ 1/N, "
-                        f"so the {N_SCALE_FRAC_SYST:.0%} vapor-pressure-correlation "
-                        f"spread moves beta by the same fraction; density.py)"])
+                        # WORDED, NOT REFUTED (2026-09-21, finding (e) on C5): this
+                        # row applies N_SCALE_FRAC_SYST -- the arms' WORST-CASE single-temperature
+                        # displacement, largest at 70 C, density.py -- to beta directly, as a
+                        # conservative ENVELOPE. That is exact only for a UNIFORM density-scale
+                        # error (beta_true = beta_fit * N_assumed/N_true at every point alike);
+                        # switching the vapour-pressure LAW instead is non-uniform across the
+                        # temperature arm (density.py's law_ratio varies with T), so it is not this
+                        # fit's own measured response -- a refit at the alternate law moves beta by
+                        # a DIFFERENT amount, lever-weighted toward the fit's hottest point, not
+                        # yet a committed cell this note can cite by name.
+                        f"MHz per 1e12 cm^-3 (density-SCALE systematic: beta ~ 1/N, so this row "
+                        f"applies the {N_SCALE_FRAC_SYST:.1%} worst-case vapor-pressure-"
+                        f"correlation displacement (density.py's N_SCALE_FRAC_SYST, largest at "
+                        f"70 C) to beta directly as a conservative envelope, not as this fit's "
+                        f"own measured response: a refit at the alternate law moves beta by "
+                        f"less, lever-weighted toward the fit's hottest point, and is not yet a "
+                        f"committed cell)"])
         w.writerow(["noise_floor_limited", "global",
                     str(fit["noise_floor_limited"]), "",
                     "chi2_red < 0.8: the errors are set by the conservative "

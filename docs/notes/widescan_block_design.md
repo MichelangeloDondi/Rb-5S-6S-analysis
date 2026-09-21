@@ -100,7 +100,7 @@ The pedestal sits at 0.38 per cent of the line's peak height, from the
 record's own retro ratio of 0.94 through the area ratio 4rho/(1+rho^2).
 
 Against the measured single-point noise of 0.39 per cent of peak, a naive
-count over the 36000 off-line points of a 40000-point record would promise 186
+count over the 36000 off-line points of a 40000-point record would promise 186 <!-- other-quantity: a count of off-line points, not a test count -->
 sigma. **Two corrections apply, and they bring it to about 61 sigma in one
 trace and 137 in a five-trace block.** The noise is correlated: the record's 32
 tau_int values run 1.31 to 19.81 with a median of 3.81, so the effective count

@@ -1,34 +1,34 @@
 quantity,window_mhz,value,err,note,status
 law_transit_k2,4-20,0.90,0.13,log-log slope of |d k_n| over the window. blank when the signature is below the grid's resolution (removed by the wing baseline or the self-centring),DIAGNOSTIC
 law_transit_k3,4-20,1.57,0.46,log-log slope of |d k_n| over the window. blank when the signature is below the grid's resolution (removed by the wing baseline or the self-centring),DIAGNOSTIC
-law_transit_k4,4-20,1.96,0.15,log-log slope of |d k_n| over the window. blank when the signature is below the grid's resolution (removed by the wing baseline or the self-centring),DIAGNOSTIC
-law_transit_k5,4-20,2.42,0.25,log-log slope of |d k_n| over the window. blank when the signature is below the grid's resolution (removed by the wing baseline or the self-centring),DIAGNOSTIC
-law_transit_k6,4-20,2.82,0.50,log-log slope of |d k_n| over the window. blank when the signature is below the grid's resolution (removed by the wing baseline or the self-centring),DIAGNOSTIC
-law_transit_k7,4-20,2.64,0.60,log-log slope of |d k_n| over the window. blank when the signature is below the grid's resolution (removed by the wing baseline or the self-centring),DIAGNOSTIC
+law_transit_k4,4-20,2.14,0.18,log-log slope of |d k_n| over the window. blank when the signature is below the grid's resolution (removed by the wing baseline or the self-centring),DIAGNOSTIC
+law_transit_k5,4-20,2.93,0.60,log-log slope of |d k_n| over the window. blank when the signature is below the grid's resolution (removed by the wing baseline or the self-centring),DIAGNOSTIC
+law_transit_k6,4-20,3.77,0.19,log-log slope of |d k_n| over the window. blank when the signature is below the grid's resolution (removed by the wing baseline or the self-centring),DIAGNOSTIC
+law_transit_k7,4-20,4.33,0.39,log-log slope of |d k_n| over the window. blank when the signature is below the grid's resolution (removed by the wing baseline or the self-centring),DIAGNOSTIC
 law_lorentzian_sum_k2,4-20,1.713,0.094,log-log slope of |d k_n| over the window. blank when the signature is below the grid's resolution (removed by the wing baseline or the self-centring),DIAGNOSTIC
 law_lorentzian_sum_k3,4-20,-0.14,0.19,log-log slope of |d k_n| over the window. blank when the signature is below the grid's resolution (removed by the wing baseline or the self-centring),DIAGNOSTIC
-law_lorentzian_sum_k4,4-20,1.77,0.33,log-log slope of |d k_n| over the window. blank when the signature is below the grid's resolution (removed by the wing baseline or the self-centring),DIAGNOSTIC
-law_lorentzian_sum_k5,4-20,1.72,0.44,log-log slope of |d k_n| over the window. blank when the signature is below the grid's resolution (removed by the wing baseline or the self-centring),DIAGNOSTIC
-law_lorentzian_sum_k6,4-20,4.26,0.43,log-log slope of |d k_n| over the window. blank when the signature is below the grid's resolution (removed by the wing baseline or the self-centring),DIAGNOSTIC
-law_lorentzian_sum_k7,4-20,4.07,0.48,log-log slope of |d k_n| over the window. blank when the signature is below the grid's resolution (removed by the wing baseline or the self-centring),DIAGNOSTIC
+law_lorentzian_sum_k4,4-20,3.37,0.10,log-log slope of |d k_n| over the window. blank when the signature is below the grid's resolution (removed by the wing baseline or the self-centring),DIAGNOSTIC
+law_lorentzian_sum_k5,4-20,1.14,0.46,log-log slope of |d k_n| over the window. blank when the signature is below the grid's resolution (removed by the wing baseline or the self-centring),DIAGNOSTIC
+law_lorentzian_sum_k6,4-20,5.216,0.097,log-log slope of |d k_n| over the window. blank when the signature is below the grid's resolution (removed by the wing baseline or the self-centring),DIAGNOSTIC
+law_lorentzian_sum_k7,4-20,3.44,0.40,log-log slope of |d k_n| over the window. blank when the signature is below the grid's resolution (removed by the wing baseline or the self-centring),DIAGNOSTIC
 law_gaussian_laser_k2,4-20,0.73,0.10,log-log slope of |d k_n| over the window. blank when the signature is below the grid's resolution (removed by the wing baseline or the self-centring),DIAGNOSTIC
 law_gaussian_laser_k3,4-20,-2.13,0.26,log-log slope of |d k_n| over the window. blank when the signature is below the grid's resolution (removed by the wing baseline or the self-centring),DIAGNOSTIC
-law_gaussian_laser_k4,4-20,1.81,0.13,log-log slope of |d k_n| over the window. blank when the signature is below the grid's resolution (removed by the wing baseline or the self-centring),DIAGNOSTIC
-law_gaussian_laser_k5,4-20,-1.29,0.31,log-log slope of |d k_n| over the window. blank when the signature is below the grid's resolution (removed by the wing baseline or the self-centring),DIAGNOSTIC
-law_gaussian_laser_k6,4-20,2.0,1.4,log-log slope of |d k_n| over the window. blank when the signature is below the grid's resolution (removed by the wing baseline or the self-centring),DIAGNOSTIC
-law_gaussian_laser_k7,4-20,2.50,0.34,log-log slope of |d k_n| over the window. blank when the signature is below the grid's resolution (removed by the wing baseline or the self-centring),DIAGNOSTIC
+law_gaussian_laser_k4,4-20,1.96,0.14,log-log slope of |d k_n| over the window. blank when the signature is below the grid's resolution (removed by the wing baseline or the self-centring),DIAGNOSTIC
+law_gaussian_laser_k5,4-20,1.59,0.25,log-log slope of |d k_n| over the window. blank when the signature is below the grid's resolution (removed by the wing baseline or the self-centring),DIAGNOSTIC
+law_gaussian_laser_k6,4-20,3.61,0.14,log-log slope of |d k_n| over the window. blank when the signature is below the grid's resolution (removed by the wing baseline or the self-centring),DIAGNOSTIC
+law_gaussian_laser_k7,4-20,4.3,1.4,log-log slope of |d k_n| over the window. blank when the signature is below the grid's resolution (removed by the wing baseline or the self-centring),DIAGNOSTIC
 law_lorentzian_laser_form_k2,4-20,1.92,0.11,log-log slope of |d k_n| over the window. blank when the signature is below the grid's resolution (removed by the wing baseline or the self-centring),DIAGNOSTIC
 law_lorentzian_laser_form_k3,4-20,0.27,0.23,log-log slope of |d k_n| over the window. blank when the signature is below the grid's resolution (removed by the wing baseline or the self-centring),DIAGNOSTIC
-law_lorentzian_laser_form_k4,4-20,1.95,0.30,log-log slope of |d k_n| over the window. blank when the signature is below the grid's resolution (removed by the wing baseline or the self-centring),DIAGNOSTIC
-law_lorentzian_laser_form_k5,4-20,1.87,0.47,log-log slope of |d k_n| over the window. blank when the signature is below the grid's resolution (removed by the wing baseline or the self-centring),DIAGNOSTIC
-law_lorentzian_laser_form_k6,4-20,4.23,0.70,log-log slope of |d k_n| over the window. blank when the signature is below the grid's resolution (removed by the wing baseline or the self-centring),DIAGNOSTIC
-law_lorentzian_laser_form_k7,4-20,4.59,0.44,log-log slope of |d k_n| over the window. blank when the signature is below the grid's resolution (removed by the wing baseline or the self-centring),DIAGNOSTIC
-law_tilt_k2,4-20,3.213,0.098,log-log slope of |d k_n| over the window. blank when the signature is below the grid's resolution (removed by the wing baseline or the self-centring),DIAGNOSTIC
-law_tilt_k3,4-20,5.559,0.050,log-log slope of |d k_n| over the window. blank when the signature is below the grid's resolution (removed by the wing baseline or the self-centring),DIAGNOSTIC
-law_tilt_k4,4-20,4.53,0.75,log-log slope of |d k_n| over the window. blank when the signature is below the grid's resolution (removed by the wing baseline or the self-centring),DIAGNOSTIC
-law_tilt_k5,4-20,5.30,0.83,log-log slope of |d k_n| over the window. blank when the signature is below the grid's resolution (removed by the wing baseline or the self-centring),DIAGNOSTIC
-law_tilt_k6,4-20,5.7,1.1,log-log slope of |d k_n| over the window. blank when the signature is below the grid's resolution (removed by the wing baseline or the self-centring),DIAGNOSTIC
-law_tilt_k7,4-20,8.09,0.46,log-log slope of |d k_n| over the window. blank when the signature is below the grid's resolution (removed by the wing baseline or the self-centring),DIAGNOSTIC
+law_lorentzian_laser_form_k4,4-20,3.60,0.12,log-log slope of |d k_n| over the window. blank when the signature is below the grid's resolution (removed by the wing baseline or the self-centring),DIAGNOSTIC
+law_lorentzian_laser_form_k5,4-20,1.17,0.40,log-log slope of |d k_n| over the window. blank when the signature is below the grid's resolution (removed by the wing baseline or the self-centring),DIAGNOSTIC
+law_lorentzian_laser_form_k6,4-20,5.44,0.12,log-log slope of |d k_n| over the window. blank when the signature is below the grid's resolution (removed by the wing baseline or the self-centring),DIAGNOSTIC
+law_lorentzian_laser_form_k7,4-20,3.38,0.49,log-log slope of |d k_n| over the window. blank when the signature is below the grid's resolution (removed by the wing baseline or the self-centring),DIAGNOSTIC
+law_tilt_k2,4-20,3.12,0.13,log-log slope of |d k_n| over the window. blank when the signature is below the grid's resolution (removed by the wing baseline or the self-centring),DIAGNOSTIC
+law_tilt_k3,4-20,5.558,0.050,log-log slope of |d k_n| over the window. blank when the signature is below the grid's resolution (removed by the wing baseline or the self-centring),DIAGNOSTIC
+law_tilt_k4,4-20,5.136,0.079,log-log slope of |d k_n| over the window. blank when the signature is below the grid's resolution (removed by the wing baseline or the self-centring),DIAGNOSTIC
+law_tilt_k5,4-20,7.402,0.049,log-log slope of |d k_n| over the window. blank when the signature is below the grid's resolution (removed by the wing baseline or the self-centring),DIAGNOSTIC
+law_tilt_k6,4-20,7.104,0.070,log-log slope of |d k_n| over the window. blank when the signature is below the grid's resolution (removed by the wing baseline or the self-centring),DIAGNOSTIC
+law_tilt_k7,4-20,9.323,0.045,log-log slope of |d k_n| over the window. blank when the signature is below the grid's resolution (removed by the wing baseline or the self-centring),DIAGNOSTIC
 law_offset_after_wings_k2,4-20,,,log-log slope of |d k_n| over the window. blank when the signature is below the grid's resolution (removed by the wing baseline or the self-centring),DIAGNOSTIC
 law_offset_after_wings_k3,4-20,,,log-log slope of |d k_n| over the window. blank when the signature is below the grid's resolution (removed by the wing baseline or the self-centring),DIAGNOSTIC
 law_offset_after_wings_k4,4-20,,,log-log slope of |d k_n| over the window. blank when the signature is below the grid's resolution (removed by the wing baseline or the self-centring),DIAGNOSTIC
@@ -38,70 +38,70 @@ law_offset_after_wings_k7,4-20,,,log-log slope of |d k_n| over the window. blank
 law_centre_shift_k2,4-20,,,log-log slope of |d k_n| over the window. blank when the signature is below the grid's resolution (removed by the wing baseline or the self-centring),DIAGNOSTIC
 law_centre_shift_k3,4-20,,,log-log slope of |d k_n| over the window. blank when the signature is below the grid's resolution (removed by the wing baseline or the self-centring),DIAGNOSTIC
 law_centre_shift_k4,4-20,,,log-log slope of |d k_n| over the window. blank when the signature is below the grid's resolution (removed by the wing baseline or the self-centring),DIAGNOSTIC
-law_centre_shift_k5,4-20,3.0,1.1,log-log slope of |d k_n| over the window. blank when the signature is below the grid's resolution (removed by the wing baseline or the self-centring),DIAGNOSTIC
+law_centre_shift_k5,4-20,,,log-log slope of |d k_n| over the window. blank when the signature is below the grid's resolution (removed by the wing baseline or the self-centring),DIAGNOSTIC
 law_centre_shift_k6,4-20,,,log-log slope of |d k_n| over the window. blank when the signature is below the grid's resolution (removed by the wing baseline or the self-centring),DIAGNOSTIC
-law_centre_shift_k7,4-20,3.50,0.90,log-log slope of |d k_n| over the window. blank when the signature is below the grid's resolution (removed by the wing baseline or the self-centring),DIAGNOSTIC
-kept_transit_k2,1.5-20,0.62,,fraction of the term's noise-weighted sensitivity over the twelve windows surviving the tilt's projection,DIAGNOSTIC
-kept_lorentzian_sum_k2,1.5-20,0.41,,fraction of the term's noise-weighted sensitivity over the twelve windows surviving the tilt's projection,DIAGNOSTIC
-kept_gaussian_laser_k2,1.5-20,0.70,,fraction of the term's noise-weighted sensitivity over the twelve windows surviving the tilt's projection,DIAGNOSTIC
-kept_transit_k4,1.5-20,0.65,,fraction of the term's noise-weighted sensitivity over the twelve windows surviving the tilt's projection,DIAGNOSTIC
-kept_lorentzian_sum_k4,1.5-20,0.61,,fraction of the term's noise-weighted sensitivity over the twelve windows surviving the tilt's projection,DIAGNOSTIC
-kept_gaussian_laser_k4,1.5-20,0.67,,fraction of the term's noise-weighted sensitivity over the twelve windows surviving the tilt's projection,DIAGNOSTIC
-kept_transit_k6,1.5-20,0.97,,fraction of the term's noise-weighted sensitivity over the twelve windows surviving the tilt's projection,DIAGNOSTIC
-kept_lorentzian_sum_k6,1.5-20,0.98,,fraction of the term's noise-weighted sensitivity over the twelve windows surviving the tilt's projection,DIAGNOSTIC
-kept_gaussian_laser_k6,1.5-20,0.97,,fraction of the term's noise-weighted sensitivity over the twelve windows surviving the tilt's projection,DIAGNOSTIC
-sigma_ln_transit_white,1.5-20,0.0385,0.0013,"per-trace sigma on ln transit from k2, k4, k6 at twelve windows with the tilt free and the empirical covariance of 400 realisations, shrunk 5 per cent to its diagonal. err from 24 bootstrap resamples",DIAGNOSTIC
-sigma_ln_lorentzian_sum_white,1.5-20,0.0632,0.0014,"per-trace sigma on ln lorentzian_sum from k2, k4, k6 at twelve windows with the tilt free and the empirical covariance of 400 realisations, shrunk 5 per cent to its diagonal. err from 24 bootstrap resamples",DIAGNOSTIC
-sigma_ln_gaussian_laser_white,1.5-20,0.0358,0.0014,"per-trace sigma on ln gaussian_laser from k2, k4, k6 at twelve windows with the tilt free and the empirical covariance of 400 realisations, shrunk 5 per cent to its diagonal. err from 24 bootstrap resamples",DIAGNOSTIC
-corr_transit_lorentzian_white,1.5-20,-0.87,,correlation of the transit and the Lorentzian sum in the joint covariance,DIAGNOSTIC
-bias_k2_white,6,-0.127,0.050,noise-induced bias of the self-centred windowed cumulant in units of its own per-trace sd,DIAGNOSTIC
-bias_k2_white,12,-0.241,0.050,noise-induced bias of the self-centred windowed cumulant in units of its own per-trace sd,DIAGNOSTIC
-bias_k4_white,6,0.114,0.050,noise-induced bias of the self-centred windowed cumulant in units of its own per-trace sd,DIAGNOSTIC
-bias_k4_white,12,-0.106,0.050,noise-induced bias of the self-centred windowed cumulant in units of its own per-trace sd,DIAGNOSTIC
-bias_k6_white,6,-0.086,0.050,noise-induced bias of the self-centred windowed cumulant in units of its own per-trace sd,DIAGNOSTIC
-bias_k6_white,12,0.221,0.050,noise-induced bias of the self-centred windowed cumulant in units of its own per-trace sd,DIAGNOSTIC
+law_centre_shift_k7,4-20,,,log-log slope of |d k_n| over the window. blank when the signature is below the grid's resolution (removed by the wing baseline or the self-centring),DIAGNOSTIC
+kept_transit_k2,1.5-20,0.59,,fraction of the term's noise-weighted sensitivity over the twelve windows surviving the tilt's projection,DIAGNOSTIC
+kept_lorentzian_sum_k2,1.5-20,0.38,,fraction of the term's noise-weighted sensitivity over the twelve windows surviving the tilt's projection,DIAGNOSTIC
+kept_gaussian_laser_k2,1.5-20,0.68,,fraction of the term's noise-weighted sensitivity over the twelve windows surviving the tilt's projection,DIAGNOSTIC
+kept_transit_k4,1.5-20,0.72,,fraction of the term's noise-weighted sensitivity over the twelve windows surviving the tilt's projection,DIAGNOSTIC
+kept_lorentzian_sum_k4,1.5-20,0.50,,fraction of the term's noise-weighted sensitivity over the twelve windows surviving the tilt's projection,DIAGNOSTIC
+kept_gaussian_laser_k4,1.5-20,0.79,,fraction of the term's noise-weighted sensitivity over the twelve windows surviving the tilt's projection,DIAGNOSTIC
+kept_transit_k6,1.5-20,0.77,,fraction of the term's noise-weighted sensitivity over the twelve windows surviving the tilt's projection,DIAGNOSTIC
+kept_lorentzian_sum_k6,1.5-20,0.55,,fraction of the term's noise-weighted sensitivity over the twelve windows surviving the tilt's projection,DIAGNOSTIC
+kept_gaussian_laser_k6,1.5-20,0.82,,fraction of the term's noise-weighted sensitivity over the twelve windows surviving the tilt's projection,DIAGNOSTIC
+sigma_ln_transit_white,1.5-20,0.0460,0.0016,"per-trace sigma on ln transit from k2, k4, k6 at twelve windows with the tilt free and the empirical covariance of 400 realisations, shrunk 5 per cent to its diagonal. err from 24 bootstrap resamples",DIAGNOSTIC
+sigma_ln_lorentzian_sum_white,1.5-20,0.0762,0.0023,"per-trace sigma on ln lorentzian_sum from k2, k4, k6 at twelve windows with the tilt free and the empirical covariance of 400 realisations, shrunk 5 per cent to its diagonal. err from 24 bootstrap resamples",DIAGNOSTIC
+sigma_ln_gaussian_laser_white,1.5-20,0.0415,0.0015,"per-trace sigma on ln gaussian_laser from k2, k4, k6 at twelve windows with the tilt free and the empirical covariance of 400 realisations, shrunk 5 per cent to its diagonal. err from 24 bootstrap resamples",DIAGNOSTIC
+corr_transit_lorentzian_white,1.5-20,-0.90,,correlation of the transit and the Lorentzian sum in the joint covariance,DIAGNOSTIC
+bias_k2_white,6,-0.061,0.050,noise-induced bias of the self-centred windowed cumulant in units of its own per-trace sd,DIAGNOSTIC
+bias_k2_white,12,-0.214,0.050,noise-induced bias of the self-centred windowed cumulant in units of its own per-trace sd,DIAGNOSTIC
+bias_k4_white,6,-0.045,0.050,noise-induced bias of the self-centred windowed cumulant in units of its own per-trace sd,DIAGNOSTIC
+bias_k4_white,12,-0.189,0.050,noise-induced bias of the self-centred windowed cumulant in units of its own per-trace sd,DIAGNOSTIC
+bias_k6_white,6,-0.037,0.050,noise-induced bias of the self-centred windowed cumulant in units of its own per-trace sd,DIAGNOSTIC
+bias_k6_white,12,-0.165,0.050,noise-induced bias of the self-centred windowed cumulant in units of its own per-trace sd,DIAGNOSTIC
 sd_ratio_k2_white,6,1.00,,per-trace sd relative to the white form at 6 MHz,DIAGNOSTIC
 sd_ratio_k4_white,6,1.00,,per-trace sd relative to the white form at 6 MHz,DIAGNOSTIC
 sd_ratio_k6_white,6,1.00,,per-trace sd relative to the white form at 6 MHz,DIAGNOSTIC
-sigma_ln_transit_ar1_rho1,1.5-20,0.0447,0.0010,"per-trace sigma on ln transit from k2, k4, k6 at twelve windows with the tilt free and the empirical covariance of 400 realisations, shrunk 5 per cent to its diagonal. err from 24 bootstrap resamples",DIAGNOSTIC
-sigma_ln_lorentzian_sum_ar1_rho1,1.5-20,0.0724,0.0018,"per-trace sigma on ln lorentzian_sum from k2, k4, k6 at twelve windows with the tilt free and the empirical covariance of 400 realisations, shrunk 5 per cent to its diagonal. err from 24 bootstrap resamples",DIAGNOSTIC
-sigma_ln_gaussian_laser_ar1_rho1,1.5-20,0.0425,0.0012,"per-trace sigma on ln gaussian_laser from k2, k4, k6 at twelve windows with the tilt free and the empirical covariance of 400 realisations, shrunk 5 per cent to its diagonal. err from 24 bootstrap resamples",DIAGNOSTIC
-corr_transit_lorentzian_ar1_rho1,1.5-20,-0.86,,correlation of the transit and the Lorentzian sum in the joint covariance,DIAGNOSTIC
-bias_k2_ar1_rho1,6,-0.171,0.050,noise-induced bias of the self-centred windowed cumulant in units of its own per-trace sd,DIAGNOSTIC
-bias_k2_ar1_rho1,12,-0.159,0.050,noise-induced bias of the self-centred windowed cumulant in units of its own per-trace sd,DIAGNOSTIC
-bias_k4_ar1_rho1,6,0.138,0.050,noise-induced bias of the self-centred windowed cumulant in units of its own per-trace sd,DIAGNOSTIC
-bias_k4_ar1_rho1,12,-0.007,0.050,noise-induced bias of the self-centred windowed cumulant in units of its own per-trace sd,DIAGNOSTIC
-bias_k6_ar1_rho1,6,-0.066,0.050,noise-induced bias of the self-centred windowed cumulant in units of its own per-trace sd,DIAGNOSTIC
-bias_k6_ar1_rho1,12,0.114,0.050,noise-induced bias of the self-centred windowed cumulant in units of its own per-trace sd,DIAGNOSTIC
+sigma_ln_transit_ar1_rho1,1.5-20,0.0531,0.0016,"per-trace sigma on ln transit from k2, k4, k6 at twelve windows with the tilt free and the empirical covariance of 400 realisations, shrunk 5 per cent to its diagonal. err from 24 bootstrap resamples",DIAGNOSTIC
+sigma_ln_lorentzian_sum_ar1_rho1,1.5-20,0.0875,0.0033,"per-trace sigma on ln lorentzian_sum from k2, k4, k6 at twelve windows with the tilt free and the empirical covariance of 400 realisations, shrunk 5 per cent to its diagonal. err from 24 bootstrap resamples",DIAGNOSTIC
+sigma_ln_gaussian_laser_ar1_rho1,1.5-20,0.0484,0.0013,"per-trace sigma on ln gaussian_laser from k2, k4, k6 at twelve windows with the tilt free and the empirical covariance of 400 realisations, shrunk 5 per cent to its diagonal. err from 24 bootstrap resamples",DIAGNOSTIC
+corr_transit_lorentzian_ar1_rho1,1.5-20,-0.89,,correlation of the transit and the Lorentzian sum in the joint covariance,DIAGNOSTIC
+bias_k2_ar1_rho1,6,-0.176,0.050,noise-induced bias of the self-centred windowed cumulant in units of its own per-trace sd,DIAGNOSTIC
+bias_k2_ar1_rho1,12,-0.155,0.050,noise-induced bias of the self-centred windowed cumulant in units of its own per-trace sd,DIAGNOSTIC
+bias_k4_ar1_rho1,6,-0.176,0.050,noise-induced bias of the self-centred windowed cumulant in units of its own per-trace sd,DIAGNOSTIC
+bias_k4_ar1_rho1,12,-0.119,0.050,noise-induced bias of the self-centred windowed cumulant in units of its own per-trace sd,DIAGNOSTIC
+bias_k6_ar1_rho1,6,-0.174,0.050,noise-induced bias of the self-centred windowed cumulant in units of its own per-trace sd,DIAGNOSTIC
+bias_k6_ar1_rho1,12,-0.098,0.050,noise-induced bias of the self-centred windowed cumulant in units of its own per-trace sd,DIAGNOSTIC
 sd_ratio_k2_ar1_rho1,6,1.06,,per-trace sd relative to the white form at 6 MHz,DIAGNOSTIC
-sd_ratio_k4_ar1_rho1,6,1.05,,per-trace sd relative to the white form at 6 MHz,DIAGNOSTIC
-sd_ratio_k6_ar1_rho1,6,1.07,,per-trace sd relative to the white form at 6 MHz,DIAGNOSTIC
-sigma_ln_transit_ar1_tau_int,1.5-20,0.0653,0.0027,"per-trace sigma on ln transit from k2, k4, k6 at twelve windows with the tilt free and the empirical covariance of 400 realisations, shrunk 5 per cent to its diagonal. err from 24 bootstrap resamples",DIAGNOSTIC
-sigma_ln_lorentzian_sum_ar1_tau_int,1.5-20,0.1075,0.0034,"per-trace sigma on ln lorentzian_sum from k2, k4, k6 at twelve windows with the tilt free and the empirical covariance of 400 realisations, shrunk 5 per cent to its diagonal. err from 24 bootstrap resamples",DIAGNOSTIC
-sigma_ln_gaussian_laser_ar1_tau_int,1.5-20,0.0588,0.0022,"per-trace sigma on ln gaussian_laser from k2, k4, k6 at twelve windows with the tilt free and the empirical covariance of 400 realisations, shrunk 5 per cent to its diagonal. err from 24 bootstrap resamples",DIAGNOSTIC
-corr_transit_lorentzian_ar1_tau_int,1.5-20,-0.89,,correlation of the transit and the Lorentzian sum in the joint covariance,DIAGNOSTIC
-bias_k2_ar1_tau_int,6,-0.012,0.050,noise-induced bias of the self-centred windowed cumulant in units of its own per-trace sd,DIAGNOSTIC
-bias_k2_ar1_tau_int,12,-0.045,0.050,noise-induced bias of the self-centred windowed cumulant in units of its own per-trace sd,DIAGNOSTIC
-bias_k4_ar1_tau_int,6,0.009,0.050,noise-induced bias of the self-centred windowed cumulant in units of its own per-trace sd,DIAGNOSTIC
-bias_k4_ar1_tau_int,12,-0.001,0.050,noise-induced bias of the self-centred windowed cumulant in units of its own per-trace sd,DIAGNOSTIC
-bias_k6_ar1_tau_int,6,-0.021,0.050,noise-induced bias of the self-centred windowed cumulant in units of its own per-trace sd,DIAGNOSTIC
-bias_k6_ar1_tau_int,12,0.033,0.050,noise-induced bias of the self-centred windowed cumulant in units of its own per-trace sd,DIAGNOSTIC
-sd_ratio_k2_ar1_tau_int,6,1.62,,per-trace sd relative to the white form at 6 MHz,DIAGNOSTIC
-sd_ratio_k4_ar1_tau_int,6,1.50,,per-trace sd relative to the white form at 6 MHz,DIAGNOSTIC
-sd_ratio_k6_ar1_tau_int,6,1.45,,per-trace sd relative to the white form at 6 MHz,DIAGNOSTIC
-sigma_ln_transit_white_plus_wander,1.5-20,0.1234,0.0042,"per-trace sigma on ln transit from k2, k4, k6 at twelve windows with the tilt free and the empirical covariance of 400 realisations, shrunk 5 per cent to its diagonal. err from 24 bootstrap resamples",DIAGNOSTIC
-sigma_ln_lorentzian_sum_white_plus_wander,1.5-20,0.3141,0.0090,"per-trace sigma on ln lorentzian_sum from k2, k4, k6 at twelve windows with the tilt free and the empirical covariance of 400 realisations, shrunk 5 per cent to its diagonal. err from 24 bootstrap resamples",DIAGNOSTIC
-sigma_ln_gaussian_laser_white_plus_wander,1.5-20,0.0732,0.0022,"per-trace sigma on ln gaussian_laser from k2, k4, k6 at twelve windows with the tilt free and the empirical covariance of 400 realisations, shrunk 5 per cent to its diagonal. err from 24 bootstrap resamples",DIAGNOSTIC
-corr_transit_lorentzian_white_plus_wander,1.5-20,-0.92,,correlation of the transit and the Lorentzian sum in the joint covariance,DIAGNOSTIC
-bias_k2_white_plus_wander,6,-0.056,0.050,noise-induced bias of the self-centred windowed cumulant in units of its own per-trace sd,DIAGNOSTIC
-bias_k2_white_plus_wander,12,-0.061,0.050,noise-induced bias of the self-centred windowed cumulant in units of its own per-trace sd,DIAGNOSTIC
-bias_k4_white_plus_wander,6,0.043,0.050,noise-induced bias of the self-centred windowed cumulant in units of its own per-trace sd,DIAGNOSTIC
-bias_k4_white_plus_wander,12,-0.086,0.050,noise-induced bias of the self-centred windowed cumulant in units of its own per-trace sd,DIAGNOSTIC
-bias_k6_white_plus_wander,6,-0.030,0.050,noise-induced bias of the self-centred windowed cumulant in units of its own per-trace sd,DIAGNOSTIC
-bias_k6_white_plus_wander,12,0.038,0.050,noise-induced bias of the self-centred windowed cumulant in units of its own per-trace sd,DIAGNOSTIC
-sd_ratio_k2_white_plus_wander,6,7.25,,per-trace sd relative to the white form at 6 MHz,DIAGNOSTIC
-sd_ratio_k4_white_plus_wander,6,7.05,,per-trace sd relative to the white form at 6 MHz,DIAGNOSTIC
-sd_ratio_k6_white_plus_wander,6,5.46,,per-trace sd relative to the white form at 6 MHz,DIAGNOSTIC
+sd_ratio_k4_ar1_rho1,6,1.08,,per-trace sd relative to the white form at 6 MHz,DIAGNOSTIC
+sd_ratio_k6_ar1_rho1,6,1.09,,per-trace sd relative to the white form at 6 MHz,DIAGNOSTIC
+sigma_ln_transit_ar1_tau_int,1.5-20,0.0762,0.0029,"per-trace sigma on ln transit from k2, k4, k6 at twelve windows with the tilt free and the empirical covariance of 400 realisations, shrunk 5 per cent to its diagonal. err from 24 bootstrap resamples",DIAGNOSTIC
+sigma_ln_lorentzian_sum_ar1_tau_int,1.5-20,0.1238,0.0043,"per-trace sigma on ln lorentzian_sum from k2, k4, k6 at twelve windows with the tilt free and the empirical covariance of 400 realisations, shrunk 5 per cent to its diagonal. err from 24 bootstrap resamples",DIAGNOSTIC
+sigma_ln_gaussian_laser_ar1_tau_int,1.5-20,0.0688,0.0022,"per-trace sigma on ln gaussian_laser from k2, k4, k6 at twelve windows with the tilt free and the empirical covariance of 400 realisations, shrunk 5 per cent to its diagonal. err from 24 bootstrap resamples",DIAGNOSTIC
+corr_transit_lorentzian_ar1_tau_int,1.5-20,-0.90,,correlation of the transit and the Lorentzian sum in the joint covariance,DIAGNOSTIC
+bias_k2_ar1_tau_int,6,-0.033,0.050,noise-induced bias of the self-centred windowed cumulant in units of its own per-trace sd,DIAGNOSTIC
+bias_k2_ar1_tau_int,12,-0.071,0.050,noise-induced bias of the self-centred windowed cumulant in units of its own per-trace sd,DIAGNOSTIC
+bias_k4_ar1_tau_int,6,-0.029,0.050,noise-induced bias of the self-centred windowed cumulant in units of its own per-trace sd,DIAGNOSTIC
+bias_k4_ar1_tau_int,12,-0.068,0.050,noise-induced bias of the self-centred windowed cumulant in units of its own per-trace sd,DIAGNOSTIC
+bias_k6_ar1_tau_int,6,-0.028,0.050,noise-induced bias of the self-centred windowed cumulant in units of its own per-trace sd,DIAGNOSTIC
+bias_k6_ar1_tau_int,12,-0.067,0.050,noise-induced bias of the self-centred windowed cumulant in units of its own per-trace sd,DIAGNOSTIC
+sd_ratio_k2_ar1_tau_int,6,1.52,,per-trace sd relative to the white form at 6 MHz,DIAGNOSTIC
+sd_ratio_k4_ar1_tau_int,6,1.54,,per-trace sd relative to the white form at 6 MHz,DIAGNOSTIC
+sd_ratio_k6_ar1_tau_int,6,1.55,,per-trace sd relative to the white form at 6 MHz,DIAGNOSTIC
+sigma_ln_transit_white_plus_wander,1.5-20,0.1402,0.0059,"per-trace sigma on ln transit from k2, k4, k6 at twelve windows with the tilt free and the empirical covariance of 400 realisations, shrunk 5 per cent to its diagonal. err from 24 bootstrap resamples",DIAGNOSTIC
+sigma_ln_lorentzian_sum_white_plus_wander,1.5-20,0.341,0.011,"per-trace sigma on ln lorentzian_sum from k2, k4, k6 at twelve windows with the tilt free and the empirical covariance of 400 realisations, shrunk 5 per cent to its diagonal. err from 24 bootstrap resamples",DIAGNOSTIC
+sigma_ln_gaussian_laser_white_plus_wander,1.5-20,0.0865,0.0041,"per-trace sigma on ln gaussian_laser from k2, k4, k6 at twelve windows with the tilt free and the empirical covariance of 400 realisations, shrunk 5 per cent to its diagonal. err from 24 bootstrap resamples",DIAGNOSTIC
+corr_transit_lorentzian_white_plus_wander,1.5-20,-0.93,,correlation of the transit and the Lorentzian sum in the joint covariance,DIAGNOSTIC
+bias_k2_white_plus_wander,6,-0.065,0.050,noise-induced bias of the self-centred windowed cumulant in units of its own per-trace sd,DIAGNOSTIC
+bias_k2_white_plus_wander,12,-0.066,0.050,noise-induced bias of the self-centred windowed cumulant in units of its own per-trace sd,DIAGNOSTIC
+bias_k4_white_plus_wander,6,-0.067,0.050,noise-induced bias of the self-centred windowed cumulant in units of its own per-trace sd,DIAGNOSTIC
+bias_k4_white_plus_wander,12,-0.063,0.050,noise-induced bias of the self-centred windowed cumulant in units of its own per-trace sd,DIAGNOSTIC
+bias_k6_white_plus_wander,6,-0.070,0.050,noise-induced bias of the self-centred windowed cumulant in units of its own per-trace sd,DIAGNOSTIC
+bias_k6_white_plus_wander,12,-0.059,0.050,noise-induced bias of the self-centred windowed cumulant in units of its own per-trace sd,DIAGNOSTIC
+sd_ratio_k2_white_plus_wander,6,7.10,,per-trace sd relative to the white form at 6 MHz,DIAGNOSTIC
+sd_ratio_k4_white_plus_wander,6,6.41,,per-trace sd relative to the white form at 6 MHz,DIAGNOSTIC
+sd_ratio_k6_white_plus_wander,6,5.87,,per-trace sd relative to the white form at 6 MHz,DIAGNOSTIC
 noise_law_rho1,,0.098,,"first-lag correlation of the p_sweep law, pooled median",DIAGNOSTIC
 noise_law_tau_int,,2.51,,integrated correlation time of the same law. the ar1_tau_int form uses (tau-1)/(tau+1),DIAGNOSTIC
 n_realisations,,400,,per noise form,DIAGNOSTIC

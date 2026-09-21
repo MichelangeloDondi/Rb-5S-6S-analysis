@@ -1,9 +1,10 @@
 """The density-law rows say what the laws are and what the archive cannot tell.
 
 FAILURE MODE IF THIS FILE IS DELETED: the producer could silently swap the
-laws' ordering (Alcock above Steck across the archive is what the anchor's
-conversion rests on), leave out the thermometry-offset reading, or report the
-ladder fit as preferring a law when the fit is degenerate by construction.
+laws' ordering (Alcock above Nesmeyanov across the archive is what the
+anchor's conversion rests on), leave out the thermometry-offset reading, or
+report the ladder fit as preferring a law when the fit is degenerate by
+construction.
 """
 import csv
 from pathlib import Path
@@ -21,9 +22,15 @@ def _rows():
 
 
 def test_alcock_sits_above_steck_across_the_ladder_by_a_few_kelvin():
+    """"Steck" named Nesmeyanov's correlation while it was the central law (until O42,
+    2026-09-21); the held Steck document now adopts Alcock instead (F259), so the producer
+    renamed the row from `ratio_AIH_over_Steck` to `ratio_AIH_over_Nesmeyanov` -- the law by its
+    author, never by a document whose own adopted law just changed underneath the name. The
+    quantity and its numbers are unchanged: this is the same Alcock-over-Nesmeyanov ratio the
+    function name (kept for its node id) has always tested."""
     rows = _rows()
     for T in ("T70", "T90", "T110", "T130"):
-        r = next(x for x in rows if x["quantity"] == "ratio_AIH_over_Steck" and x["key"] == T)
+        r = next(x for x in rows if x["quantity"] == "ratio_AIH_over_Nesmeyanov" and x["key"] == T)
         assert 1.15 < float(r["value"]) < 1.35, (T, r["value"])
         k = next(x for x in rows if x["quantity"] == "ratio_as_kelvin_AIH" and x["key"] == T)
         assert 2.0 < float(k["value"]) < 5.0, (T, k["value"])

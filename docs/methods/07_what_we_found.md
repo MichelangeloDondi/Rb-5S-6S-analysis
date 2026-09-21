@@ -20,7 +20,7 @@ collisional trend. No peak resolves a slope: the four signal-to-noise ratios are
 
 $$\boxed{ \beta_\text{self}\lesssim 0.03\text{ to }0.05\ \text{MHz per }10^{12}\ \text{cm}^{-3}. }$$
 
-The four density points are 70, 90, 110 and 130 °C, a $\times52.5$ lever. The
+The four density points are 70, 90, 110 and 130 °C, a $\times48.1$ lever. The
 130 °C point is the 225 mW power session, taken in the same optical and cell
 configuration and inside the same continuous campaign, with each session's axis
 calibrated from its own rate source before the two are put on one density axis
@@ -31,11 +31,18 @@ Two coverage corrections define this bound (both 2026-07-16). First, the
 between-block scatter that dominates the slope error is estimated on only
 **two residual degrees of freedom** (4 density points, 2 fit parameters), so a
 one-sided 95% limit needs the Student-t quantile $t(0.95, 2)=2.92$, not the
-Gaussian-asymptotic 2 an earlier revision used. Second, $\beta\propto 1/N$, so
-the roughly 20% spread between published vapor-pressure correlations is a
-density-scale systematic that moves every $\beta$ by the same fraction, and the
-cold-spot direction makes the fitted $\beta$ an underestimate, so the bound is
-inflated on the + side ($\times1.2$, see `density.py`). (The scatter estimate
+Gaussian-asymptotic 2 an earlier revision used.
+
+Second, $\beta\propto 1/N$, so
+the spread between published vapor-pressure correlations, now derived from
+the model-form arms (24.3 per cent, worst at 70 °C, `density.py`'s
+`N_SCALE_FRAC_SYST`), enters this bound as a conservative envelope on
+$\beta$, not a measured response: a refit of $\beta$ itself at the
+alternate law would move by less, lever-weighted toward the fit's hottest
+point, and that refit is not yet a committed cell. The cold-spot direction
+makes the fitted $\beta$ an
+underestimate, so the bound is inflated on the + side ($\times1.2$, see
+`density.py`). (The scatter estimate
 divides by the degrees of freedom, not by $n$. Using $n$ would tighten the
 bound, a directional bug fixed 2026-07-12.) The spread across the boxed range
 is systematics rather than physics, because the four bounds track each peak's
@@ -52,12 +59,12 @@ vapour-cell result.
 The full fit ([§4.2](06_the_statistics.md),
 `fit_global`), which lets $\sigma_\text{laser}$ drift per temperature
 and weights each block by its own correlation time, returns
-$\beta_{85}=0.0534(43)$ and $\beta_{87}=0.0534(47)$ MHz per $10^{12}$ cm⁻³:
+$\beta_{85}=0.0433(35)$ and $\beta_{87}=0.0433(38)$ MHz per $10^{12}$ cm⁻³:
 **no isotope dependence**, the two differing by $0.0000$, well inside either
 error bar, and dropping any one peak moves the value by at most $0.007$. It is
 a *model-based* value, and it sits **above** both the per-peak model fits
-(0.013–0.018) and all four model-independent per-peak bounds
-(0.03–0.05). The three estimators of the same quantity therefore span about
+(0.011–0.015) and all four model-independent per-peak bounds
+(0.02–0.04). The three estimators of the same quantity therefore span about
 a factor of four, and that spread across $\sigma_\text{laser}$ treatments is
 the uncertainty on this deliverable, larger than any single fit's error
 bar.
@@ -71,7 +78,8 @@ $\pm0.014$** is the largest of the other four (the
 $|\text{Voigt}-\text{Lehmann}|$ shift, [§4.7](06_the_statistics.md), `run_global_fit`: the Gaussian-transit
 Voigt gives the *higher* $\beta\approx0.068$ because a narrower transit core forces
 more width onto collisions), **density scale $\pm0.011$** ($\beta\propto1/N$, the
-roughly 20% spread between published vapor-pressure correlations, `density.py`),
+spread between published vapor-pressure correlations, now derived
+(24.3 per cent), `density.py`),
 and the $w_0$-band $[0.050,0.057]$, which covers transit reference widths from
 $w_0=65$ down to 40 µm and is the narrowest of the four.
 The paper must quote all four, not the optimistic $\pm0.004$ alone.
@@ -87,7 +95,7 @@ covers only 70, 90 and 110 °C, so it says nothing about sharing at the 130 °C
 point that now carries most of the lever.
 
 The fit's
-$\sigma_\text{laser}(T)\approx2.1/2.2/1.5$ MHz is **not** a clean drift curve,
+$\sigma_\text{laser}(T)\approx2.0/2.2/1.5$ MHz is **not** a clean drift curve,
 though: the free per-condition fit gives a *flat* 1.5–1.75 MHz, so that trend
 is the $\beta \leftrightarrow \sigma_\text{laser}$ degeneracy under the density
 tie, not a physical laser drift. The 110 °C dip is a model artifact, not a
@@ -99,7 +107,7 @@ cooling-sweep $\beta$ with its stacked error bars and a leave-one-peak and
 leave-one-temperature scan, and adds the lever test: folding in the
 130 °C anchor ([§4.2](06_the_statistics.md)) pulls $\beta$ down
 to $0.020$, a shift of $-0.034$, because $\gamma_\text{coll}$
-rises only about [1.48](../../results/lever_crosscheck.csv "ref:lever_crosscheck:gamma_rise_factor:70to130")-fold across a ${\times}52.5$ density span. That is a
+rises only about [1.51](../../results/lever_crosscheck.csv "ref:lever_crosscheck:gamma_rise_factor:70to130")-fold across a ${\times}48.1$ density span. That is a
 residual floor rather than resolved collisions, so $\beta$ is a lever-dependent
 bound. The full audited
 budget is in the results ledger (`docs/RESULTS.md`).
@@ -168,7 +176,8 @@ this paragraph previously read the four slopes as a band clustered on the rate
 law, flagging only 993.4121 nm as low. Tested against 2 rather than described,
 under a block bootstrap over the power cells that respects this sweep's
 power-time collinearity, 993.4121 nm at 1.831 excludes 2 from below, 993.4154
-nm at 2.121 and 993.4192 nm at 2.116 exclude it from above, and 993.4207 nm at
+nm at 2.121 and 993.4192 nm at 2.116 exclude it from above, <!-- other-quantity: amplitude-departure log-log slope exponents, not an identifiability-profile cell -->
+and 993.4207 nm at
 2.100 becomes consistent with 2 once the block treatment replaces the
 within-cell error. The departure replicates in the 2025-07-04 rehearsal, whose
 alternating ladder directions show it to be invariant under acquisition order,

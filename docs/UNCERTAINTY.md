@@ -400,9 +400,9 @@ for the spread between published vapour-pressure correlations:
 
 Across the campaign's own four-point grid, 70/90/110/130 C, the
 differential is below
-[0.044](../results/collisional_shift_bound.csv "ref:collisional_shift_bound:bound:shift_bound_differential")
+[0.054](../results/collisional_shift_bound.csv "ref:collisional_shift_bound:bound:shift_bound_differential")
 MHz, about
-[5.9](../results/collisional_shift_bound.csv "ref:collisional_shift_bound:comparison:light_shift_over_collisional")
+[4.7](../results/collisional_shift_bound.csv "ref:collisional_shift_bound:comparison:light_shift_over_collisional")
 times smaller than the light-shift bound this record quotes on the same
 axis, below
 [0.26](../results/stark_joint.csv "ref:stark_joint:S0_225mW_ub95:primary")
@@ -439,7 +439,7 @@ ceiling, and that is what two numbers agreeing in size actually say.
 shift-to-broadening ratio is -0.33 of the FWHM, a value Zameroski's Rb
 5S-5D5/2 pair independently reproduces. Applied to this record's own
 `beta_self(6S)` it predicts a differential of
-[0.033](../results/collisional_shift_bound.csv "ref:collisional_shift_bound:expectation:shift_expected_differential")
+[0.040](../results/collisional_shift_bound.csv "ref:collisional_shift_bound:expectation:shift_expected_differential")
 MHz across the same grid, which is
 [0.92](../results/collisional_shift_bound.csv "ref:collisional_shift_bound:expectation:expectation_over_bound")
 of the **uninflated** ceiling, 0.0363 MHz, and **not** of the 0.044 quoted

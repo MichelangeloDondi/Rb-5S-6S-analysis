@@ -4,12 +4,13 @@ archive's temperatures, what each is supported by, and what the archive's own
 temperature ladder says about them.
 
 WHY THIS EXISTS (owner, 2026-09-13: "delve into the density law to understand
-whether we can do better than 20 per cent"). `density.py` carries Nesmeyanov's
-liquid correlation as Steck tabulates it and a typed 20 per cent as "the
+whether we can do better than 20 per cent"). `density.py` carried Nesmeyanov's
+liquid correlation as Steck tabulates it and a typed 20 per cent until 2026-09-21, when the
+owner's ruling O42 moved it to Alcock (F259: the held Steck adopts Alcock), the spread now DERIVED as "the
 midpoint of the 10 to 30 per cent spread between published correlations",
 with none named. Three are named here with their forms:
 
-  Nesmeyanov (Steck)   log10 P/torr = 15.88253 - 4529.635/T + 0.00058663 T - 2.99138 log10 T
+  Nesmeyanov   log10 P/torr = 15.88253 - 4529.635/T + 0.00058663 T - 2.99138 log10 T
   Alcock-Itkin-Horrigan (CRC)   log10 P/torr = 2.881 + 4.312 - 4040/T   (liquid. claimed better than 5 per cent)
   Stull-Sinke (CRC, second form)   log10 P/Pa = 9.545 - 4132/T
 
@@ -28,7 +29,7 @@ support them. So the literature bounds the law at about the 20 per cent
 `density.py` types, and the row that matters is the archive's own: the
 temperature ladder's collisional width, fitted with each law's shape.
 
-WHAT THE ROWS ARE. `N_<law>` at each archive temperature. `ratio_<law>_over_Steck`;
+WHAT THE ROWS ARE. `N_<law>` at each archive temperature. `ratio_<law>_over_Nesmeyanov`;
 `ratio_as_kelvin` (the offset that would reconcile the two laws at that
 temperature). `support_<paper>` rows naming the range and the level. and the
 `ladder_fit_<law>` rows: gamma_coll(T) from the t_sweep fitted as
@@ -46,30 +47,60 @@ from scipy.stats import chi2 as chi2_dist
 REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO))
 from rb5s6s import config as _CFG                                  # noqa: E402
-from rb5s6s import constants as K                                  # noqa: E402
-from rb5s6s.density import number_density_cm3, dlnN_dT_per_K, N_SCALE_FRAC_SYST   # noqa: E402
+from rb5s6s.density import number_density_cm3, dlnN_dT_per_K, N_SCALE_FRAC_SYST, law_ratio   # noqa: E402
+from rb5s6s.vanderwaals import ZAMEROSKI_7S_EFF_T_K                # noqa: E402
 
 TORR_PA = 101325.0 / 760.0
 T_LADDER_C = (70.0, 90.0, 110.0, 130.0)
 
 
 def n_aih(T_C):
-    T = np.asarray(T_C, dtype=float) + 273.15
-    p_torr = 10.0 ** (2.881 + 4.312 - 4040.0 / T)
-    return p_torr * TORR_PA / (K.K_B_J_PER_K * T) * 1e-6
+    """Alcock-Itkin-Horrigan, the central law since 2026-09-21 (O42): the package's one definition."""
+    return number_density_cm3(T_C, "alcock")
+
+
+def n_nes(T_C):
+    """Nesmeyanov, the central law until 2026-09-21 and a model-form arm since."""
+    return number_density_cm3(T_C, "nesmeyanov")
 
 
 def n_smi(T_C):
-    T = np.asarray(T_C, dtype=float) + 273.15
-    p_pa = 10.0 ** (9.545 - 4132.0 / T)
-    return p_pa / (K.K_B_J_PER_K * T) * 1e-6
+    """Stull-Sinke, the CRC's 4132 K form: a model-form arm."""
+    return number_density_cm3(T_C, "stull_sinke")
 
 
-LAWS = {"Steck": number_density_cm3, "AIH": n_aih, "SMI": n_smi}
+LAWS = {"Nesmeyanov": n_nes, "AIH": n_aih, "SMI": n_smi}
+
+
+def _zameroski_support_row():
+    """COMPUTED, not typed (2026-09-21, finding (d) on C5): the row used to say "at
+    393 K", which is Table 4's note about a DIFFERENT experiment's linewidth budget and was
+    retracted from this record on 2026-09-15 (a06e6176); it now reads the anchor's own effective
+    temperature from `vanderwaals.ZAMEROSKI_7S_EFF_T_K` (428.9 K, the same value
+    `beta_self_theory.csv`'s `anchor/effective_temperature_k` row carries). And the row used to
+    say "converted with Steck's it is 22 per cent lower", which named the WRONG law (this record's
+    held Steck adopts Alcock since O42; the law the row means is Nesmeyanov, named by its author
+    rather than by a document whose own adopted law just changed under the same word) in the WRONG
+    DIRECTION (Nesmeyanov's density sits BELOW Alcock's at this temperature, so converting the
+    anchor's rate per mTorr through Nesmeyanov's smaller density divides by a smaller number and
+    reads the rate, and beta with it, HIGHER, not lower). `law_ratio` gives the fraction directly:
+    at 393 K it was 0.8193 (22 per cent, the retracted row's own arithmetic, just signed the wrong
+    way); at the anchor's real effective temperature it is close but not identical, about 0.84.
+    """
+    r = law_ratio(ZAMEROSKI_7S_EFF_T_K - 273.15, "nesmeyanov", "alcock")   # N_Nesmeyanov / N_Alcock
+    return (
+        f"Alcock-Itkin-Horrigan. the self-broadening anchor's pressure axis at "
+        f"{ZAMEROSKI_7S_EFF_T_K:.1f} K (the anchor's own effective temperature, "
+        f"vanderwaals.ZAMEROSKI_7S_EFF_T_K)",
+        f"the anchor's rate per mTorr is on this law. converted with Nesmeyanov's instead it is "
+        f"{100 * (1.0 / r - 1.0):.0f} per cent higher (the pressure and the density it implies are "
+        f"{100 * (1.0 - r):.0f} per cent lower)")
+
+
 SUPPORT = {
     "siddons2008": ("Nesmeyanov (Steck), their appendix A. absolute D-line absorption at room temperature and above", "absolute absorption in excellent agreement with theory at the measured temperature. no per cent on the density is stated"),
     "achar2025": ("Alcock-Itkin-Horrigan. single-pass absorption in MEMS cells, 293 to 353 K", "densities follow the relation closely over the range. 2.0 per cent systematic per point. no directional offset reported"),
-    "zameroski2014": ("Alcock-Itkin-Horrigan. the self-broadening anchor's pressure axis at 393 K", "the anchor's rate per mTorr is on this law. converted with Steck's it is 22 per cent lower"),
+    "zameroski2014": _zameroski_support_row(),
     "alcock1984": ("the law's own claim", "better than 5 per cent for the practical equations"),
 }
 
@@ -113,12 +144,12 @@ def main() -> int:
         for name, n in ns.items():
             out.append([f"N_{name}", f"T{T:g}", f"{n:.4e}", "", "cm^-3", "number density from the named law at the set point", ""])
         for name in ("AIH", "SMI"):
-            r = ns[name] / ns["Steck"]
-            dk = float(np.log(r) / dlnN_dT_per_K(T))
-            out.append([f"ratio_{name}_over_Steck", f"T{T:g}", f"{r:.4f}", "", "", "the two laws' ratio at this temperature", ""])
-            out.append([f"ratio_as_kelvin_{name}", f"T{T:g}", f"{dk:.2f}", "", "K", "the temperature offset at which Steck's law gives the other's density (ln ratio over d ln N/dT). the laws' disagreement is a thermometry offset of this size between the experiments supporting each", ""])
+            r = ns[name] / ns["Nesmeyanov"]
+            dk = float(np.log(r) / dlnN_dT_per_K(T, "nesmeyanov"))
+            out.append([f"ratio_{name}_over_Nesmeyanov", f"T{T:g}", f"{r:.4f}", "", "", "the two laws' ratio at this temperature", ""])
+            out.append([f"ratio_as_kelvin_{name}", f"T{T:g}", f"{dk:.2f}", "", "K", "the temperature offset at which Nesmeyanov's law gives the other's density (ln ratio over d ln N/dT). the laws' disagreement is a thermometry offset of this size between the experiments supporting each", ""])
         out.append(["dlnN_dT", f"T{T:g}", f"{100 * float(dlnN_dT_per_K(T)):.2f}", "", "per cent per K", "the density's sensitivity to the temperature at this set point", ""])
-    out.append(["typed_spread", "density_py", f"{100 * N_SCALE_FRAC_SYST:.0f}", "", "per cent", "N_SCALE_FRAC_SYST as density.py carries it", ""])
+    out.append(["derived_spread", "density_py", f"{100 * N_SCALE_FRAC_SYST:.0f}", "", "per cent", "N_SCALE_FRAC_SYST as density.py derives it: the largest displacement an arm makes at the ladder temperatures", ""])
     for key, (law, level) in SUPPORT.items():
         out.append([f"support_{key}", "law", law, "", "", level, ""])
     rows = _t_sweep()

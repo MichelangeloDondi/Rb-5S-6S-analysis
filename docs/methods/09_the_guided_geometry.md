@@ -120,7 +120,7 @@ recedes: a free atom on a single passage past the fibre, or one reflected by
 the repulsive component of a two-colour potential. **An atom that arrives and
 stops, adsorbed at the glass, or that starts there and leaves, sees a one-sided
 envelope**, and read like for like against the same velocity average that gives
-each factor below, sidedness is worth 1.554 at a single velocity and about 1.57
+each factor below, sidedness is worth 1.554 at a single velocity and about 1.57 <!-- other-quantity: a guided-geometry sidedness factor, not an identifiability-profile cell -->
 across the ensembles. The weighting choice is worth 1.811. Both are comparable
 levers and both are inputs, not results.
 
@@ -320,11 +320,11 @@ diameter.** Its sensitivity must be weighted by the intensity present at each
 rung, the fitted observable must be a frequency rather than a bare ratio, and
 the drive's own surface shift must be marginalised because the scan cannot know
 it a priori. With all three, the mode length comes out at
-[0.2895](../../results/onf_lever_ranking.csv "ref:onf_lever_ranking:distance_scan:sigma_lambda_frac")
+[0.2928](../../results/onf_lever_ranking.csv "ref:onf_lever_ranking:distance_scan:sigma_lambda_frac")
 and the diameter at
-[30.7](../../results/onf_lever_ranking.csv "ref:onf_lever_ranking:distance_scan:sigma_diameter_nm") nm
+[31.1](../../results/onf_lever_ranking.csv "ref:onf_lever_ranking:distance_scan:sigma_diameter_nm") nm
 at the 2025 drifting lock, falling to
-[0.67](../../results/onf_lever_ranking.csv "ref:onf_lever_ranking:lock_span_0.0:sigma_diameter_nm") nm
+[0.68](../../results/onf_lever_ranking.csv "ref:onf_lever_ranking:lock_span_0.0:sigma_diameter_nm") nm
 at the photon floor.
 
 The surface coefficient is the weaker parameter of the same scan, at
@@ -406,9 +406,9 @@ blackbody excitation, at a branch of two parts per million. A fibre measures the
 a large number and the noise is the shot noise of the whole beam. The two modes
 scale differently in atom number and in power, and a platform comparison that
 does not say which is meant is not a comparison. The absorbed fraction is
-[0.00604294](../../results/platform_twins.csv "ref:platform_twins:hcpcf_warm:hcpcf:absorbed_fraction") for
+[0.00604289](../../results/platform_twins.csv "ref:platform_twins:hcpcf_warm:hcpcf:absorbed_fraction") for
 the vapour-filled mode, which a photodiode resolves easily, and
-[2.05542e-07](../../results/platform_twins.csv "ref:platform_twins:hcpcf_cold:hcpcf:absorbed_fraction") once
+[2.05541e-07](../../results/platform_twins.csv "ref:platform_twins:hcpcf_cold:hcpcf:absorbed_fraction") once
 the vapour is replaced by a loaded cold column, which is not.
 
 **What this does not say.** The trapped densities and temperatures behind those

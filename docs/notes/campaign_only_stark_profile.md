@@ -39,7 +39,7 @@ diagnostic rather than record-grade until reproduced there.
 ## What it returned
 
 Three profile passes, ascending, descending and seeded, agree on the 95%
-crossing to three decimals, 1.024, 1.025 and 1.026 MHz per W, and repeating the
+crossing to three decimals, 1.024, 1.025 and 1.026 MHz per W, <!-- other-quantity: campaign-only kappa passes, not an identifiability-profile cell --> and repeating the
 scan in the opposite axis direction changes nothing at the stated precision. The
 minimum sits at 0.25 MHz per W with a preference over zero of 0.00 in
 chi-square, so there is no detection, only a bound-shaped profile.
@@ -59,7 +59,7 @@ The profile, each variant against its own minimum:
 | 3.50 | 36.54 | 49.57 |
 | 5.00 | 80.80 | 93.83 |
 
-The primary column crosses 2.706 at 1.024 MHz per W.
+The primary column crosses 2.706 at 1.024 MHz per W. <!-- other-quantity: a campaign-only kappa crossing, not an identifiability-profile cell -->
 
 ## The wing column, and how not to read it
 

@@ -106,7 +106,7 @@ effective count. Using a raw chi-square against a reduced penalty inflates
 the fit's apparent gain by roughly the correlation time while lowering its
 parameter cost, and on this archive that half-treatment reverses a verdict,
 moving a delta-BIC from decisively negative to decisively positive (the two
-rows of [`sharing_bic.csv`](../../results/sharing_bic.csv), -51.9 and +61.3 at
+rows of [`sharing_bic.csv`](../../results/sharing_bic.csv), -52.0 and +61.3 at
 this writing, regenerated with the rates). The implementation refuses to
 compute the effective form unless both are supplied.
 
@@ -233,7 +233,7 @@ And the silence is not conservative. In the layer study behind
 0.05 per cent each on their own, and a criterion scores no preference on any
 of them, giving the same answer whether the simulation has them right or
 wrong. The loud ones are not spared either: the saturation companion moves
-the fitted transit by [1.378](../../results/rf_saturation_ladder.csv "ref:rf_saturation_ladder:transit_bias_pct:one_tooth_waist_only") per cent and is
+the fitted transit by [1.374](../../results/rf_saturation_ladder.csv "ref:rf_saturation_ladder:transit_bias_pct:one_tooth_waist_only") per cent and is
 just as invisible to a criterion, because it is a world term with no fitted
 twin. A term invisible to the likelihood is invisible to AIC by
 construction.

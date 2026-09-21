@@ -35,7 +35,7 @@ each limit.
 
 Three bounds, each with the construction that produced it.
 
-**Collisional self-broadening.** Below [0.030](../../results/beta_self_probe.csv "ref:beta_self_probe:pooled_slope::bound95_nscale") MHz per 10¹² cm⁻³ at 95%,
+**Collisional self-broadening.** Below [0.026](../../results/beta_self_probe.csv "ref:beta_self_probe:pooled_slope::bound95_nscale") MHz per 10¹² cm⁻³ at 95%,
 pooled across the four hyperfine lines by a shared-slope construction
 preregistered before computation, from the four-point 70 to 130 °C density
 lever ([`run_beta_self.py`](../../scripts/run_beta_self.py),
@@ -266,8 +266,8 @@ about −0.92. A property of the lineshape, a Lorentzian core convolved with a G
 not of the sample size, so more data does not fix it
 ([the identifiability page](../wiki/identifiability.md)).
 Free the transit width as well and the degeneracy moves instead of lifting:
-[`identifiability.csv`](../../results/identifiability.csv) then reports
-−0.958 between the collisional and transit widths, the same exchange seen from
+`identifiability.csv` reports
+[−0.971](../../results/identifiability.csv "ref:identifiability:corr:gamma_coll_transit") between the collisional and transit widths, the same exchange seen from
 a different direction.
 
 **Transit against waist.** The transit width follows from the waist.

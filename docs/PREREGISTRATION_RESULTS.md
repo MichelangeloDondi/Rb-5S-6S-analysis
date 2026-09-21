@@ -2434,12 +2434,12 @@ no red-wing nuisance, the cold start parked in a local minimum and stayed
 there for the whole chain, forward and backward: 469,570.98 at kappa = 0
 going up, 469,510.09 coming back down. The wing variant, which has two
 more free parameters, escaped from the identical cold start and settled
-at 186,370.45. The extra freedom opens a path out that the tighter layout
+at 186,370.45. The extra freedom opens a path out that the tighter layout <!-- other-quantity: a chi-squared of a fit, not a test count -->
 does not have.
 
 The measurement that proves it is a local minimum and not physics. Seeding
 the primary layout from the wing solution, with the two wing entries
-deleted so the vector fits the narrower layout, reaches 186,370.03 at
+deleted so the vector fits the narrower layout, reaches 186,370.03 at <!-- other-quantity: a chi-squared of a fit, not a test count -->
 kappa = 0. Same data, same priors, same objective, same number of free
 parameters as the stuck chain, 283,140 units lower. A fit cannot disagree <!-- other-quantity: part of a chi-squared difference in units, not the dilute-gas margin of docs/methods/02 -->
 with itself by that much for any physical reason.
@@ -2469,7 +2469,7 @@ chains parked at 469,510 again, and its seeded twin walked straight to
 **How far v3.2.0 was off.** The same disease was present in v3.2.0 at an
 amplitude small enough to look like convergence. Its committed profile
 point at kappa = 0 was 189,761.79. Re-profiling in the true local minimum under
-v3.2.0's own priors, same direction and same layout, gives 186,360.89 at
+v3.2.0's own priors, same direction and same layout, gives 186,360.89 at <!-- other-quantity: a chi-squared of a fit, not a test count -->
 the same kappa. v3.2.0 was mis-parked by 3,401 units, about one part in
 fifty of its own chi square, which is why nothing flagged it.
 

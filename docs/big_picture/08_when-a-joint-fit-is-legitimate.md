@@ -113,8 +113,10 @@ its 1.00 and 1.50 grid points. A diagnostic re-run of the same construction on
 2026-08-17 scanned the profile in both directions and from a seeded start, and
 taken separately its passes put the bound at 1.007, 1.231 and 2.106 MHz per W. So
 the passes span a factor of 2.1, and even the re-run's best-converged seeded pass
-sits seven per cent from the committed value. The campaign-only refit from the
-same day behaves oppositely: its passes agree to three decimals, at 1.024, 1.025
+sits seven per cent from the committed value.
+
+The campaign-only refit from the
+same day behaves oppositely: its passes agree to three decimals, at 1.024, 1.025 <!-- other-quantity: campaign-only kappa passes, not an identifiability-profile cell -->
 and 1.026. The constructions and profiles are published in [the campaign-only
 profile note](../notes/campaign_only_stark_profile.md) so these sentences rest on
 evidence a reader can see.

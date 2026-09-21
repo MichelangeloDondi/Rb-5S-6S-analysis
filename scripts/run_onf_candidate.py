@@ -524,7 +524,7 @@ def main() -> int:
         "carries the citation")
     add("C3_ratio_6S_over_5S", f"{C3_RATIO_BAND[0]:.0f} to "
         f"{C3_RATIO_BAND[1]:.0f}", "", "assumed_parameter",
-        "REPLACE with a Casimir-Polder sum over 6S oscillator strengths; the "
+        "REPLACE with a Casimir-Polder sum over 6S oscillator strengths. The "
         "band brackets plausible values and the conclusion is not sensitive "
         "inside it")
     for r_nm in (50, 100, 200):
@@ -575,7 +575,7 @@ def main() -> int:
     spacing_transition = K.TOOTH_SPACING_TRANSITION_HZ / 1e6
     add("eom_tooth_spacing_transition", f"{spacing_transition:.4f}", "MHz",
         "committed_input",
-        "constants.TOOTH_SPACING_TRANSITION_HZ; the laser-axis spacing is half "
+        "constants.TOOTH_SPACING_TRANSITION_HZ. The laser-axis spacing is half "
         "of it, and the axis each number is quoted on is named per rule 19.88")
 
     # RESOLVABILITY. A ruler is only a ruler while its teeth are separable

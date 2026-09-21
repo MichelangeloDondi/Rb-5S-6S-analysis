@@ -149,13 +149,13 @@ as a bound. Concretely:
   ground state, hundreds of linewidths away, and is gone from the line rather
   than merely detuned.*
 - **β_self is bounded, and the bound's necessity is demonstrated.** The
-  fitted collisional width rises ×1.47 while the density rises ×52.5, a
-  residual floor rather than resolved collisions, so a naive fit's "4–10σ
+  fitted collisional width rises ×1.47 while the density rises ×48.1 (Alcock),
+  a residual floor rather than resolved collisions, so a naive fit's "4–10σ
   detection" would be an artifact. The headline construction folds that same
-  ×52.5-lever 130 °C point into the density-slope fit itself
+  ×48.1-lever 130 °C point into the density-slope fit itself
   (`scripts/run_beta_self.py`), the apparatus having been confirmed unchanged
   across it. The per-peak bound is
-  ≲ 0.03–0.05 MHz per 10¹² cm⁻³ (95%, four points on two degrees of freedom,
+  ≲ 0.02–0.04 MHz per 10¹² cm⁻³ (95%, four points on two degrees of freedom,
   with the small-sample scatter and the vapour-pressure density scale both
   propagated).
 

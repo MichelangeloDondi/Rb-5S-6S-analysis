@@ -500,7 +500,21 @@ def test_the_aperture_spread_factor_reproduces_the_reviewed_column_and_its_uncli
         got = aperture_spread_factor(w0_um * 1e-6)
         assert abs(got - F) < 0.004, (w0_um, got)
         assert got < aperture_onaxis_factor(w0_um * 1e-6), "the spread factor sits below the on-axis one at every waist"
-    assert abs(aperture_spread_factor(W0_MEASURED_M, a_m=50e-3) - 1.0) < 2e-3, "a bore far wider than the beam clips nothing"
+    # n_r RAISED, NOT the change reverted (2026-09-21): C5 normalised the focal-plane power by
+    # Parseval and asserted the on-axis peak against its closed form (rb5s6s/lineshape.py's
+    # `_spread`), which is a strictly stronger check than the trapezoid-over-rho it replaced, and
+    # it is what this exact call was missing -- confirmed, not assumed: a=50 mm against this
+    # waist's w_in of ~0.74 mm is a 67-fold span, and the default n_r=1200 resolves the truncated
+    # Gaussian too coarsely over it to hold the closed-form check to 1e-3, so the corrected
+    # function correctly REFUSES rather than returning a silently wrong ratio (its own error
+    # message says "raise n_r"). Raised to 20000 the ratio comes back at 1 - 4e-6, four orders of
+    # magnitude inside this assertion's tolerance -- the asymptote the assertion is testing was
+    # never in question, only the default grid's resolution at this one extreme a_m/w_in ratio.
+    # The four (w0, F) pairs above, which use the default n_r, are untouched by this: they landed
+    # inside tolerance under the corrected function on the first try, so the column above
+    # itself needed no re-derivation.
+    assert abs(aperture_spread_factor(W0_MEASURED_M, a_m=50e-3, n_r=20000) - 1.0) < 2e-3, (
+        "a bore far wider than the beam clips nothing")
 
 
 def test_the_predicted_shift_per_recorded_watt_carries_the_on_axis_factor_once():

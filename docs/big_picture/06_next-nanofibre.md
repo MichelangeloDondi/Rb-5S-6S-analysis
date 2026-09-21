@@ -215,8 +215,8 @@ azimuthal-mean convention and 0.49 on the peak convention at the committed
 [0.826](../../results/guided_mode_tables.csv "ref:guided_mode_tables:mode_solve_350nm:mode_area_azimuthal_mean")
 and
 [0.642](../../results/guided_mode_tables.csv "ref:guided_mode_tables:mode_solve_350nm:mode_area_peak")
-at the group's 350, with a shift of 1.253 MHz per milliwatt at the trap site
-on the 370 nm fibre of `results/onf_lever_ranking.csv`, so the refusal is a
+at the group's 350, with a shift of [1.239](../../results/onf_lever_ranking.csv "ref:onf_lever_ranking:_inputs:S0_onf_1mW_at_trap_this_fibre") MHz per milliwatt at the trap site
+on the 370 nm fibre, so the refusal is a
 factor under two at the group's own diameter and over two at the committed
 one. The later briefing from the
 same source withdrew the 1.4 itself.
@@ -245,9 +245,9 @@ small factor of one.
 For a host group the practical consequence is the observable. A cell hands
 fluorescence against a dark background. A fibre gives a transmission
 dip, which an ideal shot-noise-limited photodiode would resolve at
-[0.00604294](../../results/platform_twins.csv "ref:platform_twins:hcpcf_warm:hcpcf:absorbed_fraction")
+[0.00604289](../../results/platform_twins.csv "ref:platform_twins:hcpcf_warm:hcpcf:absorbed_fraction")
 with vapour in the mode and a part-per-million measurement at
-[2.05542e-07](../../results/platform_twins.csv "ref:platform_twins:hcpcf_cold:hcpcf:absorbed_fraction")
+[2.05541e-07](../../results/platform_twins.csv "ref:platform_twins:hcpcf_cold:hcpcf:absorbed_fraction")
 once the vapour is replaced by a cold loaded column. The second number is the
 one that decides whether a cold guided experiment is a measurement or a
 proposal, and it rests on a shot-noise-limited detector this record has not
@@ -262,7 +262,7 @@ row is optimistic by eleven, or by five against the larger count the paper's
 own optical depth implies. **The arm survives that, slowly.** Both the dip and
 the signal-to-noise fall by that same factor, because the probe flux setting
 the shot noise does not move, so the row's committed
-[2.51759](../../results/platform_twins.csv "ref:platform_twins:hcpcf_cold:hcpcf:snr_per_s")
+[2.51757](../../results/platform_twins.csv "ref:platform_twins:hcpcf_cold:hcpcf:snr_per_s")
 per second divided by eleven, or by five on the larger count, is what the arm
 delivers: the measurement that took sixteen seconds at the assumed number takes
 about thirty-four minutes on the first reading and seven on the second.
@@ -281,7 +281,7 @@ cooling that reaches it inside the fibre is
 A fibre arm would be run beside the cell, the trap and the nanofibre, so what
 it is worth is what it does to the joint problem. This record's bound fails on
 four couplings: the collisional width against the transit at
-[-0.958](../../results/identifiability.csv "ref:identifiability:corr:gamma_coll_transit"),
+[-0.971](../../results/identifiability.csv "ref:identifiability:corr:gamma_coll_transit"),
 the laser width against the collisional at
 [-0.9411](../../results/campaign_twin_forecast.csv "ref:campaign_twin_forecast:cell:corr_laser_coll_5traces"),
 a Lorentzian laser component and the collisional width entering only as their
@@ -404,8 +404,8 @@ run is owed before any of this becomes a figure instead of an argument.
 ### Observables unique to the guided arm
 
 The guided light shift is a translation of the whole line and not an asymmetry
-of a per cent, so at the record's 1.253 MHz per milliwatt
-(`results/onf_lever_ranking.csv`) a few milliwatts move the line by a
+of a per cent, so at the record's [1.239](../../results/onf_lever_ranking.csv "ref:onf_lever_ranking:_inputs:S0_onf_1mW_at_trap_this_fibre") MHz per milliwatt
+a few milliwatts move the line by a
 linewidth, in a direction the two published signs of the differential
 polarizability predict oppositely. The record settles that sign from the
 measured 6S lifetime, and the guided arm reads it by inspection in a day, on an
@@ -440,7 +440,7 @@ on it.
 | **the evanescent envelope the transit kernel is built on** | [methods chapter 9](../methods/09_the_guided_geometry.md) section 9.1 states that the exponential approximation is not available at these radii, since $qa$ runs 0.18 to 0.32, and section 9.2 then builds the whole transit kernel on a plain exponential decay in time | **no forecast spans it, and it is the largest known error on the temperature ladder's value.** Carrying the chapter's own solved profile through shortens the effective decay length against the nominal 401 nm, and the kernel enters at second order so the width a ladder reads moves by the square of that factor. **The size depends on which effective length is meant and the definition has to be named.** Matched on the second moment, the quantity the added width depends on, the solved profile gives about 270 nm against the nominal, and about 2.2 on the width. A second evaluation of the same integral, written independently, lands a few nanometres shorter, so the length is good to about the nearest ten and the width factor to the first decimal. A log-linear fit over the first 600 nm gives about 218 nm and 3.3. **The second-moment length must exceed the fitted one**, because the profile's local decay length rises outward, 183 nm at 50 nm from the surface to 340 nm at two microns. **The direction is conservative under every definition**: the fibre lever is stronger than this chapter currently claims, so closing it is a gain and not a retraction. It is derivable and needs no apparatus fact, so it is mathematics and not a question for the group |
 | **Rb adsorption against exposure time** | how long the fibre runs before its transmission degrades, which bounds the whole arm and is what the campaign costs the fibre itself | no forecast rests on it. `results/campaign_twin_forecast.csv` reports the integration time so the exposure is visible, but nothing converts exposure into degradation |
 | **the trap's azimuth around the fibre** | which field magnitude an atom sees, and so every guided light shift. The field varies by about a third between the polarisation axis and perpendicular to it | spanned by a committed pair in `results/guided_mode_tables.csv`, the azimuthally averaged `stark_fraction` beside the on-axis one. The tensor term vanishes for this transition, both states having $J=1/2$, but the vector term does not, and a guided mode is strongly elliptically polarised near the surface. So the committed pair is a lower bound on how much the azimuth matters |
-| **trap position and its thermal spread** | the intensity at the atom, and the atom-surface distance the surface term depends on | the distance-scan lever reaches a fractional [0.2895](../../results/onf_lever_ranking.csv "ref:onf_lever_ranking:distance_scan:sigma_lambda_frac") on the decay length at the 2025 lock, and under a hundredth at the photon floor. The spread itself is unmodelled and no forecast rests on it |
+| **trap position and its thermal spread** | the intensity at the atom, and the atom-surface distance the surface term depends on | the distance-scan lever reaches a fractional [0.2928](../../results/onf_lever_ranking.csv "ref:onf_lever_ranking:distance_scan:sigma_lambda_frac") on the decay length at the 2025 lock, and under a hundredth at the photon floor. The spread itself is unmodelled and no forecast rests on it |
 | **the Doppler pedestal's detectability in the guided arm** | whether the shared-sweep thermometer can be read at the fibre as well as lent to it | no forecast rests on it. The cell arm supplies the temperature either way, and the guided pedestal would measure the trapped sample instead of the vapour, which is a different and more valuable quantity if it is reachable at all |
 | **whether the modulator is upstream of the beam split** | whether the comb state can differ between the cell and fibre arms in one sweep | no forecast rests on it. Every committed cell is single-arm. It decides only whether the two arms can hold different comb settings at once, or must take turns |
 
@@ -489,9 +489,9 @@ this chapter called it the one the campaign can perform, measuring the quantity
 that actually enters rather than a proxy for it.
 
 It reaches the diameter to about
-[30.73](../../results/onf_lever_ranking.csv "ref:onf_lever_ranking:lock_span_0.04:sigma_diameter_nm") nm at the
+[31.07](../../results/onf_lever_ranking.csv "ref:onf_lever_ranking:lock_span_0.04:sigma_diameter_nm") nm at the
 2025 drifting lock and
-[0.67](../../results/onf_lever_ranking.csv "ref:onf_lever_ranking:lock_span_0.0:sigma_diameter_nm") nm at the
+[0.68](../../results/onf_lever_ranking.csv "ref:onf_lever_ranking:lock_span_0.0:sigma_diameter_nm") nm at the
 photon floor. The lock was repaired in August 2026 and its residual is
 unmeasured, so the campaign sits inside that span.
 

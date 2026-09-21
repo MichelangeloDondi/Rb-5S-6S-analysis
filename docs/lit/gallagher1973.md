@@ -137,7 +137,7 @@ densities do not rest on it.
    403 K between them. Read for the joint fit's density prior: the
    four-term law is anchored at 7 per cent at 330 K and extrapolated 70 K
    upward, with one conditional datum at 430 K leaning 20 per cent toward
-   the two-term law. The 20 per cent `N_SCALE_FRAC_SYST` in `density.py`
+   the two-term law. The 24 per cent `N_SCALE_FRAC_SYST` in `density.py`
    is not refuted by this paper. What the paper refuses is the reading
    that the two laws are reconciled by a 3 to 4 K thermometry offset on
    this side, which [siddons2008](siddons2008.md) and the CSV's

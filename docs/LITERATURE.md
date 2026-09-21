@@ -127,9 +127,9 @@ integral's excited-state repair and the signed exchange branches of 2026-09-14, 
 [the difference-potential note](notes/vdw_difference_potential_and_4d_channel.md).
 
 Consequences (calibration against the theoretical expectation):
-- The dataset's bound (0.03–0.05 MHz per 10¹² cm⁻³, the four-point
+- The dataset's bound (0.02–0.04 MHz per 10¹² cm⁻³, the four-point
   70/90/110/130 °C headline since 2026-08-02, and 0.2–0.4 MHz on the
-  earlier three-point 70–110 °C headline) sits **8–15× above
+  earlier three-point 70–110 °C headline) sits **7–12× above
   the expected value**, consistent but not constraining. Paper wording must
   say exactly that. The value of the bound is methodological, since it
   quantifies the drift confound rather than constraining β.
@@ -203,8 +203,8 @@ recomputed here.
 | [Lee et al. 2010](lit/lee2010.md) | Cs 6S→8S | −7.25 ± 0.45 Hz/(mW/mm²) light shift | VERIFIED | an AC-Stark coefficient, not a collisional one, kept here because it is the closest analogue experiment there is, the same retro-reflected two-photon vapour-cell architecture as this work |
 | Lee et al., *J. Phys. B* (2010, the sibling to lee2010, not yet held) | Cs 6S→8S (self) | −588 ± 387 Hz/mPa pressure shift | REPORTED, abstract only | the direct collisional analogue to β_self, same group and line as lee2010, cite nothing further from it until the full text is read |
 | [Weller et al. 2011](lit/weller2011.md) | Rb 5S→5P₁/₂ (D1, self) | (0.69 ± 0.04)×10⁻⁷ Hz cm³ = 69 kHz per 10¹² cm⁻³ | VERIFIED | resonant dipole–dipole on an allowed line, the largest self-broadening mechanism there is, so a ceiling rather than an estimate for an S–S pair |
-| [Orson et al. 2021](lit/orson2021.md) | Rb 5S→6S (this exact transition) | null, no AC-Stark or density shift at 6 MHz resolution, N = 3×10¹¹–5×10¹³ cm⁻³ | VERIFIED | the only prior measurement attempt on this line. Its null is on the shift and this column is a width, so the two are only comparable once one is converted. Read as a shift rate over its own density span, on the transition axis, it is about [0.24](../results/collisional_shift_bound.csv "ref:collisional_shift_bound:comparison:orson_null_as_shift_rate") MHz per 10¹² cm⁻³; this record's pooled width bound implies a shift rate of [0.0098](../results/collisional_shift_bound.csv "ref:collisional_shift_bound:comparison:width_bound_as_shift_rate") through the measured shift-to-width ratio, so like for like the gap is about [24](../results/collisional_shift_bound.csv "ref:collisional_shift_bound:comparison:orson_density_null_over_implied") times, and wider still once their one-sigma resolution is matched to this record's 95 per cent. Earlier versions of this cell said three orders of magnitude, then five to eight |
-| This work | Rb 5S→6S (self) | 0.03–0.05 MHz per 10¹² cm⁻³ bound, four-point 70–130 °C dataset | BOUND, not a measurement | 8–15× above the 3.4 ± 0.3 kHz per 10¹² cm⁻³ expectation, consistent but not constraining |
+| [Orson et al. 2021](lit/orson2021.md) | Rb 5S→6S (this exact transition) | null, no AC-Stark or density shift at 6 MHz resolution, N = 3×10¹¹–5×10¹³ cm⁻³ | VERIFIED | the only prior measurement attempt on this line. Its null is on the shift and this column is a width, so the two are only comparable once one is converted. Read as a shift rate over its own density span, on the transition axis, it is about [0.24](../results/collisional_shift_bound.csv "ref:collisional_shift_bound:comparison:orson_null_as_shift_rate") MHz per 10¹² cm⁻³; this record's pooled width bound implies a shift rate of [0.0084](../results/collisional_shift_bound.csv "ref:collisional_shift_bound:comparison:width_bound_as_shift_rate") through the measured shift-to-width ratio, so like for like the gap is about [29](../results/collisional_shift_bound.csv "ref:collisional_shift_bound:comparison:orson_density_null_over_implied") times, and wider still once their one-sigma resolution is matched to this record's 95 per cent. Earlier versions of this cell said three orders of magnitude, then five to eight |
+| This work | Rb 5S→6S (self) | 0.02–0.04 MHz per 10¹² cm⁻³ bound, four-point 70–130 °C dataset | BOUND, not a measurement | 7–12× above the 3.4 ± 0.3 kHz per 10¹² cm⁻³ expectation, consistent but not constraining |
 
 ## 3. Transit-time lineshape
 
@@ -348,7 +348,7 @@ A number here is an identifier, not a position.
    (its density peaks at $|s|=S_0$ and halves at $|s|=S_0/2$). The extra width
    that puts on the line is read from `run_identifiability.py`, not composed
    here: [6.33](../results/identifiability.csv "ref:identifiability:width_signature_broadening_khz:gaussian_branch")
-   kHz on the Gaussian branch and [7.06](../results/identifiability.csv "ref:identifiability:width_signature_broadening_khz:cusp_branch")
+   kHz on the Gaussian branch and [7.15](../results/identifiability.csv "ref:identifiability:width_signature_broadening_khz:cusp_branch")
    kHz on the cusp, a part in some 800 of the line. No width measurement
    reaches this signal at any precision.
    The same comparison settles a loose end in [lee2010](lit/lee2010.md): their
@@ -360,7 +360,7 @@ A number here is an identifier, not a position.
    Preliminary: the span covers the retro and transition-vs-laser-axis
    conventions their text leaves open. **[OPEN]**
 3. **β_self(6S)**: completes the measured 5D/7S self-rate series, a
-   modest addition to the measured series rather than a headline result. In the dataset it is a bound 8–15×
+   modest addition to the measured series rather than a headline result. In the dataset it is a bound 7–12×
    above expectation (four-point, 2026-08-02, was 57–113× on the earlier
    three-point construction). A measurement requires the high-T extension.
 4. **EOM-comb-in-fine-scan** frequency axis (0.042524(51) MHz/ms laser-axis,
@@ -785,7 +785,7 @@ given, so a reader checking a number ends up here rather than in a module.
   on the sum this analysis builds. **[FEED]**
 - **Matrix elements for the 6S polarizability.**
   [Herold et al. 2012](lit/herold2012.md) supplies the 5S→6P reduced matrix
-  elements 0.3235(9) and 0.5230(8) ea₀ that `rb5s6s/polarizability.py` uses,
+  elements 0.3236(9) and 0.5230(8) ea₀ that `rb5s6s/polarizability.py` uses,
   measured by light-shift cancellation at the 421 and 423 nm magic zeros.  <!-- other-quantity: 423 nm is a wavelength and not the 423 K conversion temperature that moved in this diff -->
   REPORTED, the record confirmed from the publisher listing and the source
   not read here. **[FEED]**

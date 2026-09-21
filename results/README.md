@@ -227,7 +227,7 @@ in-sample check that cannot discriminate. The recovered acquisition clock then
 showed the peaks were taken 54 to 76 minutes apart, so the close-in-time
 justification for sharing was never true in the first place.
 
-The 2.054, 2.166, 1.540 MHz trend is not a laser drift. Fitting each
+The 2.054, 2.166, 1.540 MHz trend is not a laser drift. <!-- other-quantity: a tied per-temperature sigma_laser fit, not lever_crosscheck's leave-one-peak-out row --> Fitting each
 condition freely gives a flat 1.53 to 1.71 MHz, so the tied fit's rise and drop
 is the β against σ_laser degeneracy working under the density constraint. The
 errors are statistical only, and these are not clean per-temperature

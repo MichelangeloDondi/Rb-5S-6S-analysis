@@ -62,13 +62,13 @@ def main() -> int:
         w.writerow(["quantity", "key", "value", "unit"])
         for name, m in (("per_T", A), ("per_block", B)):
             w.writerow(["bic_eff", name, f"{m['bic_eff']:.1f}",
-                        f"correlation-corrected chi2 + k*ln(N_eff); k={m['k']}, N_eff={m['n_eff']:.0f}"])
+                        f"correlation-corrected chi2 + k*ln(N_eff), k={m['k']}, N_eff={m['n_eff']:.0f}"])
             w.writerow(["chi2_red", name, f"{m['chi2_red']:.3f}", "raw chi2 / dof"])
         w.writerow(["dBIC_eff_block_minus_T", "shared", f"{res['dBIC']:.1f}",
-                    f"PRIMARY: +ve favours per_T (shared); {res['verdict']} (Kass-Raftery); "
+                    f"PRIMARY: +ve favours per_T (shared), {res['verdict']} (Kass-Raftery). "
                     f"Occam on underpowered data, NOT sharing proof (M4c)"])
         w.writerow(["dBIC_raw_block_minus_T", "shared", f"{res['dBIC_raw']:.1f}",
-                    "diagnostic: naive raw-N BIC (over-counts correlated samples; "
+                    "diagnostic: naive raw-N BIC (over-counts correlated samples, "
                     "flips sign -> the archive does not robustly resolve the sharing)"])
     print("  Wrote results/sharing_bic.csv.")
     return 0

@@ -102,9 +102,10 @@ tests whether the free fit is one of several near-degenerate optima
 ### 1.1 Constraining the fit relocates the degeneracy
 
 The natural response is to impose physics: tie `gamma_coll` to `beta * N(T)`,
-with `N(T)` from Nesmeyanov's liquid-Rb vapour-pressure correlation as tabulated
-by Steck ([density.py:9](../rb5s6s/density.py#L9)), share `sigma_laser`, and let
-the constrained fit report smooth curves. That is
+with `N(T)` from Alcock's liquid-Rb vapour-pressure correlation as the held
+Steck now adopts it ([density.py:9](../rb5s6s/density.py#L9)), share
+`sigma_laser`, and let the constrained fit report smooth curves. Nesmeyanov,
+the central law until 2026-09-21, is now carried as a model-form arm. That is
 [M4b](../rb5s6s/global_fit.py).
 
 The constrained fit then produces a `sigma_laser(T)` rising to 1.5–1.6 MHz at
@@ -317,7 +318,7 @@ out of the headline, and no separate three-point construction is kept
 alongside it, so it is one licensed construction and one bound per peak
 ([run_beta_self.py](../scripts/run_beta_self.py), module docstring).
 
-The four-point construction (70/90/110/130 °C, dof=2, ×52.5 density lever)
+The four-point construction (70/90/110/130 °C, dof=2, ×48.1 density lever)
 tightens the per-peak 95% bound by roughly an order of magnitude, from
 ≲0.2–0.4 to ≲0.03–0.05 MHz per 10¹² cm⁻³, and the physics reading gets
 stronger with it: `rb5s6s/lever_crosscheck.py` had already noted that folding
@@ -341,7 +342,7 @@ Recorded together because the fold-in groups them as one commit.
 
 Decision: the four-point `beta_self` lever, already decided in §9, gets
 the code that had not caught up to it. The promotion of the
-70/90/110/130 °C construction to the sole headline (dof=2, the ×52.5 lever,
+70/90/110/130 °C construction to the sole headline (dof=2, the ×48.1 lever,
 the same-configuration fact and the instrument authority both recorded in
 §9) was a documentation decision before it was a code one. `rb5s6s/beta.py`
 and `rb5s6s/coverage.py` still ran the three-point, dof=1 machinery through

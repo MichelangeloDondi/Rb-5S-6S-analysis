@@ -80,7 +80,7 @@ source attaches no reliability to them.
 
 The provenance of the record's headline density law. The four-term
 coefficients descend from this book's Table II, a compilation whose
-reviewer states it carries no reliability estimate. The 20 per cent
+reviewer states it carries no reliability estimate. The 24 per cent
 `N_SCALE_FRAC_SYST` in `density.py` is therefore the record's own
 envelope, drawn from the spread between correlations, and not a figure
 the source supplies. The only absolute measurement in the held set that

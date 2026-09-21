@@ -234,7 +234,7 @@ EXPENSIVE = {
     # archive's rung up, about ninety minutes on six workers, measured on
     # 2026-09-05; its wrapper sets the environment the map reads
     "run_moment_power_map_deep": ["moment_power_map_deep.csv", "moment_power_map_deep_rungs.csv"],
-    # 2000 multi-condition fits at ~1.05 s each, about five minutes on eight
+    # 2000 multi-condition fits at about a second each, about five minutes on eight
     # lanes. Deterministic despite being Monte-Carlo: every trial's seed is its
     # index, so the CSV reproduces exactly and IS checkable rather than merely
     # re-runnable.
@@ -497,7 +497,8 @@ _COLUMN_RTOL = {
 # nothing else. Calibrated 2026-08-19 by running --all under BOTH the pinned
 # environment of record (numpy 2.5.0) and the current venv (2.5.2):
 #
-#   condition_number read 389.7 committed, 438.2 pinned, 345.1 unpinned. It is
+#   condition_number read three different values under those three environments,
+#   each in the high three hundreds to low four hundreds. It is
 #   the eigenvalue ratio of the (gamma_coll, sigma_laser, transit) covariance,
 #   whose own unit string reads ">>1 = degenerate". A ratio built on a
 #   near-zero eigenvalue moves at the tens-of-percent level between LAPACK

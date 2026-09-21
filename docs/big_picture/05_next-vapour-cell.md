@@ -88,9 +88,9 @@ physics:
    top of the range. Runs as [`PLAN.md`](../PLAN.md) §7c.
 
    Folding the dataset's own 130 °C point into the headline already stretched
-   the 2025 lever from ×16.2 to ×52.5 and tightened the bound an order of
-   magnitude (was 0.2–0.4, now 0.03–0.05 MHz per 10¹² cm⁻³). Even at ×52.5 the
-   bound sits only 8–15× above the ~3.5 kHz expectation of §1.4, on the
+   the 2025 lever from ×15.2 to ×48.1 (Alcock) and tightened the bound an order of
+   magnitude (was 0.2–0.4, now 0.02–0.04 MHz per 10¹² cm⁻³). Even at ×48.1 the
+   bound sits only 7–12× above the ~3.5 kHz expectation of §1.4, on the
    contested anchor §1.4 records, closer than
    before, but a same-session 150–170 °C extension is still the cleaner route.
    It removes the cross-epoch calibration step that folding the 130 °C point in

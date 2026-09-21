@@ -3,9 +3,10 @@
 *[quantities index](README.md) · headline parameter*
 
 What light shift can be separated from the other mechanisms that share its power signature? The quantity is $\kappa$, relating the on-axis shift to the drive power in MHz per watt, and $S_0 = \kappa P$, the shift at a stated power, both on the transition axis. This page builds on the committed fits and their profile likelihoods. No new fitting. It sets out the bound in every construction that produced one, the four reasons it is a bound rather than a value, and three defined levels of improvement with their bench recipes. Not covered here: the question is how the shift distorts a line, which is [the AC-Stark shift](../wiki/ac-stark-shift.md), or whether the joint constructions may be compared with each other, which is [chapter 8](../big_picture/08_when-a-joint-fit-is-legitimate.md).
+
 **Where it stands.** A bound, not a measurement, in every construction the
-record carries, and the constructions span $\kappa \lt 0.944$ to
-$\kappa \lt 2.811$ MHz/W depending on which data and which channel are used.
+record carries, and the constructions span $\kappa \lt 0.944$ to a profile-likelihood
+bound of [2.813](../../results/stark_sweep.csv "ref:stark_sweep:kappa_ub95_profile:shared") MHz/W depending on which data and which channel are used.
 
 No single number is quotable without its construction, and whether the joint
 three-session construction reproduces remains an open question, so
@@ -93,7 +94,7 @@ prevent.
 | Joint, with the red-side wing marginalised | $\lt$ [1.066](../../results/stark_joint.csv "ref:stark_joint:kappa_ub95_wing:robustness") MHz/W | | BOUND, conditional | `stark_joint.csv` |
 | Joint, dropping the 4192 peak and with it the whole pilot session | $\lt$ [1.626](../../results/stark_joint.csv "ref:stark_joint:kappa_ub95_drop4192:robustness") MHz/W | $\lt 0.366$ MHz | BOUND | `stark_joint.csv` |
 | $\kappa$ and $\beta_{\rm self}$ both free, no prior | $\lt 0.963$ MHz/W | $\lt 0.217$ MHz | PRELIM | [`global_dataset_fit.csv`](../../results/global_dataset_fit.csv) |
-| Width channel alone | $\lt [2.811](../../results/stark_sweep.csv "ref:stark_sweep:kappa_ub95_profile:shared")$ MHz/W | $\lt [0.633](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_ub95_profile:shared")$ MHz | BOUND | [`stark_sweep.csv`](../../results/stark_sweep.csv) |
+| Width channel alone | $\lt [2.813](../../results/stark_sweep.csv "ref:stark_sweep:kappa_ub95_profile:shared")$ MHz/W | $\lt [0.633](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_ub95_profile:shared")$ MHz | BOUND | [`stark_sweep.csv`](../../results/stark_sweep.csv) |
 | Centre channel alone | $\lt 8.653$ MHz/W | | BOUND | [`centre_stark.csv`](../../results/centre_stark.csv) |
 
 **The prediction, for comparison rather than as a result.** $\kappa$ is

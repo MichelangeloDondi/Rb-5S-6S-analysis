@@ -347,7 +347,7 @@ ramp exactly when the trap depth goes to zero.
 
 The transit degeneracy disappears, because the transit does. The
 correlation of
-[-0.958](../../results/identifiability.csv "ref:identifiability:corr:gamma_coll_transit")
+[-0.971](../../results/identifiability.csv "ref:identifiability:corr:gamma_coll_transit")
 between the collisional width and the transit is a
 correlation between two terms of a crossing-time kernel. A trapped atom does
 not cross the beam, so the kernel is not a transit at all and
@@ -403,7 +403,7 @@ derivation of [methods chapter 3](../methods/03_the_ac_stark_ramp.md):
 
 | observable | goes as | confounded with |
 |---|---|---|
-| transit width | $w_0^{-1}$ | the collisional width at $-0.958$, and a per-block laser width |
+| transit width | $w_0^{-1}$ | the collisional width at $-0.971$, and a per-block laser width |
 | light shift $S_0$ | $w_0^{-2}$ | $\Delta\alpha$, and a free centre per trace |
 | two-photon Rabi frequency | $w_0^{-2}$ | the drive calibration |
 | axial collection ratio | $w_0^{-2}$ | the optics |
@@ -466,7 +466,7 @@ that no function here used to carry.
 2. **The density ladder separates the transit from the collisional width.**
    Across the archive's own temperatures the collisional width moves by a
    factor of fifty-two and the transit by 1.08, so the pair that correlates at
-   $-0.958$ at one condition is separated by the ladder. This is the same
+   $-0.971$ at one condition is separated by the ladder. This is the same
    argument that already makes the two Lorentzian widths identifiable.
 3. **A cold arm separates the transit from the laser width.** In a trap or a
    molasses both the collisional width and the transit fall away and the laser
@@ -540,7 +540,7 @@ cent, and every width in the model has a different exponent along them:
 | the amplitude | 2.00 | 22.42 |
 
 So the transit is an observable, and the temperature arm is what makes it
-so. The $-0.958$ correlation is a property of a fit at a single temperature.
+so. The $-0.971$ correlation is a property of a fit at a single temperature.
 The density runs as the 22nd power of the temperature where the transit runs as
 its square root, a separation of a factor of 45. The power arm then moves
 the shift alone, with every width standing still. Three exponents across two
@@ -797,9 +797,9 @@ is a function, and every term of the line has its own law in it, measured on
 the package's own profile at the archive point
 (`results/window_laws.csv`): the tilt is the one nuisance the wing baseline
 and the self-centring leave, and its signature grows as the window to the
-[3.213](../../results/window_laws.csv "ref:window_laws:law_tilt_k2:4-20") on the
+[3.120](../../results/window_laws.csv "ref:window_laws:law_tilt_k2:4-20") on the
 second cumulant and to the
-[5.559](../../results/window_laws.csv "ref:window_laws:law_tilt_k3:4-20") on the
+[5.558](../../results/window_laws.csv "ref:window_laws:law_tilt_k3:4-20") on the
 third, steeper than any physics term. The transit's second cumulant grows to
 the [0.90](../../results/window_laws.csv "ref:window_laws:law_transit_k2:4-20"),
 the Lorentzian sum's to the
@@ -809,13 +809,13 @@ and a Lorentzian laser kernel to the
 which is the Lorentzian sum's law and the reason a free Lorentzian component
 absorbs the laser's kernel form for the widths. Projecting the tilt out of
 the twelve-window ladder keeps
-[0.62](../../results/window_laws.csv "ref:window_laws:kept_transit_k2:1.5-20")
+[0.59](../../results/window_laws.csv "ref:window_laws:kept_transit_k2:1.5-20")
 of the transit's sensitivity on the second cumulant and
-[0.97](../../results/window_laws.csv "ref:window_laws:kept_transit_k6:1.5-20")
+[0.77](../../results/window_laws.csv "ref:window_laws:kept_transit_k6:1.5-20")
 on the sixth.
 
 Jointly, the even cumulants at twelve windows measure the transit to
-[0.0385](../../results/window_laws.csv "ref:window_laws:sigma_ln_transit_white:1.5-20")
+[0.0460](../../results/window_laws.csv "ref:window_laws:sigma_ln_transit_white:1.5-20")
 of itself per trace under white noise with the tilt free and the covariance
 of the thirty-six statistics taken from realisations, against the profile
 fit's own per-trace figure with the same widths free (the private plan's
@@ -823,21 +823,21 @@ round-one Monte Carlo, of the same size): the same information, as the data-proc
 inequality says it must be, obtained without committing to a kernel form for
 the nuisances. The noise's low-frequency form sets the bar: at the law's
 first-lag correlation the figure is
-[0.0447](../../results/window_laws.csv "ref:window_laws:sigma_ln_transit_ar1_rho1:1.5-20"),
+[0.0531](../../results/window_laws.csv "ref:window_laws:sigma_ln_transit_ar1_rho1:1.5-20"),
 at the twin's correlation-time form
-[0.0653](../../results/window_laws.csv "ref:window_laws:sigma_ln_transit_ar1_tau_int:1.5-20"),
+[0.0762](../../results/window_laws.csv "ref:window_laws:sigma_ln_transit_ar1_tau_int:1.5-20"),
 and with a slow wander carrying a third of the variance
-[0.1234](../../results/window_laws.csv "ref:window_laws:sigma_ln_transit_white_plus_wander:1.5-20").
+[0.1402](../../results/window_laws.csv "ref:window_laws:sigma_ln_transit_white_plus_wander:1.5-20").
 The transit and the Lorentzian sum stay correlated at
-[-0.87](../../results/window_laws.csv "ref:window_laws:corr_transit_lorentzian_white:1.5-20")
+[-0.90](../../results/window_laws.csv "ref:window_laws:corr_transit_lorentzian_white:1.5-20")
 under every form, which is the degeneracy the theory prior on the
 self-broadening coefficient breaks and nothing in one trace does.
 
 And the
 estimator's own noise-induced bias, per trace in units of its scatter, is
-[-0.127](../../results/window_laws.csv "ref:window_laws:bias_k2_white:6") at
+[-0.061](../../results/window_laws.csv "ref:window_laws:bias_k2_white:6") at
 6 MHz and
-[-0.241](../../results/window_laws.csv "ref:window_laws:bias_k2_white:12") at
+[-0.214](../../results/window_laws.csv "ref:window_laws:bias_k2_white:12") at
 12 MHz on the second cumulant, so pooled over a condition's hundred traces it
 is a one-to-two-sigma term the twin supplies per condition from that
 condition's measured spectrum, never from a white draw.
@@ -897,9 +897,11 @@ On the archive the cycles per crossing on a central chord
 are [0.0814](../../results/four_peak_contrasts.csv "ref:four_peak_contrasts:cycles_per_crossing_axis:P225_w64")
 at 225 mW and 64 µm (the saturated rate integrated along the chord, which is
 $P^2/w_0^3$ only while the core is unsaturated: at 16 µm the saturated integral
-is 1.77 times the weak-drive form), which predicts a deviation of
+is 1.77 times the weak-drive form <!-- other-quantity: a chord saturation integral, not window_laws.csv's law_lorentzian_sum_k4 cell -->), which predicts a deviation of
 [0.00863](../../results/four_peak_contrasts.csv "ref:four_peak_contrasts:amplitude_face_predicted:87Rb_P225_w64")
-in the log for the 87Rb pair. The measured deviation at that rung is
+in the log for the 87Rb pair.
+
+The measured deviation at that rung is
 [0.1517](../../results/four_peak_contrasts.csv "ref:four_peak_contrasts:amplitude_face_measured:87Rb_P225") ±
 [0.0055](../../results/four_peak_contrasts.csv "ref:four_peak_contrasts:amplitude_face_measured:87Rb_P225:err")
 and at 25 mW [-0.248](../../results/four_peak_contrasts.csv "ref:four_peak_contrasts:amplitude_face_measured:87Rb_P25") ±
@@ -930,8 +932,8 @@ with the cathode's 12 mm along the beam and
 saturation carried, against the on-axis rate per atom's $-4$. At 16 µm the
 saturated slope is [0.606](../../results/detection_budget.csv "ref:detection_budget:exponent_saturated:along12_w16um"),
 the wrong sign for a waist channel. The chain's prediction sits
-[2.78](../../results/detection_budget.csv "ref:detection_budget:gap_log10_predicted_over_measured:Steck_along12_D6mm") to
-[3.97](../../results/detection_budget.csv "ref:detection_budget:gap_log10_predicted_over_measured:Steck_along12_D25.4mm")
+[2.86](../../results/detection_budget.csv "ref:detection_budget:gap_log10_predicted_over_measured:Steck_along12_D6mm") to
+[4.06](../../results/detection_budget.csv "ref:detection_budget:gap_log10_predicted_over_measured:Steck_along12_D25.4mm")
 in the log above the archive's measured rate across the aperture's span, with
 the D1 trapping, the filter and the excess-noise factor named outside it
 ([the open apparatus items](../plan/12_open-apparatus-items.md)).
@@ -963,7 +965,7 @@ Expanding to second order, $P = P_0 - \tfrac{2S_0}{3}P_0' + \tfrac{S_0^2}{4}P_0'
 
 Two consequences follow without any fit. The residual is second order in $S_0$, so the derivative of the observable response vanishes at $S_0 = 0$: the Fisher information for the shift is zero at the boundary and the log-likelihood is quartic there. That is why the bound is one-sided and the profile is flat at the boundary. (A coefficient linear in the data is negative half the time under a null at the boundary, so a rail rate near one half is that argument's expectation there. The coverage study's zero-shift cell rails 6 per cent of the time in the nominal arm, the one the postscript finds the real data behave like, and 14 per cent in the over-dispersed arm. The postscript records the discrepancy with one half as open.) And the width channel is even in $S_0$, so it cannot see the sign of the shift at any precision.
 
-The size of what survives, computed by `scripts/run_identifiability.py` with `rb5s6s.lineshape.total_fwhm_mhz` at the archive's two fitted branches and never by prose arithmetic: at the predicted shift of [0.348](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred:shared") MHz (envelope [0.306](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred_lo:shared") to [0.375](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred_hi:shared")) the line broadens by [7.06](../../results/identifiability.csv "ref:identifiability:width_signature_broadening_khz:cusp_branch") kHz at the cusp branch and [6.33](../../results/identifiability.csv "ref:identifiability:width_signature_broadening_khz:gaussian_branch") kHz at the Gaussian branch, on lines of [5.3179](../../results/identifiability.csv "ref:identifiability:width_signature_fwhm_mhz:cusp_branch") and [5.4036](../../results/identifiability.csv "ref:identifiability:width_signature_fwhm_mhz:gaussian_branch") MHz, so the centre pull the free centre discards is [34.0](../../results/identifiability.csv "ref:identifiability:width_signature_centre_over_width:cusp_branch") to [37.9](../../results/identifiability.csv "ref:identifiability:width_signature_centre_over_width:gaussian_branch") times the width signal. The pure-Gaussian estimate a withdrawn draft carried was about half of this, because the real line is about two thirds Lorentzian, and the two-branch cells above are the record's own.
+The size of what survives, computed by `scripts/run_identifiability.py` with `rb5s6s.lineshape.total_fwhm_mhz` at the archive's two fitted branches and never by prose arithmetic: at the predicted shift of [0.348](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred:shared") MHz (envelope [0.306](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred_lo:shared") to [0.375](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred_hi:shared")) the line broadens by [7.15](../../results/identifiability.csv "ref:identifiability:width_signature_broadening_khz:cusp_branch") kHz at the cusp branch and [6.33](../../results/identifiability.csv "ref:identifiability:width_signature_broadening_khz:gaussian_branch") kHz at the Gaussian branch, on lines of [5.3065](../../results/identifiability.csv "ref:identifiability:width_signature_fwhm_mhz:cusp_branch") and [5.4035](../../results/identifiability.csv "ref:identifiability:width_signature_fwhm_mhz:gaussian_branch") MHz, so the centre pull the free centre discards is [33.6](../../results/identifiability.csv "ref:identifiability:width_signature_centre_over_width:cusp_branch") to [37.9](../../results/identifiability.csv "ref:identifiability:width_signature_centre_over_width:gaussian_branch") times the width signal. The pure-Gaussian estimate a withdrawn draft carried was about half of this, because the real line is about two thirds Lorentzian, and the two-branch cells above are the record's own.
 
 **Which side the centre sits on is now a fitted choice, shown and not only
 derived.** The expansion above is a statement about the forward
@@ -1015,7 +1017,7 @@ identifiability claim is a claim about a pair, the world and the estimator, and
 a loop run through one term list proves only that the optimiser can invert a
 function it was handed.
 
-A note on two numbers this page and its neighbours quote. The split-against-total anisotropy is [0.0032](../../results/identifiability.csv "ref:identifiability:best_constrained_sigma:total_width") MHz against [0.0588](../../results/identifiability.csv "ref:identifiability:worst_constrained_sigma:split") MHz, a factor of [18.6](../../results/identifiability.csv "ref:identifiability:anisotropy_ratio:split_over_total"). [The statistics chapter](../methods/06_the_statistics.md) calls the same pair twenty-fold worse. The producer divides the unrounded sigmas and writes [18.6](../../results/identifiability.csv "ref:identifiability:anisotropy_ratio:split_over_total"). The two committed digits give a ratio a fifth of a unit smaller, which is what the campaign-projection figure prints from the same cells, and the difference is rounding, not physics.
+A note on two numbers this page and its neighbours quote. The split-against-total anisotropy is [0.0032](../../results/identifiability.csv "ref:identifiability:best_constrained_sigma:total_width") MHz against [0.0674](../../results/identifiability.csv "ref:identifiability:worst_constrained_sigma:split") MHz, a factor of [21.4](../../results/identifiability.csv "ref:identifiability:anisotropy_ratio:split_over_total"). [The statistics chapter](../methods/06_the_statistics.md) calls the same pair twenty-fold worse. The producer divides the unrounded sigmas and writes [21.4](../../results/identifiability.csv "ref:identifiability:anisotropy_ratio:split_over_total"). The two committed digits give a ratio a fifth of a unit smaller, which is what the campaign-projection figure prints from the same cells, and the difference is rounding, not physics.
 
 ## Absorption by the collisional coefficient
 
@@ -1086,14 +1088,14 @@ the same on every tooth while the two-photon rate follows the tooth's share of
 the drive: across the orders the archive's rulers admit the rate spans [5.50](../../results/rf_saturation_ladder.csv "ref:rf_saturation_ladder:ladder_rate_span:")
 at one light shift, which no power ladder can do. Fitting one tooth with the
 waist alone free and the companion unmodelled biases the transit by
-[1.378](../../results/rf_saturation_ladder.csv "ref:rf_saturation_ladder:transit_bias_pct:one_tooth_waist_only") ± [0.027](../../results/rf_saturation_ladder.csv "ref:rf_saturation_ladder:transit_bias_pct:one_tooth_waist_only:err") per cent.
+[1.374](../../results/rf_saturation_ladder.csv "ref:rf_saturation_ladder:transit_bias_pct:one_tooth_waist_only") ± [0.027](../../results/rf_saturation_ladder.csv "ref:rf_saturation_ladder:transit_bias_pct:one_tooth_waist_only:err") per cent.
 Fitting every usable tooth jointly with one shared Rabi frequency free returns
-[-0.034](../../results/rf_saturation_ladder.csv "ref:rf_saturation_ladder:transit_bias_pct:ladder_waist_only_omega_free") ± [0.061](../../results/rf_saturation_ladder.csv "ref:rf_saturation_ladder:transit_bias_pct:ladder_waist_only_omega_free:err"), the bias gone, and holding
-that frequency at the truth gives [-0.019](../../results/rf_saturation_ladder.csv "ref:rf_saturation_ladder:transit_bias_pct:ladder_waist_only_omega_pinned") ± [0.018](../../results/rf_saturation_ladder.csv "ref:rf_saturation_ladder:transit_bias_pct:ladder_waist_only_omega_pinned:err"), so the
+[-0.003](../../results/rf_saturation_ladder.csv "ref:rf_saturation_ladder:transit_bias_pct:ladder_waist_only_omega_free") ± [0.062](../../results/rf_saturation_ladder.csv "ref:rf_saturation_ladder:transit_bias_pct:ladder_waist_only_omega_free:err"), the bias gone, and holding
+that frequency at the truth gives [-0.017](../../results/rf_saturation_ladder.csv "ref:rf_saturation_ladder:transit_bias_pct:ladder_waist_only_omega_pinned") ± [0.018](../../results/rf_saturation_ladder.csv "ref:rf_saturation_ladder:transit_bias_pct:ladder_waist_only_omega_pinned:err"), so the
 ladder is not limited by the extra parameter.
 
 An arm with the Lorentzian width
-free instead measures nothing here, [-0.17](../../results/rf_saturation_ladder.csv "ref:rf_saturation_ladder:transit_bias_pct:one_tooth_gamma_l_free") ± [0.13](../../results/rf_saturation_ladder.csv "ref:rf_saturation_ladder:transit_bias_pct:one_tooth_gamma_l_free:err"), because
+free instead measures nothing here, [-0.06](../../results/rf_saturation_ladder.csv "ref:rf_saturation_ladder:transit_bias_pct:one_tooth_gamma_l_free") ± [0.13](../../results/rf_saturation_ladder.csv "ref:rf_saturation_ladder:transit_bias_pct:one_tooth_gamma_l_free:err"), because
 it absorbs the companion one for one, which is this section's degeneracy read
 the other way round.
 
@@ -1205,13 +1207,14 @@ before and after.
 
 This is the sharpest identifiability result the record holds, and it is a
 committed cell and not an argument. Fitted with the laser's Lorentzian
-component pinned at zero, the collisional coefficient comes back at 0.0534
-MHz per density unit, sixteen times the van der Waals anchor of 0.003383 and
+component pinned at zero, the collisional coefficient
+(`results/lever_crosscheck.csv`'s `beta_crosscheck` row) comes back well
+above the van der Waals anchor of 0.003383 and
 far outside either error. Fitted with that component carried at the value the
 kernel study measures, it comes back at **0.0057 plus or minus 0.0043, which
 sits 0.54 of a sigma from the anchor**. The extra-homogeneous-component axis
-alone moves the coefficient by 0.0477, which is nearly the whole apparent
-excess.
+alone (`beta_err_kernel`) moves the coefficient substantially, accounting for
+nearly the whole apparent excess.
 
 That setting is not a measurement of the coefficient, and the reason is this
 page's own subject. At a fixed condition the extra component is exactly
@@ -1231,8 +1234,9 @@ and the first place to look is an axis a model-form grid already spans.
 
 The same grid of refits measures the model-form systematic, across the
 transit-kernel and sharing axes. On the collisional coefficient the
-model-form spread is **0.0142 against a statistical error of 0.0043**, so the
-choice of kernel form costs more than three times what the data's own noise
+model-form spread (`results/lever_crosscheck.csv`'s `beta_err_modelform` row)
+is **several times the statistical error of 0.0043**, so the
+choice of kernel form costs several times what the data's own noise
 does. Any sigma quoted on this page against a theory anchor carries all three
 error bars or it is not a sigma. A gap divided by the anchor's error alone
 overstated this one by a factor of fifty before the crosscheck was read.

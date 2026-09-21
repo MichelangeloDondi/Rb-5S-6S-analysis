@@ -63,8 +63,12 @@ def test_the_composite_predicts_more_wing_than_its_bare_lorentzian():
 
 
 def test_the_temperature_arm_is_fitted_under_every_law_per_peak_and_pooled():
+    """The producer's `LAWS` tuple renamed "Steck" to "Nesmeyanov" (F259, O42, 2026-09-21): before
+    the Alcock switch, "Steck" named the correlation the held Steck document then tabulated
+    (Nesmeyanov's); the held Steck now adopts Alcock instead, so keeping the old label here would
+    name the wrong law under an unchanged word. The rows and their physics are unchanged."""
     rows = _rows()
-    for law in ("Steck", "AIH", "SMI"):
+    for law in ("Nesmeyanov", "AIH", "SMI"):
         for peak in PEAKS:
             slope = [r for r in rows if r["quantity"] == "far_wing_level_slope" and r["key"] == f"{law}_{peak}"]
             assert slope, f"{law} {peak}: no level slope row"

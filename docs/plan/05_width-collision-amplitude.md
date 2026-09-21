@@ -30,8 +30,8 @@ with their directions, the veto census, and the difference.
 ![the 2025 dataset's width-vs-density floor](../../figures/fig6_gamma_floor.png)
 
 *The floor in the 2025 dataset that this program upgrades: the mean of
-the four fitted collisional widths rises only ×[1.48](../../results/lever_crosscheck.csv "ref:lever_crosscheck:gamma_rise_factor:70to130") while the density
-rises ×52.5, so the 2025 slope is a bound. A binary-collision width
+the four fitted collisional widths rises only ×[1.51](../../results/lever_crosscheck.csv "ref:lever_crosscheck:gamma_rise_factor:70to130") while the density
+rises ×48.1 (Alcock), so the 2025 slope is a bound. A binary-collision width
 would be proportional to density, so these four points bound the
 coefficient rather than measure it, and the bound
 moves with the density range used, which is why the figure draws two of them.
@@ -65,11 +65,11 @@ fifth block buys.
 
 **7c. 150–170 °C in the same locked session, interleaved.** Wanted for a
 narrower reason than the 2025 reading gave it. The 2025 dataset's lever test
-shows the joint β collapses 0.0534 → 0.0198 for ⁸⁵Rb and 0.0219 for ⁸⁷Rb when
-the ×53 anchor (the 130 °C block) is folded in
+shows the joint β collapses 0.0433 → 0.0164 for ⁸⁵Rb and 0.0181 for ⁸⁷Rb when
+the ×48.1 anchor (Alcock, the 130 °C block) is folded in
 ([`lever_crosscheck.csv`](../../results/lever_crosscheck.csv)). That collapse is not a session artifact. It is the correct
-least-squares response to a line that barely moves across a 52.5× density span
-(gamma_coll rises only ×[1.48](../../results/lever_crosscheck.csv "ref:lever_crosscheck:gamma_rise_factor:70to130")–1.9), which is what makes "residual floor, not
+least-squares response to a line that barely moves across a 48.1× density span
+(gamma_coll rises only ×[1.51](../../results/lever_crosscheck.csv "ref:lever_crosscheck:gamma_rise_factor:70to130")–1.9), which is what makes "residual floor, not
 resolved collisions" a demonstrated conclusion rather than an assumption. The
 2026-08-02 decision that promoted the four-point fold-in to the record's
 headline, and the reasoning behind it, are recorded in
@@ -80,7 +80,7 @@ What a same-session
 cross-epoch calibration step entirely rather than relying on it being handled
 correctly after the fact, and it is the only route to densities where a genuine
 ~kHz collisional effect could clear the block-noise floor. The record's
-four-point bound (≲0.03–0.05 MHz per 10¹² cm⁻³) is still roughly an order of
+four-point bound (≲0.02–0.04 MHz per 10¹² cm⁻³) is still roughly an order of
 magnitude above the [3.50](../../results/beta_self_theory.csv "ref:beta_self_theory:beta_self_6s:anchored") kHz expectation (§1,
 [`BIG_PICTURE.md`](../BIG_PICTURE.md) §1), so the case for the session is about
 reach, not about combining points at all.
@@ -455,7 +455,7 @@ completes while crossing the beam, and the four lines have
 
 | line | branching f | surviving fraction after three cycles |
 |---|---|---|
-| 4121 | 0.3725 | 0.247 |
+| 4121 | 0.3725 | 0.247 <!-- other-quantity: a hyperfine branching fraction, not an identifiability-profile cell --> |
 | 4154 | 0.3476 | 0.278 |
 | 4192 | 0.2483 | 0.425 |
 | 4207 | 0.2235 | 0.468 |

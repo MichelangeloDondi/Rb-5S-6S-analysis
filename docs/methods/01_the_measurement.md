@@ -56,7 +56,7 @@ Their relative
 strengths follow the ground-state populations, abundance × (2F+1)/G_iso, which
 predicts ⁸⁵Rb F = 3 at 7/5 = 1.40 times F = 2 against 1.42 integrated from the
 digitised record on the up-sweep, 1.34 to 1.42 across integration rules, and the
-⁸⁵Rb pair at the bare abundance ratio 2.59 times the ⁸⁷Rb pair against 2.45
+⁸⁵Rb pair at the bare abundance ratio 2.59 times the ⁸⁷Rb pair against 2.45 <!-- other-quantity: an isotope pair-area ratio, not a density -->
 measured. The photographed display compresses the tallest spikes and the whole
 down-sweep, so peak heights are not read for ratios. The integration rules and
 their caveats are [APPARATUS §6](../APPARATUS.md).*

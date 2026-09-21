@@ -51,7 +51,7 @@ measuring it:
 |---|---|---|---|
 | 5S→5D₃/₂ ([Cao 2025](../lit/cao2025.md)) | 40 ± 0.54 kHz/mTorr | ≈ 0.0018 | FWHM, stated |
 | 5S→7S ([Wang 2025](../lit/wang2025.md)) | 0.32 ± 0.01 MHz/mTorr | ≈ 0.014 | not stated |
-| **5S→6S, this work** | not measured | **bound 0.03–0.05** | FWHM |
+| **5S→6S, this work** | not measured | **bound 0.02–0.04** | FWHM |
 
 Converted at 423 K, the temperature both papers use. The 7S paper never says
 whether its linewidth is a half width or a full width, so the factor of eight
@@ -73,8 +73,8 @@ the 7S rung: three of the four are above 0.014 and the fourth just under it, eve
 though 6S is the more compact state. That is independent
 support, from outside this record, for the reading its own lever test already
 forces: those fitted widths are a floor, not resolved collisions. Inside the
-2025 dataset the evidence is that the width rises only ×1.47 across a ×52.5
-density span. The neighbouring rung says the same thing from the other direction.
+2025 dataset the evidence is that the width rises only ×1.47 across a ×48.1
+(Alcock) density span. The neighbouring rung says the same thing from the other direction.
 
 [Wang 2025](../lit/wang2025.md) closes by
 proposing 5S→7S as the basis for an optical frequency standard. The 5S→6S line

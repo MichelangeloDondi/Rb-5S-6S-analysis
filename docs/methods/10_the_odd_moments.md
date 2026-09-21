@@ -192,8 +192,8 @@ be the same for both.
 
 Validated first, since an earlier hand-built attempt at this failed quietly:
 a symmetric Gaussian alone returns a third cumulant of exactly zero and a
-fifth of 3e-14, and a three-point ramp convolved with it returns 1.4880 and
--11.322 against true values of 1.4880 and -11.322. Convolution additivity is
+fifth of 3e-14, and a three-point ramp convolved with it returns 1.4880 and <!-- other-quantity: a convolution-additivity self-test pair, not an identifiability-profile cell -->
+-11.322 against true values of 1.4880 and -11.322. Convolution additivity is <!-- other-quantity: a convolution-additivity self-test pair, not an identifiability-profile cell -->
 recovered to full precision, so the machinery reports what it is asked.
 
 Then, for two ramps differing in their true fifth cumulant by -0.0135:
@@ -282,7 +282,8 @@ truncation, recoverable by a wider window or by a comb, and not a failure of the
 
 This transition cannot reach that cell, and the reason is a constant. The
 natural width of the upper state is [3.493](../../rb5s6s/constants.py "ref:constant:GAMMA_NAT_HZ:1e-6") MHz and is Lorentzian. The Gaussian
-widths of the archive's line, the laser at 1.6 and the transit at 0.958 in
+widths of the archive's line, the laser at 1.6 and the transit at 0.958 MHz <!-- other-quantity: the transit width in MHz, not identifiability.csv's transit-collisional correlation -->
+in
 quadrature, come to 1.865 MHz. So the archive sits at a Lorentzian fraction of
 **0.68**, and with the collisional term driven to zero the floor is still
 **0.65**. Reaching 0.15 would need Gaussian widths near 20 MHz, which is not a

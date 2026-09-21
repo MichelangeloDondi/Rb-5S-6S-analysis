@@ -1,12 +1,12 @@
 quantity,key,value,err,unit,note,status
-sweep_x0,median_bar_um,0.5519,,um,"the median over realisations of the vertex's delta-chi2 = 1 half-width at this level, whitened at the level's own scale",DIAGNOSTIC
-sweep_x0,bias_um,-0.0000,,um,the mean recovered waist minus the truth over the interior realisations at this level,DIAGNOSTIC
-sweep_x0,interior_fraction,1.000,,,"1 of 1 realisations found an INTERIOR minimum at 0 times each condition's own noise law. bias -0.000 um, coverage 1.00, median bar 0.552 um, chi2_red 0.000. Verdicts: interior",DIAGNOSTIC
-chi2_x0,w0_40um,964.1,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 52 um",DIAGNOSTIC
-chi2_x0,w0_42um,559.4,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 52 um",DIAGNOSTIC
-chi2_x0,w0_44um,309.4,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 52 um",DIAGNOSTIC
-chi2_x0,w0_46um,153.9,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 52 um",DIAGNOSTIC
-chi2_x0,w0_48um,60.5,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+sweep_x0,median_bar_um,0.5524,,um,"the median over realisations of the vertex's delta-chi2 = 1 half-width at this level, whitened at the level's own scale",DIAGNOSTIC
+sweep_x0,bias_um,0.0001,,um,the mean recovered waist minus the truth over the interior realisations at this level,DIAGNOSTIC
+sweep_x0,interior_fraction,1.000,,,"1 of 1 realisations found an INTERIOR minimum at 0 times each condition's own noise law. bias +0.000 um, coverage 1.00, median bar 0.552 um, chi2_red 0.000. Verdicts: interior",DIAGNOSTIC
+chi2_x0,w0_40um,924.0,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0,w0_42um,545.7,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0,w0_44um,308.2,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0,w0_46um,153.3,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0,w0_48um,60.3,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 52 um",DIAGNOSTIC
 chi2_x0,w0_51.6562um,0.4,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 52 um",DIAGNOSTIC
 chi2_x0,w0_51.7188um,0.3,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 52 um",DIAGNOSTIC
 chi2_x0,w0_51.7812um,0.2,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 52 um",DIAGNOSTIC
@@ -20,83 +20,83 @@ chi2_x0,w0_52.2188um,0.2,,whitened chi2,"realisation 0 at 0 times the law, mixed
 chi2_x0,w0_52.2812um,0.3,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 52 um",DIAGNOSTIC
 chi2_x0,w0_52.3438um,0.4,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 52 um",DIAGNOSTIC
 chi2_x0,w0_52.4062um,0.5,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 52 um",DIAGNOSTIC
-chi2_x0,w0_56um,38.3,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 52 um",DIAGNOSTIC
-sweep_x0.1,median_bar_um,0.0552,,um,"the median over realisations of the vertex's delta-chi2 = 1 half-width at this level, whitened at the level's own scale",DIAGNOSTIC
-sweep_x0.1,bias_um,0.0320,,um,the mean recovered waist minus the truth over the interior realisations at this level,DIAGNOSTIC
-sweep_x0.1,interior_fraction,1.000,,,"2 of 2 realisations found an INTERIOR minimum at 0.1 times each condition's own noise law. bias +0.032 um, coverage 0.00, median bar 0.055 um, chi2_red 0.995. Verdicts: interior",DIAGNOSTIC
-chi2_x0.1,w0_40um,1102013.2,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
-chi2_x0.1,w0_42um,1061363.9,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
-chi2_x0.1,w0_44um,1036214.3,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
-chi2_x0.1,w0_46um,1020634.6,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
-chi2_x0.1,w0_48um,1011277.4,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
-chi2_x0.1,w0_51.6562um,1005174.6,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
-chi2_x0.1,w0_51.7188um,1005158.1,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
-chi2_x0.1,w0_51.7812um,1005143.4,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
-chi2_x0.1,w0_51.8438um,1005131.2,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
-chi2_x0.1,w0_51.9062um,1005124.9,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
-chi2_x0.1,w0_51.9688um,1005118.3,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
-chi2_x0.1,w0_52.0312um,1005112.7,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
-chi2_x0.1,w0_52.0938um,1005111.6,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
-chi2_x0.1,w0_52.1562um,1005114.9,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
-chi2_x0.1,w0_52.2188um,1005123.0,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
-chi2_x0.1,w0_52.2812um,1005132.5,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
-chi2_x0.1,w0_52.3438um,1005142.2,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
-chi2_x0.1,w0_52.4062um,1005154.7,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
-chi2_x0.1,w0_56um,1008739.3,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
-sweep_x0.3,median_bar_um,0.1832,,um,"the median over realisations of the vertex's delta-chi2 = 1 half-width at this level, whitened at the level's own scale",DIAGNOSTIC
-sweep_x0.3,bias_um,0.0542,,um,the mean recovered waist minus the truth over the interior realisations at this level,DIAGNOSTIC
-sweep_x0.3,interior_fraction,1.000,,,"2 of 2 realisations found an INTERIOR minimum at 0.3 times each condition's own noise law. bias +0.054 um, coverage 0.00, median bar 0.183 um, chi2_red 0.995. Verdicts: interior",DIAGNOSTIC
-chi2_x0.3,w0_40um,1486834.1,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 52 um",DIAGNOSTIC
-chi2_x0.3,w0_42um,1482229.4,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 52 um",DIAGNOSTIC
-chi2_x0.3,w0_44um,1479363.7,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 52 um",DIAGNOSTIC
-chi2_x0.3,w0_46um,1477601.2,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 52 um",DIAGNOSTIC
-chi2_x0.3,w0_48um,1476538.1,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 52 um",DIAGNOSTIC
-chi2_x0.3,w0_51.6562um,1475826.6,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 52 um",DIAGNOSTIC
-chi2_x0.3,w0_51.7188um,1475824.3,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 52 um",DIAGNOSTIC
-chi2_x0.3,w0_51.7812um,1475822.1,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 52 um",DIAGNOSTIC
-chi2_x0.3,w0_51.8438um,1475819.7,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 52 um",DIAGNOSTIC
-chi2_x0.3,w0_51.9062um,1475817.8,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 52 um",DIAGNOSTIC
-chi2_x0.3,w0_51.9688um,1475816.3,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 52 um",DIAGNOSTIC
-chi2_x0.3,w0_52.0312um,1475815.9,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 52 um",DIAGNOSTIC
-chi2_x0.3,w0_52.0938um,1475814.9,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 52 um",DIAGNOSTIC
-chi2_x0.3,w0_52.1562um,1475814.3,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 52 um",DIAGNOSTIC
-chi2_x0.3,w0_52.2188um,1475814.4,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 52 um",DIAGNOSTIC
-chi2_x0.3,w0_52.2812um,1475815.2,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 52 um",DIAGNOSTIC
-chi2_x0.3,w0_52.3438um,1475816.4,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 52 um",DIAGNOSTIC
-chi2_x0.3,w0_52.4062um,1475817.9,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 52 um",DIAGNOSTIC
-chi2_x0.3,w0_56um,1476191.3,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 52 um",DIAGNOSTIC
-sweep_x1,median_bar_um,0.5991,,um,"the median over realisations of the vertex's delta-chi2 = 1 half-width at this level, whitened at the level's own scale",DIAGNOSTIC
-sweep_x1,bias_um,0.0091,,um,the mean recovered waist minus the truth over the interior realisations at this level,DIAGNOSTIC
-sweep_x1,interior_fraction,1.000,,,"2 of 2 realisations found an INTERIOR minimum at 1 times each condition's own noise law. bias +0.009 um, coverage 1.00, median bar 0.599 um, chi2_red 0.995. Verdicts: interior",DIAGNOSTIC
-chi2_x1,w0_40um,1992750.3,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
-chi2_x1,w0_42um,1992300.5,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
-chi2_x1,w0_44um,1992013.4,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
-chi2_x1,w0_46um,1991842.1,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
-chi2_x1,w0_48um,1991737.8,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
-chi2_x1,w0_51.6562um,1991662.6,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
-chi2_x1,w0_51.7188um,1991662.2,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
-chi2_x1,w0_51.7812um,1991661.8,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
-chi2_x1,w0_51.8438um,1991661.2,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
-chi2_x1,w0_51.9062um,1991660.9,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
-chi2_x1,w0_51.9688um,1991660.8,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
-chi2_x1,w0_52.0312um,1991660.4,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
-chi2_x1,w0_52.0938um,1991660.0,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
-chi2_x1,w0_52.1562um,1991659.9,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
-chi2_x1,w0_52.2188um,1991659.9,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
-chi2_x1,w0_52.2812um,1991659.9,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
-chi2_x1,w0_52.3438um,1991660.0,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
-chi2_x1,w0_52.4062um,1991660.0,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
-chi2_x1,w0_56um,1991687.5,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
-sweep_x0_truth64,median_bar_um,1.0172,,um,"the median over realisations of the vertex's delta-chi2 = 1 half-width at this level, whitened at the level's own scale",DIAGNOSTIC
+chi2_x0,w0_56um,38.1,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+sweep_x0.1,median_bar_um,0.0556,,um,"the median over realisations of the vertex's delta-chi2 = 1 half-width at this level, whitened at the level's own scale",DIAGNOSTIC
+sweep_x0.1,bias_um,0.0286,,um,the mean recovered waist minus the truth over the interior realisations at this level,DIAGNOSTIC
+sweep_x0.1,interior_fraction,1.000,,,"2 of 2 realisations found an INTERIOR minimum at 0.1 times each condition's own noise law. bias +0.029 um, coverage 0.00, median bar 0.056 um, chi2_red 0.995. Verdicts: interior",DIAGNOSTIC
+chi2_x0.1,w0_40um,1097716.6,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.1,w0_42um,1059696.3,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.1,w0_44um,1035913.7,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.1,w0_46um,1020403.5,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.1,w0_48um,1011081.4,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.1,w0_51.6562um,1005011.7,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.1,w0_51.7188um,1004997.0,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.1,w0_51.7812um,1004981.0,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.1,w0_51.8438um,1004967.8,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.1,w0_51.9062um,1004959.2,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.1,w0_51.9688um,1004955.6,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.1,w0_52.0312um,1004952.4,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.1,w0_52.0938um,1004953.4,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.1,w0_52.1562um,1004956.6,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.1,w0_52.2188um,1004963.5,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.1,w0_52.2812um,1004972.2,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.1,w0_52.3438um,1004982.4,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.1,w0_52.4062um,1004994.7,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.1,w0_56um,1008573.0,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+sweep_x0.3,median_bar_um,0.1886,,um,"the median over realisations of the vertex's delta-chi2 = 1 half-width at this level, whitened at the level's own scale",DIAGNOSTIC
+sweep_x0.3,bias_um,0.0514,,um,the mean recovered waist minus the truth over the interior realisations at this level,DIAGNOSTIC
+sweep_x0.3,interior_fraction,1.000,,,"2 of 2 realisations found an INTERIOR minimum at 0.3 times each condition's own noise law. bias +0.051 um, coverage 0.50, median bar 0.189 um, chi2_red 0.995. Verdicts: interior",DIAGNOSTIC
+chi2_x0.3,w0_40um,1486181.3,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.3,w0_42um,1481868.2,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.3,w0_44um,1479183.2,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.3,w0_46um,1477430.4,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.3,w0_48um,1476371.4,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.3,w0_51.6562um,1475665.4,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.3,w0_51.7188um,1475663.2,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.3,w0_51.7812um,1475661.3,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.3,w0_51.8438um,1475659.5,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.3,w0_51.9062um,1475657.6,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.3,w0_51.9688um,1475656.1,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.3,w0_52.0312um,1475654.7,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.3,w0_52.0938um,1475654.1,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.3,w0_52.1562um,1475654.5,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.3,w0_52.2188um,1475655.0,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.3,w0_52.2812um,1475656.1,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.3,w0_52.3438um,1475656.9,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.3,w0_52.4062um,1475657.8,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x0.3,w0_56um,1476032.8,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+sweep_x1,median_bar_um,0.4150,,um,"the median over realisations of the vertex's delta-chi2 = 1 half-width at this level, whitened at the level's own scale",DIAGNOSTIC
+sweep_x1,bias_um,0.3246,,um,the mean recovered waist minus the truth over the interior realisations at this level,DIAGNOSTIC
+sweep_x1,interior_fraction,0.500,,,"1 of 2 realisations found an INTERIOR minimum at 1 times each condition's own noise law. bias +0.325 um, coverage 1.00, median bar 0.415 um, chi2_red 0.995. Verdicts: interior, not convex",DIAGNOSTIC
+chi2_x1,w0_40um,1992534.5,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x1,w0_42um,1992111.3,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x1,w0_44um,1991849.7,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x1,w0_46um,1991680.8,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x1,w0_48um,1991577.0,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x1,w0_51.6562um,1991502.9,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x1,w0_51.7188um,1991502.5,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x1,w0_51.7812um,1991502.1,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x1,w0_51.8438um,1991502.0,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x1,w0_51.9062um,1991501.7,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x1,w0_51.9688um,1991501.3,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x1,w0_52.0312um,1991500.8,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x1,w0_52.0938um,1991500.5,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x1,w0_52.1562um,1991500.3,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x1,w0_52.2188um,1991500.4,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x1,w0_52.2812um,1991500.4,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x1,w0_52.3438um,1991500.5,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x1,w0_52.4062um,1991500.6,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+chi2_x1,w0_56um,1991528.7,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 52 um",DIAGNOSTIC
+sweep_x0_truth64,median_bar_um,1.0183,,um,"the median over realisations of the vertex's delta-chi2 = 1 half-width at this level, whitened at the level's own scale",DIAGNOSTIC
 sweep_x0_truth64,bias_um,-0.0000,,um,the mean recovered waist minus the truth over the interior realisations at this level,DIAGNOSTIC
-sweep_x0_truth64,interior_fraction,1.000,,,"1 of 1 realisations found an INTERIOR minimum at 0 times each condition's own noise law. bias -0.000 um, coverage 1.00, median bar 1.017 um, chi2_red 0.000. Verdicts: interior",DIAGNOSTIC
-chi2_x0_truth64,w0_40um,2150.4,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-chi2_x0_truth64,w0_42um,1541.9,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-chi2_x0_truth64,w0_44um,1107.9,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-chi2_x0_truth64,w0_46um,783.9,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-chi2_x0_truth64,w0_48um,542.0,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-chi2_x0_truth64,w0_52um,235.2,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-chi2_x0_truth64,w0_56um,81.6,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+sweep_x0_truth64,interior_fraction,1.000,,,"1 of 1 realisations found an INTERIOR minimum at 0 times each condition's own noise law. bias -0.000 um, coverage 1.00, median bar 1.018 um, chi2_red 0.000. Verdicts: interior",DIAGNOSTIC
+chi2_x0_truth64,w0_40um,2114.1,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+chi2_x0_truth64,w0_42um,1532.4,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+chi2_x0_truth64,w0_44um,1104.5,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+chi2_x0_truth64,w0_46um,781.4,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+chi2_x0_truth64,w0_48um,540.3,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+chi2_x0_truth64,w0_52um,234.5,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+chi2_x0_truth64,w0_56um,81.4,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 64 um",DIAGNOSTIC
 chi2_x0_truth64,w0_63.6562um,0.1,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 64 um",DIAGNOSTIC
 chi2_x0_truth64,w0_63.7188um,0.1,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 64 um",DIAGNOSTIC
 chi2_x0_truth64,w0_63.7812um,0.1,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 64 um",DIAGNOSTIC
@@ -106,89 +106,89 @@ chi2_x0_truth64,w0_63.9688um,0.0,,whitened chi2,"realisation 0 at 0 times the la
 chi2_x0_truth64,w0_64.0312um,0.0,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 64 um",DIAGNOSTIC
 chi2_x0_truth64,w0_64.0938um,0.0,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 64 um",DIAGNOSTIC
 chi2_x0_truth64,w0_64.1562um,0.0,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-chi2_x0_truth64,w0_64.2188um,0.1,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+chi2_x0_truth64,w0_64.2188um,0.0,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 64 um",DIAGNOSTIC
 chi2_x0_truth64,w0_64.2812um,0.1,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 64 um",DIAGNOSTIC
 chi2_x0_truth64,w0_64.3438um,0.1,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 64 um",DIAGNOSTIC
 chi2_x0_truth64,w0_64.4062um,0.2,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-sweep_x0.1_truth64,median_bar_um,0.1088,,um,"the median over realisations of the vertex's delta-chi2 = 1 half-width at this level, whitened at the level's own scale",DIAGNOSTIC
-sweep_x0.1_truth64,bias_um,0.0567,,um,the mean recovered waist minus the truth over the interior realisations at this level,DIAGNOSTIC
-sweep_x0.1_truth64,interior_fraction,1.000,,,"2 of 2 realisations found an INTERIOR minimum at 0.1 times each condition's own noise law. bias +0.057 um, coverage 0.50, median bar 0.109 um, chi2_red 0.995. Verdicts: interior",DIAGNOSTIC
-chi2_x0.1_truth64,w0_40um,1219712.2,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-chi2_x0.1_truth64,w0_42um,1158763.4,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-chi2_x0.1_truth64,w0_44um,1115325.8,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-chi2_x0.1_truth64,w0_46um,1082928.8,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-chi2_x0.1_truth64,w0_48um,1058764.3,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-chi2_x0.1_truth64,w0_52um,1028144.1,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-chi2_x0.1_truth64,w0_56um,1012834.0,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-chi2_x0.1_truth64,w0_63.6562um,1004665.0,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-chi2_x0.1_truth64,w0_63.7188um,1004660.7,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-chi2_x0.1_truth64,w0_63.7812um,1004657.3,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-chi2_x0.1_truth64,w0_63.8438um,1004655.1,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-chi2_x0.1_truth64,w0_63.9062um,1004653.1,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-chi2_x0.1_truth64,w0_63.9688um,1004652.2,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-chi2_x0.1_truth64,w0_64.0312um,1004651.8,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-chi2_x0.1_truth64,w0_64.0938um,1004652.5,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-chi2_x0.1_truth64,w0_64.1562um,1004653.3,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-chi2_x0.1_truth64,w0_64.2188um,1004654.6,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-chi2_x0.1_truth64,w0_64.2812um,1004655.9,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-chi2_x0.1_truth64,w0_64.3438um,1004657.8,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-chi2_x0.1_truth64,w0_64.4062um,1004660.3,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-sweep_x0.3_truth64,median_bar_um,0.2724,,um,"the median over realisations of the vertex's delta-chi2 = 1 half-width at this level, whitened at the level's own scale",DIAGNOSTIC
-sweep_x0.3_truth64,bias_um,0.1017,,um,the mean recovered waist minus the truth over the interior realisations at this level,DIAGNOSTIC
-sweep_x0.3_truth64,interior_fraction,0.500,,,"1 of 2 realisations found an INTERIOR minimum at 0.3 times each condition's own noise law. bias +0.102 um, coverage 1.00, median bar 0.272 um, chi2_red 0.995. Verdicts: interior, rail",DIAGNOSTIC
-chi2_x0.3_truth64,w0_40um,1499593.9,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-chi2_x0.3_truth64,w0_42um,1492727.2,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-chi2_x0.3_truth64,w0_44um,1487837.2,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-chi2_x0.3_truth64,w0_46um,1484202.4,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-chi2_x0.3_truth64,w0_48um,1481488.5,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-chi2_x0.3_truth64,w0_52um,1478040.0,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-chi2_x0.3_truth64,w0_56um,1476305.5,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-chi2_x0.3_truth64,w0_63.6562um,1475355.6,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-chi2_x0.3_truth64,w0_63.7188um,1475354.9,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-chi2_x0.3_truth64,w0_63.7812um,1475354.3,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-chi2_x0.3_truth64,w0_63.8438um,1475354.1,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-chi2_x0.3_truth64,w0_63.9062um,1475353.8,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-chi2_x0.3_truth64,w0_63.9688um,1475353.5,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-chi2_x0.3_truth64,w0_64.0312um,1475353.4,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-chi2_x0.3_truth64,w0_64.0938um,1475353.4,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-chi2_x0.3_truth64,w0_64.1562um,1475353.5,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-chi2_x0.3_truth64,w0_64.2188um,1475353.5,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-chi2_x0.3_truth64,w0_64.2812um,1475353.4,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-chi2_x0.3_truth64,w0_64.3438um,1475353.3,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-chi2_x0.3_truth64,w0_64.4062um,1475353.2,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-sweep_x1_truth64,median_bar_um,0.5717,,um,"the median over realisations of the vertex's delta-chi2 = 1 half-width at this level, whitened at the level's own scale",DIAGNOSTIC
-sweep_x1_truth64,bias_um,0.0854,,um,the mean recovered waist minus the truth over the interior realisations at this level,DIAGNOSTIC
-sweep_x1_truth64,interior_fraction,0.500,,,"1 of 2 realisations found an INTERIOR minimum at 1 times each condition's own noise law. bias +0.085 um, coverage 1.00, median bar 0.572 um, chi2_red 0.995. Verdicts: interior, rail",DIAGNOSTIC
-chi2_x1_truth64,w0_40um,1993523.6,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-chi2_x1_truth64,w0_42um,1992865.6,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-chi2_x1_truth64,w0_44um,1992395.2,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-chi2_x1_truth64,w0_46um,1992052.6,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-chi2_x1_truth64,w0_48um,1991796.7,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-chi2_x1_truth64,w0_52um,1991467.8,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-chi2_x1_truth64,w0_56um,1991298.7,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-chi2_x1_truth64,w0_63.6562um,1991198.9,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-chi2_x1_truth64,w0_63.7188um,1991198.8,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-chi2_x1_truth64,w0_63.7812um,1991198.7,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-chi2_x1_truth64,w0_63.8438um,1991198.7,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-chi2_x1_truth64,w0_63.9062um,1991198.7,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-chi2_x1_truth64,w0_63.9688um,1991198.7,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-chi2_x1_truth64,w0_64.0312um,1991198.6,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-chi2_x1_truth64,w0_64.0938um,1991198.6,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-chi2_x1_truth64,w0_64.1562um,1991198.5,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-chi2_x1_truth64,w0_64.2188um,1991198.5,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-chi2_x1_truth64,w0_64.2812um,1991198.4,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-chi2_x1_truth64,w0_64.3438um,1991198.2,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-chi2_x1_truth64,w0_64.4062um,1991198.1,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
-sweep_x0_truth76,median_bar_um,1.7519,,um,"the median over realisations of the vertex's delta-chi2 = 1 half-width at this level, whitened at the level's own scale",DIAGNOSTIC
+sweep_x0.1_truth64,median_bar_um,0.1090,,um,"the median over realisations of the vertex's delta-chi2 = 1 half-width at this level, whitened at the level's own scale",DIAGNOSTIC
+sweep_x0.1_truth64,bias_um,0.0541,,um,the mean recovered waist minus the truth over the interior realisations at this level,DIAGNOSTIC
+sweep_x0.1_truth64,interior_fraction,1.000,,,"2 of 2 realisations found an INTERIOR minimum at 0.1 times each condition's own noise law. bias +0.054 um, coverage 0.50, median bar 0.109 um, chi2_red 0.995. Verdicts: interior",DIAGNOSTIC
+chi2_x0.1_truth64,w0_40um,1215790.2,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+chi2_x0.1_truth64,w0_42um,1157546.2,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+chi2_x0.1_truth64,w0_44um,1114760.8,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+chi2_x0.1_truth64,w0_46um,1082468.2,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+chi2_x0.1_truth64,w0_48um,1058393.9,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+chi2_x0.1_truth64,w0_52um,1027881.7,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+chi2_x0.1_truth64,w0_56um,1012627.0,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+chi2_x0.1_truth64,w0_63.6562um,1004494.6,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+chi2_x0.1_truth64,w0_63.7188um,1004490.4,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+chi2_x0.1_truth64,w0_63.7812um,1004487.0,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+chi2_x0.1_truth64,w0_63.8438um,1004485.0,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+chi2_x0.1_truth64,w0_63.9062um,1004483.1,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+chi2_x0.1_truth64,w0_63.9688um,1004482.2,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+chi2_x0.1_truth64,w0_64.0312um,1004481.9,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+chi2_x0.1_truth64,w0_64.0938um,1004482.6,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+chi2_x0.1_truth64,w0_64.1562um,1004483.5,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+chi2_x0.1_truth64,w0_64.2188um,1004484.8,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+chi2_x0.1_truth64,w0_64.2812um,1004486.2,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+chi2_x0.1_truth64,w0_64.3438um,1004488.2,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+chi2_x0.1_truth64,w0_64.4062um,1004490.7,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+sweep_x0.3_truth64,median_bar_um,0.2729,,um,"the median over realisations of the vertex's delta-chi2 = 1 half-width at this level, whitened at the level's own scale",DIAGNOSTIC
+sweep_x0.3_truth64,bias_um,0.1078,,um,the mean recovered waist minus the truth over the interior realisations at this level,DIAGNOSTIC
+sweep_x0.3_truth64,interior_fraction,0.500,,,"1 of 2 realisations found an INTERIOR minimum at 0.3 times each condition's own noise law. bias +0.108 um, coverage 1.00, median bar 0.273 um, chi2_red 0.995. Verdicts: interior, rail",DIAGNOSTIC
+chi2_x0.3_truth64,w0_40um,1498969.7,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+chi2_x0.3_truth64,w0_42um,1492414.6,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+chi2_x0.3_truth64,w0_44um,1487612.6,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+chi2_x0.3_truth64,w0_46um,1483991.2,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+chi2_x0.3_truth64,w0_48um,1481287.2,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+chi2_x0.3_truth64,w0_52um,1477855.2,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+chi2_x0.3_truth64,w0_56um,1476128.9,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+chi2_x0.3_truth64,w0_63.6562um,1475185.5,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+chi2_x0.3_truth64,w0_63.7188um,1475184.8,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+chi2_x0.3_truth64,w0_63.7812um,1475184.2,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+chi2_x0.3_truth64,w0_63.8438um,1475184.1,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+chi2_x0.3_truth64,w0_63.9062um,1475183.8,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+chi2_x0.3_truth64,w0_63.9688um,1475183.5,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+chi2_x0.3_truth64,w0_64.0312um,1475183.4,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+chi2_x0.3_truth64,w0_64.0938um,1475183.5,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+chi2_x0.3_truth64,w0_64.1562um,1475183.6,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+chi2_x0.3_truth64,w0_64.2188um,1475183.6,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+chi2_x0.3_truth64,w0_64.2812um,1475183.5,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+chi2_x0.3_truth64,w0_64.3438um,1475183.5,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+chi2_x0.3_truth64,w0_64.4062um,1475183.4,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+sweep_x1_truth64,median_bar_um,0.5720,,um,"the median over realisations of the vertex's delta-chi2 = 1 half-width at this level, whitened at the level's own scale",DIAGNOSTIC
+sweep_x1_truth64,bias_um,0.0941,,um,the mean recovered waist minus the truth over the interior realisations at this level,DIAGNOSTIC
+sweep_x1_truth64,interior_fraction,0.500,,,"1 of 2 realisations found an INTERIOR minimum at 1 times each condition's own noise law. bias +0.094 um, coverage 1.00, median bar 0.572 um, chi2_red 0.995. Verdicts: interior, rail",DIAGNOSTIC
+chi2_x1_truth64,w0_40um,1993300.1,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+chi2_x1_truth64,w0_42um,1992668.8,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+chi2_x1_truth64,w0_44um,1992216.9,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+chi2_x1_truth64,w0_46um,1991876.4,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+chi2_x1_truth64,w0_48um,1991622.1,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+chi2_x1_truth64,w0_52um,1991295.0,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+chi2_x1_truth64,w0_56um,1991127.4,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+chi2_x1_truth64,w0_63.6562um,1991028.9,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+chi2_x1_truth64,w0_63.7188um,1991028.8,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+chi2_x1_truth64,w0_63.7812um,1991028.7,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+chi2_x1_truth64,w0_63.8438um,1991028.7,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+chi2_x1_truth64,w0_63.9062um,1991028.7,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+chi2_x1_truth64,w0_63.9688um,1991028.7,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+chi2_x1_truth64,w0_64.0312um,1991028.6,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+chi2_x1_truth64,w0_64.0938um,1991028.6,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+chi2_x1_truth64,w0_64.1562um,1991028.6,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+chi2_x1_truth64,w0_64.2188um,1991028.5,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+chi2_x1_truth64,w0_64.2812um,1991028.4,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+chi2_x1_truth64,w0_64.3438um,1991028.3,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+chi2_x1_truth64,w0_64.4062um,1991028.1,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 64 um",DIAGNOSTIC
+sweep_x0_truth76,median_bar_um,1.7538,,um,"the median over realisations of the vertex's delta-chi2 = 1 half-width at this level, whitened at the level's own scale",DIAGNOSTIC
 sweep_x0_truth76,bias_um,-0.0000,,um,the mean recovered waist minus the truth over the interior realisations at this level,DIAGNOSTIC
-sweep_x0_truth76,interior_fraction,1.000,,,"1 of 1 realisations found an INTERIOR minimum at 0 times each condition's own noise law. bias -0.000 um, coverage 1.00, median bar 1.752 um, chi2_red 0.000. Verdicts: interior",DIAGNOSTIC
-chi2_x0_truth76,w0_40um,2964.0,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 76 um",DIAGNOSTIC
-chi2_x0_truth76,w0_42um,2250.5,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 76 um",DIAGNOSTIC
-chi2_x0_truth76,w0_44um,1719.3,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 76 um",DIAGNOSTIC
-chi2_x0_truth76,w0_46um,1306.6,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 76 um",DIAGNOSTIC
-chi2_x0_truth76,w0_48um,986.1,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 76 um",DIAGNOSTIC
-chi2_x0_truth76,w0_52um,548.1,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 76 um",DIAGNOSTIC
-chi2_x0_truth76,w0_56um,291.5,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+sweep_x0_truth76,interior_fraction,1.000,,,"1 of 1 realisations found an INTERIOR minimum at 0 times each condition's own noise law. bias -0.000 um, coverage 1.00, median bar 1.754 um, chi2_red 0.000. Verdicts: interior",DIAGNOSTIC
+chi2_x0_truth76,w0_40um,2928.9,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+chi2_x0_truth76,w0_42um,2241.8,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+chi2_x0_truth76,w0_44um,1714.1,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+chi2_x0_truth76,w0_46um,1302.5,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+chi2_x0_truth76,w0_48um,983.0,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+chi2_x0_truth76,w0_52um,546.4,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+chi2_x0_truth76,w0_56um,290.6,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 76 um",DIAGNOSTIC
 chi2_x0_truth76,w0_75.6562um,0.0,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 76 um",DIAGNOSTIC
 chi2_x0_truth76,w0_75.7188um,0.0,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 76 um",DIAGNOSTIC
 chi2_x0_truth76,w0_75.7812um,0.0,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 76 um",DIAGNOSTIC
@@ -202,85 +202,85 @@ chi2_x0_truth76,w0_76.2188um,0.0,,whitened chi2,"realisation 0 at 0 times the la
 chi2_x0_truth76,w0_76.2812um,0.0,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 76 um",DIAGNOSTIC
 chi2_x0_truth76,w0_76.3438um,0.0,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 76 um",DIAGNOSTIC
 chi2_x0_truth76,w0_76.4062um,0.1,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 76 um",DIAGNOSTIC
-sweep_x0.1_truth76,median_bar_um,0.2013,,um,"the median over realisations of the vertex's delta-chi2 = 1 half-width at this level, whitened at the level's own scale",DIAGNOSTIC
-sweep_x0.1_truth76,bias_um,0.0682,,um,the mean recovered waist minus the truth over the interior realisations at this level,DIAGNOSTIC
-sweep_x0.1_truth76,interior_fraction,1.000,,,"2 of 2 realisations found an INTERIOR minimum at 0.1 times each condition's own noise law. bias +0.068 um, coverage 0.50, median bar 0.201 um, chi2_red 0.995. Verdicts: interior",DIAGNOSTIC
-chi2_x0.1_truth76,w0_40um,1300284.5,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
-chi2_x0.1_truth76,w0_42um,1228967.7,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
-chi2_x0.1_truth76,w0_44um,1175884.1,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
-chi2_x0.1_truth76,w0_46um,1134632.3,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
-chi2_x0.1_truth76,w0_48um,1102634.1,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
-chi2_x0.1_truth76,w0_52um,1058927.8,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
-chi2_x0.1_truth76,w0_56um,1033390.9,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
-chi2_x0.1_truth76,w0_75.6562um,1004551.4,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
-chi2_x0.1_truth76,w0_75.7188um,1004549.8,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
-chi2_x0.1_truth76,w0_75.7812um,1004548.7,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
-chi2_x0.1_truth76,w0_75.8438um,1004547.8,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
-chi2_x0.1_truth76,w0_75.9062um,1004547.0,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
-chi2_x0.1_truth76,w0_75.9688um,1004546.0,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
-chi2_x0.1_truth76,w0_76.0312um,1004545.0,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
-chi2_x0.1_truth76,w0_76.0938um,1004544.2,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
-chi2_x0.1_truth76,w0_76.1562um,1004543.4,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
-chi2_x0.1_truth76,w0_76.2188um,1004542.6,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
-chi2_x0.1_truth76,w0_76.2812um,1004542.9,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
-chi2_x0.1_truth76,w0_76.3438um,1004544.3,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
-chi2_x0.1_truth76,w0_76.4062um,1004546.3,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+sweep_x0.1_truth76,median_bar_um,0.2016,,um,"the median over realisations of the vertex's delta-chi2 = 1 half-width at this level, whitened at the level's own scale",DIAGNOSTIC
+sweep_x0.1_truth76,bias_um,0.0657,,um,the mean recovered waist minus the truth over the interior realisations at this level,DIAGNOSTIC
+sweep_x0.1_truth76,interior_fraction,1.000,,,"2 of 2 realisations found an INTERIOR minimum at 0.1 times each condition's own noise law. bias +0.066 um, coverage 0.50, median bar 0.202 um, chi2_red 0.995. Verdicts: interior",DIAGNOSTIC
+chi2_x0.1_truth76,w0_40um,1296483.3,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+chi2_x0.1_truth76,w0_42um,1227856.9,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+chi2_x0.1_truth76,w0_44um,1175113.4,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+chi2_x0.1_truth76,w0_46um,1133995.2,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+chi2_x0.1_truth76,w0_48um,1102099.1,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+chi2_x0.1_truth76,w0_52um,1058547.9,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+chi2_x0.1_truth76,w0_56um,1033100.6,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+chi2_x0.1_truth76,w0_75.6562um,1004374.6,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+chi2_x0.1_truth76,w0_75.7188um,1004373.1,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+chi2_x0.1_truth76,w0_75.7812um,1004372.0,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+chi2_x0.1_truth76,w0_75.8438um,1004371.2,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+chi2_x0.1_truth76,w0_75.9062um,1004370.4,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+chi2_x0.1_truth76,w0_75.9688um,1004369.4,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+chi2_x0.1_truth76,w0_76.0312um,1004368.5,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+chi2_x0.1_truth76,w0_76.0938um,1004367.7,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+chi2_x0.1_truth76,w0_76.1562um,1004366.9,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+chi2_x0.1_truth76,w0_76.2188um,1004366.2,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+chi2_x0.1_truth76,w0_76.2812um,1004366.5,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+chi2_x0.1_truth76,w0_76.3438um,1004368.0,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+chi2_x0.1_truth76,w0_76.4062um,1004370.0,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
 sweep_x0.3_truth76,median_bar_um,nan,,um,"the median over realisations of the vertex's delta-chi2 = 1 half-width at this level, whitened at the level's own scale",DIAGNOSTIC
 sweep_x0.3_truth76,bias_um,nan,,um,the mean recovered waist minus the truth over the interior realisations at this level,DIAGNOSTIC
 sweep_x0.3_truth76,interior_fraction,0.000,,,"0 of 2 realisations found an INTERIOR minimum at 0.3 times each condition's own noise law. bias +nan um, coverage 1.00, median bar nan um, chi2_red 0.995. Verdicts: extrapolated",DIAGNOSTIC
-chi2_x0.3_truth76,w0_40um,1508504.1,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 76 um",DIAGNOSTIC
-chi2_x0.3_truth76,w0_42um,1500482.0,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 76 um",DIAGNOSTIC
-chi2_x0.3_truth76,w0_44um,1494526.2,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 76 um",DIAGNOSTIC
-chi2_x0.3_truth76,w0_46um,1489904.3,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 76 um",DIAGNOSTIC
-chi2_x0.3_truth76,w0_48um,1486318.3,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 76 um",DIAGNOSTIC
-chi2_x0.3_truth76,w0_52um,1481410.4,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 76 um",DIAGNOSTIC
-chi2_x0.3_truth76,w0_56um,1478536.6,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 76 um",DIAGNOSTIC
-chi2_x0.3_truth76,w0_75.6562um,1475248.1,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 76 um",DIAGNOSTIC
-chi2_x0.3_truth76,w0_75.7188um,1475248.0,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 76 um",DIAGNOSTIC
-chi2_x0.3_truth76,w0_75.7812um,1475247.8,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 76 um",DIAGNOSTIC
-chi2_x0.3_truth76,w0_75.8438um,1475247.6,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 76 um",DIAGNOSTIC
-chi2_x0.3_truth76,w0_75.9062um,1475247.4,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 76 um",DIAGNOSTIC
-chi2_x0.3_truth76,w0_75.9688um,1475247.0,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 76 um",DIAGNOSTIC
-chi2_x0.3_truth76,w0_76.0312um,1475246.8,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 76 um",DIAGNOSTIC
-chi2_x0.3_truth76,w0_76.0938um,1475246.5,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 76 um",DIAGNOSTIC
-chi2_x0.3_truth76,w0_76.1562um,1475246.1,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 76 um",DIAGNOSTIC
-chi2_x0.3_truth76,w0_76.2188um,1475245.8,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 76 um",DIAGNOSTIC
-chi2_x0.3_truth76,w0_76.2812um,1475245.7,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 76 um",DIAGNOSTIC
-chi2_x0.3_truth76,w0_76.3438um,1475246.0,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 76 um",DIAGNOSTIC
-chi2_x0.3_truth76,w0_76.4062um,1475246.3,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 76 um",DIAGNOSTIC
-sweep_x1_truth76,median_bar_um,0.7925,,um,"the median over realisations of the vertex's delta-chi2 = 1 half-width at this level, whitened at the level's own scale",DIAGNOSTIC
-sweep_x1_truth76,bias_um,0.3612,,um,the mean recovered waist minus the truth over the interior realisations at this level,DIAGNOSTIC
-sweep_x1_truth76,interior_fraction,0.500,,,"1 of 2 realisations found an INTERIOR minimum at 1 times each condition's own noise law. bias +0.361 um, coverage 1.00, median bar 0.793 um, chi2_red 0.995. Verdicts: interior, not convex",DIAGNOSTIC
-chi2_x1_truth76,w0_40um,1994256.9,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
-chi2_x1_truth76,w0_42um,1993491.9,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
-chi2_x1_truth76,w0_44um,1992926.3,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
-chi2_x1_truth76,w0_46um,1992493.4,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
-chi2_x1_truth76,w0_48um,1992156.7,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
-chi2_x1_truth76,w0_52um,1991693.0,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
-chi2_x1_truth76,w0_56um,1991419.4,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
-chi2_x1_truth76,w0_75.6562um,1991092.4,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
-chi2_x1_truth76,w0_75.7188um,1991092.4,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
-chi2_x1_truth76,w0_75.7812um,1991092.4,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
-chi2_x1_truth76,w0_75.8438um,1991092.3,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
-chi2_x1_truth76,w0_75.9062um,1991092.2,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
-chi2_x1_truth76,w0_75.9688um,1991092.1,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
-chi2_x1_truth76,w0_76.0312um,1991092.0,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
-chi2_x1_truth76,w0_76.0938um,1991091.9,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
-chi2_x1_truth76,w0_76.1562um,1991091.8,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
-chi2_x1_truth76,w0_76.2188um,1991091.7,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
-chi2_x1_truth76,w0_76.2812um,1991091.7,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
-chi2_x1_truth76,w0_76.3438um,1991091.8,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
-chi2_x1_truth76,w0_76.4062um,1991091.9,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
-sweep_x0_truth90,median_bar_um,3.0109,,um,"the median over realisations of the vertex's delta-chi2 = 1 half-width at this level, whitened at the level's own scale",DIAGNOSTIC
+chi2_x0.3_truth76,w0_40um,1507886.9,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+chi2_x0.3_truth76,w0_42um,1500172.9,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+chi2_x0.3_truth76,w0_44um,1494270.7,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+chi2_x0.3_truth76,w0_46um,1489665.3,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+chi2_x0.3_truth76,w0_48um,1486091.8,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+chi2_x0.3_truth76,w0_52um,1481204.4,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+chi2_x0.3_truth76,w0_56um,1478342.6,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+chi2_x0.3_truth76,w0_75.6562um,1475071.5,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+chi2_x0.3_truth76,w0_75.7188um,1475071.3,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+chi2_x0.3_truth76,w0_75.7812um,1475071.2,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+chi2_x0.3_truth76,w0_75.8438um,1475071.0,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+chi2_x0.3_truth76,w0_75.9062um,1475070.8,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+chi2_x0.3_truth76,w0_75.9688um,1475070.5,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+chi2_x0.3_truth76,w0_76.0312um,1475070.2,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+chi2_x0.3_truth76,w0_76.0938um,1475069.9,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+chi2_x0.3_truth76,w0_76.1562um,1475069.6,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+chi2_x0.3_truth76,w0_76.2188um,1475069.3,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+chi2_x0.3_truth76,w0_76.2812um,1475069.2,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+chi2_x0.3_truth76,w0_76.3438um,1475069.5,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+chi2_x0.3_truth76,w0_76.4062um,1475069.8,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+sweep_x1_truth76,median_bar_um,0.7949,,um,"the median over realisations of the vertex's delta-chi2 = 1 half-width at this level, whitened at the level's own scale",DIAGNOSTIC
+sweep_x1_truth76,bias_um,0.3447,,um,the mean recovered waist minus the truth over the interior realisations at this level,DIAGNOSTIC
+sweep_x1_truth76,interior_fraction,0.500,,,"1 of 2 realisations found an INTERIOR minimum at 1 times each condition's own noise law. bias +0.345 um, coverage 1.00, median bar 0.795 um, chi2_red 0.995. Verdicts: interior, not convex",DIAGNOSTIC
+chi2_x1_truth76,w0_40um,1994025.6,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+chi2_x1_truth76,w0_42um,1993289.5,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+chi2_x1_truth76,w0_44um,1992738.1,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+chi2_x1_truth76,w0_46um,1992307.7,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+chi2_x1_truth76,w0_48um,1991972.6,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+chi2_x1_truth76,w0_52um,1991511.4,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+chi2_x1_truth76,w0_56um,1991239.7,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+chi2_x1_truth76,w0_75.6562um,1990915.8,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+chi2_x1_truth76,w0_75.7188um,1990915.8,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+chi2_x1_truth76,w0_75.7812um,1990915.8,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+chi2_x1_truth76,w0_75.8438um,1990915.8,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+chi2_x1_truth76,w0_75.9062um,1990915.6,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+chi2_x1_truth76,w0_75.9688um,1990915.5,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+chi2_x1_truth76,w0_76.0312um,1990915.4,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+chi2_x1_truth76,w0_76.0938um,1990915.3,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+chi2_x1_truth76,w0_76.1562um,1990915.2,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+chi2_x1_truth76,w0_76.2188um,1990915.2,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+chi2_x1_truth76,w0_76.2812um,1990915.2,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+chi2_x1_truth76,w0_76.3438um,1990915.2,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+chi2_x1_truth76,w0_76.4062um,1990915.4,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 76 um",DIAGNOSTIC
+sweep_x0_truth90,median_bar_um,3.0136,,um,"the median over realisations of the vertex's delta-chi2 = 1 half-width at this level, whitened at the level's own scale",DIAGNOSTIC
 sweep_x0_truth90,bias_um,0.0002,,um,the mean recovered waist minus the truth over the interior realisations at this level,DIAGNOSTIC
-sweep_x0_truth90,interior_fraction,1.000,,,"1 of 1 realisations found an INTERIOR minimum at 0 times each condition's own noise law. bias +0.000 um, coverage 1.00, median bar 3.011 um, chi2_red 0.000. Verdicts: interior",DIAGNOSTIC
-chi2_x0_truth90,w0_40um,3525.8,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 90 um",DIAGNOSTIC
-chi2_x0_truth90,w0_42um,2745.8,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 90 um",DIAGNOSTIC
-chi2_x0_truth90,w0_44um,2154.9,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 90 um",DIAGNOSTIC
-chi2_x0_truth90,w0_46um,1688.2,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 90 um",DIAGNOSTIC
-chi2_x0_truth90,w0_48um,1320.0,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 90 um",DIAGNOSTIC
-chi2_x0_truth90,w0_52um,802.3,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 90 um",DIAGNOSTIC
-chi2_x0_truth90,w0_56um,483.0,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+sweep_x0_truth90,interior_fraction,1.000,,,"1 of 1 realisations found an INTERIOR minimum at 0 times each condition's own noise law. bias +0.000 um, coverage 1.00, median bar 3.014 um, chi2_red 0.000. Verdicts: interior",DIAGNOSTIC
+chi2_x0_truth90,w0_40um,3489.5,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+chi2_x0_truth90,w0_42um,2736.1,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+chi2_x0_truth90,w0_44um,2147.8,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+chi2_x0_truth90,w0_46um,1682.7,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+chi2_x0_truth90,w0_48um,1315.7,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+chi2_x0_truth90,w0_52um,799.7,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+chi2_x0_truth90,w0_56um,481.4,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 90 um",DIAGNOSTIC
 chi2_x0_truth90,w0_89.6562um,0.0,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 90 um",DIAGNOSTIC
 chi2_x0_truth90,w0_89.7188um,0.0,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 90 um",DIAGNOSTIC
 chi2_x0_truth90,w0_89.7812um,0.0,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 90 um",DIAGNOSTIC
@@ -295,77 +295,74 @@ chi2_x0_truth90,w0_90.2812um,0.0,,whitened chi2,"realisation 0 at 0 times the la
 chi2_x0_truth90,w0_90.3438um,0.0,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 90 um",DIAGNOSTIC
 chi2_x0_truth90,w0_90.4062um,0.0,,whitened chi2,"realisation 0 at 0 times the law, mixed arm, truth 90 um",DIAGNOSTIC
 sweep_x0.1_truth90,median_bar_um,0.2211,,um,"the median over realisations of the vertex's delta-chi2 = 1 half-width at this level, whitened at the level's own scale",DIAGNOSTIC
-sweep_x0.1_truth90,bias_um,0.0584,,um,the mean recovered waist minus the truth over the interior realisations at this level,DIAGNOSTIC
-sweep_x0.1_truth90,interior_fraction,0.500,,,"1 of 2 realisations found an INTERIOR minimum at 0.1 times each condition's own noise law. bias +0.058 um, coverage 0.50, median bar 0.221 um, chi2_red 0.995. Verdicts: interior, not convex",DIAGNOSTIC
-chi2_x0.1_truth90,w0_40um,1356353.8,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
-chi2_x0.1_truth90,w0_42um,1278110.8,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
-chi2_x0.1_truth90,w0_44um,1218941.1,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
-chi2_x0.1_truth90,w0_46um,1172267.0,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
-chi2_x0.1_truth90,w0_48um,1135476.9,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
-chi2_x0.1_truth90,w0_52um,1083854.3,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
-chi2_x0.1_truth90,w0_56um,1052072.9,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
-chi2_x0.1_truth90,w0_89.6562um,1004514.7,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
-chi2_x0.1_truth90,w0_89.7188um,1004514.0,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
-chi2_x0.1_truth90,w0_89.7812um,1004513.0,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
-chi2_x0.1_truth90,w0_89.8438um,1004512.3,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
-chi2_x0.1_truth90,w0_89.9062um,1004511.9,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
-chi2_x0.1_truth90,w0_89.9688um,1004511.7,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
-chi2_x0.1_truth90,w0_90.0312um,1004511.7,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
-chi2_x0.1_truth90,w0_90.0938um,1004511.6,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
-chi2_x0.1_truth90,w0_90.1562um,1004511.5,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
-chi2_x0.1_truth90,w0_90.2188um,1004511.8,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
-chi2_x0.1_truth90,w0_90.2812um,1004512.4,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
-chi2_x0.1_truth90,w0_90.3438um,1004513.2,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
-chi2_x0.1_truth90,w0_90.4062um,1004514.0,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+sweep_x0.1_truth90,bias_um,0.0514,,um,the mean recovered waist minus the truth over the interior realisations at this level,DIAGNOSTIC
+sweep_x0.1_truth90,interior_fraction,0.500,,,"1 of 2 realisations found an INTERIOR minimum at 0.1 times each condition's own noise law. bias +0.051 um, coverage 0.50, median bar 0.221 um, chi2_red 0.995. Verdicts: interior, not convex",DIAGNOSTIC
+chi2_x0.1_truth90,w0_40um,1352374.0,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+chi2_x0.1_truth90,w0_42um,1276853.0,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+chi2_x0.1_truth90,w0_44um,1217978.3,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+chi2_x0.1_truth90,w0_46um,1171466.2,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+chi2_x0.1_truth90,w0_48um,1134802.2,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+chi2_x0.1_truth90,w0_52um,1083362.9,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+chi2_x0.1_truth90,w0_56um,1051695.4,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+chi2_x0.1_truth90,w0_89.6562um,1004329.5,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+chi2_x0.1_truth90,w0_89.7188um,1004328.8,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+chi2_x0.1_truth90,w0_89.7812um,1004327.9,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+chi2_x0.1_truth90,w0_89.8438um,1004327.2,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+chi2_x0.1_truth90,w0_89.9062um,1004326.8,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+chi2_x0.1_truth90,w0_89.9688um,1004326.6,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+chi2_x0.1_truth90,w0_90.0312um,1004326.6,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+chi2_x0.1_truth90,w0_90.0938um,1004326.6,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+chi2_x0.1_truth90,w0_90.1562um,1004326.4,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+chi2_x0.1_truth90,w0_90.2188um,1004326.8,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+chi2_x0.1_truth90,w0_90.2812um,1004327.4,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+chi2_x0.1_truth90,w0_90.3438um,1004328.2,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+chi2_x0.1_truth90,w0_90.4062um,1004329.0,,whitened chi2,"realisation 0 at 0.1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
 sweep_x0.3_truth90,median_bar_um,0.4760,,um,"the median over realisations of the vertex's delta-chi2 = 1 half-width at this level, whitened at the level's own scale",DIAGNOSTIC
-sweep_x0.3_truth90,bias_um,0.0752,,um,the mean recovered waist minus the truth over the interior realisations at this level,DIAGNOSTIC
-sweep_x0.3_truth90,interior_fraction,0.500,,,"1 of 2 realisations found an INTERIOR minimum at 0.3 times each condition's own noise law. bias +0.075 um, coverage 1.00, median bar 0.476 um, chi2_red 0.995. Verdicts: interior, not convex",DIAGNOSTIC
-chi2_x0.3_truth90,w0_40um,1514730.1,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 90 um",DIAGNOSTIC
-chi2_x0.3_truth90,w0_42um,1505940.7,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 90 um",DIAGNOSTIC
-chi2_x0.3_truth90,w0_44um,1499314.2,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 90 um",DIAGNOSTIC
-chi2_x0.3_truth90,w0_46um,1494093.0,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 90 um",DIAGNOSTIC
-chi2_x0.3_truth90,w0_48um,1489971.1,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 90 um",DIAGNOSTIC
-chi2_x0.3_truth90,w0_52um,1484185.8,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 90 um",DIAGNOSTIC
-chi2_x0.3_truth90,w0_56um,1480612.3,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 90 um",DIAGNOSTIC
-chi2_x0.3_truth90,w0_89.6562um,1475214.2,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 90 um",DIAGNOSTIC
-chi2_x0.3_truth90,w0_89.7188um,1475214.1,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 90 um",DIAGNOSTIC
-chi2_x0.3_truth90,w0_89.7812um,1475213.9,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 90 um",DIAGNOSTIC
-chi2_x0.3_truth90,w0_89.8438um,1475213.7,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 90 um",DIAGNOSTIC
-chi2_x0.3_truth90,w0_89.9062um,1475213.5,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 90 um",DIAGNOSTIC
-chi2_x0.3_truth90,w0_89.9688um,1475213.5,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 90 um",DIAGNOSTIC
-chi2_x0.3_truth90,w0_90.0312um,1475213.5,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 90 um",DIAGNOSTIC
-chi2_x0.3_truth90,w0_90.0938um,1475213.5,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 90 um",DIAGNOSTIC
-chi2_x0.3_truth90,w0_90.1562um,1475213.5,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 90 um",DIAGNOSTIC
-chi2_x0.3_truth90,w0_90.2188um,1475213.5,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 90 um",DIAGNOSTIC
-chi2_x0.3_truth90,w0_90.2812um,1475213.6,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 90 um",DIAGNOSTIC
-chi2_x0.3_truth90,w0_90.3438um,1475213.8,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 90 um",DIAGNOSTIC
-chi2_x0.3_truth90,w0_90.4062um,1475213.9,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+sweep_x0.3_truth90,bias_um,0.0649,,um,the mean recovered waist minus the truth over the interior realisations at this level,DIAGNOSTIC
+sweep_x0.3_truth90,interior_fraction,0.500,,,"1 of 2 realisations found an INTERIOR minimum at 0.3 times each condition's own noise law. bias +0.065 um, coverage 1.00, median bar 0.476 um, chi2_red 0.995. Verdicts: interior, not convex",DIAGNOSTIC
+chi2_x0.3_truth90,w0_40um,1514080.5,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+chi2_x0.3_truth90,w0_42um,1505609.1,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+chi2_x0.3_truth90,w0_44um,1499025.4,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+chi2_x0.3_truth90,w0_46um,1493826.9,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+chi2_x0.3_truth90,w0_48um,1489720.5,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+chi2_x0.3_truth90,w0_52um,1483957.6,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+chi2_x0.3_truth90,w0_56um,1480399.5,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+chi2_x0.3_truth90,w0_89.6562um,1475029.1,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+chi2_x0.3_truth90,w0_89.7188um,1475028.9,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+chi2_x0.3_truth90,w0_89.7812um,1475028.7,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+chi2_x0.3_truth90,w0_89.8438um,1475028.6,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+chi2_x0.3_truth90,w0_89.9062um,1475028.4,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+chi2_x0.3_truth90,w0_89.9688um,1475028.4,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+chi2_x0.3_truth90,w0_90.0312um,1475028.4,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+chi2_x0.3_truth90,w0_90.0938um,1475028.4,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+chi2_x0.3_truth90,w0_90.1562um,1475028.4,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+chi2_x0.3_truth90,w0_90.2188um,1475028.5,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+chi2_x0.3_truth90,w0_90.2812um,1475028.6,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+chi2_x0.3_truth90,w0_90.3438um,1475028.8,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+chi2_x0.3_truth90,w0_90.4062um,1475028.9,,whitened chi2,"realisation 0 at 0.3 times the law, mixed arm, truth 90 um",DIAGNOSTIC
 sweep_x1_truth90,median_bar_um,nan,,um,"the median over realisations of the vertex's delta-chi2 = 1 half-width at this level, whitened at the level's own scale",DIAGNOSTIC
 sweep_x1_truth90,bias_um,nan,,um,the mean recovered waist minus the truth over the interior realisations at this level,DIAGNOSTIC
 sweep_x1_truth90,interior_fraction,0.000,,,"0 of 2 realisations found an INTERIOR minimum at 1 times each condition's own noise law. bias +nan um, coverage 0.00, median bar nan um, chi2_red 0.995. Verdicts: extrapolated, not convex",DIAGNOSTIC
-chi2_x1_truth90,w0_40um,1994801.2,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
-chi2_x1_truth90,w0_42um,1993968.2,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
-chi2_x1_truth90,w0_44um,1993343.4,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
-chi2_x1_truth90,w0_46um,1992856.2,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
-chi2_x1_truth90,w0_48um,1992470.3,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
-chi2_x1_truth90,w0_52um,1991927.3,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
-chi2_x1_truth90,w0_56um,1991588.6,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
-chi2_x1_truth90,w0_89.6562um,1991058.7,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
-chi2_x1_truth90,w0_89.7188um,1991058.7,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
-chi2_x1_truth90,w0_89.7812um,1991058.6,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
-chi2_x1_truth90,w0_89.8438um,1991058.6,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
-chi2_x1_truth90,w0_89.9062um,1991058.7,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
-chi2_x1_truth90,w0_89.9688um,1991058.7,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
-chi2_x1_truth90,w0_90.0312um,1991058.7,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
-chi2_x1_truth90,w0_90.0938um,1991058.8,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
-chi2_x1_truth90,w0_90.1562um,1991058.8,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
-chi2_x1_truth90,w0_90.2188um,1991058.8,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
-chi2_x1_truth90,w0_90.2812um,1991058.8,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
-chi2_x1_truth90,w0_90.3438um,1991058.8,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
-chi2_x1_truth90,w0_90.4062um,1991058.8,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+chi2_x1_truth90,w0_40um,1994559.2,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+chi2_x1_truth90,w0_42um,1993757.0,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+chi2_x1_truth90,w0_44um,1993144.4,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+chi2_x1_truth90,w0_46um,1992659.8,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+chi2_x1_truth90,w0_48um,1992275.2,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+chi2_x1_truth90,w0_52um,1991735.5,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+chi2_x1_truth90,w0_56um,1991399.0,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+chi2_x1_truth90,w0_89.6562um,1990873.6,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+chi2_x1_truth90,w0_89.7188um,1990873.6,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+chi2_x1_truth90,w0_89.7812um,1990873.5,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+chi2_x1_truth90,w0_89.8438um,1990873.5,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+chi2_x1_truth90,w0_89.9062um,1990873.6,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+chi2_x1_truth90,w0_89.9688um,1990873.6,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+chi2_x1_truth90,w0_90.0312um,1990873.6,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+chi2_x1_truth90,w0_90.0938um,1990873.7,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+chi2_x1_truth90,w0_90.1562um,1990873.7,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+chi2_x1_truth90,w0_90.2188um,1990873.7,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+chi2_x1_truth90,w0_90.2812um,1990873.7,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+chi2_x1_truth90,w0_90.3438um,1990873.7,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
+chi2_x1_truth90,w0_90.4062um,1990873.7,,whitened chi2,"realisation 0 at 1 times the law, mixed arm, truth 90 um",DIAGNOSTIC
 noise_where_the_waist_dies,largest_scale_still_localised,1,,,"the largest multiple of the archive's own noise law at which at least half the realisations still return an INTERIOR minimum in w0. Above it the profile rails and the waist is not localised at all. This is a CAMPAIGN LEVER and not a reading of the past: it gives the noise reduction this estimator would need to measure the waist. Localised at [0.0, 0.1, 0.3, 1.0], railed at []",ENVELOPE
-rung_noiseless,verdict,PASS,,,"at x0 of the law: 1 of 1 interior, max|rel| 6.194e-07, coverage 1.00 against a nominal 0.68, chi2_red 0.000. ",CALIB
-rung_low,verdict,FAIL,,,"at x0.3 of the law: 2 of 2 interior, max|rel| 0.003087, coverage 0.00 against a nominal 0.68, chi2_red 0.995. 2 realisation(s) is under the floor of 8: a coverage read on fewer cannot be inside or outside any band",CALIB
-rung_archive,verdict,NOT CLIMBED,,,"not on the ladder because its predecessor did not pass, but MEASURED in the sweep above at x1: 2 of 2 interior, max|rel| 0.005618, coverage 1.00. cannot record 'archive' for 'ultra_joint_waist': the required rung 'low' below it does not read PASS.",CALIB
-real_arm_reached,boolean,False,,,"THE RULE MADE MECHANICAL (owner, 2026-09-15 and 2026-09-16): the real traces are reachable only through rb5s6s.ladder_gate.real_traces, which raises until the noiseless, low and archive rungs are recorded and all read PASS. REFUSED: real traces refused for 'ultra_joint_waist': the low rung reads FAIL: {""n_truths"": 4, ""n_realisations"": 2, ""interior"": 2, ""median_bar_um"": 0.18315497422967175, ""profiles"": [[[40.0, 1486834.138924697], [42.0, 1482229.3928498314], [44.0, 1479363.7459503822], [46.0, 147760. the archive rung has no artefact (private/cache/plan_2026-09-16/.ladder/ultra_joint_waist/archive.json): run",CALIB
+real_arm_reached,boolean,False,,,"THE RULE MADE MECHANICAL (owner, 2026-09-15 and 2026-09-16): the real traces are reachable only through rb5s6s.ladder_gate.real_traces, which raises until the noiseless, low and archive rungs are recorded and all read PASS. REFUSED: real traces refused for 'ultra_joint_waist': the noiseless rung reads FAIL: {""n_truths"": 1, ""n_realisations"": 1, ""interior"": 1, ""median_bar_um"": 0.2652878747186146, ""profiles"": [[[40.0, 99.5710237707028], [41.65625, 22.57427923101069], [41.71875, 21.709227962580464], [41.7812. the low rung has no artefact (private/cache/plan_2026-09-16/.ladder/ultra_joint_waist/low.json): run i",CALIB
 closure_verdict,waist_recovered,False,,,"PASS on every rung is what licenses a waist from this fit. Anything else and every w0 in results/ultra_joint_fit.csv is conditional and none is a measurement (register A274, A276)",CALIB

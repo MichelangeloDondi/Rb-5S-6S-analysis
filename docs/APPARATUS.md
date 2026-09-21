@@ -698,14 +698,14 @@ acquisition drift, which the dataset puts two orders below.*
 > `rb5s6s/amplitudes.py`), predicting relative weights
 > 1.00 / 1.67 / 2.88 / 4.03 for ⁸⁷ F=1 / ⁸⁷ F=2 / ⁸⁵ F=2 / ⁸⁵ F=3, and the
 > measured integrals rank in exactly that order, the two apex-straddling
-> ⁸⁷ F=1 crossings weakest. And the two ratios the record can carry come back
-> at the prediction: the up-sweep ⁸⁵ pair integrates to 1.42 times against
+> ⁸⁷ F=1 crossings weakest. Two ratios come back at the prediction:
+> the up-sweep ⁸⁵ pair integrates to 1.42 times against
 > the predicted 7/5 = 1.40 (moving 1.34 to 1.42 as the spike threshold
-> varies over 5 to 8 mad), and the up-sweep ⁸⁵ pair carries 2.45 times the
+> varies over 5 to 8 mad), and the up-sweep ⁸⁵ pair carries 2.45 times the <!-- other-quantity: an isotope pair-area ratio, not a density -->
 > ⁸⁷ pair's area (2.43 to 2.64 across the same rules) against the predicted
 > abundance ratio 2.59. The (2F+1) sum to G_iso within each isotope, so the
-> pair ratio predicts the bare abundance ratio rather than the 3.9 that
-> abundance × (2F+1) without the normalisation would give. The individual
+> pair ratio predicts the bare abundance ratio, not the 3.9 of an
+> unnormalised abundance × (2F+1). The individual
 > weights are not quantitatively recovered, and the causes are in the
 > record: the display compresses the tallest spikes (the two ⁸⁵ up-sweep
 > peaks read equal heights to about 1% where the populations put them 1.4

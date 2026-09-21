@@ -119,7 +119,7 @@ def fit_global(blocks: List[Dict], *, transit_ref_mhz: float = C.TRANSIT_FWHM_PL
         si = sig_keys.index(_skey(blk)); bi = beta_keys.index(blk["isotope"])
         law = blk.get("law")
         # A DENSITY OUTSIDE THE VAPOUR'S PHYSICAL BAND IS A UNITS DEFECT, NOT A FIT (F250, 2026-09-21).
-        # N_units is the Rb number density in 1e12 cm^-3: 0.56 at 70 C, 29.4 at 130 C, and the
+        # N_units is the Rb number density in 1e12 cm^-3: 0.74 at 70 C, 35.6 at 130 C on the central law, and the
         # record's cells all sit inside [0.01, 500]. A harness passed Kelvin to a callee that takes
         # Celsius and handed this function 55468, so the first residual built gamma_coll = 5547 MHz,
         # a 66 000 MHz span and 1.3 million grid points, and hung for 7h50m. Refusing here names the
@@ -128,7 +128,7 @@ def fit_global(blocks: List[Dict], *, transit_ref_mhz: float = C.TRANSIT_FWHM_PL
         if not (0.01 <= _N <= 500.0):
             raise ValueError(
                 f"block {blk.get('peak')!r} at {blk.get('T_C')} C carries N_units={_N:.4g}, outside the "
-                f"Rb vapour's physical band [0.01, 500] in 1e12 cm^-3 (0.56 at 70 C, 29.4 at 130 C). "
+                f"Rb vapour's physical band [0.01, 500] in 1e12 cm^-3 (0.74 at 70 C, 35.6 at 130 C on the central law). "
                 f"That is a units defect in the caller (F250: Celsius given as Kelvin gives 5.5e4), and a "
                 f"fit on it would not return.")
         tau_b = max(law.get("tau_int", 1.0), 1.0) if law else 1.0

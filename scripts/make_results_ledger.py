@@ -20,7 +20,7 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from rb5s6s import config as C  # noqa: E402
-from rb5s6s.density import number_density_cm3  # noqa: E402
+from rb5s6s.density import number_density_cm3, N_SCALE_FRAC_SYST  # noqa: E402
 from rb5s6s.lineshape import stark_shift_S0_mhz  # noqa: E402
 
 # The small-waist configuration the plan proposes, used only to scale the
@@ -156,12 +156,13 @@ def main() -> int:
     W("## C1. Collisional self-broadening $\\beta_\\text{self}$\n")
     W("![fitted width against density for every peak and every "
       "condition](../figures/fig19_width_trends.png)\n")
-    W("*Every width this bound is built from, on one pair of axes. The "
-      "density lever runs 52.5-fold across the plot while the widths "
-      "move by very little, and the scatter within one density is "
-      "between blocks rather than within them. That relation, not any "
-      "single fit, is what makes the coefficient below a bound and a "
-      "floor rather than a resolved slope.*\n")
+    _lever_70_130 = number_density_cm3(130.0) / number_density_cm3(70.0)
+    W(f"*Every width this bound is built from, on one pair of axes. The "
+      f"density lever runs {_lever_70_130:.1f}-fold across the plot while the widths "
+      f"move by very little, and the scatter within one density is "
+      f"between blocks rather than within them. That relation, not any "
+      f"single fit, is what makes the coefficient below a bound and a "
+      f"floor rather than a resolved slope.*\n")
     # every number in this intro is READ from the CSVs -- a hand-written bound
     # here once went stale (3x tight) against the corrected construction below
     pr = {r["peak"]: r for r in rows("beta_self_probe") if r.get("headline") == "yes"}
@@ -220,8 +221,10 @@ def main() -> int:
       "Gaussian-asymptotic 2 used before. The old “≈2σ” bounds "
       "(0.07–0.15) under-covered, which is why they were always flagged with a "
       "~factor-2 own-uncertainty, and the t-quantile formalizes exactly that. "
-      "(ii) **Density scale:** $\\beta \\propto 1/N$, so the ~20% spread between "
-      "published vapor-pressure correlations moves every $\\beta$ by 20%. The "
+      f"(ii) **Density scale:** $\\beta \\propto 1/N$, so the "
+      f"{N_SCALE_FRAC_SYST:.0%} worst-case spread between "
+      f"published vapor-pressure correlations (`density.py`) is applied as an envelope. "
+      "The "
       "cold-spot direction makes the fitted $\\beta$ an underestimate, so the "
       "bound is inflated on the + side (×1.2, `density.py`). **The "
       "per-peak spread is systematics, not physics:** the bounds track each "
@@ -240,20 +243,14 @@ def main() -> int:
       "**The 130 °C point is now in the headline (2026-08-02).** Earlier "
       "releases kept the 70–110 °C three-point construction as the headline "
       "and folded 130 °C in only as a separate, non-headline probe variant, "
-      "reasoning it might be a different apparatus configuration (a power "
-      "sweep, calibrated off before/after modulator brackets rather than the "
-      "temperature session's own per-block ruler). Confirmed from recollection "
-        "(RECOLLECTION, no contemporaneous record) that "
-      "the 130 °C power-sweep session ran in the same optical and cell "
-      "configuration as the temperature sweep. What differs is the acquisition "
-      "epoch "
-      "and the axis calibration, and `load_t_rates` already calibrates each "
-      "session from its own rate source before the two are combined onto one "
-      "density axis. The recovered clock also places 130 °C 2.3 h before the "
-      "110 °C dwell, inside the same continuous campaign, while the 9.6 h "
-      "break falls *between* 110 °C and 90 °C, so the 130 °C point was never "
-      "the outlier in elapsed time either. Folding it in stretches the lever "
-      "from ×16.2 to ×52.5 and tightens the bound roughly an order of "
+      "reasoning it might differ in apparatus (a power sweep, calibrated off "
+      "modulator brackets rather than the session's own ruler). The apparatus and "
+      "calibration are confirmed unchanged (RECOLLECTION, no contemporaneous "
+      "record), and the recovered clock puts 130 °C 2.3 h before the 110 °C "
+      "dwell, inside the same campaign rather than across the 9.6 h break "
+      "(session-timing detail: `docs/DATA.md`'s lever-test entry). Folding it in stretches the lever "
+      f"from ×{number_density_cm3(110.0) / number_density_cm3(70.0):.1f} to "
+      f"×{_lever_70_130:.1f} and tightens the bound roughly an order of "
       "magnitude. There is no separate three-point construction kept "
       "alongside it (`scripts/run_beta_self.py`, module docstring, and "
       "`docs/RESEARCH_DECISIONS.md`).\n")
@@ -379,7 +376,7 @@ def main() -> int:
         # THE RANKING IS COMPUTED FROM THE ROWS THIS PAGE JUST PRINTED, never
         # typed (escape E51, 2026-09-11). Two sentences here ranked by a
         # hand-written comparative and both were wrong: the w0 band was called
-        # the largest at a span of 0.0044 against the transit's 0.0142, and it
+        # the largest at a span of 0.0044 against the transit's larger error, and it
         # had been published that way since 2026-07-13. A typed superlative
         # passes every numeric guard, because the numbers beside it are read
         # from the file and only the ordering word is not.
@@ -629,9 +626,9 @@ def main() -> int:
           "and in the 2025-07-04 rehearsal a width trend appears on the descending "
           "ladder while both ascending ladders show none, which is an "
           "order-dependence signature rather than a power dependence. The "
-          "concavity is therefore provisional and is not an established physical "
-          "effect. Both sessions sit outside the frozen archive for epoch and "
-          "instrument reasons rather than any data defect.")
+          "concavity is therefore provisional, not established. Both sessions "
+          "sit outside the frozen archive for epoch and instrument reasons, "
+          "not a data defect.")
     W("- **C3b amplitude near $P^2$, and three of the four slopes are not "
       "consistent with 2:** log-log slopes 1.83–2.12 (the two-photon "
       "rate law). **Corrected 2026-08-18**: these were narrated as a band and "
@@ -639,7 +636,10 @@ def main() -> int:
       "respects this sweep's power-time collinearity, 993.4121 nm at 1.831 "
       "excludes 2 from below while 993.4154 nm at 2.121 and 993.4192 nm at 2.116 "
       "exclude it from above, and 993.4207 nm at 2.100 becomes consistent with 2 "
-      "once the block treatment replaces the within-cell error. **The departure "
+      "once the block treatment replaces the within-cell error. "
+      "<!-- other-quantity: amplitude-departure log-log slope exponents, not an "
+      "identifiability-profile cell --> "
+      "**The departure "
       "Replicates and is invariant under acquisition order**: the 2025-07-04 "
       "rehearsal ran its ladders in alternating directions on one scope at one "
       "gain, and its three exponents of 2.244 descending against 2.228 and 2.070 "
@@ -1232,10 +1232,9 @@ def main() -> int:
               "as `results/beta_self.csv` times the 130 °C density, and "
               "`results/stark_joint.csv` records the prior each peak was fit "
               "under. They disagree: " + ". ".join(moved) + ". Re-running "
-              "`run_stark_joint.py` picks the current prior up. That is "
-              "flagged rather than done here, because the joint fit is a long "
-              "profile-likelihood run and is not re-run as a side effect of "
-              "regenerating this ledger.\n")
+              "`run_stark_joint.py` would pick it up. Flagged rather than "
+              "done here, since that fit is a long profile-likelihood run "
+              "this regeneration does not repeat.\n")
         else:
             print("  [C3f] gamma_coll priors in stark_joint.csv match "
                   "beta_self.csv x N(130 C) on every peak")
@@ -1246,11 +1245,12 @@ def main() -> int:
         asym = {k[1]: (float(v["value"]), float(v["err"]))
                 for k, v in wc.items() if k[0] == "asymmetry_red_minus_blue"}
         worst = max(asym.items(), key=lambda kv: abs(kv[1][0]) / max(kv[1][1], 1e-9))
+        _wc_lever = number_density_cm3(130.0) / number_density_cm3(70.0)
         W(f"- **C3g. The residual asymmetry is not a collisional wing, and "
           f"C3f's open item is closed** (`run_wing_check`). A "
           f"quasistatic self-broadening satellite is a pair effect, so its "
           f"fractional weight must scale with density, and the temperature "
-          f"sweep holds a ×52 density lever at fixed 225 mW while the Stark "
+          f"sweep holds a ×{_wc_lever:.1F} density lever at fixed 225 mW while the Stark "
           f"wedge and any instrument asymmetry stay put. The observable is "
           f"the **difference** between the two sides, red minus blue: a "
           f"symmetric mismatch between the fixed transit kernel and the free "
@@ -1258,15 +1258,13 @@ def main() -> int:
           f"the difference answers the question. It returns "
           f"**{a130:+.4F} ± {ae130:.4F}** of peak at 130 °C, "
           f"{abs(a130)/ae130:.1F}σ, exactly where a collisional satellite "
-          f"would be 52× enhanced, and no temperature exceeds "
+          f"would be {_wc_lever:.1F}× enhanced, and no temperature exceeds "
           f"{abs(worst[1][0])/max(worst[1][1], 1e-9):.1F}σ. The power lever "
-          f"agrees: at fixed density the fitted fraction does not hold "
-          f"constant as a physical wing must, but tracks amplitude, exactly "
-          f"as C3c's shot-noise identification of the residual skew already "
-          f"said. Both levers contradict a physical wing, so the asymmetry "
-          f"the joint fit flagged is amplitude-linked statistics, nothing about it "
-          f"enters the Stark budget, and the satellite thread is closed on "
-          f"this record. A real satellite search needs the fixed-lock "
+          f"agrees: at fixed density the fitted fraction tracks amplitude "
+          f"instead of holding constant, as C3c's shot-noise reading already "
+          f"found. Both levers contradict a physical wing: the asymmetry is "
+          f"amplitude-linked statistics, outside the Stark budget, and the "
+          f"satellite thread is closed. A real satellite search needs the fixed-lock "
           f"session's SNR at 150–170 °C, where this same estimator would "
           f"resolve a 0.001-fraction wing at many sigma.\n")
 
@@ -1355,7 +1353,8 @@ def main() -> int:
           f"line drives the result |")
         W(f"| drop one temperature | up to {lt[0]:.2F} · {lt[1]:.2F} | lever "
           f"leverage with three densities, expected rather than fragility |")
-        W(f"| add the ×53 130 °C lever | {pv[0]:+.3F} · {pv[1]:+.3F} | pulls "
+        W(f"| add the ×{number_density_cm3(130.0) / number_density_cm3(70.0):.1f} 130 °C lever | "
+          f"{pv[0]:+.3F} · {pv[1]:+.3F} | pulls "
           f"β_self down, since the width is a floor rather than resolved "
           f"collisions (C1) |\n")
         W("| vary this | the S₀(225 mW) bound | reading |")

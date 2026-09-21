@@ -16,9 +16,11 @@ failure teaches nothing is a design worth less than it costs.
 ## 1. The width split
 
 **The limitation.** The collisional width and the laser width are not
-separately determined. The archive fixes the total width to 0.0032 MHz and the
-direction that divides it to only 0.0588 MHz, eighteen times worse, at a
-condition number of 345 across the three width parameters.
+separately determined. The archive fixes the total width far better than the
+direction that divides it (`results/identifiability.csv`'s
+`best_constrained_sigma` and `worst_constrained_sigma` rows), at a condition
+number in the hundreds across the three width parameters
+(`results/identifiability.csv`'s `condition_number` row).
 
 **The physical cause.** A Lorentzian collisional kernel and a Gaussian laser
 kernel convolve into a profile whose shape barely distinguishes them at these
@@ -361,8 +363,8 @@ and it is not attributed to a specific physical term. A related question at the
 same scale was closed by simulation on 2026-08-20. The low-power residual skew
 already identified as shot noise could instead have been a structure of fixed
 absolute amplitude sized like this excess, and the two are separated by the
-exponent of skew against amplitude. Measured at $-0.404 \pm 0.091$ with a
-line-to-line scatter of 0.181, the fixed-amplitude reading is disfavoured at
+exponent of skew against amplitude. Measured at $-0.405 \pm 0.091$ with a
+line-to-line scatter of 0.180, the fixed-amplitude reading is disfavoured at
 $p = 0.011$ and shot noise stays consistent at $p = 0.08$
 (`results/skew_scaling.csv`). The exclusion is by simulation under each
 hypothesis rather than from the fit covariance, which describes the spread at

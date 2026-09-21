@@ -100,7 +100,7 @@ above is evaluated at the glass and no atom sits there**: at the 400 nm trap
 distance the axial flux is `guided_intensity_fraction_at_400nm` of the surface
 value, so the shift at 1 mW is `S0_onf_1mW_at_400nm` rather than the surface
 row beside it. Scaling the committed cell value at the surface gives about
-11.5 MHz at 1 mW, so reaching the cell's own 0.3 to 0.5 MHz scale takes
+11.4 MHz at 1 mW, so reaching the cell's own 0.3 to 0.5 MHz scale takes
 tens of microwatts, and the committed setting is 50 uW at the glass, where
 the shift is
 [0.57](../../results/onf_candidate.csv "ref:onf_candidate:S0_onf_50uW:") MHz

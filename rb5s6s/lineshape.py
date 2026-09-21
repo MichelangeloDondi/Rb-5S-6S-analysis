@@ -275,7 +275,20 @@ def aperture_spread_factor(w0_m: float, a_m: float = None, f_m: float = None,
         r = np.linspace(0.0, rmax, n_r)
         E = np.array([trapezoid(np.exp(-r * r / w_in ** 2) * j0(k * r * p / f) * r, r) for p in rho])
         I = E * E
-        I = I / trapezoid(I * 2.0 * np.pi * rho, rho)
+        # THE TRANSMITTED POWER BY PARSEVAL, NOT BY A TRAPEZOID OVER A GRID TIED TO THE FREE WAIST
+        # (corrected 2026-09-21 on an external audit): the Hankel transform carries (f/k)^2, so the
+        # focal plane holds exactly (f/k)^2 (pi w_in^2 / 2)(1 - exp(-2 rmax^2 / w_in^2)). The grid
+        # 0 <= rho <= 4 w0 missed a clipped focus's Airy rings (3.55 per cent of the power at a
+        # 2.46 mm input), so the factor ran high: +0.61 per cent at 42.4 um, +9.9 at 20 um.
+        P_T = (f / k) ** 2 * (np.pi * w_in ** 2 / 2.0) * (1.0 - np.exp(-2.0 * rmax ** 2 / w_in ** 2))
+        I = I / P_T
+        # the on-axis peak against its closed form, (1 - e^-x)^2 / (1 - e^-2x) of the open peak,
+        # x = rmax^2 / w_in^2: a quadrature that misses it is refused, never returned
+        x = rmax ** 2 / w_in ** 2
+        peak_exact = (w_in ** 2 / 2.0) ** 2 * (1.0 - np.exp(-x)) ** 2 / P_T
+        if abs(float(I[0]) / peak_exact - 1.0) > 1e-3:
+            raise ValueError(f"aperture_spread_factor: the focal peak {float(I[0]):.6e} misses its closed "
+                             f"form {peak_exact:.6e} by more than 1e-3 at w0={float(w0_m):.3e}; raise n_r")
         m2 = trapezoid(I ** 2 * 2.0 * np.pi * rho, rho)
         m3 = trapezoid(I ** 3 * 2.0 * np.pi * rho, rho)
         m4 = trapezoid(I ** 4 * 2.0 * np.pi * rho, rho)

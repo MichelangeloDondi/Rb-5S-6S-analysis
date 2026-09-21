@@ -886,6 +886,17 @@ def main() -> int:
                 print(f"  rung {rung:<10} measured on {n_cond} conditions but not recorded: the noisy rungs are judged on the L", flush=True)
                 climbed[rung] = f"MEASURED (stage {stage})"
                 continue
+            # A RUNG CERTIFIES THE CANONICAL TRUTH OR NOTHING (F277, 2026-09-21): at 08:33 that day a run at
+            # the retired 52 to 90 um with two realisations wrote this ladder's noiseless and low rungs, and
+            # `real_traces` reads them for the 42 um estimator. A run whose first truth is not TRUTH_UM
+            # measures and records nothing; RB5S6S_CLOSURE_NO_RECORD makes any run (a plant's, a check's)
+            # measure without writing the live ladder.
+            if abs(float(canon) - TRUTH_UM) > 1e-9 or os.environ.get("RB5S6S_CLOSURE_NO_RECORD"):
+                why = (f"its first truth is {canon:g} um, not the canonical {TRUTH_UM:g}"
+                       if abs(float(canon) - TRUTH_UM) > 1e-9 else "RB5S6S_CLOSURE_NO_RECORD is set")
+                print(f"  rung {rung:<10} measured but not recorded: {why}", flush=True)
+                climbed[rung] = f"MEASURED, not recorded ({why})"
+                continue
             try:
                 art = ladder_gate.record(ANALYSIS_ID, rung, detail=detail)
             except ladder_gate.LadderRefused as exc:

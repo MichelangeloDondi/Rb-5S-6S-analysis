@@ -82,9 +82,10 @@ Killian data this lineage descends from, and Achar et al. 2025
 
 The record's envelope law is this paper's practical liquid equation, and
 its rows reproduce it (calculated here here from the coefficients above against
-`rb5s6s.density.number_density_cm3`): practical over Nesmeyanov is 1.320,
+`rb5s6s.density.number_density_cm3` on its Nesmeyanov arm, the practical form being the
+record's central law since 2026-09-21, O42): practical over Nesmeyanov is 1.320,
 1.270, 1.234 and 1.209 at 70, 90, 110 and 130 C, matching
-`results/density_laws.csv` `ratio_AIH_over_Steck` (1.3202, 1.2704, 1.2344,
+`results/density_laws.csv` `ratio_AIH_over_Nesmeyanov` (1.3202, 1.2704, 1.2344,
 1.2090) to 0.05 per cent. The precise form differs from the practical one
 by -0.6, +0.6, +1.4 and +1.7 per cent at the same four temperatures, so
 the record's choice of the two-term form costs under 2 per cent, inside

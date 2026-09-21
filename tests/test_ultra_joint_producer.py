@@ -789,3 +789,29 @@ def test_the_window_sets_are_disjoint_on_the_surface_grid_and_ordered_by_measure
     assert 0.0 < m.CUMULANT_FLOOR_REL < 1e-3, m.CUMULANT_FLOOR_REL
     # the two windows the measurement of 2026-09-19 found dead for one order each are NOT quoted
     assert 8.0 not in quoted and 21.0 not in quoted
+
+
+# ---------------------------------------------------------------- the permeated gas's temperature law (O41, F245)
+def test_the_permeated_width_follows_its_sealed_cell_law_and_its_arms(monkeypatch):
+    """The permeated gas sits in `gamma_l`, the constant Lorentzian of the mixed form, and a sealed cell holds
+    a fixed AMOUNT of it, so its width goes as T^+0.5 (hard spheres) and T^+0.3 (van der Waals). The model
+    must hand `full_profile` gamma_l x (T / 403.15)^p for each condition: the full value at the 130 C corner,
+    (343.15/403.15)^0.5 of it at 70 C, the constant at p = 0. Planted both ways through the model itself, by
+    capturing the argument `full_profile` receives, so a law typed in the constants and never read fails."""
+    got = {}
+    real = _uj.full_profile
+
+    def spy(nu, **kw):
+        got["gamma_l"] = kw["gamma_l"]
+        return real(nu, **kw)
+
+    monkeypatch.setattr(_uj, "full_profile", spy)
+    nu = np.linspace(-20.0, 20.0, 401)
+    for T, p, want in ((130.0, 0.5, 0.4), (70.0, 0.5, 0.4 * (343.15 / 403.15) ** 0.5),
+                       (70.0, 0.3, 0.4 * (343.15 / 403.15) ** 0.3), (70.0, 0.0, 0.4)):
+        desc = [dict(_P_DESC[0], T=T)]
+        cell = _theory_cell(42.0, traces=desc, gamma_l_exp=p)
+        d = cell.unpack(_theory_p(cell))
+        cell.model(nu, d, cell.per[0], desc[0]["peak"], desc[0]["session"])
+        assert abs(got["gamma_l"] - want) < 1e-12, (T, p, got["gamma_l"], want)
+    assert _uj.GAMMA_L_EXP == 0.5 and 0.0 in _uj.GAMMA_L_EXP_ARMS     # the default is F245's and the old constant is an arm

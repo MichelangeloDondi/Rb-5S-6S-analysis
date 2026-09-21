@@ -106,8 +106,9 @@ $$\frac{N(130\ ^\circ\mathrm{C})}{N(70\ ^\circ\mathrm{C})}\approx 50$$
 
 and that large lever arm is what makes $\beta_\text{self}$ accessible.
 **$\beta_\text{self}$ for $5S\to6S$ is unpublished, and measuring or bounding it
-is paper deliverable C1.** *Code:* $N(T)$ in `density.py` (Nesmeyanov/Steck
-correlation), with $\gamma_\text{coll}$ entering the fits in
+is paper deliverable C1.** *Code:* $N(T)$ in `density.py`, on the Alcock/Steck
+correlation (Nesmeyanov, the central law until 2026-09-21, is now a
+model-form arm), with $\gamma_\text{coll}$ entering the fits in
 `linefit.py`/`beta.py`.
 
 ### 2.3 Laser linewidth, and why it enters *twice*

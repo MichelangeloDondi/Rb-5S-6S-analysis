@@ -22,7 +22,7 @@ contrast_interaction,p_sweep_T130_P225,0.147,0.056,MHz,measured width contrast. 
 contrast_isotope,t_sweep_T70_P225,-0.13,0.13,MHz,measured width contrast. predicted 0.0103 from the record's terms. pull -1.09,DIAGNOSTIC
 contrast_F87,t_sweep_T70_P225,0.01,0.21,MHz,measured width contrast. predicted -0.0091 from the record's terms. pull +0.08,DIAGNOSTIC
 contrast_F85,t_sweep_T70_P225,0.28,0.15,MHz,measured width contrast. predicted -0.0061 from the record's terms. pull +1.97,DIAGNOSTIC
-contrast_interaction,t_sweep_T70_P225,-0.27,0.25,MHz,measured width contrast. predicted -0.0030 from the record's terms. pull -1.08,DIAGNOSTIC
+contrast_interaction,t_sweep_T70_P225,-0.28,0.25,MHz,measured width contrast. predicted -0.0030 from the record's terms. pull -1.07,DIAGNOSTIC
 contrast_isotope,t_sweep_T90_P225,0.216,0.046,MHz,measured width contrast. predicted 0.0106 from the record's terms. pull +4.48,DIAGNOSTIC
 contrast_F87,t_sweep_T90_P225,-0.299,0.077,MHz,measured width contrast. predicted -0.0091 from the record's terms. pull -3.76,DIAGNOSTIC
 contrast_F85,t_sweep_T90_P225,0.023,0.050,MHz,measured width contrast. predicted -0.0061 from the record's terms. pull +0.58,DIAGNOSTIC
@@ -42,7 +42,7 @@ contrast_interaction,pooled_power_arm,0.079,0.032,MHz,"inverse-variance pool ove
 contrast_isotope,pooled_temperature_arm,-0.008,0.019,MHz,"inverse-variance pool over the temperature arm of the L (4 conditions, the 130 C corner at the maximum power in both arms). chi2 29.5 for 3 dof",DIAGNOSTIC
 contrast_F87,pooled_temperature_arm,0.050,0.032,MHz,"inverse-variance pool over the temperature arm of the L (4 conditions, the 130 C corner at the maximum power in both arms). chi2 25.3 for 3 dof",DIAGNOSTIC
 contrast_F85,pooled_temperature_arm,0.030,0.020,MHz,"inverse-variance pool over the temperature arm of the L (4 conditions, the 130 C corner at the maximum power in both arms). chi2 8.3 for 3 dof",DIAGNOSTIC
-contrast_interaction,pooled_temperature_arm,0.020,0.038,MHz,"inverse-variance pool over the temperature arm of the L (4 conditions, the 130 C corner at the maximum power in both arms). chi2 20.4 for 3 dof",DIAGNOSTIC
+contrast_interaction,pooled_temperature_arm,0.020,0.038,MHz,"inverse-variance pool over the temperature arm of the L (4 conditions, the 130 C corner at the maximum power in both arms). chi2 20.3 for 3 dof",DIAGNOSTIC
 cycles_per_crossing_axis,P25_w64,0.0010,,,"excitation cycles on a central chord at 130 C: the saturated rate integrated along the chord, the local drive scaled as P exp(-2 v^2 t^2 / w0^2). P^2 / w0^3 in the weak-drive limit only, the core saturating at a tight waist",DIAGNOSTIC
 amplitude_face_predicted,87Rb_P25_w64,0.00011,,ln,"predicted ln(4207/4121) minus ln(1.667): the higher-branching line (4121, BRANCHING_F 0.372) is depleted more, so the ratio sits ABOVE the thermal law by this much",DIAGNOSTIC
 amplitude_face_predicted,85Rb_P25_w64,0.00007,,ln,"predicted ln(4192/4154) minus ln(1.400): the higher-branching line (4154, BRANCHING_F 0.348) is depleted more, so the ratio sits ABOVE the thermal law by this much",DIAGNOSTIC

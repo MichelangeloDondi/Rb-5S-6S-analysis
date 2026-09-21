@@ -112,7 +112,7 @@ width-against-density fit carries one temperature condition at leverage
 close to one, since the sweep leaves it far from the other three on the
 density axis by design. Leverage depends only on where the points sit, not
 on any fitted value: at the campaign's four temperatures the density units
-run 0.56, 2.45, 9.10 and 29.43, and the leverages are 0.43, 0.37, 0.25 and
+run 0.74, 3.11, 11.23 and 35.59 (Alcock), and the leverages are 0.44, 0.37, 0.25 and
 0.94 against a four-point average of 0.5. That same lever puts one
 point almost entirely in charge of the fit, forcing the fit through it
 regardless of value, so a residual-based diagnostic, a robust loss among

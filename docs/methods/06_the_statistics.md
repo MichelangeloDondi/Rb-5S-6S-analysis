@@ -110,11 +110,11 @@ recovers a known $\beta$ through the whole 20-trace machinery, so the pipeline
 itself is validated by that recovery, not assumed.
 
 The dataset's curated 130 °C anchor (the `serves_t130` traces, 225 mW) would
-triple the density lever ($N{\times}16.2\to{\times}52.5$), and the lever cross-check
+triple the density lever ($N{\times}15.2\to{\times}48.1$, Alcock), and the lever cross-check
 uses it as a **lever test**: adding it pulls the joint $\beta$ far below the
 cooling-sweep value. The lesson is not "bad block". It is that
-$\gamma_\text{coll}$ **barely grows with density**: it rises only about [1.48](../../results/lever_crosscheck.csv "ref:lever_crosscheck:gamma_rise_factor:70to130")-fold
-across a ${\times}52.5$ density span (70→130 °C), and the 130 °C widths sit *on*
+$\gamma_\text{coll}$ **barely grows with density**: it rises only about [1.51](../../results/lever_crosscheck.csv "ref:lever_crosscheck:gamma_rise_factor:70to130")-fold
+across a ${\times}48.1$ density span (70→130 °C), and the 130 °C widths sit *on*
 that near-flat trend, whereas a real binary-collision width is *linear* in $N$.
 So the fitted $\gamma_\text{coll}$ is a residual floor, not resolved collisions,
 and $\beta$ is a **lever-dependent bound** and not a value, which is exactly why the
@@ -427,13 +427,13 @@ At the anchored branch, the covariance (SVD of the Jacobian,
 `fitutil.cov_from_jac`), diagonalized over the $3\times3$ width block:
 
 - the strongest trade-off is $\gamma_\text{coll}\leftrightarrow$ transit
-  ($\approx-0.96$): the two cusp-generating widths swap almost freely.
-- the **condition number** of the width-block *covariance* is $\approx345$,
+  ($\approx-0.97$): the two cusp-generating widths swap almost freely.
+- the **condition number** of the width-block *covariance* is $\approx456$,
   which is strongly ill-conditioned.
 - the **eigen-directions**: the best-constrained combination (a
   total-width-like sum, mostly $\gamma_\text{coll}$ + transit) is pinned to
   $1\sigma\approx0.003$ MHz, while the worst-constrained direction (dominated
-  by $\sigma_\text{laser}$) is $\approx0.06$ MHz, about **20× looser**.
+  by $\sigma_\text{laser}$) is $\approx0.07$ MHz, about **20× looser**.
 
 The global map (the standard referee demand: profile, not just covariance)
 fixes ($\gamma_\text{coll}$, $\sigma_\text{laser}$) on a grid and re-minimises
@@ -441,23 +441,23 @@ $\chi^2$ over transit and every per-trace nuisance at each point (variable
 projection, each cell fit from two independent warm-start lineages, with a
 fresh-seed audit on every fifth cell). Its certifications, all committed: audit
 gains $\le0.05$ (no warm-start trapping) and a **straight** valley floor
-(RMS 0.002 MHz against a 0.019 MHz grid step) whose ridge slope (+0.086) is
-compared against the covariance ellipse's prediction (+0.110), since in the
+(RMS 0.004 MHz against a 0.020 MHz grid step) whose ridge slope (+0.057) is
+compared against the covariance ellipse's prediction (+0.072), since in the
 Gaussian limit the profile contours are exactly the marginal covariance
 ellipse.
 
 **How much weight that comparison carries, and it is less than the word
 agreement suggests.** The two numbers share a sign and an order of magnitude.
-The prediction sits 28 per cent above the measurement, and both moved when the
+The prediction sits 26 per cent above the measurement, and both moved when the
 arithmetic environment changed, the slope by 18 per cent and the prediction by
 37. A pair that both moves and still tracks to this tolerance certifies the
 shape of the valley, not the value of either number.
 
 The whole neighbourhood moves together under an environment change: the
-condition number and the valley-floor RMS are now [345.1](../../results/identifiability.csv "ref:identifiability:condition_number:width_block") and 0.0020 against the
+condition number and the valley-floor RMS are now [456.2](../../results/identifiability.csv "ref:identifiability:condition_number:width_block") and 0.0044 against the
 pre-migration 389.7 and 0.0032, and the map-minimum certification changed
 character, from a free fit that was the map's optimum to a zoom map that finds
-a point 1.3 below it. The pre-migration values and the reason they moved are
+a point 0.12 below it. The pre-migration values and the reason they moved are
 recorded once, in
 the history.
 That is what an

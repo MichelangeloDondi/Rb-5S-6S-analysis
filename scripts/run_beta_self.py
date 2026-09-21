@@ -741,10 +741,13 @@ def main() -> int:
     print(f"{'peak':>6s} {'beta_eff':>10s} {'formal':>8s} {'+syst':>8s} "
           f"{'resid':>7s} {'sig':>5s} {'mono':>5s}  verdict")
     # Single headline variant (2026-08-02): 70/90/110/130 C, dof=2, the
-    # x52.5 density lever. No separate three-point row is kept; see the
-    # module docstring for why.
+    # N(130)/N(70) density lever on the central law (COMPUTED below, never typed: the lever
+    # moved from Nesmeyanov's x52.5 to Alcock's x48.1 at the 2026-09-21 switch, O42/F259, and
+    # a typed label would have carried the retired law's number silently past it). No separate
+    # three-point row is kept; see the module docstring for why.
     probe_rows = []
-    variant = "70-130C (headline, four-point, same configuration, 52.5x lever)"
+    _lever = density_units(130.0) / density_units(70.0)
+    variant = f"70-130C (headline, four-point, same configuration, {_lever:.1f}x lever)"
     print(f"  --- {variant} ---")
     for peak in PEAKS:
         pr = width_vs_density_probe(rows, peak, trates, prates, include_130=True)

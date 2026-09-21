@@ -31,7 +31,7 @@ in the thin single-waist limit only. The producer filters
 `results/transit_mc.csv` to its `thin` rows, so the collection-geometry
 dependence that file also carries is not on this canvas, and it runs the
 direction that would soften the exclusion shaded here: at the one waist where
-that file computes it, 50 µm, the added transit falls from 1.254 MHz in the
+that file computes it, 50 µm, the added transit falls from 1.254 MHz in the <!-- other-quantity: an added-transit figure from transit_mc.csv, not an identifiability-profile cell -->
 thin limit to 1.134 MHz over a 6 mm collection column. The file computes no
 collection variants at the small waists this figure excludes, so how far the
 boundary would move there is not settled by it. The S−L width difference reads

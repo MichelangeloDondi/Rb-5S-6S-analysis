@@ -607,21 +607,24 @@ own uncertainty") without acting on it.
 
 *What it taught.* Two things. A hard-coded multiplier hides its own assumption
 about degrees of freedom, so the quantile must be computed from the fit. And
-because β scales as 1/N, the ~20% spread between published vapour-pressure
-correlations moves every β by the same fraction (`density.py`,
-`N_SCALE_FRAC_SYST`). The cold-spot direction makes the fitted β an
+because β scales as 1/N, the spread between published vapour-pressure
+correlations, now derived from the model-form arms
+(24.3 per cent, worst at 70 °C), enters the bound as a conservative envelope
+on β (`density.py`,
+`N_SCALE_FRAC_SYST`), not a measured response. The cold-spot direction makes the fitted β an
 underestimate, so the bound inflates on the + side by ×1.2. The selection rule
 flips with it: the *loosest* peak is the conservative single-number floor,
 because the minimum of noisy one-degree-of-freedom estimates is the
 down-fluctuated one.
 
-The 130 °C lever variant (dof = 2) barely moves, 0.03 to 0.05, and keeps a
+The 130 °C lever variant (dof = 2) barely moves, 0.02 to 0.04, and keeps a
 caveat, promoted to the sole headline 2026-08-02 (Michelangelo, firsthand:
 the 130 °C session shares the same apparatus/optical configuration as the
 T-sweep, and see the four-point entry below and [RESEARCH_DECISIONS.md](RESEARCH_DECISIONS.md) §9). The clock puts it 2.3 h from the 110 °C dwell inside the same campaign,
 so the objection is not a session boundary but that it is an extreme lever
 point, with T confounded against elapsed time across the whole campaign. The
-hierarchical global-fit β gains a `beta_nscale_syst` row at ±20%. A constant
+hierarchical global-fit β gains a `beta_nscale_syst` row at ±24%, a
+conservative envelope, not a measured response (see `results/global_fit.csv`). A constant
 cold-spot offset also tilts the N(T) lever by ~2.3%/K of offset, which is a
 slope effect rather than a scale one, quantified in `density.py` and recorded
 but not propagated as second order.
@@ -745,7 +748,7 @@ conclusions:
   longer holds, and the two sessions differ only by acquisition epoch and axis
   calibration, and the calibration is already handled per session
   (`load_t_rates`). The headline is now the four-point 70/90/110/130 °C
-  construction (dof=2, ×52.5 lever): β_self ≲0.03–0.05 MHz per 10¹² cm⁻³
+  construction (dof=2, ×48.1 lever): β_self ≲0.03–0.05 MHz per 10¹² cm⁻³
   (95%, per peak), non-monotonic in density for 2 of 4 peaks, an order of
   magnitude tighter than the retired three-point reading. See
   `scripts/run_beta_self.py`'s module docstring and
@@ -769,15 +772,18 @@ the brief, and they moved no headline number.
   On the keeper side no exclusion-worthy trace was found:
   the flags that survive are fit-time instructions (retrace masking, cold
   rulers → per-trace bright-tooth fits), and RF labels verified 297/297.
+
 - **The lever test, in which the fitted γ_coll is a floor and β_self is lever-dependent,
   hence a *bound* (2026-07-12).** The figures in this entry are as MEASURED on
   its own date and the pipeline has been refit since, so read the current
   values from `results/lever_crosscheck.csv` rather than from here. As of
   2026-08-14 that file gives the 4-peak mean γ_coll as 0.401 / 0.391 / 0.444 / <!-- other-quantity: a collisional width of 2026-08-14, not the shift band's edge -->
-  0.594 MHz and the rise as ×[1.48](../results/lever_crosscheck.csv "ref:lever_crosscheck:gamma_rise_factor:70to130") over a density ratio of ×52.5, and the joint
-  β as 0.0198 (⁸⁵Rb) and 0.0219 (⁸⁷Rb) against a headline 0.0534. The direction
-  and the conclusion are unchanged, so the entry stands: ×[1.48](../results/lever_crosscheck.csv "ref:lever_crosscheck:gamma_rise_factor:70to130") across
-  ×52.5 is still far sub-linear. What follows is the 2026-07-12 record.
+  0.594 MHz and the rise as ×[1.51](../results/lever_crosscheck.csv "ref:lever_crosscheck:gamma_rise_factor:70to130") over a density ratio of ×48.1 (Alcock, density.py's default law), and the joint
+  β dropping sharply once the ×48.1 130 °C anchor folds in, well below the
+  cooling-only headline (see `results/lever_crosscheck.csv`'s
+  `beta_lever_probe_130` and `beta_crosscheck` rows). The direction
+  and the conclusion are unchanged, so the entry stands: ×[1.51](../results/lever_crosscheck.csv "ref:lever_crosscheck:gamma_rise_factor:70to130") across
+  ×48.1 is still far sub-linear. What follows is the 2026-07-12 record.
   Per-condition fits (linefit_conditions):
   the 4-peak mean γ_coll is 0.245 / 0.231 / 0.289 / 0.454 MHz at 70/90/110/130 °C
   while the density rises ×52, a ×1.85 rise where a real binary-collision
@@ -799,6 +805,7 @@ the brief, and they moved no headline number.
   (ii) A corr(γ, log N) > corr(γ, N) argument, which is fragile (993.4121 nm is
   non-monotonic and the pooled means reverse it). The robust metric is the
   rise factor ×1.85 over ×52 (lever_crosscheck.csv: gamma_rise_factor).
+
 - **Discard/excluded audit adjudicated + `qc_reason` column added (2026-07-12).**
   An external audit of the excluded traces was verified against the
   repo, and its two central factual claims did not survive, in opposite directions
@@ -843,9 +850,10 @@ the brief, and they moved no headline number.
   of a since-debunked "Nieddu 2.5 MHz" note are documented in full in
   `docs/LITERATURE.md` §6a, both external corroborations of the record's w₀ re-pin
   and the observed line width, not raised here to avoid duplicating that entry.
-  **N(T) chain confirmed:** `rb5s6s/density.py` uses the Steck/Nesmeyanov liquid-Rb correlation
+  **N(T) chain confirmed:** `rb5s6s/density.py` uses the liquid-Rb correlation
   + ideal gas, exactly the T→P→N chain the theses use (Rajasree cites Steck). No
-  change. The June-2025 `Lab_plan` is a 4-week project-management doc (planned
+  change (Nesmeyanov was the correlation named here until 2026-09-21. The
+  central law is now Alcock, as the held Steck adopts it). The June-2025 `Lab_plan` is a 4-week project-management doc (planned
   40–80 °C, while the campaign actually went to 130 °C) and does not pin the beam
   geometry. So the w₀ prior legitimately rests on the Gaussian estimate +
   Nieddu's measurement, not the plan.

@@ -285,12 +285,12 @@ line at 0.32 ± 0.01 MHz/mTorr, about 0.014 in these units against Zameroski's
 0.0054, a factor of 2.6, with no half-width or full-width convention stated on
 either side ([FUTURE_TRANSITIONS_titsapph.md](../FUTURE_TRANSITIONS_titsapph.md)
 §3.2). On Wang's value the anchor is near 9 kHz instead, and every standoff
-quoted from it loosens by that factor. The recorded bound of 0.03–0.05 MHz per
-10¹² cm⁻³ (four-point, 70/90/110/130 °C) sits **8–15× above it** on the
-Zameroski anchor and about 3 to 6 times above it on Wang's, tighter
+quoted from it loosens by that factor. The recorded bound of 0.02–0.04 MHz per
+10¹² cm⁻³ (four-point, 70/90/110/130 °C) sits **7–12× above it** on the
+Zameroski anchor and about 3 to 5 times above it on Wang's, tighter
 than the earlier three-point bound (was 0.2–0.4 MHz, 57–113× above), because
 folding the 130 °C point into the headline extends the density lever from
-×16.2 to ×52.5 (`scripts/run_beta_self.py`).
+×15.2 to ×48.1 (Alcock, `scripts/run_beta_self.py`).
 
 The identical machinery gives C₆(5S+5S) = 4180 a.u. against the literature
 Rb₂ value of ~4691, 11% low, in

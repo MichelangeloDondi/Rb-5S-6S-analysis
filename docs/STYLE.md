@@ -45,7 +45,7 @@ How should a claim, a number or a figure in this repository be written, so that 
   three of them also carry rows that are replaced diagnostics kept for
   continuity. A bare "the bound" is ambiguous, and on 2026-08-14 a reader of
   this repository (the author) quoted `stark_sweep.csv`'s replaced Wald row
-  [2.205](../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_ub95:shared") in place of its actual bound, `S0_225mW_ub95_profile`, whose own
+  [2.206](../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_ub95:shared") in place of its actual bound, `S0_225mW_ub95_profile`, whose own
   note says "quote the profile row". Say which file, and check the `status`
   column before quoting the row.
 - **A number cited from a paper carries the sentence that states it.** Quote

@@ -102,7 +102,7 @@ def _wing_stats(v: np.ndarray, detrend: bool = True) -> dict:
     `detrend` removes a LINEAR baseline, and the difference between the two
     settings is what this measures. A slow tilt across the wing inflates a
     correlation time and a straight line removes it, while a broadband
-    correlation survives both. The archive reads 1.88 tilted and 0.96
+    correlation survives both. The archive reads 2.28 tilted and 0.96
     detrended, so what it carries is mostly a tilt.
 
     THIS ESTIMATOR IS NOT THE COMMITTED LAW'S AND THE TWO NUMBERS DO NOT
@@ -264,7 +264,7 @@ def main() -> int:
                         "DIAGNOSTIC"])
     # THE TERM THIS COMPARISON ACTUALLY FINDS, and it is not the one the day
     # started by looking for. The archive's wing carries a slow TILT: under one
-    # estimator it reads 1.88 with only the mean removed and 0.96 once a
+    # estimator it reads 2.28 with only the mean removed and 0.96 once a
     # straight line is taken out, while a broadband correlation survives both
     # removals. The twin has no per-trace baseline tilt, so this is a missing
     # term, and it is a different term from the AR(1) the noise law's own

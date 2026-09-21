@@ -55,7 +55,7 @@ undriven level. It is **per line** and fixed, not free:
 
 | line | isotope, driven $F$ | $f$ |
 |---|---|---|
-| 993.4121 nm | $^{87}\text{Rb}$, $F=1$ | 0.3725 |
+| 993.4121 nm | $^{87}\text{Rb}$, $F=1$ | 0.3725 <!-- other-quantity: a hyperfine branching fraction, not an identifiability-profile cell --> |
 | 993.4154 nm | $^{85}\text{Rb}$, $F=2$ | 0.3476 |
 | 993.4192 nm | $^{85}\text{Rb}$, $F=3$ | 0.2483 |
 | 993.4207 nm | $^{87}\text{Rb}$, $F=2$ | 0.2235 |

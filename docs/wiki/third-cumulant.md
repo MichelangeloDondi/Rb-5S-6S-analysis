@@ -140,8 +140,8 @@ instead of reading it from the fit's own covariance, which describes the
 spread at the fitted exponent and not at the one being excluded
 ([`scripts/run_skew_scaling.py`](../../scripts/run_skew_scaling.py),
 [`results/skew_scaling.csv`](../../results/skew_scaling.csv)). The four-line
-mean exponent comes out at $-0.404 \pm 0.091$ with a line-to-line scatter of
-0.181. That disfavours the fixed-size candidate at $p = 0.011$, about
+mean exponent comes out at $-0.405 \pm 0.091$ with a line-to-line scatter of
+0.180. That disfavours the fixed-size candidate at $p = 0.011$, about
 2.3 sigma one-sided, and leaves shot noise consistent at $p = 0.08$. The
 fixed-size candidate had been expected to survive this test. The data
 instead favour the null.

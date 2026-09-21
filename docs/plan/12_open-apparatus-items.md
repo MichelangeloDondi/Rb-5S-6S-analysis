@@ -56,7 +56,7 @@ sum-rule test at the tight waist at all.
 The size is MEASURED (2026-09-06, on
 quiet traces so no noise enters): with the term switched off the power ladder's area
 follows the two-photon square law at a log-log slope of 1.978 and the depth ladder
-stands still to seven per cent, while with it on the slope reads 2.209 and the depth
+stands still to seven per cent, while with it on the slope reads 2.209 and the depth <!-- other-quantity: a power-ladder slope figure, not an identifiability-profile cell -->
 ladder falls by nineteen. The Bessel weights are innocent, summing to 1.000000 at the
 lowest depth and 0.997587 at the highest over the seven modelled teeth, and so is the
 wing baseline, which moves by three per cent across the ladder while the raw integral
@@ -901,19 +901,19 @@ photoelectrons per second. The chain's prediction (the excitations in the
 collected length at that line's share of the atoms, the branching, the
 aperture's solid angle, the quantum efficiency, with $f$, the image distance and
 the quantum efficiency drawn) exceeds it by
-[2.78](../../results/detection_budget.csv "ref:detection_budget:gap_log10_predicted_over_measured:Steck_along12_D6mm") ±
+[2.86](../../results/detection_budget.csv "ref:detection_budget:gap_log10_predicted_over_measured:Steck_along12_D6mm") ±
 [0.22](../../results/detection_budget.csv "ref:detection_budget:gap_log10_predicted_over_measured:Steck_along12_D6mm:err")
 in the log at a 6 mm aperture and
-[3.97](../../results/detection_budget.csv "ref:detection_budget:gap_log10_predicted_over_measured:Steck_along12_D25.4mm") ±
+[4.06](../../results/detection_budget.csv "ref:detection_budget:gap_log10_predicted_over_measured:Steck_along12_D25.4mm") ±
 [0.22](../../results/detection_budget.csv "ref:detection_budget:gap_log10_predicted_over_measured:Steck_along12_D25.4mm:err")
-at the largest aperture spanned, one inch (12 mm along, and [2.18](../../results/detection_budget.csv "ref:detection_budget:gap_log10_predicted_over_measured:Steck_along3_D6mm")
-to [3.38](../../results/detection_budget.csv "ref:detection_budget:gap_log10_predicted_over_measured:Steck_along3_D25.4mm")
+at the largest aperture spanned, one inch (12 mm along, and [2.27](../../results/detection_budget.csv "ref:detection_budget:gap_log10_predicted_over_measured:Steck_along3_D6mm")
+to [3.46](../../results/detection_budget.csv "ref:detection_budget:gap_log10_predicted_over_measured:Steck_along3_D25.4mm")
 with 3 mm along).
 
 Exclusions from the gap, by name: the filter's
 transmission, the excess-noise factor, the retro ratio's span, the density law
 (the Alcock form adds under a tenth of a decade), and the D1 photons' own trapping, whose
-optical depth is [18.59](../../results/detection_budget.csv "ref:detection_budget:D1_optical_depth_per_mm:Steck")
+optical depth is [22.47](../../results/detection_budget.csv "ref:detection_budget:D1_optical_depth_per_mm:Steck")
 per millimetre at 130 °C on the envelope cross-section, so the emission the
 lens sees is the cell's and not the beam's, and the collected fraction of a
 trapped emission is unpriced. **What closing it needs**: the clear aperture,

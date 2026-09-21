@@ -8,8 +8,9 @@ power-dependent to be the Stark wedge. The candidate that mattered was a
 collisional (quasistatic self-broadening) red satellite, because that would
 be new line physics and would connect to the beta_self programme. It makes
 one unforgiving prediction: as a pair effect its fractional weight must
-scale with density, and the temperature sweep holds a x52 density lever at
-fixed 225 mW while the Stark wedge and any instrumental asymmetry stay put.
+scale with density, and the temperature sweep holds a x48 density lever
+(Alcock, density.py's default law since O42/F259) at fixed 225 mW while the
+Stark wedge and any instrumental asymmetry stay put.
 
 THE MEASUREMENT. Per (peak, T) condition on the canonical RF-off
 temperature sweep, the M23 standoff wing (2 MHz standoff, 6 MHz scale,
@@ -33,7 +34,7 @@ THE RESULT:
 
   * Density lever, the closure: the red-minus-blue asymmetry at 130 C is
     -0.0007 +/- 0.0013 of peak, 0.5 sigma, exactly where a collisional
-    satellite would be 52x enhanced. At 110 C it is -0.2 sigma, and at
+    satellite would be 48x enhanced. At 110 C it is -0.2 sigma, and at
     70 C and 90 C +0.7 sigma.
   * Power lever: at fixed density the fitted fraction does not hold
     constant as a physical wing must; it tracks amplitude, exactly as
@@ -198,14 +199,14 @@ def main() -> int:
             f, e, c2 = fit_wing(recs, rate, float(T), side)
             perT[T][lab].append((f, e))
             out_rows.append([f"f_wing_{lab}", f"{pk}_T{T}", f"{f:.4f}", f"{e:.4f}",
-                             "fraction of peak; standoff wing, per condition"])
+                             "fraction of peak. Standoff wing, per condition"])
         print(f"  {pk} T={T}", flush=True)
     for T in sorted(perT):
         nn = float(number_density_cm3(np.array([float(T)]))[0]) / n70
         for lab in ("red", "blue"):
             m, e = wmean(perT[T][lab])
             out_rows.append([f"f_wing_{lab}_mean", f"T{T}", f"{m:.4f}", f"{e:.4f}",
-                             f"weighted over peaks; N/N(70C) = {nn:.1f}"])
+                             f"weighted over peaks. N/N(70C) = {nn:.1f}"])
             print(f"  T={T} {lab}: {m:+.4f} +/- {e:.4f}  (N/N70 {nn:.0f})")
 
     # power lever: p_sweep at fixed 130 C
@@ -222,12 +223,12 @@ def main() -> int:
         f, e, c2 = fit_wing(recs, rate, 130.0, -1)
         perP[P].append((f, e))
         out_rows.append(["f_wing_red", f"{pk}_P{P}", f"{f:.4f}", f"{e:.4f}",
-                         "fraction of peak; power lever, 130 C"])
+                         "fraction of peak. Power lever, 130 C"])
         print(f"  {pk} P={P}", flush=True)
     for P in sorted(perP):
         m, e = wmean(perP[P])
         out_rows.append(["f_wing_red_mean", f"P{P}", f"{m:.4f}", f"{e:.4f}",
-                         "weighted over peaks; a physical wing is a constant "
+                         "weighted over peaks. A physical wing is a constant "
                          "fraction across this row, an SNR artifact falls"])
         print(f"  P={P}: {m:+.4f} +/- {e:.4f}")
 
@@ -243,14 +244,17 @@ def main() -> int:
         bv, be = wmean(perT[T]["blue"])
         out_rows.append(["asymmetry_red_minus_blue", f"T{T}",
                          f"{rv - bv:+.4f}", f"{_math.hypot(re_, be):.4f}",
-                         "fraction of peak; THE observable -- a symmetric "
+                         "fraction of peak. THE observable: a symmetric "
                          "misfit cancels here, a one-sided wing does not"])
+    # COMPUTED from the default (central) law, never typed (2026-09-21): the lever was
+    # Nesmeyanov's x52.5 until the O42/F259 switch to Alcock, which reads x48.1 here.
+    _lever = float(number_density_cm3(130.0) / number_density_cm3(70.0))
     _a130 = wmean(perT[130]["red"])[0] - wmean(perT[130]["blue"])[0]
     _e130 = _math.hypot(wmean(perT[130]["red"])[1], wmean(perT[130]["blue"])[1])
     out_rows.append(["asymmetry_130C", "verdict", f"{_a130:+.4f}", f"{_e130:.4f}",
-                     "THE closure: the red-minus-blue asymmetry at the x52 "
-                     "density lever, where a collisional satellite would be "
-                     "52x enhanced"])
+                     f"THE closure: the red-minus-blue asymmetry at the x{_lever:.1f} "
+                     f"density lever, where a collisional satellite would be "
+                     f"{_lever:.1f}x enhanced"])
 
     # context row for the ledger: the individual red side at 130 C, no longer
     # a null since v3.0.0 (see the docstring) -- the CLOSURE is asymmetry_130C
@@ -259,11 +263,12 @@ def main() -> int:
     m130, e130 = wmean(perT[130]["red"])
     out_rows.append(["f_wing_red_130C", "verdict", f"{m130:.4f}", f"{e130:.4f}",
                      "the individual red side at the density lever, not a "
-                     "null since v3.0.0's narrower transit; the asymmetry "
+                     "null since v3.0.0's narrower transit. The asymmetry "
                      "M23 originally flagged is amplitude-linked statistics, "
                      "not line physics"])
-    out_rows.append(["density_lever", "verdict", "52.5", "",
-                     "N(130C)/N(70C); the scaling a pair effect cannot dodge"])
+    out_rows.append(["density_lever", "verdict", f"{_lever:.1f}", "",
+                     "N(130C)/N(70C), Alcock (density.py's default law). The scaling a "
+                     "pair effect cannot dodge"])
 
     with open(C.RESULTS_DIR / "wing_check.csv", "w", newline="") as fh:
         w = csv.writer(fh)
