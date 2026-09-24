@@ -129,11 +129,12 @@ from scipy import optimize
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
+from rb5s6s.config import RESULTS_DIR as _RESULTS_DIR  # noqa: E402  (F480: results where RB5S6S_RESULTS_DIR points)
 
 QUARANTINE = Path(os.environ.get(
     "RB5S6S_BACKUP_DIR", "~/rb-2025-sessions/backup")).expanduser()
 RATE_MHZ_MS = float(next(csv.DictReader(
-    open(ROOT / "results" / "ruler_campaign.csv")))["rate_laser"])  # laser axis, M2
+    open(_RESULTS_DIR / "ruler_campaign.csv")))["rate_laser"])  # laser axis, M2
 JUMP_MS = 10.0                      # same step-block screen as run_intrablock_trend
 LONG_PAIR_MIN = 7.0                 # pairs longer than this likely contain a re-centring
 EARLY_H = 1.2                       # hour-1 ladders (4192, 4207)
@@ -177,7 +178,7 @@ def clock() -> dict:
 
 def load_blocks() -> pd.DataFrame:
     mt = clock()
-    d = pd.read_csv(ROOT / "results" / "qc_metrics.csv")
+    d = pd.read_csv(_RESULTS_DIR / "qc_metrics.csv")
     d = d[(d.flag == "canonical") & (~d.rf_on) & (d.role == "p_sweep")].copy()
     d["mtime"] = d.file.map(mt)
     rows = []
@@ -228,7 +229,7 @@ def main() -> int:
         print("no timestamp backup found (set RB5S6S_BACKUP_DIR) and no committed "
               "data_recovered/CLOCK.csv; the archive alone has no clock -- nothing to do.")
         return 0
-    if not (ROOT / "results" / "qc_metrics.csv").is_file():
+    if not (_RESULTS_DIR / "qc_metrics.csv").is_file():
         print("results/qc_metrics.csv not present (gitignored dump; regenerate with "
               "scripts/run_qc.py) -- the drift analysis needs it; nothing to do.")
         return 0
@@ -319,7 +320,7 @@ def main() -> int:
 
 def _traces() -> pd.DataFrame:
     mt = clock()
-    d = pd.read_csv(ROOT / "results" / "qc_metrics.csv")
+    d = pd.read_csv(_RESULTS_DIR / "qc_metrics.csv")
     d = d[(d.flag == "canonical") & (~d.rf_on) & (d.role == "p_sweep")].copy()
     d["mtime"] = d.file.map(mt)
     d = d.dropna(subset=["mtime"]).sort_values("mtime")
@@ -807,7 +808,7 @@ def _rekick_steps() -> pd.DataFrame:
     import datetime as dt
     JST = dt.timezone(dt.timedelta(hours=9))
     mt = clock()
-    d = pd.read_csv(ROOT / "results" / "qc_metrics.csv")
+    d = pd.read_csv(_RESULTS_DIR / "qc_metrics.csv")
     d = d[(d.flag == "canonical") & (~d.rf_on)].copy()
     d["t"] = d.file.map(mt)
     d = d.dropna(subset=["t"])

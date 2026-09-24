@@ -56,12 +56,57 @@ from .fitutil import cov_from_jac, feasible_p0
 OPTIMALITY_CEILING = 1e3
 
 
+def _grouped_jacobian(fun, lo, hi, nshared: int, lens: List[int]):
+    """The '2-point' finite-difference Jacobian of `fit_global`'s residuals, computed by COLUMN GROUPS.
+
+    The shared prefix (sigma_laser, beta, the transit) reaches every residual, while trace i's four
+    nuisances (amplitude, centre, two baseline terms) reach only trace i's rows. So one perturbation
+    of the k-th nuisance of EVERY trace at once differences all of them together, and the Jacobian
+    costs nshared + 4 residual evaluations instead of nshared + 4 * n_traces.
+
+    IT IS THE SAME JACOBIAN, BITWISE, AND THE SAME TRAJECTORY (F301, 2026-09-22). The step per column
+    is scipy's own (`approx_derivative`, the routine `least_squares` itself calls, with the same bounds),
+    and a row cannot see another trace's perturbation, so every entry is the ungrouped entry exactly.
+    The array is returned in FORTRAN order because that is the layout scipy's dense differencing
+    returns: a C-ordered copy of the same numbers sends the trust-region step through BLAS in a
+    different summation order, and the trajectory drifted by 0.13 in a parameter within 30
+    evaluations. Measured on run_global_fit's own first fit (59 traces, 241 parameters, scipy 1.18.0):
+    x, cost and Jacobian bitwise equal, 14.7 s against 127.3 s. `approx_derivative` and `group_columns`
+    live in scipy's private `_numdiff`; `tests/test_global_fit.py` asserts the equality, so an upgrade
+    that breaks it goes red instead of drifting.
+    """
+    from scipy.optimize._numdiff import approx_derivative, group_columns
+    from scipy.sparse import lil_matrix
+    m, n = int(sum(lens)), nshared + 4 * len(lens)
+    S = lil_matrix((m, n), dtype=np.int8)
+    S[:, :nshared] = 1
+    off = 0
+    for i, L in enumerate(lens):
+        S[off:off + L, nshared + 4 * i: nshared + 4 * i + 4] = 1
+        off += L
+    S = S.tocsc()
+    groups = group_columns(S)
+    lb = np.broadcast_to(np.asarray(lo, float), (n,))
+    ub = np.broadcast_to(np.asarray(hi, float), (n,))
+
+    def jac(x):
+        return np.asfortranarray(approx_derivative(fun, x, method="2-point", f0=fun(x),
+                                                   bounds=(lb, ub), sparsity=(S, groups)).toarray())
+    return jac
+
+
 def fit_global(blocks: List[Dict], *, transit_ref_mhz: float = C.TRANSIT_FWHM_PLACEHOLDER_MHZ,
                fit_transit: bool = False, T_ref_C: float = 110.0,
                transit_kind: str = "exp", sigma_sharing: str = "per_T",
-               laser_kind: str = "gaussian", gamma_l: float = 0.0,
-               p0_shared=None, max_nfev: int = 80000) -> Dict:
+               laser_kind: str = "gaussian", gamma_l: float = 0.0, fit_gamma_l: bool = False,
+               p0_shared=None, max_nfev: int = 80000, _jac: str = "grouped") -> Dict:
     """Hierarchical fit over many (peak, T) blocks.
+
+    _jac : 'grouped' (default) computes the finite-difference Jacobian by column groups, since each
+        trace's four nuisances touch only that trace's residuals (`_grouped_jacobian`); '2-point' is
+        scipy's own dense differencing. The two return the same solution BITWISE (F301, 2026-09-22),
+        and 'grouped' costs about nine residual evaluations per Jacobian where '2-point' costs one per
+        parameter; the argument exists so that the plant can run both.
 
     p0_shared : optional start for the SHARED prefix of the parameter vector, in its own order
         (sigma_laser per group, beta per isotope, then transit_ref if fit_transit). A profile by
@@ -95,7 +140,13 @@ def fit_global(blocks: List[Dict], *, transit_ref_mhz: float = C.TRANSIT_FWHM_PL
     sig_keys = sorted({_skey(b) for b in blocks})          # sigma_laser groups
     beta_keys = sorted({b["isotope"] for b in blocks})     # beta per isotope
     nS, nB = len(sig_keys), len(beta_keys)
-    nshared = nS + nB + (1 if fit_transit else 0)
+    # A PERMEATED GAS IS ONE NUMBER FOR THE WHOLE CELL, so `fit_gamma_l` adds ONE shared
+    # parameter and never one per block (F245, A28: it is the single width term with no P and no T
+    # dependence, which is exactly what makes it separable). `linefit.fit_condition` has carried
+    # this switch since 2026-08-21 and `fit_global` never exposed it, so every committed joint
+    # number pins the permeated gas at exactly zero and could not test that (O56 audit, F426).
+    nshared = nS + nB + (1 if fit_transit else 0) + (1 if fit_gamma_l else 0)
+    _i_gl = nS + nB + (1 if fit_transit else 0)          # gamma_l's slot when it is free
 
     # N(T) must be UNIQUE per temperature (all peaks at one T see one vapor
     # density). Assert rather than silently use whichever block comes first
@@ -143,7 +194,8 @@ def fit_global(blocks: List[Dict], *, transit_ref_mhz: float = C.TRANSIT_FWHM_PL
     ntr = len(tr)
 
     # seeds
-    p0 = [1.5] * nS + [0.1] * nB + ([transit_ref_mhz] if fit_transit else [])
+    p0 = ([1.5] * nS + [0.1] * nB + ([transit_ref_mhz] if fit_transit else [])
+          + ([max(gamma_l, 0.05)] if fit_gamma_l else []))
     for t in tr:
         p0 += [t[8], t[7], t[9], 0.0]
     p0 = np.array(p0, float)
@@ -151,12 +203,15 @@ def fit_global(blocks: List[Dict], *, transit_ref_mhz: float = C.TRANSIT_FWHM_PL
     lo[:nshared] = 0.0
     if fit_transit:
         lo[nS + nB] = 0.05; hi[nS + nB] = 10.0
+    if fit_gamma_l:
+        lo[_i_gl] = 0.0; hi[_i_gl] = 50.0        # linefit.fit_condition's own bounds
     for i in range(ntr):
         lo[nshared + 4 * i] = 0.0
 
     def residuals(p):
         sig_l = p[:nS]; beta = p[nS:nS + nB]
         tref = p[nS + nB] if fit_transit else transit_ref_mhz
+        gl = p[_i_gl] if fit_gamma_l else gamma_l
         # one profile per (sigma-group, isotope, T) actually present: sigma_laser
         # is p[si] (grouped by the sharing axis), gamma_coll = beta[iso]*N(T),
         # transit scales with sqrt(T). Keyed by the block's REAL T (t[6]) so
@@ -179,7 +234,7 @@ def fit_global(blocks: List[Dict], *, transit_ref_mhz: float = C.TRANSIT_FWHM_PL
                                                transit_fwhm_at_T(T_, tref, T_ref_C),
                                                laser_kind,
                                                transit_kind=transit_kind,
-                                               gamma_l=gamma_l)
+                                               gamma_l=gl)
         out = []
         for i, t in enumerate(tr):
             g, prof = profs[(t[3], t[4], t[6])]
@@ -194,11 +249,14 @@ def fit_global(blocks: List[Dict], *, transit_ref_mhz: float = C.TRANSIT_FWHM_PL
         p0_shared = np.asarray(p0_shared, float)
         if p0_shared.shape != (nshared,):
             raise ValueError(f"p0_shared has shape {p0_shared.shape}; the shared prefix is {nshared} long "
-                             f"({nS} sigma, {nB} beta{', 1 transit' if fit_transit else ''})")
+                             f"({nS} sigma, {nB} beta{', 1 transit' if fit_transit else ''}"
+                             f"{', 1 gamma_l' if fit_gamma_l else ''})")
         p0[:nshared] = p0_shared
     p0 = feasible_p0(p0, lo, hi)  # project seed into bounds
     cost0 = 0.5 * float(np.sum(residuals(p0) ** 2))
-    sol = least_squares(residuals, p0, bounds=(lo, hi), max_nfev=max_nfev)
+    jac = (_grouped_jacobian(residuals, lo, hi, nshared, [len(t[1]) for t in tr])
+           if _jac == "grouped" else "2-point")
+    sol = least_squares(residuals, p0, bounds=(lo, hi), max_nfev=max_nfev, jac=jac)
     if not sol.success:
         raise RuntimeError(f"global fit failed: {sol.message}")
     # A SOLUTION WORSE THAN ITS OWN START IS REPORTED, NEVER RETURNED SILENTLY (F252, 2026-09-21):
@@ -241,6 +299,12 @@ def fit_global(blocks: List[Dict], *, transit_ref_mhz: float = C.TRANSIT_FWHM_PL
         "sigma_laser": [float(sol.x[i]) for i in range(nS)],
         "sigma_laser_err": [float(err[i]) for i in range(nS)],
         "transit_ref": float(sol.x[nS + nB] if fit_transit else transit_ref_mhz),
+        # THE PERMEATED GAS, AND THE FLAG SAYING WHETHER IT WAS MEASURED OR ASSUMED. A caller that
+        # reads `gamma_l` without `gamma_l_fitted` cannot tell a fitted 0.12 from the pinned 0.0
+        # that every committed joint number carries, which is the whole point of the switch.
+        "gamma_l": float(sol.x[_i_gl] if fit_gamma_l else gamma_l),
+        "gamma_l_err": float(err[_i_gl]) if fit_gamma_l else float("nan"),
+        "gamma_l_fitted": bool(fit_gamma_l),
         "chi2_red": chi2_red, "n_traces": ntr,
         # for BIC (M14): raw counts AND the correlation-corrected effective ones.
         # The fit whitens each residual by sqrt(tau_block), so the matching

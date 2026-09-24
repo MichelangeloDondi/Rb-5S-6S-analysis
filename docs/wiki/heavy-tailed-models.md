@@ -232,6 +232,67 @@ instead of sitting here misleading a reader.
 - [Resampling](resampling.md), for building a null distribution directly
   instead of assuming a tail shape at all.
 
+
+## Reparametrisation of a non-existent moment
+
+A line with Lorentzian wings has no finite second moment: the truncated value grows with the window
+without limit. That is not a numerical difficulty to be pushed back with a wider window, it is a
+property of the object. Two fields outside spectroscopy have met the same wall.
+
+Financial derivatives met it at the strike range. A call option's value is, up to discounting, a
+partial first moment of the underlying distribution, with the strike as its truncation point, so the
+machinery that recovers a density from a whole grid of strikes faces this question when only a finite
+range is available. Two answers coexist there and they differ on one assumption. One shrinks the
+error toward the full-range integral, which presumes that integral converges. The other stops
+treating the untruncated quantity as the target at all and studies the truncated object on its own
+terms, defining it as the estimand instead of a biased view of something else. **The second answer is
+the one available when the first is not**, and it is the one this record's window sweep uses.
+Each window carries its own forecast bias, never a correction toward a limit.
+
+And when the moments themselves are the question, the move is to a bounded functional. There is a
+result in that same literature relating the asymptotic slope of implied volatility at extreme strikes
+to how many moments of the underlying distribution are finite, a number that need not be an integer
+and may be infinite. Its strategy is the transferable part: where a raw quantity diverges, find a
+bounded, estimable functional of the tail whose value is finite exactly there, and let that carry the
+information.
+
+This record's moment ratios are that strategy applied here. A ratio of two windowed moments is
+bounded where each member is not, and the drive-free combinations were chosen for their bias
+behaviour before this parallel was noticed. The parallel is not a priority claim in either direction.
+It is evidence that reparametrising away from a divergent raw quantity, toward a bounded combination,
+is the right genre of answer, reached independently in a field whose divergence comes from a
+different mechanism entirely.
+
+## Bounded truncation in finance
+
+<!-- term-of-art: option pricing and strike price are the finance literature's own names for their subject, not this record's process vocabulary -->
+Option pricing integrates over a strike range it does not choose, so it has had to bound the cost of
+a finite range instead of regularising the density. [Jiang and Tian 2005](../lit/jiang2005.md) bound
+the truncation error and the discretisation error separately, and state the first in terms of the
+local variation in the tails. That is the third distinct response this page now records to one
+problem: astrophysics reparametrises into an orthogonal basis, plasma physics regularises the
+generating distribution, and finance keeps the tail and **bounds the error of not seeing all of it**.
+
+This repository is closest to the third, and differs from it in one way that is worth stating as a
+question and not a claim: their range is imposed by a market and ours is chosen by us, so where
+they bound an error they must accept, we can sweep the variable that causes it. Whether that is an
+advantage or merely a different problem is not settled by anything on this page.
+
+## The plasma resolution of the same divergence
+
+The Holtsmark distribution of the ion microfield in a classical plasma has a large-field tail falling
+as a power slow enough that **its second moment does not exist** either. That community's resolution
+is instructive precisely because it is not ours: they regularise the model, screening the Coulomb
+potential so the microfield distribution decays fast enough for the moments to exist, or they use the
+full functional form and never expand in moments at all. The same move appears in truncated stable
+laws elsewhere, where a cutoff is imposed on the underlying process and not on the observation.
+
+So for this record the plasma case is a contrast and not a precedent. Those fields fix the
+generating distribution. This one keeps the physical model as it is, wings and all, and treats the
+measurement window as the calibrated knob. That is a real difference, and it is worth stating as a
+question and not a claim: it is either the gap this work fills, or a reason to understand why the
+other fields went the other way.
+
 ---
 
 [← Resampling](resampling.md) · *Robustness and influence, 4 of 7* · [Sensitivity analysis →](sensitivity-analysis.md)

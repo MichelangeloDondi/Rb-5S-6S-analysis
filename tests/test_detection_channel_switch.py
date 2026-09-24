@@ -17,8 +17,10 @@ import pytest
 from rb5s6s import twin
 from rb5s6s.amplitudes import predicted_shares
 
-TRUTH = dict(gamma_coll_mhz=0.580779, sigma_laser_mhz=1.560691,
-             transit_fwhm_mhz=0.957477)
+from rb5s6s.reference_point import reference_point  # noqa: E402
+_AP = reference_point()   # F313: the twin's truth is the archive point, read and never typed
+TRUTH = dict(gamma_coll_mhz=_AP["gamma_coll"], sigma_laser_mhz=_AP["sigma_laser"],
+             transit_fwhm_mhz=_AP["transit_fwhm"])
 SEED = 20260905
 
 

@@ -24,9 +24,10 @@ import sys
 import time
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
-OUT = ROOT / "results" / "noiseless_floor.csv"
 sys.path.insert(0, str(ROOT / "scripts"))
 sys.path.insert(0, str(ROOT))
+from rb5s6s.config import RESULTS_DIR as _RESULTS_DIR  # noqa: E402  (F480: results where RB5S6S_RESULTS_DIR points)
+OUT = _RESULTS_DIR / "noiseless_floor.csv"
 
 
 spec = importlib.util.spec_from_file_location("ujc", ROOT / "scripts" / "run_ultra_joint_closure.py")
@@ -41,8 +42,12 @@ BUDGETS = (1200, 6000)
 def main() -> int:
     t0 = time.time()
     m._init()
-    print(f"  world built in {time.time() - t0:.1f}s, {len(m._W['cell'].traces)} traces", flush=True)
-    syn, level, shape = m.inject(m._W["cell"], m._W["ptr"], m.SEED, noise_scale=0.0)
+    # THE CLOSURE BUILDS ITS WORLD PER TRUTH NOW (F481, 2026-09-24): `_W['cell']` and `_W['ptr']` left the
+    # closure module when it moved to `_truth(truth, prior_mean)`, and this producer raised KeyError on its
+    # first line; the injected truth is the grid's own centre, as before.
+    cell, ptr = m._truth(52.0, False)
+    print(f"  world built in {time.time() - t0:.1f}s, {len(cell.traces)} traces", flush=True)
+    syn, level, shape = m.inject(cell, ptr, m.SEED, noise_scale=0.0)
     rows = []
     for nfev in BUDGETS:
         t1 = time.time()

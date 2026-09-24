@@ -131,7 +131,7 @@ def test_a_stated_interval_contains_its_own_point_estimate():
     fixed by interpolating the crossings, and the interpolated result was still
     wrong: [0.0150, 0.0151] on a quantity whose minimum three rows above it in
     the SAME FILE at the SAME KEY read 0.0150 and whose free joint fit read
-    0.0183. Interpolating chi2 linearly understated the width by a factor of 14
+    0.0183 (the value that stood at the time). Interpolating chi2 linearly understated the width by a factor of 14
     (a profile is quadratic about its minimum, so the locally linear variable is
     sqrt(dchi2)), and the 0.01 grid could not locate the minimum to better than
     half a cell. The tell that needs no knowledge of either cause: an interval

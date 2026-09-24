@@ -113,7 +113,7 @@ The dataset's curated 130 °C anchor (the `serves_t130` traces, 225 mW) would
 triple the density lever ($N{\times}15.2\to{\times}48.1$, Alcock), and the lever cross-check
 uses it as a **lever test**: adding it pulls the joint $\beta$ far below the
 cooling-sweep value. The lesson is not "bad block". It is that
-$\gamma_\text{coll}$ **barely grows with density**: it rises only about [1.51](../../results/lever_crosscheck.csv "ref:lever_crosscheck:gamma_rise_factor:70to130")-fold
+$\gamma_\text{coll}$ **barely grows with density**: it rises only about [2.99](../../results/lever_crosscheck.csv "ref:lever_crosscheck:gamma_rise_factor:70to130")-fold
 across a ${\times}48.1$ density span (70→130 °C), and the 130 °C widths sit *on*
 that near-flat trend, whereas a real binary-collision width is *linear* in $N$.
 So the fitted $\gamma_\text{coll}$ is a residual floor, not resolved collisions,
@@ -153,7 +153,7 @@ $\sigma^2=a^2+bV$ then gives $a$ (a floor by construction of the model, though m
 shot-noise, "Fano", term).
 
 The digitiser is not in this budget and the
-measurement is not quantisation-limited: the committed files carry 11.86
+measurement is not quantisation-limited: the committed files carry 11.86 <!-- other-quantity: a bit count -->
 effective bits across their own swing, so the step at the median peak is about
 150 microvolts and its standard deviation about 43, against a fitted floor
 between 1.3 and 15.5 millivolts. That is thirty to three hundred and sixty times
@@ -355,7 +355,7 @@ Whether the window sits in the right place was
 open until it was measured directly: neither clip is active on the dataset (the
 25 MHz cap binds on 0 of 159 canonical traces and the 9 MHz floor on 0 of 159),
 the recorded crossings sit 7.64 to 8.54 fitted widths out against a window edge
-at 3.50, and the constant that is sensitive to the sweep rate in the widening
+at 3.50 <!-- other-quantity: FIT_HALFWIDTH_FWHM_MULT, the fit half-width multiplier, not a detection-budget gap -->, and the constant that is sensitive to the sweep rate in the widening
 direction is the 9 MHz floor rather than the cap
 ([DATA](../DATA.md) §7, [the ruler specification](../notes/ruler_validity_and_trim_prereg.md)
 §G3). *Code:* `linefit.adaptive_halfwidth()`.
@@ -407,14 +407,21 @@ transit railed at zero, $\chi^2 = 5026$). The profile map exposed a **deeper,
 cusp-dominated local minimum**, at $\gamma_\text{coll}\approx0.22$,
 $\sigma_\text{laser}\approx0.46$, transit $\approx1.43$ MHz, i.e. the transit
 width the $w_0\approx43$ µm geometry predicts, at $\chi^2 = 4551$, a
-$\Delta\chi^2\approx475$ preference. The local analysis is therefore anchored
+$\Delta\chi^2\approx472$ preference. The local analysis is therefore anchored
 by a **two-start fit** at the deeper branch, and both branches plus their gap
-are committed (`branch`, `branch_gap` rows). Set beside the accepted prior that
-is a tension the dataset owns rather than resolves: the shape prefers
-$w_0\approx43$ µm where the beamline-lineage measurement puts it at the accepted
-**64 µm**, which is 1.43 MHz of transit width against 0.96 MHz at 130 °C.
+are committed (`branch`, `branch_gap` rows).
+
+Set beside the accepted prior, this
+was, until owner order O44 (2026-09-21), a tension the dataset owned rather
+than resolved: the shape preferred $w_0\approx43$ µm where the beamline-lineage
+measurement had put the accepted prior at **the retired convention**, 1.43 MHz of transit width
+against 0.96 MHz at 130 °C. O44 retires that lineage transfer for this bench's own
+bore-limited calculation, **42.38 µm**, [1.4459](../../results/transition_ladder.csv "ref:transition_ladder:6S:transit_fwhm") MHz of transit width at 130 °C, within
+a few per cent of what the shape alone preferred, so the tension this
+section was built around has largely dissolved, not merely shifted.
 Taken at face value the shape data
-*prefer* the physical decomposition (real transit cusp, narrow laser).
+*prefer* the physical decomposition (real transit cusp, narrow laser), and the
+calculated prior now agrees with that preference instead of standing against it.
 
 But
 $\Delta\chi^2 = 475$ over about 4400 points is a $\chi^2$ change of about 10%
@@ -428,12 +435,12 @@ At the anchored branch, the covariance (SVD of the Jacobian,
 
 - the strongest trade-off is $\gamma_\text{coll}\leftrightarrow$ transit
   ($\approx-0.97$): the two cusp-generating widths swap almost freely.
-- the **condition number** of the width-block *covariance* is $\approx456$,
+- the **condition number** of the width-block *covariance* is $\approx325$,
   which is strongly ill-conditioned.
 - the **eigen-directions**: the best-constrained combination (a
   total-width-like sum, mostly $\gamma_\text{coll}$ + transit) is pinned to
   $1\sigma\approx0.003$ MHz, while the worst-constrained direction (dominated
-  by $\sigma_\text{laser}$) is $\approx0.07$ MHz, about **20× looser**.
+  by $\sigma_\text{laser}$) is $\approx0.06$ MHz, about **20× looser**.
 
 The global map (the standard referee demand: profile, not just covariance)
 fixes ($\gamma_\text{coll}$, $\sigma_\text{laser}$) on a grid and re-minimises
@@ -441,20 +448,20 @@ $\chi^2$ over transit and every per-trace nuisance at each point (variable
 projection, each cell fit from two independent warm-start lineages, with a
 fresh-seed audit on every fifth cell). Its certifications, all committed: audit
 gains $\le0.05$ (no warm-start trapping) and a **straight** valley floor
-(RMS 0.004 MHz against a 0.020 MHz grid step) whose ridge slope (+0.057) is
-compared against the covariance ellipse's prediction (+0.072), since in the
+(RMS 0.0014 MHz against a 0.019 MHz grid step) whose ridge slope (+0.093) is
+compared against the covariance ellipse's prediction (+0.123), since in the
 Gaussian limit the profile contours are exactly the marginal covariance
 ellipse.
 
 **How much weight that comparison carries, and it is less than the word
 agreement suggests.** The two numbers share a sign and an order of magnitude.
-The prediction sits 26 per cent above the measurement, and both moved when the
+The prediction sits 32 per cent above the measurement, and both moved when the
 arithmetic environment changed, the slope by 18 per cent and the prediction by
 37. A pair that both moves and still tracks to this tolerance certifies the
 shape of the valley, not the value of either number.
 
 The whole neighbourhood moves together under an environment change: the
-condition number and the valley-floor RMS are now [456.2](../../results/identifiability.csv "ref:identifiability:condition_number:width_block") and 0.0044 against the
+condition number and the valley-floor RMS are now [325.3](../../results/identifiability.csv "ref:identifiability:condition_number:width_block") and 0.0014 against the
 pre-migration 389.7 and 0.0032, and the map-minimum certification changed
 character, from a free fit that was the map's optimum to a zoom map that finds
 a point 0.12 below it. The pre-migration values and the reason they moved are
@@ -622,17 +629,27 @@ detects real sharing structure when the data carry the power the dataset lacks.
 
 ### 4.14 Sufficiency, and the one condition it rests on
 
+<!-- C6b: re-measured as a moment (A149) -->
+The duel below compares the profile fit against odd cumulants. Its re-run on
+the record's central moments is C6b's own work, and what follows still
+describes the odd-cumulant version as committed.
+
 **The theorem, and its scope.** The full-profile likelihood is
 sufficient, so no statistic computed from the same trace carries information
 it lacks. What that buys operationally is asymptotic efficiency among
 regular estimators. It does **not** promise the fit the smallest
 mean-squared error against a biased competitor at finite samples, and
-`results/estimator_duel.csv` shows the cumulant route winning exactly there
-(model correct, at the duel's injected $S_0 = 0.35$ MHz: root-mean-square errors
-of 0.1068 MHz for the cumulant route and 0.2069 for the fit, both from the two
-rows' own notes, with spreads of
-[0.0102](../../results/estimator_duel.csv "ref:estimator_duel:bias_odd_cumulants:S0_0.35_clean:err") and
-[0.2030](../../results/estimator_duel.csv "ref:estimator_duel:bias_profile_mle:S0_0.35_clean:err") MHz).
+`results/estimator_duel.csv` reads how the two routes make their errors at
+the duel's injected $S_0 = 0.35$ MHz with the model correct: root-mean-square
+errors of 0.0999 MHz for the fit and 0.1155 MHz for the cumulant route, both
+from the two rows' own notes, with biases of
+[-0.0364](../../results/estimator_duel.csv "ref:estimator_duel:bias_profile_mle:S0_0.35_clean") and
+[-0.1150](../../results/estimator_duel.csv "ref:estimator_duel:bias_odd_cumulants:S0_0.35_clean") MHz and spreads of
+[0.0930](../../results/estimator_duel.csv "ref:estimator_duel:bias_profile_mle:S0_0.35_clean:err") and
+[0.0108](../../results/estimator_duel.csv "ref:estimator_duel:bias_odd_cumulants:S0_0.35_clean:err") MHz, so the cumulant route's error
+is almost all bias and the fit's mostly spread.
+The sharper contrast the theorem leaves room for shows up once the defect is
+added, below.
 
 **The condition.** Efficiency claims assume the model is right, and
 [`results/fit_window_scan.csv`](../../results/fit_window_scan.csv) shows this
@@ -646,14 +663,19 @@ model does not carry is absorbed by the free width while the core, where
 the counts and therefore the misspecified fit's compromise live, stays
 well described.
 
-Two structural facts favthe moments, and both carry their limits.
-Parity: a symmetric kernel contributes nothing to a **self-centred** odd
-moment, the Lorentzian to a truncation-limited remainder
+Two structural facts favour the cumulant route, and both carry their limits.
+Parity: a symmetric kernel contributes nothing to a **self-centred** third
+moment or fifth cumulant, the Lorentzian only a truncation-limited remainder
 ([the condition](../wiki/third-cumulant.md)). The remainder is a regime,
-not a licence: the `kappa3_sigma_blindness_pct` row measures the
-self-centred $\kappa_3$ moving 110 per cent when the laser width is taken
-fourfold to 6.4 MHz against the same $\pm 8$ MHz window, because a kernel
-comparable to the window truncates past what parity protects. The
+not a licence, and the `kappa3_sigma_blindness_pct` row reads which regime
+the duel sits in: the self-centred third moment moves
+[2.0](../../results/estimator_duel.csv "ref:estimator_duel:kappa3_sigma_blindness_pct:S0_3") per cent
+when the laser width is taken fourfold, from 0.4745 to 1.898 MHz, against the
+same $\pm 8$ MHz window, so a kernel that far inside the window stays inside
+what parity protects, and one comparable to the window, which would truncate
+past it, is not measured here.
+
+The
 earlier lab-frame and mode-centred variants are emitted beside it as
 rows, so the earlier values stay reproducible. What the duel's
 estimator actually leans on is the joint likelihood over
@@ -670,25 +692,28 @@ asymmetric defect the fitter lacks.
 
 | estimator | model correct | with the defect | shift |
 |---|---|---|---|
-| profile likelihood | $-0.023 \pm 0.036$ | $-2.145 \pm 0.085$ | 2.39 |
-| $\kappa_3, \kappa_5$ | $-0.957 \pm 0.035$ | $-0.990 \pm 0.045$ | 0.033 |
+| profile likelihood | [-0.0139](../../results/estimator_duel.csv "ref:estimator_duel:bias_profile_mle:S0_3_clean") ± [0.0071](../../results/estimator_duel.csv "ref:estimator_duel:bias_profile_mle:S0_3_clean:err") | [0.2166](../../results/estimator_duel.csv "ref:estimator_duel:bias_profile_mle:S0_3_defect") ± [0.0074](../../results/estimator_duel.csv "ref:estimator_duel:bias_profile_mle:S0_3_defect:err") | [0.2305](../../results/estimator_duel.csv "ref:estimator_duel:defect_sensitivity_profile_mle:S0_3") |
+| $\kappa_3, \kappa_5$ | [-0.9258](../../results/estimator_duel.csv "ref:estimator_duel:bias_odd_cumulants:S0_3_clean") ± [0.0090](../../results/estimator_duel.csv "ref:estimator_duel:bias_odd_cumulants:S0_3_clean:err") | [-0.8324](../../results/estimator_duel.csv "ref:estimator_duel:bias_odd_cumulants:S0_3_defect") ± [0.0834](../../results/estimator_duel.csv "ref:estimator_duel:bias_odd_cumulants:S0_3_defect:err") | [0.0934](../../results/estimator_duel.csv "ref:estimator_duel:defect_sensitivity_odd_cumulants:S0_3") |
 
 Bias in MHz, injected $S_0 = 3$ MHz. The $\pm$ is the spread over 120
 realisations, not the bias's own error, which is $\sqrt{120}$ smaller: the
-fit's $-0.023$ is seven of its standard errors from zero, small but real.
+fit's bias is about 21 of its standard errors from zero, small but real.
 With the model correct the profile fit is the better estimator at this
-$S_0$. With the defect its bias moves by 2.39 MHz and the cumulant route's
-by 0.033, a factor of 65: the fit is the more efficient estimator and the
-more fragile one.
+$S_0$. With the defect its bias moves by
+[0.2305](../../results/estimator_duel.csv "ref:estimator_duel:defect_sensitivity_profile_mle:S0_3") MHz
+and the cumulant route's by
+[0.0934](../../results/estimator_duel.csv "ref:estimator_duel:defect_sensitivity_odd_cumulants:S0_3"),
+a factor of [2.47](../../results/estimator_duel.csv "ref:expr:{estimator_duel:defect_sensitivity_profile_mle:S0_3} / {estimator_duel:defect_sensitivity_odd_cumulants:S0_3}"):
+the fit is the more efficient estimator and the more fragile one.
 
 **Three cautions before anyone uses this.** The cumulant route's standing
 bias is not the laser width. A control row repeats it with the true
-$\sigma$ and gets $-0.978$ against $-0.990$, and the remainder is
+$\sigma$ and gets [-0.7429](../../results/estimator_duel.csv "ref:estimator_duel:bias_odd_cumulants_correct_sigma:S0_3_defect") against [-0.8324](../../results/estimator_duel.csv "ref:estimator_duel:bias_odd_cumulants:S0_3_defect"), and the remainder is
 consistent with window placement, though no committed row yet isolates
 placement from the $\gamma$ float, so that attribution is plausible rather
-than measured. At the duel's injected 0.35 MHz, near the archive's predicted $S_0$ of [0.348](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred:shared") MHz (an envelope, not a measurement), the picture inverts:
-the fit's spread grows to [0.2030](../../results/estimator_duel.csv "ref:estimator_duel:bias_profile_mle:S0_0.35_clean:err") where the cumulants' is [0.0102](../../results/estimator_duel.csv "ref:estimator_duel:bias_odd_cumulants:S0_0.35_clean:err") (the same producer's cells, re-read with it), and the two
-gap between the defect sensitivities narrows from a factor of 23 to a factor of 1.9, 0.0798 against 0.1503. And the twin is
+than measured. At the duel's other injected point, 0.35 MHz, below the archive's predicted $S_0$ of [0.729](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred:shared") MHz at the calculated waist (an envelope, not a measurement), the spreads invert:
+the fit's grows to [0.0930](../../results/estimator_duel.csv "ref:estimator_duel:bias_profile_mle:S0_0.35_clean:err") where the cumulant route's is [0.0108](../../results/estimator_duel.csv "ref:estimator_duel:bias_odd_cumulants:S0_0.35_clean:err") (the same producer's cells), and the
+gap between the defect sensitivities here is a factor of [4.36](../../results/estimator_duel.csv "ref:expr:{estimator_duel:defect_sensitivity_profile_mle:S0_0.35} / {estimator_duel:defect_sensitivity_odd_cumulants:S0_0.35}"), [0.0705](../../results/estimator_duel.csv "ref:estimator_duel:defect_sensitivity_odd_cumulants:S0_0.35") against [0.3074](../../results/estimator_duel.csv "ref:estimator_duel:defect_sensitivity_profile_mle:S0_0.35"). And the twin is
 one defect shape with white noise and no baseline, so it speaks to a
 mechanism and not to this dataset.
 
@@ -720,11 +745,49 @@ higher-statistics injection run in which the Student-t upper limit missed the
 injected $\beta$ more often than five times in a hundred would retire the rule
 rather than qualify it.
 
+### 4.15 The moment block's likelihood
+
+`rb5s6s/moment_coords.py` is the coordinate and likelihood machinery for the windowed-moment programme [chapter 11](11_the_window_limits.md) builds and the fits of this chapter do not yet use. It is designed and tested on its own, against closed forms and synthetic lines (`tests/test_moment_coords.py`, no repository data), and nothing under `rb5s6s/` imports it yet and no `results/` producer calls it. What follows is read off the module as it stands today, checked against the literature it rests on, ahead of the wiring that is C6c's own work.
+
+**Its name.** The block's mean is the forward model's own predicted value of each admitted coordinate, supplied by whatever model is being fit, and its covariance and its bias are read off the twin at a fixed grid of truths, with a bias carried as a function of the parameter only where the twin shows it moving smoothly across that grid. Nothing about the covariance or the bias is re-simulated once a trial parameter is proposed: `moment_block_nll(observed, predicted, cov, ...)` takes the predicted vector as a plain argument and never calls a simulator to obtain it. That structure is a minimum-distance block in the generalised method of moments' sense, and not a synthetic likelihood, and the trial loop is the difference.
+
+Wood's synthetic likelihood assumes the summary vector is Gaussian and, at every trial parameter, simulates fresh replicate data sets to estimate its mean and covariance there before evaluating the likelihood ([wood2010](../lit/wood2010.md), its Eq. 2 and the unnumbered log-likelihood display, p. 1103). The Bayesian form of [price2018](../lit/price2018.md) keeps that same trial-point simulation inside an MCMC step, `mu_n(theta)` and `Sigma_n(theta)` built from `n` replicates drawn at that `theta` on every proposal (its Eq. 2-3, p. 2-3). Only a covariance re-simulated along `theta` would turn this block into one of those two, and their asymptotics are not this block's.
+
+**Its weight.** The covariance is the plain sample covariance of the admitted coordinates over the twin's replicas, needing only more replicas than coordinates. Two corrections from the literature bind it before it is wired. Hartlap, Simon and Schneider's debiased inverse, `alpha = (n_rep - p - 2) / (n_rep - 1)` applied to the naive inverse sample covariance, unbiases the inverse of an unshrunk Wishart sample covariance and nothing else ([hartlap2007](../lit/hartlap2007.md), its Eq. 17 and Sect. 3.1). At this record's own scale, 500 replicas and 50 admitted coordinates, `hartlap_factor(500, 50)` returns 0.898, so the naive inverse over-states the precision by a factor of 1.114 (`rb5s6s.moment_coords.hartlap_factor`).
+
+But Sellentin and Heavens show that debiasing a point estimate of the inverse is not the same as carrying its own randomness. Marginalising the true covariance against its inverse-Wishart posterior given the sample covariance gives a modified multivariate-t likelihood at the same evaluation cost as the Gaussian, needing only `n_rep > p` ([sellentin2016](../lit/sellentin2016.md), its Eq. 12-13), and its own conclusion recommends that form for parameter inference wherever a covariance matrix is estimated from simulations, without a further condition on how large `n_rep` is relative to `p` (its Sect. 5, p. 5). `moment_block_nll`'s default is this multivariate-t form, `form="sellentin_heavens"`, and it takes no Hartlap factor of its own. The Hartlap-scaled Gaussian stays as the named alternative, `form="hartlap"`.
+
+A shrinkage toward the diagonal is available as an explicit opt-in, `shrinkage=True`, for a regime with too many coordinates for the plain sample covariance to invert usefully at all. It borrows Ledoit and Wolf's general argument, that a convex combination of the sample covariance with a lower-variance target has uniformly smaller expected loss and a bounded condition number even where the sample covariance is singular ([ledoit2004](../lit/ledoit2004.md), its Theorem 3.4-3.5), but its actual target in this repository, with no optional dependency installed, is a hand-rolled Schafer-Strimmer-style estimator that keeps the sample diagonal exact and shrinks only the off-diagonal entries, which is not the scaled-identity target Ledoit and Wolf's own theorems are proved for.
+
+So the citation is for the shrinkage principle, and not a claim that those two theorems cover this exact construction. Its precision carries no Hartlap factor at all, since Hartlap's factor unbiases the inverse of an unshrunk Wishart matrix and a shrunk covariance is biased toward its target by construction (`ReplicaCovariance.hartlap` reads `None` under shrinkage). A shrunk precision's coverage is calibrated on the twin's own replicas, never assumed from either paper.
+
+Downstream of the likelihood, `dodelson_schneider_factor` carries a separate, later inflation of a fitted parameter's own covariance, because the data covariance it was fit against is in turn a noisy estimate from a finite number of replicas ([dodelson2013](../lit/dodelson2013.md), its Eq. 27-28). At 500 replicas, 50 coordinates and ten fitted parameters, `dodelson_schneider_factor(500, 50, 10)` returns 1.089, and at five parameters 1.101 (`rb5s6s.moment_coords.dodelson_schneider_factor`), bracketing the paper's own leading-order estimate of 1.10 from either side and sitting inside the 5 to 15 per cent inflation its Table I reports for three real surveys at similarly sized replica-to-coordinate ratios. This factor stacks with whichever of the two likelihood forms above produced the fit, and replaces neither.
+
+**What the twin's bias is, and what it is not.** Newey and Smith split a minimum-distance estimator's own leading bias into a curvature term, from the model's own nonlinearity in its parameters, and a weight term, from the correlation of an estimated weight matrix with the moments it weights, the second vanishing when the weight is estimated independently of the data being fit ([newey2004](../lit/newey2004.md), its Theorem 4.6). The record's covariance comes from twin replicas independent of the trace being fit, the case the weight term vanishes for, and the weight term is driven by the third moments of the coordinates themselves.
+
+A raw windowed moment is linear in the trace, so with Gaussian noise its third moments vanish and the term with them. The ratios and normalised combinations the programme favours are not linear, and for them the term returns and can grow with the number of admitted coordinates, which is the same argument this record already makes for choosing coordinates by their twin bias per window instead of accumulating every one a catalogue can build.
+
+Barlow and Beeston's objection to subtracting a bias measured on a finite Monte Carlo template is a different bias from the one the twin subtracts, and naming the difference is the whole of the answer. Their bias comes from noise in a finite simulated template and shrinks as the simulation grows, so their own worked example argues a simulation large enough to measure and subtract it would be better spent inside the fit itself, a plain binned likelihood biased to a mean of 0.39 against a true 0.333 at about ten Monte Carlo entries per bin ([barlow1993](../lit/barlow1993.md), its Sect. 8).
+
+The twin's bias is the estimator's own finite-sample bias at the data's noise level, present even with a noiseless, infinitely resolved model, which is what rule W1(a) and W1(b) measure per coordinate and what this record's bias-and-subtract convention exists to remove. The two are not in competition. A twin template drawn too thin to trust would add Barlow and Beeston's bias on top of the one already being subtracted, and neither the module nor its tests yet check that the twin's own replica count sits past that floor.
+
+What the fit must add when the block is wired comes from four results of the estimator literature, and each changes a step of the wiring, not a sentence of it. Weights estimated from the same data bias a minimum-distance estimate toward zero, and equal weighting usually has the smaller root-mean-square error ([altonji1996](../lit/altonji1996.md)), so an equal-weight arm runs beside the weighted one and the twin decides between them. When no parameter reproduces the observed summaries, a synthetic likelihood can pile up on a boundary, split, flatten or settle confidently on a wrong value, and inflating each summary's variance separately both repairs it and names the summary at fault ([frazier2024](../lit/frazier2024.md)).
+
+The bias is corrected by inverting the finite-sample binding function on the twin's grid of truths, and not by subtracting it at the fitted point ([gourieroux2000](../lit/gourieroux2000.md)). A moment set is at most as efficient as the likelihood whose score it spans ([gallant1996](../lit/gallant1996.md)), so the score of a fast auxiliary line model is the comparison arm for the list of moments.
+
+One rule the literature does not state binds as well. The trace block and a moment block computed from the same trace are never added as independent terms, because that counts the trace twice and narrows every interval. One likelihood spans independent data: the traces, the sessions and the conditions. Within a trace the choice is one representation, or one synthetic likelihood carrying the twin's covariance between the two blocks, or the two estimates kept apart with their disagreement read as a test of the model ([gourieroux1993](../lit/gourieroux1993.md)).
+
+*Code:* `rb5s6s/moment_coords.py`, closure `tests/test_moment_coords.py`. No producer and no results CSV yet, because the block is not wired into a fit (C6c).
+
 ## 5. The estimator's own biases
 
 Everything above concerns what the data can say. This section concerns what the
 estimator adds on its own, because two distinct finite-sample biases sit in the
 machinery and conflating them has cost this record time.
+
+The record's own vector is central moments, not cumulants: a central moment is
+positive at every even order and linear under mixture, and at second and third
+order, where the two coincide exactly, the difference below does not arise.
 
 A cumulant estimated from a finite sample is biased, and the bias appears as
 structure and not as scatter. The second cumulant's correction is the

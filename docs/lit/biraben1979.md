@@ -64,13 +64,16 @@ collection geometry is the thing that decides whether it applies.**
 | w0 | L / z_R | the paper's "small compared to" |
 |---|---|---|
 | 128 um | 0.065 | holds |
-| **64 um, the archive** | **0.261** | holds |
+| **42.38 um, the archive** | **0.594** | marginal, close to the 40 um row |
 | 40 um | 0.667 | marginal |
 | 24 um | 1.853 | violated |
 | **16 um, the campaign's tightest** | **4.169** | violated by an order of magnitude |
 
-The archive sits inside the licence. The campaign's tight-waist
-configurations do not, and they use the same analytic kernel, since
+The archive now sits at the marginal edge of the licence, no longer
+well inside it, since the calculated 42.38 um central waist (O44,
+2026-09-21) more than doubles L / z_R, on the Gaussian Rayleigh range, against the retired waist convention. The
+campaign's tighter-waist configurations do not sit inside it at all, and they
+use the same analytic kernel, since
 `composite_profile` defaults to `transit_kind='exp'` and the forecast path
 calls it. `transit_mc.py` is the module built for exactly this, a Monte Carlo
 over the full `w(z)` that "builds in" the idealisation, and it is not on the

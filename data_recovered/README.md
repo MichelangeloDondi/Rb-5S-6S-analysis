@@ -20,7 +20,7 @@ Match by hash, never by name: nine of the recovered names collide with
 series stayed hidden until content hashing exposed it. Filenames here carry
 an `__<md5-8>` suffix for that reason.
 
-The complete timestamped backup (438 files including the campaign-morning
+The complete timestamped backup (438 files including the campaign-morning <!-- other-quantity: a file count -->
 session and the 4 July session, the latter's evening run made on the LeCroy
 scope) is preserved verbatim as a release asset, so see the release notes
 and addendum 10 for the backup's hash. The results that *use* this layer:

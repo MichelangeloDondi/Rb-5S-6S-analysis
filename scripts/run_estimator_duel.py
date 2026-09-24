@@ -46,16 +46,18 @@ sys.path.insert(0, str(ROOT / "scripts"))
 from _producer_lock import take_producer_lock                     # noqa: E402
 from rb5s6s import config as C                                    # noqa: E402
 from rb5s6s._compat import trapezoid as tz                        # noqa: E402
-from rb5s6s.constants import W0_MEASURED_M, transit_fwhm_from_w0  # noqa: E402
+from rb5s6s.constants import W0_CENTRAL_M, transit_fwhm_from_w0  # noqa: E402
 from rb5s6s.lineshape import model_profile                        # noqa: E402
 
 OUT = C.RESULTS_DIR / "estimator_duel.csv"
 
 # MHz, the campaign twin's own widths. The transit is now the twin's, where
-# a retired 1.8 stood here (2026-09-04): the record's transit at its measured
-# waist and 130 C is 0.9575, and no committed row ever held 1.8.
-GAMMA, SIGMA = 0.55, 1.6
-TRANSIT = transit_fwhm_from_w0(W0_MEASURED_M, T_C=130.0)
+# a retired 1.8 stood here (2026-09-04): the record's transit at the waist
+# convention of that day and 130 C was 0.9575, and no committed row ever held 1.8.
+from rb5s6s.reference_point import reference_point  # noqa: E402
+_AP = reference_point()   # F313: the archive's line, read from the committed fit and the waist, never typed
+GAMMA, SIGMA = _AP["gamma_coll"], _AP["sigma_laser"]
+TRANSIT = transit_fwhm_from_w0(W0_CENTRAL_M, T_C=130.0)
 SIGMA_HANDED_TO_B = 2.4                     # deliberately 50% wrong, to show parity
 NU = np.linspace(-20, 20, 2001)
 W1, W2 = 8.0, 16.0                          # the two moment windows, MHz
@@ -174,9 +176,9 @@ def main() -> int:
     def _k3_centred(sigma):
         # MEAN-centred by fixed point on a fine local grid, with the
         # earlier centrings emitted as rows below so every retracted
-        # number stays reproducible: mean-centred 39.7, lab-frame 4.4,
-        # mode-on-trace-grid 248.4 (all per cent, this sweep, the rows'
-        # own values). The first version used the mode and shipped an
+        # number stays reproducible (the mean-centred, lab-frame and
+        # mode-on-trace-grid rows, each in per cent, read from the CSV and
+        # never typed here). The first version used the mode and shipped an
         # irreproducible figure; mode and mean differ by O(S0), and that
         # offset leaks kappa_1 into kappa_3. The trio shares a four-pass
         # fixed point on a 40001-point grid, stated here because a sister

@@ -1,4 +1,4 @@
-*Chapter 1 of 9 of [the big picture](../BIG_PICTURE.md)*
+*Chapter 1 of 10 of [the big picture](../BIG_PICTURE.md)*
 
 ## 1. Motivation for characterising the line
 
@@ -60,7 +60,7 @@ The 7S row is also not the 7S number §1.4 anchors on. Zameroski 2014 measured
 the same 760 nm line at 129 ± 13 kHz/mTorr, about 0.0054 in the units of the
 third column, a factor of 2.6 below Wang's, and §1.4 converts it at his own
 429 K rather than the 423 K of the table above, that 429 being the
-effective temperature of a slope fitted over 353 to 438 K and not a single
+effective temperature of a slope fitted over 353 to 438 K and not a single <!-- other-quantity: a temperature -->
 cell, which is a difference of a few percent and none of the factor of 2.6
 ([FUTURE_TRANSITIONS_titsapph.md](../FUTURE_TRANSITIONS_titsapph.md) §3.2). The
 one quantity the expectation in §1.4 rides on therefore has two published

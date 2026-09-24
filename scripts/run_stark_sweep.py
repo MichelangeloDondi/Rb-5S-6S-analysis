@@ -9,8 +9,8 @@ powers) with ONE shared kappa and a per-peak core width (rb5s6s.stark). In the
 constrained ONLY through the ramp's width broadening (~S0^2) -- a weak handle,
 hence a one-sided UPPER BOUND, not a measurement. It brackets the predicted S0
 and validates the fixed-lock session method; a fixed lock would measure the pull ~S0
-directly (and at a smaller waist, S0 ~16x larger: 0.35 -> 5.56 MHz at
-225 mW, w0 64 -> 16 um).
+directly (and at a smaller waist, S0 ~16x larger: up to 5.56 MHz at
+225 mW and 16 um, from the retired convention's smaller value).
 
 Writes results/stark_sweep.csv. Reads results/power_sweep.csv (run M6 first).
 
@@ -97,9 +97,9 @@ def main() -> int:
         # instrument calibration, and a 95 per cent significance was computed
         # against them.
         w.writerow(["kappa_pred", "shared", f"{res['kappa_pred']:.3f}", "",
-                    f"MHz per W: the predicted coefficient behind S0_225mW_pred, one function (stark.kappa_pred_per_watt) at this record's polarizability with the aperture's on-axis factor (w0={C.W0_MEASURED_M*1e6:.0f}um convention, rho={C.RHO_RETRO}). ENVELOPE for the reasons the next row gives"])
+                    f"MHz per W: the predicted coefficient behind S0_225mW_pred, one function (stark.kappa_pred_per_watt) at this record's polarizability with the aperture's on-axis factor (w0={C.W0_CENTRAL_M*1e6:.0f}um convention, rho={C.RHO_RETRO}). ENVELOPE for the reasons the next row gives"])
         w.writerow(["S0_225mW_pred", "shared", f"{res['S0_225_pred']:.3f}", "",
-                    f"predicted S0 at 225 mW (w0={C.W0_MEASURED_M*1e6:.0f}um prior, rho={C.RHO_RETRO}). ENVELOPE: conditional on an effective waist not measured in the cell and on an assumed retro ratio, so its band is an envelope over two opposite vertices of the +-1 sigma box and NOT a sigma band, and a sigma distance measured from it is not a sigma"])
+                    f"predicted S0 at 225 mW (w0={C.W0_CENTRAL_M*1e6:.0f}um prior, rho={C.RHO_RETRO}). ENVELOPE: conditional on an effective waist not measured in the cell and on an assumed retro ratio, so its band is an envelope over two opposite vertices of the +-1 sigma box and NOT a sigma band, and a sigma distance measured from it is not a sigma"])
         w.writerow(["S0_225mW_pred_lo", "shared", f"{res['S0_225_pred_lo']:.3f}", "",
                     f"SENSITIVITY ANCHOR, not a confidence bound: S0 re-evaluated at w0={C.W0_BAND_M[1]*1e6:.0f}um, rho={C.RHO_RETRO-C.RHO_RETRO_ERR:.2f}. Calling this a band edge turned a sensitivity scan into an interval by nomenclature alone"])
         w.writerow(["S0_225mW_pred_hi", "shared", f"{res['S0_225_pred_hi']:.3f}", "",

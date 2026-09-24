@@ -45,8 +45,9 @@ sizes a nanofibre candidate alongside this vapour cell:
 | evanescent decay length | 543 to 732 nm amplitude, 312 nm intensity at the central diameter | the atom-surface distance scale. Solved from the diameter, not assumed |
 | effective mode area | [0.615](../../results/guided_mode_tables.csv "ref:guided_mode_tables:mode_solve_400nm:mode_area_azimuthal_mean") µm² | the intensity a given power makes. P divided by the azimuthally averaged flux at the surface. The peak convention gives the smaller area, [0.489](../../results/guided_mode_tables.csv "ref:guided_mode_tables:mode_solve_400nm:mode_area_peak"), so the number is not quotable without its convention. Earlier values in HISTORY |
 
-The same file gives the cell's effective intensity as 6.784e7 W per square
-metre, with a 0.348 MHz shift at 225 mW. A mode area below a square micron
+The same file gives the cell's effective intensity as 1.547e8 W per square
+metre, with a 0.821 MHz shift at 225 mW (the archive's own 42.38 µm waist, owner order O44,
+2026-09-21). A mode area below a square micron
 reaches that intensity at microwatts.
 
 **How the area is settled.** The fields are built in
@@ -66,7 +67,7 @@ times the data moving the width-width correlation by 0.0000.
 
 Transit broadening is set by how long an atom stays in the light: a thermal
 velocity crossing the beam waist in a cell, a fixed geometry in a guide. The
-cell's contribution at 130 C is 0.9575 MHz and cannot be turned off. In a
+cell's contribution at 130 C is [1.446](../../results/onf_candidate.csv "ref:onf_candidate:transit_cell_130C:") MHz and cannot be turned off. In a
 guide it becomes a knob, an orthogonal lever on the degeneracy.
 
 The knobs are concrete: a two-colour trap turned on or off with its colour

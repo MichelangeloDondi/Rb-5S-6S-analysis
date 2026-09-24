@@ -36,8 +36,8 @@ committed sweep rate:
 | campaign morning, all 26, with a free offset per window setting | 4.83 |
 | 4 July evening session, 46 traces, 180 mW contrast | 1.35 <!-- other-quantity: a centre contrast of the evening session, not a leave-one-out bracket --> |
 
-The width channel's bound is 1.147 MHz/W and the prediction is 1.545, so two of
-those configurations would be worth having. The model is calibrated: it forecasts
+The width channel's bound is [0.810](../../results/stark_joint.csv "ref:stark_joint:kappa_ub95:primary") MHz/W and the prediction is [3.241](../../results/stark_joint.csv "ref:stark_joint:kappa_pred:prediction"), so two of
+those configurations would be worth having against the prediction. The model is calibrated: it forecasts
 3.39 for a campaign epoch and M27's three epochs returned 1.72, 2.94 and 3.75.
 
 ## The campaign: the power order is monotone, and that is the whole problem
@@ -58,7 +58,7 @@ addendum 29. Its drift prior is directional, +0.016 +/- 0.009 MHz/min, and the
 that sign, leaving a two-sided bound of about 0.02 MHz/min. Refitting on the
 sign-undetermined prior gives +6.6 +/- 3.4 rather than +4.8 +/- 2.4 MHz/W,
 so the significance is unchanged at 1.95 sigma against 2.00 and the bound
-loosens to 12.21 MHz/W, 10.6 times weaker than the width channel. The
+loosens to 12.21 MHz/W, about 11.0 times weaker than the width channel's [0.810](../../results/stark_joint.csv "ref:stark_joint:kappa_ub95:primary") MHz/W. The
 direction is the unfavourable one and it strengthens rather than weakens
 everything below, since the channel is closed here on grounds that never
 involve the prior.

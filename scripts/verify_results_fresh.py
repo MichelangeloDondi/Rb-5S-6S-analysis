@@ -55,6 +55,7 @@ CHEAP = {
     # the freshness canary that runs without --all.
     "run_moment_admission": ["moment_admission.csv"],
     "run_beta_self_theory": ["beta_self_theory.csv"],   # ~1 s, no data read
+    "run_ladder_terms": ["ladder_terms.csv"],   # ~1 s, reads two committed CSVs and the density law
     "run_density_laws": ["density_laws.csv"],
     "run_four_peak_contrasts": ["four_peak_contrasts.csv"],
     "run_detection_budget": ["detection_budget.csv"],
@@ -565,7 +566,7 @@ _EXPECTED_INSTABILITY = {
     ),
     ("identifiability_profile.csv", "*"): (
         "2026-08-19, three runs. The per-cell profile map of the same surface, "
-        "1857 cells, a different one moving each run. The bound the map "
+        "1857 cells, a different one moving each run. The bound the map "  # <!-- other-quantity: a count of profile-map cells, not the kernel_k5 headroom -->
         "delivers is stable; individual cells are not."
     ),
 }

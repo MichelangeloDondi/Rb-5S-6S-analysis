@@ -92,6 +92,7 @@ import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
+from rb5s6s.config import RESULTS_DIR as _RESULTS_DIR  # noqa: E402  (F480: results where RB5S6S_RESULTS_DIR points)
 
 QP = Path(os.environ.get(
     "RB5S6S_SESSION_20250717_DIR", "~/rb-2025-sessions/pilot")).expanduser()
@@ -99,7 +100,7 @@ QH = Path(os.environ.get(
     "RB5S6S_SESSION_20250704_DIR", "~/rb-2025-sessions/prehistory")).expanduser()
 TOOTH_SPACING_LASER_MHZ = 6.25   # EOM 12.5 MHz tank, laser axis = Omega/2
 RATE_MHZ_MS = float(next(csv.DictReader(
-    open(ROOT / "results" / "ruler_campaign.csv")))["rate_laser"])
+    open(_RESULTS_DIR / "ruler_campaign.csv")))["rate_laser"])
 CAMPAIGN_TOOTH_MS = TOOTH_SPACING_LASER_MHZ / RATE_MHZ_MS
 # the campaign-morning day's own Def-comb ACF period (check 3)
 PILOT_TOOTH_MS = 144.2
@@ -224,7 +225,7 @@ def pilot_thermometry() -> None:
     pm = float(wid.mean())
     pse = float(wid.std(ddof=1) / np.sqrt(len(wid)))
 
-    d = pd.read_csv(ROOT / "results" / "linefit_conditions.csv")
+    d = pd.read_csv(_RESULTS_DIR / "linefit_conditions.csv")
     c = d[(d.peak == 4192) & ((d.role == "t_sweep")
                               | ((d.role == "p_sweep") & (d["T"] == 130)))]
     g = c.groupby("T").agg(w=("total_fwhm", "mean"), err=("total_fwhm_err", "mean"),
@@ -250,7 +251,7 @@ def pilot_thermometry() -> None:
 
     A = pd.DataFrame(amps, columns=["mW", "amp"])
     pl = float(np.median(A.amp / (A.mW / 100.0) ** 2))
-    q = pd.read_csv(ROOT / "results" / "qc_metrics.csv")
+    q = pd.read_csv(_RESULTS_DIR / "qc_metrics.csv")
     q = q[q.peak == 4192]
     gp = q[(q.role == "p_sweep") & (q.temperature_C == 130)].dropna(subset=["power_mW"])
     cp = float(np.median(gp.height_v / (gp.power_mW / 100.0) ** 2))

@@ -51,8 +51,11 @@ Matrix elements (reduced E1, atomic units) and their sources:
                                       lineage): 4.1462(82), 6.048(13),
                                       9.720(25), 13.645(36), 0.992(18),
                                       1.540(25), 0.3936(54), 0.6285(96)
-  6S core    9.1(5)                   Safronova, Williams & Clark, PRA 69,
-                                      022509 (2004); Arora et al. 2007
+  6S core    9.1(5)                   9.1 is the RPA value Safronova, Williams
+                                      & Clark, PRA 69, 022509 (2004) print (p. 6),
+                                      whose accuracy they put at 5 per cent from
+                                      their Ref. [3]; the (5) as printed is Arora
+                                      et al. 2007's Table I entry
   6S tail    +3.4 (fixed by the Safronova-group static alpha_6S = 5167(22);
              varied +-100% in the uncertainty band. Zang et al. 2012 is
              consistent but is weaker than this comment used to claim: they

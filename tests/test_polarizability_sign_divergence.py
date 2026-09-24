@@ -105,9 +105,10 @@ def test_the_model_still_computes_its_own_definition():
 
 def test_the_shift_depth_is_a_magnitude_whatever_the_sign():
     """S0 is the ramp's depth, so it is non-negative under either value."""
+    from rb5s6s.constants import W0_CENTRAL_M
     from rb5s6s.lineshape import stark_shift_S0_mhz
-    ours = stark_shift_S0_mhz(0.225, 64e-6, rho=0.94)
-    theirs = stark_shift_S0_mhz(0.225, 64e-6, rho=0.94,
+    ours = stark_shift_S0_mhz(0.225, W0_CENTRAL_M, rho=0.94)
+    theirs = stark_shift_S0_mhz(0.225, W0_CENTRAL_M, rho=0.94,
                                 delta_alpha_au=DELTA_ALPHA_AU_ORSON2021)
     assert ours > 0 and theirs > 0, (
         "stark_shift_S0_mhz returned a negative depth. Its consumers all "

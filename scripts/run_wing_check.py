@@ -26,7 +26,7 @@ time measures "how much extra sits in that wing", and a SYMMETRIC misfit --
 the fixed transit kernel not quite matching the free Voigt core -- raises
 both sides equally without being an asymmetry at all. So the quantity that
 answers the question is the DIFFERENCE, red minus blue. The v3.0.0 reprior
-made this distinction matter: at w0 = 64 um the transit narrows to 0.93 MHz,
+made this distinction matter: at the retired waist convention the transit narrows,
 which raises both single-side fractions together while leaving their
 difference at zero.
 
@@ -236,7 +236,7 @@ def main() -> int:
     # transit kernel not quite matching the free Voigt core) raises BOTH
     # wings equally and is not an asymmetry at all, so differencing the two
     # sides is what actually answers M24's question. Added at v3.0.0, when
-    # the narrower transit at w0 = 64 um made both single-side fractions
+    # the narrower transit at the retired waist convention made both single-side fractions
     # nonzero while their difference stayed at zero.
     import math as _math
     for T in sorted(perT):

@@ -76,7 +76,7 @@ somewhere else, because the RF oscillator's frequency is exact.
 
 ### 10b.3 EOM drive: modulation depth at the carrier zero
 
-Set the modulation index to **beta = 2.405**, the first zero of the Bessel
+Set the modulation index to **beta = 2.405**, the first zero of the Bessel <!-- other-quantity: the first zero of the Bessel function J0, not a committed cell -->
 function J0. Computed at that depth:
 
 | tooth | amplitude | power fraction |
@@ -84,7 +84,7 @@ function J0. Computed at that depth:
 | carrier (n=0) | 0.0000 | 0 |
 | n = +-1 | 0.5191 | 0.539 |
 | n = +-2 | 0.4318 | 0.373 |
-| n = +-3 | 0.1990 | 0.079 |
+| n = +-3 | 0.1990 | 0.079 <!-- other-quantity: a comb sideband weight in this table, not cavity_scan_integrals' t_centroid --> |
 
 the carrier vanishes. That matters for three reasons. The comb becomes
 symmetric with no dominant central tooth, so the fit is no longer trying to
@@ -95,7 +95,7 @@ the carrier suppression no longer needs the polarisation axis to be rotated
 against the crystal, which is a trick that costs power and couples the
 modulation depth to an alignment.
 
-Record the drive voltage that achieves beta = 2.405 and re-check it whenever
+Record the drive voltage that achieves beta = 2.405 and re-check it whenever <!-- other-quantity: the first zero of the Bessel function J0, not a committed cell -->
 the crystal temperature is touched, since beta drifts with it.
 
 ### 10b.4 EOM RF frequency and the wider span
@@ -105,7 +105,7 @@ transition axis and 6.25 MHz apart on the laser axis, against a line 5.4 MHz
 wide, which is the 2.3 linewidths this section is about. The twin measures
 what the spacing costs each channel at the tight waist
 ([chapter 4](04_intensity-and-light-shift.md), item 3): at the 2025 spacing
-the lower first-order tooth's tail cancelled the ramp's third cumulant inside
+the lower first-order tooth's tail cancelled the ramp's third moment inside
 a 6 MHz window and the centre fit, confined to just under half the spacing,
 read the leakage as a centre, in the world without the collection window. With
 the window and the fringe tail in it (2026-09-08) both channels recover the

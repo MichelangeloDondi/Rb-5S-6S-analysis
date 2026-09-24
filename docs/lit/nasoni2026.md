@@ -10,7 +10,7 @@ pages: null
 year: 2026
 doi: null
 arxiv: null
-pdf: PDF_papers/theses/TesiLM_Nasoni_2026_Optical Trapping of Cold Atoms with a Hollow-Core Fiber.pdf
+pdf: PDF_papers/theses/Nasoni_2026_MSc-thesis_optical-trapping-cold-atoms-hollow-core-fibre.pdf
 held: true
 status: VERIFIED
 routing:

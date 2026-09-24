@@ -149,10 +149,10 @@ a reader.
 - [The wavemeter and the frequency axis](the-wavemeter-and-the-frequency-axis.md),
   the frequency record whose own stability this statistic would
   characterise.
-- [The third cumulant](third-cumulant.md), the other mathematical
+- [The third moment](third-cumulant.md), the other mathematical
   descriptor on this wiki, isolating a lineshape's asymmetry instead of a
   noise process.
 
 ---
 
-[← The third cumulant](third-cumulant.md) · *Mathematical descriptors, 2 of 2* · [wiki index →](README.md)
+[← The third moment](third-cumulant.md) · *Mathematical descriptors, 2 of 2* · [wiki index →](README.md)

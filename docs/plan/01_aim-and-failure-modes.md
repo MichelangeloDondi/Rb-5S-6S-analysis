@@ -39,7 +39,7 @@ saw nothing', slower." True as pure numbers: this record's bounds are
 confirmatory of Orson's nulls, same direction, tighter. The increment is by
 channel. The method (a closed-form two-photon ramp lineshape law plus a
 reference-free moment readout) is not pursued elsewhere. The S₀ bound
-(< 0.26 MHz on the transition axis. No single ratio against Orson's null is
+(< 0.18 MHz on the transition axis, 0.26 until 2026-09-22. No single ratio against Orson's null is
 well posed: the two apparatuses differ in power convention, waist and beam
 architecture, and their null is a one-sigma resolution against this record's
 95 per cent limit. Each is compared with its own prediction instead. Theirs
@@ -106,9 +106,9 @@ The held-lock drift is bounded at order 0.02 MHz/min on the
 laser axis with the sign undetermined. Bottom: what each way of running the
 measurement leaves on the light shift, in units of the predicted shift, with
 measured values filled and forecasts open. As taken, the free drift leaves
-[3.64](../../results/centre_fisher.csv "ref:centre_fisher:sigma_amplitude:linear_per_epoch").
+[1.74](../../results/centre_fisher.csv "ref:centre_fisher:sigma_amplitude:linear_per_epoch").
 Re-ordering the powers through the epoch is forecast to leave
-[0.51](../../results/centre_fisher.csv "ref:centre_fisher:sigma_amplitude_forecast:linear_drift_cycled"),
+[0.24](../../results/centre_fisher.csv "ref:centre_fisher:sigma_amplitude_forecast:linear_drift_cycled"),
 a factor of two from a lock whose drift is known. The 2025 lock
 supported the shape-only bounds reported here, and a fixed lock of the class
 already demonstrated on this transition would make the centre channel
@@ -124,16 +124,15 @@ carries its own EOM ruler. Drift acts between blocks, which is exactly why
 unbiased moments) is committed: `tests/test_intrascan_drift.py`.
 
 "A Δα bracket that wide discriminates nothing." Partly answered by the
-joint three-session bound: S₀(225 mW) < 0.26 MHz sits below the predicted
-shift at the accepted geometry. Two files carry that prediction:
-`results/stark_sweep.csv` holds the current one,
-[0.348](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred:shared") MHz, at the polarizability this record
-pins with the aperture's on-axis factor, while `results/stark_joint.csv` holds a cell computed before that decision
-which matches it to three digits by coincidence, and its bound was taken on the red-sided ramp the ruling of
-2026-09-17 replaced, with the refit running. So the record constrains the (Δα, intensity)
+joint three-session bound: S₀(225 mW) < 0.18 MHz sits below the predicted
+shift at the calculated geometry (0.26 until 2026-09-22). Both files now carry one prediction,
+[0.729](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred:shared") MHz, at the polarizability this record
+pins with the aperture's on-axis factor, and the bound was re-taken on the blue-sided ramp and re-obtained
+from scratch on 2026-09-24. So the record constrains the (Δα, intensity)
 pair. What it cannot do is split the pair: either the intensity or |Δα| sits
-modestly below the values of record, and the most conservative data subset
-reaches the prediction itself and needs no headroom at all. A beam-profile
+well below the values of record, by a factor of about 4.0 in their product at the calculated waist,
+and every data subset now sits below the prediction (until 2026-09-22 the most conservative one reached it).
+All of it is conditional on the fitter's reduced forward model, which the next code window completes. A beam-profile
 measurement decides which. The measured coefficient needs the session.
 
 "That bound is looser than you think." Correct, and by a measured factor

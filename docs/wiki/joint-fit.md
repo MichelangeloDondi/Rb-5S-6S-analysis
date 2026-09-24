@@ -117,6 +117,11 @@ precision of the degenerate combination and leaves the split as poorly
 determined as before, which is the subject of
 [identifiability](identifiability.md).
 
+Counting one trace twice is the quieter failure. A trace's residuals and its moments carry the
+same data, so adding both as independent terms narrows every interval for nothing. Use one of
+them, let the twin supply their covariance, or keep the two estimates apart and read their
+disagreement.
+
 ## Try it
 
 Four drifted repeats of one line, fitted separately and then jointly with a
@@ -165,7 +170,7 @@ print(f"fitted jointly: {joint:.3f}   truth: {w_true}")
 
 The newest joint fit in this record is not on the 2025 data. The campaign's
 five-rung power ladder is generated through the world builder with every
-physics layer on, and the windowed third cumulant is fitted against power with
+physics layer on, and the windowed third moment is fitted against power with
 one coefficient shared: the cubic law is the validity test and the intercept
 is the coefficient. Its first run, on a ladder starting at 50 mW and with the
 estimator's fixed pass count, read the top rung sign-degenerate at the

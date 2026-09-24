@@ -80,6 +80,9 @@ def test_the_second_moment_ratio_reads_a_key_the_function_actually_returns():
     for r in rows:
         assert math.isfinite(float(r["k2_over_pure"])), r
         assert math.isfinite(float(r["k3_over_pure"])), r
+        # the column read nan at every rung for a wave after the ramp moved to the blue side, because its
+        # integral ran over [-1, 0] only (2026-09-22, C6a); a finite check on the sibling columns let it pass
+        assert math.isfinite(float(r["k3_one_photon_over_two"])), r
 
 
 def test_the_relative_rate_and_cycle_columns_come_from_the_package():

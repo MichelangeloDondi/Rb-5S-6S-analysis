@@ -2,7 +2,8 @@
 prediction, and the producer's estimator refuses what its two grids dispute.
 
 FAILURE MODE IF THIS FILE IS DELETED: a ratio row could be without its block-scatter
-bar or its predictions at 42, 64 and 85 um without anything noticing, the
+bar or its predictions at 42, 56 and 85 um (`scripts/run_cross_arm_ratios.py`'s
+WAISTS_UM, C6a) without anything noticing, the
 isotope law could drift from the constants it must reproduce, the halved-grid
 refusal could stop firing, and the model's power ratio could be without its
 ordering in the waist (the P^2 terms go as w0^-4, so the 42 um prediction
@@ -53,7 +54,7 @@ def test_every_ratio_carries_its_bar_and_its_three_predictions():
             assert r["status"] == "DIAGNOSTIC"
         per = [r for r in per if r["value"].strip()]
         for r in per:
-            assert all(f"{w:g} um" in r["note"] for w in (42, 64, 85)), f"{q} {r['key']}: a prediction is missing"
+            assert all(f"{w:g} um" in r["note"] for w in (42, 56, 85)), f"{q} {r['key']}: a prediction is missing"
             assert "pulls" in r["note"], f"{q} {r['key']}: no pull"
     assert {r["key"] for r in rows if r["quantity"] == "power_ratio_k2"} == set(PEAKS) | {"pooled"}
 
@@ -64,8 +65,8 @@ def test_the_model_power_ratio_falls_with_the_waist_and_exceeds_one():
     ramp stop reaching the prediction, or when the ordering flips."""
     rows = _rows()
     m = {r["key"]: float(r["value"]) for r in rows if r["quantity"] == "power_ratio_k2_model"}
-    assert set(m) == {"w42", "w64", "w85"}
-    assert m["w42"] > m["w64"] > m["w85"] > 1.0, m
+    assert set(m) == {"w42", "w56", "w85"}
+    assert m["w42"] > m["w56"] > m["w85"] > 1.0, m
 
 
 def test_the_isotope_law_is_the_root_of_the_mass_ratio_and_the_transit_widens_85():
@@ -115,9 +116,9 @@ def test_the_model_k2_scales_as_the_width_squared():
     quotes for a transit meter. FAILS when the transit stops reaching the
     model or the estimator stops reading the wider line as wider."""
     xa = _producer()
-    a = xa.model_k2(64.0, 130.0, 225.0, 0.58, 1.6, 87, "4121", (6.0,))[6.0]
-    b = xa.model_k2(64.0, 130.0, 225.0, 0.58, 1.6, 85, "4121", (6.0,))[6.0]
-    wide = xa.model_k2(64.0, 130.0, 225.0, 1.58, 1.6, 87, "4121", (6.0,))[6.0]
+    a = xa.model_k2(60.0, 130.0, 225.0, 0.58, 1.6, 87, "4121", (6.0,))[6.0]
+    b = xa.model_k2(60.0, 130.0, 225.0, 0.58, 1.6, 85, "4121", (6.0,))[6.0]
+    wide = xa.model_k2(60.0, 130.0, 225.0, 1.58, 1.6, 87, "4121", (6.0,))[6.0]
     assert 0 < (b - a) / a < 0.01
     assert wide > a
 

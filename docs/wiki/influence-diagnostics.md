@@ -100,10 +100,11 @@ one from its own fit.
 That sharpens something the record already reports. It does not contradict
 it. [`results/lever_crosscheck.csv`](../../results/lever_crosscheck.csv)
 carries the same comparison read the other way: folding the 130 °C point
-into the joint fit moves $\beta_\text{self}$ from 0.0433 to 0.0164 MHz per
-$10^{12} \mathrm{cm^{-3}}$ for $^{85}\text{Rb}$, and from 0.0433 to 0.0181 for
-$^{87}\text{Rb}$, a shift the file logs directly and one comparable in size to
-the coefficient itself. That is what a leverage close to one predicts: a
+into the joint fit moves $\beta_\text{self}$ from 0.0086 to 0.0058 MHz per
+$10^{12} \mathrm{cm^{-3}}$ for $^{85}\text{Rb}$, and from 0.0093 to 0.0076 for
+$^{87}\text{Rb}$, a shift the file logs directly, forty-eight per cent of the
+remaining $^{85}\text{Rb}$ coefficient and twenty-two per cent of the
+$^{87}\text{Rb}$ one. That is what a leverage close to one predicts: a
 point that anchors a fit moves the fit by close to its own scale whenever it
 is added or removed. It is also why the density-slope coefficient in
 [self-broadening](self-broadening.md) is reported as a bound, not a value.

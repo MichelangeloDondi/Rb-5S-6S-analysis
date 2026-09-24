@@ -174,7 +174,7 @@ def test_the_window_is_on_at_every_m2_including_exactly_one():
     passes m2 to full_profile, whose own switch is off at exactly 1."""
     from rb5s6s import constants as K
     from rb5s6s.fullmodel import full_profile
-    w0 = 64e-6
+    w0 = K.W0_CENTRAL_M
     prof1 = _uj.window_profile(w0, 1.0)
     assert prof1.z_ratio == pytest.approx(K.collection_z_ratio(w0_m=w0)) and prof1.z_ratio > 0.2
     assert _uj.window_profile(w0, 2.0).z_ratio == pytest.approx(2.0 * prof1.z_ratio)
@@ -202,12 +202,15 @@ def test_the_producer_model_carries_the_window_the_isotope_and_the_tie():
     over w0^2 through two_photon_rabi_hz."""
     from rb5s6s import constants as K
     from rb5s6s.hyperpolarizability import two_photon_rabi_hz
-    cell = _theory_cell(64.0)
+    # O44/F280 (2026-09-21): the cell's waist and the cross-checked prediction below must be the
+    # SAME number, so this uses K.W0_CENTRAL_M throughout rather than a second, independent
+    # literal that used to happen to agree with it at the retired waist convention.
+    cell = _theory_cell(K.W0_CENTRAL_M * 1e6)
     per85 = cell._per_trace(dict(T=130.0, P_W=0.225, iso=85, session="P", peak="4192"))
     per87 = cell._per_trace(dict(T=130.0, P_W=0.225, iso=87, session="P", peak="4207"))
     assert per85["transit"] / per87["transit"] == pytest.approx(np.sqrt(K.M_RB87_KG / K.M_RB85_KG), rel=1e-9)
-    assert per87["omega_ref"] == pytest.approx(two_photon_rabi_hz(0.225, 64e-6, 0.94) / 1e6)
-    assert per87["omega_ref"] == pytest.approx(0.45, abs=0.01)
+    assert per87["omega_ref"] == pytest.approx(two_photon_rabi_hz(0.225, K.W0_CENTRAL_M, 0.94) / 1e6)
+    assert per87["omega_ref"] == pytest.approx(1.026, abs=0.01)
     low = cell._per_trace(dict(T=130.0, P_W=0.025, iso=87, session="P", peak="4207"))
     assert low["omega_ref"] / per87["omega_ref"] == pytest.approx(0.025 / 0.225)
     assert low["s0"] / per87["s0"] == pytest.approx(0.025 / 0.225)
@@ -215,7 +218,7 @@ def test_the_producer_model_carries_the_window_the_isotope_and_the_tie():
     # literal: this line read 0.36 until 2026-09-17, which was the prediction at the retired
     # polarizability, and a literal cannot follow the cell it quotes.
     from rb5s6s.stark import kappa_pred_per_watt
-    assert per87["s0"] == pytest.approx(kappa_pred_per_watt(K.W0_MEASURED_M, K.RHO_RETRO) * 0.225, rel=1e-6)
+    assert per87["s0"] == pytest.approx(kappa_pred_per_watt(K.W0_CENTRAL_M, K.RHO_RETRO) * 0.225, rel=1e-6)
 
 
 def test_the_depletion_arm_widens_through_the_package_function_and_restores_the_switch():
@@ -223,7 +226,7 @@ def test_the_depletion_arm_widens_through_the_package_function_and_restores_the_
     t = 0.9575
     assert _uj.depleted_transit(t, 0.45, "4192", 0.0) == t
     wide = _uj.depleted_transit(t, 0.45, "4192", 3.0)
-    assert 1.005 < wide / t < 1.03, "about one per cent at 64 um through companion_transit_mhz"
+    assert 1.005 < wide / t < 1.03, "about one per cent at the campaign waist through companion_transit_mhz"
     wider = _uj.depleted_transit(t, 1.05, "4192", 3.0)
     assert wider > wide, "more Rabi frequency, more depletion"
     assert stark.COMPANIONS is None, "the module switch is restored after the call"
@@ -235,26 +238,26 @@ def test_the_depletion_arm_widens_through_the_package_function_and_restores_the_
 # ---------------------------------------------------------------- the parameter arms
 def test_the_shared_laser_width_and_the_power_scale_arms_change_the_parameter_list():
     desc = _P_DESC + [dict(T=90.0, P_W=0.225, iso=87, session="T", peak="4207", axis="mhz")]
-    per_session = _theory_cell(64.0, traces=desc)
+    per_session = _theory_cell(60.0, traces=desc)
     # ALPHA AND BETA ARE PINNED AT THEIR THEORY VALUES BY DEFAULT SINCE 2026-09-17 (owner,
     # 00:30: pin them from theory with their uncertainty carried as a systematic, and compare
     # the MLE's own value afterwards), so neither is in the name order unless freed, and the
     # freed arm restores the 2026-09-16 order with both prior terms beside omega_scale.
     assert per_session.names == ("sigma_l_P", "sigma_l_T", "omega_scale", "gamma_l")
     assert per_session.spec["pinned"] == ("alpha_rel", "beta_rel")
-    shared = _theory_cell(64.0, traces=desc, sigma_l="shared")
+    shared = _theory_cell(60.0, traces=desc, sigma_l="shared")
     assert shared.names == ("sigma_l_shared", "omega_scale", "gamma_l")
-    scaled = _theory_cell(64.0, traces=desc, power_scale=True)
+    scaled = _theory_cell(60.0, traces=desc, power_scale=True)
     assert scaled.names[-2:] == ("power_scale_P", "power_scale_T")
     assert [n for n, _, _ in scaled.prior_terms] == ["omega_scale", "power_scale_P", "power_scale_T"]
     assert [sig for _, _, sig in scaled.prior_terms] == [_uj.OMEGA_PRIOR_FRAC, _uj.POWER_PRIOR_FRAC,
                                                          _uj.POWER_PRIOR_FRAC]
-    freed = _theory_cell(64.0, traces=desc, free=("beta_rel", "alpha_rel"))
+    freed = _theory_cell(60.0, traces=desc, free=("beta_rel", "alpha_rel"))
     assert freed.names == ("beta_rel", "alpha_rel", "sigma_l_P", "sigma_l_T", "omega_scale", "gamma_l")
     assert [n for n, _, _ in freed.prior_terms] == ["omega_scale", "beta_rel", "alpha_rel"]
     assert [sig for _, _, sig in freed.prior_terms] == [_uj.OMEGA_PRIOR_FRAC, _uj.BETA_PRIOR_FRAC,
                                                         _uj.ALPHA_PRIOR_FRAC]
-    fixed = _theory_cell(64.0, traces=desc, fixed={"beta_rel": 5.0})
+    fixed = _theory_cell(60.0, traces=desc, fixed={"beta_rel": 5.0})
     assert "beta_rel" not in fixed.names and fixed.unpack([1.0, 1.6, 1.6, 1.0, 0.4])["beta_rel"] == 5.0
     d = scaled.unpack(_theory_p(scaled))
     assert scaled.power_factor(d, "P") == 1.0 and per_session.power_factor(per_session.unpack(_theory_p(per_session)), "P") == 1.0
@@ -361,7 +364,7 @@ def test_the_excluded_sessions_load_in_place_with_their_own_laws_or_skip():
     for t in by["E"] + by["M"]:
         assert t["law"]["source"].startswith("condition_noise_model") and t["law"]["a"] > 0 and t["tau"] >= 1.0
         assert t["T"] == 130.0 and t["P_W"] in (0.09, 0.18, 0.27, 0.035, 0.07, 0.105, 0.21)
-    e = _theory_cell(64.0, traces=by["E"][:1])
+    e = _theory_cell(60.0, traces=by["E"][:1])
     d = e.unpack(_theory_p(e))
     nu = e.axis(d, by["E"][0])
     assert nu.size == by["E"][0]["x"].size and abs(nu[-1] - nu[0]) > 5.0, "the evening axis is ms times the seeded rate"

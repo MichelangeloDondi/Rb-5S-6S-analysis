@@ -175,6 +175,16 @@ def saturation_companion_mhz(omega_mhz: float, peak: Optional[str] = None,
     the light shift and multiplies by 1.2511, so it vanishes wherever the
     fitted shift does. Saturation is F-independent; the pumping term carries the
     per-line branching and is the only part that moves with ``peak``.
+
+    WHICH RABI FREQUENCY, graded by the optical Bloch equations along each
+    atom's crossing (F324, 2026-09-22): the collected line's saturation is one
+    extra Lorentzian at about HALF the on-axis two-photon Rabi frequency, a
+    quarter of the width this returns at the on-axis value, at every node from
+    41 to 45 um, 70 to 130 C and 125 to 225 mW. The steady-state average over
+    the collected atoms gives 0.417 of the on-axis width in closed form at
+    42.38 um and the crossing's transient 0.61 of that. A caller passing the on-axis value
+    (`two_photon_rabi_hz` at the focus) asks for four times the ensemble's
+    broadening; the form is right and the evaluation point is the caller's.
     """
     om = abs(float(omega_mhz))
     if om <= 0.0:
@@ -235,8 +245,8 @@ def full_profile(nu: np.ndarray, *, gamma_coll: float, sigma_laser_fwhm: float,
 
     FAILURE MODE, and it is in the docstring because a caller who reads only
     this would otherwise miss it: ``m2`` is DISCONTINUOUS at exactly 1. The
-    axial collection window is absent at 1 and present at 1 + 1e-9, so at a
-    64 um waist a fifth of the excursion between m2 = 1 and 3 is the window
+    axial collection window is absent at 1 and present at 1 + 1e-9, so at the
+    retired convention's waist a fifth of the excursion between m2 = 1 and 3 is the window
     switching on and not beam quality, and at 16 um the step exceeds the
     excursion and flips the third cumulant's sign. No committed producer calls
     this with m2 != 1 today, so no shipped number carries it; a Sobol scan over
@@ -267,7 +277,7 @@ def full_profile(nu: np.ndarray, *, gamma_coll: float, sigma_laser_fwhm: float,
     # THE SWITCH IS DISCONTINUOUS AT m2 == 1 AND THAT IS A DEFECT, named here
     # rather than hidden (2026-09-12). At m2 == 1 no axial
     # window is installed at all; at 1 + 1e-9 the window appears, and at
-    # 64 um that step alone is 1.6e-3 of peak against 7.6e-3 for the whole
+    # the retired convention's waist that step alone is 1.6e-3 of peak against 7.6e-3 for the whole
     # m2 = 1 -> 3 excursion, so a fifth of what this record attributes to
     # BEAM QUALITY is the window switching on. At 16 um the step is larger
     # than the excursion and flips the sign of k3. The repair is to take
@@ -452,10 +462,10 @@ DEFAULT_WINDOWS = (3.25, 6.0, 12.0)
 #: Measured on the twin's world under the noise model's own correlation time
 #: (`tau_int = 2.515`), 42 statistics over these orders and windows split
 #: exactly by parity at a per-trace SNR of 3: every even order and even ratio
-#: runs 446.30 [ref:moment_admission:snr_admitted_min:] to
-#: 5871 [ref:moment_admission:snr_admitted_max:] and every odd one runs
-#: 0.0032500 [ref:moment_admission:snr_refused_min:] to
-#: 0.717 [ref:moment_admission:snr_refused_max:]. The tuple was
+#: runs 438.40 [ref:moment_admission:snr_admitted_min:] to
+#: 5810 [ref:moment_admission:snr_admitted_max:] and every odd one runs
+#: 0.0222300 [ref:moment_admission:snr_refused_min:] to
+#: 0.706 [ref:moment_admission:snr_refused_max:]. The tuple was
 #: `(2, 3, 5, 7)` until 2026-09-12, carrying ONE even order and no even ratio,
 #: so the statistic set that holds the width information could not be produced
 #: by this module at all. The odd orders stay in the tuple because they are the
@@ -636,11 +646,11 @@ def transit_collection_factor(w0_m: float, m2: float = 1.0, n: int = 4001) -> fl
     it the beam radius grows as w(z) = w0 sqrt(1 + (z/z_R)^2): each slice's transit width goes as
     1/w and its two-photon signal as the integral of I^2 over the slice, w^-2 at unit power, so
     the collected kernel is that mixture and its width, to first order, the signal-weighted mean
-    of 1/w: <w^-3> / <w^-2> over z uniform on [-L, L]. It reads 0.9892 at 64 um and M2 = 1
+    of 1/w: <w^-3> / <w^-2> over z uniform on [-L, L]. It read 0.9892 at the retired waist convention and M2 = 1
     (z_ratio 0.2605) and 0.9971 at 90 um; the kernel Monte Carlo of `scripts/run_kernel_mc.py`
-    reads -0.96 +- 0.2 per cent at 64 um against this -1.08. Below one always, one as the ratio
+    read -0.96 +- 0.2 per cent there against this -1.08. Below one always, one as the ratio
     goes to zero. The ramp carries the same mixture through `stark_ramp_axial`; the transit did
-    not until this factor, so a fit at cycles zero read a kernel one per cent too wide at 64 um.
+    not until this factor, so a fit at cycles zero read a kernel one per cent too wide at that waist.
     """
     from ._compat import trapezoid
     zr = collection_z_ratio_m2(float(w0_m), float(m2))
@@ -671,17 +681,18 @@ def convolution_licence(w0_m: float, m2: float = 1.0, **kw) -> dict:
 
     The licence edges below are inverted from THIS function by bisection, so
     they are arithmetic on the line above and are not offered as independent:
-    55 microns leaves the licence at `M^2 = 1.891`, 64 at `2.560`, 70 at
-    `3.062` and 85 at `4.516`. An earlier draft put 64 microns at 3.0, which is
-    17 per cent past where the function itself refuses it, and the guard never
-    probed 64 between 1.9 and 3.0 so the wrong number survived.
+    55 microns leaves the licence at `M^2 = 1.891`, 70 at
+    `3.062` and 85 at `4.516`. An earlier draft put the retired convention's waist at 3.0,
+    17 per cent past where the function itself refuses it (`2.560`), and the guard never
+    probed that waist between 1.9 and 3.0 so the wrong number survived.
     Equivalently `w0 >= 40 microns * sqrt(M^2)`. But the
-    committed prediction band gives `z_ratio = 0.26 +- 0.14` at `M^2 = 1`, a 54
-    per cent relative uncertainty propagated from `f = 18 +- 1 mm`, an image
-    distance of `50 +- 5 mm` and the waist band, so at `M^2 = 3` the boundary
-    sits INSIDE the error bar. `licensed` is therefore the reading of the
+    committed prediction band gives `z_ratio = 0.59 +- 0.35` at `M^2 = 1` at the
+    calculated waist (results/prediction_band.csv), a 59 per cent relative
+    uncertainty propagated from `f = 18 +- 1 mm`, an image distance of
+    `50 +- 10 mm` and the waist band, so the boundary sits INSIDE the error bar
+    already at `M^2 = 1`. `licensed` is therefore the reading of the
     central value and `margin` is what a caller must weigh against its own
-    uncertainty: a sharp yes or no quoted against a +-54 per cent input would be
+    uncertainty: a sharp yes or no quoted against a +-59 per cent input would be
     invented precision.
 
     FAILURE MODE: a caller that reads `licensed` and ignores `z_ratio` learns
@@ -753,9 +764,9 @@ def ultra_joint_covariance(nu: np.ndarray, *, n_real: int = 400,
 
     **THE SNR SPLITS THE LADDER BY PARITY, AND IT NO LONGER GATES ANYTHING.**
     Over 42 statistics at the archive's parameters, the 21 even ones carry a
-    per-trace SNR of 446.30 [ref:moment_admission:snr_admitted_min:] to
-    5871 [ref:moment_admission:snr_admitted_max:] and the 21 odd ones reach only
-    0.717 [ref:moment_admission:snr_refused_max:], so a floor at 3 refused the
+    per-trace SNR of 438.40 [ref:moment_admission:snr_admitted_min:] to
+    5810 [ref:moment_admission:snr_admitted_max:] and the 21 odd ones reach only
+    0.706 [ref:moment_admission:snr_refused_max:], so a floor at 3 refused the
     odd ladder entirely -- the shift channel, and the half of the owner's
     specification that opens with "in particular the ODD ones". Owner order O17
     of 2026-09-15 forbids admitting by SNR at all, and the reasoning is in the
@@ -1052,9 +1063,9 @@ UNFITTABLE = {
                          "amplitude absorbs the surviving fraction and not "
                          "the widening. A wider kernel is fitted as a LARGER "
                          "transit and the waist goes as its inverse, so a fit "
-                         "that ignores depletion reads the waist too SMALL: "
-                         "64 um reads as 57 at three mean cycles, a third of "
-                         "the way to the 42 the record cannot explain",
+                         "that ignores depletion reads the waist too SMALL, "
+                         "by about 11 per cent at three mean cycles, the "
+                         "inverse of the 12 per cent widening",
     "scope_quantisation": "read as noise by any weighted fit",
     "lock_drift": "absorbed by the free per-trace centre, and the oracle arm "
                   "exists to size what that absorption costs",

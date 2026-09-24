@@ -632,7 +632,8 @@ def fig_vapour_density_and_temperature():
     ax.set_ylabel("Rb number density (cm^-3)")
     ax.set_title("Vapour density against cell temperature", fontsize=9)
     ax.grid(alpha=0.25, which="both")
-    _footer(fig, "rb5s6s.density.number_density_cm3, closed form, Nesmeyanov/Steck correlation.\n"
+    from rb5s6s import density as _dens   # the central law is read, never typed (O42 moved it to Alcock)
+    _footer(fig, f"rb5s6s.density.number_density_cm3, closed form, the {_dens.DENSITY_LAW.capitalize()} correlation.\n"
                  "Rebuild: python scripts/make_wiki_figures.py")
     _save(fig, "wiki_vapour_density_and_temperature.png")
 
@@ -1308,8 +1309,9 @@ def fig_injection_recovery_2():
     """Recovered width minus the injected truth, across twelve independent synthetic realisations."""
     from scipy.optimize import least_squares
     from rb5s6s import composite_profile, transit_fwhm_from_w0
+    from rb5s6s.constants import W0_CENTRAL_M
 
-    t = transit_fwhm_from_w0(64e-6, 130.0)
+    t = transit_fwhm_from_w0(W0_CENTRAL_M, 130.0)
     grid, p = composite_profile(0.60, 1.40, t)
     nu = np.linspace(-15, 15, 1200)
     shape = np.interp(nu, grid, p / p.max(), left=0, right=0)
@@ -1375,7 +1377,10 @@ def fig_blackbody_radiation():
     t_c_pts = np.array([70, 90, 110, 130])
     shift_pts = np.array([79.9349, 101.983, 128.738, 160.963])  # results/blackbody_channels.csv
     exponent = 4.35  # rb5s6s/blackbody.py _SHIFT_EXPONENT, fitted to these 4 points
-    s0_ub95_hz = 258_000.0  # results/stark_joint.csv S0_225mW_ub95 (0.258 MHz)
+    # READ, never typed (C6a, 2026-09-22: it was typed at the retired convention's bound)
+    with (Path(__file__).resolve().parents[1] / "results" / "stark_joint.csv").open(encoding="utf-8") as _fh:
+        s0_ub95_hz = 1e6 * float(next(r["value"] for r in csv.DictReader(_fh)
+                                      if r["quantity"] == "S0_225mW_ub95" and r["key"] == "primary"))
     t_c = np.linspace(70, 130, 200)
     t_k = t_c + 273.15
     model_435 = shift_pts[-1] * (t_k / (t_c_pts[-1] + 273.15)) ** exponent
@@ -1401,7 +1406,8 @@ def fig_blackbody_radiation():
 
 def fig_the_beam_waist():
     """Beam radius about the waist, with the Rayleigh range and divergence angle marked."""
-    w0_um, lam_nm = 64.0, 993.4  # W0_MEASURED_M, LAMBDA_LASER_M, rb5s6s/constants.py
+    from rb5s6s.constants import W0_CENTRAL_M, LAMBDA_LASER_M
+    w0_um, lam_nm = W0_CENTRAL_M * 1e6, LAMBDA_LASER_M * 1e9  # rb5s6s/constants.py
     w0, lam = w0_um * 1e-6, lam_nm * 1e-9
     zr = np.pi * w0 ** 2 / lam
     theta = lam / (np.pi * w0)
@@ -1425,7 +1431,7 @@ def fig_the_beam_waist():
     ax.set_ylabel("beam radius (um)")
     ax.set_title(r"$w_0\theta = \lambda/\pi$, the fixed diffraction trade", fontsize=9)
     ax.grid(alpha=0.25)
-    _footer(fig, "w0, lambda from rb5s6s.constants (W0_MEASURED_M, LAMBDA_LASER_M).\n"
+    _footer(fig, "w0, lambda from rb5s6s.constants (W0_CENTRAL_M, LAMBDA_LASER_M).\n"
                  "Rebuild: python scripts/make_wiki_figures.py")
     _save(fig, "wiki_the_beam_waist.png")
 

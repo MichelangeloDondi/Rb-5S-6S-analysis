@@ -20,7 +20,7 @@ argument alone.
 The instinct that a better lock gives a narrower line is nearly wrong here,
 and the arithmetic matters because it decides where the work goes. The
 natural width is [3.4925](../../rb5s6s/constants.py "ref:constant:GAMMA_NAT_HZ:1e-6") MHz and it is the floor. Driving the laser
-contribution from its committed median of 1.738 MHz down to 0.2 would move
+contribution from its committed median of [0.936](../../results/global_dataset_fit.csv "ref:global_dataset_fit:sigma_laser_sp:camp130_4121") MHz down to 0.2 would move
 the total width only from about 5.29 to 4.90 MHz, a nine per cent change, and
 the transit kernel would rise from 17.6 to 19.0 per cent of the line. The
 record length of section 10a is unaffected, and the transit cusp does not

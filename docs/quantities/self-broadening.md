@@ -87,26 +87,28 @@ cent.
 |---|---|---|---|
 | Four-temperature width slope, pooled, dof 2 | $\lt$ [0.026](../../results/beta_self_probe.csv "ref:beta_self_probe:pooled_slope::bound95_nscale") MHz per 1e12 per cubic centimetre, the headline; [0.0205](../../results/beta_self_probe.csv "ref:beta_self_probe:pooled_slope::bound95") before the density-scale systematic | BOUND | [`beta_self_probe.csv`](../../results/beta_self_probe.csv) |
 | Four-temperature width slope, per peak | $\lt 0.0246$ to $\lt 0.0423$ | BOUND | `beta_self_probe.csv` |
-| Model-independent per-peak central values | 0.0131 to 0.0181 | PRELIM | [`beta_self.csv`](../../results/beta_self.csv) |
-| Hierarchical joint fit, cooling sweep | $0.0433 \pm 0.0035$ (85Rb) | BOUND | [`global_fit.csv`](../../results/global_fit.csv) |
-| Same fit with the 130 C anchor folded in | 0.0164 (85Rb), 0.0181 (87Rb) | BOUND | [`lever_crosscheck.csv`](../../results/lever_crosscheck.csv) |
-| $\kappa$ and $\beta_{\rm self}$ both free | 0.0183, interval 0.0177 to 0.0187 | PRELIM | [`global_dataset_fit.csv`](../../results/global_dataset_fit.csv) |
+| Model-independent per-peak central values | 0.0043 to 0.0069 | PRELIM | [`beta_self.csv`](../../results/beta_self.csv) |
+| Hierarchical joint fit, cooling sweep | [0.0086](../../results/global_fit.csv "ref:global_fit:beta_self:85Rb") $\pm$ [0.0026](../../results/global_fit.csv "ref:global_fit:beta_self:85Rb:err") (85Rb) | BOUND | [`global_fit.csv`](../../results/global_fit.csv) |
+| Same fit with the 130 C anchor folded in | [0.0058](../../results/lever_crosscheck.csv "ref:lever_crosscheck:beta_lever_probe_130:85Rb") (85Rb), [0.0076](../../results/lever_crosscheck.csv "ref:lever_crosscheck:beta_lever_probe_130:87Rb") (87Rb) | BOUND | [`lever_crosscheck.csv`](../../results/lever_crosscheck.csv) |
+| $\kappa$ and $\beta_{\rm self}$ both free | 0.0043, interval 0.0041 to 0.0046 | PRELIM | [`global_dataset_fit.csv`](../../results/global_dataset_fit.csv) |
 
 **The measurement that turns the value into a bound.** The fitted collisional
-width across the temperature ladder is 0.393, 0.391, 0.444 and 0.594 MHz at 70,
+width across the temperature ladder is 0.075, 0.057, 0.088 and 0.223 MHz at 70,
 90, 110 and 130 C, against densities of 0.74, 3.11, 11.23 and 35.59 (Alcock) in units of
-1e12 per cubic centimetre. That is a factor of [1.51](../../results/lever_crosscheck.csv "ref:lever_crosscheck:gamma_rise_factor:70to130") in width across a factor of 48.1
+1e12 per cubic centimetre. That is a factor of [2.99](../../results/lever_crosscheck.csv "ref:lever_crosscheck:gamma_rise_factor:70to130") in width across a factor of 48.1
 in density. A genuine collisional width would rise linearly. **A width that
-rises by 1.5 while the density rises by 48 is a floor with a small collisional
+rises by 3 while the density rises by 48 is a floor with a small collisional
 component on top, not a resolved collision rate**, so the quantity the data
 support is an upper limit and that is what the record reports.
 
 The hierarchical construction is a cross-check and is not settled. Its
-central value of 0.0433 moves to 0.0164 and 0.0181 when the 130 C anchor
-extends the density lever from 15 to 48 (Alcock). A cross-check estimator that moves by
-a factor of 2.6 when one condition is added is reporting its own model
-dependence, which is precisely why the model-independent slope is the headline
-and this is not.
+central values of 0.0086 and 0.0093 move to 0.0058 and 0.0076 when the 130 C anchor
+extends the density lever from 15 to 48 (Alcock), a third and a fifth lower, and
+dropping the 110 C condition moves the first by
+[0.0382](../../results/lever_crosscheck.csv "ref:lever_crosscheck:beta_loo_temp:85Rb"), more than four times its value.
+A cross-check estimator that moves this much when one condition is added or removed is
+reporting its own model dependence, which is precisely why the model-independent
+slope is the headline and this is not.
 
 ## 4. Limits of the present experiment
 
@@ -118,53 +120,60 @@ reason a `bound95_nscale` variant exists beside every `bound95`.
 
 Experimental: the temperature lever is short and one-ended. Four
 temperatures spanning a factor of 48 in density sounds generous and is not,
-because the width response is 1.5 over that span. Most of the density lever
+because the width response is 3 over that span. Most of the density lever
 buys almost no width.
 
-**Model form, and as of 2026-08-21 the binding one.** The laser kernel was
+**Model form, quantified 2026-08-21.** The laser kernel was
 treated as a choice between a Gaussian and a Lorentzian. Freeing both
-components at once, which the shipped model can now do, is preferred at every
-peak by a nested likelihood ratio, and it moves $\beta_\text{self}$ by 42 to
-66 per cent. The uncertainty this contributes,
-$U_\text{kernel} = 0.004530$ MHz per density unit, exceeds the statistical
-error $U_\text{statistical} = 0.001398$ by a factor
-$R_\text{kernel} = 3.24$ (`results/kernel_k3.csv`).
+components at once, which the shipped model can now do, is preferred at three
+of the four peaks by a nested likelihood ratio, and it moves $\beta_\text{self}$ by 5 to
+48 per cent. The uncertainty this contributes,
+$U_\text{kernel} = 0.000709$ MHz per density unit, sits below the statistical
+error $U_\text{statistical} =$ [0.001165](../../results/kernel_k3.csv "ref:kernel_k3:all:U_statistical"), a factor
+$R_\text{kernel} = 0.61$ (`results/kernel_k3.csv`).
 
 And the hierarchical arm had not carried it until 2026-09-11. The paragraph
 above is a per-peak result, from `kernel_k3.csv`, which fits the extra component
 free in each peak. The hierarchical fit that `docs/RESULTS.md` heads its table
 with publishes a model-form bar built from a grid of transit form and sharing
 only, and holds the component at zero. Set instead to the weighted mean that
-same file fits, 0.398 MHz, the hierarchical coefficient reads
-[0.0057](../../results/lever_crosscheck.csv) against 0.0433, a move of
-[0.0387](../../results/lever_crosscheck.csv) where the published bar is 0.0115,
-and the whitened $\chi^2$ prefers the fitted component on all four
-transit-and-sharing forms by 28 to 46. `beta_err_kernel` carries the axis in
-that file now, beside `beta_err_transit` and `beta_err_sharing`, and outside
-`beta_err_modelform`, whose definition over three cells is left where a reader
-found it.
+same file fits, 0.078 MHz, the hierarchical coefficient reads
+[0.0019](../../results/lever_crosscheck.csv "ref:lever_crosscheck:beta_grid_exp_per_T_gamma_l0.078:85Rb") against
+[0.0086](../../results/lever_crosscheck.csv "ref:lever_crosscheck:beta_grid_exp_per_T:85Rb"), a move of
+[0.0067](../../results/lever_crosscheck.csv "ref:lever_crosscheck:beta_err_kernel:85Rb"), at the same reduced $\chi^2$
+of 0.851, so at the calculated waist the width fit prefers neither end of the
+axis. `beta_err_kernel` carries the axis in that file, beside `beta_err_transit`
+and `beta_err_sharing`, and outside `beta_err_modelform`, whose definition over
+three cells is left where a reader found it.
 
-And the reason it moves is the shape of the fit, not a wide bar on a good
-number. The homogeneous width is $\Gamma_\text{nat} + \beta N + \gamma_l$.
-Holding $\gamma_l$ at zero forces the density line through the origin against a
-floor this same file reports: `gamma_coll_mean_vs_T` reads
-[0.393](../../results/lever_crosscheck.csv) MHz at the lowest density, where
-$\beta N$ would be 0.030. A line through the origin fitted to a floor $c$ has
-slope offset by $c \sum wN / \sum wN^2$, so the fitted coefficient is *linear*
-in $\gamma_l$. It is, to half a per cent, until it reaches its lower bound.
-The two ladders predict $-0.136$ and $-0.0435$ per MHz and measure $-0.120$ and
-$-0.035$, the per-temperature Gaussian taking the remaining fifth.
+At this waist the transit's form is
+the larger axis by far: the Voigt transit reads
+[0.0548](../../results/lever_crosscheck.csv "ref:lever_crosscheck:beta_grid_gaussian_per_T:85Rb") where the Lehmann
+cusp reads 0.0086, a `beta_err_transit` of
+[0.0462](../../results/lever_crosscheck.csv "ref:lever_crosscheck:beta_err_transit:85Rb"), about seven times the
+kernel axis and eighteen times the statistical error.
+
+And the reason the kernel axis moves the coefficient is the shape of the fit,
+not a wide bar on a good number. The homogeneous width is
+$\Gamma_\text{nat} + \beta N + \gamma_l$. Holding $\gamma_l$ at zero forces the
+density line through the origin against a floor this same file reports:
+`gamma_coll_mean_vs_T` reads
+[0.075](../../results/lever_crosscheck.csv "ref:lever_crosscheck:gamma_coll_mean_vs_T:70C") MHz at the lowest
+density, where $\beta N$ at the fitted coefficient would be about 0.006. A line
+through the origin fitted to a floor $c$ has slope offset by
+$c \sum wN / \sum wN^2$, so the fitted coefficient is *linear* in $\gamma_l$,
+and the two committed points put that slope at $-0.086$ per MHz on the cooling
+ladder.
 
 Three things follow. The floor and the fitted component are the same
-quantity by two constructions, 0.393 from the density intercept against the
-weighted mean the kernel chain fits. The lever dependence that makes this
+quantity by two constructions, 0.075 MHz from the lowest-density width against
+the 0.078 the kernel chain fits. The lever dependence that makes this
 coefficient a BOUND, the width rising only
-[1.51](../../results/lever_crosscheck.csv "ref:lever_crosscheck:gamma_rise_factor:70to130")-fold across a 48.1-fold density span,
+[2.99](../../results/lever_crosscheck.csv "ref:lever_crosscheck:gamma_rise_factor:70to130")-fold across a 48.1-fold density span,
 is that floor forced through the origin, so modelling it removes the lever
-dependence instead of explaining it. And the dip in $\sigma_\text{laser}(T)$ at
-110 °C, which `docs/RESULTS.md` attributes to the
-$\beta\leftrightarrow\sigma_\text{laser}$ degeneracy, disappears at the fitted
-component.
+dependence instead of explaining it. And the van der Waals prediction is crossed
+inside the span the kernel chain fits: on the straight line through the two
+committed points it falls near $\gamma_l = 0.06$ MHz.
 
 **What it leaves open, and the first draft of this section got it backwards.**
 That draft said that if the extra width were atomic the coefficient would be
@@ -175,18 +184,21 @@ of the apparatus or of the vapour, which is the K5 transfer triangle's question
 and is not settled here. The central value is left where a reader found it for
 that reason and for no other.
 
-Owed before any of this is quoted further. The per-peak and hierarchical
-coefficients at the fitted component have no committed producer: they exist in
-this repository's private correction record and in a replay beside it, not in
-`results/`. The van der Waals prediction of [3.50](../../results/beta_self_theory.csv "ref:beta_self_theory:beta_self_6s:anchored")([0.37](../../results/beta_self_theory.csv "ref:beta_self_theory:beta_self_6s:anchored:err")) kHz is crossed somewhere
-above the fitted component, and locating that crossing needs a third grid point
+Owed before any of this is quoted further. The per-peak coefficients at the
+fitted component have no committed producer: they exist in this repository's
+private correction record and in a replay beside it, not in `results/`. The
+hierarchical one is the committed row `beta_grid_exp_per_T_gamma_l0.078`. The
+van der Waals prediction of [3.50](../../results/beta_self_theory.csv "ref:beta_self_theory:beta_self_6s:anchored")([0.37](../../results/beta_self_theory.csv "ref:beta_self_theory:beta_self_6s:anchored:err")) kHz lies between the
+two committed grid points, and locating its crossing needs a third grid point
 and not a line drawn through two.
 
 So the answer to "why can the experiment not do better" has changed. It is
 no longer the density lever or the statistics. **More repetitions of the
-current construction do not improve this coefficient**, because the kernel
-systematic is three times larger than the thing more data would shrink. What
-improves it is an independent constraint on the laser kernel, and
+current construction do not improve this coefficient**, because its model-form
+systematic, the transit's form above all, is about eighteen times the
+statistical error that more data would shrink, and the kernel axis alone is two
+and a half times it. What improves it is an independent constraint on the
+transit and laser kernels, and
 `results/kernel_k7.csv` ranks the routes. Note also what the kernel result does
 not settle: a non-Gaussian homogeneous component is present, and attributing it
 to the laser is a separate arrow that no measurement yet taken carries.
@@ -209,6 +221,23 @@ density is unattributed. It could be residual laser width, transit, or
 lineshape misfit, and the record does not resolve which. Until it is
 attributed, the collisional coefficient is being read as the slope of a line
 whose intercept is not understood.
+
+Model: the temperature arm moves three terms together. Across the arm's 70 to
+130 C the self-broadening signal is [122.0](../../results/ladder_terms.csv "ref:ladder_terms:signal:rb_self_broadening") kHz on the central density law,
+while the transit's own drift over the same arm is [105.4](../../results/ladder_terms.csv "ref:ladder_terms:transit_drift:band_high_45.00um_rb87") to
+[118.6](../../results/ladder_terms.csv "ref:ladder_terms:transit_drift:band_low_40.00um_rb87") kHz across the 40 to 45 um band, [0.86](../../results/ladder_terms.csv "ref:ladder_terms:transit_over_signal:band_high_45.00um_rb87") to
+[0.97](../../results/ladder_terms.csv "ref:ladder_terms:transit_over_signal:band_low_40.00um_rb87") of the signal and with its sign, because the transit width
+rises as the square root of the temperature.
+
+A sealed cell's permeated gas adds at
+most [6.6](../../results/ladder_terms.csv "ref:ladder_terms:permeated_drift:fixed_density_hard_sphere") kHz more with the same sign: on the arm's timescale of
+hours the cell holds a fixed amount, so that width rises with temperature too.
+A slope of total width against density would return about [1.97](../../results/ladder_terms.csv "ref:ladder_terms:naive_slope_factor:central_fixed_density_hard_sphere") times
+beta_self. The record does not read beta_self from such a slope: it fits the
+composite model, in which the transit is a term with its own temperature law,
+so the result is conditional on that term and through it on the waist. The
+separation needs a lever with a different temperature exponent: power, waist,
+or a platform without the transit (`results/ladder_terms.csv`).
 
 ## 5. Three levels of improvement
 

@@ -136,12 +136,18 @@ def stark_ramp(nu: np.ndarray, s0: float) -> np.ndarray:
     weight (s/2)/(1+s) reduces to I^2 only while the saturation parameter s is
     small. That is safe here and not safe everywhere: s carries the two-photon
     Rabi frequency squared, so it scales as the FOURTH power of the inverse
-    waist while s0 scales only as the second. At the archive's 64 um convention
-    and 225 mW s is 0.033. At the 16 um a future session proposes it is 8.5,
-    and re-integrating the moments with the saturated weight moves the
-    predicted axial skew from -0.36 to -1.07. The sign flip survives, the
-    magnitude does not. scripts/run_geometry_design.ramp_moments computes both
-    branches and its weak-field branch reproduces stark_ramp_axial_moments;
+    waist while s0 scales only as the second. At W0_CENTRAL_M (the bore-limited
+    central value, O44/F280, 2026-09-21) and 225 mW s is 0.173, against 0.033
+    at the retired, wider waist convention -- the fourth power of the waist ratio is about 5.2, so the same
+    move that raises S0 by a factor 2.28 raises s by 5.2, and "safe here" is a
+    claim worth re-checking rather than restating: 0.17 is still well under 1
+    but no longer an order of magnitude inside it. At the 16 um a future
+    session proposes it is 8.5, and re-integrating the moments with the
+    saturated weight moves the predicted axial skew from +0.36 to +1.07 on the
+    side RAMP_SIDE carries (it is -0.53 at the archive's own waist). The
+    sign flip survives, the magnitude does not. scripts/run_geometry_design.
+    ramp_moments computes both branches and its weak-field branch reproduces
+    stark_ramp_axial_moments;
     docs/THEORY_NOTE.md sec 2.0a and figures/fig24_weak_field_limit.png.
 
     IMPLEMENTATION (fix, 2026-07-11): the original code dropped a
@@ -186,9 +192,20 @@ def aperture_onaxis_factor(w0_m: float, a_m: float = None, f_m: float = None,
     power meter reads BEHIND the cell, so the recorded power is the transmitted one,
     (1 - e^{-2 a^2/w^2}). Hence factor = (1 - e^{-a^2/w^2})^2 / (1 - e^{-2 a^2/w^2}), rung 2 (a
     closed form, F39, 2026-09-17, the thesis session's aperture harness): 0.716 at 42.4 um, 0.876 at
-    52.1, 0.967 at 64 and 0.994 at 76. WHAT IT IS: the leading, on-axis part of the DIFFRACTION of
+    52.1, 0.967 at 64 and 0.994 at 76.
+
+    Published source: Belland and Crenn, Appl. Opt. 21, 522 (1982) (belland1982), Eqs. 30-31 for
+    the on-axis clipped intensity and Eq. 9 for the transmission this factor divides by. Their
+    weak-clipping equivalent Gaussian, which replaces the whole clipped profile with a new
+    Gaussian, needs a/r0 > 1.6 (r0 the 1/e intensity radius, r0 = w/sqrt(2)), and the bench's own
+    2.46 mm input sits at a/r0 = 0.86, well outside it, so no quantity here rests on that
+    equivalent Gaussian. The on-axis closed form above is not that equivalent Gaussian. It
+    integrates the truncated field directly and holds at any clipping, so this function's own
+    regime is not limited by the 1.6 threshold.
+
+    WHAT IT IS: the leading, on-axis part of the DIFFRACTION of
     the clipped focus, not a bookkeeping of the recorded watt (the transmission alone is 0.03 per
-    cent at 64 um); the profile part of the same term (the side lobes, the effective M2, the change
+    cent at the retired, wider waist convention); the profile part of the same term (the side lobes, the effective M2, the change
     in the transit kernel and in the ramp's f(s)) is the deferred `eom_aperture` term, and the
     width channel's bound reads the SPREAD of the shift distribution under the rate weighting,
     which a clipped focus moves by a factor that differs from this one, appreciably below about
@@ -227,9 +244,9 @@ def aperture_spread_factor(w0_m: float, a_m: float = None, f_m: float = None,
     goes as I and the rate as I^2, so the rms shift is sqrt(<I^4>/<I^2> - (<I^3>/<I^2>)^2) over the
     focal plane. Unclipped, that rms over the peak is 1/sqrt(18) = 0.2357, the test's anchor. Rung
     3 by quadrature, the focal plane only: the axial collection window and the kernel changes are
-    the deferred profile part. 0.70 at 42.4 um, 0.86 at 52.1, 0.96 at 64, 0.99 at 76; F over the
-    on-axis factor is 0.974, 0.982, 0.992 and 0.998, so the on-axis shortcut overstates the width
-    channel's factor by 0.8 per cent at 64 um and 2.6 at 42.4.
+    the deferred profile part. 0.70 at 42.4 um, 0.86 at 52.1 and 0.99 at 76; F over the
+    on-axis factor is 0.974, 0.982 and 0.998, so the on-axis shortcut overstates the width
+    channel's factor by 2.6 per cent at 42.4.
     """
     from scipy.special import j0
     # A GRID OF WAISTS IS A GRID OF QUADRATURES, not a broadcast: the focal field is built on its
@@ -297,6 +314,171 @@ def aperture_spread_factor(w0_m: float, a_m: float = None, f_m: float = None,
     s_clip, _ = _spread(a)
     s_open, _ = _spread(6.0 * w_in)
     return s_clip / s_open
+
+
+_ACTUAL_ONAXIS_TABLE_CACHE: dict = {}
+_ACTUAL_ONAXIS_W_IN_LO_M = 0.1e-3
+_ACTUAL_ONAXIS_W_IN_HI_M = 15e-3
+_ACTUAL_ONAXIS_N_NODES = 80
+_ACTUAL_ONAXIS_INTERP_TOL = 1e-3
+
+
+def _actual_focus_quadrature(w_in_m: float, a_m: float, f_m: float, lam_m: float,
+                             n_r: int, n_rho: int) -> tuple:
+    """One point of the input-radius -> (actual focus, same-reading on-axis factor) map (F104,
+    F108, F280): the clipped focal field E(rho) = int_0^a exp(-r^2/w_in^2) J0(k r rho / f) r dr,
+    normalised to the TRANSMITTED power by Parseval rather than a truncated grid (F280's own
+    correction of an earlier grid bias that ran +0.6 per cent high at 42.4 um and +9.9 at 20).
+    The actual 1/e^2 radius is where the focal intensity first crosses the on-axis value's
+    1/e^2, located by linear interpolation between the bracketing radial samples."""
+    from scipy.special import j0
+    k = 2.0 * np.pi / lam_m
+    w_free = lam_m * f_m / (np.pi * w_in_m)
+    # rho_max must bracket the crossing whether this w_in sits near the unclipped regime
+    # (w_act ~ w_free, which can run to hundreds of microns for a narrow input) or deep in the
+    # saturated-floor regime (w_act pinned near the bore's own diffraction limit, tens of
+    # microns): six free-focus radii covers the first, the 250 um floor margin the second.
+    rho_max = max(6.0 * w_free, 250e-6)
+    r = np.linspace(0.0, a_m, n_r)
+    rho = np.linspace(0.0, rho_max, n_rho)
+    field = np.array([trapezoid(np.exp(-r * r / w_in_m ** 2) * j0(k * r * p / f_m) * r, r) for p in rho])
+    p_transmitted = (f_m / k) ** 2 * (np.pi * w_in_m ** 2 / 2.0) * (1.0 - np.exp(-2.0 * a_m * a_m / w_in_m ** 2))
+    inten = field ** 2 / p_transmitted
+    i0 = float(inten[0])
+    below = np.nonzero(inten <= i0 * np.exp(-2.0))[0]
+    if not below.size or below[0] == 0:
+        raise ValueError(f"_actual_focus_quadrature: rho_max={rho_max:.3e} did not reach the "
+                         f"1/e^2 crossing at w_in={w_in_m:.3e}; widen rho_max")
+    j = int(below[0])
+    w_act = float(np.interp(i0 * np.exp(-2.0), [inten[j], inten[j - 1]], [rho[j], rho[j - 1]]))
+    g_peak_same_reading = 2.0 / (np.pi * w_act ** 2)     # a Gaussian AT THE SAME READING, per watt
+    return w_act, float(i0 / g_peak_same_reading)
+
+
+def _actual_onaxis_table(a_m: float, f_m: float, lam_m: float) -> tuple:
+    """The cached (actual focus, same-reading on-axis factor) node table for one (bore, lens,
+    wavelength), sorted ascending in the actual focus: built once per process, about 0.7 s for 80
+    nodes, and interpolated after that in about a microsecond, so a `Cell` that would otherwise
+    call `aperture_onaxis_factor_actual` once per trace at one FIXED w0
+    (`scripts/run_ultra_joint.py`) pays the quadrature once per process rather than once per
+    trace. Self-tests three interior nodes against a four-times-finer quadrature and raises
+    rather than caching a table it has not checked (the same discipline as
+    `aperture_spread_factor`'s own node cache above)."""
+    key = (float(a_m), float(f_m), float(lam_m))
+    cached = _ACTUAL_ONAXIS_TABLE_CACHE.get(key)
+    if cached is not None:
+        return cached
+    w_in_nodes = np.geomspace(_ACTUAL_ONAXIS_W_IN_LO_M, _ACTUAL_ONAXIS_W_IN_HI_M, _ACTUAL_ONAXIS_N_NODES)
+    w_act = np.empty(_ACTUAL_ONAXIS_N_NODES)
+    ratio = np.empty(_ACTUAL_ONAXIS_N_NODES)
+    for i, w_in in enumerate(w_in_nodes):
+        w_act[i], ratio[i] = _actual_focus_quadrature(float(w_in), a_m, f_m, lam_m, n_r=500, n_rho=900)
+    order = np.argsort(w_act)
+    w_act, ratio = w_act[order], ratio[order]
+    for frac in (0.15, 0.5, 0.85):
+        idx = int(frac * (_ACTUAL_ONAXIS_N_NODES - 1))
+        w_act_exact, ratio_exact = _actual_focus_quadrature(float(w_in_nodes[idx]), a_m, f_m, lam_m,
+                                                             n_r=1200, n_rho=2000)
+        got = float(np.interp(w_act_exact, w_act, ratio))
+        if abs(got - ratio_exact) > _ACTUAL_ONAXIS_INTERP_TOL:
+            raise ValueError(
+                f"aperture_onaxis_factor_actual: interpolation over [{w_act[0]:.3e}, {w_act[-1]:.3e}] "
+                f"missed its bound at w_act={w_act_exact:.3e} ({got:.6f} against {ratio_exact:.6f}); "
+                f"widen _ACTUAL_ONAXIS_N_NODES")
+    _ACTUAL_ONAXIS_TABLE_CACHE[key] = (w_act, ratio)
+    return w_act, ratio
+
+
+def aperture_onaxis_factor_actual(w_act_m: float, a_m: float = None, f_m: float = None,
+                                  lam_m: float = LAMBDA_LASER_M, clamp_floor: bool = False) -> float:
+    """The on-axis focal intensity per recorded watt of a clipped Gaussian, relative to an
+    UNCLIPPED Gaussian carrying the same transmitted power AT THE SAME READING -- i.e. `w_act_m`
+    is the ACTUAL (same-reading) 1/e^2 focal radius the clipped beam has, not the naive unclipped
+    focus an input radius would give (that convention is `aperture_onaxis_factor` above, F39).
+
+    F280 (2026-09-21): the `Cell`'s `w0` in `scripts/run_ultra_joint.py` IS this actual reading --
+    its transit reads it too -- so `stark_shift_S0_mhz(...) * aperture_onaxis_factor(self.w0)`
+    was computing for the wrong beam and read S0 about 20 per cent low at the bore-limited central
+    value, 42.4 um (0.716 against 0.890, a factor 0.716/0.890 = 0.80, the same correction plan A9
+    made to G0 and never carried into the likelihood). This function is that carry.
+
+    THE CONVENTION, spelled out because the record has confused the two before (F108): for one
+    input radius w_in at the lens, `w_free = lam f / (pi w_in)` is the diffraction limit an
+    UNCLIPPED beam would focus to, and `w_act` is what the clipped beam ACTUALLY reads at the same
+    input -- always wider, because a hard aperture's diffraction spreads the focus rather than
+    narrowing it. This function's argument is `w_act`; `aperture_onaxis_factor`'s is `w_free`.
+
+    THE CLOSED FORM (F108, reproduced by F280 to 0.45 per cent against the same quadrature this
+    function tabulates): with x = a^2/w_in^2, ratio(same reading) = (1-e^-x)^2/(1-e^-2x) *
+    (w_act/w_free)^2 -- `aperture_onaxis_factor`'s own on-axis factor times the SQUARE of the
+    reading correction, because a Gaussian's peak per watt goes as the inverse square of its
+    radius. It gives 0.890 at 42.42 um (a 2.46 mm input, F280's own reading; this module's
+    quadrature reproduces 0.8896), 0.997 at 60.98 um (a 0.80 mm input), and -> 1 as the clipping
+    vanishes (w_act -> w_free).
+
+    Published source (belland1982, Belland and Crenn, Appl. Opt. 21, 522, 1982): Eqs. 30-31 give
+    the on-axis clipped intensity and Eq. 9 the transmission, the same closed form
+    `aperture_onaxis_factor` divides by, carried here with the extra (w_act/w_free)^2 reading
+    correction. Their weak-clipping equivalent Gaussian needs a/r0 > 1.6 (r0 = w/sqrt(2), the 1/e
+    intensity radius), and the bench's own 2.46 mm input sits at a/r0 = 0.86, so no quantity here
+    rests on that equivalent Gaussian. Both closed forms integrate the truncated field directly at
+    the focus and hold at any clipping, which is why neither carries an equivalent-Gaussian regime
+    restriction of its own.
+
+    WHY THIS IS A TABLE AND NOT A ROOT-FIND ON EVERY CALL: the closed form above needs `w_in` (via
+    `w_free`), and going from a READING `w_act` back to `w_in` has no closed form -- it is the
+    inverse of the same finite-Hankel-transform map F104/F108/F280 compute forward. A direct
+    root-find (one quadrature per `scipy.optimize.brentq` iteration) reproduces the finding's
+    numbers but costs about 0.6 s a call, which a `Cell` built from a hundred-plus traces at one
+    FIXED w0 would pay once per trace for an identical answer every time. Instead the forward map
+    is tabulated once per process (`_actual_onaxis_table`, about 0.7 s for 80 nodes) and every
+    call after the first is a `np.interp` (about 1 us), with three interior nodes checked against
+    a four-times-finer quadrature before the table is trusted.
+
+    THE FLOOR (F280's point 2): the table's shortest node is the tightest actual focus this bore,
+    lens and wavelength can make -- about 41 um at the default 1.5 mm bore, and it is a genuine
+    asymptote (a 1 m input radius reaches only 40.85 um), not a grid artefact. A `w_act_m` below
+    the table's floor has no solution and RAISES rather than extrapolating into a beam this bench
+    cannot form; `constants.W0_BAND_M`'s own low edge (40 um, the owner's ruling) sits just inside
+    that floor, so a caller sweeping the band's low edge through this function meets the refusal,
+    which is F280's own open tension and not a defect of this function. A `w_act_m` above the
+    table's widest node (about 470 um, negligibly clipped) is clamped to that node's near-1 value
+    by `np.interp`'s own edge behaviour, correct to within `_ACTUAL_ONAXIS_INTERP_TOL`.
+
+    UNCLIPPED LIMIT: a `w_act_m` far above the archive band (a few hundred microns, still inside
+    the table's own node range) implies, through `w_free = lam f / (pi w_in)`, an input so far
+    below the bore that x = a^2/w_in^2 is large and the beam is barely clipped, so the ratio -> 1
+    at the SAME default geometry -- no second bore is needed to see the limit, and this module's
+    table gives 0.9998 at 300 um against the default 1.5 mm bore; tested in
+    `tests/test_lineshape.py` alongside the 0.890 reading.
+
+    `clamp_floor=True` (default False) turns the refusal into a clamp at the floor's own ratio
+    instead: `constants.W0_BAND_M`'s owner-stated low edge (40 um) sits BELOW this bore's floor
+    (about 40.89 um), a tension F280 names and does not resolve, and a caller computing a
+    PREDICTION-BAND ENVELOPE (`stark.fit_stark_sweep`'s widest credible interval, already an
+    approximation by its own name) reads the clamp as "the most this bore can do toward that
+    edge" rather than crashing on an apparatus question a mechanical patch cannot answer. A
+    caller FITTING data to a specific w0 (`scripts/run_ultra_joint.py`'s `Cell`) must NOT pass
+    this -- a fit that wants a sub-floor waist is wrong, and the default keeps that a refusal.
+    """
+    from .constants import EOM_APERTURE_RADIUS_M, DRIVE_LENS_F_M
+    a = EOM_APERTURE_RADIUS_M if a_m is None else float(a_m)
+    f = DRIVE_LENS_F_M if f_m is None else float(f_m)
+    lam = float(lam_m)
+    w_act_nodes, ratio_nodes = _actual_onaxis_table(a, f, lam)
+    w_act = np.asarray(w_act_m, dtype=float)
+    floor = w_act_nodes[0]
+    if np.any(w_act < floor):
+        if clamp_floor:
+            w_act = np.clip(w_act, floor, None)
+        else:
+            bad = float(np.min(w_act))
+            raise ValueError(
+                f"aperture_onaxis_factor_actual: {bad * 1e6:.3f} um is below this bore's floor "
+                f"({floor * 1e6:.3f} um at a={a * 1e3:.2f} mm, f={f * 1e3:.0f} mm); no input radius "
+                f"through this aperture focuses that tight (F280)")
+    out = np.interp(w_act, w_act_nodes, ratio_nodes)
+    return float(out) if out.ndim == 0 else out
 
 
 def stark_shift_S0_mhz(power_w: float, w0_m: float, rho: float = 1.0,
@@ -1064,7 +1246,7 @@ def model_profile(nu: np.ndarray, *, gamma_coll: float, sigma_laser_fwhm: float,
     # cell exactly in its mean, but a derivative of the profile (a windowed
     # moment, a width difference) converges only when the ramp itself is
     # resolved: the error collapses on the ramp's cell count (found 2026-09-04:
-    # 0.478 to 0.498 on the survival ratio and 7.48 to a value about three per
+    # 0.478 to 0.498 on the survival ratio and 7.48 to a value about three per (readings that stood at the 2026-09-04 code)
     # cent lower on the cusp-branch broadening; with the shift on the grid the
     # steps per kernel and the shift together set that count). resolve_shift
     # adds the shift to the widths that set the grid; grid_steps_per_kernel

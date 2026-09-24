@@ -15,7 +15,7 @@ from rb5s6s.stark import kappa_pred_per_watt
 
 #: The world's coefficient and its shift at 225 mW, read from the package so a test input cannot
 #: carry a retired prediction (these read 1.618 and 0.364, the static-tail values, until 2026-09-17).
-KAPPA_PRED = kappa_pred_per_watt(K.W0_MEASURED_M, K.RHO_RETRO)
+KAPPA_PRED = kappa_pred_per_watt(K.W0_CENTRAL_M, K.RHO_RETRO)
 S0_PRED_MHZ = KAPPA_PRED * 0.225
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -94,7 +94,7 @@ def test_the_pull_channel_reads_the_ramps_mean_from_the_fitted_centre():
     """The ramp's mean is 2 S0/3 on its side (+ on the blue side since O27): a centre fitted
     with s0 = 0 shifts by that amount, so kappa = (d centre / dP) / (the signed 2/3). Checked here on the model's own
     first moment; the producer's fitted centre on its quiet traces returns
-    the same to about a per cent at 16 um and better at 40 and 64."""
+    the same to about a per cent at 16 um and better at 40 um and at the retired waist convention."""
     from rb5s6s.lineshape import model_profile
     nu = np.linspace(-30, 30, 12001)
     cs = []
@@ -193,7 +193,11 @@ def test_every_cell_carries_its_seam_values_and_a_pooled_worker_builds_at_them()
     cells = mod.levers()
     for name, cfg in cells:
         assert cfg["two_beta"] == pytest.approx(mod._two_beta_default()) or "depth" in name, name
-        assert 0.005 < cfg["beta_self"] < 0.05, name
+        # A plausibility band, whose job is to catch a zero, a placeholder and a unit slip. Its lower edge
+        # was 0.005, which excluded the theory anchor itself (0.0035 MHz per 1e12 cm^-3,
+        # results/beta_self_theory.csv) and, at the calculated waist, the 4192 row this producer reads
+        # (F312: 0.0043); it now holds the anchor and both waist conventions' archival values.
+        assert 0.001 < cfg["beta_self"] < 0.05, name
     src = (ROOT / "scripts" / "run_three_channel_forecast.py").read_text()
     # no module global carries a seam value into _trace: the cfg does, and the
     # cfg is what the pool pickles into every worker

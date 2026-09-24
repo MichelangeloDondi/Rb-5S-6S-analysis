@@ -75,7 +75,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from _producer_lock import take_producer_lock     # noqa: E402
 from rb5s6s import config as C                                    # noqa: E402
-from rb5s6s.constants import (GAMMA_NAT_HZ, W0_MEASURED_M,        # noqa: E402
+from rb5s6s.constants import (GAMMA_NAT_HZ, W0_CENTRAL_M,        # noqa: E402
                               RHO_RETRO, PEAKS)
 from rb5s6s.density import density_units, N_UNIT_CM3              # noqa: E402
 from rb5s6s.fibre import (HE11Field, solve_he11,                   # noqa: E402
@@ -135,7 +135,7 @@ def main() -> int:
         "constants.GAMMA_NAT_HZ from tau(6S) = 45.57 ns")
     tr_cell = transit_fwhm_at_T(CELL_T_C, C.TRANSIT_FWHM_PLACEHOLDER_MHZ)
     add("transit_cell_130C", f"{tr_cell:.4f}", "MHz", "committed_input",
-        "transit_fwhm_at_T at the cell waist W0_MEASURED_M = 64 um")
+        f"transit_fwhm_at_T at the cell waist W0_CENTRAL_M = {W0_CENTRAL_M * 1e6:.2f} um")
     with (C.RESULTS_DIR / "beta_self.csv").open() as fh:
         betas = [float(r["beta_self"]) for r in csv.DictReader(fh)]
     beta_med = sorted(betas)[len(betas) // 2]
@@ -144,11 +144,11 @@ def main() -> int:
     n_cell = density_units(CELL_T_C)
     add("density_cell_130C", f"{n_cell:.3f}", "1e12 cm^-3", "committed_input",
         "density.density_units at the cell reference condition")
-    i_cell = (1.0 + RHO_RETRO) * 2.0 * CELL_P_W / (math.pi * W0_MEASURED_M ** 2)
+    i_cell = (1.0 + RHO_RETRO) * 2.0 * CELL_P_W / (math.pi * W0_CENTRAL_M ** 2)
     add("intensity_cell_eff", f"{i_cell:.3e}", "W m^-2", "committed_input",
-        "time-averaged fwd+retro on-axis intensity at 225 mW, w0 = 64 um, "
+        f"time-averaged fwd+retro on-axis intensity at 225 mW, w0 = {W0_CENTRAL_M * 1e6:.2f} um, "
         "rho = 0.94 (the constants.py convention)")
-    s0_cell = stark_shift_S0_mhz(CELL_P_W, W0_MEASURED_M, RHO_RETRO)
+    s0_cell = stark_shift_S0_mhz(CELL_P_W, W0_CENTRAL_M, RHO_RETRO)
     add("S0_cell_225mW", f"{s0_cell:.3f}", "MHz", "committed_input",
         "stark_shift_S0_mhz at the cell reference condition")
 
@@ -264,7 +264,7 @@ def main() -> int:
 
     # ---- instrument A: cold atoms, trap off -------------------------------
     v_ratio = math.sqrt(MOT_T_K / (CELL_T_C + 273.15))
-    geo = W0_MEASURED_M * 1e9 / lam_c
+    geo = W0_CENTRAL_M * 1e9 / lam_c
     tr_cold = tr_cell * geo * v_ratio
     add("transit_onf_cold_scaled_LEGACY", f"{tr_cold * 1e3:.0f}", "kHz",
         "derived_expectation",
@@ -544,25 +544,35 @@ def main() -> int:
     # Two PER-COMPONENT numbers, not one rounded singular target. They are
     # computed from the anchor sigmas rather than quoted, so the row carries
     # the construction and a reader can see which anchor moved if it changes.
-    anchor_gamma_l, anchor_sigma_g = 0.061, 0.058     # MHz, kernel_identifiability
+    # READ from kernel_identifiability.csv's joint block, never typed (F313's second half, 2026-09-22):
+    # the typed 0.061 and 0.058 MHz and the typed ratio below were an earlier run's rows. The block's own
+    # validation gate travels with them: a forecast its gate refuses is not a target.
+    with (C.RESULTS_DIR / "kernel_identifiability.csv").open() as fh:
+        ki = {r["kind"]: r for r in csv.DictReader(fh) if r["block"] == "joint_cell_onf"}
+    anchor_gamma_l = float(ki["absolute_anchor"]["sv_ratio"])       # MHz
+    anchor_sigma_g = float(ki["absolute_anchor"]["null_dir_gamma"])  # MHz
     prior_factor = 0.2
+    recovery = float(ki[f"prior_GL_and_sigmaG_rel{prior_factor:g}"]["sv_ratio"])
+    gate = ("" if "OUT OF BAND" not in ki["validation_cell_alone"]["note"] else
+            ". THE FORECAST'S VALIDATION GATE READS OUT OF BAND (kernel_identifiability.csv, "
+            "validation_cell_alone), so this target is not to be read")
     add("target_sigma_gamma_l", f"{prior_factor * anchor_gamma_l * 1e3:.1f}", "kHz",
         "derived_expectation",
         f"{prior_factor} x the cell-alone sigma(Gamma_L) of "
         f"{anchor_gamma_l} MHz from the absolute_anchor row of "
         "kernel_identifiability.csv. The precision a fibre measurement must "
         "reach on the LORENTZIAN laser component for the joint fit to gain "
-        "what the forecast assumes")
+        "what the forecast assumes" + gate)
     add("target_sigma_sigma_g", f"{prior_factor * anchor_sigma_g * 1e3:.1f}", "kHz",
         "derived_expectation",
         f"{prior_factor} x the cell-alone sigma(sigma_G) of "
         f"{anchor_sigma_g} MHz, the same requirement on the GAUSSIAN "
         "component. The two targets differ and a single rounded figure hides "
-        "which component is the binding one")
-    add("target_recovery_fraction", "0.36", "fraction", "committed_input",
+        "which component is the binding one" + gate)
+    add("target_recovery_fraction", f"{recovery:.2f}", "fraction", "committed_input",
         "the joint fit's sigma(beta) relative to the free-Gamma_L cell-alone "
         "fit when both laser components carry a prior at this strength, from "
-        "the prior scan in kernel_identifiability.csv")
+        "the prior scan in kernel_identifiability.csv" + gate)
 
     # ---- the EOM ruler through the fibre ---------------------------------
     # The cell's frequency axis is built by the EOM sideband ruler. The same

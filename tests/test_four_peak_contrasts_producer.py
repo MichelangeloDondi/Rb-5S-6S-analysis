@@ -56,7 +56,8 @@ def test_the_amplitude_face_is_carried_with_its_sign_and_its_bar():
     rows = _rows()
     pred = [r for r in rows if r["quantity"] == "amplitude_face_predicted"]
     meas = [r for r in rows if r["quantity"] == "amplitude_face_measured"]
-    cyc = [r for r in rows if r["quantity"] == "cycles_per_crossing_axis" and r["key"].endswith("_w64")]
+    # the power rows are keyed by the waist's ROLE since the central waist was ruled (O44): `_wcentral`
+    cyc = [r for r in rows if r["quantity"] == "cycles_per_crossing_axis" and r["key"].endswith("_wcentral")]
     assert pred and meas and len(cyc) == 5
     assert all(float(r["value"]) > 0 for r in pred)
     vals = [float(r["value"]) for r in cyc]
@@ -78,7 +79,10 @@ def test_the_amplitude_face_is_carried_with_its_sign_and_its_bar():
     # is what is asserted, and the turnover is left to the physics.
     ladder = [r for r in rows if r["quantity"] == "cycles_per_crossing_axis"
               and r["key"].startswith("P225_w")]
-    by_waist = sorted(ladder, key=lambda r: -float(r["key"].split("_w")[1]))
+    def _w_um(key):
+        tail = key.split("_w")[1]
+        return K.W0_CENTRAL_M * 1e6 if tail == "central" else float(tail)
+    by_waist = sorted(ladder, key=lambda r: -_w_um(r["key"]))
     assert len(by_waist) >= 4, f"the waist ladder is {len(by_waist)} rows"
     vals_w = [float(r["value"]) for r in by_waist]
     # THE LICENCE FIRST, THEN THE SHAPE. Monotonicity holds only at or above the
@@ -87,7 +91,7 @@ def test_the_amplitude_face_is_carried_with_its_sign_and_its_bar():
     # this rather than with a bare shape error. "Rises across the span" was tried
     # and is too weak: the defective ladder rose overall (0.0805 to 0.448) and
     # fell only between the last two rungs, which is exactly what it got wrong.
-    waists = [float(r["key"].split("_w")[1]) for r in by_waist]
+    waists = [_w_um(r["key"]) for r in by_waist]
     # THE TURNOVER IS MEASURED FROM THE PRODUCER, NOT TYPED AS 16 (corrected 2026-09-13). The previous licence asserted `min(waists) >= 16.0` and
     # called ~16 um the turnover; it is 16.3, so the committed 16 um rung sits
     # BELOW it and the licence was admitting exactly the region it claimed to

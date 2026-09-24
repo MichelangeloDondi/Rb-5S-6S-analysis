@@ -113,7 +113,9 @@ S0_LADDER = ((0.364, 0.5, 0.73, 1.0, 2.0) if os.environ.get("RB5S6S_MPM_DEEP")
 # A rung at 0.5 brackets the boundary between the archive and the campaign.
 ORDERS = (3, 5, 7)
 
-GAMMA_COLL, SIGMA_LASER, TRANSIT = 0.55, 1.6, 0.9575
+from rb5s6s.reference_point import reference_point  # noqa: E402
+_AP = reference_point()   # F313: the archive's line, read from the committed fit and the waist, never typed
+GAMMA_COLL, SIGMA_LASER, TRANSIT = _AP["gamma_coll"], _AP["sigma_laser"], _AP["transit_fwhm"]
 # THE TRACE COUNT IS THE STUDY'S OWN SUBJECT, not a convenience. At the
 # archive's shift and noise level a single trace's third cumulant is far
 # smaller than its own scatter, so the map must report the signal-to-scatter it
@@ -300,7 +302,7 @@ def _grid():
 
 
 def main() -> int:
-    known = {"--one-cell", "--plant"}
+    known = {"--one-cell", "--plant", "--from", "--n", "--dump", "--combine"}
     bad = [a for a in sys.argv[1:] if a.startswith("-") and a not in known and not a.startswith("--tag=")]
     if bad:
         raise SystemExit(f"unknown flag(s) {bad}: the flags are --one-cell and --plant, "
@@ -343,6 +345,28 @@ def main() -> int:
             return 1
         return 0
 
+    # WAVES (C6a, 2026-09-22): the grid is 432 cells, 83 minutes at five workers under load, past the wave cap, so
+    # `--from F --n N --dump P` computes cells F..F+N-1 and dumps their rows, and `--combine DIR` writes the two
+    # CSVs from every dump in cell order. The cells are seeded each on its own (the plant above: one worker and
+    # eight byte-equal), so the waves return exactly the one-process grid; `private/checks/wave_runner.py` walks it.
+    if "--from" in sys.argv:
+        import json
+        lo = int(sys.argv[sys.argv.index("--from") + 1]); n = int(sys.argv[sys.argv.index("--n") + 1])
+        dump = Path(sys.argv[sys.argv.index("--dump") + 1])
+        out, out_rungs = _compute(cells[lo:lo + n], workers)
+        dump.write_text(json.dumps({"from": lo, "out": out, "out_rungs": out_rungs}))
+        print(f"wrote cells {lo}..{min(lo + n, len(cells)) - 1} to {dump}")
+        return 0
+    if "--combine" in sys.argv:
+        import json
+        d = Path(sys.argv[sys.argv.index("--combine") + 1])
+        parts = sorted((json.loads(f.read_text()) for f in d.glob("wave_*.json")), key=lambda x: x["from"])
+        out = [r for part in parts for r in part["out"]]
+        out_rungs = [r for part in parts for r in part["out_rungs"]]
+        if len(out) != len(cells):
+            raise SystemExit(f"--combine: {len(out)} of {len(cells)} cells have a dump in {d}; the grid is not complete")
+        return _write(out, out_rungs)
+
     # a half-hour eight-worker job into a shared results/ takes a lock, as
     # run_coverage_grid.py does; the lock belongs to the job
     # keyed on the checkout, so a scratch clone's run and this checkout's do
@@ -359,6 +383,11 @@ def main() -> int:
 
 
 def _run(cells, workers) -> int:
+    return _write(*_compute(cells, workers))
+
+
+def _compute(cells, workers):
+    """The cells' rows, collected in cell order (the CSV bytes never depend on completion order)."""
     print(f"  {len(cells)} cells on {workers} workers", flush=True)
     with ProcessPoolExecutor(max_workers=workers) as ex:
         # COLLECTED IN ORDER, so the CSV bytes do not depend on completion
@@ -370,6 +399,11 @@ def _run(cells, workers) -> int:
             if i % 24 == 0 or i == len(cells):
                 print(f"    {i}/{len(cells)} cells collected", flush=True)
 
+    return out, out_rungs
+
+
+def _write(out, out_rungs) -> int:
+    """Write the two CSVs from the cells' rows, in cell order."""
     OUT.parent.mkdir(parents=True, exist_ok=True)
     with OUT.open("w", newline="", encoding="utf-8") as fh:
         w = csv.writer(fh)
@@ -391,7 +425,7 @@ def _run(cells, workers) -> int:
                 status = "DIAGNOSTIC" if r[9] == len(S0_LADDER) else "NULL"
                 note = ("the fitted power of S0 carried by the windowed cumulant "
                         "of this order at this configuration, from a log-log fit "
-                        "over the S0 ladder; NaN means the estimator returned a "
+                        "over the S0 ladder -- NaN means the estimator returned a "
                         "non-finite or zero cumulant on some rung")
                 w.writerow([f"{r[0]:g}", f"{r[1]:g}", r[2], r[3], f"{r[4]:g}",
                             str(r[5]).lower(), r[6], f"{r[7]:.4f}",

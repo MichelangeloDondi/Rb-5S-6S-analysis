@@ -33,13 +33,13 @@ each limit.
 
 ## 1. The measurements
 
-Three bounds, each with the construction that produced it.
-
-**Collisional self-broadening.** Below [0.026](../../results/beta_self_probe.csv "ref:beta_self_probe:pooled_slope::bound95_nscale") MHz per 10¹² cm⁻³ at 95%,
+Three bounds, each with the construction that produced it. **Collisional self-broadening.** Below [0.026](../../results/beta_self_probe.csv "ref:beta_self_probe:pooled_slope::bound95_nscale") MHz per 10¹² cm⁻³ at 95%,
 pooled across the four hyperfine lines by a shared-slope construction
 preregistered before computation, from the four-point 70 to 130 °C density
 lever ([`run_beta_self.py`](../../scripts/run_beta_self.py),
-[`beta_self_probe.csv`](../../results/beta_self_probe.csv)). The pooling is
+[`beta_self_probe.csv`](../../results/beta_self_probe.csv)).
+
+The pooling is
 licensed by physics, one R⁻⁶ slope for hyperfine components of one
 parity-forbidden line, and checked in the data. The loosest per-peak bound,
 below 0.05, stands beside it as the geometry-robust floor, and both include
@@ -47,8 +47,8 @@ the 20% density systematic. The effective coefficients sit at 0.005 to
 0.016, each below 2 sigma against its own standard error, so nothing
 resolves a collisional width and every number here is a bound.
 
-The unexplained Gaussian width, which is not the laser. Below 2.4 MHz on the two-photon transition axis, the axis the
-analysis works on, or [1.2](../../results/laser_epoch.csv "ref:laser_epoch:sigma_laser_bound:over_w0_band") MHz per photon
+The unexplained Gaussian width, which is not the laser. Below 1.4 MHz on the two-photon transition axis, the axis the
+analysis works on, or [0.7](../../results/laser_epoch.csv "ref:laser_epoch:sigma_laser_bound:over_w0_band") MHz per photon
 ([`laser_epoch.csv`](../../results/laser_epoch.csv)). **The name matters
 more than the number.** What the fit bounds is the Gaussian left over once
 transit is removed at the waist convention, which is why the bound rises with
@@ -79,43 +79,51 @@ best-fit power coefficient is consistent with zero (Δχ² against zero of
 0.12). The data give a 95% upper limit on S₀, the
 shift an atom on the beam axis sees at the campaign's 225 mW, the deepest
 anywhere in the beam:
-**below [0.26](../../results/stark_joint.csv "ref:stark_joint:S0_225mW_ub95:primary") MHz**
+**below [0.18](../../results/stark_joint.csv "ref:stark_joint:S0_225mW_ub95:primary") MHz**
 ([`run_stark_joint.py`](../../scripts/run_stark_joint.py),
 [`stark_joint.csv`](../../results/stark_joint.csv)). The limit is not read from where the
 line sits: every trace keeps a free centre, profiling drift and re-locks
-out exactly. An on-axis shift instead spreads the line into a ramp of red
+out exactly. An on-axis shift instead spreads the line into a ramp of blue
 shifts across the beam, broadening and skewing it as power rises, with no
 waist needed.
 
-The predicted shift does need one. At the 64 µm waist convention, taken from the lineage
-profile of the predecessor laser through the same lens and geometry, though not in
-the cell at campaign time, which is why section 4 still asks for the
-profile, the prediction is [0.348](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred:shared") MHz, above the limit, and the limit lies below the whole predicted envelope,
-1.404 to 1.760 in κ <!-- other-quantity: the ±1σ waist-and-retro envelope of the joint fit on the red-sided ramp, recomputed with its refit, not the prediction band's outermost cell --> over the stated waist and retro band, so on the full
+The predicted shift does need one. At the 42.38 µm waist convention, calculated
+as the bore-limited actual focus this apparatus makes of its own input beam
+(order O44, 2026-09-21, which replaced the lineage profile of the
+predecessor laser through the same lens and geometry this record carried
+through 2026-09-21), though not confirmed in the cell at campaign time, which
+is why section 4 still asks for the profile, the prediction is [0.7290](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred:shared") MHz, above the limit. The predicted
+coefficient is [3.24](../../results/prediction_band.csv "ref:prediction_band:kappa_pred:central") ± [0.26](../../results/prediction_band.csv "ref:prediction_band:kappa_pred:central:err") MHz/W, with a worst-case band of
+[2.753](../../results/prediction_band.csv "ref:prediction_band:kappa_pred_band:worst_lo") to [3.689](../../results/prediction_band.csv "ref:prediction_band:kappa_pred_band:worst_hi") MHz/W (quadrature [2.981](../../results/prediction_band.csv "ref:prediction_band:kappa_pred_band:quadrature_lo") to [3.500](../../results/prediction_band.csv "ref:prediction_band:kappa_pred_band:quadrature_hi")) over the stated waist and
+retro band, and the limit lies below the whole worst-case band
+(`worst_band_spans_bound` is [False](../../results/prediction_band.csv "ref:prediction_band:verdict:worst_band_spans_bound")), so on the full
 three-session fit the prediction is excluded at 95 per cent at every geometry
-in that band. **Two things qualify that exclusion.**
+in that band.
 
-The strength is a range and not a number. Δχ² runs 4.1 to 5.7 across the
-envelope, 2.0 to 2.4 σ, and the same profile read as a posterior puts the
-computed value in the upper 3 per cent, about 1.8 σ. What is withdrawn is a
-single calibrated two-sigma, not the existence of a significance.
+The strength is no longer a range that reaches down to about two sigma. An
+earlier reading of this record, retracted 2026-08-27, ran Δχ² 4.1 to 5.7 across a predicted envelope of 1.404 to 1.760 in κ, 2.0 to 2.4 σ: both
+numbers belonged to the retired waist convention. At the calculated waist
+every point of the worst-case band sits at least [44.7](../../results/prediction_band.csv "ref:prediction_band:profile:dchi2_floor_over_band")
+in delta chi-square, [6.7](../../results/prediction_band.csv "ref:prediction_band:profile:wilks_sigma_floor_over_band") σ under one-sided Wilks, above the data's
+minimum, rising to [75.1](../../results/prediction_band.csv "ref:prediction_band:profile:dchi2_at_central")
+([8.7](../../results/prediction_band.csv "ref:prediction_band:profile:wilks_sigma_at_central") σ) at the central prediction. What is withdrawn is the
+retired convention's own single calibrated two-sigma, not the existence of a
+significance, which is now stronger throughout the band.
 
-The stronger reading of the same data is the full-archive fit, over both
-ladders and not three sessions: κ < 0.944, Δχ² of 6.5 to 10.5 across the
-same envelope, 2.5 to 3.2 σ, and all four leave-one-out arms clearing the
-threshold with margin. It carries a failing prior-tension gate of its own,
-`gate_B4` at 3.78 σ on the collisional width, which is degenerate with the
-channel the bound is read from, so it is the stronger construction and not an
-unqualified one.
+The full-archive fit, over both
+ladders and not three sessions, stopped on its own `gate_B3_railed_physics`
+at the calculated waist (one session's laser width at its 0.05 MHz floor), so
+its bound is held out of this record until that gate is ruled, and neither
+its earlier nor its recomputed number is quoted here.
 
-On the three-session fit the exclusion is fragile to leaving one peak out.
-The leave-one-out Δχ² are [8.75](../../results/stark_joint.csv "ref:stark_joint:lopo_dchi2_pred:4121"), [2.27](../../results/stark_joint.csv "ref:stark_joint:lopo_dchi2_pred:4192"), [1.12](../../results/stark_joint.csv "ref:stark_joint:lopo_dchi2_pred:4154") and [0.61](../../results/stark_joint.csv "ref:stark_joint:lopo_dchi2_pred:4207") for 4121, 4192,
-4154 and 4207 against a 2.706 threshold, at the joint fit's κ of [1.545](../../results/stark_joint.csv "ref:stark_joint:kappa_pred:prediction"),
-computed at the cited 1093 a.u., where this record's own coefficient is [1.547](../../results/stark_sweep.csv "ref:stark_sweep:kappa_pred:shared").
+On the three-session fit the exclusion survives leaving any one peak out.
+The leave-one-out Δχ² are [84.77](../../results/stark_joint.csv "ref:stark_joint:lopo_dchi2_pred:4121"), [36.16](../../results/stark_joint.csv "ref:stark_joint:lopo_dchi2_pred:4192"), [52.29](../../results/stark_joint.csv "ref:stark_joint:lopo_dchi2_pred:4154") and [52.23](../../results/stark_joint.csv "ref:stark_joint:lopo_dchi2_pred:4207") for 4121, 4192,
+4154 and 4207 against a 2.706 threshold, at the joint fit's κ of [3.241](../../results/stark_joint.csv "ref:stark_joint:kappa_pred:prediction"),
+computed at the cited 1093 a.u., where this record's own coefficient is [3.241](../../results/stark_sweep.csv "ref:stark_sweep:kappa_pred:shared").
 Each arm is a fit with one peak removed against its own minimum, so the arms do not
 share the full profile's derivative, and each is carried across that gap by its own
-secant bracket to the 2.62 checkpoint (RESULTS.md C3f): 4121 clears at both ends and 4154,
-4192 and 4207 fail at both ends, all four read on the red-sided ramp until the joint
+secant bracket to the 2.62 checkpoint (RESULTS.md C3f): every arm clears at both ends,
+all four read on the red-sided ramp until the joint
 fit's refit lands.
 
 A count of arms is read only once each bracket sits clear of the threshold, and a bracket
@@ -125,20 +133,22 @@ above, one level down.
 What the data support is the inversion. Taking the geometry as a stated
 prior, the width channel puts the magnitude of the differential
 polarizability below
-[868](../../results/delta_alpha_posterior.csv "ref:delta_alpha_posterior:limit:delta_alpha_abs_ub95_profile")
+[361](../../results/delta_alpha_posterior.csv "ref:delta_alpha_posterior:limit:delta_alpha_abs_ub95_profile")
 a.u. in the record's own construction and below
-[1076](../../results/delta_alpha_posterior.csv "ref:delta_alpha_posterior:limit:delta_alpha_abs_ub95_posterior")
+[404](../../results/delta_alpha_posterior.csv "ref:delta_alpha_posterior:limit:delta_alpha_abs_ub95_posterior")
 a.u. read as a posterior, against the
-[0.35](../../results/delta_alpha_posterior.csv "ref:delta_alpha_posterior:estimator:sigma_from_zero")
-σ that separates the fit from zero. **The gap is real and what is withdrawn is the
+[2.23](../../results/delta_alpha_posterior.csv "ref:delta_alpha_posterior:estimator:sigma_from_zero")
+σ that separates the fit from zero, short of a detection on its own.
+
+**The gap is real and what is withdrawn is the
 number attached to it**: the earlier computed value (now [-1131.8](../../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive") ± [5.9](../../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive:err") with the 6S tail summed dynamically, which sits nearer the cited magnitude and shrinks the tension below) sits in the upper tail
 at
-[0.0406](../../results/delta_alpha_posterior.csv "ref:delta_alpha_posterior:comparison:posterior_prob_above_computed_here")
-under the posterior and at 0.017 under the crossing, so it is a real tension
-under both readings and quotable to neither's third digit. Over the ±1σ box
-in waist and retro ratio the prediction runs 0.32 to 0.40, all above the
-primary limit, so reconciling through the geometry needs an effective waist
-outside that box.
+a posterior probability below 5e-06, which is 0 of 200 000 draws, and (an open item, pending re-derivation at the calculated waist, and 0.017 before it) under the crossing, so it is a real tension
+under both readings and quotable to neither's third digit. The worst-case
+band already stated above, [2.753](../../results/prediction_band.csv "ref:prediction_band:kappa_pred_band:worst_lo") to [3.689](../../results/prediction_band.csv "ref:prediction_band:kappa_pred_band:worst_hi") MHz/W, is that same ±1σ box
+in waist and retro ratio, read in κ instead of S₀, and it sits wholly
+above the primary limit, so reconciling through the geometry needs an
+effective waist outside that box.
 
 One caveat runs the other way and is easy to over-read. The limit bounds the
 **sum** of three channels that all broaden as the square of the power, of
@@ -180,10 +190,12 @@ one three-session maximum-likelihood fit with one shared coefficient,
 per-peak physical widths under a prior from the collisional chain, per-trace
 free centres that profile out drift and re-locks, and a per-session
 detector-saturation nuisance. The subset spread is the systematic this bound is
-usually read on: 0.26 MHz from all three sessions, 0.15 from the
-campaign rows alone, 0.24 with the red-wing nuisance marginalised, and 0.366
-with peak 4192 dropped, which lands inside the predicted envelope and not
-below it. A second systematic, the pooled construction's
+usually read on: [0.182](../../results/stark_joint.csv "ref:stark_joint:S0_225mW_ub95:primary") MHz from all three sessions, 0.245 MHz (0.225 × [0.688](../../results/stark_joint.csv "ref:stark_joint:kappa_ub95_camponly:robustness") MHz/W) from the
+campaign rows alone, [0.143](../../results/stark_joint.csv "ref:expr:{stark_joint:kappa_ub95_wing:robustness} * 0.225") MHz (0.225 × [0.634](../../results/stark_joint.csv "ref:stark_joint:kappa_ub95_wing:robustness") MHz/W) with the red-wing nuisance marginalised, and [0.242](../../results/stark_joint.csv "ref:stark_joint:S0_225mW_ub95_drop4192:robustness")
+with peak 4192 dropped, which at the calculated waist sits below the
+predicted band, not inside it.
+
+A second systematic, the pooled construction's
 pass-to-pass spread, is recorded in
 [chapter 8](../big_picture/08_when-a-joint-fit-is-legitimate.md) and is not
 among the reasons above: two diagnostics of near-identical size sit behind
@@ -267,14 +279,16 @@ not of the sample size, so more data does not fix it
 ([the identifiability page](../wiki/identifiability.md)).
 Free the transit width as well and the degeneracy moves instead of lifting:
 `identifiability.csv` reports
-[−0.971](../../results/identifiability.csv "ref:identifiability:corr:gamma_coll_transit") between the collisional and transit widths, the same exchange seen from
+[−0.954](../../results/identifiability.csv "ref:identifiability:corr:gamma_coll_transit") between the collisional and transit widths, the same exchange seen from
 a different direction.
 
 **Transit against waist.** The transit width follows from the waist.
-The 64 µm value is the lineage profile of the predecessor laser through the same
-lens and geometry. What this campaign did not do is measure it in its own
-interaction volume at its own time. A wrong waist is absorbed by the other
-widths, so it never shows up as a misfit.
+The 42.38 µm value is calculated as the bore-limited actual focus this
+apparatus makes of its own input beam (order O44, 2026-09-21),
+replacing the lineage profile of the predecessor laser this record carried
+through the same lens and geometry until that date. What this campaign did
+not do is measure it in its own interaction volume at its own time. A wrong
+waist is absorbed by the other widths, so it never shows up as a misfit.
 
 **The excluded sessions' absolute frequency axis.** Usable as fractional
 changes, not absolute positions, until the axis is repaired.

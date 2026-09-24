@@ -1,4 +1,4 @@
-*Chapter 6 of 9 of [the big picture](../BIG_PICTURE.md)*
+*Chapter 6 of 10 of [the big picture](../BIG_PICTURE.md)*
 
 ## 6. Gains from nanofibre measurements
 
@@ -36,8 +36,8 @@ A nanofibre does not fight those degeneracies. It removes them.
 | channel | in the cell | in the evanescent field |
 |---|---|---|
 | collisional | 0.19 to 0.93 MHz, degenerate with the laser term at -0.9 | **178 Hz** at MOT density. Gone from the budget |
-| geometry | w₀ assumed, sets transit and intensity together, no upper bound from the data | no waist. A **diameter**, which is measurable, and a mode that is computable from it |
-| transit | cusp, 0.93 MHz, separable by shape | [73 to 98](../../results/onf_candidate.csv "ref:onf_candidate:transit_onf_cold_band:") kHz, and it enters the width at **second order**, contributing a small fraction of itself. A temperature ladder is the only lever that acts on it and it acts weakly |
+| geometry | w₀ calculated, bore-limited, sets transit and intensity together, no upper bound from the data alone | no waist. A **diameter**, which is measurable, and a mode that is computable from it |
+| transit | cusp, 1.45 MHz, separable by shape | [73 to 98](../../results/onf_candidate.csv "ref:onf_candidate:transit_onf_cold_band:") kHz, and it enters the width at **second order**, contributing a small fraction of itself. A temperature ladder is the only lever that acts on it and it acts weakly |
 | residual Gaussian | ~1 MHz unexplained, leading candidate a 0.19 degree retro tilt | no free-space retro to tilt, so the candidate is **testable** and not assumed |
 | blackbody | the density lever and the thermal field share one knob | cold atoms against a 300 K room. The two **decouple** |
 | atom to surface | absent | Casimir-Polder, a term to **measure** and not avoid |
@@ -143,7 +143,7 @@ survives. Whether 790 nm is also near a differential zero for 5S to 6S is a
 natural question and **this repository cannot answer it**.
 
 The 6S line list
-stops at 8P, whose transition lies at 1028.7 nm, while the 6S to nP series
+stops at 8P, whose transition lies at 1028.7 nm, while the 6S to nP series <!-- other-quantity: a wavelength -->
 continues through 13P near 797.9 nm and 14P near 787.1 nm <!-- other-quantity: the 14P line's wavelength in nm, not a projections factor --> to the ionisation
 limit at 737.6 nm. **A trap at 790 nm sits between those two omitted states, a
 few nanometres from each**, where their neglected denominators are far smaller
@@ -281,9 +281,9 @@ cooling that reaches it inside the fibre is
 A fibre arm would be run beside the cell, the trap and the nanofibre, so what
 it is worth is what it does to the joint problem. This record's bound fails on
 four couplings: the collisional width against the transit at
-[-0.971](../../results/identifiability.csv "ref:identifiability:corr:gamma_coll_transit"),
+[-0.954](../../results/identifiability.csv "ref:identifiability:corr:gamma_coll_transit"),
 the laser width against the collisional at
-[-0.9411](../../results/campaign_twin_forecast.csv "ref:campaign_twin_forecast:cell:corr_laser_coll_5traces"),
+[-0.8293](../../results/campaign_twin_forecast.csv "ref:campaign_twin_forecast:cell:corr_laser_coll_5traces"),
 a Lorentzian laser component and the collisional width entering only as their
 sum, and a beam waist nobody has measured, which is why every absolute result here is a bound
 and not a value. A guided arm attacks two of the four by geometry alone, and a cold free-space
@@ -295,11 +295,11 @@ collision physics, so that width is identical in the two arms by construction,
 while the transit differs because the mode is
 [19.000](../../results/platform_twins.csv "ref:platform_twins:hcpcf_warm:hcpcf:w0_um")
 microns against the cell's
-[64.000](../../results/platform_twins.csv "ref:platform_twins:cell_130C:cell:w0_um"),
+[42.380](../../results/platform_twins.csv "ref:platform_twins:cell_130C:cell:w0_um"),
 giving
 [3.22518](../../results/platform_twins.csv "ref:platform_twins:hcpcf_warm:hcpcf:transit_fwhm_mhz")
 MHz against
-[0.957477](../../results/platform_twins.csv "ref:platform_twins:cell_130C:cell:transit_fwhm_mhz").
+[1.445930](../../results/platform_twins.csv "ref:platform_twins:cell_130C:cell:transit_fwhm_mhz").
 Two arms, one shared nuisance, two different transits, and the fibre's
 transverse scale is a manufactured mode field diameter with a datasheet, not
 an alignment that drifts. So the pair returns the collisional width and
@@ -309,16 +309,16 @@ first and the reason every absolute number here carries a bound.
 A free beam locks the shift to the interaction length, and a fibre does
 not. The light shift goes as the inverse square of the waist while the
 Rayleigh range goes as its square, so focusing buys shift and pays it straight
-back. Tightening the cell from 64 to 16 microns multiplies the shift by sixteen
-and divides the interaction length by sixteen, from
-[12.9535](../../results/platform_twins.csv "ref:platform_twins:cell_130C:cell:length_eff_mm")
+back. Tightening the cell from 42.38 to 16 microns multiplies the shift by
+about seven and divides the interaction length by about seven, from
+[5.6800](../../results/platform_twins.csv "ref:platform_twins:cell_130C:cell:length_eff_mm")
 mm to
 [0.8096](../../results/platform_twins.csv "ref:platform_twins:cell_130C_tight:cell:length_eff_mm"),
 taking the atom count down with it. A guided mode does not diverge, so its
 length is the length of fibre: the warm row carries
 [100.0000](../../results/platform_twins.csv "ref:platform_twins:hcpcf_warm:hcpcf:length_eff_mm")
 mm. Intensity and length become two knobs where the cell has one, and the
-campaign can reach the shift its third-cumulant channel needs without
+campaign can reach the shift its third-moment channel needs without
 collapsing the interaction region to under a millimetre.
 
 **The trap and the molasses switch off both unseparable widths at once.** In
@@ -334,7 +334,8 @@ instrument without new hardware.
 The convolution condition is exact in a guided mode. A convolution holds
 only where the homogeneous kernel is the same at every collected element, and
 in a free beam the transit follows the local beam radius, so the kernel varies
-along the axis by one per cent at 64 microns and by nearly half at 16. A guided
+along the axis by about four and a half per cent at the calculated 42.4 microns
+and by nearly half at 16. A guided
 mode has the same transverse profile at every point along it, so the condition
 holds identically. The shape channels, which is to say the asymmetry this whole
 programme reads, are clean in the fibre at every length and contaminated in the
@@ -440,7 +441,7 @@ on it.
 | **the evanescent envelope the transit kernel is built on** | [methods chapter 9](../methods/09_the_guided_geometry.md) section 9.1 states that the exponential approximation is not available at these radii, since $qa$ runs 0.18 to 0.32, and section 9.2 then builds the whole transit kernel on a plain exponential decay in time | **no forecast spans it, and it is the largest known error on the temperature ladder's value.** Carrying the chapter's own solved profile through shortens the effective decay length against the nominal 401 nm, and the kernel enters at second order so the width a ladder reads moves by the square of that factor. **The size depends on which effective length is meant and the definition has to be named.** Matched on the second moment, the quantity the added width depends on, the solved profile gives about 270 nm against the nominal, and about 2.2 on the width. A second evaluation of the same integral, written independently, lands a few nanometres shorter, so the length is good to about the nearest ten and the width factor to the first decimal. A log-linear fit over the first 600 nm gives about 218 nm and 3.3. **The second-moment length must exceed the fitted one**, because the profile's local decay length rises outward, 183 nm at 50 nm from the surface to 340 nm at two microns. **The direction is conservative under every definition**: the fibre lever is stronger than this chapter currently claims, so closing it is a gain and not a retraction. It is derivable and needs no apparatus fact, so it is mathematics and not a question for the group |
 | **Rb adsorption against exposure time** | how long the fibre runs before its transmission degrades, which bounds the whole arm and is what the campaign costs the fibre itself | no forecast rests on it. `results/campaign_twin_forecast.csv` reports the integration time so the exposure is visible, but nothing converts exposure into degradation |
 | **the trap's azimuth around the fibre** | which field magnitude an atom sees, and so every guided light shift. The field varies by about a third between the polarisation axis and perpendicular to it | spanned by a committed pair in `results/guided_mode_tables.csv`, the azimuthally averaged `stark_fraction` beside the on-axis one. The tensor term vanishes for this transition, both states having $J=1/2$, but the vector term does not, and a guided mode is strongly elliptically polarised near the surface. So the committed pair is a lower bound on how much the azimuth matters |
-| **trap position and its thermal spread** | the intensity at the atom, and the atom-surface distance the surface term depends on | the distance-scan lever reaches a fractional [0.2928](../../results/onf_lever_ranking.csv "ref:onf_lever_ranking:distance_scan:sigma_lambda_frac") on the decay length at the 2025 lock, and under a hundredth at the photon floor. The spread itself is unmodelled and no forecast rests on it |
+| **trap position and its thermal spread** | the intensity at the atom, and the atom-surface distance the surface term depends on | the distance-scan lever reaches a fractional [0.2927](../../results/onf_lever_ranking.csv "ref:onf_lever_ranking:distance_scan:sigma_lambda_frac") on the decay length at the 2025 lock, and under a hundredth at the photon floor. The spread itself is unmodelled and no forecast rests on it |
 | **the Doppler pedestal's detectability in the guided arm** | whether the shared-sweep thermometer can be read at the fibre as well as lent to it | no forecast rests on it. The cell arm supplies the temperature either way, and the guided pedestal would measure the trapped sample instead of the vapour, which is a different and more valuable quantity if it is reachable at all |
 | **whether the modulator is upstream of the beam split** | whether the comb state can differ between the cell and fibre arms in one sweep | no forecast rests on it. Every committed cell is single-arm. It decides only whether the two arms can hold different comb settings at once, or must take turns |
 
@@ -491,7 +492,7 @@ that actually enters rather than a proxy for it.
 It reaches the diameter to about
 [31.07](../../results/onf_lever_ranking.csv "ref:onf_lever_ranking:lock_span_0.04:sigma_diameter_nm") nm at the
 2025 drifting lock and
-[0.68](../../results/onf_lever_ranking.csv "ref:onf_lever_ranking:lock_span_0.0:sigma_diameter_nm") nm at the
+[0.67](../../results/onf_lever_ranking.csv "ref:onf_lever_ranking:lock_span_0.0:sigma_diameter_nm") nm at the
 photon floor. The lock was repaired in August 2026 and its residual is
 unmeasured, so the campaign sits inside that span.
 
@@ -519,23 +520,23 @@ a skewness about three times larger with no hard edge (section 1.2 of the
 design note, which computes both).
 
 Carrying the ramp over unchanged would get the sign of the line's asymmetry
-wrong, and the self-centred third cumulant is the drift-immune channel this programme
+wrong, and the self-centred third moment is the drift-immune channel this programme
 relies on, where the shift is large against the line, as it is in the
 evanescent field and is not at the 2025 cell's waist.
 
-![the third cumulant as an observable: the two-photon asymmetry, the cumulant ladder, what each mechanism reaches, and the ceiling the record's bound puts on it](../../figures/fig30_third_cumulant.png)
+![the third moment as an observable: the two-photon asymmetry, the cumulant ladder, what each mechanism reaches, and the ceiling the record's bound puts on it](../../figures/fig30_third_cumulant.png)
 
 *Figure 30. Why this channel is worth the session. The first panel shows what
 the ramp does to the observable, and the difference below it is the
-antisymmetric one-lobe-up, one-lobe-down signature that the third cumulant
+antisymmetric one-lobe-up, one-lobe-down signature that the third moment
 measures. The third panel is the argument: every symmetric kernel contributes
-to the variance and nothing to a self-centred κ₃ (the Lorentzian to the truncation fraction
+to the variance and nothing to a self-centred μ₃ (the Lorentzian to the truncation fraction
 [the condition](../wiki/third-cumulant.md) quantifies), so
 the collisional-against-laser
 degeneracy that dominates the width budget cannot reach it. The ramp is the
 only asymmetric term in the model.*
 
-![the third cumulant computed on real traces: one trace folded about its centroid, the measured cumulant against power for two peaks, and the gap to the prediction](../../figures/fig31_third_cumulant_measured.png)
+![the third moment computed on real traces: one trace folded about its centroid, the measured moment against power for two peaks, and the gap to the prediction](../../figures/fig31_third_cumulant_measured.png)
 
 *Figure 31. And what the 2025 data actually say in it. The folded residual in
 the first panel is noise, the measurements in the second straddle zero and the
@@ -599,9 +600,9 @@ per cent of its own FWHM, and the width a ladder sees grows as $T$ and not
 as $\sqrt T$, so a ladder reading it through the total width has both less
 signal and a different shape than an additive treatment implies. Under synthetic worlds calibrated to the
 per-condition width precision this record already achieves, it identifies the
-common Lorentzian component at [0.9640](../../results/fibre_twin.csv "ref:fibre_twin:O2A_lambda_312nm:coverage_gamma_l") and [0.9580](../../results/fibre_twin.csv "ref:fibre_twin:O2A_lambda_492nm:coverage_gamma_l") coverage at the two
+common Lorentzian component at [0.9200](../../results/fibre_twin.csv "ref:fibre_twin:O2A_lambda_312nm:coverage_gamma_l") and [0.8800](../../results/fibre_twin.csv "ref:fibre_twin:O2A_lambda_492nm:coverage_gamma_l") coverage at the two
 decay-length band edges, and does **not** identify the Gaussian one, at
-[0.4040](../../results/fibre_twin.csv "ref:fibre_twin:O2A_lambda_312nm:coverage_sigma_g") and [0.3760](../../results/fibre_twin.csv "ref:fibre_twin:O2A_lambda_492nm:coverage_sigma_g").
+[0.3520](../../results/fibre_twin.csv "ref:fibre_twin:O2A_lambda_312nm:coverage_sigma_g") and [0.3440](../../results/fibre_twin.csv "ref:fibre_twin:O2A_lambda_492nm:coverage_sigma_g").
 A single-rung control fails to split, which is what makes the ladder the lever,
 not the fit.
 

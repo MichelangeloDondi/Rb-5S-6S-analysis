@@ -325,3 +325,25 @@ def test_an_on_head_board_names_its_real_prior_commits_and_checks_the_right_mode
     assert prev in r.stdout, "the prior pair must start one commit back from HEAD"
     assert head not in r.stdout.split("BINDING")[0], (
         "the head commit must not be named as one of its own predecessors")
+
+
+def test_the_prompt_names_the_board_copy_only_when_the_copy_is_the_boards_tree(tmp_path):
+    """C5-carry-2 (2026-09-22): the prompt used to name the read-only board copy whatever --prepare-copy
+    returned, at a parent that ignored BOARD_COPY_ROOT, so a failed copy sent every seat to a path that was
+    not there. `_board_copy_verified` reads the artefact: absent, or writing another tree, is refused; a copy
+    whose `git write-tree` is the board's tree is admitted."""
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("_mp_copy", SRC)
+    mp = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mp)
+    ok, why = mp._board_copy_verified(str(tmp_path / "board_absent"), "0" * 40)
+    assert not ok and "no copy" in why
+    copy = tmp_path / "board_copy"
+    subprocess.run(["git", "init", "-q", str(copy)], check=True)
+    (copy / "f.txt").write_text("x\n")
+    subprocess.run(["git", "-C", str(copy), "add", "f.txt"], check=True)
+    tree = subprocess.run(["git", "-C", str(copy), "write-tree"], capture_output=True, text=True).stdout.strip()
+    ok, why = mp._board_copy_verified(str(copy), "f" * 40)
+    assert not ok and "not the board's" in why
+    ok, why = mp._board_copy_verified(str(copy), tree)
+    assert ok and why == ""

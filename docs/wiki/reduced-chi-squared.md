@@ -75,7 +75,7 @@ print(f"chi2_red = {chi2 / nu:.3f}, expected 1 +- {np.sqrt(2 / nu):.3f}")
 structured = resid + 0.085 * np.cos(2.1 * np.linspace(-3, 3, n))
 chi2b = float(np.sum((structured / sigma) ** 2))
 print(f"with an unmodelled component: {chi2b / nu:.3f}")
-print(f"inflating errors by its square root returns it to 1.000")
+print(f"inflating errors by its square root returns it to 1.000")  # other-quantity: an illustrative worked example, not a committed cell
 ```
 
 ## Values below one
@@ -104,7 +104,7 @@ repairs it. Two consequences follow, and this repository has met both:
 per-condition line fits return 0.78 to 1.09 across the 32 fitted conditions,
 so within a condition the model describes the data. The **width-against-power
 regression** over 20 summary widths returns about
-[3.7](../../results/stark_sweep.csv "ref:stark_sweep:chi2_red:fit"). Both come from the same
+[50.1](../../results/stark_sweep.csv "ref:stark_sweep:chi2_red:fit"). Both come from the same
 traces, so the misfit is **between** conditions and not within them:
 block-to-block width scatter rather than a defect of the line profile.
 

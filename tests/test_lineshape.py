@@ -480,57 +480,106 @@ def test_model_profile_custom_geometry_changes_line():
 def test_the_aperture_on_axis_factor_matches_its_closed_form_table():
     """F39: the modulator's 3 mm bore ahead of the 150 mm lens clips the input Gaussian; the
     on-axis intensity per recorded watt is (1 - e^{-a^2/w^2})^2 / (1 - e^{-2 a^2/w^2}) with
-    w = lam f / (pi w0). The thesis session's table, checked both sides: 28.4, 12.4, 3.3 and 0.6
-    per cent lost at 42.4, 52.1, 64 and 76 um; the factor tends to one for a wide focus (a
+    w = lam f / (pi w0). The thesis session's table, checked both sides: 28.4, 12.4, 5.3 and 0.6
+    per cent lost at 42.4, 52.1, 60 and 76 um; the factor tends to one for a wide focus (a
     narrow input beam) and to zero for a tight one."""
     from rb5s6s.lineshape import aperture_onaxis_factor
-    for w0_um, loss_pct in ((42.4, 28.4), (52.1, 12.4), (64.0, 3.3), (76.0, 0.6)):
+    for w0_um, loss_pct in ((42.4, 28.4), (52.1, 12.4), (60.0, 5.3), (76.0, 0.6)):
         assert abs(100.0 * (1.0 - aperture_onaxis_factor(w0_um * 1e-6)) - loss_pct) < 0.1, w0_um
     assert aperture_onaxis_factor(300e-6) > 0.9999 and aperture_onaxis_factor(5e-6) < 0.05
+
+
+def test_the_actual_focus_on_axis_factor_matches_f280_and_the_unclipped_limit():
+    """F280 (2026-09-21): the Cell's w0 is the ACTUAL (same-reading) focus, not the free-focus
+    convention `aperture_onaxis_factor` takes, and reading it through the wrong function read S0
+    about 20 per cent low at the archive's own waist (0.716 against 0.890). This is the carry:
+    0.890 at 42.42 um (the finding's own reading, a 2.46 mm input), and -> 1 once the beam is loose
+    enough that the bore barely clips it -- checked at the SAME default geometry rather than a
+    second bore, whose floor sits far enough from this one that the table's node grid (tuned for
+    the default 1.5 mm bore) is not asserted accurate there. Plants both ways: the reading a real
+    call must hit, and the floor a call below it must refuse rather than silently extrapolate."""
+    from rb5s6s.lineshape import aperture_onaxis_factor_actual
+    assert abs(aperture_onaxis_factor_actual(42.42e-6) - 0.890) < 2e-3
+    assert aperture_onaxis_factor_actual(300e-6) > 0.999, "a loosely focused beam is barely clipped"
+    with pytest.raises(ValueError):
+        aperture_onaxis_factor_actual(38e-6)      # F280's floor sits near 41 um for this bore
+    # clamp_floor=True (stark.fit_stark_sweep's prediction-band use, W0_BAND_M's own low edge
+    # sitting under the floor): no raise, and the clamped value equals the floor's own reading.
+    clamped = aperture_onaxis_factor_actual(38e-6, clamp_floor=True)
+    at_floor = aperture_onaxis_factor_actual(41.0e-6)
+    assert abs(clamped - at_floor) < 5e-3, (clamped, at_floor)
+
+
+def test_the_actual_and_free_focus_conventions_disagree_at_the_same_number():
+    """The two are NOT interchangeable (F108): `aperture_onaxis_factor(w)` reads w as an
+    unclipped input's own diffraction limit, `aperture_onaxis_factor_actual(w)` reads w as the
+    bench-ACTUAL reading, and calling the first on an actual reading is exactly F280's bug -- the
+    actual-convention factor is always the larger of the two, because the clipped beam's actual
+    focus is always wider than the free-focus number of the same input."""
+    from rb5s6s.lineshape import aperture_onaxis_factor, aperture_onaxis_factor_actual
+    for w0_um in (42.4, 52.1, 60.0):
+        free_convention = aperture_onaxis_factor(w0_um * 1e-6)
+        actual_convention = aperture_onaxis_factor_actual(w0_um * 1e-6)
+        assert actual_convention > free_convention, (w0_um, free_convention, actual_convention)
 
 
 def test_the_aperture_spread_factor_reproduces_the_reviewed_column_and_its_unclipped_anchor():
     """F39: the width channel reads the spread of the shift distribution under the rate weighting,
     which the clipped focus moves by a factor F that differs from the on-axis one; the
-    column (0.699, 0.860, 0.959, 0.992 at 42.4, 52.1, 64 and 76 um) reproduces here to 0.3 per
+    column (0.699, 0.860, 0.936, 0.992 at 42.4, 52.1, 60 and 76 um) reproduces here to 0.3 per
     cent, and the unclipped rms over the peak is 1/sqrt(18)."""
     from rb5s6s.lineshape import aperture_spread_factor, aperture_onaxis_factor
-    from rb5s6s.constants import W0_MEASURED_M
-    for w0_um, F in ((42.4, 0.699), (52.1, 0.860), (64.0, 0.959), (76.0, 0.992)):
+    from rb5s6s.constants import W0_CENTRAL_M
+    for w0_um, F in ((42.4, 0.699), (52.1, 0.860), (60.0, 0.936), (76.0, 0.992)):
         got = aperture_spread_factor(w0_um * 1e-6)
         assert abs(got - F) < 0.004, (w0_um, got)
         assert got < aperture_onaxis_factor(w0_um * 1e-6), "the spread factor sits below the on-axis one at every waist"
     # n_r RAISED, NOT the change reverted (2026-09-21): C5 normalised the focal-plane power by
     # Parseval and asserted the on-axis peak against its closed form (rb5s6s/lineshape.py's
-    # `_spread`), which is a strictly stronger check than the trapezoid-over-rho it replaced, and
-    # it is what this exact call was missing -- confirmed, not assumed: a=50 mm against this
-    # waist's w_in of ~0.74 mm is a 67-fold span, and the default n_r=1200 resolves the truncated
-    # Gaussian too coarsely over it to hold the closed-form check to 1e-3, so the corrected
-    # function correctly REFUSES rather than returning a silently wrong ratio (its own error
-    # message says "raise n_r"). Raised to 20000 the ratio comes back at 1 - 4e-6, four orders of
-    # magnitude inside this assertion's tolerance -- the asymptote the assertion is testing was
-    # never in question, only the default grid's resolution at this one extreme a_m/w_in ratio.
-    # The four (w0, F) pairs above, which use the default n_r, are untouched by this: they landed
-    # inside tolerance under the corrected function on the first try, so the column above
-    # itself needed no re-derivation.
-    assert abs(aperture_spread_factor(W0_MEASURED_M, a_m=50e-3, n_r=20000) - 1.0) < 2e-3, (
+    # `_spread`), a strictly stronger check than the trapezoid-over-rho it replaced. A 50 mm bore
+    # against the central waist's input radius is a span of tens, and the default n_r=1200 resolves
+    # the truncated Gaussian too coarsely over it to hold the closed-form check to 1e-3, so the
+    # corrected function REFUSES rather than returning a silently wrong ratio (its own message says
+    # "raise n_r"). At n_r=20000 the ratio comes back inside this tolerance by orders of magnitude.
+    assert abs(aperture_spread_factor(W0_CENTRAL_M, a_m=50e-3, n_r=20000) - 1.0) < 2e-3, (
         "a bore far wider than the beam clips nothing")
 
 
 def test_the_predicted_shift_per_recorded_watt_carries_the_on_axis_factor_once():
-    """F39: three producers computed the prediction identically, so it lives in the package;
-    it is the ideal relation times the on-axis factor at the same waist, and nothing else."""
+    """F39, F280: three producers computed the prediction identically, so it lives in the package;
+    it is the ideal relation times the ACTUAL-focus on-axis factor at the same waist (corrected
+    2026-09-21 from the free-focus convention, which read the wrong beam), and nothing else."""
     from rb5s6s.stark import kappa_pred_per_watt
-    from rb5s6s.lineshape import aperture_onaxis_factor, stark_shift_S0_mhz
+    from rb5s6s.lineshape import aperture_onaxis_factor_actual, stark_shift_S0_mhz
     from rb5s6s import constants as K
-    for w0_um in (42.4, 64.0, 76.0):
+    for w0_um in (42.4, 45.0, 52.1):
         w0 = w0_um * 1e-6
-        want = stark_shift_S0_mhz(1.0, w0, rho=K.RHO_RETRO) * aperture_onaxis_factor(w0)
+        want = stark_shift_S0_mhz(1.0, w0, rho=K.RHO_RETRO) * aperture_onaxis_factor_actual(w0)
         assert abs(kappa_pred_per_watt(w0, K.RHO_RETRO) / want - 1.0) < 1e-12, w0_um
-    # the defaults are the record's own geometry, and the factor is applied once, not twice
+    # the defaults are the record's own geometry, and the factor is applied once, not twice; at
+    # the bore-limited central value the actual-convention factor reads about 0.888 (F280), below
+    # the free-convention 0.9-to-1.0 band the pre-F280 test asserted here
     d = kappa_pred_per_watt()
-    ideal = stark_shift_S0_mhz(1.0, K.W0_MEASURED_M, rho=K.RHO_RETRO)
-    assert 0.9 < d / ideal < 1.0, (d, ideal)
+    ideal = stark_shift_S0_mhz(1.0, K.W0_CENTRAL_M, rho=K.RHO_RETRO)
+    assert 0.85 < d / ideal < 1.0, (d, ideal)
+
+
+def test_a_design_point_below_the_bore_floor_must_name_its_unclipped_convention():
+    """C6a (plan A127): a 16 um design point is below the bore's floor (about 40.9 um, F291), so
+    the bench convention REFUSES it and only `bore_in_path=False`, the unclipped Gaussian of a
+    design with the bore out of the focusing path, computes it. Planted both ways: the default
+    raises at the design point, the flag returns the ideal relation exactly, and at the bench's
+    own focus the flag's only effect is the on-axis factor it removes."""
+    from rb5s6s.stark import kappa_pred_per_watt
+    from rb5s6s.lineshape import stark_shift_S0_mhz
+    from rb5s6s import constants as K
+    with pytest.raises(ValueError, match="below this bore's floor"):
+        kappa_pred_per_watt(16e-6, K.RHO_RETRO)
+    got = kappa_pred_per_watt(16e-6, K.RHO_RETRO, bore_in_path=False)
+    assert got == stark_shift_S0_mhz(1.0, 16e-6, rho=K.RHO_RETRO)
+    bench = kappa_pred_per_watt(K.W0_CENTRAL_M, K.RHO_RETRO)
+    free = kappa_pred_per_watt(K.W0_CENTRAL_M, K.RHO_RETRO, bore_in_path=False)
+    assert 0.85 < bench / free < 1.0, (bench, free)
 
 
 def test_both_aperture_factors_take_a_waist_grid_and_agree_with_the_scalar_call():
@@ -546,8 +595,8 @@ def test_both_aperture_factors_take_a_waist_grid_and_agree_with_the_scalar_call(
     """
     import numpy as np
     from rb5s6s.lineshape import aperture_onaxis_factor, aperture_spread_factor
-    from rb5s6s.constants import W0_MEASURED_M
-    grid = np.array([42.4e-6, 52.1e-6, W0_MEASURED_M, 76.0e-6])
+    from rb5s6s.constants import W0_CENTRAL_M
+    grid = np.array([42.4e-6, 52.1e-6, W0_CENTRAL_M, 76.0e-6])
 
     on_grid = aperture_onaxis_factor(grid)
     assert np.shape(on_grid) == (4,)
@@ -560,5 +609,5 @@ def test_both_aperture_factors_take_a_waist_grid_and_agree_with_the_scalar_call(
         assert abs(got - aperture_spread_factor(float(w))) < 1e-12
 
     # and a scalar still returns a python float, which is what every committed caller stores
-    assert isinstance(aperture_onaxis_factor(W0_MEASURED_M), float)
-    assert isinstance(aperture_spread_factor(W0_MEASURED_M), float)
+    assert isinstance(aperture_onaxis_factor(W0_CENTRAL_M), float)
+    assert isinstance(aperture_spread_factor(W0_CENTRAL_M), float)

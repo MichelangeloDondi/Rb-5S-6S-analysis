@@ -416,9 +416,10 @@ The two-photon transition (sum axis) therefore shifts by
     S0 = |dE_6S - dE_5S| / h = Delta_alpha * I_eff / (2 eps0 c h),
 with I_eff = (1+rho) * 2P/(pi w0^2) the TIME-AVERAGED on-axis intensity
 (forward + retro, NO coherent x2 -- the fringe-averaging argument below).
-=> S0(225 mW, w0=64 um, rho=0.94) = 0.35 MHz transition (0.17 laser axis)
-   [the v3.0.0 prior; was 0.59 at the replaced 50 um / rho=1, and 1.43 at the
-   32 um nominal before that -- see W0_MEASURED_M and RHO_RETRO];
+=> S0(225 mW, w0=W0_CENTRAL_M, rho=0.94) = 0.82 MHz transition (0.41 laser axis)
+   [the O44/F280 bore-limited central value; was 0.35 at the retired lineage
+   convention, 0.59 at the replaced 50 um / rho=1, and 1.43 at the 32 um
+   nominal before that -- see W0_CENTRAL_M and RHO_RETRO];
    S0(225 mW, w0=16 um, rho=0.94) = 5.56 MHz transition (why the fixed-lock
    session's small waist makes the skew, ~S0^3, measurable). See
    stark_shift_S0_mhz().
@@ -438,8 +439,8 @@ fringe-RESOLVED tail. It is NOT benign: the fringe MULTIPLIES the shift,
 s -> s(1+x) with x arcsine (mean 0), so it leaves the mean but SUPPRESSES the ramp
 skew -- kappa3 -> -S0^3 (1/135 - f_res*sigma_x^2/5) (= -1/135 + f_res/10 at rho=1),
 a -13.5*f_res*contrast^2 fractional leverage (contrast = 2 sqrt(rho)/(1+rho); only
-the product P = f_res*sigma_x^2 is observable). It is negligible at the w0=64 um
-prior, where the whole ramp skew is below the 2025 noise anyway, and material
+the product P = f_res*sigma_x^2 is observable). It is negligible at W0_CENTRAL_M,
+where the whole ramp skew is below the 2025 noise anyway, and material
 at w0=16 um, where it is SAME-SIGN-additive to the larger beam-divergence
 correction (stark_ramp_axial) -- the two must be fit JOINTLY at the small waist.
 Its SIZE is not restated here. rb5s6s/fringe_tail.py computes it and
@@ -549,161 +550,90 @@ LAMBDA_LASER_M = 993.4e-9              # drive wavelength (sets the Rayleigh ran
 # --------------------------------------------------------------------------
 # Beam geometry
 # --------------------------------------------------------------------------
-W0_MEASURED_M = 64e-6
-"""Beam waist, 64 um, A WORKING CONVENTION borrowed from the apparatus lineage.
+W0_CENTRAL_M = 42.38e-6
+"""Beam waist, m: this record's own bore-limited actual focus. CALCULATED, not measured and not
+adopted from another apparatus.
 
-**THE NAME OF THIS SYMBOL ASSERTS WHAT THE DOCSTRING DENIES, and the owner has
-corrected it twice (2026-09-10, 2026-09-15).** w0 is NOT measured on this bench.
-Two independent disqualifiers, and the second was missing from this note until
-2026-09-16: Nieddu profiled a DIFFERENT LASER SOURCE (a Coherent MBR 110, where
-this campaign runs a SolsTiS), and his path carried NO 3 mm EOM APERTURE, which
-this beam passes before the focusing lens. THE SECOND ONE'S DIRECTION WAS WRONG
-UNTIL 2026-09-17 (F105), and its correction has two halves that were separated
-the same evening: at a FIXED input radius the bore WIDENS the focus,
-because it throws away the outer rays that carry the convergence; ACROSS input
-radii it FLOORS it, because the wider the input the more of it the bore removes.
-The floor is what bears on this record's waist and the widening is what a bench
-reading of one beam would show. Computed
-as a finite Hankel transform through the 1.5 mm radius, the focal 1/e^2 radius
-reads 52.6 um for a 1.0 mm input radius at the lens, 45.4 for 1.5 and 42.4 for
-2.5, against 47.4, 31.6 and 19.0 unclipped, so any beam of a millimetre or more
-lands between 42 and 53 um and only an input under 0.8 mm reaches 60. A 64 um
-focus needs an unclipped 0.74 mm input. The owner's own reading, 2026-09-17, is
-40 to 45 um. What no document states is the beam radius at the focusing lens on
-this bench, which is an open apparatus item. `W0_CONVENTION_M` is what this should be called; the rename
-touches 179 sites over 70 files and is owed as its own wave, because a name a
-reader autocompletes is read more often than the note under it.
+**RETIRED AND REPLACED ON 2026-09-21 (order O44).** This symbol
+previously carried a WORKING CONVENTION borrowed from a profiler reading of a different beam, on a
+predecessor laser, elsewhere in this apparatus's lineage (Nieddu et al., Opt. Express 27, 6528 (2019),
+page 6530; `docs/lit/nieddu2019.md`) -- a value the owner had already twice corrected the NAME of
+(2026-09-10, 2026-09-15) for asserting "measured" where the docstring denied it, and then ordered
+struck from every document as stale once this bench's own bore-limited derivation existed to replace
+it. That value, why it was adopted, and the disqualifiers that undid it (F105, two independent ones:
+a different laser source with no EOM aperture in the profiled path, and a WIDENS-at-fixed-input /
+FLOORS-across-inputs correction to the direction of its own bias) are this file's git history and
+`private/CLAUDE_ACCOUNTS.md`; no number from that convention is restated here.
 
-WHAT ESTIMATES IT INSTEAD, and it is the campaign's own answer: the ultra-joint
-maximum-likelihood estimate over every observable the 2025 data holds. And where
-a combination can avoid needing it at all, that combination is preferred --
-S0/(transit)^2 and sqrt(k2)/(transit)^2 are proportional to Delta_alpha(1+rho)P
-with the waist divided out, because the transit is the only term carrying an odd
-power of w0, and the same construction is being sought for M^2. Bypassing the
-ignorance beats propagating it.
+THE DERIVATION (F104, F105, F108, 2026-09-17; F280, 2026-09-21; plan A9). The EOM's bore (radius
+`EOM_APERTURE_RADIUS_M`) truncates the input Gaussian ahead of the focusing lens (`DRIVE_LENS_F_M`) at
+the drive wavelength (`LAMBDA_LASER_M`); its focal field is the finite Hankel transform of the clipped
+aperture, and the ACTUAL (same-reading) 1/e^2 radius is where that field's intensity first crosses the
+on-axis value's 1/e^2, not the unclipped Gaussian-optics estimate for the same input. At a 2.5 mm input
+radius the reading is grid-stable at 42.38 um across four independent radial grids (F108,
+`private/cache/plan_2026-09-16/clipped_focus.py` / `clipped_focus.tsv`, the w_in=2.5 mm row), and
+F280's later, Parseval-normalised re-derivation of the same map (plan A9,
+`private/cache/plan_2026-09-16/p18_clipped_map.py`) reads 42.42 um at a 2.46 mm input -- the two
+grids and two quadratures agreeing to within their own 0.1 um. 42.38 um is the reading this file
+adopts.
 
-(owner, 2026-09-10; E76): profiled once on that lineage, in that configuration,
-and stated in a published paper; not measured on this bench. Enters the transit
-width (~1/w0) and all Stark magnitudes (~1/w0^2), so it is the dominant
-systematic and every absolute result is conditional on it.
+THE FLOOR (F280): the same map shows this bore cannot focus tighter than about 41 um for ANY input
+radius -- doubling the input past about 3 mm buys almost nothing further, because the bore itself,
+not the lens, is setting the diffraction limit. A fit that wants an actual focus below that floor is
+asking for a beam this geometry cannot make, and `lineshape.aperture_onaxis_factor_actual` raises
+rather than extrapolating past it.
 
-THE MEASUREMENT, stated first because it is the reason this is not a prior.
-Nieddu et al., Opt. Express 27, 6528 (2019), page 6530, describing the
-identical focused-and-retro-reflected 993 nm cell geometry: "A plano-convex
-lens (L1), with focal length f1 = 150 mm, is placed after the optical isolator
-to focus the beam in the cell. THE 1/e^2 BEAM DIAMETER IS 128 um." So
-w0 = 64 um, and the 1/e^2 convention is the source's own word rather than our
-reading of a bare "diameter".
+WHAT THIS VALUE IS NOT: the beam radius AT THE LENS (the bore's own input) is still an open apparatus
+item (`docs/plan/12`) that no document states, but F280's map shows the actual focus is comparatively
+FLAT against that input across the owner's whole band -- the on-axis factor alone moves from 0.964 to
+0.857 for inputs 1.4 to 4.0 mm, and inputs above about 1.55 mm read an actual focus inside 40-45 um
+(46.20 um at 1.4 mm, 43.29 at 2.0, 42.42 at 2.46, 41.43 at 4.0, 40.94 at 10 mm, against the Airy
+asymptote 40.85 um; an independent quadrature of 2026-09-22, the same method) -- so this CALCULATED
+central value is conditional on the bore/lens/wavelength geometry, not on the further-unmeasured input.
 
-CORRECTED 2026-08-14, and the correction WEAKENS the provenance without moving
-the value. This docstring previously said the waist was measured TWICE, once by
-Rajasree-KP 2020 on the SolsTiS and once by Nieddu on a Coherent MBR 110, "two
-profiler measurements, one configuration, agreeing". That is not what the
-sources say. The thesis footnote opening its section 5.1 (page 65) reads: "The
-data shown in Section 5.2 were collected by T. Nieddu and plotted by K.P.
-Subramonian Rajasree. The paper is given in Appendix B.2." So the thesis
-section is Nieddu's data replotted, not an independent re-measurement, and its
-own sentence quotes the 128 um WITHOUT the convention, which the paper it
-reprints in Appendix B.2 supplies. ONE profiler measurement, reported in two
-documents, on the predecessor laser rather than on this campaign's. It is
-still a direct measurement of this geometry with its convention stated, which
-is why it stands as the value of record, but it is not corroborated by a second
-independent measurement and this file no longer says it is.
+WHAT ESTIMATES THE RESIDUAL UNCERTAINTY, and it is the campaign's own answer: the ultra-joint
+maximum-likelihood estimate over every observable the 2025 data holds, now centred on this
+bore-limited value rather than a transferred one. Where a combination can avoid needing w0 at all,
+that combination is preferred -- S0/(transit)^2 and sqrt(k2)/(transit)^2 are proportional to
+Delta_alpha(1+rho)P with the waist divided out, because the transit is the only term carrying an odd
+power of w0, and the same construction is being sought for M^2. Bypassing the ignorance beats
+propagating it.
 
-What this dataset does NOT do is re-measure it. The transit-against-laser-width
-degeneracy means the 2025 line cannot pin w0 on its own, which is a
-statement about this dataset and not about the value. The knife-edge scan of a
-fixed-lock session would measure it here as well as in the lineage.
+Enters the transit width (~1/w0) and, through `lineshape.aperture_onaxis_factor_actual`, every
+absolute Stark magnitude, so it remains the dominant systematic and every absolute result stays
+conditional on it -- conditional now on this bench's own bore geometry rather than on a borrowed
+profiler reading. The transit-against-laser-width degeneracy still means the 2025 line cannot pin w0
+on its own; the knife-edge scan of a fixed-lock session remains the direct way to measure THIS beam,
+confirmatory of the calculation above rather than a substitute for it.
 
-Re-centred 32 -> 50 um (2026-07-12) after the transit-broadening physics was
-corrected: transit_fwhm_from_w0 (below), validated against Lehmann 2021's NNO
-worked example to 0.2%, gives a BARE transit FWHM of ~1.87 MHz at w0 = 32 um,
-110 C (transition axis). Convolved with the 3.49 MHz natural Lorentzian that
-already OVERSHOOTS the observed ~5.25 MHz line (natural(x)transit = 5.64 > 5.25)
-BEFORE any laser or collisional width -- so w0 = 32 um is EXCLUDED. The observed
-width is consistent with w0 ~= 45-70 um (hard floor ~38 um); 50 um was the central value before the lineage measurement was found. That
-intermediate step was an inference from our own line rather than a
-measurement: the transit<->sigma_laser degeneracy means the 2025 line cannot
-pin w0 on its own -- that is exactly what the knife-edge measurement settles. (The
-Gaussian-optics estimate f = 150 mm, w_in = 1.5 mm gave ~32 um, attributed to
-"the EOM aperture" clipping the beam. That attribution is now sourced rather
-than inferred (2026-08-01, APPARATUS.md sec 1.2/2): no lens or telescope sits
-between the SolsTiS and the EOM (direct confirmation), the isolator before it (ISOWAVE
-I-98T-5L, 5 mm clear aperture, manufacturer datasheet) is wide enough not to
-clip, and the EOM-02-12.5-V's own clear aperture IS 3 mm per the manufacturer's
-"Standard Characteristics" table -- confirmed directly from
-photonicstechnologies.com, not from the test certificates, which do not state
-it. Separately, an IR viewer card showed clipping at
-the EOM (a recollection over a year old, not a contemporaneous measurement).
-So w_in = 1.5 mm (3 mm diameter) is a real aperture with a real clipping
-observation behind it, not a free parameter chosen to fit -- though a
-recollected clipping EVENT does not by itself fix how MUCH of the beam was
-clipped, which is why this stays a Gaussian-optics estimate and not a
-measurement.)
+Re-centred 32 -> 50 um (2026-07-12) after the transit-broadening physics was corrected, then to the
+lineage measurement (v3.0.0, 2026-08-01) and now to this bore-limited calculation (O44, 2026-09-21):
+transit_fwhm_from_w0 (below), validated against Lehmann 2021's NNO worked example to 0.2%, is the
+route each re-centring was checked against, and w0 = 32 um stays EXCLUDED on the same convolved-width
+argument as before (a bare transit already overshoots the observed line before any laser or
+collisional width is added)."""
 
-THE LINEAGE MEASUREMENT, in full (2026-08-01, v3.0.0, PROVENANCE CORRECTED
-2026-08-14). This is the value the group MEASURED on this apparatus lineage,
-not a value inferred from our own line. Nieddu et al., Opt. Express 27, 6528
-(2019), page 6530, states it with its own convention: "The 1/e^2 beam diameter
-is 128 um", i.e. w0 = 64 um, through L1 with f = 150 mm in the same 2 f_CM
-retro geometry. The Rajasree-KP 2020 OIST thesis section 5.2 records the same
-128 um with the Thorlabs BC106VIS profiler named and the cell at 130 C, but it
-is the SAME measurement rather than a second one: the thesis footnote at its
-section 5.1 says the section 5.2 data "were collected by T. Nieddu and plotted
-by K.P. Subramonian Rajasree", and reprints the paper as Appendix B.2.
+W0_BAND_M = (40e-6, 45e-6)
+"""Working band on w0 (m): the ruling of 2026-09-17 evening, which replaced the band this symbol
+carried before it -- "I guess the waist is something about 40-45 um and suffers significantly by the
+clipping of the 3 mm hole of the EOM and by the M^2 factor." Owner order O44 (2026-09-21) retires the
+earlier band along with the working convention it was centred on (see W0_CENTRAL_M); no number from
+that retired band is restated here, and this one is the owner's own stated interval rather than a
+margin computed around a transferred value.
 
-So this is ONE profiler measurement of this geometry, stated with its
-convention, on the PREDECESSOR laser rather than on the M Squared SolsTiS this
-campaign used. This block previously said the measurement was made on the same
-laser model as this campaign with Nieddu as a separate confirmation on the
-older Coherent MBR 110. That was wrong in both halves and is corrected here.
-The geometry (lens, focal length, retro, cell temperature) is this campaign's
-in every documented respect, which is why 64 um is used as measured rather
-than merely cited, but the laser is not, and there is no second measurement.
+A CONVENTION AND NOT A MEASURED INTERVAL (E77, 2026-09-14, restated under the new centre): the
+instruments that scan past it (scripts/run_ultra_joint.py, the moment ladder) read where the power
+arm and the fine grid actually admit; the band moves only when they agree on something else. F280's
+own map puts a FLOOR near 41 um on the actual focus this bore, lens and wavelength can make for ANY
+input radius (see W0_CENTRAL_M), so this band's own low edge sits close to a limit the geometry may
+not reach, which is a finding and not yet a correction to that number.
 
-It is an ADOPTED prior, NOT a measurement of this beam. Two known effects sit
-between Rajasree's bench and ours, and BOTH push the EFFECTIVE waist ABOVE
-64 um:
-  * residual clipping at the 3 mm EOM aperture (sourced from the
-    manufacturer's specification table, APPARATUS.md sec 1.2/2), which
-    truncates the beam and widens the focus;
-  * imperfect superposition of the counter-propagating retro beam, which
-    dilutes the effective on-axis intensity relative to a perfect overlap.
-Five years of possible realignment separate the two benches as well. Hence
-W0_BAND_M below is centred on 64 um and the residual effects are recorded
-as biasing the effective value high rather than low.
-
-The dataset's own light-shift data agree: the three-session bound (M23) sits
-BELOW the prediction at every subset, which is what a larger waist (lower
-intensity) produces. The knife-edge measurement in a fixed-lock session
-remains the way to measure THIS beam; it is now confirmatory rather than the
-sole route to a sane value."""
-
-W0_BAND_M = (62e-6, 68e-6)
-"""Working band on w0 (m) around the 64 um convention borrowed from the lineage.
-
-A CONVENTION AND NOT A MEASURED INTERVAL (E77, 2026-09-14): the first instrument
-that scans past it, scripts/run_ultra_joint.py, puts the two forms the power arm
-admits near 82 to 85 um on its coarse grid, conditional on a nuisance rate at
-its wall; the band moves only when the fine grid and the power arm agree.
-
-NOT the old transit-inferred range: since v3.0.0 the central value comes from
-an external lineage measurement (see W0_MEASURED_M), so this band expresses
-confidence in transferring that measurement to this bench, not the width of
-what our own line can accommodate. It leans high because the two residual
-effects named in W0_MEASURED_M (EOM clipping, imperfect retro superposition)
-both bias the EFFECTIVE waist upward, and -2/+4 um about 64 keeps that lean.
-Single source for w0-conditional prediction bands (e.g. stark.fit_stark_sweep),
-so the band is never hand-typed downstream.
-
-NARROWED 2026-08-10 by decision, from (60, 70) um. Every quantity that
-reads this constant moves with it, which is the point of there being one
-source: the S0 prediction band, the laser-epoch band and the beta w0
-systematic in lever_crosscheck all recompute. It does NOT touch the central
-value, so no headline bound moves. The transit-inferred 45-70 um quoted in
-W0_MEASURED_M's note above and in transit_mc is a DIFFERENT quantity, what the
-dataset's own line can accommodate with no external input, and it is kept as
-the historical inference it is rather than overwritten by this band."""
+Single source for w0-conditional prediction bands (e.g. the S0 prediction lines in stark.py), so the
+band is never hand-typed downstream. Every quantity that reads this constant moves with it: the S0
+prediction band, the laser-epoch band and the beta w0 systematic in lever_crosscheck all recompute.
+NOT the transit-inferred range this file quoted alongside the retired convention: that was the
+dataset's own line accommodating no external input, a different question from this band, and it is
+not restated here now that the convention it sat beside is gone."""
 
 RHO_RETRO = 0.94
 """Retro-reflection power ratio (returning/forward intensity at the atoms).
@@ -741,17 +671,18 @@ rho + err), so the widest credible prediction interval is quoted."""
 # --------------------------------------------------------------------------
 # A campaign that changes the drive wavelength changes the waist with it, and
 # until 2026-09-09 this repository had that relation only as prose inside
-# W0_MEASURED_M's own docstring. Register A136 and A137 record what its absence
+# W0_CENTRAL_M's own docstring. Register A136 and A137 record what its absence
 # cost: three drive-power ceilings computed at a waist only the 993 nm rung can
 # reach. Rung 2, closed form, no simulation.
 
 W0_REFERENCE_LAMBDA_NM = 993.4
-"""Wavelength at which W0_MEASURED_M was measured, nm.
+"""Wavelength at which W0_CENTRAL_M is calculated, nm.
 
-Nieddu 2019 profiled the focused cell beam on the 993 nm line through the
-f = 150 mm lens (see W0_MEASURED_M). The waist is a property of the beam AND
-the wavelength, so the measurement carries this label and does not transfer to
-another drive without `waist_at_drive` below.
+W0_CENTRAL_M is the bore-limited actual focus computed for this bench's EOM bore
+and f = 150 mm lens at the 993 nm line (O44, 2026-09-21); the lineage's profiler
+reading on the same line (Nieddu 2019) is the convention it replaced. A focus is a
+property of the beam AND the wavelength, so the value carries this label and does
+not transfer to another drive without `waist_at_drive` below.
 
 This is the LABEL wavelength, the one the profiling paper states. The 5S-6S
 two-photon drive derived from the NIST term energy is 993.418 nm, 0.018 nm
@@ -823,7 +754,7 @@ def drive_lens_focal_m(lam_nm: float,
 
 
 def waist_at_drive(lam_nm: float,
-                   w0_ref_m: float = W0_MEASURED_M,
+                   w0_ref_m: float = W0_CENTRAL_M,
                    lam_ref_nm: float = W0_REFERENCE_LAMBDA_NM,
                    *,
                    input_beam: str,
@@ -902,8 +833,17 @@ instead as the OBJECT distance it would give z_ratio 0.823 rather than 0.262
 and a twelvefold larger bias, so the reading is named here rather than
 implied."""
 
-COLLECTION_IMAGE_DIST_ERR_M = 10e-3
-"""One-sigma on COLLECTION_IMAGE_DIST_M. Owner-stated."""
+COLLECTION_IMAGE_DIST_ERR_M = 5e-3
+"""One-sigma on COLLECTION_IMAGE_DIST_M, owner-stated 2026-09-13 and
+restated 2026-09-22 ("let's say +-5 mm (anyway we didn't measure it)"),
+replacing the 10 mm of 2026-09-04, which the record carried beside it for
+nine days while `docs/plan/12` already read 5.
+
+It is the dominant term in the collection magnification, (s' - f)/f =
+1.78 +- 0.32 (18 per cent), and so in both dimensions of the imaged region:
+the axial half-window is 3.38 +- 0.60 mm and the transverse half-acceptance
+0.84 +- 0.15 mm. Nothing here measures it; a knife-edge or a camera at the
+image plane would, and `docs/plan/12` carries it as an open item."""
 
 PMT_CATHODE_ALONG_BEAM_M = 12e-3
 """The R636-10 cathode's long dimension, 12 mm, which APPARATUS records as
@@ -911,15 +851,16 @@ lying ALONG the beam in 2025 (datasheet TPMS1016E gives 3 x 12 mm).
 
 Side-on collection makes z a transverse direction for the lens, so this
 dimension over the magnification is the accepted range in z. The 3 mm
-dimension maps to millimetres across a 64 um beam and collects the transverse
-direction whole, which is why the optics are a PURE AXIAL WINDOW and leave the
+dimension maps to millimetres across the beam at this record's central waist
+(W0_CENTRAL_M, tens of microns) and collects the transverse direction whole,
+which is why the optics are a PURE AXIAL WINDOW and leave the
 radial integral -- the ramp itself -- untouched."""
 
 
 def collection_z_ratio(f_m: float = COLLECTION_LENS_F_M,
                        image_dist_m: float = COLLECTION_IMAGE_DIST_M,
                        cathode_m: float = PMT_CATHODE_ALONG_BEAM_M,
-                       w0_m: float = W0_MEASURED_M,
+                       w0_m: float = W0_CENTRAL_M,
                        lambda_m: float = LAMBDA_LASER_M) -> float:
     """Half of the imaged axial extent, in Rayleigh ranges: the ``z_ratio`` of
     lineshape.stark_ramp_axial.

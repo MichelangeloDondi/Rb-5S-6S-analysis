@@ -1,4 +1,4 @@
-*Chapter 2 of 9 of [the big picture](../BIG_PICTURE.md)*
+*Chapter 2 of 10 of [the big picture](../BIG_PICTURE.md)*
 
 This page sets out the drift-immune method, immune through its free per-scan centres, and what it costs to use. This page builds on the motivation of chapter 1, or nothing if you already accept that the line is worth measuring and sets out the method itself, the shape channels it reads, the size the coefficients are expected to have, and the limits that follow from reading shapes rather than positions. Not covered here: what the data delivered rather than how, in which case [what the 2025 dataset delivered](04_what-2025-delivered.md) is the chapter.
 
@@ -86,8 +86,9 @@ parameter. The awkward part is how it scales. Focusing the beam tighter raises
 the shift as the square of the inverse spot size, but it raises the saturation
 parameter as the **fourth** power, because the two-photon coupling itself is
 quadratic in the field. So tightening the focus leaves the safe regime twice as
-fast as it gains signal. At the [64](../../rb5s6s/constants.py "ref:constant:W0_MEASURED_M:1e6") µm spot of the 2025 sitting the parameter is
-0.033 and the square law is safe. At the 16 µm a future sitting proposes it is
+fast as it gains signal. At the [42.38](../../rb5s6s/constants.py "ref:constant:W0_CENTRAL_M:1e6") µm spot of the 2025 sitting the parameter is
+0.173 and the square law is still safe, though no longer by an order of
+magnitude. At the 16 µm a future sitting proposes it is
 8.5, and the predicted lopsidedness changes by a factor of three
 ([fig24](../../figures/fig24_weak_field_limit.png)).
 
@@ -172,7 +173,7 @@ experiment is for. It reaches 0.4 per cent of one error bar.
 A fourth candidate is elliptical polarisation, computed 2026-08-20 from this
 package's own line lists. The differential vector polarizability is 1.7 per
 cent of the differential scalar one at the drive wavelength, so an imperfectly
-polarised beam spreads the magnetic sublevels by 6.0 kHz at the campaign's
+polarised beam spreads the magnetic sublevels by 12.7 kHz at the campaign's
 highest power even for fully circular light, against per-condition width
 errors near 30 kHz. It is small enough to leave every current bound untouched.
 It is named here because it stops being small once centres rather than widths
@@ -265,12 +266,13 @@ excited pair against the ground pair (a 2026-08-04 referee point the
 record accepted, [notes/vdw_difference_potential_and_4d_channel.md](../notes/vdw_difference_potential_and_4d_channel.md)).
 The Lindholm-Foley prefactor, the mean-speed step and the dropped core
 and tail are common to the 6S and 7S rungs and divide out of the ratio.
+
 The ground-pair subtraction is not that kind of error and does not
 cancel, which is why the assumed ratio is a ratio of differences: with
 ΔC₆(6S) = 49805 and ΔC₆(7S) = 157294 a.u., the ratio 0.3166 enters
 through the (ΔC₆/ħ)^0.4 scaling and scales the *measured* 7S rate of
 5.290 kHz per 10¹² cm⁻³ by 0.3166^0.4 = 0.631 (before the exchange branches) and by
-the ratio of the two rungs' exchange-branch factors (0.985 for 6S against 1.000 for 7S, the signs from the sum rule (A253), computed on
+the ratio of the two rungs' exchange-branch factors (0.985 for 6S against 1.000 for 7S <!-- other-quantity: the 7S exchange-branch width factor, exactly 1 by construction, not a committed cell -->, the signs from the sum rule (A253), computed on
 2026-09-14, register A251), giving
 
 β_self(6S) = [3.50](../../results/beta_self_theory.csv "ref:beta_self_theory:beta_self_6s:anchored") ± [0.37](../../results/beta_self_theory.csv "ref:beta_self_theory:beta_self_6s:anchored:err") kHz per 10¹² cm⁻³, where the

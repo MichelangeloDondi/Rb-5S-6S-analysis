@@ -478,7 +478,7 @@ literal copy of the four branching values and its own literal natural width.
 Both now come from their source, so a change to either cannot leave that file
 behind. Reproduced exactly on collapse: the width is byte-identical and three
 of four branchings are unchanged, with 4121 gaining precision from 0.372478
-to 0.372478177, a relative move of 5e-7.
+to [0.372478177](../results/cascade_branching.csv "ref:cascade_branching:branching_f:993.4121"), a relative move of 5e-7.
 
 ## The blackbody seam, added 2026-08-19
 

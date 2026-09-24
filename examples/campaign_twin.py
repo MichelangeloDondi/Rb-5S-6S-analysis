@@ -69,11 +69,13 @@ C_M_S = 299792458.0
 # (results/linefit_conditions). The transit and the coefficient are NOT, and
 # stood here as though they were: that file has gamma_coll and sigma_laser
 # columns and no transit column at all. Both are taken from the constants
-# (2026-09-04), where the transit at the convention waist and 130 C is 0.9575
+# (2026-09-04), where the transit at the waist convention of that day and 130 C was 0.9575
 # MHz and the predicted coefficient is `stark.kappa_pred_per_watt`, against the
 # 1.8 and the 1.556 written here before.
-GAMMA_COLL_MHZ = 0.55
-SIGMA_LASER_MHZ = 1.6
+# The archive point at the calculated waist (F313, 2026-09-22): typed here because this example reads no
+# file, and held to `rb5s6s.reference_point.reference_point()` to two decimals by tests/test_reference_point.py.
+GAMMA_COLL_MHZ = 0.22
+SIGMA_LASER_MHZ = 0.47
 # THE PERMEATED GAS, WHICH IS A CONSTANT LORENTZIAN AND IS THEREFORE `gamma_l` (owner, repeatedly:
 # "include the gas permeation in the model and use the full model, either in the twin and in general").
 # The mechanism was already here -- `build_world_trace` has taken `gamma_l` throughout -- and what was
@@ -84,11 +86,11 @@ SIGMA_LASER_MHZ = 1.6
 # cell and never typed, and it is quoted with the span its note demands.
 _KB = {r[0]: r[1] for r in __import__("csv").reader(
     (CFG.RESULTS_DIR / "kernel_budget.csv").open(encoding="utf-8"))}
-GAMMA_L_MHZ = float(_KB["gamma_l_weighted_mean"])          # span 0.315 to 0.449, per that row's own note
+GAMMA_L_MHZ = float(_KB["gamma_l_weighted_mean"])          # its span is quoted in that row's own note
 del _KB
-TRANSIT_FWHM_MHZ = C.transit_fwhm_from_w0(C.W0_MEASURED_M, T_C=130.0)
+TRANSIT_FWHM_MHZ = C.transit_fwhm_from_w0(C.W0_CENTRAL_M, T_C=130.0)
 # The prediction under test, kappa in MHz per W on the transition axis.
-KAPPA_PRED = kappa_pred_per_watt(C.W0_MEASURED_M, C.RHO_RETRO)
+KAPPA_PRED = kappa_pred_per_watt(C.W0_CENTRAL_M, C.RHO_RETRO)
 # The 2025 ladder, watts.
 POWERS_W = np.array([0.025, 0.075, 0.125, 0.175, 0.225])
 # Session drift, MHz over the whole session (plan/06's confound scale).
@@ -153,8 +155,9 @@ def build_rung(power_w: float, kappa: float, t_c: float, order_idx: int,
     collection window and the standing wave's fringe-resolved tail on
     2026-09-08 as two opt-in arguments, and this example passes neither, so
     the exhibit's traces are unchanged and the forecast producers are where
-    those terms are read. At the archive's 64 microns both are a few per cent
-    (docs/plan/12); at a tight waist they are not, which is why the campaign
+    those terms are read. At the archive's own central waist both are a few
+    per cent (docs/plan/12, re-read after O44/F280's 2026-09-21 retirement of
+    the old waist convention); at a tight waist they are not, which is why the campaign
     forecast carries them and this example does not.
     """
     return build_world_trace(

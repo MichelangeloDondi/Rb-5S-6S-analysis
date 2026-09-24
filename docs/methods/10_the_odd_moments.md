@@ -2,7 +2,7 @@
 
 ## 10. Odd moments of the shifted line
 
-The odd cumulants of a shifted line are meant to be the channel that reads the shift while the symmetric kernels drop out. Which orders actually carry it here, and at what window? This chapter builds on the lineshape and AC-Stark chapters, and the composite the twin builds and sets out A measured account of what the third, fifth and seventh orders do, and a withdrawal: the convolution picture the argument rests on does not describe this model. Not covered here: you only need the shift channel this record uses. That is the third cumulant, and the AC-Stark chapter covers it. This chapter is about whether the higher orders add anything, and its current answer is that the question is not yet properly posed.
+The odd cumulants of a shifted line are meant to be the channel that reads the shift while the symmetric kernels drop out. Which orders actually carry it here, and at what window? This chapter builds on the lineshape and AC-Stark chapters, and the composite the twin builds and sets out A measured account of what the third, fifth and seventh orders do, and a withdrawal: the convolution picture the argument rests on does not describe this model. Not covered here: you only need the shift channel this record uses. That is the third moment, and the AC-Stark chapter covers it. This chapter is about whether the higher orders add anything, and its current answer is that the question is not yet properly posed.
 
 > [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
 > defines every term and symbol used anywhere in this repository.
@@ -37,27 +37,31 @@ volume element. Two independent things break it. The transit width goes as the
 inverse local beam radius, which is geometric: over the axial window the
 collection optics set ([chapter 3](03_the_ac_stark_ramp.md), diverging-beam
 collection) the signal-weighted transit width has an rms spread of
-[0.97](../../results/prediction_band.csv "ref:prediction_band:collection_window:transit_kernel_rms_spread_pct")
+[4.41](../../results/prediction_band.csv "ref:prediction_band:collection_window:transit_kernel_rms_spread_pct")
 per cent. **And the saturation companion is keyed on the local light shift, the ramp's
 own variable**, so the broad elements are exactly the shifted ones and no
 axial shortening touches it.
 
-The one per cent does not license the statement below, and this sentence
+The four and a half per cent does not license the statement below, and this sentence
 said it did until 2026-09-09. A small correlated variation of the kernel is
 not small against a small cumulant: `scripts/run_kernel_inhomogeneity.py`
 builds the collected volume as a mixture with one kernel per element and
-measures the windowed third cumulant against the same mixture with the kernel
+measures the windowed third moment against the same mixture with the kernel
 held fixed at the volume's own weighted mean. The error is
-[106.742](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w64um:k3_error") per cent at the
-archive's own 64 microns,
-[103.258](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w40um:k3_error") at 40,
-[96.532](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w24um:k3_error") at 24 and
-[89.925](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w16um:k3_error") at 16, and at the
-archive's waist it inverts the sign. **The archive is the worst of the four,
-and not the licensed one.** What the transit's one per cent does license is the
+[103.942](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w42um:k3_error") per cent at the
+archive's own 42.38 microns,
+[104.614](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w45um:k3_error") at 45,
+[96.571](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w24um:k3_error") at 24 and
+[89.992](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w16um:k3_error") at 16, every case
+including the 42.38 and 45 micron rows an unclipped design, the bore out of
+the focusing path, and not the bench's own measured, bore-clipped
+prediction, and at the archive's waist it inverts the sign.
+
+**The two band waists, 42.38 and 45 microns, are the
+worst of the four, and not the licensed ones.** What the transit's four and a half per cent does license is the
 even part. A broadening symmetric about each element's own centre cannot move
 the mixture's first moment, and the centroid's error is
-[-0.000](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w64um:centroid_pull_error") per cent at
+[-0.000](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w42um:centroid_pull_error") per cent at
 every waist, exactly.
 
 So sections 3 to 10 below are a derivation of what the odd cumulants would
@@ -98,6 +102,7 @@ additivity the section above rests on.**
 
 ## 3. The measurement, and it contradicts the naive expectation
 
+<!-- C6b: re-measured as a moment (A149) -->
 Self-centred windowed cumulants on the production path, log-derivative with
 respect to the shift, five per cent central differences:
 
@@ -114,12 +119,13 @@ Lorentzian, which leaves the natural one.
 
 ## 4. The candidate explanation, undemonstrated
 
+<!-- C6b: re-measured as a moment (A149) -->
 `k_5 = mu_5 - 10 mu_3 mu_2` is built so that the cross term cancels. Expanding
 the convolution in the ramp's raw moments, `mu_5` carries a term proportional
 to `m_3 * k_2`, which is order `S^3`, and the subtraction removes it exactly
 only when the moments are taken over the whole line. **Windowed, the
 cancellation is inexact, and the residue is order S^3 where the true `k_5` is
-order S^5.** With `S` about [0.348](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred:shared") MHz against a 5.4 MHz line, `S^3` exceeds `S^5`
+order S^5.** With `S` about [0.7290](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred:shared") MHz against a 5.4 MHz line, `S^3` exceeds `S^5`
 by four orders of magnitude, so the residue would dominate completely and
 every odd order would report the cube.
 
@@ -130,6 +136,7 @@ as evidence in either direction.
 
 ## 5. Consequences for the analysis
 
+<!-- C6b: re-measured as a moment (A149) -->
 * **The shift channel is one number, not three.** If all odd orders carry the
   same power, `k_5` and `k_7` add no independent shift information: they are
   the same asymmetry read through different truncation weights.
@@ -163,7 +170,7 @@ with the shift so truncation stays comparable:
 | 2.0 | 0.37 | 7.0 | 2.974 | 3.004 | 3.096 |
 | 4.0 | 0.74 | 10.0 | 2.970 | 3.056 | 3.606 |
 | 8.0 | 1.48 | 16.0 | 2.977 | 3.182 | -5.597 <!-- other-quantity: a half-window in MHz in the odd-moment ladder --> |
-| 16.0 | 2.96 | 28.0 | 2.985 | 3.410 | 1.042 |
+| 16.0 | 2.96 | 28.0 | 2.985 | 3.410 | 1.042 <!-- other-quantity: this table's own slope-test values at a 16 MHz half-window, not the transition-ladder or detection-budget cells that happen to share these digits --> |
 
 `k_5` moves, but nowhere near far enough. At a shift three times the line
 width, where the ramp dominates the profile entirely and the ladder should be
@@ -174,12 +181,15 @@ three line widths.
 
 And `k_7` is numerically unusable. Its slope runs 3.0, 3.0, 3.1, 3.6,
 then -5.6 and 1.0. The seventh-order combination is a difference of large
-products and its answer falls under the rounding once the profile broadens. **The
+products and its answer falls under the rounding once the profile broadens.
+<!-- C6b: re-measured as a moment (A149) -->
+**The
 seventh cumulant is therefore struck from the usable observables**, whatever
 the theory says about it, until an estimator exists that computes it stably.
 
 ## 8. Refutation of the first reading
 
+<!-- C6b: re-measured as a moment (A149) -->
 Section 7 left two readings. The first, that the windowed cumulants are
 dominated by the window edges at every shift so the cube would belong to the
 truncation geometry and not to the ramp, is now refuted for a kernel with
@@ -208,10 +218,10 @@ Then, for two ramps differing in their true fifth cumulant by -0.0135:
 The windowed fifth cumulant does carry the ramp's own fifth cumulant, in
 full at a wide window and with a survival factor at a narrow one, exactly as
 the third cumulant does and as this record's survival ratios already describe.
-It is an observable of the ramp, not an artefact of the edges.
+It is an observable of the ramp, not an artefact of the edges. **Which leaves the Lorentzian as the remaining suspect.** The clean test above
+uses a Gaussian, whose moments exist.
 
-**Which leaves the Lorentzian as the remaining suspect.** The clean test above
-uses a Gaussian, whose moments exist. The composite this record fits contains
+The composite this record fits contains
 a Lorentzian from the natural width and usually another from collisions, whose
 moments do not exist at any order above the first, so its truncated
 contribution is a function of the window and not a property of the line.
@@ -221,6 +231,7 @@ should now be aimed.
 
 ## 9. Confirmation of the Lorentzian tail
 
+<!-- C6b: re-measured as a moment (A149) -->
 Section 8 named the Lorentzian as the remaining suspect. The same two-ramp
 test, with the kernel changed and nothing else, confirms it. The figure is the
 fraction of the ramps' true difference in the fifth cumulant that the windowed
@@ -257,6 +268,7 @@ are where it now has to come from.
 
 ## 10. Recoverability of the ladder
 
+<!-- C6b: re-measured as a moment (A149) -->
 A factorial on the twin settles what the earlier sections left. The ramp's own
 cumulants were validated first and scale as designed, powers of 3.000 and
 5.000 to three decimals. The table is the power the windowed estimator reports
@@ -264,8 +276,8 @@ for each cumulant, against the fraction of the kernel that is Lorentzian:
 
 | Lorentzian fraction | window 4 | 8 | 16 |
 |---|---|---|---|
-| 0.00 | 2.96 / 2.98 | 2.97 / 3.07 | 3.00 / **4.91** |
-| 0.15 | 2.95 / 2.97 | 2.98 / 3.06 | 3.00 / 3.05 |
+| 0.00 | 2.96 / 2.98 | 2.97 / 3.07 | 3.00 / **4.91** <!-- other-quantity: another table --> |
+| 0.15 | 2.95 / 2.97 | 2.98 / 3.06 | 3.00 / 3.05 <!-- other-quantity: another table --> |
 | 0.35 | 2.93 / 2.96 | 2.99 / 3.03 | 3.00 / 3.02 |
 | 0.60 | 2.92 / 2.95 | 2.99 / 3.01 | 3.00 / 3.01 |
 | 1.00 | 2.93 / 2.94 | 2.99 / 3.00 | 3.00 / 3.01 |
@@ -275,7 +287,7 @@ for each cumulant, against the fraction of the kernel that is Lorentzian:
 One cell of fifteen recovers the fifth power, and it is the one with no
 Lorentzian at all and the widest window. A Lorentzian fraction of 0.15 is
 already enough to return the fifth cumulant to the third power. The third
-cumulant's own power is 3.00 on the noiseless model at a wide window, and it falls to [1.91](../../results/three_channel_forecast.csv "ref:three_channel_forecast:base::exponent_quiet") once the saturation companion broadens the line inside a fixed 6 MHz half-width. It climbs as the window widens, [2.15](../../results/three_channel_forecast.csv "ref:three_channel_forecast:window_8MHz::exponent_quiet") at 8 MHz, [2.60](../../results/three_channel_forecast.csv "ref:three_channel_forecast:window_16MHz::exponent_quiet") at 16, [2.95](../../results/three_channel_forecast.csv "ref:three_channel_forecast:window_40MHz::exponent_quiet") at 40 and [2.99](../../results/three_channel_forecast.csv "ref:three_channel_forecast:window_55MHz::exponent_quiet") at 55, each a cell of the producer's own window lever on the world that carries the collection window and the fringe tail, and within a few hundredths of the same scan on the world without them.
+cumulant's own power is 3.00 on the noiseless model at a wide window, and it falls to [1.90](../../results/three_channel_forecast.csv "ref:three_channel_forecast:base::exponent_quiet") once the saturation companion broadens the line inside a fixed 6 MHz half-width. It climbs as the window widens, [2.16](../../results/three_channel_forecast.csv "ref:three_channel_forecast:window_8MHz::exponent_quiet") at 8 MHz, [2.61](../../results/three_channel_forecast.csv "ref:three_channel_forecast:window_16MHz::exponent_quiet") at 16, [2.92](../../results/three_channel_forecast.csv "ref:three_channel_forecast:window_40MHz::exponent_quiet") at 40 and [2.94](../../results/three_channel_forecast.csv "ref:three_channel_forecast:window_55MHz::exponent_quiet") at 55, each a cell of the producer's own window lever on the world that carries the collection window and the fringe tail, and within a few hundredths of the same scan on the world without them.
 
 **Whether it returns exactly to three is not established here**, because the producer's grid spans 60 MHz either side and a window reaching that edge leaves the trace, which the estimator refuses. What makes it the usable channel is that the loss is
 truncation, recoverable by a wider window or by a comb, and not a failure of the law.
@@ -312,6 +324,7 @@ and that is the analytic work item 1 above already names.
 
 ## 11. The underlying assumption and its failure
 
+<!-- C6b: re-measured as a moment (A149) -->
 Sections 1 to 10 rest on one thing: that the line is a fixed kernel convolved
 with a distribution of shifts. Cumulants add only under convolution, and the
 kernel drops out of the odd orders only because it is symmetric and enters that
@@ -379,7 +392,7 @@ One part in a thousand of the peak is rounding. **The composite as built here
 is a convolution of a fixed kernel with a shift distribution**, which is what
 this check injected and therefore what it recovers, the recovered mean
 is exactly the two thirds of the shift the AC-Stark chapter derives, and the
-recovered distribution's own third cumulant runs 0.00732, 0.05940 and 0.47439
+recovered distribution's own third moment runs 0.00732, 0.05940 and 0.47439
 at those three shifts, ratios of 8.11 and 7.99 against the 8 that a cube
 demands. The ramp scales as designed.
 
@@ -393,8 +406,8 @@ that model.
 The verification above composes one kernel with the ramp and recovers what it
 injected, which is the check it is. It cannot see a kernel that follows the
 shift, because it does not have one. Against the mixture that does, the
-windowed third cumulant is wrong by
-[106.742](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w64um:k3_error") per cent at the
+windowed third moment is wrong by
+[103.942](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w42um:k3_error") per cent at the
 archive's waist. A self-consistent model verified against itself is evidence
 about the arithmetic and not about the licence.
 
@@ -402,13 +415,14 @@ With one correction that is independent of all this. Section 10 argued the
 closure by placing the archive at a Lorentzian fraction of 0.68 against a
 threshold near 0.15. Those two numbers came from different definitions, a
 synthetic kernel weight and a linear sum of full widths, and are not
-commensurable. The closure rests instead on the regrounded scan: on the
+commensurable. <!-- C6b: re-measured as a moment (A149) -->
+The closure rests instead on the regrounded scan: on the
 production model, with the window set as a multiple of each line's own width,
 the fifth cumulant's local power is 3.00 in every cell tested, including a
 Gaussian-dominated line of 42 MHz at ten times its own width. That comparison
 is in the right units and it is the one to cite.
 
-And under noise the windowed third cumulant does not reach its own power law
+And under noise the windowed third moment does not reach its own power law
 at the archive's shift. The moment-power map
 ([`results/moment_power_map.csv`](../../results/moment_power_map.csv)) runs
 the estimator above on synthetic traces from the world builder, every physics
@@ -416,8 +430,8 @@ layer on, across the laser kernel's Lorentzian component, the noise level, the
 oscilloscope, the analysis window and the model's own grid, at two thousand
 traces on each of five shifts from below the archive's to twice the campaign's.
 The noiseless exponent is three at wide windows with the shift resolved. Under
-the archive's noise the fitted exponent of the third cumulant sits near two,
-because a cumulant smaller than its own noise has its magnitude inflated by
+the archive's noise the fitted exponent of the third moment sits near two,
+because a moment smaller than its own noise has its magnitude inflated by
 that noise and the rungs at and below the archive's shift are that case. The
 joint fit against power on the campaign's ladder, with the drift and the drawn
 rung order on, is regenerated under the package estimator and lands in its
@@ -459,6 +473,7 @@ pedestal also dilutes the normalisation by the line's share of the window,
 which is constant across the maps' fixed-power shift ladder and varies along a
 power ladder, where it bends a fitted exponent.
 
+<!-- C6b: re-measured as a moment (A149) -->
 The odd cumulants of the ramp alternate in sign, from its density
 $2s/S_0^2$ on $[0, S_0]$: $\kappa_3 = -S_0^3/135$, $\kappa_5 = +S_0^5/567$,
 $\kappa_7 = -S_0^7/1215$ (the recursion of `cumulants_from_central_moments`
@@ -469,8 +484,8 @@ fraction of traces returning a negative value in
 order's own sign: for the fifth order a fraction near one is a settled
 measurement and a fraction near one half is the coin flip, and the reading
 that struck the fifth order as never settling had read the convention. The
-signs are those of the coded side of the ramp, the red one. On the blue side,
-which the polarizability this record uses implies and the record holds open, every odd
+signs are those of the side the ramp was coded on before O27, the red one. On the blue side,
+which the polarizability this record uses implies and the record has used since O27, every odd
 sign flips and the reading inverts with it.
 
 `results/moment_power_map*.csv` are produced through the same package

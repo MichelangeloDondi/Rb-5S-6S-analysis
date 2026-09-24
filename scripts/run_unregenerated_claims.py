@@ -39,6 +39,7 @@ from pathlib import Path
 # was built by hand from the repository root, so the freshness verifier
 # could not isolate it and compared a committed file against itself.
 from rb5s6s import config as _CFG  # noqa: E402
+from rb5s6s.config import RESULTS_DIR as _RESULTS_DIR  # noqa: E402  (F480: results where RB5S6S_RESULTS_DIR points)
 _CFG_RESULTS = _CFG.RESULTS_DIR
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -130,7 +131,7 @@ def _partition() -> dict:
     # instrument's own prose is not evidence that a producer regenerates it.
     # Self-reference is not provenance.
     results_blob = "".join(f.read_text(errors="ignore")
-                           for f in sorted((ROOT / "results").glob("*.csv"))
+                           for f in sorted((_RESULTS_DIR).glob("*.csv"))
                            if f.name != OUT.name)
 
     generic = quoted = 0

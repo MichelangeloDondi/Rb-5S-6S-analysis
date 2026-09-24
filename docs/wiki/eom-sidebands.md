@@ -116,7 +116,7 @@ outer teeth sit within the central tooth's tails and are hard to resolve.
 One workaround is admixing amplitude modulation via a half-wave plate to
 suppress the carrier. A cleaner fix is driving at the depth that nulls the
 carrier: for the two-photon comb that is $\beta \approx 1.202$, half the
-value (2.405) a one-photon calculation gives.
+value (2.405) a one-photon calculation gives. <!-- other-quantity: the first zero of the Bessel function J0, not a committed cell -->
 
 Tooth amplitudes fall away once the order exceeds the modulation argument,
 so near the carrier-null depth only the first few orders carry usable
@@ -208,7 +208,9 @@ and the F statistics are one non-equilibrium process here: atoms enter from the 
 populations, are excited along the chord, and cascade with a computed probability into the other ground
 hyperfine level, depleting the excitable population as they cross. That depletion is a function of the
 excitation rate, and the branching probability is what sets how much of it is permanent rather than
-recoverable. The comb varies the rate by an order of magnitude at fixed power, fixed alignment, fixed
+recoverable.
+
+The comb varies the rate by an order of magnitude at fixed power, fixed alignment, fixed
 volume and fixed temperatures, so the rate-dependence of the line across orders is a direct measurement
 of the branching that the model presently supplies from calculation. It is the same measurement as the
 saturation reading and it is a different parameter read out of it, because permanent loss into the other
@@ -331,7 +333,7 @@ A pair of components with orders $m$ and $n$ is resonant when the laser sits $(m
 line centre, so the spectrum carries features at half-integer multiples of the RF frequency. Those
 half-integer features exist only because two different components combine and have no single-photon
 counterpart. At the optical null their weights, in units of $f_\text{RF}/2$, read 0.0564, 0.0901, 0.0127,
-0.1552 and 0.1434 for $k$ from zero to four, so the first and third crossovers are 1.6 and 2.8 times the
+0.1552 and 0.1434 <!-- other-quantity: a comb sideband weight at the optical null, not transit_additivity's added_fraction_100uK --> for $k$ from zero to four, so the first and third crossovers are 1.6 and 2.8 times the
 centre. A depth scan redistributes the spectrum and not dimming it.
 
 Whether they are usable is set by the width against half the tooth spacing, and the width rises with the
@@ -345,7 +347,7 @@ reading of the total width that never passes through the lineshape fit.
 The two-photon weights sum to one at every depth, so the comb redistributes the signal and never destroys
 it. That does not mean the precision is preserved. The replicas share the same photons, so splitting a
 fixed count among more peaks divides the signal and its shot noise together. Computed over the whole comb
-with shot noise at every point, the Fisher information on a common frequency shift reads 1.000 unmodulated,
+with shot noise at every point, the Fisher information on a common frequency shift reads 1.000 unmodulated, <!-- other-quantity: the unmodulated Fisher-information baseline, 1 by normalisation, not a committed cell -->
 0.808 at a depth of 1.20 and 0.764 at 2.40: modulating to the optical null costs about a quarter of it.
 
 So the reason to modulate is not precision. It is that the depth walks the excitation rate against a light

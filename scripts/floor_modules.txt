@@ -20,5 +20,21 @@ tests/test_agonistic_ratchet.py
 tests/test_docs_math_render.py
 tests/test_docs_links.py
 tests/test_docstring_counts.py
-tests/test_tqm_report.py
+# tests/test_tqm_report.py -- MOVED TO THE GATE 2026-09-24 on the owner's ruling
+# that the floor must finish under 60 s. Measured that day: its single cell
+# test_the_report_runs_end_to_end took 163.19 s of a 165.94 s stage, 98.3 per cent,
+# while the other ten modules together took about 2.7 s. It is not a prose or doc
+# guard, which is what this list is for; it is an end-to-end report run, and the
+# gate is where an expensive question about a tree is answered. THIS FILE IS THE
+# ONE LIST prefloor.sh and gate_split.py both read, so commenting it out here
+# moves it INTO the reduced gate by construction and loses no coverage --
+# gate_split --verify proves the union is still the whole suite.
 tests/test_lit_consistency.py
+# RED AT THE GATE ON A GREEN FLOOR (the TQM process check of 2026-09-24): the floor read
+# green and the gate then failed 52 nodes, 19 of them in these four document guards, which read text and committed
+# cells only and take 7.4 s together serially on the sandbox copy, 6.3 s of it the test-count collection. The
+# check's pre-decided consequence is to repair the map, so they move from the gate into the floor.
+tests/test_navigation_footer_is_last.py
+tests/test_navigation_chain_is_coherent.py
+tests/test_results_index_is_complete.py
+tests/test_docs_canonical.py

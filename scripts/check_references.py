@@ -22,6 +22,16 @@ Key forms:
                                         physical constant (a results row echoing one is a
                                         copy); <unit> scales it: Hz, kHz, MHz, GHz, or a
                                         number such as 1e-6
+    ref:expr:<expression over {key}s>   a number DERIVED from other references, so a
+                                        computed fact never gets a second cell of its own
+                                        (owner order O40). Each {key} inside the curly
+                                        braces is one of the three forms above, and the
+                                        expression around them is + - * / ** parentheses
+                                        and numeric literals, read by a small ast walker
+                                        with no eval() and no name lookup:
+                                            [8](../results/x.csv "ref:expr:{x:speed:a} + 5")
+                                        if x:speed:a holds 3, the page above is stale at 8
+                                        and --fix rewrites it to 6.
 
 The lit values table is a `## Values` section on docs/lit/<citekey>.md:
     | field | value | where in the paper |
@@ -34,22 +44,36 @@ paraphrased number ("about three times" for 3.24), a unit-converted
 restatement, and any quote with no reference at all. The first two stay
 human; the third is the coverage ratchet's job, not this resolver's.
 
-TWO FURTHER MODES, the design's phase 4:
+FOUR FURTHER MODES, the design's phase 4 and O40's propagation step:
   --fix    rewrite the PURE-VALUE link texts to the current source value
            at the precision the page printed, and only those: a value
            inside a sentence can falsify the prose around it, and no
            fixer may rewrite an argument. Flagged sites stay failures.
+           A ref:expr: site is a pure value like any other and is
+           rewritten by the same rule, at the same precision.
   --graph  emit docs/reference_graph.json, the derived dependents map:
            claim key to source, producer and quoting sites. Generated,
-           never hand-edited, and not itself a quoting surface.
+           never hand-edited, and not itself a quoting surface. A
+           ref:expr: site is also recorded as a DEPENDENT of every
+           reference its expression reads.
+  --thesis-outbox PATH
+           read one PhD-Thesis chapter file, READ-ONLY, find its own
+           ref: tags, and append a row to
+           private/cache/plan_2026-09-16/THESIS_OUTBOX.md for every tag
+           whose cell has moved since the chapter's number was written.
+           Never opens the chapter for writing: the chapter's own
+           repository applies the row, this one only names it.
 """
 from __future__ import annotations
 
+import ast
 import csv
 import json
+import operator
 import re
 import subprocess
 import sys
+from datetime import datetime
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -240,6 +264,126 @@ def _producers() -> dict[str, str]:
     return out
 
 
+# THE DERIVED FORM (owner order O40, private/OWNER_ORDERS.tsv). A number computed from other
+# references never gets a cell of its own: giving it one would be a SECOND source of truth for
+# the same fact. ref:expr:<expression> reads other ref: keys, each written {key} inside curly
+# braces, combines them with + - * / ** parentheses and numeric literals, and is evaluated by
+# the small ast walker below. No eval(), no name lookup, no call: an expression written in a
+# document is data, and the whitelist is the whole language it gets.
+
+_EXPR_TOKEN = re.compile(r"\{([^{}]+)\}")
+
+_EXPR_OPS = {ast.Add: operator.add, ast.Sub: operator.sub, ast.Mult: operator.mul,
+             ast.Div: operator.truediv, ast.Pow: operator.pow, ast.USub: operator.neg,
+             ast.UAdd: operator.pos}
+
+
+class ExprError(Exception):
+    """A ref:expr: this checker refuses instead of guessing: a {key} it cannot resolve, or
+    syntax outside the arithmetic whitelist. Always raised, never swallowed into a pass."""
+
+
+def _resolve_plain_key(key: str) -> str | None:
+    """One of the three plain schemes (constant, lit, or a results/ coordinate) resolved to
+    its source string, the same dispatch _report() and _scan() use for a top-level ref: tag.
+
+    Never an expr: key: an expression may combine only the leaf schemes below, so nesting one
+    derivation inside another is refused at the point it would be read, not chased.
+    """
+    parts = key.split(":")
+    if parts[0] == "constant" and len(parts) in (2, 3):
+        return _constant_value(parts[1], parts[2] if len(parts) == 3 else "")
+    if parts[0] == "lit" and len(parts) == 3:
+        return _lit_value(parts[1], parts[2])
+    if parts[0] not in ("lit", "expr") and len(parts) in (3, 4):
+        v = _csv_cell(*parts)
+        return None if v is AMBIGUOUS else v
+    return None
+
+
+def _eval_expr_node(node: ast.AST) -> float:
+    """Evaluate arithmetic only, ast node types spelled out one by one.
+
+    A Name, a Call, an Attribute, a Subscript, a string, or any other Constant that is not a
+    plain number: none of these appear in the chain below, so none of them evaluate. Calling
+    eval() on text a document carries is how a document becomes a shell, and this walker is
+    built so that no path through it can call anything at all.
+    """
+    if isinstance(node, ast.Expression):
+        return _eval_expr_node(node.body)
+    if isinstance(node, ast.Constant):
+        if isinstance(node.value, (int, float)) and not isinstance(node.value, bool):
+            return float(node.value)
+        raise ExprError(f"{node.value!r} is not a numeric literal")
+    if isinstance(node, ast.BinOp) and type(node.op) in _EXPR_OPS:
+        return _EXPR_OPS[type(node.op)](_eval_expr_node(node.left), _eval_expr_node(node.right))
+    if isinstance(node, ast.UnaryOp) and type(node.op) in _EXPR_OPS:
+        return _EXPR_OPS[type(node.op)](_eval_expr_node(node.operand))
+    raise ExprError(f"{type(node).__name__} is outside the arithmetic whitelist (only "
+                     f"+ - * / ** and parentheses over numeric literals and {{key}} references)")
+
+
+def _eval_expr(expr: str) -> float:
+    """Substitute every {key} with its resolved source value, then evaluate the arithmetic.
+
+    Substitution happens on TEXT, before any parsing, and every substituted value passes
+    through repr(float(...)) on its way in, so a resolved value can never itself carry a name
+    or a call into the parser: the parser only ever sees numbers and operators.
+    """
+    missing: list[str] = []
+
+    def sub(m: re.Match) -> str:
+        v = _resolve_plain_key(m.group(1))
+        if v is None:
+            missing.append(m.group(1))
+            return "0"
+        try:
+            return repr(float(v))
+        except ValueError:
+            missing.append(m.group(1))
+            return "0"
+
+    substituted = _EXPR_TOKEN.sub(sub, expr)
+    if missing:
+        raise ExprError(f"unresolved reference(s): {', '.join(missing)}")
+    try:
+        tree = ast.parse(substituted, mode="eval")
+    except SyntaxError as exc:
+        raise ExprError(f"not a valid arithmetic expression: {exc}") from exc
+    return _eval_expr_node(tree)
+
+
+def _eval_expr_or_none(expr: str) -> tuple[str | None, str | None]:
+    """(the evaluated value as a string, an error message). Exactly one of the two is None."""
+    try:
+        return repr(_eval_expr(expr)), None
+    except ExprError as exc:
+        return None, str(exc)
+
+
+def _resolve_any_key(key: str) -> str | None:
+    """Every scheme this checker resolves, ref:expr: included: the one call a caller that
+    wants only the current value, and not the report-mode wording, should make."""
+    if key.startswith("expr:"):
+        v, _err = _eval_expr_or_none(key[len("expr:"):])
+        return v
+    return _resolve_plain_key(key)
+
+
+def _at_precision(source: str, written: str) -> str:
+    """Format a resolved value at the decimal places the page's own written number used.
+
+    The one formatting rule _fix() and --thesis-outbox both need, so a page's digits are
+    never rewritten to more, or fewer, decimals than it already carried.
+    """
+    stripped = written.strip().lstrip("<>~ ")
+    places = len(stripped.split(".")[1]) if "." in stripped else 0
+    try:
+        return f"{float(source):.{places}f}"
+    except ValueError:
+        return source
+
+
 def _scan() -> list[dict]:
     """Every reference in the corpus, resolved, one record each."""
     records = []
@@ -266,8 +410,17 @@ def _scan() -> list[dict]:
                 "them; neither mode may write while a tag is unreadable.")
         for m in _RE.finditer(text):
             key = m.group("title")[len("ref:"):]
-            parts = key.split(":")
             line = text[: m.start()].count("\n") + 1
+            if key.startswith("expr:"):
+                expr_text = key[len("expr:"):]
+                source, _err = _eval_expr_or_none(expr_text)
+                records.append(dict(
+                    key=key, file=rel, line=line, written=m.group("text"),
+                    source=source, source_file=None, producer=None,
+                    span=m.span(), expr=expr_text,
+                    expr_refs=_EXPR_TOKEN.findall(expr_text)))
+                continue
+            parts = key.split(":")
             if parts[0] == "constant" and len(parts) in (2, 3):
                 source = _constant_value(parts[1], parts[2] if len(parts) == 3 else "")
                 src_file = "rb5s6s/constants.py"
@@ -302,6 +455,15 @@ def _emit_graph() -> Path:
             source_value=r["source"], quoting_sites=[]))
         node["quoting_sites"].append(
             dict(file=r["file"], line=r["line"], writes=r["written"]))
+        # A ref:expr: SITE IS A DEPENDENT OF EVERY REFERENCE IT READS, not a quoting site of
+        # them: the number it prints is a FUNCTION of theirs, not a copy, so it is recorded on
+        # each dependency's own node under its own key. A dependency named only inside an
+        # expression, never quoted on its own anywhere, still gets a node here.
+        for dep_key in r.get("expr_refs") or []:
+            dep = graph.setdefault(dep_key, dict(
+                source_file=None, producer=None, source_value=None, quoting_sites=[]))
+            dep.setdefault("expr_dependents", []).append(
+                dict(file=r["file"], line=r["line"], expr=r.get("expr")))
     out = ROOT / "docs" / "reference_graph.json"
     out.write_text(json.dumps(graph, indent=1, sort_keys=True) + "\n",
                    encoding="utf-8")
@@ -314,6 +476,7 @@ _PURE = re.compile(r"^[<>~\s]*-?[\d.,()]+$")
 def _fix() -> int:
     """Rewrite pure-value link texts to the source, report the rest."""
     rewritten = flagged = 0
+    moved: list = []
     by_file: dict[str, list] = {}
     for r in _scan():
         if r["source"] is None or _matches(r["written"], r["source"]):
@@ -329,12 +492,7 @@ def _fix() -> int:
                       f"decides what the sentence still means")
                 flagged += 1
                 continue
-            stripped = r["written"].strip().lstrip("<>~ ")
-            places = (len(stripped.split(".")[1]) if "." in stripped else 0)
-            try:
-                newtext = f"{float(r['source']):.{places}f}"
-            except ValueError:
-                newtext = r["source"]
+            newtext = _at_precision(r["source"], r["written"])
             prefix = r["written"][: len(r["written"]) - len(r["written"].lstrip("<>~ "))]
             a, b = r["span"]
             old_link = text[a:b]
@@ -364,18 +522,133 @@ def _fix() -> int:
             rewritten += 1
             print(f"  rewrote {rel}:{r['line']}: {r['written']!r} -> "
                   f"{prefix}{newtext!r}")
+            # THE NUMBER IS CURRENT AND THE SENTENCE MAY NOT BE (2026-09-22,
+            # and the owner's "the SSOT fixed once for all, also in the prose"). A rewrite keeps the
+            # digits true to the cell and says nothing about the claim built around them: an estimator
+            # passage read "close to tied" while its own cells had moved apart. So every moved value
+            # prints the sentence it sits in, and the landing re-reads that list.
+            moved.append((rel, r["line"], r["written"], f"{prefix}{newtext}", _sentence_at(text, a)))
         path.write_text(text, encoding="utf-8")
-    print(f"fix: {rewritten} rewritten, {flagged} flagged for a human")
+    if moved:
+        print("\nfix: the sentences whose bound value MOVED, to be re-read before the landing "
+              "(a current number can still sit in a stale claim):")
+        for rel, line, old, new, sent in moved:
+            print(f"  {rel}:{line}: {old} -> {new}\n      {sent}")
+    print(f"fix: {rewritten} rewritten, {flagged} flagged for a human, {len(moved)} sentence(s) to re-read")
     return 0 if flagged == 0 else 1
 
 
+#: The propagation surface's own log: private/cache/plan_2026-09-16/THESIS_OUTBOX.md, rows this
+#: repository owes the PhD-Thesis chapter. --thesis-outbox appends to it, nothing else in this
+#: file opens it, and a plant never points this NAME at the real path, it passes outbox_path
+#: instead (a scratch path in every test, per the working rules for this repository).
+THESIS_OUTBOX = ROOT / "private" / "cache" / "plan_2026-09-16" / "THESIS_OUTBOX.md"
+
+_HEADING = re.compile(r"^(#{1,6})\s+(.*)$", re.M)
+
+
+def _sentence_at(text: str, index: int) -> str:
+    """The sentence a rewritten value sits in, for the re-read list.
+
+    A markdown table row is one cell and not one sentence, so the cell is the unit there; elsewhere the
+    unit is the sentence, bounded by a full stop and a space or by the line. Collapsed to one line
+    because the reader reads a list, and capped so one long row cannot bury the rest."""
+    start = text.rfind("\n", 0, index) + 1
+    end = text.find("\n", index)
+    end = len(text) if end < 0 else end
+    line = text[start:end]
+    at = index - start
+    if line.lstrip().startswith("|"):
+        cuts = [i for i, ch in enumerate(line) if ch == "|"]
+        lo = max([c for c in cuts if c <= at], default=-1) + 1
+        hi = min([c for c in cuts if c > at], default=len(line))
+        out = line[lo:hi]
+    else:
+        lo = max(line.rfind(". ", 0, at) + 2, 0)
+        hi = line.find(". ", at)
+        out = line[lo:(hi + 1 if hi > 0 else len(line))]
+    out = " ".join(out.split())
+    return out if len(out) <= 300 else out[:297] + "..."
+
+
+def _section_at(text: str, upto_line: int) -> str:
+    """The nearest markdown heading at or before a line, for the outbox row's own section
+    column. 'front matter' names anything before the chapter's first heading."""
+    best = "front matter"
+    for hm in _HEADING.finditer(text):
+        hline = text[: hm.start()].count("\n") + 1
+        if hline > upto_line:
+            break
+        best = hm.group(2).strip()
+    return best
+
+
+def _thesis_outbox(chapter_path: str, outbox_path: str | None = None) -> int:
+    """Read one PhD-Thesis chapter, find its ref: tags, and append one outbox row per tag
+    whose cell has moved since the chapter's own number was written.
+
+    READ-ONLY on the chapter, always: chapter_path is only ever passed to Path.read_text,
+    never to a write call, so a stale chapter number becomes a row here for a human to carry
+    across, never an edit this repository makes on the other side of the boundary (the
+    outbox's own header names why: the two repositories' safety probes cannot see each
+    other's open work). A tag this checker cannot resolve is skipped, not guessed: that is a
+    citation defect in the chapter's own repository, and this tool's population is this
+    repository's tracked files, never the chapter's.
+    """
+    chapter = Path(chapter_path)
+    if not chapter.exists():
+        print(f"check_references: --thesis-outbox {chapter_path} does not exist, nothing read")
+        return 1
+    text = chapter.read_text(encoding="utf-8")
+    rows = []
+    for m in LINK.finditer(text):
+        key = m.group("title")[len("ref:"):]
+        line = text[: m.start()].count("\n") + 1
+        current = _resolve_any_key(key)
+        if current is None:
+            continue
+        if not _matches(m.group("text"), current):
+            rows.append((_section_at(text, line), m.group("text"),
+                         _at_precision(current, m.group("text")), key))
+    outbox = Path(outbox_path) if outbox_path else THESIS_OUTBOX
+    if rows:
+        outbox.parent.mkdir(parents=True, exist_ok=True)
+        stamp = datetime.now().strftime("%Y-%m-%d %H:%M")
+        with outbox.open("a", encoding="utf-8") as fh:
+            fh.write(f"\n## {stamp}, from check_references.py --thesis-outbox "
+                      f"{chapter.name}\n\n")
+            fh.write("| chapter section | old reading | new reading | the cell |\n")
+            fh.write("|---|---|---|---|\n")
+            for section, old, new, key in rows:
+                fh.write(f"| {section} | {old} | {new} | `ref:{key}` |\n")
+    print(f"check_references: --thesis-outbox {chapter.name}: {len(rows)} "
+          f"row(s) appended to {outbox}")
+    return 0
+
+
 def main() -> int:
+    if "--thesis-outbox" in sys.argv:
+        idx = sys.argv.index("--thesis-outbox")
+        if idx + 1 >= len(sys.argv):
+            print("check_references: --thesis-outbox needs a chapter path")
+            return 2
+        return _thesis_outbox(sys.argv[idx + 1])
     if "--graph" in sys.argv:
         out = _emit_graph()
         print(f"check_references: graph written to {out.relative_to(ROOT)}")
         return 0
     if "--fix" in sys.argv:
         return _fix()
+    return _report()
+
+
+def _report() -> int:
+    """The default mode: every reference resolved and compared, findings printed and counted.
+
+    Factored out of main() so a caller can read the exit code directly, without sys.argv or a
+    subprocess: main() is now a thin dispatcher over four modes, matching how --fix, --graph
+    and --thesis-outbox were already their own functions.
+    """
     bad: list[str] = []
     n_refs = 0
     # THE RAW-MARK COUNT IS A REGEX AND NOT A SUBSTRING, because in python the
@@ -418,9 +691,18 @@ def main() -> int:
         for m in _RE.finditer(text):
             n_refs += 1
             key = m.group("title")[len("ref:"):]
-            parts = key.split(":")
             line = text[: m.start()].count("\n") + 1
             where = f"{rel}:{line}"
+            if key.startswith("expr:"):
+                expr_text = key[len("expr:"):]
+                value, err = _eval_expr_or_none(expr_text)
+                if err is not None:
+                    bad.append(f"{where}: EXPRESSION ERROR, ref:expr:{expr_text} - {err}")
+                elif not _matches(m.group("text"), value):
+                    bad.append(f"{where}: writes {m.group('text')!r}, the expression "
+                               f"{expr_text!r} evaluates to {value!r}")
+                continue
+            parts = key.split(":")
             if parts[0] == "constant":
                 if len(parts) not in (2, 3):
                     bad.append(f"{where}: malformed constant key ref:{key}")

@@ -63,7 +63,8 @@ A 2.5 mm intensity FWHM is a 1/e^2 radius of 2.123 mm, so at rho = 1 this
 package's `stark_shift_S0_mhz` returns S0 = 0.121 kHz at 80 mW per beam and
 0.243 kHz at 160 mW forward, bracketing their -0.2 kHz. Their text does not
 say which side of the 50/50 split the 160 mW is quoted on. This record's
-archive sits at S0 = 364 kHz, fifteen hundred times higher. **Their symmetric
+archive, at the ruled waist, sits near three thousand times higher (the prediction in
+`results/stark_joint.csv`, against 364 kHz and fifteen hundred times at the retired waist). **Their symmetric
 Voigt is the right model at their waist**, and the difference between the two
 benches is a design curve, not a disagreement.
 

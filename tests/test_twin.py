@@ -207,3 +207,17 @@ def test_the_example_twin_does_not_keep_its_own_copy_of_the_line_ruler():
         "the example re-derives the line ruler instead of importing the package's")
     assert "lambda_nm" not in src.split("def line_positions_mhz")[1].split("def ")[0], (
         "the example's line ruler still reads the wavelength labels")
+
+
+def test_a_platform_carries_no_typed_transit_default():
+    """F313: the Platform's transit defaulted to the retired waist convention's 130 C value, so a
+    cell built without one generated that line silently. A cell now derives its transit from the
+    record's waist at its OWN temperature, and any other platform built without one is refused at
+    the line rather than drawn at a transit nobody chose."""
+    from rb5s6s import constants as K
+    for t_c in (70.0, 130.0):
+        assert twin.vapour_cell(t_c).transit_fwhm_mhz == pytest.approx(
+            K.transit_fwhm_from_w0(K.W0_CENTRAL_M, t_c), rel=1e-12)
+    assert twin.vapour_cell(130.0, transit_fwhm_mhz=2.5).transit_fwhm_mhz == 2.5
+    with pytest.raises(ValueError, match="no transit width"):
+        twin._profile(np.linspace(-5.0, 5.0, 11), 0.0, twin.nanofibre())

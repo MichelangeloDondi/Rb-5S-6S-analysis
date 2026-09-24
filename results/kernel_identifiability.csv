@@ -1,25 +1,25 @@
 block,kind,corr_gamma_sigma,sv_ratio,null_dir_gamma,null_dir_sigma,note,status
-fixed_condition_jacobian,gaussian,0.9085236361,1.577e-01,-0.340392,+0.940284,"null direction weight on (gamma,sigma). 1/sqrt(2)=0.7071 is the SUM degeneracy",DIAGNOSTIC
-fixed_condition_jacobian,lorentzian,1.0000000000,1.816e-10,+0.707107,-0.707107,"null direction weight on (gamma,sigma). 1/sqrt(2)=0.7071 is the SUM degeneracy",DIAGNOSTIC
-sum_invariance,gaussian,,4.030e-01,5.782e-03,1.435e-02,"sum-preserving move changes the line by 5.78e-03 of peak, against 1.43e-02 for the sum-changing control",DIAGNOSTIC
-sum_invariance,lorentzian,,0.000e+00,0.000e+00,1.699e-02,"sum-preserving move changes the line by 0.00e+00 of peak, against 1.70e-02 for the sum-changing control",DIAGNOSTIC
+fixed_condition_jacobian,gaussian,-0.8084348578,4.373e-01,+0.499247,+0.866460,"null direction weight on (gamma,sigma). 1/sqrt(2)=0.7071 is the SUM degeneracy",DIAGNOSTIC
+fixed_condition_jacobian,lorentzian,1.0000000000,2.161e-11,+0.707107,-0.707107,"null direction weight on (gamma,sigma). 1/sqrt(2)=0.7071 is the SUM degeneracy",DIAGNOSTIC
+sum_invariance,gaussian,,7.430e-01,7.844e-03,1.056e-02,"sum-preserving move changes the line by 7.84e-03 of peak, against 1.06e-02 for the sum-changing control",DIAGNOSTIC
+sum_invariance,lorentzian,,0.000e+00,0.000e+00,1.681e-02,"sum-preserving move changes the line by 0.00e+00 of peak, against 1.68e-02 for the sum-changing control",DIAGNOSTIC
 mixed_model_validation,gamma_L->0,,0.000e+00,,,reimplementation vs shipped composite_profile in this limit. AGREES,DIAGNOSTIC
 mixed_model_validation,sigma_G->0,,0.000e+00,,,reimplementation vs shipped composite_profile in this limit. AGREES,DIAGNOSTIC
-mixed_model_jacobian,G+L,1.0000000000,2.020e-11,+0.707107,-0.707107,"4 params (gamma_coll, sigma_G, Gamma_L_equiv, transit) at ONE condition. The corr column is gamma_coll against Gamma_L_equiv",DIAGNOSTIC
-fisher_transit_frozen,gaussian,,1.577e-01,-0.340392,+0.940284,n_params=2. Laser weight in worst direction 0.9403,DIAGNOSTIC
-fisher_transit_free,gaussian,,1.238e-01,+0.630090,-0.482627,n_params=3. Laser weight in worst direction 0.4826,DIAGNOSTIC
-fisher_transit_frozen,lorentzian,,1.816e-10,+0.707107,-0.707107,n_params=2. Laser weight in worst direction 0.7071,DIAGNOSTIC
-fisher_transit_free,lorentzian,,1.347e-10,+0.707107,-0.707107,n_params=3. Laser weight in worst direction 0.7071,DIAGNOSTIC
-joint_cell_onf,validation_cell_alone,-0.9100,1.000,,,"the forecast machinery in the record's own 2-parameter form: corr(beta, sigma_G) = -0.910 against the committed -0.82 to -0.89 (kernel_headline.csv, gaussian arm): CREDIBLE, the rows below may be read",DIAGNOSTIC
-joint_cell_onf,cost_of_freeing_gamma_L,-0.8038,1.681,+0.0570,,"freeing Gamma_L inflates sigma(beta) by this factor over the 2-parameter fit: what K3 pays for honesty about the kernel, and the quantity an ONF prior buys back",DIAGNOSTIC
-joint_cell_onf,prior_GL_rel1,-0.6908,0.823,1.383,,ONF prior at 1 x the cell-alone width on Gamma_L alone: sigma(beta) at this fraction of the FREE-Gamma_L fit (sv_ratio) and of the 2-parameter fit (null_dir_gamma),DIAGNOSTIC
-joint_cell_onf,prior_GL_and_sigmaG_rel1,-0.7966,0.811,1.363,,ONF prior at 1 x the cell-alone width on both laser parameters: sigma(beta) at this fraction of the FREE-Gamma_L fit (sv_ratio) and of the 2-parameter fit (null_dir_gamma),DIAGNOSTIC
-joint_cell_onf,prior_GL_rel0.5,-0.5171,0.695,1.168,,ONF prior at 0.5 x the cell-alone width on Gamma_L alone: sigma(beta) at this fraction of the FREE-Gamma_L fit (sv_ratio) and of the 2-parameter fit (null_dir_gamma),DIAGNOSTIC
-joint_cell_onf,prior_GL_and_sigmaG_rel0.5,-0.7798,0.606,1.018,,ONF prior at 0.5 x the cell-alone width on both laser parameters: sigma(beta) at this fraction of the FREE-Gamma_L fit (sv_ratio) and of the 2-parameter fit (null_dir_gamma),DIAGNOSTIC
-joint_cell_onf,prior_GL_rel0.2,-0.2561,0.615,1.035,,ONF prior at 0.2 x the cell-alone width on Gamma_L alone: sigma(beta) at this fraction of the FREE-Gamma_L fit (sv_ratio) and of the 2-parameter fit (null_dir_gamma),DIAGNOSTIC
-joint_cell_onf,prior_GL_and_sigmaG_rel0.2,-0.6373,0.363,0.610,,ONF prior at 0.2 x the cell-alone width on both laser parameters: sigma(beta) at this fraction of the FREE-Gamma_L fit (sv_ratio) and of the 2-parameter fit (null_dir_gamma),DIAGNOSTIC
-joint_cell_onf,prior_GL_rel0.1,-0.1332,0.600,1.009,,ONF prior at 0.1 x the cell-alone width on Gamma_L alone: sigma(beta) at this fraction of the FREE-Gamma_L fit (sv_ratio) and of the 2-parameter fit (null_dir_gamma),DIAGNOSTIC
-joint_cell_onf,prior_GL_and_sigmaG_rel0.1,-0.4250,0.283,0.475,,ONF prior at 0.1 x the cell-alone width on both laser parameters: sigma(beta) at this fraction of the FREE-Gamma_L fit (sv_ratio) and of the 2-parameter fit (null_dir_gamma),DIAGNOSTIC
-joint_cell_onf,floor_GL_alone,,0.595,,,"the exact asymptote of a Gamma_L-only prior: however precise, sigma(beta) cannot fall below this fraction of the free fit while sigma_G stays free",DIAGNOSTIC
-joint_cell_onf,absolute_anchor,,0.074,0.072,,"cell-alone sigma(Gamma_L) and sigma(sigma_G) in MHz, anchored by matching the 2-parameter forecast to the committed beta_err_gaussian of the 4121 peak: the 0.2x prior row therefore asks the ONF for 0.01 MHz on Gamma_L and 0.01 MHz on sigma_G, which is the absolute precision target the instrument must meet",DIAGNOSTIC
-joint_cell_onf,ceiling_laser_pinned,,0.247,0.415,,"both laser parameters pinned exactly: the ceiling of the prior route, relative to the free-Gamma_L fit (sv_ratio) and to the 2-parameter fit (null_dir_gamma)",DIAGNOSTIC
+mixed_model_jacobian,G+L,1.0000000000,2.124e-11,+0.707107,-0.707107,"4 params (gamma_coll, sigma_G, Gamma_L_equiv, transit) at ONE condition. The corr column is gamma_coll against Gamma_L_equiv",DIAGNOSTIC
+fisher_transit_frozen,gaussian,,4.373e-01,+0.499247,+0.866460,n_params=2. Laser weight in worst direction 0.8665,DIAGNOSTIC
+fisher_transit_free,gaussian,,3.640e-02,+0.773302,+0.282850,n_params=3. Laser weight in worst direction 0.2829,DIAGNOSTIC
+fisher_transit_frozen,lorentzian,,2.161e-11,+0.707107,-0.707107,n_params=2. Laser weight in worst direction 0.7071,DIAGNOSTIC
+fisher_transit_free,lorentzian,,1.260e-11,-0.707107,+0.707107,n_params=3. Laser weight in worst direction 0.7071,DIAGNOSTIC
+joint_cell_onf,validation_cell_alone,-0.7676,1.000,,,"the forecast machinery in the record's own 2-parameter form: corr(beta, sigma_G) = -0.768 against the committed -0.77 to -0.61 (kernel_headline.csv, gaussian arm, slack 0.08): CREDIBLE, the rows below may be read",DIAGNOSTIC
+joint_cell_onf,cost_of_freeing_gamma_L,-0.9310,2.740,+0.0191,,"freeing Gamma_L inflates sigma(beta) by this factor over the 2-parameter fit: what K3 pays for honesty about the kernel, and the quantity an ONF prior buys back",DIAGNOSTIC
+joint_cell_onf,prior_GL_rel1,-0.8746,0.753,2.063,,ONF prior at 1 x the cell-alone width on Gamma_L alone: sigma(beta) at this fraction of the FREE-Gamma_L fit (sv_ratio) and of the 2-parameter fit (null_dir_gamma),DIAGNOSTIC
+joint_cell_onf,prior_GL_and_sigmaG_rel1,-0.9102,0.747,2.048,,ONF prior at 1 x the cell-alone width on both laser parameters: sigma(beta) at this fraction of the FREE-Gamma_L fit (sv_ratio) and of the 2-parameter fit (null_dir_gamma),DIAGNOSTIC
+joint_cell_onf,prior_GL_rel0.5,-0.7521,0.554,1.517,,ONF prior at 0.5 x the cell-alone width on Gamma_L alone: sigma(beta) at this fraction of the FREE-Gamma_L fit (sv_ratio) and of the 2-parameter fit (null_dir_gamma),DIAGNOSTIC
+joint_cell_onf,prior_GL_and_sigmaG_rel0.5,-0.8566,0.519,1.422,,ONF prior at 0.5 x the cell-alone width on both laser parameters: sigma(beta) at this fraction of the FREE-Gamma_L fit (sv_ratio) and of the 2-parameter fit (null_dir_gamma),DIAGNOSTIC
+joint_cell_onf,prior_GL_rel0.2,-0.4475,0.408,1.118,,ONF prior at 0.2 x the cell-alone width on Gamma_L alone: sigma(beta) at this fraction of the FREE-Gamma_L fit (sv_ratio) and of the 2-parameter fit (null_dir_gamma),DIAGNOSTIC
+joint_cell_onf,prior_GL_and_sigmaG_rel0.2,-0.6372,0.313,0.857,,ONF prior at 0.2 x the cell-alone width on both laser parameters: sigma(beta) at this fraction of the FREE-Gamma_L fit (sv_ratio) and of the 2-parameter fit (null_dir_gamma),DIAGNOSTIC
+joint_cell_onf,prior_GL_rel0.1,-0.2461,0.376,1.032,,ONF prior at 0.1 x the cell-alone width on Gamma_L alone: sigma(beta) at this fraction of the FREE-Gamma_L fit (sv_ratio) and of the 2-parameter fit (null_dir_gamma),DIAGNOSTIC
+joint_cell_onf,prior_GL_and_sigmaG_rel0.1,-0.3954,0.257,0.703,,ONF prior at 0.1 x the cell-alone width on both laser parameters: sigma(beta) at this fraction of the FREE-Gamma_L fit (sv_ratio) and of the 2-parameter fit (null_dir_gamma),DIAGNOSTIC
+joint_cell_onf,floor_GL_alone,,0.365,,,"the exact asymptote of a Gamma_L-only prior: however precise, sigma(beta) cannot fall below this fraction of the free fit while sigma_G stays free",DIAGNOSTIC
+joint_cell_onf,absolute_anchor,,0.058,0.124,,"cell-alone sigma(Gamma_L) and sigma(sigma_G) in MHz, anchored by matching the 2-parameter forecast to the committed beta_err_gaussian of the 4121 peak: the 0.2x prior row therefore asks the ONF for 0.01 MHz on Gamma_L and 0.02 MHz on sigma_G, which is the absolute precision target the instrument must meet",DIAGNOSTIC
+joint_cell_onf,ceiling_laser_pinned,,0.234,0.641,,"both laser parameters pinned exactly: the ceiling of the prior route, relative to the free-Gamma_L fit (sv_ratio) and to the 2-parameter fit (null_dir_gamma)",DIAGNOSTIC

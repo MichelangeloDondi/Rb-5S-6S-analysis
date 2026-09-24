@@ -153,10 +153,11 @@ in fibres can skip that thread.
 record once answered with unregenerable digits: the span-and-repeats
 search, rebuilt from a named committed condition into
 [`twin_span_sweep.csv`](../../results/twin_span_sweep.csv). Repeats
-reduce the uncertainty as sampling predicts, a factor 3.16 at ten times
-the traces, while a five times wider span increases it by a factor 2.72
-at fixed points per trace, and the width degeneracy moves by at most
-0.0075 under either, the regenerable form of the failed asymmetric-knob
+reduce the uncertainty faster than plain sampling predicts, a factor 4.16
+at ten times the traces against independent sampling's root-ten of 3.16 <!-- other-quantity: sqrt(10), not twin_span_sweep's err_ratio_10x_traces -->,
+while a five times wider span increases it by a factor 2.86 <!-- other-quantity: twin_span_sweep's err_ratio_wide_span, not detection_budget's gap ratio --> at fixed
+points per trace, and the width degeneracy moves by at most [0.1542](../../results/twin_span_sweep.csv "ref:twin_span_sweep:VERDICT:corr_move_with_traces") under
+either, the regenerable form of the failed asymmetric-knob
 search that [identifiability](identifiability.md) records.
 
 `docs/TUTORIAL.md` walks the loop for a line of the reader's own
@@ -325,6 +326,7 @@ close the second row and the amplitude needed is about seven times what the
 wings actually show, which is the evidence that something else contributes.
 **Two terms remain open, named, and not papered over.**
 
+<!-- C6b: re-measured as a moment (A149) -->
 And the tail shape's cost is measured now, not only named. Saying a term is
 open says nothing about what it is worth. Resampling the archive's own wing
 residuals in moving blocks, so the distribution comes off the bench and not out
@@ -349,7 +351,7 @@ scaled-noise rungs before it is allowed to read a real trace.
 is absent. Three linewidths out, the statistic reads the line's shoulder and
 returns about ten whatever the noise is set to. And this estimator is not the
 noise law's. Over a short window it recovers 1.33 from a synthetic process whose
-true integrated time is 2.515, so its numbers are read archive-against-simulation
+true integrated time is [2.515](../../results/moment_admission.csv "ref:moment_admission:tau_int:"), so its numbers are read archive-against-simulation
 and never against the committed law.
 
 ## Related pages

@@ -30,6 +30,7 @@ import numpy as np  # noqa: E402
 ROOT = Path(__file__).resolve().parents[1]     # scripts/ -> the repository
 sys.path.insert(0, str(ROOT))
 from rb5s6s import ladder_gate  # noqa: E402
+from rb5s6s.constants import W0_CENTRAL_M  # noqa: E402
 
 _s = importlib.util.spec_from_file_location("closure_for_treatments", ROOT / "scripts" / "run_ultra_joint_closure.py")
 CL = importlib.util.module_from_spec(_s); _s.loader.exec_module(CL)   # ladder-exempt: the injection's own source
@@ -37,7 +38,7 @@ UJ = CL.UJ
 
 ANALYSIS_ID = "ultra_joint_treatments"
 WORLDS = (0.1, 0.6, 1.5, 2.8)            # coarse first (owner 02:40); the free fit beside them
-GRID = (40.0, 42.0, 44.0, 46.0, 48.0, 52.0, 56.0)   # the scan grid about the 40 to 45 um band, from the lowest waist whose kernel nodes all pass (38 um fails depleted_line_abs)
+GRID = (41.0, 42.0, 44.0, 46.0, 48.0, 52.0, 56.0)   # the scan grid about the 40 to 45 um band, from the lowest waist whose kernel nodes all pass (38 um fails depleted_line_abs)
 
 
 def _spec(form, w0, treat, truth_sigma=None):
@@ -84,7 +85,15 @@ def _cell(args):
             nb = int(np.ceil(n / 16)); st = rng.integers(0, len(p) - 16, size=nb)
             o = np.concatenate([p[s:s + 16] for s in st])[:n]; return o / max(float(np.std(p)), 1e-300)
     syn, level, shape = CL.inject(cell, ptr, CL.SEED + 1 + r, noise_scale=scale, residual_source=src)
-    grid = tuple(sorted(set(GRID) | {truth + k * 0.5 for k in range(-4, 5)}))
+    # NOTHING BELOW THE BORE'S FLOOR (F291, V5.8c item iii; the sibling's own pattern at
+    # `run_ultra_joint_closure.py:91`). The fine points are built as `truth + k/2`, so when the
+    # truth moved off the typed 42.0 onto the SSOT constant the grid's low end walked to 40.38 um
+    # -- below the 40.892 um this bore can produce -- and `aperture_onaxis_factor_actual` RAISED,
+    # correctly. **A grid anchored on a value that moves, with a fixed offset, walks off a physical
+    # edge the moment the anchor moves**, and nothing in the offset says where the edge is. Filter
+    # against GRID[0], which is chosen above the floor, exactly as the closure does.
+    grid = tuple(sorted({w for w in set(GRID) | {truth + k * 0.5 for k in range(-4, 5)}
+                         if w >= GRID[0]}))
     d_truth = cell.unpack(ptr)
     truth_sigma = {k: float(v) for k, v in d_truth.items() if k.startswith("sigma_l")}
     pts = _fit_grid(syn, form, treat, grid, scale if scale > 0 else 1.0, truth_sigma, noisy=scale > 0)
@@ -121,7 +130,7 @@ NOTE = ("one treatment of the matrix at one truth and one noise level. The shift
 
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--form", default="mixed"); ap.add_argument("--truth", type=float, default=42.0)
+    ap.add_argument("--form", default="mixed"); ap.add_argument("--truth", type=float, default=round(W0_CENTRAL_M * 1e6, 4))  # SSOT: the record's central waist
     ap.add_argument("--worlds", default=",".join(str(w) for w in WORLDS) + ",free")
     ap.add_argument("--s0", default="tied", choices=("tied", "free")); ap.add_argument("--w0", default="tied", choices=("tied", "free"))
     ap.add_argument("--noise", type=float, default=0.0); ap.add_argument("--reals", type=int, default=1)

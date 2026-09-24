@@ -1,26 +1,26 @@
 scope,quantity,value,unit,note,status
 RUN,admissible,YES,flag,the preregistered void check passed,DIAGNOSTIC
 G,n_conditions,32,count,conditions contributing to the stack,DIAGNOSTIC
-G,max_z,6.893,sigma,largest |stacked mean / its across-condition standard error| inside the preregistered window,DIAGNOSTIC
-G,p_signflip,0.0010,p-value,"1000 sign-flip draws. Below 0.01 would be evidence of a COMMON residual shape, which would mean the model class is inadequate. It would NOT name the missing term",DIAGNOSTIC
-G,verdict,COMMON_SHAPE_DETECTED,verdict,a null does NOT establish that the class is adequate. It bounds any common missing term at the sensitivity reported below,DIAGNOSTIC
-G,sensitivity_frac_of_peak,2.0e-03,fraction,"smallest injected common bump, as a fraction of line peak, detected in 90 per cent of trials at the observed threshold. This is what a null result bounds",DIAGNOSTIC
+G,max_z,3.229,sigma,largest |stacked mean / its across-condition standard error| inside the preregistered window,DIAGNOSTIC
+G,p_signflip,0.2967,p-value,"1000 sign-flip draws. Below 0.01 would be evidence of a COMMON residual shape, which would mean the model class is inadequate. It would NOT name the missing term",DIAGNOSTIC
+G,verdict,NO_COMMON_SHAPE,verdict,a null does NOT establish that the class is adequate. It bounds any common missing term at the sensitivity reported below,DIAGNOSTIC
+G,sensitivity_frac_of_peak,1.0e-03,fraction,"smallest injected common bump, as a fraction of line peak, detected in 90 per cent of trials at the observed threshold. This is what a null result bounds",DIAGNOSTIC
 GL,n_conditions,32,count,conditions contributing to the stack,DIAGNOSTIC
-GL,max_z,7.307,sigma,largest |stacked mean / its across-condition standard error| inside the preregistered window,DIAGNOSTIC
-GL,p_signflip,0.0010,p-value,"1000 sign-flip draws. Below 0.01 would be evidence of a COMMON residual shape, which would mean the model class is inadequate. It would NOT name the missing term",DIAGNOSTIC
-GL,verdict,COMMON_SHAPE_DETECTED,verdict,a null does NOT establish that the class is adequate. It bounds any common missing term at the sensitivity reported below,DIAGNOSTIC
+GL,max_z,3.707,sigma,largest |stacked mean / its across-condition standard error| inside the preregistered window,DIAGNOSTIC
+GL,p_signflip,0.0849,p-value,"1000 sign-flip draws. Below 0.01 would be evidence of a COMMON residual shape, which would mean the model class is inadequate. It would NOT name the missing term",DIAGNOSTIC
+GL,verdict,NO_COMMON_SHAPE,verdict,a null does NOT establish that the class is adequate. It bounds any common missing term at the sensitivity reported below,DIAGNOSTIC
 GL,sensitivity_frac_of_peak,2.0e-03,fraction,"smallest injected common bump, as a fraction of line peak, detected in 90 per cent of trials at the observed threshold. This is what a null result bounds",DIAGNOSTIC
-LOO_G,worst_p,0.0010,p-value,"the least significant leave-one-out. The detection stands only if this stays below the threshold, meaning no single condition drives it",DIAGNOSTIC
-LOO_G,median_p,0.0010,p-value,median across the leave-one-out set,DIAGNOSTIC
-LOO_G,n_above_alpha,0,count,leave-one-out runs failing the 0.01 threshold,DIAGNOSTIC
-LOO_G,verdict,ROBUST,verdict,ROBUST means the finding survives removing any one condition,DIAGNOSTIC
+LOO_G,worst_p,0.5145,p-value,"the least significant leave-one-out. The detection stands only if this stays below the threshold, meaning no single condition drives it",DIAGNOSTIC
+LOO_G,median_p,0.3232,p-value,median across the leave-one-out set,DIAGNOSTIC
+LOO_G,n_above_alpha,32,count,leave-one-out runs failing the 0.01 threshold,DIAGNOSTIC
+LOO_G,verdict,DRIVEN_BY_FEW_CONDITIONS,verdict,ROBUST means the finding survives removing any one condition,DIAGNOSTIC
 CONTROL,n_conditions,32,count,"synthetic conditions built from the fitted model plus its own noise law, then refitted",DIAGNOSTIC
-CONTROL,max_z,2.560,sigma,same statistic,DIAGNOSTIC
-CONTROL,p_signflip,0.8591,p-value,"a DETECTION here would invalidate the real-data result, because these traces contain no misfit by construction",DIAGNOSTIC
+CONTROL,max_z,2.680,sigma,same statistic,DIAGNOSTIC
+CONTROL,p_signflip,0.7443,p-value,"a DETECTION here would invalidate the real-data result, because these traces contain no misfit by construction",DIAGNOSTIC
 CONTROL,verdict,CLEAN,verdict,"CLEAN means the binning, axis, statistic and reconstruction do not create a common shape on their own",DIAGNOSTIC
-CHECK,arm_residual_median_abs_diff,1.246e-05,sigma,median over conditions of the largest per-condition difference between the G and G+L residual stacks,DIAGNOSTIC
-CHECK,arm_residual_max_abs_diff,5.946e-01,sigma,"the worst condition. REPORTED AS A DISTRIBUTION rather than one number, because a large max beside a tiny median means ONE condition's two fits landed in different places, not that the degeneracy failed. The degeneracy itself predicts agreement to optimiser tolerance, and the median is what tests it",DIAGNOSTIC
-CHECK,arm_conditions_above_1e3,13,count,conditions whose two arms differ by more than 1e-3 sigma anywhere in the window,DIAGNOSTIC
+CHECK,arm_residual_median_abs_diff,2.923e-01,sigma,median over conditions of the largest per-condition difference between the G and G+L residual stacks,DIAGNOSTIC
+CHECK,arm_residual_max_abs_diff,6.985e-01,sigma,"the worst condition. REPORTED AS A DISTRIBUTION rather than one number, because a large max beside a tiny median means ONE condition's two fits landed in different places, not that the degeneracy failed. The degeneracy itself predicts agreement to optimiser tolerance, and the median is what tests it",DIAGNOSTIC
+CHECK,arm_conditions_above_1e3,32,count,conditions whose two arms differ by more than 1e-3 sigma anywhere in the window,DIAGNOSTIC
 VOID_CHECK,median_rel_diff_gamma_coll,0.000e+00,relative,median across matched conditions. The distribution is reported because a maximum alone hides whether one condition or all of them disagree,DIAGNOSTIC
 VOID_CHECK,n_above_void_rtol,0,count,conditions above the repository's own 0.02 reproduction standard,DIAGNOSTIC
 VOID_CHECK,n_matched,32,count,conditions matched against results/linefit_conditions.csv,DIAGNOSTIC

@@ -88,7 +88,7 @@ def _s0_225():
     row carries, which is a coincidence and the reason the SOURCE is what this reads.) The prediction now comes from results/stark_sweep.csv, which IS
     in the checked set and carries the current value. The bound stays in the
     joint file, because the sweep's row of that name is a replaced diagnostic
-    of a different construction and reads 2.206.
+    of a different construction and reads a different number.
     """
     import csv as _csv
     def _row(fname, key):

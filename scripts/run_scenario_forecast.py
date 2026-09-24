@@ -10,7 +10,7 @@ the cost of ignoring the one asymmetric term is a measured column and not a
 belief. Every claim-class row carries an err: the forecast rows the
 world-to-world spread of the reported error, the shift rows the derived
 retro-ratio term, the mode rows the propagated diameter tolerance. The waist scales the transit width as 1/w0 and the 225 mW shift as
-1/w0 squared from their committed 64 um values, which is geometry, not new
+1/w0 squared from their committed central-waist values (constants.W0_CENTRAL_M), which is geometry, not new
 physics. The nanofibre preset adds rows from the solved HE11 mode: the
 effective index, the intensity decay length, and the guided transit width
 at the cold-atom temperature.
@@ -32,6 +32,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
+from rb5s6s.config import RESULTS_DIR as _RESULTS_DIR  # noqa: E402  (F480: results where RB5S6S_RESULTS_DIR points)
 # _producer_lock lives in scripts/, which Python puts on sys.path only
 # when a script is run DIRECTLY. A test that loads this module by path
 # gets no such favour, and three sibling test files do exactly that - two
@@ -44,26 +45,34 @@ from _producer_lock import take_producer_lock     # noqa: E402
 import numpy as np
 
 from rb5s6s import fibre  # noqa: E402
+from rb5s6s import lineshape  # noqa: E402
 from rb5s6s.stark import kappa_pred_per_watt  # noqa: E402  (SSOT: one predicted coefficient)
 from rb5s6s import constants as C  # noqa: E402
 from rb5s6s.constants import transit_fwhm_from_w0  # noqa: E402
 from rb5s6s.forecast import forecast_precision  # noqa: E402
+from rb5s6s.reference_point import reference_point  # noqa: E402
 from rb5s6s.workers import n_workers  # noqa: E402
 from rb5s6s.noise import load_noise_model  # noqa: E402
 from rb5s6s.qc import median_standard_error  # noqa: E402
 from rb5s6s.scenario import load_scenario  # noqa: E402
 
-# The record's committed line, the truth the forecast perturbs around.
-GAMMA_COLL_MHZ = 0.55        # PRELIM medians, results/linefit_conditions
-SIGMA_LASER_MHZ = 1.6
+# The record's committed line, the truth the forecast perturbs around: the archive point, READ
+# from the committed fit of the reference condition and never typed (F313, 2026-09-22; the typed
+# pair was the retired waist convention's medians).
+_AP = reference_point()
+GAMMA_COLL_MHZ = _AP["gamma_coll"]
+SIGMA_LASER_MHZ = _AP["sigma_laser"]
 # SOURCED, not written down (2026-09-04). The
 # transit stood at 1.8 MHz, the retired 32 um figure relabelled, 88 per cent
-# above what this file's own 130 C and the record's 64 um waist give. The shift
+# above what this file's own 130 C and the record's central waist give (this
+# was the retired convention at the time; O44/F280, 2026-09-21, moved
+# the convention and this file's own identifiers with it -- see
+# TRANSIT_FWHM_CENTRAL_MHZ below). The shift
 # stood at the retired polarizability. Neither was reachable by the sweep that
 # closed the transit class, because its pattern could not match an identifier
 # carrying digits.
-TRANSIT_FWHM_64UM_MHZ = transit_fwhm_from_w0(C.W0_MEASURED_M, T_C=130.0)
-S0_225MW_64UM_MHZ = kappa_pred_per_watt(C.W0_MEASURED_M, C.RHO_RETRO) * 0.225
+TRANSIT_FWHM_CENTRAL_MHZ = transit_fwhm_from_w0(C.W0_CENTRAL_M, T_C=130.0)
+S0_225MW_CENTRAL_MHZ = kappa_pred_per_watt(C.W0_CENTRAL_M, C.RHO_RETRO) * 0.225
 NOISE_FRAC = 0.004           # the 2025 bright-rung dither regime
 GAGE_SEEDS = 5               # G3's verdict is a median over seeds, see below
 GAGE_TRIALS = 24             # where all eight measured seeds cleared the gate
@@ -76,6 +85,14 @@ N_TRIALS = 6
 LAMBDA_NM = 993.4            # the drive wavelength reaching the fibre solver
 
 PRESETS = ("dataset_2025", "campaign_cell", "campaign_cell_onf")
+# THE BENCH AND THE DESIGNS ARE COMPUTED DIFFERENTLY (C6a, 2026-09-22; the 16 um survey of that morning). The
+# 2025 bench focuses through the EOM's 3 mm bore, so its shift per recorded watt carries the actual-focus
+# on-axis factor at each grid waist (an edge below the bore's floor, about 40.9 um, at the floor's factor,
+# the envelope convention of stark.fit_stark_sweep). The campaign designs (8 to 24 um) are below that floor,
+# reachable only with the bore out of the focusing path, so they are the UNCLIPPED Gaussian
+# (stark.kappa_pred_per_watt(..., bore_in_path=False)). Scaling the bench's clipped prediction by the
+# Gaussian waist ratio, as this file did until then, computed a design with a factor no such beam has.
+BENCH_SCENARIOS = frozenset({"dataset_2025"})
 
 
 def _omission_gap_note(matched: float, omitted: float) -> str:
@@ -180,7 +197,7 @@ def main() -> int:
     # said "nineteen" where the tree held seventeen, wrong the hour it
     # was written, and a comment cannot derive what it asserts.
     take_producer_lock("run_scenario_forecast")
-    law = load_noise_model(ROOT / "results" / "noise_model.csv",
+    law = load_noise_model(_RESULTS_DIR / "noise_model.csv",
                            role="p_sweep", pool="median")
     # PHASE ONE: every (preset, waist) task with the seed it will use.
     # The seed is the producer's own crc32 of the task identity, so the
@@ -193,11 +210,19 @@ def main() -> int:
     for name in PRESETS:
         sc = load_scenario(ROOT / "examples" / "scenarios" / f"{name}.toml")
         for w0 in sc.waist_um.grid(3):
-            scale = 64.0 / w0
+            # COMPUTED AT EACH GRID WAIST (C6a, 2026-09-22): the transit from the waist itself and the shift
+            # by BENCH_SCENARIOS' rule above, no longer a scale-up of the central cell, which carried the
+            # bench's clipped factor into designs that have no bore in the focusing path.
+            w0_m = w0 * 1e-6
+            if name in BENCH_SCENARIOS:
+                s0 = (lineshape.stark_shift_S0_mhz(0.225, w0_m, rho=C.RHO_RETRO)
+                      * lineshape.aperture_onaxis_factor_actual(w0_m, clamp_floor=True))
+            else:
+                s0 = kappa_pred_per_watt(w0_m, C.RHO_RETRO, bore_in_path=False) * 0.225
             truth = {"gamma_coll": GAMMA_COLL_MHZ,
                      "sigma_laser": SIGMA_LASER_MHZ,
-                     "transit_fwhm": TRANSIT_FWHM_64UM_MHZ * scale,
-                     "s0": S0_225MW_64UM_MHZ * scale ** 2}
+                     "transit_fwhm": transit_fwhm_from_w0(w0_m, T_C=130.0),
+                     "s0": s0}
             design = {"noise": NOISE_FRAC, "n_traces": 5, "n_points": 2000,
                       "T_C": 130.0}
             # zlib.crc32, not hash(): string hashing is per-process
@@ -275,8 +300,10 @@ def main() -> int:
                          "committed delta", "ENVELOPE"])
             rows.append([name, f"w0_{w0:g}um", "s0_225mW",
                          f"{truth['s0']:.4f}", _two_sig(s0_err), "MHz",
-                         f"the record's {S0_225MW_64UM_MHZ:.3f} MHz at 64 um scaled by "
-                         "(64/w0)^2, geometry only", "CALIB"])
+                         ("the bench's shift at this waist with the EOM bore's actual-focus factor "
+                          "(an edge below the bore floor at the floor's factor)" if name in BENCH_SCENARIOS else
+                          "a design with the EOM bore out of the focusing path: the unclipped Gaussian, "
+                          "stark.kappa_pred_per_watt(w0, rho, bore_in_path=False) at 225 mW"), "CALIB"])
         if sc.fibre is not None:
             mode = fibre.solve_he11(sc.fibre.diameter_nm, LAMBDA_NM)
             lo = fibre.solve_he11(
@@ -313,10 +340,10 @@ def main() -> int:
     # committed beside the physics rows.
     sc16 = load_scenario(ROOT / "examples" / "scenarios" / "campaign_cell.toml")
     w0g = sc16.waist_um.grid(3)[1]
-    sg = 64.0 / w0g
+    # a design point, computed like the campaign rows above (C6a, 2026-09-22): unclipped, its own transit
     tg = {"gamma_coll": GAMMA_COLL_MHZ, "sigma_laser": SIGMA_LASER_MHZ,
-          "transit_fwhm": TRANSIT_FWHM_64UM_MHZ * sg,
-          "s0": S0_225MW_64UM_MHZ * sg ** 2}
+          "transit_fwhm": transit_fwhm_from_w0(w0g * 1e-6, T_C=130.0),
+          "s0": kappa_pred_per_watt(w0g * 1e-6, C.RHO_RETRO, bore_in_path=False) * 0.225}
     # THE GAGE RUNS AT THE DIM RUNG, the regime the preregistration names:
     # at the bright amplitude the shot term b times level buries the floor
     # thirty-seven-fold and the first version of this gage read minus five
@@ -368,7 +395,7 @@ def main() -> int:
                  f"sits {(moved - 10.0) / g_se:.1f} standard errors above the "
                  f"threshold and {g_pass} of {len(moves)} seeds clear it "
                  f"individually", "DIAGNOSTIC"])
-    out = ROOT / "results" / "scenario_forecast.csv"
+    out = _RESULTS_DIR / "scenario_forecast.csv"
     with out.open("w", newline="", encoding="utf-8") as fh:
         w = csv.writer(fh)
         w.writerow(["scenario", "key", "quantity", "value", "err", "unit",

@@ -1,8 +1,8 @@
 quantity,key,value,unit,status
-summed_bic,A_voigt,45783.3,BIC over 12 T-sweep conditions,DIAGNOSTIC
-summed_bic,B_transit,44904.4,BIC over 12 T-sweep conditions,DIAGNOSTIC
-summed_bic,C_collisions,43813.2,BIC over 12 T-sweep conditions,DIAGNOSTIC
-summed_bic,D_stark,43907.8,BIC over 12 T-sweep conditions,DIAGNOSTIC
-dBIC_rung,A_voigt->B_transit,878.9,"BIC[simpler]-BIC[richer], decisive, WARRANTED (>10 decisive)",DIAGNOSTIC
-dBIC_rung,B_transit->C_collisions,1091.3,"BIC[simpler]-BIC[richer], decisive, WARRANTED (>10 decisive)",DIAGNOSTIC
-dBIC_rung,C_collisions->D_stark,-94.6,"BIC[simpler]-BIC[richer], decisive, not warranted (>10 decisive)",DIAGNOSTIC
+summed_bic,A_voigt,45783.2,BIC over 12 T-sweep conditions,DIAGNOSTIC
+summed_bic,B_transit,43611.8,BIC over 12 T-sweep conditions,DIAGNOSTIC
+summed_bic,C_collisions,43654.7,BIC over 12 T-sweep conditions,DIAGNOSTIC
+summed_bic,D_stark,43752.6,BIC over 12 T-sweep conditions,DIAGNOSTIC
+dBIC_rung,A_voigt->B_transit,2171.4,"BIC[simpler]-BIC[richer], decisive, WARRANTED (>10 decisive)",DIAGNOSTIC
+dBIC_rung,B_transit->C_collisions,-42.9,"BIC[simpler]-BIC[richer], decisive, not warranted (>10 decisive)",DIAGNOSTIC
+dBIC_rung,C_collisions->D_stark,-97.9,"BIC[simpler]-BIC[richer], decisive, not warranted (>10 decisive)",DIAGNOSTIC

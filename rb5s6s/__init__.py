@@ -27,7 +27,7 @@ from .constants import (                                    # noqa: F401
     LAMBDA_LASER_M,
     RHO_RETRO,
     TAU_6S_S,
-    W0_MEASURED_M,
+    W0_CENTRAL_M,
     transit_fwhm_from_w0,
     waist_at_drive,
 )
@@ -67,7 +67,7 @@ __all__ = [
     "__version__",
     # constants and the geometry that follows from them
     "DELTA_ALPHA_AU", "GAMMA_NAT_HZ", "LAMBDA_LASER_M", "RHO_RETRO",
-    "TAU_6S_S", "W0_MEASURED_M", "transit_fwhm_from_w0", "waist_at_drive",
+    "TAU_6S_S", "W0_CENTRAL_M", "transit_fwhm_from_w0", "waist_at_drive",
     # the deep seam: the shift distribution and the line model
     "local_ramp_density", "ramp_mixture",
     "stark_ramp", "stark_ramp_axial_moments", "stark_shift_S0_mhz",

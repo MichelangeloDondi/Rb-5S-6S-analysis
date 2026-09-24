@@ -193,7 +193,7 @@ h, c, k = 6.62607015e-34, 2.99792458e8, 1.380649e-23
 c2 = h * c / k * 1e6
 x_energy = brentq(lambda x: 5 * (1 - np.exp(-x)) - x, 1e-6, 20)
 x_photon = brentq(lambda x: 4 * (1 - np.exp(-x)) - x, 1e-6, 20)
-T = 403.15
+T = 403.15  # other-quantity: the archive's 130 C reference cell temperature, not read from a committed cell
 print(f"at {T - 273.15:.0f} C the peak is at")
 print(f"  {c2 / x_energy / T:5.2f} um by energy        ({c2 / x_energy:.0f} um.K)")
 print(f"  {c2 / x_photon / T:5.2f} um by photon number ({c2 / x_photon:.0f} um.K)")

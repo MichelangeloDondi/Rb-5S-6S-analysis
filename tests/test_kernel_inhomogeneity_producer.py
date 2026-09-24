@@ -70,7 +70,7 @@ def test_one_axial_slice_reproduces_the_shipped_composite_profile():
     """The reduction the claims table asserted by hand and nothing guarded."""
     mod = _load()
     stark.COMPANIONS = None
-    w0 = 64e-6
+    w0 = K.W0_CENTRAL_M
     s0 = stark.stark_shift_S0_mhz(0.225, w0, K.RHO_RETRO)
     tr = K.transit_fwhm_from_w0(w0, 130.0)
     e = np.linspace(0.0, s0, 401)
@@ -125,12 +125,12 @@ def test_the_companion_is_the_cumulant_uncertainty_axis_and_the_grid_is_not():
     threefold. Both axes are swept; this holds their ordering."""
     mod = _load()
     stark.COMPANIONS = {"ratio": 1.2511, "scale": 1.0}
-    cells, _s0, _z = mod.volume_grid(64e-6, n_s=60, n_z=10)
+    cells, _s0, _z = mod.volume_grid(K.W0_CENTRAL_M, n_s=60, n_z=10)
     base = mod.observables(mod.profile_exact(cells), 6.0)[1]
     lo = mod.observables(mod.profile_exact(cells, companion_scale=1 / 3.0), 6.0)[1]
     hi = mod.observables(mod.profile_exact(cells, companion_scale=3.0), 6.0)[1]
     companion_span = abs(hi - lo)
     coarse = mod.observables(mod.profile_exact(
-        mod.volume_grid(64e-6, n_s=30, n_z=10)[0]), 6.0)[1]
+        mod.volume_grid(K.W0_CENTRAL_M, n_s=30, n_z=10)[0]), 6.0)[1]
     assert companion_span > 10.0 * abs(base - coarse), \
         "the companion must dominate the shift-grid axis by an order or more"

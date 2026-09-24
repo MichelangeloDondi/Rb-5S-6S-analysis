@@ -59,7 +59,7 @@ HALF_WINDOW_M = 3.375e-3
 # distance as the arm understates every offset by that factor and understated
 # the worst recovered-rho bias from 0.83 to 0.31.
 LEVER_ARM_M = 300e-3
-W0S = (55e-6, 64e-6, 70e-6, 85e-6)
+W0S = (55e-6, _CFG.W0_CENTRAL_M, 70e-6, 85e-6)   # the retired waist convention stood here, replaced O44/F280 2026-09-21
 M2S = (1.0, 1.5, 1.9, 3.0)
 RHOS = (0.5, 0.7, 0.9, 1.0)
 E1E2 = (1.0, 0.866, 0.5)          # parallel, 30 and 60 degrees

@@ -197,8 +197,11 @@ def main() -> int:
         # about 1.8 times more). The shift is sourced through the package's
         # own function at the sweep's 225 mW operating point; the only
         # literals here are that operating point and the grid.
-        from rb5s6s.lineshape import stark_shift_S0_mhz, total_fwhm_mhz  # noqa: PLC0415
-        s0_pred = stark_shift_S0_mhz(0.225, C.W0_MEASURED_M, rho=C.RHO_RETRO)
+        from rb5s6s.lineshape import total_fwhm_mhz  # noqa: PLC0415
+        from rb5s6s.stark import kappa_pred_per_watt  # noqa: PLC0415
+        # C6a (2026-09-22): the PREDICTED shift per recorded watt, the bore's actual-focus on-axis factor
+        # included (F280), which is the shift the prose cites; the raw Gaussian read it about 12 per cent high.
+        s0_pred = kappa_pred_per_watt(C.W0_CENTRAL_M, C.RHO_RETRO) * 0.225
         # np.convolve is direct, not FFT, so the grid is what the half-maximum
         # interpolation needs and no finer: 2 kHz steps over +-30 MHz. A
         # first version used 1e-4 MHz over +-40 and ran for an hour without
@@ -211,7 +214,7 @@ def main() -> int:
                     f"{r['worst_constrained_sigma'] / r['best_constrained_sigma']:.1f}",
                     "ratio, worst_constrained_sigma over best_constrained_sigma, the split against the total"])
         w.writerow(["s0_pred_225mW", "shared", f"{s0_pred:.3f}",
-                    "MHz, stark_shift_S0_mhz(0.225 W, W0_MEASURED_M, RHO_RETRO), the shift the rows below are evaluated at"])
+                    "MHz, stark.kappa_pred_per_watt(W0_CENTRAL_M, RHO_RETRO) x 0.225 W, the predicted shift with the actual-focus factor, at which the rows below are evaluated"])
         for name, rb in (("gaussian_branch", r_gauss), ("cusp_branch", r_cusp)):
             kw = dict(gamma_coll=rb["fit"]["gamma_coll"], sigma_laser_fwhm=rb["fit"]["sigma_laser"],
                       transit_fwhm=rb["fit"]["transit"])

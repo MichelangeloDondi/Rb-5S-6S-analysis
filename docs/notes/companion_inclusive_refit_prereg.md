@@ -1,5 +1,7 @@
 # Putting the three companions inside the model: specification of record
 
+<!-- kind: record -->  <!-- a preregistration states what was predicted before the result. Rewriting its numbers to match the present would destroy its only function, which is why it is declared a record and not propagated -->
+
 **Status: pre-registered 2026-08-10, before the code was written and before any
 number came out of it.** Every prediction below is stated with its arithmetic so
 the run can only confirm it or fail it.
@@ -43,7 +45,7 @@ centre.
 $\Gamma(\sqrt{1+s}-1)$ with $s=2\Omega^2/\Gamma^2$, exactly the function already
 committed as `saturation_increment_mhz` in `scripts/run_saturation_probe.py`.
 It carries the conversion from the shift to the Rabi frequency, which is the one
-number in the chain the record gives as a band, 1.2446 to 1.2577
+number in the chain the record gives as a band, 1.2446 to 1.2577 <!-- other-quantity: this note's own Rabi-conversion band, not identifiability_profile's zoom_transit cell -->
 (earlier 1.24 to 1.30) rather than a
 value, so **every prediction below is stated at both ends of that band.**
 

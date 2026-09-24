@@ -1,4 +1,4 @@
-*Chapter 8 of 9 of [the big picture](../BIG_PICTURE.md)*
+*Chapter 8 of 10 of [the big picture](../BIG_PICTURE.md)*
 
 A joint fit shares one parameter across many measurements. When does that add information, and when does it only add freedom? This page builds on the constructions of [what the 2025 dataset delivered](04_what-2025-delivered.md) and the degeneracies of [limitations and identifiability](07_limitations-and-identifiability.md) and sets out the two sharing decisions this record makes, one across spectral peaks and one across measurement sessions, each with the evidence for it and the boundary beyond which it is not established. Then six questions to ask of any pooled fit. Not covered here: the bounds rather than their construction, in which case [RESULTS.md](../RESULTS.md) is the ledger.
 
@@ -36,32 +36,31 @@ calculable, and it sits a factor of twenty below the noise that would reveal it.
 A difference in that position is a reason to keep the term in the model and not
 a reason to stop sharing.
 
-**What the fit statistics say about sharing, including where they disagree with
-themselves.** `results/sharing_bic.csv` compares a laser width shared per
-temperature against one free per block. Corrected for the roughly threefold
-spectral over-sampling, the criterion favours the shared model by 61.3, which is
-decisive on the usual reading. Computed on raw sample counts it favours the free
-model by 51.9. The two models fit almost identically, at reduced chi-square 0.857
-against 0.854.
+**What the fit statistics say about sharing, and how much the verdict's margin
+depends on the counting convention.** `results/sharing_bic.csv` compares a laser
+width shared per temperature against one free per block. Corrected for the
+roughly threefold spectral over-sampling, the criterion favours the shared model
+by 77.5, which is decisive on the usual reading. Computed on raw sample counts it
+favours the same shared model, by only 46.9, also decisive on the same reading
+but a much smaller margin. The two models fit almost identically, at reduced
+chi-square 0.851 against 0.850.
 
 That pair of numbers is the most useful thing in this section. **The
-model-selection verdict is set by the effective-sample convention used to account
-for correlation, not by the physics**, which is a statement about the dataset's
-information content rather than about whether the sharing is physically true. The
-correction does two things at once, and naming both is what makes the flip
-unsurprising: it rescales the chi-square as well as the sample count, so the
-freer model's chi-square advantage shrinks roughly as the over-sampling factor
-while the parameter penalty shrinks only logarithmically, and the verdict moves
-toward the shared model. The decomposition from the committed numbers: the
-penalty change alone would move the verdict by about eleven units toward the
-freer model, the chi-square whitening moves it by about one hundred and twenty
-the other way, and their sum is the observed flip of one hundred and thirteen.
+model-selection verdict's margin is set by the effective-sample convention used
+to account for correlation, not by the physics**, which is a statement about the
+dataset's information content rather than about whether the sharing is
+physically true. The correction does two things at once, and naming both is what
+makes the widening margin unsurprising: it rescales the chi-square as well as the
+sample count, so the freer model's chi-square advantage shrinks roughly as the
+over-sampling factor while the parameter penalty shrinks only logarithmically,
+and the verdict moves further toward the shared model under the correction, from
+46.9 to 77.5.
 
-A
-dataset whose verdict flips with the counting convention does not resolve shared
-against independent, and the record's response is to keep the headline result
-model-independent, which is why the width-slope bound rather than the
-hierarchical fit carries the collisional claim.
+A dataset whose verdict's margin moves by 30.6 units under the counting
+convention alone does not resolve shared against independent on one number, and
+the record's response is to keep the headline result model-independent, which is
+why the width-slope bound rather than the hierarchical fit carries the
+collisional claim.
 
 ## 3. Across the three sessions
 
@@ -107,11 +106,11 @@ to one quantity.
 
 The profile passes disagree about the bound itself, by a factor of two. The
 numbers come from two runs and the provenance matters, so it is stated. The
-committed bound, 1.147 MHz per W, is the 2026-08-03 production run's
+committed bound until 2026-09-22, 1.147 MHz per W, was the 2026-08-03 production run's
 pointwise-minimum construction over cold and seeded chains, interpolated between
-its 1.00 and 1.50 grid points. A diagnostic re-run of the same construction on
+its 1.00 and 1.50 grid points (the ruled waist's re-run reads [0.810](../../results/stark_joint.csv "ref:stark_joint:kappa_ub95:primary")). A diagnostic re-run of the same construction on
 2026-08-17 scanned the profile in both directions and from a seeded start, and
-taken separately its passes put the bound at 1.007, 1.231 and 2.106 MHz per W. So
+taken separately its passes put the bound at 1.007, 1.231 and 2.106 MHz per W <!-- other-quantity: independent-pass kappa bounds from this re-run, not paired_reference_forecast's width_err_ratio -->. So
 the passes span a factor of 2.1, and even the re-run's best-converged seeded pass
 sits seven per cent from the committed value.
 
@@ -125,7 +124,7 @@ Two different gap statistics exist and only one of them carries this claim.
 Within the diagnostic re-run, the chi-square gap between the ascending and
 descending passes varies by up to 56 along the profile, and a gap that varies is
 exactly what moves a bound, which is why those passes land answers a factor of
-two apart. The committed run separately records `direction_dchi2_max` as 8.59,
+two apart. The committed run separately records `direction_dchi2_max` as [21.22](../../results/stark_joint.csv "ref:stark_joint:direction_dchi2_max:robustness") at the ruled waist (8.59 until 2026-09-22),
 the largest pointwise gap between its two direction variants, each of which is
 already a pointwise minimum over several chains. **Neither raw gap establishes
 anything by itself**, because each profile is normalised to its own minimum
@@ -134,8 +133,11 @@ bound at all. The quantity that matters is the spread of the answers, and that i
 the factor of 2.1 above.
 
 The signal and every noise scale it must beat, in one table. The loosening
-this section would like to interpret is the pooled 1.147 against the
-campaign-only 1.025.
+this section would like to interpret was the pooled 1.147 (until 2026-09-22) against the
+campaign-only 1.025, the retired waist's figures. At the <!-- other-quantity: the diagnostic re-run's campaign-only bound, not a paired-forecast cell -->
+ruled waist the committed table reads a pooled [0.810](../../results/stark_joint.csv "ref:stark_joint:kappa_ub95:primary") against a campaign-only [0.688](../../results/stark_joint.csv "ref:stark_joint:kappa_ub95_camponly:robustness")
+(`results/stark_joint.csv`), and the diagnostic re-run behind the table below was not
+repeated there.
 
 | effect | size | what it is |
 |---|---|---|
@@ -143,7 +145,7 @@ campaign-only 1.025.
 | pooled pass-to-pass spread | factor 2.1 | reproducibility of the construction across scan passes |
 | best pass against the committed value | 7% | run-to-run movement of even the best-converged pass |
 | local profile non-monotonicity | 0.24 in chi-square | the optimiser noise scale, 4.60 at 1.50 falling to 4.36 at 1.54 |
-| leave-one-peak-out movement | factor 1.42 | concentration of leverage in one subset |
+| leave-one-peak-out movement | factor 1.42 until 2026-09-22, 1.33 at the ruled waist | concentration of leverage in one subset |
 | wing-conditioned movement | factor 7.3 | dependence on one model-construction choice |
 
 The question the table answers is whether the first row is resolvable against
@@ -269,14 +271,22 @@ apparatus grounds, and section 3 says why no nuisance in the fit could settle it
 
 One of this chapter's own checklist questions applies to these numbers and gets
 its answer here rather than being deflected. Question 3 asks whether leaving one
-group out moves the answer more than the systematic being claimed, and it does:
-dropping peak 4192, which removes the entire campaign-morning session, moves the
-bound by a factor of 1.42, and the chi-square cost of removing peak 4121 from
-the fit at the predicted coefficient is 8.75 against 1.12, 2.27 and 0.61 for the
-other three, so the constraint is substantially owned by one peak and one
-subset. That is why the record publishes the leave-one-out rows and treats their
+group out moves the answer more than the systematic being claimed, and at the retired waist it did:
+dropping peak 4192, which removes the entire campaign-morning session, moved the
+bound by a factor of 1.42 (until 2026-09-22), and the chi-square cost of removing peak 4121 from
+the fit at the predicted coefficient was 8.75 against 1.12, 2.27 and 0.61 (until 2026-09-22) for the
+other three, so the constraint was substantially owned by one peak and one
+subset.
+
+At the ruled waist
+(`results/stark_joint.csv`, re-obtained from scratch 2026-09-24) the drop-4192 factor is
+1.33, and with one peak removed the prediction sits [84.77](../../results/stark_joint.csv "ref:stark_joint:lopo_dchi2_pred:4121"), [52.29](../../results/stark_joint.csv "ref:stark_joint:lopo_dchi2_pred:4154"), [36.16](../../results/stark_joint.csv "ref:stark_joint:lopo_dchi2_pred:4192") and [52.23](../../results/stark_joint.csv "ref:stark_joint:lopo_dchi2_pred:4207") above
+each arm's own minimum (arms without 4121, 4154, 4192 and 4207), so every arm excludes
+it and no single peak owns the constraint.
+
+The record publishes the leave-one-out rows and treats their
 spread as the dominant reported sensitivity of this construction. Why one peak
-carries most of the leverage is a separate open question with several boring and
+carried most of the leverage at the retired waist and none does at the ruled one is a separate open question with several boring and
 one interesting answer, more data, lower noise, cleaner separation from its
 neighbour, a stronger model sensitivity, or a defect, and no adjudication
 between them has been run.
@@ -374,7 +384,7 @@ Two desirable properties therefore point in opposite directions here. Adjudicati
 on either one alone would pick a different answer, which is the reason this chapter
 argues for a checklist rather than for a construction.
 
-The pooled bound stays the quoted construction, S₀(225 mW) below 0.26 MHz,
+The pooled bound stays the quoted construction, S₀(225 mW) below 0.18 MHz at the calculated waist (0.26 until 2026-09-22),
 because it is the one that has been run and published, with its convergence
 examined in section 4, and because withdrawing it on the strength of a diagnostic
 would replace a documented number with none. The two open items are recorded rather than resolved: the

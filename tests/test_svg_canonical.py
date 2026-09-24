@@ -6,7 +6,7 @@ Why this file exists. A hand-authored SVG is invisible to every other guard:
 test_figure_register and test_figures_fresh cover only scripts/make_figures.py
 outputs, and test_docs_canonical scans only markdown. So numbers drawn on the
 bench schematic went stale unseen. It quoted w0 ~ 50 um, a value matching
-neither the replaced 32 um naive estimate nor the 64 um convention, and
+neither the replaced 32 um naive estimate nor the retired waist convention, and
 asserted rho ~ 1 where the analysis of record assumes 0.94 +- 0.04. This file
 closes the class. Every tracked *.svg under docs/ is scanned for the quantities
 a drawing is likely to quote (the waist, the retro ratio rho, MHz comb
@@ -82,8 +82,8 @@ _NUM = r"([0-9]+(?:\.[0-9]+)?)"
 SVG_QUANTITIES = [
     dict(
         name="beam waist (µm)",
-        canonical=lambda: [K.W0_MEASURED_M * 1e6],
-        source="rb5s6s.constants.W0_MEASURED_M, the adopted Rajasree-lineage prior",
+        canonical=lambda: [K.W0_CENTRAL_M * 1e6],
+        source="rb5s6s.constants.W0_CENTRAL_M, the adopted Rajasree-lineage prior",
         find=re.compile(rf"(?:\bw0\b|waist)[^0-9]{{0,12}}{_NUM}\s*µm", re.I),
     ),
     dict(
@@ -206,7 +206,9 @@ def test_planted_stale_value_is_caught(planted):
 
 
 def test_planted_canonical_labels_pass():
-    ok = ["w₀ ≈ 64 µm", "(ρ 0.94 ± 0.04 assumed)", "12.5 MHz resonant",
+    # the retired waist convention's label -> "w0 ~ 42.38 um" 2026-09-21 (O44/F280): the canonical
+    # beam waist is now K.W0_CENTRAL_M, the bore-limited actual focus, not the retired adopted-lineage convention.
+    ok = ["w₀ ≈ 42.38 µm", "(ρ 0.94 ± 0.04 assumed)", "12.5 MHz resonant",
           "AFG31021, 12.5 MHz, 10 Vpp", "6.25 MHz between teeth",
           "drift envelope 4 MHz/min",
           "f = 150 mm", "70-130 °C, foil-wrapped"]   # out of scope, must not trip

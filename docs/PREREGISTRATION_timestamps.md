@@ -41,7 +41,7 @@ Stated first, because the temptation to over-read a recovered clock is the main
 risk here.
 
 - **Assumption A1 (trigger sync — file time $=$ ramp phase)** is untouched.
-  A1 concerns the scope trigger's phase *within* a 1.000 s trace; a file's
+  A1 concerns the scope trigger's phase *within* a 1.000 s trace; a file's <!-- other-quantity: the trace acquisition window, not a committed cell -->
   modification time carries no information about it. A1 remains open and is
   still listed as needing one word of experimenter confirmation.
 - **Absolute trace positions across saves** remain meaningless (horizontal-knob

@@ -176,7 +176,7 @@ import math
 from rb5s6s import LAMBDA_LASER_M
 
 kb, m_rb = 1.380649e-23, 1.41e-25
-v = math.sqrt(8 * math.log(2) * kb * 403.15 / m_rb)
+v = math.sqrt(8 * math.log(2) * kb * 403.15 / m_rb)  # other-quantity: the archive's 130 C reference cell temperature, not read from a committed cell
 print(f"one-photon Doppler width {2 * v / LAMBDA_LASER_M / 1e6:.0f} MHz")
 print("counter-propagating pair: cancels to first order, for every atom")
 ```

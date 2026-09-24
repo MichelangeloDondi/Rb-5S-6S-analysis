@@ -82,6 +82,9 @@ SKIP = {"laser_epoch.csv", "qc_metrics.csv",
         "kernel_budget.csv", "kernel_headline.csv",
         "kernel_identifiability.csv", "kernel_k3.csv", "kernel_k5.csv",
         "kernel_k4.csv", "kernel_k7.csv", "kernel_worlds.csv",
+        # the temperature arm's three rising terms (F244, F245), same reason: every row is DIAGNOSTIC and
+        # the producer writes it. Registered in the commit that created it.
+        "ladder_terms.csv",
         # the fibre twin, same reason: its producer writes per-row statuses
         "fibre_twin.csv",
         # the transit-additivity producer, same reason and one more: it mixes
@@ -325,7 +328,7 @@ FILE_STATUS = {
     "beta_self.csv": "PRELIM",            # per-peak model fits; headline is the BOUND
     "beta_self_probe.csv": "BOUND",       # the model-independent width-slope bound = C1 headline
     "amplitude_ratios.csv": "NULL",       # degeneracy-law ratios drift-limited -> untestable in the dataset
-    "amplitude_trapping.csv": "MEASURED", # amp ~ N, slopes 0.85-1.02, no rollover
+    "amplitude_trapping.csv": "MEASURED", # amp ~ N, slopes 0.85-1.02, no rollover <!-- other-quantity: amplitude slopes, not the far-wing asymmetry -->
     "modelform.csv": "NULL",              # Voigt-vs-Lehmann BIC below the gate -> no preference
     "power_sweep.csv": "MEASURED",  # width null + amp~P^2 consistency check (resid_skew=ARTIFACT, RESULTS C3c)
     "sobol_acquisition.csv": "ENVELOPE",  # exact shares over stated design-knob ranges (plan/07)
@@ -452,6 +455,9 @@ QUANTITY_STATUS = {
         "collection_window": "CALIB",
         "verdict": "DIAGNOSTIC", "waist_at_bound": "DIAGNOSTIC",
         "sign": "DIAGNOSTIC",
+        # C6a, 2026-09-22: the prediction's distance from the data, read at a point
+        # of the profile the bound comes from, is a statement about the record
+        "profile": "DIAGNOSTIC",
     },
     # M24: the wing check -- a NULL that closes C3f's open structure. The
     # per-condition and mean f_wing rows are bounds on a wing fraction; the

@@ -54,8 +54,9 @@ docstring sentence because the wrong version ran first):
     excess in BOTH sessions (campaign skew +0.33 falling with P; evening session
     -0.28 under its flipped axis -- the same side of the line). The wing row
     reports how the kappa bound moves when that structure is absorbed; the
-    wedge and the wing both live on the red side, so this is the fit's
-    hardest robustness test, not a formality.
+    wedge and the wing both lived on the red side before O27, so this was the fit's
+    hardest robustness test. Since O27 (2026-09-17) the wedge sits blue and the wing
+    still red, so the row now tests the opposite side (F498).
 
 THE THIRD SESSION (added 2026-08-01, the module's v2). THE CAMPAIGN-MORNING
 SESSION OF 17 JULY 2025, directory SESSION_20250717 (this docstring said
@@ -94,7 +95,7 @@ conclusion, not an assumption. No usable in-trace ruler exists for the
 evening session itself.
 
 THE PRIORS MOVED AT v3.0.0 (2026-08-01), which is why the numbers in this
-docstring's history differ from the CSV. w0 went 50 -> 64 um (accepted from
+docstring's history differ from the CSV. w0 went 50 -> the retired waist convention (accepted from
 the Nieddu/Rajasree lineage profile of the predecessor laser through the same
 lens and geometry) and the retro ratio went from an asserted 1 to an assumed
 0.94 +/- 0.04. The predicted coefficient therefore moved 2.62 -> 1.55 MHz/W
@@ -149,6 +150,7 @@ from __future__ import annotations
 import csv
 import datetime
 import glob
+import json
 import os
 import re
 import sys
@@ -180,9 +182,9 @@ PK_IX = {p: i for i, p in enumerate(PEAKS)}
 TRANSIT = transit_fwhm_at_T(130.0, C.TRANSIT_FWHM_PLACEHOLDER_MHZ)
 DNU_FLOOR = 2e-2          # see _shared_profile_grid's docstring
 NU0_WING = 2.0            # MHz standoff of the wing nuisance
-KAPPA_PRED = kappa_pred_per_watt(C.W0_MEASURED_M, C.RHO_RETRO)   # F39: per RECORDED watt
+KAPPA_PRED = kappa_pred_per_watt(C.W0_CENTRAL_M, C.RHO_RETRO)   # F39: per RECORDED watt
 """The predicted coefficient, COMPUTED from the constants rather than typed.
-It moved 2.62 -> 1.55 MHz/W at v3.0.0 when the priors became w0 = 64 um and
+It moved 2.62 -> 1.55 MHz/W at v3.0.0 when the priors became w0 = the retired waist convention and
 rho = 0.94; the grid below keeps 2.62 as a legacy checkpoint so the older
 profiles stay comparable."""
 KAPPAS = tuple(sorted({0.0, 0.25, 0.5, 0.75, 1.0, round(KAPPA_PRED, 3),
@@ -561,6 +563,131 @@ _REQUIRED_SESSIONS = (
 )
 
 
+# THE FIVE FAMILIES, AND WHY THEY ARE CHECKPOINTED (plan v5.1 RT46, 2026-09-22). This fit is about five
+# hours in one process, which the wave rule forbids outside `private/checks/wave_runner.py`: an interruption
+# must cost one wave and never the run. The families are the natural waves because each seeds the next:
+# the cold wing profile C-, the primary A- seeded from it, the direction check A+ seeded from A-, the
+# seeded wing check C+, and the four leave-one-peak-out fits seeded from A-. `--family-from K --families N
+# --dump D --state S` runs families K..K+N-1, saves each to S as it finishes (a family already in S is
+# reused, not recomputed), and writes the wave's one-line summary to D; `--combine --state S` writes the
+# CSV from S. With neither flag the five run in process in the same order, so the numbers are the ones
+# the single-process run always produced.
+FAMILIES = ("C-", "A-", "A+", "C+", "LOPO")
+_NEEDS = {"C-": (), "A-": ("C-",), "A+": ("A-",), "C+": ("C-",), "LOPO": ("A-",)}
+
+
+def _flag(name: str, cast=str):
+    if name in sys.argv:
+        return cast(sys.argv[sys.argv.index(name) + 1])
+    return None
+
+
+FAMILY_FROM = _flag("--family-from", int)
+FAMILY_N = _flag("--families", int)
+FAMILY_DUMP = _flag("--dump")
+STATE_DIR = _flag("--state")
+COMBINE = "--combine" in sys.argv
+
+
+def lopo_fits(traces, priors, q_a):
+    """The four leave-one-peak-out fits at the primary settings, seeded from the primary solution."""
+    # LOPO at the primary settings, seeded from the full solution. Peak 4192
+    # gets the FULL kappa grid rather than the short one, because dropping it
+    # removes the entire campaign-morning session -- so that subset deserves a real
+    # profile bound, which the ledger used to hand-type as "0.34".
+    lopo, lopo_prof = {}, {}
+    for drop in PEAKS:
+        keep = [i for i, t in enumerate(traces) if t["peak"] != drop]
+        sub = [traces[i] for i in keep]
+        p0s, los, his = build(sub, priors, False)
+        qs = p0s[1:].copy()
+        qs[:NS - 1] = q_a[:NS - 1]
+        for j, i in enumerate(keep):
+            qs[NS - 1 + 4 * j: NS - 1 + 4 * j + 4] = q_a[NS - 1 + 4 * i: NS - 1 + 4 * i + 4]
+        rs = make_resid(sub, priors, -1, False)
+        Sfs = sparsity(sub, False)[:, 1:]
+        ncs = sum(len(t["x"]) for t in sub if t["sess"] == "camp")
+        grid = KAPPAS if drop == "4192" else KAPPAS_LOPO
+        res = chain(rs, Sfs, los, his, qs, grid, ncs, f"L{drop}", nfev=900)
+        cs = {k: v[0] for k, v in res.items()}
+        mn = min(cs.values())
+        lopo[drop] = {k: cs[k] - mn for k in cs}
+        lopo_prof[drop] = np.array([[k, cs[k], cs[k]] for k in sorted(cs)])
+        print(f"  LOPO {drop}: "
+              + "  ".join(f"k={k}:{lopo[drop][k]:+.2f}" for k in sorted(cs)))
+    return lopo, lopo_prof
+
+
+def run_family(fam, traces, priors, done):
+    """One family of the joint fit, seeded from the families in `done` exactly as the one-process run seeds it."""
+    if fam == "C-":
+        print("  wing robustness (dir -1, cold; the minimum search):")
+        return bidi_profile(traces, priors, -1, True, "C-")
+    if fam == "A-":
+        print("  primary profile (priors, evening-session dir -1, seeded from C-):")
+        return bidi_profile(traces, priors, -1, False, "A-", seed=strip_wing(done["C-"][2]))
+    if fam == "A+":
+        print("  direction check (dir +1, seeded from the dir -1 solution):")
+        return bidi_profile(traces, priors, +1, False, "A+", seed=done["A-"][2])
+    if fam == "C+":
+        print("  wing robustness (dir +1, seeded):")
+        return bidi_profile(traces, priors, +1, True, "C+", seed=done["C-"][2])
+    if fam == "LOPO":
+        return lopo_fits(traces, priors, done["A-"][2])
+    raise ValueError(f"no family {fam!r}; the families are {FAMILIES}")
+
+
+def _family_file(state, fam):
+    tag = fam.replace("+", "plus").replace("-", "minus")
+    return Path(state) / f"family_{FAMILIES.index(fam)}_{tag}.npz"
+
+
+def _save_family(state, fam, res):
+    Path(state).mkdir(parents=True, exist_ok=True)
+    if fam == "LOPO":
+        np.savez(_family_file(state, fam), **{f"prof_{pk}": res[1][pk] for pk in PEAKS})
+    else:
+        prof, kmin, q = res
+        np.savez(_family_file(state, fam), prof=prof, kmin=np.array(kmin), q=q)
+
+
+def _load_family(state, fam):
+    with np.load(_family_file(state, fam)) as z:
+        if fam == "LOPO":
+            lopo_prof = {pk: np.array(z[f"prof_{pk}"]) for pk in PEAKS}
+            lopo = {}
+            for pk, arr in lopo_prof.items():
+                cs = {float(r[0]): float(r[1]) for r in arr}
+                mn = min(cs.values())
+                lopo[pk] = {k: cs[k] - mn for k in cs}
+            return lopo, lopo_prof
+        return np.array(z["prof"]), float(z["kmin"]), np.array(z["q"])
+
+
+def _run_family_wave(traces, priors) -> int:
+    """One wave: families FAMILY_FROM .. FAMILY_FROM + FAMILY_N - 1, each saved as it finishes."""
+    if STATE_DIR is None or FAMILY_DUMP is None or CAMPONLY:
+        print("REFUSING: --family-from needs --dump and --state, and runs the pooled fit only (not --camponly)")
+        return 2
+    done = {f: _load_family(STATE_DIR, f) for f in FAMILIES if _family_file(STATE_DIR, f).exists()}
+    cells = []
+    for idx in range(FAMILY_FROM, min(FAMILY_FROM + (FAMILY_N or 1), len(FAMILIES))):
+        fam = FAMILIES[idx]
+        absent = [f for f in _NEEDS[fam] if f not in done]
+        if absent:
+            print(f"REFUSING family {fam}: it seeds from {', '.join(absent)}, which is not in {STATE_DIR}")
+            return 1
+        t1 = time.time()
+        if fam not in done:
+            done[fam] = run_family(fam, traces, priors, done)
+            _save_family(STATE_DIR, fam, done[fam])
+        prof = done[fam][1]["4192"] if fam == "LOPO" else done[fam][0]
+        cells.append([float(idx), 0.0, ub95(prof), fam, round(time.time() - t1, 1)])
+        print(f"  family {fam}: 95% bound {cells[-1][2]:.3f} MHz/W ({cells[-1][4]:.0f} s)", flush=True)
+    Path(FAMILY_DUMP).write_text(json.dumps(cells))
+    return 0
+
+
 def main() -> int:
     if not (SESSION_20250704.is_dir() and SESSION_20250717.is_dir()):
         print(f"excluded tree(s) not on this machine "
@@ -607,45 +734,28 @@ def main() -> int:
     # against a converged one. Seeding the primary from the wing solution
     # (wing entries stripped) closes that mode for every family at once.
     t0 = time.time()
-    print("  wing robustness (dir -1, cold; the minimum search):")
-    prof_c, kmin_c, q_c = bidi_profile(traces, priors, -1, True, "C-")
-    print("  primary profile (priors, evening-session dir -1, seeded from C-):")
-    prof_a, kmin_a, q_a = bidi_profile(traces, priors, -1, False, "A-",
-                                       seed=strip_wing(q_c))
-    print("  direction check (dir +1, seeded from the dir -1 solution):")
-    prof_b, kmin_b, _ = bidi_profile(traces, priors, +1, False, "A+", seed=q_a)
-    print("  wing robustness (dir +1, seeded):")
-    prof_d, kmin_d, _ = bidi_profile(traces, priors, +1, True, "C+", seed=q_c)
+    if FAMILY_FROM is not None:
+        return _run_family_wave(traces, priors)
+    if COMBINE:
+        missing = [f for f in FAMILIES if not _family_file(STATE_DIR, f).exists()]
+        if missing:
+            print(f"REFUSING --combine: {', '.join(missing)} not in {STATE_DIR}; run the waves first")
+            return 1
+        done = {f: _load_family(STATE_DIR, f) for f in FAMILIES}
+    else:
+        done = {}
+        for fam in FAMILIES:
+            done[fam] = run_family(fam, traces, priors, done)
+    prof_c, kmin_c, q_c = done["C-"]
+    prof_a, kmin_a, q_a = done["A-"]
+    prof_b, kmin_b, _ = done["A+"]
+    prof_d, kmin_d, _ = done["C+"]
+    lopo, lopo_prof = done["LOPO"]
 
     ka, kc = ub95(prof_a), ub95(prof_c)
     ka_camp = ub95(prof_a, col=2)
     dchi2_a = float(prof_a[0, 1] - prof_a[:, 1].min())
     dir_delta = float(np.abs(prof_a[:, 1] - prof_b[:, 1]).max())
-
-    # LOPO at the primary settings, seeded from the full solution. Peak 4192
-    # gets the FULL kappa grid rather than the short one, because dropping it
-    # removes the entire campaign-morning session -- so that subset deserves a real
-    # profile bound, which the ledger used to hand-type as "0.34".
-    lopo, lopo_prof = {}, {}
-    for drop in PEAKS:
-        keep = [i for i, t in enumerate(traces) if t["peak"] != drop]
-        sub = [traces[i] for i in keep]
-        p0s, los, his = build(sub, priors, False)
-        qs = p0s[1:].copy()
-        qs[:NS - 1] = q_a[:NS - 1]
-        for j, i in enumerate(keep):
-            qs[NS - 1 + 4 * j: NS - 1 + 4 * j + 4] = q_a[NS - 1 + 4 * i: NS - 1 + 4 * i + 4]
-        rs = make_resid(sub, priors, -1, False)
-        Sfs = sparsity(sub, False)[:, 1:]
-        ncs = sum(len(t["x"]) for t in sub if t["sess"] == "camp")
-        grid = KAPPAS if drop == "4192" else KAPPAS_LOPO
-        res = chain(rs, Sfs, los, his, qs, grid, ncs, f"L{drop}", nfev=900)
-        cs = {k: v[0] for k, v in res.items()}
-        mn = min(cs.values())
-        lopo[drop] = {k: cs[k] - mn for k in cs}
-        lopo_prof[drop] = np.array([[k, cs[k], cs[k]] for k in sorted(cs)])
-        print(f"  LOPO {drop}: "
-              + "  ".join(f"k={k}:{lopo[drop][k]:+.2f}" for k in sorted(cs)))
 
     ka_d4192 = ub95(lopo_prof["4192"])
 
@@ -676,6 +786,7 @@ def main() -> int:
         w.writerow(["kappa_ub95", "primary", f"{ka:.3f}", "",
                     "MHz per W, 95% one-sided profile-likelihood bound -- "
                     "THE quoted construction (negative kappa is flat by "
+                    # 'red' in this note is the side before O27; the note changes at this producer's next run (F499)
                     "construction: the ramp model only broadens red)"])
         w.writerow(["S0_225mW_ub95", "primary", f"{ka*0.225:.3f}", "",
                     "MHz, transition axis, joint three-session bound at the "                    "campaign's maximum power"])
@@ -683,7 +794,7 @@ def main() -> int:
                     "MHz, at the evening session's maximum power"])
         w.writerow(["kappa_pred", "prediction", f"{KAPPA_PRED:.3f}", "",
                     f"MHz per W, the PREDICTED coefficient at the current "
-                    f"priors (w0 = {C.W0_MEASURED_M*1e6:.0f} um, rho = "
+                    f"priors (w0 = {C.W0_CENTRAL_M*1e6:.0f} um, rho = "
                     f"{C.RHO_RETRO}), computed from constants -- what the "
                     f"bound is compared against"])
         w.writerow(["S0_225mW_pred", "prediction",

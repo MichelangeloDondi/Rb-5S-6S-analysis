@@ -16,7 +16,7 @@ which is what this page is for.
 
 ## The runner, and the scripts outside it
 
-`bash scripts/run_all.sh` executes 50 analysis stages in dependency order,
+`bash scripts/run_all.sh` executes 51 analysis stages in dependency order,
 then the reference graph, the figures, `docs/RESULTS.md`, and the CSV status
 column.
 
@@ -54,7 +54,7 @@ That comparison is a stated tolerance rather than byte equality because the
 arithmetic depends on the numerical environment. The committed digits were
 produced under numpy 2.0.2 and hold across numpy 2.0 to 2.4. A full rerun on
 the declared numpy 2.5 floor moved two of the global dataset fit's preliminary
-values in their last digit, 0.963 to 0.959 MHz/W and 0.217 to 0.216 MHz, while
+values in their last digit, formerly 0.963 to 0.959 MHz/W and 0.217 to 0.216 MHz as read on 2026-08-14, while
 the collisional coefficient and the predicted light shift stayed identical to
 the printed digit.
 [`results/ENVIRONMENT_OF_RECORD.md`](../results/ENVIRONMENT_OF_RECORD.md)
@@ -111,7 +111,7 @@ Point `RB5S6S_SESSION_20250704_DIR` and `RB5S6S_SESSION_20250717_DIR` at the tre
 * `run_kernel_inhomogeneity.py` (`kernel_inhomogeneity.csv`, about three and a half minutes building the collected volume element by element, held out for runtime. It landed in d5bc11aa routed by neither this page nor the runner, which is escape E44).
 * `run_transit_additivity.py` (`transit_additivity.csv`, the guided transit kernel's second-order entry computed two independent ways, a few minutes over a 600,000-point grid).
 * `run_fibre_twin.py` (`fibre_twin.csv`).
-* `run_ultra_joint.py` (`ultra_joint_fit.csv`, the waist scanned under three laser kernels on both arms of the design: about twenty minutes for the coarse grid on ten workers and hours for the fine one, run from the night queue and never by the runner).
+* `run_ultra_joint.py` (`ultra_joint_fit.csv`, the waist scanned under three laser kernels on both arms of the design: about twenty minutes for the coarse grid on ten workers and hours for the fine one, run from the night queue and never by the runner). Its output is withheld until the waist ladder it reads (`ladder_gate.real_traces`) is climbed again on the current model: the 2026-09-16 run, on a waist grid and model conventions C6a retired, is in the history record, not in `results/`.
 * `run_ultra_joint_closure.py` (`ultra_joint_closure.csv`, that estimator closed on its own model at a known waist over eight noise steps, about seventy minutes on ten workers, and it records its ladder rungs as it goes so the real arm is refused unless they pass).
 * `run_ultra_joint_treatments.py` (`ultra_joint_treatments.csv`, the treatment matrix of the main aim on the twin: the laser-width worlds with the shift and the waist tied through the exponent table and the theory constants pinned, about two hours on eight workers for six worlds at the L's thirty-two conditions, its rows DIAGNOSTIC until the whitening re-run).
 * `run_noiseless_floor.py` (`noiseless_floor.csv`, one closure cell at two optimiser budgets, about six minutes on one core).

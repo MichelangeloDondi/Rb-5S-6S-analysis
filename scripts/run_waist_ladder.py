@@ -42,17 +42,36 @@ import numpy as np
 
 from rb5s6s import config as C_cfg
 from rb5s6s import constants as C
+from rb5s6s.reference_point import reference_point
 from rb5s6s.hyperpolarizability import two_photon_rabi_hz
 from rb5s6s.lineshape import ramp_moment_contributions
 from rb5s6s.stark import stark_shift_S0_mhz
 
-W0_REF_M = C.W0_MEASURED_M          # the record's prior waist, the ladder's anchor
+W0_REF_M = C.W0_CENTRAL_M          # the record's prior waist, the ladder's anchor
 POWER_W = 0.225                     # the campaign's top rung
 T_C = 130.0
 RHO = 0.94
-MAGNIFICATIONS = (1.0, 0.625, 0.390625, 0.25)   # 64, 40, 25, 16 um at the anchor
-GAMMA_COLL = 0.55        # the producers' own 130 C collisional width, MHz
-SIGMA_LASER = 2.07       # the session range's upper end, MHz FWHM
+MAGNIFICATIONS = (1.0, 0.625, 0.390625, 0.25)   # fractions of the anchor waist
+
+
+def _session_sigma_upper() -> float:
+    """The session range's upper end: the largest per-block laser width of the campaign's sessions.
+
+    READ from `results/global_dataset_fit.csv`, the `sigma_laser` rows of the campaign's temperature
+    blocks (keys `camp*`), never typed (F313, 2026-09-22): the typed value was the retired waist
+    convention's, from an earlier version of that table.
+    """
+    path = C_cfg.RESULTS_DIR / "global_dataset_fit.csv"
+    with open(path, newline="", encoding="utf-8") as fh:
+        vals = [float(r["value"]) for r in csv.DictReader(fh)
+                if r["quantity"] == "sigma_laser" and r["key"].startswith("camp")]
+    if not vals:
+        raise SystemExit(f"run_waist_ladder: {path} carries no campaign sigma_laser rows")
+    return max(vals)
+
+
+GAMMA_COLL = reference_point()["gamma_coll"]   # the archive point's 130 C collisional width, MHz (F313)
+SIGMA_LASER = _session_sigma_upper()         # the session range's upper end, MHz FWHM (F313)
 
 # The anchors the relative columns are normalised against, from the same
 # package functions that make the columns, so the ladder carries no power
@@ -70,12 +89,15 @@ def _k3_axial(z_ratio: float, n_photon: int, n_grid: int = 600_001) -> float:
     of the on-axis shift cubed.
 
     Emitted so the one-photon comparison below is a computed cell and not a
-    remembered fact. At `z_ratio` zero it returns 0 for n = 1 and -1/135 for
-    n = 2, which are the closed forms `docs/methods/03` derives."""
+    remembered fact. The closed forms `docs/methods/03` derives in the transverse limit are 0 for n = 1
+    and 1/135 of the on-axis shift cubed IN MAGNITUDE for n = 2, the sign set by `lineshape.RAMP_SIDE`
+    (the axial form itself degenerates at `z_ratio` exactly zero, which no rung reaches)."""
     import numpy as np
     from rb5s6s._compat import trapezoid
     from rb5s6s.lineshape import stark_ramp_axial
-    nu = np.linspace(-1.0000001, 0.0, n_grid)
+    # BOTH SIDES, so the ramp's side is never restated here (O27, lineshape.RAMP_SIDE): this grid read
+    # [-1, 0] and returned nan at every rung once the ramp moved to the blue side (2026-09-22, C6a)
+    nu = np.linspace(-1.0000001, 1.0000001, 2 * n_grid - 1)
     f = stark_ramp_axial(nu, 1.0, z_ratio, n_photon=n_photon)
     a = trapezoid(f, nu)
     if not a:

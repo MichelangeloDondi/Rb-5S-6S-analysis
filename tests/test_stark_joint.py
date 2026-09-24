@@ -89,10 +89,10 @@ def test_the_two_full_subsets_lie_below_the_nominal_prediction():
     called that "the load-bearing claim of C3f: ... whichever subset carries
     the weight". **The record retracts exactly that**:
     `docs/PREREGISTRATION_RESULTS.md` says the statement that every subset
-    requires a lower intensity is withdrawn, and `S0_225mW_ub95_drop4192` =
-    0.366 sits ABOVE the prediction. The test stayed green only because it
-    excused the drop-4192 arm in a clause and read `pred` from the stale
-    0.348 cell. A test whose NAME asserts a retracted proposition will revive
+    requires a lower intensity is withdrawn, and under the retired convention
+    `S0_225mW_ub95_drop4192` sat ABOVE that convention's prediction. The test
+    stayed green only because it excused the drop-4192 arm in a clause and
+    read `pred` from a stale prediction cell. A test whose NAME asserts a retracted proposition will revive
     it, so the name now says what the body checks: two subsets, not every
     one. The drop-4192 arm is covered by
     `test_the_leave_one_out_arms_are_checked_against_the_threshold` below.
@@ -132,9 +132,11 @@ def test_the_leave_one_out_arms_are_checked_against_the_threshold():
     body could not have caught the defect: it asserted only positivity, and
     only at the legacy kappa = 2.62 checkpoint, which sits far above the
     predicted coefficient. Positivity was never the test. The threshold is
-    2.706, and the arms straddle it: 4121 clears and 4154, 4192 and 4207 fail,
-    and RESULTS.md C3f brackets each arm to the record's own coefficient from
-    the committed rows rather than restating a count here.
+    2.706. Under the retired convention the arms straddled it, 4121 clearing
+    and 4154, 4192 and 4207 failing. At the calculated waist (C6a,
+    2026-09-22) the prediction the arms are read at moved with the waist and
+    every arm clears it, so the finding is restated and the pin is the empty
+    list; RESULTS.md C3f brackets each arm from the committed rows.
 
     This test pins the COMMITTED ROWS so they cannot silently revert, and pins the
     2.62 checkpoint separately as the convergence check it actually is.
@@ -146,7 +148,7 @@ def test_the_leave_one_out_arms_are_checked_against_the_threshold():
     rows are the red-sided ramp's until the joint fit's refit lands."""
     below = [pk for pk in ("4121", "4154", "4192", "4207")
              if val("lopo_dchi2_pred", pk) < 2.706]
-    assert sorted(below) == ["4154", "4192", "4207"], (
+    assert sorted(below) == [], (
         f"the committed leave-one-out arms below 2.706 changed: {below}. "
         f"This pins the COMMITTED ROWS at the joint fit's own kappa_pred row. "
         f"The arms are separate likelihoods, bracketed to the record's own "

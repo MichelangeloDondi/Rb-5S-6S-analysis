@@ -55,7 +55,8 @@ SKIP = ("PREREGISTRATION", "/lit/")
 # return fraction, so printing 0.040 would claim the assumption is known to
 # two digits. The test is provenance, not size.
 DECLARED = {("0.94", "0.04"),
-            ("18", "1"), ("50", "10")}   # the owner's stated optics tolerances (2026-09-04)
+            ("18", "1"), ("50", "10"),   # the owner's stated optics tolerances (2026-09-04)
+            ("50", "5"), ("6", "1")}     # as he restated them on 2026-09-13: the image distance and the QE
 
 # Another author's published value, quoted as they published it (8a.5). Not
 # ours to reformat: tidying someone else's paper is a different fault from

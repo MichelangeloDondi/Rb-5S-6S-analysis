@@ -1,0 +1,30 @@
+quantity,key,value,err,unit,note,status
+density,n_70C,7.39705e+11,,cm^-3,number_density_cm3 on the central law (alcock),DIAGNOSTIC
+density,n_130C,3.55852e+13,,cm^-3,number_density_cm3 on the central law (alcock),DIAGNOSTIC
+density,lever,48.1072,,ratio,the arm's density lever on alcock,DIAGNOSTIC
+input,beta_self_anchor,3.50,0.37,kHz per 1e12 cm^-3 at 403.15 K,"beta_self_theory.csv beta_self_6s anchored, held at its anchor across the arm",DIAGNOSTIC
+signal,rb_self_broadening,122,13,kHz,beta_self times the density change across 70 to 130 C: what a slope of width against density is meant to read,DIAGNOSTIC
+transit_drift,band_low_40.00um_rb87,118.589,,kHz,"transit_fwhm_from_w0 at 40.00 um, 70 to 130 C: it rises as sqrt(T) with the signal's sign",DIAGNOSTIC
+transit_over_signal,band_low_40.00um_rb87,0.97,0.10,ratio,"the transit drift over the whole self-broadening signal, its error the anchor's alone",DIAGNOSTIC
+transit_drift,band_low_40.00um_rb85,119.976,,kHz,"transit_fwhm_from_w0 at 40.00 um, 70 to 130 C: it rises as sqrt(T) with the signal's sign",DIAGNOSTIC
+transit_over_signal,band_low_40.00um_rb85,0.98,0.10,ratio,"the transit drift over the whole self-broadening signal, its error the anchor's alone",DIAGNOSTIC
+transit_drift,central_42.38um_rb87,111.93,,kHz,"transit_fwhm_from_w0 at 42.38 um, 70 to 130 C: it rises as sqrt(T) with the signal's sign",DIAGNOSTIC
+transit_over_signal,central_42.38um_rb87,0.919,0.098,ratio,"the transit drift over the whole self-broadening signal, its error the anchor's alone",DIAGNOSTIC
+transit_drift,central_42.38um_rb85,113.238,,kHz,"transit_fwhm_from_w0 at 42.38 um, 70 to 130 C: it rises as sqrt(T) with the signal's sign",DIAGNOSTIC
+transit_over_signal,central_42.38um_rb85,0.929,0.099,ratio,"the transit drift over the whole self-broadening signal, its error the anchor's alone",DIAGNOSTIC
+transit_drift,band_high_45.00um_rb87,105.413,,kHz,"transit_fwhm_from_w0 at 45.00 um, 70 to 130 C: it rises as sqrt(T) with the signal's sign",DIAGNOSTIC
+transit_over_signal,band_high_45.00um_rb87,0.865,0.092,ratio,"the transit drift over the whole self-broadening signal, its error the anchor's alone",DIAGNOSTIC
+transit_drift,band_high_45.00um_rb85,106.645,,kHz,"transit_fwhm_from_w0 at 45.00 um, 70 to 130 C: it rises as sqrt(T) with the signal's sign",DIAGNOSTIC
+transit_over_signal,band_high_45.00um_rb85,0.875,0.093,ratio,"the transit drift over the whole self-broadening signal, its error the anchor's alone",DIAGNOSTIC
+input,gamma_l_equiv_reference,0.078,0.018,MHz,"kernel_k3.csv's inverse-variance mean of the per-peak Lorentzian-equivalent widths: an UPPER size for the permeated gas, which it holds together with any Lorentzian laser content",DIAGNOSTIC
+permeated_factor,fixed_density_hard_sphere,0.0839053,,fraction,"T^+0.5 across 70 to 130 C: a sealed cell on the arm's timescale, width n sigma v with n fixed",DIAGNOSTIC
+permeated_drift,fixed_density_hard_sphere,6.6,1.5,kHz,the reference width times the fraction: an upper size,DIAGNOSTIC
+permeated_over_signal,fixed_density_hard_sphere,0.0540217,,ratio,the permeated drift over the whole signal,DIAGNOSTIC
+permeated_factor,fixed_density_vdw,0.0495299,,fraction,T^+0.3 across 70 to 130 C: the same with the van der Waals rate coefficient's own velocity law carried,DIAGNOSTIC
+permeated_drift,fixed_density_vdw,3.89,0.91,kHz,the reference width times the fraction: an upper size,DIAGNOSTIC
+permeated_over_signal,fixed_density_vdw,0.0318894,,ratio,the permeated drift over the whole signal,DIAGNOSTIC
+permeated_factor,fixed_pressure,-0.0774102,,fraction,"T^-0.5 across 70 to 130 C: a cell held at fixed pressure, n = P/kT, the branch that does NOT apply to a sealed cell",DIAGNOSTIC
+permeated_drift,fixed_pressure,-6.1,1.4,kHz,the reference width times the fraction: an upper size,DIAGNOSTIC
+permeated_over_signal,fixed_pressure,-0.0498398,,ratio,the permeated drift over the whole signal,DIAGNOSTIC
+naive_slope_factor,central_fixed_density_hard_sphere,1.97253,,ratio,"what a slope of total width against density returns over beta_self at the central waist, Rb 87: all three terms rise together along the arm, so no cancellation is available and the separation needs a lever with a different exponent (power, waist, or a platform without the transit)",DIAGNOSTIC
+naive_slope_factor,central_fixed_density_vdw,1.95039,,ratio,"what a slope of total width against density returns over beta_self at the central waist, Rb 87: all three terms rise together along the arm, so no cancellation is available and the separation needs a lever with a different exponent (power, waist, or a platform without the transit)",DIAGNOSTIC

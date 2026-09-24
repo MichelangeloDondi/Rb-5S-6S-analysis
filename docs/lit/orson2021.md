@@ -52,7 +52,7 @@ The isotope shift, +94(12) MHz, is consistent with ayachitula2024's later, more 
 
 ## Use in this record
 
-**The definition, read from the paper rather than inferred.** Section 3,
+**The definition, read from the paper, not inferred.** Section 3,
 "Results and analysis", which is where both this paragraph and the density
 paragraph below sit. The paper has four sections in all, and section 4 is
 the conclusions. It states it in words: the authors calculate "the AC Stark differential
@@ -68,9 +68,12 @@ paragraph on 2026-08-26.
 campaign's.** The same paragraph gives a focused waist radius of 6.3e-5 m,
 0.8 W, a peak intensity of 1.28e8 W m^-2 and E^2 = 4.8e10 V^2 m^-2, with the
 shift as half alpha56 E^2. That returns -0.652 MHz against their stated
--0.66. Their waist is 63 um against this record's 64 um convention, so the
-geometry is near enough for a direct comparison: at their conditions this
-record's value predicts +0.683 MHz, the same size and the other sign.
+-0.66. Their waist is 63 um against this record's 42.38 um convention (the
+retired waist convention was near enough to theirs for a direct comparison without a
+geometry correction. The calculated central value no longer is), so the
+comparison below is made at their own conditions, not the record's:
+at their conditions this record's value predicts +0.683 MHz, the same size
+and the other sign.
 
 **Their AC-Stark null does not discriminate between the two, and the
 comparison has to be made on one axis.** The null search is at 6 MHz, the

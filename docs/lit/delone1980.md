@@ -162,8 +162,8 @@ $g_1 = -0.566$ at $n=2$ on the bounded support $[0,S_0]$, this record's blue sid
 is used as a drift-immune channel for measuring $S_0$.
 
 At the beam waist convention of this experiment, the Section 5 validity
-condition holds with about a factor of ten to spare: the ramp edge is
-[0.348](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred:shared") MHz against a natural width of 3.4925 MHz. For the resonance-enhanced case of
+condition holds with about a factor of five to spare: the ramp edge is
+[0.7290](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred:shared") MHz against a natural width of 3.4925 MHz. For the resonance-enhanced case of
 Section 6c, applied to a third 993 nm photon reaching the real 6S population
 through a 2+1 process: the intermediate state lies 345 cm⁻¹ from the
 6S–8P₃⁄₂ transition, the 8P admixture is $1.7\times10^{-9}$ at the campaign

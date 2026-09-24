@@ -41,15 +41,16 @@ OUT = C.RESULTS_DIR / "cumulant_window_check.csv"
 S0 = 3.0                 # MHz, the REFERENCE shift; the ratio depends on the shift through the fixed window's
                          # clipping of the composite's tails (the survival_vs_S0 rows measure it, no page derives it yet, and the reference rows name this shift) once
                          # the ramp is resolved on the model's grid (the row at the
-                         # archive's shift read 0.478 under-resolved and 0.498 resolved)
+                         # archive's shift read 0.478 under-resolved and 0.498 resolved) -- readings that stood at the 2026-09-04 code
 W = 8.0                  # MHz, window half-width about the self-centre
-SIGMA_LASER_FWHM = 1.6   # MHz FWHM (the twin's own laser kernel)
+from rb5s6s.reference_point import reference_point  # noqa: E402
+SIGMA_LASER_FWHM = reference_point()["sigma_laser"]   # MHz FWHM, the twin's own laser kernel: the archive point (F313)
 # MHz FWHM at the archive's 130 C from the waist convention, the value
 # twin_realism.csv carries as TRUTH; the config placeholder is the same function
 # at 110 C and the archive's line is not at 110 C. Never a literal.
-TRANSIT_FWHM = C.transit_fwhm_from_w0(C.W0_MEASURED_M, 130.0)
+TRANSIT_FWHM = C.transit_fwhm_from_w0(C.W0_CENTRAL_M, 130.0)
 GAMMAS = (0.2, 0.55, 1.1)   # MHz, gamma_coll grid spanning the record's range
-S0_2025 = round(float(kappa_pred_per_watt(C.W0_MEASURED_M, C.RHO_RETRO) * 0.225), 3)   # the 2025 campaign's shift, sourced from the one predicted coefficient
+S0_2025 = round(float(kappa_pred_per_watt(C.W0_CENTRAL_M, C.RHO_RETRO) * 0.225), 3)   # the 2025 campaign's shift, sourced from the one predicted coefficient
 S0_GRID = (S0_2025, 1.0, 3.0)  # MHz: the archive's shift, one, the reference
 # 160001 points and twenty fixed-point passes. At four passes the gc=0.55 ratio
 # reads 0.60 and RISES with gamma at 80001 points and at 160001 alike, so that
@@ -193,7 +194,7 @@ def main() -> int:
     # the two smallest shifts must agree: the ratio carries the fixed window's
     # clipping of the composite's tails, which grows with the shift (the survival_vs_S0 rows
     # measure it; no page derives it yet), so it is compared where the shift is
-    # smallest; a gap here is the grid (0.478 against 0.497 on the
+    # smallest; a gap here is the grid (0.478 against 0.497 on the (readings that stood at the 2026-09-04 code)
     # unresolved grid, 2026-09-04, which this assertion would have refused) or
     # the fixed window clipping more of the composite's tails as the shift grows, which the
     # print below sizes against the gate from the unrounded values; a much

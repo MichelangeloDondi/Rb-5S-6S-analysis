@@ -28,7 +28,7 @@ returned is worth more than a pass would have been.
 WHAT IT FOUND (2026-09-16, register A274). On data generated at 52 um the
 likelihood has NO interior minimum anywhere on 40 to 90 um: it falls
 monotonically to the grid edge, 383 chi2 below its own truth, while the real
-traces turn over at 52.0 and rise 111 by 64 um. The correlated arm differs from
+traces turn over at 52.0 and rise 111 further into the retired band of waists. The correlated arm differs from
 the white by 5.6 chi2 out of 313, so the estimator's treatment of correlated
 noise as independent is EXCLUDED and the 419 chi2 of high-side curvature that
 exists only in the real traces is MODEL ERROR. The production fit's
@@ -68,13 +68,16 @@ UJ = importlib.util.module_from_spec(_s)
 _s.loader.exec_module(UJ)
 
 from rb5s6s import ladder_gate             # noqa: E402
+from rb5s6s.constants import W0_CENTRAL_M  # noqa: E402  (SSOT: the canonical truth is the record's central waist)
 from rb5s6s.forecast import _correlate      # noqa: E402
 from rb5s6s.noise import sigma_of_v         # noqa: E402
 
 FORM = "mixed"                  # the form the archive's own fit prefers on chi2
 SESSIONS = ("P", "T")           # the canonical L; E and M live off this machine
-TRUTH_UM = 42.0          # the 40 to 45 um band (2026-09-17); the 64 um convention stood until then
-GRID_UM = (40.0, 42.0, 44.0, 46.0, 48.0, 52.0, 56.0)   # the scan grid from the lowest waist whose kernel nodes all pass (2026-09-18): at 38 um five of eight nodes fail depleted_line_abs, at 34-36 the transit's width too; the fine band lives in GRID_NOISELESS
+TRUTH_UM = round(W0_CENTRAL_M * 1e6, 4)   # the record's central waist, read and never typed (owner, 2026-09-22:
+#: "make sure that the SSOT is working properly"); it was a typed 42.0 inside the 40 to 45 um band, and the ladder
+#: frozen at 42.0 went to private/history/records/ladders/ as the rule for a new canonical truth says
+GRID_UM = (41.0, 42.0, 44.0, 46.0, 48.0, 52.0, 56.0)   # the scan grid from the lowest waist whose kernel nodes all pass (2026-09-18): at 38 um five of eight nodes fail depleted_line_abs, at 34-36 the transit's width too; the fine band lives in GRID_NOISELESS
 # THE NOISELESS RUNG NEEDS A FINER GRID, AND THE TOLERANCE IS NOT THE THING TO MOVE.
 # `ladder_gate.NOISELESS_TOL` is 1e-3, which on a 52 um truth is 0.052 um -- and a
 # parabola through three points of a 4 um grid cannot localise to that however good
@@ -84,7 +87,8 @@ GRID_UM = (40.0, 42.0, 44.0, 46.0, 48.0, 52.0, 56.0)   # the scan grid from the 
 # rung walks the coarse grid AND a fine band about the truth -- the coarse half still
 # catches a landscape that rails far away, which is the failure mode actually seen, and
 # the fine half resolves a minimum if there is one to resolve.
-GRID_NOISELESS = tuple(sorted(set(GRID_UM) | {TRUTH_UM + k * 0.5 for k in range(-4, 5)}))
+GRID_NOISELESS = tuple(sorted(w for w in set(GRID_UM) | {TRUTH_UM + k * 0.5 for k in range(-4, 5)}
+                              if w >= GRID_UM[0]))   # C6a: nothing below the bore's floor (F291)
 
 
 #: THE FINE BAND'S STEP, SET BY MEASUREMENT (F175, 2026-09-19). `local_min` interpolates over the three
@@ -125,7 +129,7 @@ def grid_noiseless(truth: float, offset: float = GRID_OFFSET_UM, step: float = G
     """
     g = set(GRID_UM) | {truth + offset + k * step for k in range(-6, 7)}
     return tuple(w for w in sorted(g) if abs(w - truth) > 1e-9)
-WIDE_UM = (48.0, 56.0)          # tests the asymptote instead of extrapolating it (was 76 and 90 on the 64-90 grid)
+WIDE_UM = (48.0, 56.0)          # tests the asymptote instead of extrapolating it (was 76 and 90 on the grid used before the waist convention retired)
 SEED = 1000
 # THE SWEEP, AND IT IS THE RULE READ LITERALLY. The owner's words are "first on noiseless
 # synthetic traces, then on INCREASINGLY NOISY synthetic traces up to the archive noise
@@ -480,7 +484,7 @@ def _task(args):
     ld = bool(logdet and scale > 0.0)               # no log-determinant at zero noise
     # EVERY RUNG WALKS THE FINE BAND (F14, 2026-09-17): the noisy rungs walked the 4 um grid alone,
     # and a parabola through 4 um nodes of a profile that is not a parabola read +0.56 um at the
-    # first noisy level and railed a 64 um truth that had no interior triple there.
+    # first noisy level and railed a truth drawn from the retired band that had no interior triple there.
     _grid = grid_noiseless(truth) if _W.get("grid", "full") == "full" else \
         tuple(sorted({min(GRID_UM), max(GRID_UM)} | {truth + k * 0.5 for k in range(-4, 5)}))
     pts = _fit_grid(syn, _grid, max_nfev=(NOISELESS_NFEV if scale <= 0.0 else None),
@@ -625,7 +629,8 @@ def main() -> int:
     ap.add_argument("--conditions", default=None, help="'all' or the number of conditions in design order; sets RB5S6S_CLOSURE_CONDITIONS for the workers")
     ap.add_argument("--levels", default=None, help="a comma list of noise levels to walk instead of the sweep (0 is always walked first)")
     ap.add_argument("--truths", default=str(TRUTH_UM), help="comma-separated truth waists in um; the first is the ladder's canonical one")
-    ap.add_argument("--prior-mean", action="store_true", help="inject the truth at the prior means (beta_rel, omega_scale, alpha_rel = 1)")
+    ap.add_argument("--prior-mean", action=argparse.BooleanOptionalAction, default=True,
+                    help="inject the truth at the prior means (beta_rel, omega_scale, alpha_rel = 1). THE DEFAULT since 2026-09-22 (plan A2 said every closure carries it, and two runs that day did not, so the noiseless rung failed on the prior's pull, chi2_prior 24.75 at the truth); --no-prior-mean is the explicit comparison arm")
     # THE LOG-DETERMINANT IS ON BY DEFAULT (2026-09-19). It was `store_true`, so the DEFAULT objective
     # omitted `sum ln sigma^2` and was therefore not a likelihood at all by this record's own rule: an
     # objective whose weights depend on its own parameters rewards whatever inflates the level until the
@@ -898,7 +903,8 @@ def main() -> int:
                 climbed[rung] = f"MEASURED, not recorded ({why})"
                 continue
             try:
-                art = ladder_gate.record(ANALYSIS_ID, rung, detail=detail)
+                art = ladder_gate.record(ANALYSIS_ID, rung, detail=detail,
+                                         canonical={"truth_um": float(canon)})
             except ladder_gate.LadderRefused as exc:
                 print(f"  rung {rung:<10} NOT CLIMBED: {exc}", flush=True)
                 rows.append([f"rung_{rung}", "verdict", "NOT CLIMBED", "", "",

@@ -32,7 +32,7 @@ def test_the_reference_wavelength_returns_the_measured_waist(regime):
     it. A regime that rescaled its own anchor would be reporting a units bug
     as physics."""
     assert K.waist_at_drive(REF, input_beam=regime) == pytest.approx(
-        K.W0_MEASURED_M, rel=1e-12)
+        K.W0_CENTRAL_M, rel=1e-12)
 
 
 @pytest.mark.parametrize("regime", ["aperture", "resonator"])
@@ -50,7 +50,7 @@ def test_the_closed_form_is_reproduced_independently():
     """Recompute w0 = lambda f / (pi w_in) from the reference rather than
     calling the function again, so the test is evidence about the physics and
     not a restatement of the implementation."""
-    w_in = REF * 1e-9 * K.DRIVE_LENS_F_M / (math.pi * K.W0_MEASURED_M)
+    w_in = REF * 1e-9 * K.DRIVE_LENS_F_M / (math.pi * K.W0_CENTRAL_M)
     for lam in DRIVES:
         f = K.drive_lens_focal_m(lam)
         expected = lam * 1e-9 * f / (math.pi * w_in)
@@ -65,16 +65,16 @@ def test_the_two_regimes_bracket_and_the_aperture_branch_moves_further():
     for lam in (760.126, 778.104):
         a = K.waist_at_drive(lam, input_beam="aperture")
         r = K.waist_at_drive(lam, input_beam="resonator")
-        assert a < r < K.W0_MEASURED_M
-        assert abs(K.W0_MEASURED_M - a) > abs(K.W0_MEASURED_M - r)
+        assert a < r < K.W0_CENTRAL_M
+        assert abs(K.W0_CENTRAL_M - a) > abs(K.W0_CENTRAL_M - r)
 
 
 def test_the_shift_gain_bracket_matches_the_register():
     """A137's table: the on-axis shift goes as 1/w0^2, so the 760 nm rung gains
     between 1.32 and 1.74 at equal power. Both ends are quoted in the register
     and in the degeneracy map, so both are frozen here."""
-    lo = (K.W0_MEASURED_M / K.waist_at_drive(760.126, input_beam="resonator")) ** 2
-    hi = (K.W0_MEASURED_M / K.waist_at_drive(760.126, input_beam="aperture")) ** 2
+    lo = (K.W0_CENTRAL_M / K.waist_at_drive(760.126, input_beam="resonator")) ** 2
+    hi = (K.W0_CENTRAL_M / K.waist_at_drive(760.126, input_beam="aperture")) ** 2
     assert lo == pytest.approx(1.328, abs=0.005)
     assert hi == pytest.approx(1.735, abs=0.005)
 
@@ -104,7 +104,7 @@ def test_the_focal_shift_is_small_against_the_wavelength_factor():
     focal length moves under one per cent while the waist moves by a quarter."""
     f_frac = abs(K.drive_lens_focal_m(760.126) / K.DRIVE_LENS_F_M - 1.0)
     w_frac = abs(K.waist_at_drive(760.126, input_beam="aperture")
-                 / K.W0_MEASURED_M - 1.0)
+                 / K.W0_CENTRAL_M - 1.0)
     assert f_frac < 0.01
     assert w_frac > 0.20
 
@@ -179,7 +179,7 @@ def test_the_producer_still_emits_a_waist_and_a_polarizability_per_rung():
               if r["quantity"] == "input_rung_waist_at_drive"}
     ref = [k for k in waists if k.startswith("993")]
     assert ref, "no 993 nm rung among the waist rows"
-    assert waists[ref[0]] == pytest.approx(K.W0_MEASURED_M * 1e6, rel=1e-3), (
+    assert waists[ref[0]] == pytest.approx(K.W0_CENTRAL_M * 1e6, rel=1e-3), (
         "the 993 nm rung's drive waist should reproduce the measured waist")
     for key, value in waists.items():
         if key.startswith("993"):

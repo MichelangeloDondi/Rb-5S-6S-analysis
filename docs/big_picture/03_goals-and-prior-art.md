@@ -1,4 +1,4 @@
-*Chapter 3 of 9 of [the big picture](../BIG_PICTURE.md)*
+*Chapter 3 of 10 of [the big picture](../BIG_PICTURE.md)*
 
 ## 2. Objectives
 
@@ -80,7 +80,7 @@ Gaussian beam ([delone1980](../lit/delone1980.md)).
 
 What is open is what §4
 states and no more: the evaluation for the geometry that actually occurs, its
-cumulants in closed form, and the third cumulant used as a measurement channel
+cumulants in closed form, and the third moment used as a measurement channel
 *because* no reference is available. The 778 nm clock community suppresses the light shift actively
 and does not use shape information at all. With a good reference the centre
 is strictly better, which is precisely why the shape route matters only in

@@ -185,7 +185,7 @@ import math
 
 from rb5s6s.constants import K_B_J_PER_K, LAMBDA_LASER_M, M_RB87_KG
 
-T_K = 403.15  # K, the reference cell temperature used elsewhere in this record
+T_K = 403.15  # K, other-quantity: the reference cell temperature used elsewhere in this record, not read from a committed cell
 v_sigma = math.sqrt(K_B_J_PER_K * T_K / M_RB87_KG)  # 1D thermal speed
 k_fund = 2.0 * math.pi / LAMBDA_LASER_M             # the fundamental wavevector
 

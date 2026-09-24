@@ -41,7 +41,7 @@ names. the ratios and differences propagate it in quadrature.
 
 THE PREDICTIONS come from `rb5s6s.fullmodel.full_profile` sampled on a grid
 like the traces' own (0.0425 MHz steps over 42 MHz each side) and read with
-the same estimator, at 42, 64 and 85 um: the transit from the waist and the
+the same estimator, at 42 um, the retired convention, and 85 um: the transit from the waist and the
 temperature (`constants.transit_fwhm_from_w0`, per isotope), the ramp depth
 from `lineshape.stark_shift_S0_mhz` at the retro ratio of record, the
 two-photon Rabi frequency from `hyperpolarizability.two_photon_rabi_hz`, the
@@ -114,7 +114,7 @@ N_FULL, N_HALF = 4001, 2001
 # grids settle a hair apart. A tenth of that tail, 1e-4, is where the grid
 # error is still a hundredth of the cell's own block scatter.
 GRID_TOL = 1e-4               # relative disagreement between the two grids that refuses a reading
-WAISTS_UM = (42.0, 64.0, 85.0)
+WAISTS_UM = (42.0, 56.0, 85.0)   # C6a: the band's centre, the grid's top and a far point
 PEAKS = ("4121", "4154", "4192", "4207")
 ISO = {p: K.PEAKS[p]["isotope"] for p in PEAKS}
 PAIRS_F = {"87Rb": ("4207", "4121"), "85Rb": ("4192", "4154")}     # higher F minus lower F

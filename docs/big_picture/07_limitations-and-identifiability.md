@@ -1,4 +1,4 @@
-*Chapter 7 of 9 of [the big picture](../BIG_PICTURE.md)*
+*Chapter 7 of 10 of [the big picture](../BIG_PICTURE.md)*
 
 What does this dataset fail to determine, why does each failure happen, and which measurement fixes which one? This page builds on the results of [what the 2025 dataset delivered](04_what-2025-delivered.md) and sets out six chains from a limitation to the measurement that removes it, each with what would be learnt if it worked and if it did not. Not covered here: the summary rather than the argument, in which case Part iii of [the big picture](../BIG_PICTURE.md) is the table this chapter expands.
 
@@ -61,14 +61,14 @@ error, the polarizability spread and a spanned power calibration,
 [False](../../results/prediction_band.csv "ref:prediction_band:verdict:worst_band_spans_bound")
 for the worst case, and the waist at which the prediction would meet the bound
 is
-[74.3](../../results/prediction_band.csv "ref:prediction_band:waist_at_bound:w0_um")
-um against the 64 this record carries. The tension is therefore conditional on the waist,
+[84.8](../../results/prediction_band.csv "ref:prediction_band:waist_at_bound:w0_um")
+um against the 42.38 this record carries. The tension is therefore conditional on the waist,
 which no measurement of this beam has fixed, and on the retro power ratio, an
 assumption the record labels as one with a deliberately modest spread: at the
 uncoated-window end of its physical range the prediction falls by about twelve
 per cent and still clears the bound. The fluorescence collection
 window corrects the bound in the same file, by
-[-1.97](../../results/prediction_band.csv "ref:prediction_band:collection_window:shift_bias_width_pct")
+[-6.02](../../results/prediction_band.csv "ref:prediction_band:collection_window:shift_bias_width_pct")
 per cent and in the direction that eases the tension, which is far too small to
 remove it.
 
@@ -106,15 +106,16 @@ the band the science blocks' widths integrate
 
 That systematic is now measured, and measuring it did not settle the
 question. A mixed Gaussian-plus-Lorentzian laser kernel was fitted against
-the pinned-Gaussian one at every peak. The mixed form wins decisively, by
-$\Delta\chi^2$ of 176 to 961 on a nested test with one parameter at its
-boundary, so **a non-Gaussian homogeneous component is present**, with
-peak-conditioned values from 0.315 to 0.449 MHz
+the pinned-Gaussian one at every peak. At the calculated waist the mixed form
+is preferred at three of the four peaks, by $\Delta\chi^2$ of 6.9 to 65 on a
+nested test with one parameter at its boundary, and not at 4207 (0.69), so
+**a non-Gaussian homogeneous component is present there**, with
+peak-conditioned values from 0.009 to 0.115 MHz
 (`results/kernel_k3.csv`). Its size against the statistical error is stated on
-a matched footing as $R_\text{kernel} = 3.24$
+a matched footing as $R_\text{kernel} = 0.61$
 (`results/kernel_budget.csv`): the choice of kernel moves the collisional
-coefficient by more than three times what the noise does, so repetitions of
-the current construction no longer buy that coefficient.
+coefficient by less than the noise does, so repetitions of the current
+construction still buy that coefficient.
 
 ![which experimental variable breaks which degeneracy](../../figures/fig35_orthogonal_information.png)
 
@@ -127,7 +128,7 @@ been taken.*
 
 Four things are true at once here and merging any two of them is the error
 this section exists to prevent. A parameter is identified. Whether the four
-peaks share one value is neither rejected nor established, at $p = 0.097$, so
+peaks share one value is neither rejected nor established, at $p = 0.16$, so
 the inverse-variance mean of those four values is never quoted bare. The
 physical origin is not identified, and calling the component the laser is a
 separate claim that no measurement taken licenses: the one in-situ laser
@@ -136,33 +137,46 @@ measurement samples a different band from the one a scanned width integrates
 $R_\text{kernel}$ is a sensitivity within the two forms tested. The blind
 residual atlas that would test the class itself has been built and run.
 
-**The atlas now qualifies, and it detects.** Stacking per-condition residuals
-on a common axis and testing against a null that flips each condition's sign, a
-common residual structure appears at the permutation floor in both arms, the
-synthetic control built from the fitted model returns clean, and **the
-detection survives the removal of any single condition**. The tested inference
-family leaves **reproducible residual structure** that no member of it produces
-(`results/kernel_k4.csv`).
+**The atlas reproduces the committed fits and finds no common shape at the
+calculated waist.** Stacking per-condition residuals on a common axis and
+testing against a null that flips each condition's sign, neither arm shows a
+common shape: `G` at $p=$[0.2967](../../results/kernel_k4.csv "ref:kernel_k4:G:p_signflip") and `GL` at
+$p=$[0.0849](../../results/kernel_k4.csv "ref:kernel_k4:GL:p_signflip"), both above the preregistered 0.01, and the
+synthetic control built from the fitted model stays clean at
+$p=$[0.7443](../../results/kernel_k4.csv "ref:kernel_k4:CONTROL:p_signflip"). Every leave-one-out run stays above the
+threshold too (median $p=$[0.3232](../../results/kernel_k4.csv "ref:kernel_k4:LOO_G:median_p")), so no single
+condition hides a detection. The atlas's own preregistered reproducibility check
+passes: its refit matches the committed per-condition fits in all 32 conditions
+(`RUN.admissible = YES`, `results/kernel_k4.csv`). An earlier run of the same
+day failed that check, and the cause was a whitening mismatch between the two
+producers it compares, not the atlas.
 
-**What that is and is not.** It is named unexplained reproducible residual
-structure rather than model inadequacy, because a residual can come from the
-physical model, the noise model, preprocessing or the instrument, and this test
-separates none of them. **No mechanism is named.** **$R_\text{kernel}$ is
-unchanged and remains a sensitivity within the class that was tested**, since
-turning this structure into an admissible alternative model and computing its
-effect on the collisional coefficient has not been done. And the domain is
-stated: the structure is inside the fit window.
+**What that leaves standing.** No structure common to the conditions is
+detected inside the fit window at this waist. That bounds any common missing
+term at the atlas's sensitivity and does not show the model class adequate.
+**$R_\text{kernel}$ is unchanged and remains a sensitivity within the class
+that was tested**, since turning any such structure into an admissible
+alternative model and computing its effect on the collisional coefficient has
+not been done. The domain the atlas tests is the fit window, not the excess
+outside it.
 
-Its relation to the excess outside the window has since been measured and is no longer
-unresolved. Regressing each condition's in-window amplitude on
-the model's own profile height and on vapour density at once, weighted, height
-prevails at 9.4 sigma and density gives 1.3, with the two predictors correlated
-only 0.49 and the height term surviving every leave-one-out above 8.5
-(`results/kernel_k8.csv`). **The band excess outside the window gives +8.65 and
--0.75 on the same two predictors by the same method**, so both structures share
-a predictor and both exclude density, and one common cause explains them better
-than two unrelated ones. **The two band figures are the weaker pair**: they
-come from [a note with no committed producer](../notes/band_excess_is_model_form.md).
+Its relation to the excess outside the window has since been measured, and at the
+calculated waist it no longer supports a shared cause. Regressing each condition's
+in-window amplitude on the model's own profile height and on vapour density at
+once, weighted, neither predictor is significant: height reads $-0.48$ sigma and
+density $-0.42$, with the two predictors correlated only 0.489, and the height
+term stays within about one sigma on every leave-one-out ($-0.87$ to $-0.47$)
+(`results/kernel_k8.csv`), a verdict the producer computes as
+NEITHER_SIGNAL_NOR_DENSITY. The density null that excluded a collisional origin
+stands either way.
+
+**The band excess outside the window gave +8.65 and
+-0.75 on the same two predictors by the same method**, in the unproduced note at the
+retired waist. This tree's reconstruction reads +1.67 and -0.54 at the ruled waist
+(`results/band_excess.csv`, +3.05 and -1.57 until 2026-09-22), neither resolved at the
+preregistered 3.0 sigma, so at this waist neither the band nor the window shows a
+height-tracking structure and nothing is left for the two to share. **The two band figures are the weaker
+pair**: they come from [a note with no committed producer](../notes/band_excess_is_model_form.md).
 **A documented reconstruction (`results/band_excess.csv`) rebuilt
 the construction from the same committed traces and did not reproduce them**:
 the census matches exactly at 79 traces while the cubic-surviving amplitude
@@ -363,9 +377,9 @@ and it is not attributed to a specific physical term. A related question at the
 same scale was closed by simulation on 2026-08-20. The low-power residual skew
 already identified as shot noise could instead have been a structure of fixed
 absolute amplitude sized like this excess, and the two are separated by the
-exponent of skew against amplitude. Measured at $-0.405 \pm 0.091$ with a
-line-to-line scatter of 0.180, the fixed-amplitude reading is disfavoured at
-$p = 0.011$ and shot noise stays consistent at $p = 0.08$
+exponent of skew against amplitude. Measured at $-0.387 \pm 0.079$ with a
+line-to-line scatter of 0.158, the fixed-amplitude reading is disfavoured at
+$p = 0.009$ and shot noise stays consistent at $p = 0.063$
 (`results/skew_scaling.csv`). The exclusion is by simulation under each
 hypothesis rather than from the fit covariance, which describes the spread at
 the fitted exponent and not at the one being excluded.
@@ -375,10 +389,12 @@ rather than the atom. A joint fit over every canonical trace, each granted its
 own free polynomial baseline, leaves a shared excess standing at 3.6 sigma under
 per-trace cubic freedom. Regressed on both competing predictors at once, that
 excess tracks the model's own profile height inside the band at 8.65 sigma while
-vapour density is a null predictor at -0.75 sigma, and a band re-cut in units of
+vapour density is a null predictor at -0.75 sigma (the note's figures at the retired
+waist, against +1.67 and -0.54 in the reconstruction at the ruled waist), and a band re-cut in units of
 each trace's own linewidth keeps the trend. A placebo band inside the fitted
 window carries structure too, which a general profile mismatch predicts and a
 far-wing collisional excess does not.
+
 [The full construction and its controls](../notes/band_excess_is_model_form.md),
 **which carries no committed producer**: these four numbers were computed once
 for the commit that introduced them, no `results/` row holds them, and the
@@ -393,9 +409,9 @@ This is a candidate mechanism and not an explanation, so the limitation
 stands. Nothing in `results/` moved on it. What it does settle is what the
 excess is not: the pedestal is excluded as its source by the ceiling test of
 chain 3, and the excess is not evidence for a collisional far wing, which
-leaves that question open on theory rather than contaminated.
+leaves that question open on theory rather than contaminated. **The change.** Polarisation isolation.
 
-**The change.** Polarisation isolation. The two-photon rate goes as the squared
+The two-photon rate goes as the squared
 degree of linear polarisation and vanishes for circular light, which is
 published for this transition in this lineage
 ([Rajasree and co-workers](../lit/rajasree2020spin.md)) and which falls out

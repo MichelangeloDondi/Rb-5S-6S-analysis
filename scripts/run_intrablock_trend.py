@@ -44,13 +44,14 @@ from scipy import stats
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
+from rb5s6s.config import RESULTS_DIR as _RESULTS_DIR  # noqa: E402  (F480: results where RB5S6S_RESULTS_DIR points)
 
 MS_PER_MHZ = 1.8 / 0.08          # DATA.md §2 calibration: 1.8 ms = 0.08 MHz
 JUMP_MS = 10.0                   # a block with std above this has a step, not scatter
 
 
 def blocks() -> pd.DataFrame:
-    d = pd.read_csv(ROOT / "results" / "qc_metrics.csv")
+    d = pd.read_csv(_RESULTS_DIR / "qc_metrics.csv")
     d = d[(d.flag == "canonical") & (~d.rf_on)
           & (d.role.isin(["p_sweep", "t_sweep"]))].copy()
     rows = []

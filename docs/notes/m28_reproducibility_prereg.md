@@ -1,5 +1,7 @@
 # The full-archive fit re-run on identical inputs: specification before code
 
+<!-- kind: record -->  <!-- a preregistration states what was predicted before the result. Rewriting its numbers to match the present would destroy its only function, which is why it is declared a record and not propagated -->
+
 Status: pre-registered 2026-08-05, before the run. This note is committed
 with the v3.4.0 release and the run launches after it, so the inputs are the
 release's own committed tables and the record shows the rule before the

@@ -10,7 +10,7 @@ Where the extra bits come from when an eight-bit instrument delivers twelve, wha
 ## Definition
 
 Every oscilloscope in ordinary laboratory use has an eight-bit converter, and
-eight bits is 256 levels across the screen. That is far too coarse for a
+eight bits is 256 levels across the screen. That is far too coarse for a <!-- other-quantity: 2^8, the levels an eight-bit digitiser gives -->
 measurement that wants a per cent of a line height, and instruments therefore
 offer a smoothing feature that exchanges bandwidth for resolution. The
 exchange is real. Averaging genuinely reduces the uncertainty of each
@@ -42,7 +42,7 @@ $$\text{bits gained} = \log_4 N = \tfrac{1}{2}\log_2 N.$$
 This is the physically meaningful figure, the one that says how much better
 the measurement actually is.
 
-The two differ by a factor of two in the exponent, so at 256 averages the
+The two differ by a factor of two in the exponent, so at 256 averages the <!-- other-quantity: a count of averages, not a measured value -->
 word length has grown by eight bits while the noise has fallen by four.
 Reading the word-length number as if it were the noise number overstates the
 improvement by a factor of two in bits, which is a factor of four in
@@ -50,7 +50,7 @@ variance. The Agilent manual states both: an extra bit per factor of two, and
 noise reduced by one half per factor of four.
 
 In this repository the distinction has a concrete use. The quantisation grid
-of the campaign traces gives 11.86 bits, which is a word length. It says the
+of the campaign traces gives 11.86 bits, which is a word length. It says the <!-- other-quantity: a bit count -->
 instrument wrote fine-grained numbers. It does not say the measurement is
 twelve-bit good, and the question of whether the grid matters is settled
 separately by the dither ratio below.
@@ -81,7 +81,7 @@ the other, and the difference decides what ends up in the file.
 ![The LeCroy WaveSurfer oscilloscope used for the campaign traces](../apparatus/2025-07-29_lecroy_ws3104z.jpg)
 
 *The LeCroy WaveSurfer whose ERes math function produced the campaign's
-11.86-bit export while leaving the raw channel data on disk untouched.*
+11.86-bit export while leaving the raw channel data on disk untouched.* <!-- other-quantity: a bit count -->
 
 | | acquisition mode | math function |
 |---|---|---|
@@ -94,7 +94,7 @@ Where the feature is a math function it creates a separate trace, and saving
 the channel saves the unsmoothed data no matter what is displayed. The
 2025-07-04 rehearsal traces measure 7.74 bits across their signal swing,
 which is raw eight-bit behaviour, while the campaign traces from the other
-instrument measure 11.86, which an eight-bit converter cannot produce at any
+instrument measure 11.86, which an eight-bit converter cannot produce at any <!-- other-quantity: a bit count -->
 record length.
 
 What the measurement does not settle is why. A math-function smoothing that

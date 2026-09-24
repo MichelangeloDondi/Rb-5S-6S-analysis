@@ -56,7 +56,7 @@ intensity weighting, from the closed form with no fitted data.*
 What is worth carrying here is the delineation from the nearest prior art, a
 one-photon, fringe-resolved method giving a uniform distribution: the
 dependence on the signal exponent $n$ separates this channel from it. The
-asymmetry is measured through [the third cumulant](third-cumulant.md), a
+asymmetry is measured through [the third moment](third-cumulant.md), a
 channel that opens only above about a megahertz of shift, and that the
 forecast finds accurate on a 25 or 40 MHz comb and biased high on the
 comb-free trace, because splitting the drive among teeth lowers each
@@ -138,7 +138,7 @@ element. The saturation companion is keyed on the local shift, this page's own
 variable, so the broad elements are the shifted ones and the two are
 correlated where a convolution assumes them independent. The centroid survives
 that exactly, the first moment of a mixture of symmetric kernels being the
-density's own mean. The fitted centre and the third cumulant do not.
+density's own mean. The fitted centre and the third moment do not.
 [The AC-Stark ramp chapter](../methods/03_the_ac_stark_ramp.md) carries the
 measurement and [the composite chapter](../methods/04_the_composite_model.md)
 carries the boundary.
@@ -199,7 +199,7 @@ waist the record has left.**
 
 | $w_0$ | transit | transit over natural response |
 |---|---|---|
-| 64 µm | 0.204 µs | 4.5 |
+| the retired waist convention | 0.204 µs | 4.5 |
 | 45 µm | 0.144 µs | 3.2 |
 | 42 µm | 0.134 µs | 3.0 |
 | 40 µm | 0.128 µs | 2.8 |
@@ -212,7 +212,7 @@ quoted with the waist it assumes or not at all.
 
 **And the two approximations weaken together, which is the part worth carrying.** The same move to a
 tighter waist that shrinks this margin also worsens the convolution: the kernel's dependence on the
-mixture variable grows as the beam closes, and the windowed third cumulant is already misstated by about
+mixture variable grows as the beam closes, and the windowed third moment is already misstated by about
 a factor of two at every waist the record has examined. So at 40 to 45 micron the composite model rests
 on two approximations that each hold over a narrower range than the surfaces describing them suggest, and
 neither surface said so because both were written at 64.
@@ -223,7 +223,7 @@ neither surface said so because both were written at 64.
   which measures light shifts by a fringe-resolved one-photon method.
 - [Methods chapter 3](../methods/03_the_ac_stark_ramp.md), the derivation of
   record for this repository's ramp law.
-- [The third cumulant](third-cumulant.md) for the statistic the asymmetry is
+- [The third moment](third-cumulant.md) for the statistic the asymmetry is
   read through.
 
 ## Related pages
@@ -234,7 +234,7 @@ neither surface said so because both were written at 64.
   the intensity this shift responds to.
 - [Saturation](saturation.md) for the boundary where this shift's I-squared
   law starts to fail.
-- [The third cumulant](third-cumulant.md) for the statistic that reads the
+- [The third moment](third-cumulant.md) for the statistic that reads the
   shift distribution's asymmetry out of a fitted line.
 - [Blackbody radiation](blackbody-radiation.md) for the cell's own thermal
   field, a second source of level shift acting on the same states.

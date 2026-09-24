@@ -198,35 +198,37 @@ carry the scale between them.
 
 This page's calibration practices say how to correct a nonlinear scan. This
 section says how well, and the tolerance is far tighter than a centre fit
-needs, because the third cumulant of the line reads an asymmetry and a
+needs, because the third moment of the line reads an asymmetry and a
 nonlinear sweep manufactures one.
 
 Write the true frequency against the assumed axis as
 $\nu = \hat\nu + \alpha\hat\nu^2$. The rate then varies across an analysis
 window of half-width $W$ by a fraction $\epsilon$ equal to $2\alpha W$, and the
-induced third cumulant is linear in that fraction. Measured on the production estimator against the same
+induced third moment is linear in that fraction. Measured on the production estimator against the same
 composed line the campaign forecasts:
 
-| configuration | window | the light shift's own third cumulant | rate variation that fakes it |
+| configuration | window | the light shift's own third moment | rate variation that fakes it |
 |---|---|---|---|
-| 2025, 64 microns | 6 MHz | [-0.00010447](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:k3_light_shift") MHz cubed | [0.00196](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:rate_variation_tolerance") per cent |
-| campaign, 40 microns, the tightest licensed | 6 MHz | [-0.00069510](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:k3_light_shift") MHz cubed | [0.0131](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:rate_variation_tolerance") per cent |
-| campaign, 16 microns, outside the model's licence | 12 MHz | [0.666476](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_16um:k3_light_shift") MHz cubed | [1.44](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_16um:rate_variation_tolerance") per cent |
+| 2025, 42.38 microns | 6 MHz | [-0.000740959](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:k3_light_shift") MHz cubed | [0.0135](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:rate_variation_tolerance") per cent |
+| campaign, 40 microns, the tightest licensed | 6 MHz | [-0.00083489](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:k3_light_shift") MHz cubed | [0.0153](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:rate_variation_tolerance") per cent |
+| campaign, 16 microns, outside the model's licence | 12 MHz | [0.709569](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_16um:k3_light_shift") MHz cubed | [1.52](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_16um:rate_variation_tolerance") per cent |
 
-Each tolerance carries a band: the producer scans the collisional and laser
+Both campaign rows assume the unclipped design, the bore out of the
+focusing path. Each tolerance carries a band: the producer scans the collisional and laser
 width bands, the waist band paired with the retro-ratio error, and the two
 ends of the coherence window the fringe density leaves open, and reports the
 largest excursion from the tolerance. That is
-[0.00061](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:rate_variation_tolerance_err"),
-[0.0022](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:rate_variation_tolerance_err")
-and [0.48](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_16um:rate_variation_tolerance_err")
+[0.0029](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:rate_variation_tolerance_err"),
+[0.0026](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:rate_variation_tolerance_err")
+and [0.70](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_16um:rate_variation_tolerance_err")
 per cent for the three rows above.
 
-A bow of two parts in a thousand of the actuator's travel already reaches
-two parts in a hundred thousand across a 6 MHz window, so the 2025 third
-cumulant was unavailable on its frequency axis whatever its counts had been. The
-campaign's licensed waist asks for a bow under about two per cent, which is a
-different matter and a measurable one.
+At the calculated waist a smooth bow of about one per cent of the actuator's
+travel reaches the 2025 tolerance across a 6 MHz window, so the 2025 third
+moment was unavailable on its frequency axis only if its actuator bowed by
+more than that, which nothing on record gives, and an open-loop piezo's typical ten
+per cent would. The campaign's tightest licensed waist asks for a bow under
+about 1.3 per cent, which is a measurable requirement.
 
 The nonlinearity is the actuator's and not the scan's, which the first
 version of this section had backwards. A piezo's bow is a fraction of its
@@ -241,10 +243,10 @@ that is the argument for it.
 a quadratic bow gives a rate variation across a window of half-width W of
 exactly twelve times the departure times W over the travel, on rung two. Over
 a 6 GHz travel a bow of two per cent gives [0.0240](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:eps_bow_eta2") per cent across a
-6 MHz window, which fails the 64 micron tolerance by eleven and clears the
-40 micron one by 1.2, and a ten per cent bow fails 40 microns by four. So the
+6 MHz window, which fails the 42.38 micron tolerance by 1.8 and fails the
+40 micron one by 1.6, and a ten per cent bow fails 40 microns by about eight. So the
 moment channel at the campaign's licensed waist needs an actuator linear to
-about two per cent of its travel, or the bow taken out from the anchors.
+about 1.3 per cent of its travel, or the bow taken out from the anchors.
 
 A short-scale departure does not dilute, and above a small amplitude it
 reverses the sweep. A ripple of N cycles across the travel replaces the

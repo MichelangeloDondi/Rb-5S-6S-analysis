@@ -128,11 +128,11 @@ Ellipticity shifts levels through the vector light shift, computed in
 `rb5s6s/polarisation.py`, and does not open a transition channel. The
 differential vector polarizability is 1.7 per cent of the differential
 scalar one at the drive wavelength. `results/stark_sweep.csv` gives the
-predicted `S0_225mW_pred` as [0.348](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred:shared") MHz, an ENVELOPE conditional on a waist
+predicted `S0_225mW_pred` as [0.729](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred:shared") MHz, an ENVELOPE conditional on a waist
 never measured in the cell and on an assumed retro ratio, and the joint
-three-session bound `S0_225mW_ub95` as 0.258 MHz. Sized against the
-larger, the spread is 6.0 kHz at the campaign's highest power for fully
-circular light, or 4.5 kHz against the bound, small against
+three-session bound `S0_225mW_ub95` as [0.182](../../results/stark_joint.csv "ref:stark_joint:S0_225mW_ub95:primary") MHz. Sized against the
+larger, the spread is 12.7 kHz at the campaign's highest power for fully
+circular light, or 3.2 kHz against the bound (the spread scales with S0), small against
 per-condition width errors near 30 kHz, and it cancels in the mean
 unless optical pumping biases the population, a concern for a
 fixed-lock campaign more than for this one.

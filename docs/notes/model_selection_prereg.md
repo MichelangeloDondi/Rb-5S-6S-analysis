@@ -88,35 +88,38 @@ signature) against `'gaussian'` (making the whole line a pure Voigt, no cusp).
   the argument, defaulting to the current behaviour so no committed number
   moves, is a precondition for C2.
 
-### C3. The sigma_laser sharing comparison. The one site that flips.
+### C3. The sigma_laser sharing comparison, no longer a flip.
 
 `rb5s6s/sharing_bic.py` (M14) compares `sigma_laser` shared per temperature
 (241 parameters) against per block (250, nine more), scored with a
 correlation-corrected BIC on an effective sample size `N_eff = N / tau_int`.
 The committed `results/sharing_bic.csv` has `N_eff = 13853` and
-`dBIC_eff = +61.3`, decisive in favour of sharing.
+`dBIC_eff = +77.5`, decisive in favour of sharing.
 
 Working the arithmetic back from those committed numbers: the chi-squared
-difference is 61.3 - 9 ln(13853) = -24.6, meaning per-block genuinely fits
-better, as a nested richer model must. BIC charges 9 ln(13853) = 85.8 for the
+difference is 77.5 - 9 ln(13853) = -8.3, meaning per-block still fits
+better in raw chi-squared, as a nested richer model must, but by much less
+than the retired convention's -24.6. BIC charges 9 ln(13853) = 85.8 for the
 nine extra parameters and AIC would charge 18, so
 
-    dAIC = -24.6 + 18 = -6.6
+    dAIC = -8.3 + 18 = +9.7
 
-**AIC reverses the verdict**: BIC says share decisively, AIC says do not share,
-mildly. This is the only site in the repository where the criterion change
-demonstrably flips an answer.
+**AIC now agrees with BIC**: both favour sharing, BIC decisively (77.5,
+above this record's own 10 threshold for decisive) and AIC strongly (+9.7,
+short of that threshold but the same sign, so the same direction). At the
+calculated waist this site no longer flips, and no other site in this note
+carries a computed AIC figure that flips either: C4's B to C
+collisional-width rung cannot be scored either way, since its own BIC
+verdict reversed and it carries no AIC figure to compare (see C4).
 
 - What depends on it: `sharing_bic.csv` and the default `sigma_sharing="per_T"`
   baked into `rb5s6s/global_fit.py:58`, which feeds the lever cross-check.
 - What does not depend on it: the headline. Both `docs/RESULTS.md` and
   methods 4.13 already say the headline stays the model-independent width-slope
   bound rather than the sharing-dependent hierarchical value, and the sharing
-  axis contributes about 0.001 of the quoted 0.014 model-form spread. So the
-  flip changes a cross-check and an interpretive label.
-- Note the direction, because it is the opposite of the intuition that started
-  this: AIC here admits less sharing, that is more free parameters, which is
-  the "admits more structure" direction. It just lands on a cross-check.
+  axis contributes about 0.001 of the quoted 0.014 model-form spread. A flip
+  here would change only a cross-check and an interpretive label, and at the
+  calculated waist no flip occurs to change them.
 
 ### C4. The nested model ladder (M11), robust
 
@@ -125,9 +128,15 @@ demonstrably flips an answer.
 
 | rung | dBIC | under AIC | flips? |
 |---|---|---|---|
-| A Voigt -> B +transit | +878.9 | unchanged | no: B adds NO free parameter, so no penalty term exists to change |
-| B -> C +collisional width | +[1091.3](../../results/model_ladder.csv "ref:model_ladder:dBIC_rung:B_transit->C_collisions") | about +1167 | no, and more decisive |
-| C -> D +AC-Stark ramp | -94.6 | about -18 | no: the chi-squared gain from the Stark term is about 5.6 in total, so nothing buys it |
+| A Voigt -> B +transit | +[2171.4](../../results/model_ladder.csv "ref:model_ladder:dBIC_rung:A_voigt->B_transit") | unchanged | no: B adds NO free parameter, so no penalty term exists to change |
+| B -> C +collisional width | [-42.9](../../results/model_ladder.csv "ref:model_ladder:dBIC_rung:B_transit->C_collisions") | owed | open: no AIC figure is computed for this rung |
+| C -> D +AC-Stark ramp | -97.9 | about -18 | no: the chi-squared gain from the Stark term is about 5.6 in total, so nothing buys it |
+
+The B to C rung has moved since this table was first written: at the
+calculated waist the collisional-width term reads decisively not warranted
+under BIC, the reverse of the retired convention's decisively warranted
+reading. `results/model_ladder.csv` carries no parameter-count or AIC cell
+for this rung, so whether AIC agrees is owed, not computed here.
 
 The C to D rung is the one that matters for the headline, because it is the
 statement that the AC-Stark parameter is not warranted on the drifted data and

@@ -74,7 +74,7 @@ sys.path.insert(0, str(ROOT))
 
 from rb5s6s import config as C  # noqa: E402
 from rb5s6s.stark import kappa_pred_per_watt  # noqa: E402  (SSOT: one predicted coefficient)
-from rb5s6s.constants import RHO_RETRO, W0_MEASURED_M  # noqa: E402
+from rb5s6s.constants import RHO_RETRO, W0_CENTRAL_M  # noqa: E402
 
 LASER_HISTORY_CSV = C.RESULTS_DIR / "laser_history.csv"
 OUT_CSV = C.RESULTS_DIR / "centre_fisher.csv"
@@ -99,7 +99,7 @@ DRIFT_CLASSES = [
 def pull_mhz_per_w() -> float:
     """The predicted centre pull per watt, laser axis."""
     return (CENTROID_FRACTION * LASER_AXIS_FACTOR
-            * kappa_pred_per_watt(W0_MEASURED_M, RHO_RETRO))
+            * kappa_pred_per_watt(W0_CENTRAL_M, RHO_RETRO))
 
 
 def _mad_sigma(x: np.ndarray) -> float:

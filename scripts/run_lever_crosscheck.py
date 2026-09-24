@@ -48,6 +48,7 @@ from rb5s6s.noise import condition_noise_model  # noqa: E402
 from rb5s6s.qc import trace_metrics, hard_flags, ingest_flags  # noqa: E402
 from rb5s6s.linefit import to_frequency  # noqa: E402
 from rb5s6s.global_fit import fit_global  # noqa: E402
+from rb5s6s import lever_crosscheck as _LC  # noqa: E402
 from rb5s6s.lever_crosscheck import (lever_crosscheck_beta, GRID_CELLS,  # noqa: E402
                                      KERNEL_CELL)
 
@@ -263,7 +264,8 @@ def main() -> int:
                         "sigma-sharing axis (|per_T - per_block|)"])
             lo, hi = res["w0_band"][iso]
             w.writerow(["beta_w0_band", f"{iso}Rb", f"{lo:.4f}", f"{hi:.4f}",
-                        "value=lo err=hi over transit_ref 0.92-1.49 (~w0 65-40 um, the OPEN w0)"])
+                        f"value=lo err=hi over transit_ref {min(_LC.W0_BAND_MHZ):.2f}-{max(_LC.W0_BAND_MHZ):.2f} MHz "
+                        f"(w0 {_LC.W0_BAND_UM[0]:.0f}-{_LC.W0_BAND_UM[-1]:.0f} um, constants.W0_BAND_M, the OPEN w0)"])
             dp, wp = res["loo_peak"][iso]
             w.writerow(["beta_loo_peak", f"{iso}Rb", f"{dp:.4f}", "",
                         f"largest |dbeta| dropping one PEAK -- robustness ({wp or 'n/a'})"])

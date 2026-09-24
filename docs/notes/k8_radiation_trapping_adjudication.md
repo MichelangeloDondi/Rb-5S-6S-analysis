@@ -31,14 +31,14 @@ across 32 conditions
 
 | predictor | z | reading |
 |---|---|---|
-| the model's own profile height | 9.41 | the structure scales with signal amplitude |
-| log10 vapour number density | 1.30 | it does not scale with density <!-- other-quantity: a log10 vapour number density --> |
+| the model's own profile height | -0.48 | consistent with zero: the amplitude-scaling structure is gone at the calculated waist |
+| log10 vapour number density | -0.42 | consistent with zero: it does not scale with density |
 
-The two predictors correlate at 0.488, below the threshold preregistered
+The two predictors correlate at 0.489, below the threshold preregistered
 for separability, so the density null is a measurement rather than an
 artefact of collinearity. Leave-one-out refits put the smallest height z at
-8.53, so no single condition carries the result. The committed verdict is
-`MULTIPLICATIVE_IN_SIGNAL_NOT_DENSITY`, with the mechanism recorded as not named.
+-0.87, so no single condition carries the result. The committed verdict is
+`NEITHER_SIGNAL_NOR_DENSITY`, with the mechanism recorded as not named.
 
 **Trapping of any kind is governed by optical depth, and optical depth is
 governed by density.** The reabsorber is a ground-state atom, which is what
@@ -50,21 +50,26 @@ The lever is large enough for that null to bite. The density span across
 the four temperatures is 52.5-fold ([RESULTS.md](../RESULTS.md)), and the
 cell is optically thick on the D1 detection line over that span, with
 tau per centimetre running about 1 to 160 (RESULTS.md, radiation trapping).
-A mechanism whose strength tracks tau across a 160-fold range cannot
-produce a density coefficient of 1.30 sigma while producing a height  <!-- other-quantity: a significance in sigma -->
-coefficient of 9.41.
+A density-driven mechanism whose strength tracked tau across that
+160-fold range would show up as a density coefficient of real size. The
+joint regression instead returns -0.42 sigma on density and -0.48 sigma
+on height, both consistent with zero: at the calculated waist there is
+no residual structure of either kind for a density-driven mechanism to
+explain.
 
 ## What this does not settle
 
-The three original candidates are untouched. K8's own note records why its
-height coefficient is weak evidence about mechanism: a normalised residual
-scales with signal under any fractional model, so 9.41 sigma on height
-discriminates almost nothing by itself. **The exclusion here rests entirely
-on the density null, not on the height coefficient.**
+The three original candidates are untouched. K8's own note records why a
+height coefficient alone would not discriminate mechanism even were it
+significant: a normalised residual scales with signal under any fractional
+model. At the calculated waist that caveat is not reached either way,
+since height itself now reads -0.48 sigma and is consistent with zero.
+**The exclusion here rests entirely on the density null, not on the
+height coefficient.**
 
 It also leaves the amplitude channel alone. Trapping is present in this
 cell and the record measures it: amplitude against density gives log-log
-slopes of 0.85 to 1.02 with no significant rollover, which is trapping
+slopes of 0.85 to 1.02 with no significant rollover, which is trapping <!-- other-quantity: amplitude slopes -->
 redistributing rather than destroying. That is a statement about
 amplitudes. K8 is a statement about residual shape, and section 2.7's title
 makes the distinction the record has always drawn.

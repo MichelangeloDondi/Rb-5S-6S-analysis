@@ -33,6 +33,7 @@ sys.path.insert(0, str(ROOT / "scripts"))
 from rb5s6s import config as C
 from rb5s6s import windows as _WINDOWS, ladder_gate                       # noqa: E402
 from rb5s6s.cumulants import windowed_moments                     # noqa: E402
+from rb5s6s.config import RESULTS_DIR as _RESULTS_DIR  # noqa: E402  (F480: results where RB5S6S_RESULTS_DIR points)
 
 _s = importlib.util.spec_from_file_location("closure_for_surface", ROOT / "scripts" / "run_ultra_joint_closure.py")
 CL = importlib.util.module_from_spec(_s); _s.loader.exec_module(CL)   # ladder-exempt: the injection's own source, the closure's route
@@ -201,7 +202,7 @@ def _spread_check(vals, refused_keys, half, reps, scale, has_pool):
     ref = os.environ.get("RB5S6S_SPREAD_REFERENCE", "")
     p = Path(ref) if ref else Path(C.RESULTS_DIR) / "ultra_joint_moments.csv"
     if not p.is_file():
-        p = ROOT / "results" / "ultra_joint_moments.csv"
+        p = _RESULTS_DIR / "ultra_joint_moments.csv"
     out["reference"] = str(p)
     # THE NULL IS NOT ONE (a reading of 2026-09-17 03:40): the repeats' standard error comes
     # from four or five traces, so sigma/s has a median of sqrt(nu / median chi2_nu), 1.092 for
@@ -263,7 +264,11 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--stage", type=int, default=3, help="the size stage. the default is the full noiseless surface the committed CSV carries")
     ap.add_argument("--noise", type=float, default=0.0, help="the level, a multiple of each condition's law. one per run")
-    ap.add_argument("--truth", type=float, default=64.0)
+    # DERIVED, NOT A BARE LITERAL (O44/F280, 2026-09-21): was a hardcoded literal, the retired
+    # convention, which the mechanical rename missed because it is a CLI default and not a named
+    # constant reference. Deriving it from C.W0_CENTRAL_M means a bare invocation (the one "the
+    # committed CSV carries", per --stage's own help text above) tracks the live convention.
+    ap.add_argument("--truth", type=float, default=round(C.W0_CENTRAL_M * 1e6, 2))
     ap.add_argument("--reps", type=int, default=1)
     ap.add_argument("--windows", default=",".join(str(w) for w in ALL_WINDOWS))
     ap.add_argument("--orders", default=",".join(str(o) for o in ALL_ORDERS))

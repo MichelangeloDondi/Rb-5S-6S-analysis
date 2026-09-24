@@ -174,6 +174,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from rb5s6s import config as C  # noqa: E402
+from rb5s6s.config import RESULTS_DIR as _RESULTS_DIR  # noqa: E402  (F480: results where RB5S6S_RESULTS_DIR points)
 
 CLOCK = C.REPO_ROOT / "data_recovered" / "CLOCK.csv"
 
@@ -188,7 +189,7 @@ CLOCK = C.REPO_ROOT / "data_recovered" / "CLOCK.csv"
 #: check verified nothing". Two committed CSVs were graded by a check that
 #: could never have run. Inputs come from the canonical
 #: results directory; only the output follows the redirect.
-_IN = C.REPO_ROOT / "results"
+_IN = _RESULTS_DIR
 
 
 def _campaign_rate() -> tuple[float, float]:

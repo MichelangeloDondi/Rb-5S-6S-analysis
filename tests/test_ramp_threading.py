@@ -3,8 +3,9 @@ default path is untouched.
 
 Until 2026-09-08 `build_world_trace` convolved the pure transverse ramp, so
 the twin recovered what it injected and would not have recovered this bench's
-line: the collection window's divergence (kappa3 at 0.93 of the ramp's at
-64 um, reversed in sign at 16) and the standing wave's fringe-resolved tail
+line: the collection window's divergence (kappa3 at 0.93 of the ramp's at the
+campaign waist of the time, reversed in sign at 16 microns) and the standing
+wave's fringe-resolved tail
 (a skew suppression near a quarter at 16 um) were both derived in the record
 and threaded into nothing. `lineshape.ramp_mixture` carries either or both
 from one local density; these tests hold it against the closed forms it
@@ -63,7 +64,7 @@ def _moments(x, dens):
 def test_the_fringe_density_without_contrast_is_the_ramp():
     """rho = 0 removes the fringe; dividing the path factor out leaves the
     record's own ramp: mean +2/3, variance 1/18, third cumulant -1/135 (BLUE; O27)."""
-    d = fringe_shift_density(w0_m=64e-6, rho=0.0, n_atoms=200_000, seed=7,
+    d = fringe_shift_density(w0_m=K.W0_CENTRAL_M, rho=0.0, n_atoms=200_000, seed=7,
                              coherence_s=COHERENCE_TRANSIT)
     assert d["kappa_bar"] == pytest.approx(math.sqrt(2.0 / 3.0), abs=1e-9)
     m, v, k3 = _moments(d["x_grid"], d["density"])
@@ -91,7 +92,7 @@ def _world(kappa_scale=1.0, **kw):
     layers = {"cascade": False, "saturation": False, "stark": True,
               "bbr": False, "drift": False, "quantise": False, "randomise": False}
     return build_world_trace(
-        0.225, kappa_scale * kappa_pred_per_watt(K.W0_MEASURED_M, K.RHO_RETRO), 130.0, 0, 1, np.random.default_rng(4), layers,
+        0.225, kappa_scale * kappa_pred_per_watt(K.W0_CENTRAL_M, K.RHO_RETRO), 130.0, 0, 1, np.random.default_rng(4), layers,
         positions={"4192": 0.0}, shares={"4192": 1.0},
         gamma_coll=0.4, sigma_laser_fwhm=2.0, transit_fwhm=0.93,
         power_max_w=0.225, cycles_at_max=1.0, drift_mhz_total=0.0,
@@ -223,7 +224,7 @@ def test_the_coherence_end_is_named_and_the_old_silent_default_is_refused():
     instead of continuing to publish one end of a bracket as the answer."""
     for bad in (None, "cap", "", 0.0, -1e-9, float("inf")):
         with pytest.raises(ValueError):
-            fringe_shift_density(w0_m=64e-6, coherence_s=bad, n_atoms=200, seed=1)
+            fringe_shift_density(w0_m=K.W0_CENTRAL_M, coherence_s=bad, n_atoms=200, seed=1)
 
 
 def test_the_transit_sentinel_is_the_long_window_limit_and_a_short_one_moves_it():

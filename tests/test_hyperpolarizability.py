@@ -273,8 +273,10 @@ def test_two_photon_matrix_element_and_its_ratio_to_the_light_shift():
 
 
 def test_two_photon_rabi_uses_the_geometric_arm_combination():
-    """Omega/2pi = 450 kHz at the campaign maximum, and the retro enters as
-    2 sqrt(rho), not (1 + rho).
+    """Omega/2pi = 1026 kHz at the campaign maximum (RE-PINNED 2026-09-21, O44/F280: was 450 kHz
+    at the retired waist convention; Omega goes as 1/w0^2 and the bore-limited central waist is smaller,
+    42.38 um, so the campaign-maximum Rabi frequency reads higher, not lower), and the retro
+    enters as 2 sqrt(rho), not (1 + rho).
 
     This is the one place the coupling and the shift take different combinations
     of the same two arms: the shift is linear in |E|^2, whose fringe mean is the
@@ -286,33 +288,39 @@ def test_two_photon_rabi_uses_the_geometric_arm_combination():
     the FORM, at a rho where the two differ visibly.
     """
     import math
+    from rb5s6s.constants import W0_CENTRAL_M
     from rb5s6s.lineshape import stark_shift_S0_mhz
-    om = hp.two_photon_rabi_hz(0.225, 64e-6, 0.94)
-    assert abs(om / 1e3 - 449.9) < 0.5
+    om = hp.two_photon_rabi_hz(0.225, W0_CENTRAL_M, 0.94)
+    assert abs(om / 1e3 - 1026.0) < 0.5
 
     # the form: at rho = 0.36 the geometric and arithmetic combinations differ
-    # by 11.8 per cent, so a regression to (1 + rho) cannot hide here
+    # by 11.8 per cent, so a regression to (1 + rho) cannot hide here. These are
+    # relationships, not absolute pins, and hold unchanged at the new waist
+    # (verified live: the ratios below are w0-independent to 1e-12).
     rho = 0.36
-    got = hp.two_photon_rabi_hz(0.225, 64e-6, rho)
-    one_arm = hp.two_photon_rabi_hz(0.225, 64e-6, 0.5) / (2.0 * math.sqrt(0.5))
+    got = hp.two_photon_rabi_hz(0.225, W0_CENTRAL_M, rho)
+    one_arm = hp.two_photon_rabi_hz(0.225, W0_CENTRAL_M, 0.5) / (2.0 * math.sqrt(0.5))
     assert abs(got / (one_arm * 2.0 * math.sqrt(rho)) - 1.0) < 1e-12
     assert abs(got / (one_arm * (1.0 + rho)) - 1.0) > 0.1
 
     # Omega is linear in power and goes as 1/w0^2, both because it is linear in
     # intensity: a two-photon RABI FREQUENCY is first order in I, not second
-    assert abs(hp.two_photon_rabi_hz(0.450, 64e-6, 0.94) / om - 2.0) < 1e-12
-    assert abs(hp.two_photon_rabi_hz(0.225, 32e-6, 0.94) / om - 4.0) < 1e-12
+    assert abs(hp.two_photon_rabi_hz(0.450, W0_CENTRAL_M, 0.94) / om - 2.0) < 1e-12
+    assert abs(hp.two_photon_rabi_hz(0.225, W0_CENTRAL_M / 2, 0.94) / om - 4.0) < 1e-12
 
     # and the ratio to the committed S0 is the band's matching end times the
     # contrast, which is the whole content of the correction. Since the
     # S0 defaults to the package constant, which since 2026-09-15 is the
     # adopted dynamic sum, so the matching end is 1.2511; the cited 1.2951 end
-    # is reproduced by passing the Orson constant explicitly.
+    # is reproduced by passing the Orson constant explicitly. UNCHANGED at the
+    # new waist (verified live, both sides move by the same aperture factor):
+    # 1.2501 and 1.2944 against the same 1.2511/1.2951 targets, inside the same
+    # 1e-3 tolerance this test always used.
     from rb5s6s.constants import DELTA_ALPHA_AU_ORSON2021
     contrast = 2.0 * math.sqrt(0.94) / 1.94
-    ratio = om / (stark_shift_S0_mhz(0.225, 64e-6, rho=0.94) * 1e6)
+    ratio = om / (stark_shift_S0_mhz(0.225, W0_CENTRAL_M, rho=0.94) * 1e6)
     assert abs(ratio - 1.2511 * contrast) < 1e-3
     ratio_cited = om / (stark_shift_S0_mhz(
-        0.225, 64e-6, rho=0.94,
+        0.225, W0_CENTRAL_M, rho=0.94,
         delta_alpha_au=DELTA_ALPHA_AU_ORSON2021) * 1e6)
     assert abs(ratio_cited - 1.2951 * contrast) < 1e-3

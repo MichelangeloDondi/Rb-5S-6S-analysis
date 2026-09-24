@@ -109,12 +109,14 @@ def test_the_noiseless_resolved_limit_returns_the_cubic_law():
 def test_the_unresolved_grid_biases_small_shifts_and_not_the_campaign():
     """A33 as a standing measurement, and as the REGION it applies to.
 
-    The fitted slope alone would mislead: it mixes rungs. Rung by rung the
-    unresolved grid overstates the third cumulant by 68 per cent at S0 = 0.18,
-    reads 5 per cent low at the ladder's 0.364 rung (the archive's prediction of its date), and is exact at 1.0 and above
-    -- so the campaign's own regime is untouched and the archive's is not.
-    Guarding the structure rather than one number is what stops this being
-    restated as "the twin is biased", which is the overstatement it replaced.
+    The fitted slope alone would mislead: it mixes rungs. At the retired waist convention, until
+    2026-09-22, the unresolved grid overstated the third cumulant by 68 per cent at S0 = 0.18 and read
+    5 per cent low at the 0.364 rung. At the ruled waist the line is wider (its transit 1.45 MHz), the
+    grid is resolved further down, and the bias region moves to smaller shifts: a factor 4.3 at
+    S0 = 0.02 and a sign flip at 0.05, 9 per cent low at 0.1, within 2 per cent from 0.18 up, exact at
+    1.0 and above (2026-09-24). The campaign's own regime is untouched either way. Guarding the
+    structure rather than one number is what stops this being restated as "the twin is biased",
+    which is the overstatement it replaced.
     """
     mod = _load()
     from rb5s6s.forecast import build_world_trace
@@ -132,8 +134,8 @@ def test_the_unresolved_grid_biases_small_shifts_and_not_the_campaign():
             gamma_l=0.0, resolve_shift=resolve, offset=0.0)
         return mod.selfcentred_cumulant(y, 8.0, 3, grid=nu)
 
-    # small shift: the unresolved grid is badly wrong
-    assert k3(0.18, False) / k3(0.18, True) > 1.3
+    # small shift: the unresolved grid is badly wrong (at the ruled waist, below about 0.05 MHz)
+    assert k3(0.02, False) / k3(0.02, True) > 1.3
     # the campaign's regime: resolving the shift changes nothing
     for s0 in (1.0, 2.0):
         assert k3(s0, False) == pytest.approx(k3(s0, True), rel=1e-6), s0

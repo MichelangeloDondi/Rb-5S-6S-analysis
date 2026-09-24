@@ -28,6 +28,7 @@ import math
 import numpy as np
 
 from rb5s6s import composite_profile, transit_fwhm_from_w0
+from rb5s6s.constants import W0_CENTRAL_M
 from rb5s6s.linefit import fit_condition
 
 
@@ -36,7 +37,7 @@ from rb5s6s.linefit import fit_condition
 GAMMA_COLL_TRUE = 0.60      # MHz, the collisional width
 SIGMA_LASER_TRUE = 1.40     # MHz, the laser kernel FWHM (a FWHM, not a sigma,
                             # despite the name: see rb5s6s/linefit.py)
-W0_M = 64e-6                # m, beam waist, sets the transit kernel
+W0_M = W0_CENTRAL_M          # m, beam waist, sets the transit kernel
 T_C = 130.0                 # C, sets the thermal speed in the transit kernel
 N_TRACES = 4
 NOISE_FRAC = 0.004          # of peak, per sample

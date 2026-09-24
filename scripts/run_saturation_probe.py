@@ -117,7 +117,7 @@ def ramp_increment_mhz(s0_mhz: float, gamma_coll: float, sigma_laser: float,
 def stage1() -> dict:
     print("=" * 78)
     print("STAGE 1  the two-photon Rabi frequency, from the bench numbers up")
-    w0 = C.W0_MEASURED_M
+    w0 = C.W0_CENTRAL_M
     rho = C.RHO_RETRO
     i_arm = 2.0 * P_MAX_W / (math.pi * w0 ** 2)
     e_arm_sq = 2.0 * i_arm / (EPS0_F_PER_M * C_M_PER_S)

@@ -118,7 +118,7 @@ def main() -> int:
     print()
     print(f"   {'w0':>5} {'P':>6} {'S0':>7} {'s':>7} {'transit':>8} {'ramp':>8} "
           f"{'sat':>9} {'total':>7} {'lever':>8} {'/88kHz':>7} {'/frac':>6}")
-    for w0_um in (64.0, 40.0, 32.0, 24.0, 16.0):
+    for w0_um in (round(C.W0_CENTRAL_M * 1e6, 2), 40.0, 32.0, 24.0, 16.0):   # C6a: the archive's focus first
         for p_mw in (225.0, 500.0, 1000.0):
             r = lever_row(w0_um, p_mw)
             print(f"   {w0_um:4.0f}u {p_mw:5.0f}m {r['s0']:7.3f} "
@@ -145,10 +145,10 @@ def main() -> int:
     lam32, a32 = T._leg(*T.LINES_6S[1][:2])
     b12 = a12 / (a12 + a32)
     s12 = T._sigma_peak_cm2(lam12, a12, 2, 2)
-    m = ramp_moments(C.W0_MEASURED_M, 0.225, 2.2e-3)
+    m = ramp_moments(C.W0_CENTRAL_M, 0.225, 2.2e-3)
     f_ex = (m["sat_w"] / 2.0) / (1.0 + m["sat_w"])
-    z_r = math.pi * C.W0_MEASURED_M ** 2 / 993.4e-9
-    v_beam = math.pi * C.W0_MEASURED_M ** 2 * (2.0 * z_r) * 1e6
+    z_r = math.pi * C.W0_CENTRAL_M ** 2 / C.LAMBDA_LASER_M
+    v_beam = math.pi * C.W0_CENTRAL_M ** 2 * (2.0 * z_r) * 1e6
     print()
     print(f"   {'T':>5} {'n (1e12)':>10} {'tau/cm':>8} {'halo re-exc':>12} "
           f"{'band':>17} {'6S->6P ppm':>11} {'BBR shift':>10}")

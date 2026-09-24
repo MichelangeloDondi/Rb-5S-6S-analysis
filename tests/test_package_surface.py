@@ -42,7 +42,7 @@ def test_the_exported_surface_is_stable_and_nonempty():
     assert not missing, f"__all__ names something absent: {missing}"
     # the seam-map names docs/ADAPTING.md tells a reader to reach for
     for name in ("stark_ramp", "stark_shift_S0_mhz", "model_profile",
-                 "delta_alpha", "two_photon_rabi_hz", "W0_MEASURED_M"):
+                 "delta_alpha", "two_photon_rabi_hz", "W0_CENTRAL_M"):
         assert name in rb5s6s.__all__, f"{name} dropped from the public surface"
 
 
@@ -58,8 +58,8 @@ def test_every_exported_name_is_pure():
     # the pure calls below must not touch these, so make them impossible to
     # satisfy and check the calls still work
     for fn, args in (
-        (rb5s6s.stark_shift_S0_mhz, (0.225, 64e-6)),
-        (rb5s6s.two_photon_rabi_hz, (0.225, 64e-6, 0.94)),
+        (rb5s6s.stark_shift_S0_mhz, (0.225, rb5s6s.W0_CENTRAL_M)),
+        (rb5s6s.two_photon_rabi_hz, (0.225, rb5s6s.W0_CENTRAL_M, 0.94)),
         (rb5s6s.delta_alpha, (993.4192,)),
         (rb5s6s.two_photon_matrix_element, (993.4192,)),
         (rb5s6s.alpha_5s, (993.4192,)),

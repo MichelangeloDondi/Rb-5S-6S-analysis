@@ -416,8 +416,8 @@ def two_photon_rabi_hz(power_w: float, w0_m: float, rho: float = 1.0,
       running-wave geometry attractive: it removes the fringe from the shift
       without touching the rate.
 
-    At 225 mW, w0 = 64 um, rho = 0.94 this returns 449.9 kHz, which is the
-    450 kHz the saturation companion note quotes.
+    At 225 mW and rho = 0.94, at the retired waist convention, this returned 449.9 kHz, the
+    450 kHz the saturation companion note quotes (the note predates O44).
     """
     i_arm = 2.0 * power_w / (np.pi * w0_m ** 2)
     e_arm_sq = 2.0 * i_arm / (EPS0_F_PER_M * C_M_PER_S)

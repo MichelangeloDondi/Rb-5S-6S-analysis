@@ -23,7 +23,7 @@ error delta.
 the window cubed.** The pedestal's own third moment about its centre is zero;
 about a point delta off it, the uniform's third moment is -delta W^2 per unit
 mass, so the fake term is of order -(2bW / (A + 2bW)) delta W^2. Measured on
-the twin's noiseless lowest rung (a 64 um beam, 50 mW, the 1 per cent offset
+the twin's noiseless lowest rung (a beam at the retired waist convention, 50 mW, the 1 per cent offset
 a third of the peak): at a 6 MHz half-width twenty passes read 0.0308e-3
 where eighty passes read 0.0006e-3, and at 24 MHz they read 31.8e-3 where
 eighty passes read -0.0012e-3, while the centre itself agreed to four

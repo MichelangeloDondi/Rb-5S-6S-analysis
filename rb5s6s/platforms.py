@@ -78,7 +78,8 @@ class Platform:
     detection: str            # fluorescence | absorption
     guided: bool
     # NOT A SOLID ANGLE, which this line called it until 2026-09-11.
-    # `results/prediction_band.csv` derives 0.162 as `2 arctan(z_ratio) / pi`,
+    # `results/prediction_band.csv` derives it as `2 arctan(z_ratio) / pi` (its
+    # `fluorescence_collected_frac` row),
     # the fraction of the emitted fluorescence inside the COLLECTION WINDOW the
     # cathode and the lens define, at the archive's waist. So the detected rate
     # carries an axial window and NO solid angle: the record has never measured
@@ -506,9 +507,10 @@ def transit_fwhm_mhz(p: Platform) -> float:
 #: DESIGN FIGURES; the cell's are this record's own measured conditions.
 PLATFORMS: Dict[str, Platform] = {
     "cell_130C": Platform(
-        "cell_130C", "cell", 403.15, 2.94e13, 64e-6, 0.05, 1.0,
+        "cell_130C", "cell", 403.15, 2.94e13, C.W0_CENTRAL_M, 0.05, 1.0,
         "fluorescence", False,
-        note="the 2025 archive's own conditions, the only measured row here"),
+        note="the 2025 archive's own conditions, the only measured row here (the waist is "
+             "C.W0_CENTRAL_M itself, not a second copy of it -- O44, F280)"),
     "cell_130C_tight": Platform(
         "cell_130C_tight", "cell", 403.15, 2.94e13, 16e-6, 0.05, 1.0,
         "fluorescence", False,

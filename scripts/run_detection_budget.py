@@ -78,12 +78,12 @@ from rb5s6s.pmfmt import pm_cells                                  # noqa: E402
 OUT = _CFG.RESULTS_DIR / "detection_budget.csv"
 HEADER = ["quantity", "key", "value", "err", "unit", "note"]
 
-# The bench facts, each with its source. The image distance's one-sigma is the
-# owner's 2026-09-13 figure (5 mm); constants.COLLECTION_IMAGE_DIST_ERR_M still
-# carries the 10 mm of 2026-09-04 and is not moved here, because the prediction
-# band's committed cells rest on it (docs/plan/12 carries the discrepancy).
+# The bench facts, each with its source. The image distance's one-sigma is read
+# from the constant, which carries the owner's 5 mm since C6a's last code step:
+# this file typed its own copy of that figure for nine days while the constant
+# read 10, which is one fact at two values and is what that step closed.
 F_M, F_ERR_M = K.COLLECTION_LENS_F_M, K.COLLECTION_LENS_F_ERR_M
-S_IMG_M, S_IMG_ERR_M = K.COLLECTION_IMAGE_DIST_M, 5e-3
+S_IMG_M, S_IMG_ERR_M = K.COLLECTION_IMAGE_DIST_M, K.COLLECTION_IMAGE_DIST_ERR_M
 QE, QE_ERR = 0.06, 0.01                     # owner, 2026-09-13: 8 per cent cathode, 6 +- 1 in the chain
 CATHODE_M = {"along12": K.PMT_CATHODE_ALONG_BEAM_M,      # the 12 mm dimension along the beam, the record's reading
              "along3": 3e-3}                             # the 3 mm dimension along the beam, the owner's 2026-09-12 "portrait"   # datasheet TPMS1016E, 3 x 12 mm
@@ -92,7 +92,9 @@ DT_STORED_S = 0.5e-3                        # docs/APPARATUS.md, the stored spac
 B_HZ = 1.0 / (2.0 * DT_STORED_S)
 RHO = 0.94                                  # the record's retro ratio; the span 0.7 to 1 is a row
 T_C, P_W = 130.0, 0.225
-W0_GRID_UM = (64.0, 40.0, 25.0, 16.0)
+# The grid's first point is the archive's own focus, read from the constant (O44, C6a 2026-09-22), so the
+# retired convention cannot re-enter as a literal; 40, 25 and 16 um stay as the design points.
+W0_GRID_UM = (round(K.W0_CENTRAL_M * 1e6, 2), 40.0, 25.0, 16.0)
 N_DRAWS = 4000
 
 
@@ -169,13 +171,14 @@ def main() -> None:
     n_steck = number_density_cm3(T_C)
     n_aih = aih_density_cm3(T_C)
     branching = ir_branching_5p12()
-    w0 = K.W0_MEASURED_M
+    w0 = K.W0_CENTRAL_M
 
     # 1. the geometry and the exponents, at the record's waist and along the campaign's ladder
     for orient, cath in CATHODE_M.items():
         s_obj, mag, L, z_r, x = geometry(F_M, S_IMG_M, cath, w0)
         add(["object_distance", orient, f"{s_obj*1e3:.2f}", "", "mm", "1/(1/f - 1/s'), thin lens, the detector in focus"])
-        add(["magnification", orient, f"{mag:.3f}", "", "", "s'/s"])
+        _dmag = math.hypot(S_IMG_ERR_M / F_M, S_IMG_M * F_ERR_M / F_M ** 2)
+        add(["magnification", orient, *pm_cells(mag, _dmag), "", "s'/s"])
         add(["collected_length", orient, f"{L*1e3:.2f}", "", "mm", "the cathode's dimension along the beam over the magnification"])
         add(["collected_fraction", orient, f"{2*math.atan(x)/math.pi:.3f}", "", "", "2 arctan(L / 2 z_R) / pi, the ramp's axial weight inside the window. the record's prediction_band cell is the 12 mm reading"])
         for w_um in W0_GRID_UM:

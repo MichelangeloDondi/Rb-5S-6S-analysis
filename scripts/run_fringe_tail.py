@@ -3,7 +3,7 @@
 M15: fringe-tail imprint on the standing-wave AC-Stark ramp.
 
 Samples the 3D Maxwell-Boltzmann + fringe-phase ensemble (rb5s6s.fringe_tail)
-at the waist convention (config.W0_MEASURED_M) and small-waist config S (16 um)
+at the waist convention (config.W0_CENTRAL_M) and small-waist config S (16 um)
 geometries -- both S0 from lineshape.stark_shift_S0_mhz at 225 mW, so neither
 waist nor shift can go stale here -- over the three retro ratios, and reports
 how the slow-axial-speed fringe tail
@@ -30,11 +30,11 @@ from rb5s6s.fringe_tail import fringe_tail_mc  # noqa: E402
 from rb5s6s.lineshape import stark_shift_S0_mhz  # noqa: E402
 
 # (label, w0 in m, S0 in MHz): the measured waist and the small-waist (config S) target
-_S0_RECORD = kappa_pred_per_watt(C.W0_MEASURED_M, C.RHO_RETRO) * 0.225
+_S0_RECORD = kappa_pred_per_watt(C.W0_CENTRAL_M, C.RHO_RETRO) * 0.225
 _S0_SMALL = stark_shift_S0_mhz(0.225, 16e-6, rho=C.RHO_RETRO)
 REGIMES = (
-    (f"2025 ({C.W0_MEASURED_M*1e6:.0f}um, {_S0_RECORD:.2f}MHz)",
-     C.W0_MEASURED_M, _S0_RECORD),
+    (f"2025 ({C.W0_CENTRAL_M*1e6:.0f}um, {_S0_RECORD:.2f}MHz)",
+     C.W0_CENTRAL_M, _S0_RECORD),
     (f"S    (16um, {_S0_SMALL:.1f}MHz)", 16e-6, _S0_SMALL),
 )
 RHOS = (1.0, C.RHO_RETRO, 0.75)
@@ -114,7 +114,7 @@ def main() -> int:
 
     # the READING quotes the run's own numbers, so it cannot describe a waist or
     # a suppression the run did not produce (it long said "the archival 50 um
-    # waist" after W0_MEASURED_M moved to 64 um, and a percentage of the triangle
+    # waist" after W0_CENTRAL_M moved to the retired waist convention, and a percentage of the triangle
     # skew that was last true two waists earlier)
     def _band(lab):
         d = [abs(r["d_skew"]) for r in rows if r["regime"].split()[0] == lab]
@@ -122,7 +122,7 @@ def main() -> int:
                f"{max(d) / G1_TRIANGLE * 100:.0f}% of the +{G1_TRIANGLE:.3f} triangle skew"
     print("\n  READING: the fringe tail SUPPRESSES the ramp skew (d_skew < 0) and")
     print("  inflates its variance, both scaling with the fringe-modulation")
-    print(f"  variance. At the measured {C.W0_MEASURED_M*1e6:.0f} um it is negligible")
+    print(f"  variance. At the measured {C.W0_CENTRAL_M*1e6:.0f} um it is negligible")
     print(f"  ({_band('2025')}), the whole skew being below the")
     print("  archival noise there; at the small 16 um waist (config S) it is")
     print(f"  material ({_band('S')}). The transit <->")

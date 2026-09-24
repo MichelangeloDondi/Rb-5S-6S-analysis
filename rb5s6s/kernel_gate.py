@@ -362,7 +362,7 @@ def depletion_factor(w0_um: float, line: str, m2: float = 1.0, rho: float = 0.94
     the fit: `transit_fwhm x depletion_factor`. Read from the node's artefact when the waist
     sits on a validated node; between two validated nodes it is interpolated linearly, whatever
     their spacing up to `MAX_SPAN_UM`, because the factor moves by a part in a thousand per micron
-    (5.2 to 2.25 per cent over 64 to 90 um at 225 mW, 2026-09-16) and a coarse node grid is the
+    (5.2 to 2.25 per cent from the retired convention's waist to 90 um at 225 mW, 2026-09-16) and a coarse node grid is the
     order's own preference. The error of the straight line is bounded by the second difference
     across the three nearest nodes where a third exists (`CURVATURE_TOL`), and a waist outside the
     validated span, a gap wider than the bound, or a curvature over the tolerance is refused."""

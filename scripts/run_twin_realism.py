@@ -34,8 +34,10 @@ from rb5s6s.linefit import fit_condition                     # noqa: E402
 
 OUT = C.RESULTS_DIR / "twin_realism.csv"
 LAW = dict(a=0.004, b=1.0e-3, c=0.0, lev_max=1.0, tau_int=1.0)
-TRUTH = dict(gamma_coll_mhz=0.580779, sigma_laser_mhz=1.560691,
-             transit_fwhm_mhz=0.957477)
+from rb5s6s.reference_point import reference_point  # noqa: E402
+_AP = reference_point()   # F313: the archive's line, read from the committed fit and the waist, never typed
+TRUTH = dict(gamma_coll_mhz=round(_AP["gamma_coll"], 6), sigma_laser_mhz=round(_AP["sigma_laser"], 6),
+             transit_fwhm_mhz=round(_AP["transit_fwhm"], 6))
 SEED = 20260824
 
 

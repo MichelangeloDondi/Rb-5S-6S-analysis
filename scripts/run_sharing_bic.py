@@ -53,9 +53,17 @@ def main() -> int:
     print("  archive cannot pay for per-block sigma_laser freedom once the ~3.5x")
     print("  spectral over-sampling is accounted for. This is Occam/parsimony, NOT")
     print("  proof the four peaks shared one laser width (the unlogged timing forbids")
-    print("  that; M4c). The naive raw-N BIC flips to per_block, which is the")
-    print("  caveat: the archive does not ROBUSTLY resolve shared-vs-independent, so")
-    print("  the headline stays the model-independent width-slope bound (C1).")
+    # THE READING FOLLOWS THE SIGN IT DESCRIBES (2026-09-24, F478): this text and the CSV note said the
+    # raw-N BIC "flips" while the table itself read +46.9 against +77.5, the same sign, so the file
+    # contradicted its own numbers; both are now written from `res['robust']`, which the line above reads.
+    if res["robust"]:
+        print("  that; M4c). The naive raw-N BIC agrees in sign, so the counting")
+        print("  convention sets the margin and not the verdict; the headline still")
+        print("  stays the model-independent width-slope bound (C1).")
+    else:
+        print("  that; M4c). The naive raw-N BIC flips to per_block, which is the")
+        print("  caveat: the archive does not ROBUSTLY resolve shared-vs-independent, so")
+        print("  the headline stays the model-independent width-slope bound (C1).")
 
     with open(C.RESULTS_DIR / "sharing_bic.csv", "w", newline="") as f:
         w = csv.writer(f)
@@ -69,7 +77,8 @@ def main() -> int:
                     f"Occam on underpowered data, NOT sharing proof (M4c)"])
         w.writerow(["dBIC_raw_block_minus_T", "shared", f"{res['dBIC_raw']:.1f}",
                     "diagnostic: naive raw-N BIC (over-counts correlated samples, "
-                    "flips sign -> the archive does not robustly resolve the sharing)"])
+                    + ("agrees in sign -> the counting convention sets the margin, not the verdict)" if res["robust"]
+                       else "flips sign -> the archive does not robustly resolve the sharing)")])
     print("  Wrote results/sharing_bic.csv.")
     return 0
 

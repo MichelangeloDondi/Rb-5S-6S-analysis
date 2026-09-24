@@ -91,7 +91,7 @@ in
 dropping the single peak whose absence moves the fit most shifts
 $\beta_\text{self}$ by at most 0.0070 MHz per $10^{12} \text{cm}^{-3}$ for
 $^{85}\text{Rb}$ and 0.0040 for $^{87}\text{Rb}$, while dropping the 110 C
-block moves it by up to [0.1043](../../results/lever_crosscheck.csv "ref:lever_crosscheck:beta_loo_temp:85Rb") and [0.0578](../../results/lever_crosscheck.csv "ref:lever_crosscheck:beta_loo_temp:87Rb") respectively, because a
+block moves it by up to [0.0382](../../results/lever_crosscheck.csv "ref:lever_crosscheck:beta_loo_temp:85Rb") and [0.0081](../../results/lever_crosscheck.csv "ref:lever_crosscheck:beta_loo_temp:87Rb") respectively, because a
 temperature block is also a density point that shortens the fit's density
 lever when removed.
 
@@ -110,7 +110,7 @@ whole peak's power sweep, not a smaller one.
 
 Resampling cannot manufacture information the sample does not contain, and
 a nonparametric bootstrap on a very small sample meets that limit early: a
-four-point fit has only $4^4=256$ distinct resamples, most dropping at
+four-point fit has only $4^4=256$ distinct resamples, most dropping at <!-- other-quantity: 4^4, the count of distinct four-point resamples -->
 least one of the four points entirely, so the distribution is coarse by
 construction. The same limit is sharper in the influence audit above,
 where one of the four design points sits at leverage near one: the fitted

@@ -473,8 +473,12 @@ def fig_width_vs_density():
               frameon=True)
     fig.suptitle("Total FWHM against Rb density, four hyperfine components",
                  fontsize=12, y=0.968)
+    # the law and its scale systematic are READ from the density module: the typed "Nesmeyanov, 20%" stood here
+    # after the central law moved to Alcock (O42) and the arms' spread to 24 per cent (found 2026-09-22)
+    from rb5s6s import density as _dens
     _footer(fig, "Sources: results/linefit_conditions.csv, with the density from "
-                 "rb5s6s/density.py (Nesmeyanov, 20% scale systematic). "
+                 f"rb5s6s/density.py ({_dens.DENSITY_LAW.capitalize()}, "
+                 f"{100 * _dens.N_SCALE_FRAC_SYST:.0f}% scale systematic). "
                  "Regenerate: python scripts/make_figures.py.")
     _save(fig, "fig1_width_vs_density.png")
 
@@ -1487,7 +1491,15 @@ def fig_degeneracy_vs_observable():
     nu = np.arange(-40.0, 40.0, 0.01)
     W = np.array([[_fwhm_of(a, b, transit, 0.0, nu) for a in gg] for b in ss])
     cs = ax1.contour(gg, ss, W, levels=8, colors="0.55", linewidths=0.8)
-    ax1.clabel(cs, inline=True, fontsize=6, fmt="%.2f")
+    _cl = ax1.clabel(cs, inline=True, fontsize=6, fmt="%.2f")
+    # A CONTOUR LABEL IS PLACED BY MATPLOTLIB, and at the ruled waist one landed half outside the panel (the
+    # canvas guard, 2026-09-24): a label that leaves the axes is dropped rather than drawn through the spine.
+    fig.canvas.draw()
+    _rr = fig.canvas.get_renderer()
+    for _t in list(_cl):
+        _b = _t.get_window_extent(renderer=_rr)
+        if not (ax1.bbox.contains(_b.x0, _b.y0) and ax1.bbox.contains(_b.x1, _b.y1)):
+            _t.remove()
 
     th = np.linspace(0, 2 * np.pi, 120)
     for i, pk in enumerate(peaks):
@@ -2049,7 +2061,7 @@ def fig_hyperfine_pumping():
     the fit sees against what it attributes, which is the actual claim.
 
     THE CONSEQUENCE THAT CHANGED A CLAIM. f differs across the four lines,
-    0.375 to 0.625, while the ramp and the saturation do not, because the
+    0.375 to 0.625, while the ramp and the saturation do not, because the <!-- other-quantity: the (2F+1)/G shares, three and five eighths, not the S0 prediction -->
     two-photon Rabi frequency is F-independent here (constants.ABUNDANCE_RB85
     note). So the three same-signature terms are NOT degenerate across the line
     index, only across power and waist. The lever is 7 kHz between the extreme
@@ -2064,7 +2076,7 @@ def fig_hyperfine_pumping():
     from rb5s6s.polarizability import E_6S_CM, LINES_6S     # noqa: E402
 
     G_MHZ = GAMMA_NAT_HZ / 1e6
-    W0, ZC_M, P_MAX = C.W0_MEASURED_M, 2.2e-3, 0.225
+    W0, ZC_M, P_MAX = C.W0_CENTRAL_M, 2.2e-3, 0.225
     GC, SL, TR = 0.60, 1.50, 0.96
     NU = np.linspace(-40.0, 40.0, 200001)
 
@@ -2312,8 +2324,9 @@ def fig_weak_field_limit():
     from run_geometry_design import ramp_moments            # noqa: E402
 
     ZC_M, P_MAX = 2.2e-3, 0.225
-    W0 = C.W0_MEASURED_M
-    waists_um = np.array([64, 56, 48, 40, 36, 32, 28, 24, 20, 18, 16], float)
+    W0 = C.W0_CENTRAL_M
+    # C6a (O44): the dataset's point is the first row, so the grid opens at the archive's own focus
+    waists_um = np.array([W0 * 1e6, 40, 36, 32, 28, 24, 20, 18, 16], float)
     rows = [(w, ramp_moments(w * 1e-6, P_MAX, ZC_M, saturate=True),
              ramp_moments(w * 1e-6, P_MAX, ZC_M, saturate=False))
             for w in waists_um]
@@ -2989,10 +3002,13 @@ def fig_drift_story():
     # tight_layout declines to size margins around it. A label whose
     # legibility depends on the layout engine agreeing with you is a label
     # that will be cut in some other render.
+    # THE LEFT LIMIT FOLLOWS THE DATA (2026-09-24): it was a literal 0.14, and at the ruled waist one scenario
+    # reads 0.12, so its marker and value sat left of the panel, which the canvas guard caught.
+    _xlo = min(0.14, 0.8 * min(v for _l, v, _c, _m in scenarios))
     for i, (label, val, col, measured) in enumerate(scenarios):
-        ax.annotate(label, xy=(0.152, i + 0.26), fontsize=8.2, color="0.25",
+        ax.annotate(label, xy=(_xlo * 1.086, i + 0.26), fontsize=8.2, color="0.25",
                     va="bottom", ha="left", zorder=6)
-        ax.plot([0.15, val], [i, i], "-", color=col, lw=1.6, alpha=0.55,
+        ax.plot([_xlo * 1.07, val], [i, i], "-", color=col, lw=1.6, alpha=0.55,
                 zorder=2)
         ax.plot([val], [i], "o", ms=11, color=col if measured else "white",
                 mec=col, mew=1.8, zorder=4)
@@ -3010,7 +3026,7 @@ def fig_drift_story():
     ax.text(0.418, 0.955, "resolved\nat 2$\\sigma$", transform=ax.transAxes,
             fontsize=7.0, color="0.35", va="top", ha="right")
     ax.set_xscale("log")
-    ax.set_xlim(0.14, 9.0)
+    ax.set_xlim(_xlo, 9.0)
     ax.set_ylim(-0.65, 4.15)
     ax.set_yticks([])
     # Explicit ticks: the log locator put 3x10^0 and 4x10^0 close enough to
@@ -3071,7 +3087,7 @@ def _gallery_context():
     # numbers, from global_dataset_fit.csv, status PRELIM. They are NOT the
     # figures README.md and CLAIMS.md headline, which are the three-session
     # joint construction in stark_joint.csv, status BOUND, giving
-    # S0(225 mW) < 0.26 MHz against this fit's 0.217. The preregistration
+    # S0(225 mW) < 0.26 MHz against this fit's 0.126. The preregistration
     # deliberately leaves open which construction is of record, so this box
     # labels its own provenance rather than implying agreement. An earlier
     # version of this comment claimed the reader-facing documents report
@@ -4490,7 +4506,7 @@ def fig_radiation_environment():
                                   TAU_6S_S)
     from rb5s6s.polarizability import E_6S_CM               # noqa: E402
 
-    W0, ZC_M, P_MAX = C.W0_MEASURED_M, 2.2e-3, 0.225
+    W0, ZC_M, P_MAX = C.W0_CENTRAL_M, 2.2e-3, 0.225
     t_c = 130.0
     t_k = t_c + 273.15
     h, kb, cl = 6.62607015e-34, 1.380649e-23, 2.99792458e8
@@ -4795,8 +4811,8 @@ def fig_isotope_transit():
     temps = np.linspace(60.0, 140.0, 200)
     # THE REFERENCE TRANSIT WIDTH IS READ, NOT TYPED. This was 0.96 with a
     # comment calling it "the record's own transit width at 110 C". The
-    # record's value at the ADOPTED 64 um waist is 0.9334, and 0.964 is the
-    # value at the tight end of the waist band, w0 about 62 um, which
+    # record's value at the ADOPTED retired waist convention is 0.9334, and 0.964 is the
+    # value at the tight end of the retired waist band, which
     # laser_epoch.csv states. The panel's argument, that the two isotopes do
     # not share a transit width, is unaffected either way, and the gap it
     # draws moves by 2.9 per cent. Corrected 2026-08-20 with fig15's, since
@@ -4921,7 +4937,7 @@ def fig_third_cumulant():
     axA = fig.add_subplot(gs[0, 0])
     axD = fig.add_subplot(gs[1, 0], sharex=axA)
     nu = np.linspace(-14.0, 14.0, 3001)
-    transit = K.transit_fwhm_from_w0(K.W0_MEASURED_M, 110.0) * math.sqrt(
+    transit = K.transit_fwhm_from_w0(K.W0_CENTRAL_M, 110.0) * math.sqrt(
         403.15 / 383.15)
     s0_demo = 3.0                    # exaggerated so the eye can see it
     g0, p0 = _shared_profile_grid(0.58, 1.56, transit, 0.0, "gaussian")
@@ -5308,7 +5324,7 @@ def fig_campaign_projection():
 
     handles = [
         plt.Line2D([], [], marker="o", ls="", ms=8, color=TODAY,
-                   label="today, from the 2025 archive"),
+                   label="today, from the 2025 dataset"),
         plt.Line2D([], [], marker="o", ls="", ms=8, mfc="white", mec=FUTURE,
                    mew=2.0, label="projected, one designed campaign"),
     ]
@@ -5666,7 +5682,7 @@ def fig_orthogonal_information():
     axR.set_xlim(0, 10)
     axR.set_ylim(0, 10)
     axR.axis("off")
-    axR.set_title("why one lever settles it and another does not",
+    axR.set_title("the term each setting reaches",
                   fontsize=10, loc="left")
 
     terms = [("$\\gamma_{\\rm nat}$  3.49 MHz", 8.4, "#2F5D50", False),

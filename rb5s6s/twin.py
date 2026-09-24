@@ -84,7 +84,11 @@ class Platform:
     name: str
     radiation_temperature_k: float
     atom_temperature_k: Optional[float] = None
-    transit_fwhm_mhz: float = 0.96
+    # NO TYPED DEFAULT (F313, 2026-09-22). This field defaulted to the retired waist convention's
+    # 130 C transit. A cell derives its own from the record's waist at its own temperature
+    # (`vapour_cell`); any other platform must pass one, and the NaN left here makes `_profile`
+    # refuse rather than generate a line at a transit nobody chose.
+    transit_fwhm_mhz: float = float("nan")
     gamma_coll_mhz: float = 0.0
     sigma_laser_mhz: float = 0.0
     gamma_l_mhz: float = 0.0
@@ -100,7 +104,12 @@ class Platform:
 
 
 def vapour_cell(t_c: float, **kw) -> Platform:
-    """The heated cell: the atoms radiate against the cell they sit in."""
+    """The heated cell: the atoms radiate against the cell they sit in.
+
+    Its transit, when not passed, is the record's waist at the cell's OWN temperature,
+    `constants.transit_fwhm_from_w0(W0_CENTRAL_M, t_c)`, never a typed number (F313).
+    """
+    kw.setdefault("transit_fwhm_mhz", float(K.transit_fwhm_from_w0(K.W0_CENTRAL_M, t_c)))
     return Platform(name="vapour_cell",
                     radiation_temperature_k=273.15 + t_c,
                     atom_temperature_k=273.15 + t_c,
@@ -152,6 +161,9 @@ def line_positions_mhz() -> Dict[str, float]:
 def _profile(nu: np.ndarray, centre: float, platform: Platform) -> np.ndarray:
     """The composite line, through the package's own profile machinery."""
     from .linefit import _shared_profile_grid
+    if not np.isfinite(platform.transit_fwhm_mhz):
+        raise ValueError(f"platform {platform.name!r} carries no transit width; pass transit_fwhm_mhz "
+                         f"(a vapour cell derives one from the record's waist, F313)")
     g, prof = _shared_profile_grid(
         platform.gamma_coll_mhz, platform.sigma_laser_mhz,
         platform.transit_fwhm_mhz, 0.0, "gaussian", platform.gamma_l_mhz)

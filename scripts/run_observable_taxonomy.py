@@ -54,7 +54,7 @@ this sentence ("nothing quotes rows from it") was false, and that plan block
 now carries the pull-factor debt explicitly. Threading them here is
 owed before its shape rows are quoted, and the centres family is NOT untouched
 by them either: the forecast's own `pull_factor_quiet` puts the fitted centre's
-response at 0.98, 0.89, 0.69 and 0.58 of the pure ramp's mean pull at 64, 40,
+response at 0.89, 0.69 and 0.58 of the pure ramp's mean pull at 40,
 24 and 16 microns, and its scatter grows by the reciprocal.
 
 THE ABSOLUTE-FREQUENCY LETTERS ARE CELL-ONLY BY PHYSICS, NOT BY EFFORT. An
@@ -132,7 +132,7 @@ ZOOMS = (("nominal", 1.0), ("coarse", 4.0))
 WINDOW_RATIOS = (0.6, 0.75, 1.1, 1.5, 2.2, 3.0)
 CELL_FWHM_REF_MHZ = 5.4
 WAISTS_UM = tuple(float(w) for w in
-                  os.environ.get("RB5S6S_TAX_WAISTS", "64,40,24,16").split(","))
+                  os.environ.get("RB5S6S_TAX_WAISTS", f"{C.W0_CENTRAL_M * 1e6:.2f},40,24,16").split(","))
 N_SETS = int(os.environ.get("RB5S6S_TAX_SETS", "600"))
 # eight of ten is the standing rule while a gate may run; the owner lifted it to
 # ten for a compute that runs alone after the push (2026-09-08)
@@ -146,7 +146,7 @@ SNR_FLOOR = 3.0
 # `model_profile` composes the line as a convolution, which holds exactly only
 # where the homogeneous kernel is the same at every collected volume element.
 # The transit width goes as the inverse local beam radius, so over the
-# collected length its spread runs 0.1 per cent at 128 microns, 1.0 at 64, 5.5
+# collected length its spread runs 0.1 per cent at 128 microns, 5.5
 # at 40, 23 at 24 and 47 at 16 (docs/plan/12, at the committed conjugates'
 # magnification of 1.8; 36 at 16 at the bench's estimated 2.5). The record's
 # reading is that the convolution holds at 40 microns and wider and not below.
@@ -164,7 +164,10 @@ SNR_FLOOR = 3.0
 # 2.6 in signal-to-noise on a peak that is already shot-limited
 # (docs/plan/04). That is an apparatus choice and not a modelling one, so this
 # file measures both faces and chooses neither.
-AXIAL_KERNEL_SPREAD_PCT = {128.0: 0.1, 64.0: 1.0, 40.0: 5.5, 24.0: 23.0, 16.0: 47.0}
+# C6a (O44, 2026-09-22): the retired convention's entry is gone and the central waist is NOT typed in: a
+# waist outside the table reads NaN ("not tabulated") until the spread is computed there, and O45's
+# non-convolving model retires this convolution-licence table in C6b.
+AXIAL_KERNEL_SPREAD_PCT = {128.0: 0.1, 40.0: 5.5, 24.0: 23.0, 16.0: 47.0}
 CONVOLUTION_LICENCE_MIN_WAIST_UM = 40.0
 
 # The fibre, from the one place the record fixes it.
@@ -221,7 +224,7 @@ def onf_terms(t_c: float, trap_nm: float = ONF_TRAP_NM) -> tuple:
     a_eff = fld.stark_area_m2()
     frac = fld.stark_fraction_at(trap_nm * 1e-9)
     # the cell reference: 1 W through the archive's waist, same retro convention
-    w0_ref = 64e-6
+    w0_ref = C.W0_CENTRAL_M
     i_cell = 2.0 / (np.pi * w0_ref ** 2)            # peak axial intensity per watt
     kappa_cell = stark_shift_S0_mhz(1.0, w0_ref, rho=0.94)
     kappa_onf = kappa_cell * ((1.0 / a_eff) / i_cell) * frac
@@ -610,7 +613,7 @@ def _centre_kappa(res: dict) -> float:
         # It was a literal -3/2 until the ramp's side was stated once (O27, P3), which returned the
         # coefficient with the wrong sign for the hours after the kernel flipped.
         # The forecast this producer imports measures what the window
-        # costs: pull_factor_quiet runs 0.9775 at 64 um to 0.5752 at 16,
+        # costs: pull_factor_quiet falls from the retired convention's value to 0.5752 at 16,
         # so at the campaign's own waist this reports about 0.575 of the
         # coefficient. Applying it needs a quiet CENTROID, which
         # _quiet_curve does not yet carry, so the factor is owed and this
@@ -876,7 +879,7 @@ def _plant() -> int:
     loudly on an empty comparison, since a plant that compared nothing is
     indistinguishable from one that passed.
     """
-    items = [(64.0, "cell", 900000, 2, 0), (64.0, "cell", 901000, 2, 1),
+    items = [(40.0, "cell", 900000, 2, 0), (40.0, "cell", 901000, 2, 1),
              (400.0, "onf", 700000, 1, 0)]
     serial = [_block(it) for it in items]
     with ProcessPoolExecutor(max_workers=3) as ex:

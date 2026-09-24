@@ -65,6 +65,7 @@ import numpy as np
 from rb5s6s import config as C
 from rb5s6s import constants as K
 from rb5s6s import stark
+from rb5s6s.reference_point import reference_point
 # MOMENTS, NOT CUMULANTS (O33). This producer asks only for orders 2 and/or 3, where the two
 # bases are the SAME NUMBER (k2 = mu2 and k3 = mu3 identically), so the switch cannot move a
 # committed cell -- it removes the retired name, which is the point of doing it everywhere.
@@ -74,21 +75,50 @@ from rb5s6s.fringe_tail import COHERENCE_TRANSIT, fringe_shift_density
 from rb5s6s.lineshape import model_profile, ramp_mixture
 
 NU = np.linspace(-120.0, 120.0, 480001)
-GAMMA_COLL = 0.55
-SIGMA_LASER = 1.6
-GAMMA_NAT = 3.49
-GAMMA_COLL_BAND = (0.40, 0.70)
-SIGMA_LASER_BAND = (1.2, 2.0)
+
+
+def _width_bands() -> tuple[tuple[float, float], tuple[float, float]]:
+    """The line's own width spread across the archive, READ from the committed fits (F313, 2026-09-22).
+
+    The 10th and 90th percentiles of `gamma_coll` and `sigma_laser` over the conditions of
+    `results/linefit_conditions.csv`, a fit at its bound excluded because it reports the bound and not
+    a width. The bands typed here on 2026-09-08 bracketed the typed widths at the retired waist
+    convention and sat close to that spread (the fits then gave 0.34 to 0.62 and 1.21 to 1.91 MHz).
+    """
+    path = C.RESULTS_DIR / "linefit_conditions.csv"
+    with open(path, newline="", encoding="utf-8") as fh:
+        rows = [r for r in csv.DictReader(fh)
+                if r["gamma_coll_at_bound"] != "True" and r["sigma_laser_at_bound"] != "True"]
+    if len(rows) < 10:
+        raise SystemExit(f"run_sweep_linearity: {path} holds {len(rows)} fits off their bounds, "
+                         "too few for the archive's width spread")
+    g = np.percentile([float(r["gamma_coll"]) for r in rows], [10.0, 90.0])
+    s = np.percentile([float(r["sigma_laser"]) for r in rows], [10.0, 90.0])
+    return (float(g[0]), float(g[1])), (float(s[0]), float(s[1]))
+
+
+# The reference line is the archive point, READ and never typed (F313, 2026-09-22): the typed
+# pair was the retired waist convention's decomposition. The natural width is the kernel's own.
+_AP = reference_point()
+GAMMA_COLL = _AP["gamma_coll"]
+SIGMA_LASER = _AP["sigma_laser"]
+GAMMA_NAT = stark._GAMMA_MHZ
+GAMMA_COLL_BAND, SIGMA_LASER_BAND = _width_bands()
 # the actuator's full travel: the four-peak span the campaign sweeps
 TRAVEL_MHZ = 6000.0
 # (name, waist, on-axis shift at 225 mW, window half-width, inside the licence)
-CASES = (("archive", 64e-6, 0.3599, 6.0, True),
+CASES = (("archive", K.W0_CENTRAL_M, 0.8208, 6.0, True),
          ("campaign_40um", 40e-6, 0.9213, 6.0, True),
          ("campaign_16um", 16e-6, 5.7584, 12.0, False))
 # MOVED 2026-09-15 from 0.364, 0.932 and 5.826, all by the same 1.16 per cent,
 # when DELTA_ALPHA_AU's static-tail value was replaced by the dynamic
 # sum's: S0 goes as
-# |Delta_alpha| and these are its value at the campaign's top power. The literals
+# |Delta_alpha| and these are its value at the campaign's top power.
+# MOVED AGAIN 2026-09-21 (O44/F280): the archive row's waist retired from the old convention to
+# K.W0_CENTRAL_M (42.38 um), and its shift literal from the retired convention's value to 0.8208 MHz, the package's own
+# stark.stark_shift_S0_mhz(0.225, K.W0_CENTRAL_M, K.RHO_RETRO) at the new value (this row does
+# NOT carry the F280 aperture on-axis factor, matching the check below, which never applied it
+# either). The other two rows are untouched: they were never the retired convention. The literals
 # stay literals ON PURPOSE -- deriving them would make the check below vacuous,
 # and the check firing at the floor is exactly how this drift was found.
 # EVERY SHIFT LITERAL ABOVE IS CHECKED AGAINST THE PACKAGE AT IMPORT, so the
@@ -286,7 +316,7 @@ def main() -> int:
         # the same FRACTION of its own waist, since no campaign waist is
         # measured; docs/plan/12 carries that as its own open item.
         waist_corners = []
-        _f_lo, _f_hi = (b / K.W0_MEASURED_M for b in K.W0_BAND_M)
+        _f_lo, _f_hi = (b / K.W0_CENTRAL_M for b in K.W0_BAND_M)
         for w0c, rhoc in ((w0 * _f_lo, K.RHO_RETRO + K.RHO_RETRO_ERR),
                           (w0 * _f_hi, K.RHO_RETRO - K.RHO_RETRO_ERR)):
             s0c = stark.stark_shift_S0_mhz(0.225, w0c, rhoc)
@@ -335,12 +365,17 @@ def main() -> int:
             "ENVELOPE")
         add(name, "k3_light_shift_err", f"{0.5 * (max(k3c) - min(k3c)):.6g}", "MHz^3",
             "half-span over the same width corners", "moves the same way", "ENVELOPE")
+        # THE BOW THAT REACHES THE TOLERANCE IS DERIVED, never typed (F313's second half, 2026-09-22): the
+        # sentence here read "two parts in a thousand ... two per cent exceeds it tenfold", true at the
+        # retired waist convention and false at the calculated one, where two parts in a thousand clear it.
+        eta_reach = tol * TRAVEL_MHZ / (12.0 * W)
+        reach = (f"a smooth bow of {100 * eta_reach:.2g} per cent of the full travel reaches this "
+                 f"(12 eta W / T), and two per cent exceeds it {0.02 / eta_reach:.2g}-fold")
         add(name, "rate_variation_tolerance", f"{100.0 * tol:.{dec}f}", "per cent",
             "the rate variation across the window whose forged third cumulant "
             "equals the light shift's own",
-            {"archive": "a smooth bow of two parts in a thousand over the full travel "
-                        "already reaches this, and two per cent exceeds it tenfold",
-             "campaign_40um": "the campaign's tightest licensed waist",
+            {"archive": reach,
+             "campaign_40um": "at the campaign's tightest licensed waist " + reach,
              "campaign_16um": lic}[name], "ENVELOPE")
         a, b = induced_k3(1e-3, W, 0.0, transit), induced_k3(1e-2, W, 0.0, transit)
         add(name, "artefact_linearity_ratio", f"{b / a:.4f}", "dimensionless",

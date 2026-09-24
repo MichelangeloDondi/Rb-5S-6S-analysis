@@ -29,7 +29,7 @@ ROOT = Path(__file__).resolve().parents[1]
 # Frozen ANCHOR geometries, not the live configuration: 50 um / 0.6 MHz is the
 # waist the earlier direct Monte-Carlo was run at, kept so the estimator can be
 # checked against it to the digit. The committed CSV is produced at
-# config.W0_MEASURED_M (64 um) -- see scripts/run_fringe_tail.py.
+# config.W0_CENTRAL_M (42.38 um since O44/F280, 2026-09-21) -- see scripts/run_fringe_tail.py.
 _RECORD = dict(w0_m=50e-6, s0_mhz=0.6)
 _SMALL = dict(w0_m=16e-6, s0_mhz=5.7)
 

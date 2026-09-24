@@ -374,7 +374,7 @@ def main() -> int:
         # the new one and it dominates away from the reference wavelength. The
         # reference waist's own measurement band rides along, scaled by the
         # same ratio, and it is all there is AT the reference.
-        _meas_rel = 0.5 * (K.W0_BAND_M[1] - K.W0_BAND_M[0]) / K.W0_MEASURED_M
+        _meas_rel = 0.5 * (K.W0_BAND_M[1] - K.W0_BAND_M[0]) / K.W0_CENTRAL_M
         w_err = math.hypot(0.5 * abs(wr - wa), wa * _meas_rel)
         rel_w = w_err / wa
         add(rung, "waist_aperture_limited_err", f"{w_err * 1e6:.3f}", "um",
@@ -400,7 +400,7 @@ def main() -> int:
             f"{zr_m * 1e3 * math.hypot(2 * rel_w, lam_err / lam):.4g}", "mm",
             "two powers of the waist and one of the wavelength, in quadrature",
             "the waist term dominates by three orders", "DIAGNOSTIC")
-        l_m = K.collection_z_ratio() * (math.pi * K.W0_MEASURED_M ** 2
+        l_m = K.collection_z_ratio() * (math.pi * K.W0_CENTRAL_M ** 2
                                         / K.LAMBDA_LASER_M)
         z_ratio = l_m / zr_m
         add(rung, "collection_z_ratio", f"{z_ratio:.4f}", "dimensionless",

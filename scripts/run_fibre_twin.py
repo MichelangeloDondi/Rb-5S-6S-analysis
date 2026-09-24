@@ -47,7 +47,10 @@ from rb5s6s.fibre import transit_fwhm   # noqa: E402
 OUT = C.RESULTS_DIR / "fibre_twin.csv"
 
 LADDER_K = (20e-6, 60e-6, 150e-6)      # the preregistered ladder
-GAMMA_L_TRUE_MHZ = 0.398               # a common component of the measured size
+# a common component of the MEASURED size: the record's own fitted constant Lorentzian, read from its committed
+# cell and never typed (F322, 2026-09-22; it was typed as the retired convention's 0.398)
+with (C.RESULTS_DIR / "kernel_budget.csv").open(encoding="utf-8") as _fh:
+    GAMMA_L_TRUE_MHZ = float({r[0]: r[1] for r in csv.reader(_fh)}["gamma_l_weighted_mean"])
 SIGMA_G_TRUE_MHZ = 0.30                # a Gaussian laser contribution
 # The solved INTENSITY-decay band across the 350 to 400 nm diameter range,
 # from solve_he11 at the corrected silica index: 492 nm at 350 and 312 nm at
@@ -268,7 +271,7 @@ def main() -> int:
         "the fibre tests whether the homogeneous component moves as the "
         "transit law predicts, which is not a laser linewidth measurement")
     add("ALL", "velocity_convention", "mean", "convention",
-        "typed on the estimator; rms differs by about 6 per cent")
+        "typed on the estimator -- rms differs by about 6 per cent")
 
     # THE COVERAGE ROWS ARE UNREADABLE WITHOUT THESE TWO. A coverage fraction
     # is a statement about a world's information content as much as about the
@@ -276,7 +279,7 @@ def main() -> int:
     # Carrying the assumption as rows means a reader of this file alone can see
     # what the design was asked to do it WITH.
     add("ALL", "per_rung_sd_khz", f"{PER_RUNG_SD_MHZ * 1e3:.2f}", "kHz",
-        "the per-rung scatter on the total width that these settings achieve; "
+        "the per-rung scatter on the total width that these settings achieve -- "
         "every coverage row below assumes it")
     add("ALL", "per_rung_demonstrated_khz", f"{PER_RUNG_TARGET_KHZ:.1f}", "kHz",
         "what the record already achieves per condition on a total width "
@@ -308,7 +311,7 @@ def main() -> int:
         f = run_o2a(a.trials, LAMBDA_EDGES_M[0], seed0=20_000, alpha=alpha)
         add(f"WORLD_F_alpha_{alpha}", "coverage_gamma_l",
             f"{f['cov_gamma_l']:.4f}", "fraction",
-            "data generated under T**(alpha/2), fitted under the correct law; "
+            "data generated under T**(alpha/2), fitted under the correct law -- "
             "the alpha at which coverage collapses is the departure the design "
             "can detect")
 
@@ -316,7 +319,7 @@ def main() -> int:
     # O2-B: the rung-to-rung departure the design can detect. NOT K2.5.
     fp = run_o2b(a.trials, LAMBDA_EDGES_M[0], 0.0, 30_000, O2B_CHI2_CRIT)
     add("O2B", "false_positive_rate", f"{fp:.4f}", "fraction",
-        "detection rate at ZERO departure; the nominal 0.05 is the design "
+        "detection rate at ZERO departure -- the nominal 0.05 is the design "
         "point, and a measured value far from it means the assumed per-rung "
         "scatter is wrong rather than the design")
     for d in O2B_DEPARTURES_MHZ:

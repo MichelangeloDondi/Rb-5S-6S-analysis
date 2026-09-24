@@ -1,4 +1,4 @@
-*Chapter 4 of 9 of [the big picture](../BIG_PICTURE.md)*
+*Chapter 4 of 10 of [the big picture](../BIG_PICTURE.md)*
 
 ## 4. Deliverables of the 2025 dataset
 
@@ -17,19 +17,24 @@ as a bound. Concretely:
   ramp at zero, and the shared ramp coefficient of the width-versus-power
   fit rails at zero, so the ramp is a component the record bounds rather
   than one these fits resolve. The beam waist
-  is **a convention taken from the apparatus lineage**: [64](../../rb5s6s/constants.py "ref:constant:W0_MEASURED_M:1e6") µm, the value
+  was, through 2026-09-21, **a convention taken from the apparatus lineage**: the value
   [Rajasree 2020](../lit/rajasree2020thesis.md) reprints from Nieddu's profile of the
   predecessor laser, through the same f = 150 mm lens and retro geometry and without
   this beam's 3 mm modulator bore. The 32 µm figure this
   work started from was a Gaussian-optics estimate that cannot account for how
   much of the beam the 3 mm EOM aperture removed, and transit physics excludes
-  it. Residual clipping and imperfect retro overlap both push the *effective*
-  waist above [64](../../rb5s6s/constants.py "ref:constant:W0_MEASURED_M:1e6") µm, so that reading gave a 62–68 µm band with ρ = 0.94 ± 0.04.
+  it. Residual clipping and imperfect retro overlap both pushed the *effective*
+  waist above the lineage value, so that reading gave a band with ρ = 0.94 ± 0.04.
 
-  **That band no longer stands.** The working region since 2026-09-17 is **40 to 45 µm**, on the
-  reading that the beam is clipped by the 3 mm modulator bore and carries M² greater than one,
-  both of which the [64](../../rb5s6s/constants.py "ref:constant:W0_MEASURED_M:1e6") µm lineage value predates. Every number on this page that is conditional
-  on the waist is therefore conditional on a region this page no longer names, and the
+  **Neither the lineage convention nor that band stands.** The working region since
+  2026-09-17 was revised to **40 to 45 µm**, on the reading that the beam is clipped
+  by the 3 mm modulator bore and carries M² greater than one, both of which the
+  lineage value predates, and owner order O44 (2026-09-21) then retired the lineage
+  convention itself: the record now carries `constants.W0_CENTRAL_M`
+  = [42.38](../../rb5s6s/constants.py "ref:constant:W0_CENTRAL_M:1e6") µm, so w0 ≈ 42 µm, the bore-limited actual focus this apparatus calculates for its own
+  input beam, with its band 40 to 45 µm, anchored to that calculation.
+  Every number on this page that is conditional
+  on the waist is therefore conditional on this calculated value, and the
   conditional statements stand while their conditioning value has moved.
 
   **And the waist cannot be recovered from the line.** Closed on synthetic traces at three noise
@@ -43,47 +48,67 @@ as a bound. Concretely:
 - **The width channel returns the differential polarizability itself, and it
   is a null.** Taking the geometry as a stated prior and inverting the usual
   comparison, the magnitude comes out below
-  [868](../../results/delta_alpha_posterior.csv "ref:delta_alpha_posterior:limit:delta_alpha_abs_ub95_profile")
+  [361](../../results/delta_alpha_posterior.csv "ref:delta_alpha_posterior:limit:delta_alpha_abs_ub95_profile")
   a.u. in this record's own construction and below
-  [1076](../../results/delta_alpha_posterior.csv "ref:delta_alpha_posterior:limit:delta_alpha_abs_ub95_posterior")
+  [404](../../results/delta_alpha_posterior.csv "ref:delta_alpha_posterior:limit:delta_alpha_abs_ub95_posterior")
   a.u. read as a posterior over the same committed likelihood, against the
-  [0.35](../../results/delta_alpha_posterior.csv "ref:delta_alpha_posterior:estimator:sigma_from_zero")
-  σ that separates the fit from zero. Which uncertainty dominates depends on
+  [2.23](../../results/delta_alpha_posterior.csv "ref:delta_alpha_posterior:estimator:sigma_from_zero")
+  σ that separates the fit from zero, short of a detection.
+
+Which uncertainty dominates depends on
   the row taken: the posterior's spread is the data's, the geometry
   priors carrying
-  [0.0114](../../results/delta_alpha_posterior.csv "ref:delta_alpha_posterior:budget:geometry_share_of_variance")
-  of its variance, while the quoted limit's whole ±79 is geometric, because
+  [0.0123](../../results/delta_alpha_posterior.csv "ref:delta_alpha_posterior:budget:geometry_share_of_variance")
+  of its variance, while the quoted limit's whole ±[20](../../results/delta_alpha_posterior.csv "ref:delta_alpha_posterior:limit:delta_alpha_abs_ub95_profile:err") is geometric, because
   the crossing behind it is a fixed committed number. Beam metrology sharpens
-  the second and not the first. The older hand-scaled form, |Δα| ≲ 839 a.u.,
-  is derived rather than typed, and it is the same formula one micrometre
-  away: 866 at 65 µm against 839 at the pinned 64, differing by exactly
-  (65/64)² and by nothing else, so the two agreeing is arithmetic and not
-  corroboration.
+  the second and not the first. The older hand-scaled form, |Δα| ≲ 283 a.u.,
+  is derived rather than typed: the computed value scaled by the bound over the
+  prediction. Until 2026-09-22 it read 839 and agreed with the construction's limit
+  because the two were one micrometre of waist apart, which is arithmetic and not
+  corroboration. At the ruled waist they differ by a factor of 1.28, and why has
+  not been read.
 
-  The bound behind it is S₀(225 mW) < 0.26 MHz (95%, from a joint
+  The bound behind it is S₀(225 mW) < 0.18 MHz (95%, from a joint
   full-profile fit of three sessions, every trace with a free centre so the
   drifting laser costs nothing. An earlier, tighter figure was
   cold-start-inflated and is retracted, preregistration addendum 24). The
-  predicted 0.35 MHz at the measured geometry sits above it by a factor of
-  about 1.4. The exclusion holds on the full fit, the limit lying
+  predicted 0.73 MHz at the calculated geometry sits above it by a factor of
+  about 4.0.
+
+  The exclusion holds on the full fit, the limit lying
   below every point of the predicted envelope, and this bullet used to state
-  it without its two qualifications. Its strength is a range, 2.0 to 2.4 σ
-  across the envelope, and on this construction it does not survive leaving one
-  peak out: one arm clearly excludes, two clearly do not, and the fourth sits
-  inside the profile's own scatter of the threshold, so no count of arms is
-  quotable.
+  it without its two qualifications. Its strength is a range, 8.0 to 9.4 σ
+  across the envelope at the ruled waist, read off the committed profile (2.0 to 2.4 σ
+  at the retired waist until 2026-09-22), and conditional on the fitter's reduced
+  forward model, which carries no bore, no Doppler pedestal and no retro tilt and
+  whose transit is narrower than the node Monte Carlo's by 3 to 5 per cent. On this
+  construction it survives leaving any one
+  peak out: every arm clearly excludes, so no count of arms weakens it.
+
+  Those missing terms widen the model line or raise its shift, so adding them tightens
+  the limit and does not relax it. The limit is also robust inside the fit's own model
+  family: mirroring the ramp to the other side of the line, changing the natural width
+  by 3 per cent, or narrowing the transit by 5 per cent moves it by at most about 7 per
+  cent, and each change of width worsens the fit. What it does not test is the
+  intensity at the atoms. It bounds the shift per recorded watt at the ruled waist, so
+  it reaches the polarizability only through where the power was read and how strong
+  the return beam is at the atoms, and the record measures neither there.
 
   The fuller archive fit is stronger and keeps all four, and carries
   a failing prior-tension gate of its own. Separately the limit moves by
-  a factor of [1.231](../../results/delta_alpha_posterior.csv "ref:delta_alpha_posterior:limit:construction_spread")
-  between two readings of one likelihood, about 1.104 of which is generic to
-  those two readings and not a property of this fit. **The gap is not
+  a factor of [1.110](../../results/delta_alpha_posterior.csv "ref:delta_alpha_posterior:limit:construction_spread")
+  between two readings of one likelihood, about 1.002 of which is generic to
+  those two readings and would exist for an exactly Gaussian likelihood, and
+  1.114 of which is this profile's own shape. **The gap is not
   withdrawn, only the number attached to it**: the computed value sits in the
   upper tail at posterior probability
-  [0.0406](../../results/delta_alpha_posterior.csv "ref:delta_alpha_posterior:comparison:posterior_prob_above_computed_here")
-  and at 0.017 under the crossing, real under both and quotable to neither's
+  below 5e-06, which is 0 of 200 000 draws
+  (4.9e-11 under the crossing), and Orson's value likewise below 5e-06
+  (2.3e-10 under the crossing), the two candidate values 1.9e-10 apart
+  under the crossing, real under both constructions and quotable to neither's
   third digit, and the primary limit sits below the whole predicted envelope.
-  Either the intensity sits lower than the accepted geometry implies, or |Δα|
+
+Either the intensity sits lower than the accepted geometry implies, or |Δα|
   is smaller than computed, or the forward model is missing something that
   suppresses the width response to power. A beam-profile measurement
   separates the geometry reading from the other two.
@@ -177,7 +202,7 @@ as a bound. Concretely:
 
   The
   laser width is bounded at ≲1.2 MHz on the laser axis, with a central value
-  of 1.088 MHz at the waist convention, against the sub-MHz figure quoted for the
+  of 1.088 MHz <!-- other-quantity: this section's own laser-width central value, not identifiability_profile's zoom_dchi2 cell --> at the waist convention, against the sub-MHz figure quoted for the
   same laser in [Gokhroo 2022](../lit/gokhroo2022.md). The drift-immune skew
   observable is derived and bounded, and detecting it requires a tighter
   focus. The premise
@@ -220,7 +245,7 @@ distribution is the statistics of a fluctuating field, unknown in advance, so
 their integral stays formal. In a focused beam that distribution is fixed by
 **geometry**, so the integral closes. The closure gives **analytic cumulants**
 on bounded support, and in particular the intrinsic $g_1 = -0.566$ at $n = 2$,
-which is a number and not a fit. And the third of those cumulants is a
+which is a number and not a fit. And the third of those moments is a
 **drift-immune channel**, which is
 what makes a dataset with no usable line centres say anything at all.
 

@@ -1392,12 +1392,12 @@ def test_the_retired_words_are_gone_from_code_identifiers():
 # --------------------------------------------------------------------------
 #
 # w0 has been re-pinned three times: a 32 um Gaussian-optics nominal, a ~50 um
-# transit inference, and the adopted 64 um lineage measurement (Nieddu 2019's
+# transit inference, and the once-adopted lineage measurement, since itself retired (Nieddu 2019's
 # explicit 1/e^2 diameter of 128 um). Each move left statements behind that
 # quoted the value of their day, and on 2026-08-14 one of them cost real time:
 # a 45-70 um range that four files correctly mark as the superseded LINE-ONLY
 # inference was read as a live constraint on the waist. The value is in one
-# place, constants.W0_MEASURED_M, and prose that repeats a retired number
+# place, constants.W0_CENTRAL_M, and prose that repeats a retired number
 # beside a live claim is what this guard is for.
 _RETIRED_WAISTS_UM = ("32", "50", "90")
 
@@ -1431,7 +1431,7 @@ def test_no_live_claim_quotes_a_retired_waist():
 
     2026-08-14: `rb5s6s/stark.py` said the inflated bound "BRACKETS the
     predicted ~0.6 MHz (w0 = 50 um)" long after the adopted waist moved to
-    64 um and the prediction to 0.35, and `ramp_transit.py` illustrated a
+    what is now the retired waist convention, and the prediction to 0.35, and `ramp_transit.py` illustrated a
     transit rate "at w0 = 50 um". Neither was wrong when written. Both read as
     current."""
     import re
@@ -1463,7 +1463,8 @@ def test_no_live_claim_quotes_a_retired_waist():
             offenders.append(f"{rel}:{n}: {line.strip()[:88]}")
     assert not offenders, (
         "a retired waist (32/50/90 um) is quoted beside a live claim. The "
-        "adopted value is constants.W0_MEASURED_M = 64 um. Say that, or mark "
+        "adopted value is constants.W0_CENTRAL_M, the bore-limited actual "
+        "focus (O44/F280, 2026-09-21). Say that, or mark "
         "the sentence as history:\n  " + "\n  ".join(offenders[:20]))
 
 

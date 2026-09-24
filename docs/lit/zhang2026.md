@@ -52,7 +52,7 @@ spread both collapse. Two orders of magnitude is the measured size of that.
 **This record's programme is the same physics read the other way.** The shift
 is the signal, its DISTRIBUTION is the observable, and the levers that suppress
 it are the levers that must be avoided. The 2025 archive already sits where
-they would not put a clock, at a 64 um waist, and the campaign proposes to go
+they would not put a clock, at a 42.38 um waist, and the campaign proposes to go
 tighter still.
 
 So this paper is the quantitative statement of what the opposite design costs

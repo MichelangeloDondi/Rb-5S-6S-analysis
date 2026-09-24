@@ -7,7 +7,7 @@ break it at a tight waist, and they break it for the same reason:
   the transit kernel   its width goes as the inverse local beam radius, so it
                        varies along z as the beam diverges over the collected
                        length. Geometric, and already sized in the record at
-                       1.0 per cent rms at 64 um and 47 at 16.
+                       a small fraction rms at the retired waist convention, rising to 47 at 16.
 
   the Lorentzian       gamma_nat + gamma_coll is uniform, but the SATURATION
                        COMPANION is not: stark.companion_gamma_mhz is keyed on
@@ -45,6 +45,7 @@ import numpy as np
 
 from rb5s6s import constants as K
 from rb5s6s import stark
+from rb5s6s.reference_point import reference_point
 from rb5s6s.constants import collection_z_ratio
 # MOMENTS, NOT CUMULANTS (O33). This producer asks only for orders 2 and/or 3, where the two
 # bases are the SAME NUMBER (k2 = mu2 and k3 = mu3 identically), so the switch cannot move a
@@ -62,12 +63,29 @@ from rb5s6s.lineshape import RAMP_SIDE, model_profile
 # not a physical cost. The span is now wide enough to reach the limit and the
 # producer reports its movement rather than assuming it.
 NU = np.linspace(-320.0, 320.0, 128001)
-GAMMA_COLL = 0.55
-SIGMA_LASER = 1.6
+# The archive's line at its reference condition, READ from the committed fit and never typed
+# (F313, 2026-09-22): the typed pair was the retired waist convention's decomposition.
+_AP = reference_point()
+GAMMA_COLL = _AP["gamma_coll"]
+SIGMA_LASER = _AP["sigma_laser"]
 GAMMA_NAT = stark._GAMMA_MHZ    # the kernel's own, never a rounded copy
 T_C = 130.0
 POWER_W = 0.225
-CASES = ((64e-6, 6.0), (40e-6, 6.0), (24e-6, 8.0), (16e-6, 12.0))
+CASES = ((K.W0_CENTRAL_M, 6.0), (45e-6, 6.0), (24e-6, 8.0), (16e-6, 12.0))
+# REGRIDDED 2026-09-21 (O44/F280 follow-up). The mechanical patch first left this as
+# (K.W0_CENTRAL_M, 40e-6, 24e-6, 16e-6): the retired campaign point became 42.38 um but the
+# second row's literal 40e-6 stayed, so the top two rows sat 2.4 um apart (a near-duplication,
+# private/cache/plan_2026-09-18/, the retirement inventory, Section 6). The scan's PURPOSE (per the
+# module docstring) is showing how far the convolution approximation's cost moves across a
+# representative waist range, campaign down to ONF-tight; the two top rows now bracket the
+# owner's own 40-45 um band (K.W0_CENTRAL_M at its centre, 45e-6 at its loose edge) instead of
+# duplicating one point in it, which resolves the near-duplication AND gives the region the
+# project is asking about (the working band on w0, see constants.W0_BAND_M) its own internal
+# contrast rather than one sample. 24e-6 and 16e-6 (ONF-adjacent and tight) are unchanged.
+# THE OLD "w40um" ROW IS GONE, not relabelled: nothing here reads 40e-6 any more, so a passage
+# citing its numbers (docs/methods/04's 40 um reading, and the rule file's own "1.9 per cent" and
+# "103 per cent" at 40 um) is restated from the new w42um row, the closest surviving case; the
+# governing rule file is gitignored and edited by its owner, not by this producer's wave.
 # N_Z was 36 until 2026-09-09. The per-axis bar added that day then
 # refused the 40 micron case outright, the FIXED row's own axial movement being
 # 5.10 per cent against a five per cent bar, which is the finding working: a
@@ -84,6 +102,23 @@ def _refuse_unless_isolated() -> None:
     pkg = os.path.realpath(_pkg.__file__)
     if not pkg.startswith(here + os.sep):
         raise SystemExit(f"REFUSING: rb5s6s resolves to {pkg}, outside {here}")
+
+
+def window_rel_band() -> tuple[float, float, float]:
+    """The collected window's z_ratio, its half-span and the relative band, over the f, image-distance
+    and waist corners: the construction of results/prediction_band.csv's z_ratio row, COMPUTED here
+    rather than typed (F313's second half, 2026-09-22; the typed 0.538 was that row's band at the
+    retired waist convention)."""
+    lo_w, hi_w = K.W0_BAND_M
+    z_c = collection_z_ratio()
+    z_hi = collection_z_ratio(f_m=K.COLLECTION_LENS_F_M + K.COLLECTION_LENS_F_ERR_M,
+                              image_dist_m=K.COLLECTION_IMAGE_DIST_M - K.COLLECTION_IMAGE_DIST_ERR_M,
+                              w0_m=lo_w)
+    z_lo = collection_z_ratio(f_m=K.COLLECTION_LENS_F_M - K.COLLECTION_LENS_F_ERR_M,
+                              image_dist_m=K.COLLECTION_IMAGE_DIST_M + K.COLLECTION_IMAGE_DIST_ERR_M,
+                              w0_m=hi_w)
+    half = 0.5 * (z_hi - z_lo)
+    return z_c, half, half / z_c
 
 
 def volume_grid(w0_m, n_s=N_S, n_z=N_Z, l_scale=1.0):
@@ -389,10 +424,11 @@ def main() -> int:
         #   the widths : the saturation companion is uncertain at the
         #                factor-of-three level at this waist (docs/methods/04),
         #                so the span is re-evaluated with it scaled both ways
-        #   the transit: the collected half-length is 0.26 +- 0.14 Rayleigh
-        #                ranges (prediction_band.csv), a 54 per cent band, and
+        #   the transit: the collected half-length's own band over the optics
+        #                and waist corners (window_rel_band, prediction_band.csv's
+        #                construction), and
         #                the span follows the window
-        _f_lo, _f_hi = (b / K.W0_MEASURED_M for b in K.W0_BAND_M)
+        _f_lo, _f_hi = (b / K.W0_CENTRAL_M for b in K.W0_BAND_M)
         _s_hi = stark.stark_shift_S0_mhz(POWER_W, w0 * _f_lo, K.RHO_RETRO + K.RHO_RETRO_ERR)
         _s_lo = stark.stark_shift_S0_mhz(POWER_W, w0 * _f_hi, K.RHO_RETRO - K.RHO_RETRO_ERR)
         add(name, "on_axis_shift_err", f"{0.5 * (_s_hi - _s_lo):.4f}", "MHz",
@@ -412,12 +448,13 @@ def main() -> int:
             "depend on it: whatever the size, it is a function of the local "
             "shift", "ENVELOPE")
         _tr = [tr for _, tr, _ in cells]
-        _cl, _ch = volume_grid(w0, l_scale=1.0 - 0.538)[0], volume_grid(w0, l_scale=1.0 + 0.538)[0]
+        _zc, _zh, _zrel = window_rel_band()
+        _cl, _ch = volume_grid(w0, l_scale=1.0 - _zrel)[0], volume_grid(w0, l_scale=1.0 + _zrel)[0]
         _sl = max(t for _, t, _ in _cl) / min(t for _, t, _ in _cl)
         _sh = max(t for _, t, _ in _ch) / min(t for _, t, _ in _ch)
         add(name, "transit_span_err", f"{0.5 * abs(_sh - _sl):.3f}", "dimensionless",
-            "the span re-evaluated over the collected window's own 0.26 +- 0.14 band",
-            "the window is 54 per cent uncertain and the span follows it "
+            f"the span re-evaluated over the collected window's own {_zc:.2f} +- {_zh:.2f} band",
+            f"the window is {100 * _zrel:.0f} per cent uncertain and the span follows it "
             "directly, since the beam radius at the window EDGE is what sets "
             "the narrowest kernel and so the denominator of this ratio",
             "ENVELOPE")

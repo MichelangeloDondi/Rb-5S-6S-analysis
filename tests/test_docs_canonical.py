@@ -129,7 +129,7 @@ def _const(name):
 def _normalize(text: str) -> str:
     text = re.sub(r"```.*?```", "", text, flags=re.S)          # drop fenced code
     # A BOUND NUMBER IS STILL A CITATION. The SSOT binding writes a value as
-    # [64](../../rb5s6s/constants.py "ref:constant:W0_MEASURED_M:1e6"), so the
+    # [42.38](../../rb5s6s/constants.py "ref:constant:W0_CENTRAL_M:1e6"), so the
     # characters between the digits and their unit stop being whitespace and
     # every `find` here stops matching -- which is how d5c36a9d, whose whole
     # purpose was binding the prose to its constants, silently unbound this
@@ -272,8 +272,8 @@ CANONICAL = [
         docs=["docs/big_picture/04_what-2025-delivered.md", "private/manuscripts/PAPER1_SKELETON.md"],
     ),
     dict(
-        # ADDED 2026-08-10, when the band moved from 60-70 to 62-68 um on the
-        # experimenter's instruction and turned up hand-typed in five documents plus a
+        # ADDED 2026-08-10, when the band moved from 60-70 um to the retired waist convention's
+        # band on the experimenter's instruction and turned up hand-typed in five documents plus a
         # SECOND, different, two-generations-stale literal band inside
         # run_global_fit.py. Every reader of constants.W0_BAND_M moved by
         # itself. Nothing that had typed the numbers did, which is what this
@@ -304,9 +304,10 @@ CANONICAL = [
     ),
     dict(
         name="beam waist w0",
-        value=lambda: f"{int(_const('W0_MEASURED_M') * 1e6)}",
-        # "64 um, the value ..." is the wording that replaced "64 um (prior)" when the waist
-        # stopped being called measured on this bench; the citation is the same one.
+        value=lambda: f"{int(_const('W0_CENTRAL_M') * 1e6)}",
+        # "<value> um, the value ..." is the wording that replaced "<value> um (prior)" when the waist
+        # stopped being called measured on this bench, both quoting the retired waist convention at the
+        # time; the citation is the same one.
         find=re.compile(r"w.?0\s*[≈=]\s*([0-9]+)\s*µm|([0-9]+)\s*µm\s*(?:\((?:prior|measured)|,\s*measured|,\s*the value)|~([0-9]+)\s+µm;"),
         mode="any",
         # docs/PLAN.md joined 2026-08-05 through the "(prior" alternate: its
@@ -531,7 +532,9 @@ CANONICAL = [
         # against its own producer. Now two documents and one CSV must agree.
         name="polarisation: vector m_F spread at 225 mW, fully circular",
         value=lambda: f"{float(_cell('polarisation_bound.csv', 'vector_spread_at_225mW_pred')) * 1e3:.1f}",
-        find=re.compile(r"(?:the spread is|sublevels by)\s+([0-9]\.[0-9])\s+kHz"),
+        # ONE digit before the point until 2026-09-24, when the spread grew to 12.7 kHz with the prediction it is
+        # sized against: the guard's grammar was narrower than the number and reported the page as silent (F395's class)
+        find=re.compile(r"(?:the spread is|sublevels by)\s+([0-9]+\.[0-9])\s+kHz"),
         mode="all",
         docs=["docs/wiki/magnetic-sublevels.md",
               "docs/big_picture/02_the-method-and-its-limits.md"],
@@ -822,13 +825,20 @@ def test_sigma_laser_panel_numbers_match_the_csvs():
     """fig5's title said 'flat (~1.7' while its own plotted free-fit means are
     1.04-1.25, and methods/07 quoted tied values 2.1/2.2/1.6 against a
     committed global_fit.csv reading 1.48/1.63/1.06 -- both stale against the
-    data under them. Pin quoted <-> computed."""
+    data under them. Pin quoted <-> computed.
+
+    RE-PINNED 2026-09-21 (O44/F280): global_fit.csv was refit at the bore-limited central waist
+    (42.38 um, was the retired waist convention); the tied sigma_laser(T) moved from [2.0, 2.2, 1.5] to [0.6, 1.0, 0.6],
+    not a small drift -- flagged for a physics read, since S0's prediction at this fit's pinned
+    waist roughly doubled and a degenerate parameter absorbing that move is exactly the kind of
+    shift this pin exists to surface, not hide."""
     import csv
     import numpy as np
     gf = {r["key"]: float(r["value"])
           for r in csv.DictReader(open(ROOT / "results" / "global_fit.csv"))
           if r["quantity"] == "sigma_laser"}
-    assert [round(gf[k], 1) for k in ("70C", "90C", "110C")] == [2.0, 2.2, 1.5], (
+    # re-pinned 2026-09-24: the 110 C cell reads 0.687 in the global fit the wave committed (0.6 until then)
+    assert [round(gf[k], 1) for k in ("70C", "90C", "110C")] == [0.6, 1.0, 0.7], (
         "tied sigma_laser(T) moved; requote methods/07 and this test together")
     rows = list(csv.DictReader(open(ROOT / "results" / "linefit_conditions.csv")))
     means = []
@@ -837,9 +847,11 @@ def test_sigma_laser_panel_numbers_match_the_csvs():
              for r in rows if r["role"] == "t_sweep" and int(float(r["T"])) == T]
         s = np.array([x[0] for x in v]); w = 1 / np.array([x[1] for x in v]) ** 2
         means.append(float(np.sum(w * s) / np.sum(w)))
-    assert 1.4 <= min(means) and max(means) <= 1.8, (
-        "free per-condition sigma_laser left the 1.4-1.8 band; requote fig5's "
-        "title and methods/07")
+    # RE-PINNED 2026-09-24 on the construction and not on a band: at the ruled waist the free means read
+    # 0.33/0.84/0.71 MHz, below the retired waist's 1.4-1.8 band, and methods/07 quotes them as computed here.
+    _quoted = "/".join(f"{m:.2f}" for m in means)
+    assert _quoted in (ROOT / "docs" / "methods" / "07_what_we_found.md").read_text(encoding="utf-8"), (
+        f"methods/07 no longer quotes the free per-condition sigma_laser means {_quoted}; requote it and fig5")
     fig_src = (ROOT / "scripts" / "make_figures.py").read_text(encoding="utf-8")
     # The panel used to carry a typed "~1.6". It now formats the same
     # inverse-variance mean this test recomputes, so the pin is on the

@@ -87,11 +87,11 @@ integral closes, and the moments follow by direct integration:
 
 $$\langle s\rangle = +\tfrac{2}{3}S_0,\qquad
 \mathrm{Var}(s) = \tfrac{1}{18}S_0^2,\qquad
-\kappa_3 = -\tfrac{1}{135}S_0^3$$
+\mu_3 = -\tfrac{1}{135}S_0^3$$
 
 so the ramp's intrinsic standardised skewness is the pure number
 
-$$g_1 = \frac{\kappa_3}{\mathrm{Var}^{3/2}} = -\frac{18^{3/2}}{135} \approx -0.566$$
+$$g_1 = \frac{\mu_3}{\mathrm{Var}^{3/2}} = -\frac{18^{3/2}}{135} \approx -0.566$$
 
 independent of $S_0$. It is a property of the ramp component's shape and a
 diagnostic, not a standardised skewness of the observed line, which is
@@ -124,7 +124,7 @@ machinery already accepts the photon order, and
 
 The one-photon case $n=1$, a Stark-induced forbidden line
 for instance, gives the uniform distribution, $\langle s\rangle=+S_0/2$ and
-$\kappa_3=0$, exactly zero skew. The skewness observable therefore exists *only
+$\mu_3=0$, exactly zero skew. The skewness observable therefore exists *only
 because the two-photon rate goes as $I^2$*, which is the sharpest statement of
 what is specific here.
 
@@ -145,8 +145,8 @@ line. `FUTURE_TRANSITIONS_titsapph.md` section 3.5 carries the numbers.
 
 *The whole section in one picture. On the left, the weight the atom actually
 carries against the square law that replaces it, with the dataset and the
-proposed tight focus marked. The two markers are a fourfold change in waist,
-which is a 256-fold change in the saturation parameter against a 16-fold change
+proposed tight focus marked. The two markers are a 2.65-fold change in waist,
+which is a 49.2-fold change in the saturation parameter against a 7.02-fold change
 in the shift, because one goes as the fourth power of the inverse waist and the
 other only as the second. On the right, what that does to the observable the
 tight focus is wanted for. The flip in the sign of $g_1$ there is not a
@@ -163,8 +163,10 @@ slope in intensity falls below $n$, and **the whole family above moves with it**
 $g_1$ shrinks toward its $n=1$ value of zero.
 
 This matters because $s$ scales as the fourth power of the inverse waist. At
-the dataset's [64](../rb5s6s/constants.py "ref:constant:W0_MEASURED_M:1e6") µm convention and 225 mW it is 0.033, so the weak-field law is
-good to a per cent and nothing here is affected. At the 16 µm the fixed-lock
+the dataset's [42.38](../rb5s6s/constants.py "ref:constant:W0_CENTRAL_M:1e6") µm convention and 225 mW it is 0.173, up from 0.033 at
+the retired waist convention: still well under one, but no longer an order of
+magnitude inside it, so the weak-field law is to be re-checked here, not
+assumed safe. At the 16 µm the fixed-lock
 session proposes it is 8.5, and integrating the moments with the saturated
 weight instead moves the predicted axial skew from $+0.36$ to $+1.07$. So the
 committed axial machinery, which takes an integer photon order, is being asked
@@ -187,9 +189,11 @@ The derivation above is quasi-static. Each atom sits at one intensity and
 carries one shift. Real atoms cross the beam, sweeping their own shift from
 zero to the on-axis maximum and back within a transit time that is only a few times the natural
 response $1/\Gamma\approx 45$ ns. **That margin depends on the waist and this paragraph was written at
-a waist the record has left.** At $w_0 = 64$ µm the transit is 0.204 µs and the ratio is 4.5. Across the
+a waist the record has left.** At the retired waist convention the transit was 0.204 µs and the ratio 4.5. Across the
 working band of 40 to 45 µm taken on 2026-09-17 it is 0.128 to 0.144 µs and the ratio is 2.8 to 3.2, a
-reduction of about a third in the very separation of timescales the argument rests on. The justification
+reduction of about a third in the very separation of timescales the argument rests on.
+
+The justification
 below still holds, since it turns on a change of variables and not on the size of the ratio, but the
 regime it holds in is tighter than the number quoted here suggested, and any claim that the quasi-static
 ramp is safe *because* the timescales separate is quoted with the waist it assumes or not at all. [Camparo and Lambropoulos](lit/camparo1992.md) (*JOSA
@@ -239,10 +243,10 @@ one speed.
   variance and differs only in transit width, so any mixture inherits both.
   Checked directly against a flux-weighted Maxwell-Boltzmann sample.
 
-The third cumulant, the one the asymmetry claim rests on, is **not** resolved
+The third moment, the one the asymmetry claim rests on, is **not** resolved
 by that simulation, because the FFT noise floor weighted by $\nu^3$ swamps it.
-For $\kappa_3$ the change-of-variables argument stands alone, and it carries
-the quasi-static assumption. The fringe's effect on $\kappa_3$ is M15's result,
+For $\mu_3$ the change-of-variables argument stands alone, and it carries
+the quasi-static assumption. The fringe's effect on $\mu_3$ is M15's result,
 not this one's.
 
 ![the ramp construction](../figures/fig12_ramp_construction.png)
@@ -302,7 +306,7 @@ the transit width, which is the four-way degeneracy that dominates the width
 channel and that M9 and M4c work on.
 
 (Stated as symmetry rather
-than as $\kappa_3 = 0$. Cumulants are additive under convolution and vanish for
+than as $\mu_3 = 0$. Cumulants are additive under convolution and vanish for
 symmetric factors, but a Lorentzian has no finite third moment (the windowed, self-centred form and its measured remainder: [the concept page](wiki/third-cumulant.md)), so symmetry is
 the property the fit actually uses. This is the same reason the extraction is a
 model fit rather than a raw-moment computation.)
@@ -313,24 +317,25 @@ core-model dependence above, and it is checkable by BIC and the M8 cusp fit,
 which is why those exist.
 
 And the width channel is not merely worse, it is blind. At the campaign's
-maximum 225 mW, at the $w_0 = 64$ µm convention (the waist is not measured), the record's
+maximum 225 mW, at the $w_0 = 42.38$ µm convention (the waist is not measured, it is calculated as the bore-limited actual focus), the record's
 prediction (`stark.kappa_pred_per_watt`, the ideal coefficient times the on-axis aperture factor) is
-$S_0 =$ [0.348](../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred:shared") MHz. The ramp's density is $f(s)\propto s$ on $[0,S_0]$, so it
+$S_0 =$ [0.7290](../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred:shared") MHz. The ramp's density is $f(s)\propto s$ on $[0,S_0]$, so it
 peaks at $s=S_0$ and halves at $s=S_0/2$: the kernel's full width at half
 maximum is $S_0/2$ exactly, with no grid and no fit.
 
 The extra width it puts on the line is read from a producer, never composed
 here. `run_identifiability.py` evaluates the profile at the fitted widths and
 reports the whole width-channel signal at the predicted shift as
-[6.33](../results/identifiability.csv "ref:identifiability:width_signature_broadening_khz:gaussian_branch") kHz on the Gaussian branch and
-[7.15](../results/identifiability.csv "ref:identifiability:width_signature_broadening_khz:cusp_branch") kHz on the cusp. **Composing it
+[25.95](../results/identifiability.csv "ref:identifiability:width_signature_broadening_khz:gaussian_branch") kHz on the Gaussian branch and
+[28.77](../results/identifiability.csv "ref:identifiability:width_signature_broadening_khz:cusp_branch") kHz on the cusp. **Composing it
 instead, by adding the kernel width to the line in quadrature, understates it
 by about a factor of two**, because quadrature addition of full widths is a
 Gaussian rule and this line is roughly two thirds Lorentzian. That composition
 stood in this paragraph and is the reason the sourced cells
 are quoted here.
 
-On a line of about 5.3 MHz that signal is a part in some 800,
+On a line of [5.4040](../results/identifiability.csv "ref:identifiability:width_signature_fwhm_mhz:gaussian_branch") MHz (Gaussian branch) to [5.3219](../results/identifiability.csv "ref:identifiability:width_signature_fwhm_mhz:cusp_branch") MHz (cusp branch)
+that signal is a part in some 185 to 208 ([5.4040](../results/identifiability.csv "ref:identifiability:width_signature_fwhm_mhz:gaussian_branch")/[0.02595](../results/campaign_twin_forecast.csv "ref:campaign_twin_forecast:cell:sigma_laser_20traces_err") and [5.3219](../results/identifiability.csv "ref:identifiability:width_signature_fwhm_mhz:cusp_branch")/0.02877),
 far below the width budget's own systematics. No width measurement of any
 precision reaches this signal. The asymmetry channel is not a refinement of the
 width channel but the only channel there is. Calculated 2026-07-30, requoted
@@ -339,7 +344,7 @@ width channel but the only channel there is. Calculated 2026-07-30, requoted
 The reference moments the fit encodes,
 
 $$\text{centroid pull} = +\tfrac{2}{3}S_0,\qquad
-\kappa_3^{\text{ramp}} = -\tfrac{1}{135}S_0^3$$
+\mu_3^{\text{ramp}} = -\tfrac{1}{135}S_0^3$$
 
 order the signal by statistical cost: pull $\propto P$, excess variance
 $\propto P^2$, skew $\propto P^3$, the last vanishing unless $n=2$, the $I^2$
@@ -374,22 +379,26 @@ A fixed-lock session would change this two ways. The fixed lock would recover
 the first-order pull ($+\tfrac23 S_0 \propto P$, a shift of order MHz against a
 stable reference, and the primary $S_0$ measurement once it is no longer
 absorbed by a free centre). The small waist, where $S_0$ would be about
-16 times larger, would lift the shape asymmetry into a detection, though not by
+7.90 times larger than the archive's own for an unclipped design, the bore
+out of the focusing path (7.02 with the 2025 input kept), would lift the
+shape asymmetry into a detection, though not by
 the naive $S_0^3$ cube of that gain, because the axial average changes the
-third cumulant's magnitude and, for a long enough collection window, its sign
-(§7). Both are conditional on the small-waist skew corrections, the
+third moment's magnitude and, for a long enough collection window, its sign
+(§7).
+
+Both are conditional on the small-waist skew corrections, the
 beam-divergence collection average of §7 (the larger, sign-flipping one) and
 the standing-wave fringe-resolved tail of §5 (same-sign, and fit jointly with
 it). Those move the ramp form, and the pull coefficient off $+\tfrac23$, at
 small waist, and must be applied before $S_0$, hence $\Delta\alpha$, is read.
 
-The three cumulants are not three rival
+The three moments are not three rival
 measurements to be combined or cherry-picked. They are three analytic
 functionals of the *one* parameter $S_0(P)$
 (`lineshape.ramp_moment_contributions`): pull $\propto S_0$, excess variance
-$\propto S_0^2$, third cumulant $\propto S_0^3$. A fixed-lock fit would use a
+$\propto S_0^2$, third moment $\propto S_0^3$. A fixed-lock fit would use a
 single $S_0$ per condition and check that the pull, excess-variance and
-third-cumulant *measured from the data* are mutually consistent with it, a
+third-moment *measured from the data* are mutually consistent with it, a
 $\chi^2$ across the moment hierarchy. The primary observable at each intensity
 is pre-registered as the lowest-order moment above its own noise floor (the
 pull where $S_0$ is small, the skew only where $P^3$ has climbed clear of
@@ -426,7 +435,7 @@ destroys the centres, the pull $\propto S_0$ is absorbed by each trace's free
 centre, and only the ramp's $\propto S_0^2$ width broadening survives (a
 $0.6$ MHz $S_0$ inflates a $5$ MHz line by less than $0.1$ MHz).
 
-M23 (`run_stark_joint`) tightens the same channel to $S_0(225\ \text{mW})$ below 0.26 MHz
+M23 (`run_stark_joint`) tightens the same channel to $S_0(225\ \text{mW})$ below 0.18 MHz at the calculated waist (0.26 at the retired one until 2026-09-22)
 by fitting every point of every profile across the sessions instead of 20
 summary widths. The 20-summary-width construction is kept as the independent
 simpler bracket, so there are two constructions of one physical channel and
@@ -465,7 +474,7 @@ the precondition for this channel existing.
 carries the forecasts and the arithmetic.
 
 Through the §5 convention the M23 bound maps to a $\Delta\alpha$ bracket below
-the computed $1093$ at the $w_0 = 64$ µm convention, so the dataset constrains
+the computed $1093$ at the $w_0 = 42.38$ µm convention, so the dataset constrains
 the $(\Delta\alpha,\ \text{intensity})$ pair rather than either alone. The
 prior is now the lineage measurement itself (§5), a direct test rather than an
 inference pointing at an external number. Two documented effects push the
@@ -553,17 +562,17 @@ the two-photon operator is scalar, 6S sits in one hyperfine level, so this is a
 two-step product rather than a degeneracy weight, and each leg scales that
 weight by a clean fraction:
 
-$$f = \frac{2F'+1}{\sum_F (2F+1)}\left(\tfrac89 b_{1/2}+\tfrac49 b_{3/2}\right)
-= 0.372,\ 0.348,\ 0.248,\ 0.223
-\ \text{ for } 993.4121,\ 4154,\ 4192,\ 4207\ \text{nm}$$
+$$f = \frac{2F'+1}{\sum_F (2F+1)}\left(\tfrac89 b_{1/2}+\tfrac49 b_{3/2}\right)$$
 
-with $b$ the two legs' branching, 0.341 and 0.659, and the bracket evaluating to
+gives $0.372$, $0.348$, $0.248$ and $0.223$ <!-- other-quantity: the two-photon branching fractions f, not the S0 prediction --> for 993.4121, 4154, 4192 and 4207 nm respectively, with $b$ the two legs' branching, 0.341 and 0.659, and the bracket evaluating to
 0.596 for every line. The $8/9$ and $4/9$ are not an averaging over hyperfine
 structure, and the obvious objection is worth answering here rather than leaving
 to the reader: every line feeds one $5P_{3/2}$ level that cannot decay to the
 undriven ground level at all, since a $J=1$ photon cannot change $F$ by two, and
 those levels differ per line ($F=0,1,4,3$ across 4121, 4154, 4192, 4207) and
-carry between 0.17 and 0.70 of that leg. They are in the calculation, and they
+carry between 0.17 and 0.70 of that leg.
+
+They are in the calculation, and they
 cancel against the enhanced paths exactly. The reason is that a spontaneous
 decay evolves the density matrix as $\rho\to\sum_q D_q\rho D_q^\dagger$, which
 is basis-free, and neither dipole operator touches the nucleus, so evaluating it
@@ -643,12 +652,12 @@ The fringe-resolved tail suppresses the skew. The line is Doppler-free over
 node-to-antinode arcsine. That is a fringe-resolved tail (weight
 $f_\text{res}$) which keeps the mean but, because the fringe *multiplies* the
 shift $s\to s(1+x)$ with $x$ arcsine, suppresses the ramp skew:
-$\kappa_3\to -S_0^3(1/135-f_\text{res}/10)$ at $\rho=1$, a $-13.5 f_\text{res}$
+$\mu_3\to -S_0^3(1/135-f_\text{res}/10)$ at $\rho=1$, a $-13.5 f_\text{res}$
 fractional leverage $\propto$ contrast², of which only
 $P=f_\text{res}\sigma_x^2$ is observable. Measured as the change in standardized
-skew over the intrinsic 0.566 magnitude of the triangle, it is negligible at $w_0=64$ µm
-(≈7–14% of an already-below-noise skew, `results/fringe_tail.csv`, whose
-7–14% spread is the open coherence-window choice, not Monte-Carlo noise: the
+skew over the intrinsic 0.566 magnitude of the triangle, it is negligible at $w_0=42.38$ µm
+(≈11–15% of an already-below-noise skew, `results/fringe_tail.csv`, whose
+11–15% spread is the open coherence-window choice, not Monte-Carlo noise: the
 block-to-block error on the underlying standardized skew, `d_skew_mc_err` in
 the same file, is 2 to 4% of the value it accompanies) and
 ≈26–28% at 16 µm, where it is same-sign-additive to the larger §7
@@ -656,11 +665,13 @@ divergence correction, so the two must be fit jointly at small waist
 (quantified and coherence-window-bracketed in `fringe_tail`).
 
 With this record's $\Delta\alpha$ (§5.0) in place of Orson's 1093 a.u., and the on-axis aperture factor, the prediction is
-$S_0 =$ [0.348](../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred:shared") MHz
-(transition) at $P=225$ mW, $w_0=64$ µm, $\rho=0.94$. It grows to $5.6$ MHz
-at $w_0=16$ µm, which is why a small waist would lift the ramp asymmetry to
+$S_0 =$ [0.7290](../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred:shared") MHz
+(transition) at $P=225$ mW, $w_0=42.38$ µm, $\rho=0.94$. It grows to
+[5.76](../results/platform_twins.csv "ref:platform_twins:cell_130C_tight:cell:s0_mhz") MHz
+at $w_0=16$ µm for an unclipped design, the bore out of the focusing path,
+which is why a small waist would lift the ramp asymmetry to
 a detection, though *not* by the on-axis $S_0^3$ cube of the intensity gain,
-since the axial average over the collection window changes the third cumulant's
+since the axial average over the collection window changes the third moment's
 magnitude and, past $Z_c/z_R\approx1.12$, its sign (§7).
 
 The $\langle E^2\rangle$ convention is magnitude-only.
@@ -682,7 +693,7 @@ M16), a sum-over-states model from Safronova-lineage matrix elements. Two of
 its three anchors are held out and one is not, and the distinction is worth
 making rather than blurring. Held out, and therefore evidence: it reproduces
 the *measured* 5S scalar tune-out 790.032326(32) nm to $\approx1.6$ pm, and
-the measured static $\alpha_{5S}=318.79(1.42)$. Not held out: the model also
+the measured static $\alpha_{5S}=318.79(1.42)$. Not held out: the model also <!-- other-quantity: an uncertainty -->
 returns the Safronova-group static $\alpha_{6S}=5167(22)$, but its 6S tail term
 is *fixed by* that value (`TAIL_6S` in `rb5s6s/polarizability.py`, and
 `results/polarizability.csv` records the row as tail-calibrated), so the
@@ -702,7 +713,7 @@ The 6P pair gives $-279.8$ and $-567.0$, the 7P pair $-13.2$ and $-32.4$, and th
 8P pair $-15.3$ and $-41.2$, for a line sum of $-324.7$ and $[-312.2](../results/polarizability.csv "ref:polarizability:alpha_6s_993:model")$ after tail
 and core. So the 8P pair, at $-56.5$ a.u., is **18% of $\alpha_{6S}$ and the second
 largest upward group**, ahead of 7P. The reason is that 993 nm sits only
-345 cm^-1 blue of the *real* 6S–8P3/2 transition at 1028.67 nm, which is the
+345 cm^-1 blue of the *real* 6S–8P3/2 transition at 1028.67 nm, which is the <!-- other-quantity: a detuning -->
 closest real coupling this field has to 6S, 6.8 times closer than 7P and
 18.8 times closer than 6P. Proximity still loses: the 8P matrix elements are
 about twenty times smaller than 6P's and enter squared.
@@ -906,8 +917,8 @@ at once.
 It reaches no resonance. From 6S a third photon lands at 30198.75 cm^-1.
 Selection rules allow only $n\mathrm{P}$ from a real S state, and the nearest odd-parity
 level of any kind is 8P3/2 at 29853.79 cm^-1, so the photon arrives
-**345 cm^-1 above it**. That is 10.34 THz, about 23000 Doppler widths of the
-1028.67 nm transition at 130 C, and roughly $2\times10^{7}$ times the 8P natural
+**345 cm^-1 above it**. That is 10.34 THz, about 23000 Doppler widths of the <!-- other-quantity: a detuning -->
+1028.67 nm transition at 130 C, and roughly $2\times10^{7}$ times the 8P natural <!-- other-quantity: a wavelength -->
 width. The next candidates are farther: 8P1/2 at 364 cm^-1, then 9P and 6F at
 several hundred more. A single-colour three-photon resonance to 8P3/2 would need
 1004.90 nm, 11.5 nm from where this laser runs.

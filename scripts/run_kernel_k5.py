@@ -196,7 +196,7 @@ def main() -> int:
         "requirement",
         "the lock's own error signal, a self-heterodyne or beat measurement, "
         "or a fast-scan comb block sampling inside that band. Each is a "
-        "candidate K7 ranks; none has been run")
+        "candidate K7 ranks -- none has been run")
 
     with OUT.open("w", newline="") as fh:
         w = csv.DictWriter(fh, fieldnames=list(rows[0].keys()))

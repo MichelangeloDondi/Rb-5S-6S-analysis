@@ -73,6 +73,17 @@ _PROFILE_RTOL = 0.02
 
 
 def test_stark_sweep_csv_matches_current_code():
+    # THE EXPENSIVE SET IS GRADED BY HAND, AND THIS CELL IS IN IT (F494, 2026-09-24). Its comment put the recompute
+    # at about 30 s; at the ruled waist the producer ran 9523 s on 2026-09-22 (c6a_final.chain.tsv), and inside the
+    # gate's serial stage, clamped to the efficiency cores, this one cell held the verdict of 9a476ecb7f84 for over
+    # four hours. verify_results_fresh.EXPENSIVE names run_stark_sweep, and `verify_results_fresh.py --all` is where
+    # the expensive producers are re-run, so this cell defers to that one registry rather than keeping a second.
+    import importlib.util as _ilu
+    _s = _ilu.spec_from_file_location("_vrf", C.REPO_ROOT / "scripts" / "verify_results_fresh.py")
+    _v = _ilu.module_from_spec(_s); _s.loader.exec_module(_v)
+    if "run_stark_sweep" in getattr(_v, "EXPENSIVE", {}):
+        pytest.skip("run_stark_sweep is in verify_results_fresh.EXPENSIVE (9523 s at the ruled waist): graded by "
+                    "`scripts/verify_results_fresh.py --all`, never inside the gate")
     committed = _committed_values("stark_sweep.csv")
     stale = []
     for key, val in _stark_sweep_from_code().items():

@@ -326,7 +326,7 @@ puts the aperture at the beam's own 1/e^2 radius. The direction of the error is
 stated here instead of left to be inferred: a real beam has `M^2 > 1`, so the true
 Rayleigh range is *shorter* than every number in this record assumes, the window
 ratio *larger*, and the collection-window correction on the second and third
-cumulants bigger than the signed rows the record carries.
+moments bigger than the signed rows the record carries.
 
 Nothing quantifies it,
 because nothing has measured `M^2` on this bench.
@@ -402,10 +402,10 @@ Across the campaign's own four-point grid, 70/90/110/130 C, the
 differential is below
 [0.054](../results/collisional_shift_bound.csv "ref:collisional_shift_bound:bound:shift_bound_differential")
 MHz, about
-[4.7](../results/collisional_shift_bound.csv "ref:collisional_shift_bound:comparison:light_shift_over_collisional")
+[3.4](../results/collisional_shift_bound.csv "ref:collisional_shift_bound:comparison:light_shift_over_collisional")
 times smaller than the light-shift bound this record quotes on the same
 axis, below
-[0.26](../results/stark_joint.csv "ref:stark_joint:S0_225mW_ub95:primary")
+[0.18](../results/stark_joint.csv "ref:stark_joint:S0_225mW_ub95:primary")
 MHz at 225 mW. So a collisional shift is not separable from zero by this
 dataset. The differential is quoted beside the absolute
 bound because it is the smaller and more relevant scale. **The mechanism this

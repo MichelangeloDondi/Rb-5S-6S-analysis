@@ -3,11 +3,19 @@
 `rb5s6s/constants.py` says it in the symbol's own docstring: w0 is NOT measured on this bench (a
 lineage profile on another laser source, without this beam's 3 mm modulator aperture), and the owner
 corrected the reading twice (2026-09-10, 2026-09-15). On 2026-09-17 thirty-six reader-facing lines still
-called the 64 um waist "measured", and the owner named w0 among the stale values. The forms refused below
-are the unambiguous ones: a measured 64 um, a measured w0 equal to 64, and a definite "the measured
+called the retired waist convention "measured", and the owner named w0 among the stale values. The forms refused below
+are the unambiguous ones: a measured waist called out by NUMBER, a measured w0 set equal to one, and a definite "the measured
 waist" that a number is evaluated at. A campaign's future measurement ("the waist measured at several
 powers", "a measured w0 would ...") is not refused, and neither is a preregistration or a history
 record, which quote their own day.
+
+RE-PINNED 2026-09-22 (O44): the first three patterns below used to name the retired convention's own
+number literally. No waist of any size has ever been independently measured on this bench (the
+knife-edge scan is still owed), so a claim of a MEASURED waist is false whichever number it names, and
+the patterns now match any number rather than only the retired one. Matching any number collides with
+a THIRD PARTY's own measured beam, quoted correctly elsewhere in this record (Nieddu's and Rajasree's
+profiler readings, docs/lit/nieddu2019.md and docs/lit/rajasree2020thesis.md) -- a different apparatus
+and a different quantity, so a paragraph naming one of them is not refused.
 """
 from __future__ import annotations
 
@@ -18,9 +26,12 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 
 STALE = [
-    ("a measured 64 um", re.compile(r"measured\s+64\s*(?:µm|um|micron)", re.I)),
-    ("a 64 um measured waist", re.compile(r"64\s*(?:µm|um)\s+measured\s+(?:beam\s+)?waist", re.I)),
-    ("a measured w0 equal to 64", re.compile(r"measured\s+\$?w_?\{?0\}?\$?\s*=\s*64", re.I)),
+    ("a measured waist named by a number and its unit",
+     re.compile(r"measured\s+\d+(?:\.\d+)?\s*(?:µm|um|micron)", re.I)),
+    ("a number and unit before 'measured waist'",
+     re.compile(r"\d+(?:\.\d+)?\s*(?:µm|um)\s+measured\s+(?:beam\s+)?waist", re.I)),
+    ("a measured w0 equal to a number",
+     re.compile(r"measured\s+\$?w_?\{?0\}?\$?\s*=\s*\d+(?:\.\d+)?", re.I)),
     ("a number evaluated at the measured waist",
      re.compile(r"\b(?:at|using|rides|on)\s+the\s+(?:accepted\s+)?measured\s+(?:beam\s+)?waist\b", re.I)),
     ("the measured w0 band", re.compile(r"measured\s+w_?0\s+band", re.I)),
@@ -49,6 +60,15 @@ EXEMPT_FILES = ("docs/PREREGISTRATION_RESULTS.md", "docs/notes/transit_width_res
                 # same self-match that made an expensive-producer check find its own shell in `ps`.
                 "tests/test_waist_is_a_convention.py", "tests/test_waist_language.py")
 
+# RE-PINNED 2026-09-22 (O44): matching ANY number (above) collided with "directly measured 128 µm"
+# and "a MEASURED 128 um beam diameter" -- Nieddu's and Rajasree's own profiler readings of a
+# DIFFERENT apparatus, quoted correctly across docs/APPARATUS.md, docs/LITERATURE.md,
+# docs/LITERATURE_INDEX.md and the rajasree thesis note itself, none of which claim anything about
+# THIS bench. `private/checks/retired_values.py`'s own role patterns carry the identical allowlist
+# for the identical reason (its `_ROLE_ALLOWLIST_FILES` comment). A paragraph naming either
+# researcher is about their beam, not this record's, so it is not refused.
+_THIRD_PARTY_WAIST = re.compile(r"nieddu|rajasree", re.I)
+
 
 def stale_waist_lines(files, reader):
     hits = []
@@ -63,10 +83,11 @@ def stale_waist_lines(files, reader):
         for i in range(len(lines) + 1):
             if i == len(lines) or not lines[i].strip():
                 para = " ".join(l.strip() for l in lines[start:i])
-                for name, pat in STALE:
-                    if pat.search(para):
-                        hits.append(f"{f}:{start + 1} [{name}] {para[:110]}")
-                        break
+                if not _THIRD_PARTY_WAIST.search(para):
+                    for name, pat in STALE:
+                        if pat.search(para):
+                            hits.append(f"{f}:{start + 1} [{name}] {para[:110]}")
+                            break
                 start = i + 1
     return hits
 
@@ -83,20 +104,25 @@ def _reader_surfaces():
 def test_the_scan_refuses_the_stale_forms_and_admits_a_campaign_measurement():
     planted = {
         "a.md": "below the predicted 0.35 MHz at the measured waist",
-        "b.md": "At the dataset's\nmeasured 64 µm and 225 mW the law holds",
-        "c.md": "Taken over the measured w0 band (62-68um)",
+        "b.md": "At the dataset's\nmeasured 50 µm and 225 mW the law holds",
+        "c.md": "Taken over the measured w0 band (40-45um)",
         "d.md": "the waist measured at several powers with the EOM thermalised",
         "e.md": "A measured $w_0$, by fixing transit, would turn this bound into a measurement.",
         "f.md": "below the predicted 0.35 MHz at the waist convention",
         "g.py": "the main analysis FIXES transit from the measured w0 and reports",
         "h.py": "B  + transit   A (x) transit(FIXED at the measured w0)",
         "i.py": "Per setting: the magnification, the measured waist, the retro ratio",
+        # PLANT for the third-party escape (2026-09-22): the same shape as b.md's positive, so the
+        # escape is shown doing real work and not merely admitting a line the pattern never fired on.
+        "j.md": "Rajasree 2020 measured 128 um beam diameter on their own bench",
     }
     hits = stale_waist_lines(list(planted), lambda f: planted[f])
     assert sorted(h.split(":")[0] for h in hits) == ["a.md", "b.md", "c.md", "g.py", "h.py"], hits
+    # the escape is not a no-op: strip the researcher's name and the same sentence is refused
+    assert stale_waist_lines(["k.md"], lambda f: "measured 128 um beam diameter on their own bench")
 
 
 def test_no_reader_surface_calls_the_2025_waist_measured():
     hits = stale_waist_lines(_reader_surfaces(), lambda f: (ROOT / f).read_text(encoding="utf-8", errors="ignore"))
-    assert not hits, ("the 2025 waist is a convention (rb5s6s/constants.py, W0_MEASURED_M's docstring), "
+    assert not hits, ("the 2025 waist is a convention (rb5s6s/constants.py, W0_CENTRAL_M's docstring), "
                       "and these reader lines call it measured:\n  " + "\n  ".join(hits[:40]))

@@ -20,13 +20,51 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from rb5s6s import config as C  # noqa: E402
+from rb5s6s.constants import DRIVE_LENS_F_M, GAMMA_NAT_HZ  # noqa: E402
 from rb5s6s.density import number_density_cm3, N_SCALE_FRAC_SYST  # noqa: E402
-from rb5s6s.lineshape import stark_shift_S0_mhz  # noqa: E402
+from rb5s6s.hyperpolarizability import two_photon_rabi_hz  # noqa: E402
+from rb5s6s.stark import kappa_pred_per_watt  # noqa: E402
 
-# The small-waist configuration the plan proposes, used only to scale the
-# predicted S0 by the waist ratio squared. tests/test_ramp_geometry_docs.py
-# recomputes the same ratio from the same function.
+# The small-waist configuration the plan proposes, used for the C3c small-waist S0 gain
+# and saturation parameter, each set against the archive's own waist.
 W0_SMALL_M = 16e-6
+
+
+def _um(w_m):
+    """A waist in microns at the digits its constant carries. A fixed `.0F` printed
+    W0_CENTRAL_M's 42.38 as 42, so the page and the constant read as two numbers."""
+    return f"{w_m * 1e6:.4g}"
+
+
+def _w0_ref():
+    """The central waist bound to its constant, so tests/test_references.py checks the printed
+    number against constants.W0_CENTRAL_M and a re-pin cannot leave the page behind."""
+    return (f"[{_um(C.W0_CENTRAL_M)}](../rb5s6s/constants.py "
+            f"\"ref:constant:W0_CENTRAL_M:1e6\")")
+
+
+def _saturation_parameter(power_w, w0_m):
+    """The two-photon saturation parameter 2 (Omega / Gamma_nat)^2 at the retro ratio the
+    record assumes, through the one Rabi chain tests/test_platforms.py pins, so the C3c
+    sentence moves with the waist instead of carrying the number of a waist it no longer uses."""
+    return 2.0 * (two_photon_rabi_hz(power_w, w0_m, C.RHO_RETRO) / GAMMA_NAT_HZ) ** 2
+
+
+def _joint_fit_waist_um():
+    """The waist `results/stark_joint.csv` states its own prediction cells were computed at,
+    read from its kappa_pred note, or None when the note names none. The joint fit reads two
+    data trees held outside this repository, so its cells can lag a re-pinned waist, and the
+    page must say so rather than print them under the current waist's label."""
+    note = next((r["unit"] for r in rows("stark_joint")
+                 if (r["quantity"], r["key"]) == ("kappa_pred", "prediction")), "")
+    m = re.search(r"w0\s*=\s*([0-9]+(?:\.[0-9]+)?)\s*um", note)
+    return float(m.group(1)) if m else None
+
+
+def _joint_fit_at_current_waist():
+    # run_stark_joint.py writes the waist into that note to whole microns
+    w = _joint_fit_waist_um()
+    return w is not None and abs(w - C.W0_CENTRAL_M * 1e6) <= 0.5
 
 
 def rows_of(csv_name):
@@ -87,26 +125,37 @@ def main() -> int:
       "noted, because they ride on the beam waist $w_0$, which this dataset "
       "does not itself re-measure. Frequencies are transition-axis unless "
       "a `_LASER` note says otherwise.\n")
-    W("> **The dominant systematic is the beam waist $w_0$. It is a convention "
-      "borrowed from the apparatus lineage, and what this dataset cannot do is "
-      "re-measure it, because the transit width and the laser width are "
-      "degenerate through it. A beam profile (knife-edge/camera) in a "
-      "fixed-lock session would confirm it, and that session is proposed, not "
-      "scheduled.** At the old 32 µm nominal "
+    # THE WAIST'S PROVENANCE IS OWNER ORDER O44's (2026-09-21), AND ITS NUMBERS ARE THE
+    # CONSTANT'S. This paragraph kept the retired lineage convention in hard-coded words around
+    # a live number after the constant moved, so the page printed the new waist inside a
+    # sentence saying where the old one came from. The exception clause is computed, because the
+    # joint fit's cells cannot be re-run from this repository and lag any re-pin.
+    _joint_exception = ("" if _joint_fit_at_current_waist() else
+                        " except the joint fit's C3f prediction cells")
+    W("> **The dominant systematic is the beam waist $w_0$. It is a calculation, "
+      "not a measurement, and what this dataset cannot do is confirm it, because "
+      "the transit width and the laser width are degenerate through it. A beam "
+      "profile (knife-edge/camera) in a fixed-lock session would confirm it, and "
+      "that session is proposed, not scheduled.** At the old 32 µm nominal "
       "the natural width convolved with the transit kernel alone already "
       "exceeds the observed ~5.25 MHz line in the thin single-waist limit, "
       "though over a realistic multi-mm collection column that margin "
-      "narrows and the line alone no longer decides it. The lineage's "
-      "64 µm profile (Nieddu/Rajasree), a convention here, is what makes the "
-      "exclusion safe. "
-      f"Since v3.0.0 the analysis uses it: $w_0$ is **"
-      f"{C.W0_MEASURED_M*1e6:.0F} µm** (band {C.W0_BAND_M[0]*1e6:.0F}–"
-      f"{C.W0_BAND_M[1]*1e6:.0F}), taken from the lineage by convention rather "
-      "than inferred from our own line, and the retro ratio is assumed at "
+      "narrows and the line alone no longer decides it. "
+      # the floor is this lens's: a shorter one after the same bore reaches 32 um (the 40/32/24 um survey)
+      "`constants.W0_CENTRAL_M`, this bench's bore-limited actual focus, is what "
+      "makes the exclusion safe, since no input radius through its EOM bore and "
+      f"f = [{DRIVE_LENS_F_M * 1e3:.0F}](../rb5s6s/constants.py "
+      f"\"ref:constant:DRIVE_LENS_F_M:1e3\") mm lens focuses to 32 µm. "
+      f"Since owner order O44 (2026-09-21) the analysis uses it: $w_0$ is **"
+      f"{_w0_ref()} µm** (band {_um(C.W0_BAND_M[0])}–"
+      f"{_um(C.W0_BAND_M[1])}), calculated from the EOM bore, the focusing lens "
+      "and the drive wavelength rather than taken from the Nieddu/Rajasree "
+      "apparatus-lineage convention this record carried from v3.0.0, and the "
+      "retro ratio is assumed at "
       f"$\\rho={C.RHO_RETRO}\\pm{C.RHO_RETRO_ERR}$. "
       "Every $w_0$-conditional number below (the "
       "$\\beta_\\text{self}$ and $\\sigma_\\text{laser}$ bounds, $S_0$, the $w_0$-band) "
-      "has been re-run at the convention's value. They stay preliminary and "
+      f"has been re-run at this value{_joint_exception}. They stay preliminary and "
       "$w_0$-conditional because the transit versus $\\sigma_\\text{laser}$ "
       "degeneracy means the line in the dataset cannot pin $w_0$ itself, which is "
       "the beam-profile measurement's job. "
@@ -149,8 +198,9 @@ def main() -> int:
           "and no claim about where the archive's noise removes the waist is made here "
           "until the sweep is re-run at a resolved realisation count. What does stand is "
           "that the generator and the estimator share one forward model, so any such "
-          "closure speaks to conditioning and not to physics, and every $w_0$ in "
-          "`results/ultra_joint_fit.csv` stays conditional.\n")
+          "closure speaks to conditioning and not to physics, and every $w_0$ the "
+          "ultra-joint fit returns stays conditional (its output is withheld until the "
+          "waist ladder is climbed again on the current model).\n")
 
     # ---- C1: beta_self ----
     W("## C1. Collisional self-broadening $\\beta_\\text{self}$\n")
@@ -354,22 +404,35 @@ def main() -> int:
           "precision and systematics *of this estimator*, which do not span the bound. "
           "The headline number stays the top-row width-slope bound.\n")
         d87 = _dv("beta_loo_drop", "4207|87Rb")
-        s4207 = {r["key"].split("|")[1]: float(r["value"]) for r in dfr
+        # THE KEYS ARE READ WITHOUT REGARD TO CASE AND THE READINGS ARE COMPUTED (C6a, 2026-09-22): the
+        # lookup asked for "70c" where the rows are keyed "70C", so this sentence printed empty parentheses,
+        # and its "pattern intact", "110 C dip" and "every other drop" were typed beside them.
+        _T = ("70c", "90c", "110c")
+        s4207 = {r["key"].split("|")[1].lower(): float(r["value"]) for r in dfr
                  if r["quantity"] == "sigma_loo_drop" and r["key"].startswith("4207|")}
-        if d87 and s4207:
-            sl = "/".join(f"{s4207[k]:.2F}" for k in ("70c", "90c", "110c") if k in s4207)
-            sgl = {r["key"]: float(r["value"]) for r in gf if r["quantity"] == "sigma_laser"}
-            sall = "/".join(f"{sgl[k]:.2F}" for k in ("70c", "90c", "110c") if k in sgl)
+        sgl = {r["key"].lower(): float(r["value"]) for r in gf if r["quantity"] == "sigma_laser"}
+        if d87 and s4207 and all(k in s4207 for k in _T) and all(k in sgl for k in _T):
+            sl = "/".join(f"{s4207[k]:.2F}" for k in _T)
+            sall = "/".join(f"{sgl[k]:.2F}" for k in _T)
+            _stat87 = float(_dv("beta_crosscheck", "87Rb")["err"] or "nan")
+            _below = abs(float(d87["err"])) < _stat87
+            _order = lambda d: tuple(sorted(_T, key=lambda k: d[k]))           # noqa: E731
+            _same = _order(s4207) == _order(sgl)
+            _peak = max(_T, key=lambda k: sgl[k]).upper().replace("C", " °C")
+            _drops = {r["key"].split("|")[0] for r in dfr if r["quantity"] == "sigma_loo_drop"}
+            _all_same = all(_order({r["key"].split("|")[1].lower(): float(r["value"]) for r in dfr
+                                    if r["quantity"] == "sigma_loo_drop" and r["key"].startswith(pk + "|")})
+                            == _order(sgl) for pk in _drops)
             W(f"> Per-drop detail is committed (`beta_loo_drop` and `sigma_loo_drop` "
               f"rows). "
               f"Dropping the 993.4207 nm suspect moves $\\beta_{{87}}$ by "
-              f"{float(d87['err']):+.4F} (below its statistical error) and leaves the "
-              f"$\\sigma_\\text{{laser}}(T)$ pattern intact ({sl} against {sall} with "
-              f"all peaks). The suspect drives **neither** the coefficient **nor** the "
-              f"$\\sigma_\\text{{laser}}$ trend, whose 110 °C dip the sharing check "
-              f"already attributes "
-              f"to the $\\beta\\leftrightarrow\\sigma_\\text{{laser}}$ degeneracy. The "
-              f"same holds for every other single-peak drop.\n")
+              f"{float(d87['err']):+.4F} ("
+              + ("below" if _below else "above") + " its statistical error of "
+              f"{_stat87:.4F}) and " + ("keeps" if _same else "changes")
+              + f" the order of the $\\sigma_\\text{{laser}}(T)$ values ({sl} against {sall} "
+              f"with all peaks, the largest at {_peak}). "
+              + ("The same order holds for every other single-peak drop.\n" if _all_same else
+                 "Another single-peak drop changes that order.\n"))
         lt = _dv("beta_loo_temp", isos[0]) if isos else None
         pb87 = _dv("beta_grid_exp_per_block", "87Rb")
         sh87 = _dv("beta_err_sharing", "87Rb")
@@ -388,16 +451,18 @@ def main() -> int:
              ("the $\\sigma_\\text{laser}$ sharing choice",
               float(_dv("beta_err_sharing", isos[0])["value"]))],
             key=lambda t: -t[1])
+        # EACH AXIS KEEPS ITS OWN EXPLANATION (2026-09-22). The kernel axis's sat after the colon of
+        # whichever axis ranked first, so when the transit overtook it at the calculated waist the
+        # page credited the transit's value to zeroing the composite's extra homogeneous component.
         W(f"\n> **{_ranked[0][0].capitalize()} is the largest systematic**, at "
-          f"{_ranked[0][1]:.3F}: zeroing the "
-          "composite's extra homogeneous component, against what "
-          "`kernel_k3.csv` fits, moves $\\beta$ by that much "
-          "([the dossier](quantities/self-broadening.md)), and it is not an "
-          "error bar on a good central value. The fit at zero puts a "
-          "density-independent floor through the origin, which is the same "
-          "floor this page's own lever test reports. "
+          f"{_ranked[0][1]:.3F}. "
           + "Then ".join([""] + [f"{n} at {v:.3F}. " for n, v in _ranked[1:]])
-          + "The waist band is what the "
+          + "The kernel axis is the move in $\\beta$ from zeroing the composite's extra "
+          "homogeneous component against what `kernel_k3.csv` fits "
+          "([the dossier](quantities/self-broadening.md)), and it is not an "
+          "error bar on a good central value: the fit at zero puts a "
+          "density-independent floor through the origin, which is the same "
+          "floor this page's own lever test reports. The waist band is what the "
           "beam-profile measurement collapses, and the transit axis is the Lehmann cusp "
           "against Voigt. The $\\sigma_\\text{laser}$ A-against-B *sharing* choice is "
           "minor, and the lever test below does not rest on it: "
@@ -474,37 +539,77 @@ def main() -> int:
     k3 = {r["quantity"]: r for r in rows_of("kernel_k3.csv")
           if r.get("scope") == "all"}
     k5 = {r["quantity"]: r for r in rows_of("kernel_k5.csv")}
+    def _k3(q, shown=None):
+        """One all-scope kernel_k3 cell, bound to its row so the reference check keeps it current.
+        `shown` prints it at fewer digits, and the check compares at the precision printed."""
+        return (f"[{shown or k3[q]['value']}](../results/kernel_k3.csv "
+                f"\"ref:kernel_k3:all:{q}\")")
     if k3:
         W("## C1b. The free laser kernel's cost to "
           "$\\beta_\\text{self}$\n")
+        # THE PER-PEAK READINGS ARE COMPUTED, never typed (F313's second half, 2026-09-22): the span,
+        # the p and "preferred at every peak" were the retired waist convention's, and at the calculated
+        # waist one peak no longer prefers the Lorentzian content at all.
+        k3p = {(r["scope"], r["quantity"]): r["value"] for r in rows_of("kernel_k3.csv")}
+        _pk = sorted(s for s, q in k3p if q == "gamma_l_equiv")
+        _gl = [float(k3p[(s, "gamma_l_equiv")]) for s in _pk]
+        _pb = {s: float(k3p[(s, "p_boundary")]) for s in _pk}
+        _np = [s for s in _pk if _pb[s] >= 0.05]
+        _pref = ("at every peak" if not _np else
+                 f"at {len(_pk) - len(_np)} of {len(_pk)} peaks and not at "
+                 + ", ".join(f"{s} (p = {_pb[s]:.2f})" for s in _np))
+        # AND SO ARE THE VERDICTS BESIDE THEM: the common-scalar reading is the producer's own
+        # k2p5_verdict, the p is shown at two decimals (the raw cell printed as 1.6251e-01), and the
+        # R_kernel reading says when U_kernel is still the provisional fallback-class value.
+        def _word(n):
+            return {1: "one", 2: "two", 3: "three", 4: "four", 5: "five", 6: "six"}.get(n, str(n))
+        _nw = _word(len(_pk))
+        _hp = float(k3["k2p5_heterogeneity_p"]["value"])
+        _hp_shown = f"{_hp:.2f}" if _hp >= 0.01 else None
+        _verdict = k3.get("k2p5_verdict", {}).get("value", "")
+        _het = {"ONE_SCALAR_LICENSED": "a common scalar is neither rejected nor established",
+                "HETEROGENEOUS": "a common scalar is rejected, which makes the mean the wrong object",
+                }.get(_verdict, f"the common-scalar test reads `{_verdict}`")
+        _prov = k3.get("U_kernel_status", {}).get("value", "") == "PROVISIONAL"
         W(f"The kernel is a **model form**, and on this dataset it is also a "
           f"measurement. Freeing a Lorentzian-equivalent laser width alongside "
-          f"the Gaussian one is preferred at every peak by a nested likelihood "
+          f"the Gaussian one is preferred {_pref} by a nested likelihood "
           f"ratio with one parameter on its boundary, and the inverse-variance "
           f"mean across peaks is "
-          f"$\\Gamma_{{L,\\text{{equiv}}}} = "
-          f"{k3['k2p5_gamma_l_weighted_mean']['value']}$ MHz, and that mean is "
-          f"never quoted alone: the four per-peak values span **0.315 to 0.449 "
-          f"MHz** and a common scalar is neither rejected nor established, at "
-          f"**p = 0.097** "
-          f"(`results/kernel_k3.csv`, `results/kernel_budget.csv`). At a fixed "
+          f"$\\Gamma_{{L,\\text{{equiv}}}}$ = "
+          f"{_k3('k2p5_gamma_l_weighted_mean')} MHz, and that mean is "
+          f"never quoted alone: the {_nw} per-peak values span **{min(_gl):.3f} to {max(_gl):.3f} "
+          f"MHz** and {_het}, at "
+          f"**p = {_k3('k2p5_heterogeneity_p', _hp_shown)}** "
+          f"(`results/kernel_k3.csv`). At a fixed "
           f"condition this parameter is "
           f"exactly degenerate with the collisional width, because both are "
           f"Lorentzian and Lorentzians add, so it is identified only across "
           f"the density ladder.\n")
-        W(f"- $U_\\text{{statistical}}$ = {k3['U_statistical']['value']}, "
-          f"$U_\\text{{kernel}}$ = {k3['U_kernel']['value']}, both in MHz per "
+        W(f"- $U_\\text{{statistical}}$ = {_k3('U_statistical')}, "
+          f"$U_\\text{{kernel}}$ = {_k3('U_kernel')}, both in MHz per "
           f"density unit and on the same one-sigma-like footing, giving "
-          f"**$R_\\text{{kernel}}$ = {k3['R_kernel']['value']}**. The kernel "
-          f"systematic dominates the statistical error, so repetitions of the "
-          f"current construction no longer buy the coefficient.\n")
-        W("- Freeing the kernel moves $\\beta_\\text{self}$ by 42 to 66 per "
-          "cent across the four peaks, which reproduces from a freeing "
-          "construction the 45 to 67 per cent this record already carried from "
-          "a switching one.\n")
-        if k5:
+          f"**$R_\\text{{kernel}}$ = {_k3('R_kernel')}**. "
+          + ("$U_\\text{kernel}$ is provisional, computed over the fallback kernel class until "
+             "K5's classification replaces it, and on that reading the kernel systematic "
+             if _prov else "The kernel systematic ")
+          + ("dominates the statistical error, so repetitions of the current construction no "
+             "longer buy the coefficient.\n"
+             if float(k3["R_kernel"]["value"]) > 1.0 else
+             "sits below the statistical error, so repetitions of the current construction "
+             "still buy the coefficient.\n"))
+        _free = [abs(float(k3p[(s, "beta_self_GL")]) / float(k3p[(s, "beta_self_G")]) - 1.0) for s in _pk]
+        _swap = [abs(float(r["beta_frac_shift"])) for r in rows_of("kernel_headline.csv")]
+        W(f"- Freeing the kernel moves $\\beta_\\text{{self}}$ by {100 * min(_free):.0f} to "
+          f"{100 * max(_free):.0f} per cent across the {_nw} peaks (`results/kernel_k3.csv`), "
+          f"and switching it wholesale by {100 * min(_swap):.0f} to {100 * max(_swap):.0f} "
+          f"(`results/kernel_headline.csv`).\n")
+        _npres = len(_pk) - len(_np)
+        if k5 and _npres:
             W("- **The origin is not settled by any of this.** A non-Gaussian "
-              "homogeneous component is present. Calling it the laser is a "
+              "homogeneous component is present "
+              + ("at every peak" if not _np else f"at {_word(_npres)} of the {_nw} peaks")
+              + ". Calling it the laser is a "
               "separate arrow, and the transfer that would carry it is "
               "classified `"
               + k5.get("transfer_classification", {}).get("value", "?")
@@ -559,11 +664,11 @@ def main() -> int:
     W("- Degenerate with $w_0$ through the transit kernel: the transit adds ~2.1 MHz "
       "at $w_0=32$ µm (which overshoots the observed line, so 32 µm is excluded) and "
       f"~{C.TRANSIT_FWHM_PLACEHOLDER_MHZ:.2F} MHz at the "
-      f"{C.W0_MEASURED_M*1e6:.0F} µm convention waist. More transit leaves less width for "
+      f"{_w0_ref()} µm convention waist. More transit leaves less width for "
       "the laser.")
     # Axis discipline: laser_epoch.csv is on the laser axis, every fit below is
     # on the transition axis (= 2x laser). All four numbers are read from the
-    # CSVs. A hand-typed trio here (1.44/1.63/1.06) went stale and inverted the
+    # CSVs. A hand-typed trio here (1.44/1.63/1.06) went stale and inverted the (the trio that used to be typed here)
     # conversion, which is what tests/test_docs_canonical.py records.
     gsig = {r["key"]: float(r["value"]) for r in rows("global_fit")
             if r["quantity"] == "sigma_laser"}
@@ -667,19 +772,34 @@ def main() -> int:
       "25 mW, "
       "genuine saturation, or a weak power-dependence of trapping at the thick end "
       "are not separable from one single-temperature sweep.")
-    # The small-waist gain is read from the CSV and scaled by the waist ratio
-    # squared, using the same function the guard in tests/test_ramp_geometry_docs
-    # uses, so the two cannot diverge. It was hardcoded at "0.59 -> 5.7, ~10x",
-    # which held only at the retired 50 um and unity-retro geometry.
+    # The small-waist gain is read from the CSV's archive prediction and scaled by one function
+    # at both waists. It was hardcoded at "0.59 -> 5.7, ~10x", which held only at the retired
+    # 50 um and unity-retro geometry. ONE WAIST IS FORMED THROUGH THE BORE AND ONE WITHOUT IT (C6a's
+    # recorded default, pending the owner's word): no input radius through the EOM bore focuses
+    # to 16 um, so the design point is the unclipped Gaussian of a beam with the bore out of its
+    # path, and the archive is its actual clipped prediction. A ratio of two stark_shift_S0_mhz
+    # values treated both waists as unclipped, the form tests/test_ramp_geometry_docs.py recomputes.
     swp = {(r["quantity"], r["key"]): r for r in rows("stark_sweep")}
     s0p = swp.get(("S0_225mW_pred", "shared"))
-    gain = (stark_shift_S0_mhz(0.225, W0_SMALL_M)
-            / stark_shift_S0_mhz(0.225, C.W0_MEASURED_M))
+    gain = (kappa_pred_per_watt(W0_SMALL_M, C.RHO_RETRO, bore_in_path=False)
+            / kappa_pred_per_watt(C.W0_CENTRAL_M, C.RHO_RETRO))
     skew_gain = (f"$S_0$ {float(s0p['value']):.2F} → "
                  f"{float(s0p['value']) * gain:.1F} MHz at 225 mW, "
                  f"{gain:.0F} times larger at the {W0_SMALL_M * 1e6:.0F} µm "
-                 f"configuration than at the convention "
-                 f"{C.W0_MEASURED_M * 1e6:.0F} µm") if s0p else "a larger $S_0$"
+                 f"configuration, unclipped with the bore out of its path, than at the "
+                 f"convention {_w0_ref()} µm through it") if s0p else "a larger $S_0$"
+    # The saturation parameter at both waists, computed rather than typed: this sentence read
+    # "0.033 at the convention" waist for a day after the constant it was computed at retired.
+    sat_central = _saturation_parameter(0.225, C.W0_CENTRAL_M)
+    sat_small = _saturation_parameter(0.225, W0_SMALL_M)
+    # The sweep-rate tolerance is read from its cell: it was typed inside its own ref link, so the
+    # link named the cell while the digits stayed at a waist the record no longer uses.
+    sweep_tol = next((r["value"] for r in rows("sweep_linearity")
+                      if (r["case"], r["quantity"]) == ("archive", "rate_variation_tolerance")),
+                     None)
+    sweep_tol_txt = (f"[{sweep_tol}](../results/sweep_linearity.csv "
+                     f"\"ref:sweep_linearity:archive:rate_variation_tolerance\") per cent"
+                     if sweep_tol else "the tolerance `results/sweep_linearity.csv` carries")
     # worst low-power residual skew, read from the CSV rather than typed: the
     # same figure was quoted as ~10 sigma and then as 9 sigma in one bullet
     lowp = [r for r in ps if int(r["power_mW"]) == min(int(x["power_mW"])
@@ -731,9 +851,7 @@ def main() -> int:
       # page survives until the next regeneration and no further, which is how
       # the first version of this sentence was lost the same day it was made.
       "A third constraint is not statistical: the channel needs a sweep-rate "
-      "variation under "
-      "[0.00196](../results/sweep_linearity.csv \"ref:sweep_linearity:archive:rate_variation_tolerance\") "
-      "per cent across the window "
+      f"variation under {sweep_tol_txt} across the window "
       "([methods 5](methods/05_the_frequency_ruler.md)). "
       f"({_skew_scaling_clause()}) "
       "A fixed-lock session would lift the real observable two ways: the "
@@ -761,8 +879,9 @@ def main() -> int:
       "**And on a third, found 2026-08-10, which is the largest of them at the "
       "small waist:** the $\\propto I^2$ signal weighting the whole ramp law rests "
       "on is a weak-field statement, and the saturation parameter scales as the "
-      "fourth power of the inverse waist, so it runs from 0.033 at the convention "
-      "64 µm to 8.5 at 16 µm. Re-integrating the moments with the saturated weight "
+      f"fourth power of the inverse waist, so it runs from {sat_central:.3F} at the "
+      f"convention {_w0_ref()} µm to {sat_small:.1F} at "
+      f"{W0_SMALL_M * 1e6:.0F} µm. Re-integrating the moments with the saturated weight "
       "moves the predicted axial skew at 16 µm from $+0.36$ to $+1.07$. The sign "
       "flip survives that, and the magnitude does not, so the small-waist "
       "prediction is uncertain at the factor-of-three level for a reason that is a "
@@ -817,9 +936,9 @@ def main() -> int:
           f"conditional on that spectral model. "
           f"The prediction is not a point but a **band**: the {plo:.2F}–{phi:.2F} "
           f"MHz spread is $S_0$ over the convention $w_0$ band "
-          f"{C.W0_BAND_M[0]*1e6:.0F}–{C.W0_BAND_M[1]*1e6:.0F} µm "
+          f"{_um(C.W0_BAND_M[0])}–{_um(C.W0_BAND_M[1])} µm "
           f"($\\propto 1/w_0^2$, central {pr:.2F} at the convention "
-          f"{C.W0_MEASURED_M*1e6:.0F} µm) folded with "
+          f"{_w0_ref()} µm) folded with "
           f"$\\rho={C.RHO_RETRO}\\pm{C.RHO_RETRO_ERR}$, the assumed retro "
           f"ratio ($S_0\\propto(1+\\rho)$, measured in situ in the next "
           f"campaign, see `docs/PLAN.md`), under "
@@ -981,6 +1100,39 @@ def main() -> int:
         v = lambda q, k: float(sj[(q, k)]["value"])
         pred_ratio = v("S0_225mW_pred", "prediction") / v("S0_225mW_ub95", "primary")
         swp_pred = float(next(r for r in rows("stark_sweep") if r["quantity"] == "S0_225mW_pred")["value"])
+        # THE JOINT FIT'S PREDICTION CELLS ARE ITS OWN LAST RUN'S, at the waist that run used,
+        # and they lag a re-pin until that fit is re-run. So the waist is read from its own note
+        # and the match with the current prediction is computed, never asserted: after O44 this
+        # paragraph labelled a retired-waist cell with the calculated waist and called the two
+        # equal to the digit, and after the refit the same words would call an identity a
+        # coincidence.
+        _jp = v("S0_225mW_pred", "prediction")
+        _joint_same = f"{_jp:.3f}" == f"{swp_pred:.3f}"
+        _da_cell = next(r["value"] for r in rows("polarizability_deep")
+                        if (r["quantity"], r["key"]) == ("delta_alpha", "at_drive"))
+        _now_txt = (f"one function (`stark.kappa_pred_per_watt`) at this record's own "
+                    f"polarizability, which is now [{_da_cell}](../results/polarizability_deep.csv "
+                    f"\"ref:polarizability_deep:delta_alpha:at_drive\"), at {_w0_ref()} µm and "
+                    f"with the on-axis factor")
+        if _joint_fit_at_current_waist() and _joint_same:
+            _joint_vs_now = (
+                f"The fit gives {pred_ratio:.1f}× less than $S_0(225) = {swp_pred:.2f}$ MHz, the "
+                f"prediction the joint fit's own cells and `results/stark_sweep.csv` both carry, "
+                f"computed by {_now_txt}.")
+        else:
+            _joint_vs_now = (
+                f"Against the joint fit's own prediction, $S_0(225) = {_jp:.2f}$ MHz with "
+                f"$\\rho={C.RHO_RETRO}$, the fit gives {pred_ratio:.1f}× less. **The joint fit's "
+                f"prediction cells are pre-adjudication**: its coefficient, "
+                f"{v('kappa_pred', 'prediction'):.3f} MHz/W, was computed at the cited 1093 a.u. "
+                f"without the aperture's on-axis factor"
+                + ("" if _joint_fit_at_current_waist() else " and at the retired waist")
+                + ", so its S₀ cell "
+                + ("matching the current prediction to the printed digits is a coincidence and "
+                   "not a confirmation" if _joint_same else "is not the current prediction")
+                + f", and the joint fit's refit is owed. The current prediction, {_now_txt}, is "
+                f"{swp_pred:.3f} MHz and {swp_pred / v('S0_225mW_ub95', 'primary'):.1f}×, "
+                f"carried by `results/stark_sweep.csv`.")
         # THE ARMS ARE READ AND THEIR BRACKET COMPUTED (2026-09-17). The sentence carried the arms
         # as typed digits and bracketed them to 1.618, the coefficient of the retired static-tail
         # polarizability, for four weeks after the record moved on. Each arm's committed pair (at the
@@ -1039,8 +1191,10 @@ def main() -> int:
           f"hundred traces of the count above. "
           f"\n\n  The second is the "
           f"2025-07-04 LeCroy evening session (46 usable traces at 90/180/270 "
-          f"mW), whose 270 mW rung carries 1.44× the campaign's maximum "
-          f"$S_0^2$ lever and whose alternating ladder directions are the "
+          f"mW), whose 270 mW rung carries 1.44× the campaign's maximum "  # <!-- other-quantity: the LeCroy evening's own rung against its own campaign maximum -->
+          f"$S_0^2$ lever <!-- other-quantity: the LeCroy evening's own 270 mW rung "
+          f"against its own campaign maximum, not sweep_linearity's rate-variation "
+          f"tolerance --> and whose alternating ladder directions are the "
           f"design the centre channel demanded. Its auto-triggered scope "
           f"randomises the sweep phase per trace, so it contributes shape and not "
           f"centres."
@@ -1060,18 +1214,7 @@ def main() -> int:
           f"seeded from the minimum search (addendum 24: a cold-start chain "
           f"parked 283,000 units above the local minimum in this very run, and the "
           f"seeded twin is what disarms that failure mode). "
-          f"\n\n  Against $S_0(225) = {v('S0_225mW_pred','prediction'):.2f}$ MHz "
-          f"predicted at the convention $w_0={C.W0_MEASURED_M*1e6:.0f}$ µm with "
-          f"$\\rho={C.RHO_RETRO}$, the fit gives "
-          f"{pred_ratio:.1f}× less. **The joint fit's prediction cells are "
-          f"pre-adjudication**: its coefficient, {v('kappa_pred','prediction'):.3f} MHz/W, was "
-          f"computed at the cited 1093 a.u. without the aperture's on-axis factor, "
-          f"so its S₀ cell matching the current prediction to the printed digits is a "
-          f"coincidence and not a confirmation, and the joint fit's refit is owed. The current "
-          f"prediction, one function (`stark.kappa_pred_per_watt`) at this record's own "
-          f"polarizability, which is now [-1131.8](../results/polarizability_deep.csv \"ref:polarizability_deep:delta_alpha:at_drive\"), with the on-axis factor, is "
-          f"{swp_pred:.3f} MHz and {swp_pred / v('S0_225mW_ub95','primary'):.1f}×, carried by "
-          f"`results/stark_sweep.csv`.\n\n  The spread "
+          f"\n\n  {_joint_vs_now}\n\n  The spread "
           f"across data subsets is the "
           f"dominant systematic: {v('S0_225mW_ub95','primary'):.2f} MHz from all "
           f"three sessions, {v('kappa_ub95_camponly','robustness')*0.225:.2f} "
@@ -1186,11 +1329,10 @@ def main() -> int:
           f"third-digit effect on the limit. The 1038/837 ratio of 1.24 is "
           f"not the like-for-like figure: 837 is the crossing at central "
           f"geometry and 1038 a percentile with geometry marginalised, so "
-          f"that ratio mixes a construction change with a marginalisation.\n\n  The convention waist is the lineage "
-          f"profile, since "
-          f"[Rajasree 2020](lit/rajasree2020thesis.md) recorded 128 µm "
-          f"diameter, profiled on the predecessor laser through the same lens and geometry, so the "
-          f"comparison is a direct test of it. The evening-session "
+          f"that ratio mixes a construction change with a marginalisation.\n\n  The convention waist "
+          f"is a calculation for this bench's bore, lens and wavelength and not a profile of this "
+          f"beam, so the comparison tests the prediction conditional on it. "
+          f"The evening-session "
           f"axis-direction hypothesis "
           + (f"moves no $\\chi^2$ by more than "
              f"{v('direction_dchi2_max','robustness'):.1f}"
@@ -1319,20 +1461,31 @@ def main() -> int:
         # this table called the waist row dominant while the row beneath it moved
         # beta three times further, and the page promises above that it "cannot go
         # stale". It also had no row for the axis that moves beta furthest of all.
+        # AND NOW THEY ARE (2026-09-22): the rows sat in a fixed order under typed readings, and at the
+        # calculated waist every reading was false, the kernel row called "the largest by a factor of
+        # three" beneath the model-form row. Ranked on the 85Rb column, as C1's paragraph is.
         kx = _iso("beta_err_kernel")
+        _b0 = _iso("beta_crosscheck")[0]
+        _srows = sorted([
+            (kx[0], "the extra homogeneous component (0 ↔ what `kernel_k3.csv` fits)",
+             f"{kx[0]:.3F} · {kx[1]:.3F}", "a floor fitted through the origin, not a bar"),
+            # the band is the constant's, the one rb5s6s/lever_crosscheck.py evaluates beta over since O44
+            (abs(w0hi[0] - w0lo[0]),
+             f"the unmeasured w₀ (band {_um(C.W0_BAND_M[1])}→{_um(C.W0_BAND_M[0])} µm)",
+             f"spans {w0lo[0]:.3F}–{w0hi[0]:.3F} · {w0lo[1]:.3F}–{w0hi[1]:.3F}",
+             f"a span of {abs(w0hi[0]-w0lo[0]):.3F}, which a beam-profile measurement collapses"),
+            (mf[0], "transit model-form (Lehmann cusp ↔ Voigt)", f"{mf[0]:.3F} · {mf[1]:.3F}",
+             f"{mf[0] / _b0:.1F} times β_self itself" if _b0 else ""),
+            (sh[0], "σ_laser sharing (per-temperature ↔ per-block)", f"{sh[0]:.3F} · {sh[1]:.3F}", ""),
+        ], key=lambda t: -t[0])
+        _ord = ("the largest", "the second largest", "the third largest", "the smallest")
         W("| vary this | β_self moves by (85Rb · 87Rb) | reading |")
         W("|---|---|---|")
-        W(f"| the extra homogeneous component (0 ↔ what `kernel_k3.csv` fits) | "
-          f"{kx[0]:.3F} · {kx[1]:.3F} | **the largest by a factor of three**, and "
-          f"a floor fitted through the origin, not a bar |")
-        W(f"| the unmeasured w₀ (transit band, ~65→40 µm) | spans "
-          f"{w0lo[0]:.3F}–{w0hi[0]:.3F} · {w0lo[1]:.3F}–{w0hi[1]:.3F} | "
-          f"a span of {abs(w0hi[0]-w0lo[0]):.3F}, which a beam-profile measurement collapses |")
-        W(f"| transit model-form (Lehmann cusp ↔ Voigt) | {mf[0]:.3F} · "
-          f"{mf[1]:.3F} | comparable to β_self itself, and the second largest |")
-        W(f"| σ_laser sharing (per-temperature ↔ per-block) | {sh[0]:.3F} · "
-          f"{sh[1]:.3F} "
-          f"| negligible next to the other two rows |")
+        for _i, (_mag, _label, _vals, _note) in enumerate(_srows):
+            _rank = _ord[_i]
+            if _i == 0 and _srows[1][0] > 0:
+                _rank = f"**{_rank}, by a factor of {_mag / _srows[1][0]:.1F}**"
+            W(f"| {_label} | {_vals} | {_rank}{', ' + _note if _note else ''} |")
         nls = rows("noise_law_swap")
         if nls:
             per_iso = {}

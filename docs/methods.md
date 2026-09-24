@@ -45,7 +45,7 @@ assumed beyond undergraduate quantum mechanics and statistics.
 All width symbols above ($\Gamma_\text{nat}$, $\gamma_\text{coll}$,
 $\sigma_\text{laser}$) are **FWHM**, for direct comparison with measured
 linewidths. The one exception is $\sigma_\text{eff}$ in §2.6, which is a
-**standard deviation** ($\sqrt{\kappa_2}$) because it sits in a cumulant
+**standard deviation** ($\sqrt{\mu_2}$) because it sits in a cumulant
 ratio, and it is flagged again where it appears.
 
 ### The label schemes: C-results, M-modules and CI
@@ -255,6 +255,12 @@ rb5s6s/   api(the supported entry point: a trace in, a linewidth out)
                 against, are in the guided-geometry chapter. A leaf module:
                 it imports core and core never imports it)
           fitutil pmfmt workers _compat
+          reference_point(the 2025 line at its reference condition, read once from the committed fit and
+                    the waist, so no producer types the twin's truth)
+          volume_line beam_field twin_volume moment_coords(the non-convolving model's parts, new and
+                    not yet wired: the joint shift-and-transit line per path and its table, the
+                    bore-clipped beam through the focus, the twin's world drawn from the atom Monte Carlo,
+                    and the moment likelihood's coordinates, covariance and set statistic)
           (M18, M19, M29, M31, M32, M33, M34, M35, M36 and M37 are library-and-test only: they have
            no CSV product, so grepping results/ for them finds nothing -- see
            their test files, and for M34 also examples/campaign_twin.py)
@@ -269,7 +275,7 @@ scripts/  import_data (+ annotate_manifest_qc: qc_reason provenance)
           run_geometry_design (the running-wave and waist designs, whose
           weak-field branch reproduces lineshape.stark_ramp_axial_moments)
 data_raw/ MANIFEST.csv, and the 297 traces where the copy carries them
-tests/    5631-test battery (5444 fast ~5 min + 187 `slow` high-statistics
+tests/    7200-test battery (6934 fast ~5 min + 316 `slow` high-statistics
           closure tests via --runslow, incl. the M4d synthetic-β and M4e
           synthetic-κ closures, the MANIFEST qc_reason guards, and the
           docs-consistency gates: canonical numbers, links+anchors, math
@@ -293,8 +299,8 @@ The first six scripts form the pipeline (each reads the previous ones'
 
 ```bash
 python3 -m venv .venv && source .venv/bin/activate
-pip install -e ".[dev]" && pytest -q          # 5444 fast tests (~5 min)
-pytest -q --runslow                           # full 5631 incl. slow closures (what CI runs)
+pip install -e ".[dev]" && pytest -q          # 6934 fast tests (~5 min)
+pytest -q --runslow                           # full 7200 incl. slow closures (what CI runs)
 
 # reproduce every committed CSV, figure, and docs/RESULTS.md from data_raw/
 # (already in git; import_data.py only re-imports from the original tree):

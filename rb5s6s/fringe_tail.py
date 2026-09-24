@@ -66,7 +66,7 @@ flux and the Gaussian crossing time), exactly the transit_mc convention.
 
 COHERENCE WINDOW. tau_c is the ONE open modelling choice. The coherent
 excitation amplitude lives at most one 6S lifetime (tau_6S ~ 46 ns), but the
-beam crossing may be shorter or longer: at the 64 um waist convention the transit
+beam crossing may be shorter or longer: at the retired, wider waist convention the transit
 is ~260 ns (transit-limited, tau_c -> inf is the right cap), at the small
 16 um waist it is ~65 ns, comparable to tau_6S, so the two bracket the fringe
 survival. Both are w0/v at the 2D Maxwell-Boltzmann mean transverse speed,
@@ -78,7 +78,7 @@ report that bracket.
 WHAT FRACTION OF ATOMS THAT IS (2026-08-10). Worked out over the 3D
 Maxwell-Boltzmann spread in docs/notes/running_wave_and_waist_design.md design
 3, computed by scripts/run_geometry_design.fringe_velocity_classes: 2.21 per
-cent of atoms at the lifetime cap, 0.19 at the 64 um transit cap, 0.78 at
+cent of atoms at the lifetime cap, 0.19 at the retired convention's transit cap, 0.78 at
 16 um. The factor of eleven between the ends of that bracket is a modelling
 choice and not a measurement, which is the whole reason this is swept rather
 than corrected for. That section also settles what a frequency-shifted arm

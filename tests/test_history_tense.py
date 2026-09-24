@@ -7,9 +7,9 @@ entries were found asserting a state that had since changed:
   * `history/08` said a sentence "now states the exclusion's two-sigma
     strength", written when that was true and left standing after the
     strength was retired;
-  * `history/01` said "The calibrated prediction is 0.348 MHz", in the
-    present tense, after that row was retagged and a later value replaced
-    the one it names.
+  * `history/01` said "The calibrated prediction is the retired value", in
+    the present tense, after that row was retagged and a later value
+    replaced the one it names.
 
 **Neither is a wrong number, which is exactly why nothing caught them.**
 History is the one place in this repository where a replaced value is
@@ -41,8 +41,8 @@ the existing entries are a debt to pay down and not a wall to hit today.
 
 THIS GUARD'S BLIND REGION, measured before it was admitted rather than
 discovered later. It catches the FIRST defect above and is SILENT on the
-second, and that is deliberate. "The calibrated prediction is 0.348 MHz"
-names a VALUE, and an entry naming a value already owes a live-value file
+second, and that is deliberate. "The calibrated prediction is the retired
+value" names a VALUE, and an entry naming a value already owes a live-value file
 under `test_entries_naming_no_live_value_file_only_fall`, whose budget stands
 at eleven entries. So the second defect is a debt in an EXISTING guard, not a
 gap needing a new one, and paying that budget down is what closes it. I

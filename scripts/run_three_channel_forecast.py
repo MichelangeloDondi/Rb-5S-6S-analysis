@@ -59,6 +59,7 @@ from rb5s6s import constants as K                                  # noqa: E402
 from rb5s6s import density as D                                    # noqa: E402
 from rb5s6s.lineshape import ramp_mean_over_s0                     # noqa: E402  (O27)
 from rb5s6s.forecast import build_world_trace                      # noqa: E402
+from rb5s6s.reference_point import reference_point                      # noqa: E402
 from rb5s6s.fringe_tail import COHERENCE_TRANSIT, fringe_shift_density
 from rb5s6s import stark                                           # noqa: E402
 from rb5s6s.lineshape import stark_shift_S0_mhz                    # noqa: E402
@@ -102,8 +103,11 @@ BASE = dict(w0_um=16.0, p_top=0.225, t_c=130.0, rho=0.94, scope=("rtm3004", "hir
 # The record's collisional width at 130 C and the committed self-broadening
 # slope carry the width to other temperatures: gamma(T) = gamma(130) +
 # beta_self (N(T) - N(130)), beta_self the 4192 row of results/beta_self.csv.
-GAMMA_COLL_130 = 0.55
-SIGMA_LASER = 1.6
+# Both widths are the archive point's (130 C), READ and never typed (F313, 2026-09-22): the
+# typed pair was the retired waist convention's decomposition.
+_AP = reference_point()
+GAMMA_COLL_130 = _AP["gamma_coll"]
+SIGMA_LASER = _AP["sigma_laser"]
 MIN_PER_TRACE = 2.78                               # campaign_twin_forecast, per trace
 LAYERS = {"cascade": True, "saturation": True, "stark": True, "bbr": True,
           "drift": True, "quantise": True, "randomise": True}
@@ -171,7 +175,7 @@ def levers():
         return {**cfg, "beta_self": beta_self,
                 "two_beta": cfg["two_beta"] if cfg["two_beta"] is not None else two_beta}
     cells = [("base", fill(BASE))]
-    for w in (64.0, 40.0, 24.0):
+    for w in (round(K.W0_CENTRAL_M * 1e6, 2), 40.0, 24.0):   # C6a: the archive's own focus, unclipped like every cell
         cells.append((f"waist_{w:g}um", fill({**BASE, "w0_um": w})))
     cells.append(("power_top_0.5W", fill({**BASE, "p_top": 0.5})))
     for t in (150.0, 170.0):

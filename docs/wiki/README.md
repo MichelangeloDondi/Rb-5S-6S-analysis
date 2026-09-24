@@ -166,7 +166,7 @@ the ways such a result goes wrong.
 
 | page | type | in one line |
 |---|---|---|
-| [The third cumulant](third-cumulant.md) | concept | the number that isolates a lineshape's asymmetry from its width |
+| [The third moment](third-cumulant.md) | concept | the number that isolates a lineshape's asymmetry from its width |
 | [Allan deviation](allan-deviation.md) | concept, supporting | the statistic that separates noise types by how they average down |
 
 Bessel functions and the Allan deviation are supporting topics: the design of
@@ -221,7 +221,7 @@ flowchart LR
     BW -.-> T
     SAT["saturation"] -.-> S
     B["blackbody"] -.-> S
-    K["third cumulant"] -.-> S
+    K["third moment"] -.-> S
     A["Allan deviation"] -.-> WM
     BF["Bessel functions"] -.-> E
 ```

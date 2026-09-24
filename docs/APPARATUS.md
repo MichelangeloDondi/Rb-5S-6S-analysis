@@ -163,10 +163,10 @@ naive Gaussian-optics $w_0\approx32\ \mu\mathrm{m}$ estimate in `constants.py` u
 
 It was previously carried as an inferred number chosen to make the clipping
 story work, and is now grounded in a manufacturer spec plus a recollection
-of the clipping itself. See `constants.py`'s `W0_MEASURED_M` docstring and
+of the clipping itself. See `constants.py`'s `W0_CENTRAL_M` docstring and
 `docs/notes/transit_width_resolved.md` for the full waist reasoning, and the
 [Rajasree 2020 thesis](lit/rajasree2020thesis.md)'s directly measured 128 µm
-($w_0=64\ \mu\mathrm{m}$) on the same lens and the same-model SolsTiS laser, which
+on the same lens and the same-model SolsTiS laser, which
 remains the better-evidenced comparison since a recollected clipping event
 does not by itself fix how much of the beam was clipped.
 
@@ -267,7 +267,7 @@ at 1.0 mm, $-0.062$ at 0.83 mm and $-0.402$ at 0.50 mm. So a small-waist session
 that lands near $Z_c = 0.9$ mm measures **nothing**, whichever sign it expected.
 The way out is not to aim for a sign but to aim away from the crossing: at
 $Z_c \lesssim 0.7$ mm the skew is negative and close to its intrinsic $-0.566$ at
-every waist from 64 down to 16 µm, so a tight collection region buys the
+every waist from 42.38 down to 16 µm, so a tight collection region buys the
 small-waist shift without the axial penalty. That makes the standoff distance,
 and hence $u$, a quantity the session has to set on purpose and record.
 
@@ -304,7 +304,7 @@ controller top-right.*
 |---|---|---|
 | **Scope of record** | Agilent/Keysight **InfiniiVision DSO-X 3054A**, 500 MHz, 4 GSa/s | PHOTO 2025-06-10 + **DATA** (CSV signature) + RECOLLECTION |
 | Also on the bench (not used for the dataset) | LeCroy **WaveSurfer 3104z** (1 GHz, 4 gs/s); LeCroy **WaveSurfer 10** (1 GHz, 10 gs/s) | PHOTO 2025-07-29 |
-| Trace format | 2000 points, 0.5 ms step, 1.000 s window | DATA |
+| Trace format | 2000 points, 0.5 ms step, 1.000 s window | DATA <!-- other-quantity: the 1.000 s trace acquisition window, 2000 points at 0.5 ms, not a committed cell --> |
 
 The instrument-native comparison of the three scopes, measured from the files
 each one wrote and from their manuals, is in
@@ -322,7 +322,7 @@ ever stored.**
     the campaign ran in **High Resolution** mode. On this instrument the two
     are mutually exclusive.
   * The traces themselves settle part of it (measured 2026-08-19): the
-    quantisation grid of the committed campaign files spans **11.86 bits**
+    quantisation grid of the committed campaign files spans **11.86 bits** <!-- other-quantity: a bit count -->
     across the signal swing, which an eight-bit converter cannot write at any
     record length, so a resolution-raising mode was active. The grid alone
     cannot distinguish High Resolution from Averaging, since both refine it.
@@ -350,9 +350,9 @@ ever stored.**
     **The bit arithmetic supports the recollection over the
     photograph.** A boxcar of N raw samples buys half a log2 N in bits, so at
     the instrument's maximum rate a 0.5 ms bin would reach about 18 bits. The
-    committed files span **11.86 bits, which is 0.14 under a 12-bit ceiling**,
+    committed files span **11.86 bits, which is 0.14 under a 12-bit ceiling**, <!-- other-quantity: a bit count -->
     and a ceiling at 12 bits is what InfiniiVision High Resolution is
-    documented to have. **A capped High Resolution mode is exactly what 11.86
+    documented to have. **A capped High Resolution mode is exactly what 11.86 <!-- other-quantity: a bit count -->
     bits looks like**, and the photographed "Averaging 32" is not.
 
     **Confirmed from the manual, so this is settled rather than
@@ -364,7 +364,7 @@ ever stored.**
     a table against sweep speed: eight bits at or below 1 us/div, one more bit
     per step, and **twelve bits at or above 20 us/div**. The campaign ran at
     100 ms/div, four decades past that threshold, **so the mode delivered
-    exactly twelve bits and the measured 11.86 is that ceiling.** Averaging is
+    exactly twelve bits and the measured 11.86 is that ceiling.** Averaging is <!-- other-quantity: a bit count -->
     documented separately as a mode for periodic signals combined across
     acquisitions, which is a different mechanism and would leave a different
     signature.
@@ -464,10 +464,10 @@ assumption A1 outright rather than leaving it as a stated assumption.
 That is worth one spare channel, and the ranking this paragraph once carried
 is withdrawn. It said the ramp channel is the first thing to drop when channels
 are contended. The sweep-linearity tolerance computed in
-[`plan/07`](plan/07_acquisition-settings.md) puts the third cumulant's tolerance
-on the rate variation across an analysis window at three parts in ten
-thousand at the campaign's tightest licensed waist and at two parts in a
-hundred thousand at the 2025 one, which makes the ramp a witness for the novelty channel, not a
+[`plan/07`](plan/07_acquisition-settings.md) puts the third moment's tolerance
+on the rate variation across an analysis window at about one and a half parts
+in ten thousand at the campaign's tightest licensed waist and about 1.4 at the
+2025 one, which makes the ramp a witness for the novelty channel, not a
 convenience. What is dropped first is stated there, with its condition.
 
 <img src="apparatus/2025-07-15_eom_comb_five_teeth.jpg" width="80%" alt="Five-tooth EOM comb on the scope: carrier, two sidebands, two faint outer teeth">
@@ -647,7 +647,7 @@ acquisition drift, which the dataset puts two orders below.*
 > the 53-minute sibling both show what reads by eye as a roughly 50 s
 > breathing of the scan band. Digitised and tested, the band centre carries
 > no significant sinusoid near 50 s once re-lock kicks, relaxation and
-> background drift are removed (amplitude 0.26 to 0.36 MHz, 0.6 to 0.7 sigma
+> background drift are removed (amplitude 0.31 +- 0.05 MHz, 0.6 to 0.7 sigma
 > above a spectrum-matched noise surrogate, phase incoherent), and the
 > campaign's own held-lock trace record shows the same null under a stacked
 > Lomb-Scargle test. A same-night scope and controller screenshot documents
@@ -699,10 +699,10 @@ acquisition drift, which the dataset puts two orders below.*
 > 1.00 / 1.67 / 2.88 / 4.03 for ⁸⁷ F=1 / ⁸⁷ F=2 / ⁸⁵ F=2 / ⁸⁵ F=3, and the
 > measured integrals rank in exactly that order, the two apex-straddling
 > ⁸⁷ F=1 crossings weakest. Two ratios come back at the prediction:
-> the up-sweep ⁸⁵ pair integrates to 1.42 times against
-> the predicted 7/5 = 1.40 (moving 1.34 to 1.42 as the spike threshold
+> the up-sweep ⁸⁵ pair integrates to 1.42 times against <!-- other-quantity: a hyperfine ratio -->
+> the predicted 7/5 = 1.40 (moving 1.34 to 1.42 as the spike threshold <!-- other-quantity: a hyperfine ratio -->
 > varies over 5 to 8 mad), and the up-sweep ⁸⁵ pair carries 2.45 times the <!-- other-quantity: an isotope pair-area ratio, not a density -->
-> ⁸⁷ pair's area (2.43 to 2.64 across the same rules) against the predicted
+> ⁸⁷ pair's area (2.43 to 2.64 across the same rules) against the predicted <!-- other-quantity: the 87 pair's area ratio, not the tilt table's residual-over-transit ratio -->
 > abundance ratio 2.59. The (2F+1) sum to G_iso within each isotope, so the
 > pair ratio predicts the bare abundance ratio, not the 3.9 of an
 > unnormalised abundance × (2F+1). The individual

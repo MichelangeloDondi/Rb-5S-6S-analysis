@@ -88,16 +88,16 @@ and a confident split from a fit is a numerical artefact.
 Density separates them: $\beta_\text{self} N(T)$ moves with the temperature
 ladder, a laser width does not, and both are recovered across the ladder.
 Measured on this archive,
-$\Gamma_{L,\text{equiv}} = 0.398$ MHz as an inverse-variance mean over four
-peaks spanning 0.315 to 0.449 MHz, with a common scalar neither rejected nor
-established at $p = 0.097$. Freeing it moves $\beta_\text{self}$ by 42 to 66
+$\Gamma_{L,\text{equiv}} = 0.078$ MHz as an inverse-variance mean over four
+peaks spanning 0.009 to 0.115 MHz, with a common scalar neither rejected nor
+established at $p = 0.16$. Freeing it moves $\beta_\text{self}$ by 5 to 48
 per cent ([the laser kernel](laser-frequency-noise-and-the-linewidth.md),
 `results/kernel_k3.csv`).
 
-This is the coefficient's binding systematic: the sensitivity to the kernel
-representation, within the family tested, is 3.24 times the statistical
-error, so repeating the same construction will not improve the number. It
-is a sensitivity within that family, not an uncertainty on the coefficient.
+This is not the coefficient's binding systematic: the sensitivity to the
+kernel representation, within the family tested, is 0.61 times the
+statistical error, so repeating the same construction still improves the
+number. It is a sensitivity within that family, not an uncertainty on the coefficient.
 The family's own adequacy is separate, addressed by
 [identifiability](identifiability.md).
 
@@ -208,7 +208,7 @@ against a number derived here.
 
 The two gases also separate, because their signatures are independent. Helium
 broadens at 51.1 MHz per Torr and shifts at $+2.06$, neon at 24.7 and $-5.23$,
-a pair whose determinant is $-318$ in those units at a condition number of 10.
+a pair whose determinant is $-318$ in those units at a condition number of 10. <!-- other-quantity: a determinant -->
 A constant width and a constant shift measured together therefore separate the
 two gases, the independence being structural. Inverting to partial pressures
 needs the two coefficients on the line in question, which this record does not
@@ -283,7 +283,7 @@ It splits the
 potential into two branches $C_6(1 \pm f)$ sampled with equal weight (an
 equal superposition of the two exchange eigenstates), and since the width
 goes as $C_6^{2/5}$ the factor is $((1+f)^{2/5} + (1-f)^{2/5})/2$, 0.985 for
-6S and 1.000 for 7S. It does not cancel in the anchor.
+6S and 1.000 for 7S. <!-- other-quantity: the 7S exchange-branch width factor, exactly 1 by construction, not a committed cell --> It does not cancel in the anchor.
 
 **Step 3, the impact cross-section.** Along a straight path with impact
 parameter $b$ and relative speed $v$ the phase accumulated in one collision
@@ -316,11 +316,11 @@ per millitorr becomes a rate per density only through $n = P/kT$ at the cell
 temperature of the measurement itself, and the impact width then goes as
 $\langle v^{3/5}\rangle$ and so as $T^{0.3}$ at fixed density. Those are two
 steps, and this record has now got the second one wrong twice. It converted at
-its own 403.15 K with no speed scaling until 2026-09-15. It then converted at
+its own 403.15 K <!-- other-quantity: the archive's 130 C reference cell temperature, not the twin's radiation-temperature cell --> with no speed scaling until 2026-09-15. It then converted at
 393 K for one afternoon, reading that number off a table note. The board's
 physics seat retracted both the same day, against the source:
 
-> The temperature of the cell ranged from 353 K to 438 K.  *(figure 7 caption, the
+> The temperature of the cell ranged from 353 K to 438 K.  *(figure 7 caption, the <!-- other-quantity: a temperature -->
 > plot the 129 kHz mTorr⁻¹ slope is fitted from)*
 
 The rate is a slope across 85 K and has no single temperature. The 393 K
@@ -328,7 +328,7 @@ belongs to a table note giving the self-broadening contribution for a different
 experiment's linewidth budget at that experiment's temperature, a number about
 another quantity that happened to agree with the reading. Where the slope's
 effective temperature sits depends on the weights, and the Rb pressure runs
-0.056 mTorr at 353 K to 9.3 at 438, so the hot end carries the leverage:
+0.056 mTorr at 353 K to 9.3 at 438, so the hot end carries the leverage: <!-- other-quantity: a temperature -->
 weighting by pressure gives 428.5 K, equal weight in $T$ gives 420.4, weighting
 by the inverse square of the width gives 368.3. The paper weights by the
 standard deviation of its own linewidths and does not print them, so **the

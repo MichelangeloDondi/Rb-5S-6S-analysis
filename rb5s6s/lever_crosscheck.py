@@ -51,7 +51,7 @@ from __future__ import annotations
 from typing import Dict, List
 
 from .global_fit import fit_global
-from .constants import W0_BAND_M, W0_MEASURED_M, transit_fwhm_from_w0
+from .constants import W0_BAND_M, W0_CENTRAL_M, transit_fwhm_from_w0
 from .config import TRANSIT_FWHM_PLACEHOLDER_MHZ
 
 # the 2x2 model-form matrix axes
@@ -67,12 +67,18 @@ GRID_CELLS = (("exp", "per_T"), ("gaussian", "per_T"), ("exp", "per_block"))
 # homogeneous Lorentzian component, ADDED into the homogeneous width rather
 # than convolved. Every producer of this coefficient had left it at its default
 # of zero, while results/kernel_k3.csv fits it free across the SAME density
-# ladder and finds 0.315 to 0.449 MHz in every peak, weighted mean 0.398.
-# Measured at that mean, the hierarchical coefficient moves from 0.0534 to
-# 0.0057 and the per-peak values from 0.0131-0.0181 to 0.0054-0.0082, and the
-# whitened chi-squared prefers it on all four (transit x sharing) forms by 28 to
-# 46. The account is in this repository's private correction record, which
-# is not published; the reader-facing half is
+# ladder. Under the retired convention's waist that chain found 0.315 to 0.449
+# MHz in every peak, weighted mean 0.398, and at that mean the hierarchical
+# coefficient moved from 0.0534 to 0.0057 and the per-peak values from
+# 0.0131-0.0181 to 0.0054-0.0082, with the whitened chi-squared preferring the
+# component on all four (transit x sharing) forms by 28 to 46. That account
+# belongs to the retired convention. At the calculated waist (C6a, 2026-09-22)
+# the chain fits a component five times smaller, the two cells of the re-run are
+# `beta_grid_exp_per_T` and `beta_grid_exp_per_T_gamma_l<mean>` in
+# results/lever_crosscheck.csv, their reduced chi-squared is the same to the
+# third digit, and their difference is `beta_err_kernel`, larger than either
+# cell's own bar. The account is in this repository's private correction record,
+# which is not published; the reader-facing half is
 # docs/quantities/self-broadening.md section 4.
 #
 # IT IS A SEPARATE CELL AND NOT A FOURTH MEMBER OF `GRID_CELLS`, deliberately.
@@ -89,9 +95,9 @@ GRID_CELLS = (("exp", "per_T"), ("gaussian", "per_T"), ("exp", "per_block"))
 # belongs in an error budget rather than in the central value.
 # AND THE MEAN IS QUOTED HERE UNDER A CAVEAT TWO SURFACES STATE.
 # docs/RESULTS.md and docs/BIG_PICTURE.md both say this inverse-variance mean
-# is never written on its own, because the four per-peak values span 0.315 to
-# 0.449 and a common scalar is neither rejected nor established, at a
-# heterogeneity p of 0.097. What justifies a single value HERE is that this is
+# is never written on its own, because the four per-peak values spread widely
+# and a common scalar is neither rejected nor established. What justifies a
+# single value HERE is that this is
 # a SCAN COORDINATE and not a reported quantity: the axis is walked from zero,
 # the coefficient is linear along it, and the whitened chi-squared moves by 1.1
 # across the whole fitted range, so no value inside that range is
@@ -99,15 +105,56 @@ GRID_CELLS = (("exp", "per_T"), ("gaussian", "per_T"), ("exp", "per_block"))
 # not what the kernel is claimed to be, and nothing downstream reports it.
 # The name keeps MEASURED because the kernel chain does FIT this component
 # and the value is its weighted mean. What the comment above withdraws is
-# any claim that the width fit MEASURES it: that likelihood is flat, and
-# its own minimum sits nearer 0.375 (A193).
-GAMMA_L_MEASURED_MHZ = 0.398
+# any claim that the width fit MEASURES it: that likelihood is flat (A193).
+# READ, NEVER TYPED (F322, 2026-09-22, the F313 class): this was typed as 0.398, the
+# retired convention's mean, and at the calculated waist the per-peak fits span
+# 0.009 to 0.115 MHz, so the cross-check sampled its kernel axis five times past
+# the component it names and read a rail at zero as physics. The mean is now the
+# kernel chain's own row, `all,k2p5_gamma_l_weighted_mean`, checked against the
+# per-peak rows it summarises and rounded to the kilohertz, and the guard in
+# tests/test_lever_crosscheck_kernel_axis.py bounds it by the same file.
+
+
+def _kernel_k3_weighted_mean_mhz() -> float:
+    """The kernel chain's own inverse-variance mean of its per-peak component.
+
+    Read from the row `all,k2p5_gamma_l_weighted_mean` of results/kernel_k3.csv,
+    which run_kernel_k3.py writes, so the number has one producer. The per-peak
+    rows it summarises are read beside it and the two must agree: a mean row
+    that stopped matching its members is a stale file, and the cross-check
+    refuses it instead of sampling the axis at either value.
+    """
+    import csv
+    from . import config as _C
+    vals, errs, chain = {}, {}, None
+    with (_C.RESULTS_DIR / "kernel_k3.csv").open(encoding="utf-8") as fh:
+        for row in csv.DictReader(fh):
+            q, v = row.get("quantity"), row.get("value")
+            if not v:
+                continue
+            if q in ("gamma_l_equiv", "gamma_l_equiv_err"):
+                (vals if q == "gamma_l_equiv" else errs)[row["scope"]] = float(v)
+            elif q == "k2p5_gamma_l_weighted_mean" and row.get("scope") == "all":
+                chain = float(v)
+    if chain is None:
+        raise ValueError("kernel_k3.csv carries no all,k2p5_gamma_l_weighted_mean row")
+    w = {k: 1.0 / errs[k] ** 2 for k in vals if errs.get(k, 0.0) > 0.0}
+    if len(w) < 4:
+        raise ValueError(f"kernel_k3.csv carries {len(w)} weighted components, not one per peak")
+    members = sum(vals[k] * w[k] for k in w) / sum(w.values())
+    if abs(members - chain) > 1e-4:
+        raise ValueError(f"kernel_k3.csv's mean row reads {chain} MHz and its per-peak rows give "
+                         f"{members:.6f}: the file is stale against itself")
+    return round(chain, 3)
+
+
+GAMMA_L_MEASURED_MHZ = _kernel_k3_weighted_mean_mhz()
 KERNEL_CELL = ("exp", "per_T", GAMMA_L_MEASURED_MHZ)
 # w0 confound band: transit_ref values from the CORRECTED transit<->w0 law at
 # the wide edge / central prior / tight edge. DERIVED from the constants since
 # v3.0.0 (was a parallel hard-coded (65,50,40) that had to be edited by hand
 # whenever the prior moved, and silently went stale when it did).
-W0_BAND_UM = (W0_BAND_M[1] * 1e6, W0_MEASURED_M * 1e6, W0_BAND_M[0] * 1e6)
+W0_BAND_UM = (W0_BAND_M[1] * 1e6, W0_CENTRAL_M * 1e6, W0_BAND_M[0] * 1e6)
 W0_BAND_MHZ = tuple(round(transit_fwhm_from_w0(w * 1e-6, 110.0), 3) for w in W0_BAND_UM)
 
 

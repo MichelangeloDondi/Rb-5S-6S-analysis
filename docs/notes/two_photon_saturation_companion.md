@@ -25,9 +25,10 @@ different reason.
 ## The number
 
 The two-photon Rabi frequency for 5S(1/2) to 6S(1/2) at 993.4192 nm, at the
-campaign maximum of 225 mW with the 64 um waist convention and rho = 0.94, is
+campaign maximum of 225 mW with the archive's own 42.38 um waist (calculated,
+owner order O44, 2026-09-21) and rho = 0.94, is
 
-    Omega_2ph / 2pi = 450 kHz   on axis
+    Omega_2ph / 2pi = 1026 kHz   on axis
 
 and it is now computed from the bench numbers up rather than tethered to
 anything: `hyperpolarizability.two_photon_rabi_hz` walks power to intensity to
@@ -76,13 +77,23 @@ and is kept as history, not as a current reading. The matrix element itself, T =
 campaign maximum, was confirmed independently to 0.04 per cent and does not
 move.
 
-Against the [3.4925](../../rb5s6s/constants.py "ref:constant:GAMMA_NAT_HZ:1e-6") MHz natural width, 450 kHz is a saturation parameter s = 0.033
-on axis and 0.0146 signal-weighted. The atom reaches steady state at this waist, since the 456 ns
-beam chord is about ten natural lifetimes (at the campaign's 16 micron waist
-the chord is a quarter of that and the steady-state form becomes an
-approximation, which plan chapter 12 carries as an open derivation), so the homogeneous power-broadening
-formula applies, and Omega times the crossing time is 1.29 radians, so there is
-no Rabi flopping and the drive is weak throughout.
+Against the [3.4925](../../rb5s6s/constants.py "ref:constant:GAMMA_NAT_HZ:1e-6") MHz natural width, 1026 kHz is a saturation parameter s = 0.173
+on axis and about 0.076 signal-weighted (the retired convention's reading, 0.0146, carried by the same
+intensity-squared scaling the Rabi frequency itself moved by). The atom does not reach steady state at
+this waist: the 302 ns beam chord is about 6.6 natural lifetimes, and the
+optical Bloch equations integrated along sampled crossings give about 0.61 of
+the steady-state ensemble broadening at the archive's speeds (at the campaign's
+16 micron waist the chord is about a third of that and the steady-state form is
+further off, which plan chapter 12 carries as an open derivation). The homogeneous
+power-broadening law therefore enters at an effective Rabi frequency the crossing
+sets, and Omega times the crossing time is 1.95 radians, so there is still no full
+Rabi flop and the drive stays weak throughout. The 6S atom also decays through 5P,
+never straight to 5S, and the 5P level holds population while it lives: in steady
+state the law becomes Gamma sqrt(1 + (1 + r/2) s), with r = 0.587 the mean 5P
+lifetime over the 6S one, and along one central chord of the 42.4 micron beam the
+saturation increment rises by 1.085, 1.154 and 1.207 at 400, 280 and 200 m/s over
+the closed two-level atom's. The effective Rabi fractions the fit reads are
+recomputed with the cascade in the next code window.
 
 **The predicted broadening across the whole sweep is 24 kHz**, which is 0.45 per
 cent of the line, one to two orders of magnitude below the 3 to 8 per cent
@@ -93,21 +104,34 @@ confirmation of C3a with a number attached.
 
 ## Why it is worth a note
 
-**The saturation broadening is larger than the ramp broadening the light-shift
-width bound is built on, and carries the identical P-squared signature.** At the
-predicted S0 = 0.3476 MHz the ramp broadens the line by 6.58 kHz, computed with
+**Saturation and the ramp broadening both carry the identical P-squared
+signature, and at the retired convention's predicted S0 the saturation term
+was the larger of the two.** At the retired convention's predicted S0
+the ramp broadened the line by 6.58 kHz, computed with
 the fit's own `rb5s6s.stark._fwhm_of` at the campaign's representative widths
 (collisional 0.60, laser 1.50, transit 0.96 MHz, unshifted FWHM 5.3737 MHz, which
-reproduces the observed 5.37). Saturation contributes 24 to 25 kHz at the same
-field. The ratio is **about 3.7**, and it is stable across the waist measurement band
-because both terms scale as the inverse fourth power of the waist.
+reproduces the observed 5.37), against a saturation contribution of 24 to 25 kHz
+at that field, a ratio of about 3.7. At the calculated waist the record's
+predicted S0 is [0.729](../../results/stark_joint.csv "ref:stark_joint:S0_225mW_pred:prediction") MHz, and the same `_fwhm_of` formula recomputes the
+ramp term to 27.5 kHz. Whether the saturation term still exceeds it, and what
+the ratio becomes, is undecided: `hyperpolarizability.two_photon_rabi_hz` is a
+function of the drive geometry, not of Δα, so the 24 to 25 kHz figure
+is not simply stale, but `fullmodel.saturation_companion_mhz`'s own docstring
+(F324, 2026-09-22) records that which Rabi frequency the collected-line average
+should use is itself open, so recomputing the ratio here would assert a new
+saturation finding this repository has not committed. F324's optical Bloch
+nodes put the collected line's saturation broadening at 0.25 to 0.27 of the
+companion's width at the on-axis Rabi frequency, and the ratio is re-derived
+on that scale when the fitter takes it. The "stable across the
+waist band" claim that followed this paragraph rested on the same undecided
+comparison and is withdrawn with it.
 
 Two consequences follow.
 
 1. The C3d and C3f construction fits one shared kappa to width against power with
    a forward model that contains the ramp and not the saturation. The two are
-   degenerate at this order, so any P-squared broadening the fit does see is
-   mostly the companion.
+   degenerate at this order, and whether any P-squared broadening the fit does
+   see is mostly the companion is the same undecided comparison above.
 2. **The direction is favourable and should be stated as such.** If the observed
    P-squared broadening is mostly saturation, the true limit on the Stark kappa is
    *tighter* than the quoted bound, not looser. The fit rails at kappa = 0, so in
@@ -134,7 +158,7 @@ document should carry these and say which is which.
 
 | quantity | signal-weighted | on axis | what its range spans |
 |---|---|---|---|
-| mean cascades per transit, n | 0.081 | 0.162 | the weighting only |
+| mean cascades per transit, n | 0.081 | 0.162 | the weighting only <!-- other-quantity: cascades per transit --> |
 | **decays at least once**, 1 - exp(-n) | **7.8%** | **15.0%** | the weighting only |
 | **pumped into the other ground state** | **1.8%** | **5.9%** | the weighting and the per-line branching |
 
@@ -164,7 +188,16 @@ f x (s/2) x Gamma_6S/2pi, and Gamma_6S/2pi is Gamma_FWHM. So
 
     pumping width / saturation width = f,
 
-independent of power, waist, retro ratio and Rabi frequency. Numerically, at the
+independent of power, waist, retro ratio and Rabi frequency, in steady state. In a
+crossing it is much smaller and grows with the crossing time, because an atom can
+leak only after it has been excited and has decayed through 5P, which a weakly
+driven atom rarely does within one crossing: along one central chord of the 42.4
+micron beam a leak of 0.3 adds 0.015 of the saturation increment at 280 m/s, 0.074
+at 200 m/s and about nothing at 400 m/s (this repository's Bloch integration with
+the 5P cascade, which an independent integration of the master equation matches
+to 0.002). The steady-state factor (1 + f) therefore overstates the pumping part at
+the archive's speeds, and a per-condition pumping scale from the same integration
+replaces it in the next code window. Numerically, in steady state, at the
 campaign maximum: saturation 57.5 kHz on axis and 25.4 signal-weighted, pumping
 18.7 to 37.4 kHz on axis and 8.4 to 16.8 signal-weighted over f = 1/3 to 2/3.
 
@@ -181,7 +214,7 @@ the combination is 0.596 and is the same for all four lines:
 | line | isotope, driven F | naive weight | f | pumping width at 225 mW |
 |---|---|---|---|---|
 | 993.4121 nm | 87Rb, F = 1 | 5/8 | 0.372 | 10.5 kHz |
-| 993.4154 nm | 85Rb, F = 2 | 7/12 | 0.348 | 9.8 kHz |
+| 993.4154 nm | 85Rb, F = 2 | 7/12 | 0.348 <!-- other-quantity: the two-photon branching fraction, not S0(225 mW) --> | 9.8 kHz |
 | 993.4192 nm | 85Rb, F = 3 | 5/12 | 0.248 | 7.0 kHz |
 | 993.4207 nm | 87Rb, F = 2 | 3/8 | 0.223 | 6.3 kHz |
 
@@ -244,9 +277,11 @@ found so far that separates the pumping companion without a fixed lock.
 
 Three consequences.
 
-1. The companion-to-ramp ratio quoted above as 3.7 becomes **4.9 to 6.2** once
-   this term is in it, because the two companions carry the identical P-squared
-   signature and add.
+1. At the retired convention, the companion-to-ramp ratio quoted above as 3.7
+   became **4.9 to 6.2** once this term was in it, because the two companions
+   carry the identical P-squared signature and add. That ratio rests on the
+   same undecided comparison as the 3.7 it was built from, and is not
+   recomputed at the calculated waist here.
 
    ![the hyperfine branch, how often it fires, and the three terms it competes with](../../figures/fig23_hyperfine_pumping.png)
 
@@ -255,7 +290,8 @@ Three consequences.
    implicit: the signal weighting runs over the collection volume at the
    record's own Z_c = 2.2 mm half-length, which is where its 28.2 kHz for the
    weighted saturation comes from against the 25.4 quoted above at an
-   unstated Z_c. The ratio moves with it, 5.7 to 7.2 rather than 4.9 to 6.2.
+   unstated Z_c. At the retired convention the ratio moved with it, 5.7 to
+   7.2 rather than 4.9 to 6.2, both readings of the same undecided comparison.
    Quote the figure's numbers with the half-length attached, and read the
    prose ones as the same statement without it. Nothing downstream turns on
    the difference, since both say the companions dominate the ramp by rather
@@ -339,7 +375,7 @@ broadening of a homogeneous line is Lorentzian and Lorentzian widths add.
 |---|---|---|---|
 | production, ramp only | 0.0 +/- 6.0 | 0.6325 MHz | 3.7047 |
 | with saturation, ratio 1.2367 | +0.4 +/- 1.8 | **0.2299 MHz** | 3.7491 |
-| with saturation, ratio 1.2951 | +0.4 +/- 1.8 | **0.2230 MHz** | 3.7601 |
+| with saturation, ratio 1.2951 | +0.4 +/- 1.8 | **0.2230 MHz** | 3.7601 <!-- other-quantity: this note's own saturation-probe bound, not twin_closed_loop's gamma_coll_recovered --> |
 
 **The bound tightens by a factor 2.8**, from 0.6325 to 0.23 MHz across the ratio
 band, which is the direction this note predicted and a larger move than it
@@ -349,7 +385,7 @@ broadens faster as kappa rises, so it reaches any observed broadening at a
 smaller kappa.
 
 One bookkeeping defect is recorded rather than quietly fixed, because it is
-instructive. The single number this note first published, 0.2231 MHz, is the
+instructive. The single number this note first published, 0.2231 MHz <!-- other-quantity: this note's own first-published bound, not paired_reference_forecast's shift_err_ratio -->, is the
 ratio-1.2951 row. The prose beside it said the probe used 1.237. So the note was
 edited to carry the "corrected" ratio without the probe being re-run under it,
 and the two disagreed by 3 per cent for two days. Both rows are printed above
@@ -370,7 +406,7 @@ the added effect is far below the block-to-block scatter that dominates chi2.
 **Robustness to the one number not independently re-derived at the time.** The ratio came
 from the two-photon matrix element and the lead did not rebuild that sum. The bound
 scales roughly inversely with it: 0.3732 MHz at half the ratio, 0.23 across the
-1.2446 to 1.2577 band itself, earlier given as 1.24 to 1.30, 0.1479 at 1.5 times
+1.2446 to 1.2577 band itself <!-- other-quantity: this note's own Rabi-conversion band, not identifiability_profile's zoom_transit cell -->, earlier given as 1.24 to 1.30, 0.1479 at 1.5 times
 it. So even a factor-of-two error in
 the Rabi frequency leaves the bound well below the committed 0.6325, and the
 qualitative result is robust while the digits are not. The sum has since been
@@ -379,7 +415,7 @@ rebuilt twice, and the band is now the whole of the residual uncertainty in it.
 ## Postscript, 2026-08-09: what C3f would do, and why it was not run
 
 C3d is the width-only bound. The number outside documents quote is C3f, the joint
-three-session bound at S0(225 mW) below 0.26 MHz, and the obvious question is
+three-session bound at S0(225 mW) below [0.182](../../results/stark_joint.csv "ref:stark_joint:S0_225mW_ub95:primary") MHz, and the obvious question is
 whether the companion tightens that one too. **It was not re-run, and the reason
 is a data-access fact rather than a modelling one:** the joint fit reads the
 4 July evening session and the campaign-morning session from two excluded trees
@@ -387,11 +423,15 @@ outside the repository, and `run_stark_joint.py` exits early when they are absen
 which they are on the machine this probe ran on.
 
 What the probe does instead is fix the direction, which is arithmetic at C3f's own
-numbers. At C3f's profile minimum, kappa = 0.25 MHz/W, the ramp broadens the line
-by 2.4 kHz and saturation by 1.4 to 1.5 kHz, so the companion is the smaller
-term. At C3f's 95 per cent bound, kappa = 1.15 MHz/W, the ramp gives 3.9 kHz and
-saturation 29 to 32 kHz, a ratio of 7.5 to 8.2. The companion therefore outgrows
-the ramp exactly where the bound is set, so the joint bound must tighten as well.
+numbers, run at the retired convention. At C3f's profile minimum, kappa = 0.25 MHz/W, the ramp broadened the line
+by 2.4 kHz and saturation by 1.4 to 1.5 kHz, so the companion was the smaller
+term. At C3f's then-95-per-cent bound (retired convention), kappa = 1.147 MHz/W, the ramp gave 3.9 kHz and
+saturation 29 to 32 kHz, a ratio of 7.5 to 8.2. The companion therefore outgrew
+the ramp at the bound, so the joint bound tightened as well. At the calculated
+waist the bound is [0.810](../../results/stark_joint.csv "ref:stark_joint:kappa_ub95:primary") MHz/W and the ramp term there recomputes to
+about 4.0 kHz by the same `_fwhm_of` method. Whether saturation still outgrows
+it, and by how much, is the same undecided comparison named above and is not
+asserted here.
 
 Its size was left unquoted here, pending the run. **The run has since happened, and
 the paragraph above is replaced by the postscript below.**
@@ -407,17 +447,22 @@ fit's own profile builder so the shared coefficient, the per-peak priors, the fr
 per-trace centres and the chain seeding all stay production code. It writes
 nothing, and `results/stark_joint.csv` is untouched.
 
+This table is the 2026-08-10 run's own frame. The "production, ramp only" row
+tracks whatever is committed, restated below, and the "with saturation" row is
+that run's own historical output, not re-run at the calculated waist.
+
 | | minimum kappa | 95% bound | S0(225 mW) |
 |---|---|---|---|
-| production, ramp only | 0.25 MHz/W | 1.147 MHz/W | 0.258 MHz |
-| with saturation, ratio 1.2367 | 0.00 MHz/W | 0.519 MHz/W | **0.117 MHz** |
+| production, ramp only | 0.25 MHz/W | [0.810](../../results/stark_joint.csv "ref:stark_joint:kappa_ub95:primary") MHz/W | [0.182](../../results/stark_joint.csv "ref:stark_joint:S0_225mW_ub95:primary") MHz |
+| with saturation, ratio 1.2367 (2026-08-10, retired convention) | 0.00 MHz/W | 0.519 MHz/W | **0.117 MHz** |
 
-**The unpatched chain reproduces the committed C3f bound exactly**, 1.147 MHz/W
-and 0.258 MHz against the committed 0.26, which is the check that the probe is
-driving the shipped fit rather than a reimplementation of it.
+**The unpatched chain reproduced the committed C3f bound exactly at the time**, a now-retired 1.147 MHz/W
+and a since-retired 0.258 MHz against the then-committed 0.26, which was the check that the probe was
+driving the shipped fit rather than a reimplementation of it. The same check
+against the current committed bound, [0.810](../../results/stark_joint.csv "ref:stark_joint:kappa_ub95:primary") MHz/W and [0.182](../../results/stark_joint.csv "ref:stark_joint:S0_225mW_ub95:primary") MHz, has not been re-run.
 
-**The joint bound tightens by a factor 2.21**, from 0.258 to 0.117 MHz. That is
-smaller than C3d's 2.8, which is what this note predicted before the run and for
+**The joint bound tightened by a factor 2.21 at the retired convention**, from 0.258 to 0.117 MHz. That
+was smaller than C3d's 2.8, which is what this note predicted before the run and for
 the reason it gave: the joint fit carries a collisional-width prior that can absorb
 part of an added Lorentzian width where the width-only fit cannot.
 
@@ -437,8 +482,10 @@ a measured factor rather than by argument: 2.21 for the joint construction and
 2.8 for the width-only one.
 
 **What is still not licensed.** The functional form is the two-level homogeneous
-law used with a two-photon Rabi frequency. That is standard and the steady-state
-condition holds here, the beam chord being about ten natural lifetimes, but it is
+law used with a two-photon Rabi frequency. That is standard, but the steady-state
+condition does not hold here (the chord is a few natural lifetimes, and the Bloch
+integration along the crossings gives about 0.61 of the steady-state broadening),
+and the 5P cascade changes the law itself (the waist paragraph above), so it is
 an approximation rather than a derivation for a two-photon transition, and no
 committed bound should move on it without that step. **The committed C3d bound
 therefore stands at 0.63 MHz and remains conservative**, now by a measured factor

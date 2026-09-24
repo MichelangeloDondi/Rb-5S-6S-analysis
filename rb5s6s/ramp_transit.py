@@ -20,8 +20,8 @@ on whether the field varies slowly or quickly compared with the atomic
 response -- slow (adiabatic) fluctuations give an asymmetric line, fast ones
 average away to a symmetric line at the mean shift. Their variation is in
 time and ours is in space, but an atom in flight converts one into the other,
-and in this cell the two timescales are comparable. At the 64 um convention
-waist (constants.W0_MEASURED_M; this line said ~50 um until 2026-08-10, from
+and in this cell the two timescales are comparable. At the retired, wider waist
+convention (constants.W0_CENTRAL_M now holds the calculated focus, O44; this line said ~50 um until 2026-08-10, from
 the estimate the lineage measurement replaced) an atom takes w0/v ~ 260 ns to
 cross one waist radius, or 520 ns for the full beam diameter, against a natural
 response time of 1/(2 pi Gamma_FWHM) = 45.6 ns. The transverse speed here is
@@ -129,7 +129,7 @@ def moving_atom_moments(s0: float, *, n_b: int = 501, n_t: int = 60001,
     rate set by v_z. 0 is the frozen-fringe limit (a near-transverse atom parked
     at one point of the node-antinode pattern, sampled over the arcsine); the
     experiment's fast-axial atoms sit near ~113 (2 v_z/lambda ~ 0.56 GHz against
-    a ~4 MHz transit rate at the adopted w0 = 64 um). Both limits preserve the mean, which
+    a ~4 MHz transit rate at the retired waist convention). Both limits preserve the mean, which
     is the fringe-immunity that `constants` asserts and M15 quantifies.
 
     `speeds` supplies a distribution of transverse speeds to mix over -- pass a

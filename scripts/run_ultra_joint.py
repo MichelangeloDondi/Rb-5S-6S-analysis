@@ -116,7 +116,7 @@ measurement of the waist. RUNG: the profile is rung 3, the ties are rung 1,
 the whitening and the bound construction are rung 2.
 
 FAILURE MODES. A depletion arm through companion_transit_mhz carries only the
-lost-fraction form of the widening, about one per cent at 64 um and six at 42,
+lost-fraction form of the widening, about one per cent at the retired waist convention and six at 42,
 not the velocity-resolved twelve per cent the twin's world builder carries. A
 morning trace whose model-free width reads 2 MHz against its repeats' 5 is in
 the fit under its condition's law and is named in the width rows. A caller
@@ -126,7 +126,7 @@ switch.
     RB5S6S_WORKERS=10 python scripts/run_ultra_joint.py --coarse --all-sessions --run-name coarse_all
     python scripts/run_ultra_joint.py --coarse --all-sessions --power-scale --no-stage2 --out <path>   # an arm run
     python scripts/run_ultra_joint.py --coarse --form mixed            # the canonical traces alone
-    python scripts/run_ultra_joint.py --time-cells                     # 40, 64, 90 um
+    python scripts/run_ultra_joint.py --time-cells                     # 40 um, the retired convention, and 90 um
     python scripts/run_ultra_joint.py --plant                          # 1 worker vs 2
 """
 from __future__ import annotations
@@ -158,7 +158,7 @@ from rb5s6s.fullmodel import collection_z_ratio_m2, convolution_licence, full_pr
 from rb5s6s import kernel_gate                                                          # noqa: E402
 from rb5s6s import noise                                                                # noqa: E402
 from rb5s6s.hyperpolarizability import two_photon_rabi_hz          # noqa: E402
-from rb5s6s.lineshape import (aperture_onaxis_factor, local_ramp_density, ramp_mixture, saturated_ramp_density,   # noqa: E402
+from rb5s6s.lineshape import (aperture_onaxis_factor_actual, local_ramp_density, ramp_mixture, saturated_ramp_density,   # noqa: E402
                               stark_shift_S0_mhz)
 from rb5s6s.noise import condition_noise_model, sigma_of_v         # noqa: E402
 from rb5s6s.qc import contiguous_fwhm_ms                           # noqa: E402
@@ -170,8 +170,12 @@ OUT = C.RESULTS_DIR / "ultra_joint_fit.csv"
 GATE_DIR = ROOT / "private" / "cache" / "ultra_joint_2026-09-14"
 
 # ------------------------------------------------------------------ the design
-W0_GRID_UM = tuple(float(w) for w in range(40, 57, 2))   # 2026-09-18: the 40-45 um band with its upper margin; 40 is the lowest waist whose kernel nodes all pass on the waist set (38 fails depleted_line_abs, 34-36 the transit's width)
-W0_COARSE_UM = (64.0, 70.0, 80.0, 90.0)   # inside the validated nodes of the kernel gate
+# THE GRID STARTS AT THE BORE'S FLOOR (C6a, 2026-09-22, F291): the bench cannot focus tighter than about
+# 40.9 um, so 41 um is the first grid point and the Cell REFUSES anything below it rather than reading it
+# at the floor's factor with its own transit (an inconsistent beam). 41 sits between the 40 and 42 um nodes,
+# inside the kernel gate's interpolation span; 42 to 56 um keep the 2 um step of 2026-09-18.
+W0_GRID_UM = (41.0,) + tuple(float(w) for w in range(42, 57, 2))
+W0_COARSE_UM = (42.0, 46.0, 52.0, 56.0)   # the coarse stage inside the reachable band and its margin (C6a)
 FORMS = ("gaussian", "lorentzian", "mixed")
 M2_ARMS = (1.0, 1.5, 2.0)
 DEPLETION_ARMS = (0.0, 3.0)          # mean cycles through stark.companion_transit_mhz
@@ -217,7 +221,16 @@ BETA_PRIOR_FRAC = float(beta_self_budget()["err_khz"]) / BETA_THEORY_KHZ
 # it through (T / T_ref)^p. Across 70 to 130 C that is 8.4 per cent at p = 0.5, a drift of the SAME sign as
 # the self-broadening's, which is why a density slope fitted without it hands the gas's drift to beta_self.
 GAMMA_L_EXP = 0.5
-GAMMA_L_EXP_ARMS = (0.0, 0.3, 0.5)
+# F420 OWED A NEGATIVE ARM AND THIS RECORD WROTE PROSE INSTEAD UNTIL THE OWNER RE-SENT (2026-09-23).
+# The velocity average is 5.0 per cent across 70 to 130 C at T^0.30 and 8.4 at T^0.50, and the
+# PERMEATION CLOCK is Arrhenius at about 0.49 eV (`docs/lit/carle2023.md`), a factor of 11.8 over the
+# same ladder: a cell equilibrated at room temperature sits above air's 3.98 mTorr once heated and
+# SHEDS helium, which is the same size as the velocity average and the OPPOSITE sign. So the arms
+# span both directions, and the exponent is a model-form ARM and never a derived constant.
+# F427 then measured the term itself as UNDETECTED (gamma_l 0.0350 +- 0.0283 MHz, delta chi2 0.60
+# against the 3.84 that one degree of freedom needs at 95 per cent), so these arms span a term the
+# data does not resolve, and no surface quotes an exponent as though it had been measured.
+GAMMA_L_EXP_ARMS = (-0.5, -0.3, 0.0, 0.3, 0.5)
 GAMMA_L_T_REF_K = 403.15
 #: Delta_alpha's, relative: the committed +-5.9 a.u. on -1131.8.
 ALPHA_PRIOR_FRAC = abs(K.DELTA_ALPHA_ERR_AU / K.DELTA_ALPHA_AU)
@@ -236,7 +249,7 @@ SESSION_LADDER_W = {"P": (0.025, 0.225), "E": (0.09, 0.27), "M": (0.035, 0.21), 
 # axis (docs/RESULTS.md C2), and model_profile sets its grid by the narrowest
 # smooth kernel, so a Gaussian of 0.05 MHz FWHM under a 3.5 MHz Lorentzian
 # costs thirty times the convolution for nothing the line can show: the first
-# timing of the 40 um cell railed there and took 520 s where 64 um took 15.
+# timing of the 40 um cell railed there and took 520 s where the retired waist convention took 15.
 # The Omega scale and beta have no wall of their own so that the prior, or
 # the profile, and not a bound is what the reader sees.
 # THE EVENING RATE'S BOX IS WIDENED (2026-09-14): it sat on the old +-25 per cent wall
@@ -813,6 +826,18 @@ class Cell:
             elif what == "law":
                 law = val
         self.law_name = law
+        # F280: self.w0 IS the actual (same-reading) focus, the one the transit above already
+        # reads, so the on-axis factor is the ACTUAL-convention one and not the free-focus
+        # `aperture_onaxis_factor`. Cached once here rather than inside `_per_trace` (F280's own
+        # closing line: a node validated on the wrong S0 certifies the wrong model), because that
+        # method runs once per trace at this Cell's one fixed w0 -- a hundred-plus identical calls
+        # to a table lookup cost nothing, but the table's own first build should happen once, not
+        # be paid down the trace list.
+        # NO CLAMP (C6a, 2026-09-22, replacing the clamp of 2026-09-21): a Cell below the bore's floor
+        # (about 40.89 um) would carry the floor's on-axis factor beside its OWN narrower transit, a
+        # beam this bench cannot make. The grids start at the floor instead (W0_GRID_UM above, the
+        # closure's GRID_UM and GRID_NOISELESS), so a Cell below it is a defect and refuses.
+        self.aperture_onaxis = aperture_onaxis_factor_actual(self.w0)
         self.profile = window_profile(self.w0, self.m2)
         self.z_ratio = self.profile.z_ratio
         self.traces = traces
@@ -925,7 +950,7 @@ class Cell:
     def _per_trace(self, t):
         # THE COLLECTED COLUMN'S WINDOW FACTOR (F12): the kernel the detector sees is the
         # signal-weighted mixture over the column, narrower than the closed form at the waist by
-        # <w^-3>/<w^-2> (1.1 per cent at 64 um); the ramp carried this mixture and the transit did not.
+        # <w^-3>/<w^-2> (small at the retired waist convention); the ramp carried this mixture and the transit did not.
         bare = K.transit_fwhm_from_w0(self.w0, t["T"], isotope=t["iso"]) * transit_collection_factor(self.w0, self.m2)
         if self.kernel_gate == "legacy":
             dep = 1.0
@@ -944,10 +969,13 @@ class Cell:
                 else self.profile)
         bare = bare * float(self.spec.get("transit_scale", 1.0))
         return dict(transit=bare, dep=dep, cond=self._condition_key(t), profile=prof,
-                    # F39: the meter reads behind the cell, so the recorded watt buys the clipped
-                    # focus's on-axis intensity, c(w0) of the ideal Gaussian's (0.967 at 64 um)
+                    # F280: the meter reads behind the cell, so the recorded watt buys the clipped
+                    # focus's on-axis intensity AT THE SAME READING self.w0 already is (the ACTUAL
+                    # focus, cached once in __init__ as self.aperture_onaxis -- not the free-focus
+                    # convention this line called until 2026-09-21, which read S0 about 20 per
+                    # cent low at the bore-limited central value)
                     s0=stark_shift_S0_mhz(t["P_W"], self.w0, rho=self.rho, delta_alpha_au=self.delta_alpha)
-                       * aperture_onaxis_factor(self.w0),
+                       * self.aperture_onaxis,
                     omega_ref=two_photon_rabi_hz(t["P_W"], self.w0, self.rho) / 1e6,
                     n12=float(LAWS[self.law_name](np.array([t["T"]]))[0]) / 1e12,
                     sess=t["session"], peak=t["peak"], axis=t.get("axis", "mhz"),
@@ -2405,12 +2433,16 @@ def plant_determinism(workers_many: int = 2) -> bool:
     rows = design(traces_per_condition=1)
     dspec = design_spec(rows, ("P", "T"))
     da = deep_delta_alpha()
-    specs = base_specs(("mixed",), (40.0, 90.0), da, {}, starts=(START_SIGMA_L["mixed"][:1] * 2 + (START_OTHER[0][1], START_OTHER[0][2]),),
+    specs = base_specs(("mixed",), (41.0, 90.0), da, {}, starts=(START_SIGMA_L["mixed"][:1] * 2 + (START_OTHER[0][1], START_OTHER[0][2]),),
                        # the start follows the PINNED default's name order (sigma_l per session, omega, gamma_l)
                        max_nfev=2, beta_profile=False)
     for s in specs:
-        # the plant measures the pool's ORDER, not a node of the model: the 40 um probe sits
-        # below the validated span, so it opens the gate's one door and says so in the row
+        # the plant measures the pool's ORDER, not a node of the model: the 41 um probe sits
+        # below the validated span, so it opens the gate's one door and says so in the row.
+        # MOVED from 40.0 (O44/F280, 2026-09-21): the actual-focus on-axis factor now refuses
+        # below this bore's own geometric floor (about 40.89 um, F280), and 40 um sits under it
+        # -- a probe below the FLOOR is not "below the validated span", it describes no beam this
+        # bench can make at all, which is a different edge than this plant means to exercise.
         s["kernel_gate"] = "legacy"
     seq = run_cells(specs, dspec, 0, label="seq ")
     par = run_cells(specs, dspec, workers_many, label=f"pool{workers_many} ")
@@ -2672,7 +2704,7 @@ def time_cells(workers_for_queue: int = 10) -> dict:
     print(f"  loaded {len(rows)} traces in {t_load:.1f} s", flush=True)
     da = deep_delta_alpha()
     out = {}
-    for w in (40.0, 64.0, 90.0):
+    for w in (41.0, 56.0, 90.0):   # C6a: the grid's two ends and a far node, the worst cells timed
         r = _cell_task((0, _spec("mixed", w, da=da, beta_profile=False), dspec))
         out[w] = r
         print(f"  cell mixed w0={w:g} um: {r['seconds']:.0f} s, {r['nfev']} evaluations over 2 starts, outer passes "

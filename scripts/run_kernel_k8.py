@@ -81,6 +81,18 @@ from rb5s6s.noise import condition_noise_model                    # noqa: E402
 from rb5s6s.qc import trace_metrics, hard_flags, ingest_flags     # noqa: E402
 
 OUT = C.RESULTS_DIR / "kernel_k8.csv"
+
+
+def band_joint(quantity: str) -> float:
+    """The band excess's JOINT z from this tree's own reconstruction, `band_excess.csv`, at the same waist as the
+    in-window regression. The notes typed the unproduced note's +8.65 and -0.75, which stood at the retired waist
+    and which the reconstruction never reproduced, so the file compared a ruled-waist null with another waist's
+    figures (2026-09-24)."""
+    with open(C.RESULTS_DIR / "band_excess.csv", newline="") as fh:
+        for r in csv.DictReader(fh):
+            if r["scope"] == "JOINT" and r["quantity"] == quantity:
+                return float(r["value"])
+    raise KeyError(f"band_excess.csv carries no JOINT {quantity}")
 COLLINEAR = 0.8      # preregistered: above this, both coefficients are unreadable
 Z_MIN = 3.0          # preregistered: the significance a predictor must clear
 
@@ -200,13 +212,21 @@ def main() -> int:
     add("PRIMARY", "height_z", f"{prim['hz']:.2f}", "sigma",
         "z on the model's own profile height, peak SNR, in a JOINT weighted "
         "regression against log10 vapour density. The band excess outside the "
-        "window gives +8.65 on the same predictor by the same method")
+        f"window reads {band_joint('height_z'):+.2f} on the same predictor by the same method in this tree's "
+        "reconstruction (band_excess.csv). The unproduced note's +8.65 is not reproduced by it")
+    # COMPUTED, never typed (C6a, 2026-09-22): the note said "Non-significant in both, on opposite signs" as a
+    # fixed string, and at the calculated waist the in-window z reads the SAME sign as the band's -0.75
+    band_density_z = band_joint("density_z")
     add("PRIMARY", "density_z", f"{prim['nz']:.2f}", "sigma",
         "z on log10 vapour number density in the same joint fit. The band "
-        "excess gives -0.75. Non-significant in both, on opposite signs")
+        f"excess reads {band_density_z:+.2f} in this tree's reconstruction. "
+        + ("Non-significant in both" if abs(prim["nz"]) < Z_MIN else "Significant in-window")
+        + (", on opposite signs" if prim["nz"] * band_density_z < 0 else ", on the same sign"))
     add("PRIMARY", "predictor_corr", f"{prim['rho']:.3f}", "dimensionless",
-        f"correlation between the two predictors. Below the preregistered "
-        f"{COLLINEAR}, so the separation is genuine and not collinearity")
+        (f"correlation between the two predictors. Below the preregistered "
+         f"{COLLINEAR}, so the separation is genuine and not collinearity" if abs(prim["rho"]) <= COLLINEAR else
+         f"correlation between the two predictors. ABOVE the preregistered {COLLINEAR}, so both "
+         "coefficients are unreadable"))
     add("PRIMARY", "loo_height_z_min", f"{hzs.min():.2f}", "sigma",
         "smallest height z over all leave-one-out refits. REPORTED AS A "
         "DISTRIBUTION, min and median, single_valued does not apply")
@@ -218,24 +238,41 @@ def main() -> int:
     add("SECONDARY", "height_z", f"{brgt['hz']:.2f}", "sigma",
         "DEVIATION from the preregistration, recorded rather than hidden: "
         + brgt["note"])
-    add("ALL", "verdict",
-        "MULTIPLICATIVE_IN_SIGNAL_NOT_DENSITY", "verdict",
-        "the in-window structure scales with signal amplitude and not with "
-        "vapour density, the same predictor and the same sign as the band "
-        "excess outside the window. The band's height z is 3.05 in "
-        "reconstruction (band_excess.csv) against the note's 8.65, so the "
-        "magnitudes are not the same order and the original is not "
-        "reproducible, and the recovery rows show the band's density "
-        "reading is construction-dependent. This row's own in-window "
-        "density null is per-condition at peak SNR and stands on its own. "
-        "One common multiplicative cause is the better reading of the "
-        "in-window structure; the band's support for it is weaker than "
-        "first graded")
+    # THE VERDICT IS COMPUTED FROM ITS OWN ROWS against the preregistered Z_MIN and COLLINEAR (C6a, 2026-09-22).
+    # It was a typed string, MULTIPLICATIVE_IN_SIGNAL_NOT_DENSITY, and at the calculated waist the rows it summarises
+    # read a height z of -0.48 and a density z of -0.42 under it, so the file contradicted itself. Z_MIN was defined
+    # and read by nothing.
+    sig_h, sig_n = abs(prim["hz"]) >= Z_MIN, abs(prim["nz"]) >= Z_MIN
+    if abs(prim["rho"]) > COLLINEAR:
+        verdict, vnote = "UNREADABLE_COLLINEAR", (
+            f"the two predictors correlate above the preregistered {COLLINEAR}, so neither coefficient is read")
+    elif sig_h and not sig_n:
+        verdict, vnote = "MULTIPLICATIVE_IN_SIGNAL_NOT_DENSITY", (
+            "the in-window structure scales with signal amplitude and not with vapour density at the preregistered "
+            f"{Z_MIN} sigma. The band's height z is {band_joint('height_z'):+.2f} in reconstruction (band_excess.csv) "
+            "against the unproduced note's 8.65, "
+            "so the band's support for one common multiplicative cause is weaker than first graded")
+    elif sig_n and not sig_h:
+        verdict, vnote = "DENSITY_NOT_SIGNAL", (
+            f"the in-window structure scales with vapour density and not with signal amplitude at {Z_MIN} sigma")
+    elif sig_h and sig_n:
+        verdict, vnote = "SIGNAL_AND_DENSITY", (
+            f"the in-window structure scales with both predictors at {Z_MIN} sigma, so a density-driven part is present")
+    else:
+        verdict, vnote = "NEITHER_SIGNAL_NOR_DENSITY", (
+            f"no scaling of the in-window structure with signal amplitude or with vapour density is detected at the "
+            f"preregistered {Z_MIN} sigma. A null at that threshold does not show that no fractional model error is "
+            "left in the window, only that none this regression can read is resolved. A density-driven collisional "
+            "origin stays excluded at that threshold")
+    add("ALL", "verdict", verdict, "verdict", vnote)
     add("ALL", "mechanism_note", "NOT_NAMED", "scope",
-        "a normalised residual scales with signal under ANY fractional model "
-        "error, so profile mismatch, detector nonlinearity and an "
-        "amplitude-dependent baseline all predict this. A density-driven "
-        "collisional origin is excluded. The mechanism is not named")
+        ("a normalised residual scales with signal under ANY fractional model "
+         "error, so profile mismatch, detector nonlinearity and an "
+         "amplitude-dependent baseline all predict this. A density-driven "
+         "collisional origin is excluded. The mechanism is not named") if sig_h else
+        ("no in-window scaling with the signal is detected at this waist, so there is no mechanism to name, and a "
+         "density-driven collisional origin is excluded by the density null at the preregistered threshold" if not sig_n else
+         "the density coefficient is significant, so a density-driven origin is not excluded and the mechanism is not named"))
     add("ALL", "r_kernel_effect", "NONE", "scope",
         "R_kernel is unchanged and the effect on the collisional coefficient "
         "remains unquantified")

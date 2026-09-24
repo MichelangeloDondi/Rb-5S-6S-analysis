@@ -42,6 +42,7 @@ import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
+from rb5s6s.config import RESULTS_DIR as _RESULTS_DIR  # noqa: E402  (F480: results where RB5S6S_RESULTS_DIR points)
 sys.path.insert(0, str(ROOT / "scripts"))
 
 from rb5s6s import config as C  # noqa: E402
@@ -78,7 +79,7 @@ def main() -> int:
         return 0
 
     reh_rate = {}
-    with open(ROOT / "results" / "stark_joint.csv") as fh:
+    with open(_RESULTS_DIR / "stark_joint.csv") as fh:
         for r in csv.DictReader(fh):
             if r["quantity"] == "reh_rate":
                 reh_rate[r["key"]] = float(r["value"])

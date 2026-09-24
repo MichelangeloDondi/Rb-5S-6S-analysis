@@ -165,3 +165,26 @@ def test_a_constant_reference_resolves_to_the_package_and_refuses_a_wrong_digit(
         "a name the module lacks resolves to nothing, never to a default")
     assert mod._constant_value("GAMMA_NAT_HZ", "furlongs") is None, (
         "a unit the scheme lacks resolves to nothing")
+
+
+def test_the_fixer_names_the_sentence_a_moved_value_sits_in():
+    """--fix keeps a bound number current and says nothing about the claim around it.
+
+    This was earned on 2026-09-22: an estimator passage was rewritten to
+    "close to tied" while its own cells had moved apart, so a rewrite now prints the sentence for
+    a person to re-read. A table row is one cell, not one sentence, and the two units differ.
+    """
+    import importlib.util
+    spec = importlib.util.spec_from_file_location(
+        "check_references_sentence", Path(__file__).resolve().parents[1] / "scripts" / "check_references.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    row = '| a | the correlation moves [0.0009](x.csv "ref:a:b:c") over a wider span | b |\n'
+    prose = "Plain prose here. The value [7.42](y.csv) sits in this one. A third sentence follows.\n"
+    text = row + prose
+    cell = mod._sentence_at(text, text.index("0.0009"))
+    assert cell.startswith("the correlation moves") and cell.endswith("wider span"), cell
+    assert "| b |" not in cell, "a table cell stops at its own pipes"
+    got = mod._sentence_at(text, text.index("7.42"))
+    assert got == "The value [7.42](y.csv) sits in this one.", got
+    assert len(mod._sentence_at("x" * 1000 + " [1.0](y)", 1002)) <= 300, "one long row cannot bury the list"

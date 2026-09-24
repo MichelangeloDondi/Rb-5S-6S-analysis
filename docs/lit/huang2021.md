@@ -60,8 +60,8 @@ against any duty cycle this record's forecast uses.
 ## What it means here
 
 The transit width goes as the square root of the temperature. At 100
-nanokelvin it is below 0.1 kilohertz at every waist from 64 down to 16
-microns, where a 130 degree cell gives 0.97 to 3.87 megahertz. The published
+nanokelvin it is below 0.1 kilohertz at every waist from 42.38 down to 16
+microns, where a 130 degree cell gives 1.45 to 3.87 megahertz. The published
 correlation between the collisional width and the transit width in this
 record's fits is -0.958, and that degeneracy is a property of a warm sample:
 on a sub-recoil ensemble the transit term is not a fitted width at all.

@@ -1,4 +1,4 @@
-*Chapter 5 of 9 of [the big picture](../BIG_PICTURE.md)*
+*Chapter 5 of 10 of [the big picture](../BIG_PICTURE.md)*
 
 ## 5. Gains from further vapour-cell measurements
 
@@ -107,13 +107,15 @@ physics:
    ran monotonically down with elapsed time, so slow drift and density trends
    are confounded.
 5. **A tighter focus (~16 µm).**
-   Converts the bound on the third cumulant into a detection, or into a
+   Converts the bound on the third moment into a detection, or into a
    meaningful bound, on the deep-integration day. It is sized for the
    pessimistic end and is not a promised result. Runs as
    [`PLAN.md`](../PLAN.md) §6 items 3 and 4.
 
-   S₀ grows ~16× over the 2025 dataset's [64](../../rb5s6s/constants.py "ref:constant:W0_MEASURED_M:1e6") µm waist (×14 against the planned
-   [64](../../rb5s6s/constants.py "ref:constant:W0_MEASURED_M:1e6") µm configuration), and the third cumulant grows
+   S₀ grows over the 2025 dataset's calculated 42.38 µm waist (open item: the ~16× and
+   ×14 factors this record stated at the retired waist convention are pending
+   re-derivation, since `stark.kappa_pred_per_watt` now raises instead of
+   extrapolating a 16 µm actual focus below this bore's floor, F280), and the third moment grows
    faster still, though not by the naive $S_0^3$ cube of that gain, a reading
    that [THEORY_NOTE.md](../THEORY_NOTE.md) §3 and [RESULTS.md](../RESULTS.md) C3c
    both record as replaced. The axial average over the

@@ -37,7 +37,7 @@ orders.
 
 *The first three Bessel orders and the power fraction in each sideband
 against modulation depth, with the one-photon carrier null at
-$\beta = 2.405$ marked.*
+$\beta = 2.405$ marked.* <!-- other-quantity: the first zero of the Bessel function J0, not a committed cell -->
 
 A useful pair of facts follows from the identity. The total power is
 conserved, $\sum_n J_n^2(\beta) = 1$, so modulation redistributes light
@@ -67,10 +67,10 @@ and the derivation, and of [methods chapter 3](../methods/05_the_frequency_ruler
 one-photon formula would misplace at 2.405.*
 
 In a one-photon spectrum the sideband amplitude is $J_n(\beta)$ and the
-carrier vanishes at the first zero of $J_0$, at $\beta = 2.405$. In the
+carrier vanishes at the first zero of $J_0$, at $\beta = 2.405$. <!-- other-quantity: the first zero of the Bessel function J0, not a committed cell --> In the
 two-photon comb every tooth sums the pairs of sidebands that reach it, and
 the addition theorem collapses that sum to $J_k(2\beta)$. The carrier
-therefore vanishes at $2\beta = 2.405$, that is at $\beta = 1.202$.
+therefore vanishes at $2\beta = 2.405$, that is at $\beta = 1.202$. <!-- other-quantity: the first zero of the Bessel function J0, not a committed cell -->
 
 ## Failure modes
 

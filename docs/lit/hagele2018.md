@@ -10,7 +10,7 @@ year: 2018
 doi: 10.1103/PhysRevB.98.205143
 arxiv: 1611.02077
 pdf: PDF_papers/Hagele_2018_higher-order-moments-cumulants-spectra-quantum-noise.pdf
-held: false
+held: true
 status: REPORTED
 routing:
   - CITE

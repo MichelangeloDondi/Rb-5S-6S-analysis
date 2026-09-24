@@ -164,11 +164,13 @@ sets how big the light shift is. Calculated rather than measured here, and its
 *sign* is under an open disagreement that no result here depends on
 ([THEORY_NOTE](THEORY_NOTE.md) section 5).
 
-**Skewness, $g_1$, and the third cumulant $\kappa_3$.** Numbers describing how
+**Skewness, $g_1$, and the third central moment $\mu_3$.** Numbers describing how
 lopsided a distribution is. The ramp is lopsided in a calculable way, so
 measuring the line's lopsidedness is a way to measure the light shift without
 needing to know where the line's centre is. That is the method this repository
-is built around, and in the 2025 data the effect sits below the noise. Full page: [third-cumulant](wiki/third-cumulant.md).
+is built around, and in the 2025 data the effect sits below the noise. At this
+order the central moment and the cumulant this record used to name are the same
+number. Full page: [third-cumulant](wiki/third-cumulant.md).
 
 **The centre channel, or the pull.** The other way to measure a light shift:
 watch the line's centre move as the power changes. It needs a frequency
@@ -209,9 +211,10 @@ bounds and are quoted as loose by a stated factor.
 100 mm long, warmed in an oven. Warmer means denser
 ([APPARATUS.md](APPARATUS.md)).
 
-**Beam waist, $w_0$.** The radius of the laser beam at its narrowest. Measured
-here at 64 µm (`rb5s6s.config.W0_MEASURED_M`). Almost every intensity-dependent
-number rides on it.
+**Beam waist, $w_0$.** The radius of the laser beam at its narrowest. Not
+directly measured. It is carried here at 42.38 µm (`rb5s6s.config.W0_CENTRAL_M`), the
+bore-limited actual focus this apparatus calculates for its own input radius.
+Almost every intensity-dependent number rides on it.
 
 **Rayleigh range, $z_R$.** The distance along the beam before it has
 spread appreciably. The ratio of the observed region to this length decides

@@ -228,7 +228,12 @@ def main() -> int:
     # other three lines drawing the shared shape. The pool takes every condition with four or more
     # traces; the study's own rows keep their N_COND.
     tau_rows = []
-    _pool_keys = [k for k in sorted(groups) if len(groups[k]) >= 4] if os.environ.get("RB5S6S_RESIDUAL_POOL_OUT") else keys
+    # EVERY CONDITION, WHATEVER THE ENVIRONMENT SAYS (F328, 2026-09-22): the full pool used to be taken only when
+    # RB5S6S_RESIDUAL_POOL_OUT was set, so a chain that ran this producer without the export wrote the study's first eight
+    # conditions and dropped the other 24 conditions' `tau_resid` rows, and every keyed noise law read after it whitened three
+    # of the four lines by the raw segment time (a median 2.66 times the post-fit one). The committed table must not depend on
+    # an environment variable: the variable decides only whether the sample array is exported below.
+    _pool_keys = [k for k in sorted(groups) if len(groups[k]) >= 4]
     for k in _pool_keys:
         triples = ladder_gate.real_traces(ANALYSIS_ID, __file__, rows=groups[k][:5])
         rs = [residuals_of(t[1][1]) for t in triples]

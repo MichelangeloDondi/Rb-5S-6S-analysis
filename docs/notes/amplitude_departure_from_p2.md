@@ -26,7 +26,7 @@ which a block bootstrap collapsed to consistency with zero.
 |---|---|---|
 | 993.4121 nm | 1.831 | 1.750 to 1.897, excludes 2 |
 | 993.4154 nm | 2.121 | 2.104 to 2.142, excludes 2 <!-- other-quantity: an amplitude-departure slope CI, not an identifiability-profile or lever_crosscheck cell --> |
-| 993.4192 nm | 2.116 | 2.073 to 2.204, excludes 2 |
+| 993.4192 nm | 2.116 | 2.073 to 2.204, excludes 2 <!-- other-quantity: an amplitude-departure slope CI, not a global_dataset_fit cell --> |
 | 993.4207 nm | 2.100 | 1.986 to 2.269, includes 2 |
 
 Three of four exclude 2. The fourth loses its within-cell significance of 10.6

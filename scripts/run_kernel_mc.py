@@ -69,6 +69,7 @@ import math
 import os
 import sys
 import time
+import pathlib
 from pathlib import Path
 
 os.environ.setdefault("OMP_NUM_THREADS", "1"); os.environ.setdefault("OPENBLAS_NUM_THREADS", "1")
@@ -76,7 +77,9 @@ import numpy as np  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
+from rb5s6s.config import RESULTS_DIR as _RESULTS_DIR  # noqa: E402  (F480: results where RB5S6S_RESULTS_DIR points)
 from rb5s6s import constants as K                                   # noqa: E402
+from rb5s6s import beam_field as BF                                 # noqa: E402
 from rb5s6s import fullmodel as FM                                  # noqa: E402
 from rb5s6s import kernel_gate                                      # noqa: E402
 from rb5s6s import lineshape                                        # noqa: E402
@@ -86,10 +89,15 @@ from rb5s6s.cascade import BRANCHING_F, amplitude_factor            # noqa: E402
 from rb5s6s.platforms import PLATFORMS, excitation_rate_per_atom    # noqa: E402
 
 B_CUT = 3.0                   # impact parameters out to three beam radii
+TAIL_FRACTION = 0.20          # the mixture proposal's uniform component (F372)
+B_CUT_CLIPPED = 8.0           # a clipped beam's rings fall as a POWER: 2.4e-4 of the two-photon
+                              # weight sits past three radii against 2.3e-16 for a Gaussian, and
+                              # 3 -> 8 moves mu3 by 0.66 per cent. 8.0 is `shift_density`'s own
+                              # cut, so the model and the Monte Carlo now truncate ALIKE
 TAU_EDGE = 3.0                # the chord in units of w/v, the wings carried
 N_TAU = 41                    # points along the chord; the grid movement halves it
 POWER_STEP = 0.05             # the central difference for d ln A / d ln P
-GRID_W0_UM = tuple(range(34, 59, 2))                      # the 36-56 um scan grid with one node beyond each end, so a fine band at an edge truth has both bracketing nodes; 62-92 was the grid of the 16th
+GRID_W0_UM = tuple(range(34, 59, 2))                      # the 36-56 um scan grid with one node beyond each end, so a fine band at an edge truth has both bracketing nodes; the grid of the 16th ran from the retired band out to 92
 GRID_CONDITIONS = tuple((130.0, p) for p in (25.0, 75.0, 125.0, 175.0, 225.0)) + \
                   tuple((t, 225.0) for t in (70.0, 90.0, 110.0)) + \
                   tuple((130.0, p) for p in (90.0, 180.0, 270.0))   # the L's eight conditions, and the LeCroy evening's three
@@ -113,21 +121,116 @@ def _rate(logp_tab, logg_tab, p_local):
     return out
 
 
-def _sample(rng, n, w0_m, m2, T_C, half_window_m):
+#: THE BEAM IS AN OBJECT AND ITS FOCUS IS PRODUCED, NOT ASSUMED (F368, owner 2026-09-23). A node names
+#: a waist; a waist on this bench is made by SOME input radius through the fixed 3 mm bore, so the beam
+#: is found by inverting `ClippedBeam.actual_focus_m()` for that waist rather than by rescaling a
+#: Gaussian. Below the bore's own floor no input produces the waist and above the clipping band the
+#: input is far inside the bore, so both ends fall back to the diffracting Gaussian WITH A NOTE, which
+#: rides in the artefact: a fallback nobody can read is a fallback nobody can weigh.
+_BEAM_CACHE: dict = {}
+#: the input radii the propagated field's own table accepts (measured 2026-09-23: 0.3 and 8 mm
+#: is REFUSED by its interpolation bound, 0.5 to 14 mm are not), giving foci 94.90 to 40.90 um,
+#: which reaches the Airy floor 0.4112 lambda f / a = 40.849 um that no input attains (the Thesis
+#: Writer, 2026-09-23: the earlier 6 mm bracket stopped at 41.11 and threw 41.00 um nodes to the
+#: Gaussian fallback, which is how a too-narrow bracket reads as a physical limit)
+W_IN_LO_M, W_IN_HI_M = 0.50e-3, 14.0e-3
+
+
+class _GaussianBeam:
+    """The beam this file used to assume, as an object answering the same two calls."""
+
+    def __init__(self, w0_m: float, m2: float):
+        self.w0_m, self.m2 = float(w0_m), float(m2)
+        self.z_R = math.pi * self.w0_m ** 2 / (self.m2 * K.LAMBDA_LASER_M)
+
+    def w(self, z_m, clamp=False):
+        return self.w0_m * np.sqrt(1.0 + (np.asarray(z_m, float) / self.z_R) ** 2)
+
+    def u(self, r_m, z_m, clamp=False):
+        w = self.w(z_m)
+        return (self.w0_m / w) ** 2 * np.exp(-2.0 * np.asarray(r_m, float) ** 2 / w ** 2)
+
+
+def _beam_for(w0_m: float, m2: float):
+    """(beam, note) whose ACTUAL focus is `w0_m`, by bisection on the input radius."""
+    key = (round(float(w0_m), 12), round(float(m2), 6))
+    if key in _BEAM_CACHE:
+        return _BEAM_CACHE[key]
+    try:
+        f_lo = float(BF.ClippedBeam(w_in_m=W_IN_LO_M, m2=m2).actual_focus_m())   # the widest focus
+        f_hi = float(BF.ClippedBeam(w_in_m=W_IN_HI_M, m2=m2).actual_focus_m())   # the bore's floor
+    except Exception as exc:                       # an M2 the field cannot carry
+        out = (_GaussianBeam(w0_m, m2), f"gaussian: the propagated field refused this node ({exc})")
+        _BEAM_CACHE[key] = out
+        return out
+    if not (f_hi <= w0_m <= f_lo):
+        side = "below the bore's floor" if w0_m < f_hi else "wider than any clipped input produces"
+        out = (_GaussianBeam(w0_m, m2),
+               f"gaussian: {w0_m * 1e6:.2f} um is {side} ({f_hi * 1e6:.2f} to {f_lo * 1e6:.2f} um)")
+        _BEAM_CACHE[key] = out
+        return out
+    lo, hi = W_IN_LO_M, W_IN_HI_M                  # focus DECREASES with input radius
+    for _ in range(40):
+        mid = 0.5 * (lo + hi)
+        if float(BF.ClippedBeam(w_in_m=mid, m2=m2).actual_focus_m()) > w0_m:
+            lo = mid
+        else:
+            hi = mid
+        if hi - lo < 1e-9:
+            break
+    w_in = 0.5 * (lo + hi)
+    beam = BF.ClippedBeam(w_in_m=w_in, m2=m2)
+    out = (beam, f"clipped: w_in {w_in * 1e3:.4f} mm gives focus {beam.actual_focus_m() * 1e6:.3f} um")
+    _BEAM_CACHE[key] = out
+    return out
+
+
+def _sample(rng, n, w0_m, m2, T_C, half_window_m, beam=None):
     sv = math.sqrt(K.K_B_J_PER_K * (T_C + 273.15) / K.M_RB87_KG)
-    z_R = math.pi * w0_m ** 2 / (float(m2) * K.LAMBDA_LASER_M)
+    if beam is None:
+        beam, _ = _beam_for(w0_m, m2)
     z0 = rng.uniform(-half_window_m, half_window_m, n) if half_window_m > 0 else np.zeros(n)
-    w = w0_m * np.sqrt(1.0 + (z0 / z_R) ** 2)
+    w = np.asarray(beam.w(z0, clamp=True), float)
     # THE CHORDS OF A UNIFORM ISOTROPIC GAS ARE UNIFORM IN THE IMPACT PARAMETER (the line
     # measure db dphi), not in its area: `transit_mc` draws b uniform in area, which its only
     # validated output, the kernel's width, cannot see (the per-atom shape is blind to b) and
     # the ramp can: 4 per cent in k2 and five-fold in k3 (2026-09-16 night, F11).
-    # and it is DRAWN from the weak field's own weight, the half-normal e^{-4 b^2 / w^2} (a
-    # uniform draw leaves five atoms in six with a negligible weight and the width's Monte
-    # Carlo error at one per cent for 100k atoms); the importance factor w e^{4 b^2 / w^2}
-    # restores the uniform measure, so in the weak field the weights are flat.
-    b = np.minimum(np.abs(rng.normal(0.0, 1.0, n)) * w / (2.0 * math.sqrt(2.0)), B_CUT * w)
-    imp_b = w * np.exp(4.0 * b ** 2 / w ** 2)
+    #
+    # THE PROPOSAL IS A MIXTURE, AND THE PURE HALF-NORMAL IT REPLACES IS A GAUSSIAN-ONLY DEVICE
+    # (F372, 2026-09-23). Drawing b from the half-normal e^{-4 b^2 / w^2} and restoring the
+    # uniform measure with w e^{+4 b^2 / w^2} leaves FLAT weights only because the two-photon
+    # rate carries e^{-4 b^2 / w^2} of its own and cancels it exactly. Behind a bore the rate
+    # falls as a POWER, so that cancellation fails and the importance weight diverges: at three
+    # radii it is e^{36}, about 4e15, against a rate that is no longer exponentially small, and
+    # the estimator's variance is unbounded. So 20 per cent of the draws come from a UNIFORM
+    # component over the same support, the weight is one over the MIXTURE density, and it is
+    # bounded for any beam. In the Gaussian limit the answer is unchanged and only the variance
+    # moves (the self-test plants both).
+    r_max = (B_CUT if isinstance(beam, _GaussianBeam) else B_CUT_CLIPPED) * w
+    sig_b = w / (2.0 * math.sqrt(2.0))
+    # THE TAIL COMPONENT FIRES ONLY WHERE IT IS NEEDED. For a Gaussian the half-normal's weight
+    # cancels the rate exactly and the proposal is already optimal, so adding a uniform arm only
+    # wastes a fifth of the draws and widened the transit reading from under half a per cent to
+    # 0.85. The Gaussian arm is therefore left EXACTLY as it was, which is also what keeps the
+    # two-limit self-test a check on the closed form rather than on this change.
+    # AND THE GAUSSIAN ARM DOES NOT EVEN DRAW THE MIXTURE'S SELECTOR, so its RANDOM STREAM is
+    # bit-identical to the one this file used before the beam became an object. That is what
+    # makes the two-limit self-test a plant on the change: the Gaussian node must return the
+    # same numbers it always did, not merely numbers inside a tolerance.
+    if isinstance(beam, _GaussianBeam):
+        # THE GAUSSIAN ARM IS THE OLD CODE, LINE FOR LINE. Not merely the same stream: the same
+        # WEIGHT. `1 / p_core` differs from `w e^{4 b^2 / w^2}` by the constant sqrt(pi/2)/(2 sqrt 2),
+        # which normalises away inside this file and BROKE the bit-for-bit contract with
+        # `volume_line.sample_atoms` that `test_sample_atoms_matches_scripts_run_kernel_mc` asserts.
+        # The test caught it; a tolerance would not have.
+        b = np.minimum(np.abs(rng.normal(0.0, 1.0, n)) * sig_b, r_max)
+        imp_b = w * np.exp(4.0 * b ** 2 / w ** 2)
+    else:
+        pick = rng.random(n) < TAIL_FRACTION
+        b = np.where(pick, rng.random(n) * r_max,
+                     np.minimum(np.abs(rng.normal(0.0, 1.0, n)) * sig_b, r_max))
+        p_core = math.sqrt(2.0 / math.pi) / sig_b * np.exp(-0.5 * (b / sig_b) ** 2)
+        imp_b = 1.0 / ((1.0 - TAIL_FRACTION) * p_core + TAIL_FRACTION / r_max)
     # IMPORTANCE SAMPLING OF THE SPEED (2026-09-16 night). The kernel weights each chord by its
     # flux times its area over its width, which is one power of the speed BELOW the Rayleigh
     # density: sampled from the Maxwellian and weighted by 1/v, the weights' variance diverges
@@ -135,15 +238,24 @@ def _sample(rng, n, w0_m, m2, T_C, half_window_m):
     # construction `transit_mc` also uses). The speed is drawn from the target density itself,
     # the half-normal e^{-v^2/2 sigma^2}, and the importance factor v rides in `flux_len`.
     v = np.maximum(np.abs(rng.normal(0.0, sv, n)), 1e-9 * sv)
-    u_b = (w0_m / w) ** 2 * np.exp(-2.0 * b ** 2 / w ** 2)             # the chord's peak, on-axis focus = 1
+    u_b = np.clip(np.asarray(beam.u(b, z0, clamp=True), float), 0.0, None)  # the chord's peak
     flux_len = v * imp_b * v                        # the crossing flux, the b-measure's factor, the speed's factor
-    return w, v, u_b, flux_len
+    return w, v, u_b, flux_len, b, z0
 
 
-def _chord(P_W, u_b, w, v, tab, n_tau, q=0.0, weak=False):
+def _chord(P_W, u_b, w, v, tab, n_tau, q=0.0, weak=False, beam=None, b=None, z0=None):
     """Along the chord: the rate G(t), the population N(t), the time step. Arrays (atoms, tau)."""
     tau = np.linspace(-TAU_EDGE, TAU_EDGE, n_tau)
-    u = u_b[:, None] * np.exp(-2.0 * tau[None, :] ** 2)
+    if beam is None or b is None:
+        u = u_b[:, None] * np.exp(-2.0 * tau[None, :] ** 2)
+    else:
+        # THE ATOM TRAVERSES THE REAL PROFILE. At chord time t its radius is
+        # sqrt(b^2 + (v t)^2), and tau = v t / w, so r = sqrt(b^2 + (w tau)^2) with no
+        # speed in it. For a Gaussian this is identically u_b exp(-2 tau^2), which is the
+        # line above, so the branch is exact in the limit and not an approximation of it.
+        r = np.sqrt(b[:, None] ** 2 + (w[:, None] * tau[None, :]) ** 2)
+        zz = np.broadcast_to(z0[:, None], r.shape)
+        u = np.clip(np.asarray(beam.u(r, zz, clamp=True), float), 0.0, None)
     if weak:
         g0 = _rate(*tab, np.array([P_W * 1e-3]))[0] / (P_W * 1e-3) ** 2   # the weak-field coefficient
         G = g0 * (P_W * u) ** 2
@@ -196,8 +308,45 @@ def _cycles_axis(tab, P_W: float, w0_m: float, T_C: float) -> float:
                  * w0_m / math.sqrt(math.pi * K.K_B_J_PER_K * (T_C + 273.15) / (2.0 * K.M_RB87_KG)))
 
 
-def run_node(w0_um, m2, rho, T_C, P_mW, *, n_atoms=100_000, half_window_m=None,
-             cycles_model=0.0, seed=0, n_tau=N_TAU, depletion_form="mc"):
+def _load_contract():
+    """The Monte Carlo contract, or None where `private/` is absent (the public mirror, a stranger's clone).
+
+    The contract lives in the governance tree and binds every node run HERE; a checkout without it runs
+    the sampler at the numerics its caller names, and says so, instead of dying on a missing file
+    (2026-09-24)."""
+    path = ROOT / "private" / "checks" / "mc_contract.py"
+    if not path.is_file():
+        return None
+    import importlib.util as _ilu
+    _s = _ilu.spec_from_file_location("mc_contract", path)
+    _m = _ilu.module_from_spec(_s); _s.loader.exec_module(_m)
+    return _m
+
+
+def run_node(w0_um, m2, rho, T_C, P_mW, *, n_atoms=None, half_window_m=None,
+             cycles_model=0.0, seed=0, n_tau=N_TAU, depletion_form="mc",
+             beam_kind="clipped", mc_deviations=None):
+    """THE MONTE CARLO IS CALLED AT ONE SET OF NUMERICS OR THE RUN IS THROWN AWAY (O56, the owner,
+    nine times). Until 2026-09-24 this file referenced `mc_contract` ZERO times: the twin's LINE was
+    guarded by `twin_callers` and the KERNEL MONTE CARLO, which is what the order names, was under
+    no contract at all. The node population was already MIXED, 130 artefacts at 100 000 atoms and
+    123 at 400 000, while `depleted_line_abs` is sampler noise A188 puts at 0.00234 and 0.00089 for
+    those two counts against a tolerance of 0.002 -- so a node could fail a reading on its atom
+    count alone and nothing said so. `n_atoms` now defaults to the contract's value instead of a
+    literal, and a departure needs a reason of six words through `mc_deviations`.
+
+    The node's COORDINATES (`w0_um`, `m2`, `rho`, `T_C`, `P_mW`) are swept by design and are not in
+    the contract. Its NUMERICS are, because the gate grades every node against one set of
+    tolerances."""
+    _MC = _load_contract()
+    if n_atoms is None:
+        if _MC is None:
+            raise SystemExit("run_kernel_mc: no atom count given and no contract in this checkout "
+                             "(private/checks/mc_contract.py is absent, as in the public mirror); pass n_atoms")
+        n_atoms = _MC.kernel_contract()["n_atoms"]
+    if _MC is not None:
+        _MC.guard_kernel_node(n_atoms=n_atoms, seed=seed, depletion_form=depletion_form,
+                              beam_kind=beam_kind, deviations=mc_deviations)
     t0 = time.time()
     w0_m, P_W = w0_um * 1e-6, P_mW * 1e-3
     z_R = math.pi * w0_m ** 2 / (float(m2) * K.LAMBDA_LASER_M)
@@ -205,24 +354,58 @@ def run_node(w0_um, m2, rho, T_C, P_mW, *, n_atoms=100_000, half_window_m=None,
         half_window_m = FM.collection_z_ratio_m2(w0_m, m2) * z_R
     zr = half_window_m / z_R
     rng = np.random.default_rng(seed)
-    w, v, u_b, flux_len = _sample(rng, n_atoms, w0_m, m2, T_C, half_window_m)
+    if beam_kind == "gaussian":
+        beam, beam_note = _GaussianBeam(w0_m, m2), "gaussian: asked for by the caller"
+    else:
+        beam, beam_note = _beam_for(w0_m, m2)
+        # THE CONTRACT GRADED THE REQUEST AND THE RUN USED A DIFFERENT BEAM (2026-09-24, F457).
+        # `_beam_for` falls back to a diffracting Gaussian whenever the asked-for waist is below the
+        # bore's reachable floor. `guard_kernel_node` sees beam_kind="clipped" because that is what the
+        # CALLER asked for, matches it against the contract's 'clipped', and passes -- so four nodes ran
+        # with no bore in the Monte Carlo at all and three of them recorded PASS at the contract's atom
+        # count, indistinguishable in the population from a validated node. A contract satisfied by an
+        # INTENTION is not a contract. The produced beam is graded here, where it exists, and before the
+        # sampler spends anything. An explicit `--beam gaussian` is untouched: that is a declared choice.
+        if beam_note.startswith("gaussian") and not (mc_deviations or {}).get("beam_kind"):
+            raise _MC.ContractBreach(
+                f"mc-contract kernel: beam_kind='clipped' was asked for and this node produced "
+                f"{beam_note!r}. The bore is absent from this Monte Carlo, so every reading it "
+                f"returns is about a beam the apparatus cannot make (F382, A192). Ask for the "
+                f"Gaussian explicitly, declare the deviation, or choose a reachable waist.")
+    w, v, u_b, flux_len, b_imp, z_imp = _sample(rng, n_atoms, w0_m, m2, T_C,
+                                                half_window_m, beam=beam)
+    _bk = dict(beam=beam, b=b_imp, z0=z_imp)
     tab = _rate_table(P_W, w0_m, T_C, rho)
     ref_bare = K.transit_fwhm_from_w0(w0_m, T_C, isotope=87)
-    ref_fwhm = ref_bare * (FM.transit_collection_factor(w0_m, m2) if zr > 0 else 1.0)   # what the Cell passes
+    # THE TRANSIT REFERENCE GAINS THE BEAM'S OWN AXIAL WIDTH (F374, 2026-09-23).
+    # `transit_collection_factor` computes the rate-weighted mean of 1/w(z) for a beam that diverges as
+    # w0 sqrt(1 + (z/z_R)^2); the bore-clipped beam does NOT, its depth of focus being about 1.55 times
+    # that, so across the window it stays narrow while the model's beam opens up. The correction enters
+    # as a RATIO of `effective_transit_radius` on the two beams and never as a replacement, because that
+    # function carries its own 0.37 per cent offset against the closed form and a ratio of like for like
+    # cancels it exactly. For a Gaussian beam the ratio is identically one, so this line is unchanged in
+    # the limit -- the same standard the sampler's own change was held to.
+    _rate_w = (lambda uu: _rate(*tab, P_W * uu))
+    if zr > 0 and not isinstance(beam, _GaussianBeam):
+        beam_transit_corr = (BF.effective_transit_radius(_GaussianBeam(w0_m, m2), half_window_m, rate=_rate_w)
+                             / BF.effective_transit_radius(beam, half_window_m, rate=_rate_w))
+    else:
+        beam_transit_corr = 1.0
+    ref_fwhm = ref_bare * ((FM.transit_collection_factor(w0_m, m2) * beam_transit_corr) if zr > 0 else 1.0)
     nu = np.linspace(0.0, 6.0 * ref_fwhm, 721)
     # --- the transit kernel, no depletion: the time-integrated rate weights each chord
-    G, N1, dt, u = _chord(P_W, u_b, w, v, tab, n_tau)
+    G, N1, dt, u = _chord(P_W, u_b, w, v, tab, n_tau, **_bk)
     sig0 = (G * dt).sum(axis=1) * flux_len
     L0 = _kernel(nu, sig0, w, v); fwhm_mc = _fwhm(nu, L0)
     cusp = lineshape.two_sided_exponential(nu, fwhm_mc); cusp = cusp / cusp[0]
     sel = nu <= 3.0 * fwhm_mc
     shape_dev = float(np.max(np.abs(L0[sel] - cusp[sel])))      # encoded below as 1 + dev against 1
     # --- the ramp: the rate-weighted instantaneous shift, saturated and weak-field, k3's grid movement
-    Gw, _, _, _ = _chord(P_W, u_b, w, v, tab, n_tau, weak=True)
+    Gw, _, _, _ = _chord(P_W, u_b, w, v, tab, n_tau, weak=True, **_bk)
     shift = +u                                                          # BLUE-sided (O27), units of S0
     wt_sat = (G * dt) * flux_len[:, None]; wt_weak = (Gw * dt) * flux_len[:, None]
     m_s, k2_s, k3_s = _cumulants(shift, wt_sat); m_w, k2_w, k3_w = _cumulants(shift, wt_weak)
-    Gh, _, dth, uh = _chord(P_W, u_b, w, v, tab, (n_tau - 1) // 2 + 1)
+    Gh, _, dth, uh = _chord(P_W, u_b, w, v, tab, (n_tau - 1) // 2 + 1, **_bk)
     # THE SAME SIDE AS THE FULL GRID, and it was not (2026-09-18). When the ramp's side was flipped
     # to blue (O27) line 210 above became `shift = +u` and this halved-grid twin kept `-uh`. k3 is
     # ODD, so the convergence check has been differencing k3 against MINUS ITSELF ever since, and
@@ -240,14 +423,18 @@ def run_node(w0_um, m2, rho, T_C, P_mW, *, n_atoms=100_000, half_window_m=None,
     # trace's power), so a PASS here certifies the model the fit uses. The sign convention follows
     # `shift = +u` above: the reference mean is POSITIVE (blue) as the Monte Carlo's is; the old
     # `-abs(mean)` in the detail was a leftover of the red-sided kernel.
+    # THE MODEL SIDE READS THE SAME BEAM AND THE SAME SATURATED RATE (F368). The Gaussian route
+    # below is kept and reported beside it, because the DIFFERENCE between them is the cost of
+    # the beam the fitter still assumes, and a number nobody prints is a number nobody can act on.
     _xg = np.linspace(0.0, 1.0, 4001)
     _gx = lineshape.saturated_ramp_density(_xg, P_W, w0_m, T_C, rho)
-    mm = lineshape.ramp_mixture_moments(1.0, zr, _xg, _gx, n_photon=2)
+    mm_gauss = lineshape.ramp_mixture_moments(1.0, zr, _xg, _gx, n_photon=2)
+    mm = BF.shift_moments(beam, half_window_m, rate=lambda uu: _rate(*tab, P_W * uu))
     m_ref, k2_ref, k3_ref = mm["mean"], mm["var"], mm["k3"]
     # --- depletion per line: the surviving signal, the surviving kernel's width, the shares
     per_line, dep = {}, {}
     for peak, q in BRANCHING_F.items():
-        Gq, Nq, dtq, _ = _chord(P_W, u_b, w, v, tab, n_tau, q=q)
+        Gq, Nq, dtq, _ = _chord(P_W, u_b, w, v, tab, n_tau, q=q, **_bk)
         sig = (Gq * Nq * dtq).sum(axis=1) * flux_len
         per_line[peak] = float(sig.sum() / sig0.sum())                   # surviving fraction of the signal
         dep[peak] = _fwhm(nu, _kernel(nu, sig, w, v))
@@ -267,7 +454,7 @@ def run_node(w0_um, m2, rho, T_C, P_mW, *, n_atoms=100_000, half_window_m=None,
     # --- the amplitude's local power law: Monte Carlo (saturation + depletion, line 4207) against the model's law
     def amp_at(scale, q):
         tab_s = _rate_table(P_W * scale, w0_m, T_C, rho)
-        Gs, Ns, dts, _ = _chord(P_W * scale, u_b, w, v, tab_s, n_tau, q=q)
+        Gs, Ns, dts, _ = _chord(P_W * scale, u_b, w, v, tab_s, n_tau, q=q, **_bk)
         return float(((Gs * Ns * dts).sum(axis=1) * flux_len).sum())
     q4 = BRANCHING_F["4207"]
     a_hi, a_lo = amp_at(1.0 + POWER_STEP, q4), amp_at(1.0 - POWER_STEP, q4)
@@ -321,7 +508,7 @@ def run_node(w0_um, m2, rho, T_C, P_mW, *, n_atoms=100_000, half_window_m=None,
     fit_bare = _fit(_line(_sym(L0)))
     dep_fit = {}
     for p in th:
-        Gq, Nq, dtq, _ = _chord(P_W, u_b, w, v, tab, n_tau, q=BRANCHING_F[p])
+        Gq, Nq, dtq, _ = _chord(P_W, u_b, w, v, tab, n_tau, q=BRANCHING_F[p], **_bk)
         Lq = _kernel(nu, (Gq * Nq * dtq).sum(axis=1) * flux_len, w, v)
         dep_fit[p] = _fit(_line(_sym(Lq))) / fit_bare - 1.0
     if depletion_form == "mc":
@@ -331,7 +518,7 @@ def run_node(w0_um, m2, rho, T_C, P_mW, *, n_atoms=100_000, half_window_m=None,
         # own plant (`kernel_gate --self-test`), and the factor's smoothness is in the artefact.
         model_dep = {}
         for p in th:
-            Gq, Nq, dtq, _ = _chord(P_W, u_b, w, v, tab, (n_tau - 1) // 2 + 1, q=BRANCHING_F[p])
+            Gq, Nq, dtq, _ = _chord(P_W, u_b, w, v, tab, (n_tau - 1) // 2 + 1, q=BRANCHING_F[p], **_bk)
             model_dep[p] = _fwhm(nu, _kernel(nu, (Gq * Nq * dtq).sum(axis=1) * flux_len, w, v))
     else:
         model_dep = {p: depleted_transit(ref_fwhm, om, p, cycles_model) for p in th}
@@ -340,7 +527,7 @@ def run_node(w0_um, m2, rho, T_C, P_mW, *, n_atoms=100_000, half_window_m=None,
     # right observable. The composed depleted line (worst line) against the fit's own form, the
     # cusp at the bare width times the fitted ratio, composed the same way: peak-normalised misfit.
     worst_q = max(th, key=lambda p: dep_fit[p])
-    Gq, Nq, dtq, _ = _chord(P_W, u_b, w, v, tab, n_tau, q=BRANCHING_F[worst_q])
+    Gq, Nq, dtq, _ = _chord(P_W, u_b, w, v, tab, n_tau, q=BRANCHING_F[worst_q], **_bk)
     Lq_line = _line(_sym(_kernel(nu, (Gq * Nq * dtq).sum(axis=1) * flux_len, w, v)))
     fit_line = _line(_cusp(fwhm_mc * (1.0 + dep_fit[worst_q])))
     dep_line_misfit = float(np.max(np.abs(fit_line - Lq_line)) / np.max(Lq_line))
@@ -358,6 +545,10 @@ def run_node(w0_um, m2, rho, T_C, P_mW, *, n_atoms=100_000, half_window_m=None,
     detail = {
         "node": dict(w0_um=w0_um, m2=m2, rho=rho, T_C=T_C, P_mW=P_mW), "n_atoms": n_atoms, "n_tau": n_tau,
         "half_window_m": half_window_m, "cycles_model": cycles_model, "seed": seed, "depletion_form": depletion_form,
+        "beam_kind": beam_kind, "beam_note": beam_note, "beam_transit_corr": beam_transit_corr,
+        "ramp_model_gaussian": {"mean": mm_gauss["mean"], "var": mm_gauss["var"], "k3": mm_gauss["k3"]},
+        "beam_cost_rel": {k: (float(mm[k] / mm_gauss[k] - 1.0) if mm_gauss[k] else float("nan"))
+                          for k in ("mean", "var", "k3")},
         "cycles_on_axis": cycles_axis, "cycles_mean_over_chords": cycles_mean,
         "ramp_mean": {"mc": m_s, "weak_field_mc": m_w, "model": m_ref},
         "ramp_k2_grid_movement": abs(k2_s - k2_h) / abs(k2_ref),
@@ -411,7 +602,7 @@ def _collect(rho: float) -> int:
         rows.append([key, "cycles_mean_over_chords", f"{row['detail']['cycles_mean_over_chords']:.6g}", "", "", v, "the flux-weighted mean over every chord", ""] + tail)
     if len(prov) != 1:
         raise SystemExit(f"run_kernel_mc --collect: the artefacts at rho {rho} come from {len(prov)} (model digest, atoms, seed) populations {sorted(map(str, prov))}: re-run the grid so the table is one population")
-    out = Path(os.environ.get("RB5S6S_RESULTS_DIR", str(ROOT / "results"))) / "kernel_mc.csv"
+    out = Path(os.environ.get("RB5S6S_RESULTS_DIR", str(_RESULTS_DIR))) / "kernel_mc.csv"
     out.parent.mkdir(parents=True, exist_ok=True)
     with open(out, "w", newline="") as fh:
         w = csv.writer(fh)
@@ -422,7 +613,21 @@ def _collect(rho: float) -> int:
 
 def _self_test() -> int:
     """The two limits: window closed and drive weak, the sampler returns the closed-form cusp."""
-    r, d = run_node(64.0, 1.0, 0.94, 130.0, 25.0, n_atoms=100_000, half_window_m=0.0)   # the window CLOSED: the transverse limit
+    # the contract is loaded HERE as run_node loads it: `_MC` is run_node's local, and the first form of
+    # this plant named it at module scope, so it raised NameError and graded nothing (F476)
+    _MC = _load_contract()
+    _bare = _parser().parse_args([]).n_atoms
+    if _MC is not None and _bare not in (None, _MC.kernel_contract()["n_atoms"]):
+        print(f"run_kernel_mc: self-test FAIL -- a bare command line asks for {_bare} atoms against the "
+              f"contract's {_MC.kernel_contract()['n_atoms']}, so every default node run is refused")
+        return 1
+    # THE CONTRACT BINDS THIS CALL TOO, AND THE DEVIATION IS DECLARED (F476, 2026-09-24): since F447 put
+    # `guard_kernel_node` in `run_node`, this limit check raised ContractBreach on its atom count and its
+    # beam, and nothing ran it, because the floor discovers plants under private/checks only.
+    r, d = run_node(44.0, 1.0, 0.94, 130.0, 25.0, n_atoms=100_000, half_window_m=0.0,
+                    beam_kind="gaussian",   # a CLOSED-FORM check, so the closed form's beam   # the window CLOSED: the transverse limit
+                    mc_deviations={"n_atoms": "a closed-form limit check, not a validated node, needs fewer atoms",
+                                   "beam_kind": "the closed form being checked is the Gaussian beam's own cusp"})
     dev = abs(r["transit_fwhm_rel"]["mc"] - r["transit_fwhm_rel"]["model"]) / r["transit_fwhm_rel"]["model"]
     print(f"  closed window, 25 mW: FWHM mc {r['transit_fwhm_rel']['mc']:.4f} against the closed form "
           f"{r['transit_fwhm_rel']['model']:.4f} ({dev:.2%}); shape {r['transit_shape_rel']['mc']:.3g}; "
@@ -433,14 +638,26 @@ def _self_test() -> int:
     return 0 if ok else 1
 
 
-def main(argv=None) -> int:
+def _parser() -> argparse.ArgumentParser:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--self-test", action="store_true")
-    ap.add_argument("--w0", type=float, default=64.0); ap.add_argument("--m2", type=float, default=1.0)
+    ap.add_argument("--w0", type=float, default=round(K.W0_CENTRAL_M * 1e6, 2)); ap.add_argument("--m2", type=float, default=1.0)
+    # SLICING, so a long node list runs in WAVES (owner order O50). This file is NOT in
+    # `kernel_gate.model_population()` -- checked, 20 modules, none of them this script -- so these
+    # arguments cost no digest move and re-open no node.
+    ap.add_argument("--from", dest="slice_from", type=int, help="first node index of this wave")
+    ap.add_argument("--n", dest="slice_n", type=int, help="how many nodes this wave runs")
+    ap.add_argument("--dump", help="a file written when the wave ends, so the runner can resume")
+    ap.add_argument("--beam", choices=("clipped", "gaussian"), default="clipped",
+                    help="the drive beam at the chord; `gaussian` is the comparison arm (F368)")
     ap.add_argument("--rho", type=float, default=0.94); ap.add_argument("--T", type=float, default=130.0)
     ap.add_argument("--P", type=float, default=225.0)
-    ap.add_argument("--grid", action="store_true", help="the treatment matrix's grid: 64-90 um x the L's eight conditions")
-    ap.add_argument("--n-atoms", type=int, default=100_000); ap.add_argument("--cycles-model", type=float, default=0.0)
+    ap.add_argument("--grid", action="store_true", help="the treatment matrix's grid: GRID_W0_UM x the L's eight conditions")
+    # THE DEFAULT IS THE CONTRACT'S, NOT A LITERAL (2026-09-24). This read `default=100_000` while
+    # `run_node` defaulted to the contract's 400 000, so every node started from a bare command line was
+    # REFUSED by `mc_contract.guard_kernel_node` -- the contract working, the default contradicting it.
+    # None lets `run_node` read `kernel_contract()["n_atoms"]`, so the two can no longer disagree.
+    ap.add_argument("--n-atoms", type=int, default=None); ap.add_argument("--cycles-model", type=float, default=0.0)
     ap.add_argument("--depletion-form", default="mc", choices=("mc", "none", "companion"),
                     help="the fit's form the reading is judged against: mc (the node's own factor, judged on convergence), none, companion")
     ap.add_argument("--rhos", default=None, help="a comma list of retro ratios for --grid (default the single --rho)")
@@ -452,12 +669,16 @@ def main(argv=None) -> int:
     ap.add_argument("--out", default=None, help="a CSV of the readings per node (cache class)")
     ap.add_argument("--collect", action="store_true",
                     help="write results/kernel_mc.csv from the artefacts on disk at the record's retro ratio (no Monte Carlo is run): the committed readings")
-    a = ap.parse_args(argv)
+    return ap
+
+
+def main(argv=None) -> int:
+    a = _parser().parse_args(argv)
     if a.self_test:
         return _self_test()
     if a.collect:
         return _collect(a.rho)
-    kw = dict(n_atoms=a.n_atoms, half_window_m=(None if a.window_mm is None else a.window_mm * 1e-3), cycles_model=a.cycles_model,
+    kw = dict(n_atoms=a.n_atoms, beam_kind=a.beam, half_window_m=(None if a.window_mm is None else a.window_mm * 1e-3), cycles_model=a.cycles_model,
               seed=a.seed, depletion_form=a.depletion_form)
     rhos = [float(x) for x in a.rhos.split(",")] if a.rhos else [a.rho]
     if a.nodes:
@@ -466,6 +687,10 @@ def main(argv=None) -> int:
             if ln.strip() and not ln.lstrip().startswith("#"):
                 w, m2, r, T, P = (float(x) for x in ln.split()[:5])
                 nodes.append((w, m2, r, T, P))
+        if a.slice_from is not None:
+            nodes = nodes[a.slice_from:a.slice_from + (a.slice_n or len(nodes))]
+            print(f"wave: nodes[{a.slice_from}:{a.slice_from + (a.slice_n or 0)}] = {len(nodes)} node(s)",
+                  flush=True)
     else:
         nodes = ([(float(w), a.m2, r, T, P) for r in rhos for w in GRID_W0_UM for (T, P) in GRID_CONDITIONS] if a.grid
                  else [(a.w0, a.m2, a.rho, a.T, a.P)])
@@ -497,6 +722,11 @@ def main(argv=None) -> int:
         with open(a.out, "w", newline="") as f:
             wr = csv.writer(f); wr.writerow(["node", "reading", "mc", "model", "verdict"]); wr.writerows(rows)
         print(f"  wrote {a.out} ({len(rows)} rows)")
+    if a.dump:                       # the wave's own marker, so the runner can resume (O50)
+        pathlib.Path(a.dump).parent.mkdir(parents=True, exist_ok=True)
+        pathlib.Path(a.dump).write_text(json.dumps(
+            {"from": a.slice_from, "n": a.slice_n, "nodes": len(jobs)}, indent=1))
+        print(f"  wave dump -> {a.dump}", flush=True)
     return 0
 
 

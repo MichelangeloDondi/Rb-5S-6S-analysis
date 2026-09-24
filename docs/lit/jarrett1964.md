@@ -89,13 +89,13 @@ a vapour-pressure law. The cell temperature carries 10 C.
    rms convention, N sigma v_r is 4.2e2, 1.9e3, 7.3e3 and 2.4e4 s^-1 at
    70, 90, 110 and 130 C (calculated here. V_r = sqrt(3 k T / (m/2)) = 4.81e4
    cm/s at 403 K, matching the paper's 4.59e4 at 363 K to 0.6 per cent).
-   Against the transit rate v_th / w0 = 4.3e6 s^-1 at the adopted 64 um
-   waist and 130 C (`constants.W0_MEASURED_M`, v_th = sqrt(2 k T / m)),
-   spin exchange is 180 times slower at the hottest set point and 1e4
+   Against the transit rate v_th / w0 = 6.6e6 s^-1 at the calculated 42.38 um
+   waist and 130 C (`constants.W0_CENTRAL_M`, v_th = sqrt(2 k T / m)),
+   spin exchange is 270 times slower at the hottest set point and 1.6e4
    times slower at the coldest, so within one transit it cannot refill
    the ground hyperfine level the two-photon drive empties: the F-contrast
-   term the producer reports as a bound is at most 0.6 per cent of the
-   transit rate at 130 C on this ladder, 0.7 per cent on the Alcock
+   term the producer reports as a bound is at most 0.4 per cent of the
+   transit rate at 130 C on this ladder, 0.5 per cent on the Alcock
    ladder. What the collisions drive toward is the spin-temperature
    distribution and not equal populations ([walker1997](walker1997.md)).
 2. **A worked example of the cell-density caution.** The total density is

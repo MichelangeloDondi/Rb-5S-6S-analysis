@@ -332,7 +332,7 @@ FILLER_PHRASES = [
     "hope this helps",
     "feel free to",
     # Banned on the owner's instruction: "adopted" misdescribes this
-    # bench. The 64 um waist is Rajasree's measurement on the SAME optical
+    # bench. The retired waist convention is Rajasree's measurement on the SAME optical
     # table, laser and lenses, and the cell temperature was instrumented with
     # four thermocouples between the cell and its metal case inside a
     # foil-wrapped cubic oven. Calling either "adopted" turns a measurement

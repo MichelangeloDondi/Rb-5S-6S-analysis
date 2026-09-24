@@ -101,6 +101,8 @@ from __future__ import annotations
 
 import argparse
 import csv
+import json
+import pickle
 import subprocess
 import sys
 import time
@@ -156,7 +158,7 @@ at camp130 is 147.5 kHz, rounded to 150 kHz (RESEARCH_DECISIONS section 10). It
 is the scale a real per-peak effect is expected to sit at, not a value tuned to
 this fit's outcome."""
 
-KAPPA_PRED = kappa_pred_per_watt(C.W0_MEASURED_M, C.RHO_RETRO)   # F39: per RECORDED watt
+KAPPA_PRED = kappa_pred_per_watt(C.W0_CENTRAL_M, C.RHO_RETRO)   # F39: per RECORDED watt
 KAPPAS = tuple(sorted({0.0, 0.25, 0.5, 0.75, 1.0, round(KAPPA_PRED, 3),
                        1.5, 2.0, 2.62, 3.5, 5.0}))
 KAPPAS_LOPO = tuple(sorted({0.0, 0.25, 1.0, round(KAPPA_PRED, 3), 2.0, 2.62}))
@@ -649,6 +651,22 @@ def main(argv=None) -> int:
                          "quotes nothing")
     ap.add_argument("--no-lopo", action="store_true",
                     help="skip the leave-one-peak-out family")
+    # WAVE UNITS (2026-09-22, the wave rule, run_global_dataset_fit.py's pattern, argparse instead
+    # of that file's manual sys.argv scan because this producer already has a real parser and
+    # main(argv=None) already threads an argv through it -- reusing it keeps one CLI mechanism
+    # instead of two, and gives --unit-from/--combine a --help entry the pattern file has none of).
+    ap.add_argument("--unit-from", type=int, default=None,
+                    help="run units U..U+N-1 (see --units) and pickle each into --state DIR")
+    ap.add_argument("--units", type=int, default=1,
+                    help="how many units to run from --unit-from (default 1, one unit a wave)")
+    ap.add_argument("--dump", default=None,
+                    help="wave_runner's {dump}: a small JSON marker written when --unit-from runs, "
+                         "naming which units landed and where. NOT the fit state, which is under --state")
+    ap.add_argument("--state", default=None,
+                    help="the directory unit state is pickled into and combined from")
+    ap.add_argument("--combine", action="store_true",
+                    help="read every unit's pickled state from --state DIR and write the CSV, "
+                         "exactly as the in-process run would have")
     args = ap.parse_args(argv)
     smoke = args.smoke
 
@@ -697,29 +715,152 @@ def main(argv=None) -> int:
         print("  QC gate A1: no canonical RF-off trace carries a hard flag.")
 
     t0 = time.time()
-    print("  wing robustness (dir -1, cold; the minimum search):")
-    prof_c, kmin_c, q_c, _ = bidi_profile(traces, priors, -1, True, "C-",
-                                          kappas=kappas, nfev=nfev)
-    print("  primary profile (four-point priors, evening-session dir -1, seeded from C-):")
-    prof_a, kmin_a, q_a, gap_a = bidi_profile(
-        traces, priors, -1, False, "A-", seeds=(strip_wing(q_c, n_sp),),
-        kappas=kappas, nfev=nfev)
-    print("  wing minimum search's seeded twin (from A-; no cold profile is quoted alone):")
-    prof_c2, kmin_c2, q_c2, _ = bidi_profile(
-        traces, priors, -1, True, "C-t", seeds=(insert_wing(q_a, n_sp),),
-        kappas=kappas, nfev=nfev, cold=False)
-    gap_c = float(np.max(prof_c[:, 1] - prof_c2[:, 1]))
-    if prof_c2[:, 1].min() < prof_c[:, 1].min():   # the twin found a better local minimum
-        kmin_c, q_c = kmin_c2, q_c2
-    prof_c = np.column_stack([prof_c[:, 0],
-                              np.minimum(prof_c[:, 1:], prof_c2[:, 1:])])
-    print("  direction check (dir +1, seeded from the dir -1 solution):")
-    prof_b, kmin_b, _q_b, gap_b = bidi_profile(
-        traces, priors, +1, False, "A+", seeds=(q_a,), kappas=kappas, nfev=nfev)
-    print("  wing robustness (dir +1, seeded from C-):")
-    prof_d, kmin_d, _q_d, gap_d = bidi_profile(
-        traces, priors, +1, True, "C+", seeds=(q_c,), kappas=kappas, nfev=nfev)
+    # ---- WAVE UNITS (2026-09-22, the wave rule, run_global_dataset_fit.py's pattern) -------------
+    # One process ran 19400.6 s and stopped at its own gate B3 (c6a_fdf.chain.log), which F328 then
+    # voided (the residual pool table it read was wrong before 05:07 that day) -- so this fit must
+    # re-run, and a single 5.4 hour process is exactly what the wave rule forbids. Cut at the module's
+    # own five-family seams (the docstring's "THE STARTING-POINT DISCIPLINE", W-/P-/W-twin/P+/W+) plus
+    # one unit per LOPO peak, which the original loop already computes independently of each other
+    # (each peak's chain seeds from q_a alone, never from a sibling peak's result). Same flags and
+    # semantics as run_global_dataset_fit.py: `--unit-from U --units N --dump PATH --state DIR` runs
+    # units U..U+N-1 and pickles each into DIR. `--combine --state DIR` writes the CSV from them, and
+    # keeps this producer's own exit code (a gate-B3-class STOP still returns 1 from combine). With
+    # neither flag every unit runs in this one process and nothing is pickled, as before.
+    FDF_UNITS = 5 + (0 if args.no_lopo else len(PEAKS))    # C-, A-, C-t, A+, C+, then one per LOPO peak
+    _lopo_units = () if args.no_lopo else tuple(range(5, FDF_UNITS))
+    _state = Path(args.state) if args.state else None
+    _combine = args.combine
+    if _combine:
+        _units = ()
+    elif args.unit_from is not None:
+        _units = tuple(range(args.unit_from, min(args.unit_from + args.units, FDF_UNITS)))
+    else:
+        _units = tuple(range(FDF_UNITS))
+    _staged = _combine or args.unit_from is not None
+    if _staged and _state is None:
+        raise SystemExit("--unit-from and --combine need --state DIR")
+    if _state is not None:
+        _state.mkdir(parents=True, exist_ok=True)
 
+    def _save(k, obj):
+        if _state is not None:
+            with open(_state / f"unit_{k}.pkl", "wb") as fh:
+                pickle.dump(obj, fh)
+
+    def _load(k):
+        path = _state / f"unit_{k}.pkl"
+        if not path.is_file():
+            raise SystemExit(f"unit {k} has no state in {_state}; the units run in order, 0 first")
+        with open(path, "rb") as fh:
+            return pickle.load(fh)
+
+    if 0 in _units:
+        print("  wing robustness (dir -1, cold; the minimum search):")
+        prof_c, kmin_c, q_c, _ = bidi_profile(traces, priors, -1, True, "C-",
+                                              kappas=kappas, nfev=nfev)
+        _save(0, dict(prof_c=prof_c, kmin_c=kmin_c, q_c=q_c))
+    elif 1 in _units or 2 in _units:
+        _s = _load(0)
+        prof_c, kmin_c, q_c = _s["prof_c"], _s["kmin_c"], _s["q_c"]
+
+    if 1 in _units:
+        print("  primary profile (four-point priors, evening-session dir -1, seeded from C-):")
+        prof_a, kmin_a, q_a, gap_a = bidi_profile(
+            traces, priors, -1, False, "A-", seeds=(strip_wing(q_c, n_sp),),
+            kappas=kappas, nfev=nfev)
+        _save(1, dict(prof_a=prof_a, kmin_a=kmin_a, q_a=q_a, gap_a=gap_a))
+    elif (2 in _units or 3 in _units or _combine
+          or any(u in _units for u in _lopo_units)):
+        _s = _load(1)
+        prof_a, kmin_a, q_a, gap_a = (
+            _s[k] for k in ("prof_a", "kmin_a", "q_a", "gap_a"))
+
+    if 2 in _units:
+        print("  wing minimum search's seeded twin (from A-; no cold profile is quoted alone):")
+        prof_c2, kmin_c2, q_c2, _ = bidi_profile(
+            traces, priors, -1, True, "C-t", seeds=(insert_wing(q_a, n_sp),),
+            kappas=kappas, nfev=nfev, cold=False)
+        gap_c = float(np.max(prof_c[:, 1] - prof_c2[:, 1]))
+        if prof_c2[:, 1].min() < prof_c[:, 1].min():   # the twin found a better local minimum
+            kmin_c, q_c = kmin_c2, q_c2
+        prof_c = np.column_stack([prof_c[:, 0],
+                                  np.minimum(prof_c[:, 1:], prof_c2[:, 1:])])
+        _save(2, dict(prof_c=prof_c, kmin_c=kmin_c, q_c=q_c, gap_c=gap_c))
+    elif 4 in _units or _combine:
+        _s = _load(2)
+        prof_c, kmin_c, q_c, gap_c = (
+            _s[k] for k in ("prof_c", "kmin_c", "q_c", "gap_c"))
+
+    if 3 in _units:
+        print("  direction check (dir +1, seeded from the dir -1 solution):")
+        prof_b, kmin_b, _q_b, gap_b = bidi_profile(
+            traces, priors, +1, False, "A+", seeds=(q_a,), kappas=kappas, nfev=nfev)
+        _save(3, dict(prof_b=prof_b, kmin_b=kmin_b, gap_b=gap_b))
+    elif _combine:
+        _s = _load(3)
+        prof_b, kmin_b, gap_b = _s["prof_b"], _s["kmin_b"], _s["gap_b"]
+
+    if 4 in _units:
+        print("  wing robustness (dir +1, seeded from C-):")
+        prof_d, kmin_d, _q_d, gap_d = bidi_profile(
+            traces, priors, +1, True, "C+", seeds=(q_c,), kappas=kappas, nfev=nfev)
+        _save(4, dict(prof_d=prof_d, kmin_d=kmin_d, gap_d=gap_d))
+    elif _combine:
+        _s = _load(4)
+        prof_d, kmin_d, gap_d = _s["prof_d"], _s["kmin_d"], _s["gap_d"]
+
+    # leave-one-peak-out at the primary settings, seeded from the primary
+    # solution. Peak 4192 gets the full grid because dropping it removes the
+    # ENTIRE campaign-morning session, so that subset deserves a real profile bound.
+    # Each peak's chain seeds from q_a alone (never from a sibling peak's result), so the four
+    # are independent and each is its own wave unit (5..5+len(PEAKS)-1).
+    lopo, lopo_prof = {}, {}
+    if not args.no_lopo:
+        for _li, drop in enumerate(PEAKS):
+            _u = 5 + _li
+            if _u in _units:
+                keep = [i for i, t in enumerate(traces) if t["peak"] != drop]
+                sub = [traces[i] for i in keep]
+                sub_keys = sp_keys_for(sub)
+                n_sp_sub = len(sub_keys)
+                p0s, los, his = build(sub, priors, False)
+                qs = p0s[1:].copy()
+                qs[:NS - 1] = q_a[:NS - 1]
+                full_ix = {k: i for i, k in enumerate(sp_keys)}
+                for i, k in enumerate(sub_keys):    # the surviving sigma cells
+                    qs[NS - 1 + i] = q_a[NS - 1 + full_ix[k]]
+                for j, i in enumerate(keep):
+                    a, b = NS - 1 + n_sp_sub + 4 * j, NS - 1 + n_sp + 4 * i
+                    qs[a:a + 4] = q_a[b:b + 4]
+                rs = make_resid(sub, priors, -1, False)
+                Sfs = sparsity(sub, False)[:, 1:]
+                ncs = sum(len(t["x"]) for t in sub if t["sess"] == "camp")
+                nps = sum(len(t["x"]) for t in sub
+                          if t["sess"] == "camp" and t["role"] == "p_sweep")
+                grid = kappas if drop == "4192" else kappas_lopo
+                res = chain(rs, Sfs, los, his, qs, grid, ncs, nps, f"L{drop}",
+                            nfev_lopo)
+                cs = {k: v[0] for k, v in res.items()}
+                mn = min(cs.values())
+                lopo[drop] = {k: cs[k] - mn for k in cs}
+                lopo_prof[drop] = np.array([[k, cs[k], cs[k], cs[k]] for k in sorted(cs)])
+                print(f"  LOPO {drop}: "
+                      + "  ".join(f"k={k}:{lopo[drop][k]:+.2f}" for k in sorted(cs)))
+                _save(_u, dict(lopo=lopo[drop], lopo_prof=lopo_prof[drop]))
+            elif _combine:
+                _s = _load(_u)
+                lopo[drop], lopo_prof[drop] = _s["lopo"], _s["lopo_prof"]
+    ka_d4192 = ub95(lopo_prof["4192"]) if "4192" in lopo_prof else float("nan")
+
+    if args.unit_from is not None:
+        Path(args.dump).write_text(json.dumps({"units": list(_units), "state": str(_state)}))
+        print(f"wrote units {list(_units)} to {_state}")
+        return 0
+
+    # Reached only by --combine or the in-process run (never a bare --unit-from unit, which
+    # returned above): every family's profile and gap is now in hand, either just computed or
+    # loaded from --state, so the quantities the gates and the CSV read from them are derived here,
+    # exactly where the in-process run always derived them.
     ka, kc = ub95(prof_a), ub95(prof_c)
     ka_camp = ub95(prof_a, col=2)
     ka_pld = ub95(prof_a, col=3)
@@ -727,41 +868,6 @@ def main(argv=None) -> int:
     dir_delta = float(np.abs(prof_a[:, 1] - prof_b[:, 1]).max())
     basin_gap = float(np.nanmax([g for g in (gap_a, gap_b, gap_d, gap_c)
                                  if np.isfinite(g)] or [np.nan]))
-
-    # leave-one-peak-out at the primary settings, seeded from the primary
-    # solution. Peak 4192 gets the full grid because dropping it removes the
-    # ENTIRE campaign-morning session, so that subset deserves a real profile bound.
-    lopo, lopo_prof = {}, {}
-    if not args.no_lopo:
-        for drop in PEAKS:
-            keep = [i for i, t in enumerate(traces) if t["peak"] != drop]
-            sub = [traces[i] for i in keep]
-            sub_keys = sp_keys_for(sub)
-            n_sp_sub = len(sub_keys)
-            p0s, los, his = build(sub, priors, False)
-            qs = p0s[1:].copy()
-            qs[:NS - 1] = q_a[:NS - 1]
-            full_ix = {k: i for i, k in enumerate(sp_keys)}
-            for i, k in enumerate(sub_keys):    # the surviving sigma cells
-                qs[NS - 1 + i] = q_a[NS - 1 + full_ix[k]]
-            for j, i in enumerate(keep):
-                a, b = NS - 1 + n_sp_sub + 4 * j, NS - 1 + n_sp + 4 * i
-                qs[a:a + 4] = q_a[b:b + 4]
-            rs = make_resid(sub, priors, -1, False)
-            Sfs = sparsity(sub, False)[:, 1:]
-            ncs = sum(len(t["x"]) for t in sub if t["sess"] == "camp")
-            nps = sum(len(t["x"]) for t in sub
-                      if t["sess"] == "camp" and t["role"] == "p_sweep")
-            grid = kappas if drop == "4192" else kappas_lopo
-            res = chain(rs, Sfs, los, his, qs, grid, ncs, nps, f"L{drop}",
-                        nfev_lopo)
-            cs = {k: v[0] for k, v in res.items()}
-            mn = min(cs.values())
-            lopo[drop] = {k: cs[k] - mn for k in cs}
-            lopo_prof[drop] = np.array([[k, cs[k], cs[k], cs[k]] for k in sorted(cs)])
-            print(f"  LOPO {drop}: "
-                  + "  ".join(f"k={k}:{lopo[drop][k]:+.2f}" for k in sorted(cs)))
-    ka_d4192 = ub95(lopo_prof["4192"]) if "4192" in lopo_prof else float("nan")
 
     # ---- the gates -----------------------------------------------------
     names = shared_names(sp_keys, False)
@@ -808,6 +914,7 @@ def main(argv=None) -> int:
         w.writerow(["kappa_ub95", "primary", f"{ka:.3f}", "",
                     "MHz per W, 95% one-sided profile-likelihood bound over "
                     "the FULL dataset (negative kappa is flat by construction: "
+                    # 'red' in this note is the side before O27; the note changes at this producer's next run (F499)
                     "the ramp model only broadens red)"])
         w.writerow(["S0_225mW_ub95", "primary", f"{ka * 0.225:.3f}", "",
                     "MHz, transition axis, full-dataset bound at the "
@@ -816,7 +923,7 @@ def main(argv=None) -> int:
                     "MHz, at the evening session's maximum power"])
         w.writerow(["kappa_pred", "prediction", f"{KAPPA_PRED:.3f}", "",
                     f"MHz per W, the PREDICTED coefficient at the current "
-                    f"priors (w0 = {C.W0_MEASURED_M * 1e6:.0f} um, rho = "
+                    f"priors (w0 = {C.W0_CENTRAL_M * 1e6:.0f} um, rho = "
                     f"{C.RHO_RETRO}), computed from constants"])
         w.writerow(["S0_225mW_pred", "prediction", f"{KAPPA_PRED * 0.225:.3f}", "",
                     "MHz, transition axis, the prediction at 225 mW"])

@@ -26,7 +26,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from _producer_lock import take_producer_lock     # noqa: E402
 from rb5s6s import config as C  # noqa: E402
 from rb5s6s.constants import (PEAKS as PEAKINFO,  # noqa: E402
-                              W0_BAND_M, W0_MEASURED_M, transit_fwhm_from_w0)
+                              W0_BAND_M, W0_CENTRAL_M, transit_fwhm_from_w0)
 from rb5s6s.density import density_units, N_SCALE_FRAC_SYST  # noqa: E402
 from rb5s6s.ingest import load_manifest, load_trace, trace_path  # noqa: E402
 from rb5s6s.noise import condition_noise_model  # noqa: E402
@@ -168,15 +168,15 @@ def main() -> int:
     # refit across the band and report the beta SPREAD as the w0 systematic
     # rather than letting one waist enter the quoted number silently.
     #
-    # THE BAND IS READ FROM constants.W0_BAND_M (2026-08-10). It used to be the
-    # literal (65, 50, 40) um, which was two generations stale: it predated both
-    # the lineage measurement that put the central value at 64 um and the band
+    # THE BAND IS READ FROM constants.W0_BAND_M (2026-08-10). It used to be a
+    # hand-typed band anchored on the retired convention, with 50 and 40 um, which was two generations stale: it predated both
+    # the lineage measurement that put the central value at the retired waist convention and the band
     # that replaced the line-only inference, and its own comment still called
     # the waist OPEN with a central 50 um. A hand-typed band beside a constant
     # whose whole purpose is to be the single source is the shape of defect
     # this file now cannot carry again. lever_crosscheck.py already did it this
     # way, which is why its number was current and this one was not.
-    _band_um = (W0_BAND_M[1] * 1e6, W0_MEASURED_M * 1e6, W0_BAND_M[0] * 1e6)
+    _band_um = (W0_BAND_M[1] * 1e6, W0_CENTRAL_M * 1e6, W0_BAND_M[0] * 1e6)
     print(f"\n{'-'*74}\nw0 SYSTEMATIC on beta (transit_ref band from constants.W0_BAND_M):")
     print(f"  {'transit':>8s} {'~w0':>6s} " + "  ".join(f"beta_{iso}" for iso in fit["beta_keys"]))
     band = {iso: [] for iso in fit["beta_keys"]}

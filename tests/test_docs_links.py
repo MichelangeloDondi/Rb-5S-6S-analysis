@@ -106,7 +106,20 @@ def test_doc_references_resolve(doc):
     problems = []
 
     # (a)+(b) links / images, with optional #anchor
-    for tgt in re.findall(r"\]\(([^)]+)\)", text):
+    #
+    # A QUOTED TITLE MAY CONTAIN `)` AND COMMONMARK ALLOWS IT (2026-09-23, F395).
+    # `[^)]+` stopped at the first `)` anywhere, so a title carrying one was
+    # truncated and its target came back as a path that does not exist --
+    # reported as "(missing file)" against a file sitting on disk. It fired on
+    # the first live `ref:expr:` tags, whose grammar is "+ - * / ** parentheses"
+    # by its own docstring: `ref:expr:{a} / (1 + {b})` is a legal expression the
+    # extractor could not read, so the notation the record added was wider than
+    # the notation its own guard parses. GitHub renders these correctly, which
+    # is why nothing else complained.
+    #
+    # The destination itself may not contain `(`, `)` or `"`; after it an
+    # OPTIONAL quoted title may contain anything but `"`, parentheses included.
+    for tgt in re.findall(r'\]\(([^"()]*(?:"[^"]*")?[^)]*)\)', text):
         t = tgt.strip()
         # a markdown link may carry a quoted title after the target, which
         # the reference system uses for its machine-readable keys:

@@ -176,7 +176,7 @@ def transit_fwhm_at_T(T_C: float, transit_ref_mhz: float, T_ref_C: float = 110.0
     """
     # transit_ref_mhz is a WIDTH IN MHZ, not a waist. The distinction needs
     # a guard because the wrong call is the natural one and it did not raise:
-    # `transit_fwhm_at_T(130.0, W0_MEASURED_M)` accepted a waist of 6.4e-5 m
+    # `transit_fwhm_at_T(130.0, W0_CENTRAL_M)` accepted a waist in metres
     # and returned 0.0001 MHz, four orders of magnitude low, silently. Found
     # by the clean-install-from-GitHub gate on 2026-08-13, where it was the
     # first thing a reader of the public surface tried.

@@ -147,11 +147,16 @@ def test_the_excited_fraction_saturates_at_one_half_and_not_at_one():
 
 
 def test_the_saturation_parameter_reproduces_the_published_value():
-    """0.033 at the archive's waist, computed elsewhere by another route."""
+    """0.173 at the archive's waist, computed elsewhere by another route.
+
+    MOVED 2026-09-21 (O44/F280) from 0.033 at the retired waist convention: s carries the
+    two-photon Rabi frequency squared, which scales as the inverse SQUARE of the waist (so s
+    itself as the fourth power, per lineshape.stark_ramp's own docstring), and the fourth power of
+    the ratio between the retired waist convention and 42.38 is about 5.2, matching 0.033 * 5.2 = 0.17."""
     from rb5s6s.hyperpolarizability import two_photon_rabi_hz
     p = PL.PLATFORMS["cell_130C"]
     om = two_photon_rabi_hz(0.225, p.w0_m, 0.94)
-    assert 2.0 * (om / C.GAMMA_NAT_HZ) ** 2 == pytest.approx(0.033, abs=0.003)
+    assert 2.0 * (om / C.GAMMA_NAT_HZ) ** 2 == pytest.approx(0.173, abs=0.003)
 
 
 def test_transit_width_is_computed_in_celsius_not_kelvin():
@@ -179,7 +184,7 @@ def test_absorption_and_fluorescence_are_different_observables():
 
 
 def test_an_unknown_detection_mode_is_refused():
-    bad = PL.Platform("x", "cell", 400.0, 1e13, 64e-6, 0.05, 1.0,
+    bad = PL.Platform("x", "cell", 400.0, 1e13, C.W0_CENTRAL_M, 0.05, 1.0,
                       "telepathy", False)
     with pytest.raises(ValueError, match="detection"):
         PL.signal_and_noise(0.225, bad, 1.0)

@@ -70,7 +70,6 @@ GRANDFATHERED = frozenset({
     'The 2026-08-18 corrections',
     'The 2026-08-19 corrections',
     'The 60 µm working waist, retired 2026-08-15',
-    "The 64 µm waist's provenance, 2026-08-24",
     'The acquisition-mode ceiling, 2026-08-24',
     'The amplitude power law was described rather than tested, 2026-08-18',
     "The band regression's density sign, 2026-08-24",
@@ -125,6 +124,20 @@ GRANDFATHERED = frozenset({
     'What a lever is worth, and it moved against the campaign',
 })
 
+# ONE grandfathered heading names a retired value in its own title -- this repository's own retired
+# waist convention (O44, 2026-09-21). The literal digits cannot sit in this tracked file
+# (`private/checks/retired_values.py` refuses any retired value outside `private/history/`, which is
+# where the real heading lives and stays unedited), so that entry is matched by PATTERN instead of by
+# its exact string: the pattern reproduces the heading's shape with the number generalised, and the
+# real heading in `private/history/08_documents-and-publishing.md` still matches it exactly.
+GRANDFATHERED_PATTERNS = (
+    re.compile(r"^The \d+(?:\.\d+)? µm waist's provenance, 2026-08-24$"),
+)
+
+
+def _grandfathered(head: str) -> bool:
+    return head in GRANDFATHERED or any(p.fullmatch(head) for p in GRANDFATHERED_PATTERNS)
+
 
 def _entries():
     out = []
@@ -155,7 +168,7 @@ def test_the_hub_has_entries_to_grade():
 @pytest.mark.parametrize("fname,head,body", ENTRIES,
                          ids=[f"{f}::{h[:40]}" for f, h, _ in ENTRIES])
 def test_every_entry_declares_its_audience(fname, head, body):
-    if head in GRANDFATHERED:
+    if _grandfathered(head):
         pytest.skip("predates the audience rule; grandfathered by name")
     m = MARKER.search(body)
     assert m, (
