@@ -174,7 +174,7 @@ this section, which has to be in place before any of them runs.
 3. **Skew hunt at S.** Not a promised result, and the twin says why: on a
    ladder of synthetic traces across the laser kernel, the noise, the
    oscilloscope and the analysis window
-   ([the map](../../results/moment_power_map.csv)), the third cumulant's
+   ([the map](../../results/moment_power_map.csv)), the third moment's
    cubic law is not recovered at shifts at or below the 2025 one, and the
    per-rung table of the deep map
    ([`results/moment_power_map_deep_rungs.csv`](../../results/moment_power_map_deep_rungs.csv))
@@ -192,7 +192,7 @@ this section, which has to be in place before any of them runs.
    centered moments at the 2025 spacing and de-saturates the line at 25 and
    40 MHz, where the twin recovers the coefficient (§10.5). Measured on the twin at configuration S, the 2025 comb's lower
    first-order tooth leaks into a 6 MHz window enough to cancel the ramp's
-   third cumulant to a few per cent of itself in the world without the
+   third moment to a few per cent of itself in the world without the
    collection window, a 40 MHz spacing still leaves a
    tilt term of the ramp's own order at the dim rungs, and at the measured
    depth the first-order teeth stand higher than the carrier. The centre
@@ -210,7 +210,7 @@ this section, which has to be in place before any of them runs.
    **Go/no-go.** Convergence of the bounded wing amplitude from a spread of
    starting values, checked before any outlier is interpreted. **Empty.** A bound
    rather than a detection is the designed-for outcome, and the sizing above is
-   what makes that bound meaningful. **Record.** The third cumulant with its
+   what makes that bound meaningful. **Record.** The third moment with its
    floor, the starting-value spread, and the trace count actually achieved.
 3b. **The depth ladder at fixed power, the null test of the light shift.**
    A phase modulation leaves the intensity constant, so the 993 nm field
@@ -252,7 +252,7 @@ this section, which has to be in place before any of them runs.
    ([`results/three_channel_forecast.csv`](../../results/three_channel_forecast.csv)),
    **and it is available at one spacing and not the other**. On the 40 MHz comb
    the fitted centre's slope against depth comes back at the expected null,
-   [-0.010](../../results/three_channel_forecast.csv "ref:three_channel_forecast:depth_ladder_40MHz::kappa_pull")
+   [-0.011](../../results/three_channel_forecast.csv "ref:three_channel_forecast:depth_ladder_40MHz::kappa_pull")
    against its own scatter of
    [0.018](../../results/three_channel_forecast.csv "ref:three_channel_forecast:depth_ladder_40MHz::sd_pull"),
    which is under half a standard error from zero. On the 25 MHz comb the same
@@ -364,10 +364,10 @@ this section, which has to be in place before any of them runs.
 
    Numbers from `scripts/run_ramp_geometry.py`:
 
-   | orientation | M | Z_c | g₁ @ L (64 µm) | g₁ @ S (16 µm) | flip |
+   | orientation | M | Z_c | g₁ @ L (60 µm) | g₁ @ S (16 µm) | flip |
    |---|---|---|---|---|---|
-   | long axis along the beam (`landscape` in `run_ramp_geometry.py`, 12 mm) | 1.9 | 3.16 mm | −0.555 | **+0.421** | yes |
-   | long axis along the beam (12 mm) | 2.8 | 2.14 mm | −0.563 | **+0.367** | yes |
+   | long axis along the beam (`landscape` in `run_ramp_geometry.py`, 12 mm) | 1.9 | 3.16 mm | −0.555 | **+0.421** | yes <!-- other-quantity: configuration L --> |
+   | long axis along the beam (12 mm) | 2.8 | 2.14 mm | −0.563 | **+0.367** | yes <!-- other-quantity: configuration L --> |
    | portrait (3 mm) | 1.9 | 0.79 mm | −0.566 | −0.103 | no |
    | portrait (3 mm) | 2.8 | 0.54 mm | −0.566 | −0.367 | no |
 
@@ -375,7 +375,7 @@ this section, which has to be in place before any of them runs.
    **The same window seen from the model's side (owner statement, 2026-09-06).** The
    flip is the collection window's, and the window is also what breaks the
    convolution the twin's line rests on: the transit kernel's spread over the
-   collected length is one per cent at 64 microns and 47 at 16 at the committed
+   collected length is 4.5 per cent at the calculated 42.4 microns and 47 at 16 at the committed
    conjugates' magnification of 1.8 (36 at 16 at the bench's estimated 2.5,
    from which the ladder below is counted), so at configuration S the line is
    the volume integral or it is not modelled.
@@ -390,8 +390,8 @@ this section, which has to be in place before any of them runs.
    and the mechanism that breaks the convolution for the shape channels is
    radial: the saturation companion follows the local light shift. The
    archive's own waist, which is the geometry this remedy reproduces, is where
-   the measured cost is largest, at
-   [106.742](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w64um:k3_error") per cent. One
+   the measured cost is largest but for the band's upper edge, at
+   [103.942](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w42um:k3_error") per cent. One
    choice, two faces, and chapter 12 carries it as open, with the volume model
    the route that costs no light.
 
@@ -403,37 +403,38 @@ this section, which has to be in place before any of them runs.
    observable taxonomy forecasts the fitted centre's precision
    at every waist, and the magnification's cost falls entirely on it, since a
    symmetric spread does not move a centre but shot noise does. The fractional
-   precision on the coefficient runs 2.7 per cent at 64 microns, 1.2 at 40,
-   0.52 at 24 and 0.27 at 16.
+   precision on the coefficient runs 1.2 per cent at 40 microns, 0.52 at 24 and
+   0.27 at 16. The ladder has no rung at the calculated 42.4 microns, which sits
+   beside its 40 micron one.
 
    **These four carry an owed correction that bites
    hardest exactly where the argument turns.** The producer's
    `build_world_trace` call passes neither the collection window nor the
    fringe-resolved tail, and the forecast's own `pull_factor_quiet` puts the
    fitted centre's response at
-   [0.9775](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_64um::pull_factor_quiet"),
-   [0.8913](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_40um::pull_factor_quiet"),
-   [0.6917](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_24um::pull_factor_quiet")
-   and [0.5754](../../results/three_channel_forecast.csv "ref:three_channel_forecast:base::pull_factor_quiet")
+   [0.9079](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_42.38um::pull_factor_quiet"),
+   [0.8912](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_40um::pull_factor_quiet"),
+   [0.6916](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_24um::pull_factor_quiet")
+   and [0.5753](../../results/three_channel_forecast.csv "ref:three_channel_forecast:base::pull_factor_quiet")
    of the pure ramp's mean pull at these four waists, with the scatter growing
    by the reciprocal.
    So the tight-waist rows are the optimistic ones and the ratios below are
    upper bounds on the advantage. The ranking is not re-stated here from a
    correction made by eye: it is re-read when the producer runs with those
    terms threaded. Paying the factor 2.6 that the restoring
-   magnification costs takes 16 microns to 0.70 per cent, which still beats 64
-   microns by 3.8 times and 40 microns, the tightest waist inside the licence
-   as it stands, by 1.7.
+   magnification costs takes 16 microns to 0.70 per cent, which still beats
+   40 microns, the tightest waist inside the licence as it stands, by 1.7.
 
    **So for the fitted centre the magnification route survives its own
-   cost**: it buys a factor of sixteen in the coefficient and
+   cost**: over the calculated waist it buys a factor of 7.90 in the
+   coefficient for an unclipped design (7.02 with the 2025 input kept) and
    pays a factor of 2.6 in the noise.
 
    **It rescues nothing for the shape channel, and that is the other half.** At
-   16 microns the third cumulant's injected value is 0.88 of its own pooled
+   16 microns the third moment's injected value is 0.88 of its own pooled
    standard error over the inventory's seventy-two traces per rung, so the
    channel is already refused on counts, and 2.6 times worse noise takes it to
-   0.34 at best, since 2.6 is the peak's shot-noise cost and the cumulant reads
+   0.34 at best, since 2.6 is the peak's shot-noise cost and the moment reads
    the wings, where the light-linked floor dominates and a sevenfold cut in
    light costs up to seven. Below 40 microns it is refused twice over, once because the line is
    not a convolution there and once because the counts do not reach, and the
@@ -492,7 +493,7 @@ conjugates u and v, M, and the slit calibration.
 
 One fit, pre-registered. The four items are one fit, not four: per
 condition, fit a single ramp amplitude S₀ and compare the pull, excess
-variance and third cumulant as three analytic functionals of it
+variance and third moment as three analytic functionals of it
 (`lineshape.ramp_moment_contributions`), with a χ² for their mutual
 consistency. Pre-register which moment is primary at each (P, w₀): the
 lowest-order moment above its own floor. Report the primary as the
@@ -530,10 +531,10 @@ grows as the saturation width, so it grows as $P^2/w_0^{-4}$, and
 
 | $w_0$ | P | saturation width | lever | vs 88 kHz | vs the same *fractional* stability |
 |---|---|---|---|---|---|
-| 64 µm | 225 mW | 53 kHz | 8 kHz | 0.09 | 0.09 |
-| 40 µm | 500 mW | 1.42 MHz | 212 kHz | 2.4 | 1.7 |
-| 32 µm | 500 mW | 2.94 MHz | 438 kHz | 5.0 | 2.6 |
-| **16 µm** | **225 mW** | **6.84 MHz** | **1.02 MHz** | **11.6** | **3.5** |
+| 42.4 µm | 225 mW | 290 kHz | 43 kHz | 0.49 | 0.42 |
+| 40 µm | 500 mW | 1.54 MHz | 229 kHz | 2.6 | 1.8 |
+| 32 µm | 500 mW | 3.16 MHz | 471 kHz | 5.4 | 2.7 |
+| **16 µm** | **225 mW** | **7.28 MHz** | **1.08 MHz** | **12.3** | **3.6** |
 
 The last column is the one to plan against: 88 kHz is 1.68 per cent of the
 5.25 MHz line it was measured on, and a wider line will not hold 88 kHz, so the
@@ -568,7 +569,8 @@ predicts 1.1e-5 at the current bound: a factor near one thousand, which the
 cube-root dependence of the coefficient compresses into a skew-channel bound
 only 9.5 times looser than the width channel's. The signal reaches the measured
 noise floor when $S_0$ exceeds about 2.5 MHz, and the 16 micron configuration's
-predicted 5.56 MHz clears that threshold by design, which is why the skew
+predicted [5.76](../../results/platform_twins.csv "ref:platform_twins:cell_130C_tight:cell:s0_mhz") MHz, for an unclipped design, the bore out of the
+focusing path, clears that threshold by design, which is why the skew
 channel is dead in this archive and central to that proposal.
 
 Two ways of spending statistics on the skew were considered and neither
@@ -578,13 +580,13 @@ on the skew's standard error, which is the whole of what independent repeats can
 give. Against a shortfall near one thousand between the resolved per-trace
 skewness and the ramp's prediction, that leaves a factor of about one hundred
 still to find, so the arithmetic settles the question rather than leaving it
-open. Smoothing the residuals before taking the third cumulant is the second,
+open. Smoothing the residuals before taking the third moment is the second,
 and it does not work for a reason worth stating, because the same reasoning
 recurs whenever a higher moment looks noisy. A moving average is a convolution,
 and a convolution acts on the signal as well as on the noise.
 
-The third cumulant
-is not linear in the data, so the smoothed residual's third cumulant is not an
+The third moment
+is not linear in the data, so the smoothed residual's third moment is not an
 estimate of the unsmoothed one with a smaller error, it is an estimate of a
 different quantity. What the kernel removes from the variance it also removes
 from the skew it was meant to measure, and the correlation it introduces between
@@ -594,7 +596,7 @@ which no reweighting of the same samples moves.
 
 So the ordering the plan needs is explicit: **a positive detection of $\kappa$
 comes first, and the per-line lever is spendable only afterwards.** The 16 µm
-row above satisfies that on its own, since $S_0$ there is 5.56 MHz against a
+row above satisfies that on its own, since $S_0$ there is 5.76 MHz against a
 natural width of 3.49 and cannot be confused with zero. The point is that the
 factor of thirty in the table is not the whole requirement, and a session
 designed to close only that factor would return the same empty profile this one
@@ -635,7 +637,7 @@ Two analysis steps precede the next session and run on data already in hand, in
 this order.
 
 First, resolve which model component carries the power dependence the fit
-cannot absorb. The summary widths are concave in power, with an apex near 120 mW
+cannot absorb. The summary widths are concave in power, with an apex near 120 mW <!-- other-quantity: a drive power in mW -->
 and a fall from there to the top of the ladder that is about fifty times the whole
 range the light-shift term can produce at its bound. The structure survives a
 model-free half-max width, so it is in the data rather than in the fit. The
@@ -649,7 +651,7 @@ structure has nowhere to go and is sitting in the residual.
 
 The test frees one
 component at a time per condition with the other two held at their physical
-values, since all three at once is degenerate at a condition number of 345, and
+values, since all three at once is degenerate at a condition number of [325.3](../../results/identifiability.csv "ref:identifiability:condition_number:width_block") (this page read 345 until 2026-09-22), and
 the three kernels have different shapes so the comparison was expected to
 identify the missing term as well as locate it.
 
@@ -664,7 +666,7 @@ deviations, where the model-free summary statistic gives about minus 11 at four.
 
 Two things follow, and the second was not anticipated. The kernels are
 interchangeable against this structure rather than distinguishable by shape, so
-the width degeneracy already recorded at condition number 345 governs the power
+the width degeneracy already recorded at condition number [325.3](../../results/identifiability.csv "ref:identifiability:condition_number:width_block") (this page read 345 until 2026-09-22) governs the power
 channel too. And the two constructions disagree about the size of the concavity
 by a factor near three.
 
@@ -727,7 +729,7 @@ own kernel to half a per cent at its own grid, puts the chirp's effect in the
 shape alone: at the archive's waist the line's width is unchanged and the
 interior residual is under a fifth of a per cent of peak, so nothing in the
 2025 bounds moves, and at the campaign's tightest waist the line is about two
-per cent narrower, with the collection window's reversal of the third cumulant
+per cent narrower, with the collection window's reversal of the third moment
 standing and the chirp adding of order ten to twenty per cent to it. The
 harness is held outside the tracked tree, and it lands as a producer with its
 own table and a convergence arm under chapter 12's open item before any of

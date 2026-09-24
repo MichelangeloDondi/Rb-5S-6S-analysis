@@ -27,6 +27,44 @@ def test_static_anchors():
     assert abs(alpha_6s(0.0) - 5167.0) < 25.0
 
 
+def test_9p_and_10p_are_explicit_and_the_static_anchor_holds_exactly():
+    """F307 corrected, A132.16 (C6b). Before this wave, TAIL_6S held 9P and above at a single FLAT
+    3.4 a.u., right only at lam_nm=0: at the drive, 993.4181 nm, `alpha_6s` read -312.2 a.u. against
+    the deep producer's dynamic sum, -299.4 (`results/polarizability_deep.csv`), a 12.8 a.u. gap.
+    9P and 10P now carry their own explicit lines (energies shared with LINES_5S's own 9P/10P
+    entries, RMEs the deep producer's calibrated Coulomb approximation), so their dynamic
+    enhancement (about 7.3x for 9P, 4.2x for 10P at the drive) is read at whatever wavelength
+    `alpha_6s` is asked for, not only at one hardcoded point. This closes about 10.0 a.u. of the
+    12.8 a.u. gap, the 9P and 10P share of it; 11P and above stay in the flat remainder."""
+    from rb5s6s.polarizability import LINES_6S, LINES_5S, TAIL_6S, E_6S_CM, CM_PER_HARTREE
+
+    # the four new lines are present, at the SAME term energies LINES_5S already carries
+    assert len(LINES_6S) == 12, "9P1/2, 9P3/2, 10P1/2 and 10P3/2 must be explicit lines"
+    new_energies = sorted(e for e, _, _ in LINES_6S[-4:])
+    expected_energies = sorted(LINES_5S[i][0] for i in (8, 9, 10, 11))
+    for got, want in zip(new_energies, expected_energies):
+        assert got == pytest.approx(want, abs=1e-6), (got, want)
+
+    # the flat remainder shrank by exactly the new lines' own static contribution, computed the
+    # same way `_alpha` sums a line (prefactor 1/6, static term 2*d^2/de at lam_nm=0), so the
+    # STATIC total below is unchanged to machine precision
+    static_contrib = sum(2.0 * d * d / ((e - E_6S_CM) / CM_PER_HARTREE)
+                         for e, d, _ in LINES_6S[-4:]) / 6.0
+    assert TAIL_6S == pytest.approx(3.4 - static_contrib, abs=1e-9)
+    assert 1.0 < TAIL_6S < 2.0, "the remaining flat tail (11P and above) is smaller, not gone"
+
+    # THE TEST THAT FAILS ON THE OLD CODE: at the drive, alpha_6S must sit CLOSE TO the deep
+    # producer's dynamic value and CLEAR of the pre-fix -312.2, which is exactly the F307 defect.
+    LAM_DRIVE_NM = 993.4181
+    got_drive = alpha_6s(LAM_DRIVE_NM)
+    assert -305.0 < got_drive < -297.0, got_drive         # old code read -312.2, outside this band
+    assert abs(got_drive - (-299.4)) < abs(got_drive - (-312.2)), (
+        "9P and 10P explicit must move alpha_6S TOWARD the deep producer's value, not away from it")
+
+    # and the static anchor is untouched: the Safronova-group value this module is calibrated to
+    assert alpha_6s(0.0) == pytest.approx(5166.9526, abs=0.01)
+
+
 def test_measured_tuneout_reproduced():
     # Leonard et al. 2015 as corrected by their 2017 erratum (PRA 95,
     # 059901(E)): 790.032326(32) nm. The model does not use this number;
@@ -134,7 +172,10 @@ def test_magic_search_guards_the_5s_d_lines():
     lam, alpha = magic[0]
     # the one real crossing, between the D lines beside the 5S tune-out
     assert abs(lam - 790.1298) < 0.01, magic
-    assert abs(alpha - (-244.3)) < 1.0, magic
+    # the crossing's alpha moved from -244.3 to about -252.6 (F307 corrected, A132.16, C6b): 9P
+    # and 10P are explicit lines in LINES_6S now, and at 790 nm their dynamic enhancement is
+    # smaller than at the 993 nm drive but not zero, so alpha_6S here moves too
+    assert abs(alpha - (-252.6)) < 1.0, magic
     for pole in (780.24, 794.98):
         assert abs(lam - pole) > 1.0, magic
 

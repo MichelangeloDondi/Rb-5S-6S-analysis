@@ -1,16 +1,16 @@
 peak,variant,headline,beta_eff,formal_err,syst_err,resid_rms,snr,dof,t95,bound95,n_frac_syst,bound95_nscale,verdict,monotonic,status
-4121,"70-130C (headline, four-point, same configuration, 48.1x lever)",yes,0.007534379618940067,0.0015267285323137742,0.006420359575210798,0.1599223970723907,1.1735136530406387,2,2.9199855803537242,0.026281736999241558,0.2425522850902685,0.03265643236454906,BOUND,True,BOUND
-4154,"70-130C (headline, four-point, same configuration, 48.1x lever)",yes,0.006825209826087891,0.0012015951542291739,0.009332943366435545,0.25143634132428505,0.7313030367926242,2,2.9199855803537242,0.034077269878337625,0.2425522850902685,0.042342789556966194,BOUND,False,BOUND
-4192,"70-130C (headline, four-point, same configuration, 48.1x lever)",yes,0.00437221928746212,0.0014736807805715486,0.005294842471492298,0.13715080393085355,0.8257505886156902,2,2.9199855803537242,0.019833082954464107,0.2425522850902685,0.02464364254545423,BOUND,True,BOUND
-4207,"70-130C (headline, four-point, same configuration, 48.1x lever)",yes,0.013094547670287685,0.0013557351186829956,0.006859018981005151,0.18374064223464373,1.9090992030421166,2,2.9199855803537242,0.03312278419019522,0.2425522850902685,0.041156791184078896,BOUND,False,BOUND
-pooled_slope,"70-130C pooled across the four lines (shared slope, per-line floors, prereg beta_self_pooling)",no,0.010207764174136005,0.0012210372137750939,0.0035395108790857313,0.09763528174488019,2.8839476760621534,2.0,2.9199855803537242,0.020543084902571476,0.2425522850902685,0.025525857088493586,BOUND,True,BOUND
-pooled_s_c,"condition-common width scatter (MHz), REML on the sixteen points",no,0.0714173557669436,,,,,,,,,,,,BOUND
-pooled_s_ind,"per-line width scatter (MHz), REML on the sixteen points, subsumes the within-block error",no,0.13314968323897644,,,,,,,,,,,,BOUND
-pooled_rms_within,"rms within-block width error (MHz), the repeat and rate error that s_ind subsumes",no,0.07746323271088609,,,,,,,,,,,,BOUND
-pooled_f_common,common-mode fraction s_c^2/(s_c^2+s_ind^2),no,0.22341656890605535,,,,,,,,,,,,BOUND
+4121,"70-130C (headline, four-point, same configuration, 48.1x lever)",yes,0.0075343798860618705,0.001526728516186445,0.0064203596388831535,0.1599223989714708,1.1735136830080293,2,2.9199855803537242,0.026281737452285722,0.2425522850902685,0.03265643292748012,BOUND,True,BOUND
+4154,"70-130C (headline, four-point, same configuration, 48.1x lever)",yes,0.00682520986877555,0.0012015951735071244,0.00933294338029982,0.2514363416991735,0.7313030402801277,2,2.9199855803537242,0.03407726996150877,0.2425522850902685,0.04234278966031069,BOUND,False,BOUND
+4192,"70-130C (headline, four-point, same configuration, 48.1x lever)",yes,0.004372219291429225,0.001473680780755483,0.005294842473277789,0.13715080398200954,0.8257505890864755,2,2.9199855803537242,0.01983308296364482,0.2425522850902685,0.024643642556861745,BOUND,True,BOUND
+4207,"70-130C (headline, four-point, same configuration, 48.1x lever)",yes,0.013094547673683593,0.0013557351185472426,0.006859018983614017,0.1837406423094152,1.9090992028110814,2,2.9199855803537242,0.03312278420120898,0.2425522850902685,0.04115679119776407,BOUND,False,BOUND
+pooled_slope,"70-130C pooled across the four lines (shared slope, per-line floors, prereg beta_self_pooling)",no,0.010207764271357722,0.0012210372118647691,0.0035395109209698595,0.0976352829002287,2.883947669403065,2.0,2.9199855803537242,0.02054308512209424,0.2425522850902685,0.0255258573612621,BOUND,True,BOUND
+pooled_s_c,"condition-common width scatter (MHz), REML on the sixteen points",no,0.0714173573633849,,,,,,,,,,,,BOUND
+pooled_s_ind,"per-line width scatter (MHz), REML on the sixteen points, subsumes the within-block error",no,0.13314968320260115,,,,,,,,,,,,BOUND
+pooled_rms_within,"rms within-block width error (MHz), the repeat and rate error that s_ind subsumes",no,0.07746323253803754,,,,,,,,,,,,BOUND
+pooled_f_common,common-mode fraction s_c^2/(s_c^2+s_ind^2),no,0.2234165767576551,,,,,,,,,,,,BOUND
 pooled_f_common_lo,"common-mode fraction, low end of the 95% profile range (dchi2 < 3.841)",no,0.0,,,,,,,,,,,,BOUND
 pooled_f_common_hi,"common-mode fraction, high end of the 95% profile range (dchi2 < 3.841)",no,0.9102,,,,,,,,,,,,BOUND
-pooled_gain_vs_worst_perline,worst per-line 95% bound (4154) over the pooled one,no,1.6588195025213572,,,,,,,,,,,,BOUND
-pooled_share_70C,share of the pooled slope carried by the 70 C low-SNR narrowing,no,0.15259493750519898,,,,,,,,,,,,BOUND
-pooled_isotope_split,"87 minus 85 Rb pooled slope, an expected null (note section 1)",no,0.002782138540911888,0.004826992291604561,,,0.5763710345572285,,,,,,,,BOUND
-pooled_perline_chi2,"four per-line slopes against the shared slope, chi2 per dof on their own total errors",no,0.5655131412222653,,,,,3,,,,,,,BOUND
+pooled_gain_vs_worst_perline,worst per-line 95% bound (4154) over the pooled one,no,1.6588194888438839,,,,,,,,,,,,BOUND
+pooled_share_70C,share of the pooled slope carried by the 70 C low-SNR narrowing,no,0.1525949372886226,,,,,,,,,,,,BOUND
+pooled_isotope_split,"87 minus 85 Rb pooled slope, an expected null (note section 1)",no,0.0027821386674741905,0.004826992290285871,,,0.5763710609343904,,,,,,,,BOUND
+pooled_perline_chi2,"four per-line slopes against the shared slope, chi2 per dof on their own total errors",no,0.5655131427962669,,,,,3,,,,,,,BOUND

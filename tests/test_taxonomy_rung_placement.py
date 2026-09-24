@@ -3,7 +3,7 @@
 WHY THIS EXISTS (escape E45, 2026-09-10). `run_observable_taxonomy.py` draws
 the rung order per condition -- that draw IS the campaign's design rule, and it
 is what separates the drift from the pull -- then appended each trace's
-cumulants in ACQUISITION order. `_lineshape_kappa` reshaped that flat list to
+moments in ACQUISITION order. `_lineshape_kappa` reshaped that flat list to
 `(n_cond, n_pow)`, so column j was the j-th acquisition SLOT and held a
 different rung in every condition, while the quiet curve divided into it was
 indexed by RUNG. The estimator returned the true coefficient times 13.995,
@@ -44,17 +44,17 @@ def taxo():
 def _res(order_per_cond):
     """A res dict whose traces ARRIVE in the given per-condition rung order.
 
-    `k3` encodes `100*condition + rung`, so a correct placement is checkable
+    `mu3` encodes `100*condition + rung`, so a correct placement is checkable
     cell by cell rather than by a summary statistic.
     """
-    powers, block, k3 = [], [], []
+    powers, block, mu3 = [], [], []
     for ci, order in enumerate(order_per_cond):
         for ri in order:
             powers.append(POWERS[ri])
             block.append(ci)
-            k3.append(100 * ci + ri)
+            mu3.append(100 * ci + ri)
     return ({"powers": np.array(powers), "block": np.array(block)},
-            np.array(k3, float))
+            np.array(mu3, float))
 
 
 WANT = np.array([[100 * c + r for r in range(NPOW)] for c in range(NCOND)],

@@ -26,7 +26,7 @@ time measures "how much extra sits in that wing", and a SYMMETRIC misfit --
 the fixed transit kernel not quite matching the free Voigt core -- raises
 both sides equally without being an asymmetry at all. So the quantity that
 answers the question is the DIFFERENCE, red minus blue. The v3.0.0 reprior
-made this distinction matter: at w0 = 64 um the transit narrows to 0.93 MHz,
+made this distinction matter: at the retired waist convention the transit narrows,
 which raises both single-side fractions together while leaving their
 difference at zero.
 
@@ -81,6 +81,12 @@ sys.path.insert(0, str(REPO / "scripts"))
 from _producer_lock import take_producer_lock     # noqa: E402
 
 from rb5s6s import config as C  # noqa: E402
+from rb5s6s.pmfmt import pm_cells  # noqa: E402   # every value and its err at two significant digits (owner, 2026-09-24)
+
+
+def _pm(v, e, signed=False):
+    vt, et = pm_cells(v, e)
+    return (('+' + vt) if signed and not vt.startswith('-') else vt), et
 from rb5s6s.density import number_density_cm3  # noqa: E402
 from rb5s6s.ingest import load_manifest, load_trace, trace_path  # noqa: E402
 from rb5s6s.linefit import (_shared_profile_grid, adaptive_halfwidth,  # noqa: E402
@@ -198,14 +204,14 @@ def main() -> int:
         for lab, side in (("red", -1), ("blue", +1)):
             f, e, c2 = fit_wing(recs, rate, float(T), side)
             perT[T][lab].append((f, e))
-            out_rows.append([f"f_wing_{lab}", f"{pk}_T{T}", f"{f:.4f}", f"{e:.4f}",
+            out_rows.append([f"f_wing_{lab}", f"{pk}_T{T}", *_pm(f, e),
                              "fraction of peak. Standoff wing, per condition"])
         print(f"  {pk} T={T}", flush=True)
     for T in sorted(perT):
         nn = float(number_density_cm3(np.array([float(T)]))[0]) / n70
         for lab in ("red", "blue"):
             m, e = wmean(perT[T][lab])
-            out_rows.append([f"f_wing_{lab}_mean", f"T{T}", f"{m:.4f}", f"{e:.4f}",
+            out_rows.append([f"f_wing_{lab}_mean", f"T{T}", *_pm(m, e),
                              f"weighted over peaks. N/N(70C) = {nn:.1f}"])
             print(f"  T={T} {lab}: {m:+.4f} +/- {e:.4f}  (N/N70 {nn:.0f})")
 
@@ -222,12 +228,12 @@ def main() -> int:
         rate, _ = prates[pk]
         f, e, c2 = fit_wing(recs, rate, 130.0, -1)
         perP[P].append((f, e))
-        out_rows.append(["f_wing_red", f"{pk}_P{P}", f"{f:.4f}", f"{e:.4f}",
+        out_rows.append(["f_wing_red", f"{pk}_P{P}", *_pm(f, e),
                          "fraction of peak. Power lever, 130 C"])
         print(f"  {pk} P={P}", flush=True)
     for P in sorted(perP):
         m, e = wmean(perP[P])
-        out_rows.append(["f_wing_red_mean", f"P{P}", f"{m:.4f}", f"{e:.4f}",
+        out_rows.append(["f_wing_red_mean", f"P{P}", *_pm(m, e),
                          "weighted over peaks. A physical wing is a constant "
                          "fraction across this row, an SNR artifact falls"])
         print(f"  P={P}: {m:+.4f} +/- {e:.4f}")
@@ -236,14 +242,14 @@ def main() -> int:
     # transit kernel not quite matching the free Voigt core) raises BOTH
     # wings equally and is not an asymmetry at all, so differencing the two
     # sides is what actually answers M24's question. Added at v3.0.0, when
-    # the narrower transit at w0 = 64 um made both single-side fractions
+    # the narrower transit at the retired waist convention made both single-side fractions
     # nonzero while their difference stayed at zero.
     import math as _math
     for T in sorted(perT):
         rv, re_ = wmean(perT[T]["red"])
         bv, be = wmean(perT[T]["blue"])
         out_rows.append(["asymmetry_red_minus_blue", f"T{T}",
-                         f"{rv - bv:+.4f}", f"{_math.hypot(re_, be):.4f}",
+                         *_pm(rv - bv, _math.hypot(re_, be), signed=True),
                          "fraction of peak. THE observable: a symmetric "
                          "misfit cancels here, a one-sided wing does not"])
     # COMPUTED from the default (central) law, never typed (2026-09-21): the lever was
@@ -251,7 +257,7 @@ def main() -> int:
     _lever = float(number_density_cm3(130.0) / number_density_cm3(70.0))
     _a130 = wmean(perT[130]["red"])[0] - wmean(perT[130]["blue"])[0]
     _e130 = _math.hypot(wmean(perT[130]["red"])[1], wmean(perT[130]["blue"])[1])
-    out_rows.append(["asymmetry_130C", "verdict", f"{_a130:+.4f}", f"{_e130:.4f}",
+    out_rows.append(["asymmetry_130C", "verdict", *_pm(_a130, _e130, signed=True),
                      f"THE closure: the red-minus-blue asymmetry at the x{_lever:.1f} "
                      f"density lever, where a collisional satellite would be "
                      f"{_lever:.1f}x enhanced"])
@@ -261,7 +267,7 @@ def main() -> int:
     # above, this row exists so the size of the symmetric-misfit floor is on
     # the record next to it.
     m130, e130 = wmean(perT[130]["red"])
-    out_rows.append(["f_wing_red_130C", "verdict", f"{m130:.4f}", f"{e130:.4f}",
+    out_rows.append(["f_wing_red_130C", "verdict", *_pm(m130, e130),
                      "the individual red side at the density lever, not a "
                      "null since v3.0.0's narrower transit. The asymmetry "
                      "M23 originally flagged is amplitude-linked statistics, "

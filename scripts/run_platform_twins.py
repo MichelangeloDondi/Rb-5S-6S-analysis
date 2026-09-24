@@ -117,6 +117,9 @@ def rows():
             absorbed_fraction=("" if sn["absorbed_fraction"] != sn["absorbed_fraction"]
                                else f"{sn['absorbed_fraction']:.6g}"),
             snr_per_s=f"{sn['snr']:.6g}",
+            # the drive's own absorbed fraction per pass (platforms.drive_absorbed_fraction_per_pass): the column the
+            # committed table carried while this row builder never wrote it (the audit of 2026-09-25)
+            drive_absorbed_fraction_per_pass=f"{PL.drive_absorbed_fraction_per_pass(pw, p, RHO):.6g}",
             note=p.note,
         ))
     return out

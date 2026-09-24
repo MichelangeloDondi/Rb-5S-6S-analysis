@@ -1,6 +1,6 @@
 """THE WINDOW SETS, DEFINED ONCE (owner, 2026-09-19: "Solve the SSOT issue once for all").
 
-WHY THIS MODULE EXISTS. On 2026-09-19 the half-widths at which this record takes its windowed cumulants
+WHY THIS MODULE EXISTS. On 2026-09-19 the half-widths at which this record takes its windowed moments
 were defined in FOUR places that nothing bound together: `fullmodel.DEFAULT_WINDOWS`,
 `run_cross_arm_ratios.WINDOWS`, `run_moment_power_map.WINDOW` and `run_ultra_joint.MOMENT_WINDOWS`. Three of
 them still carried the set the joint vector had already left. That is the SSOT defect in its plainest form:
@@ -9,7 +9,7 @@ copy the hand happened to be on.
 
 THE SETS, AND WHAT EACH IS FOR.
 
-`QUOTED` is the joint vector's own: the half-widths whose cumulants enter the likelihood and are quoted.
+`QUOTED` is the joint vector's own: the half-widths whose moments enter the likelihood and are quoted.
 Chosen on the measured per-trace signal-to-noise at the archive's own noise law (the wave of 2026-09-19),
 and re-chosen only on a measurement, never on taste.
 
@@ -33,7 +33,7 @@ refuses one that is not this module's, which is what makes the single source sin
 """
 from __future__ import annotations
 
-#: the joint vector's half-widths, MHz. Every cumulant quoted by the MLE is taken here.
+#: the joint vector's half-widths, MHz. Every moment quoted by the MLE is taken here.
 QUOTED: tuple[float, ...] = (1.0, 2.0, 5.0, 13.0)
 
 #: computed, written with a reason, never quoted: the windows where an order is at or near its own zero.

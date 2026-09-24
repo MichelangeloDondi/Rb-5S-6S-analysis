@@ -56,6 +56,11 @@ def _theory_cell(w0_um, m2=1.0, cycles=0.0, traces=_P_DESC, **extra):
     # it opens the kernel gate's one door and says so; the gate's own refusals and its
     # interpolation are tested in tests/test_kernel_gate.py through a temporary cache.
     extra.setdefault("kernel_gate", "legacy")
+    # F324/A134 (C6b): bloch_fraction refuses a waist or temperature the atom Monte Carlo has not
+    # graded (41 to 45 um, 70 to 130 C), and this fixture probes power ratios and pooling identity
+    # at waists well outside that band (50, 60, 85 um). Those tests are not about the saturation
+    # companion's scale, so clamp rather than drop them to a refusal a real fit must still hit.
+    extra.setdefault("bloch_fraction_clamp", True)
     return _uj.Cell(_uj._spec("mixed", w0_um, m2=m2, cycles=cycles, da=(-1131.8, 5.9), **extra), traces)  # SSOT-HISTORY: a fixture pins its own inputs so a constant change surfaces as a test failure and not a silent drift
 
 
@@ -64,6 +69,64 @@ def _theory_p(cell):
     v = {"beta_rel": 1.0, "omega_scale": 1.0, "gamma_l": 0.4}
     return np.array([v.get(n, 1.6 if n.startswith("sigma_l") else 1.0 if n.startswith("power_scale") else 0.0)
                      for n in cell.names])
+
+
+# ------------------------------------------------------- the saturation companion's ensemble scale
+def test_bloch_fraction_reproduces_the_table_at_its_own_nodes():
+    """F324/A134 (C6b): `bloch_fraction` reads `sat_fraction_table.tsv`'s effective_rabi_fraction
+    column at its own committed nodes, not some other column or a stale copy of it."""
+    assert _uj.bloch_fraction(41.0, 130.0) == pytest.approx(0.4877, abs=1e-4)
+    assert _uj.bloch_fraction(45.0, 70.0) == pytest.approx(0.5145, abs=1e-4)
+    assert _uj.bloch_fraction(42.38, 130.0) == pytest.approx(0.4955, abs=1e-4)
+    assert _uj.bloch_fraction(42.38, 90.0) == pytest.approx(0.4986, abs=1e-4)
+
+
+def test_bloch_fraction_refuses_outside_the_twelve_node_grid():
+    """The table has no Monte Carlo reading beyond 41 to 45 um and 70 to 130 C, so a Cell asked for
+    a node it does not cover raises rather than extrapolating a scale nothing has checked."""
+    with pytest.raises(ValueError, match="twelve-node grid"):
+        _uj.bloch_fraction(50.0, 130.0)
+    with pytest.raises(ValueError, match="twelve-node grid"):
+        _uj.bloch_fraction(42.38, 150.0)
+    with pytest.raises(ValueError, match="twelve-node grid"):
+        _uj.bloch_fraction(40.0, 130.0)
+    assert 0.0 < _uj.bloch_fraction(42.38, 130.0) < 1.0, "inside the grid, no refusal"
+
+
+def test_omega_ref_carries_the_bore_factor_and_the_ensembles_bloch_fraction():
+    """F324 (with addenda e and f) and A134: the Cell's reference Rabi frequency is the UNCLIPPED
+    focus's Rabi frequency times the bore's on-axis factor times the ensemble's Bloch fraction, so
+    it sits at about 0.44 of the unclipped value at the archive's corner and not at the unclipped
+    value itself, which is what `omega_ref` carried before C6b and what this test fails against."""
+    from rb5s6s.hyperpolarizability import two_photon_rabi_hz
+    from rb5s6s.lineshape import aperture_onaxis_factor_actual
+    from rb5s6s import constants as K
+    desc = [dict(T=130.0, P_W=0.225, iso=85, session="P", peak="4192", axis="mhz")]
+    cell = _theory_cell(42.38, traces=desc)
+    got = cell.per[0]["omega_ref"]
+    unclipped_mhz = two_photon_rabi_hz(0.225, K.W0_CENTRAL_M, cell.rho) / 1e6
+    aperture = aperture_onaxis_factor_actual(K.W0_CENTRAL_M)
+    fraction = _uj.bloch_fraction(42.38, 130.0)
+    assert got == pytest.approx(unclipped_mhz * aperture * fraction, rel=1e-9)
+    # this is the number the finding names: about 0.44 of the unclipped reference, not the
+    # unclipped reference itself (what the pre-C6b code returned, and what fails this bound)
+    assert 0.40 < got / unclipped_mhz < 0.46, got / unclipped_mhz
+    # the twin's world reads the SAME omega through Cell.physics, never a second copy of this
+    # arithmetic (A134's own point): the F324 addendum (e) reading, about 0.44 in all, both factors
+    assert aperture == pytest.approx(0.8884, abs=2e-3)
+    assert aperture * fraction == pytest.approx(0.44, abs=0.01)
+
+
+def test_omega_ref_tracks_the_traces_own_temperature_not_the_cells():
+    """The Bloch fraction is read per trace at the TRACE's own T (F324's table has a mild
+    temperature dependence, falling as the atoms speed up), not frozen at one temperature for
+    every condition a multi-temperature Cell carries."""
+    desc = [dict(T=70.0, P_W=0.225, iso=85, session="T", peak="4192", axis="mhz"),
+           dict(T=130.0, P_W=0.225, iso=85, session="T", peak="4192", axis="mhz")]
+    cell = _theory_cell(42.38, traces=desc)
+    lo, hi = cell.per[0]["omega_ref"], cell.per[1]["omega_ref"]
+    assert lo != pytest.approx(hi), "70 C and 130 C read different nodes of the table"
+    assert lo / hi == pytest.approx(_uj.bloch_fraction(42.38, 70.0) / _uj.bloch_fraction(42.38, 130.0), rel=1e-9)
 
 
 # ---------------------------------------------------------------- the pool
@@ -105,17 +168,31 @@ def test_the_pooled_power_arm_combines_sessions_by_inverse_variance():
 def test_the_model_predicts_a_steeper_power_ratio_at_a_small_waist():
     """The physics the refusal reads: the P^2 terms go as w0^-4, so the 25 to
     225 mW width ratio at the theory parameters is larger at 42 um than at
-    85 um, and the 42 um prediction sits outside the archive's measured ratio
-    while the 85 um one sits inside it."""
+    85 um.
+
+    THE REFUSAL ITSELF NO LONGER FIRES AT EITHER WAIST (F324/A134, C6b), and that is the finding,
+    not a loosened tolerance. Before C6b the power arm's saturation term was evaluated at the
+    on-axis Rabi frequency, which F324 measured as 2.5 times the ensemble ever sees, so the
+    theory-point prediction over-stated the P^2 steepening and the tight-waist case pulled the
+    archive's measured ratio past the one-sigma refusal bar. With omega_ref carrying the bore
+    factor and the Bloch fraction, the same theory point pulls only 0.95 sigma at 42 um (was
+    refused) and 0.32 sigma at 85 um (was already clear), so the qualitative claim this test is
+    named for survives and the numeric one it used to carry alongside it does not."""
     cs, cl = _theory_cell(42.0), _theory_cell(85.0)
     small = cs.power_ratios(_theory_p(cs))["P"]
     large = cl.power_ratios(_theory_p(cl))["P"]
-    assert 1.03 < small < 1.09, small
-    assert 1.0 < large < 1.02, large
-    assert small > large + 0.02
+    assert 1.008 < small < 1.020, small
+    assert 1.0 < large < 1.008, large
+    assert small > large + 0.005
     meas = _uj.measured_power_ratio() if (ROOT / "results" / "power_sweep.csv").is_file() else dict(ratio=0.9956, bar=0.0188)
-    assert _uj.power_arm_check(small, meas["ratio"], meas["bar"])["refused"]
-    assert not _uj.power_arm_check(large, meas["ratio"], meas["bar"])["refused"]
+    small_chk = _uj.power_arm_check(small, meas["ratio"], meas["bar"])
+    large_chk = _uj.power_arm_check(large, meas["ratio"], meas["bar"])
+    assert not small_chk["refused"], (
+        "the tight-waist theory point no longer trips the refusal under the corrected saturation "
+        "scale; a return to being refused here would itself be a finding")
+    assert not large_chk["refused"]
+    assert 0.7 < small_chk["pull"] < 1.0, small_chk["pull"]
+    assert small_chk["pull"] > large_chk["pull"] + 0.3, (small_chk["pull"], large_chk["pull"])
 
 
 def test_the_evening_ladder_carries_the_larger_lever():
@@ -174,7 +251,7 @@ def test_the_window_is_on_at_every_m2_including_exactly_one():
     passes m2 to full_profile, whose own switch is off at exactly 1."""
     from rb5s6s import constants as K
     from rb5s6s.fullmodel import full_profile
-    w0 = 64e-6
+    w0 = K.W0_CENTRAL_M
     prof1 = _uj.window_profile(w0, 1.0)
     assert prof1.z_ratio == pytest.approx(K.collection_z_ratio(w0_m=w0)) and prof1.z_ratio > 0.2
     assert _uj.window_profile(w0, 2.0).z_ratio == pytest.approx(2.0 * prof1.z_ratio)
@@ -202,12 +279,23 @@ def test_the_producer_model_carries_the_window_the_isotope_and_the_tie():
     over w0^2 through two_photon_rabi_hz."""
     from rb5s6s import constants as K
     from rb5s6s.hyperpolarizability import two_photon_rabi_hz
-    cell = _theory_cell(64.0)
+    # O44/F280 (2026-09-21): the cell's waist and the cross-checked prediction below must be the
+    # SAME number, so this uses K.W0_CENTRAL_M throughout rather than a second, independent
+    # literal that used to happen to agree with it at the retired waist convention.
+    cell = _theory_cell(K.W0_CENTRAL_M * 1e6)
     per85 = cell._per_trace(dict(T=130.0, P_W=0.225, iso=85, session="P", peak="4192"))
     per87 = cell._per_trace(dict(T=130.0, P_W=0.225, iso=87, session="P", peak="4207"))
     assert per85["transit"] / per87["transit"] == pytest.approx(np.sqrt(K.M_RB87_KG / K.M_RB85_KG), rel=1e-9)
-    assert per87["omega_ref"] == pytest.approx(two_photon_rabi_hz(0.225, 64e-6, 0.94) / 1e6)
-    assert per87["omega_ref"] == pytest.approx(0.45, abs=0.01)
+    # F324/A134 (C6b): Omega is tied to the UNCLIPPED P sqrt(rho) over w0^2, times the bore's
+    # on-axis factor and the ensemble's Bloch fraction, not the bare unclipped value alone (what
+    # this test read before C6b, when it pinned 1.026, the unclipped Rabi frequency itself).
+    from rb5s6s.lineshape import aperture_onaxis_factor_actual
+    unclipped = two_photon_rabi_hz(0.225, K.W0_CENTRAL_M, 0.94) / 1e6
+    aperture = aperture_onaxis_factor_actual(K.W0_CENTRAL_M)
+    fraction = _uj.bloch_fraction(K.W0_CENTRAL_M * 1e6, 130.0)
+    assert per87["omega_ref"] == pytest.approx(unclipped * aperture * fraction)
+    assert unclipped == pytest.approx(1.026, abs=0.01)
+    assert per87["omega_ref"] == pytest.approx(0.452, abs=0.01)
     low = cell._per_trace(dict(T=130.0, P_W=0.025, iso=87, session="P", peak="4207"))
     assert low["omega_ref"] / per87["omega_ref"] == pytest.approx(0.025 / 0.225)
     assert low["s0"] / per87["s0"] == pytest.approx(0.025 / 0.225)
@@ -215,7 +303,40 @@ def test_the_producer_model_carries_the_window_the_isotope_and_the_tie():
     # literal: this line read 0.36 until 2026-09-17, which was the prediction at the retired
     # polarizability, and a literal cannot follow the cell it quotes.
     from rb5s6s.stark import kappa_pred_per_watt
-    assert per87["s0"] == pytest.approx(kappa_pred_per_watt(K.W0_MEASURED_M, K.RHO_RETRO) * 0.225, rel=1e-6)
+    assert per87["s0"] == pytest.approx(kappa_pred_per_watt(K.W0_CENTRAL_M, K.RHO_RETRO) * 0.225, rel=1e-6)
+
+
+def test_the_cell_now_passes_the_pedestal_and_the_retro_tilt():
+    """F465: `full_profile` takes `pedestal_height_frac` and `retro_tilt_rad`, and neither reached
+    it from this Cell before this change. The pedestal is the record's fixed convention height
+    (`fullmodel.FIT_TERMS`'s own start), always passed and never fitted; the tilt defaults to the
+    record's central value (`FIT_TERMS`'s own start, zero, since no reading assigns it a nonzero
+    one) and can be made a Cell-wide fitted nuisance through `spec["retro_tilt_free"]`, off by
+    default so an existing Cell gains no free parameter."""
+    from rb5s6s import constants as K
+    trace = dict(T=130.0, P_W=0.225, iso=87, session="P", peak="4207")
+
+    cell = _theory_cell(K.W0_CENTRAL_M * 1e6)
+    assert "retro_tilt_rad" not in cell.names
+    per = cell._per_trace(trace)
+    d = cell.unpack(_theory_p(cell))
+    phys = cell.physics(d, per, trace["peak"], trace["session"])
+    assert phys["pedestal_height_frac"] == pytest.approx(_uj.PEDESTAL_HEIGHT_FRAC)
+    assert phys["pedestal_height_frac"] > 0.0
+    assert phys["retro_tilt_rad"] == pytest.approx(_uj.RETRO_TILT_START)
+    assert phys["retro_tilt_rad"] == pytest.approx(0.0)
+
+    free_cell = _theory_cell(K.W0_CENTRAL_M * 1e6, retro_tilt_free=True)
+    assert "retro_tilt_rad" in free_cell.names
+    lo, hi = free_cell.bounds("retro_tilt_rad")
+    assert (lo, hi) == tuple(_uj.FIT_TERMS["retro_tilt_rad"][:2])
+    p = list(_theory_p(free_cell))
+    p[free_cell.names.index("retro_tilt_rad")] = tilt_value = 0.5 * (lo + hi)
+    d2 = free_cell.unpack(tuple(p))
+    per2 = free_cell._per_trace(trace)
+    phys2 = free_cell.physics(d2, per2, trace["peak"], trace["session"])
+    assert phys2["retro_tilt_rad"] == pytest.approx(tilt_value)
+    assert phys2["pedestal_height_frac"] == pytest.approx(_uj.PEDESTAL_HEIGHT_FRAC)
 
 
 def test_the_depletion_arm_widens_through_the_package_function_and_restores_the_switch():
@@ -223,7 +344,7 @@ def test_the_depletion_arm_widens_through_the_package_function_and_restores_the_
     t = 0.9575
     assert _uj.depleted_transit(t, 0.45, "4192", 0.0) == t
     wide = _uj.depleted_transit(t, 0.45, "4192", 3.0)
-    assert 1.005 < wide / t < 1.03, "about one per cent at 64 um through companion_transit_mhz"
+    assert 1.005 < wide / t < 1.03, "about one per cent at the campaign waist through companion_transit_mhz"
     wider = _uj.depleted_transit(t, 1.05, "4192", 3.0)
     assert wider > wide, "more Rabi frequency, more depletion"
     assert stark.COMPANIONS is None, "the module switch is restored after the call"
@@ -235,26 +356,26 @@ def test_the_depletion_arm_widens_through_the_package_function_and_restores_the_
 # ---------------------------------------------------------------- the parameter arms
 def test_the_shared_laser_width_and_the_power_scale_arms_change_the_parameter_list():
     desc = _P_DESC + [dict(T=90.0, P_W=0.225, iso=87, session="T", peak="4207", axis="mhz")]
-    per_session = _theory_cell(64.0, traces=desc)
+    per_session = _theory_cell(60.0, traces=desc)
     # ALPHA AND BETA ARE PINNED AT THEIR THEORY VALUES BY DEFAULT SINCE 2026-09-17 (owner,
     # 00:30: pin them from theory with their uncertainty carried as a systematic, and compare
     # the MLE's own value afterwards), so neither is in the name order unless freed, and the
     # freed arm restores the 2026-09-16 order with both prior terms beside omega_scale.
     assert per_session.names == ("sigma_l_P", "sigma_l_T", "omega_scale", "gamma_l")
     assert per_session.spec["pinned"] == ("alpha_rel", "beta_rel")
-    shared = _theory_cell(64.0, traces=desc, sigma_l="shared")
+    shared = _theory_cell(60.0, traces=desc, sigma_l="shared")
     assert shared.names == ("sigma_l_shared", "omega_scale", "gamma_l")
-    scaled = _theory_cell(64.0, traces=desc, power_scale=True)
+    scaled = _theory_cell(60.0, traces=desc, power_scale=True)
     assert scaled.names[-2:] == ("power_scale_P", "power_scale_T")
     assert [n for n, _, _ in scaled.prior_terms] == ["omega_scale", "power_scale_P", "power_scale_T"]
     assert [sig for _, _, sig in scaled.prior_terms] == [_uj.OMEGA_PRIOR_FRAC, _uj.POWER_PRIOR_FRAC,
                                                          _uj.POWER_PRIOR_FRAC]
-    freed = _theory_cell(64.0, traces=desc, free=("beta_rel", "alpha_rel"))
+    freed = _theory_cell(60.0, traces=desc, free=("beta_rel", "alpha_rel"))
     assert freed.names == ("beta_rel", "alpha_rel", "sigma_l_P", "sigma_l_T", "omega_scale", "gamma_l")
     assert [n for n, _, _ in freed.prior_terms] == ["omega_scale", "beta_rel", "alpha_rel"]
     assert [sig for _, _, sig in freed.prior_terms] == [_uj.OMEGA_PRIOR_FRAC, _uj.BETA_PRIOR_FRAC,
                                                         _uj.ALPHA_PRIOR_FRAC]
-    fixed = _theory_cell(64.0, traces=desc, fixed={"beta_rel": 5.0})
+    fixed = _theory_cell(60.0, traces=desc, fixed={"beta_rel": 5.0})
     assert "beta_rel" not in fixed.names and fixed.unpack([1.0, 1.6, 1.6, 1.0, 0.4])["beta_rel"] == 5.0
     d = scaled.unpack(_theory_p(scaled))
     assert scaled.power_factor(d, "P") == 1.0 and per_session.power_factor(per_session.unpack(_theory_p(per_session)), "P") == 1.0
@@ -361,7 +482,7 @@ def test_the_excluded_sessions_load_in_place_with_their_own_laws_or_skip():
     for t in by["E"] + by["M"]:
         assert t["law"]["source"].startswith("condition_noise_model") and t["law"]["a"] > 0 and t["tau"] >= 1.0
         assert t["T"] == 130.0 and t["P_W"] in (0.09, 0.18, 0.27, 0.035, 0.07, 0.105, 0.21)
-    e = _theory_cell(64.0, traces=by["E"][:1])
+    e = _theory_cell(60.0, traces=by["E"][:1])
     d = e.unpack(_theory_p(e))
     nu = e.axis(d, by["E"][0])
     assert nu.size == by["E"][0]["x"].size and abs(nu[-1] - nu[0]) > 5.0, "the evening axis is ms times the seeded rate"
@@ -525,15 +646,17 @@ def test_the_moment_statistic_takes_a_fitted_baseline_and_not_a_wing_strip():
     """The arm's statistic, on a trace whose wings the LINE ITSELF occupies.
 
     FAILURE MODE THIS CATCHES, and it is a measured bias rather than a
-    hypothetical. `windowed_cumulants` defaults to a WINGS baseline; on this
+    hypothetical. `windowed_moments` defaults to a WINGS baseline; on this
     sweep the line contributes about 0.9 per cent of peak at the +-20 to 28 MHz
-    strips, which drags k2 down by 7.6 per cent and k3 by 21 at the 12 MHz
-    window. `_moment_stats` must therefore pass `baseline=None` and let the
-    caller remove a FITTED offset, and this test fails if the default ever comes
-    back: the wings-baselined statistic sits measurably below the truth on a
-    trace built with no offset at all.
+    strips, which drags mu2 down by 7.6 per cent and mu3 by 21 at the 12 MHz
+    window (mu2 = kappa2 and mu3 = kappa3 identically, so these two figures are
+    unmoved by O49's retirement of the cumulant basis). `_moment_stats` must
+    therefore pass `baseline=None` and let the caller remove a FITTED offset,
+    and this test fails if the default ever comes back: the wings-baselined
+    statistic sits measurably below the truth on a trace built with no offset
+    at all.
     """
-    from rb5s6s.cumulants import windowed_cumulants
+    from rb5s6s.cumulants import windowed_moments
     m = _uj
     nu = np.linspace(-42.5, 42.5, 4001)
     from rb5s6s.fullmodel import full_profile
@@ -546,31 +669,13 @@ def test_the_moment_statistic_takes_a_fitted_baseline_and_not_a_wing_strip():
     # (2, 8, 13) on 2026-09-18 so the vector sits on the window surface's own grid, and a typed 12 here
     # raised a KeyError on a statistic the producer no longer emits.
     w_hi = max(m.MOMENT_WINDOWS)
-    k_wing, _ = windowed_cumulants(nu, y, w_hi, orders=(2,), baseline="wings")
-    assert stats[f"mu2@{w_hi:g}"] > k_wing[2], (stats[f"mu2@{w_hi:g}"], k_wing[2])
+    # A SECOND, INDEPENDENTLY PARAMETERISED windowed_moments CALL is the cross-check (not the
+    # SAME call `_moment_stats` makes): order 2 is exact between bases, so this is still the
+    # wings-vs-fitted-baseline comparison the test is about and not a cumulant/moment one.
+    mu_wing, _ = windowed_moments(nu, y, w_hi, orders=(2,), baseline="wings")
+    assert stats[f"mu2@{w_hi:g}"] > mu_wing[2], (stats[f"mu2@{w_hi:g}"], mu_wing[2])
     # both parities are produced, which the arm that ran at orders [2, 4] was not
     assert {2, 3, 4, 5, 6, 7} == set(m.MOMENT_ORDERS)
-
-
-def test_moment_cumulant_conditioning_matches_orders_two_and_three_being_unmoved():
-    """O33's vector, read off the producer's own function: for order >= 4, `mu` and `k` differ
-    and `conditioning` is exactly `abs(k) / abs(mu)` from the SAME central-moment array (no
-    second quadrature -- planted by checking `k` against an independent `windowed_cumulants`
-    call, which must agree to floating-point precision if both routes are consistent)."""
-    from rb5s6s.cumulants import windowed_cumulants
-    m = _uj
-    nu = np.linspace(-42.5, 42.5, 4001)
-    from rb5s6s.fullmodel import full_profile
-    y = full_profile(nu, gamma_coll=0.26, sigma_laser_fwhm=1.0, transit_fwhm=1.28,
-                     s0=0.36, gamma_l=0.28, peak="4192", T_C=130.0)
-    rows = m.moment_cumulant_conditioning(nu, y, windows=(5.0, 8.0), orders=m.MOMENT_ORDERS)
-    assert {r["order"] for r in rows} == {4, 5, 6, 7}          # orders 2, 3 are not returned
-    assert {r["window"] for r in rows} == {5.0, 8.0}
-    for r in rows:
-        k_indep, _ = windowed_cumulants(nu, y, r["window"], orders=(r["order"],), baseline=None)
-        assert r["k"] == pytest.approx(k_indep[r["order"]], rel=1e-9, abs=1e-12)
-        assert r["conditioning"] == pytest.approx(abs(r["k"]) / abs(r["mu"]), rel=1e-12)
-        assert r["mu"] > 0.0 or r["order"] % 2 == 1            # every even order's moment is non-negative
 
 
 def test_the_moment_vector_is_not_wired_into_the_arms_own_admission():
@@ -578,77 +683,20 @@ def test_the_moment_vector_is_not_wired_into_the_arms_own_admission():
     `_moment_stats` or `moment_arm` onto `mu<n>@<w>` keys is caught here rather than discovered
     downstream. `moment_arm`'s own docstring says its covariance is diagonal; central moments at
     order >= 4 are strongly auto-correlated with mu2, so wiring them into that arm's per-statistic
-    exceedance test would over-weight correlated evidence (see `moment_cumulant_conditioning`'s
-    docstring). Until that arm carries a full covariance or the owner rules the marginal
-    treatment acceptable, `_moment_stats` keeps quoting cumulants and nothing it returns is
-    prefixed `mu`."""
+    exceedance test would over-weight correlated evidence.
+
+    O33/A72 INVERTED this guard's original sense (it once asserted the moment vector stayed
+    UNWIRED); owner order O49 (2026-09-22) then retired the cumulant basis outright, so
+    `_moment_stats` now ALWAYS emits `mu`-prefixed keys and this guard is a plain regression
+    check on that naming, not a conditional on a ruling that could still flip back."""
     m = _uj
     nu = np.linspace(-42.5, 42.5, 4001)
     from rb5s6s.fullmodel import full_profile
     y = full_profile(nu, gamma_coll=0.26, sigma_laser_fwhm=1.0, transit_fwhm=1.28,
                      s0=0.36, gamma_l=0.28, peak="4192", T_C=130.0)
     stats = m._moment_stats(nu, y)
-    # O33/A72 INVERTED: this guard asserted the moment vector stays UNWIRED. The owner's
-    # ruling reverses it, and a guard left asserting the retired state is how a reversed
-    # decision silently un-reverses itself.
     assert all(k.startswith("mu") or k.startswith("diag_") for k in stats), stats
     assert any(k.startswith("mu") for k in stats), stats   # the vector IS the moments now
-
-
-def test_the_moment_and_cumulant_vectors_carry_the_same_information():
-    """THE INVARIANCE ADDITION TO O33 (2026-09-20): moments and cumulants are related by an
-    invertible map, so a fit carrying the FULL covariance of its statistic vector extracts
-    IDENTICAL information from either -- what the switch buys is conditioning, not new
-    information, and F211's SNR ratios (384x at mu4@8) are a MARGINAL, per-statistic reading
-    that does not carry over to a joint, full-covariance treatment.
-
-    Planted on a pure Lorentzian (nu grid, one window, orders 2 and 4): draw many noisy
-    replicas of the noiseless truth (same construction as `fullmodel.ultra_joint_covariance`),
-    estimate the FULL 2x2 covariance of (mu2, mu4) and of (k2, k4) from them, then whiten one
-    held-out noisy realisation's departure from the truth by each vector's own covariance. THE
-    TWO WHITENED CHI-SQUAREDS MUST AGREE TO WITHIN A FEW PER CENT (the map is exact only in the
-    noiseless limit; away from it a small residual from the map's own nonlinearity at order 4 is
-    expected and is not the effect under test), while the MOMENT covariance's condition number
-    must be substantially worse than the CUMULANT covariance's -- that gap, and not the SNR
-    ratio, is the number the switch is licensed by for a diagonal-admission arm."""
-    from rb5s6s.cumulants import cumulants_from_central_moments, windowed_moments
-    from rb5s6s.lineshape import lorentzian
-
-    nu = np.linspace(-30.0, 30.0, 4001)
-    y0 = lorentzian(nu, 3.0)
-    peak = float(np.max(y0))
-    w = 5.0
-    orders_full = (1, 2, 3, 4)
-
-    def stats(y):
-        mu, _ = windowed_moments(nu, y, w, orders=orders_full, baseline=None, centre0=0.0,
-                                 n_points=801, max_passes=30)
-        mu_arr = np.array([mu[o] for o in range(1, 5)])
-        kappa = cumulants_from_central_moments(mu_arr)
-        return np.array([mu[2], mu[4]]), np.array([kappa[1], kappa[3]])
-
-    truth_mu, truth_k = stats(y0)
-    noise_frac, n_real = 0.02, 4000
-    X_mu = np.empty((n_real, 2)); X_k = np.empty((n_real, 2))
-    for r in range(n_real):
-        rng = np.random.default_rng(20260920 + r)
-        x = rng.standard_normal(y0.size)
-        yn = y0 + noise_frac * np.sqrt(np.clip(y0, 0.0, None) * peak) * x
-        X_mu[r], X_k[r] = stats(yn)
-    cov_mu = np.cov(X_mu, rowvar=False)
-    cov_k = np.cov(X_k, rowvar=False)
-
-    rng = np.random.default_rng(7770)
-    x = rng.standard_normal(y0.size)
-    y_data = y0 + noise_frac * np.sqrt(np.clip(y0, 0.0, None) * peak) * x
-    data_mu, data_k = stats(y_data)
-    r_mu, r_k = data_mu - truth_mu, data_k - truth_k
-    chi2_mu = float(r_mu @ np.linalg.solve(cov_mu, r_mu))
-    chi2_k = float(r_k @ np.linalg.solve(cov_k, r_k))
-
-    assert chi2_mu == pytest.approx(chi2_k, rel=0.05), (chi2_mu, chi2_k)
-    cond_mu, cond_k = np.linalg.cond(cov_mu), np.linalg.cond(cov_k)
-    assert cond_mu > 10.0 * cond_k, (cond_mu, cond_k)
 
 
 def test_a_ratio_whose_denominator_flips_sign_across_repeats_is_refused_by_name():

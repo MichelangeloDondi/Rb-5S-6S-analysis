@@ -360,10 +360,10 @@ def main() -> int:
     for iso, m_kg in mass.items():
         v_perp = math.sqrt(K_B_J_PER_K * (T_C + 273.15) / m_kg) \
             * math.sqrt(math.pi / 2.0)
-        t_cross[iso] = 2.0 * C.W0_MEASURED_M / v_perp
+        t_cross[iso] = 2.0 * C.W0_CENTRAL_M / v_perp
         print(f"  {iso}: mean transverse speed {v_perp:.1f} m/s, crossing "
               f"{t_cross[iso]*1e9:.1f} ns")
-    m = ramp_moments(C.W0_MEASURED_M, 0.225, 2.2e-3)
+    m = ramp_moments(C.W0_CENTRAL_M, 0.225, 2.2e-3)
     rate_axis = 2.0 * math.pi * GAMMA_NAT_HZ * (m["sat00"] / 2.0) / (1.0 + m["sat00"])
     rate_wei = 2.0 * math.pi * GAMMA_NAT_HZ * (m["sat_w"] / 2.0) / (1.0 + m["sat_w"])
     print(f"  cascade rate {rate_axis:.3g} /s on axis, {rate_wei:.3g} "

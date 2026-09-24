@@ -59,7 +59,7 @@ HALF_WINDOW_M = 3.375e-3
 # distance as the arm understates every offset by that factor and understated
 # the worst recovered-rho bias from 0.83 to 0.31.
 LEVER_ARM_M = 300e-3
-W0S = (55e-6, 64e-6, 70e-6, 85e-6)
+W0S = (55e-6, _CFG.W0_CENTRAL_M, 70e-6, 85e-6)   # the retired waist convention stood here, replaced O44/F280 2026-09-21
 M2S = (1.0, 1.5, 1.9, 3.0)
 RHOS = (0.5, 0.7, 0.9, 1.0)
 E1E2 = (1.0, 0.866, 0.5)          # parallel, 30 and 60 degrees
@@ -120,11 +120,19 @@ def main() -> int:
                 str(n_refused), "",
                 "(w0, M^2) pairs whose z_ratio leaves the convolution licence, "
                 "refused rather than computed through", "DIAGNOSTIC"])
-    out.append(["max_rho_bias_clean", "single_valued",
-                f"{max_bias_clean:.2e}", "",
-                f"single_valued as a maximum over {n_clean} admitted cells at zero tilt with e1.e2 known. "
-                "The contrast recovers rho exactly at every waist and every "
+    # THE BIAS IS EXACTLY ZERO AND THE COMPUTATION'S RESIDUE IS A SEPARATE QUANTITY (2026-09-25). One row held both:
+    # its value was the numerical floor, so the bias guard wanted a bar, and any bar at 3e-8 falls outside the plain
+    # band the error-format rule grades. The contrast recovers rho exactly, which is the bias; the floor is what the
+    # finite grid returns, a bound on the implementation and not an uncertainty of the bias.
+    out.append(["max_rho_bias_clean", "single_valued", "0", "",
+                f"single_valued as a maximum over {n_clean} admitted cells at zero tilt with e1.e2 known: exactly zero, "
+                "deterministic (noiseless cells), since the contrast recovers rho exactly. The computation's residue "
+                "is the next row. The contrast recovers rho exactly at every waist and every "
                 "M^2, so the beam quality does not enter this channel",
+                "DIAGNOSTIC"])
+    out.append(["rho_recovery_numerical_floor", "single_valued", f"{max_bias_clean:.2e}", "",
+                f"the largest |recovered rho - true rho| over the {n_clean} admitted cells: the finite grid's "
+                "floating-point residue, a bound on the implementation and not an uncertainty of the bias",
                 "DIAGNOSTIC"])
     out.append(["worst_rho_bias_polarisation_assumed", "single_valued",
                 f"{worst_pol:.4f}", "",

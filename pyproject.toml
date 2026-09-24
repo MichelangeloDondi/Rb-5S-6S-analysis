@@ -79,7 +79,7 @@ packages = ["rb5s6s"]
 # The example trace travels too: the tutorial now starts from a
 # measurement rather than from a dictionary, and a tutorial whose data is
 # absent from the wheel is a tutorial a stranger cannot run.
-rb5s6s = ["README.md", "data/*.csv"]
+rb5s6s = ["README.md", "data/*.csv", "data/*.tsv"]
 
 [tool.pytest.ini_options]
 addopts = "-rfE"  # compute_gate_verdict.py parses FAILED/ERROR summary lines; default reportchars emit them today, this pins it

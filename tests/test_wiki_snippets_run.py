@@ -22,15 +22,19 @@ import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
 WIKI = ROOT / "docs" / "wiki"
+#: THE FRONT DOOR TOO (the audit of 2026-09-25): START_HERE.md's quickstart called a constant the previous commit had
+#: renamed and raised AttributeError while every wiki snippet passed, because this population was docs/wiki/ alone.
+FRONT = (ROOT / "START_HERE.md", ROOT / "README.md")
 
 BLOCK = re.compile(r"```python\n(.*?)```", re.S)
 
 
 def _blocks():
     out = []
-    for page in sorted(WIKI.glob("*.md")):
+    for page in sorted(WIKI.glob("*.md")) + [p for p in FRONT if p.is_file()]:
+        rel = page.relative_to(ROOT).as_posix()
         for i, code in enumerate(BLOCK.findall(page.read_text(encoding="utf-8"))):
-            out.append((f"{page.name}#{i}", code))
+            out.append((f"{rel}#{i}", code))
     return out
 
 
@@ -57,7 +61,7 @@ def test_wiki_snippet_runs(name, code):
         env={"PATH": "/usr/bin:/bin", "PYTHONPATH": str(ROOT),
              "HOME": str(Path.home()), "MPLBACKEND": "Agg"})
     assert proc.returncode == 0, (
-        f"the snippet in docs/wiki/{name} does not run:\n{proc.stderr[-1500:]}")
+        f"the snippet in {name} does not run:\n{proc.stderr[-1500:]}")
     assert proc.stdout.strip(), (
-        f"the snippet in docs/wiki/{name} runs and prints nothing, so a "
+        f"the snippet in {name} runs and prints nothing, so a "
         f"reader cannot tell what it demonstrates")

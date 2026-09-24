@@ -27,7 +27,7 @@ next session inventing a value, or asking for one nobody has.
 | **repaired lock, per-sweep excursion** | not MEASURED. The same characterisation run [chapter 9](09_the-fixed-lock.md) calls for reads it beside the drift | every centre measurement on either platform rides it, as the drift row above | spanned in the fibre thread ([the campaign chapter](../big_picture/09_the-campaign-cases.md)): its paired-acquisition forecast covers the comb best-fit class to the wavemeter ceiling and the acquisition-geometry verdict there turns on exactly this item. The cell-side three-channel forecast now spans the drift over a tenfold range and finds the pull channel's spread unmoved, because the twin generates the drift as strictly linear in acquisition order and the fit carries that order as a free nuisance, so the term is a column of the design matrix and costs nothing. **The lever's worth cannot be established until the world's drift has structure**, which is the modelling item below |
 | **the cell's own dimensions** | owner-stated 2026-09-09 as about 25 mm bore and 100 mm long, a standard size not MEASURED precisely, with the beam about 2.0 plus or minus 1.0 mm from the wall; carried in [the APPARATUS chapter](../APPARATUS.md) | they set how often an atom returns to the beam against how often it reaches a wall, which decides whether the vapour around the beam is hyperfine-pumped in steady state; the cascade model assumes each atom arrives unpumped | no forecast rests on it, and the span is why: over every plausible cell an atom reaches a wall many hundreds of times between beam crossings, and an uncoated glass wall relaxes the hyperfine state on adsorption, so atoms arrive reset whatever the dimensions are. The item is recorded because the argument for that needs a number the record does not carry, not because a result does |
 | **beam radius at the focusing lens** | not stated in any document. It is the one input the Gaussian-optics estimate of the focus needs and the only one nothing on this bench measures, so the 42 to 53 micron band the finite-Hankel calculation returns through the 3 mm bore spans an input and does not resolve it | it sets the focus, and with it every intensity-denominated number, through the bore's truncation. It also sets how much of the beam the bore removes, which is a power loss of a third to a half over the same range | no forecast rests on it: every forecast spans the waist band the bore returns, not the input radius behind it. [Chapter 4 section 4.5](03_optics-protocol.md) proposes the delivery that removes the question instead of answering it: behind a single-mode fibre the focus is the mode radius times the ratio of two focal lengths, so the input radius stops being an input |
-| **beam waist in the interaction volume** | not MEASURED in this cell. The working 64 um is a same-conditions measurement from an earlier thesis on this APPARATUS lineage | the largest open systematic in the record. Every intensity-denominated number rides it | spanned across the band the data allow in `results/transit_mc.csv`, and [chapter 5](05_width-collision-amplitude.md) specifies the profile measurement that closes it. A second, atom-based route in the cell itself: a 778 nm diode driving 5S to 5D through the same optics reads the waist from the MEASURED light-shift coefficient of that line, 2.5(2) e-13 per mW per square millimetre ([Martin 2019](../lit/martin2019.md), held), a twenty-linewidth shift at this bench's power on a 330 kHz line, so the waist follows to about four per cent from a number that imports none of the disputed theory, with the waist at 778 nm scaling as the wavelength for the same optics |
+| **beam waist in the interaction volume** | not MEASURED in this cell. The working 42.38 um is calculated as the bore-limited actual focus this apparatus makes of its own input beam (order O44, 2026-09-21), which replaced the same-conditions measurement from an earlier thesis on this apparatus lineage that this record carried through that date | the largest open systematic in the record. Every intensity-denominated number rides it | spanned across the band the data allow in `results/transit_mc.csv`, and [chapter 5](05_width-collision-amplitude.md) specifies the profile measurement that closes it. A second, atom-based route in the cell itself: a 778 nm diode driving 5S to 5D through the same optics reads the waist from the MEASURED light-shift coefficient of that line, 2.5(2) e-13 per mW per square millimetre ([Martin 2019](../lit/martin2019.md), held), a twenty-linewidth shift at this bench's power on a 330 kHz line, so the waist follows to about four per cent from a number that imports none of the disputed theory, with the waist at 778 nm scaling as the wavelength for the same optics |
 | **cell temperature against the cold spot** | instrumented but the gradient is not resolved | the density lever, and through it the collisional coefficient. And the meaning of any Doppler thermometer: with the record's densities the mean free path exceeds the cell below about 110 C and falls to millimetres at 130, so the vapour is a flux-weighted mixture of the walls' Maxwellians at the cold end and a local temperature at the hot end, and a pedestal fitted as one Gaussian reads a temperature that moves against the thermocouple across the lever by up to the gradient itself | carried as a stated systematic in `results/beta_self_probe.csv`, and the thermometer's regime dependence is an item for the deep-trace producer's landing |
 | **retro-reflection intensity ratio** | not MEASURED. The working value is a stated prior, carried with its spread in `results/delta_alpha_posterior.csv`'s notes, and [chapter 7](07_acquisition-settings.md) records one in-record reading that contradicts it outright | the effective intensity, and through it every light-shift prediction. [Chapter 6](06_sizing-and-spending-rules.md) already schedules turning the assumption into a measurement | carried as the prior in `results/delta_alpha_posterior.csv`, whose limit row states how far the priors move it, and inside the predicted envelope of `results/stark_joint.csv` |
 
@@ -44,10 +44,14 @@ curvature or a random walk.
 
 The saturated two-photon rate law, the same kind of unknown and the one that bounds
 the tight-waist case. The world carries saturation as a width, through the companion,
-and not as a limit on the rate. At the archive that is right to a part in thirty: the
-saturation parameter is 0.033. At the campaign's 16 micron waist and top rung the shift
-is seventeen times the archive's, so the parameter is some three hundred times larger
-and the two-photon rate no longer grows as the power squared. **What it changes**: every
+and not as a limit on the rate. At the archive that is right to about a part in six: the
+saturation parameter is [0.1726](../../results/platform_twins.csv "ref:platform_twins:cell_130C:cell:saturation_s").
+
+At the campaign's 16 micron waist the shift
+is about 7.02 times the archive's for an unclipped design, the bore out of the
+focusing path, so the parameter is about 49 times larger before any further power
+increase, and at the top rung of the power ladder it is larger still (its own
+re-derivation owed), and the two-photon rate no longer grows as the power squared. **What it changes**: every
 amplitude and every summed tooth area at the tight waist, and with them the area sum
 rule's own null. **How the forecast proceeds**: those cells are read as upper bounds on
 the signal and the file's note says so, and the summed tooth area is not read as a
@@ -72,20 +76,29 @@ below) sets the true weight, so the window's correction is exact in form and sta
 the tolerance of that profile, which is 8 to 16 per cent on the coefficient at
 16 microns: integrating the mixture's mean over a uniform weight, a linear
 taper, a Gaussian at half at the edge and a window half again as long gives
-0.585, 0.677, 0.615 and 0.555, against 0.818 to 0.942 at 40 microns.
+0.585, 0.677, 0.615 and 0.555, against 0.818 to 0.942 at 40 microns. <!-- other-quantity: a mixture mean -->
 
-And the
-realised factor is not that geometric ratio: `pull_factor_quiet` at a fixed
-16 micron geometry reads [0.5754](../../results/three_channel_forecast.csv "ref:three_channel_forecast:base::pull_factor_quiet"), 0.5578, [0.4824](../../results/three_channel_forecast.csv "ref:three_channel_forecast:eom_comb_8MHz::pull_factor_quiet") and [0.5524](../../results/three_channel_forecast.csv "ref:three_channel_forecast:eom_comb_12.5MHz::pull_factor_quiet") across the base,
-the 0.5 W ladder and two comb spacings, because the centre is fitted in a
-window that moves with the comb, so a campaign supplying the geometric number
-reads 1.7 to 18 per cent low. The two quantities are named apart: the
-mixture's centroid ratio is geometry, `pull_factor_quiet` is what the
-estimator realises. `results/waist_ladder.csv` reports what the window does
-against the pure ramp (the windowed third cumulant at -1.035831 of it at 16 microns, a
-reversed sign, and the mean pull at 0.585), which is now what the world builds. The
-exhibit twin (`examples/campaign_twin.py`, at the archive's 64 microns, where both terms
-are a few per cent) keeps the default until its regeneration, and says so.
+And the realised factor is not that geometric ratio: `pull_factor_quiet` at a fixed 16
+micron geometry reads [0.5753](../../results/three_channel_forecast.csv
+"ref:three_channel_forecast:base::pull_factor_quiet"),
+[0.5582](../../results/three_channel_forecast.csv
+"ref:three_channel_forecast:power_top_0.5W::pull_factor_quiet"),
+[0.4843](../../results/three_channel_forecast.csv
+"ref:three_channel_forecast:eom_comb_8MHz::pull_factor_quiet") and
+[0.5522](../../results/three_channel_forecast.csv
+"ref:three_channel_forecast:eom_comb_12.5MHz::pull_factor_quiet") across the base, the
+0.5 W ladder and two comb spacings, because the centre is fitted in a window that moves
+with the comb, so a campaign supplying the geometric number reads 1.7 to 18 per cent
+low.
+
+The two quantities are named apart: the mixture's centroid ratio is geometry,
+`pull_factor_quiet` is what the estimator realises. `results/waist_ladder.csv` reports
+what the window does against the pure ramp (the windowed third moment at -1.035831 of it
+at 16 microns, a reversed sign, and the mean pull at 0.585), which is now what the world
+builds. The exhibit twin (`examples/campaign_twin.py`, at the archive's 42.38 microns,
+where both terms are a few per cent) now reads its waist default from
+`constants.W0_CENTRAL_M` (owner order O44, 2026-09-21), no longer the retired lineage
+convention.
 
 The guided
 arm carries neither: an evanescent field has no focus, and the record holds no fringe
@@ -96,35 +109,38 @@ this kind. The forward model gives the interaction volume a single beam radius, 
 collected region is fixed by the optics, so the description holds only while the
 Rayleigh range is long against that region. Measured over the collected length at
 the campaign's own optics, the transit width's spread about its mean runs 0.1 per
-cent at 128 microns, 1.0 at 64, 5.5 at 40, 23 at 24 and 47 at 16, where the beam
-radius at the edge of the collected region is 4.3 times the waist. **That one
-per cent licenses nothing for the shape channels, and this item said it
+cent at 128 microns, 4.5 at the calculated 42.4, 5.5 at 40, 23 at 24 and 47 at 16, where the beam
+radius at the edge of the collected region is 4.3 times the waist. **That spread
+licenses nothing for the shape channels, and this item said it
 licensed the convolution until 2026-09-09.** It is the axial spread of the
 transit kernel alone, and the second mechanism is radial.
 
-The saturation
-companion follows the local light shift, the ramp's own variable, so the broad
-elements are the shifted ones and shortening the collected region cannot reach
-it. Measured element by element
-(`scripts/run_kernel_inhomogeneity.py`), the windowed third cumulant is wrong
-by [106.742](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w64um:k3_error") per cent at the
-archive's own waist, [96.532](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w24um:k3_error") at
-24 microns and [89.925](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w16um:k3_error") at 16:
-**the archive is the worst of the four and not the licensed one.** The centre
-channel splits. The centroid is exactly immune at every waist
-([-0.000](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w64um:centroid_pull_error") per cent),
-while the fitted centre the campaign actually inverts moves by
-[-0.265](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w64um:fitted_centre_error") per cent at
-64 microns and [-57.023](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w16um:fitted_centre_error")
-at 16. **A campaign waist has no MEASURED band of its own**, so the
-tolerance producer applies the archive's 62 to 68 micron band as the same
-fraction of each proposed waist, paired with the retro-ratio error as the
-record's convention pairs them.
+The saturation companion follows the local light shift, the ramp's own variable, so the
+broad elements are the shifted ones and shortening the collected region cannot reach it.
+Measured element by element (`scripts/run_kernel_inhomogeneity.py`), the windowed third
+moment is wrong by [103.942](../../results/kernel_inhomogeneity.csv
+"ref:kernel_inhomogeneity:w42um:k3_error") per cent at the archive's own waist,
+[96.571](../../results/kernel_inhomogeneity.csv
+"ref:kernel_inhomogeneity:w24um:k3_error") at 24 microns and
+[89.992](../../results/kernel_inhomogeneity.csv
+"ref:kernel_inhomogeneity:w16um:k3_error") at 16: **the band's two waists are the worst
+of the four and not the licensed ones.** The centre channel splits.
+
+The centroid is exactly immune at every waist
+([-0.000](../../results/kernel_inhomogeneity.csv
+"ref:kernel_inhomogeneity:w42um:centroid_pull_error") per cent), while the fitted centre
+the campaign actually inverts moves by [-1.563](../../results/kernel_inhomogeneity.csv
+"ref:kernel_inhomogeneity:w42um:fitted_centre_error") per cent at 42.38 microns and
+[-60.912](../../results/kernel_inhomogeneity.csv
+"ref:kernel_inhomogeneity:w16um:fitted_centre_error") at 16. **A campaign waist has no
+MEASURED band of its own**, so the tolerance producer applies the archive's 40 to 45
+micron band as the same fraction of each proposed waist, paired with the retro-ratio
+error as the record's convention pairs them.
 
 That is a borrowed uncertainty, not a spanned
 one, and it is an open item: a knife-edge at each proposed waist is what
 replaces it. **What it changes**: any reading that depends on the line shape at a
-tight waist, the third cumulant above all. The width's spread does not threaten the fitted
+tight waist, the third moment above all. The width's spread does not threaten the fitted
 centre, because it is symmetric in the axial coordinate and a symmetric
 broadening does not move a centre. The shift's own integral over the collected
 length does move it, by the 2, 11, 31 and 42 per cent the collection-window
@@ -144,11 +160,12 @@ makes worth taking.
 
 The shape channels are the conflict:
 the single-waist description is good at 40 microns and wider, and the third
-cumulant only carries signal at 24 and below, where the shift approaches the
+moment only carries signal at 24 and below, where the shift approaches the
 line. The forecast reads the shape channel exactly where this item says the
 model is weakest. That tension is the finding, and it is not a rule for
-choosing a waist. **The design choice at a tight waist (owner statement, 2026-09-06)**: at 64 microns with the
-present magnification of about 2.5 the convolution model is already marginal,
+choosing a waist. **The design choice at a tight waist (owner statement, 2026-09-06)**: at the
+calculated 42.38 microns with the present magnification of about 2.5 the convolution model is already marginal
+(more so than at the retired waist convention this statement was made against),
 so a smaller waist means one of two things and the PLAN must say which.
 
 Either
@@ -157,9 +174,11 @@ integrated over the collected length together, of which only the shift's half
 exists in the tree as `stark_ramp_axial`, or the collection magnification
 rises to hold the collected length at the archive's fraction of the Rayleigh
 range, where the convolution holds to a per cent, a range that scales as
-the waist squared: from about 2.5 at 64 microns to about 6 at 40, 18 at 24 and
-40 at 16, at a cost in collected light proportional to the collected length at
-fixed numerical aperture, sixteenfold at 16 microns. The geometry sign flip of
+the waist squared: from about 2.5 at 42.38 microns to about 2.8 at 40, 7.8 at 24 and
+17.5 at 16, at a cost in collected light proportional to the collected length at
+fixed numerical aperture (the fold-increase this sentence stated at the retired
+waist convention is an open item pending re-derivation at the calculated
+waist, since it is entangled with the arctangent-law figures below). The geometry sign flip of
 chapter 4 exists only on the first route, since the second removes the window
 that makes it.
 
@@ -179,9 +198,13 @@ so it is a factor of seven at 16 microns and 2.6 in signal-to-noise, five and
 
 The fit-window systematic on the collisional width, not an APPARATUS
 number but an analysis unknown the same rules govern: the window scan
-(`results/fit_window_scan.csv`) shows a coherent drift of the fitted width
-with the fit window that no committed error bar carries
-(`docs/uncertainty.md` §3a). What closes it: the committed shared-slope
+(`results/fit_window_scan.csv`) showed a coherent drift of the fitted width
+with the fit window at the retired waist, and at the calculated waist it does
+not, the width falling in
+[18](../../results/fit_window_scan.csv "ref:fit_window_scan:n_drift_negative:summary") of
+[32](../../results/fit_window_scan.csv "ref:fit_window_scan:n_conditions:summary")
+conditions (`docs/uncertainty.md` §3a). No committed error bar carries a
+window term yet. What closes it: the committed shared-slope
 $\beta$ construction re-run per window. Until then the headline bound's own
 line in [RESULTS.md](../RESULTS.md) points at that section, and the
 forecast proceeds unchanged because every per-window indicative slope is
@@ -220,7 +243,7 @@ same two surfaces for the round trip. The forward leg from the focus out to the
 meter crosses them once each and is carried in no module.
 
 At the clean values of
-that item, 0.99 each, the missing factor is $1/0.980 = 1.020$. At its filmed
+that item, 0.99 each, the missing factor is $1/0.980 = 1.020$. At its filmed <!-- other-quantity: two transmissions -->
 scenario, 0.90 per pass, it is $1/0.891 = 1.122$. The EOM aperture's on-axis
 factor moves the same prediction by $-3.3$ per cent at the convention waist, so
 this uncarried term is between two thirds and four times its size and opposite
@@ -251,24 +274,49 @@ the closed form since July with its window flagged open, and
 `constants.collection_z_ratio()` now closes it from the focal length, the
 image distance and the cathode's 12 mm dimension along the beam. Two of the
 three are stated to a tolerance and not yet MEASURED: $f = 18 \pm 1$ mm and an
-image distance of $50 \pm 10$ mm. An owner statement puts the magnification at about 2.5
+image distance of $50 \pm 5$ mm, the owner's own figure, restated on 2026-09-22 with
+the reason it is a tolerance and not a measurement. An owner statement puts the magnification at about 2.5
 (2026-09-06), which the stated conjugates give as 1.8 at their centre and reach
 at their tolerance's edge, so the imaging geometry is the first ruler
 measurement of the campaign.
 
 They close with a ruler and no atoms. What they change: the window is
-[0.26](../../results/prediction_band.csv "ref:prediction_band:collection_window:z_ratio")
+[0.59](../../results/prediction_band.csv "ref:prediction_band:collection_window:z_ratio")
 Rayleigh ranges, where the ramp is exact over most of the shift range and the
 recovered shift is biased low by
-[-1.97](../../results/prediction_band.csv "ref:prediction_band:collection_window:shift_bias_width_pct")
+[-6.02](../../results/prediction_band.csv "ref:prediction_band:collection_window:shift_bias_width_pct")
 per cent. That correction stays conservative only while the window is below
 [1.691](../../results/prediction_band.csv "ref:prediction_band:collection_window:width_bias_sign_flip_z_ratio"),
-and the third cumulant's own null sits at
+and the third moment's own null sits at
 [1.117](../../results/prediction_band.csv "ref:prediction_band:collection_window:skew_null_z_ratio").
 **The largest of the three uncertainties is how the 50 mm is read**: as the
 image distance it gives the window above, and as the object distance it would
 give one about three times wider, a twelvefold larger bias with the null within
 reach. `constants.COLLECTION_IMAGE_DIST_M` names the reading it takes.
+
+#### The cathode's other dimension, and what it truncates
+
+The same imaging fixes a transverse half-acceptance of about 0.8 mm from the
+cathode's 3 mm side, and two things emit inside it. The drive beam does not
+reach it: at the axial window's own edge its radius is tens of microns against
+that acceptance, a margin above ten at every beam quality the band allows, and
+the two-photon rate goes as the square of the intensity, so the weight outside
+the acceptance is not small but absent. The radial integral, which is the
+AC-Stark ramp itself, is therefore untouched, and the optics stay a pure axial
+window for the signal.
+
+The radiation-trapped halo does reach it. `run_trapping_channels.py` sets the
+halo's radius equal to the standoff from the near window, which is not
+recorded and is carried as a band from one to five millimetres, and at its
+central value about half the halo's cross-section falls outside the cathode.
+That truncation is two-dimensional, the model carries none of it, and the
+trapping that feeds the halo follows the optical depth, which runs by about
+fifty across the temperature arm. The halo is flat in laser frequency, so it
+enters the free per-trace baseline and not the lineshape, and the
+consequence is a collection efficiency that varies with temperature. **So the
+standoff is load-bearing for the collected rate and not only for the one per
+cent re-excitation it was introduced to bound.** A ruler measurement of the
+focus position in the cell closes it, alongside the imaging geometry above.
 
 ### The background scattering reaching the detector
 
@@ -312,11 +360,11 @@ from `results/trapping_channels.csv`.
 **Consequences of a non-flat response.** A background with curvature on the
 line's own scale biases the widths, since the baseline model cannot follow it,
 and a background whose scan dependence is **asymmetric** is the one term that could
-imitate the third cumulant. That is the channel the campaign now rests on, and
+imitate the third moment. That is the channel the campaign now rests on, and
 it is the single reason this item is worth an afternoon: **a shift-like
 asymmetry from the detection path would be read as a light shift by every
 estimator in this record.** The power ladder is what separates them, since the
-true shift's third cumulant goes as the cube of the power and a detection
+true shift's third moment goes as the cube of the power and a detection
 background does not, so the discriminator exists and is already in the design.
 Until the measurement is made the forecast spans the term by treating it as
 absent and naming it here.
@@ -434,11 +482,17 @@ cell**. The ruler traces were calibration traces and their power was never
 logged into the MANIFEST. What it changes: an external analysis proposes
 reading the beam waist from the saturation of the teeth in those traces, which
 needs both a power above about 100 mW and a spread of powers across the set,
-and neither can be established from the record as it stands. The same analysis
-finds by injection and recovery that the estimator is unusable at 64 microns
-and usable at 32, so the proposal is in any case a new session and not a
-reanalysis, and the missing power is what decides whether the archive can even
-serve as its rehearsal. It is an APPARATUS fact the bench notebook may hold.
+and neither can be established from the record as it stands.
+
+The same analysis
+finds by injection and recovery that the estimator's usability tracks the
+saturation it is tested at: unusable at a wide, lightly saturated probe waist
+and usable at 32 microns, a tighter focus than this record's own calculated
+waist. Saturation there depends on the delivery convention assumed for the
+beam (the bore clipped or not), so whether the estimator is usable at the
+calculated 42.38 µm waist, and under which delivery, sits unread and is owed. The proposal is
+in any case a new session and not a reanalysis, and the missing power is what
+decides whether the archive can even serve as its rehearsal. It is an APPARATUS fact the bench notebook may hold.
 
 ### The wavemeter's averaging mode and its environmental readings
 
@@ -579,24 +633,28 @@ nearly stationary in it. **Cost.** Two blocks in one session with the wide windo
 since the pedestal must be fitted. Raised by an external reading on 2026-09-06
 and derived here on rung 1.
 
-And the attenuator is worth more than a calibration: unbalance the retro on
-purpose. The fringe contrast, the one lineshape channel that separates the
-retro ratio from the polarisability, goes as twice the root of the ratio over
-one plus the ratio, and that expression is stationary at a ratio of one. Its
-logarithmic slope reads [0.01546](../../results/fringe_rho_recovery.csv "ref:fringe_rho_recovery:dcontrast_dlnrho:rho=0.94") at the working value against
-[0.15713](../../results/fringe_rho_recovery.csv "ref:fringe_rho_recovery:dcontrast_dlnrho:rho=0.5") at one half, ten times larger, and it costs the Doppler-free rate, which
-goes as the ratio itself ([methods 3](../methods/03_the_ac_stark_ramp.md)), a factor
-1.9 in signal at one half, and of the shift under measurement, which goes as one
-plus the ratio, a factor 1.3, with
-[0.08685](../../results/fringe_rho_recovery.csv "ref:fringe_rho_recovery:dcontrast_dlnrho:rho=0.7") between them, so a return beam deliberately
-attenuated to half turns a channel this bench cannot read into one it can,
+And the attenuator is worth more than a calibration: unbalance the retro on purpose. The
+fringe contrast, the one lineshape channel that separates the retro ratio from the
+polarisability, goes as twice the root of the ratio over one plus the ratio, and that
+expression is stationary at a ratio of one.
+
+Its logarithmic slope reads [0.01546](../../results/fringe_rho_recovery.csv
+"ref:fringe_rho_recovery:dcontrast_dlnrho:rho=0.94") at the working value against
+[0.15713](../../results/fringe_rho_recovery.csv
+"ref:fringe_rho_recovery:dcontrast_dlnrho:rho=0.5") at one half, ten times larger, and
+it costs the Doppler-free rate, which goes as the ratio itself ([methods
+3](../methods/03_the_ac_stark_ramp.md)), a factor 1.9 in signal at one half, and of the
+shift under measurement, which goes as one plus the ratio, a factor 1.3, with
+[0.08685](../../results/fringe_rho_recovery.csv
+"ref:fringe_rho_recovery:dcontrast_dlnrho:rho=0.7") between them, so a return beam
+deliberately attenuated to half turns a channel this bench cannot read into one it can,
 and the same run supplies the calibration above.
 
 Where the contrast is
 MEASURED with the polarisation axis known and the two beams superimposed it
-returns the ratio to [2.98e-08](../../results/fringe_rho_recovery.csv "ref:fringe_rho_recovery:max_rho_bias_clean:single_valued") over the admitted grid. Assuming the axis
-instead costs up to [0.9671](../../results/fringe_rho_recovery.csv "ref:fringe_rho_recovery:worst_rho_bias_polarisation_assumed:single_valued") in the ratio and an unthreaded tilt up to
-[0.8314](../../results/fringe_rho_recovery.csv "ref:fringe_rho_recovery:worst_rho_bias_tilt_and_offset:single_valued"), so the run records the axis and the retro alignment beside the
+returns the ratio to [2.98e-08](../../results/fringe_rho_recovery.csv "ref:fringe_rho_recovery:rho_recovery_numerical_floor:single_valued") over the admitted grid. Assuming the axis
+instead costs up to [0.9738](../../results/fringe_rho_recovery.csv "ref:fringe_rho_recovery:worst_rho_bias_polarisation_assumed:single_valued") in the ratio and an unthreaded tilt up to
+[0.8739](../../results/fringe_rho_recovery.csv "ref:fringe_rho_recovery:worst_rho_bias_tilt_and_offset:single_valued"), so the run records the axis and the retro alignment beside the
 attenuation. The ratio it returns is exactly immune to the beam quality.
 
 ### The retro path length
@@ -604,7 +662,7 @@ attenuation. The ratio it returns is exactly immune to the beam quality.
 State of knowledge. Nothing. The retro mirror is a flat behind the cell
 ([APPARATUS](../APPARATUS.md)) and no page records its distance from the atoms.
 
-**Bearing on the forecast.** The retro beam's modulation lags the forward beam's by
+Bearing on the forecast. The retro beam's modulation lags the forward beam's by
 the round trip, so the two-photon comb's depth is the drive's depth times
 $\cos(2\pi f d/c)$ ([methods chapter 5](../methods/05_the_frequency_ruler.md)).
 The committed ruler is untouched, because the depth is fitted from the tooth
@@ -620,7 +678,7 @@ It decides a second thing, found 2026-09-09, and this one rides on the retro
 ratio. Lens (8) and the flat mirror form a retro whose returning mode matches
 the forward one exactly when the mirror sits one focal length beyond the lens,
 and not otherwise: the round trip returns the waist onto itself with a power
-overlap of 1.000000 at that distance, 0.9967 at 50 mm and 0.9610 at 500 mm.
+overlap of 1.000000 at that distance, 0.9967 at 50 mm and 0.9610 at 500 mm <!-- other-quantity: the retro mode-overlap power fraction, not the collection-window kappa2 ratio -->.
 So the `rho = 0.94` of record may be carrying an unmeasured mode-mismatch factor
 beside the surface losses it is meant to describe, and the item below on the
 retro power ratio cannot separate the two without this length. The same
@@ -632,6 +690,92 @@ It closes with a tape measure, and the
 same distance enters the misalignment item above and the mode-overlap reading
 here.
 
+### The waist measurement against its analysis substitute
+
+The waist is the open item every absolute result here is conditional on, and
+the two ways of closing it can now be compared in the same units instead of
+argued about.
+
+Measuring it directly, with a knife edge or a camera at the focal plane, pins
+one parameter and lets the centroid carry the polarizability on its own. Not
+measuring it leaves the waist free in the joint fit, where the second and
+fourth moments constrain it and so free the centroid indirectly. Both routes
+were costed on the twin, by two independent calculations that agree: **a
+measured waist is about one and a half times better on the polarizability than
+the entire moment stack with the waist free, and the moment analysis recovers
+around two thirds of what the measurement would give.**
+
+Two consequences follow and neither is optional.
+
+The first is that the two are **alternatives and are never summed**. Once the
+waist is pinned the moments add nothing further to the polarizability, because
+their own sensitivity to it is zero: their contribution was always the waist
+and never the shift. A forecast that adds the analysis gain to the measurement
+gain is double counting.
+
+The second is that the measurement is the cheaper of the two by a wide margin.
+It is an afternoon at the bench against a campaign of analysis, and it buys
+more. What the moment analysis buys instead is the ability to work without it,
+which is what makes the existing data analysable at all and is worth exactly
+its two thirds.
+
+None of this narrows what the higher moments do elsewhere. They carry the waist
+itself, the collisional coefficient, the systematics monitors and the
+model-form discrimination, and the substitution argument applies to the
+polarizability alone.
+
+One caveat travels with the ratio. Both calculations perturb with white noise,
+while the real traces carry a correlated tilt across the window, and a tilt is
+the one disturbance that moves a centroid without moving a central moment. The
+centroid's side of the comparison is therefore the optimistic one, and the
+ratio may move toward the moments when the measured correlation is injected.
+
+### Mode content at the bore
+
+State of knowledge. Nothing records how the drive beam's power is distributed
+across transverse modes, and this is a separate item from the input radius below
+and not a refinement of it.
+
+Bearing on the forecast, and it removes an axis instead of widening one. A
+beam-quality figure is the natural thing to ask a laser supplier for, and behind
+a hard aperture it does not answer the question. Propagating the clipped bore
+with the same beam-quality figure carried in different mode compositions gives
+focal radii from the bore's own limit up to a few per cent above it, because a
+high-order halo is removed by the bore before the lens and never focused by
+it.
+
+A beam three times worse than diffraction-limited, with its excess in high
+modes, focuses to the same spot as a perfect one. **So beam quality does not
+predict this focus and there is no beam-quality axis to scan**, and what does
+predict it is the radial profile arriving at the bore.
+
+What the bench already constrains, added 2026-09-23 and the first quantitative handle on
+this item. The power through the modulator drops by about 60 per cent of roughly a watt,
+and the power the record logs is read after it. Two things follow. The transmitted
+fraction divides out of the light shift per recorded watt, so it is not a systematic on
+that quantity. And the same number bounds the mode content, because every non-clipping
+loss in that path lowers the total further, so the bore's own transmission is bounded
+from below by the measured drop.
+
+A pure high-order input passes far less than that at any input radius from 1.6 mm up. It
+survives only near 1.2 mm, where an ideal Gaussian would pass more than nine tenths and
+nearly the whole drop would have to be something other than clipping. **So the
+measurement disfavours the halo-dominated end of the family without excluding it**,
+which is weaker than a profile and is not nothing: before it, that end was an assumption
+with no evidence either way.
+
+What closes it. A camera image at the bore plane, or equivalently at a relay of
+it, since the profile is what the propagation needs and a single number is not.
+The measurement is the same one the item below asks for, read as a profile
+instead of as a radius, so the two close together. The transmission above
+narrows the prior the profile has to overturn. It does not replace it, because
+one number cannot separate the input radius from the halo weight, and the pair
+moves together along exactly the direction the measurement fixes.
+
+Until it is closed the forward model states its own convention and not
+implying a measurement, and any axial extent it reports is the propagated
+field's, not a free-space Rayleigh range.
+
 ### The input beam at the focusing lens
 
 State of knowledge. The beam reaches L1 free-space from the laser through the
@@ -640,22 +784,27 @@ EOM's 3 mm clear aperture, which an infrared card recalls clipping
 that aperture removes. L1 itself is quoted from the source as "a plano-convex
 lens", which is a single element, and no page states an achromat.
 
-**Bearing on the forecast.** Nothing at all while the campaign drives one line, and the
+Bearing on the forecast. Nothing at all while the campaign drives one line, and the
 whole cross-transition programme once it drives two. The focused waist is
 `lambda f / (pi w_in)`, so a retune moves the waist even with no optic touched,
 and the ratio of light shifts between two drives carries `(w_in at one / w_in
-at the other)` squared. If the aperture fixes the input radius the factor is
+at the other)` squared.
+
+If the aperture fixes the input radius the factor is
 one and the waist follows the wavelength. If the beam is an unclipped
 fixed-geometry resonator mode the radius follows the root of the wavelength and
-so does the waist. Between 993.4 and 760.1 nm that is 48.59 um against
-55.55 um, and 31 per cent on every shift ratio built from them (register A136).
+so does the waist. Between 993.4 and 760.1 nm the two regimes differ by 31 per
+cent on every shift ratio built from them (register A136). That spread is the
+ratio of the two scaling laws, so it does not depend on which waist anchors it.
+The absolute pair this line used to quote was anchored on the retired waist
+convention and went with it.
 
 The element type is the small term, worth 0.8 per cent through `1/(n-1)` and
 insensitive to the glass, but it is not free: an achromat holds the focal
 length and a singlet also moves the focus 1.17 mm, which is a third of the
 collection half-window.
 
-**Closure.** A beam profile at the lens, on the same afternoon and the
+Closure. A beam profile at the lens, on the same afternoon and the
 same stage as the waist measurement the PLAN already schedules, with no atoms
 and no lock, with one look at the lens mount for a cemented doublet. Until then
 the campaign's own line closes it in situ, since the transit width carries the
@@ -667,6 +816,35 @@ regime as a required argument with no default, and
 resonator reading quoted beside it in the note, so every multi-drive number is
 a bracket until the profile exists.
 
+### The EOM bore's distance before the focusing lens
+
+**State of knowledge.** [APPARATUS.md](../APPARATUS.md) places the EOM's 3 mm
+bore ahead of the first f = 150 mm lens (section 1.2) and states no distance
+between them. Paraxially the bore-to-lens distance `d` sets the focus's axial
+asymmetry, which goes as `(1 - d/f)`: at a 2.46 mm input the axial intensity
+peak sits 0.80 mm toward the lens at `d = 0`, on the focal plane at `d = f`
+and 1.54 mm beyond it at `d = 3f`, against a collection half-window near
+3.4 mm (an independent Collins-integral computation, 2026-09-22). The
+focal-plane intensity itself does not depend on `d`, so the bore-limited
+central waist and its band are unaffected. What moves is where along the axis
+the peak sits relative to the collected length.
+
+Bearing on the forecast. A shifted axial peak moves the effective
+collection geometry the campaign's ramp and kernel machinery assume, at a
+scale, 0.8 to 1.5 mm, that is a sizeable fraction of the 3.4 mm collection
+half-window above. Nothing today reads `d`, so every axial-window calculation
+in this record implicitly assumes whichever default the field call carries.
+
+**Closure.** A ruler measurement of the bore-to-lens separation, on the same
+afternoon and the same optical-bench access as the other open distances this
+chapter lists, with no atoms and no lock.
+
+**Treatment in the forecast.** The model carries `d` explicitly:
+`rb5s6s.beam_field.ClippedBeam`'s `d_ap_m` parameter, defaulting to 0.0 (the
+`d = 0` case) to match the existing focal-plane table until the distance is
+read off the bench, and spans it in the twin's world beside the input beam
+radius above.
+
 ### Composition of the transit kernel and light shift
 
 The twin's line composes the transit kernel with the ramp as a convolution.
@@ -676,7 +854,7 @@ leaves the mean exactly the composition's at every waist (rung 2, the first
 moment of the two-time spectrum), holds the archive's width and interior
 residual to a fifth of a per cent, narrows the line by about two per cent at
 the campaign's tightest waist, and adds ten to twenty per cent to the
-collection window's third cumulant there. **What settles
+collection window's third moment there. **What settles
 it.** No bench time: the second-order coherent term derived for the methods
 chapter, the chord harness landed as a producer with its table and a
 convergence arm so the figures become the record's, and the world builder
@@ -698,6 +876,19 @@ the rate there. **Settlement.** Nothing on the bench: it is a derivation,
 the transient two-level response along a Gaussian chord, owed to the methods
 chapter before the 16 micron cells are quoted. Raised by an external reading on
 2026-09-06.
+
+**Partly answered, and at the archive's waist too (F324, 2026-09-22).** The
+optical Bloch equations integrated along each atom's crossing, at five nodes
+over 41 to 45 um, 70 and 130 C and 125 and 225 mW, give a collected line whose
+saturation is still one extra homogeneous Lorentzian, at an effective Rabi
+frequency near half the on-axis one: the steady-state average over the
+collected atoms, a closed form, times the crossing's own transient, which is
+the coherence's lag and not a population's. So the steady-state form at the
+on-axis Rabi frequency is not licensed at the archive's waist either, and the
+premise above, ten lifetimes along the chord, does not rescue it. The model
+takes the ensemble's scale in its next window, with the companion among the
+readings a kernel node must pass on a coarse set of Bloch nodes (plan A134).
+The 16 micron cells still wait for the same integration at their own waist.
 
 ### The analog chain's linearity at the peak rate
 
@@ -736,7 +927,7 @@ is not.** The time constant itself, at the gain the next session uses.
 **Bearing on the forecast.** Whether a full-span triangle can be swept fast enough to
 put many line crossings in one record. On the bound as it stands, a lag of
 10 microseconds costs a third of a per cent of width at 12 MHz per ms and
-17 per cent at 120, and a triangle over the four peaks' 5.2 GHz sweeps
+17 per cent at 120, and a triangle over the four peaks' 5.2 GHz sweeps <!-- other-quantity: a drive power in mW -->
 10 MHz per ms at 1 Hz and 100 at 10 Hz. The campaign's proposed settings,
 24 to 6000 MHz per second, all sit far below the first figure, so the bound
 admits every one of them and chapter 9 is right that the chain does not bind
@@ -772,14 +963,15 @@ is a yes or a no.
 ### Sweep nonlinearity and hysteresis of the piezo
 
 The rate variation across an analysis window that forges the whole light-shift
-signal in the third cumulant is computed in
+signal in the third moment is computed in
 [chapter 7](07_acquisition-settings.md): about one and a half parts in ten thousand
-at the campaign's tightest licensed waist and two parts in a hundred thousand
+at the campaign's tightest licensed waist and about 1.4 parts in ten thousand
 at the 2025 configuration. The nonlinearity that matters is the actuator's own over its
 travel, and the span scanned does not enter it, so what is needed is the
 piezo's departure from linearity as a fraction of its full travel and the
-hysteresis between the two halves of a triangle. A bow of two per cent clears
-the 40 micron tolerance by 1.2 and ten per cent fails it by four, so an
+hysteresis between the two halves of a triangle. The 40 micron tolerance
+assumes the unclipped design, the bore out of the focusing path. A bow of
+two per cent fails it by 1.6 and ten per cent fails it by about eight, so an
 open-loop actuator needs its bow MEASURED from the anchors the sweep crosses
 and taken out.
 
@@ -836,7 +1028,7 @@ record's collection window. The collection solid angle, which the record has nev
 the quantity that closes it, and this section carries the debt until a measurement exists.
 
 **The gap.** The platform table's fluorescence rows multiply the
-emitted rate by 0.162, and that number is the fraction of the emission inside
+emitted rate by 0.341, and that number is the fraction of the emission inside
 the axial collection window, `2 arctan(z_ratio) / pi`, derived in
 `results/prediction_band.csv` from the lens and the cathode. It is not a solid
 angle, and no solid angle enters anywhere. So every absolute fluorescence rate
@@ -852,7 +1044,7 @@ condenser sits in the path. All are bench facts.
 trap and the molasses rows, by one common factor, so it does not move any
 comparison between those rows, and it moves every comparison against an
 absorption row. The axial window's own weighting is a second, smaller question:
-0.162 is computed on the ramp's axial weight, and the table now integrates the
+0.341 is computed on the ramp's axial weight, and the table now integrates the
 saturated rate, whose weight is different.
 
 ### The detection budget from the bench facts
@@ -869,27 +1061,30 @@ dimension along it (the record's reading) or
 dimension along it (the owner's 2026-09-12 "portrait"), the two readings still
 open above.
 
-The waist power the signal carries, derived. The integrated
-weak-drive two-photon signal in a collected length $L$ is
-$(P^2/\lambda) 2\arctan(L/2z_R)$: the prefactor holds no waist, and the
-whole dependence sits in the arctangent, whose logarithmic slope in the waist
-runs from $-2$ where $L \ll z_R$ to $0$ where the Rayleigh range sits inside the
-window. At 64 µm that slope is
-[-1.914](../../results/detection_budget.csv "ref:detection_budget:exponent_weak_drive:along12_w64um") (12 mm
-along) or [-1.994](../../results/detection_budget.csv "ref:detection_budget:exponent_weak_drive:along3_w64um")
-(3 mm along), and with the archive's own saturation carried on the strong-drive
-integral it is [-1.838](../../results/detection_budget.csv "ref:detection_budget:exponent_saturated:along12_w64um").
-The on-axis rate per atom goes as $w_0^{-4}$. The mode holds $w_0^2 L$ atoms,
-which is where two of the four powers go. Along the campaign's ladder the
-slope weakens to [-0.340](../../results/detection_budget.csv "ref:detection_budget:exponent_weak_drive:along12_w16um")
-at 16 µm in the weak-drive form and changes sign,
-[0.606](../../results/detection_budget.csv "ref:detection_budget:exponent_saturated:along12_w16um"), once
-the centre saturates, so the absolute amplitude is a waist channel at the
-archive's geometry and not at a tight one.
+The waist power the signal carries, derived. The integrated weak-drive two-photon signal
+in a collected length $L$ is $(P^2/\lambda) 2\arctan(L/2z_R)$: the prefactor holds no
+waist, and the whole dependence sits in the arctangent, whose logarithmic slope in the
+waist runs from $-2$ where $L \ll z_R$ to $0$ where the Rayleigh range sits inside the
+window. At 42.38 µm that slope is [-1.638](../../results/detection_budget.csv
+"ref:detection_budget:exponent_weak_drive:along12_w42.38um") (12 mm along) or
+[-1.971](../../results/detection_budget.csv
+"ref:detection_budget:exponent_weak_drive:along3_w42.38um") (3 mm along), and with the
+archive's own saturation carried on the strong-drive integral it is
+[-1.364](../../results/detection_budget.csv
+"ref:detection_budget:exponent_saturated:along12_w42.38um").
+
+The on-axis rate per atom goes as $w_0^{-4}$. The mode holds $w_0^2 L$ atoms, which is
+where two of the four powers go. Along the campaign's ladder the slope weakens to
+[-0.340](../../results/detection_budget.csv
+"ref:detection_budget:exponent_weak_drive:along12_w16um") at 16 µm in the weak-drive
+form and changes sign, [0.606](../../results/detection_budget.csv
+"ref:detection_budget:exponent_saturated:along12_w16um"), once the centre saturates, so
+the absolute amplitude is a waist channel at the archive's geometry and not at a tight
+one.
 
 A 15 per cent absolute budget at the
 archive's orientation would hold the waist to
-[7.8](../../results/detection_budget.csv "ref:detection_budget:waist_from_a_15pct_budget:along12") per cent.
+[9.2](../../results/detection_budget.csv "ref:detection_budget:waist_from_a_15pct_budget:along12") per cent.
 
 **Position of the MEASURED rate.** The noise law's shot term gives the
 photoelectron rate per volt as $2FB/b$ with neither the gain nor the
@@ -901,13 +1096,13 @@ photoelectrons per second. The chain's prediction (the excitations in the
 collected length at that line's share of the atoms, the branching, the
 aperture's solid angle, the quantum efficiency, with $f$, the image distance and
 the quantum efficiency drawn) exceeds it by
-[2.86](../../results/detection_budget.csv "ref:detection_budget:gap_log10_predicted_over_measured:Steck_along12_D6mm") ±
+[3.15](../../results/detection_budget.csv "ref:detection_budget:gap_log10_predicted_over_measured:Steck_along12_D6mm") ±
 [0.22](../../results/detection_budget.csv "ref:detection_budget:gap_log10_predicted_over_measured:Steck_along12_D6mm:err")
 in the log at a 6 mm aperture and
-[4.06](../../results/detection_budget.csv "ref:detection_budget:gap_log10_predicted_over_measured:Steck_along12_D25.4mm") ±
+[4.35](../../results/detection_budget.csv "ref:detection_budget:gap_log10_predicted_over_measured:Steck_along12_D25.4mm") ±
 [0.22](../../results/detection_budget.csv "ref:detection_budget:gap_log10_predicted_over_measured:Steck_along12_D25.4mm:err")
-at the largest aperture spanned, one inch (12 mm along, and [2.27](../../results/detection_budget.csv "ref:detection_budget:gap_log10_predicted_over_measured:Steck_along3_D6mm")
-to [3.46](../../results/detection_budget.csv "ref:detection_budget:gap_log10_predicted_over_measured:Steck_along3_D25.4mm")
+at the largest aperture spanned, one inch (12 mm along, and [2.59](../../results/detection_budget.csv "ref:detection_budget:gap_log10_predicted_over_measured:Steck_along3_D6mm")
+to [3.78](../../results/detection_budget.csv "ref:detection_budget:gap_log10_predicted_over_measured:Steck_along3_D25.4mm")
 with 3 mm along).
 
 Exclusions from the gap, by name: the filter's
@@ -934,8 +1129,9 @@ deferral of 2026-09-16 points here for it.
 natural width alone, while the same row carries a transit width of 3.83 MHz
 beside a natural 3.49. The detuning-integrated weak-drive rate is fixed by the
 Rabi frequency alone, so the peak rate scales as one over the total homogeneous
-width. On the record's own kernel the composite width over the natural runs
-1.62 at 64 microns, 2.58 at 19 and 2.92 at 16, and every rate, saturation <!-- other-quantity: a composite-to-natural width ratio, not the predicted coefficient -->
+width. On the record's own kernel (the archive point's collisional and laser widths with each
+row's transit and light shift) the composite width over the natural runs
+1.54 at the calculated 42.4 microns, 2.20 at 19 and 2.74 at 16, and every rate, saturation <!-- other-quantity: a composite-to-natural width ratio, not the predicted coefficient -->
 parameter and absorbed fraction in the platform table is overstated by that
 factor at its own waist.
 
@@ -972,9 +1168,10 @@ collection window's ratio, which the record carries as a signed correction with
 two sign reversals, the fringe Monte Carlo, and the kernel spread that licenses
 writing the model as a convolution. Because the window ratio goes as the quality
 factor over the waist squared, the strain falls on a *small* waist with a poor
-beam. At 55 microns the third cumulant keeps 86 per cent of its value at a
-quality factor of 1, 48 per cent at 2, and reverses sign past 3.17. At 64
-microns the reversal needs 4.29 and at 85 it needs 7.56.
+beam. At 55 microns the third moment keeps 86 per cent of its value at a
+quality factor of 1, 48 per cent at 2, and reverses sign past 3.17. At the
+calculated 42.4 microns the reversal needs 1.88 and at 85 it needs 7.56, so at
+the calculated waist a beam of quality near 2 already reverses it.
 
 **The bench's diffraction limit in question.** The drive passes a
 modulator whose clear aperture is 3 mm, sourced from the manufacturer's own
@@ -993,7 +1190,7 @@ licence with a factor of two to spare, and that pair, not an interval in the
 waist alone, is what the guided and tight-waist cases are sized against.
 
 A second route reaches the same bound, 2026-09-12. The paragraph above sizes
-the pair on the third cumulant's sign reversal. The convolution licence sizes it
+the pair on the third moment's sign reversal. The convolution licence sizes it
 independently, on the rms spread of the transit width over the collected region:
 that spread is 1.73 per cent at 55 microns and a quality factor of 1, 3.61 at
 1.5, 4.70 at 1.75 and 5.84 at 2.0, against the 5.5 per cent edge the record sets
@@ -1010,12 +1207,13 @@ So the waist band and the quality-factor bound are one assumption, not two,
 and writing either alone writes half of it.
 
 The threshold is a band, not a line. The collection ratio carries its own
-uncertainty from the optics: `L/z_R = 0.26 +- 0.14` at a quality factor of 1,
-propagated from `f = 18 +- 1` mm, an image distance of `50 +- 5` mm and the 62
-to 68 micron waist band, which is 54 per cent relative. Scaled, `0.52 +- 0.28`
-at 2 and `0.78 +- 0.42` at 3, so at 3 the licence boundary sits inside the error
-bar and no clean yes or no is available there. A fit reports the probability its
-licence holds, never a sharp verdict against a 54 per cent input.
+uncertainty from the optics: `L/z_R = 0.59 +- 0.35` at a quality factor of 1
+(`results/prediction_band.csv`), propagated from `f = 18 +- 1` mm, an image distance
+of `50 +- 10` mm and the 40 to 45 micron waist band, which is 59 per cent relative.
+At the calculated waist the licence boundary of 0.667 therefore sits inside the error
+bar already at a quality factor of 1, and at 2 the central value, `1.19 +- 0.70`, is
+outside it, so no clean yes or no is available anywhere in the band. A fit reports
+the probability its licence holds, never a sharp verdict against a 59 per cent input.
 
 ### Tilt of the retro-reflection
 
@@ -1024,12 +1222,12 @@ they are exactly anti-parallel. At a tilt $\theta$ the residual two-photon
 wave-vector is $2k\sin(\theta/2)$, so the Doppler-free line regains a Gaussian
 width of that times the thermal speed. Derived, not simulated, at 110 °C. **The angle in this table is the crossing angle at the atoms**, which is what the residual Doppler width is set by. A mirror tilt reaches it multiplied by `2(1 - d/f)` = 4/3 for the bench's 50 mm and f = 150, so a mirror tilt of 3.2 mrad is a crossing angle of 4.27 and gives 1.94 MHz, not the 1.45 the mirror angle alone would give:
 
-| tilt | residual FWHM | against the transit at 64 µm |
+| tilt | residual FWHM | against the transit at 42.38 µm |
 |---|---|---|
-| 0.5 mrad | 0.23 MHz | 0.24 |
-| 1 mrad | 0.45 MHz | 0.49 |
-| 2 mrad | 0.91 MHz | 0.97 |
-| 5 mrad | 2.27 MHz | 2.43 |
+| 0.5 mrad | 0.23 MHz | 0.16 |
+| 1 mrad | 0.45 MHz | 0.32 |
+| 2 mrad | 0.91 MHz | 0.65 |
+| 5 mrad | 2.27 MHz <!-- other-quantity: this table's own retro-tilt residual-Doppler width, not a detection-budget gap --> | 1.61 |
 
 No forecast rests on it: these are the term's size at tilts nobody MEASURED,
 and no committed cell carries a mirror tilt.
@@ -1100,7 +1298,7 @@ fringe wave-vector $k\sin\theta$ is four orders below the axial $2k$, so at
 0.5 mrad the mean fringe survival moves by under 2 per cent, while an offset of
 one waist takes the mean contrast from 0.9995 to 0.836. Beam quality enters
 through the axial sampling instead, taking the mean radius over the collected
-region from 1.011 to 1.083 waists at $M^2 = 3$ and the survival down by 6 per
+region from 1.011 to 1.083 waists <!-- other-quantity: a mean radius in waist units, not paired_reference_forecast's width_err_ratio --> at $M^2 = 3$ and the survival down by 6 per
 cent. What a tilt does to this bench, it does through the offset it produces.
 The wavefront mismatch is still not modelled, so these are an upper bound on the
 fringe effect at non-zero tilt.
@@ -1228,7 +1426,7 @@ of [BIG_PICTURE](../BIG_PICTURE.md):
 ---
 
 
-## The waist estimator is not validated on noisy synthetic traces (2026-09-19)
+## Waist estimator validation on noisy synthetic traces (2026-09-19)
 
 The waist estimator's closure was climbed to three noise levels on the repaired whitening. The rung table
 and its two readings live in [injection and recovery](../wiki/injection-recovery.md), which is where the
@@ -1252,7 +1450,52 @@ waist is quoted at any noisy rung, and the interval's coverage reads well under 
 bar the next quantity to interrogate. **This is the open item that gates every absolute number on this
 page, and the external measurement of the waist is what would close it independently of the fit.**
 
-next wave's first item.
+
+## The drive power measurement point
+
+**OPEN, and it is worth more than the focus width.** The bore transmits 51.5 per cent of an ideal
+Gaussian at the bench's input radius and 26.1 per cent of an LG(1) of the same scale, so two input beams
+of one beam-quality number deliver light differing by a factor of two. `S0` goes as the transmitted
+power over the focal radius squared, so at one `M^2` the composition moves the light shift by about 2.5.
+
+**Which of two questions that is depends on one bench fact.** If the recorded 225 mW is read after the
+modulator, the transmitted fraction divides out and only the focal radius matters. If it is read before it,
+the composition enters every `S0` the record holds. A power meter after the modulator is already wanted
+here and is not on record, which points at the second.
+
+The owner is the instrument for this one. Until he states it, the twin spans both conventions.
+
+## The cell's glass, wall thickness and sealing date (2026-09-23)
+
+What is unknown. Which glass the 2025 cell is made of, how thick its wall is, and when it was
+sealed. The record discusses borosilicate permeation as a documented drift
+([`docs/APPARATUS.md`](../APPARATUS.md)) without stating any of the three for this cell.
+
+Why it bounds a term of the model and not a detail. The permeated gas enters the line as
+a constant Lorentzian, and its temperature behaviour is set by the permeation clock, not
+by the collision. That clock is Arrhenius ([`carle2023`](../lit/carle2023.md), an
+activation energy measured at three temperatures), so a sealed cell's time constant
+falls by about an order of magnitude across the 70 to 130 C ladder. Scaling
+[`feng2026`](../lit/feng2026.md)'s own borosilicate figure for a cell of comparable
+geometry puts it at weeks near the cold end and a day or two near the hot one, and
+[`carle2023`](../lit/carle2023.md)'s microcells are slower again while their
+aluminosilicate is slower by orders.
+
+A cell that has equilibrated at room temperature sheds helium when heated, because a
+fixed amount in a fixed volume puts its internal partial pressure above the
+atmosphere's. Across the ladder that is a change in the gas's own content of the
+opposite sign to the velocity average of the collision, and of the same size. The
+arithmetic and its figures are in the private finding record. This page states the
+consequence and not the numbers, because they rest on a borrowed permeability and this
+cell's glass is the unknown.
+
+What would close it. The cell's fabrication record: the glass, the wall thickness and the date.
+Failing that, a repeat of one temperature block after a long hold at that temperature, which reads
+the clock directly from the line, with no permeability table needed.
+
+How the forecast spans it meanwhile. The permeated gas's temperature exponent runs as a
+model-form arm with a negative branch, not as a fixed velocity exponent, and no number is quoted for
+its drift across the ladder.
 
 ---
 

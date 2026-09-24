@@ -111,12 +111,12 @@ width is degenerate with $\gamma_{\rm coll}$ and competes with it for the
 same wings, unlike the transit kernel's separate convolution. Density
 breaks the degeneracy, because the collisional part scales with density
 and the laser part does not. The correlation
-between $\beta_{\rm self}$ and the shared laser width runs $-0.82$ to
-$-0.89$ under the Gaussian kernel and $-0.91$ to $-0.98$ under the
+between $\beta_{\rm self}$ and the shared laser width runs $-0.61$ to
+$-0.77$ under the Gaussian kernel and $-0.91$ to $-0.98$ under the
 Lorentzian, so the density ladder converts an exact degeneracy into a
 strong but finite one (`results/kernel_identifiability.csv`). Switching the
-kernel shifts the headline $\beta_{\rm self}$ by 45 to 67 per cent across
-the four peaks, nine to eighteen sigma on the statistical error quoted
+kernel shifts the headline $\beta_{\rm self}$ by 5 to 48 per cent across
+the four peaks, 0.6 to 4.3 sigma on the statistical error quoted
 beside it (`results/kernel_headline.csv`).
 
 Fit quality alone cannot settle which kernel is right. The Gaussian arm
@@ -127,17 +127,17 @@ $\sigma$ to zero in the first recovers the second exactly, verified
 numerically to 1.5e-5 of peak, with both widths bounded $[0,50]$ MHz so the
 containing point is reachable. The Gaussian kernel therefore cannot fit
 worse at any condition, and it does give the lower reduced chi-square at
-all 32, with a median difference of +0.023. That tally alone reflects
+all 32, with a median difference of +0.0009. That tally alone reflects
 parameter counting more than it reflects the laser's noise type.
 
 What is informative is the size of the improvement, read as a nested
-likelihood ratio instead of a tally of wins: a median $\Delta\chi^2$ of 232
-for one extra parameter sitting on its boundary, roughly fifteen sigma,
-over a range from 0.1 to 1303 across the 32 conditions. The pure Lorentzian
-is excluded at better than three sigma at 26 of the 32 conditions and at
-better than ten sigma at 21, while the remaining six fall below three sigma
-and the data there do not settle it. The line requires Gaussian-like
-content at most but not all conditions, a constraint on the laser's noise
+likelihood ratio instead of a tally of wins: at the calculated waist a median
+$\Delta\chi^2$ of 9.1 for one extra parameter sitting on its boundary, about
+three sigma, over a range from -0.7 to 131 across the 32 conditions
+(`results/laser_kernel.csv`). The pure Lorentzian is excluded at better than
+three sigma at 16 of the 32 conditions and at better than ten sigma at one,
+while the other sixteen fall below three sigma and the data there do not
+settle it. The line requires Gaussian-like content at half the conditions, a constraint on the laser's noise
 type obtained from the lineshape instead of from the comb ([laser
 frequency noise](laser-frequency-noise-and-the-linewidth.md) carries what
 the comb does and does not say).
@@ -184,7 +184,7 @@ the profile the package returns.
 ```python
 from rb5s6s import composite_profile, transit_fwhm_from_w0
 
-nu, prof = composite_profile(0.60, 1.40, transit_fwhm_from_w0(64e-6, 130.0))
+nu, prof = composite_profile(0.60, 1.40, transit_fwhm_from_w0(42.38e-6, 130.0))
 above = nu[prof >= prof.max() / 2]
 print(f"total FWHM {above[-1] - above[0]:.3f} MHz")
 ```

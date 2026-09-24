@@ -79,6 +79,21 @@ separation while a frequency-axis error does not. That is what makes them a
 ruler and not a line, and it is why the axis does not need the wavemeter
 whose labels identify the peaks but do not measure them.
 
+## Physical and D-line data the thesis quotes
+
+From the held PDF, revision 2.3.4 of 8 August 2025, which the frontmatter's year predates.
+
+| quantity | 85Rb | where |
+|---|---|---|
+| relative natural abundance | 72.17(2) per cent | Table 2 |
+| ionisation limit | 33 690.798 90(20) cm^-1, 4.177 126 695(25) eV | Table 2 |
+| D2 frequency | 2π · 384.230 406 373(14) THz | Table 3 |
+| D2 lifetime and natural width | 26.2348(77) ns, 2π · 6.0666(18) MHz | Table 3 |
+| D1 frequency | 2π · 377.107 385 690(46) THz | Table 4 |
+| D1 lifetime and natural width | 27.679(27) ns, 2π · 5.7500(56) MHz | Table 4 |
+
+The ionisation limit the thesis quotes, 4.177 127 427(25) eV, is the 87Rb sheet's ([steck_rb87](steck_rb87.md)). This sheet's differs in the sixth decimal.
+
 ## What it does not settle
 
 Steck tabulates the D lines. The 6S state is not in it, so the other half of

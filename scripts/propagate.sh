@@ -33,6 +33,11 @@ $PY private/checks/ssot_deps.py --propagate || rc=1
 #     `test_the_committed_graph_is_fresh` was the one red left after stage 1 had
 #     nothing to do. A repair arm that fires only on one trigger is not the
 #     propagation step; it is one of its cases.
+echo "propagate: 1a/5 binding every prose number that resolves to exactly one cell (ssot_bind --bind; O50)"
+# THE SSOT IN THE PROSE, AUTOMATICALLY (owner order O50, 2026-09-22): a number that CAN follow its cell is bound here,
+# at every propagation, so the rewrite below carries it; the ambiguous ones stay for a person and the ratchets refuse
+# their growth. Generated pages are skipped by the binder (their generator emits the value).
+$PY private/checks/ssot_bind.py --bind >/dev/null || rc=1
 echo "propagate: 1b/5 rewriting ref: citations and the reference graph"
 $PY scripts/check_references.py --fix  >/dev/null 2>&1 || true
 $PY scripts/check_references.py --graph >/dev/null || rc=1

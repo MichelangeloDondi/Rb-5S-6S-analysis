@@ -82,6 +82,9 @@ SKIP = {"laser_epoch.csv", "qc_metrics.csv",
         "kernel_budget.csv", "kernel_headline.csv",
         "kernel_identifiability.csv", "kernel_k3.csv", "kernel_k5.csv",
         "kernel_k4.csv", "kernel_k7.csv", "kernel_worlds.csv",
+        # the temperature arm's three rising terms (F244, F245), same reason: every row is DIAGNOSTIC and
+        # the producer writes it. Registered in the commit that created it.
+        "ladder_terms.csv",
         # the fibre twin, same reason: its producer writes per-row statuses
         "fibre_twin.csv",
         # the transit-additivity producer, same reason and one more: it mixes
@@ -285,7 +288,7 @@ FILE_STATUS = {
     # read on a channel the committed fits do not use, against the record's
     # own widths, so DIAGNOSTIC throughout (2026-09-14).
     "far_wing_level.csv": "DIAGNOSTIC",
-    # the cross-arm ratios of the windowed second cumulant against the model
+    # the cross-arm ratios of the windowed second moment against the model
     # at the committed parameters: comparisons, no term measured, DIAGNOSTIC.
     "cross_arm_ratios.csv": "DIAGNOSTIC",
     # the vapour-pressure laws and the archive's ladder against them (M45):
@@ -296,7 +299,7 @@ FILE_STATUS = {
     # row (M48, 2026-09-14): a discrimination between forms conditional on
     # the pinned terms, so DIAGNOSTIC throughout and never a waist.
     "ultra_joint_fit.csv": "DIAGNOSTIC",
-    # THE WINDOW SURFACE (2026-09-16): the twin's windowed cumulants per window and noise level,
+    # THE WINDOW SURFACE (2026-09-16): the twin's windowed moments per window and noise level,
     # a diagnostic of the ESTIMATOR and of the truncation bias, never a property of the atom.
     "window_surface.csv": "DIAGNOSTIC", "kernel_mc.csv": "DIAGNOSTIC",
     # the detection budget (M46): the chain's prediction against the archive's
@@ -310,10 +313,13 @@ FILE_STATUS = {
     # value of anything the apparatus has, so the whole file is
     # DIAGNOSTIC and its absolute widths must never meet the fitted ones.
     "power_time_sign_test.csv": "DIAGNOSTIC",
-    # THE ARBITER ROWS for the three-layer cumulant statement: survival
+    # THE ARBITER ROWS for the three-layer moment statement: survival
     # fractions of the model line, pure quadrature, no apparatus quantity.
     "cumulant_window_check.csv": "DIAGNOSTIC",
     "twin_term_census.csv": "DIAGNOSTIC",
+    # THE MODEL-TERMS REGISTRY (2026-09-25): every row states which computation path carries a
+    # physical term, never a value the atom or the apparatus has, so the whole file is DIAGNOSTIC.
+    "model_terms.csv": "DIAGNOSTIC",
     "twin_realism.csv": "DIAGNOSTIC",
     "band_excess.csv": "DIAGNOSTIC",
     "twin_span_sweep.csv": "DIAGNOSTIC",
@@ -325,7 +331,7 @@ FILE_STATUS = {
     "beta_self.csv": "PRELIM",            # per-peak model fits; headline is the BOUND
     "beta_self_probe.csv": "BOUND",       # the model-independent width-slope bound = C1 headline
     "amplitude_ratios.csv": "NULL",       # degeneracy-law ratios drift-limited -> untestable in the dataset
-    "amplitude_trapping.csv": "MEASURED", # amp ~ N, slopes 0.85-1.02, no rollover
+    "amplitude_trapping.csv": "MEASURED", # amp ~ N, slopes 0.85-1.02, no rollover <!-- other-quantity: amplitude slopes, not the far-wing asymmetry -->
     "modelform.csv": "NULL",              # Voigt-vs-Lehmann BIC below the gate -> no preference
     "power_sweep.csv": "MEASURED",  # width null + amp~P^2 consistency check (resid_skew=ARTIFACT, RESULTS C3c)
     "sobol_acquisition.csv": "ENVELOPE",  # exact shares over stated design-knob ranges (plan/07)
@@ -404,16 +410,16 @@ QUANTITY_STATUS = {
         "tau_resid_median": "MEASURED",
         "resampled_from_a_zero_pool": "CALIB",
         "bootstrap_carries_of_truth": "CALIB",
-        "sd_k4_bootstrap_over_gaussian": "CALIB",
-        "sd_k4_direct_over_gaussian": "CALIB",
+        "sd_mu4_bootstrap_over_gaussian": "CALIB",
+        "sd_mu4_direct_over_gaussian": "CALIB",
         "sigma_resampled_over_gaussian": "CALIB",
         "mixture_check_ratio_to_heaviest_member": "CALIB",
         "conditions_pooled": "DIAGNOSTIC",
         "pool_size_": "DIAGNOSTIC",
         "excess_kurtosis_": "MEASURED",
-        "sd_k2_over_gaussian": "ENVELOPE",
-        "sd_k4_over_gaussian": "ENVELOPE",
-        "sd_k4_over_gaussian_corrected": "ENVELOPE",
+        "sd_mu2_over_gaussian": "ENVELOPE",
+        "sd_mu4_over_gaussian": "ENVELOPE",
+        "sd_mu4_over_gaussian_corrected": "ENVELOPE",
     },
     # THE CLOSURE'S OWN ROWS. The landscapes and their differences are comparisons
     # and measure no apparatus quantity, so DIAGNOSTIC; the control boolean and the
@@ -452,6 +458,9 @@ QUANTITY_STATUS = {
         "collection_window": "CALIB",
         "verdict": "DIAGNOSTIC", "waist_at_bound": "DIAGNOSTIC",
         "sign": "DIAGNOSTIC",
+        # C6a, 2026-09-22: the prediction's distance from the data, read at a point
+        # of the profile the bound comes from, is a statement about the record
+        "profile": "DIAGNOSTIC",
     },
     # M24: the wing check -- a NULL that closes C3f's open structure. The
     # per-condition and mean f_wing rows are bounds on a wing fraction; the
@@ -690,12 +699,12 @@ QUANTITY_STATUS = {
         # geometry, so the coefficients are ENVELOPE (a bracket, re-derive with
         # the measured collection profile); the MC error and window fraction are
         # diagnostics of that bracket.
-        "d_skew": "ENVELOPE", "d_kappa3": "ENVELOPE",
+        "d_skew": "ENVELOPE", "d_mu3": "ENVELOPE",
         "excess_var_frac": "ENVELOPE", "frac_resolved": "ENVELOPE",
         "d_skew_mc_err": "DIAGNOSTIC", "window_frac": "DIAGNOSTIC",
         # 2026-08-10: the three siblings d_skew_mc_err had none of, same
         # construction and same tag.
-        "d_kappa3_mc_err": "DIAGNOSTIC", "excess_var_frac_mc_err": "DIAGNOSTIC",
+        "d_mu3_mc_err": "DIAGNOSTIC", "excess_var_frac_mc_err": "DIAGNOSTIC",
         "frac_resolved_mc_err": "DIAGNOSTIC",
     },
 }

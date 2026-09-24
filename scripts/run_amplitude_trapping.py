@@ -151,7 +151,11 @@ def _trapping_vs_drift(data, slopes, out):
     d, de = s87 - s85, float(np.hypot(e87, e85))
     print("\n(2) log-log slope A~N^s by isotope (s<1 = sublinear = losses):")
     print(f"    87Rb <s> = {s87:.2f}+/-{e87:.2f}    85Rb <s> = {s85:.2f}+/-{e85:.2f}")
-    print(f"    87-85 = {d:+.2f}+/-{de:.2f}  ({abs(d)/de:.1f}sigma).  Trapping predicts")
+    # Two significant digits on the error and the value at its decimals (LANGUAGE 8a.2), through the
+    # package's one formatter: the ledger quotes this line.
+    from rb5s6s.pmfmt import pm_cells
+    dv, dev = pm_cells(d, de)
+    print(f"    87-85 = {'+' if d >= 0 else ''}{dv}+/-{dev}  ({abs(d)/de:.1f}sigma).  Trapping predicts")
     print("    85Rb MORE sublinear (s85<s87, so 87-85>0): sign is as predicted for")
     print("    THIS cut (weighted, 130C in), but it reverses if either is dropped --")
     print("    one cut among four, ~1sigma. Not evidence for trapping (addendum 15 PS).")

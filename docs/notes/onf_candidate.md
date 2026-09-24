@@ -56,7 +56,7 @@ the order of what they remove from this record's uncertainty.
 
 MOT atoms drift through the evanescent field of the guided 993 nm mode. At
 150 uK the transit contribution is 73 to 98 kHz across the 272 to 366 nm
-intensity-decay band, and at MOT density the collisional term is about 180 Hz,
+intensity-decay band, and at MOT density the collisional term is about 180 Hz, <!-- other-quantity: a collisional rate in Hz at MOT density -->
 which is nine orders below the cell's. What remains is
 
 $$\Gamma_{\rm line} \approx \Gamma_{\rm nat} + \Gamma_{\rm laser} + (0.073\ \text{to}\ 0.098)\ \text{MHz} + \Delta U_{\rm surf}(z)$$
@@ -186,12 +186,12 @@ to license the forecast and flagged in its own output row either way.
 Four numbers carry the case.
 
 * Freeing the Lorentzian laser content, which is what an honest K3 fit must
-  do, inflates the coefficient's statistical error by a factor 1.71. That is
+  do, inflates the coefficient's statistical error by a factor 2.74. That is
   what kernel honesty costs with cell data alone.
 * An ONF measurement of both laser shape components at one fifth of the
-  cell's own precision on them brings the error to 0.36 of the free fit,
+  cell's own precision on them brings the error to 0.31 of the free fit,
   buying back the whole inflation and more, on data already taken.
-* A measurement of the Lorentzian content alone has an exact floor at 0.585
+* A measurement of the Lorentzian content alone has an exact floor at 0.365
   of the free fit however precise it is, because the free Gaussian width
   stays correlated with the coefficient. The design consequence decides the
   instrument: the ONF must measure the laser's shape, both components, which
@@ -199,15 +199,15 @@ Four numbers carry the case.
   would not.
 * The relative language hides an absolute demand, so the block anchors it:
   matching the forecast to the committed beta error puts the cell's own
-  determination of each laser parameter near 0.06 MHz, and the one-fifth
-  prior above therefore asks the ONF for roughly 12 kHz on each component.
-  Useful gains begin already at the 0.06 MHz level, which costs the ONF
-  little, and the factor-three gains need the 12 kHz level, which is a real
-  demand on a line a few MHz wide and belongs in the instrument's error
-  budget from the start.
+  determination near 0.058 MHz on Gamma_L and 0.124 MHz on sigma_G, and the
+  one-fifth prior above asks the ONF for 11.6 and 24.8 kHz respectively.
+  Useful gains begin already at the cell-alone level, which costs the ONF
+  little, and the threefold gain (0.31 of the free fit) needs the 11.6 and
+  24.8 kHz level, which is a real demand on a line a few MHz wide and belongs
+  in the instrument's error budget from the start.
 
-The ceiling with both components pinned exactly is 0.24 of the free fit.
-Multiplied by the 1.71 inflation this is 0.41 of the two-parameter fit,
+The ceiling with both components pinned exactly is 0.23 of the free fit.
+Multiplied by the 2.74 inflation this is 0.64 of the two-parameter fit,
 which equals the square root of one minus the validation correlation
 squared, so the forecast agrees with the covariance algebra it must reduce
 to. The shared-path condition below applies to every row.
@@ -254,7 +254,7 @@ magnitude.**
 **not** add into the homogeneous width the way the collisional width and
 $\Gamma_{L,\text{equiv}}$ do. Its time function is quadratic at the origin
 and not linear, so at 170 µK it enters at second order and contributes
-[0.083 to 0.171](../../results/transit_additivity.csv "ref:transit_additivity:spanned:added_fraction_170uK_band")
+[0.089 to 0.183](../../results/transit_additivity.csv "ref:transit_additivity:spanned:added_fraction_170uK_band")
 of its own FWHM, each branch against its own kernel, growing as $T^{0.98}$ and
 not as $\sqrt T$. **The fraction is a property of the kernel together with the
 line it is added to**, and the per-branch rows of that file name the core each
@@ -292,11 +292,11 @@ axis:
 
 | platform | transit width | teeth per transit width |
 |---|---|---|
-| cell, 130 C | [0.958](../../results/onf_candidate.csv "ref:onf_candidate:transit_cell_130C:") MHz | [13.06](../../results/onf_candidate.csv "ref:onf_candidate:eom_teeth_per_transit_cell_130C:") |
+| cell, 130 C | [1.446](../../results/onf_candidate.csv "ref:onf_candidate:transit_cell_130C:") MHz | [8.64](../../results/onf_candidate.csv "ref:onf_candidate:eom_teeth_per_transit_cell_130C:") |
 | fibre, cold, 150 uK | [73 to 98](../../results/onf_candidate.csv "ref:onf_candidate:transit_onf_cold_band:") kHz | [127.18 to 171.45](../../results/onf_candidate.csv "ref:onf_candidate:eom_teeth_per_transit_onf_cold:") |
 | fibre, 130 C | [140.3](../../results/onf_candidate.csv "ref:onf_candidate:transit_onf_hot_130C:") MHz | [0.08 to 0.10](../../results/onf_candidate.csv "ref:onf_candidate:eom_teeth_per_transit_onf_hot_130C:") |
 
-The cold fibre resolves the ruler roughly ten to thirteen times more cleanly
+The cold fibre resolves the ruler roughly fifteen to twenty times more cleanly
 than the cell, the ratio of the two cited rows above,
 because transit broadening there is two orders below the tooth spacing. The
 130 C fibre does not resolve it at all: fewer than one tooth falls
@@ -319,12 +319,12 @@ atom at delay `tau`, averaged across the sample
 (`rb5s6s/forecast.py`, `comb_tooth_weights`). The average runs over the
 sample's spatial extent, so the drive at which the comb weights start to smear
 is inversely proportional to that extent. The carrier weight at the depth
-`2*beta = 2.405`, where an unsmeared carrier nulls exactly:
+`2*beta = 2.405`, where an unsmeared carrier nulls exactly: <!-- other-quantity: the first zero of the Bessel function J0 (EOM modulation depth), not a committed cell -->
 
 | drive | cell, atoms over ~7 cm | fibre, atoms in the ~2 mm waist |
 |---|---|---|
 | 12.5 MHz | 0.000000 | 0.000000 |
-| 700 MHz | 0.089584 | 0.000000 |
+| 700 MHz | [0.089584](../../results/onf_candidate.csv "ref:onf_candidate:eom_carrier_at_null_cell_7cm_700MHz:") | 0.000000 |
 | 1.5 GHz | [0.438608](../../results/onf_candidate.csv "ref:onf_candidate:eom_carrier_at_null_cell_7cm_1500MHz:") | 0.000001 |
 
 The 130 C fibre would need a drive of

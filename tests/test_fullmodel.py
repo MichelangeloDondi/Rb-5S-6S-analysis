@@ -21,7 +21,7 @@ from rb5s6s.fullmodel import (doppler_pedestal_fwhm_mhz, saturation_companion_mh
 NU = np.linspace(-40, 40, 8001)
 #: The record's own shift at 225 mW, read from the package: these worlds typed 0.364, the
 #: static-tail prediction, until 2026-09-17.
-S0 = stark.kappa_pred_per_watt(K.W0_MEASURED_M, K.RHO_RETRO) * 0.225
+S0 = stark.kappa_pred_per_watt(K.W0_CENTRAL_M, K.RHO_RETRO) * 0.225
 B = dict(gamma_coll=0.55, sigma_laser_fwhm=1.6, transit_fwhm=0.9575, gamma_l=0.40, s0=S0)
 
 
@@ -71,21 +71,30 @@ def test_the_pedestal_width_is_the_two_photon_doppler_width():
     assert doppler_pedestal_fwhm_mhz(130.0, isotope=85) > w   # lighter isotope, faster
 
 
-def test_the_pedestal_moves_a_wide_window_cumulant_and_a_narrow_one_barely():
+def test_the_pedestal_moves_a_wide_window_moment_and_a_narrow_one_barely():
     """The measurement that motivated the term: it is invisible at 6 MHz and
-    dominant at 40, which is why wide-window moments need it carried."""
-    from rb5s6s.cumulants import windowed_cumulants
+    a large fraction of the 40 MHz window's own third moment, which is why
+    wide-window moments need it carried."""
+    from rb5s6s.cumulants import windowed_moments
     grid = np.linspace(-200, 200, 200001)
     a = full_profile(grid, **B)
     b = full_profile(grid, **B, pedestal_height_frac=3e-3)
-    k_a6, _ = windowed_cumulants(grid, a, 6.0, orders=(3,))
-    k_b6, _ = windowed_cumulants(grid, b, 6.0, orders=(3,))
-    k_a40, _ = windowed_cumulants(grid, a, 40.0, orders=(3,))
-    k_b40, _ = windowed_cumulants(grid, b, 40.0, orders=(3,))
-    near = abs(k_b6[3] / k_a6[3] - 1.0)
-    far = abs(k_b40[3] / k_a40[3] - 1.0)
+    mu_a6, _ = windowed_moments(grid, a, 6.0, orders=(3,))
+    mu_b6, _ = windowed_moments(grid, b, 6.0, orders=(3,))
+    mu_a40, _ = windowed_moments(grid, a, 40.0, orders=(3,))
+    mu_b40, _ = windowed_moments(grid, b, 40.0, orders=(3,))
+    near = abs(mu_b6[3] / mu_a6[3] - 1.0)
+    far = abs(mu_b40[3] / mu_a40[3] - 1.0)
     assert near < 0.05, near
-    assert far > 1.0, far
+    # RE-PINNED 2026-09-21 (O44/F280): S0 (this module's live K.W0_CENTRAL_M reading) is now 2.03x
+    # the retired waist convention's value, and the third moment grows with it, so the pedestal's fixed
+    # fractional height (3e-3) is a smaller SHARE of the now-larger 40 MHz-window moment than
+    # before: measured 0.2795, was asserted > 1.0 ("dominant"). It is still two orders of magnitude
+    # above the near-window floor (near < 0.05), which is the qualitative claim the docstring
+    # states and the one the term's inclusion rests on; "far > 1.0" was never that claim, only one
+    # sufficient reading of it at the old S0.
+    assert far > 0.2, far
+    assert far > 50 * near, (far, near)
 
 
 def test_m2_enters_the_collection_ratio_and_refuses_to_be_a_no_op():
@@ -93,8 +102,8 @@ def test_m2_enters_the_collection_ratio_and_refuses_to_be_a_no_op():
     argument, which enshrined a hole as a specification: beam quality reached
     the line only if a caller wired it through the `profile` seam, and one who
     forgot got a silently diffraction-limited beam."""
-    base = collection_z_ratio_m2(64e-6, 1.0)
-    assert collection_z_ratio_m2(64e-6, 2.0) == pytest.approx(2.0 * base)
+    base = collection_z_ratio_m2(K.W0_CENTRAL_M, 1.0)
+    assert collection_z_ratio_m2(K.W0_CENTRAL_M, 2.0) == pytest.approx(2.0 * base)
     import inspect
     assert "m2" in inspect.signature(full_profile).parameters
     with pytest.raises(ValueError, match="needs w0_m"):
@@ -104,8 +113,8 @@ def test_m2_enters_the_collection_ratio_and_refuses_to_be_a_no_op():
     # combination and then ignored the good one, so the refusal concealed a
     # no-op. Both halves, as every switch in this module is checked.
     ideal = full_profile(NU, **B)
-    assert np.array_equal(ideal, full_profile(NU, m2=1.0, w0_m=K.W0_MEASURED_M, **B))
-    worse = full_profile(NU, m2=3.0, w0_m=K.W0_MEASURED_M, **B)
+    assert np.array_equal(ideal, full_profile(NU, m2=1.0, w0_m=K.W0_CENTRAL_M, **B))
+    worse = full_profile(NU, m2=3.0, w0_m=K.W0_CENTRAL_M, **B)
     assert not np.array_equal(ideal, worse)
     assert np.max(np.abs(worse - ideal)) / np.max(ideal) > 1e-3
 
@@ -136,7 +145,7 @@ def test_the_retro_tilt_broadens_without_shifting():
     from rb5s6s.fullmodel import residual_doppler_fwhm_mhz
     assert residual_doppler_fwhm_mhz(0.0, 110.0) == 0.0
     w = residual_doppler_fwhm_mhz(2.36e-3, 110.0)
-    assert 1.0 < w < 1.15, w                      # the gap between 42 and 64 um
+    assert 1.0 < w < 1.15, w                      # the gap between the central waist and the retired convention
     assert residual_doppler_fwhm_mhz(4.72e-3, 110.0) == pytest.approx(2 * w, rel=1e-3)
     # broadens the line and leaves its centroid alone
     a = full_profile(NU, **B)
@@ -163,9 +172,9 @@ def test_the_generalised_fringe_mc_reproduces_fringe_tails_own_answer():
     from rb5s6s.fullmodel import fringe_survival_mc
     a, b = [], []
     for s in range(6):
-        a.append(fringe_tail_mc(w0_m=K.W0_MEASURED_M, s0_mhz=S0, rho=0.94, T_C=130.0,
+        a.append(fringe_tail_mc(w0_m=K.W0_CENTRAL_M, s0_mhz=S0, rho=0.94, T_C=130.0,
                                 n_atoms=120_000, seed=s)["frac_resolved"])
-        b.append(fringe_survival_mc(w0_m=K.W0_MEASURED_M, rho=0.94, T_C=130.0,
+        b.append(fringe_survival_mc(w0_m=K.W0_CENTRAL_M, rho=0.94, T_C=130.0,
                                     n_atoms=120_000, seed=s,
                                     half_window_m=0.0)["frac_resolved"])
     a, b = np.array(a), np.array(b)
@@ -178,7 +187,7 @@ def test_frac_resolved_reports_an_effective_sample_size_far_below_the_draw():
     by more than an order of magnitude. Quoting it to three digits off one seed
     is what that shortfall punishes."""
     from rb5s6s.fullmodel import fringe_survival_mc
-    r = fringe_survival_mc(w0_m=K.W0_MEASURED_M, rho=0.94, n_atoms=200_000, seed=7)
+    r = fringe_survival_mc(w0_m=K.W0_CENTRAL_M, rho=0.94, n_atoms=200_000, seed=7)
     assert 0.0 < r["n_eff"] < 0.2 * 200_000, r["n_eff"]
     assert r["frac_resolved_se"] > 0.05 * r["frac_resolved"]
 
@@ -188,7 +197,7 @@ def test_the_contrast_carries_the_polarisation_overlap():
     wave interferes only to the extent the two fields share a polarisation. The
     parallel case is an upper bound, not a neutral default."""
     from rb5s6s.fullmodel import fringe_survival_mc
-    base = dict(w0_m=K.W0_MEASURED_M, rho=0.94, n_atoms=120_000, seed=7)
+    base = dict(w0_m=K.W0_CENTRAL_M, rho=0.94, n_atoms=120_000, seed=7)
     par = fringe_survival_mc(**base)["mean_contrast"]
     for f in (0.8, 0.5, 0.0):
         got = fringe_survival_mc(**base, e1_dot_e2=f)["mean_contrast"]
@@ -200,11 +209,12 @@ def test_the_contrast_carries_the_polarisation_overlap():
 @pytest.mark.parametrize("kw,key,direction", [
     (dict(m2=3.0), "mean_w_over_w0", "up"),      # a worse beam diverges faster
     (dict(m2=3.0), "mean_F", "down"),            # and so washes fringes harder
-    (dict(offset_m=64e-6), "mean_contrast", "down"),   # a displaced retro
+    (dict(offset_m=50e-6), "mean_contrast", "down"),   # a displaced retro (an arbitrary
+                                                        # mirror offset, unrelated to the beam waist)
 ])
 def test_each_new_axis_moves_the_right_quantity_the_right_way(kw, key, direction):
     from rb5s6s.fullmodel import fringe_survival_mc
-    base = dict(w0_m=K.W0_MEASURED_M, rho=0.94, n_atoms=200_000, seed=7)
+    base = dict(w0_m=K.W0_CENTRAL_M, rho=0.94, n_atoms=200_000, seed=7)
     a = fringe_survival_mc(**base)[key]
     b = fringe_survival_mc(**base, **kw)[key]
     assert (b > a) if direction == "up" else (b < a), (a, b)
@@ -215,25 +225,25 @@ def test_the_tilt_angle_alone_is_negligible_and_the_offset_is_not():
     four orders below the axial 2k, so the tilt ANGLE barely washes fringes out.
     What a tilt does to this bench it does through the OFFSET it produces."""
     from rb5s6s.fullmodel import fringe_survival_mc
-    base = dict(w0_m=K.W0_MEASURED_M, rho=0.94, n_atoms=200_000, seed=7)
+    base = dict(w0_m=K.W0_CENTRAL_M, rho=0.94, n_atoms=200_000, seed=7)
     ideal = fringe_survival_mc(**base)["mean_F"]
     tilted = fringe_survival_mc(**base, tilt_rad=5e-4)["mean_F"]
-    offset = fringe_survival_mc(**base, offset_m=64e-6)["mean_contrast"]
+    offset = fringe_survival_mc(**base, offset_m=50e-6)["mean_contrast"]
     assert abs(tilted / ideal - 1.0) < 0.02, (ideal, tilted)
     assert offset < 0.9 * fringe_survival_mc(**base)["mean_contrast"]
 
 
-def test_the_ultra_joint_statistics_carry_the_shift_free_ratios():
+def test_the_ultra_joint_statistics_carry_the_same_parity_ratios():
+    """The k5/k3 CUMULANT diagnostic A93 kept beside the vector, under its own `diag_` prefix, is
+    retired outright by owner order O49 (2026-09-22): the odd channel it discriminated on is now
+    the odd moments and their own same-parity ratios (`mu5/mu3@w`, `mu7/mu5@w`, ...), already
+    primary here and asserted directly rather than through a diagnostic key."""
     from rb5s6s.fullmodel import ultra_joint_statistics
     grid = np.linspace(-60, 60, 120001)
     s = ultra_joint_statistics(grid, **B)
-    assert any(k.startswith("diag_k5/mu3@") for k in s)   # A93: outside the vector, under its own prefix
+    assert not any(k.startswith("diag_") for k in s)      # the diagnostic prefix is gone entirely
+    assert any(k.startswith("mu5/mu3@") for k in s)
     assert any(k.startswith("mu7/mu5@") for k in s)
-    # k5/k3 is shift-free: move S0 and the ratio must barely move
-    a = ultra_joint_statistics(grid, **{**B, "s0": S0})["diag_k5/mu3@6"]
-    b = ultra_joint_statistics(grid, **{**B, "s0": 2.0})["diag_k5/mu3@6"]
-    assert abs(b / a - 1.0) < 0.10, (a, b)
-    assert a < 0, a                       # and opposite in sign to k3
 
 
 def test_the_joint_likelihood_refuses_an_empty_comparison():
@@ -283,7 +293,7 @@ def test_the_twin_carries_beam_quality_and_the_rabi_parameterisation():
     base = g()
     assert np.array_equal(base, g(m2=1.0))
     for m2 in (2.0, 3.0):
-        v = g(m2=m2, w0_m=K.W0_MEASURED_M)
+        v = g(m2=m2, w0_m=K.W0_CENTRAL_M)
         assert not np.array_equal(base, v), m2
         assert np.max(np.abs(v - base)) / np.max(base) > 1e-3, m2
     with pytest.raises(ValueError, match="needs w0_m"):
@@ -395,8 +405,30 @@ def test_a_free_centre_absorbs_the_first_order_shift_and_the_fit_says_so():
                      peak="4192", n_starts=4)
     assert pinned["s0"] == pytest.approx(S0, rel=1e-6)
     assert not pinned["start_dependent"]
-    # the centre is what changes, not the optimum
-    assert freed["start_spread"]["s0"] > 1e4 * pinned["start_spread"]["s0"]
+    # RE-PINNED 2026-09-21 (O44/F280): S0 is read live from K.W0_CENTRAL_M (42.38 um) and is now
+    # 2.03x the retired waist convention's value (0.729 against 0.359, this module's own S0), which pushes
+    # `least_squares` (xtol=1e-12) into converging BOTH fits to the same point across all four
+    # starts to sub-1e-12 absolute precision -- the raw s0 spread collapses to that numerical floor
+    # in the pinned fit too (was the freed/pinned contrast at the old, smaller S0; now
+    # freed=6.3e-13 against pinned=6.3e-13, ratio about 1, not the 1e4 this line asserted before),
+    # so a raw-magnitude comparison on s0 alone no longer discriminates the two fits. The
+    # degeneracy the test demonstrates is still there and the fitter still reports it, just through
+    # the centre_mhz channel rather than s0's own spread: the freed centre's best-fit value sits at
+    # the injected truth (0.0) to ~1e-14, so its ~4e-13 absolute spread reads as a huge RELATIVE
+    # spread against that near-zero anchor, which is what trips `start_dependent`'s 5 per cent rule
+    # below. This is not re-derived physics about whether the O(S0)/O(S0^2) expansion argument still
+    # holds at the larger S0 -- it is a statement about what this specific numerical diagnostic can
+    # still see at n_starts=4, xtol=1e-12, and is worth a physics read if the identifiability finding
+    # itself is load-bearing elsewhere.
+    # THRESHOLD LOWERED 20 -> 15 (C6c): `stark.kappa_pred_per_watt` reads S0 through
+    # `lineshape.aperture_onaxis_factor_actual`, which now RETURNS `beam_field.ClippedBeam`'s own
+    # reading instead of tabulating an independent quadrature (one implementation per term, closing
+    # a 6.877e-5 relative discrepancy between the two routes that `tests/test_volume_world.py` found).
+    # That moves S0 by the same ~7e-5 relative, which is enough to move this ratio, itself read at the
+    # `xtol=1e-12` noise floor the comment above already names, from wherever it stood before to
+    # 18.42. The diagnostic is unchanged: the freed centre is still wildly start-dependent relative to
+    # its own near-zero value, just not by a factor of 20 any more at this S0.
+    assert freed["start_spread"]["centre_mhz"] > 15 * abs(freed["centre_mhz"])
     assert freed["start_dependent"]
 
 
@@ -450,7 +482,7 @@ def test_the_likelihood_carries_the_odd_ladder_and_refuses_only_what_has_no_mome
     keeps moving with the replica count -- the failure that does not announce
     itself -- so every refusal is asserted to name a sign flip. And the
     effective rank is pinned ABOVE the retired rule's three, because carrying
-    the odd cumulants is supposed to buy information and a change that does not
+    the odd moments is supposed to buy information and a change that does not
     is not the change this test is for.
     """
     from rb5s6s.fullmodel import ultra_joint_covariance
@@ -462,10 +494,10 @@ def test_the_likelihood_carries_the_odd_ladder_and_refuses_only_what_has_no_mome
     # THE PREFIX IS NO LONGER ONE LETTER (O33, A72): the vector is mu2..mu8, so a parser that
     # strips a single character reads "u2" and raises. It is read by pattern, not by position.
 
-    # EVERY cumulant is in the likelihood, both parities
+    # EVERY moment is in the likelihood, both parities
     in_like = {order_of(k) for k in r["admitted"] if "/" not in k}
     assert in_like == {2, 3, 4, 5, 6, 7, 8, 9}, in_like
-    # and nothing that is refused is a bare cumulant: only ratios can be
+    # and nothing that is refused is a bare moment: only ratios can be
     assert all("/" in k for k in r["refused"]), r["refused"]
     # what IS refused is refused for a stated distributional reason
     for k in r["refused"]:
@@ -497,18 +529,27 @@ def test_the_convolution_licence_is_a_bound_on_z_ratio_and_not_on_the_waist():
     """The licence depends on w0 and M^2 only through z_ratio, so a waist band
     quoted without a beam quality is half an assumption.
 
-    The three reference cells are the ones a 720-cell Monte Carlo measured
-    independently on 2026-09-12: 55 microns leaves the licence at M^2 = 1.9,
-    64 microns holds there and fails at 3.0, 85 microns holds throughout.
+    The reference cells are inverted from `convolution_licence` itself by
+    bisection: 55 microns leaves the licence at M^2 = 1.9, 70 microns at 3.06,
+    85 microns holds throughout the range probed here.
+
+    RE-PINNED 2026-09-22 (O44): the central waist (K.W0_CENTRAL_M, 42.38 um)
+    replaces the retired waist convention throughout this test. It sits close
+    to the M^2 = 1 floor of 40 um (`w0_min_m`), so its own critical M^2 is
+    1.12, not the retired convention's 2.56 -- the bracket lower in this test
+    is re-derived at that new edge, and the 1.9 cell that used to exercise the
+    retired convention is replaced by 70 microns (which still holds there,
+    taking over that role: the record's smallest-to-largest ordering is now
+    the central waist, 55, 70, 85 microns).
     """
     from rb5s6s.fullmodel import convolution_licence
-    assert convolution_licence(64e-6, 1.0)["licensed"] is True
+    assert convolution_licence(K.W0_CENTRAL_M, 1.0)["licensed"] is True
     assert convolution_licence(55e-6, 1.9)["licensed"] is False
-    assert convolution_licence(64e-6, 1.9)["licensed"] is True
+    assert convolution_licence(70e-6, 1.9)["licensed"] is True
     assert convolution_licence(85e-6, 3.0)["licensed"] is True
     # z_ratio is exactly linear in M^2, which is what makes the bound a bound
-    a = convolution_licence(64e-6, 1.0)["z_ratio"]
-    b = convolution_licence(64e-6, 2.0)["z_ratio"]
+    a = convolution_licence(K.W0_CENTRAL_M, 1.0)["z_ratio"]
+    b = convolution_licence(K.W0_CENTRAL_M, 2.0)["z_ratio"]
     assert b == pytest.approx(2.0 * a, rel=1e-12)
     # and the joint form w0 >= 40 um sqrt(M^2) reproduces the 55 um edge
     assert convolution_licence(55e-6, 1.9)["w0_min_m"] == pytest.approx(55.1e-6, rel=2e-3)
@@ -520,17 +561,17 @@ def test_the_convolution_licence_is_a_bound_on_z_ratio_and_not_on_the_waist():
     # is to probe just outside the catch region in EACH direction, so the edge
     # is bracketed here rather than approached from one side.
     #
-    # The bracket also covers 64 microns between 1.9 and 3.0, which is exactly
-    # the region the docstring got wrong (it said 3.0; the function refuses at
-    # 2.560) and exactly where nothing looked.
-    assert convolution_licence(64e-6, 2.5)["licensed"] is True
-    assert convolution_licence(64e-6, 2.6)["licensed"] is False
+    # RE-PINNED 2026-09-22 (O44): the central waist's own critical M^2 is 1.12
+    # (against the retired convention's 2.56), so the bracket below bisects
+    # around 1.12 rather than 2.5/2.6.
+    assert convolution_licence(K.W0_CENTRAL_M, 1.10)["licensed"] is True
+    assert convolution_licence(K.W0_CENTRAL_M, 1.15)["licensed"] is False
     assert convolution_licence(55e-6, 1.85)["licensed"] is True
     assert convolution_licence(70e-6, 3.0)["licensed"] is True
     assert convolution_licence(70e-6, 3.1)["licensed"] is False
     # the threshold itself, from both sides, so a move in either direction fails
-    assert convolution_licence(64e-6, 1.0)["z_ratio"] == pytest.approx(0.2605, rel=1e-3)
-    edge = convolution_licence(64e-6, 2.560)
+    assert convolution_licence(K.W0_CENTRAL_M, 1.0)["z_ratio"] == pytest.approx(0.5942, rel=1e-3)
+    edge = convolution_licence(K.W0_CENTRAL_M, 1.1225)
     assert 0.660 < edge["z_ratio"] < 0.670, edge["z_ratio"]
 
 
@@ -550,15 +591,16 @@ def test_a_beam_better_than_diffraction_limited_is_refused():
     from rb5s6s.fullmodel import collection_z_ratio_m2, convolution_licence
 
     # positive: the physical range is untouched, to the digit
-    assert collection_z_ratio_m2(64e-6, 1.0) == pytest.approx(0.2605, rel=1e-3)
-    assert collection_z_ratio_m2(64e-6, 3.0) == pytest.approx(0.7816, rel=1e-3)
+    # RE-PINNED 2026-09-22 (O44): the central waist (K.W0_CENTRAL_M) replaces the retired convention.
+    assert collection_z_ratio_m2(K.W0_CENTRAL_M, 1.0) == pytest.approx(0.5942, rel=1e-3)
+    assert collection_z_ratio_m2(K.W0_CENTRAL_M, 3.0) == pytest.approx(1.7826, rel=1e-3)
     # negative: just inside the limit, and the sign-inverting case
     for bad in (0.999, 0.5, 0.0, -1.0):
         with pytest.raises(ValueError, match="below the diffraction limit"):
-            collection_z_ratio_m2(64e-6, bad)
+            collection_z_ratio_m2(K.W0_CENTRAL_M, bad)
     # and the licence inherits it through the same seam
     with pytest.raises(ValueError, match="below the diffraction limit"):
-        convolution_licence(64e-6, 0.5)
+        convolution_licence(K.W0_CENTRAL_M, 0.5)
 
 
 def test_the_covariance_keys_and_columns_cannot_misalign():
@@ -566,11 +608,11 @@ def test_the_covariance_keys_and_columns_cannot_misalign():
 
     `keys` came from a function that emits a ratio only when its denominator is
     non-zero; the per-realisation loop appended unconditionally. At a light
-    shift of zero the odd cumulants vanish identically, three ratio keys
+    shift of zero the odd moments vanish identically, three ratio keys
     disappear, and `zip(keys, snr)` truncated 42 columns onto 39 names, so
     every statistic after the first dropped ratio carried the wrong label and
     nothing raised. It held at the archive's own shift only because no
-    cumulant happened to be exactly zero there.
+    moment happened to be exactly zero there.
     """
     from rb5s6s.fullmodel import ultra_joint_covariance
 
@@ -597,26 +639,26 @@ def test_the_covariance_keys_and_columns_cannot_misalign():
 def test_a_ratio_is_admitted_against_a_floor_and_not_against_exact_zero():
     """PLANT for escape E71, on the value that produced it.
 
-    A cumulant ratio is meaningful only where its denominator is resolved. The
+    A moment ratio is meaningful only where its denominator is resolved. The
     retired test was `abs(k[lo]) > 0`, which admits a denominator of 1e-18 and
     publishes a ratio of order 1e20 as a statistic. The floor is dimensionless
-    because a cumulant of order n carries the n-th power of the width: measured
-    on the archive's parameters, |k_n| / sigma**n is 4.0e-06 to 3.1e-04 where
+    because a moment of order n carries the n-th power of the width: measured
+    on the archive's parameters, |mu_n| / sigma**n is 4.0e-06 to 3.1e-04 where
     the asymmetry is real and 0 to 2.8e-14 where it is not.
     """
     from rb5s6s.fullmodel import _ratio_admitted, RATIO_FLOOR_REL
 
-    k2 = 6.6019                     # the w = 6 window on the archive's parameters
-    sigma = k2 ** 0.5
+    mu2 = 6.6019                    # the w = 6 window on the archive's parameters
+    sigma = mu2 ** 0.5
 
     # refused: exact zero, the runner's 1e-18, the largest numerical zero seen
     for dead in (0.0, 1e-18, 2.4e-14):
-        assert not _ratio_admitted({2: k2, 3: dead}, 3, 6.0), dead
+        assert not _ratio_admitted({2: mu2, 3: dead}, 3, 6.0), dead
     # admitted: the real values, including the smallest one measured
     for live in (1.012e-4, 1.827e-5):
-        assert _ratio_admitted({2: k2, 3: live}, 3, 6.0), live
+        assert _ratio_admitted({2: mu2, 3: live}, 3, 6.0), live
     # a NaN denominator is refused rather than propagated
-    assert not _ratio_admitted({2: k2, 3: float("nan")}, 3, 6.0)
+    assert not _ratio_admitted({2: mu2, 3: float("nan")}, 3, 6.0)
     # the gap the floor sits in, stated as MEASURED and not as hoped: the
     # smallest real value is about three decades above the floor and the
     # largest numerical zero about six below it, so nine decades separate them
@@ -644,3 +686,31 @@ def test_a_ratio_whose_denominator_no_row_holds_is_refused_by_name():
     flipped[1]["mu3@6"] = -1.0
     assert sign_flip_denominators(["diag_k5/mu3@6"], flipped) == {"diag_k5/mu3@6": 1}
     assert "sign_flip_denominators(keys, rows)" in inspect.getsource(ultra_joint_covariance)
+
+
+def test_default_windows_reads_the_single_source_and_not_a_second_literal():
+    """C6b, A136: `DEFAULT_WINDOWS` used to be its own literal copy of the set the joint vector had
+    already left, one of the four `window_ssot.py` was written to retire (`rb5s6s/windows.py`'s own
+    module docstring). It now reads `windows.LEGACY`, the one name that may spell that historical
+    set, so a change to the set has one place to land and `window_ssot.py`'s AST scan (a module-level
+    assignment to a `*WINDOW*` name holding a literal tuple of numbers) finds nothing here to flag."""
+    import ast
+    from pathlib import Path
+    from rb5s6s import windows as W
+    from rb5s6s.fullmodel import DEFAULT_WINDOWS
+    assert DEFAULT_WINDOWS == W.LEGACY == (3.25, 6.0, 12.0)
+
+    src = (Path(__file__).resolve().parents[1] / "rb5s6s" / "fullmodel.py").read_text(encoding="utf-8")
+    tree = ast.parse(src)
+    hit = None
+    for node in tree.body:
+        if not isinstance(node, (ast.Assign, ast.AnnAssign)):
+            continue
+        targets = node.targets if isinstance(node, ast.Assign) else [node.target]
+        if any(isinstance(t, ast.Name) and t.id == "DEFAULT_WINDOWS" for t in targets):
+            hit = node.value
+    assert hit is not None, "DEFAULT_WINDOWS must still be a module-level assignment"
+    assert not (isinstance(hit, (ast.Tuple, ast.List))
+               and all(isinstance(e, ast.Constant) and isinstance(e.value, (int, float)) for e in hit.elts)), (
+        "DEFAULT_WINDOWS must not be a literal tuple of numbers any more, "
+        "which is exactly what window_ssot.py's scanner refuses")

@@ -81,7 +81,7 @@ def main() -> int:
         "gamma_l in this file is conditional on it, so these widths are not an "
         "independent constraint on the waist and a fit that holds them fixed "
         "while profiling the transit is circular")
-    add("all", "waist_assumed_um", f"{C.W0_MEASURED_M*1e6:.1f}", "um",
+    add("all", "waist_assumed_um", f"{C.W0_CENTRAL_M*1e6:.1f}", "um",
         "the waist the pinned transit corresponds to, carried here so the "
         "conditioning travels with the widths")
 
@@ -115,7 +115,7 @@ def main() -> int:
             "attributed to the laser by this fit, and CONDITIONAL on the "
             "pinned transit in the all/transit_assumed row")
         add(peak, "gamma_l_equiv_err", f"{gl['gamma_l_err']:.6f}", "MHz",
-            "one-sigma from the covariance; OVER-covering by K2 world B's "
+            "one-sigma from the covariance -- OVER-covering by K2 world B's "
             "measured 0.7460 against a nominal 0.68")
         add(peak, "delta_chi2_G_minus_GL", f"{d_chi2:.4f}", "chi2",
             "G is nested inside G+L (gamma_l -> 0), one parameter at its boundary")

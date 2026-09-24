@@ -10,16 +10,18 @@ section 2.5): to reach the observed
 ~5.25 MHz total from the 3.49 MHz natural Lorentzian, the extra broadening is
 split between the transit kernel (which rides on the OPEN w0) and the laser, and
 the fit cannot say how much is which --
-    transit 0.85 MHz (w0~70um)       => sigma_laser ~ 1.1 MHz (laser axis)
-    transit 0.93 MHz (w0=64um measured) => sigma_laser ~ 1.1 MHz
-    transit 1.49 MHz (w0~40um)       => sigma_laser ~ 0.4 MHz (laser could be narrow)
-So we quote sigma_laser(2025) <~ 1 MHz (laser axis) as an upper bound, with that
+    transit 1.33 MHz (w0~45um)       => sigma_laser ~ 0.668 MHz (laser axis)
+    transit 1.41 MHz (w0 42um, the calculated waist) => sigma_laser ~ 0.539 MHz
+    transit 1.49 MHz (w0~40um)       => sigma_laser ~ 0.363 MHz (laser could be narrow)
+(results/laser_epoch.csv at the waist the record carries, O44; the waist is calculated from the
+drive optics' bore and never measured on this bench.)
+So we quote sigma_laser(2025) <~ 0.7 MHz (laser axis) as an upper bound, with that
 w0-degeneracy band, and note slow drift is not the cause (~0.01 MHz within a
 scan). A knife-edge measurement of w0 on this bench, fixing the transit term,
 turns this bound into a measurement. (History: w0 was re-centred 32 -> 50 um on
-2026-07-12 when the transit physics was corrected, and later to the lineage-profile
-64 um; 32 um overshoots the observed line and is excluded -- see
-constants.W0_MEASURED_M.)
+2026-07-12 when the transit physics was corrected, and later to the retired
+lineage-profile convention; 32 um overshoots the observed line and is excluded -- see
+constants.W0_CENTRAL_M.)
 
 We also report the block-to-block scatter of the fitted sigma_laser -- the
 block-to-block drift record of the bad-lock epoch -- the starting linewidth the ONF work
@@ -55,9 +57,9 @@ def w0_band():
         return a[-1] - a[0]
     band = []
     _lo_um, _hi_um = C.W0_BAND_M[0] * 1e6, C.W0_BAND_M[1] * 1e6
-    _pr_um = C.W0_MEASURED_M * 1e6
+    _pr_um = C.W0_CENTRAL_M * 1e6
     for w0_um, w0 in ((_hi_um, f"~{_hi_um:.0f}um"),
-                      (_pr_um, f"{_pr_um:.0f}um measured"),
+                      (_pr_um, f"{_pr_um:.0f}um calculated"),
                       (_lo_um, f"~{_lo_um:.0f}um")):
         tr = transit_fwhm_from_w0(w0_um * 1e-6, 110.0)
         if fwhm(1e-3, tr) >= 5.25:
@@ -93,8 +95,8 @@ def main() -> int:
     print("    where sigma<->gamma is unconstrained): "
           + ", ".join(f"{r['peak']}@{r['T'] if r['role']=='t_sweep' else '130/'+r['P']+'mw'}"
                       for r in degen))
-    print(f"  well-constrained sigma_laser (transition axis, at the measured "
-          f"w0={C.W0_MEASURED_M*1e6:.0f}um):")
+    print(f"  well-constrained sigma_laser (transition axis, at the calculated "
+          f"w0={C.W0_CENTRAL_M*1e6:.0f}um):")
     print(f"     median {np.median(sl_t):.1f}, range {sl_t.min():.1f}-{sl_t.max():.1f} MHz "
           f"transition (= {np.median(sl_l):.1f} laser axis; block scatter = drift record)")
 
@@ -110,10 +112,10 @@ def main() -> int:
     # Reporting the central value as the bound would understate it.
     bound = max(sl_l.max(), max(s for _, _, s in band))
     print(f"\n  headline (C2): sigma_laser(2025) <~ {bound:.1f} MHz (laser axis) over the"
-          f" w0 band; ~{np.median(sl_l):.1f} at the measured "
-          f"{C.W0_MEASURED_M*1e6:.0f} um.")
-    print(f"    - degenerate with w0: below the measured "
-          f"{C.W0_MEASURED_M*1e6:.0f}um the true laser is narrower (possibly << 1 MHz)")
+          f" w0 band; ~{np.median(sl_l):.1f} at the calculated "
+          f"{C.W0_CENTRAL_M*1e6:.0f} um.")
+    print(f"    - degenerate with w0: below the calculated "
+          f"{C.W0_CENTRAL_M*1e6:.0f}um the true laser is narrower (possibly << 1 MHz)")
     print("    - slow drift is not the cause (~0.01 MHz within a 1 s scan)")
     print("    - a well-locked SolsTiS reaches ~0.05-0.1 MHz laser axis; the fixed-lock session")
     print("      knife-edge w0 (fixing transit) converts this bound into a measurement")
@@ -141,8 +143,8 @@ def main() -> int:
                     f"rising with w0, reaching zero near w0=16um, so it is "
                     f"formally unconstrained below and quoted to one significant "
                     f"figure for that reason. Conditional on "
-                    f"w0={C.W0_MEASURED_M*1e6:.0f}um, which is measured on this "
-                    f"apparatus lineage but not re-measured by this archive",
+                    f"w0={C.W0_CENTRAL_M*1e6:.0f}um, the waist calculated from the drive "
+                    f"optics' bore (O44), which no measurement on this bench has checked",
                     "BOUND"])
         for tr, w0, sl in band:
             w.writerow(["sigma_laser_at_w0", f"w0_{w0}", f"{sl:.3f}", "",

@@ -20,6 +20,11 @@ windowed cumulants of the SAME model by:
      24 MHz  +517.8 %      -819.2 %
      40 MHz +6494.7 %     -4257.3 %
 
+(k3 = mu3 identically, so its column is unaffected by the cumulant retirement of O49,
+2026-09-22; the k7 column is the CUMULANT's own sensitivity and is queued for
+re-measurement on mu7, the vector's own order-7 member, alongside the three
+re-measured readings that switch named)
+
 after the estimator's own wing-baseline subtraction. **So a wide-window moment
 fitted against a pedestal-free model is fitting the pedestal**, and the
 `k5`/`k7` divergences the record struck those orders for cannot be separated
@@ -69,7 +74,7 @@ scientific run holds the model; the code lands with its own node re-run.
   white at the law or through `residual_source` (the pooled post-fit residuals, moving blocks of 16). A8
   measured the archive's REPEATS scattering 1.8 to 4.1 times the twin's in the moment channel, worst at
   the narrowest window and on the power arm (4.06 against 0.79 on the temperature arm), and a sweep of the
-  twin's amplitude jitter moved the statistic not at all, because a windowed cumulant is exactly invariant
+  twin's amplitude jitter moved the statistic not at all, because a windowed moment is exactly invariant
   under a per-trace amplitude. So the missing term is BETWEEN traces and is a centre or a width jitter.
 
   THE SEAM. `synthetic_traces(..., centre_jitter_mhz=0.0, width_jitter_rel=0.0)` and the same two keywords
@@ -80,7 +85,7 @@ scientific run holds the model; the code lands with its own node re-run.
   `acquire(centre_jitter_mhz=...)` in a different generator; this ports the construction, not a new idea.
 
   THE CALIBRATION, MODEL-FREE. The amplitude of the jitter is not a guess: it is fitted so that the twin's
-  repeat scatter of k_n(W) reproduces the archive's, per window, where the archive's is read from the
+  repeat scatter of mu_n(W) reproduces the archive's, per window, where the archive's is read from the
   DIFFERENCES of its five repeats -- which cancel the model entirely and leave the noise, within and
   between trace, with no law and no residual in them. That is the gage the twin must pass, and A8's ratio
   goes to one by construction of the term. The law sigma^2 = a^2 + bV (+ cV^2) then sets only the LEVEL the
@@ -102,7 +107,9 @@ import numpy as np
 
 from . import constants as K
 from . import stark
-from .lineshape import local_ramp_density, model_profile, ramp_mixture
+from . import windows as W
+from .lineshape import _kernel_widths, local_ramp_density, model_profile, ramp_mixture
+from .volume_line import JointTable
 
 __all__ = ["doppler_pedestal_fwhm_mhz", "residual_doppler_fwhm_mhz",
            "saturation_companion_mhz",
@@ -175,6 +182,16 @@ def saturation_companion_mhz(omega_mhz: float, peak: Optional[str] = None,
     the light shift and multiplies by 1.2511, so it vanishes wherever the
     fitted shift does. Saturation is F-independent; the pumping term carries the
     per-line branching and is the only part that moves with ``peak``.
+
+    WHICH RABI FREQUENCY, graded by the optical Bloch equations along each
+    atom's crossing (F324, 2026-09-22): the collected line's saturation is one
+    extra Lorentzian at about HALF the on-axis two-photon Rabi frequency, a
+    quarter of the width this returns at the on-axis value, at every node from
+    41 to 45 um, 70 to 130 C and 125 to 225 mW. The steady-state average over
+    the collected atoms gives 0.417 of the on-axis width in closed form at
+    42.38 um and the crossing's transient 0.61 of that. A caller passing the on-axis value
+    (`two_photon_rabi_hz` at the focus) asks for four times the ensemble's
+    broadening; the form is right and the evaluation point is the caller's.
     """
     om = abs(float(omega_mhz))
     if om <= 0.0:
@@ -224,6 +241,7 @@ def full_profile(nu: np.ndarray, *, gamma_coll: float, sigma_laser_fwhm: float,
                  w0_m: Optional[float] = None,
                  T_C: float = 130.0,
                  isotope: int = 87,
+                 volume_table: Optional[JointTable] = None,
                  **model_kw) -> np.ndarray:
     """The composite line with saturation, hyperfine pumping and the pedestal.
 
@@ -233,17 +251,39 @@ def full_profile(nu: np.ndarray, *, gamma_coll: float, sigma_laser_fwhm: float,
     ``pedestal_height_frac`` is the pedestal's height as a fraction of the
     narrow line's PEAK, which is the convention the record quotes (about 3e-3).
 
+    WITH ``volume_table`` (a `rb5s6s.volume_line.JointTable`, C6b), the table's joint line of shift
+    and transit replaces `model_profile`'s transit and light-shift convolution: the table carries the
+    two together, atom by atom over the diverging beam, which a convolution cannot (F318 measured
+    what that pairing costs: the odd moments at middle windows and high drive, under one archive
+    sd). The homogeneous Lorentzian (natural, collisional, the saturation companion and the
+    permeated gas) and the laser's Gaussian still convolve, through `lineshape._kernel_widths`, the
+    rule `model_profile` itself uses, and the pedestal adds afterwards as on the default path. The
+    table was sampled at one beam quality and one temperature, so its ``m2`` and ``T_C`` must be
+    this call's, ``w0_m`` is required, and ``transit_fwhm`` must be passed as None and ``profile``
+    left out, because either would count the transit or the ramp twice.
+
     FAILURE MODE, and it is in the docstring because a caller who reads only
     this would otherwise miss it: ``m2`` is DISCONTINUOUS at exactly 1. The
-    axial collection window is absent at 1 and present at 1 + 1e-9, so at a
-    64 um waist a fifth of the excursion between m2 = 1 and 3 is the window
+    axial collection window is absent at 1 and present at 1 + 1e-9, so at the
+    retired convention's waist a fifth of the excursion between m2 = 1 and 3 is the window
     switching on and not beam quality, and at 16 um the step exceeds the
-    excursion and flips the third cumulant's sign. No committed producer calls
+    excursion and flips the third moment's sign. No committed producer calls
     this with m2 != 1 today, so no shipped number carries it; a Sobol scan over
     the beam-quality axis would. The repair is to take ``z_ratio`` explicitly
     and let ``m2`` scale a window that is already on, and it is owed its own
     commit because it moves every caller that passes a waist.
     """
+    if volume_table is not None:
+        return _add_pedestal(nu, _table_line(nu, volume_table, gamma_coll=gamma_coll,
+                                             sigma_laser_fwhm=sigma_laser_fwhm, transit_fwhm=transit_fwhm,
+                                             s0=s0, gamma_nat_mhz=gamma_nat_mhz, laser_kind=laser_kind,
+                                             gamma_l=gamma_l, peak=peak, omega_mhz=omega_mhz,
+                                             pump_scale=pump_scale, retro_tilt_rad=retro_tilt_rad, m2=m2,
+                                             w0_m=w0_m, T_C=T_C, isotope=isotope, model_kw=model_kw),
+                             pedestal_height_frac, T_C, isotope)
+    if transit_fwhm is None:
+        raise ValueError("transit_fwhm is None without a volume_table: model_profile needs a transit width "
+                         "to convolve, and only a table carries the transit itself")
     # M^2 REACHES THE PROFILE ONLY THROUGH THE COLLECTION WINDOW, and until
     # 2026-09-12 it did not reach it at all: a caller had to wire
     # collection_z_ratio_m2 through the `profile` seam and one who forgot got a
@@ -267,10 +307,10 @@ def full_profile(nu: np.ndarray, *, gamma_coll: float, sigma_laser_fwhm: float,
     # THE SWITCH IS DISCONTINUOUS AT m2 == 1 AND THAT IS A DEFECT, named here
     # rather than hidden (2026-09-12). At m2 == 1 no axial
     # window is installed at all; at 1 + 1e-9 the window appears, and at
-    # 64 um that step alone is 1.6e-3 of peak against 7.6e-3 for the whole
+    # the retired convention's waist that step alone is 1.6e-3 of peak against 7.6e-3 for the whole
     # m2 = 1 -> 3 excursion, so a fifth of what this record attributes to
     # BEAM QUALITY is the window switching on. At 16 um the step is larger
-    # than the excursion and flips the sign of k3. The repair is to take
+    # than the excursion and flips the sign of mu3. The repair is to take
     # `z_ratio` as an explicit argument and let `m2` only scale a window
     # that is already on; it is owed its own commit because it moves every
     # caller that passes a waist, and `test_m2_enters_the_collection_ratio_and_
@@ -300,6 +340,11 @@ def full_profile(nu: np.ndarray, *, gamma_coll: float, sigma_laser_fwhm: float,
                            transit_fwhm=transit_fwhm, s0=s0,
                            gamma_nat_mhz=gamma_nat_mhz, laser_kind=laser_kind,
                            gamma_l=gamma_l, **model_kw)
+    return _add_pedestal(nu, narrow, pedestal_height_frac, T_C, isotope)
+
+
+def _add_pedestal(nu, narrow, pedestal_height_frac, T_C, isotope):
+    """The Doppler pedestal, added to either line at its own peak's centre."""
     if pedestal_height_frac <= 0.0:
         return narrow
     fwhm = doppler_pedestal_fwhm_mhz(T_C, isotope)
@@ -307,6 +352,37 @@ def full_profile(nu: np.ndarray, *, gamma_coll: float, sigma_laser_fwhm: float,
     centre = float(nu[int(np.argmax(narrow))])
     ped = np.exp(-4.0 * math.log(2.0) * ((nu - centre) / fwhm) ** 2)
     return narrow + pedestal_height_frac * float(np.max(narrow)) * ped
+
+
+def _table_line(nu, table, *, gamma_coll, sigma_laser_fwhm, transit_fwhm, s0, gamma_nat_mhz, laser_kind,
+                gamma_l, peak, omega_mhz, pump_scale, retro_tilt_rad, m2, w0_m, T_C, isotope, model_kw):
+    """`full_profile`'s narrow line through a `JointTable` (its docstring states the contract). Every
+    refusal below is a way of counting a term twice or evaluating the table away from its own sample."""
+    if w0_m is None:
+        raise ValueError("volume_table needs w0_m: its line is interpolated in (s0, w0)")
+    if float(table.m2) != float(m2):
+        raise ValueError(f"volume_table.m2 = {table.m2} and m2 = {m2}: the table's atoms were sampled at one "
+                         "beam quality")
+    if float(table.T_C) != float(T_C):
+        raise ValueError(f"volume_table.T_C = {table.T_C} and T_C = {T_C}: the table's atoms were sampled at "
+                         "one temperature")
+    if transit_fwhm is not None:
+        raise ValueError("transit_fwhm must be None beside a volume_table, which carries the transit itself")
+    if "profile" in model_kw:
+        raise ValueError("profile must be left out beside a volume_table, which replaces the ramp's convolution")
+    if model_kw:
+        raise ValueError(f"volume_table takes none of model_profile's grid keywords: {sorted(model_kw)}")
+    if laser_kind not in ("gaussian", "lorentzian"):
+        raise ValueError(f"laser_kind={laser_kind!r}: a volume_table mirrors model_profile's two kinds only")
+    companion = saturation_companion_mhz(omega_mhz, peak, pump_scale)
+    sig = sigma_laser_fwhm
+    if retro_tilt_rad > 0.0:              # Gaussian like the laser kernel, so the two add in quadrature
+        sig = math.hypot(sig, residual_doppler_fwhm_mhz(retro_tilt_rad, T_C, isotope))
+    # the transit is the table's, so the helper is asked for the widths alone (its transit argument only
+    # sizes model_profile's own grid)
+    lorentz_laser, homog, _ = _kernel_widths(gamma_coll + companion, sig, 0.0, gamma_nat_mhz, laser_kind, gamma_l)
+    return table.profile(nu, s0_mhz=float(s0), w0_m=float(w0_m), gamma_hom_mhz=float(homog),
+                         sigma_laser_mhz=0.0 if lorentz_laser else float(sig))
 
 
 # ---------------------------------------------------------------------------
@@ -442,20 +518,25 @@ def fringe_survival_mc(*, w0_m: float, rho: float = 1.0, T_C: float = 130.0,
 # The ultra-joint likelihood over every observable at once
 # ---------------------------------------------------------------------------
 
-#: Statistics the joint fit reads. The windowed cumulants are SUMMARY
+#: Statistics the joint fit reads. The windowed moments are SUMMARY
 #: STATISTICS compared against their own forward prediction, never estimators of
-#: an untruncated ramp cumulant: the windowed fifth of a Lorentzian-cored line
+#: an untruncated ramp moment: the windowed fifth of a Lorentzian-cored line
 #: diverges as the window widens and that is a property of the window, not a
 #: defect. Asking them to converge struck two usable channels twice.
-DEFAULT_WINDOWS = (3.25, 6.0, 12.0)
+#: READS THE SINGLE SOURCE (C6b, A136): this used to be its own literal copy of the set the joint
+#: vector had already left, one of the four `windows.py` was built to retire. `windows.LEGACY` is
+#: that same set under its one name, so a producer that wants it can grep for the token instead of
+#: a second definition drifting from the first. `private/checks/window_ssot.py`'s dated exemption
+#: for this file is spent once this reads the source, and the report says so.
+DEFAULT_WINDOWS = W.LEGACY
 #: BOTH PARITIES, because the even orders are the ones this archive can read.
 #: Measured on the twin's world under the noise model's own correlation time
 #: (`tau_int = 2.515`), 42 statistics over these orders and windows split
 #: exactly by parity at a per-trace SNR of 3: every even order and even ratio
-#: runs 446.30 [ref:moment_admission:snr_admitted_min:] to
-#: 5871 [ref:moment_admission:snr_admitted_max:] and every odd one runs
-#: 0.0032500 [ref:moment_admission:snr_refused_min:] to
-#: 0.717 [ref:moment_admission:snr_refused_max:]. The tuple was
+#: runs 413.2 [ref:moment_admission:snr_admitted_min:] to
+#: 5627 [ref:moment_admission:snr_admitted_max:] and every odd one runs
+#: 0.0151 [ref:moment_admission:snr_refused_min:] to
+#: 0.732 [ref:moment_admission:snr_refused_max:]. The tuple was
 #: `(2, 3, 5, 7)` until 2026-09-12, carrying ONE even order and no even ratio,
 #: so the statistic set that holds the width information could not be produced
 #: by this module at all. The odd orders stay in the tuple because they are the
@@ -467,7 +548,7 @@ DEFAULT_WINDOWS = (3.25, 6.0, 12.0)
 #: decision that can bias; and the floor that did the dropping was |mean|/sd
 #: over the replicas, which selects on the realised data. `ultra_joint_covariance`
 #: now admits on whether a statistic HAS a population moment, which keeps every
-#: odd cumulant and refuses only the odd RATIOS whose denominator changes sign
+#: odd moment and refuses only the odd RATIOS whose denominator changes sign
 #: across replicas -- 33 of 42 statistics against the old floor's 22.
 DEFAULT_ORDERS = (2, 3, 4, 5, 6, 7, 8, 9)
 
@@ -477,7 +558,7 @@ def ultra_joint_statistics(nu: np.ndarray, *, windows=DEFAULT_WINDOWS,
                            **profile_kw) -> dict:
     """The statistic vector the ultra-joint fit matches, from `full_profile`.
 
-    Returns raw windowed cumulants at every (window, order), and optionally the
+    Returns raw windowed moments at every (window, order), and optionally the
     adjacent same-parity RATIOS.
 
     **THE CLAIM THIS DOCSTRING CARRIED ABOUT `k5/k3` IS RETRACTED**, on the
@@ -486,38 +567,40 @@ def ultra_joint_statistics(nu: np.ndarray, *, windows=DEFAULT_WINDOWS,
     ramp", and its stability was read as evidence. For a
     centred distribution
 
-        kappa5 = mu5 - 10 mu2 mu3,   so   kappa5/kappa3 = mu5/mu3 - 10 kappa2
+        kappa5 = mu5 - 10 mu2 mu3,   so   kappa5/mu3 = mu5/mu3 - 10 mu2
 
     EXACTLY. On the twin's own truth at a 1.5 MHz window the ratio reads -4.62,
-    -5.40, -4.59 and -4.58 at four conditions whose `k3` spans two orders of
-    magnitude AND BOTH SIGNS, while -10 k2 is -6.97 there and mu5/mu3 the
+    -5.40, -4.59 and -4.58 at four conditions whose `mu3` spans two orders of
+    magnitude AND BOTH SIGNS, while -10 mu2 is -6.97 there and mu5/mu3 the
     remaining +2.35, of order the window's (7/9)w^2. At 3.25 MHz it is -17.3 at
     every condition. **A ratio identical across conditions whose asymmetry
     differs in size and in sign carries nothing about the asymmetry**: its
-    stability was k2 being well measured, and a fit that reads it reads k2
-    twice. What is left of the odd channel is the odd CUMULANTS themselves, and
-    a caller wanting the shift-free part of the ratio subtracts the -10 k2 term
-    it already has.
+    stability was mu2 being well measured, and a fit that reads it reads mu2
+    twice. What is left of the odd channel is the odd MOMENTS themselves,
+    already primary at every window (`mu3@w`, `mu5@w`, `mu7@w`, and the
+    adjacent-pair ratio `mu5/mu3@w` the loop below emits): owner order O49
+    (2026-09-22, "make sure that all cumulants are gone and that the moments
+    are used everywhere instead") retires the k5/k3 CUMULANT diagnostic A93 had
+    kept beside them, so a caller wanting the shift-free combination the
+    retracted claim described forms mu5/mu3 - 10 mu2 from the vector's own
+    members rather than reading it off a stored key.
 
     FAILURE MODE: a window wider than the data's own span returns a statistic
     dominated by whatever the model puts in the wings, which on this archive is
     a pedestal degenerate with the detector offset. Keep the windows inside the
     trace.
     """
-    # MOMENTS ARE THE VECTOR (owner order O33, A35, A72). Both bases come from ONE quadrature per
-    # (window, trace): `windowed_moments` returns the central moments and the cumulants are DERIVED
-    # from that same array, never from a second call. A cumulant is an exact function of the moments,
-    # so carrying it costs no information and adds no evidence -- it rides as a diagnostic with its
-    # cancellation conditioning, which is what explains why a cumulant dies at a window.
-    from .cumulants import cumulants_from_central_moments, windowed_moments
+    # MOMENTS ARE THE VECTOR (owner order O33, A35, A72, and O49 which retired the last diagnostic
+    # exception). `windowed_moments` returns the central moments in ONE quadrature per (window,
+    # trace) and nothing here converts them to cumulants any more: a cumulant is an exact function
+    # of the moments, so carrying it beside them costs no information and adds no evidence.
+    from .cumulants import windowed_moments
     y = full_profile(nu, **profile_kw)
     orders = tuple(orders)
     top = max(orders)
     out: dict = {}
     for w in windows:
         mu, _ = windowed_moments(nu, y, w, orders=tuple(range(1, top + 1)))
-        mu_arr = np.array([mu[o] for o in range(1, top + 1)])
-        k = {n: float(cumulants_from_central_moments(mu_arr)[n - 1]) for n in orders}
         for n in orders:
             out[f"mu{n}@{w:g}"] = float(mu[n])
         if not with_ratios:
@@ -536,39 +619,31 @@ def ultra_joint_statistics(nu: np.ndarray, *, windows=DEFAULT_WINDOWS,
                 # twice for nothing. The moment ratio has no cancellation and no sign constraint to
                 # trip over. The admission floor is read on the DENOMINATOR that is actually used.
                 out[f"mu{hi}/mu{lo}@{w:g}"] = float(mu[hi]) / float(mu[lo])
-        # THE ONE CUMULANT RATIO THAT KEEPS ITS FORM (A93): k5/k3 is shift-free and its sign is the
-        # instrumental-asymmetry discriminator, both measured in that form. It is a DIAGNOSTIC and
-        # enters no likelihood, which is why it is emitted under a name the vector does not select.
-        if 5 in orders and 3 in orders and _ratio_admitted(k, 3, w):
-            # THE DENOMINATOR IS SPELLED AS THE ROW KEY THE REPLICAS HOLD (CRITICAL 1, 2026-09-21):
-            # mu3 is k3 identically, so the ratio is unchanged and the sign-flip guard can now find
-            # its denominator instead of grading NaN. The physics name stays k5/k3 (A93).
-            out[f"diag_k5/mu3@{w:g}"] = k[5] / k[3]
     return out
 
 
 # A RATIO IS ADMITTED AGAINST A MEASURED FLOOR, NEVER AGAINST EXACT ZERO (E71).
 # Both emitters below used `abs(k[lo]) > 0`, which is a claim about the
-# PLATFORM and not about the physics: at zero light shift the odd cumulants
+# PLATFORM and not about the physics: at zero light shift the odd moments
 # vanish identically, and whether the quadrature returns them as 0.0 or as
 # 1e-18 decides whether a meaningless ratio of order 1e20 is published. This
 # machine returns exact zeros at two of three windows and the hosted runner
 # returns none, which is the whole of escape E71.
 #
-# The floor is DIMENSIONLESS because a cumulant of order n carries the n-th
-# power of the distribution's width: the scale is sigma = sqrt(k2) when the
+# The floor is DIMENSIONLESS because a moment of order n carries the n-th
+# power of the distribution's width: the scale is sigma = sqrt(mu2) when the
 # caller asked for order 2, and the window half-width otherwise, since a
 # distribution confined to the window has sigma <= w.
 #
 # WHAT THIS DOES, AND WHAT IT DOES NOT. At the shift the archive and the
-# campaign actually use, |k_n| / sigma**n runs 4.0e-06 to 3.1e-04, while an
+# campaign actually use, |mu_n| / sigma**n runs 4.0e-06 to 3.1e-04, while an
 # EXACTLY symmetric profile returns 0 to 2.8e-14, so five decades separate the
 # live case from the zero case and the floor refuses the zero one. That is
 # escape E71 and the whole of what this constant is for.
 #
-# It is NOT a test of whether a weak-shift cumulant is resolved, and a first
+# It is NOT a test of whether a weak-shift moment is resolved, and a first
 # draft of this comment claimed it was. Measured across s0 down to 1e-8: the
-# returned cumulants stop following the shift below s0 ~ 1e-3 and plateau on
+# returned moments stop following the shift below s0 ~ 1e-3 and plateau on
 # the construction's own numerical floor, and that plateau reaches 1.7e-06
 # across orders and windows while the smallest LEGITIMATE cell in a 540-cell
 # scan is 2.8e-07. **The two populations overlap, so no single dimensionless
@@ -582,7 +657,7 @@ RATIO_FLOOR_REL = 1e-9
 
 
 def _ratio_scale(k: dict, half_width: float) -> float:
-    """The width whose powers set the size of a cumulant at this window."""
+    """The width whose powers set the size of a moment at this window."""
     k2 = k.get(2)
     if k2 is not None and np.isfinite(k2) and k2 > 0:
         return float(k2) ** 0.5
@@ -596,8 +671,11 @@ def _ratio_admitted(k: dict, lo: int, half_width: float) -> bool:
     orders vanish identically at zero shift and this floor separates that
     zero from a live value by five decades (E71).
 
-    IT IS CALLED ON BOTH BASES AND THE CALIBRATION DIFFERS, which the caller
-    must know (O33, A72). The dimensionless quantity is `|v[lo]| / sigma**lo`:
+    IT IS CALLED ON MOMENTS ONLY SINCE O49 RETIRED THE CUMULANT BASIS
+    (2026-09-22); UNTIL THEN IT WAS CALLED ON BOTH AND THE CALIBRATION
+    DIFFERED, which the caller had to know (O33, A72), and the contrast is
+    kept below because it is the reason moments were chosen. The
+    dimensionless quantity is `|v[lo]| / sigma**lo`:
 
     * ODD orders: the calibration below is UNCHANGED and exact at order 3,
       because `mu3 == k3` identically -- the floor is comparing the same
@@ -636,11 +714,11 @@ def transit_collection_factor(w0_m: float, m2: float = 1.0, n: int = 4001) -> fl
     it the beam radius grows as w(z) = w0 sqrt(1 + (z/z_R)^2): each slice's transit width goes as
     1/w and its two-photon signal as the integral of I^2 over the slice, w^-2 at unit power, so
     the collected kernel is that mixture and its width, to first order, the signal-weighted mean
-    of 1/w: <w^-3> / <w^-2> over z uniform on [-L, L]. It reads 0.9892 at 64 um and M2 = 1
+    of 1/w: <w^-3> / <w^-2> over z uniform on [-L, L]. It read 0.9892 at the retired waist convention and M2 = 1
     (z_ratio 0.2605) and 0.9971 at 90 um; the kernel Monte Carlo of `scripts/run_kernel_mc.py`
-    reads -0.96 +- 0.2 per cent at 64 um against this -1.08. Below one always, one as the ratio
+    read -0.96 +- 0.2 per cent there against this -1.08. Below one always, one as the ratio
     goes to zero. The ramp carries the same mixture through `stark_ramp_axial`; the transit did
-    not until this factor, so a fit at cycles zero read a kernel one per cent too wide at 64 um.
+    not until this factor, so a fit at cycles zero read a kernel one per cent too wide at that waist.
     """
     from ._compat import trapezoid
     zr = collection_z_ratio_m2(float(w0_m), float(m2))
@@ -671,17 +749,18 @@ def convolution_licence(w0_m: float, m2: float = 1.0, **kw) -> dict:
 
     The licence edges below are inverted from THIS function by bisection, so
     they are arithmetic on the line above and are not offered as independent:
-    55 microns leaves the licence at `M^2 = 1.891`, 64 at `2.560`, 70 at
-    `3.062` and 85 at `4.516`. An earlier draft put 64 microns at 3.0, which is
-    17 per cent past where the function itself refuses it, and the guard never
-    probed 64 between 1.9 and 3.0 so the wrong number survived.
+    55 microns leaves the licence at `M^2 = 1.891`, 70 at
+    `3.062` and 85 at `4.516`. An earlier draft put the retired convention's waist at 3.0,
+    17 per cent past where the function itself refuses it (`2.560`), and the guard never
+    probed that waist between 1.9 and 3.0 so the wrong number survived.
     Equivalently `w0 >= 40 microns * sqrt(M^2)`. But the
-    committed prediction band gives `z_ratio = 0.26 +- 0.14` at `M^2 = 1`, a 54
-    per cent relative uncertainty propagated from `f = 18 +- 1 mm`, an image
-    distance of `50 +- 5 mm` and the waist band, so at `M^2 = 3` the boundary
-    sits INSIDE the error bar. `licensed` is therefore the reading of the
+    committed prediction band gives `z_ratio = 0.59 +- 0.35` at `M^2 = 1` at the
+    calculated waist (results/prediction_band.csv), a 59 per cent relative
+    uncertainty propagated from `f = 18 +- 1 mm`, an image distance of
+    `50 +- 10 mm` and the waist band, so the boundary sits INSIDE the error bar
+    already at `M^2 = 1`. `licensed` is therefore the reading of the
     central value and `margin` is what a caller must weigh against its own
-    uncertainty: a sharp yes or no quoted against a +-54 per cent input would be
+    uncertainty: a sharp yes or no quoted against a +-59 per cent input would be
     invented precision.
 
     FAILURE MODE: a caller that reads `licensed` and ignores `z_ratio` learns
@@ -753,9 +832,9 @@ def ultra_joint_covariance(nu: np.ndarray, *, n_real: int = 400,
 
     **THE SNR SPLITS THE LADDER BY PARITY, AND IT NO LONGER GATES ANYTHING.**
     Over 42 statistics at the archive's parameters, the 21 even ones carry a
-    per-trace SNR of 446.30 [ref:moment_admission:snr_admitted_min:] to
-    5871 [ref:moment_admission:snr_admitted_max:] and the 21 odd ones reach only
-    0.717 [ref:moment_admission:snr_refused_max:], so a floor at 3 refused the
+    per-trace SNR of 413.2 [ref:moment_admission:snr_admitted_min:] to
+    5627 [ref:moment_admission:snr_admitted_max:] and the 21 odd ones reach only
+    0.732 [ref:moment_admission:snr_refused_max:], so a floor at 3 refused the
     odd ladder entirely -- the shift channel, and the half of the owner's
     specification that opens with "in particular the ODD ones". Owner order O17
     of 2026-09-15 forbids admitting by SNR at all, and the reasoning is in the
@@ -763,7 +842,7 @@ def ultra_joint_covariance(nu: np.ndarray, *, n_real: int = 400,
     and a floor on |mean|/sd selects on the realised data. What is refused now is
     a statistic with NO POPULATION MOMENT, which on this archive is the three odd
     RATIOS at each window, whose denominator changes sign in about half the
-    replicas. 33 admitted against the floor's 22, with `k3` through `k9` in. A windowed cumulant of pure noise is largest
+    replicas. 33 admitted against the floor's 22, with `mu3` through `mu9` in. A windowed moment of pure noise is largest
     exactly where the signal is smallest (A74), so averaging a refused
     statistic into a result does not dilute it, it inverts it.
 
@@ -815,10 +894,10 @@ def ultra_joint_covariance(nu: np.ndarray, *, n_real: int = 400,
             else:
                 x = w
         yn = y0 + noise_frac * np.sqrt(np.clip(y0, 0.0, None) * peak) * x
-        from .cumulants import cumulants_from_central_moments, windowed_moments
+        from .cumulants import windowed_moments
         # KEYED, NEVER POSITIONAL. `keys` comes from a function that emits a
         # ratio only when its denominator is non-zero, while this loop always
-        # appended, so at a light shift of zero the odd cumulants vanish, three
+        # appended, so at a light shift of zero the odd moments vanish, three
         # ratio keys disappear and `zip(keys, snr)` silently truncated 42
         # columns onto 39 names: every statistic after the first dropped ratio
         # was mislabelled, and nothing raised. Building a dict per realisation
@@ -827,9 +906,6 @@ def ultra_joint_covariance(nu: np.ndarray, *, n_real: int = 400,
         for half_width in windows:
             _top = max(orders)
             mm, _ = windowed_moments(nu, yn, half_width, orders=tuple(range(1, _top + 1)))
-            _mu_arr = np.array([mm[o] for o in range(1, _top + 1)])
-            _kap = cumulants_from_central_moments(_mu_arr)
-            kk = {n: float(_kap[n - 1]) for n in orders}
             for n in orders:
                 row[f"mu{n}@{half_width:g}"] = float(mm[n])
             if with_ratios:
@@ -841,8 +917,6 @@ def ultra_joint_covariance(nu: np.ndarray, *, n_real: int = 400,
                     # which is the misalignment this function's own comment above already records.
                     if hi in orders and _ratio_admitted(mm, lo, half_width):
                         row[f"mu{hi}/mu{lo}@{half_width:g}"] = float(mm[hi]) / float(mm[lo])
-                if 5 in orders and 3 in orders and _ratio_admitted(kk, 3, half_width):
-                    row[f"diag_k5/mu3@{half_width:g}"] = kk[5] / kk[3]   # mu3 is k3: the key names a row that exists (CRITICAL 1)
         rows.append(row)
     # the names every realisation produced, in the reference order
     common = [k for k in keys if all(k in r for r in rows)]
@@ -1052,9 +1126,9 @@ UNFITTABLE = {
                          "amplitude absorbs the surviving fraction and not "
                          "the widening. A wider kernel is fitted as a LARGER "
                          "transit and the waist goes as its inverse, so a fit "
-                         "that ignores depletion reads the waist too SMALL: "
-                         "64 um reads as 57 at three mean cycles, a third of "
-                         "the way to the 42 the record cannot explain",
+                         "that ignores depletion reads the waist too SMALL, "
+                         "by about 11 per cent at three mean cycles, the "
+                         "inverse of the 12 per cent widening",
     "scope_quantisation": "read as noise by any weighted fit",
     "lock_drift": "absorbed by the free per-trace centre, and the oracle arm "
                   "exists to size what that absorption costs",

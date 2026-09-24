@@ -29,7 +29,7 @@ ROOT = Path(__file__).resolve().parents[1]
 # Frozen ANCHOR geometries, not the live configuration: 50 um / 0.6 MHz is the
 # waist the earlier direct Monte-Carlo was run at, kept so the estimator can be
 # checked against it to the digit. The committed CSV is produced at
-# config.W0_MEASURED_M (64 um) -- see scripts/run_fringe_tail.py.
+# config.W0_CENTRAL_M (42.38 um since O44/F280, 2026-09-21) -- see scripts/run_fringe_tail.py.
 _RECORD = dict(w0_m=50e-6, s0_mhz=0.6)
 _SMALL = dict(w0_m=16e-6, s0_mhz=5.7)
 
@@ -81,10 +81,10 @@ def test_skew_suppressed_and_scales_with_waist():
 
 
 @pytest.mark.slow
-def test_third_cumulant_and_variance_coefficients():
+def test_third_moment_and_variance_coefficients():
     # the memory's leverages, in the convention f_res = 2 Var(x): the variance
     # inflation (as a fraction of the un-inflated wedge variance) is +4.5 f_res,
-    # and the third-cumulant identity is exact.
+    # and the third-moment identity is exact.
     o = fringe_tail_mc(**_SMALL, rho=1.0, n_atoms=10 ** 6, n_blocks=8, seed=1)
     f_res = 2.0 * o["f_res_var"]
     exc_over_var0 = (o["var"] - o["var_nofringe"]) / o["var_nofringe"]
@@ -96,19 +96,19 @@ def test_third_cumulant_and_variance_coefficients():
 
 def test_shorter_coherence_window_resolves_more_fringe():
     # capping the window at tau_6S (< the config-S transit) leaves more fringe
-    # unaveraged -> larger resolved fraction and larger third-cumulant change
+    # unaveraged -> larger resolved fraction and larger third-moment change
     trans = fringe_tail_mc(**_SMALL, rho=1.0, n_atoms=300_000, n_blocks=4, seed=1)
     tau6s = fringe_tail_mc(**_SMALL, rho=1.0, coherence_s=TAU_6S_S,
                            n_atoms=300_000, n_blocks=4, seed=1)
     assert tau6s["window_frac"] > trans["window_frac"], (trans, tau6s)
     assert tau6s["frac_resolved"] > trans["frac_resolved"], (trans, tau6s)
-    assert abs(tau6s["d_kappa3"]) > abs(trans["d_kappa3"]), (trans, tau6s)
+    assert abs(tau6s["d_mu3"]) > abs(trans["d_mu3"]), (trans, tau6s)
 
 
 def test_byte_reproducible_at_fixed_seed():
     a = fringe_tail_mc(**_SMALL, rho=1.0, n_atoms=50_000, n_blocks=3, seed=7)
     b = fringe_tail_mc(**_SMALL, rho=1.0, n_atoms=50_000, n_blocks=3, seed=7)
-    assert a["d_skew"] == b["d_skew"] and a["kappa3"] == b["kappa3"]
+    assert a["d_skew"] == b["d_skew"] and a["mu3"] == b["mu3"]
 
 
 # --------------------------------------------------------------------------

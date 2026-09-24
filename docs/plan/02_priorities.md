@@ -238,8 +238,8 @@ ramp from its two companions, because atomic saturation and hyperfine
 pumping share the ramp's inverse-fourth-power dependence on the waist, so
 both configurations carry the same mixture and their ratio is blind to it.
 At 16 µm the weak-field statement that underwrites that scaling has itself
-broken down, the saturation parameter having risen from a few per cent at
-64 µm to well above one.
+broken down, the saturation parameter having risen from about seventeen per
+cent at 42.38 µm to well above one.
 
 The pair's gain, which is still the argument for the second
 configuration. It falsifies a mis-scaled geometry: if the effective waists
@@ -248,7 +248,7 @@ directly, and that is the one systematic the 2025 record could not touch
 from inside its own data. **And the handle that finishes the job is the
 skew**, item 6 below, which grows as the cube of S₀ where symmetric power
 broadening grows as its square. It is the one signature the ramp has that
-its companions do not, and one this record already has the third-cumulant
+its companions do not, and one this record already has the third-moment
 machinery to read. **The tight waist buys signal, the pair calibrates the
 geometry, and the skew separates the ramp.** Only the three together turn
 the null into a measurement. The 2025 dataset's own limit is the
@@ -256,11 +256,13 @@ demonstration of what any one of them leaves behind: a null on a product.
 
 
 6. **Small waist (16 µm), the Stark, skew and lineshape-form configuration**:
-   ~16× more S₀ than 64 µm, so the skew (∝ S₀³) becomes measurable, and at the
+   more S₀ than at the width workhorse (the ~16× this item stated at the
+   retired waist convention is pending re-derivation at the calculated
+   waist), so the skew (∝ S₀³) becomes measurable, and at the
    cliff (S₀ ≫ linewidth) the triangular ramp is directly visible. The skew's
    sign-flip test rides on the collection geometry: the flip happens where the
    axial window Z_c crosses 1.12 z_R, which the small waist puts within reach
-   (§6 item 4). **64 µm is the clean-κ width workhorse.**
+   (§6 item 4). **42.38 µm is the clean-κ width workhorse.**
    **Added 2026-08-09, and it bears on the number this item quotes.** Item 7
    below already notes that 16 µm is saturated at 225 mW and treats that as a
    statement about power headroom. It is also a statement about the skew, which
@@ -271,8 +273,9 @@ demonstration of what any one of them leaves behind: a null on a product.
    same direction as the sign flip rather than against it. The committed axial
    machinery cannot see this, since it takes an integer photon exponent. So the
    sign-flip test stands and the magnitude does not, and the middle of the range
-   is worth costing: 32 µm keeps the sign positive at a saturation of 0.5 and
-   carries a shot-noise figure of merit 24 times the present waist.
+   is worth costing: 32 µm keeps the skew on the archive's side (-0.29 saturated,
+   where 24 µm has crossed) at a saturation of about 0.5 and carries a shot-noise
+   figure of merit 2.5 times the calculated waist's, for the unclipped design.
    [notes/running_wave_and_waist_design.md](../notes/running_wave_and_waist_design.md)
    has the table, the identity that a smaller waist buys no shift at matched
    intensity, and what the machinery needs before 16 µm is chosen deliberately.
@@ -282,20 +285,23 @@ demonstration of what any one of them leaves behind: a null on a product.
    `results/campaign_twin_forecast.csv`). **Two-photon ionization from 6S is
    energetically open** and no committed row bounds its rate, so no claim that this
    probe cannot ionize rests on the single-photon margin alone.
-   Two-photon saturation leaves 1–2 W of headroom at
-   the waist convention, where the on-axis saturation parameter is 0.033 at
+   Two-photon saturation leaves headroom at
+   the 42.38 µm waist convention, where the on-axis saturation parameter is 0.173 at
    225 mW and falls as the inverse fourth power of the waist, so a wider
-   focus only adds headroom. The predicted on-axis shift at 225 mW is
-   [0.348](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred:shared") MHz at the accepted
+   focus only adds headroom (the 1-2 W figure this sentence carried at the
+   retired waist convention is an open item pending re-derivation at the
+   calculated waist). The predicted on-axis shift at 225 mW is
+   [0.729](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred:shared") MHz at the accepted
    waist convention, with an envelope of
-   [0.306](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred_lo:shared") to
-   [0.375](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred_hi:shared") MHz across the
-   waist and retro priors, against Γ = 3.49 MHz, and the 2025
+   [0.675](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred_lo:shared") to
+   [0.786](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred_hi:shared") MHz across the
+   waist and retro priors (the high edge evaluated at the 3 mm bore's own 40.892 µm
+   floor, not an unclipped 40 µm Gaussian), against Γ = 3.49 MHz, and the 2025
    dataset's amplitude ∝ P² to 225 mW confirms the headroom. At 16 µm the
    line is already saturated at 225 mW, so power is not the knob there. The
    one in-beam part with a plausible sub-watt limit is the EOM: check its
    damage rating before
-   lifting the ceiling, and watch the P² bend at 64 µm rather than assuming 1 W
+   lifting the ceiling, and watch the P² bend at 42.38 µm rather than assuming 1 W
    is clean. There is also a physics ceiling on drive power that is not a damage
    limit, the point at which the light shift itself exceeds a tenth of the line
    width, and the projections table carries it per rung.

@@ -62,9 +62,21 @@ def main() -> int:
     add("A", "gamma_l_equiv_transition", f"{gamma_l_mhz:.6f}", "MHz",
         "inverse-variance mean across peaks from kernel_k3.csv, on the "
         "transition axis the lineshape is fitted on")
-    add("A", "verdict", "PRESENT_AND_IDENTIFIED", "verdict",
-        "a non-Gaussian homogeneous component, preferred by a nested "
-        "likelihood ratio at every peak. Says nothing about its origin")
+    # WHICH peaks prefer the component is READ from kernel_k3.csv's own boundary tests, never typed: the
+    # sentence "at every peak" stood here after the calculated focus left 4207 at p 0.20 (F508).
+    pb = {}
+    with (C.RESULTS_DIR / "kernel_k3.csv").open() as fh:
+        for r in csv.DictReader(fh):
+            if r["quantity"] == "p_boundary":
+                pb[r["scope"]] = float(r["value"])
+    pref = sorted(k for k, v in pb.items() if v < 0.05)
+    rest = sorted(k for k in pb if k not in pref)
+    where = ("at every peak" if not rest else
+             f"at {len(pref)} of {len(pb)} peaks, {', '.join(pref)}, and not at "
+             + ", ".join(f"{k} (p {pb[k]:.2g})" for k in rest))
+    add("A", "verdict", "PRESENT_AND_IDENTIFIED" if pref else "NOT_IDENTIFIED", "verdict",
+        f"a non-Gaussian homogeneous component, preferred by a nested likelihood ratio at the 5 per cent level "
+        f"{where}. Says nothing about its origin")
 
     # ---- leg B: the independent laser evidence --------------------------
     ts = {}
@@ -196,7 +208,7 @@ def main() -> int:
         "requirement",
         "the lock's own error signal, a self-heterodyne or beat measurement, "
         "or a fast-scan comb block sampling inside that band. Each is a "
-        "candidate K7 ranks; none has been run")
+        "candidate K7 ranks -- none has been run")
 
     with OUT.open("w", newline="") as fh:
         w = csv.DictWriter(fh, fieldnames=list(rows[0].keys()))

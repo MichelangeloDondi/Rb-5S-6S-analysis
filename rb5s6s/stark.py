@@ -67,27 +67,41 @@ import math
 import numpy as np
 from scipy.optimize import least_squares
 
-from .lineshape import aperture_onaxis_factor, stark_shift_S0_mhz, total_fwhm_mhz
+from .lineshape import aperture_onaxis_factor_actual, stark_shift_S0_mhz, total_fwhm_mhz
 from .linefit import transit_fwhm_at_T
 from .constants import (GAMMA_NAT_HZ, RHO_RETRO, RHO_RETRO_ERR, W0_BAND_M,
-                        W0_MEASURED_M)
+                        W0_CENTRAL_M)
 from .cascade import BRANCHING_F as F_PER_LINE
 from .config import TRANSIT_FWHM_PLACEHOLDER_MHZ
 
 
-def kappa_pred_per_watt(w0_m: float = None, rho: float = None) -> float:
-    """The predicted light shift per RECORDED watt, MHz per W on the transition axis (F39).
+def kappa_pred_per_watt(w0_m: float = None, rho: float = None, bore_in_path: bool = True) -> float:
+    """The predicted light shift per RECORDED watt, MHz per W on the transition axis (F39, F280).
+
+    `bore_in_path=False` is a DESIGN point's convention and never the 2025 bench's (C6a, plan
+    A127). A focus tighter than the EOM bore can form (its floor is about 40.9 um, F291) is
+    reachable only with that 3 mm bore out of the focusing path, so a recorded watt then buys the
+    UNCLIPPED Gaussian's peak and the factor is exactly 1. The default stays the bench's actual
+    focus and still refuses below the floor, so a design-point caller that omits the flag fails
+    loudly instead of computing for a beam this bench cannot make. Which convention the 16 um design
+    points carry is the owner's decision; the flag makes it explicit at every call site.
 
     The ideal Gaussian relation times the on-axis part of the clipped focus's diffraction,
-    `lineshape.aperture_onaxis_factor`: the power meter reads behind the cell, so a recorded
-    watt buys 0.967 of the unclipped on-axis intensity at 64 um and 0.994 at 76. Three
-    producers computed this line identically (the global and full dataset fits and the stark
-    joint fit), which is why it lives here. The profile part of the aperture term (the side
-    lobes, the effective M2, the kernel) stays deferred, and the width channel reads
-    `aperture_spread_factor` instead."""
-    w0 = W0_MEASURED_M if w0_m is None else float(w0_m)
+    `lineshape.aperture_onaxis_factor_actual`: the power meter reads behind the cell, so a
+    recorded watt buys the ACTUAL-focus on-axis factor at `w0_m` (this function's argument is
+    the same-reading, bench-actual waist -- the transit reads it too -- never the unclipped
+    free-focus convention `aperture_onaxis_factor` takes). CORRECTED 2026-09-21 (F280): until
+    then this called `aperture_onaxis_factor(w0)` directly, which computes for the wrong beam and read
+    S0 about 20 per cent low at the bore-limited central value (0.716 against 0.890, a factor
+    0.716/0.890 = 0.80). Three producers computed this line identically (the global and full
+    dataset fits and the stark joint fit), which is why it lives here. The profile part of the
+    aperture term (the side lobes, the effective M2, the kernel) stays deferred, and the width
+    channel reads `aperture_spread_factor` instead (also still on the free-focus convention,
+    F280's own open item)."""
+    w0 = W0_CENTRAL_M if w0_m is None else float(w0_m)
     r = RHO_RETRO if rho is None else float(rho)
-    return stark_shift_S0_mhz(1.0, w0, rho=r) * aperture_onaxis_factor(w0)
+    factor = aperture_onaxis_factor_actual(w0) if bore_in_path else 1.0
+    return stark_shift_S0_mhz(1.0, w0, rho=r) * factor
 
 
 # --- the two width companions, OFF unless a caller turns them on -----------
@@ -164,7 +178,7 @@ def _fwhm_of(gamma_coll: float, sigma_laser: float, transit: float, s0: float,
 def fit_stark_sweep(grid: Dict[Tuple[str, float], Tuple[float, float]], *,
                     T_C: float = 130.0,
                     transit_ref_mhz: float = TRANSIT_FWHM_PLACEHOLDER_MHZ,
-                    gamma_coll: float = 0.6, w0_um: float = W0_MEASURED_M * 1e6,
+                    gamma_coll: float = 0.6, w0_um: float = W0_CENTRAL_M * 1e6,
                     rho: float = RHO_RETRO, profile: bool = True,
                     nu_step: float = 0.01) -> Dict:
     """Bound the AC-Stark coefficient kappa from FWHM-vs-power at fixed T.
@@ -206,10 +220,14 @@ def fit_stark_sweep(grid: Dict[Tuple[str, float], Tuple[float, float]], *,
     # come from constants (W0_BAND_M, RHO_RETRO +/- RHO_RETRO_ERR) so no edge
     # is ever hand-typed here.
     _w0_lo_m, _w0_hi_m = W0_BAND_M
+    # clamp_floor=True: W0_BAND_M's low edge (40 um, the owner's own ruling) sits below this
+    # bore's geometric floor (about 40.89 um, F280) -- an open apparatus tension, not something
+    # this prediction BAND's own "widest credible interval" should crash on (see
+    # aperture_onaxis_factor_actual's docstring). A FIT never passes this flag.
     s0_225_pred_hi = (stark_shift_S0_mhz(0.225, _w0_lo_m, rho=rho + RHO_RETRO_ERR)
-                      * aperture_onaxis_factor(_w0_lo_m))
+                      * aperture_onaxis_factor_actual(_w0_lo_m, clamp_floor=True))
     s0_225_pred_lo = (stark_shift_S0_mhz(0.225, _w0_hi_m, rho=rho - RHO_RETRO_ERR)
-                      * aperture_onaxis_factor(_w0_hi_m))
+                      * aperture_onaxis_factor_actual(_w0_hi_m, clamp_floor=True))
     lo = np.array([0.0] * npk + [0.0], float)
     hi = np.array([np.inf] * (npk + 1), float)
 
@@ -232,8 +250,8 @@ def fit_stark_sweep(grid: Dict[Tuple[str, float], Tuple[float, float]], *,
     # covariance from the Jacobian. The fit is over-dispersed (chi2_red > 1,
     # block-to-block width scatter), so we CONSERVATIVELY inflate the parameter
     # error by sqrt(chi2_red) -- the standard over-dispersion rescale. This is
-    # load-bearing: the inflated bound BRACKETS the predicted 0.35 MHz at the
-    # adopted w0 = 64 um (constants.W0_MEASURED_M). It was quoted here against
+    # load-bearing: the inflated bound BRACKETED the predicted 0.35 MHz at the
+    # retired waist convention (constants.W0_CENTRAL_M now holds the calculated focus, O44). It was quoted here against
     # ~0.6 MHz while the central waist was 50 um, and 1.43 at the older 32 um
     # nominal; both are retired. The raw (un-inflated) bound would be
     # tighter, so we surface both (kappa_err_raw, chi2_inflation) for verifiability.

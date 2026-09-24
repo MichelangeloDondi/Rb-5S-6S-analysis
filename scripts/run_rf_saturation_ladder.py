@@ -51,12 +51,14 @@ from rb5s6s.pmfmt import pm_cells                                  # noqa: E402
 
 _CFG_RESULTS = _CFG.RESULTS_DIR
 
-# THE SHIFT OF THIS WORKING POINT IS A DESIGN VALUE OF ITS DATE: 0.364 MHz was the archive's
-# prediction when the point was set (the static-tail polarizability, retired 2026-09-17), and the
-# record's own is stark_sweep.csv's S0_225mW_pred. The re-run at it is queued as twin-working-point-ssot.
-TRUTH = dict(gamma_coll=0.55, sigma_laser_fwhm=1.6, transit_fwhm=0.9575,
-             gamma_l=0.40, s0=0.364)
-OMEGA0 = 0.45
+# THE WORKING POINT IS THE ARCHIVE POINT (twin-working-point-ssot, done 2026-09-22, F313): the widths are the
+# committed fit's at the calculated waist and the shift is the predicted S0 at 225 mW, read from
+# `rb5s6s.reference_point`; the design values it carried before belonged to retired conventions.
+from rb5s6s.reference_point import reference_point  # noqa: E402
+_AP = reference_point()   # F313: the archive's line, read from the committed fit and the waist, never typed
+TRUTH = dict(gamma_coll=_AP["gamma_coll"], sigma_laser_fwhm=_AP["sigma_laser"], transit_fwhm=_AP["transit_fwhm"],
+             gamma_l=0.40, s0=_AP["s0_225mW"])
+OMEGA0 = _AP["rabi_225mW"]     # the Rabi frequency at the same field and focus factor as s0
 T_C, PEAK = 110.0, "4192"
 NOISE = 0.004
 NU = np.linspace(-25.0, 25.0, 1501)

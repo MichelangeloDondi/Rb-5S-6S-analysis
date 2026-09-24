@@ -109,11 +109,26 @@ def model_population() -> tuple:
 READINGS = {
     "transit_fwhm_rel": 0.01,          # the Monte Carlo kernel's FWHM against transit_fwhm_from_w0
     "transit_shape_rel": 0.02,         # the kernel's cusp shape: the ratio of its 10 and 50 per cent widths
-    "ramp_k2_rel": 0.02,               # the light-shift distribution's second cumulant against the ramp's
-    "ramp_k3_rel": 0.05,               # its third, the grid movement stated (a small difference of large numbers)
+    "ramp_mu2_rel": 0.02,               # the light-shift distribution's second moment against the ramp's
+    "ramp_mu3_rel": 0.05,               # its third, the grid movement stated (a small difference of large numbers)
     "amplitude_power_law_abs": 0.02,   # the departure of the amplitude from P^2 at the node, absolute in the exponent
     "shares_abs": 0.01,                # the four lines' shares, absolute per line
     "depleted_line_abs": 2e-3,       # the composed depleted line against the fit's form, peak-normalised        # the surviving kernel's width with the F depletion along the chord
+    # C6B'S OWN ADDITION (the merge's item 5a, F290's gap): a random subsample of the node's own atoms,
+    # run through `volume_line.joint_spectrum`'s own per-atom recipe, against `volume_line.JointTable` at
+    # the same condition -- what neither transit_fwhm_rel nor ramp_mu2_rel/ramp_mu3_rel touches, since those
+    # validate the kernel and the ramp SEPARATELY. BOTH TOLERANCES ARE SET FROM THE MEASUREMENT, at F318's
+    # corner (42.38 um, 130 C, 225 mW, `scripts/run_kernel_mc.py --w0 42.38 --T 130 --P 225`), five seeds:
+    # shape read 0.00079 to 0.00585 (worst 0.00585), moment_sigma read 0.15 to 3.64 sd (worst 3.64). THE
+    # MARGIN: roughly three times the shape's worst seed and twice the moment's, each still comfortably
+    # below the two DEFECT states this reading's own development measured and repaired (0.09 shape / 10.6
+    # sd, a nine-point-vs-two-point S0 grid's interpolation error read as the joint pairing, and 0.36
+    # shape / 37+ sd, a value-histogram binning of the atoms that plateaued without converging on
+    # `joint_spectrum`, F290's own gap measured the wrong way first) -- so a regression to either state is
+    # still refused, and the tolerance is not fitted to pass whatever the measurement happened to read. See
+    # private/cache/plan_2026-09-18/c6b_defaults_2026-09-22/REPORT.md for the five-seed table.
+    "joint_shape_abs": 0.02,           # the largest absolute difference of the two peak-normalised lines
+    "joint_moment_sigma_abs": 7.0,     # the worst of mu2, mu3, mu4 at QUOTED, in the archive's own sd
 }
 
 
@@ -254,12 +269,12 @@ def judge(readings: Dict[str, Any], names=None) -> tuple:
             why.append(f"{name} malformed"); continue
         if dev > tol:
             why.append(f"{name} off by {dev:.3g} against {tol}")
-        if name == "ramp_k3_rel":
+        if name == "ramp_mu3_rel":
             gm = r.get("grid_movement")
             if gm is None:
-                why.append("ramp_k3_rel carries no grid movement")
-            elif not (float(gm) <= K3_GRID_TOL):
-                why.append(f"ramp_k3_rel grid movement {float(gm):.3g} over {K3_GRID_TOL}")
+                why.append("ramp_mu3_rel carries no grid movement")
+            elif not (float(gm) <= MU3_GRID_TOL):
+                why.append(f"ramp_mu3_rel grid movement {float(gm):.3g} over {MU3_GRID_TOL}")
     return ("PASS" if not why else "FAIL"), why
 
 
@@ -362,7 +377,7 @@ def depletion_factor(w0_um: float, line: str, m2: float = 1.0, rho: float = 0.94
     the fit: `transit_fwhm x depletion_factor`. Read from the node's artefact when the waist
     sits on a validated node; between two validated nodes it is interpolated linearly, whatever
     their spacing up to `MAX_SPAN_UM`, because the factor moves by a part in a thousand per micron
-    (5.2 to 2.25 per cent over 64 to 90 um at 225 mW, 2026-09-16) and a coarse node grid is the
+    (5.2 to 2.25 per cent from the retired convention's waist to 90 um at 225 mW, 2026-09-16) and a coarse node grid is the
     order's own preference. The error of the straight line is bounded by the second difference
     across the three nearest nodes where a third exists (`CURVATURE_TOL`), and a waist outside the
     validated span, a gap wider than the bound, or a curvature over the tolerance is refused."""
@@ -436,13 +451,13 @@ def require_span(conditions, w0_lo: float, w0_hi: float, *, line: str = "4121",
             + "\n  ".join(bad[:8]))
 
 
-K3_GRID_TOL = 0.01
-"""How far the third cumulant may move when the chord grid is halved, as a fraction of the
-reference k3. The rule file asks for both halves -- "Compute it on a halved grid too and refuse
+MU3_GRID_TOL = 0.01
+"""How far the third moment may move when the chord grid is halved, as a fraction of the
+reference mu3. The rule file asks for both halves -- "Compute it on a halved grid too and refuse
 the row when the two disagree" -- and until 2026-09-18 this file did only the first: `judge`
 tested that `grid_movement` was PRESENT and never what it said. So a diagnostic pinned at ~1.9 by
 a sign defect in the producer's halved-grid path rode through 744 validated nodes without comment,
-and the third cumulant -- the odd channel this whole record turns on -- had never actually had its
+and the third moment -- the odd channel this whole record turns on -- had never actually had its
 convergence read. A number a mechanism computes and no mechanism grades is a comment.
 
 0.01 is set from the MEASUREMENT and not from taste: with the sign repaired, 25 nodes spanning
@@ -458,7 +473,7 @@ def _self_test() -> list:
     import tempfile
     bad = []
     ok = {n: {"mc": 1.0, "model": 1.0} for n in READINGS}
-    ok["ramp_k3_rel"]["grid_movement"] = 1e-4
+    ok["ramp_mu3_rel"]["grid_movement"] = 1e-4
     with tempfile.TemporaryDirectory() as td:
         c = pathlib.Path(td); key = node_key(64.0)
         try:
@@ -471,16 +486,38 @@ def _self_test() -> list:
             require_node(key, c); bad.append("kernel-mc: a FAIL artefact was admitted")
         except KernelUnvalidated:
             pass
+        # C6B'S OWN PLANT, both ways (the merge's item 5a): a joint-line reading beyond its tolerance
+        # refuses, one within it (the base `ok` template already carries mc=model=1.0 for every name in
+        # READINGS, joint_shape_abs and joint_moment_sigma_abs included) admits.
+        joint_off = json.loads(json.dumps(ok))
+        joint_off["joint_shape_abs"] = {"mc": 1.0, "model": 0.0}       # 1.0 is beyond any sane peak-normalised tolerance
+        record_node(key, joint_off, detail=_DETAIL_OK, cache=c)
+        try:
+            require_node(key, c); bad.append("kernel-mc: a node failing joint_shape_abs was admitted")
+        except KernelUnvalidated:
+            pass
+        joint_off2 = json.loads(json.dumps(ok))
+        joint_off2["joint_moment_sigma_abs"] = {"mc": 1e6, "model": 0.0}   # far beyond any archive-sd bound
+        record_node(key, joint_off2, detail=_DETAIL_OK, cache=c)
+        try:
+            require_node(key, c); bad.append("kernel-mc: a node failing joint_moment_sigma_abs was admitted")
+        except KernelUnvalidated:
+            pass
+        record_node(key, ok, detail=_DETAIL_OK, cache=c)
+        try:
+            require_node(key, c)
+        except KernelUnvalidated as exc:
+            bad.append(f"kernel-mc: a joint-line PASS artefact was refused: {exc}")
         absent = json.loads(json.dumps(ok)); del absent["shares_abs"]
         record_node(key, absent, cache=c)
         try:
             require_node(key, c); bad.append("kernel-mc: an artefact missing a reading was admitted")
         except KernelUnvalidated:
             pass
-        nogm = json.loads(json.dumps(ok)); nogm["ramp_k3_rel"] = {"mc": 1.0, "model": 1.0}
+        nogm = json.loads(json.dumps(ok)); nogm["ramp_mu3_rel"] = {"mc": 1.0, "model": 1.0}
         record_node(key, nogm, cache=c)
         try:
-            require_node(key, c); bad.append("kernel-mc: a third cumulant with no grid movement was admitted")
+            require_node(key, c); bad.append("kernel-mc: a third moment with no grid movement was admitted")
         except KernelUnvalidated:
             pass
         record_node(key, ok, detail=_DETAIL_OK, cache=c)
@@ -501,10 +538,10 @@ def _self_test() -> list:
             require_node(key, c, readings=WAIST_READINGS)
         except KernelUnvalidated as exc:
             bad.append(f"kernel-mc: a node failing only the amplitude law was refused on the waist set: {exc}")
-        k3off = json.loads(json.dumps(ok)); k3off["ramp_k3_rel"] = {"mc": 1.2, "model": 1.0, "grid_movement": 1e-4}
-        record_node(key, k3off, detail=_DETAIL_OK, cache=c)
+        mu3off = json.loads(json.dumps(ok)); mu3off["ramp_mu3_rel"] = {"mc": 1.2, "model": 1.0, "grid_movement": 1e-4}
+        record_node(key, mu3off, detail=_DETAIL_OK, cache=c)
         try:
-            require_node(key, c, readings=WAIST_READINGS); bad.append("kernel-mc: a node failing k3 was admitted on the waist set")
+            require_node(key, c, readings=WAIST_READINGS); bad.append("kernel-mc: a node failing mu3 was admitted on the waist set")
         except KernelUnvalidated:
             pass
         for wrong in (("no_such_reading",), ()):

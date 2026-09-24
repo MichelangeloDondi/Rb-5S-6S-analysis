@@ -21,7 +21,7 @@ from rb5s6s import constants as K
 from rb5s6s.stark import kappa_pred_per_watt
 
 #: The record's own shift at 225 mW (0.364, the static-tail prediction, until 2026-09-17).
-S0 = kappa_pred_per_watt(K.W0_MEASURED_M, K.RHO_RETRO) * 0.225
+S0 = kappa_pred_per_watt(K.W0_CENTRAL_M, K.RHO_RETRO) * 0.225
 
 
 def _kw():

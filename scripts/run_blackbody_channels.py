@@ -364,18 +364,18 @@ def main() -> int:
              "Planck occupation number at 130 C, the detected line",
              "DIAGNOSTIC"),
             ("bbr_reexcitation", "5P3/2_to_6S", legs[1][3] * legs[1][2] * 0.5,
-             "", "", "per second at 130 C, the larger of the two legs; the "
+             "", "", "per second at 130 C, the larger of the two legs. The "
              "trapped-infrared halo does the same job at about 1.9e3",
              "DIAGNOSTIC"),
             ("bbr_transfer", "6S_to_6P", up, "", "",
-             "per second at 130 C, summed over both fine-structure levels; "
+             "per second at 130 C, summed over both fine-structure levels, "
              "the largest blackbody channel out of 6S", "DIAGNOSTIC")]
     for t_c in (70.0, 90.0, 110.0, 130.0):
         sh = bbr_shift_hz(t_c + 273.15)
         rows.append(("bbr_stark_shift", f"T{int(t_c)}C", sh, abs(sh) * frac,
                      "polarizability",
                      "Hz on the transition axis, principal value through the "
-                     "6S to 6P poles; err is the committed alpha_6s_static "
+                     "6S to 6P poles. err is the committed alpha_6s_static "
                      "band carried through", "ENVELOPE"))
     for t_c in (70.0, 130.0):
         rows.append(("bbr_detector_background", f"T{int(t_c)}C",

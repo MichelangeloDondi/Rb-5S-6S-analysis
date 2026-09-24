@@ -87,7 +87,7 @@ def test_lever_crosscheck_beta_recovers_injected_beta():
     beta85, beta87 = 0.10, 0.06
     blocks = _synth_dataset(beta85, beta87)
     res = lever_crosscheck_beta(blocks, transit_ref_mhz=TREF,
-                          do_w0_band=False, do_loo=False)
+                          do_w0_band=False, do_loo=False, model="convolution")
     b85, e85 = res["headline"][85], res["err_statistical"][85]
     b87, e87 = res["headline"][87], res["err_statistical"][87]
     assert abs(b85 - beta85) < max(5 * e85, 0.02), (b85, e85)
@@ -101,7 +101,7 @@ def test_lever_crosscheck_beta_recovers_injected_beta():
     small = _synth_dataset(0.10, 0.06, temps=(70, 110), peaks_per_iso=1,
                            n=2, noise=0.01)
     res2 = lever_crosscheck_beta(small, transit_ref_mhz=TREF,
-                           do_w0_band=True, do_loo=True)
+                           do_w0_band=True, do_loo=True, model="convolution")
     lo, hi = res2["w0_band"][85]
     assert lo <= res2["headline"][85] <= hi + 1e-9   # headline inside its band
     dp, _ = res2["loo_peak"][85]

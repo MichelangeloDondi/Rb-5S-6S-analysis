@@ -6,7 +6,7 @@ name = "dataset_2025"
 platform = "cell"
 temperatures_c = [70.0, 100.0, 130.0]
 powers_w = [0.225, 0.175, 0.125, 0.075, 0.025]
-waist_um = [62.0, 68.0]
+waist_um = [40.0, 45.0]
 retro_ratio = 0.94
 retro_ratio_err = 0.04
 lock = "drifting"
@@ -25,7 +25,7 @@ repeats_per_rung = 5
 [provenance]
 temperatures_c = "docs/DATA.md: three temperature dwells, all sessions at internal 130 C for the power ladder"
 powers_w = "docs/DATA.md: the ladder ran descending 225-175-125-75-25 mW on all four peaks"
-waist_um = "rb5s6s.constants W0_BAND_M (62, 68) um about the 64 um lineage value; the knife-edge stays open"
+waist_um = "rb5s6s.constants W0_BAND_M (40, 45) um, the owner's 2026-09-17 ruling about the bore-limited central value W0_CENTRAL_M = 42.38 um (O44/F280, retiring the earlier band built on the retired waist convention); the knife-edge stays open"
 retro_ratio = "rb5s6s.constants RHO_RETRO 0.94 with RHO_RETRO_ERR 0.04"
 lock = "the 2025 cavity lock drifted; docs/plan/09 records the repair as later"
 lock_drift_mhz_per_min = "results/projections.csv input_lock_drift_rate, the held-lock bound 0.04 MHz/min, CALIB"

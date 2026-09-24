@@ -13,7 +13,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 GENERATOR = ROOT / "scripts" / "make_results_ledger.py"
 WAIST = re.compile(r"waist|w_0|\bw0\b|W0_", re.I)
-# a lowercase word, so the constant W0_MEASURED_M (whose docstring says convention) is not a hit
+# a lowercase word, so the constant W0_CENTRAL_M (whose docstring says convention) is not a hit
 MEASURED = re.compile(r"(?<![A-Za-z_])measured(?![A-Za-z_])")
 ALLOWED = {
     "the peak this bound is measured on": "a bound measured on a peak is not a measured waist",
@@ -40,7 +40,7 @@ def test_the_ledger_generator_never_calls_the_waist_measured():
 
 def test_the_guard_sees_a_planted_measurement_claim(tmp_path, monkeypatch):
     """The plant: a sentence of the retired shape inserted into a copy of the generator fires."""
-    src = GENERATOR.read_text(encoding="utf-8") + "\n# the width at the measured waist of 64 um\n"
+    src = GENERATOR.read_text(encoding="utf-8") + "\n# the width at the measured waist\n"
     fake = tmp_path / "gen.py"; fake.write_text(src, encoding="utf-8")
     monkeypatch.setattr("tests.test_waist_language.GENERATOR", fake, raising=False)
     import tests.test_waist_language as me

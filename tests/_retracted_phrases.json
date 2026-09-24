@@ -98,9 +98,9 @@
    "marker_window": 400
   },
   {
-   "pattern": "independent 64 (um|µm|\\\\mu m|micron) waist measurement",
+   "pattern": "independent \\d+(?:\\.\\d+)? (um|µm|\\\\mu m|micron) waist measurement",
    "retired": "2026-09-14",
-   "why": "E76: the lineage waist is a working convention (owner, 2026-09-10), and the results ledger's generator still called it an independent measurement",
+   "why": "E76: the lineage waist is a working convention (owner, 2026-09-10), and the results ledger's generator still called it an independent measurement. Generalised 2026-09-22 (O44) from the one retired number to any number: no waist of any size has ever been independently measured on this bench, so the claim is false whichever number it names",
    "marker_window": 400
   },
   {

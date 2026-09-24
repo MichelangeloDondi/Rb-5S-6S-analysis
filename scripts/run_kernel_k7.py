@@ -150,7 +150,7 @@ def main() -> int:
         "reaches the band and carries a stated discrimination, and is ranked "
         "third only because it needs cell time the error-signal route does "
         "not. Its EXISTING bound, taken at the campaign rate, is separately "
-        "too loose to constrain the kernel (kernel_k5.csv); that is a "
+        "too loose to constrain the kernel (kernel_k5.csv) -- that is a "
         "statement about the measurement already taken and not about the fast "
         "block this row ranks")
 

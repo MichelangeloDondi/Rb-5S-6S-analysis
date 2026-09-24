@@ -63,7 +63,9 @@ def test_the_peak_height_optimum_is_interior():
 
 def test_the_second_moment_ratio_reads_a_key_the_function_actually_returns():
     """The column read `kappa2` from a mapping
-    whose keys are `pull`, `excess_var` and `kappa3`, so it fell to its NaN
+    whose keys are `pull`, `excess_var` and `mu3` (`kappa3` until owner order O49,
+    2026-09-22, retired the cumulant spelling; the identity mu3 == kappa3 means the
+    VALUE this history describes is unchanged), so it fell to its NaN
     default on every rung of every run while the file's own note described it
     as computed. A `get` with a NaN default on a fixed small key set is a typo
     that cannot fail.
@@ -78,8 +80,11 @@ def test_the_second_moment_ratio_reads_a_key_the_function_actually_returns():
     rows = _rows("rung")
     assert rows, "no rungs"
     for r in rows:
-        assert math.isfinite(float(r["k2_over_pure"])), r
-        assert math.isfinite(float(r["k3_over_pure"])), r
+        assert math.isfinite(float(r["mu2_over_pure"])), r
+        assert math.isfinite(float(r["mu3_over_pure"])), r
+        # the column read nan at every rung for a wave after the ramp moved to the blue side, because its
+        # integral ran over [-1, 0] only (2026-09-22, C6a); a finite check on the sibling columns let it pass
+        assert math.isfinite(float(r["mu3_one_photon_over_two"])), r
 
 
 def test_the_relative_rate_and_cycle_columns_come_from_the_package():

@@ -52,9 +52,13 @@ def test_every_condition_was_fitted_under_both_kernels():
     rows = _rows()
     assert len(rows) >= 30, f"only {len(rows)} conditions"
     for r in rows:
-        for k in ("gamma_coll_gaussian", "gamma_coll_lorentzian",
-                  "chi2_red_gaussian", "chi2_red_lorentzian"):
+        for k in ("chi2_red_gaussian", "chi2_red_lorentzian"):
             assert float(r[k]) > 0.0, (k, r)
+        # A WIDTH MAY SIT ON ITS ZERO RAIL (2026-09-24): at the ruled waist, at (4154, 70 C) and (4207, 90 C),
+        # both arms rail the collisional and the laser width at zero because the 1.45 MHz transit and the
+        # natural width take the whole line there (F491). A negative width is still a defect.
+        for k in ("gamma_coll_gaussian", "gamma_coll_lorentzian"):
+            assert float(r[k]) >= 0.0, (k, r)
 
 
 def test_the_kernel_choice_is_a_large_lever_on_the_HEADLINE_coefficient():
@@ -65,16 +69,20 @@ def test_the_kernel_choice_is_a_large_lever_on_the_HEADLINE_coefficient():
     density and density is the only thing separating a collisional width from
     a laser one.
     """
+    # READ AT THE RULED WAIST (2026-09-24). At the retired waist convention the switch moved the headline by 45
+    # to 67 per cent, every peak beyond 9 sigma; at 42.38 um it moves it by 5 to 48 per cent, 0.6 to 4.3 sigma
+    # (results/kernel_headline.csv, re-obtained 4 of 4), because the tied Gaussian laser width fell from about
+    # 2 MHz to 0.6 to 1.0 once the transit took its share of the line, and a narrower kernel's shape matters
+    # less. What is guarded is the reading the documents carry: a median lever above a fifth, and three
+    # peaks of four moved beyond three sigma of their statistical error.
     rows = _rows(HEADLINE)
     shifts = [abs(float(r["beta_frac_shift"])) for r in rows]
     med = statistics.median(shifts)
-    assert med > 0.30, (
-        f"median headline shift {med:.1%} is too small to be this lever; "
-        f"the kernel was the largest single assumption on beta_self")
-    for r in rows:
-        assert abs(float(r["beta_shift_in_sigma"])) > 5.0, (
-            f"{r['peak']}: kernel shift {r['beta_shift_in_sigma']} sigma no "
-            f"longer exceeds the quoted statistical error")
+    assert med > 0.20, (
+        f"median headline shift {med:.1%} has collapsed below a fifth; re-read the kernel lever")
+    beyond = sum(1 for r in rows if abs(float(r["beta_shift_in_sigma"])) > 3.0)
+    assert beyond >= 3, (
+        f"only {beyond} of {len(rows)} peaks move beyond three sigma under the kernel switch")
 
 
 def test_the_gaussian_arm_cannot_fit_worse_because_it_CONTAINS_the_other():
@@ -86,13 +94,18 @@ def test_the_gaussian_arm_cannot_fit_worse_because_it_CONTAINS_the_other():
     not a discovery about the laser, it is a fit that failed to reach a
     minimum known to exist.
     """
-    diffs = [float(r["chi2_red_diff"]) for r in _rows()]
-    worse = sum(1 for d in diffs if d >= 0)
-    assert worse == len(diffs), (
-        f"the Lorentzian kernel fits better at {len(diffs) - worse} "
+    # THE PRECISION IS THE TABLE'S OWN DIGIT (F490, 2026-09-24): where the free Gaussian fit stopped above the
+    # contained model the producer refits the arm at its boundary, and the two then agree to the optimiser's
+    # precision, which the table prints as a delta chi2 of -0.0; a delta chi2 below -0.05 is a failed minimum.
+    rows = _rows()
+    worse = sum(1 for r in rows if float(r["delta_chi2"]) >= -0.05)
+    assert worse == len(rows), (
+        f"the Lorentzian kernel fits better at {len(rows) - worse} "
         f"condition(s). The Lorentzian model is CONTAINED in the Gaussian "
         f"one, so this cannot happen from the data. It means the Gaussian "
-        f"arm's optimiser did not converge there")
+        f"arm's optimiser did not converge there, even at its boundary")
+    assert all(r.get("gaussian_arm") in ("free", "boundary") for r in rows), \
+        "the producer names which Gaussian fit it reports"
 
 
 def test_the_nested_likelihood_ratio_is_reported_and_self_consistent():
@@ -115,19 +128,23 @@ def test_the_nested_likelihood_ratio_is_reported_and_self_consistent():
             f"({want:.1f}) at {r['peak']} {r['T']}C {r['P']}mW")
 
 
-def test_a_pure_lorentzian_laser_is_excluded_at_most_conditions():
+def test_a_pure_lorentzian_laser_is_excluded_at_half_the_conditions():
     """The surviving claim, stated as a count rather than as a p-value.
 
     A sign test on a nested comparison has no null to test against. The number
-    of conditions where the improvement is large IS informative.
+    of conditions where the improvement is large IS informative. At the retired
+    waist convention it was 20 or more of 32 with a median above 50; at the ruled
+    42.38 um it is 16 of 32 with a median of 9.1, which the documents quote, because
+    the laser kernel is narrow under the wider transit and its shape is weakly
+    identified there. Guarded against collapse with room for a re-run's scatter.
     """
     dchi2 = [float(r["delta_chi2"]) for r in _rows()]
     strong = sum(1 for d in dchi2 if d > 9.0)      # three sigma, one parameter
-    assert strong >= 20, (
+    assert strong >= 12, (
         f"only {strong} of {len(dchi2)} conditions exclude a purely "
         f"Lorentzian laser contribution above three sigma; the record's "
         f"Gaussian assumption rests on this margin")
-    assert statistics.median(dchi2) > 50.0, (
+    assert statistics.median(dchi2) > 4.0, (
         f"median delta chi2 {statistics.median(dchi2):.1f} has collapsed")
 
 

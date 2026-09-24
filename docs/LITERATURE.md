@@ -80,8 +80,8 @@ fringe-averaged intensity with no coherent ×2 enhancement. The fringe-resolved
 tail is not benign, though: near-transverse atoms sample the node/antinode
 arcsine, and because the fringe multiplies the shift it suppresses the ramp
 skew, κ₃ → −S₀³(1/135 − f_res/10) at ρ=1. As a fraction of the intrinsic 0.566
-triangle skew that is negligible at w₀=64 µm (~7–14% of an
-already-below-noise skew) but ~26–28% at w₀=16 µm, additive to the
+triangle skew that is ~11–15% of an already-below-noise skew at the
+calculated central waist w₀ = 42.38 µm (`results/fringe_tail.csv`) but ~26–28% at w₀=16 µm, additive to the
 beam-divergence correction (`rb5s6s/fringe_tail.py`). Calculated.
 
 [Hamilton et al., Phys. Rev. Applied 19, 054059 (2023)](lit/hamilton2023.md)
@@ -344,13 +344,17 @@ A number here is an identifier, not a position.
    core, which is checkable by BIC and the M8 cusp fit. See
    [THEORY_NOTE](THEORY_NOTE.md) §3.
    *And the width channel is not a weaker alternative. It is blind.* At 225 mW
-   and the $w_0 = 64$ µm convention the ramp kernel's own width is $S_0/2$ exactly
+   and the $w_0 = 42.38$ µm convention the ramp kernel's own width is $S_0/2$ exactly
    (its density peaks at $|s|=S_0$ and halves at $|s|=S_0/2$). The extra width
    that puts on the line is read from `run_identifiability.py`, not composed
-   here: [6.33](../results/identifiability.csv "ref:identifiability:width_signature_broadening_khz:gaussian_branch")
-   kHz on the Gaussian branch and [7.15](../results/identifiability.csv "ref:identifiability:width_signature_broadening_khz:cusp_branch")
-   kHz on the cusp, a part in some 800 of the line. No width measurement
-   reaches this signal at any precision.
+   here: [25.95](../results/identifiability.csv "ref:identifiability:width_signature_broadening_khz:gaussian_branch")
+   kHz on the Gaussian branch and [28.77](../results/identifiability.csv "ref:identifiability:width_signature_broadening_khz:cusp_branch")
+   kHz on the cusp, a part in some 185 to 208 of the line.
+
+Against the
+   record's own between-block width scatter, 3 to 8 per cent (RESULTS.md C3a),
+   160 to 430 kHz absolute, the signal is six to seventeen times smaller. No
+   width measurement reaches this signal at any precision.
    The same comparison settles a loose end in [lee2010](lit/lee2010.md): their
    power-dependent Gaussian growth of ~1.9 MHz is **4–9× larger** than the ramp
    their own measured light-shift coefficient can produce, so the intensity
@@ -373,6 +377,8 @@ both added 2026-07-30, **that intensity-inhomogeneity broadening of a two-photon
 alkali line in a hot cell is a new observation** ([lee2010](lit/lee2010.md) owns
 it, see §5.3), or **that reading a lineshape as a map of the underlying
 distribution of AC-Stark shifts is a new frame**.
+
+Added 2026-09-24: nor **that reading a family of moments along a swept truncation axis is new**. Particle physics fits central moments of decay spectra at many lower cuts jointly for one parameter set ([buchmueller2006](lit/buchmueller2006.md)), and cosmology derives the smoothing window's effect on amplitude-free moment ratios and uses variance and skewness together to split a degeneracy ([juszkiewicz1993](lit/juszkiewicz1993.md), [bernardeau1994](lit/bernardeau1994.md), [bernardeau1997](lit/bernardeau1997.md)). What stays claimable is the condition that forces the method here, one coordinate setting both the shift and the transit, and the bias forecast at the level of the instrument.
 
 > **The mapping idea is 1992 at the latest, and for a two-photon transition.**
 > [camparo1992](lit/camparo1992.md) §3:
@@ -417,7 +423,7 @@ distribution of AC-Stark shifts is a new frame**.
 > **one-photon** rate, and [THEORY_NOTE](THEORY_NOTE.md) §2 gives
 > $f(s)\propto|s|^{n-1}$, so $n=1$ (the case it already names as "a
 > Stark-induced forbidden line") is the **uniform** distribution with
-> $\kappa_3 = 0$, exactly zero skew. The triangular ramp and its $-0.566$ cannot
+> $\mu_3 = 0$, exactly zero skew. The triangular ramp and its $-0.566$ cannot
 > be Wieman's effect. Theirs is the standing wave's node structure crossed with
 > velocity, ours the $I^2$ weighting over a transverse Gaussian, with the
 > standing wave shown not to move the mean at all (M19).
@@ -502,7 +508,7 @@ measures the laser's statistics. This programme runs it backwards: $P$ is
 number rather than a fit. Delone cannot write that number because in their
 setting it is exactly what is unknown. The defensible contributions are
 therefore: evaluating a known general result for the geometry that actually
-occurs, its cumulants in closed form, and using the **third** cumulant as a
+occurs, its cumulants in closed form, and using the **third** moment as a
 drift-immune measurement channel, which answers an experimental problem (an
 untrustworthy centre) that does not arise in Delone's setting. **Claim 1 above
 should be narrowed accordingly before the introduction is drafted.** **[OPEN]**
@@ -530,7 +536,7 @@ with power while the homogeneous part does not, is theirs, sixteen years ago.
 Any wording implying this programme first noticed that is indefensible.
 
 **What survives, and it is the whole of claim 1.** They fit the effect as a
-**Gaussian**: symmetric, $\kappa_3 = 0$, no closed form, no cumulants, and the
+**Gaussian**: symmetric, $\mu_3 = 0$, no closed form, no cumulants, and the
 distribution treated as a nuisance parameter to be separated from the natural
 width. The programme's derivation gives $f(s)\propto|s|^{n-1}$, triangular at
 $n=2$, with intrinsic skew $g_1 = -0.566$, and a Voigt fit has no third moment
@@ -572,7 +578,7 @@ any manuscript:
   [zang2012](lit/zang2012.md) (arXiv:1204.4354, held) tabulates magic
   wavelengths for the **6S–5p₁/₂,₃/₂** pairs of a four-level active clock and
   reports **six** of them between 1200 and 1600 nm: 1342 and 1421 nm for
-  6S–5p₁/₂, and 1331, 1336, 1453, 1461 nm for 6S–5p₃/₂. **This work's 1339.6 nm
+  6S–5p₁/₂, and 1331, 1336, 1453, 1461 nm for 6S–5p₃/₂. **This work's [1339.6](../results/polarizability.csv "ref:polarizability:magic_5s6s:1340nm") nm
   is bracketed by two**, 1336 (−3.6) and 1342 (+2.4). *This entry previously
   recorded only 1342, which understated it.*
   What defuses it is structural rather than rhetorical: their Table I puts the
@@ -660,10 +666,12 @@ and density-shift nulls this dataset's bounds refine).
 ### 6a. Provenance of the cell and beam
 - **[Nieddu 2019](lit/nieddu2019.md)** (Opt. Express and OIST PhD thesis), the
   group's 993 nm two-photon *frequency-reference* demonstration on our exact
-  line. **[CITE, established]** They measured **w₀ = 64 µm** (f₁ = 150 mm
+  line. **[CITE, established]** They measured a **1/e² beam diameter of 128 µm** (f₁ = 150 mm
   L1), the direct beam measurement corroborating our transit-physics w₀
-  re-pin (32 µm excluded, dataset w₀ ~ 50–64 µm, see
-  `docs/notes/transit_width_resolved.md`). Their four two-photon peaks
+  re-pin of the time (32 µm excluded, see
+  `docs/notes/transit_width_resolved.md`). That lineage value was retired as
+  the convention itself by order O44, 2026-09-21, in favour of the
+  calculated `W0_CENTRAL_M` = 42.38 µm. Their four two-photon peaks
   (FWHM ~5 MHz transition axis) are consistent with our dataset's ~5.25 MHz.
   Their retro is a self-imaging concave mirror (f = 75 mm) at 2F. Ours (md,
   2026-07-14) is the lens-based equivalent, L1/L2 at f = 150 mm with a flat
@@ -864,7 +872,7 @@ and §5.2a of this file govern: the map frame, the multiphoton weighting and
 the asymmetric shift-dominated limit are [delone1980](lit/delone1980.md)
 review material, so what stays claimable on the 778 nm line is the closed
 form with its analytic cumulants, the reference-free extraction where the
-frequency axis is unusable, and the third cumulant as a drift-immune
+frequency axis is unusable, and the third moment as a drift-immune
 channel. A 2015 nanofibre-trap analysis (Lee, Grover,
 Hoffman, Orozco, Rolston, *J. Phys. B* **48**, 165004) reads a position-weighted
 light-shift distribution from lineshape asymmetry in trapped ⁸⁷Rb and is the
@@ -1090,15 +1098,16 @@ the reference against which ONF surface/pushing effects are read.
   analogue to this programme's own CRYST³ hollow core at Bologna (~18 µm, now
   sourced as a measured injection-beam radius for the 1064 nm trap beam in a
   held Nasoni 2026 thesis, an assumption rather than a measurement for a
-  778 nm probe): transit there costs ~3–4 MHz against 0.93 MHz for the
-  free-space $w_0=64$ µm, a factor of 3–5 rather than the 15–30× a tighter
+  778 nm probe): transit there costs ~3–4 MHz against 1.41 MHz for the
+  free-space $w_0=42.38$ µm, a factor of 2–3 rather than the 15–30× a tighter
   published core would impose, with Perrella's 10 MHz total warning that
   transit is not the whole budget in a real large-core fibre. **[CITE]**
 
 [FEED] Pennetta et al. 2026 ([pennetta2026](lit/pennetta2026.md)), the
 nearest-platform result to the nanofibre extension, feeding two of its
-pillars: radial trap ~7 kHz, atom ~280 nm from the surface, and record
-Ramsey/spin-echo coherence times. It puts quantified atom–surface content
+pillars: a hybrid trap about 1 µK deep with a radial frequency near 7 kHz and
+its minimum near 650 nm from the surface (the standard two-colour trap's sits
+at 280 nm), and record Ramsey and spin-echo coherence times. It puts quantified atom–surface content
 (Casimir–Polder plus surface-charge electrostatics) on the near-surface
 potential where `gokhroo2022` left only a hypothesis, and its coherence gain
 is a suppression of the trapping-light differential light shift, a

@@ -125,7 +125,7 @@ And **saturation**, which the first pass ignored, and which turns out to be the
 one that decides the answer.
 
 The saturation parameter goes as the fourth power of one over the waist, so it
-runs away: 0.033 at 64 um becomes 0.53 at 32 um and 8.5 at 16 um, all at 225 mW.
+runs away: 0.173 at the archive's own 42.38 um becomes 0.53 at 32 um and 8.5 at 16 um, all at 225 mW.
 That matters because the ramp law weights each shift by the signal it produces,
 and the two-photon signal goes as intensity squared only while the drive is weak.
 Where saturation is large the weight flattens, the effective exponent falls toward
@@ -138,15 +138,15 @@ Integrating the moments with the saturated weight instead, at 225 mW and the
 
 | w0 | Z_c/z_R | saturation | S0 | skew, saturated | skew, weak-field | width | figure of merit |
 |---|---|---|---|---|---|---|---|
-| 64 um | 0.15 | 0.033 | 0.348 MHz | -0.545 | -0.555 | 5.40 MHz | 1 |
-| 48 um | 0.27 | 0.105 | 0.618 MHz | -0.516 | -0.546 | 5.86 MHz | 5 |
-| 40 um | 0.40 | 0.217 | 0.890 MHz | -0.462 | -0.517 | 6.27 MHz | 13 |
-| 32 um | 0.62 | 0.531 | 1.390 MHz | -0.294 | -0.393 | 6.96 MHz | 24 |
-| 24 um | 1.10 | 1.678 | 2.472 MHz | +0.191 | -0.007 | 8.27 MHz | 54 |
-| 16 um | 2.47 | 8.496 | 5.561 MHz | +1.067 | +0.358 | 11.27 MHz | 1100 |
+| 42.38 um | 0.35 | 0.173 | 0.821 MHz | -0.484 | -0.531 | 6.13 MHz | 1.0 |
+| 48 um | 0.27 | 0.105 | 0.640 MHz | -0.516 | -0.546 | 5.86 MHz | 0.5 |
+| 40 um | 0.40 | 0.217 | 0.921 MHz | -0.462 | -0.517 | 6.27 MHz | 1.3 |
+| 32 um | 0.62 | 0.531 | 1.440 MHz | -0.294 | -0.393 | 6.96 MHz | 2.5 |
+| 24 um | 1.10 | 1.678 | 2.559 MHz | +0.191 | -0.007 | 8.28 MHz | 5.5 |
+| 16 um | 2.47 | 8.496 | 5.758 MHz | +1.067 | +0.358 | 11.32 MHz | 110.5 |
 
-The figure of merit is the shot-noise-limited significance of the third cumulant,
-the cumulant over the cube of the observed width times the square root of the
+The figure of merit is the shot-noise-limited significance of the third moment,
+the moment over the cube of the observed width times the square root of the
 collected signal, relative to the present waist. The width now includes the
 saturation increment, without which the deeply saturated rows are flattered.
 
@@ -171,8 +171,8 @@ it is a factor-of-three error in the headline prediction for the planned
 measurement, and it comes from a modelling assumption rather than from an input.
 
 **A smaller waist buys no shift at all on its own, and the identity says so.** At
-matched intensity the shift is identical at every waist: 0.348 MHz at 64 um and
-225 mW, at 32 um and 56 mW, and at 16 um and 14 mW. What a smaller waist buys is
+matched intensity the shift is identical at every waist: 0.821 MHz at 42.38 um and
+225 mW, at 32 um and 128.3 mW, and at 16 um and 32.1 mW. What a smaller waist buys is
 the intensity a limited power can reach. What it pays is saturation, which grows
 as the square of the intensity while the shift grows as the first power, and the
 axial average, which reverses the skew's sign past 1.12. Stated that way the exchange
@@ -180,10 +180,13 @@ stops being a matter of opinion.
 
 **The proposed 32 um sweet spot survives, with a different justification and a
 smaller number.** The first pass claimed a thirtyfold gain from a figure of merit
-built on a quadrature width and no saturation. The corrected figure is 24, and the
-reason to prefer 32 um is not the size of the gain but that it is the tightest
-waist that keeps the skew's sign positive while the saturation stays near a half,
-where the weak-field weighting is bent by about a quarter rather than replaced.
+built on a quadrature width and no saturation. Against the calculated waist's
+reference row the corrected figure is 2.5, and the reason to prefer 32 um is not
+the size of the gain but that it is the tightest waist in the table that keeps
+the skew on the archive's side (-0.294 saturated, where 24 um has already crossed
+to +0.191) while the saturation stays near a half, where the weak-field weighting
+is bent by about a quarter (-0.393 weak-field) and not replaced. The table's S0
+column is the unclipped design, the bore out of the focusing path.
 
 ### What has to happen before 16 um is chosen deliberately
 
@@ -243,7 +246,7 @@ one-dimensional marginal of the three-dimensional distribution:
 | cap on $\tau_c$ | $\tau_c$ | $v^*$ | fraction of atoms |
 |---|---|---|---|
 | excited-state lifetime | 46 ns | 5.45 m/s | 2.214 % |
-| crossing time at 64 µm | 520 ns | 0.48 m/s | 0.194 % |
+| crossing time at the archive's 42.38 µm | 344 ns | 0.72 m/s | 0.293 % |
 | crossing time at 16 µm | 130 ns | 1.91 m/s | 0.776 % |
 
 The spread between the top and bottom rows is a factor of eleven, and it is a
@@ -262,7 +265,7 @@ of that class is whatever the Maxwell-Boltzmann weight is there:
 | $\Delta$ | $v_\text{fringe}$ | weight at that $v_z$ | residual Doppler |
 |---|---|---|---|
 | 40 MHz | 19.9 m/s | 0.995 | 62 Hz |
-| 80 MHz | 39.7 m/s | 0.980 | 123 Hz |
+| 80 MHz | 39.7 m/s | 0.980 | 123 Hz <!-- other-quantity: another ratio --> |
 | 200 MHz | 99.3 m/s | 0.880 | 309 Hz |
 | 400 MHz | 198.7 m/s | 0.600 | 617 Hz |
 | 800 MHz | 397.4 m/s | 0.129 | 1234 Hz |
@@ -343,9 +346,9 @@ way. The axial-averaged skew across that band:
 
 | w0 | z_R | Z_c = 2.40 | 2.00 | 1.33 | 1.00 | 0.83 | 0.67 | 0.50 mm |
 |---|---|---|---|---|---|---|---|---|
-| 64 um | 12.95 mm | -0.563 | -0.565 | -0.565 | -0.566 | -0.566 | -0.566 | -0.566 |
+| 42.38 um (archive) | 5.68 mm | -0.516 | -0.540 | -0.560 | -0.564 | -0.565 | -0.565 | -0.566 |
 | 32 um | 3.24 mm | -0.301 | -0.402 | -0.521 | -0.550 | -0.558 | -0.562 | -0.565 |
-| 24 um | 1.82 mm | +0.113 | -0.013 | -0.309 | -0.450 | -0.501 | -0.536 | -0.555 |
+| 24 um | 1.82 mm | +0.113 | -0.013 | -0.309 | -0.450 | -0.501 | -0.536 | -0.555 <!-- other-quantity: another row --> |
 | 16 um | 0.81 mm | +0.386 | +0.354 | +0.231 | +0.071 | -0.062 | -0.230 | -0.402 |
 | 12 um | 0.46 mm | +0.451 | +0.434 | +0.384 | +0.327 | +0.273 | +0.174 | -0.013 |
 
@@ -353,7 +356,7 @@ way. The axial-averaged skew across that band:
 
 First, a tight collection region removes the axial penalty almost entirely. At
 Z_c below about 0.7 mm the skew is negative and within a few per cent of its
-intrinsic -0.566 at every waist from 64 down to 16 um. That is the configuration
+intrinsic -0.566 at every waist from 42.38 down to 16 um. That is the configuration
 the earlier sections were looking for and did not find: the small waist's shift
 gain with no axial suppression, which moves the binding constraint back onto
 saturation where the second section left it.

@@ -30,7 +30,7 @@ prose that quotes them, now next to a row that can be checked.
 THE TRUTH IS TRACEABLE, WHICH IS THE WHOLE REPAIR. gamma_coll and sigma_laser
 come from results/linefit_conditions.csv at p_sweep/4154/130C/225mW, the
 brightest condition of the reference peak. The transit width comes from the
-committed 64 um waist through constants.transit_fwhm_from_w0 at the same
+committed central waist (constants.W0_CENTRAL_M, 42.38 um) through constants.transit_fwhm_from_w0 at the same
 temperature. Nothing here is a number somebody remembered.
 
 WHAT IT CANNOT SETTLE. A Monte-Carlo correlation carries sampling scatter, and
@@ -47,12 +47,12 @@ import sys
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from rb5s6s import config as C                                    # noqa: E402
-from rb5s6s.constants import W0_MEASURED_M, transit_fwhm_from_w0  # noqa: E402
+from rb5s6s.constants import W0_CENTRAL_M, transit_fwhm_from_w0  # noqa: E402
 from rb5s6s.forecast import forecast_precision                    # noqa: E402
 
 OUT = C.RESULTS_DIR / "twin_span_sweep.csv"
 REF = ("p_sweep", "4154", "130", "225")     # brightest condition, reference peak
-W0_M = W0_MEASURED_M                        # the committed waist convention, read from the
+W0_M = W0_CENTRAL_M                        # the committed waist convention, read from the
                                             # constant so it follows a change rather than
                                             # standing as a copy of it (ssot-guard, 2026-09-18)
 SEED = 0

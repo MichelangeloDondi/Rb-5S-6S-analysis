@@ -7,7 +7,7 @@ break it at a tight waist, and they break it for the same reason:
   the transit kernel   its width goes as the inverse local beam radius, so it
                        varies along z as the beam diverges over the collected
                        length. Geometric, and already sized in the record at
-                       1.0 per cent rms at 64 um and 47 at 16.
+                       a small fraction rms at the retired waist convention, rising to 47 at 16.
 
   the Lorentzian       gamma_nat + gamma_coll is uniform, but the SATURATION
                        COMPANION is not: stark.companion_gamma_mhz is keyed on
@@ -29,7 +29,7 @@ efficiency. The convolution is the special case Gamma and transit constant.
 first half of this; what is missing is letting the kernel follow s.
 
 WHAT THIS PRODUCER REPORTS, per waist: the fitted centre and the windowed
-third cumulant under three models, the exact mixture, the fixed-kernel mixture
+third moment under three models, the exact mixture, the fixed-kernel mixture
 the code ships today, and the pure convolution, so the chapter can say what
 each approximation costs where.
 
@@ -45,6 +45,7 @@ import numpy as np
 
 from rb5s6s import constants as K
 from rb5s6s import stark
+from rb5s6s.reference_point import reference_point
 from rb5s6s.constants import collection_z_ratio
 # MOMENTS, NOT CUMULANTS (O33). This producer asks only for orders 2 and/or 3, where the two
 # bases are the SAME NUMBER (k2 = mu2 and k3 = mu3 identically), so the switch cannot move a
@@ -62,12 +63,29 @@ from rb5s6s.lineshape import RAMP_SIDE, model_profile
 # not a physical cost. The span is now wide enough to reach the limit and the
 # producer reports its movement rather than assuming it.
 NU = np.linspace(-320.0, 320.0, 128001)
-GAMMA_COLL = 0.55
-SIGMA_LASER = 1.6
+# The archive's line at its reference condition, READ from the committed fit and never typed
+# (F313, 2026-09-22): the typed pair was the retired waist convention's decomposition.
+_AP = reference_point()
+GAMMA_COLL = _AP["gamma_coll"]
+SIGMA_LASER = _AP["sigma_laser"]
 GAMMA_NAT = stark._GAMMA_MHZ    # the kernel's own, never a rounded copy
 T_C = 130.0
 POWER_W = 0.225
-CASES = ((64e-6, 6.0), (40e-6, 6.0), (24e-6, 8.0), (16e-6, 12.0))
+CASES = ((K.W0_CENTRAL_M, 6.0), (45e-6, 6.0), (24e-6, 8.0), (16e-6, 12.0))
+# REGRIDDED 2026-09-21 (O44/F280 follow-up). The mechanical patch first left this as
+# (K.W0_CENTRAL_M, 40e-6, 24e-6, 16e-6): the retired campaign point became 42.38 um but the
+# second row's literal 40e-6 stayed, so the top two rows sat 2.4 um apart (a near-duplication,
+# private/cache/plan_2026-09-18/, the retirement inventory, Section 6). The scan's PURPOSE (per the
+# module docstring) is showing how far the convolution approximation's cost moves across a
+# representative waist range, campaign down to ONF-tight; the two top rows now bracket the
+# owner's own 40-45 um band (K.W0_CENTRAL_M at its centre, 45e-6 at its loose edge) instead of
+# duplicating one point in it, which resolves the near-duplication AND gives the region the
+# project is asking about (the working band on w0, see constants.W0_BAND_M) its own internal
+# contrast rather than one sample. 24e-6 and 16e-6 (ONF-adjacent and tight) are unchanged.
+# THE OLD "w40um" ROW IS GONE, not relabelled: nothing here reads 40e-6 any more, so a passage
+# citing its numbers (docs/methods/04's 40 um reading, and the rule file's own "1.9 per cent" and
+# "103 per cent" at 40 um) is restated from the new w42um row, the closest surviving case; the
+# governing rule file is gitignored and edited by its owner, not by this producer's wave.
 # N_Z was 36 until 2026-09-09. The per-axis bar added that day then
 # refused the 40 micron case outright, the FIXED row's own axial movement being
 # 5.10 per cent against a five per cent bar, which is the finding working: a
@@ -84,6 +102,23 @@ def _refuse_unless_isolated() -> None:
     pkg = os.path.realpath(_pkg.__file__)
     if not pkg.startswith(here + os.sep):
         raise SystemExit(f"REFUSING: rb5s6s resolves to {pkg}, outside {here}")
+
+
+def window_rel_band() -> tuple[float, float, float]:
+    """The collected window's z_ratio, its half-span and the relative band, over the f, image-distance
+    and waist corners: the construction of results/prediction_band.csv's z_ratio row, COMPUTED here
+    rather than typed (F313's second half, 2026-09-22; the typed 0.538 was that row's band at the
+    retired waist convention)."""
+    lo_w, hi_w = K.W0_BAND_M
+    z_c = collection_z_ratio()
+    z_hi = collection_z_ratio(f_m=K.COLLECTION_LENS_F_M + K.COLLECTION_LENS_F_ERR_M,
+                              image_dist_m=K.COLLECTION_IMAGE_DIST_M - K.COLLECTION_IMAGE_DIST_ERR_M,
+                              w0_m=lo_w)
+    z_lo = collection_z_ratio(f_m=K.COLLECTION_LENS_F_M - K.COLLECTION_LENS_F_ERR_M,
+                              image_dist_m=K.COLLECTION_IMAGE_DIST_M + K.COLLECTION_IMAGE_DIST_ERR_M,
+                              w0_m=hi_w)
+    half = 0.5 * (z_hi - z_lo)
+    return z_c, half, half / z_c
 
 
 def volume_grid(w0_m, n_s=N_S, n_z=N_Z, l_scale=1.0):
@@ -129,7 +164,7 @@ def volume_grid(w0_m, n_s=N_S, n_z=N_Z, l_scale=1.0):
         # relative areas: the waist slices, which are the broad AND the shifted
         # ones, stop being over-counted.
         # Measured at 16 microns: the waist-to-edge slice weight ratio falls
-        # from 18.316 to 9.043, the pull from -2.073 to -1.804 MHz (the red side, before O27), and the k3
+        # from 18.316 to 9.043, the pull from -2.073 to -1.804 MHz (the red side, before O27), and the mu3
         # cost from 92.7 to 89.7 per cent.
         wgt = wgt * (w_z[iz] / w0_m) ** 2
         cells.append((mid, transit[iz], wgt))
@@ -185,7 +220,7 @@ def profile_exact(cells, companion_scale=1.0):
     file uses: the area falls by the same root the width grows by. A sweep that
     widened the kernel while the weight's Rabi ratio stayed at its nominal
     value produced a half-span over an object no physics makes, understating
-    the k3 cost's own bar by 1.8 at 16 microns and overstating k3's by 1.7.
+    the mu3 cost's own bar by 1.8 at 16 microns and overstating mu3's by 1.7.
     `swept_cells` below rebuilds the volume at the swept ratio, so the two
     halves move together; this function is left scaling the kernel alone so
     that the two can still be separated when one wants them separated."""
@@ -318,13 +353,13 @@ def covariance_term(cells, window):
 
 def observables(prof, window):
     """The two the campaign reads: the centroid pull and the windowed third
-    cumulant. The centroid is the profile's own first moment, which is what a
+    moment. The centroid is the profile's own first moment, which is what a
     free per-trace centre fits to at leading order."""
     m = float((NU * prof).sum() / prof.sum())
     v, info = windowed_moments(NU, prof, window, (3,), centre0=0.0,
                                  baseline="wings")
-    k3 = float(v[3]) if info["converged"] and info.get("in_span", True) else float("nan")
-    return m, k3
+    mu3 = float(v[3]) if info["converged"] and info.get("in_span", True) else float("nan")
+    return m, mu3
 
 
 def main() -> int:
@@ -357,27 +392,27 @@ def main() -> int:
         # THE THIRD CUMULANT IS A SMALL DIFFERENCE OF LARGE NUMBERS and this
         # construction does not resolve it everywhere. Summing one kernel per
         # (Lorentzian, transit) pair leaves a numerical floor, and where the
-        # ramp's own k3 sits under that floor the row reports the floor. At the
-        # archive's waist k3 was still moving by tens of per cent between grids
+        # ramp's own mu3 sits under that floor the row reports the floor. At the
+        # archive's waist mu3 was still moving by tens of per cent between grids
         # while the pull had converged to four digits, and an earlier draft of
-        # this producer quoted the unconverged value with the wrong SIGN. So k3
+        # this producer quoted the unconverged value with the wrong SIGN. So mu3
         # is computed on a half grid too and refused unless the two agree.
         # THE AXES ARE HALVED SEPARATELY AND THE FIXED ROW IS BARRED TOO
         # (2026-09-09). A combined halving is not a
         # convergence check: the axial axis carried all of the movement while
-        # the shift axis moved k3 by under 0.04 per cent, and the bar was
+        # the shift axis moved mu3 by under 0.04 per cent, and the bar was
         # applied only to the exact row while the fixed row's own movement
         # reached 5.24 per cent at 24 microns, against a README sentence
-        # claiming every cumulant row cleared it.
+        # claiming every moment row cleared it.
         cells_s, _, _ = volume_grid(w0, n_s=N_S // 2)
         cells_z, _, _ = volume_grid(w0, n_z=N_Z // 2)
         m_eh, k_es = observables(profile_exact(cells_s), W)
         _, k_ez = observables(profile_exact(cells_z), W)
         _, k_fz = observables(profile_fixed_kernel(cells_z, s_bar, tr_bar), W)
-        k3_move = max(abs(k_e - k_es), abs(k_e - k_ez)) / max(abs(k_e), 1e-30)
-        k3_move_fixed = abs(k_f - k_fz) / max(abs(k_f), 1e-30)
+        mu3_move = max(abs(k_e - k_es), abs(k_e - k_ez)) / max(abs(k_e), 1e-30)
+        mu3_move_fixed = abs(k_f - k_fz) / max(abs(k_f), 1e-30)
         pull_move = abs(m_e - m_eh) / max(abs(m_e), 1e-30)
-        k3_ok = k3_move < 0.05 and k3_move_fixed < 0.05
+        mu3_ok = mu3_move < 0.05 and mu3_move_fixed < 0.05
 
         # EVERY CLAIM-CLASS ROW CARRIES ITS OWN UNCERTAINTY (8a.1), and the
         # guard's only escape is a sibling _err row, deliberately, so that a
@@ -389,10 +424,11 @@ def main() -> int:
         #   the widths : the saturation companion is uncertain at the
         #                factor-of-three level at this waist (docs/methods/04),
         #                so the span is re-evaluated with it scaled both ways
-        #   the transit: the collected half-length is 0.26 +- 0.14 Rayleigh
-        #                ranges (prediction_band.csv), a 54 per cent band, and
+        #   the transit: the collected half-length's own band over the optics
+        #                and waist corners (window_rel_band, prediction_band.csv's
+        #                construction), and
         #                the span follows the window
-        _f_lo, _f_hi = (b / K.W0_MEASURED_M for b in K.W0_BAND_M)
+        _f_lo, _f_hi = (b / K.W0_CENTRAL_M for b in K.W0_BAND_M)
         _s_hi = stark.stark_shift_S0_mhz(POWER_W, w0 * _f_lo, K.RHO_RETRO + K.RHO_RETRO_ERR)
         _s_lo = stark.stark_shift_S0_mhz(POWER_W, w0 * _f_hi, K.RHO_RETRO - K.RHO_RETRO_ERR)
         add(name, "on_axis_shift_err", f"{0.5 * (_s_hi - _s_lo):.4f}", "MHz",
@@ -412,12 +448,13 @@ def main() -> int:
             "depend on it: whatever the size, it is a function of the local "
             "shift", "ENVELOPE")
         _tr = [tr for _, tr, _ in cells]
-        _cl, _ch = volume_grid(w0, l_scale=1.0 - 0.538)[0], volume_grid(w0, l_scale=1.0 + 0.538)[0]
+        _zc, _zh, _zrel = window_rel_band()
+        _cl, _ch = volume_grid(w0, l_scale=1.0 - _zrel)[0], volume_grid(w0, l_scale=1.0 + _zrel)[0]
         _sl = max(t for _, t, _ in _cl) / min(t for _, t, _ in _cl)
         _sh = max(t for _, t, _ in _ch) / min(t for _, t, _ in _ch)
         add(name, "transit_span_err", f"{0.5 * abs(_sh - _sl):.3f}", "dimensionless",
-            "the span re-evaluated over the collected window's own 0.26 +- 0.14 band",
-            "the window is 54 per cent uncertain and the span follows it "
+            f"the span re-evaluated over the collected window's own {_zc:.2f} +- {_zh:.2f} band",
+            f"the window is {100 * _zrel:.0f} per cent uncertain and the span follows it "
             "directly, since the beam radius at the window EDGE is what sets "
             "the narrowest kernel and so the denominator of this ratio",
             "ENVELOPE")
@@ -460,18 +497,18 @@ def main() -> int:
         # its nominal value, so the half-span was taken over a profile no
         # physics makes: width and area are one object under the law this file
         # uses. Rebuilt at the swept ratio the bar is 1.8 times wider on the
-        # cost row at 16 microns and 1.7 times narrower on the cumulant.
-        _k3_lo = observables(profile_exact(swept_cells(w0, 1 / 3.0),
+        # cost row at 16 microns and 1.7 times narrower on the moment.
+        _mu3_lo = observables(profile_exact(swept_cells(w0, 1 / 3.0),
                                           companion_scale=1 / 3.0), W)[1]
-        _k3_hi = observables(profile_exact(swept_cells(w0, 3.0),
+        _mu3_hi = observables(profile_exact(swept_cells(w0, 3.0),
                                            companion_scale=3.0), W)[1]
-        add(name, "k3_exact_err", f"{0.5 * abs(_k3_hi - _k3_lo):.6g}" if k3_ok else "",
+        add(name, "mu3_exact_err", f"{0.5 * abs(_mu3_hi - _mu3_lo):.6g}" if mu3_ok else "",
             "MHz^3",
             "half-span with the saturation companion scaled by three each way",
             "the dominant axis by three orders over the grid. The "
-            "k3_grid_movement row carries that separately", "ENVELOPE")
-        add(name, "k3_fixed_kernel_err",
-            f"{abs(k_f - k_fz):.6g}" if k3_ok else "", "MHz^3",
+            "mu3_grid_movement row carries that separately", "ENVELOPE")
+        add(name, "mu3_fixed_kernel_err",
+            f"{abs(k_f - k_fz):.6g}" if mu3_ok else "", "MHz^3",
             "the fixed row's own axial-grid movement",
             "its own, not the exact row's copied across. The first draft copied "
             "one number to both and it exceeded the fixed row's real movement "
@@ -525,30 +562,30 @@ def main() -> int:
         # for a density going as |s| the mean is two thirds of the peak, so the
         # twin's kernel is the wider one and pays more. A caveat citing the
         # mean-shift row as the forecast's own cost understates it.
-        add(name, "k3_error_forecast_kernel",
-            f"{_side_free_err(k_e, k_fc):.3f}" if k3_ok else "", "per cent",
+        add(name, "mu3_error_forecast_kernel",
+            f"{_side_free_err(k_e, k_fc):.3f}" if mu3_ok else "", "per cent",
             "the forecast's own single kernel against the exact mixture",
             "the companion at the on-axis shift and the transit at the waist, "
             "as rb5s6s/forecast.py composes them, so this row and not the "
             "mean-shift one is what the campaign surfaces cite", "ENVELOPE")
-        add(name, "k3_error_forecast_kernel_err",
-            f"{100.0 * k3_move:.2f}" if k3_ok else "", "per cent",
+        add(name, "mu3_error_forecast_kernel_err",
+            f"{100.0 * mu3_move:.2f}" if mu3_ok else "", "per cent",
             "the exact row's own grid movement, which bounds this comparison",
             "the two share the grid and differ only in the kernel", "ENVELOPE")
-        add(name, "k3_grid_movement_fixed", f"{100.0 * k3_move_fixed:.2f}", "per cent",
+        add(name, "mu3_grid_movement_fixed", f"{100.0 * mu3_move_fixed:.2f}", "per cent",
             "the same bar applied to the fixed-kernel row, halving the axial axis",
             "the bar binds both rows, since the comparison between them is only "
             "as converged as the looser of the two", "DIAGNOSTIC")
-        add(name, "k3_grid_movement", f"{100.0 * k3_move:.2f}", "per cent",
+        add(name, "mu3_grid_movement", f"{100.0 * mu3_move:.2f}", "per cent",
             "the worst of halving the shift axis and the axial axis separately",
             "the bar is five per cent. Above it the row reports this "
             "construction's numerical floor and not the physics, which is the "
-            "case wherever the ramp's own third cumulant is small",
+            "case wherever the ramp's own third moment is small",
             "DIAGNOSTIC")
         add(name, "pull_grid_movement", f"{100.0 * pull_move:.3f}", "per cent",
             "the same for the centroid pull",
-            "the pull converges three orders faster than the cumulant, which is "
-            "why it is quotable at every waist and the cumulant is not",
+            "the pull converges three orders faster than the moment, which is "
+            "why it is quotable at every waist and the moment is not",
             "DIAGNOSTIC")
         # LANGUAGE 8a.1: a claim-class row carries an uncertainty. For a
         # comparison between two models the uncertainty is numerical, and this
@@ -557,15 +594,15 @@ def main() -> int:
             "the pull's grid movement, which bounds the comparison above",
             "the difference between two models is only as sharp as either is "
             "converged, and the pull converges three orders faster than the "
-            "cumulant", "ENVELOPE")
+            "moment", "ENVELOPE")
         # THE RATIO'S OWN AXIS IS THE COMPANION TOO, and the ratio is far more
         # robust than either value: at the archive's waist the companion's
-        # factor of three makes k3_exact uncertain by more than itself, while
+        # factor of three makes mu3_exact uncertain by more than itself, while
         # the ratio moves only a little, which is why the headline survives and
         # the individual cells do not carry it alone.
-        _r_lo = _side_free_err(_k3_lo, k_f) if _k3_lo else float("nan")
-        _r_hi = _side_free_err(_k3_hi, k_f) if _k3_hi else float("nan")
-        add(name, "k3_error_err", f"{0.5 * abs(_r_hi - _r_lo):.2f}" if k3_ok else "",
+        _r_lo = _side_free_err(_mu3_lo, k_f) if _mu3_lo else float("nan")
+        _r_hi = _side_free_err(_mu3_hi, k_f) if _mu3_hi else float("nan")
+        add(name, "mu3_error_err", f"{0.5 * abs(_r_hi - _r_lo):.2f}" if mu3_ok else "",
             "per cent",
             "half-span of the same ratio with the companion scaled three ways",
             "the grid movement is carried separately and is the smaller axis. "
@@ -573,7 +610,7 @@ def main() -> int:
         # THE COVARIANCE IDENTITY, MEASURED RATHER THAN ASSERTED (2026-09-10).
         # mu3(X) = RAMP_SIDE (mu3(u) + 3 Cov(u, V(u))) is exact for a kernel symmetric
         # about each element's own centre. The contamination this producer
-        # measures, k3_fixed minus k3_exact, is therefore -RAMP_SIDE 3 Cov up to whatever
+        # measures, mu3_fixed minus mu3_exact, is therefore -RAMP_SIDE 3 Cov up to whatever
         # the windowed stand-in for V costs, and the ratio of the two is the
         # constant the methods chapter quotes. It stood there for a day with no
         # script behind it, which is what these four rows repair.
@@ -589,15 +626,15 @@ def main() -> int:
             "the scale the covariance sits against, and the quantity a "
             "convolution replaces by a constant", "DIAGNOSTIC")
         add(name, "covariance_identity_ratio",
-            f"{(k_f - k_e) / (-RAMP_SIDE * 3.0 * _cov):.4f}" if (k3_ok and _cov) else "",
+            f"{(k_f - k_e) / (-RAMP_SIDE * 3.0 * _cov):.4f}" if (mu3_ok and _cov) else "",
             "dimensionless",
-            "the measured contamination, k3_fixed minus k3_exact, over -RAMP_SIDE 3 Cov(u, V)",
+            "the measured contamination, mu3_fixed minus mu3_exact, over -RAMP_SIDE 3 Cov(u, V)",
             "THE IDENTITY PREDICTS ONE. The fixed-kernel profile carries a "
             "constant V, so its covariance term vanishes and the difference of "
-            "the two third cumulants is exactly -RAMP_SIDE 3 Cov, on either side of "
+            "the two third moments is exactly -RAMP_SIDE 3 Cov, on either side of "
             "the line. This reads 0.386 with a "
             "spread of 4.0 per cent across a factor of sixteen in L/z_R and "
-            "three orders of magnitude in the cumulant itself. The shortfall "
+            "three orders of magnitude in the moment itself. The shortfall "
             "is the analysis window truncating a Lorentzian, whose second "
             "moment does not exist at all, so the windowed stand-in for V "
             "over-states the covariance by the reciprocal, 2.594, and the "
@@ -611,17 +648,17 @@ def main() -> int:
             "the range of the windowed kernel variance over the volume",
             "zero here would mean the convolution condition holds exactly at "
             "this waist", "DIAGNOSTIC")
-        add(name, "k3_exact", f"{k_e:.6g}" if k3_ok else "", "MHz^3",
-            f"windowed third cumulant at a {W:.1f} MHz half-width, exact mixture",
+        add(name, "mu3_exact", f"{k_e:.6g}" if mu3_ok else "", "MHz^3",
+            f"windowed third moment at a {W:.1f} MHz half-width, exact mixture",
             "the novelty channel's own observable", "CALIB")
-        add(name, "k3_fixed_kernel", f"{k_f:.6g}" if k3_ok else "", "MHz^3",
+        add(name, "mu3_fixed_kernel", f"{k_f:.6g}" if mu3_ok else "", "MHz^3",
             "the same under the fixed kernel", "the approximation", "CALIB")
-        add(name, "k3_error",
-            f"{_side_free_err(k_e, k_f):.3f}" if k3_ok else "", "per cent",
+        add(name, "mu3_error",
+            f"{_side_free_err(k_e, k_f):.3f}" if mu3_ok else "", "per cent",
             "the fixed kernel against the exact mixture, 100 (exact - fixed) / exact",
             "what the convolution assumption costs the moment channel", "ENVELOPE")
         print(f"  {name}: pull {m_e:.4f} vs {m_f:.4f} MHz "
-              f"({_side_free_err(m_e, m_f):+.2f}%), k3 {k_e:.4g} vs {k_f:.4g} "
+              f"({_side_free_err(m_e, m_f):+.2f}%), mu3 {k_e:.4g} vs {k_f:.4g} "
               f"({_side_free_err(k_e, k_f):+.2f}%)", flush=True)
 
 

@@ -177,7 +177,7 @@ def test_the_counter_separates_the_five_kinds(tmp_path):
     demonstrated that it detects its intended failure mode."""
     cases = {
         "bare.md": "The excess tracks height at 8.65 sigma.",
-        "csv.md": "provenance: results/kernel_k8.csv\n\nHeight at 9.41 sigma.",
+        "csv.md": "provenance: results/kernel_k8.csv\n\nHeight at 9.41 sigma.",  # <!-- other-quantity: a planted fixture note, not the kernel_k8 cell -->
         "design.md": "provenance: DESIGN\n\nA block at 1.5 sigma costs 1200.",
         "noprod.md": "provenance: NO_PRODUCER, computed once\n\n+8.65 sigma.",
         "empty.md": "provenance:\n\nThe excess sits at 3.6 sigma.",

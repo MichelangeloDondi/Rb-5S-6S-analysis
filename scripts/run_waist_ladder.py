@@ -17,7 +17,7 @@ measurement of it costs is measured elsewhere.
 
 Columns per rung: the magnification, the waist, the transit FWHM, the peak
 light shift, the two-photon Rabi frequency, the axial collection ratio, the
-ramp's own second and third cumulant against the pure ramp at that ratio, the
+ramp's own second and third moment against the pure ramp at that ratio, the
 relative excitation cycles of one crossing, the relative rate per atom, the
 relative collected signal and the relative peak height. Then one row per term
 carrying the fitted exponent across the ladder and the exponent the derivation
@@ -42,17 +42,36 @@ import numpy as np
 
 from rb5s6s import config as C_cfg
 from rb5s6s import constants as C
+from rb5s6s.reference_point import reference_point
 from rb5s6s.hyperpolarizability import two_photon_rabi_hz
 from rb5s6s.lineshape import ramp_moment_contributions
 from rb5s6s.stark import stark_shift_S0_mhz
 
-W0_REF_M = C.W0_MEASURED_M          # the record's prior waist, the ladder's anchor
+W0_REF_M = C.W0_CENTRAL_M          # the record's prior waist, the ladder's anchor
 POWER_W = 0.225                     # the campaign's top rung
 T_C = 130.0
 RHO = 0.94
-MAGNIFICATIONS = (1.0, 0.625, 0.390625, 0.25)   # 64, 40, 25, 16 um at the anchor
-GAMMA_COLL = 0.55        # the producers' own 130 C collisional width, MHz
-SIGMA_LASER = 2.07       # the session range's upper end, MHz FWHM
+MAGNIFICATIONS = (1.0, 0.625, 0.390625, 0.25)   # fractions of the anchor waist
+
+
+def _session_sigma_upper() -> float:
+    """The session range's upper end: the largest per-block laser width of the campaign's sessions.
+
+    READ from `results/global_dataset_fit.csv`, the `sigma_laser` rows of the campaign's temperature
+    blocks (keys `camp*`), never typed (F313, 2026-09-22): the typed value was the retired waist
+    convention's, from an earlier version of that table.
+    """
+    path = C_cfg.RESULTS_DIR / "global_dataset_fit.csv"
+    with open(path, newline="", encoding="utf-8") as fh:
+        vals = [float(r["value"]) for r in csv.DictReader(fh)
+                if r["quantity"] == "sigma_laser" and r["key"].startswith("camp")]
+    if not vals:
+        raise SystemExit(f"run_waist_ladder: {path} carries no campaign sigma_laser rows")
+    return max(vals)
+
+
+GAMMA_COLL = reference_point()["gamma_coll"]   # the archive point's 130 C collisional width, MHz (F313)
+SIGMA_LASER = _session_sigma_upper()         # the session range's upper end, MHz FWHM (F313)
 
 # The anchors the relative columns are normalised against, from the same
 # package functions that make the columns, so the ladder carries no power
@@ -65,17 +84,20 @@ PREDICTED = {"transit_fwhm_mhz": -1.0, "s0_mhz": -2.0, "rabi_hz": -2.0,
 
 
 
-def _k3_axial(z_ratio: float, n_photon: int, n_grid: int = 600_001) -> float:
-    """Third cumulant of the axially windowed ramp at photon order n, in units
+def _mu3_axial(z_ratio: float, n_photon: int, n_grid: int = 600_001) -> float:
+    """Third moment of the axially windowed ramp at photon order n, in units
     of the on-axis shift cubed.
 
     Emitted so the one-photon comparison below is a computed cell and not a
-    remembered fact. At `z_ratio` zero it returns 0 for n = 1 and -1/135 for
-    n = 2, which are the closed forms `docs/methods/03` derives."""
+    remembered fact. The closed forms `docs/methods/03` derives in the transverse limit are 0 for n = 1
+    and 1/135 of the on-axis shift cubed IN MAGNITUDE for n = 2, the sign set by `lineshape.RAMP_SIDE`
+    (the axial form itself degenerates at `z_ratio` exactly zero, which no rung reaches)."""
     import numpy as np
     from rb5s6s._compat import trapezoid
     from rb5s6s.lineshape import stark_ramp_axial
-    nu = np.linspace(-1.0000001, 0.0, n_grid)
+    # BOTH SIDES, so the ramp's side is never restated here (O27, lineshape.RAMP_SIDE): this grid read
+    # [-1, 0] and returned nan at every rung once the ramp moved to the blue side (2026-09-22, C6a)
+    nu = np.linspace(-1.0000001, 1.0000001, 2 * n_grid - 1)
     f = stark_ramp_axial(nu, 1.0, z_ratio, n_photon=n_photon)
     a = trapezoid(f, nu)
     if not a:
@@ -86,8 +108,8 @@ def _k3_axial(z_ratio: float, n_photon: int, n_grid: int = 600_001) -> float:
 
 
 def _one_over_two(z_ratio: float) -> float:
-    """|kappa3| of a one-photon ramp over a two-photon one at the same window."""
-    a, b = abs(_k3_axial(z_ratio, 1)), abs(_k3_axial(z_ratio, 2))
+    """|mu3| of a one-photon ramp over a two-photon one at the same window."""
+    a, b = abs(_mu3_axial(z_ratio, 1)), abs(_mu3_axial(z_ratio, 2))
     return a / b if b else float("nan")
 
 
@@ -125,16 +147,16 @@ def _rows() -> list[dict]:
             s0_mhz=stark_shift_S0_mhz(POWER_W, w0, RHO),
             rabi_hz=two_photon_rabi_hz(POWER_W, w0, RHO),
             z_ratio=z_ratio,
-            k2_over_pure=(ramp["excess_var"] / pure["excess_var"]) if pure["excess_var"] else float("nan"),
-            k3_over_pure=(ramp.get("kappa3", float("nan")) / pure["kappa3"]) if pure.get("kappa3") else float("nan"),
+            mu2_over_pure=(ramp["excess_var"] / pure["excess_var"]) if pure["excess_var"] else float("nan"),
+            mu3_over_pure=(ramp.get("mu3", float("nan")) / pure["mu3"]) if pure.get("mu3") else float("nan"),
             # THE ONE-PHOTON NULL IS A THIN-WINDOW STATEMENT (owner, 2026-09-09).
             # The transverse law is uniform at n = 1 and a uniform density is
-            # symmetric about its own mean, so its third cumulant vanishes. The
+            # symmetric about its own mean, so its third moment vanishes. The
             # OBSERVED density is the axial mixture of uniforms with different
             # upper limits, which is not uniform and not symmetric. It is
             # recovered only as z_ratio goes to zero, which is a wide waist and
             # a large collection magnification.
-            k3_one_photon_over_two=_one_over_two(z_ratio),
+            mu3_one_photon_over_two=_one_over_two(z_ratio),
             rate_rel=(two_photon_rabi_hz(POWER_W, w0, RHO) / RABI_ANCHOR_HZ) ** 2,
             cycles_rel=((two_photon_rabi_hz(POWER_W, w0, RHO) / RABI_ANCHOR_HZ) ** 2
                         * TRANSIT_ANCHOR_MHZ / C.transit_fwhm_from_w0(w0, T_C)),
@@ -191,25 +213,25 @@ def main(out_path: Path | None = None) -> Path:
             "that owns it. signal_rel is the closed form (2 P^2 / lambda) arctan(L / zR) normalised to the "
             "anchor, and peak_rel divides it by the COMPOSITE line width, which is what a peak height "
             "is measured against and is not the transit alone. "
-            "k2_over_pure and k3_over_pure are the ramp's cumulants through the axial collection window "
+            "mu2_over_pure and mu3_over_pure are the ramp's moments through the axial collection window "
             "against the pure ramp, and the third reverses sign where the window passes about one Rayleigh "
             "range. The exponent rows fit d ln term / d ln magnification across the ladder and compare it "
-            "against the derivation of docs/methods/03. k3_one_photon_over_two is the same "
+            "against the derivation of docs/methods/03. mu3_one_photon_over_two is the same "
             "window applied to a one-photon ramp against the two-photon one: the one-photon "
             "null holds only as the window shrinks, since the transverse law is uniform at "
             "each slice and the axial mixture of uniforms with different upper limits is not.")
     with dest.open("w", newline="", encoding="utf-8") as fh:
         w = csv.writer(fh)
         w.writerow(["row_kind", "magnification", "w0_um", "transit_fwhm_mhz", "s0_mhz", "rabi_hz",
-                    "z_ratio", "k2_over_pure", "k3_over_pure", "k3_one_photon_over_two",
+                    "z_ratio", "mu2_over_pure", "mu3_over_pure", "mu3_one_photon_over_two",
                     "cycles_rel", "rate_rel",
                     "signal_rel", "line_fwhm_mhz", "peak_rel", "term", "fitted_exponent",
                     "predicted_exponent", "status", "note"])
         for r in rows:
             w.writerow(["rung", f"{r['magnification']:.6f}", f"{r['w0_um']:.3f}",
                         f"{r['transit_fwhm_mhz']:.6f}", f"{r['s0_mhz']:.6f}", f"{r['rabi_hz']:.3f}",
-                        f"{r['z_ratio']:.6f}", f"{r['k2_over_pure']:.6f}", f"{r['k3_over_pure']:.6f}",
-                        f"{r['k3_one_photon_over_two']:.6f}",
+                        f"{r['z_ratio']:.6f}", f"{r['mu2_over_pure']:.6f}", f"{r['mu3_over_pure']:.6f}",
+                        f"{r['mu3_one_photon_over_two']:.6f}",
                         f"{r['cycles_rel']:.6f}", f"{r['rate_rel']:.6f}", f"{r['signal_rel']:.6f}",
                         f"{r['line_fwhm_mhz']:.4f}", f"{r['peak_rel']:.6f}", "", "", "", "DIAGNOSTIC", note])
         for e in exps:

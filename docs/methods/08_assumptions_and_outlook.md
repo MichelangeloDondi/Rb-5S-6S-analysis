@@ -14,32 +14,37 @@ What is everything above resting on, and what would a second epoch of data lift?
    split depends on them). These two are no longer in the same position, as of
    2026-08-20. The transit shape is still undistinguished by the 2025 data
    ([§4.7](06_the_statistics.md)), and the Voigt-versus-Lehmann difference is
-   carried as a model-form error bar for that reason. The laser shape is not:
-   fitting every condition under a Lorentzian laser kernel instead gives a
-   median $\Delta\chi^2$ of 232 against the Gaussian for one extra parameter,
-   and a purely Lorentzian laser contribution is excluded at 26 of the 32
-   conditions above three sigma. Two cautions travel with that. The comparison
+   carried as a model-form error bar for that reason. The laser shape is not,
+   though at the calculated waist it is distinguished less sharply: fitting
+   every condition under a Lorentzian laser kernel instead gives a median
+   $\Delta\chi^2$ of 9.1 against the Gaussian for one extra parameter, and a
+   purely Lorentzian laser contribution is excluded at 16 of the 32 conditions
+   above three sigma (`results/laser_kernel.csv`, its `delta_chi2` column).
+   Two cautions travel with that. The comparison
    is nested rather than a choice between alternatives, since the Lorentzian
    model is the boundary case of the Gaussian one, so the count of conditions
    the Gaussian wins carries no information and only the size of the
    improvement does. And excluding one end-member is not the same as measuring the
    shape: how much Lorentzian content the line tolerates is a fitted width
    that has not been measured yet. The laser shape is therefore tested at one end-member and unmeasured in between.
-4. The beam waist $w_0=64$ µm is **accepted from the lineage measurement,
-   not measured on this bench**. Rajasree 2020 reprints Nieddu's 128 µm $1/e^2$
-   diameter, profiled on the predecessor laser through the same $f=150$ mm
-   lens, the same 130 °C cell and the same $2f$ retro geometry, and without this
-   beam's 3 mm modulator bore. Transferring it assumes the
-   2025 alignment matched. Two documented effects push the *effective* waist
-   above 64 µm and neither is fitted: residual clipping at the 3 mm EOM
-   aperture, and imperfect superposition of the retro beam. A direct
-   beam-profile measurement in a fixed-lock session settles it for this bench,
-   and until then every absolute number carries the $w_0$ band.
+4. The beam waist $w_0=42.38$ µm is **calculated from this bench's own EOM-bore
+   diffraction (owner order O44, 2026-09-21), not measured on this bench and no
+   longer transferred from the Nieddu/Rajasree lineage measurement**. The 3 mm
+   EOM aperture truncates the input Gaussian ahead of the focusing lens, and the
+   actual on-axis waist is the clipped aperture's own finite-Hankel-transform
+   focus, grid-stable at 42.38 µm for a 2.5 mm input radius (F104, F105, F108,
+   F280). The same calculation shows this bore cannot focus tighter than about
+   41 µm for any input radius, so the value sits close to a floor as well as
+   being a point estimate, and the beam radius at the lens itself stays an open
+   apparatus item the calculation is comparatively insensitive to. A direct
+   beam-profile measurement in a fixed-lock session remains the way to confirm
+   this bench's actual beam against its calculated one, and until then
+   every absolute number carries the $w_0$ band.
 5. The retro ratio $\rho=0.94\pm0.04$ behind the quoted $S_0$ prediction
    ([§2.6](03_the_ac_stark_ramp.md)) is an **assumption**.
    Until v3.0.0 the code asserted $\rho=1$ on a geometric design argument: the
    2025 retro is self-imaging, L2 ($f=150$ mm) maps the cell waist to a
-   about 0.7 mm intermediate waist and a flat mirror at that flat wavefront
+   about 1.1 mm intermediate waist and a flat mirror at that flat wavefront
    time-reverses the beam, re-forming the original waist, so the
    forward/return *mode match* is by construction. That argument covers mode
    matching and not *loss* (two extra L2 passes, two extra window passes,
@@ -47,7 +52,8 @@ What is everything above resting on, and what would a second epoch of data lift?
    superposition either. Neither was characterized for the dataset, so a
    modest departure is now assumed instead of a perfect retro. The exposure is
    bounded either way: $S_0\propto(1+\rho)$ confines the prediction to
-   0.18–0.36 MHz for any $\rho$, and the Doppler-free rate's own
+   [0.376](../../results/stark_joint.csv "ref:expr:{stark_joint:S0_225mW_pred:prediction} / (1 + {constant:RHO_RETRO})")–[0.752](../../results/stark_joint.csv "ref:expr:2 * {stark_joint:S0_225mW_pred:prediction} / (1 + {constant:RHO_RETRO})") MHz
+   for any $\rho$ at the calculated waist, and the Doppler-free rate's own
    $\propto\rho$ scaling means the dataset's strong lines already argue
    $\rho$ is not small. What no static bound covers is a *drifting* overlap
    within a scan (mirror tilt is the sensitive axis, and the longitudinal
@@ -63,6 +69,17 @@ What is everything above resting on, and what would a second epoch of data lift?
    against the kept repeats at their own conditions, and are indistinguishable
    in the *fitted* quantity, the linewidth, even where they are measurably dimmer
    ([PREREGISTRATION_RESULTS.md](../PREREGISTRATION_RESULTS.md) addendum 3).
+9. The saturation companion's width is evaluated at the on-axis two-photon Rabi
+   frequency (`fullmodel.saturation_companion_mhz`, whose docstring says so). The
+   collected line averages the drive over the beam's transverse profile, the axial
+   window and each atom's crossing, so the on-axis value overstates the line's
+   saturation broadening. An optical Bloch integration along the atoms' crossings
+   finds the collected line's saturation still one extra homogeneous Lorentzian,
+   at an effective Rabi frequency near half the on-axis one, and the model takes
+   that scale in the next model window together with the kernel study's re-run at
+   it. Until then the saturation term, and every width-against-power reading that
+   separates it from the ramp's own broadening, sits at the upper end of what the
+   collected line admits ([the saturation companion note](../notes/two_photon_saturation_companion.md)).
 
 ---
 
@@ -83,8 +100,11 @@ every absolute scale above rests.
 **PLAN §9**). Power
 would be capped at
 225 mW, so the intensity axis comes from the **beam waist instead**
-($I\propto P/w_0^2$, since a telescope unclips the EOM aperture and two working
-waists, 64 µm and 16 µm, span a $\times16$ intensity range at fixed power).
+($I\propto P/w_0^2$, since expanding the beam after the EOM bore, or feeding it
+from a fibre after the modulator, reaches an unclipped focus at small waists
+(PLAN §3), and two working waists, the archive's own 42.38 µm bore-clipped and
+an unclipped 16 µm, span about a $\times7.90$ intensity range at fixed power,
+or $\times7.02$ with the 2025 input kept and only the lens shortened).
 The headline shots would be these.
 
 * The AC-Stark shift coefficient, with the intensity axis anchored by the
@@ -117,8 +137,8 @@ none of its own. Each assumption is sourced from the chapter that makes it,
 and the forward programme it points at is costed in [`PLAN.md`](../PLAN.md).
 
 **What would falsify this.** A beam-profile measurement returning a waist
-outside the 62 to 68 µm band. Assumption 4 is the one every absolute number in
-this repository leans on, and a waist measured away from the lineage value
+outside the 40 to 45 µm band. Assumption 4 is the one every absolute number in
+this repository leans on, and a waist measured away from the calculated value
 would move the transit subtraction and the Stark prediction together, in the
 same direction, without any fit noticing.
 

@@ -12,7 +12,7 @@ This chapter builds on the aim of chapter 1 and the priority order of chapter 2 
 Two working waists plus one continuity check (a third full waist is dropped
 by design):
 
-- **L (w₀ ≈ 64 µm, z_R ≈ 13 mm).** The width workhorse. Transit ~1.0 MHz,
+- **L (w₀ ≈ 60 µm, z_R ≈ 11 mm).** The width workhorse. Transit ~1.0 MHz,
   collection inside z_R, clean geometry. Runs the full two-day T grid.
 - **S (w₀ ≈ 15–16 µm, z_R ≈ 0.8 mm).** The Stark, skew and cusp configuration,
   where the cusp is the discontinuous slope the transit-limit lineshape predicts
@@ -21,11 +21,11 @@ by design):
   One model caveat is specific to it: the composite lineshape convolves transit
   with the natural Lorentzian, which is rigorous when the crossing time is long
   against the 6S lifetime (45 ns). At the 2025 dataset's waist the ratio is
-  ~4. At 16 µm it is ~1.3, so this is where a referee should ask for the
+  ~3. At 16 µm it is ~1.3, so this is where a referee should ask for the
   convolution's validity range and where a Bloch-equation cross-check earns
   its time. A caveat
   to state and test, not a reason to retreat.
-- **M (the 2025 dataset's geometry, 64 µm, measured, band 62 to 68 µm).** Half-day spot
+- **M (the 2025 dataset's geometry, 42.38 µm, calculated, so w0 ≈ 42 µm, band 40 to 45 µm).** Half-day spot
   check: knife-edge, camera, P grid, one 130 °C point, for direct 2025-epoch
   continuity.
 
@@ -105,9 +105,9 @@ This block fires on any change of the expander setting and on any change of
 the drive wavelength, and the second case is the one the record missed until
 2026-09-09. The waist is not a property of the bench alone. Through a fixed
 lens and a fixed input beam it is `w0 = λf/(πw_in)`, so retuning the laser
-moves the waist with nothing touched: the 64 µm convention at 993.4 nm becomes
-[48.589](../../results/transition_ladder.csv "ref:transition_ladder:7S:waist_aperture_limited") µm at
-760.1 nm and [44.455](../../results/transition_ladder.csv "ref:transition_ladder:6D:waist_aperture_limited") µm
+moves the waist with nothing touched: the 42.38 µm convention at 993.4 nm becomes
+[32.175](../../results/transition_ladder.csv "ref:transition_ladder:7S:waist_aperture_limited") µm at
+760.1 nm and [29.437](../../results/transition_ladder.csv "ref:transition_ladder:6D:waist_aperture_limited") µm
 at 697.5. The light shift goes as the inverse square of that, so the same power
 is a different experiment. Nothing downstream of this block may be carried
 across a retune.
@@ -131,10 +131,10 @@ that what is measured is what the science blocks will run on.
 3. **Refocus the f = 18 mm collection lens onto the new focus.** The collection
    half-length is fixed by the optics while the Rayleigh range falls with the
    waist, so the ratio the axial window model uses rises from
-   [0.2605](../../results/transition_ladder.csv "ref:transition_ladder:6S:collection_z_ratio") at 993.4 nm to
-   [0.3459](../../results/transition_ladder.csv "ref:transition_ladder:7S:collection_z_ratio") at 760.1 and
-   [0.4051](../../results/transition_ladder.csv "ref:transition_ladder:9S:collection_z_ratio") at 655.8. No rung
-   in the band reaches the 1.117 at which the windowed third cumulant changes
+   [0.5942](../../results/transition_ladder.csv "ref:transition_ladder:6S:collection_z_ratio") at 993.4 nm to
+   [0.7888](../../results/transition_ladder.csv "ref:transition_ladder:7S:collection_z_ratio") at 760.1 and
+   [0.9237](../../results/transition_ladder.csv "ref:transition_ladder:9S:collection_z_ratio") at 655.8. No rung
+   in the band reaches the [1.117](../../results/prediction_band.csv "ref:prediction_band:collection_window:skew_null_z_ratio") at which the windowed third moment changes
    sign, so the shape channel keeps its sign, and the ratio still has to be
    recomputed because it enters the ramp's own moments.
 4. **Re-measure the waist with both instruments**, exactly as §4.2 prescribes:
@@ -147,8 +147,8 @@ Go/no-go for the retune itself, and it is a physics check and not an
 optical one. The transit width carries the geometry to the first power while
 the light shift carries it to the second, so the ratio of transit widths between
 the two drives is a prediction the bench has to meet: about
-[1.261](../../results/transition_ladder.csv "ref:transition_ladder:7S:transit_fwhm") MHz at 760.1 nm against
-[0.958](../../results/transition_ladder.csv "ref:transition_ladder:6S:transit_fwhm") at 993.4, at the same cell
+[1.905](../../results/transition_ladder.csv "ref:transition_ladder:7S:transit_fwhm") MHz at 760.1 nm against
+[1.446](../../results/transition_ladder.csv "ref:transition_ladder:6S:transit_fwhm") at 993.4, at the same cell
 temperature and the same atom. **A disagreement here is not a failed
 alignment.** It says the input beam is not what the waist model assumed, which
 is the open item §12 carries, and the measurement it delivers is worth more
@@ -164,11 +164,14 @@ schedules, run again, and a campaign that drives two lines schedules it twice.
 divided by the Rayleigh range is the `z_ratio` of the ramp's own closed form,
 and it enters every moment the campaign reads. `docs/methods/03` derives what
 it does: the mean pull falls from the pure ramp's value as the window
-lengthens, the third cumulant passes through zero near `z_ratio` 1.117 and
+lengthens, the third moment passes through zero near `z_ratio` [1.117](../../results/prediction_band.csv "ref:prediction_band:collection_window:skew_null_z_ratio") and
 reverses beyond it, and the axial mixture is what gives a ONE-photon line a
-third cumulant at all. The record knows the ratio as 0.26 with a `+0.20/-0.09`
-excursion, and at the tighter waists the window's own correction is 29 per cent
-of the pull at 25 microns and 42 at 16. **A number that large, known that
+third moment at all. At the calculated waist the record knows the ratio as
+[0.59](../../results/prediction_band.csv "ref:prediction_band:collection_window:z_ratio") with a
+[0.22](../../results/prediction_band.csv "ref:prediction_band:collection_window:z_ratio:err") span over the extremes of the lens,
+image-distance and waist ranges, and at the tighter rungs of the waist ladder it
+reaches 1.52 at 26.5 microns and 3.89 at 16.6 (`results/waist_ladder.csv`), past
+the third moment's null at 1.117. **A number that large, known that
 poorly, and sitting inside the observable is a hardware problem and not an
 analysis one.**
 
@@ -178,14 +181,14 @@ ASSUMED and not measured**: the attribution comes from Nieddu 2019, a different
 bench, while an in-campaign photograph of 2025-07-18 shows the cell detector
 labelled Thorlabs PXT1/M. Chapter 12 carries it as an open item and the
 arithmetic below inherits that. On the assumed geometry, rotating the tube into
-portrait divides the window by four in one discrete step, which keeps 25.5 per
-cent of the light at 64 microns, 38.8 at 25 and 60.4 at 16, the loss shrinking
+portrait divides the window by four in one discrete step, which keeps 27.5 per
+cent of the light at 42.38 microns, 38.8 at 25 and 60.4 at 16, the loss shrinking
 as the waist tightens because the collected share goes as `arctan(L/z_R)` and
 saturates. It is still not worth doing, for three reasons that do not depend on
 the exact cathode size.
 
-It lands at `z_ratio` 1.042 at 16 microns, seven per
-cent from the null, which zeroes the third cumulant.
+It lands at `z_ratio` [1.042](../../results/detection_budget.csv "ref:detection_budget:x_L_over_2zR:along3_w16um") at 16 microns, seven per
+cent from the null, which zeroes the third moment.
 
 It is a discrete step
 where the useful variable is continuous. And the tube is side-on, so its
@@ -201,7 +204,7 @@ Needs. The relay and a slit reading 0.3 to 12 mm. The relay must be
 telecentric enough that closing the slit does not change the collection solid
 angle, or the scan measures the product of the two and not the window. At the
 present conjugates the magnification is 1.78, so that slit range covers
-`z_ratio` 0.013 to 0.46 at a 64 micron waist and 0.21 to 7.4 at 16 microns,
+`z_ratio` 0.030 to 1.05 at the 42.38 micron waist and 0.21 to 7.4 at 16 microns,
 the top end capped by the cathode itself.
 
 **Shots.** Four or five slit settings at one power and one temperature, on the
@@ -216,11 +219,11 @@ says the collection weight is not uniform across the window, which chapter 9
 carries as an open item and which the ramp's derivation assumes.
 
 The sharp test it makes available. At 16 microns the slit range crosses
-`z_ratio` 1.117, where the windowed third cumulant changes sign. That crossing
+`z_ratio` [1.117](../../results/prediction_band.csv "ref:prediction_band:collection_window:skew_null_z_ratio"), where the windowed third moment changes sign. That crossing
 is a prediction of the geometry with no free parameter, and walking the slit
 through it is the strongest single check of the axial model this bench can
 make. It also walks the one-photon contamination from 0.0001 at the short
-setting to nine times the two-photon cumulant at the long one, so the same scan
+setting to nine times the two-photon moment at the long one, so the same scan
 measures the delineation from the one-photon prior art instead of assuming it.
 
 **Empty.** A slit returns a number at every setting, so the exposure is not a
@@ -292,7 +295,7 @@ third to a half of the power, it floors the focus near 42 microns whatever the
 input radius, and it replaces the Gaussian profile every kernel in this
 repository assumes with a ringed one.
 
-The bore also sets a floor, and the floor is where the waist was ruled. Solved by diffraction through the 3 mm aperture, which the unclipped Gaussian formula does not describe under heavy truncation, the focal radius reads 65.0 microns at an input radius of 0.741 mm, 51.1 at 1.06, 45.4 at 1.5, 43.3 at 2.0 and 41.4 at 4.0, against 0.0, 1.8, 13.5, 32.5 and 75.5 per cent of the power clipped. So the focus saturates at 41 to 43 microns whatever is done upstream, the beam that reaches the floor is the beam that gives up a third to a half of its power, and the owner's ruled 40 to 45 micron band is the bore's own diffraction limit. The aperture's cost and the waist's value are one fact on this bench.
+The bore also sets a floor, and the floor is where the waist was ruled. Solved by diffraction through the 3 mm aperture, which the unclipped Gaussian formula does not describe under heavy truncation, the focal radius reads 79.1 microns at an input radius of 0.6 mm, 51.1 at 1.06, 45.4 at 1.5, 43.3 at 2.0 and 41.4 at 4.0, against 0.0, 1.8, 13.5, 32.5 and 75.5 per cent of the power clipped. So the focus saturates at 41 to 43 microns whatever is done upstream, the beam that reaches the floor is the beam that gives up a third to a half of its power, and the owner's ruled 40 to 45 micron band is the bore's own diffraction limit. The aperture's cost and the waist's value are one fact on this bench.
 
 The waist becomes a rung. A fibre of mode radius `w_f` diverges at
 `lambda / pi w_f`, so a collimator `f_c` returns `f_c lambda / pi w_f` and the
@@ -319,7 +322,9 @@ one ray in the drive while their ratio goes as the crossing time.
 
 One mode means one shape on every rung. Every rung presents the same profile
 at a different scale, so every dimensionless shape number of the light-shift
-distribution takes one value across the scan, the standardised third cumulant
+distribution takes one value across the scan.
+<!-- C6b: re-measured as a moment (A149) -->
+The standardised third cumulant
 `-2 sqrt2 / 5` and the normalised fourth `-3/5`, both read off the ramp's own
 density and checkable from it. A shape
 number that moves is a systematic and can be nothing else. A truncated beam has
@@ -334,7 +339,7 @@ windows. The shape numbers measure that, so they are read on every rung before
 the fit. The second is section 4.2c's and is not repeated here: the Rayleigh
 range goes as the square of the waist while the imaged length is set by the
 collection optics, so their ratio moves by four across a factor of two in waist
-and the third cumulant crosses zero at `z_ratio` 1.117. Holding the imaged
+and the third moment crosses zero at `z_ratio` 1.117. Holding the imaged
 length proportional to the square of the waist keeps every rung at one axial
 mixture, which is what the slit of 4.2c is for.
 

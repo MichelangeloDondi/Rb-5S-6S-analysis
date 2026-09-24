@@ -39,12 +39,14 @@ from typing import Dict, List, Optional, Tuple
 import numpy as np
 from scipy.special import jv
 
-from . import blackbody, cascade, stark
+from . import blackbody, cascade, stark, twin_volume
 from .fullmodel import full_profile
 from .lineshape import (composite_profile, local_ramp_density, model_profile,
                         ramp_mixture, stark_ramp)
-from .linefit import fit_condition
+from .linefit import fit_condition, GNAT_MHZ, JOINT_N_PATH, JOINT_SEED, JOINT_Z_RATIO
+from .constants import W0_CENTRAL_M
 from .noise import sigma_of_v
+from .volume_line import GaussianBeam
 
 __all__ = ["synthetic_traces", "build_world_trace", "forecast_precision",
            "n_eff", "external_constraint_gain"]
@@ -119,6 +121,49 @@ def _correlate(w: np.ndarray, tau_int: float) -> np.ndarray:
     return x
 
 
+def _traces_from_shape(nu: np.ndarray, shape: np.ndarray, *, n_traces: int, noise: object,
+                       amp: float, amp_spread: float, offset: float, offset_spread: float,
+                       halo_fraction: float, tau_int: Optional[float], residual_source,
+                       rng: np.random.Generator) -> Tuple[List[np.ndarray], List[np.ndarray]]:
+    """THE SHARED NOISE LAYER (C6b noise wave, 2026-09-22): every trace `synthetic_traces` below
+    returns, under EITHER `model`, gets its per-trace amplitude/offset spread, its halo, its
+    correlated noise and its residual-seam draw from here. Noise is added AFTER the clean line
+    exists and does not depend on the model form that built `shape` (peak-normalised, one peak
+    of 1.0), so this is the ONE copy of that logic: before this wave `model="joint"` traces were
+    built by `twin_volume.synthetic_traces`'s own, separate, i.i.d.-only noise loop, which is why
+    `tau_int`, `residual_source` and a non-zero `halo_fraction` used to raise under `model="joint"`
+    instead of being silently dropped -- they are threaded here instead, unconditionally.
+
+    `noise` is either a float (the i.i.d./correlated standard deviation as a fraction of peak) or
+    a noise-law dict (`rb5s6s.noise.condition_noise_model`/`load_noise_model`), each point's sigma
+    then read through `sigma_of_v`. `tau_int` (explicit, or read from the noise-law dict's own
+    `tau_int` when `tau_int is None`) filters unit-variance white noise to that integrated
+    correlation time (`_correlate`). `residual_source`, a callable `(rng, n) -> array` of n
+    unit-variance samples, REPLACES that filtered draw outright when given (the moving-block
+    resamples of `scripts/run_residual_resampling.py`). `halo_fraction` raises the per-trace
+    amplitude by a fixed fraction, flat across the scan (the trapped-light re-excitation term).
+    """
+    freqs: List[np.ndarray] = []
+    volts: List[np.ndarray] = []
+    for i in range(int(n_traces)):
+        a = float(amp) * (1.0 + float(amp_spread) * i) * (1.0 + float(halo_fraction))
+        base = float(offset) + float(offset_spread) * i
+        clean = a * shape + base
+        _tau = (tau_int if tau_int is not None
+                else (float(noise.get("tau_int", 1.0))
+                      if isinstance(noise, dict) else 1.0))
+        _w = (np.asarray(residual_source(rng, nu.size), float) if residual_source is not None
+              else _correlate(rng.standard_normal(nu.size), _tau))
+        if isinstance(noise, dict):
+            sig = np.asarray([sigma_of_v(v, noise) for v in clean])
+            v = clean + sig * _w
+        else:
+            v = clean + float(noise) * a * _w
+        freqs.append(nu.copy())
+        volts.append(v)
+    return freqs, volts
+
+
 def n_eff(n: int, tau_int: float) -> float:
     """Effective number of independent samples: n over the correlation time.
 
@@ -146,8 +191,45 @@ def synthetic_traces(gamma_coll: float, sigma_laser: float, transit_fwhm: float,
                      s0: float = 0.0, halo_fraction: float = 0.0,
                      rng: Optional[np.random.Generator] = None,
                      residual_source=None,
+                     model: str = "joint", T_C: float = 110.0,
+                     w0_m: float = W0_CENTRAL_M, m2: float = 1.0,
+                     z_ratio: float = JOINT_Z_RATIO, n_path: int = JOINT_N_PATH,
+                     seed: int = JOINT_SEED,
                      ) -> Tuple[List[np.ndarray], List[np.ndarray]]:
     """Generate the traces your instrument would record for this line.
+
+    `model` (owner order O49, the C6b wide wave: "the model... is not anymore a
+    convolution"). THE DEFAULT IS `"joint"`: the world's CLEAN LINE is drawn from
+    `volume_line.joint_spectrum`'s atom-sampled two-time line, through `twin_volume.
+    world_shape` (never `volume_line.JointTable` -- "the world must be the Monte
+    Carlo, never the fitter's table", `twin_volume`'s own charter), at a beam built from
+    `w0_m` (default `constants.W0_CENTRAL_M`) and `m2`, and this call's own `T_C` (default
+    110.0, matching this module's and `linefit`'s own `T_ref_C` convention). `transit_fwhm`
+    IS NOT READ under this model: the transit comes from the atom-sampled ensemble at
+    (w0_m, T_C), the same emergent quantity `linefit.fit_condition(model="joint")` now
+    reports instead of fitting, so a twin generated here and a fit made there share the
+    SAME forward model exactly (`_one_trial` below threads `T_C`/`model`/`w0_m`/`m2` to
+    both). `gamma_coll`/`sigma_laser`/`gamma_l`/`laser_kind`/`s0` carry across unchanged:
+    `s0` is the same on-axis AC-Stark S0 either model reads, and `gamma_coll`/`gamma_l`
+    bundle into the table's homogeneous Lorentzian exactly as `linefit._shared_profile_grid`
+    does.
+
+    THE NOISE LAYER IS THE SAME ONE EITHER MODEL USES (C6b noise wave, 2026-09-22:
+    `_traces_from_shape` below). Noise is added AFTER the clean line exists and does not
+    depend on the model form, so `tau_int`-correlated noise (explicit, or carried by a noise-
+    law dict's own `tau_int`), `residual_source` (the moving-block resamples of
+    `scripts/run_residual_resampling.py`) and `halo_fraction` all reach a `model="joint"`
+    trace exactly as they reach a `model="convolution"` one, through the one shared helper,
+    never a second copy of that logic. UNTIL THIS WAVE, `twin_volume.synthetic_traces`'s own
+    simpler (i.i.d.-only) noise layer stood in for `model="joint"` instead, and `tau_int`,
+    `residual_source` and a non-zero `halo_fraction` raised under `model="joint"` instead of
+    being silently dropped. `twin_volume.world_shape` (the peak-normalised world line alone,
+    with no noise layer of its own) is what this branch calls now, so the refusal no longer
+    applies and every one of those three keywords is read under either model.
+
+    `model="convolution"` is the pre-existing separable form below (`model_profile`/
+    `composite_profile`), kept callable as the named comparison arm and byte-identical to
+    every trace generated before this parameter existed.
 
     ``residual_source`` (PLAN v2 Phase 3, 2026-09-18): a callable ``(rng, n) -> array`` of n
     unit-variance samples that REPLACES the Gaussian draw, so a twin can carry the archive's own
@@ -172,13 +254,13 @@ def synthetic_traces(gamma_coll: float, sigma_laser: float, transit_fwhm: float,
     skewness of about 1e-16. That matters more than it sounds: the AC-Stark
     ramp is the only asymmetric term in the model, and the asymmetry it puts
     into the line is the observable this record is built on. Its third
-    cumulant is -S0^3/135 on the blue side (lineshape.RAMP_SIDE, docs/methods/03), and the statement of what a windowed readout keeps of it was
+    moment is -S0^3/135 on the blue side (lineshape.RAMP_SIDE, docs/methods/03), and the statement of what a windowed readout keeps of it was
     replaced (the account is in the private correction record): the Lorentzian's even
-    cumulants diverge, its odd moments cancel under a window symmetric about
-    the line's own centre, so a SELF-CENTRED windowed kappa_3 keeps a
+    moments diverge, its odd moments cancel under a window symmetric about
+    the line's own centre, so a SELF-CENTRED windowed mu_3 keeps a
     truncation-limited fraction of the ramp's value
     (results/cumulant_window_check.csv, survival rows) while a lab-frame
-    window under drift takes on (2/pi)*gamma*delta*W of first-cumulant
+    window under drift takes on (2/pi)*gamma*delta*W of first-moment
     leakage (gamma the half-width). Drift immunity belongs to self-centred readouts,
     the fit's free per-scan centre above all. Derivation and numbers:
     docs/wiki/third-cumulant.md. A generator
@@ -200,6 +282,34 @@ def synthetic_traces(gamma_coll: float, sigma_laser: float, transit_fwhm: float,
     Returns (freqs, volts), each a list of arrays, one per trace, in the form
     `fit_condition` accepts.
     """
+    if model not in ("joint", "convolution"):
+        raise ValueError(f"synthetic_traces: model must be 'joint' or 'convolution', "
+                         f"got {model!r}")
+    if model == "joint":
+        # THE REFUSAL IS GONE (C6b noise wave, 2026-09-22): `twin_volume.world_shape` returns
+        # only the peak-normalised clean line, with no noise layer of its own to be silently
+        # short of `tau_int`/`residual_source`/`halo_fraction`, so every one of the three
+        # reaches this trace exactly as it reaches a `model="convolution"` one, through the
+        # SAME `_traces_from_shape` helper below.
+        # gaussian-limit: the layered forecast generator is an approximation of the joint twin of record, and it owes the bore (registry bore-limited-recompute)
+        beam = GaussianBeam(float(w0_m), float(m2))
+        _lorentz_laser = laser_kind != "gaussian"
+        homog = (GNAT_MHZ + max(gamma_coll, 0.0) + max(gamma_l, 0.0)
+                + (max(sigma_laser, 0.0) if _lorentz_laser else 0.0))
+        sigma_for_line = 0.0 if _lorentz_laser else max(sigma_laser, 0.0)
+        if rng is None:
+            # the SAME default derivation `twin_volume.synthetic_traces` used to make for this
+            # call before this wave: never from entropy, so a trace set is reproducible from
+            # its arguments alone.
+            rng = np.random.default_rng(np.random.SeedSequence([int(seed), 1]))
+        nu, shape = twin_volume.world_shape(
+            beam=beam, T_C=T_C, S0_mhz=s0, gamma_hom_mhz=homog,
+            sigma_laser_mhz=sigma_for_line, z_ratio=z_ratio, span_mhz=span_mhz,
+            n_points=n_points, centre_mhz=centre_mhz, n_path=n_path, seed=seed)
+        return _traces_from_shape(nu, shape, n_traces=n_traces, noise=noise, amp=amp,
+                                  amp_spread=amp_spread, offset=offset,
+                                  offset_spread=offset_spread, halo_fraction=halo_fraction,
+                                  tau_int=tau_int, residual_source=residual_source, rng=rng)
     if rng is None:
         rng = np.random.default_rng()
     nu = np.linspace(-span_mhz, span_mhz, n_points)
@@ -228,37 +338,20 @@ def synthetic_traces(gamma_coll: float, sigma_laser: float, transit_fwhm: float,
                          "span_mhz or check the widths")
     shape = shape / peak
 
-    freqs: List[np.ndarray] = []
-    volts: List[np.ndarray] = []
-    for i in range(n_traces):
-        # The trapped-light halo raises the collected amplitude by a fixed
-        # fraction of the primary rate. It does NOT reshape the line: the
-        # trapped photon is the D-line cascade photon, whose frequency is
-        # unrelated to the 993 nm two-photon detuning, so the term is flat
-        # across the scan (docs/methods/04 section 2.7).
-        a = amp * (1.0 + amp_spread * i) * (1.0 + halo_fraction)
-        base = offset + offset_spread * i
-        clean = a * shape + base
-        # THE CORRELATION COMES FROM THE LAW THE CALLER ALREADY PASSED.
-        # `noise` as a dict is the committed model, and its `tau_int` sat
-        # unused here while its amplitude coefficients were read one line
-        # below. A caller who hands over the measured law now gets the
-        # measured correlation without asking for it, which is the charter
-        # sentence; an explicit `tau_int` overrides, and a float `noise`
-        # carries no law so it stays white unless told otherwise.
-        _tau = (tau_int if tau_int is not None
-                else (float(noise.get("tau_int", 1.0))
-                      if isinstance(noise, dict) else 1.0))
-        _w = (np.asarray(residual_source(rng, nu.size), float) if residual_source is not None
-              else _correlate(rng.standard_normal(nu.size), _tau))
-        if isinstance(noise, dict):
-            sig = np.asarray([sigma_of_v(v, noise) for v in clean])
-            v = clean + sig * _w
-        else:
-            v = clean + float(noise) * a * _w
-        freqs.append(nu.copy())
-        volts.append(v)
-    return freqs, volts
+    # The trapped-light halo raises the collected amplitude by a fixed fraction of the primary
+    # rate. It does NOT reshape the line: the trapped photon is the D-line cascade photon, whose
+    # frequency is unrelated to the 993 nm two-photon detuning, so the term is flat across the
+    # scan (docs/methods/04 section 2.7). THE CORRELATION COMES FROM THE LAW THE CALLER ALREADY
+    # PASSED: `noise` as a dict is the committed model, and its `tau_int` used to sit unused here
+    # while its amplitude coefficients were read one line below. A caller who hands over the
+    # measured law now gets the measured correlation without asking for it, which is the charter
+    # sentence. An explicit `tau_int` overrides, and a float `noise` carries no law so it stays
+    # white unless told otherwise. `_traces_from_shape` (C6b noise wave) is this SAME logic,
+    # shared with `model="joint"` above instead of kept as a second copy here.
+    return _traces_from_shape(nu, shape, n_traces=n_traces, noise=noise, amp=amp,
+                              amp_spread=amp_spread, offset=offset, offset_spread=offset_spread,
+                              halo_fraction=halo_fraction, tau_int=tau_int,
+                              residual_source=residual_source, rng=rng)
 
 
 def build_world_trace(power_w: float, kappa: float, t_c: float,
@@ -320,7 +413,7 @@ def build_world_trace(power_w: float, kappa: float, t_c: float,
     trapped-light re-excitation as a flat amplitude factor. ``resolve_shift``
     makes the internal convolution grid resolve the light shift as well as
     the kernels: left off, a shift well below the kernel widths sits inside
-    one grid cell, which overstates the third cumulant by 68 per cent at
+    one grid cell, which overstates the third moment by 68 per cent at
     0.18 MHz and misreads it by a few per cent at the archive's shift of about 0.35, while at 1.0 MHz
     and above the two settings agree to every printed digit. Set it for any
     small-shift moment study. ``tooth_of`` maps a position key to the physical
@@ -440,7 +533,7 @@ def build_world_trace(power_w: float, kappa: float, t_c: float,
         # THE RAMP IS CONVOLVED, NOT APPLIED AS A SHIFT (corrected
         # 2026-08-30): a rigid translation carries only the first moment and
         # leaves the trace symmetric, while the self-centred windowed third
-        # cumulant (docs/wiki/third-cumulant.md) is the channel this record
+        # moment (docs/wiki/third-cumulant.md) is the channel this record
         # is built on. model_profile convolves lineshape.stark_ramp, so the
         # pull and the skew both come from the library, and the ramp's coded
         # SIDE is inherited rather than re-chosen (it is an open question:
@@ -509,7 +602,7 @@ def build_world_trace(power_w: float, kappa: float, t_c: float,
                               # made through this path is unchanged. The cost
                               # of leaving it False is measured rather than
                               # asserted: results/moment_power_map.csv carries
-                              # the windowed third-cumulant power both ways.
+                              # the windowed third-moment power both ways.
                               resolve_shift=resolve_shift,
                               s0=(s0 if layers["stark"] else 0.0), **_extra)
         v += amp * (shape / shape.max())
@@ -582,6 +675,15 @@ def _one_trial(truth: Dict, design: Dict, rng: np.random.Generator) -> Dict:
     # not in `design` beside the acquisition settings. Absent, it is zero and
     # both generator and fitter behave exactly as they did before 2026-08-30.
     s0 = float(truth.get("s0", 0.0))
+    # `model` (owner order O49): read once here so the SAME choice reaches both the
+    # generator and the fitter, and `T_C` likewise -- before this fix `synthetic_traces`
+    # took no T_C at all, so under model="joint" (the new default on both sides) the
+    # world was drawn at `synthetic_traces`'s own default T_C while the fit read
+    # `design.get("T_C", 130.0)`, a silent mismatch this threading removes.
+    model = design.get("model", "joint")
+    T_C = design.get("T_C", 130.0)
+    w0_m = design.get("w0_m", W0_CENTRAL_M)
+    m2 = design.get("m2", 1.0)
     freqs, volts = synthetic_traces(
         truth["gamma_coll"], truth["sigma_laser"], truth["transit_fwhm"],
         span_mhz=design.get("span_mhz", 60.0),
@@ -589,7 +691,7 @@ def _one_trial(truth: Dict, design: Dict, rng: np.random.Generator) -> Dict:
         n_traces=design.get("n_traces", 5),
         noise=design.get("noise", 0.004),
         amp=design.get("amp", 1.0),
-        s0=s0,
+        s0=s0, model=model, T_C=T_C, w0_m=w0_m, m2=m2,
         rng=rng)
     # The fitter is MATCHED to the injected ramp by default. `design["fit_s0"]`
     # deliberately mismatches it, which is how the twin measures what omitting
@@ -597,10 +699,10 @@ def _one_trial(truth: Dict, design: Dict, rng: np.random.Generator) -> Dict:
     # 2025 S0 the answer is about 0.1 sigma on gamma_coll, and at a tight focus
     # it is not. A twin that generates and fits with the same s0 can never see
     # that, the way this one could not see it while s0 did not exist.
-    return fit_condition(freqs, volts, T_C=design.get("T_C", 130.0),
+    return fit_condition(freqs, volts, T_C=T_C,
                          transit_fwhm=truth["transit_fwhm"],
                          s0=float(design.get("fit_s0", s0)),
-                         law=design.get("law"))
+                         law=design.get("law"), model=model, w0_m=w0_m, m2=m2)
 
 
 def forecast_precision(truth: Dict, design: Dict, *, n_trials: int = 8,

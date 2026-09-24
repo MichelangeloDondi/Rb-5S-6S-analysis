@@ -311,8 +311,11 @@ def test_symmetric_kernel_claims_carry_their_centring():
     wiki's old unqualified sentence and watching this test fire.
     """
     import re
+    # \kappa_3/third cumulant are the retired spelling (O49, 2026-09-22); mu_3/third moment
+    # is the current one and mu3 == kappa3 identically, so BOTH are kept as alternatives
+    # rather than swapped, since the population this scans may carry either spelling.
     pat = re.compile(r"contribut\w*\s+(?:nothing|zero)[^.]{0,80}"
-                     r"(?:\\kappa_3|κ₃|third cumulant|asymmetry|odd)",
+                     r"(?:\\kappa_3|κ₃|\\mu_3|third cumulant|third moment|asymmetry|odd)",
                      re.I)
     bad = []
     for doc in DOCS:

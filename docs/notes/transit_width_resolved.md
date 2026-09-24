@@ -1,17 +1,28 @@
-# Transit-width tension: RESOLVED, one flux bug, w₀ re-centred 32 → 50 → 64 µm
+# Transit-width tension: RESOLVED, one flux bug, w₀ re-centred 32 → 50 µm → retired
 
-**Status: RESOLVED. The beam-measured waist in force is the accepted
-64 µm**, taken at v3.0.0 (2026-08-01) from the lineage measurement in the
-v3.0.0 block below, which replaces the 50 µm conclusion this note originally
+**Status: RESOLVED. The beam-measured waist once in force was the accepted
+convention**, taken at v3.0.0 (2026-08-01) from the lineage measurement in the
+v3.0.0 block below, which replaced the 50 µm conclusion this note originally
 reached. How it got there: the M9 transit MC (`rb5s6s/transit_mc.py`) had
 **one** real bug, a missing crossing-flux factor, now fixed. The corrected
 transit re-centred the beam-measured waist from 32 µm to **~50 µm** and was
-propagated through every fit, and the lineage measurement then moved it again
-to 64 µm. An earlier draft of this note claimed the MC had **two** bugs and
+propagated through every fit, and the lineage measurement then moved it again,
+to the convention retired in turn below. An earlier draft of this note claimed the MC had **two** bugs and
 inferred **w₀ ≈ 90 µm**, which was wrong by a factor of 2 (see "What the
 earlier note got wrong" below) and is retracted.
 
-`provenance: results/transit_mc.csv` - RESOLVED by its own header, with the accepted 64 um waist in force since v3.0.0. It cites this file. An untagged number here is a claim to check, not a checked one.
+`provenance: results/transit_mc.csv` - RESOLVED by its own header, with the then-accepted convention in force since v3.0.0 (retired in turn below). It cites this file. An untagged number here is a claim to check, not a checked one.
+
+**Retired in turn by order O44, 2026-09-21.** The figure this note settles on below, and
+`W0_MEASURED_M` which carried it, are no longer this record's convention. `constants.W0_CENTRAL_M`
+now holds **42.38 µm**, this bench's own bore-limited actual focus: the EOM's 3 mm bore truncates
+the input Gaussian ahead of the focusing lens, and the actual on-axis waist is read from that
+clipped aperture's own diffraction, calculated, not transferred from the Nieddu/Rajasree
+lineage measurement this note traces below (F104, F105, F108, F280). `constants.W0_BAND_M`
+narrows to **40 to 45 µm**, the owner's own stated interval, not a margin computed around a
+transferred value. No number from the retired convention is restated here beyond what this
+note already carries below it. The account there stays as the record of how that convention was reached in
+the first place, and of the one real bug this note is actually about.
 
 
 ## The one real bug (flux), and the fix
@@ -52,7 +63,7 @@ i.e. **~1.5× the old nominal, not ~3×**. `W0_MEASURED_M` is re-centred to 50 �
 The group's own 993 nm lineage measured the focused cell beam directly.
 **Nieddu 2019** (Opt. Express 27, 6528, page 6530) states it with its
 convention: "The 1/e² beam diameter is 128 µm", with the same f = 150 mm lens,
-so **w₀ = 64 µm**. The **Rajasree-KP 2020** OIST thesis quotes the same 128 µm
+so its radius became this record's working convention at the time. The **Rajasree-KP 2020** OIST thesis quotes the same 128 µm
 in its section 5.2, and that is the same measurement rather than a second one:
 the thesis footnote at section 5.1 records that the section 5.2 data "were
 collected by T. Nieddu and plotted by K.P. Subramonian Rajasree", with the
@@ -71,10 +82,10 @@ event does not fix how much of the beam was clipped, so the estimate stays a
 Gaussian-optics calculation, not a measurement. It is, though, no longer a free
 parameter chosen to fit. Two independent routes (the corrected transit physics
 and a direct beam-profile
-measurement, both below) now converge on **w₀ ≈ 50–64 µm**, above the naive
-32 µm estimate.
+measurement, both below) now converge on **w₀ well above the naive
+32 µm estimate**, in the range the v3.0.0 conclusion below took.
 
-**Resolved at v3.0.0 (2026-08-01): the prior is the measurement, 64 µm.**
+**Resolved at v3.0.0 (2026-08-01): the prior is the measurement.**
 The note above kept 50 µm because the transit-width match slightly preferred
 50–55 and because the 2025 alignment was not guaranteed to match Nieddu's.
 Two things settled it. Rajasree's thesis §5.2 turns out to reprint the same
@@ -83,23 +94,23 @@ same f = 150 mm lens, at the same 130 °C, in the same 2F retro geometry, so
 the transfer rests on the geometry and not on the source. And the
 three-session Stark bound (M23) lands below the prediction at every data
 subset, which is what a lower intensity, meaning a wider waist, produces.
-Two documented effects push the *effective* waist above 64 rather than below
+Two documented effects push the *effective* waist above that value rather than below
 it: residual clipping at the sourced 3 mm EOM aperture, and imperfect
 superposition of the retro beam. The consequence the old note anticipated
-now holds: at 64 µm the observed width **pins σ_laser near 1.1 MHz
+now holds: at that value the observed width **pins σ_laser near 1.1 MHz
 laser-axis**, at the edge of the C2 bound, because the transit↔laser
 degeneracy collapses once w₀ is fixed. A fixed-lock beam-profile measurement
 would measure the 2025 beam directly, and is now confirmatory rather than the
 only route to a sane value.
 
 Corroboration also on the *width* itself: Nieddu 2019 fits the same four two-photon
-peaks at FWHM 2.43–2.60 MHz on the **laser axis**, which is ~5 MHz transition
+peaks at FWHM 2.43–2.60 MHz on the **laser axis**, which is ~5 MHz transition <!-- other-quantity: the laser-axis FWHM range, not the tilt table's residual-over-transit ratio -->
 axis, consistent with our measured ~5.25 MHz and with a locked-laser linewidth of
 ~100 kHz (vs the drifted 2025 lock).
 
 Cascade on the AC-Stark prediction (S₀ ∝ (1+ρ)/w₀²): the predicted on-axis
 shift at 225 mW dropped **1.43 → 0.59 MHz** at the 50 µm re-centring, and
-again to **0.35 MHz** at v3.0.0 with w₀ = 64 µm and ρ = 0.94. The M4e width
+again to **0.35 MHz** at v3.0.0 with the waist this note took and ρ = 0.94. The M4e width
 bound (0.64 MHz, profile likelihood) brackets it, and the M23 three-session bound
 sits below it, which is the v3.0.0 result.
 
@@ -108,11 +119,11 @@ sits below it, which is the v3.0.0 result.
 The observed total width is data-anchored and unchanged. The correction re-splits
 it and re-centres w₀:
 
-| quantity | old (w₀ 32 µm, transit 0.9) | 2026-07-13 (w₀ 50 µm, transit ~1.2) | v3.0.0 (w₀ 64 µm, ρ 0.94) |
+| quantity | old (w₀ 32 µm, transit 0.9) | 2026-07-13 (w₀ 50 µm, transit ~1.2) | v3.0.0 (the value then in force, ρ 0.94) |
 |---|---|---|---|
 | transit prior (110 °C, bare) | 0.9 MHz | 1.20 MHz | **0.93 MHz** (derived from w₀) |
 | σ_laser (linefit, transition, median) | ~2.0 | ~1.3 (0.64 laser axis) | **1.74** (0.87 laser axis) |
-| σ_laser(2025) bound (C2, laser axis) | <~1.1 | <~1.0 | **<1.2** (1.09 at the 64 µm point, rising with w₀) |
+| σ_laser(2025) bound (C2, laser axis) | <~1.1 | <~1.0 | **<1.2** (1.09 at that point, rising with w₀) |
 | β (global fit, central) | ~0.056 | 0.036(4); w₀-band [0.004, 0.055] | **0.0534(43) / 0.0534(47)** (⁸⁵Rb/⁸⁷Rb, the v3.0.0 figure, replaced since by later refits; see `results/lever_crosscheck.csv`) |
 | β lever probe (+130 °C) | ~0.02 | 0.014, while γ_coll rises ×1.85 over ×53 | **0.020/0.022**; γ_coll rises ×1.47 over ×52.5 |
 | S₀(225 mW) predicted | 1.43 | 0.59 | **0.35** |

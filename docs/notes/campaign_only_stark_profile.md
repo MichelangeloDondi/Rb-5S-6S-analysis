@@ -84,8 +84,8 @@ construction's reported limit is to the treatment of the red-side structure.
 
 The same day's diagnostic re-run of the pooled construction is the comparison
 the chapter interprets, so its per-pass answers belong here too. Ascending
-2.106, descending 1.007, seeded 1.231 MHz per W, against the committed
-production value of 1.147 from the earlier pointwise-minimum construction. The
+2.106, descending 1.007, seeded 1.231 MHz per W <!-- other-quantity: independent-pass kappa bounds from this re-run, not paired_reference_forecast's width_err_ratio -->, against the committed
+production value of [0.810](../../results/stark_joint.csv "ref:stark_joint:kappa_ub95:primary") from the earlier pointwise-minimum construction. The
 chi-square gap between the ascending and descending passes varies by up to 56
 along the profile, which is why they land answers a factor of two apart.
 
@@ -134,7 +134,7 @@ No committed number moves on this, and none should.
 The identical test at four times the evaluation cap, changed in nothing else,
 halved the capped points from fifteen to seven, so part of the first run's
 spread was an unfinished search. What remains is not: two starts produced
-complete curves with no capped point and their bounds are 1.000 and 2.133 MHz
+complete curves with no capped point and their bounds are 1.000 and 2.133 MHz <!-- other-quantity: a fit-search bound described in this note, not a committed cell -->
 per W, a factor of 2.13 between fully converged independent starts, and one
 start converged at three coefficient values to a stationary point about
 21,000 in chi-square above the best, which is a second local optimum and not a
@@ -171,8 +171,10 @@ its output survives beside it. Its provenance was pinned before use: the
 five per-start bounds derived from it reproduce this note's own reported
 pinned-run values exactly, 0.0, 0.593, 1.675, 1.916 and 2.191, so it is the
 pinned run's raw output and therefore the environment of record's own.
-Against the committed production minimum of 186370.92 at kappa 0.25, the
-best independent start at each coefficient value sits above it by:
+Against the production minimum then committed, which stood at 186370.92 at kappa 0.25 (the
+cell now reads [224559.91](../../results/stark_joint.csv "ref:stark_joint:profile_point:0.25") under the calculated waist, and the table below is
+the 2026-08-19 run's own frame, not carried forward against that new value),
+the best independent start at each coefficient value sat above it by:
 
 | kappa, MHz per W | best independent start, above production |
 |---|---|
@@ -210,13 +212,13 @@ correction.
 
 | construction | checks run | outcome |
 |---|---|---|
-| pooled, committed 2026-08-03 | cold and seeded chains, both directions, pointwise minimum | direction variants differ by at most 8.59 pointwise |
+| pooled, committed 2026-08-03 | cold and seeded chains, both directions, pointwise minimum | direction variants differ by at most [21.22](../../results/stark_joint.csv "ref:stark_joint:direction_dchi2_max:robustness") pointwise |
 | pooled, diagnostic re-run 2026-08-17 | three passes, ascending, descending, seeded | bounds span a factor of 2.1 |
 | campaign-only, 2026-08-17 | three passes plus the reversed scan axis | agreement at the third decimal, direction indifference 0.00 |
 | campaign-only wing variant | cold descending and seeded ascending | chi-square at or below the primary's at every grid point, as nesting requires |
 | pooled, multi-start at the production budget | five independent starts, no warm start | half the optimisations capped, one complete curve: a second optimum and an unfinished search not separated |
 | pooled, multi-start at four times the budget | identical starts, only the cap changed | **RESOLVED, both causes real**: caps halved, two complete curves disagree by a factor 2.13, and one start converged to a stationary point 21,000 above the best. More than one local optimum, and the warm-start chain is load-bearing |
-| pooled, multi-start under the pinned dependency floor | identical design, numpy 2.5.0 and scipy 1.16.0, the CI minimum leg | **Reproduces**: converged starts again split by about 21,300 in chi-square at three of six kappa points, per-start bounds run 0.59 to 2.19 with one degenerate curve, and the pointwise-min bound of 1.92 again sits far above the production warm-start chain's 1.147. The surface's structure is a property of the fit, not of the environment |
+| pooled, multi-start under the pinned dependency floor | identical design, numpy 2.5.0 and scipy 1.16.0, the CI minimum leg | **Reproduces**: converged starts again split by about 21,300 in chi-square at three of six kappa points, per-start bounds run 0.59 to 2.19 with one degenerate curve, and the pointwise-min bound of 1.92 again sits far above the production warm-start chain's [0.810](../../results/stark_joint.csv "ref:stark_joint:kappa_ub95:primary"). The surface's structure is a property of the fit, not of the environment |
 
 ## What this does and does not establish
 

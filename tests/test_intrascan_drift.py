@@ -109,18 +109,18 @@ def _bias(lin_mhz, quad_mhz=0.0, direction=+1) -> float:
 def test_clean_fit_recovers_injected_asymmetry():
     """Baseline closure: with no drift and no noise the free-centre fit returns
     the injected s0 to numerical precision, and the ramp moments it encodes
-    (pull = +2/3 s0, kappa3 = -s0^3/135; THEORY_NOTE §3) follow.
+    (pull = +2/3 s0, mu3 = -s0^3/135; THEORY_NOTE §3) follow.
 
     The two signs are owner order O27 (2026-09-17): the ramp's density runs on [0, s0],
     blue of the unshifted line, so the centroid is pulled TOWARD the shift and the third
-    cumulant opposes it. The magnitudes 2/3 and 1/135 are the triangle's own and did not
+    moment opposes it. The magnitudes 2/3 and 1/135 are the triangle's own and did not
     move; a flip that changed one of them would be a different physics, not a convention.
     """
     s0 = _fit_s0(*_scan(0.0))
     assert s0 == pytest.approx(_S0_TRUE, abs=1e-4), s0
     m = ramp_moment_contributions(s0)
     assert m["pull"] == pytest.approx(+2.0 / 3.0 * _S0_TRUE, rel=2e-3), m
-    assert m["kappa3"] == pytest.approx(-(_S0_TRUE ** 3) / 135.0, rel=2e-3), m
+    assert m["mu3"] == pytest.approx(-(_S0_TRUE ** 3) / 135.0, rel=2e-3), m
 
 
 def test_record_linear_drift_leaves_asymmetry_unbiased():

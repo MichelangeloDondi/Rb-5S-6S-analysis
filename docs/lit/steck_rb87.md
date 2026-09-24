@@ -50,6 +50,19 @@ At `I = 3/2` the ground-state splitting is `2A`, so 6834.682611 MHz against the
 Ayachitula's 6S splitting gives the second shift-immune ruler pair,
 6834.682611 - 1614.709(3) = 5219.9736 MHz against the record's 5219.973.
 
+## Physical and D-line data the thesis quotes
+
+From the held PDF, revision 2.3.4 of 8 August 2025, which the frontmatter's year predates.
+
+| quantity | 87Rb | where |
+|---|---|---|
+| relative natural abundance | 27.83(2) per cent | Table 2 |
+| ionisation limit | 33 690.804 80(20) cm^-1, 4.177 127 427(25) eV | Table 2 |
+| D2 frequency | 2π · 384.230 484 468 5(62) THz | Table 3 |
+| D2 lifetime and natural width | 26.2348(77) ns, 2π · 6.0666(18) MHz | Table 3 |
+| D1 frequency | 2π · 377.107 463 380(11) THz | Table 4 |
+| D1 lifetime and natural width | 27.679(27) ns, 2π · 5.7500(56) MHz | Table 4 |
+
 ## What it does not settle
 
 Steck tabulates the D lines. The 6S state is not in it, so the other half of

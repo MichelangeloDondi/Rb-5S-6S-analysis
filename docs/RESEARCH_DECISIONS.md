@@ -377,7 +377,7 @@ flat [0.9, 1.1] box and had drifted to 1.02–1.03 in earlier fits. M26's own
 ruler day measures it directly, at 1.0022(12) from 27 rulers, and the refit
 now uses a tight ±5σ box around that number, [0.9962, 1.0081], in its place
 ([run_global_dataset_fit.py:312](../scripts/run_global_dataset_fit.py#L312)).
-The posterior comes out at 1.0081, indistinguishable at this precision from
+The posterior comes out at [1.0081](../results/global_dataset_fit.csv "ref:global_dataset_fit:pilot_rate_scale:nuisance"), indistinguishable at this precision from
 that box's own upper edge. The measurement is doing the constraining now,
 not an assumption, and the fit still wants a rate above what the
 measurement allows. Whether that gap is the axis or absorbed width physics,
@@ -503,8 +503,8 @@ measurement.
 
 Two committed diagnostics show the pooled surface behaving badly.
 `results/stark_joint.csv` records the largest disagreement between the two scan
-directions as 8.59 in chi-square, against the 2.706 at which the bound itself is
-read, so the convergence error is about three times the quantity being measured.
+directions as [21.22](../results/stark_joint.csv "ref:stark_joint:direction_dchi2_max:robustness") in chi-square, against the 2.706 at which the bound itself is
+read, so the convergence error is about 2.4 times the quantity being measured.
 And the rehearsal's 270 mW rung carries 1.44 times the campaign's largest
 squared-shift lever while the pooled bound sits looser than its own campaign-rows
 column, which is the opposite of what adding a longer lever to a measurement of

@@ -1,5 +1,7 @@
 # The cross-campaign full-archive joint fit: specification of record
 
+<!-- kind: record -->  <!-- a preregistration states what was predicted before the result. Rewriting its numbers to match the present would destroy its only function, which is why it is declared a record and not propagated -->
+
 **Status: pre-registered 2026-08-03, before the code was written and before any
 number came out of it.** Nothing below is chosen after seeing a fit. The
 thresholds, the grid, the trace census and the stop conditions are fixed here so
@@ -128,7 +130,7 @@ width only, in every session.
 | `pilot_rate_scale`, box | measured 1.0022(12) plus or minus 5 sigma, so [0.9962, 1.0081] | M26, `results/pilot_ruler.csv`, 27 rulers of the pilot's own day |
 | rehearsal scan rate per peak, log box | within a factor of 4 of 5.9/470 MHz per ms | M23, anchored by the physical widths the rehearsal shares with the campaign |
 | `Vsat` per instrument, log box | exp(-1) to exp(6) V | M23, unchanged |
-| `kappa`, one-sided | [0, 60] MHz per W, profiled | the ramp model only broadens red, so negative kappa is flat by construction |
+| `kappa`, one-sided | [0, 60] MHz per W, profiled | the ramp model only broadens red (the side before O27), so negative kappa is flat by construction |
 
 The `beta_self` prior is the one substantive difference from M25, and it cuts
 both ways. It imports the four-point measurement's own w0 conditionality into
@@ -172,7 +174,11 @@ z-scores are printed so a reader can see them, the largest today being
     0, 0.25, 0.5, 0.75, 1.0, KAPPA_PRED, 1.5, 2.0, 2.62, 3.5, 5.0
 
 Eleven points. `KAPPA_PRED` is computed from the constants at the measured waist
-and retro ratio, which currently gives 1.545 MHz per W. The value 2.62 is kept as
+and retro ratio. At this specification's pre-registered waist convention it gave
+a value now retired. Re-run at the calculated waist this construction stops on
+its own `gate_B3_railed_physics` (section 8, and the outcome below), so its
+recomputed `KAPPA_PRED` grid point is not quoted here either until that gate is
+ruled. The value 2.62 is kept as
 a legacy checkpoint so profiles from before the v3.0.0 reprior stay comparable.
 The grid is identical to M23's, which is deliberate: the two profiles must be
 comparable point by point.
@@ -251,7 +257,7 @@ settled.
 **Amendment 1, 2026-08-03, after the smoke run and before any production
 number.** B3 as first written counted every railed shared parameter and made all
 of them a stop. The smoke run railed two, and neither is a defect. `Vsat` for
-the Agilent sat on the top of its box at 403.4 V, which is the same answer M23
+the Agilent sat on the top of its box at [403.4](../../results/full_dataset_fit.csv "ref:full_dataset_fit:Vsat_agilent:nuisance") V, which is the same answer M23
 reports from the same box at 402.8 V and which means the detector ran linear.
 A saturation parameter running to the ceiling is the expected outcome, not a
 fault. The pilot rate scale sat on the lower edge of M26's measured box, where
@@ -306,6 +312,14 @@ more peaks, or a local minimum gap that survives seeding.
 
 ## Outcome of the first full run, 2026-08-04
 
+**Held since the calculated waist landed (O44, 2026-09-21).** Every number
+below is what the 2026-08-04 run found under the waist convention retired
+that day. `results/full_dataset_fit.csv` has since been re-run at the
+calculated waist and stops on its own `gate_B3_railed_physics` (one
+session's laser width at its 0.05 MHz floor), so its bound is held out of
+this record until that gate is ruled, and this section's historical numbers
+are not a substitute for it.
+
 The run took 273 minutes over 231 traces and 296,949 points and wrote
 `results/full_archive_fit.csv`. Seven of the eight pre-registered gates
 passed. What it found, stated against the specification above rather
@@ -321,7 +335,7 @@ families before the first fit rather than after the first surprise.
 
 **The profile minimum sits at zero shift with no preference for any
 positive value**, as in the predecessor. The 95% upper limit is
-kappa < 0.943 MHz per W, which is S_0(225 mW) < 0.212 MHz. The
+kappa < 0.943 MHz per W, which is S_0(225 mW) < 0.212 MHz, the 2026-08-04 figure retired at the calculated waist (see above). The
 campaign rows alone give 0.639, and the power-ladder rows alone, which
 are the predecessor's own trace set inside this fit, give 0.696. The
 difference between 0.696 and 0.943 is what the temperature ladder adds,
@@ -331,7 +345,7 @@ prefer a positive shift.
 **Three constructions now bound the same quantity** and this note does
 not adjudicate between them. The predecessor's three-session fit gives
 0.268 MHz, the free-coefficient archive fit gives 0.217, and this run
-gives 0.212. (The 0.268 was the committed value when this note was
+gives 0.212, now retired at the calculated waist per the note above. (The 0.268 was the committed value when this note was
 written. The six-tooth recompute of addendum 26 moved it to 0.258, and
 the comparison the paragraph draws is unchanged by the difference.
 Noted 2026-08-09.) They differ in trace set, in whether the collisional

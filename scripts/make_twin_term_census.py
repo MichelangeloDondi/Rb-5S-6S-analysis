@@ -141,6 +141,13 @@ def _argon_bound() -> tuple:
 
 _ARGON = _argon_bound()
 
+# THE COMPONENT'S VALUE AND SPAN, READ (F322, 2026-09-22): the note below typed the retired convention's
+# 0.398 over 0.315 to 0.449 while saying they were read from the cell.
+with (_CFG_RESULTS / "kernel_budget.csv").open(encoding="utf-8") as _fh:
+    _KB = {r[0]: r[1] for r in __import__("csv").reader(_fh)}
+_KB_MEAN, _KB_SPAN = float(_KB["gamma_l_weighted_mean"]), f"{_KB['gamma_l_span']} MHz"
+del _KB
+
 _RECOVERY_BIAS = {
     "lorentzian_core_collisional": "none: both sides carry it",
     "laser_kernel_both_forms": "none: both sides carry it",
@@ -150,10 +157,10 @@ _RECOVERY_BIAS = {
     "axial_collection_window": "INVISIBLE: neither side carries it, so a loop "
                                "recovers its injection and would not recover "
                                "this bench's. Measured at 0.928 of the pure "
-                               "ramp's third cumulant here",
+                               "ramp's third moment here",
     "standing_wave_fringe_tail": "INVISIBLE: neither side carries it. Suppresses "
                                  "the skew by about 7 per cent at this waist, so "
-                                 "a loop over-reads the third cumulant",
+                                 "a loop over-reads the third moment",
     "saturation_companions": "world only: the fitter must absorb a homogeneous "
                              "width, which the Lorentzian sum takes one for one, "
                              "so beta or gamma_l comes back high and the waist "
@@ -163,7 +170,7 @@ _RECOVERY_BIAS = {
                          "surviving transit kernel is 12 per cent wider at three "
                          "mean cycles. The free amplitude takes the surviving "
                          "fraction and leaves the widening, so a closed loop that "
-                         "ignores it reads the waist too SMALL, 64 um as 57",
+                         "ignores it reads the waist too SMALL, by about 11 per cent at three mean cycles",
     "blackbody": "world only: a centre shift the fitter absorbs into the free "
                  "per-trace centre, so it costs the SHIFT channel and no width",
     "lock_drift": "absorbed by design: free centres span it, and the oracle "
@@ -179,7 +186,7 @@ _RECOVERY_BIAS = {
                               "cannot vary F, so the one axis that splits the "
                               "shift family internally is absent from that path",
     "background_scattering": "absorbed by the per-trace baseline while it is flat. "
-                             "A sloped one is an asymmetry the odd cumulants cannot "
+                             "A sloped one is an asymmetry the odd moments cannot "
                              "tell from the ramp except by their sign pattern",
     "laser_kernel_lorentzian_component": "none: both sides carry it, and it is the "
                                          "term that takes any missing homogeneous "
@@ -205,7 +212,7 @@ _RECOVERY_BIAS = {
                                         "kappa to",
     "eom_aperture_profile":
         "INVISIBLE, and at the ruled waist it REVERSES A SIGN. At a clipped focus whose 1/e^2 radius "
-        "READS 42.4 um the transit-integrated ramp's third cumulant is -0.00066 against a Gaussian's "
+        "READS 42.4 um the transit-integrated ramp's third moment is -0.00066 against a Gaussian's "
         "+0.00994 at the same reading, and the reversal survives the Maxwell-Boltzmann speed mixture "
         "(F114, F116). A loop that injects and fits the same Gaussian recovers its own injection and "
         "would not recover this bench's odd channel. The transit width differs by one to four per "
@@ -451,7 +458,7 @@ def main() -> int:
          "through c6_exchange, which is homonuclear. So the twin carries the family as the gamma_l "
          "knob and its value comes from the fit, never from literature. The exhibit's world SETS it "
          "since 2026-09-19, from the committed gamma_l_weighted_mean of results/kernel_budget.csv, "
-         "0.398 MHz over a span of 0.315 to 0.449, read from that cell and never typed, so the "
+         f"{_KB_MEAN:.3f} MHz over a span of {_KB_SPAN}, read from that cell and never typed, so the "
          "permeated Lorentzian is in the synthetic traces a reader is shown"),
     ]
 

@@ -20,8 +20,8 @@ on whether the field varies slowly or quickly compared with the atomic
 response -- slow (adiabatic) fluctuations give an asymmetric line, fast ones
 average away to a symmetric line at the mean shift. Their variation is in
 time and ours is in space, but an atom in flight converts one into the other,
-and in this cell the two timescales are comparable. At the 64 um convention
-waist (constants.W0_MEASURED_M; this line said ~50 um until 2026-08-10, from
+and in this cell the two timescales are comparable. At the retired, wider waist
+convention (constants.W0_CENTRAL_M now holds the calculated focus, O44; this line said ~50 um until 2026-08-10, from
 the estimate the lineage measurement replaced) an atom takes w0/v ~ 260 ns to
 cross one waist radius, or 520 ns for the full beam diameter, against a natural
 response time of 1/(2 pi Gamma_FWHM) = 45.6 ns. The transverse speed here is
@@ -84,11 +84,11 @@ one. Each is checked below, and the pull survives all three:
 
 SCOPE. Transverse crossing of a slice of constant w; the axial (z_ratio)
 beam-divergence weighting is `lineshape.stark_ramp_axial` and the fringe's
-suppression of the third cumulant is `fringe_tail` (M15) -- neither is
-re-derived here. Third and higher cumulants are NOT resolved by this simulation -- the
-numerical noise floor of the FFT, weighted by nu^3, swamps kappa_3 -- so the
-change-of-variables argument is the only support for the odd cumulants above
-the first, and it carries the quasi-static assumption. kappa_3, read
+suppression of the third moment is `fringe_tail` (M15) -- neither is
+re-derived here. Third and higher moments are NOT resolved by this simulation -- the
+numerical noise floor of the FFT, weighted by nu^3, swamps mu_3 -- so the
+change-of-variables argument is the only support for the odd moments above
+the first, and it carries the quasi-static assumption. mu_3, read
 self-centred (docs/wiki/third-cumulant.md), is the moment the asymmetry
 claim rests on.
 """
@@ -102,7 +102,7 @@ from .lineshape import RAMP_SIDE
 # Static-triangle benchmarks the moving ensemble must reproduce (n_photon = 2,
 # pure transverse). Derived in lineshape.stark_ramp / stark_ramp_axial_moments.
 # THE SIGN IS BLUE-SIDED (owner order O27, 2026-09-17): the density runs on [0, s0],
-# so the mean sits at +2/3 s0 and the third cumulant at -s0^3/135. This module read
+# so the mean sits at +2/3 s0 and the third moment at -s0^3/135. This module read
 # -2/3 for five hours after `lineshape` was flipped, which put two functions of one
 # package on opposite sides of the line for the same ramp (F90).
 TRIANGLE_MEAN_OVER_S0 = RAMP_SIDE * 2.0 / 3.0
@@ -129,7 +129,7 @@ def moving_atom_moments(s0: float, *, n_b: int = 501, n_t: int = 60001,
     rate set by v_z. 0 is the frozen-fringe limit (a near-transverse atom parked
     at one point of the node-antinode pattern, sampled over the arcsine); the
     experiment's fast-axial atoms sit near ~113 (2 v_z/lambda ~ 0.56 GHz against
-    a ~4 MHz transit rate at the adopted w0 = 64 um). Both limits preserve the mean, which
+    a ~4 MHz transit rate at the retired waist convention). Both limits preserve the mean, which
     is the fringe-immunity that `constants` asserts and M15 quantifies.
 
     `speeds` supplies a distribution of transverse speeds to mix over -- pass a

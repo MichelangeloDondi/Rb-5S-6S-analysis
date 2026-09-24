@@ -164,7 +164,20 @@ ACCOUNT_MARKERS = (
 # log exists to record; `cache/` holds an audit's queued findings, which quote
 # the stale value on purpose.
 _PRIVATE_SKIP = {".git", "cache", "run_logs", "internal", "Manuals",
-                 "qc_gallery", "qc_gallery_prev_layout", "__pycache__"}
+                 "qc_gallery", "qc_gallery_prev_layout", "__pycache__",
+                 # AN ACCOUNT-CHANGE RESCUE IS A SNAPSHOT (2026-09-24, V5.9c). `account_rescue_*`
+                 # holds verbatim copies of the memory and the plans as they stood on the day the
+                 # account was rescued. The comment below already gives the reason for every other
+                 # snapshot in this set -- a record quotes retired values because that is what a
+                 # record is, and grading it reports the record for being one -- and a rescue is
+                 # the purest case of it: the whole point is that it is NOT updated.
+                 }
+
+#: DATED SNAPSHOT DIRECTORIES, matched by PREFIX and never by their date. The first version of this
+#: named `account_rescue_2026-09-23` literally, and the next rescue made a 2026-09-24 directory that
+#: walked straight back in -- repairing the name last found missing instead of the population, which
+#: is this record's own standing class, committed inside the repair for it.
+_PRIVATE_SKIP_PREFIXES = ("account_rescue_",)
 # THE HISTORY HUB'S CHAPTERS STAY IN THE SCAN, under the now-cell rule; what leaves it is
 # `private/history/records/`, the 598 archives, prompts, snapshots and transcripts the sweep of
 # 2026-09-17 moved there, which carry their marker file instead (a record quotes retired values
@@ -211,6 +224,64 @@ _NUM_ONLY = re.compile(r"-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?")
 # the full match, because a cell is a value by construction.
 _NUM_PROSE = re.compile(r"(?<![A-Za-z0-9_{^\\/])-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?")   # and a fraction's denominator after /
 _BAND_ONLY = re.compile(r"(-?\d+(?:\.\d+)?)\s+to\s+(-?\d+(?:\.\d+)?)")
+
+# FIVE CLASSES THIS CHECKER CANNOT TELL FROM A STALE CLAIM, each measured on 2026-09-23 (F381, F383),
+# when 141 findings across 38 files read as a landing blocker and the genuine subset was four.
+# A number is data of its OWN quantity and is read only where its line's context names the cell's.
+_RETROSPECTIVE = re.compile(
+    r"\b(?:moved from|went stale|used to|formerly|previously|was typed|had read|"
+    r"until a reader|the figure printed|it printed|which claims a tighter|"
+    r"whose free joint fit read|read \d|the file's own extremes)\b", re.I)
+#: a journal volume sits after an abbreviated title and before a comma: "J. Chem. Phys. 154,"
+_JOURNAL_VOL = re.compile(
+    r"(?:Phys|J|Rev|Lett|Opt|Appl|Chem|Astrophys|Mol|Sci|Nat|Proc|Ann|Eur)\.\s*"
+    r"(?:[A-Z][A-Za-z.]*\.?\s*){0,4}\d{1,4}\s*,")
+#: a literal a test assigns to a FIXTURE mapping is invented for a plant and can collide with any cell
+_FIXTURE_ENTRY = re.compile(r'^\s*(?:"[^"]*"|\'[^\']*\')\s*:\s*[\'"]')
+
+
+
+#: A value matching more cells than this, on one line, is a two-digit coincidence and not a copy.
+_MAX_CELLS_PER_VALUE = 1
+
+#: Grammar whose whole content is that a value CHANGED, so it must quote the old one.
+_RETROSPECTIVE = re.compile(
+    r"\b(moved from|used to (?:quote|read|say|carry)|previously|formerly|printed|"
+    r"no longer|supers[e]ded|retired|retracted|was retired|stood at|now holds|"
+    r"before the|until 2026|earlier (?:read|gave)|old value)\b", re.I)
+
+
+def _is_retrospective(line: str) -> bool:
+    return bool(_RETROSPECTIVE.search(line))
+
+
+_MATCH_TALLY: dict = {}
+
+
+def _note_match(lit: str, rel: str, n: int) -> None:
+    _MATCH_TALLY.setdefault((lit, rel, n), 0)
+    _MATCH_TALLY[(lit, rel, n)] += 1
+
+
+def _match_multiplicity(lit: str, rel: str, n: int) -> int:
+    return _MATCH_TALLY.get((lit, rel, n), 1)
+
+
+def _context_refuses(rel: str, line: str, context: str = "") -> bool:
+    """True where the line's grammar or role says its number is not a claim about a current cell.
+
+    THE CONTEXT IS A WINDOW AND NOT THE LINE (2026-09-23). A retrospective paragraph carries its marker
+    in its first clause and its numbers three lines later -- "It was typed as (0.315, 0.449) until a
+    reader compared it with the file's own extremes, / 0.314803 and 0.449389, so the typed pair rounded
+    INWARD" -- so a predicate reading one line at a time refuses the marker's line and admits the
+    number's. That is the same line-granularity defect this checker's own `_last_named` exists to fix
+    for results pages, applied to grammar.
+    """
+    probe = context or line
+    if _RETROSPECTIVE.search(probe) or _JOURNAL_VOL.search(line):
+        return True
+    return rel.startswith("tests/") and bool(_FIXTURE_ENTRY.match(line))
+
 
 
 def _git(*args: str) -> str:
@@ -485,7 +556,9 @@ def _unscanned_dirs(priv) -> set:
     is a comment, which is this repository's own rule. Both are honoured now, and the population is
     still DERIVED rather than enumerated.
     """
-    return {q.parent.name for q in priv.rglob(_UNSCANNED_MARK)} | set(_PRIVATE_SKIP)
+    dated = {d.name for d in priv.rglob("*")
+             if d.is_dir() and d.name.startswith(_PRIVATE_SKIP_PREFIXES)}
+    return {q.parent.name for q in priv.rglob(_UNSCANNED_MARK)} | set(_PRIVATE_SKIP) | dated
 
 
 _RECORD_MARK = "<!-- kind: record -->"
@@ -646,7 +719,7 @@ def _sourced_elsewhere(line: str, lit: str, csv_rel: str) -> bool:
 # the same argument `ssot_literals.py` already makes for its own population. Markdown is
 # untouched: it has no code/prose distinction to draw.
 #
-# AND, SINCE PEP 701 (Python 3.12+), AN F-STRING'S LITERAL TEXT IS A THIRD TOKEN TYPE, found and
+# AND, SINCE PEP 701 (Python 3.12+), AN F-STRING'S LITERAL TEXT IS A THIRD TOKEN TYPE, found and <!-- other-quantity: a PEP number -->
 # planted the same day this scan was narrowed (2026-09-21): `tokenize`
 # no longer folds an f-string's non-brace text into STRING, it emits it as its own
 # `FSTRING_MIDDLE` token, with `FSTRING_START`/`FSTRING_END` carrying only the quote delimiters
@@ -701,6 +774,11 @@ def scan(stale: dict[str, dict[str, tuple[str, str]]],
          paths: list[Path]) -> tuple[list[str], list[str]]:
     findings: list[str] = []
     advisories: list[str] = []
+    # THE ROUNDED FORMS DEPEND ON THE TABLE ALONE, so they are derived once per table and not once per
+    # (line, table) pair (2026-09-25, the owner: the floor must finish under a minute). Measured that
+    # day: 83 661 calls took 12.9 s of a 30 s profile, every one returning what the first call for its
+    # table had returned.
+    _rounded_by_table = {c: _rounded_forms(stale[c]) for c in stale}
     for path in paths:
         _last_named: list[str] = []   # the inheritance state, reset per file (a reader found it leaking across pages, 2026-09-04)
         try:
@@ -721,7 +799,8 @@ def scan(stale: dict[str, dict[str, tuple[str, str]]],
                      if rel.startswith("private/history/") or rel == "private/HISTORY.md"
                      else None)
         for n, line in enumerate(lines, 1):
-            if any(m in line.lower() for m in ACCOUNT_MARKERS):
+            _low = line.lower()
+            if any(m in _low for m in ACCOUNT_MARKERS):
                 continue
             if hist_cols is not None:
                 keep = hist_cols.get(n - 1)
@@ -736,6 +815,9 @@ def scan(stale: dict[str, dict[str, tuple[str, str]]],
             # than the gate step this sits in; the tokens on a line are a
             # handful, so the comparison is a set lookup.
             probe = _XREF.sub(" ", probe)
+            _ctx = "\n".join(lines[max(0, n - 4):n + 1])
+            if _context_refuses(rel, line, _ctx):
+                continue                 # a volume, an account, a move, a fixture
             written = {m.group(0) for m in _NUM_PROSE.finditer(probe)}   # labels excluded
             written |= {f"{m.group(1)} to {m.group(2)}"
                         for m in _BAND_ONLY.finditer(probe)}
@@ -760,6 +842,16 @@ def scan(stale: dict[str, dict[str, tuple[str, str]]],
                     line_cited = _last_named
             else:
                 line_cited = cited
+            # THE PRE-PASS THAT MAKES CLAUSE (a) REAL: count, for this LINE, how many distinct
+            # cells each literal matches, before any of them is emitted. Counting inside the emit
+            # loop would always read one, which is how a rule can be written and never fire.
+            # ONLY A LITERAL THE LINE WRITES IS EVER READ BACK: `_match_multiplicity` is called from the
+            # exact-literal branch below, whose literals are `written & stale[csv_rel]`, so the tally is
+            # taken over that intersection and not over every stale literal of every cited table, which
+            # cost the product of the two on every line (2026-09-25).
+            for _lit in (set().union(*[written & stale[c].keys() for c in line_cited]) if line_cited else ()):
+                _cells = {(c, stale[c][_lit][0]) for c in line_cited if _lit in stale[c]}
+                _MATCH_TALLY[(_lit, rel, n)] = len(_cells)
             for csv_rel in line_cited:
                 # A ROUNDED COPY IS A COPY THE LITERAL MATCH CANNOT SEE.
                 # docs/wiki/third-cumulant.md quoted 0.415, 0.386, 0.343 and
@@ -771,7 +863,7 @@ def scan(stale: dict[str, dict[str, tuple[str, str]]],
                 # was an axis margin or a text coordinate in make_figures.py and
                 # none was in markdown (2026-09-04, and the count is not written
                 # here because the collision fix of the same day changed it).
-                for short, lits in (_rounded_forms(stale[csv_rel]).items() if rel.endswith(".md") else ()):
+                for short, lits in (_rounded_by_table[csv_rel].items() if rel.endswith(".md") else ()):
                   for lit in lits:
                     if short in written and lit not in written:
                         row, now, _b = stale[csv_rel][lit]
@@ -813,7 +905,21 @@ def scan(stale: dict[str, dict[str, tuple[str, str]]],
                         # not this file's value at all, and saying so
                         # keeps the FAIL list readable
                         continue
-                    if now == ROW_GONE or not distinctive:
+                    # A191's TWO OWED CLAUSES, wired 2026-09-24 as plan item V5.9c.
+                    # (a) A VALUE THAT MATCHES SEVERAL DIFFERENT CELLS IS A COINCIDENCE, not a
+                    #     copy. A discriminating value names one row; `0.02` on a beta_self bound
+                    #     matched five unrelated projection cells, and `0.19` on a collisional
+                    #     range matched a transit-span error and a correlation time. This is the
+                    #     multiplicity rule the precheck's stale-literal check already applies, used
+                    #     here rather than written a second time.
+                    # (b) A LINE WITH RETROSPECTIVE GRAMMAR IS AN ACCOUNT, not a claim. "moved
+                    #     from X to Y", "printed", "was", "used to quote": the whole content of
+                    #     such a sentence is that the value CHANGED, so quoting the old one is the
+                    #     sentence doing its job, exactly as the retired-row branch above allows.
+                    if _match_multiplicity(lit, rel, n) > _MAX_CELLS_PER_VALUE \
+                            or _is_retrospective(line):
+                        advisories.append(msg)
+                    elif now == ROW_GONE or not distinctive:
                         advisories.append(msg)
                     else:
                         findings.append(msg)

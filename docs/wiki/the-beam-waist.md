@@ -73,39 +73,50 @@ uncertainty out of proportion to its own fractional size.
 
 ## Application in this repository
 
-[`rb5s6s/constants.py`](../../rb5s6s/constants.py) holds `W0_MEASURED_M` and
+[`rb5s6s/constants.py`](../../rb5s6s/constants.py) holds `W0_CENTRAL_M` and
 `W0_BAND_M`, the accepted value and working band every $w_0$-dependent
-quantity reads from. **This waist is not measured on this bench.** Nor is it recovered from the
-line. The joint fit was closed on its own forward model, injecting a known [52.00](../../results/noiseless_floor.csv "ref:noiseless_floor:injected_truth:w0") µm on the
-archive's own axes and levels, and the likelihood prefers **[52.37](../../results/noiseless_floor.csv "ref:noiseless_floor:recovered_w0:nfev_6000") µm at zero noise**, with
-$\chi^2$ at the injected truth [14.4](../../results/noiseless_floor.csv "ref:noiseless_floor:chi2_at_injected_truth:nfev_6000") where a self-recovering fit returns zero. The profile is
+quantity reads from. **This waist is not measured on this bench**, and since owner order O44
+(2026-09-21) it is no longer transferred from another one either: it is calculated from this
+bench's own aperture geometry. Nor is it recovered from the
+line.
+
+The joint fit was closed on its own forward model, injecting a known [52.00](../../results/noiseless_floor.csv "ref:noiseless_floor:injected_truth:w0") µm on the
+archive's own axes and levels, and the likelihood prefers **[52.25](../../results/noiseless_floor.csv "ref:noiseless_floor:recovered_w0:nfev_6000") µm at zero noise**, with
+$\chi^2$ at the injected truth [16.0](../../results/noiseless_floor.csv "ref:noiseless_floor:chi2_at_injected_truth:nfev_6000") where a self-recovering fit returns zero. The profile is
 identical to four decimals at 1200 and at 6000 optimiser iterations, so the fit is converged and
-the preference belongs to the model: a parameter set half a micron above the truth reproduces the injected
+the preference belongs to the model: a parameter set a quarter of a micron above the truth reproduces the injected
 data better than the true parameters do. The forward map is not injective over this grid, and w₀ is absorbed
 by whatever the refit leaves free.
 
 The transit goes as $1/w_0$, $S_0$ as $1/w_0^2$ and
 $\Omega^2$ as $1/w_0^4$, so the compensating term is a nuisance with one of those exponents.
 Every waist this estimator reports is conditional on that degeneracy before any noise argument
-is reached, which is why the knife-edge settles the question instead of confirming it. The 64 µm
-of record is one profiling of the OIST lineage, reported in both [Rajasree
+is reached, which is why the knife-edge settles the question instead of confirming it. The
+figure once of record was one profiling of the OIST lineage, reported in both [Rajasree
 2020](../lit/rajasree2020thesis.md) and [Nieddu 2019](../lit/nieddu2019.md) in
 its $1/e^2$ convention, and taken on the laser generation preceding the one this
-campaign used. The owner retired it as the waist authority on 2026-09-10 and
+campaign used.
+
+The owner retired it as the waist authority on 2026-09-10 and
 restated why on 2026-09-15: a different laser source, and a 2025 beam that
 additionally passes a 3 mm modulator aperture the profiled beam did not. Both
 differences push the effective waist above the transferred value, so the
-constant is a carried convention and the name `W0_MEASURED_M` asserts what its
-own docstring denies.
+constant `W0_MEASURED_M` was a carried convention whose own name asserted what its
+docstring denied. Owner order O44 (2026-09-21) retires that transfer in turn: the renamed
+`W0_CENTRAL_M` now holds **42.38 µm**, this bench's own bore-limited actual focus, calculated
+from the EOM's 3 mm bore truncating the input Gaussian ahead of the focusing lens, neither measured
+nor transferred from another apparatus (F104, F105, F108, F280).
 
-The campaign did not read the waist off its own beam at its own time, so
-what remains open is drift or realignment since that measurement, and the
-focus position inside the cell, which [APPARATUS](../APPARATUS.md) records
-as placed near the collection lens with the standoff unrecorded. Residual
-clipping at a narrow downstream aperture, and imperfect overlap of the
-retro-reflected beam, push the effective waist above the transferred value,
-which is why the band leans high of the central number instead of sitting
-symmetric. This is the repository's largest open systematic.
+The campaign did not read the waist off its own beam at its own time. What remains open is no
+longer a transfer's own uncertainty, since that question is retired along with the transfer, but
+two apparatus facts the calculation still needs: the beam radius at the lens, which the
+calculation is comparatively insensitive to but does not pin, and the focus position inside the
+cell, which [APPARATUS](../APPARATUS.md) records
+as placed near the collection lens with the standoff unrecorded. The 40 to 45 µm band is the
+owner's own stated interval around the calculated centre, not a margin computed from a clipping
+correction, and the same calculation puts a floor near 41 µm on the actual focus this
+bore, lens and wavelength can make for any input radius, so the band's low edge sits close to a
+limit the geometry itself may not reach. This is the repository's largest open systematic.
 
 [`docs/big_picture/04_what-2025-delivered.md`](../big_picture/04_what-2025-delivered.md)
 reports what the 2025 archive did with the value of record and its band.
@@ -128,14 +139,18 @@ as licence.
 
 ## Revised values
 
-The 64 µm value of record replaced a chain of earlier estimates. First a
+The value of record replaced a chain of earlier estimates. First a
 design figure, retracted once a missing crossing-flux weighting in the
 transit Monte Carlo was found and fixed, which is the same implementation
 trap [transit-time broadening](transit-time-broadening.md) names in its
 "What can go wrong" section. Then the corrected Monte Carlo figure,
 validated against Lehmann's worked example. Then a stand-in used in three
 documents before the waist was stated as measured. the private correction record
-carries each with its date.
+carries each with its date. Owner order O44 (2026-09-21) replaces that
+transfer in turn, with 42.38 µm calculated from this bench's own bore-limited
+focus, where it had been transferred from another apparatus (F104, F105, F108, F280). The
+account above, of the transfer and why it no longer holds, stays as the
+record of that chain's own last link.
 
 ## A knowable ratio and an unknowable scale
 
@@ -150,19 +165,19 @@ A fit across settings therefore measures the absolute scale from the line
 itself, twice over and by two different powers, where a single setting has to
 take it from a knife edge.
 
-Two things move with the knob that are easy to forget. The Rayleigh range goes
-as the waist squared, so the detector's fixed axial window covers a different
-fraction of the beam at every setting, which changes the shape the light shift
-imprints and can reverse the sign of its asymmetry
-([the AC-Stark shift](ac-stark-shift.md)). And the collected signal follows the
-arctangent of that same ratio, so tightening the beam buys far less signal than
-the inverse square suggests, about five for a fourfold tightening where the
-inverse square would give sixteen. The peak height rises too, by about three over the same span, because
-the line broadens by well under a factor of two: the transit is only about a
-fifth of the composite width at these conditions. It is the light shift's own
-growth that eventually turns the peak height over, at a waist inside the range
-the campaign proposes.
-[The ramp chapter](../methods/03_the_ac_stark_ramp.md) derives both.
+Two things move with the knob that are easy to forget. The Rayleigh range goes as the
+waist squared, so the detector's fixed axial window covers a different fraction of the
+beam at every setting, which changes the shape the light shift imprints and can reverse
+the sign of its asymmetry ([the AC-Stark shift](ac-stark-shift.md)). And the collected
+signal follows the arctangent of that same ratio, so tightening the beam buys far less
+signal than the inverse square suggests, about five for a fourfold tightening where the
+inverse square would give sixteen.
+
+The peak height rises too, by about three over the same span, because the line broadens
+by well under a factor of two: the transit is only about a fifth of the composite width
+at these conditions. It is the light shift's own growth that eventually turns the peak
+height over, at a waist inside the range the campaign proposes. [The ramp
+chapter](../methods/03_the_ac_stark_ramp.md) derives both.
 
 ## The drive wavelength as a knob on the waist
 
@@ -175,7 +190,7 @@ with $w_{\rm in}$ the beam radius arriving at the lens, so **the waist is
 linear in the drive wavelength** at a fixed lens and a fixed input beam. A
 campaign that retunes the laser to another two-photon line moves the waist
 whether or not anyone touches the optics: through this bench's f = 150 mm lens
-the 64 µm measured at 993.4 nm becomes 48.59 µm at 760.1 nm and 49.78 µm at
+the 42.38 µm calculated at 993.4 nm becomes 32.17 µm at 760.1 nm and 32.96 µm at
 778.1 nm, and the light shift, going as the inverse square, is larger by 1.74
 and 1.65 at the same power. `rb5s6s.constants.waist_at_drive` computes it and
 `tests/test_drive_waist.py` guards it.
@@ -185,23 +200,27 @@ singlet, so its own focal length disperses as $1/(n-1)$, worth 150.00 mm at
 993.4 nm against 148.83 at 760.1, under a per cent. It is the same to within
 0.02 mm whether the glass is fused silica or N-BK7, so the reading does not
 turn on a fact the record lacks. The focus also moves 1.17 mm toward the lens,
-which is an eighth of a Rayleigh range and harmless for the waist but a
-third of the collection window, so the collection optics are refocused per
-wavelength or the axial-window correction is wrong by that much.
+a fixed lens property the 2026-09-21 recalculation does not touch, which at the
+archive's now smaller central waist is about a quarter of a Rayleigh range, where it read
+an eighth at the retired, larger convention. That still leaves the waist itself only weakly perturbed, but it is now a larger fraction of the collection window, so the
+collection optics are refocused per wavelength or the axial-window correction is wrong by that
+much, more so than before.
 
 That
-fraction read a fourteenth until 2026-09-10, which is what 1.17 mm is
-against the 993.4 nm waist's 16.93 mm Rayleigh range, and this page is the one
-that says the waist does not stay put: at the 760 nm rung's own 48.589 um the
-range is 9.758 mm. The mixed geometry the page exists to correct had survived
-inside it.
+fraction read a fourteenth until 2026-09-10, when this page corrected it to compare against the
+destination wavelength's own, smaller Rayleigh range and not the source's, which is what
+1.17 mm is against the 760 nm rung's own range. At the archive's calculated 42.38 µm the
+993.4 nm range is 5.68 mm and the 760 nm rung's own 32.17 µm range is 4.28 mm, both far smaller
+than the 16.93 and 9.758 mm the retired, larger convention gave, which is why the same fixed
+1.17 mm focal shift now costs proportionally more.
 
 **What is not known is $w_{\rm in}$**, and it is the term that decides how big
 the effect is. If the input beam is clipped by a fixed stop it is common to
 every drive and the waist follows $\lambda$. If it is an unclipped
 fixed-geometry resonator mode its radius follows $\sqrt{\lambda}$ and the
-waist does too. The two bracket the 760 nm waist at 48.59 and 55.55 µm, a
-31 per cent spread in the light shift. **The line itself settles it**: the
+waist does too. The two regimes differ by 31 per cent in the light shift at
+760 nm, and that spread is the ratio of the two scaling laws, so it does not
+depend on which waist anchors it. **The line itself settles it**: the
 transit width carries the same geometry to the first power, so the transit
 ratio between two drives is 1.317 in one regime and 1.152 in the other, a
 14 per cent separation the width precision resolves. A cross-transition ratio
@@ -246,19 +265,19 @@ intensity runs as $1/w_0^2$, walking across the band shows directly how much
 the light-shift prediction moves for a fixed power.
 
 ```python
-from rb5s6s.constants import W0_MEASURED_M, W0_BAND_M, RHO_RETRO
+from rb5s6s.constants import W0_CENTRAL_M, W0_BAND_M, RHO_RETRO
 from rb5s6s import stark_shift_S0_mhz
 
 power_w = 0.225  # 225 mW, the top of the 2025 campaign's power sweep
 w0_lo, w0_hi = W0_BAND_M
 
-print("rb5s6s.constants.W0_MEASURED_M and W0_BAND_M:")
-for label, w0 in (("band low", w0_lo), ("accepted", W0_MEASURED_M),
+print("rb5s6s.constants.W0_CENTRAL_M and W0_BAND_M:")
+for label, w0 in (("band low", w0_lo), ("central", W0_CENTRAL_M),
                   ("band high", w0_hi)):
-    intensity_ratio = (W0_MEASURED_M / w0) ** 2
+    intensity_ratio = (W0_CENTRAL_M / w0) ** 2
     s0_mhz = stark_shift_S0_mhz(power_w, w0, rho=RHO_RETRO)
     print(f"  {label:>9}: w0 = {w0 * 1e6:5.1f} um   "
-          f"I / I(accepted) = {intensity_ratio:6.3f}   "
+          f"I / I(central) = {intensity_ratio:6.3f}   "
           f"S0(225 mW) = {s0_mhz:.4f} MHz")
 print("intensity and the light shift both run as 1/w0^2: the same band "
       "moves both by the same fraction")
@@ -332,10 +351,55 @@ the same paragraph that states the waist: the lineage profile carried NO 3 mm
 aperture while this campaign's beam passes one, and a truncated Gaussian carries
 ring structure and does not obey `w0 = lam f / (pi w_in)`. Computed through this
 bore the focus is floored near 42 µm and not widened (F105), which is why the
-owner's own reading of 2026-09-17 is 40 to 45 µm. Beam quality above
-one, astigmatism and the retro overlap are absent from every model here. The
-transit reads an effective radius and the light shift reads a peak intensity,
-so for a non-Gaussian beam the two are not related by one waist at all.
+owner's own reading of 2026-09-17 is 40 to 45 µm.
+
+Beam quality above
+one is no longer absent: `rb5s6s/beam_field.py` propagates the truncated input
+through the bore and the drive lens as a scalar angular spectrum, with $M^2$
+entering as the mode content of the input beam and not as a factor on the focus,
+and `scripts/run_kernel_mc.py` samples every atom's chord in that field. What
+remains absent is astigmatism and the retro overlap. The transit reads an
+effective radius and the light shift reads a peak intensity, so for a
+non-Gaussian beam the two are not related by one waist at all.
+
+### Beam quality behind a hard aperture
+
+A beam-quality factor does not multiply this waist, and the arithmetic says why. The
+bore-limited 42.4 µm already contains the aperture's 2.2-fold widening of the 19.3 µm
+the same input gives unclipped, so writing $w_0 = 42.4 M^2$ counts the aperture twice.
+More than that, $M^2$ does not fix the focus here at all, and the composition matters
+more than the number. Three mixtures reaching one $M^2$ of 3.00 exactly give three
+different focal radii: nine parts Gaussian to a high-order $LG(10)$ halo focuses to
+42.32 µm, indistinguishable from an ideal beam.
+
+Three parts Gaussian to one of $LG(4)$ gives 45.79, and the plain $LG(0)+LG(p_1)$
+mixture, which at this $M^2$ is pure $LG(1)$, gives 48.31. The first two are the
+physically plausible pair and they differ by 8.2 per cent. The whole family spans 14.2,
+on a ruled band only 10.0 per cent wide. Two spans answering two different questions,
+and neither corrects the other. Which mixture a real beam carries is not on record, so
+the pure $LG(1)$ end is an assumption and not a measurement.
+
+The bore also costs power, and the bench now settles that half instead of spanning it.
+**The recorded power is read after the modulator**, so the transmitted fraction divides
+out of the light shift per recorded watt and is not a systematic on it at all, and only
+the focal radius matters. What the same measurement buys instead is a constraint on the
+mode content, which nothing else here constrains. The drop through the modulator is
+about 60 per cent of roughly a watt, and every non-clipping loss in that path reduces
+the total further, so the bore's own transmission is bounded from below by the measured
+one and not equal to it.
+
+Read that way the measurement is a joint statement about the input radius and the halo:
+a pure $LG(1)$ input, which is what this record's own mixture becomes at $M^2 = 3$,
+passes about a quarter of its power at any input radius from 1.6 mm up, which is less
+than the measurement's own lower edge. It survives only for an input radius near 1.2 mm,
+and there an ideal Gaussian would pass more than nine tenths, so nearly the whole drop
+would have to be something other than clipping. That is the opposite of the bench's
+reading that clipping is most of it. So the pessimistic end of the span above is
+disfavoured by a measurement, and is not excluded outright.
+
+The mechanism is aperture filling, not radial structure. A first reading here
+attributed the widening to an $LG(1)$ node falling inside the bore, and that is
+refuted: its only zero sits at 1.764 mm against a bore radius of 1.50.
 
 So the claim is the architecture and not the number. This apparatus carries
 its own metrology for every nuisance including the geometry, and the geometry

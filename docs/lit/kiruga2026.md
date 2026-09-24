@@ -95,6 +95,10 @@ A live, citable, cross-checkable data source for Rb (and other alkali)
 energies, matrix elements, lifetimes and polarizabilities, computed with the
 same family of all-order methods behind several of this repository's other
 theory anchors (the Safronova group's earlier Rb papers among them), rather
-than a new physics result in its own right. Its use here would be as a
-quick, structured lookup and cross-check point, not as a source this
-repository currently draws a number from.
+than a new physics result in its own right. This repository does draw numbers
+from the portal it describes: the 6S to nP reduced matrix elements of
+`rb5s6s/polarizability.py` are the portal's, retrieved 2026-07-17, 4.1462(82)
+and 6.048(13) for 6s to 5p1/2 and 5p3/2, where Safronova and Safronova 2011 print
+4.145(10) and 6.047(13) in their Table II ([safronovaSS2011](safronovaSS2011.md)).
+The paper itself prints no Rb matrix element, so a number taken from the portal is
+cited to the paper for the portal and dated by its retrieval.

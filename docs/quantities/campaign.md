@@ -118,7 +118,7 @@ bench confirmation is not evidence of feasibility.
 | temperatures to 170 C | the ladder reached 130 C | yes, the oven's ceiling and gradient |
 | absorption channel | proposed, not built | yes |
 | photon counting | proposed in [plan 7](../plan/07_acquisition-settings.md) | yes |
-| a 12-bit or better acquisition | **already delivered**: the campaign's own files carry an 11.86-bit grid from the Agilent's High Resolution mode, measured 2026-08-19, and the LeCroy channel export is the eight-bit one | no. The open item moved: holding one vertical range across the ladder, feasible at a dither ratio of 0.99 with the bright range set tight, per [plan 7](../plan/07_acquisition-settings.md) |
+| a 12-bit or better acquisition | **already delivered**: the campaign's own files carry an 11.86-bit grid from the Agilent's High Resolution mode, measured 2026-08-19, and the LeCroy channel export is the eight-bit one | no. The open item moved: holding one vertical range across the ladder, feasible at a dither ratio of 0.99 with the bright range set tight, per [plan 7](../plan/07_acquisition-settings.md) <!-- other-quantity: a bit count --> |
 | a measured detector response curve | bounded but never traced: the rehearsal's finer-sampled records put the chain faster than 10 us at the 10^6 V/A gain, and the range-to-range gain remains the leading candidate for the amplitude departure | yes, converting the bound into a curve, and it needs no atoms, only a calibrated variable source |
 
 ## Related pages

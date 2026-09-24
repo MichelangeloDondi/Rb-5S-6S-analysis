@@ -2,7 +2,7 @@
 
 *[wiki index](README.md) · physical effect*
 
-How does a fast continuous sweep forge width and asymmetry that a slow one would not, and how is that instrumental component separated from the atoms' own. This page builds on that a fit reads skew as light-shift information, established in [The third cumulant](third-cumulant.md) and assumed here, not re-argued and sets out the regression of apparent width against inverse sweep rate, the causal-kernel argument for why a lag forges asymmetry and not only width, and the two-rate design this repository specifies. Not covered here: the question is how densely a line is sampled, not how fast it can be crossed, a case covered by [Designing an acquisition](designing-an-acquisition.md).
+How does a fast continuous sweep forge width and asymmetry that a slow one would not, and how is that instrumental component separated from the atoms' own. This page builds on that a fit reads skew as light-shift information, established in [The third moment](third-cumulant.md) and assumed here, not re-argued and sets out the regression of apparent width against inverse sweep rate, the causal-kernel argument for why a lag forges asymmetry and not only width, and the two-rate design this repository specifies. Not covered here: the question is how densely a line is sampled, not how fast it can be crossed, a case covered by [Designing an acquisition](designing-an-acquisition.md).
 
 > [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
 > defines every term and symbol used anywhere in this repository.
@@ -79,7 +79,7 @@ The slow segment was once justified by a lag figure the tree never held, and
 that chapter now says no lag the record holds requires it: the chain's
 bound, measured in chapter 10, puts the lag at two parts in a thousand of the width at the
 2025 rate, so the slow segment stands on the drift's shape and on the triangle
-count, as [the third cumulant](third-cumulant.md) and the plan's open-items
+count, as [the third moment](third-cumulant.md) and the plan's open-items
 chapter set out.
 [Section 10c.10 of the following
 chapter](../plan/10_the-fixed-lock-instrument.md) makes the regression a
@@ -232,14 +232,14 @@ broken one fails the suite instead of misleading a reader here.
 - [Wikipedia: exponentially modified Gaussian
   distribution](https://en.wikipedia.org/wiki/Exponentially_modified_Gaussian_distribution),
   the closed form for a line convolved with a one-sided exponential.
-- [The third cumulant](third-cumulant.md), for the cumulant-additivity
+- [The third moment](third-cumulant.md), for the cumulant-additivity
   argument that makes skew a clean channel for an asymmetric mechanism.
 - [Designing an acquisition](designing-an-acquisition.md), the raw-storage
   and per-sweep timestamp requirements a multi-rate regression needs to run
   at all.
 
 ## Related pages
-- [The third cumulant](third-cumulant.md), for why skew is the channel a
+- [The third moment](third-cumulant.md), for why skew is the channel a
   light-shift fit reads.
 - [Designing an acquisition](designing-an-acquisition.md), the companion
   question of point density, not sweep speed.

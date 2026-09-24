@@ -187,6 +187,14 @@ INTENTIONAL_PREFIX_PAIRS = {
     # A 106, 042811); rahaman2022b is the Cs 7D5/2 hyperfine-octupole paper
     # (Opt. Lett. 47, 4612), matching the "b" suffix already on its held PDF.
     ("rahaman2022", "rahaman2022b"),
+    # distinct papers, different Schmidts: schmidt2011 is Schmidt/Nic Chormaic/Minogin's van der
+    # Waals atom-nanosphere paper (J. Phys. B 44, 015004); schmidt2011b is Schmidt, O. A. et al.'s
+    # laser-beam-quality modal-decomposition paper (Opt. Express 19(7), 6741, arXiv:1101.4610).
+    ("schmidt2011", "schmidt2011b"),
+    # distinct papers, different Wangs: wang2025 is Wang, Sandan et al.'s Rb 5S-7S multi-channel
+    # fluorescence paper (Spectrochim. Acta B 235, 107387); wang2025hcf is Wang, Rui et al.'s
+    # hollow-core-fibre optical-trapping review (Light Sci. Appl. 14, 146).
+    ("wang2025", "wang2025hcf"),
 }
 
 # A backtick token shaped like a bibtex key: >=2 leading letters, a 4-digit year,
@@ -554,6 +562,7 @@ def test_every_held_note_points_at_a_pdf_that_is_actually_there():
 #: 2026-09-10, carrying a real reading that was already stated twice elsewhere.
 #: A key nothing reads is a claim nothing checks.
 KNOWN_FRONTMATTER_KEYS = {
+    "author",  # who wrote the NOTE, not the paper: "agent" marks a note an agent drafted, refused without an audit by test_an_agent_written_note_names_its_audit (M6, 2026-09-22)
     "audit",   # the line-by-line audit that licenses a VERIFIED status (M6, 2026-09-21): a path, read by test_a_verified_note_names_an_audit_that_exists
     "citekey", "type", "authors", "title", "journal", "volume", "number",
     "pages", "year", "doi", "arxiv", "pdf", "held", "status", "routing",
@@ -917,12 +926,12 @@ def test_verified_status_requires_a_real_bibliographic_record():
 # prose and were backfilled from it. These 30 have none to recover, so the date
 # has to come from whoever reads the paper next.
 UNDATED_VERIFIED = {
-    "ahern2025", "amy2017", "andeweg2026", "antypas2018", "araujo2021",
+    "ahern2025", "amy2017", "andeweg2026", "araujo2021",
     "ayachitula2024", "bala2026",
     "biraben2019", "borde1976", "chevrollier2012", "fioretti1998",
     "gerginov2018", "gomez2005", "grimm2000", "hamilton2023",
     "lehmann2021", "martin2018", "newman2021", "nieddu2019", "poulin2002",
-    "rajasree2020", "safronova2004", "safronova2006",
+    "rajasree2020", "safronova2006",
     "sautenkov2026", "snadden1996", "spiegelman2022", "stalnaker2006",
 }
 
@@ -1043,16 +1052,38 @@ def test_a_verified_note_names_an_audit_that_exists():
     import pytest
     missing = []
     checked = 0
+    # AN AUDIT LIVES IN ONE OF TWO TREES (2026-09-22): the thesis sibling's, named relative to docs/lit/, or
+    # this record's own private/cache/, named relative to the repository root (the 2026-09-21 intake). The
+    # first version resolved only the first and SKIPPED THE WHOLE TEST at the first audit outside the
+    # sibling, so one such note made the check blind to every other; an absent tree now skips that note.
+    seen = 0
     for p in sorted((ROOT / "docs" / "lit").glob("*.md")):
         text = p.read_text(encoding="utf-8")
         m = re.search(r"^audit:\s*([^\s#]+)", text, re.M)
         if not m:
             continue
-        target = (p.parent / m.group(1)).resolve()
-        if not any(part == "PhD-Thesis" for part in target.parts) or not (ROOT.parent / "PhD-Thesis").exists():
-            pytest.skip("the sibling thesis repository is absent; the audit files live there")
+        seen += 1
+        raw = m.group(1)
+        if raw.startswith("private/"):
+            if not (ROOT / "private").is_dir():
+                continue                       # the public mirror carries no private tree
+            target = (ROOT / raw).resolve()
+        else:
+            target = (p.parent / raw).resolve()
+            if any(part == "PhD-Thesis" for part in target.parts) and not (ROOT.parent / "PhD-Thesis").exists():
+                continue                       # the sibling thesis repository is absent here
         checked += 1
         if not target.exists():
-            missing.append(f"{p.name}: {m.group(1)}")
+            missing.append(f"{p.name}: {raw}")
+    if seen and not checked:
+        pytest.skip("every named audit lives in a tree absent here (the sibling thesis repository or private/)")
     assert not missing, "a note names an audit that does not exist:\n  " + "\n  ".join(missing)
-    assert checked >= 0
+
+
+def test_an_agent_written_note_names_its_audit():
+    """M6 (plan v4, wired 2026-09-22): a note an agent drafted is unpublishable until a line-by-line audit
+    exists, so `author: agent` without an `audit:` key is refused wherever the note stands; whether the named
+    audit file exists is test_a_verified_note_names_an_audit_that_exists's to grade."""
+    bad = [k for k in _lit_keys()
+           if str(_fm(k).get("author", "")).strip().lower() == "agent" and not str(_fm(k).get("audit", "")).strip()]
+    assert not bad, "agent-written notes with no audit: " + ", ".join(bad)

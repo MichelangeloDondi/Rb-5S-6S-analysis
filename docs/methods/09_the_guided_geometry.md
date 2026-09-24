@@ -43,9 +43,9 @@ validated against two effective-index values standard for this geometry, which n
 
 | $2a$ | $V$ | $n_{\mathrm{eff}}$ | $1/q$ | $\Lambda$ | $qa$ |
 |---|---|---|---|---|---|
-| 350 nm | 1.163 | 1.01283 | 984 nm | 492 nm | 0.178 |
-| 370 nm | 1.229 | 1.01927 | 802 nm | 401 nm | 0.231 |
-| 400 nm | 1.329 | 1.03164 | 624 nm | 312 nm | 0.321 |
+| 350 nm | 1.163 <!-- other-quantity: the 350 nm fibre's V-number, not kernel_inhomogeneity or transition_ladder --> | [1.01283](../../results/guided_mode_tables.csv "ref:guided_mode_tables:mode_solve_350nm:neff") | 984 nm | 492 nm | 0.178 |
+| 370 nm | 1.229 | [1.01927](../../results/guided_mode_tables.csv "ref:guided_mode_tables:mode_solve_370nm:neff") | 802 nm | 401 nm | 0.231 |
+| 400 nm | 1.329 | [1.03164](../../results/guided_mode_tables.csv "ref:guided_mode_tables:mode_solve_400nm:neff") | 624 nm | 312 nm | 0.321 |
 
 The exponential approximation is not available here. $K_1(x)$ reduces to
 $\sqrt{\pi/2x}e^{-x}$ only for $x\gg1$, and $qa$ is 0.18 to 0.32, so the
@@ -104,10 +104,10 @@ Chapter 2 states that rule. The transform is
 $$\mathcal{F}\left[e^{-|t|/\tau}\right] = \frac{2\tau}{1+(2\pi\nu\tau)^2}$$
 
 and the profile is its square, a **squared Lorentzian**. Setting
-$(1+x^2)^2 = 2$ gives $x = \sqrt{\sqrt2-1} = 0.6436$, so the squared form is
+$(1+x^2)^2 = 2$ gives $x = \sqrt{\sqrt2-1} =$ [0.6436](../../results/guided_mode_tables.csv "ref:guided_mode_tables:transit_kernel_single_velocity:factor"), so the squared form is
 narrower than the Lorentzian built from it by exactly that factor.
 
-That 0.6436 is the two-sidedness of the envelope and not the squaring, and
+That [0.6436](../../results/guided_mode_tables.csv "ref:guided_mode_tables:transit_kernel_single_velocity:factor") is the two-sidedness of the envelope and not the squaring, and
 saying otherwise would hide a trajectory assumption. For a **one-sided**
 coupling $\Omega(t) = I_0e^{-vt/\Lambda}\theta(t)$ the transform is
 $\tau/(1+2\pi i\nu\tau)$, so $|\mathcal{F}|^2 = \tau^2/(1+(2\pi\nu\tau)^2)$
@@ -176,7 +176,7 @@ The size of that is worth stating, because it is not a refinement. Convolved
 with the natural width alone, a kernel of nominal FWHM $\Gamma_\mathrm{transit}$
 adds only
 
-$$0.083 \text{ to } 0.171 \text{ of } \Gamma_\mathrm{transit}$$
+$$0.089 \text{ to } 0.183 \text{ of } \Gamma_\mathrm{transit}$$
 
 across the three kernel branches at 170 µK in a 401 nm mode, **each branch
 against its own kernel width**, against 1.0 for a term that added exactly. The
@@ -201,7 +201,7 @@ $\Gamma_\mathrm{transit}$ and falls against a broader Lorentzian core.
 The consequence for a temperature ladder is the sharper statement. Since
 $\Gamma_\mathrm{transit}\propto\sqrt T$ and the contribution is second order,
 the width a ladder actually sees goes as $T^{p}$ with $p$ in
-[0.973 to 0.980](../../results/transit_additivity.csv "ref:transit_additivity:spanned:temperature_exponent_band")
+[0.971 to 0.978](../../results/transit_additivity.csv "ref:transit_additivity:spanned:temperature_exponent_band")
 over 10 to 170 µK, not as $\sqrt T$. **The committed row is a band across the
 three velocity weightings and this sentence quoted a single 0.98**, which is
 prose narrowing a band to a point, the reverse of the usual defect and the
@@ -229,9 +229,9 @@ budget depends on temperature at fixed atom number, a molasses temperature
 ladder is the only lever that acts on it. **How well it acts is a separate
 question and the answer is badly**: what the ladder reads is not
 $\Gamma_{\mathrm{transit}}$ but the second-order contribution below,
-[6.70 to 9.94](../../results/transit_additivity.csv "ref:transit_additivity:spanned:added_width_170uK_band")
+[7.16 to 10.61](../../results/transit_additivity.csv "ref:transit_additivity:spanned:added_width_170uK_band")
 kHz at 170 µK against a 71 kHz kernel, and
-[5.0322](../../results/onf_lever_ranking.csv "ref:onf_lever_ranking:temperature_ladder:sigma_transit_frac")
+[4.0828](../../results/onf_lever_ranking.csv "ref:onf_lever_ranking:temperature_ladder:sigma_transit_frac")
 fractional precision at the 2025 lock, read from a design whose added width
 comes from `results/transit_additivity.csv` and not from a coefficient
 fitted here. Being the only lever and being a good one are different claims.
@@ -270,6 +270,33 @@ analogue of the ramp of chapter 3, taken over the $K_1^2$ profile and not over
 a Gaussian. For atoms held in a two-colour trap at $d_0$ the distribution
 collapses toward a single shift, and the residual width is set by the trap's
 own radial spread.
+
+**What the distribution costs a trapped atom's coherence.** The residual
+spread is more than a lineshape term. For a pair of ground hyperfine states
+held in the guide, the same sampled intensity sets the spread of their
+differential light shift, and a Ramsey fringe is the characteristic function
+of that spread: its modulus is the contrast and its argument the phase. For
+thermal atoms in a harmonic dipole trap the transform is closed form, which is
+how the dephasing of a standing-wave trap was read
+([Kuhr 2005](../lit/kuhr2005.md)), and the hollow-core fibre lattice of
+[Xin 2019](../lit/xin2019.md) names this differential shift as its Ramsey
+coherence limit and recovers coherence with a spin echo and with a
+cancellation that uses the vector light shift of circularly polarised trap
+light. Each remedy acts on a different part of the distribution.
+
+The echo
+removes its static part, a magic-wavelength lattice removes its coefficient
+for a clock transition ([Okaba 2014](../lit/okaba2014.md)), colder atoms allow
+a shallower trap and less decoherence from its irregular potential
+([Wang 2022](../lit/wang2022.md)), and a trap that holds the atoms where the
+intensity is low gains an order of magnitude in coherence on a nanofibre
+([Pennetta 2026](../lit/pennetta2026.md)). A line that reads the distribution
+says which remedy pays on a given apparatus.
+[Hilton 2020](../lit/hilton2020.md) reads a one-parameter thermal family of it
+from a transmission line weighted by the probe's own intensity, and the
+moments of chapters 3 and 11 read its general shape. Carried to a fringe, the
+probe's weight is divided out first, because a line counts each atom by how
+strongly the probe excites it and a fringe counts every atom once.
 
 ### 9.4 The atom-surface potential
 
@@ -320,11 +347,11 @@ diameter.** Its sensitivity must be weighted by the intensity present at each
 rung, the fitted observable must be a frequency rather than a bare ratio, and
 the drive's own surface shift must be marginalised because the scan cannot know
 it a priori. With all three, the mode length comes out at
-[0.2928](../../results/onf_lever_ranking.csv "ref:onf_lever_ranking:distance_scan:sigma_lambda_frac")
+[0.2927](../../results/onf_lever_ranking.csv "ref:onf_lever_ranking:distance_scan:sigma_lambda_frac")
 and the diameter at
 [31.1](../../results/onf_lever_ranking.csv "ref:onf_lever_ranking:distance_scan:sigma_diameter_nm") nm
 at the 2025 drifting lock, falling to
-[0.68](../../results/onf_lever_ranking.csv "ref:onf_lever_ranking:lock_span_0.0:sigma_diameter_nm") nm
+[0.67](../../results/onf_lever_ranking.csv "ref:onf_lever_ranking:lock_span_0.0:sigma_diameter_nm") nm
 at the photon floor.
 
 The surface coefficient is the weaker parameter of the same scan, at
@@ -359,7 +386,7 @@ Monte Carlo through simulate, fit and read the covariance
    instead of two, and the ladder of 9.2 becomes attributive and not
    merely constraining. **Attributive is not the same as precise**: the
    ladder's own fractional precision is
-   [5.0322](../../results/onf_lever_ranking.csv "ref:onf_lever_ranking:temperature_ladder:sigma_transit_frac")
+   [4.0828](../../results/onf_lever_ranking.csv "ref:onf_lever_ranking:temperature_ladder:sigma_transit_frac")
    at the 2025 lock, so what it
    buys is which mechanism the width belongs to, not how big it is.
 3. **The cost is photons.** At the demonstrated 25 to 40 counts per ms,
@@ -368,11 +395,11 @@ Monte Carlo through simulate, fit and read the covariance
 
 The limitation this does not remove. `results/fibre_twin.csv` identifies
 the common Lorentzian component at
-[0.9640](../../results/fibre_twin.csv "ref:fibre_twin:O2A_lambda_312nm:coverage_gamma_l") and
-[0.9580](../../results/fibre_twin.csv "ref:fibre_twin:O2A_lambda_492nm:coverage_gamma_l") coverage across
+[0.9200](../../results/fibre_twin.csv "ref:fibre_twin:O2A_lambda_312nm:coverage_gamma_l") and
+[0.8800](../../results/fibre_twin.csv "ref:fibre_twin:O2A_lambda_492nm:coverage_gamma_l") coverage across
 the decay band, and **fails on the Gaussian**, at
-[0.4040](../../results/fibre_twin.csv "ref:fibre_twin:O2A_lambda_312nm:coverage_sigma_g") and
-[0.3760](../../results/fibre_twin.csv "ref:fibre_twin:O2A_lambda_492nm:coverage_sigma_g"). The ladder returns the
+[0.3520](../../results/fibre_twin.csv "ref:fibre_twin:O2A_lambda_312nm:coverage_sigma_g") and
+[0.3440](../../results/fibre_twin.csv "ref:fibre_twin:O2A_lambda_492nm:coverage_sigma_g"). The ladder returns the
 Lorentzian total, not the full Lorentzian-Gaussian split, and no design in
 this chapter changes that.
 
@@ -393,9 +420,9 @@ diverge. Its interaction length is the fibre. For the kagome mode of
 [100.0000](../../results/platform_twins.csv "ref:platform_twins:hcpcf_warm:hcpcf:length_eff_mm") mm against
 a Rayleigh range near one millimetre for the same waist in free space, and the
 consequence is that a vapour-filled fibre holds
-[3.3343e+09](../../results/platform_twins.csv "ref:platform_twins:hcpcf_warm:hcpcf:n_atoms_probe") atoms in
+[4.03577e+09](../../results/platform_twins.csv "ref:platform_twins:hcpcf_warm:hcpcf:n_atoms_probe") atoms in
 the probe against
-[1.91427e+07](../../results/platform_twins.csv "ref:platform_twins:cell_130C_tight:cell:n_atoms_probe") for
+[2.31699e+07](../../results/platform_twins.csv "ref:platform_twins:cell_130C_tight:cell:n_atoms_probe") for
 the tight-waist cell it would replace.
 
 And a fibre is read in transmission. A cell collects 795 nm photons against
@@ -406,7 +433,7 @@ blackbody excitation, at a branch of two parts per million. A fibre measures the
 a large number and the noise is the shot noise of the whole beam. The two modes
 scale differently in atom number and in power, and a platform comparison that
 does not say which is meant is not a comparison. The absorbed fraction is
-[0.00604289](../../results/platform_twins.csv "ref:platform_twins:hcpcf_warm:hcpcf:absorbed_fraction") for
+[0.0073142](../../results/platform_twins.csv "ref:platform_twins:hcpcf_warm:hcpcf:absorbed_fraction") for
 the vapour-filled mode, which a photodiode resolves easily, and
 [2.05541e-07](../../results/platform_twins.csv "ref:platform_twins:hcpcf_cold:hcpcf:absorbed_fraction") once
 the vapour is replaced by a loaded cold column, which is not.

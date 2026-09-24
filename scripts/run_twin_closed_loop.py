@@ -42,10 +42,11 @@ import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
+from rb5s6s.config import RESULTS_DIR as _RESULTS_DIR  # noqa: E402  (F480: results where RB5S6S_RESULTS_DIR points)
 
 from rb5s6s.amplitudes import predicted_shares  # noqa: E402
 from rb5s6s.stark import kappa_pred_per_watt  # noqa: E402  (SSOT: one predicted coefficient)
-from rb5s6s.constants import PEAKS, W0_MEASURED_M, RHO_RETRO, transit_fwhm_from_w0  # noqa: E402
+from rb5s6s.constants import PEAKS, W0_CENTRAL_M, RHO_RETRO, transit_fwhm_from_w0  # noqa: E402
 from rb5s6s.forecast import build_world_trace  # noqa: E402
 from rb5s6s.linefit import fit_condition  # noqa: E402
 from rb5s6s.scenario import load_scenario  # noqa: E402
@@ -59,12 +60,14 @@ C_M_S = 299_792_458.0
 # the prediction at 0.35, both claimed as the record's own committed line.
 # results/linefit_conditions.csv has gamma_coll and sigma_laser columns and
 # NO transit column, so that provenance was one the file could not carry:
-# the record's transit at its convention waist and 130 C is 0.9575 MHz, and
+# the record's transit at the waist convention of that day and 130 C was 0.9575 MHz, and
 # its predicted coefficient is `stark.kappa_pred_per_watt`.
-TRUTH_GAMMA = 0.55
-TRUTH_SIGMA = 1.6
-TRUTH_TRANSIT = transit_fwhm_from_w0(W0_MEASURED_M, T_C=130.0)
-KAPPA = kappa_pred_per_watt(W0_MEASURED_M, RHO_RETRO)
+from rb5s6s.reference_point import reference_point  # noqa: E402
+_AP = reference_point()   # F313: the archive's line, read from the committed fit and the waist, never typed
+TRUTH_GAMMA = _AP["gamma_coll"]
+TRUTH_SIGMA = _AP["sigma_laser"]
+TRUTH_TRANSIT = transit_fwhm_from_w0(W0_CENTRAL_M, T_C=130.0)
+KAPPA = kappa_pred_per_watt(W0_CENTRAL_M, RHO_RETRO)
 CYCLES_AT_MAX = 3.0
 NOISE_FRAC_BRIGHT = 0.004
 ADC_LEVELS = 4096
@@ -185,7 +188,7 @@ def main() -> int:
          f"{shifted['gamma_median']:.4f} and must breach A1's band: a leg "
          "that cannot fail has measured nothing", "DIAGNOSTIC"],
     ]
-    out = ROOT / "results" / "twin_closed_loop.csv"
+    out = _RESULTS_DIR / "twin_closed_loop.csv"
     with out.open("w", newline="", encoding="utf-8") as fh:
         w = csv.writer(fh)
         w.writerow(["quantity", "value", "err", "unit", "note", "status"])

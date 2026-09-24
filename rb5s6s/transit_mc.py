@@ -17,7 +17,7 @@ PHYSICS. In the weak-excitation (low-saturation) limit the two-photon excited
 amplitude for one atom is the Fourier transform of its two-photon coupling
 along its trajectory, and the two-photon Rabi frequency is proportional to the
 INTENSITY, Omega_2ph(t) ∝ I(r(t)). For a straight-line crossing of a Gaussian
-beam (w ~ constant during the ~260 ns transit at the 64 um waist convention,
+beam (w ~ constant during the ~260 ns transit at the retired, wider waist convention,
 since an atom moves only tens of um in z << zR ~ 13 mm; and the crossing is
 collisionless -- even at the densest 130 C the Rb-Rb mean free path ~1-2 cm
 dwarfs the waist by more than two orders, so an atom crosses the beam hundreds
@@ -49,8 +49,8 @@ observed ~5.25 MHz line, so 32 um is EXCLUDED and w0 must be larger (~50 um
 central, 45-70 um). i.e. the observed line is natural-plus-transit dominated and
 the 2025 laser was NARROW; the MC settles this without a fit. That band is what
 the LINE alone says and it is left as it stood, because it is an independent
-statement: the apparatus lineage's direct measurement, 64 um, was adopted later
-and falls inside it, which is a consistency check rather than a correction.
+statement: the apparatus lineage's direct measurement, adopted later as the waist convention and
+retired by O44, falls inside it, which is a consistency check rather than a correction.
 
 HISTORY (2026-07-12). An earlier version omitted the crossing-flux factor,
 weighting the ensemble by ~1/v; that produced a spurious log-divergent cusp
@@ -65,7 +65,7 @@ import numpy as np
 
 from . import config as C
 from .constants import (K_B_J_PER_K, M_RB87_KG, M_RB85_KG, LAMBDA_LASER_M,
-                        W0_MEASURED_M)
+                        W0_CENTRAL_M)
 
 
 def _sigma_v(T_C: float, isotope: int, mass_kg: float | None = None) -> float:
@@ -75,7 +75,7 @@ def _sigma_v(T_C: float, isotope: int, mass_kg: float | None = None) -> float:
     return float(np.sqrt(K_B_J_PER_K * (T_C + 273.15) / m))
 
 
-def transit_lineshape_mc(nu_mhz: np.ndarray, *, w0_m: float = W0_MEASURED_M,
+def transit_lineshape_mc(nu_mhz: np.ndarray, *, w0_m: float = W0_CENTRAL_M,
                          T_C: float = 110.0, isotope: int = 87,
                          mass_kg: float | None = None,
                          z_half_range_m: float = 6e-3,

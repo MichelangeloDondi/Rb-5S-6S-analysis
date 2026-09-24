@@ -23,7 +23,7 @@ be undone afterwards. None of them needed new hardware.
 |---|---|---|
 | record length | 2000 points | `constants.TRACE_N_POINTS` |
 | sample interval | 0.500 ms | `constants.TRACE_DT_S` |
-| window | 1.000 s | the product |
+| window | 1.000 s | the product <!-- other-quantity: the trace acquisition window, not a committed cell --> |
 | transition-axis sweep rate | 0.0852 MHz per ms | `linefit_conditions.csv` mean |
 | full span | 85.2 MHz, plus or minus 42.6 | rate times window |
 | resolution | 0.0426 MHz per point | rate times interval |
@@ -209,7 +209,7 @@ it, since the cusp is a time-domain feature and a fast scan can smear it.
 
 The deep trace, and what it does and does not settle (owner design
 question, 2026-09-06. The first form of this block was struck the same day,
-see the correction record). The bench records 2000 points in a 1.000 s window
+see the correction record). The bench records 2000 points in a 1.000 s window <!-- other-quantity: the trace acquisition window, not a committed cell -->
 at a 0.5 ms dwell, so half a million points is a real setting. What it buys is
 set by the span above: **2400 MHz reaches three sigma of the pedestal and holds
 two of the four components**, not all four, and chapter 10c.5 names the pairs.
@@ -306,6 +306,47 @@ to be 54 to 76 minutes apart rather than minutes), a spare channel for the
 ramp monitor (section 3 item 0), and a horizontal setting that is not
 touched inside a block, since the 2025 window moved 58 times across the
 campaign and line offsets are only meaningful within one scope-knob epoch.
+
+### The worth of one revisit
+
+The temperature arm was taken in descending order, so temperature and elapsed
+time run together inside the session. That matters because the permeated gas is
+the one width term that moves with **time** as well as with temperature,
+through permeation, and where the two run together a permeation rise and a
+temperature dependence compete for the same points.
+
+The saving grace is on the record already: the arm was not taken at an even
+pace. The acquisition clock, derived from the saved files, puts the first
+temperature point late on one evening and the remaining two after a break of
+most of a night, so elapsed time is not a linear function of temperature and
+the two columns are not the same column. Written as a design matrix over the
+width terms, the permeation term is **ill-conditioned and not
+inseparable**: its variance inflation is about ninety on the four points as
+taken.
+
+**Repeating the hottest point at the end of the arm brings that to about five.**
+One temperature then carries two well-separated times, which is a **factor of
+seventeen in variance and about four in the bar** on the permeation rate, for
+one block of roughly twenty traces. Cycling the temperatures within the epoch
+instead of descending through them does the same thing at the root, and it is
+the remedy this plan already gives for the power axis.
+
+A separate limit is arithmetic and not conditioning: five width terms
+cannot be fitted on four temperature points whatever their spacing, and six
+cannot be fitted on five. Adding a term to this ledger means adding a point.
+
+Two things no sampling on this axis buys. A slow instrumental drift that is
+flat in temperature cannot be separated from permeation here, because the two
+columns differ only by the few per cent that the gas's own velocity factor
+moves across the arm, and repeating the whole arm after a gap does not help
+whatever the gap. That one is held down by the apparatus or watched on its own
+channel. And the permeated gas against the transit stays degenerate on the
+temperature axis in every design, separating only through the line shape and a
+waist scan.
+
+So the second epoch is reserved for the sealing-date measurement itself, where
+the lever is weeks against this arm's hours, and the within-campaign half is
+bought by the revisit.
 
 ### Two measurements against the degeneracy
 
@@ -510,18 +551,18 @@ Radiation trapping was the next candidate and it is refuted too. Trapping
 is set by the optical depth, which grows with density, while the excitation is
 not, so the temperature sweep separates them. Across 70, 90 and 110 C at fixed
 power the floor rises with density as a power of
-[0.421](../../results/noise_floor_scaling.csv "ref:noise_floor_scaling:pooled:floor_exponent") ±
-[0.063](../../results/noise_floor_scaling.csv "ref:noise_floor_scaling:pooled:floor_exponent:err")
+[0.431](../../results/noise_floor_scaling.csv "ref:noise_floor_scaling:pooled:floor_exponent") ±
+[0.065](../../results/noise_floor_scaling.csv "ref:noise_floor_scaling:pooled:floor_exponent:err")
 of it, near the square root that shot noise on a background proportional to
 the number of atoms would give, and the floor divided by the square root of
 the line amplitude follows a power of
-[-0.143](../../results/noise_floor_scaling.csv "ref:noise_floor_scaling:pooled:floor_over_sqrt_height_exponent") ±
-[0.055](../../results/noise_floor_scaling.csv "ref:noise_floor_scaling:pooled:floor_over_sqrt_height_exponent:err"),
+[-0.147](../../results/noise_floor_scaling.csv "ref:noise_floor_scaling:pooled:floor_over_sqrt_height_exponent") ±
+[0.057](../../results/noise_floor_scaling.csv "ref:noise_floor_scaling:pooled:floor_over_sqrt_height_exponent:err"),
 consistent with flat. Trapping requires that second quantity to rise with
 density as the cell becomes optically thick. It does not. The pooled floor
 exponent hides a per-peak spread, from
 [0.17](../../results/noise_floor_scaling.csv "ref:noise_floor_scaling:peak_4121:floor_exponent") to
-[0.66](../../results/noise_floor_scaling.csv "ref:noise_floor_scaling:peak_4192:floor_exponent")
+[0.67](../../results/noise_floor_scaling.csv "ref:noise_floor_scaling:peak_4192:floor_exponent")
 ordered by line height, which `scripts/run_noise_floor_scaling.py` carries
 beside the pooled value.
 
@@ -976,7 +1017,7 @@ provenance in [APPARATUS.md](../APPARATUS.md)).
 
 | | points per trace | vertical resolution, by mechanism |
 |---|---|---|
-| Agilent dso-x 3054a | 1999 used in 2025. MegaZoom memory is 2 Mpts interleaved, upgradeable to 4, and the CSV export capped at 64 K in the bench test below | 8-bit ADC. High Resolution boxcars the samples inside each stored interval, disjoint blocks, ceiling **12 bits at or above 20 us/div** printed as a table in the manual. The campaign sat four decades past the threshold, so its 11.86 measured bits are the ceiling |
+| Agilent dso-x 3054a | 1999 used in 2025. MegaZoom memory is 2 Mpts interleaved, upgradeable to 4, and the CSV export capped at 64 K in the bench test below | 8-bit ADC. High Resolution boxcars the samples inside each stored interval, disjoint blocks, ceiling **12 bits at or above 20 us/div** printed as a table in the manual. The campaign sat four decades past the threshold, so its 11.86 measured bits are the ceiling <!-- other-quantity: a bit count --> |
 | LeCroy WS3104z | **500 001 points over 5 s measured** in the rehearsal files | 8-bit ADC raw. **ERes is a moving-average FIR across stored samples**, 0.5 to 3.0 bits in half-bit steps, each step halving bandwidth. It correlates neighbouring points by construction, which is the artefact class the mode correction just removed from this record, **so the LeCroy runs raw and any smoothing happens offline**, where the kernel is known and disjoint |
 | R&S RTM3004 | record length selectable **5 k to 80 MSample** | High Resolution is decimation, the average of the samples behind each stored point, same disjoint family as the Agilent, and the stored words go 8-bit to **16-bit**. Sixteen-bit words are not sixteen effective bits, and the native ADC depth is a datasheet item the manual does not print. Has Average+hr combined and a segmented HISTORY mode |
 
@@ -1071,7 +1112,7 @@ quarantined session and carry that session's standing.
 | record duration | 5.00 s | 1.00 s |
 | sample rate | 100 kSa/s | 2 kSa/s |
 | steps across the signal swing | 214 | **3730** |
-| bits across the swing | 7.74 | **11.86** |
+| bits across the swing | 7.74 | **11.86** <!-- other-quantity: a bit count --> |
 | baseline noise, detrended | 5505 uV | 3683 uV |
 | noise over quantisation step | 1.37 | 30.1 |
 | fraction of record above half maximum | 7.91 % | 5.90 % |
@@ -1122,7 +1163,7 @@ down the screen. Whether it survives the trip was measured rather than modelled.
 | 25 mW | 20.1 uV | 1488 uV | 0.0309 V | 74.0 |
 | 75 mW | 54.6 uV | 2353 uV | 0.2482 V | 43.1 |
 | 125 mW | 134.3 uV | 3887 uV | 0.6757 V | 28.9 |
-| 175 mW | 492.4 uV | 6973 uV | 1.3621 V | 14.2 |
+| 175 mW | 492.4 uV | 6973 uV | 1.3621 V | 14.2 <!-- other-quantity: a voltage reading in this table, not identifiability_profile's zoom_transit cell --> |
 | 225 mW | 1502.5 uV | 13583 uV | 2.3615 V | 9.0 |
 
 The step spans a factor of 347 across the ladder, and on the LeCroy a factor of
@@ -1182,7 +1223,7 @@ a reading given earlier in this chapter's history.
 
 Smoothing lives in a different place on the two makes. On the Agilent, High
 Resolution is an acquisition mode, so the stored samples themselves carry the
-extra bits, and the campaign's measured 11.86 bits confirm it was in use. On the
+extra bits, and the campaign's measured 11.86 bits confirm it was in use. On the <!-- other-quantity: a bit count -->
 LeCroy, ERes is reached by "the usual steps to set up a math function, selecting
 Eres from the Filter submenu", so it produces a separate trace and a saved
 channel carries eight bits whatever is on the screen.
@@ -1198,7 +1239,7 @@ front panel.
 
 The ceilings differ by one bit and in the opposite direction to the
 capability. The Agilent's averaging table runs 2 averages to 8 bits, 4 to 9,
-16 to 10, 64 to 11 and 256 or more to 12. ERes offers 0.5 to 3.0 bits in
+16 to 10, 64 to 11 and 256 or more to 12. ERes offers 0.5 to 3.0 bits in <!-- other-quantity: a digitiser bit-depth ladder, a power of two and not a measured value -->
 half-bit steps, so 11 is the LeCroy ceiling. Against a dither ratio of 30 on
 the traces as taken, neither ceiling binds.
 
@@ -1394,7 +1435,7 @@ and the evidence column names what it rests on rather than asserting authority.
 | record length | more points across the line, **not** for resolution | the CSV export caps at 64k and its Length control was low, but points buy time resolution rather than bits |
 | peaks per trace | **all four, one range, EOM on and off** | 5.57 per cent duty measured, and it is the direct test of the brightness ordering |
 | scan shape | triangular, keep both halves | two crossings per trace, and on a causal filter the splitting measures the lag. The transmitted power is logged on each half, because a driver's up and down brightness can differ and the up-down mean cancels a lag only when the drive is symmetric |
-| ladder order | **cycle the power several times inside a single display epoch**, not merely randomise across the session | power and elapsed time were collinear by construction in 2025, and the cost is measured in [`centre_fisher.csv`](../../results/centre_fisher.csv) (`run_centre_fisher.py`). Letting each display epoch carry a free linear drift instead of a level alone inflates the error on the light-shift amplitude by [7.3](../../results/centre_fisher.csv "ref:centre_fisher:inflation_linear_over_constant:measured")x, because a single power step and a line differ only through the arrangement of points around the change. The mechanism is sharper than collinearity: each epoch took every repeat of one power back to back, so its traces sit in two tight time clusters with one power in each. A line through two clusters is fixed by the difference of their means, and so is a one-time step. Cycling the power through the epoch separates them, since a line cannot follow a zig-zag. On the campaign's own traces and times, with nothing changed but the order, the re-ordering is forecast to be worth [7.2](../../results/centre_fisher.csv "ref:centre_fisher:ladder_order_gain:cycled_over_as_taken")x, and the rows carry that label: the light-shift error would fall from the measured [3.64](../../results/centre_fisher.csv "ref:centre_fisher:sigma_amplitude:linear_per_epoch") to [0.51](../../results/centre_fisher.csv "ref:centre_fisher:sigma_amplitude_forecast:linear_drift_cycled"), crossing the threshold at which this channel says anything at all. It is the cheapest design change in this chapter, because it costs only the order the powers are written down in. The scatter is not what limits this: it runs [0.025](../../results/centre_fisher.csv "ref:centre_fisher:sigma_per_trace_mhz:epoch_28") to [0.065](../../results/centre_fisher.csv "ref:centre_fisher:sigma_per_trace_mhz:epoch_33") MHz per trace, and with the drift pinned to a level the three multi-power epochs together separate the predicted shift from no shift at [2.0](../../results/centre_fisher.csv "ref:centre_fisher:prediction_significance_sigma:constant_per_epoch") sigma. **An earlier version of this row said a factor of 48 and a three-sigma effect per epoch, and both were wrong**: the 48 divided by a fixed-lock baseline this archive cannot evaluate, since a centre here already has its per-epoch mean removed, and the significance was quoted across a 100 mW power change that no single epoch contains. The design conclusion is unchanged, which is why the numbers moved and the recommendation did not |
+| ladder order | **cycle the power several times inside a single display epoch**, not merely randomise across the session | power and elapsed time were collinear by construction in 2025, and the cost is measured in [`centre_fisher.csv`](../../results/centre_fisher.csv) (`run_centre_fisher.py`). Letting each display epoch carry a free linear drift instead of a level alone inflates the error on the light-shift amplitude by [7.3](../../results/centre_fisher.csv "ref:centre_fisher:inflation_linear_over_constant:measured")x, because a single power step and a line differ only through the arrangement of points around the change. The mechanism is sharper than collinearity: each epoch took every repeat of one power back to back, so its traces sit in two tight time clusters with one power in each. A line through two clusters is fixed by the difference of their means, and so is a one-time step. Cycling the power through the epoch separates them, since a line cannot follow a zig-zag. On the campaign's own traces and times, with nothing changed but the order, the re-ordering is forecast to be worth [7.2](../../results/centre_fisher.csv "ref:centre_fisher:ladder_order_gain:cycled_over_as_taken")x, and the rows carry that label: the light-shift error would fall from the measured [1.74](../../results/centre_fisher.csv "ref:centre_fisher:sigma_amplitude:linear_per_epoch") to [0.24](../../results/centre_fisher.csv "ref:centre_fisher:sigma_amplitude_forecast:linear_drift_cycled"), crossing the threshold at which this channel says anything at all. It is the cheapest design change in this chapter, because it costs only the order the powers are written down in. The scatter is not what limits this: it runs [0.025](../../results/centre_fisher.csv "ref:centre_fisher:sigma_per_trace_mhz:epoch_28") to [0.065](../../results/centre_fisher.csv "ref:centre_fisher:sigma_per_trace_mhz:epoch_33") MHz per trace, and with the drift pinned to a level the three multi-power epochs together separate the predicted shift from no shift at [4.2](../../results/centre_fisher.csv "ref:centre_fisher:prediction_significance_sigma:constant_per_epoch") sigma. **An earlier version of this row said a factor of 48 and a three-sigma effect per epoch, and both were wrong**: the 48 divided by a fixed-lock baseline this archive cannot evaluate, since a centre here already has its per-epoch mean removed, and the significance was quoted across a 100 mW power change that no single epoch contains. The design conclusion is unchanged, which is why the numbers moved and the recommendation did not |
 | where to spend | **power first** | signal-to-noise is linear in power and square-root in everything else |
 | chopping | no | the noise is 83 to 97 per cent white, and a chopper costs half the photons |
 | transimpedance gain | leave it | it cancels in the shot-limited regime |
@@ -1423,7 +1464,7 @@ linearly.
 
 So the depth splits by the trace's job. The ruler information is
 lever-weighted, tooth $s$ pulling on the spacing with arm $s$, so it keeps
-climbing with depth: 0.48 at the 2025 depth against 0.87 to 1.44 at $2\beta$
+climbing with depth: 0.48 at the 2025 depth against 0.87 to 1.44 <!-- other-quantity: the ruler's own lever-weighted information factor across modulation depth, not sweep_linearity's rate-variation tolerance --> at $2\beta$
 of 2.2 to 3.0, where the width contribution still joins the fit at 0.4 to
 0.5. Brackets therefore go deep. An in-block RF-on interleave leans the
 other way, $2\beta$ near 1.0 to 1.3, keeping 0.65 of a science trace's
@@ -1462,7 +1503,7 @@ fast block therefore measures, in situ, part of the very noise that
 broadens the slow blocks' lines.
 
 If the fitted Gaussian is slow laser noise
-the fast clock sees excursions near 180 kHz, if it is fast noise it sees
+the fast clock sees excursions near 180 kHz, if it is fast noise it sees <!-- other-quantity: a drift excursion in kHz -->
 near 4 kHz, and tooth centres resolve 96 kHz each, so a single block
 separates the two readings of the laser kernel
 ([CLAIMS.md](../CLAIMS.md) section 2) by a factor near forty-five. It needs
@@ -1475,7 +1516,7 @@ tooth.
 | pull blocks | 12.5 MHz at $2\beta$ near 1.6 | ten times, many triangles | ladder-anchored centres, and the clock inside the science blocks' width band |
 | axis calibration, interleaved | the chapter 8 option in force, deep | the 2025 rate | gaps measured, whole-sweep clock |
 | lag characterisation | either | one fast and one slow block | detection lag from the up against down split, linear in rate |
-| depth diagnostic, occasional | $2\beta = 2.405$ | any | the carrier null pins the depth, valid at low drive or single-arm placement only |
+| depth diagnostic, occasional | $2\beta = 2.405$ | any | the carrier null pins the depth, valid at low drive or single-arm placement only <!-- other-quantity: the first zero of the Bessel function J0 (EOM modulation depth), not a committed cell --> |
 
 Dim rungs run RF off because the floor makes every tooth copy a pure loss
 there, and the carrier-null diagnostic moved to the last row because the
@@ -1519,7 +1560,7 @@ the range change becomes a measurable offset rather than a confound.
 ### 2. Smoothing and its verification
 
 The 2025 campaign ran High Resolution and the files confirm it. The
-quantisation grid gives 11.86 bits across the signal swing, which an eight-bit
+quantisation grid gives 11.86 bits across the signal swing, which an eight-bit <!-- other-quantity: a bit count -->
 converter cannot produce at any record length. This section is therefore a
 statement of what to keep rather than what to change, and it is written that
 way because an earlier draft of this chapter implied the opposite.
@@ -1754,12 +1795,16 @@ constraint does not bind at any setting the campaign wants.
 
 **The point budget, at the settings the physics asks for.** Reading the light
 shift directly off a trace, without a fit, needs the shift resolved
-to about a tenth of itself. The shift is 0.067 of a linewidth at the archive's
-waist and 0.329 at the campaign's tightest, so the requirement runs from 148
-points per linewidth at the archive to 30 at 16 microns. Thirty-two points per
-linewidth covers every configuration the campaign proposes, and it is ten times
-the floor a fit needs, the deep-trace study having measured the centre's
-information flat from three points per linewidth upward.
+to about a tenth of itself. At the calculated 42.38 µm waist the shift is
+about 0.135 of a 5.4 MHz line
+([0.729](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred:shared") MHz over 5.4 MHz, the bench's own bore-clipped
+prediction), so the requirement runs to roughly 70 points per linewidth at
+the archive. The 16 micron figure this budget carried under the retired
+waist convention is pending re-derivation, since it needs its own linewidth
+named at that focus and not the archive's 5.4 MHz. Thirty-two points per
+linewidth covers every configuration this budget has resolved so far, and it
+is ten times the floor a fit needs, the deep-trace study having measured the
+centre's information flat from three points per linewidth upward.
 
 | span | points per crossing | one acquisition of three triangles | five repeats |
 |---|---|---|---|
@@ -1904,25 +1949,29 @@ result and not a convenience.
 rate is not constant maps a symmetric line onto a skewed one. Writing the true
 frequency against the assumed axis as $\nu = \hat\nu + \alpha\hat\nu^2$, the
 rate varies across an analysis window of half-width $W$ by a fraction
-$\epsilon = 2\alpha W$, and the distortion enters the third cumulant linearly
+$\epsilon = 2\alpha W$, and the distortion enters the third moment linearly
 in $\epsilon$. Measured on the production estimator against the same line the
 campaign forecasts:
 
-| configuration | window | the light shift's own third cumulant | rate variation that fakes it |
+| configuration | window | the light shift's own third moment | rate variation that fakes it |
 |---|---|---|---|
-| 2025, 64 microns | 6 MHz | [-0.00010447](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:k3_light_shift") MHz cubed | [0.00196](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:rate_variation_tolerance") per cent |
-| campaign, 40 microns, the tightest licensed waist | 6 MHz | [-0.00069510](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:k3_light_shift") MHz cubed | [0.0131](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:rate_variation_tolerance") per cent |
-| campaign, 16 microns, outside the licence | 12 MHz | [0.666476](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_16um:k3_light_shift") MHz cubed | [1.44](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_16um:rate_variation_tolerance") per cent |
+| 2025, 42.38 microns | 6 MHz | [-0.000740959](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:mu3_light_shift") MHz cubed | [0.0135](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:rate_variation_tolerance") per cent |
+| campaign, 40 microns, the tightest licensed waist | 6 MHz | [-0.00083489](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:mu3_light_shift") MHz cubed | [0.0153](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:rate_variation_tolerance") per cent |
+| campaign, 16 microns, outside the licence | 12 MHz | [0.709569](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_16um:mu3_light_shift") MHz cubed | [1.52](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_16um:rate_variation_tolerance") per cent |
 
-That is a second and independent reason the 2025 third cumulant was never
-available. The first is signal to noise, and it is severe enough on its own.
-This one is worse, because a bow of two parts in a thousand of the actuator's
-travel already reaches two parts in a hundred thousand across the window, so
-the channel was unavailable on the axis as well as in the counts. The
-campaign's tightest licensed waist asks for about one and a half parts in ten
-thousand, which
-a bow of about two per cent of the travel reaches, and that is a measurable
-requirement.
+Both campaign rows assume the unclipped design, the bore out of the
+focusing path. With the 2025 input kept the light shift is smaller and
+these tolerances would need their own re-run.
+
+That is a second reason the 2025 third moment may have been unavailable,
+and at the calculated waist it is conditional. The first is signal to noise,
+and it is severe enough on its own. The 2025 tolerance is about 1.4 parts in
+ten thousand across the window, which a smooth bow of about one per cent of
+the actuator's travel reaches: two parts in a thousand clear it about fivefold,
+an open-loop piezo's typical ten per cent fails it about ninefold, and nothing
+on record gives the 2025 actuator's bow. The campaign's tightest licensed waist
+asks for about one and a half parts in ten thousand, which a bow of about 1.3
+per cent of the travel reaches, and that is a measurable requirement.
 
 The nonlinearity is the actuator's, and the first version of this section
 made it the scan's. It defined the departure as a fraction of the span
@@ -1941,25 +1990,26 @@ along it, and across a window of half-width W about the travel's centre the
 fractional variation is exactly twelve times the departure times W over the
 travel. Read against a 6 GHz travel and this chapter's windows:
 
-| bow, as a fraction of the travel | over a 6 MHz window | against 64 microns | against 40 microns |
+| bow, as a fraction of the travel | over a 6 MHz window | against 42.38 microns | against 40 microns |
 |---|---|---|---|
-| 0.2 per cent | [0.0024](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:eps_bow_eta0.2") per cent | fails by 1.1 | clears by 12 |
-| 2 per cent | [0.0240](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:eps_bow_eta2") per cent | fails by 11 | clears by 1.2 |
-| 10 per cent | [0.1199](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:eps_bow_eta10") per cent | fails by 54 | fails by 4.1 |
+| 0.2 per cent | [0.0024](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:eps_bow_eta0.2") per cent | clears by 5.6 | clears by 6.4 |
+| 2 per cent | [0.0240](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:eps_bow_eta2") per cent | fails by 1.8 | fails by 1.6 |
+| 10 per cent | [0.1199](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:eps_bow_eta10") per cent | fails by 8.9 | fails by 7.8 |
 
 So the moment channel at the campaign's tightest licensed waist needs the
-actuator's bow under about two per cent of its travel, or measured and taken
-out. An open-loop piezo is of order ten per cent, which fails by four. A
-linearised one or an anchored correction of the bow reaches it. At 64 microns a
-bow of two parts in a thousand already reaches the tolerance, which is why the
-2025 channel was unavailable on its axis.
+actuator's bow under about 1.3 per cent of its travel, or measured and taken
+out. An open-loop piezo is of order ten per cent, which fails by about eight. A
+linearised one or an anchored correction of the bow reaches it. At the 2025
+waist the requirement is nearly the same, about 1.1 per cent, so the 2025
+channel was unavailable on its axis only if its actuator bowed by more than
+that, which nothing on record gives.
 
 A short-scale departure does not dilute, and its number is smaller than the
 first version said because a larger one reverses the sweep. A ripple of N
 cycles across the travel replaces the twelve by the square of two pi N, so at
 fifty cycles the coefficient is about a hundred thousand and a ripple of a
 tenth of a per cent gives [10.0664](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:eps_ripple50_eta0.1_p95_over_phase") per cent across a 6 MHz window,
-three hundred and fifty times the 40 micron tolerance. Above about a third of
+about six hundred and sixty times the 40 micron tolerance. Above about a third of
 a per cent the sweep reverses inside the window and no rate variation exists,
 which is what the first version of this paragraph reported as one. Piezo
 resonances, creep and stick-slip

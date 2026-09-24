@@ -60,7 +60,7 @@ def main() -> int:
     print("  the PHYSICAL observable: how much it ADDS to the natural line once convolved.\n")
     print("  transit CONTRIBUTION to observable FWHM vs w0 (110 C, thin near-focus):")
     print(f"  {'w0':>5s} {'+transit':>9s} {'nat(x)transit':>14s}  interpretation")
-    for w0 in (32, 40, 50, 65, 90):
+    for w0 in (32, 40, 45, 50, 90):   # C6a: the band's upper edge in place of the retired convention
         add, err = _add_and_err(w0 * 1e-6, 0.3e-3)
         natx = GNAT + add
         if natx > OBSERVED + 0.1:
@@ -93,11 +93,11 @@ def main() -> int:
         w = csv.DictWriter(f, fieldnames=list(out[0].keys())); w.writeheader(); w.writerows(out)
 
     print(f"\n{'-'*74}\nWHAT IT MEANS (transit physics corrected 2026-07-12 -- flux factor):")
-    print("  * The transit contribution is ~2.1 MHz at w0=32 um and ~1.2 MHz at 50 um,\n    both RETIRED waists. At the accepted 64 um it is ~0.93 MHz.")
+    print("  * The transit contribution is ~2.1 MHz at w0=32 um and ~1.2 MHz at 50 um,\n    both earlier RETIRED waists. At the waist convention accepted at the time (since itself retired) it is ~0.93 MHz.")
     print("    At 32 um, natural (x) transit already EXCEEDS the observed 5.25 MHz line,")
     print("    so 32 um is EXCLUDED. The line ALONE can accommodate w0 ~ 45-70 um,")
     print("    which is a DIFFERENT quantity from the accepted prior. The band of")
-    print("    record is 62-68 um, constants.W0_BAND_M. transit and the laser")
+    print("    record is now constants.W0_BAND_M (40-45 um). transit and the laser")
     print("    Gaussian remain DEGENERATE via w0:")
     print("      - w0 ~< 40 um: transit alone ~fills the 5.25 MHz => laser NARROW/none;")
     print("      - w0 = 50 um (RETIRED, not the prior): transit ~1.2, leaving ~0.8 MHz.")

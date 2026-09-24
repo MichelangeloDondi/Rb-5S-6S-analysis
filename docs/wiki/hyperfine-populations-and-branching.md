@@ -223,7 +223,9 @@ speed, so slow atoms are pumped out preferentially. At a mean loss of a tenth pe
 half the mean speed forfeits 0.19 and one at twice the mean forfeits 0.05, and at a mean loss of a half those
 become 0.75 and 0.29. The surviving excitable population is biased fast, a fast-biased distribution gives
 a wider transit profile, and since the transit width goes as the speed over the waist an inflated width
-reads as a waist too small. The effect grows with drive power because the depletion does. The model
+reads as a waist too small.
+
+The effect grows with drive power because the depletion does. The model
 carries the depletion as a loss of amplitude and convolves the undepleted transit kernel, so the
 reshaping is absent. The selection is radial as well, biasing the survivors toward low intensity, which
 is the same mixture reweighting the convolution's first-order correction needs: one effect in two

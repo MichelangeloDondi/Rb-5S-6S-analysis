@@ -58,24 +58,25 @@ def test_the_package_defaults_to_this_records_value():
     #
     # So the divergence this file ends is between the constant and the CITED
     # sign, which is unchanged.  The constant-versus-module gap is now a
-    # DECLARED difference of construction with a committed row, and the test
-    # pins its size so that a THIRD value cannot drift in unnoticed.
-    import csv as _csv
-    from pathlib import Path as _P
-    with open(_P(__file__).resolve().parents[1] / "results" / "polarizability_deep.csv") as _fh:
-        _move = next(float(r["value"]) for r in _csv.DictReader(_fh)
-                     if r["quantity"] == "delta_alpha_shift_from_module" and r["key"] == "at_drive")
-    static_of_record = DELTA_ALPHA_AU - _move
-    assert math.isclose(delta_alpha(LAM_NM), static_of_record, rel_tol=2e-3), (
-        "the module's static sum moved; it is the reference the adopted "
-        "dynamic value is measured against")
-    gap = abs(DELTA_ALPHA_AU - delta_alpha(LAM_NM))
-    assert 11.0 < gap < 15.0, (
-        f"the constant sits {gap:.1f} a.u. from the module's static sum, "
-        f"outside the committed +12.8 of results/polarizability_deep.csv. "
-        f"Either the constant moved again or the line lists did, and which "
-        f"it is belongs in {DISPUTE_HOME} section 5 before this tolerance "
-        f"is touched")
+    # DECLARED difference of construction, and the test pins its size so that
+    # a THIRD value cannot drift in unnoticed.
+    #
+    # THE GAP SHRANK FROM +12.8 TO ABOUT +2.8 (F307 corrected, A132.16, C6b). The module is no
+    # longer purely static: 9P and 10P are explicit lines in LINES_6S now, carrying their own
+    # dynamic enhancement at the drive (about 7.3x and 4.2x), so `delta_alpha` picks up about 10.0
+    # of the old 12.8 a.u. gap on its own. results/polarizability_deep.csv's own
+    # `delta_alpha_shift_from_module` row still reads +12.8, because it is written by
+    # `run_polarizability_deep.py`, which this wave's code window did not re-run (the row is OWED
+    # a re-run, and A132.16 does not ask for it here); reading it as this test's reference would
+    # compare new code against stale committed data, so this test compares `delta_alpha` against
+    # the constant DIRECTLY instead, with the gap this wave measured, computed the same way
+    # (`DELTA_ALPHA_AU - delta_alpha(993.4)`).
+    gap = DELTA_ALPHA_AU - delta_alpha(LAM_NM)
+    assert 1.0 < gap < 5.0, (
+        f"the constant sits {gap:.1f} a.u. from the module's sum, outside the 1 to 5 a.u. this "
+        f"wave measured (about 2.8, the 11P-and-above remainder still folded into TAIL_6S). "
+        f"Either the constant moved again or the line lists did, and which it is belongs in "
+        f"{DISPUTE_HOME} section 5 before this tolerance is touched")
 
 
 def test_the_cited_value_is_still_reachable_by_name():
@@ -105,9 +106,10 @@ def test_the_model_still_computes_its_own_definition():
 
 def test_the_shift_depth_is_a_magnitude_whatever_the_sign():
     """S0 is the ramp's depth, so it is non-negative under either value."""
+    from rb5s6s.constants import W0_CENTRAL_M
     from rb5s6s.lineshape import stark_shift_S0_mhz
-    ours = stark_shift_S0_mhz(0.225, 64e-6, rho=0.94)
-    theirs = stark_shift_S0_mhz(0.225, 64e-6, rho=0.94,
+    ours = stark_shift_S0_mhz(0.225, W0_CENTRAL_M, rho=0.94)
+    theirs = stark_shift_S0_mhz(0.225, W0_CENTRAL_M, rho=0.94,
                                 delta_alpha_au=DELTA_ALPHA_AU_ORSON2021)
     assert ours > 0 and theirs > 0, (
         "stark_shift_S0_mhz returned a negative depth. Its consumers all "

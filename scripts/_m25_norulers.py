@@ -176,6 +176,8 @@ Runtime: long (many hours). Run it in the background.
 from __future__ import annotations
 
 import csv
+import json
+import pickle
 import sys
 import time
 from collections import defaultdict
@@ -199,9 +201,14 @@ from rb5s6s.noise import condition_noise_model, sigma_of_v, signal_level  # noqa
 from run_beta_self import load_t_rates  # noqa: E402
 from run_stark_joint import PEAKS, SESSION_20250717, SESSION_20250704, load_session_20250717, load_session_20250704  # noqa: E402
 
+# A pooled map dies instead of hanging (the same deadline run_global_dataset_fit.py uses).
+# Without one a spawn child that cannot import its function's defining module leaves the parent
+# blocked in `map` forever. Two hours is only ever reached by a fault at this problem size.
+_POOL_TIMEOUT_S = 7200
+
 PK_IX = {p: i for i, p in enumerate(PEAKS)}
 DNU_FLOOR = 2e-2
-KAPPA_PRED = kappa_pred_per_watt(C.W0_MEASURED_M, C.RHO_RETRO)
+KAPPA_PRED = kappa_pred_per_watt(C.W0_CENTRAL_M, C.RHO_RETRO)
 KAPPAS = tuple(sorted({0.0, 0.25, 0.5, 0.75, 1.0, round(KAPPA_PRED, 3),
                        2.0, 2.62, 3.5, 5.0}))
 
@@ -563,10 +570,127 @@ def ub95(k, c):
     return float(np.interp(2.706, [c[j - 1], c[j]], [k[j - 1], k[j]]))
 
 
+# ------------------------------------------------------------- parallel ----
+# The kappa rows of profile2d are independent BY CONSTRUCTION, exactly as in
+# run_global_dataset_fit.py: each row does q = q0.copy() before its warm-started
+# beta sweep, so no row reads another's state, and the sequential fallback below
+# is byte-identical to that file's sequential path. The forward/backward chains
+# inside chain() stay sequential, because chain() deliberately carries q across
+# kappas.
+#
+# ADDED 2026-09-22 (the wave rule, F328's re-run). This arm never had the pool
+# run_global_dataset_fit.py carries, and its joint region alone ran past 13382 s
+# without finishing two refine rounds before being stopped (c6a_gdf.chain.log,
+# rc=-15 at 15385.7 s elapsed). profile2d and w0_scan below were byte-identical
+# to run_global_dataset_fit.py's sequential bodies before this change (read both
+# before deciding), so the same pool now applies here unchanged.
+#
+# macOS spawns workers, so the worker rebuilds the residual from the loaders
+# once per worker (closures over the trace arrays do not survive pickling),
+# and each task then carries only (kappa, betas, q0, nfev).
+_W: dict = {}
+
+
+def _load_everything():
+    """The exact trace assembly main() performs, factored for the workers.
+
+    Any change to main()'s assembly MUST land here too, or the parallel path
+    fits a different dataset from the sequential one.
+    """
+    camp = load_campaign_all()
+    reh, _ = load_session_20250704()
+    _, prates = load_t_rates()
+    pil = load_session_20250717(prates["4192"][0])
+    rul = load_rulers_t() if USE_RULERS else []
+    for t in reh:
+        t["T"] = 130.0
+        t["sl"] = "reh"
+    for t in pil:
+        t["T"] = 130.0
+        t["sl"] = "pil"
+    traces = camp + reh + pil + rul
+    p0, lo, hi, offsets = build(traces)
+    resid = make_resid(traces, offsets)
+    Sf = sparsity(traces, offsets, len(p0))[:, 1:]
+    return {"traces": traces, "offsets": offsets, "p0": p0,
+            "lo": lo, "hi": hi, "resid": resid, "Sf": Sf}
+
+
+def _init_worker():
+    import os as _os
+    # One BLAS thread per worker, as in run_global_dataset_fit.py's own initializer.
+    for v in ("OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS",
+              "VECLIB_MAXIMUM_THREADS", "NUMEXPR_NUM_THREADS"):
+        _os.environ.setdefault(v, "1")
+    _W.update(_load_everything())
+
+
+def _p2d_row(args):
+    """One kappa row of the 2D grid: the warm-started beta sweep, verbatim."""
+    kap, betas, q0, nfev = args
+    resid, Sf, lo, hi = _W["resid"], _W["Sf"], _W["lo"], _W["hi"]
+    q = np.asarray(q0, float).copy()
+    out = {}
+    for b in betas:
+        def fn(z, _k=kap, _b=b):
+            z = z.copy()
+            z[I_BETA - 1] = _b
+            return resid(np.concatenate([[0.0], z]), kappa=_k)
+        sol = least_squares(fn, q, bounds=(lo[1:], hi[1:]), jac_sparsity=Sf,
+                            max_nfev=nfev, x_scale="jac", ftol=1e-11, xtol=1e-11)
+        q = sol.x.copy()
+        r = fn(q)
+        out[(kap, b)] = float(np.sum(r * r))
+    print(f"    [2Dp] kappa={kap:5.2f} done", flush=True)
+    return out
+
+
+def _w0_row(args):
+    """One assumed waist of the w0 scan: its own residual, its own chain."""
+    w0, kappas, nfev = args
+    traces, offsets = _W["traces"], _W["offsets"]
+    tr_ref = C.transit_fwhm_from_w0(w0, 110.0)
+    resid = make_resid(traces, offsets, transit_ref=tr_ref)
+    p0, lo, hi, _ = build(traces)
+    Sf = sparsity(traces, offsets, len(p0))[:, 1:]
+    res = chain(resid, Sf, lo, hi, p0[1:], kappas, f"w{w0 * 1e6:.0f}",
+                nfev=nfev)
+    ks = np.array(kappas)
+    cs = np.array([res[k][0] for k in kappas])
+    kmin = float(ks[int(np.argmin(cs))])
+    return (w0, tr_ref, ub95(ks, cs), kmin, float(res[kmin][1][I_BETA - 1]))
+
+
+def n_workers() -> int:
+    """0 means sequential, which is the default and the path of record.
+
+    Delegates to rb5s6s.workers, the one seam that reads the environment,
+    exactly as run_global_dataset_fit.py's own wrapper does (tests/test_workers.py
+    plants that delegation there; this wrapper reads the same way)."""
+    from rb5s6s.workers import n_workers as _n
+    return _n()
+
+
 def profile2d(resid, Sf, lo, hi, q0, kappas, betas, tag="2D"):
     """chi2 on a (kappa, beta) grid, warm-started along each row. Gives the
     JOINT confidence region instead of a bound on one coefficient with the
-    other profiled away silently."""
+    other profiled away silently.
+
+    With RB5S6S_WORKERS=N set, the kappa rows run in N processes; each row's
+    beta sweep stays sequential inside its worker because the warm start is
+    what makes it converge quickly. Byte-identical construction to
+    run_global_dataset_fit.py's profile2d, which is the plant for this path."""
+    nw = n_workers()
+    if nw > 0:
+        import multiprocessing as _mp
+        jobs = [(kap, tuple(betas), np.asarray(q0, float).copy(), 800)
+                for kap in kappas]
+        with _mp.get_context("spawn").Pool(nw, initializer=_init_worker) as pool:
+            rows = pool.map_async(_p2d_row, jobs).get(_POOL_TIMEOUT_S)
+        out = {}
+        for r in rows:
+            out.update(r)
+        return out
     out = {}
     for kap in kappas:
         q = q0.copy()
@@ -586,10 +710,29 @@ def profile2d(resid, Sf, lo, hi, q0, kappas, betas, tag="2D"):
     return out
 
 
+# The waists the conditionality scan walks (its reasons are stated at its call in main), and the
+# wave units they make: 0 the kappa profiles, 1 the joint region, then one per waist -- the same
+# seams as run_global_dataset_fit.py.
+W0_SCAN_M = (41e-6, C.W0_CENTRAL_M, 45e-6, 50e-6, 56e-6)
+NR_UNITS = 2 + len(W0_SCAN_M)
+
+
 def w0_scan(traces, offsets, w0s, kappas):
     """kappa and beta as functions of the ASSUMED waist. The dataset cannot
     pin w0 (transit and sigma_laser are degenerate), so the statement of
     record is not one bound but the bound's dependence on the assumption."""
+    nw = n_workers()
+    if nw > 0:
+        import multiprocessing as _mp
+        jobs = [(w0, tuple(kappas), 1200) for w0 in w0s]
+        with _mp.get_context("spawn").Pool(min(nw, len(jobs)),
+                                           initializer=_init_worker) as pool:
+            rows = pool.map_async(_w0_row, jobs).get(_POOL_TIMEOUT_S)
+        for r in rows:
+            print(f"  w0={r[0] * 1e6:.0f}um transit={r[1]:.3f}: "
+                  f"kappa<{r[2]:.3f} beta={r[4]:.4f}", flush=True)
+        return rows
+
     rows = []
     for w0 in w0s:
         tr_ref = C.transit_fwhm_from_w0(w0, 110.0)
@@ -635,73 +778,145 @@ def main() -> int:
     resid = make_resid(traces, offsets)
     Sf = sparsity(traces, offsets, len(p0))[:, 1:]
     t0 = time.time()
-    print("  kappa profile, forward:")
-    fwd = chain(resid, Sf, lo, hi, p0[1:], KAPPAS, "F")
-    print("  kappa profile, backward:")
-    bwd = chain(resid, Sf, lo, hi, fwd[KAPPAS[-1]][1], KAPPAS[::-1], "B")
-    prof = {k: min(fwd[k][0], bwd[k][0]) for k in KAPPAS}
-    kmin = min(prof, key=prof.get)
-    best_q = fwd[kmin][1] if fwd[kmin][0] <= bwd[kmin][0] else bwd[kmin][1]
-    ks = np.array(KAPPAS); cs = np.array([prof[k] for k in KAPPAS])
-    ka = ub95(ks, cs)
-    beta_fit = best_q[I_BETA - 1]
+    # ---- WAVE UNITS (2026-09-22, the wave rule, run_global_dataset_fit.py's pattern) -------------
+    # This arm ran serially, stopped unfinished after 15385.7 s (rc=-15, c6a_gdf.chain.log) inside
+    # the joint region's refine loop -- over four hours with nothing on disk to resume from. Cut at
+    # the same seams as run_global_dataset_fit.py: unit 0 the kappa profiles, unit 1 the joint
+    # (kappa, beta) region, which reads unit 0's state, and one unit per scanned waist.
+    # `--unit-from U --units N --dump PATH --state DIR` runs units U..U+N-1 and pickles each into
+    # DIR. `--combine --state DIR` writes the CSV from them. With neither flag every unit runs in
+    # this one process and nothing is pickled, as before.
+    _argv = sys.argv[1:]
+    _state = Path(_argv[_argv.index("--state") + 1]) if "--state" in _argv else None
+    _combine = "--combine" in _argv
+    if _combine:
+        _units = ()
+    elif "--unit-from" in _argv:
+        _u0 = int(_argv[_argv.index("--unit-from") + 1])
+        _units = tuple(range(_u0, min(_u0 + int(_argv[_argv.index("--units") + 1]), NR_UNITS)))
+    else:
+        _units = tuple(range(NR_UNITS))
+    _staged = _combine or "--unit-from" in _argv
+    if _staged and _state is None:
+        raise SystemExit("--unit-from and --combine need --state DIR")
+    if _state is not None:
+        _state.mkdir(parents=True, exist_ok=True)
 
-    # ---- the joint (kappa, beta) confidence region -------------------
-    betas = tuple(round(b, 4) for b in np.linspace(0.005, 0.075, 8))
-    print("\n  joint (kappa, beta) region:")
-    g2 = profile2d(resid, Sf, lo, hi, best_q, KAPPAS, betas)
-    c2min = min(g2.values())
-    # 1-parameter and 2-parameter thresholds
-    beta_prof = {b: min(g2[(k, b)] for k in KAPPAS) for b in betas}
-    bmin = min(beta_prof, key=beta_prof.get)
-    b_lo95, b_hi95 = _crossings(sorted(beta_prof),
-                                [beta_prof[b] for b in sorted(beta_prof)], 3.841)
+    def _save(k, obj):
+        if _state is not None:
+            with open(_state / f"unit_{k}.pkl", "wb") as fh:
+                pickle.dump(obj, fh)
 
-    # ---- resolve that interval instead of asserting it (addendum 30) ------
-    # Identical to the primary arm's loop, and here for the same reason: a
-    # 0.01-step grid cannot resolve an interval about 0.001 wide, so the
-    # reported minimum is whichever grid point sat lowest. Refine about the
-    # running minimum until the interval spans MIN_SPAN_STEPS of the grid that
-    # resolves it, the criterion tests/test_interval_sanity.py applies.
-    MIN_SPAN_STEPS, MAX_ROUNDS = 4.0, 4
-    step = float(betas[1] - betas[0])
-    for rnd in range(1, MAX_ROUNDS + 1):
-        if (b_hi95 - b_lo95) >= MIN_SPAN_STEPS * step:
-            break
-        step /= 8.0
-        centre = min(beta_prof, key=beta_prof.get)
-        fresh = tuple(sorted({round(centre + j * step, 6)
-                              for j in range(-6, 7)} - set(beta_prof)))
-        fresh = tuple(b for b in fresh if b > 0)
-        if not fresh:
-            break
-        print(f"    refine round {rnd}: {len(fresh)} betas at step {step:.5f} "
-              f"about {centre:.4f}", flush=True)
-        g2.update(profile2d(resid, Sf, lo, hi, best_q, KAPPAS, fresh,
-                            tag=f"2D-r{rnd}"))
-        for b in fresh:
-            beta_prof[b] = min(g2[(k, b)] for k in KAPPAS)
-        bs_sorted = sorted(beta_prof)
-        b_lo95, b_hi95 = _crossings(bs_sorted,
-                                    [beta_prof[b] for b in bs_sorted], 3.841)
-    beta_grid_step = step
-    c2min = min(g2.values())
-    beta_prof = {b: min(g2[(k, b)] for k in KAPPAS) for b in sorted(beta_prof)}
-    bmin = min(beta_prof, key=beta_prof.get)
-    print(f"    beta_self profile minimum {bmin:.4f}, "
-          f"95% (1-par, dchi2<3.84) range [{b_lo95:.4f}, {b_hi95:.4f}] "
-          f"at grid step {beta_grid_step:.5f}")
+    def _load(k):
+        path = _state / f"unit_{k}.pkl"
+        if not path.is_file():
+            raise SystemExit(f"unit {k} has no state in {_state}; the units run in order, 0 first")
+        with open(path, "rb") as fh:
+            return pickle.load(fh)
+
+    if 0 in _units:
+        print("  kappa profile, forward:")
+        fwd = chain(resid, Sf, lo, hi, p0[1:], KAPPAS, "F")
+        print("  kappa profile, backward:")
+        bwd = chain(resid, Sf, lo, hi, fwd[KAPPAS[-1]][1], KAPPAS[::-1], "B")
+        prof = {k: min(fwd[k][0], bwd[k][0]) for k in KAPPAS}
+        kmin = min(prof, key=prof.get)
+        best_q = fwd[kmin][1] if fwd[kmin][0] <= bwd[kmin][0] else bwd[kmin][1]
+        ks = np.array(KAPPAS); cs = np.array([prof[k] for k in KAPPAS])
+        ka = ub95(ks, cs)
+        beta_fit = best_q[I_BETA - 1]
+        _save(0, dict(prof=prof, kmin=kmin, best_q=best_q, ks=ks, cs=cs, ka=ka, beta_fit=beta_fit))
+    elif 1 in _units or _combine:
+        _s = _load(0)
+        prof, kmin, best_q, ks, cs, ka, beta_fit = (
+            _s[k] for k in ("prof", "kmin", "best_q", "ks", "cs", "ka", "beta_fit"))
+
+    if 1 in _units:
+        # ---- the joint (kappa, beta) confidence region -------------------
+        # THE COARSE GRID BRACKETS THIS ARM'S OWN beta, never a typed span (F313's class, F315's
+        # repair, mirrored here 2026-09-22). The typed 0.005 to 0.075 bracketed the retired waist
+        # convention's beta near 0.015. At the calculated waist the free fit's beta sits far below
+        # that grid's floor, so every cell pinned beta off the minimum and the other parameters
+        # crawled to compensate, which is why this arm never finished its refine rounds. The grid
+        # keeps the old one's reach relative to the fit, from a third of it to five times it, and
+        # the refinement below resolves the interval as before.
+        betas = tuple(round(b, 6) for b in np.linspace(beta_fit / 3.0, 5.0 * beta_fit, 8))
+        print("\n  joint (kappa, beta) region:")
+        g2 = profile2d(resid, Sf, lo, hi, best_q, KAPPAS, betas)
+        c2min = min(g2.values())
+        # 1-parameter and 2-parameter thresholds
+        beta_prof = {b: min(g2[(k, b)] for k in KAPPAS) for b in betas}
+        bmin = min(beta_prof, key=beta_prof.get)
+        b_lo95, b_hi95 = _crossings(sorted(beta_prof),
+                                    [beta_prof[b] for b in sorted(beta_prof)], 3.841)
+
+        # ---- resolve that interval instead of asserting it (addendum 30) ------
+        # Identical to the primary arm's loop, and here for the same reason: a
+        # 0.01-step grid cannot resolve an interval about 0.001 wide, so the
+        # reported minimum is whichever grid point sat lowest. Refine about the
+        # running minimum until the interval spans MIN_SPAN_STEPS of the grid that
+        # resolves it, the criterion tests/test_interval_sanity.py applies.
+        MIN_SPAN_STEPS, MAX_ROUNDS = 4.0, 4
+        step = float(betas[1] - betas[0])
+        for rnd in range(1, MAX_ROUNDS + 1):
+            if (b_hi95 - b_lo95) >= MIN_SPAN_STEPS * step:
+                break
+            step /= 8.0
+            centre = min(beta_prof, key=beta_prof.get)
+            fresh = tuple(sorted({round(centre + j * step, 6)
+                                  for j in range(-6, 7)} - set(beta_prof)))
+            fresh = tuple(b for b in fresh if b > 0)
+            if not fresh:
+                break
+            print(f"    refine round {rnd}: {len(fresh)} betas at step {step:.5f} "
+                  f"about {centre:.4f}", flush=True)
+            g2.update(profile2d(resid, Sf, lo, hi, best_q, KAPPAS, fresh,
+                                tag=f"2D-r{rnd}"))
+            for b in fresh:
+                beta_prof[b] = min(g2[(k, b)] for k in KAPPAS)
+            bs_sorted = sorted(beta_prof)
+            b_lo95, b_hi95 = _crossings(bs_sorted,
+                                        [beta_prof[b] for b in bs_sorted], 3.841)
+        beta_grid_step = step
+        c2min = min(g2.values())
+        beta_prof = {b: min(g2[(k, b)] for k in KAPPAS) for b in sorted(beta_prof)}
+        bmin = min(beta_prof, key=beta_prof.get)
+        print(f"    beta_self profile minimum {bmin:.4f}, "
+              f"95% (1-par, dchi2<3.84) range [{b_lo95:.4f}, {b_hi95:.4f}] "
+              f"at grid step {beta_grid_step:.5f}")
+
+        _save(1, dict(g2=g2, beta_prof=beta_prof, bmin=bmin, b_lo95=b_lo95, b_hi95=b_hi95,
+                      beta_grid_step=beta_grid_step, betas=betas, c2min=c2min))
+    elif _combine:
+        _s = _load(1)
+        g2, beta_prof, bmin, b_lo95, b_hi95, beta_grid_step, betas, c2min = (
+            _s[k] for k in ("g2", "beta_prof", "bmin", "b_lo95", "b_hi95", "beta_grid_step", "betas", "c2min"))
 
     # ---- how the answer depends on the assumed waist ------------------
     print("\n  w0 dependence (the conditionality, mapped):")
     # DELIBERATELY WIDER THAN constants.W0_BAND_M, and left literal for that
-    # reason (noted 2026-08-10, when the band narrowed to 62-68 um and a
-    # different hard-coded band in run_global_fit.py turned out to be two
-    # generations stale). This is a SENSITIVITY scan: its job is to show how
-    # the answer moves outside the band as well as inside it, so tying it to
-    # the band would destroy what it is for. The band sits inside this range.
-    w0rows = w0_scan(traces, offsets, (56e-6, 60e-6, 64e-6, 68e-6, 72e-6),
-                     KAPPAS)
+    # reason (noted 2026-08-10, when a different hard-coded band in
+    # run_global_fit.py turned out to be two generations stale). This is a
+    # SENSITIVITY scan: its job is to show how the answer moves outside the
+    # band as well as inside it, so tying it to the band would destroy what
+    # it is for. RESHAPED 2026-09-22 (C6a, O44, F291): the range now starts at
+    # the bore's floor (about 40.9 um, the tightest focus this bench can form),
+    # covers the reachable band at its central value and upper edge, and runs
+    # past it to 56 um, so the scan shows the answer's movement inside the band
+    # AND above it; below the floor there is no beam to assume.
+    if not _staged:
+        w0rows = w0_scan(traces, offsets, W0_SCAN_M, KAPPAS)
+    else:
+        for _k in _units:
+            if _k >= 2:
+                _save(_k, w0_scan(traces, offsets, (W0_SCAN_M[_k - 2],), KAPPAS)[0])
+        if _combine:
+            w0rows = [_load(_k) for _k in range(2, NR_UNITS)]
+    if "--unit-from" in _argv:
+        _dump = Path(_argv[_argv.index("--dump") + 1])
+        _dump.write_text(json.dumps({"units": list(_units), "state": str(_state)}))
+        print(f"wrote units {list(_units)} to {_state}")
+        return 0
 
     print(f"\n  min kappa = {kmin}, dchi2(0) = {prof[0.0]-min(cs):.2f}")
     print(f"  **95% UB kappa < {ka:.3f} MHz/W -> S0(225) < {ka*0.225:.3f} MHz**")
@@ -713,60 +928,60 @@ def main() -> int:
         w = csv.writer(fh)
         w.writerow(["quantity", "key", "value", "err", "unit"])
         w.writerow(["kappa_ub95", "primary", f"{ka:.3f}", "",
-                    "MHz per W; 95% one-sided profile-likelihood bound on the "
+                    "MHz per W -- 95% one-sided profile-likelihood bound on the "
                     "AC-Stark coefficient, beta_self free (not a prior)"])
         w.writerow(["S0_225mW_ub95", "primary", f"{ka*0.225:.3f}", "",
                     "MHz, transition axis, at the campaign's maximum power"])
         w.writerow(["kappa_min", "primary", f"{kmin:.3f}", "",
-                    "MHz per W; profile minimum -- NOT a detection unless "
+                    "MHz per W -- profile minimum -- NOT a detection unless "
                     "dchi2_kappa0 is large"])
         w.writerow(["dchi2_kappa0", "primary", f"{prof[0.0]-min(cs):.2f}", "",
                     "chi2(kappa=0) - chi2(min)"])
         w.writerow(["kappa_pred", "prediction", f"{KAPPA_PRED:.3f}", "",
-                    f"MHz per W at w0={C.W0_MEASURED_M*1e6:.0f} um, "
+                    f"MHz per W at w0={C.W0_CENTRAL_M*1e6:.0f} um, "
                     f"rho={C.RHO_RETRO}"])
         w.writerow(["beta_self_joint", "primary", f"{beta_fit:.4f}", "",
-                    "MHz per 1e12 cm^-3; fitted JOINTLY with kappa over the "
+                    "MHz per 1e12 cm^-3 -- fitted JOINTLY with kappa over the "
                     "x53 density lever -- no Stark prior, no transit-derived "
                     "beta prior, the two coefficients' covariance propagated"])
         for b in SL_BLOCKS:
             w.writerow(["sigma_laser", b, f"{best_q[I_SL + SL_IX[b] - 1]:.3f}", "",
-                        "MHz, transition axis; free per session/temperature block"])
+                        "MHz, transition axis -- free per session/temperature block"])
         sp_keys = sp_keys_for(traces)
         sp_ix = {k: i for i, k in enumerate(sp_keys)}
         for (blk, pk), i in sp_ix.items():
             sp_val = best_q[NS + i - 1]
             dev = sp_val - best_q[I_SL + SL_IX[blk] - 1]
             w.writerow(["sigma_laser_sp", f"{blk}_{pk}", f"{sp_val:.3f}", f"{dev:+.3f}",
-                        f"MHz, transition axis; per-(session,peak) sigma_laser, "
+                        f"MHz, transition axis -- per-(session,peak) sigma_laser, "
                         f"hierarchical shrinkage prior width "
                         f"{SIGMA_SP_PRIOR_MHZ*1e3:.0f} kHz toward the {blk} pooled "
                         f"mean (err column: deviation from that mean)"])
         for k, pk in enumerate(PEAKS):
             w.writerow(["reh_rate", pk, f"{np.exp(best_q[I_REHRATE + k - 1]):.5f}",
-                        "", "MHz per ms, transition; fitted evening-session scan rate"])
+                        "", "MHz per ms, transition -- fitted evening-session scan rate"])
         w.writerow(["pilot_rate_scale", "nuisance",
                     f"{np.exp(best_q[I_PILSCALE - 1]):.4f}", "",
                     "campaign-morning axis = campaign 4192 rate x this, bounded [0.9,1.1]"])
         w.writerow(["n_traces", "camp_p/camp_t/reh/pil/ruler",
                     f"{len(camp)-nT}/{nT}/{len(reh)}/{len(pil)}/{len(rul)}", "",
                     f"{npts} points total ({n_corrupt} evening-session files "
-                    f"unusable); rulers enter as five-tooth combs with free "
+                    f"unusable) -- rulers enter as five-tooth combs with free "
                     f"tooth amplitudes"])
         for k in KAPPAS:
             w.writerow(["profile_point", f"{k:.3f}", f"{prof[k]:.2f}", "",
                         "chi2 at this kappa, beta and all nuisances re-minimized"])
         w.writerow(["beta_self_min", "joint_region", f"{bmin:.5f}", "",
-                    "MHz per 1e12 cm^-3; beta at the 2D profile minimum, on the "
+                    "MHz per 1e12 cm^-3 -- beta at the 2D profile minimum, on the "
                     f"refined grid of step {beta_grid_step:.5f}"])
         w.writerow(["beta_self_lo95", "joint_region", f"{b_lo95:.5f}", "",
-                    "MHz per 1e12 cm^-3; 1-parameter 95% (dchi2 < 3.841), "
+                    "MHz per 1e12 cm^-3 -- 1-parameter 95% (dchi2 < 3.841), "
                     "kappa profiled out at each beta, edges interpolated in "
                     "sqrt(dchi2) on a grid refined until the interval spans it"])
         w.writerow(["beta_self_hi95", "joint_region", f"{b_hi95:.5f}", "",
-                    "MHz per 1e12 cm^-3; upper edge of the same interval"])
+                    "MHz per 1e12 cm^-3 -- upper edge of the same interval"])
         w.writerow(["beta_grid_step", "joint_region", f"{beta_grid_step:.5f}", "",
-                    "MHz per 1e12 cm^-3; the spacing the interval above was "
+                    "MHz per 1e12 cm^-3 -- the spacing the interval above was "
                     "resolved on, refined down from 0.01000 by the loop of "
                     "addendum 30 -- quote it whenever the interval is quoted"])
         for (kk, bb), cc in sorted(g2.items()):

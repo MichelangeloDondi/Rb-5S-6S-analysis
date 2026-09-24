@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Which windowed cumulants this archive can actually read, and which it cannot.
+"""Which windowed moments this archive can actually read, and which it cannot.
 
 THE QUESTION THIS ANSWERS, and it had never been asked with the noise in it.
 `fullmodel.DEFAULT_ORDERS` carried the odd orders (2, 3, 5, 7) until
@@ -11,7 +11,7 @@ sits below a per-trace signal-to-noise of 3 and every even one sits far above
 it. So the odd ladder is not a weaker channel than the even one; on THIS
 archive it is not a channel.
 
-A windowed cumulant of pure noise is largest exactly where the signal is
+A windowed moment of pure noise is largest exactly where the signal is
 smallest (register A74), so a refused statistic averaged into a joint fit does
 not dilute the answer, it inverts it. That is why this file exists as an
 ADMISSION test with a stated floor rather than as a ranking.
@@ -115,11 +115,23 @@ def _power_arm_traces() -> int:
     with src.open(encoding="utf-8") as fh:
         return sum(1 for r in _csv.DictReader(fh) if r["role"] == ROLE)
 # the archive's own working point, the values the record fits to
-# THE SHIFT OF THIS WORKING POINT IS A DESIGN VALUE OF ITS DATE: 0.364 MHz was the archive's
-# prediction when the point was set (the static-tail polarizability, retired 2026-09-17), and the
-# record's own is stark_sweep.csv's S0_225mW_pred. The re-run at it is queued as twin-working-point-ssot.
-POINT = dict(gamma_coll=0.55, sigma_laser_fwhm=1.6, transit_fwhm=0.9575,
-             gamma_l=0.40, s0=0.364, peak="4192", T_C=110.0)
+# THE WORKING POINT IS THE ARCHIVE POINT (twin-working-point-ssot, done 2026-09-22, F313): the widths are the
+# committed fit's at the calculated waist and the shift is the predicted S0 at 225 mW, read from
+# `rb5s6s.reference_point`; the design values it carried before belonged to retired conventions.
+from rb5s6s.reference_point import reference_point  # noqa: E402
+_AP = reference_point()   # F313: the archive's line, read from the committed fit and the waist, never typed
+def _gamma_l_equiv() -> float:
+    """The homogeneous component's size at the calculated focus, kernel_k3.csv's inverse-variance mean. The 0.40
+    typed here until 2026-09-24 was its size at the retired waist (F508)."""
+    with (_CFG.RESULTS_DIR / "kernel_k3.csv").open() as fh:
+        for r in csv.DictReader(fh):
+            if r["scope"] == "all" and r["quantity"] == "k2p5_gamma_l_weighted_mean":
+                return float(r["value"])
+    raise KeyError("kernel_k3.csv carries no k2p5_gamma_l_weighted_mean")
+
+
+POINT = dict(gamma_coll=_AP["gamma_coll"], sigma_laser_fwhm=_AP["sigma_laser"], transit_fwhm=_AP["transit_fwhm"],
+             gamma_l=_gamma_l_equiv(), s0=_AP["s0_225mW"], peak="4192", T_C=110.0)
 
 
 def main() -> int:

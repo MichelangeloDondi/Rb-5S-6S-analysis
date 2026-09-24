@@ -416,8 +416,8 @@ def two_photon_rabi_hz(power_w: float, w0_m: float, rho: float = 1.0,
       running-wave geometry attractive: it removes the fringe from the shift
       without touching the rate.
 
-    At 225 mW, w0 = 64 um, rho = 0.94 this returns 449.9 kHz, which is the
-    450 kHz the saturation companion note quotes.
+    At 225 mW and rho = 0.94, at the retired waist convention, this returned 449.9 kHz, the
+    450 kHz the saturation companion note quotes (the note predates O44).
     """
     i_arm = 2.0 * power_w / (np.pi * w0_m ** 2)
     e_arm_sq = 2.0 * i_arm / (EPS0_F_PER_M * C_M_PER_S)
@@ -464,8 +464,12 @@ def vector_coefficient(lam_nm: float):
     circularity, so this one number fixes the whole ellipticity
     budget: shift = coefficient times depth times circularity, and
     the m = -1/2 pair sees the opposite sign (an unpolarized
-    ensemble sees a splitting, not a shift)."""
-    j_list = [_H, _TH] * 4
+    ensemble sees a splitting, not a shift). SIZED TO LINES_6S (C6b, F307 corrected, A132.16):
+    the pattern is one (J=1/2, J=3/2) pair per nP doublet, the same for every n, so lengthening
+    it with LINES_6S (9P and 10P went explicit) carries them into this sum instead of the zip
+    below silently truncating them away, which is what a fixed `* 4` did the day LINES_6S grew
+    past eight entries."""
+    j_list = [_H, _TH] * (len(LINES_6S) // 2)
     om = (1e7 / lam_nm) / CM
     a_m = 0.5 * (alpha_5s(lam_nm) + alpha_6s(lam_nm))
     e0 = sqrt(4.0 * (1e6 / HARTREE_HZ) / abs(a_m))
@@ -515,7 +519,10 @@ def scattering_rates(lam_nm: float):
     om = (1e7 / lam_nm) / CM
     a_m = 0.5 * (alpha_5s(lam_nm) + alpha_6s(lam_nm))
     e0sq = 4.0 * (1e6 / HARTREE_HZ) / abs(a_m)
-    j_list = [1, 3] * 4
+    # SIZED TO LINES_6S, the same reason and the same fix as vector_coefficient's j_list above
+    # (C6b, F307 corrected, A132.16): a fixed `* 4` silently dropped 9P and 10P from this sum
+    # once LINES_6S grew past eight entries.
+    j_list = [1, 3] * (len(LINES_6S) // 2)
     out = []
     for lines, upper in ((LINES_5S[:8], 0.0), (LINES_6S, E_6S_CM)):
         total = 0.0

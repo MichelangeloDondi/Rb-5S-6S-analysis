@@ -43,11 +43,12 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import numpy as np  # noqa: E402
 
 import run_global_dataset_fit as G  # noqa: E402
+from rb5s6s import constants as K  # noqa: E402
 
 KAPPAS = (0.0, 0.5)
 BETAS = (0.005, 0.035)
 NFEV = 120
-W0S = (60e-6, 64e-6)          # two assumed waists, enough to compare rows
+W0S = (60e-6, K.W0_CENTRAL_M)  # two assumed waists, enough to compare rows (the retired waist convention, O44/F280)
 
 
 def _same(a, b) -> bool:

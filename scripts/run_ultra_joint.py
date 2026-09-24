@@ -73,8 +73,12 @@ WHAT IS FREE AT EACH GRID POINT, and what is pinned, and why:
                 stark.companion_transit_mhz at the tied Omega's THEORY scale,
                 a model form and not a parameter the fitted scale can switch
                 off.
-  pedestal,     dropped: degenerate with the per-trace baseline and with the
-  tilt          session's laser width on these traces.
+  pedestal      F465: fixed at the record's own quoted convention height (about 3e-3 of peak,
+                fullmodel.FIT_TERMS), never fitted, since over these traces it is close enough to
+                a constant offset to be degenerate with the per-trace baseline.
+  retro tilt    F465: an unmeasured apparatus number. spec["retro_tilt_free"] fits it as one
+                Cell-wide nuisance inside FIT_TERMS's own bound; otherwise fixed at the record's
+                central value, FIT_TERMS's own start of zero. No production grid sets the flag.
   isotope       per peak (constants.PEAKS).
   centre        profiled per trace on a grid with parabolic refinements,
                 re-profiled after every inner fit until it stops moving.
@@ -116,7 +120,7 @@ measurement of the waist. RUNG: the profile is rung 3, the ties are rung 1,
 the whitening and the bound construction are rung 2.
 
 FAILURE MODES. A depletion arm through companion_transit_mhz carries only the
-lost-fraction form of the widening, about one per cent at 64 um and six at 42,
+lost-fraction form of the widening, about one per cent at the retired waist convention and six at 42,
 not the velocity-resolved twelve per cent the twin's world builder carries. A
 morning trace whose model-free width reads 2 MHz against its repeats' 5 is in
 the fit under its condition's law and is named in the width rows. A caller
@@ -126,8 +130,24 @@ switch.
     RB5S6S_WORKERS=10 python scripts/run_ultra_joint.py --coarse --all-sessions --run-name coarse_all
     python scripts/run_ultra_joint.py --coarse --all-sessions --power-scale --no-stage2 --out <path>   # an arm run
     python scripts/run_ultra_joint.py --coarse --form mixed            # the canonical traces alone
-    python scripts/run_ultra_joint.py --time-cells                     # 40, 64, 90 um
+    python scripts/run_ultra_joint.py --time-cells                     # 40 um, the retired convention, and 90 um
     python scripts/run_ultra_joint.py --plant                          # 1 worker vs 2
+    python scripts/run_ultra_joint.py --separable                      # the named comparison arm, below
+
+THE LINE IS THE JOINT LINE BY DEFAULT (C6b, owner orders O45/O46/O49, A148). Every Cell of the
+production grid (the base matrix and the M2/depletion/propagation arms) reads its shift and its
+transit together from the atom Monte Carlo's tabulated line (`rb5s6s.volume_line.JointTable`,
+through `Cell.physics`'s own `volume_line` switch) instead of convolving them as two independent
+kernels. `--separable` is the named comparison arm: it restores the transit-and-ramp convolution
+(the saturated ramp density, the kernel gate's MC depletion factor) that was the only form before
+this window. Each row's own `spec` column carries `ramp`, `depletion` and `volume_line` as they
+were run, so an artefact says which line built it without a separate column. `Cell.__init__`'s own
+defaults are UNCHANGED (ramp='saturated', depletion='mc', volume_line unset): they are what a bare
+`Cell(_spec(...))` gets outside this file's own `main`, which is every test and helper that builds
+one directly, and changing them there would make an unrelated unit test pay for an atom-sampled
+Monte Carlo table build it never asked for. The flip lives where the production run is assembled,
+`main`'s own `common` dict, exactly as `run_ultra_joint_closure.py`'s `--world`/`--fitter` and
+`run_window_surface.py`'s `--world` flip their own defaults without touching the classes they call.
 """
 from __future__ import annotations
 
@@ -150,15 +170,17 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "scripts"))
+from rb5s6s import beam_field as BF                                 # noqa: E402
 from rb5s6s import config as C                                     # noqa: E402
 from rb5s6s import constants as K                                  # noqa: E402
 from rb5s6s import stark                                           # noqa: E402
 from rb5s6s.pmfmt import pm_cells                                  # noqa: E402
-from rb5s6s.fullmodel import collection_z_ratio_m2, convolution_licence, full_profile, transit_collection_factor   # noqa: E402
+from rb5s6s.fullmodel import FIT_TERMS, collection_z_ratio_m2, convolution_licence, full_profile   # noqa: E402
 from rb5s6s import kernel_gate                                                          # noqa: E402
 from rb5s6s import noise                                                                # noqa: E402
+from rb5s6s import windows as W                                                         # noqa: E402
 from rb5s6s.hyperpolarizability import two_photon_rabi_hz          # noqa: E402
-from rb5s6s.lineshape import (aperture_onaxis_factor, local_ramp_density, ramp_mixture, saturated_ramp_density,   # noqa: E402
+from rb5s6s.lineshape import (aperture_onaxis_factor_actual, local_ramp_density, ramp_mixture, saturated_ramp_density,   # noqa: E402
                               stark_shift_S0_mhz)
 from rb5s6s.noise import condition_noise_model, sigma_of_v         # noqa: E402
 from rb5s6s.qc import contiguous_fwhm_ms                           # noqa: E402
@@ -169,9 +191,90 @@ from run_density_laws import n_aih, n_nes, n_smi                          # noqa
 OUT = C.RESULTS_DIR / "ultra_joint_fit.csv"
 GATE_DIR = ROOT / "private" / "cache" / "ultra_joint_2026-09-14"
 
+# ------------------------------------------------------------ the saturation companion's ensemble scale
+#: F324 (with addenda e and f) and A134: the Cell's saturation companion is evaluated at the ON-AXIS
+#: two-photon Rabi frequency, but the ensemble of collected atoms never sees that frequency. The
+#: steady-state average over the transverse and axial profile, times the crossing's own transient
+#: share, leaves about half of it (0.49 to 0.51 across the bench's own range), the effective Rabi
+#: fraction this table carries. Tabulated over the optical Bloch equations integrated along each
+#: sampled atom's crossing (`private/cache/plan_2026-09-16/p18_sat_nodes.py`) at twelve (waist,
+#: temperature) nodes, 225 mW, s0_scale 1.0, the trace's own kinetic temperature: three waists (41,
+#: 42.38, 45 um) by four temperatures (70, 90, 110, 130 C). Interpolated bilinearly and REFUSED
+#: outside that grid, because the table was never asked at any other node and this record does not
+#: extrapolate a Monte Carlo it has not run.
+#: TRACKED IN THE PACKAGE since 2026-09-25 (an audit that day: a tracked producer read it from private/cache/, so a clone,
+#: the public mirror and every stranger re-running this producer lacked it). A byte copy of the harness's output;
+#: the harness itself is still private, so a re-run of it is copied here by hand (owed: port it to scripts/).
+SAT_FRACTION_TABLE_PATH = ROOT / "rb5s6s" / "data" / "sat_fraction_table.tsv"
+_SAT_FRACTION_GRID_CACHE: dict = {}
+
+
+def _sat_fraction_grid() -> tuple:
+    """The twelve canonical nodes of `SAT_FRACTION_TABLE_PATH`, as (w0_um sorted, T_C sorted, the
+    effective-Rabi-fraction grid), cached on the path so a run building many Cells pays the read
+    once. Filters to the standard condition (225 mW, s0_scale 1.0, the row's own kinetic
+    temperature, not the two _tk diagnostic rows displaced from it) -- the file also carries a
+    125 mW row and an s0-off probe that are not part of the (waist, temperature) grid this reads."""
+    cached = _SAT_FRACTION_GRID_CACHE.get(SAT_FRACTION_TABLE_PATH)
+    if cached is not None:
+        return cached
+    with SAT_FRACTION_TABLE_PATH.open(newline="", encoding="utf-8") as fh:
+        rows = list(csv.DictReader(fh, delimiter="\t"))
+    keep = [r for r in rows if float(r["P_mW"]) == 225.0 and float(r["s0_scale"]) == 1.0
+           and float(r["T_kin_C"]) == float(r["T_C"])]
+    w0s = sorted({float(r["w0_um"]) for r in keep})
+    Ts = sorted({float(r["T_C"]) for r in keep})
+    if len(w0s) * len(Ts) != len(keep):
+        raise ValueError(f"sat_fraction_table: {len(keep)} standard rows do not fill a "
+                         f"{len(w0s)}x{len(Ts)} (w0, T) grid, so the table changed shape")
+    grid = np.full((len(w0s), len(Ts)), np.nan)
+    for r in keep:
+        i, j = w0s.index(float(r["w0_um"])), Ts.index(float(r["T_C"]))
+        grid[i, j] = float(r["effective_rabi_fraction"])
+    if np.any(np.isnan(grid)):
+        raise ValueError("sat_fraction_table: the standard grid has a hole")
+    out = (np.array(w0s), np.array(Ts), grid)
+    _SAT_FRACTION_GRID_CACHE[SAT_FRACTION_TABLE_PATH] = out
+    return out
+
+
+def bloch_fraction(w0_um: float, T_C: float, clamp: bool = False) -> float:
+    """The saturation companion's ensemble-effective Rabi fraction at (w0_um, T_C), bilinearly
+    interpolated over `_sat_fraction_grid`'s twelve nodes (F324, A134). RAISES outside the grid's
+    own span (41 to 45 um, 70 to 130 C): a Cell built at a waist or a temperature the atom Monte
+    Carlo has not been run at has no companion reading to carry, and extrapolating one would
+    certify a scale nothing has checked. `clamp=True` (default False) holds the reading at the
+    nearest edge instead, the same escape `aperture_onaxis_factor_actual`'s own `clamp_floor` gives
+    for a beam this bench cannot make: a caller FITTING a real trace to a specific w0 must not pass
+    it, and the theory-cell test fixture, which is explicitly built to probe closed forms at waists
+    outside the validated grid, does."""
+    w0s, Ts, grid = _sat_fraction_grid()
+    if not (w0s[0] <= w0_um <= w0s[-1]) or not (Ts[0] <= T_C <= Ts[-1]):
+        if clamp:
+            w0_um = float(np.clip(w0_um, w0s[0], w0s[-1]))
+            T_C = float(np.clip(T_C, Ts[0], Ts[-1]))
+        else:
+            raise ValueError(
+                f"bloch_fraction: (w0={w0_um:g} um, T={T_C:g} C) is outside the twelve-node grid "
+                f"({w0s[0]:g} to {w0s[-1]:g} um, {Ts[0]:g} to {Ts[-1]:g} C, "
+                f"{SAT_FRACTION_TABLE_PATH.name}); no Monte Carlo has graded that node")
+    i = int(np.clip(np.searchsorted(w0s, w0_um) - 1, 0, len(w0s) - 2))
+    j = int(np.clip(np.searchsorted(Ts, T_C) - 1, 0, len(Ts) - 2))
+    w0_lo, w0_hi = w0s[i], w0s[i + 1]
+    T_lo, T_hi = Ts[j], Ts[j + 1]
+    tw = 0.0 if w0_hi == w0_lo else (w0_um - w0_lo) / (w0_hi - w0_lo)
+    tt = 0.0 if T_hi == T_lo else (T_C - T_lo) / (T_hi - T_lo)
+    f00, f01 = grid[i, j], grid[i, j + 1]
+    f10, f11 = grid[i + 1, j], grid[i + 1, j + 1]
+    return float((1 - tw) * (1 - tt) * f00 + (1 - tw) * tt * f01 + tw * (1 - tt) * f10 + tw * tt * f11)
+
 # ------------------------------------------------------------------ the design
-W0_GRID_UM = tuple(float(w) for w in range(40, 57, 2))   # 2026-09-18: the 40-45 um band with its upper margin; 40 is the lowest waist whose kernel nodes all pass on the waist set (38 fails depleted_line_abs, 34-36 the transit's width)
-W0_COARSE_UM = (64.0, 70.0, 80.0, 90.0)   # inside the validated nodes of the kernel gate
+# THE GRID STARTS AT THE BORE'S FLOOR (C6a, 2026-09-22, F291): the bench cannot focus tighter than about
+# 40.9 um, so 41 um is the first grid point and the Cell REFUSES anything below it rather than reading it
+# at the floor's factor with its own transit (an inconsistent beam). 41 sits between the 40 and 42 um nodes,
+# inside the kernel gate's interpolation span; 42 to 56 um keep the 2 um step of 2026-09-18.
+W0_GRID_UM = (41.0,) + tuple(float(w) for w in range(42, 57, 2))
+W0_COARSE_UM = (42.0, 46.0, 52.0, 56.0)   # the coarse stage inside the reachable band and its margin (C6a)
 FORMS = ("gaussian", "lorentzian", "mixed")
 M2_ARMS = (1.0, 1.5, 2.0)
 DEPLETION_ARMS = (0.0, 3.0)          # mean cycles through stark.companion_transit_mhz
@@ -217,7 +320,16 @@ BETA_PRIOR_FRAC = float(beta_self_budget()["err_khz"]) / BETA_THEORY_KHZ
 # it through (T / T_ref)^p. Across 70 to 130 C that is 8.4 per cent at p = 0.5, a drift of the SAME sign as
 # the self-broadening's, which is why a density slope fitted without it hands the gas's drift to beta_self.
 GAMMA_L_EXP = 0.5
-GAMMA_L_EXP_ARMS = (0.0, 0.3, 0.5)
+# F420 OWED A NEGATIVE ARM AND THIS RECORD WROTE PROSE INSTEAD UNTIL THE OWNER RE-SENT (2026-09-23).
+# The velocity average is 5.0 per cent across 70 to 130 C at T^0.30 and 8.4 at T^0.50, and the
+# PERMEATION CLOCK is Arrhenius at about 0.49 eV (`docs/lit/carle2023.md`), a factor of 11.8 over the
+# same ladder: a cell equilibrated at room temperature sits above air's 3.98 mTorr once heated and
+# SHEDS helium, which is the same size as the velocity average and the OPPOSITE sign. So the arms
+# span both directions, and the exponent is a model-form ARM and never a derived constant.
+# F427 then measured the term itself as UNDETECTED (gamma_l 0.0350 +- 0.0283 MHz, delta chi2 0.60
+# against the 3.84 that one degree of freedom needs at 95 per cent), so these arms span a term the
+# data does not resolve, and no surface quotes an exponent as though it had been measured.
+GAMMA_L_EXP_ARMS = (-0.5, -0.3, 0.0, 0.3, 0.5)
 GAMMA_L_T_REF_K = 403.15
 #: Delta_alpha's, relative: the committed +-5.9 a.u. on -1131.8.
 ALPHA_PRIOR_FRAC = abs(K.DELTA_ALPHA_ERR_AU / K.DELTA_ALPHA_AU)
@@ -236,7 +348,7 @@ SESSION_LADDER_W = {"P": (0.025, 0.225), "E": (0.09, 0.27), "M": (0.035, 0.21), 
 # axis (docs/RESULTS.md C2), and model_profile sets its grid by the narrowest
 # smooth kernel, so a Gaussian of 0.05 MHz FWHM under a 3.5 MHz Lorentzian
 # costs thirty times the convolution for nothing the line can show: the first
-# timing of the 40 um cell railed there and took 520 s where 64 um took 15.
+# timing of the 40 um cell railed there and took 520 s where the retired waist convention took 15.
 # The Omega scale and beta have no wall of their own so that the prior, or
 # the profile, and not a bound is what the reader sees.
 # THE EVENING RATE'S BOX IS WIDENED (2026-09-14): it sat on the old +-25 per cent wall
@@ -246,7 +358,28 @@ SESSION_LADDER_W = {"P": (0.025, 0.225), "E": (0.09, 0.27), "M": (0.035, 0.21), 
 LOGDET_OFFSET = 4.0e6
 BOUNDS = {"beta_rel": (0.0, 40.0), "alpha_rel": (0.5, 1.5), "sigma_l": (0.2, 6.0), "omega_scale": (0.0, 3.0),
           "gamma_l": (0.0, 3.0), "lograte": (math.log(0.5), math.log(1.5)), "power_scale": (0.5, 1.5),
-          "s0_scale": (0.2, 5.0), "w0_": (0.7, 1.4)}
+          "s0_scale": (0.2, 5.0), "w0_": (0.7, 1.4),
+          # F465, F471: read from FIT_TERMS rather than restated, so a change to the record's
+          # own bound moves this table without a second edit.
+          "retro_tilt_rad": tuple(FIT_TERMS["retro_tilt_rad"][:2])}
+# F465: full_profile's pedestal_height_frac and retro_tilt_rad were passed by neither the world nor
+# the Cell (the module docstring's own term table called both "dropped: degenerate with the
+# per-trace baseline and with the session's laser width on these traces"), so a fit and a twin
+# generated from it both carried a term the fitter's own gate certifies with the term absent.
+# PEDESTAL_HEIGHT_FRAC is the record's own quoted convention (FIT_TERMS's start, about 3e-3): a
+# FIXED input, always passed, never fitted, since results/twin_term_census.csv's own doppler_pedestal
+# row states why fitting it here buys nothing -- over these traces' sub-100 MHz span the 931 MHz
+# pedestal is a near-constant offset, degenerate with the per-trace linear baseline `Cell.linear`
+# already floats.
+PEDESTAL_HEIGHT_FRAC = FIT_TERMS["pedestal_height_frac"][2]
+# The retro tilt is an unmeasured apparatus number (docs/plan/12_open-apparatus-items.md, "Tilt of
+# the retro-reflection": every row there states a tilt nobody measured, "no forecast rests on it",
+# "nothing in RESULTS/ carries it"). `spec["retro_tilt_free"]` fits it as one Cell-wide nuisance,
+# box-bounded by the record's own FIT_TERMS bound and start (off by default, so every existing
+# Cell is unaffected); when it is not free the Cell still passes RETRO_TILT_START, FIT_TERMS's own
+# start and the record's central value, to full_profile, since no measurement assigns it a nonzero
+# one. Either way the term is wired into the call full_profile receives rather than silently absent.
+RETRO_TILT_START = FIT_TERMS["retro_tilt_rad"][2]
 # THE OWNER'S SECOND ANGLE (2026-09-17 00:30: "explore also the w_0 free and S_0 free combinations"):
 # `spec["s0_free"]` frees the light shift per condition (`s0_scale_<condition>`, no prior), and
 # `spec["w0_free"]` lets the three waist meters float about the scanned waist (`w0_transit_rel`,
@@ -254,6 +387,23 @@ BOUNDS = {"beta_rel": (0.0, 40.0), "alpha_rel": (0.5, 1.5), "sigma_l": (0.2, 6.0
 # Rabi frequency as the inverse square, per the exponent table), so their disagreement, term by
 # term, is a statement about the term list. Tied is the default and the primary matrix's form.
 START_SIGMA_L = {"gaussian": (1.4, 1.0), "lorentzian": (0.8, 0.4), "mixed": (1.3, 0.9)}
+#: The volume line's table settings (C6b item 2), each overridable through `spec["volume_line"]`: the atoms and
+#: seed of the Monte Carlo, the S0 step and the margin above the highest shift the Cell can reach, the detuning
+#: step and its margin beyond the widest trace, the reach used when a trace's axis is in time (the evening), and
+#: where the tables are stored.
+#: "beam" DEFAULTS TO "clipped" (C6c), NOT "gaussian": the model of record is the bore-clipped focus
+#: (the owner's standing rule that the twin runs the full model, the bore included; F465/F471 landed
+#: the plain Cell's own side of it, `self._clipped_beam`). The production run's own default flip
+#: (`main`'s `common.update(..., volume_line=True)` below) passes no dict at all, so it reads this
+#: default outright, and `Cell._table`'s `VolumeWorld._bind` already tracks whichever beam a
+#: volume-line Cell's own table carries (`cell.volume["beam"]`), so a Cell built here and the world
+#: that closes against it move to the clipped beam TOGETHER rather than drifting onto two different
+#: ones. "gaussian" stays a supported, explicit value (`run_ultra_joint_closure.py`'s
+#: `RB5S6S_CLOSURE_FITTER="volume:..."` names it opposite "volume-clipped" for exactly that
+#: comparison) for a caller that wants the free-space approximation on purpose.
+VOLUME_DEFAULTS = {"n_path": 8000, "seed": 20260922, "s0_step_mhz": 0.05, "s0_margin": 0.1, "delta_step_mhz": 0.05,
+                   "delta_margin_mhz": 5.0, "reach_mhz": 40.0, "beam": "clipped",
+                   "cache_dir": os.environ.get("RB5S6S_VOLUME_TABLE_DIR", str(ROOT / "private" / "cache" / "volume_tables"))}
 START_OTHER = ((1.0, 1.0, 0.3), (4.0, 0.8, 0.05))      # beta_rel, omega_scale, gamma_l per start
 DIFF_STEP = 3e-3
 #: Half-window at load, MHz on the transition axis. The model puts the line below
@@ -458,11 +608,11 @@ _T95 = {1: 12.706, 2: 4.303, 3: 3.182, 4: 2.776, 5: 2.571, 6: 2.447,
 # and written with admitted=False so a reader can SEE where each channel dies and never quotes it there.
 # Both sets are on the window surface's grid, so the twin's bias is subtractable at every one. The set this
 # replaces, (2, 8, 13) of 2026-09-18, sat on k4's zero; (3.25, 6, 12) before it intersected the surface nowhere.
-MOMENT_WINDOWS = (1.0, 2.0, 5.0, 13.0)
-DIAGNOSTIC_WINDOWS = (3.0, 8.0, 21.0)
+MOMENT_WINDOWS = W.QUOTED
+DIAGNOSTIC_WINDOWS = W.DIAGNOSTIC
 #: THE FLOOR IS DERIVED FROM THE ARM'S OWN PRECISION, never tuned to pass a rung (2026-09-19, the moments
 #: ladder's fourth stage-0 run). With the fit exact the arm still reproduces a statistic only to an ABSOLUTE
-#: error of about epsilon times its dimensional scale k2^(n/2): measured on k7/k5@2, a ratio whose numerator
+#: error of about epsilon times its dimensional scale mu2^(n/2): measured on mu7/mu5@2, a ratio whose numerator
 #: sits at 1.3e-4 of its scale, the relative error was 3.6e-3, so epsilon is about 4.7e-7. The noiseless
 #: rung's tolerance is 1e-3 relative (`ladder_gate.NOISELESS_TOL`), so a statistic whose normalised size is
 #: under epsilon / 1e-3 = 5e-4 cannot meet it for arithmetic reasons whatever the physics, and is refused as
@@ -477,12 +627,12 @@ MOMENT_ORDERS = (2, 3, 4, 5, 6, 7)
 
 
 def _moment_stats(nu, y, windows=MOMENT_WINDOWS, orders=MOMENT_ORDERS):
-    """Windowed cumulants of one trace, keyed `k<order>@<window>`.
+    """Windowed moments of one trace, keyed `mu<order>@<window>`.
 
     `baseline=None` ON PURPOSE, and it is the repair of a measured bias rather
     than a convenience.  `windowed_moments` defaults to a WINGS baseline, and
     on this sweep the line itself contributes 0.878 per cent of peak at the
-    +-20 to 28 MHz strips, which biases k2 by -7.6 per cent and k3 by -20.9 at
+    +-20 to 28 MHz strips, which biases mu2 by -7.6 per cent and mu3 by -20.9 at
     the 12 MHz window -- and the sweep cannot be widened, because the model puts
     the line below 1e-3 only beyond 33.3 MHz while the off-centre-sweep mirror
     occupies the outer tenth from about 38.  A strip baseline is not available
@@ -490,76 +640,18 @@ def _moment_stats(nu, y, windows=MOMENT_WINDOWS, orders=MOMENT_ORDERS):
     first, which is what the profile fit already estimates, and hands this
     function a trace whose baseline is a fitted parameter and not a strip.
     """
-    # MOMENTS ARE THE VECTOR (O33, A72). One quadrature per (window, trace): the moments are the
-    # primitive and the cumulants are derived from that same array, which is what keeps this emitter
-    # and `fullmodel`'s agreeing on names. A half-switched likelihood -- some keys mu, some k -- is
-    # worse than either basis, because the covariance's columns stop corresponding to the model's.
-    from rb5s6s.cumulants import cumulants_from_central_moments, windowed_moments
+    # MOMENTS ARE THE VECTOR (O33, A72, and O49 which retired the k5/mu3 diagnostic this function
+    # used to emit beside them). One quadrature per (window, trace), and nothing here converts it
+    # to a cumulant any more: where a conditioning read is still wanted, it is the moments' own,
+    # the replica spread over the mean that `moment_arm`'s SEM and SNR already carry, never a
+    # second, cumulant-valued basis whose keys would stop corresponding to the model's.
+    from rb5s6s.cumulants import windowed_moments
     out = {}
     top = max(orders)
     for w in windows:
         mu, _ = windowed_moments(nu, y, w, orders=tuple(range(1, top + 1)), baseline=None)
-        mu_arr = np.array([mu[o] for o in range(1, top + 1)])
-        kap = cumulants_from_central_moments(mu_arr)
         for n in orders:
             out[f"mu{n}@{w:g}"] = float(mu[n])
-        # A93's one named exception, outside the vector under a prefix it does not select.
-        if 5 in orders and 3 in orders and float(kap[2]) != 0.0:
-            out[f"diag_k5/mu3@{w:g}"] = float(kap[4]) / float(kap[2])   # mu3 is k3: a key the rows hold (CRITICAL 1)
-    return out
-
-
-#: OWNER ORDER O33 (2026-09-20), AND WHY THIS ARM IS NOT WHERE IT IS WIRED. O33 asks the moment
-#: arm above to quote central moments mu_n as its PRIMARY vector at n >= 4, with k_n retained
-#: beside them as a flagged diagnostic carrying its conditioning number |k_n| / mu_n; F211
-#: measured the SNR gain (384x at mu4@8) that licenses the switch. A same-day check of the
-#: switch (2026-09-20) found the reason it cannot be wired into `moment_arm` AS IS: that arm's
-#: own docstring says "THE COVARIANCE IS DIAGONAL AND SAYS SO" -- five repeats cannot estimate an
-#: eighteen-by-eighteen covariance, so every statistic there is judged against its OWN bar,
-#: independently, and the session verdict COUNTS how many clear their own 95 per cent point.
-#: Central moments at order >= 4 are strongly auto-correlated with mu2 (mu4 = k4 + 3 mu2^2, so
-#: mu4 tracks 3 mu2^2 plus a small remainder), which cumulants are built to remove; feeding a
-#: marginal, per-statistic decision rule a vector whose entries move together counts the SAME
-#: excursion once per window as if it were independent evidence, over-weighting exactly the
-#: statistics F211's SNR ratio is largest for. A moments-and-cumulants invariance plant with the
-#: FULL replica covariance (`test_the_moment_and_cumulant_vectors_carry_the_same_information`,
-#: tests/test_ultra_joint_producer.py) shows the two vectors' whitened chi-squared agree to
-#: about 0.3 per cent while their covariance's condition numbers differ by a factor of order 40:
-#: the SNR gain is the conditioning of the two covariance inversions, not new information, which
-#: is exactly what a diagonal admission rule cannot tell apart from a real gain. So this function
-#: computes the vector O33 asks for, for the record and for `docs/methods`, and stops there:
-#: `moment_arm`'s admitted rows, its ratios, its numerical floor and its exceedance verdict are
-#: UNCHANGED and still run on cumulants. Wiring the moment vector into that arm's own admission
-#: waits on either a full covariance for it (`rb5s6s.fullmodel.ultra_joint_covariance` and
-#: `ultra_joint_nll` already carry one, over cumulants, and are the natural home for this vector)
-#: or an owner ruling that the marginal treatment is acceptable here. Neither this stop-short nor
-#: its reason is silent: it is this comment, the function's own docstring and the report of the
-#: wave that added it.
-def moment_cumulant_conditioning(nu, y, windows=MOMENT_WINDOWS + DIAGNOSTIC_WINDOWS, orders=MOMENT_ORDERS):
-    """The central moment beside its retained cumulant diagnostic, one (window, order) cell at a
-    time, for every order 4 and above that `orders` carries (O33's vector; orders 2 and 3 are not
-    returned here because mu_2 == k_2 and mu_3 == k_3 exactly, so nothing about them moves).
-
-    BOTH `mu` AND `k` COME FROM ONE QUADRATURE per (window, trace): `windowed_moments` returns
-    the central-moment array once, and `k` is read off `cumulants_from_central_moments` applied
-    to that SAME array, never from a second call to `windowed_cumulants`. Returns a list of
-    dicts, one per (window, order), with keys `window`, `order`, `mu`, `k` and `conditioning`
-    (`abs(k) / abs(mu)`, `inf` where `mu` is exactly zero).
-    """
-    from rb5s6s.cumulants import cumulants_from_central_moments, windowed_moments
-    orders = tuple(int(o) for o in orders)
-    top = max(orders)
-    out = []
-    for w in windows:
-        mu, _ = windowed_moments(nu, y, w, orders=tuple(range(1, top + 1)), baseline=None)
-        mu_arr = np.array([mu[o] for o in range(1, top + 1)])
-        kappa = cumulants_from_central_moments(mu_arr)
-        for n in orders:
-            if n < 4:
-                continue
-            mu_n, k_n = float(mu[n]), float(kappa[n - 1])
-            cond = abs(k_n) / abs(mu_n) if mu_n != 0.0 else float("inf")
-            out.append(dict(window=w, order=n, mu=mu_n, k=k_n, conditioning=cond))
     return out
 
 
@@ -813,6 +905,38 @@ class Cell:
             elif what == "law":
                 law = val
         self.law_name = law
+        # F280: self.w0 IS the actual (same-reading) focus, the one the transit above already
+        # reads, so the on-axis factor is the ACTUAL-convention one and not the free-focus
+        # `aperture_onaxis_factor`. Cached once here rather than inside `_per_trace` (F280's own
+        # closing line: a node validated on the wrong S0 certifies the wrong model), because that
+        # method runs once per trace at this Cell's one fixed w0 -- a hundred-plus identical calls
+        # to a table lookup cost nothing, but the table's own first build should happen once, not
+        # be paid down the trace list.
+        # NO CLAMP (C6a, 2026-09-22, replacing the clamp of 2026-09-21): a Cell below the bore's floor
+        # (about 40.89 um) would carry the floor's on-axis factor beside its OWN narrower transit, a
+        # beam this bench cannot make. The grids start at the floor instead (W0_GRID_UM above, the
+        # closure's GRID_UM and GRID_NOISELESS), so a Cell below it is a defect and refuses.
+        # `spec["aperture_clamp_floor"]` (a DIAGNOSTIC, never a production fit): below the floor the on-axis factor
+        # is held at the floor's, so a Gaussian-beam fitter can be walked where a world it cannot describe pushes it
+        # (C6b D3, the clipped focus), and the size of that push is read instead of a rail at the floor.
+        # m2=self.m2 (C6c): this Cell's own clipped beam (`self._clipped_beam`, built below with the
+        # same m2) is what a `VolumeWorld` reads its on-axis factor from, and an M2 > 1 beam focuses
+        # less tightly than a diffraction-limited one through the same bore, so leaving this at the
+        # implicit M2=1 default disagreed with that beam by 0.42 per cent at m2=1.3 while agreeing
+        # to rel=1e-12 at m2=1.0 (tests/test_volume_world.py's own two-m2 sweep found it).
+        self.aperture_onaxis = aperture_onaxis_factor_actual(
+            self.w0, clamp_floor=bool(spec.get("aperture_clamp_floor", False)), m2=self.m2)
+        # THE BORE-CLIPPED BEAM, BUILT ONCE (F471, plan item V5.19a): _per_trace's transit reads
+        # it through beam_field.clipped_transit_fwhm_mhz instead of the free-space
+        # transit_collection_factor alone, closing the 3.3 to 4.6 per cent narrow reading F471
+        # measured against the kernel Monte Carlo at M2 = 1. A waist this bore and lens cannot
+        # produce (BF.ClippedBeam.at_focus raises for one) falls back to None, which leaves the
+        # correction at one and reproduces the old free-space-only number exactly -- the same
+        # fallback scripts/run_kernel_mc.py's own _beam_for already takes for the same reason.
+        try:
+            self._clipped_beam = BF.ClippedBeam.at_focus(self.w0, m2=self.m2)
+        except ValueError:
+            self._clipped_beam = None
         self.profile = window_profile(self.w0, self.m2)
         self.z_ratio = self.profile.z_ratio
         self.traces = traces
@@ -844,6 +968,11 @@ class Cell:
         names += ["omega_scale"]
         if self.form == "mixed":
             names.append("gamma_l")
+        # F465: the retro tilt as a fitted nuisance, opt-in and off by default so every existing
+        # Cell is unaffected; when it is not free, physics() still passes RETRO_TILT_START (see
+        # unpack()) rather than leaving the term out of the full_profile call altogether.
+        if spec.get("retro_tilt_free"):
+            names.append("retro_tilt_rad")
         self.conditions = sorted({self._condition_key(t) for t in traces})
         if spec.get("s0_free"):
             names += [f"s0_scale_{c}" for c in self.conditions]
@@ -855,6 +984,28 @@ class Cell:
         self.fixed = dict(spec.get("fixed", {}))
         self.names = tuple(n for n in names if n not in self.fixed)
         self.all_names = tuple(names)
+        # THE VOLUME LINE (C6b item 2, owner orders O45 and O46): `spec["volume_line"]` (a dict of the table's
+        # settings, or True for the defaults) makes the line the atom Monte Carlo's joint line of shift and
+        # transit, tabulated at this Cell's waist per temperature and isotope (`volume_line.JointTable`), in
+        # place of the transit and ramp convolution. The table is weak-field and undepleted, so a Cell that
+        # carries the saturated ramp or the transit's depletion, or floats separate waist meters that one
+        # table cannot separate, is refused rather than silently half-converted.
+        vol = spec.get("volume_line")
+        self.volume = None
+        if vol:
+            bad = [why for cond, why in ((self.ramp != "weak", "ramp='saturated'"),
+                                         (self.depletion != "none", f"depletion={self.depletion!r}"),
+                                         (bool(spec.get("w0_free")), "w0_free"))
+                   if cond]
+            if bad:
+                raise ValueError("volume_line: the joint table is weak-field and holds one beam, so it cannot carry "
+                                 + ", ".join(bad) + "; build the Cell with ramp='weak' and depletion='none'")
+            v = dict(VOLUME_DEFAULTS, **(vol if isinstance(vol, dict) else {}))
+            self.volume = v
+            self._tables: dict = {}
+            from rb5s6s.volume_line import GaussianBeam, collection_half_window_m
+            # gaussian-limit: the collection window's axial extent read from the free-space Rayleigh range; the bore's axial width is the registry's owed collection-window-in-fitter
+            self._half_window_m = collection_half_window_m(GaussianBeam(self.w0, self.m2), self.z_ratio)
         self.per = [self._per_trace(t) for t in traces]
         # ALPHA AND BETA ENTER UNDER THEIR OWN THEORY UNCERTAINTIES, not pinned and
         # not free (owner, 2026-09-16: "you have to do it with alpha jointly at the
@@ -880,7 +1031,8 @@ class Cell:
         return f"{t['session']}_{t['peak']}_{1e3 * t['P_W']:.0f}mW_{t['T']:.0f}C"
 
     def bounds(self, name):
-        for k in ("beta_rel", "alpha_rel", "sigma_l", "omega_scale", "gamma_l", "lograte", "power_scale", "s0_scale", "w0_"):
+        for k in ("beta_rel", "alpha_rel", "sigma_l", "omega_scale", "gamma_l", "lograte", "power_scale",
+                  "s0_scale", "w0_", "retro_tilt_rad"):
             if name.startswith(k):
                 return BOUNDS[k]
         raise KeyError(name)
@@ -912,6 +1064,8 @@ class Cell:
                     p.append(1.0)
                 elif n.startswith("s0_scale_") or n.startswith("w0_"):
                     p.append(1.0)
+                elif n == "retro_tilt_rad":
+                    p.append(RETRO_TILT_START)
             out.append(tuple(p))
         return out
 
@@ -920,13 +1074,22 @@ class Cell:
         d.update(self.fixed)
         d.setdefault("gamma_l", 0.0)
         d.setdefault("alpha_rel", 1.0)
+        # F465: the record's central value (FIT_TERMS's own start, 0.0: no reading assigns the
+        # retro tilt a nonzero one) when spec["retro_tilt_free"] did not make it a free name.
+        d.setdefault("retro_tilt_rad", RETRO_TILT_START)
         return d
 
     def _per_trace(self, t):
         # THE COLLECTED COLUMN'S WINDOW FACTOR (F12): the kernel the detector sees is the
         # signal-weighted mixture over the column, narrower than the closed form at the waist by
-        # <w^-3>/<w^-2> (1.1 per cent at 64 um); the ramp carried this mixture and the transit did not.
-        bare = K.transit_fwhm_from_w0(self.w0, t["T"], isotope=t["iso"]) * transit_collection_factor(self.w0, self.m2)
+        # <w^-3>/<w^-2> (small at the retired waist convention); the ramp carried this mixture and the transit did not.
+        # THE BEAM'S OWN AXIAL WIDTH (F374, F471, plan item V5.19a): w0 over its effective transit
+        # radius, weighted as the chord signal is, through the one function
+        # scripts/run_kernel_mc.py's own gate reference calls too. `rate=None` (the default) keeps
+        # this on the same unsaturated two-photon slice law transit_collection_factor already used
+        # alone; the Cell has no ready route to the Monte Carlo's own saturated chord rate, and the
+        # gap that leaves against it is measured rather than closed silently.
+        bare = BF.clipped_transit_fwhm_mhz(self.w0, self.m2, t["T"], isotope=t["iso"], beam=self._clipped_beam)
         if self.kernel_gate == "legacy":
             dep = 1.0
         else:
@@ -944,14 +1107,32 @@ class Cell:
                 else self.profile)
         bare = bare * float(self.spec.get("transit_scale", 1.0))
         return dict(transit=bare, dep=dep, cond=self._condition_key(t), profile=prof,
-                    # F39: the meter reads behind the cell, so the recorded watt buys the clipped
-                    # focus's on-axis intensity, c(w0) of the ideal Gaussian's (0.967 at 64 um)
+                    # F280: the meter reads behind the cell, so the recorded watt buys the clipped
+                    # focus's on-axis intensity AT THE SAME READING self.w0 already is (the ACTUAL
+                    # focus, cached once in __init__ as self.aperture_onaxis -- not the free-focus
+                    # convention this line called until 2026-09-21, which read S0 about 20 per
+                    # cent low at the bore-limited central value)
                     s0=stark_shift_S0_mhz(t["P_W"], self.w0, rho=self.rho, delta_alpha_au=self.delta_alpha)
-                       * aperture_onaxis_factor(self.w0),
-                    omega_ref=two_photon_rabi_hz(t["P_W"], self.w0, self.rho) / 1e6,
+                       * self.aperture_onaxis,
+                    # F324/A134 (C6b): the reference Rabi frequency the saturation companion is
+                    # evaluated at becomes the ENSEMBLE-EFFECTIVE one, not the on-axis one the fitter
+                    # used to carry. two_photon_rabi_hz(self.w0) is the UNCLIPPED focus's Rabi
+                    # frequency (F324 addendum e). The bore's on-axis factor (self.aperture_onaxis,
+                    # already cached above at this Cell's one w0, the same actual-reading convention
+                    # F280 gives the shift) reads it down to the clipped beam's on-axis value, a
+                    # linear correction because the two-photon Rabi frequency is itself linear in
+                    # intensity. `bloch_fraction` then reads the steady-state-times-transient share
+                    # the collected ensemble actually carries off `sat_fraction_table.tsv`. The prior
+                    # `omega_scale = 1 +- 0.20` keeps its meaning around THIS reference (F324's own
+                    # point: at omega_scale 1 evaluated on the old on-axis reference, the fitter's
+                    # saturation overshot the Bloch line by 3 to 13 archive sd).
+                    omega_ref=(two_photon_rabi_hz(t["P_W"], self.w0, self.rho) / 1e6
+                              * self.aperture_onaxis * bloch_fraction(
+                                  self.w0 * 1e6, float(t["T"]),
+                                  clamp=bool(self.spec.get("bloch_fraction_clamp", False)))),
                     n12=float(LAWS[self.law_name](np.array([t["T"]]))[0]) / 1e12,
                     sess=t["session"], peak=t["peak"], axis=t.get("axis", "mhz"),
-                    T_K=float(t["T"]) + 273.15)
+                    T_K=float(t["T"]) + 273.15, T_C=float(t["T"]), iso=int(t["iso"]))
 
     def sigma_l_of(self, d, sess):
         return d["sigma_l_shared"] if self.shared_sigma else d[f"sigma_l_{sess}"]
@@ -965,7 +1146,46 @@ class Cell:
             return t["x"] * (self.rate_seed[t["peak"]] * math.exp(d[f"lograte_E_{t['peak']}"]))
         return t["x"]
 
-    def model(self, nu, d, per, peak, sess):
+    def _table(self, per):
+        """The joint table this trace reads: one per temperature and isotope, at this Cell's waist, its S0 axis
+        covering every shift the Cell's free parameters can reach at those conditions, and its detuning axis
+        every trace's. Built once and stored (`JointTable.cached`), so the Cells of one waist share it."""
+        from rb5s6s.volume_line import JointTable
+        key = (per["T_C"], per["iso"])
+        tab = self._tables.get(key)
+        if tab is not None:
+            return tab
+        v = self.volume
+        mine = [q for q in self.per if (q["T_C"], q["iso"]) == key]
+        reach = max(float(np.max(np.abs(t["x"]))) for t in self.traces) if all(
+            t.get("axis", "mhz") == "mhz" for t in self.traces) else float(v["reach_mhz"])
+        grow = ((BOUNDS["alpha_rel"][1] if "alpha_rel" in self.names else float(self.fixed.get("alpha_rel", 1.0)))
+                * (BOUNDS["power_scale"][1] if self.power_scale else 1.0)
+                * (BOUNDS["s0_scale"][1] if any(n.startswith("s0_scale") for n in self.names) else 1.0))
+        s0_hi = grow * max(q["s0"] for q in mine) * (1.0 + float(v["s0_margin"]))
+        step = float(v["s0_step_mhz"])
+        S0 = np.arange(0.0, s0_hi + step, step)
+        half = int(np.ceil((reach + float(v["delta_margin_mhz"])) / float(v["delta_step_mhz"])))
+        delta = np.linspace(-half * float(v["delta_step_mhz"]), half * float(v["delta_step_mhz"]), 2 * half + 1)
+        factory, tag = None, ""
+        if v["beam"] == "clipped":           # the bench's bore-clipped focus, built to read this Cell's waist (D3)
+            from rb5s6s.beam_field import ClippedBeam
+            factory, tag = (lambda w0_m: ClippedBeam.at_focus(float(w0_m), m2=self.m2)), f"clipped:m2={self.m2}"
+        elif v["beam"] != "gaussian":
+            raise ValueError(f"volume_line beam {v['beam']!r}: 'gaussian' or 'clipped'")
+        tab = JointTable.cached(v["cache_dir"], tag=tag, S0_grid=S0, w0_grid=np.array([self.w0]), delta_mhz=delta,
+                                m2=self.m2, T_C=float(per["T_C"]), n_path=int(v["n_path"]), seed=int(v["seed"]),
+                                half_window_m=float(self._half_window_m), isotope=int(per["iso"]),
+                                beam_factory=factory)
+        self._tables[key] = tab
+        return tab
+
+    def physics(self, d, per, peak, sess) -> dict:
+        """The line's physical inputs for one trace at the parameters `d`, as `full_profile`'s own
+        keywords. The ONE place this Cell maps its parameters onto physics (C6b, 2026-09-22): `model`
+        passes them to `full_profile`, and a twin world that draws the same trace from the atom
+        Monte Carlo (`run_ultra_joint_closure.VolumeWorld`) reads the same numbers here, so the two
+        cannot drift apart through a second copy of this arithmetic."""
         f = self.power_factor(d, sess)
         omega_ref = f * per["omega_ref"]
         omega = d["omega_scale"] * omega_ref * d.get("w0_sat_rel", 1.0) ** -2
@@ -974,12 +1194,26 @@ class Cell:
         # saturation scale toward zero cannot switch the arm off as well.
         transit = (depleted_transit(per["transit"], omega_ref, peak, self.cycles) if self.depletion == "companion"
                    else per["transit"] * per["dep"]) / d.get("w0_transit_rel", 1.0)
-        return full_profile(nu, gamma_coll=d["beta_rel"] * self.beta_theory_mhz * per["n12"],
-                            sigma_laser_fwhm=self.sigma_l_of(d, sess), transit_fwhm=transit,
-                            s0=f * d["alpha_rel"] * per["s0"] * d.get(f"s0_scale_{per['cond']}", 1.0) * d.get("w0_shift_rel", 1.0) ** -2,
-                            gamma_l=d["gamma_l"] * (per["T_K"] / GAMMA_L_T_REF_K) ** self.gamma_l_exp,
-                            laser_kind=self.kind, peak=peak,
-                            omega_mhz=omega, profile=per.get("profile", self.profile))
+        out = dict(gamma_coll=d["beta_rel"] * self.beta_theory_mhz * per["n12"],
+                   sigma_laser_fwhm=self.sigma_l_of(d, sess), transit_fwhm=transit,
+                   s0=f * d["alpha_rel"] * per["s0"] * d.get(f"s0_scale_{per['cond']}", 1.0) * d.get("w0_shift_rel", 1.0) ** -2,
+                   gamma_l=d["gamma_l"] * (per["T_K"] / GAMMA_L_T_REF_K) ** self.gamma_l_exp,
+                   laser_kind=self.kind, peak=peak,
+                   omega_mhz=omega, profile=per.get("profile", self.profile),
+                   # F465: neither term was passed before this change (the module docstring's own
+                   # term table called both "dropped"); the pedestal is the record's fixed
+                   # convention height, the tilt is d["retro_tilt_rad"] (unpack()'s own default or
+                   # the fitted value when spec["retro_tilt_free"] is set).
+                   pedestal_height_frac=PEDESTAL_HEIGHT_FRAC, retro_tilt_rad=d["retro_tilt_rad"])
+        if self.volume is not None:
+            # the table carries the transit and the ramp together, so neither is passed beside it
+            del out["profile"]
+            out.update(transit_fwhm=None, volume_table=self._table(per), w0_m=self.w0, m2=self.m2,
+                       T_C=float(per["T_C"]), isotope=int(per["iso"]))
+        return out
+
+    def model(self, nu, d, per, peak, sess):
+        return full_profile(nu, **self.physics(d, per, peak, sess))
 
     def linear(self, t, nu, m):
         """Amplitude, offset and slope by weighted least squares under the
@@ -1092,20 +1326,8 @@ class Cell:
                 vals = np.array([r[k] for r in per_trace], float)
                 if not np.all(np.isfinite(vals)):
                     continue
-                # A DIAGNOSTIC IS NEVER ADMITTED (A93; 2026-09-21, F264): `diag_k5/mu3@W` carries a `/`, so the
-                # floor's regex skipped it, no flip refused it at zero noise, and it fell through as admitted;
-                # the moments ladder then failed its noiseless rung on a statistic that enters no likelihood.
-                if k.startswith("diag_"):
-                    _mu = float(vals.mean())
-                    out.append(dict(session=sess, peak=peak, p_mw=p_mw, t_c=t_c, statistic=k, n_rep=n_rep,
-                                    data=_mu, sem=float(vals.std(ddof=1)) / math.sqrt(n_rep), t95=tfac,
-                                    model=pred[k], pull=float("nan"), twin_bias=0.0, twin_bias_se=0.0,
-                                    admitted=False,
-                                    why="a DIAGNOSTIC (A93): computed from the same moments, enters no "
-                                        "likelihood and gates no cell; its sign is the asymmetry discriminator"))
-                    continue
-                # THE NUMERICAL FLOOR (F144, 2026-09-19): a cumulant of order n is a small difference of large
-                # numbers to the n-th power, and k7@13 read 6.6e-07 of its own dimensional scale k2^(n/2) with
+                # THE NUMERICAL FLOOR (F144, 2026-09-19): a moment of order n is a small difference of large
+                # numbers to the n-th power, and mu7@13 read 6.6e-07 of its own dimensional scale mu2^(n/2) with
                 # the fit exact -- both sides reporting the fit's residual, not the line. A row whose model
                 # sits under the floor is REFUSED with the reason, never admitted as a measurement. A window
                 # in DIAGNOSTIC_WINDOWS is refused as a measurement whatever its floor, with its reason.
@@ -1115,15 +1337,15 @@ class Cell:
                     # A HARD LOOKUP ON THE EMITTER'S OWN KEY (2026-09-21, F264): `.get("k2@W", 0.0)` read
                     # zero on every row since the mu rename, so `_scale` was 0, `_rel` inf, and EVERY
                     # moment was refused on the floor with no error raised. mu2 is k2 identically.
-                    _n = int(_ord); _k2 = abs(float(pred[f"mu2@{_win}"]))
-                    _scale = _k2 ** (_n / 2.0) if _k2 > 0 else 0.0
+                    _n = int(_ord); _mu2 = abs(float(pred[f"mu2@{_win}"]))
+                    _scale = _mu2 ** (_n / 2.0) if _mu2 > 0 else 0.0
                     _rel = abs(pred[k]) / _scale if _scale > 0 else float("inf")
                     _why = None
                     if float(_win) in DIAGNOSTIC_WINDOWS:
                         _why = (f"a DIAGNOSTIC window: {_win} MHz shows where the channel dies (the SNR peak at 3, "
                                 f"k4's zero at 8, k6's collapse at 21) and is never quoted as a measurement")
                     elif _n > 2 and _rel < CUMULANT_FLOOR_REL:
-                        _why = (f"the model's {k} is {_rel:.2g} of its own scale k2^{_n / 2:g}, under the floor "
+                        _why = (f"the model's {k} is {_rel:.2g} of its own scale mu2^{_n / 2:g}, under the floor "
                                 f"{CUMULANT_FLOOR_REL:g} = the arm's precision over the noiseless tolerance: "
                                 f"below what the arithmetic can resolve, not a channel")
                     if _why:
@@ -1180,11 +1402,11 @@ class Cell:
                                             f"{n_rep} repeats, so the ratio has no "
                                             f"population moment"))
                         continue
-                    # AN ADJACENT ODD-ODD RATIO IS MINUS TEN k2 PLUS A REMAINDER,
+                    # AN ADJACENT ODD-ODD RATIO IS MINUS TEN mu2 PLUS A REMAINDER,
                     # and the remainder is the only part that is about the
-                    # asymmetry: kappa5/kappa3 = mu5/mu3 - 10 kappa2 exactly, so
-                    # a fit reading k5/k3 beside k2 reads k2 twice. The row
-                    # carries the k2 term so a reader can subtract it rather
+                    # asymmetry: kappa5/mu3 = mu5/mu3 - 10 mu2 exactly, so
+                    # a fit reading mu5/mu3 beside mu2 reads mu2 twice. The row
+                    # carries the mu2 term so a reader can subtract it rather
                     # than discover the identity later.
                     rat = num / den
                     mu, sd = float(rat.mean()), float(rat.std(ddof=1))
@@ -1195,15 +1417,15 @@ class Cell:
                     _pm_per = [pm_[f"mu{hi}@{w:g}"] / pm_[f"mu{lo}@{w:g}"] for pm_ in per_model
                                if pm_[f"mu{lo}@{w:g}"] != 0.0]
                     pm = float(np.mean(_pm_per)) if _pm_per else pred[f"mu{hi}@{w:g}"] / pred[f"mu{lo}@{w:g}"]
-                    k2_term = -10.0 * pred[f"mu2@{w:g}"] if lo % 2 else None   # k2 = mu2 exactly
+                    mu2_term = -10.0 * pred[f"mu2@{w:g}"] if lo % 2 else None   # mu2 = kappa2 exactly
                     out.append(dict(session=sess, peak=peak, p_mw=p_mw, t_c=t_c,
                                     statistic=name, n_rep=n_rep, data=mu, sem=sem,
                                     t95=tfac, model=pm,
                                     pull=(mu - pm) / sem if sem > 0 else float("nan"),
                                     admitted=True,
-                                    why=("" if k2_term is None else
-                                         f"an odd-odd adjacent ratio: -10*k2 = {k2_term:.4g} "
-                                         f"of this is k2 and not the asymmetry")))
+                                    why=("" if mu2_term is None else
+                                         f"an odd-odd adjacent ratio: -10*mu2 = {mu2_term:.4g} "
+                                         f"of this is mu2 and not the asymmetry")))
         return out
 
     @staticmethod
@@ -1504,8 +1726,8 @@ def pooled_power_arm(preds: dict, meas: dict) -> dict:
 
 def width_vs_power_rows(widths: dict, meas_committed: dict) -> list[dict]:
     """The diagnostic the Omega reading must be read against: the width
-    against power per session and peak, from the committed per-power fits for
-    P and from the model-free trace widths for every session, as a weighted
+    against power per session and peak, from the committed per-power model-free
+    half-maximum widths for P and from the traces' own for every session, as a weighted
     linear slope of ln(width) in per watt with its least-squares bar and the
     sign of the slope."""
     out = []
@@ -1531,7 +1753,10 @@ def width_vs_power_rows(widths: dict, meas_committed: dict) -> list[dict]:
             e = [math.hypot(x, meas_committed["block_scatter_frac"] * y) for x, y in zip(e, w)]
             s, se = slope(P, w, e)
             out.append(dict(kind="width_vs_power_committed", sess="P", peak=peak, slope=s, err=se,
-                            source="results/power_sweep.csv fitted widths, the block scatter added in quadrature"))
+                            # power_sweep.csv's fwhm is qc.contiguous_fwhm_ms, a MODEL-FREE half-maximum width, not a
+                            # fit (F511, 2026-09-25); the block scatter is estimated about each line's mean, so it
+                            # absorbs any real trend and this slope's bar bounds a narrowing rather than testing one.
+                            source="results/power_sweep.csv model-free half-maximum widths (qc.contiguous_fwhm_ms), the block scatter added in quadrature"))
     keys = sorted({(s, pk) for (s, pk, _) in widths}, key=lambda k: (list(SESSIONS).index(k[0]), k[1]))
     for sess, peak in keys:
         pts = sorted((P, g["mean"], g["se"]) for (s, pk, P), g in widths.items() if s == sess and pk == peak)
@@ -2405,13 +2630,21 @@ def plant_determinism(workers_many: int = 2) -> bool:
     rows = design(traces_per_condition=1)
     dspec = design_spec(rows, ("P", "T"))
     da = deep_delta_alpha()
-    specs = base_specs(("mixed",), (40.0, 90.0), da, {}, starts=(START_SIGMA_L["mixed"][:1] * 2 + (START_OTHER[0][1], START_OTHER[0][2]),),
+    specs = base_specs(("mixed",), (41.0, 90.0), da, {}, starts=(START_SIGMA_L["mixed"][:1] * 2 + (START_OTHER[0][1], START_OTHER[0][2]),),
                        # the start follows the PINNED default's name order (sigma_l per session, omega, gamma_l)
                        max_nfev=2, beta_profile=False)
     for s in specs:
-        # the plant measures the pool's ORDER, not a node of the model: the 40 um probe sits
-        # below the validated span, so it opens the gate's one door and says so in the row
+        # the plant measures the pool's ORDER, not a node of the model: the 41 um probe sits
+        # below the validated span, so it opens the gate's one door and says so in the row.
+        # MOVED from 40.0 (O44/F280, 2026-09-21): the actual-focus on-axis factor now refuses
+        # below this bore's own geometric floor (about 40.89 um, F280), and 40 um sits under it
+        # -- a probe below the FLOOR is not "below the validated span", it describes no beam this
+        # bench can make at all, which is a different edge than this plant means to exercise.
         s["kernel_gate"] = "legacy"
+        # F324/A134 (C6b): this plant measures the pool's ORDER, never a physical value, and the
+        # 90 um probe sits outside bloch_fraction's twelve-node grid (41 to 45 um); clamp rather
+        # than let an unrelated refusal stand in for the determinism check this function is.
+        s["bloch_fraction_clamp"] = True
     seq = run_cells(specs, dspec, 0, label="seq ")
     par = run_cells(specs, dspec, workers_many, label=f"pool{workers_many} ")
     strip = lambda rs: [{k: v for k, v in r.items() if k != "seconds"} for r in rs]   # noqa: E731
@@ -2484,7 +2717,7 @@ def moment_arm_run(w0_um: float = 42.0, out_name: str = "ultra_joint_moments.csv
     statistic: the repeats' mean, the bar on that mean with its t-factor, this
     fit's own forward prediction of the same windowed statistic, and the pull.
     Then the cross-rung ratios, admitted on having a population moment and never
-    on their size; then k3 against power, which is a waist channel because the
+    on their size; then mu3 against power, which is a waist channel because the
     transit is the only term carrying an odd power of the waist; then a REFUSAL
     row per session.
 
@@ -2522,15 +2755,15 @@ def moment_arm_run(w0_um: float = 42.0, out_name: str = "ultra_joint_moments.csv
                     f"this fit predicts {r['model']:.6g} at the same window, so the "
                     f"pull is {r['pull']:+.2f}. The statistic is compared against its "
                     f"own forward prediction and is not an estimator of an "
-                    f"untruncated cumulant", "DIAGNOSTIC"])
+                    f"untruncated moment", "DIAGNOSTIC"])
 
-    # ---- k3 AGAINST POWER, the waist channel ----------------------------
-    # The transit is the only term with an odd power of the waist, and k3 is the
-    # ramp's own first-order signal, so the slope of k3 against P at fixed
+    # ---- mu3 AGAINST POWER, the waist channel ----------------------------
+    # The transit is the only term with an odd power of the waist, and mu3 is the
+    # ramp's own first-order signal, so the slope of mu3 against P at fixed
     # temperature is a waist statement in a way no even order is.
     lanes: dict = {}
     for r in arm:
-        if r["admitted"] and r["statistic"] == "k3@6":
+        if r["admitted"] and r["statistic"] == "mu3@6":
             lanes.setdefault((r["session"], r["peak"], r["t_c"]), []).append(r)
     for key, rs in sorted(lanes.items()):
         if len(rs) < 3:
@@ -2550,12 +2783,12 @@ def moment_arm_run(w0_um: float = 42.0, out_name: str = "ultra_joint_moments.csv
         sm = np.polyfit(P, [r["model"] for r in rs], 1)[0]
         # THE SLOPE CARRIES ITS OWN BAR OR IT IS NOT A CHANNEL. Weighted
         # least squares on the rungs' own repeat bars, so a lane whose
-        # "slope" is the scatter of a k3 consistent with zero says so
+        # "slope" is the scatter of a mu3 consistent with zero says so
         # instead of reading as a measurement.
         V = np.sum(1.0 / w ** 2) * np.sum(P ** 2 / w ** 2) - np.sum(P / w ** 2) ** 2
         sd_err = math.sqrt(np.sum(1.0 / w ** 2) / V) if V > 0 else float("nan")
         z = (sd - sm) / sd_err if sd_err > 0 else float("nan")
-        out.append([f"k3_vs_P_{key[0]}_{key[1]}_{key[2]}C", "slope_data_minus_model",
+        out.append([f"mu3_vs_P_{key[0]}_{key[1]}_{key[2]}C", "slope_data_minus_model",
                     *pm_cells(sd - sm, sd_err), "MHz^3 per mW",
                     f"{len(rs)} power rungs at one temperature, the bar from the "
                     f"rungs' own repeat spreads",
@@ -2672,7 +2905,7 @@ def time_cells(workers_for_queue: int = 10) -> dict:
     print(f"  loaded {len(rows)} traces in {t_load:.1f} s", flush=True)
     da = deep_delta_alpha()
     out = {}
-    for w in (40.0, 64.0, 90.0):
+    for w in (41.0, 56.0, 90.0):   # C6a: the grid's two ends and a far node, the worst cells timed
         r = _cell_task((0, _spec("mixed", w, da=da, beta_profile=False), dspec))
         out[w] = r
         print(f"  cell mixed w0={w:g} um: {r['seconds']:.0f} s, {r['nfev']} evaluations over 2 starts, outer passes "
@@ -2701,7 +2934,7 @@ def time_cells(workers_for_queue: int = 10) -> dict:
 
 
 def main() -> int:
-    known = {"--coarse", "--time-cells", "--plant", "--no-stage2", "--all-sessions", "--with-excluded", "--power-scale", "--accept-stale-walls", "--moment-arm", "--moment-twin"}
+    known = {"--coarse", "--time-cells", "--plant", "--no-stage2", "--all-sessions", "--with-excluded", "--power-scale", "--accept-stale-walls", "--moment-arm", "--moment-twin", "--separable"}
     valued = {"--form": None, "--sigma-l": "session", "--run-name": None, "--arms-only": None, "--out": None, "--drop-session": "", "--accept-stale-walls": None, "--moment-w0": None, "--gamma-l-exp": None, "--m2-arms": None}
     args = sys.argv[1:]
     for key in list(valued):
@@ -2797,10 +3030,19 @@ def main() -> int:
         grid_ws = W0_COARSE_UM if coarse else W0_GRID_UM
         forms = (form,) if form else FORMS
         run_name = valued["--run-name"] or (f"{'coarse' if coarse else 'fine'}_{''.join(sessions)}"
-                                            f"_{'-'.join(forms)}_{valued['--sigma-l']}{'_pscale' if '--power-scale' in args else ''}")
+                                            f"_{'-'.join(forms)}_{valued['--sigma-l']}{'_pscale' if '--power-scale' in args else ''}"
+                                            f"{'_separable' if '--separable' in args else ''}")
         rows = design(with_excluded="Q" in sessions)
         dspec = design_spec(rows, sessions)
         common = dict(sigma_l=valued["--sigma-l"], power_scale="--power-scale" in args, rate_seeds=evening_rate_seeds())
+        # THE JOINT LINE IS THE DEFAULT (C6b, A148, this file's own docstring above): every Cell of
+        # the production grid reads the atom Monte Carlo's tabulated joint line unless --separable
+        # asks for the named comparison arm, which is the transit-and-ramp convolution this file
+        # built before this window (the saturated ramp density and the kernel gate's MC depletion
+        # factor). `ramp`/`depletion` here are the ONLY values `volume_line` accepts beside it
+        # (Cell.__init__'s own refusal), so the three travel together.
+        if "--separable" not in args:
+            common.update(ramp="weak", depletion="none", volume_line=True)
         if valued["--gamma-l-exp"] is not None:        # an ARM of the permeation law (GAMMA_L_EXP_ARMS); the default is F245's 0.5
             common["gamma_l_exp"] = float(valued["--gamma-l-exp"])
         if valued["--m2-arms"] is not None:            # M2 PROFILED ON THE DATA'S OWN REASON (O41): coarse arms first,

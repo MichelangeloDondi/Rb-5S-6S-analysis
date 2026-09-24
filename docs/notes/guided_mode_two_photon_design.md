@@ -38,16 +38,19 @@ analogue for.
 ### 1.1 The intensity is delivered differently
 
 In the cell the working point is 225 mW into a waist of
-`constants.W0_MEASURED_M` = 64 µm, giving `2P/(pi w0^2)` = 3.497e7 W/m² per
+`constants.W0_CENTRAL_M` = 42.38 µm (calculated, this bench's own bore-limited focus, owner
+order O44, 2026-09-21), giving `2P/(pi w0^2)` = 7.975e7 W/m² per
 travelling wave and, with `rho` = 0.94, an on-axis maximum shift, the ideal Gaussian's
 before the aperture's on-axis factor, of
-[0.3599](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w64um:on_axis_shift") MHz
-(`lineshape.stark_shift_S0_mhz(0.225, 64e-6, 0.94)`)
+[0.8208](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w42um:on_axis_shift") MHz
+(`lineshape.stark_shift_S0_mhz(0.225, constants.W0_CENTRAL_M, 0.94)`)
 on the transition axis, at the record's own pinned `DELTA_ALPHA_AU`. An
-earlier version of this line passed `[1093.0](../../rb5s6s/constants.py "ref:constant:DELTA_ALPHA_AU_ORSON2021:1")` explicitly and got 0.3476,
-which matched `results/stark_joint.csv` only because that file's five-hour
-producer has not re-run since this record pinned its own polarizability. A guided mode of radius 15 µm reaches the same intensity at
-**11.45 mW**, and a 10 µm mode at **5.09 mW**. That is the first and largest
+earlier version of this line passed `[1093](../../rb5s6s/constants.py "ref:constant:DELTA_ALPHA_AU_ORSON2021:1")` explicitly and got a figure at the retired convention
+that matched `results/stark_joint.csv` only because that file's five-hour
+producer has not re-run since this record pinned its own polarizability. A guided mode of radius 15 µm reaches the record's current [0.729](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred:shared") MHz shift at
+**24.28 mW**, and a 10 µm mode at **10.79 mW** (`lineshape.stark_shift_S0_mhz`
+solved for the power at `rho` = 1.0, this record's own pinned `DELTA_ALPHA_AU`).
+That is the first and largest
 change: the power that a cell spends on one focal volume would instead buy
 either a much lower shift at the same rate, or the same shift over tens of
 centimetres of interaction length. A fibre buys intensity and length. It does
@@ -97,7 +100,7 @@ What is true is that the trapped distribution is nearly three times as skewed
 and has no hard edge, where the ramp's support stops dead at `S0`. Any analysis
 that carries the ramp over unchanged gets the magnitude and the tail of the
 line's asymmetry wrong, which
-matters because the self-centred third cumulant is the drift-immune channel this programme
+matters because the self-centred third moment is the drift-immune channel this programme
 already relies on.
 
 The two agree in one limit and it is the informative one. When `k_B T ≫ U0` the
@@ -122,8 +125,8 @@ This is the mechanism with no cell analogue, and it is the largest single
 number in the note.
 
 From `rb5s6s.polarizability` at 1064 nm (calculated, the module's own line
-lists): `alpha_5s(1064.0)` = 687.39 a.u., `alpha_6s(1064.0)` = −116.43 a.u.,
-`delta_alpha(1064.0)` = −803.82 a.u. Two consequences follow immediately.
+lists, with 9P and 10P explicit since C6b): `alpha_5s(1064.0)` = 687.39 a.u., `alpha_6s(1064.0)` = [-111.4](../../results/polarizability.csv "ref:polarizability:alpha_6s_1064:model") a.u.,
+`delta_alpha(1064.0)` = −798.75 a.u. (probe:3b7a9be8). Two consequences follow immediately.
 
 **The 6S state is anti-trapped at 1064 nm.** Its polarizability is negative, so
 an atom promoted to 6S sees the lattice as a repulsive potential and is
@@ -148,7 +151,7 @@ deeper does not help. Only colder atoms, or a different trap wavelength, would.
 | 100 µK | 3.655 MHz |
 | 556 µK | 20.3 MHz (ENVELOPE, past the harmonic limit) |
 
-For scale, the record's whole ramp edge is [0.348](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred:shared") MHz and the natural width is
+For scale, the record's whole ramp edge is [0.729](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred:shared") MHz and the natural width is
 `constants.GAMMA_NAT_HZ` = [3.4925](../../rb5s6s/constants.py "ref:constant:GAMMA_NAT_HZ:MHz") MHz. A 1064 nm trap reaches the record's
 ramp edge at **9.5 µK** and the natural width at **95.6 µK**. A sample at the
 few-hundred-µK temperature that a fibre load without further cooling would
@@ -162,12 +165,12 @@ because both states have J = 1/2, so no tensor term exists to spoil them):
 
 | magic wavelength | `alpha` there |
 |---|---|
-| 1203.886 nm | 546.70 a.u. |
-| 1287.874 nm | 500.82 a.u. |
-| 1339.571 nm | 479.76 a.u. |
+| [1203.69](../../results/polarizability.csv "ref:polarizability:magic_5s6s:1204nm") nm | 546.84 a.u. |
+| [1287.88](../../results/polarizability.csv "ref:polarizability:magic_5s6s:1288nm") nm | 500.82 a.u. |
+| [1339.57](../../results/polarizability.csv "ref:polarizability:magic_5s6s:1340nm") nm | 479.77 a.u. |
 
-At 1203.886 nm the differential shift vanishes by construction and the whole
-`(3/2) k_B T/h · Δα/α` term with it, at the cost of 0.795 times the trap depth
+At [1203.69](../../results/polarizability.csv "ref:polarizability:magic_5s6s:1204nm") nm (probe:1e15391f) the differential shift vanishes by construction and the whole
+`(3/2) k_B T/h · Δα/α` term with it, at the cost of 0.796 times the trap depth
 per watt relative to 1064 nm, and subject to the fibre guiding 1204 nm
 (section 5). A trap wavelength choice is therefore not a convenience here. It
 is the difference between a 3.7 MHz systematic and none.
@@ -288,19 +291,19 @@ bench work, not by any calculation (section 6).
 Geometry for the table: mode radius 10 µm (assumption, representing a core
 radius near 15 µm), 100 mW per direction, perfect counter-propagating overlap
 `rho` = 1 (assumption, against the cell's accepted 0.94), giving
-`2P/(pi w²)` = 6.366e8 W/m² per travelling wave, 18.2 times the cell's
-3.497e7. Cold case 1e4 atoms held on axis at the natural width. Hot case
+`2P/(pi w²)` = 6.366e8 W/m² per travelling wave, 8.0 times the cell's
+7.975e7 (the archive's own 42.38 µm waist, owner order O44). Cold case 1e4 atoms held on axis at the natural width. Hot case
 100 °C from `density.number_density_cm3(100)` = 4.808e12 cm⁻³ over 10 cm of
 filled fibre, line width natural plus transit plus ramp.
 
 | | 5S → 6S | 5S → 7S | 5S → 5D5/2 |
 |---|---|---|---|
-| drive (from the repo's nist terms) | 993.418 nm | 760.126 nm | 778.104 nm |
+| drive (from the repo's nist terms) | [993.418](../../results/transition_ladder.csv "ref:transition_ladder:6S:drive_wavelength") nm | [760.126](../../results/transition_ladder.csv "ref:transition_ladder:7S:drive_wavelength") nm | [778.104](../../results/transition_ladder.csv "ref:transition_ladder:5D:drive_wavelength") nm |
 | detection | 795.0 / 780.2 nm | 420.30 nm | 420.30 nm |
 | `Δα` (a.u.) | [-1131.8](../../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive") | 4371.7 | 28649 (ENVELOPE) |
-| natural FWHM | 3.4925 MHz | 1.802 MHz | 0.410 MHz (ENVELOPE) |
+| natural FWHM | [3.4925](../../rb5s6s/constants.py "ref:constant:GAMMA_NAT_HZ:MHz") MHz | 1.802 MHz | 0.410 MHz (ENVELOPE) |
 | `S0` at 100 mW | 6.75 MHz | 26.1 MHz | 171 MHz |
-| power at which `S0` = the cell's [0.348](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred:shared") MHz | 5.09 mW | 0.68 mW | 0.0049 mW |
+| power at which `S0` = the cell's [0.729](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred:shared") MHz | 10.79 mW | 2.79 mW | 0.426 mW |
 | peak rate per atom at 100 mW | 6.22e6 /s | 5.48e6 /s | 1.29e6 /s |
 | counts/s, 1e4 cold atoms, 100 mW | 2.7e5 | 1.6e5 | 9.9e3 |
 
@@ -388,7 +391,7 @@ state survives. On bare silica it does not: the mean thermal speed at 100 °C is
 accumulation into a steady-state imbalance and costs a factor 3.5e3 in the
 minimum detectable per-atom excitation rate, 1.22 /s against 3.5e-4 /s for
 side-collected fluorescence. The break-even hyperfine memory time would be
-0.526 ms, short by the same factor. **The comparison inverts for trapped atoms**,
+0.526 ms, short by the same factor. **The comparison inverts for trapped atoms**, <!-- other-quantity: a time -->
 because a trapped sample never touches the wall. The per-atom optical depth in
 the guided mode is `sigma_0/A_eff` with `sigma_0 = 3 lambda²/2pi` = 3.018e-13 m²
 at 795 nm, giving 4.27e-4 for a 15 µm mode and 9.6e-4 for a 10 µm mode with
@@ -430,15 +433,20 @@ Three reasons for 11 mW in a large core, all computed above. Transit broadening
 is 3.93 MHz in a 15 µm mode against 16.84 MHz in a 3.5 µm mode at 100 °C
 (`constants.transit_fwhm_from_w0`), so a small core would destroy the lineshape
 the programme exists to measure. The 1367 nm cross-check channel closes above
-about 11 mW. And at 11.45 mW in a 15 µm mode the shift edge would be 0.348 MHz,
-matching what the record already carries rather than exceeding it.
+about 11 mW. And at 11.45 mW in a 15 µm mode the shift edge is 0.344 MHz
+(`lineshape.stark_shift_S0_mhz(0.01145, 15e-6, rho=1.0)`, this record's own
+pinned `DELTA_ALPHA_AU`), well below what the record now carries,
+[0.729](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred:shared") MHz, rather than matching it: the 15 µm mode reaches that
+shift only at 24.28 mW (§1.1), so this third reason for the recommendation
+below no longer holds at the calculated waist and the recommendation rests
+on the transit and 1367 nm reasons alone.
 
 ---
 
 ## 4. Background and filtering budget
 
-Drive photon flux at 10 mW delivered (calculated): 5.001e16 /s at 993.418 nm,
-3.827e16 /s at 760.126 nm, 3.917e16 /s at 778.104 nm.
+Drive photon flux at 10 mW delivered (calculated): 5.001e16 /s at [993.418](../../results/transition_ladder.csv "ref:transition_ladder:6S:drive_wavelength") nm,
+3.827e16 /s at [760.126](../../results/transition_ladder.csv "ref:transition_ladder:7S:drive_wavelength") nm, 3.917e16 /s at [778.104](../../results/transition_ladder.csv "ref:transition_ladder:5D:drive_wavelength") nm.
 
 **Spectral rejection**, defined as the filter transmission at which drive
 leakage equals signal after detector quantum efficiency, scales with the signal
@@ -453,7 +461,7 @@ rate:
 **Filter and fibre fluorescence is structurally suppressed, and the reason is
 worth stating because it is unusual.** Both candidate pairings detect **bluer**
 than they drive. From the repository's own term energies, 993 → 795 is
-+2512.7 cm⁻¹ anti-Stokes, 778 → 420.30 is +10940.8 cm⁻¹, and 760 → 420.30 is
++[2512.7](../../results/transition_ladder.csv "ref:transition_ladder:6S:intermediate_detuning_5p12") cm⁻¹ anti-Stokes, 778 → 420.30 is +10940.8 cm⁻¹, and 760 → 420.30 is
 +10636.9 cm⁻¹ (calculated). One-photon fluorescence of glass, coatings and
 cement is Stokes-shifted, so it cannot reach either detection band at all. Only
 `I²` processes can, and those fall with drive power. Coloured-glass filter
@@ -464,10 +472,10 @@ experiment, is absent by construction.
 440 cm⁻¹ with an edge near 1200 cm⁻¹ (established from the literature, not
 recomputed here, and worth checking against a source before it is relied on).
 All three shifts above are outside it. The 993 → 795 case is additionally
-suppressed thermally: `k_B T/hc` at 100 °C is 259.4 cm⁻¹, so
-`exp(-2512.7/259.4)` = 6.2e-5. A hollow core puts 99 % or more of the field in
+suppressed thermally: `k_B T/hc` at 100 °C is 259.4 cm⁻¹, so <!-- other-quantity: a thermal energy -->
+`exp(-[2512.7](../../results/transition_ladder.csv "ref:transition_ladder:6S:intermediate_detuning_5p12")/259.4)` = 6.2e-5. A hollow core puts 99 % or more of the field in <!-- other-quantity: a thermal energy -->
 the gas, suppressing whatever silica overlap remains. The 993 → 1324 channel is
-the mirror case at −2512.7 cm⁻¹ Stokes, outside the one-phonon band but
+the mirror case at −[2512.7](../../results/transition_ladder.csv "ref:transition_ladder:6S:intermediate_detuning_5p12") cm⁻¹ Stokes, outside the one-phonon band but
 reachable by second-order and cascaded Raman, which would need checking at
 higher powers (OPEN).
 
@@ -504,7 +512,7 @@ standard three-term Sellmeier fit for fused silica (1965), the margin of
 `F = 2t sqrt(n²-1)/lambda` to the nearest integer, where 0.00 is on resonance
 and 0.50 is mid-band, is (calculated):
 
-| strut `t` | 420.30 | 780.24 | 794.98 | 993.42 | 1064.0 | 1203.89 | 1323.88 |
+| strut `t` | 420.30 | 780.24 | 794.98 | 993.42 | 1064.0 | [1203.69](../../results/polarizability.csv "ref:polarizability:magic_5s6s:1204nm") | 1323.88 |
 |---|---|---|---|---|---|---|---|
 | 196 nm | **0.00** | 0.47 | 0.48 | 0.41 | 0.39 | 0.34 | 0.31 |
 | 300 nm | 0.47 | 0.19 | 0.20 | 0.37 | 0.41 | 0.48 | 0.47 |
@@ -652,10 +660,10 @@ Ordered by how many open questions each one closes.
 cleaved end plus the resonance-comb arithmetic in section 5.1, and confirmable
 by a white-light transmission scan. Nothing in the analysis can settle it.
 
-**Would it guide 1203.886 nm, the nearest computed magic wavelength?** The same
+**Would it guide [1203.69](../../results/polarizability.csv "ref:polarizability:magic_5s6s:1204nm") nm, the nearest computed magic wavelength?** The same
 two measurements. If it would, the trap-induced shift of section 1.3 goes to
 zero by construction and the largest systematic in the trapped case disappears.
-If it would not, the next crossings are at 1287.874 and 1339.571 nm.
+If it would not, the next crossings are at [1287.88](../../results/polarizability.csv "ref:polarizability:magic_5s6s:1288nm") and [1339.57](../../results/polarizability.csv "ref:polarizability:magic_5s6s:1340nm") nm.
 
 **What is the atom temperature after loading?** A release-and-recapture or
 time-of-flight measurement on the fibre itself. No published number transfers,
@@ -675,7 +683,7 @@ apparatus at all.
 
 **What is the hyperfine memory time on the inside of a hollow core?** This
 decides scheme 2 in a hot fill, where bare silica gives 149 ns against the
-0.526 ms needed to break even. A coating that survives rubidium at 100 °C on
+0.526 ms needed to break even. A coating that survives rubidium at 100 °C on <!-- other-quantity: a time -->
 an inner wall is not a solved problem, and only a measurement on a coated
 sample would answer it.
 

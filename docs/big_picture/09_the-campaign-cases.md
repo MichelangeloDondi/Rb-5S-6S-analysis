@@ -1,4 +1,4 @@
-*Chapter 9 of 9 of [the big picture](../BIG_PICTURE.md)*
+*Chapter 9 of 10 of [the big picture](../BIG_PICTURE.md)*
 
 ## 9. The two campaign cases, side by side
 
@@ -30,15 +30,15 @@ transition or a different geometry.
 
 **Why a new campaign and not a re-analysis, in one measurement.** The
 fixed-lock workhorse is the mean pull, first order in the shift, which the 2025
-drifting lock absorbed into free centres. The third cumulant is a skew hunt
+drifting lock absorbed into free centres. The third moment is a skew hunt
 the plan lists third and does not promise, and
 [`results/moment_power_map.csv`](../../results/moment_power_map.csv) measures
 why: across 432 configurations of the laser kernel, the noise level, the
 oscilloscope, the analysis window and the model's own grid, at two thousand
 traces on each of five shifts from 0.18 to 2.0 MHz, **the cubic law is not
 recovered on a ladder that starts below the 2025 shift**. The fitted exponent
-of the third cumulant comes back at 1.8 with a standard deviation of 0.7 across
-the grid where the physics gives 3, because the magnitude of a cumulant smaller
+of the third moment comes back at 1.8 with a standard deviation of 0.7 across
+the grid where the physics gives 3, because the magnitude of a moment smaller
 than its own noise is inflated by that noise, and the rungs at and below the
 archive's shift are that case.
 
@@ -62,10 +62,10 @@ the standing wave's fringe-resolved tail ([chapter 12](../plan/12_open-apparatus
 the local ramp is mixed along the collected length and the fringe density
 replaces the transverse law inside it, so the asymmetry at the tight waist is
 the reversed and suppressed one the bench produces, not the pure ramp's. The centre's slope is inverted through the quiet curve's own centroid
-slope, which those two terms leave at [0.98](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_64um::pull_factor_quiet"),
+slope, which those two terms leave at [0.91](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_42.38um::pull_factor_quiet"),
 [0.89](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_40um::pull_factor_quiet"), [0.69](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_24um::pull_factor_quiet")
 and [0.58](../../results/three_channel_forecast.csv "ref:three_channel_forecast:base::pull_factor_quiet") of the pure ramp's mean pull at
-64, 40, 24 and 16 microns, so the recovery below is against that geometry.
+42.38, 40, 24 and 16 microns, so the recovery below is against that geometry.
 
 The
 two-time computation in [the plan's intensity
@@ -77,10 +77,15 @@ one, because power broadening is symmetric and does not move a centre.
 
 | waist | injected | the centre recovers |
 |---|---|---|
-| 64 microns | [1.599](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_64um::kappa_true") | [1.59](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_64um::kappa_pull") plus or minus [0.11](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_64um::sd_pull") |
-| 40 microns | [4.095](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_40um::kappa_true") | [4.10](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_40um::kappa_pull") plus or minus [0.12](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_40um::sd_pull") |
-| 24 microns | [11.375](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_24um::kappa_true") | [11.39](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_24um::kappa_pull") plus or minus [0.18](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_24um::sd_pull") |
-| 16 microns | [25.593](../../results/three_channel_forecast.csv "ref:three_channel_forecast:base::kappa_true") | [25.58](../../results/three_channel_forecast.csv "ref:three_channel_forecast:base::kappa_pull") plus or minus [0.34](../../results/three_channel_forecast.csv "ref:three_channel_forecast:base::sd_pull") |
+| 42.38 microns | [3.648](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_42.38um::kappa_true") | [3.64](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_42.38um::kappa_pull") plus or minus [0.12](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_42.38um::sd_pull") |
+| 40 microns | [4.095](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_40um::kappa_true") | [4.09](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_40um::kappa_pull") plus or minus [0.12](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_40um::sd_pull") |
+| 24 microns | [11.375](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_24um::kappa_true") | [11.38](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_24um::kappa_pull") plus or minus [0.17](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_24um::sd_pull") |
+| 16 microns | [25.593](../../results/three_channel_forecast.csv "ref:three_channel_forecast:base::kappa_true") | [25.59](../../results/three_channel_forecast.csv "ref:three_channel_forecast:base::kappa_pull") plus or minus [0.32](../../results/three_channel_forecast.csv "ref:three_channel_forecast:base::sd_pull") |
+
+Every κ in this table and in the pull factors above it, the 42.38 micron
+row included, is computed at the unclipped design, the bore out of the
+focusing path, so the 42.38 micron row is a methodological check point and
+not the bench's own measured, bore-clipped prediction.
 
 Every number in this section carries one model-form caveat, the centre
 numbers included, and at the tight waist it is the centre numbers that carry it
@@ -89,17 +94,17 @@ which is exact only where that kernel is the same at every collected volume
 element. It is not: the saturation companion is set by the light shift at each
 element, and the light shift is what the ramp distributes, so the broad
 elements are the shifted ones. The homogeneous width runs over a factor of
-[3.247](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w16um:homogeneous_width_span") across the collected volume at
+[3.446](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w16um:homogeneous_width_span") across the collected volume at
 16 microns.
 
 Measured element by element against the same mixture with the kernel held
-fixed, at 64, 40, 24 and 16 microns:
+fixed, at 42.38, 45, 24 and 16 microns:
 
-| what is read | 64 um | 40 um | 24 um | 16 um |
+| what is read | 42.38 um | 45 um | 24 um | 16 um |
 |---|---|---|---|---|
-| the centroid, per cent | [-0.000](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w64um:centroid_pull_error") | [-0.000](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w40um:centroid_pull_error") | [-0.000](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w24um:centroid_pull_error") | [-0.000](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w16um:centroid_pull_error") |
-| the fitted centre, per cent | [-0.265](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w64um:fitted_centre_error") | [-1.904](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w40um:fitted_centre_error") | [-17.233](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w24um:fitted_centre_error") | [-57.023](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w16um:fitted_centre_error") |
-| the third cumulant, per cent | [106.742](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w64um:k3_error") | [103.258](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w40um:k3_error") | [96.532](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w24um:k3_error") | [89.925](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w16um:k3_error") |
+| the centroid, per cent | [-0.000](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w42um:centroid_pull_error") | [0.000](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w45um:centroid_pull_error") | [0.000](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w24um:centroid_pull_error") | [0.000](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w16um:centroid_pull_error") |
+| the fitted centre, per cent | [-1.563](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w42um:fitted_centre_error") | [-1.198](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w45um:fitted_centre_error") | [-18.149](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w24um:fitted_centre_error") | [-60.912](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w16um:fitted_centre_error") |
+| the third moment, per cent | [103.942](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w42um:k3_error") | [104.614](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w45um:k3_error") | [96.571](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w24um:k3_error") | [89.992](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w16um:k3_error") |
 
 The centroid is exactly immune and the estimator is not, and reading the
 first as covering the second is the error this table replaces. The first
@@ -108,19 +113,20 @@ broadening symmetric about each element's own centre cannot move it, at any
 waist, exactly. A least-squares fit with a single width is a different quantity. It
 sits on the mode, the mode is set by the narrow unshifted elements, and the
 shifted elements are the broad ones. The pull rows above are that fit, through
-`fit_condition` with the shift held at zero. So at the archive's waist both
-channels are safe to a quarter of a per cent, and at the campaign's own 16
+`fit_condition` with the shift held at zero. So at the archive's waist the
+centroid stays exactly safe while the fitted centre is already off by more
+than a per cent, and at the campaign's own 16
 microns the standard channel reads the pull it inverts wrong by
-[-57.023](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w16um:fitted_centre_error") per cent,
+[-60.912](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w16um:fitted_centre_error") per cent,
 which is larger than anything the moment channel's caveat carries.
 
 So neither family is quotable at 24 microns or below until the kernel follows
 the shift inside the forecast's own mixture, and the tight-waist rows above
 are an upper bound on their own accuracy and not a result. The
-cumulant figures are quoted against the most charitable single kernel there
+moment figures are quoted against the most charitable single kernel there
 is, the volume's own weighted mean. Against the kernel the twin actually
 composes with, the companion at the on-axis shift, the cost at 16 microns is
-[95.450](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w16um:k3_error_forecast_kernel") per cent. The
+[95.445](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w16um:k3_error_forecast_kernel") per cent. The
 uncertainties are the saturation companion's own, which the record carries at
 the factor-of-three level, not a grid.
 
@@ -128,7 +134,7 @@ The higher moments alone work only where the comb is on the trace. At
 the tight waist the light
 shift is large enough that the transition saturates, and saturation broadens
 the line in proportion to the power while the ramp's asymmetry grows as its
-cube, so the third cumulant's own law flattens and the channel reads noise. A
+cube, so the third moment's own law flattens and the channel reads noise. A
 phase-modulated comb holds the intensity constant, and with it the light
 shift, while splitting the two-photon drive among the teeth. Each tooth's Rabi
 frequency is then the root of its share, its saturation broadening falls with
@@ -136,17 +142,17 @@ it, and the asymmetry survives.
 
 Those cells are the twin's world with the
 collection window and the fringe tail in it: at the tight waist the window
-reverses the third cumulant's sign against the pure ramp and the fringes
+reverses the third moment's sign against the pure ramp and the fringes
 suppress it further, and each admitted rung is inverted through the quiet
 curve's own local law with the sign read from that curve, so the comb cells
 are quoted against the bench's geometry. On the 40 MHz comb the moments recover
 [25.6](../../results/three_channel_forecast.csv "ref:three_channel_forecast:eom_comb_40MHz::kappa_skew") plus or
-minus [2.2](../../results/three_channel_forecast.csv "ref:three_channel_forecast:eom_comb_40MHz::sd_skew"), on
-the 25 MHz comb [25.5](../../results/three_channel_forecast.csv "ref:three_channel_forecast:eom_comb_25MHz::kappa_skew")
-plus or minus [2.4](../../results/three_channel_forecast.csv "ref:three_channel_forecast:eom_comb_25MHz::sd_skew"),
+minus [1.8](../../results/three_channel_forecast.csv "ref:three_channel_forecast:eom_comb_40MHz::sd_skew"), on
+the 25 MHz comb [25.4](../../results/three_channel_forecast.csv "ref:three_channel_forecast:eom_comb_25MHz::kappa_skew")
+plus or minus [2.0](../../results/three_channel_forecast.csv "ref:three_channel_forecast:eom_comb_25MHz::sd_skew"),
 and on the 2025 spacing of 12.5 MHz, which the world without those terms
-refused, [27.6](../../results/three_channel_forecast.csv "ref:three_channel_forecast:eom_comb_12.5MHz::kappa_skew") plus or minus
-[4.1](../../results/three_channel_forecast.csv "ref:three_channel_forecast:eom_comb_12.5MHz::sd_skew"), twice the wide combs' scatter,
+refused, [26.3](../../results/three_channel_forecast.csv "ref:three_channel_forecast:eom_comb_12.5MHz::kappa_skew") plus or minus
+[2.0](../../results/three_channel_forecast.csv "ref:three_channel_forecast:eom_comb_12.5MHz::sd_skew"), matching the wide combs' own scatter,
 against the same injected coefficient the centre reads.
 
 Without a comb the
@@ -223,11 +229,11 @@ Everything in scenario one, plus five additions no cell can provide.
   inhomogeneous red tail that is degenerate with the laser width, and at a
   fixed 200 nm it falls to 0.21 to 0.53 MHz and is largely common-mode
   (`results/onf_candidate.csv`). Fed back as a prior, it recovers
-  the collisional coefficient's error to 0.36 of the free-kernel fit
-  on the data already taken, against the exact floor of 0.585 that any
+  the collisional coefficient's error to 0.31 of the free-kernel fit
+  on the data already taken, against the exact floor of 0.365 that any
   single-component measurement hits (`results/kernel_identifiability.csv`,
-  and **that prior is the one asking 0.01 MHz on each of the two kernel
-  widths. That is the 69-minute trace, not the 2.78-minute working point the
+  and **that prior is the one asking 11.6 kHz on Gamma_L and 24.8 kHz on
+  sigma_G. That is the 69-minute trace, not the 2.78-minute working point the
   cost rows below quote. It is about 5.5 hours of acquisition, some
   twenty-four times the per-lever figure**,
   the joint rows). This addition improves the committed record
@@ -352,8 +358,9 @@ rate it is not a calibration at all.
 
 * A per-run calibration of the **Casimir-Polder** surface term at 6S
   sensitivity, on the same class of fibre that Rydberg-near-fibre
-  experiments probe at far higher sensitivity, where that term is a known
-  limiter ([Pennetta 2026](../lit/pennetta2026.md)). **It is not a
+  experiments probe at far higher sensitivity, where the surface potential
+  carries a Casimir-Polder and an electrostatic part
+  ([Pennetta 2026](../lit/pennetta2026.md)). **It is not a
   measurement of the electrostatic surface charge**, and the distinction is
   worth stating to a group that has just published on the latter
   ([Raj 2026](../lit/raj2026.md)): at the 1.5 V/cm those authors recover at
@@ -413,7 +420,7 @@ near a nanofibre and not spectroscopy.
 | | cell alone | cell plus nanofibre |
 |---|---|---|
 | **what the host group keeps afterwards** | nothing on their platform. The results are ours | a per-run calibration of the Casimir-Polder surface term at 6S sensitivity, the transition being blind to the electrostatic charge that limits their Rydberg probe, an atom-based monitor of adsorbate dynamics on the fibre, the two-colour trap's magic power ratio for this transition, a quadratic-Zeeman line shifter, a depth-ladder null test of the light shift demonstrated on their own modulator, and a laser characterised through their own guided path |
-| **what it measures about the fibre** | nothing | the **fibre diameter**, the tolerance no held paper states and which every guided quantity depends on, to between [31.07](../../results/onf_lever_ranking.csv "ref:onf_lever_ranking:lock_span_0.04:sigma_diameter_nm") nm at the 2025 drifting lock and [0.68](../../results/onf_lever_ranking.csv "ref:onf_lever_ranking:lock_span_0.0:sigma_diameter_nm") nm at the photon floor, marginalised over the drive amplitude the scan cannot know. The repaired lock decides where in that span the campaign sits, and its residual is unmeasured. Also the light-shift coefficient, and the surface coefficient $C_3$ which is the weakest of the three (`results/onf_lever_ranking.csv`). **The diameter is not only obtainable this way**: the group's own scanning electron microscope gives it without atoms, and the published proximity to the 352 nm mode cutoff is a sharp independent diagnostic. What the atoms add is the quantity that actually enters the physics, measured in situ under the conditions of use, rather than a fibre characterised before it was installed ([chapter 6](06_next-nanofibre.md)) |
+| **what it measures about the fibre** | nothing | the **fibre diameter**, the tolerance no held paper states and which every guided quantity depends on, to between [31.07](../../results/onf_lever_ranking.csv "ref:onf_lever_ranking:lock_span_0.04:sigma_diameter_nm") nm at the 2025 drifting lock and [0.67](../../results/onf_lever_ranking.csv "ref:onf_lever_ranking:lock_span_0.0:sigma_diameter_nm") nm at the photon floor, marginalised over the drive amplitude the scan cannot know. The repaired lock decides where in that span the campaign sits, and its residual is unmeasured. Also the light-shift coefficient, and the surface coefficient $C_3$ which is the weakest of the three (`results/onf_lever_ranking.csv`). **The diameter is not only obtainable this way**: the group's own scanning electron microscope gives it without atoms, and the published proximity to the 352 nm mode cutoff is a sharp independent diagnostic. What the atoms add is the quantity that actually enters the physics, measured in situ under the conditions of use, rather than a fibre characterised before it was installed ([chapter 6](06_next-nanofibre.md)) |
 | **fibre time** | none | **acquisition only**, about [0.23](../../results/onf_lever_ranking.csv "ref:onf_lever_ranking:temperature_ladder:hours") hours per lever across three levers. Alignment, setup and the trap settling the distance scan needs between rungs are **not costed**, and the producer says so. The interval the host group would actually be asked to grant is an open item, not this number |
 | **fibre exposure** | none | what can be quoted is integration time: about [2.78](../../results/campaign_twin_forecast.csv "ref:campaign_twin_forecast:onf:minutes_per_trace_0.02") minutes per trace at the working precision, and [69](../../results/campaign_twin_forecast.csv "ref:campaign_twin_forecast:onf:minutes_per_trace_0.004") +- [16](../../results/campaign_twin_forecast.csv "ref:campaign_twin_forecast:onf:minutes_per_trace_0.004_err") at cell-matching precision, the half-span of the committed 25 to 40 counts per ms band. **The degradation that time causes is a different quantity and is an open item**: rubidium adsorption against exposure bounds the whole arm and nothing here converts one into the other ([chapter 6](06_next-nanofibre.md)) |
 | **what it settles for us** | the collisional and light-shift coefficients, from bounds to measurements | the same, plus the laser-shape confound acted on retroactively |
@@ -501,4 +508,4 @@ measurement removes a systematic instead of widening an envelope.
 
 ---
 
-*[When a joint fit is legitimate](08_when-a-joint-fit-is-legitimate.md) · [the big picture](../BIG_PICTURE.md)*
+*[When a joint fit is legitimate](08_when-a-joint-fit-is-legitimate.md) · [Applications and reach](10_what-this-unlocks.md)*

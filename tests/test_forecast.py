@@ -68,8 +68,8 @@ def test_ladder_step_one_known_truth_recovery():
     """The public API reproduces the committed example's discipline: every
     injected width recovered within three of the fit's own standard errors."""
     f, v = synthetic_traces(**TRUTH, n_traces=5, noise=0.004,
-                            rng=np.random.default_rng(20260819))
-    res = fit_condition(f, v, T_C=130.0, transit_fwhm=TRUTH["transit_fwhm"])
+                            rng=np.random.default_rng(20260819), model="convolution")
+    res = fit_condition(f, v, T_C=130.0, transit_fwhm=TRUTH["transit_fwhm"], model="convolution")
     for name in ("gamma_coll", "sigma_laser"):
         pull = abs(res[name] - TRUTH[name]) / res[f"{name}_err"]
         assert pull < 3.0, (name, res[name], res[f"{name}_err"])
@@ -119,7 +119,7 @@ def test_more_data_does_not_break_the_width_degeneracy():
     truth = (TRUTH["gamma_coll"], TRUTH["sigma_laser"], TRUTH["transit_fwhm"])
     corrs = []
     for kw in ({}, {"span_mhz": 300.0, "n_points": 9000}):
-        f, v = synthetic_traces(*truth, n_traces=5, noise=0.004,
+        f, v = synthetic_traces(*truth, n_traces=5, noise=0.004, T_C=130.0,
                                 rng=np.random.default_rng(5), **kw)
         r = fit_condition(f, v, T_C=130.0, transit_fwhm=truth[2])
         corrs.append(r["corr_laser_coll"])

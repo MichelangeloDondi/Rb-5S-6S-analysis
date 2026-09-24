@@ -17,8 +17,8 @@ covariance with beta_self, or DIFFERENT MISSING PHYSICS ABSORBED DIFFERENTLY
 PER PEAK. That last reading makes the spread evidence of MODEL INADEQUACY,
 which is not an uncertainty on a laser kernel at all.
 
-And the homogeneity test does not license the leap. p = 0.097 says a common
-value is NOT REJECTED. It does not establish that a random-effects generative
+And the homogeneity test does not license the leap. Its p, read from kernel_k3.csv's
+k2p5_heterogeneity_p and never typed here (F508), says a common value is NOT REJECTED. It does not establish that a random-effects generative
 model is correct, so treating "not inconsistent with heterogeneity" as
 "heterogeneity variance is an uncertainty" would be assuming exactly what the
 test declines to establish.
@@ -64,6 +64,7 @@ def _read(name):
 
 def main() -> int:
     k3 = _read("kernel_k3.csv")
+    p_het = float(next(r["value"] for r in k3 if r["scope"] == "all" and r["quantity"] == "k2p5_heterogeneity_p"))
     k5 = _read("kernel_k5.csv")
     rows = []
 
@@ -149,7 +150,7 @@ def main() -> int:
         "DIAGNOSTIC",
         "QUESTION ANSWERED: how much unexplained dispersion would a "
         "HIERARCHICAL EXCHANGEABLE model infer? Conditional on exchangeability, "
-        "which p = 0.097 does not establish")
+        f"which p = {p_het:.2g} does not establish")
 
     w = 1.0 / s ** 2
     xbar = float(np.sum(w * x) / np.sum(w))
@@ -167,8 +168,11 @@ def main() -> int:
         "the four per-peak values this mean is taken over")
     add("homogeneity_chi2", f"{chi2:.4f}", "chi2", "DIAGNOSTIC",
         f"scatter about the weighted mean on {dof} dof")
+    if p_het < 0.05:
+        raise SystemExit(f"run_kernel_budget: the heterogeneity p is {p_het:.2g}, below 0.05, and this producer's "
+                         "reading assumes a common value is not rejected; re-derive the budget before writing it")
     add("heterogeneity_established", "NO", "verdict", "DIAGNOSTIC",
-        "p = 0.097 does not reject a common value and does not establish a "
+        f"p = {p_het:.2g} does not reject a common value and does not establish a "
         "random-effects model. Delta_peak is therefore NOT combined with "
         "U_stat or U_shape, and is not called an uncertainty component")
 

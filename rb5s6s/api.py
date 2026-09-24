@@ -110,6 +110,14 @@ def fit_linewidth(freqs: Sequence, volts: Sequence, *, T_C: float,
     a MAGNITUDE: the sign convention lives in `constants.DELTA_ALPHA_AU` and
     is not this function's to reinterpret.
 
+    `model` defaults to `"convolution"` here, pinned rather than left to
+    `linefit.fit_condition`'s own default: this function reconstructs the
+    returned width from separate collisional, laser and transit kernels
+    (`total_fwhm_mhz`, above), which is the convolution model's own
+    decomposition and not the non-convolving joint line's. Pass
+    `model="joint"` explicitly to fit that line instead; nothing downstream
+    of this function changes its behaviour when the lower-level default does.
+
     Everything else is forwarded to `linefit.fit_condition`, which is what
     actually does the work and is exported beside this.
 
@@ -123,8 +131,12 @@ def fit_linewidth(freqs: Sequence, volts: Sequence, *, T_C: float,
     """
     freqs, volts = _as_trace_lists(freqs, volts)
     # transit_fwhm is forwarded only when given, so fit_condition's own
-    # default stands otherwise and this module holds no second default.
+    # default stands otherwise and this module holds no second default --
+    # EXCEPT for `model`, pinned explicitly below (see the docstring): this
+    # function's own width reconstruction is convolution-shaped, so it must
+    # not drift silently whenever fit_condition's own default changes.
     kw = dict(fit_kw)
+    kw.setdefault("model", "convolution")
     if transit_fwhm is not None:
         kw["transit_fwhm"] = transit_fwhm
     raw = fit_condition(freqs, volts, T_C=T_C, law=law, s0=s0, **kw)

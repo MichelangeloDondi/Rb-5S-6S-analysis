@@ -2504,8 +2504,8 @@ rehearsal data mildly prefer a positive shift and drag the profile's
 rise, and the pilot peak's collision width settles 4.7 prior sigmas
 above its four-point prior.
 
-**What the margin is.** The prediction at the waist convention is
-0.348 MHz at 225 mW. The primary bound sits 1.3x below it, against the
+**What the margin is.** The prediction at 225 mW, under the retired waist
+convention, is not restated here (`private/history/`). The primary bound sits 1.3x below it, against the
 2.3x v3.2.0 claimed. The drop-4192 subset now reaches 0.355 MHz, slightly
 above the predicted central value, so the statement that every subset
 requires a lower intensity than the prior assumes is retracted along with

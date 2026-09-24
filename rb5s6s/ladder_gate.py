@@ -146,7 +146,12 @@ ANALYSIS_PROFILE = {
 
 
 def profile_of(analysis_id: str) -> str:
-    return ANALYSIS_PROFILE.get(analysis_id, "default")
+    """The profile of an analysis id. A suffixed id, `<base>@<world or session>`, climbs its OWN ladder
+    (its records sit under its own directory) on its base's profile: the plan's per-session ids (`@E`,
+    `@M`, Phase 6) and the twin worlds of C6b (`@volume`, `@volume-clipped`) are the same analysis on a
+    different world, so a rung passed on one world licenses nothing on another and the rungs they climb
+    are the same rungs. Until 2026-09-22 a suffixed id fell to the default profile's three rungs."""
+    return ANALYSIS_PROFILE.get(analysis_id.split("@", 1)[0], "default")
 
 
 def rungs_of(analysis_id: str) -> tuple:
@@ -450,6 +455,33 @@ def ladder_dir(analysis_id: str, cache: Optional[pathlib.Path] = None) -> pathli
     return (cache or _cache()) / ".ladder" / analysis_id
 
 
+def _private_results_dir() -> Optional[pathlib.Path]:
+    """The private results directory a re-run was pointed at, or None for the live tree."""
+    import os
+    v = os.environ.get("RB5S6S_RESULTS_DIR")
+    if not v:
+        return None
+    try:
+        if pathlib.Path(v).resolve() == (ROOT / "results").resolve():
+            return None
+    except OSError:
+        pass
+    return pathlib.Path(v)
+
+
+def record_dir(analysis_id: str, cache: Optional[pathlib.Path] = None) -> pathlib.Path:
+    """Where `record` writes. A RE-RUN POINTED AT A PRIVATE RESULTS DIRECTORY WRITES ITS RUNGS THERE TOO
+    (F482, 2026-09-24): a re-obtain of `run_window_surface.py` under `RB5S6S_RESULTS_DIR` overwrote the
+    LIVE noiseless rung of `window_surface`, the gate's own evidence, with a record of a table the live tree
+    did not carry. Reading is unchanged, so a private re-run is still gated by the live ladder; only its
+    writes stay beside its tables. An explicit `cache` is the caller's own choice and is honoured."""
+    if cache is None:
+        priv = _private_results_dir()
+        if priv is not None:
+            return priv / ".ladder_private" / analysis_id
+    return ladder_dir(analysis_id, cache)
+
+
 def climbable(analysis_id: str, rung: str, cache: Optional[pathlib.Path] = None) -> None:
     """Refuse BEFORE the computation, not only before the artefact (2026-09-16 night).
 
@@ -483,17 +515,56 @@ def climbable(analysis_id: str, rung: str, cache: Optional[pathlib.Path] = None)
                             f"artefact. The ladder is climbed in order.")
 
 
+#: THE LADDERS THAT CERTIFY ONE ESTIMATOR AT ONE CANONICAL TRUTH (C5-carry-1, 2026-09-22). F277: on
+#: 2026-09-21 a closure run at the retired truths with two realisations wrote the waist ladder's noiseless
+#: and low rungs, and `real_traces` would have read them for the 42 um estimator. The closure refused it at
+#: its one call site; the refusal now lives where the rung is written, so no caller can bypass it.
+CANONICAL_REQUIRED = {"ultra_joint_waist"}
+
+
+def _canonical_check(analysis_id: str, rung: str, canonical: Optional[Dict[str, Any]],
+                     d: pathlib.Path) -> None:
+    """Refuse a rung whose canonical key differs from the one the ladder FROZE at its first rung.
+
+    The key is whatever identifies what the ladder certifies (for the waist ladder, the truth in um).
+    The first rung written with a key freezes it in `canonical.json`; every later rung must present the
+    same key, and an analysis in CANONICAL_REQUIRED must present one at all. A new canonical truth is a
+    new ladder: its old directory goes to the history record, never overwritten here.
+    """
+    if canonical is None:
+        if analysis_id in CANONICAL_REQUIRED:
+            raise LadderRefused(
+                f"{analysis_id} certifies one estimator at one canonical truth, so its rung {rung!r} must "
+                f"declare it (record(..., canonical={{...}})); a rung without a key could have been measured "
+                f"anywhere (F277)")
+        return
+    key = json.loads(json.dumps(canonical, sort_keys=True))
+    f = d / "canonical.json"
+    if f.is_file():
+        frozen = json.loads(f.read_text())
+        if frozen != key:
+            raise LadderRefused(
+                f"{analysis_id}: rung {rung!r} declares canonical {key}, but the ladder froze {frozen} at "
+                f"its first rung; a different truth is a different ladder (F277)")
+    else:
+        d.mkdir(parents=True, exist_ok=True)
+        f.write_text(json.dumps(key, sort_keys=True, indent=1))
+
+
 def record(analysis_id: str, rung: str, *, detail: Dict[str, Any],
-           cache: Optional[pathlib.Path] = None) -> pathlib.Path:
+           cache: Optional[pathlib.Path] = None,
+           canonical: Optional[Dict[str, Any]] = None) -> pathlib.Path:
     """Write one rung's artefact, with the verdict COMPUTED from `detail`.
 
     There is deliberately no `passed` argument: a caller that tries to hand a verdict in gets a
     TypeError.  A rung whose PREDECESSOR is absent or not PASS is refused outright, so the ladder
-    cannot be climbed out of order.
+    cannot be climbed out of order. `canonical` is what the ladder certifies (the waist ladder's
+    truth); it is frozen at the first rung and a mismatch is refused (`_canonical_check`).
     """
     climbable(analysis_id, rung, cache=cache)
     verdict, reasons = _judge(rung, detail)
-    d = ladder_dir(analysis_id, cache)
+    d = record_dir(analysis_id, cache)
+    _canonical_check(analysis_id, rung, canonical, ladder_dir(analysis_id, cache))
     d.mkdir(parents=True, exist_ok=True)
     out = d / f"{rung}.json"
     out.write_text(json.dumps({
@@ -769,9 +840,16 @@ def _self_test() -> List[str]:
     # requirement must carry its own plant forward in the same edit.
     OK_C = {"coverage": 0.68, "chi2_red": 1.02, "odd_sign_agreement": True, "n_realisations": 100,
             "injected_over_record": 1.0, "injected_tau_over_record": 1.0,
-            "blame": "twin reproduces k2 and k4; k3 open"}
+            "blame": "twin reproduces mu2 and k4; mu3 open"}
     OK_A = dict(OK_C, bias_subtracted=True, spread_validated=True)
     bad = []
+    # A SUFFIXED ID CLIMBS ITS BASE'S RUNGS (C6b, 2026-09-22): a twin world or a session is the same
+    # analysis on another world, so it takes the base's profile, and an unknown base is still refused
+    # to the default's three rungs rather than inheriting from a name it merely contains
+    if profile_of("moment_window_bias@volume") != "moment_window_bias" or profile_of("ultra_joint_waist@E") != "waist":
+        bad.append("suffix: a suffixed id fell to the default profile instead of its base's")
+    if profile_of("no_such_analysis@volume") != "default":
+        bad.append("suffix: an unknown base was given a profile it does not have")
     # THE RESOLUTION COUNT (F32.3): eight realisations inside the band are UNRESOLVED, a hundred PASS
     _v8, _why8 = _judge("low", dict(OK_C, n_realisations=8))
     if _v8 == "PASS" or not any("UNRESOLVED" in w for w in _why8):
@@ -788,6 +866,25 @@ def _self_test() -> List[str]:
         cache = pathlib.Path(td)
         harness = cache / "h.py"
         harness.write_text("# plant\n")
+
+        # 0. THE CANONICAL KEY (C5-carry-1), both ways: frozen at the first rung, a mismatch refused,
+        #    a required ladder refused without one, and the same key admitted at the next rung
+        try:
+            record("ultra_joint_waist", "noiseless", detail=OK_N, cache=cache)
+            bad.append("canonical: a required ladder recorded a rung without a canonical key")
+        except LadderRefused:
+            pass
+        record("ultra_joint_waist", "noiseless", detail=OK_N, cache=cache, canonical={"truth_um": 42.0})
+        try:
+            record("ultra_joint_waist", "low", detail=OK_C, cache=cache, canonical={"truth_um": 52.0})
+            bad.append("canonical: a rung at a different truth than the frozen one was recorded (F277)")
+        except LadderRefused:
+            pass
+        try:
+            record("ultra_joint_waist", "low", detail=OK_C, cache=cache, canonical={"truth_um": 42.0})
+        except LadderRefused as exc:
+            bad.append(f"canonical: the frozen truth itself was refused at the next rung: {exc}")
+        record("plant_free", "noiseless", detail=OK_N, cache=cache)      # an unlisted ladder needs no key
 
         # 1. nothing recorded at all -> refused, and real_traces raises
         if not status("plant", str(harness), cache):

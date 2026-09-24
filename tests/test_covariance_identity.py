@@ -26,8 +26,9 @@ import pytest
 from rb5s6s._compat import trapezoid
 
 
-def _mixture_cumulants(u, w, var_of_u, grid, sigma_floor=0.0):
-    """Third cumulant of a mixture, exact and fixed-kernel, on one grid.
+def _mixture_moments(u, w, var_of_u, grid, sigma_floor=0.0):
+    """Third moment of a mixture, exact and fixed-kernel, on one grid (mu3 == kappa3
+    identically at this order, so the switch from the retired cumulant name moves nothing).
 
     Each element sits at -u with a Gaussian kernel of variance var_of_u(u).
     The fixed arm uses the weighted-mean variance, so its covariance term is
@@ -45,15 +46,15 @@ def _mixture_cumulants(u, w, var_of_u, grid, sigma_floor=0.0):
             out += wi * np.exp(-0.5 * ((grid + x) / s) ** 2) / (s * np.sqrt(2 * np.pi))
         return out / trapezoid(out, grid)
 
-    def k3(p):
+    def mu3(p):
         m = trapezoid(grid * p, grid)
         return float(trapezoid(((grid - m) ** 3) * p, grid))
 
-    return k3(build(v)), k3(build(np.full_like(v, vbar))), w, v
+    return mu3(build(v)), mu3(build(np.full_like(v, vbar))), w, v
 
 
 def test_the_identity_is_exact_for_a_kernel_whose_variance_exists():
-    """k3_fixed - k3_exact is +3 Cov(u, V), so the ratio of the two is +1.
+    """mu3_fixed - mu3_exact is +3 Cov(u, V), so the ratio of the two is +1.
 
     The producer's shipped column divided by MINUS 3 Cov, which made the
     prediction -1 while its own note said ONE. Both halves are asserted here:
@@ -63,35 +64,35 @@ def test_the_identity_is_exact_for_a_kernel_whose_variance_exists():
     u = np.linspace(0.0, 3.0, 60)
     w = rng.uniform(0.5, 1.5, u.size)
     grid = np.linspace(-60.0, 60.0, 400001)
-    k_e, k_f, wn, v = _mixture_cumulants(u, w, lambda x: 1.0 + 0.35 * x, grid)
+    mu_e, mu_f, wn, v = _mixture_moments(u, w, lambda x: 1.0 + 0.35 * x, grid)
 
     cov = float((wn * u * v).sum() - (wn * u).sum() * (wn * v).sum())
     assert cov > 0.0, "the case is built so the kernel widens with the shift"
 
     # the identity itself, to the grid's own precision
-    assert (k_f - k_e) == pytest.approx(3.0 * cov, rel=2e-3), (
-        f"k3_fixed - k3_exact is {k_f - k_e:.8g} against 3 Cov = {3 * cov:.8g}")
+    assert (mu_f - mu_e) == pytest.approx(3.0 * cov, rel=2e-3), (
+        f"mu3_fixed - mu3_exact is {mu_f - mu_e:.8g} against 3 Cov = {3 * cov:.8g}")
 
     # and the ratio the producer publishes, which must be PLUS one
-    ratio = (k_f - k_e) / (3.0 * cov)
+    ratio = (mu_f - mu_e) / (3.0 * cov)
     assert ratio == pytest.approx(1.0, rel=2e-3), (
         f"the published ratio is {ratio:.6f}; the retired convention divided "
         "by minus 3 Cov and would read -1.0 here")
 
 
-def test_a_kernel_that_does_not_vary_contributes_no_third_cumulant():
+def test_a_kernel_that_does_not_vary_contributes_no_third_moment():
     """The negative case: zero covariance, zero contamination, at any width.
 
     This is the half of the identity the centroid immunity rests on. A kernel
-    that is wide but CONSTANT is free in the third cumulant, so a producer that
+    that is wide but CONSTANT is free in the third moment, so a producer that
     reported a contamination here would be measuring its own grid.
     """
     u = np.linspace(0.0, 3.0, 60)
     w = np.ones_like(u)
     grid = np.linspace(-60.0, 60.0, 400001)
-    k_e, k_f, wn, v = _mixture_cumulants(u, w, lambda x: 4.0, grid)
+    mu_e, mu_f, wn, v = _mixture_moments(u, w, lambda x: 4.0, grid)
     assert float(v.max() - v.min()) == 0.0
-    assert (k_f - k_e) == pytest.approx(0.0, abs=1e-6 * max(abs(k_e), 1.0))
+    assert (mu_f - mu_e) == pytest.approx(0.0, abs=1e-6 * max(abs(mu_e), 1.0))
 
 
 def test_the_producer_expression_returns_the_sign_it_publishes():
@@ -103,10 +104,10 @@ def test_the_producer_expression_returns_the_sign_it_publishes():
     u = np.linspace(0.0, 3.0, 60)
     w = np.ones_like(u)
     grid = np.linspace(-60.0, 60.0, 400001)
-    k_e, k_f, wn, v = _mixture_cumulants(u, w, lambda x: 1.0 + 0.35 * x, grid)
+    mu_e, mu_f, wn, v = _mixture_moments(u, w, lambda x: 1.0 + 0.35 * x, grid)
     cov = float((wn * u * v).sum() - (wn * u).sum() * (wn * v).sum())
-    published = (k_f - k_e) / (3.0 * cov)
-    retired = (-3.0 * cov) / (k_f - k_e)
+    published = (mu_f - mu_e) / (3.0 * cov)
+    retired = (-3.0 * cov) / (mu_f - mu_e)
     assert published > 0.0 and retired < 0.0, (
         f"published {published:.4f}, retired convention {retired:.4f}: the two "
         "differ in sign, which is what the shipped note got wrong")

@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
-"""The windowed third cumulant's survival ratios, for THIS record's line.
+"""The windowed third moment's survival ratios, for THIS record's line.
 
-WHY THIS PRODUCER EXISTS. The three-layer cumulant statement went through
+WHY THIS PRODUCER EXISTS. The three-layer moment statement went through
 three wrong quantifications in two days, and the last was a convention slip:
 a survival band computed for a bare Cauchy of half-width gamma was quoted for
 a line whose Lorentzian is Gamma_nat plus gamma_coll in FULL width, under a
 laser and a transit kernel. Every kernel width below names its convention,
 and every prose surface quotes these rows instead of a hand computation.
 
-WHAT THE RATIO IS. kappa_3 of the observed line, windowed at +/-W about the
+WHAT THE RATIO IS. mu_3 of the observed line, windowed at +/-W about the
 window's own mean (fixed point, twenty passes), divided by the ramp's own
-kappa_3, -S0^3/135 on the blue side (lineshape.ramp_kappa3). One at no truncation loss; below one when the window
+mu_3, -S0^3/135 on the blue side (lineshape.ramp_mu3). One at no truncation loss; below one when the window
 clips the composite's tails; it can exceed one when a kernel is comparable
 to the window, so the suppression is truncation-limited, not guaranteed.
 
@@ -34,22 +34,23 @@ from rb5s6s.stark import kappa_pred_per_watt  # noqa: E402  (SSOT: one predicted
 from rb5s6s._compat import trapezoid as tz                        # noqa: E402
 from rb5s6s.constants import GAMMA_NAT_HZ                         # noqa: E402
 from rb5s6s.lineshape import model_grid_step_mhz, model_profile   # noqa: E402
-from rb5s6s.lineshape import RAMP_SIDE, ramp_kappa3, ramp_mean_over_s0  # noqa: E402  (O27: the ramp's side, stated once)
+from rb5s6s.lineshape import RAMP_SIDE, ramp_mu3, ramp_mean_over_s0  # noqa: E402  (O27: the ramp's side, stated once)
 
 OUT = C.RESULTS_DIR / "cumulant_window_check.csv"
 
 S0 = 3.0                 # MHz, the REFERENCE shift; the ratio depends on the shift through the fixed window's
                          # clipping of the composite's tails (the survival_vs_S0 rows measure it, no page derives it yet, and the reference rows name this shift) once
                          # the ramp is resolved on the model's grid (the row at the
-                         # archive's shift read 0.478 under-resolved and 0.498 resolved)
+                         # archive's shift read 0.478 under-resolved and 0.498 resolved) -- readings that stood at the 2026-09-04 code
 W = 8.0                  # MHz, window half-width about the self-centre
-SIGMA_LASER_FWHM = 1.6   # MHz FWHM (the twin's own laser kernel)
+from rb5s6s.reference_point import reference_point  # noqa: E402
+SIGMA_LASER_FWHM = reference_point()["sigma_laser"]   # MHz FWHM, the twin's own laser kernel: the archive point (F313)
 # MHz FWHM at the archive's 130 C from the waist convention, the value
 # twin_realism.csv carries as TRUTH; the config placeholder is the same function
 # at 110 C and the archive's line is not at 110 C. Never a literal.
-TRANSIT_FWHM = C.transit_fwhm_from_w0(C.W0_MEASURED_M, 130.0)
+TRANSIT_FWHM = C.transit_fwhm_from_w0(C.W0_CENTRAL_M, 130.0)
 GAMMAS = (0.2, 0.55, 1.1)   # MHz, gamma_coll grid spanning the record's range
-S0_2025 = round(float(kappa_pred_per_watt(C.W0_MEASURED_M, C.RHO_RETRO) * 0.225), 3)   # the 2025 campaign's shift, sourced from the one predicted coefficient
+S0_2025 = round(float(kappa_pred_per_watt(C.W0_CENTRAL_M, C.RHO_RETRO) * 0.225), 3)   # the 2025 campaign's shift, sourced from the one predicted coefficient
 S0_GRID = (S0_2025, 1.0, 3.0)  # MHz: the archive's shift, one, the reference
 # 160001 points and twenty fixed-point passes. At four passes the gc=0.55 ratio
 # reads 0.60 and RISES with gamma at 80001 points and at 160001 alike, so that
@@ -75,7 +76,7 @@ M_WINDOW = 32001         # points of the resampled window grid; the self-check
 def _selfcentred_mean(y: np.ndarray, w: float, m_pts: int = M_WINDOW, passes: int = 20,
                       grid: np.ndarray | None = None) -> float:
     """The self-centred windowed mean on the resampled window: the fixed point
-    of the first cumulant, iterated `passes` times (twenty converge it; four
+    of the first moment, iterated `passes` times (twenty converge it; four
     left it wrong by 2.0x and of the wrong sign, 2026-09-04). `grid` is the
     ambient grid `y` was built on, so a caller can vary that axis."""
     amb = FINE if grid is None else grid
@@ -88,7 +89,7 @@ def _selfcentred_mean(y: np.ndarray, w: float, m_pts: int = M_WINDOW, passes: in
     return c
 
 
-def _selfcentred_k3(y: np.ndarray, w: float, m_pts: int = M_WINDOW, passes: int = 20,
+def _selfcentred_mu3(y: np.ndarray, w: float, m_pts: int = M_WINDOW, passes: int = 20,
                     grid: np.ndarray | None = None) -> float:
     # The window is RESAMPLED onto its own uniform grid rather than masked on
     # FINE: a mask snaps both edges to grid points, and for a small windowed
@@ -140,24 +141,24 @@ def _line(gc: float, full: bool, s0: float = S0, steps: float = GRID_STEPS,
 
 def main() -> int:
     take_producer_lock("run_cumulant_window_check")
-    ramp = ramp_kappa3(S0)
+    ramp = ramp_mu3(S0)
     gnat = GAMMA_NAT_HZ / 1e6
     unrounded: dict[tuple[str, str], float] = {}   # the self-check compares these, not the printed cells
     rows = []
     for gc in GAMMAS:
         for full in (True, False):
-            r = _selfcentred_k3(_line(gc, full), W) / ramp
+            r = _selfcentred_mu3(_line(gc, full), W) / ramp
             tag = "full_line" if full else "lorentzian_alone"
             unrounded[(f"survival_{tag}", f"gc{gc}")] = r
             rows.append([f"survival_{tag}", f"gc{gc}", f"{r:.3f}", "",
-                         f"self-centred windowed kappa_3 over the ramp's own at the reference shift {S0:g} MHz, "
+                         f"self-centred windowed mu_3 over the ramp's own at the reference shift {S0:g} MHz, "
                          f"W {W:g} MHz, gamma_coll {gc} MHz. Lorentzian FWHM is "
                          f"Gamma_nat {gnat:.2f} plus gamma_coll (both MHz FWHM)"
                          + (f", laser {SIGMA_LASER_FWHM} MHz FWHM Gaussian, "
                             f"transit {TRANSIT_FWHM:.4f} MHz FWHM cusp" if full
                             else ", no laser, no transit: the derivation "
                                  "page's textbook case")])
-    # the S0 grid at the middle gamma. The windowed kappa_3 and the ramp's own
+    # the S0 grid at the middle gamma. The windowed mu_3 and the ramp's own
     # both scale as S0^3, so the ratio is shift-independent to first order and carries the window's clipping beyond it (measured, not derived); a first version
     # read 0.478 at the archive's shift because the ramp sat on fewer than five
     # of the model's grid cells. At MATCHED grid alignment the error collapses on
@@ -181,7 +182,7 @@ def main() -> int:
         cells = s0 / dnu_model
         if cells < MIN_RAMP_CELLS:
             raise SystemExit(f"survival_vs_S0 at {s0}: the ramp spans {cells:.1f} model cells, below {MIN_RAMP_CELLS}; not written")
-        r = _selfcentred_k3(_line(0.55, True, s0), W) / ramp_kappa3(s0)
+        r = _selfcentred_mu3(_line(0.55, True, s0), W) / ramp_mu3(s0)
         survival_at[s0] = r
         # THE KEY NAMES THE SHIFT'S ROLE, never its value: the campaign row was keyed S0_0.364 and then
         # S0_0.348, so every bound reference to it dangled each time the prediction moved (2026-09-17)
@@ -193,7 +194,7 @@ def main() -> int:
     # the two smallest shifts must agree: the ratio carries the fixed window's
     # clipping of the composite's tails, which grows with the shift (the survival_vs_S0 rows
     # measure it; no page derives it yet), so it is compared where the shift is
-    # smallest; a gap here is the grid (0.478 against 0.497 on the
+    # smallest; a gap here is the grid (0.478 against 0.497 on the (readings that stood at the 2026-09-04 code)
     # unresolved grid, 2026-09-04, which this assertion would have refused) or
     # the fixed window clipping more of the composite's tails as the shift grows, which the
     # print below sizes against the gate from the unrounded values; a much
@@ -205,10 +206,10 @@ def main() -> int:
     print(f"survival gap between S0 {s_lo:g} and {s_mid:g} MHz: {gap:.2e} relative, {gap / 0.01:.2f} of the gate")
     if gap > 0.01:
         raise SystemExit(f"survival at S0 {s_lo:g} and {s_mid:g} differ by {gap*100:.1f} per cent: the ramp is not resolved; not written")
-    # the first-cumulant pull's own window effect, for the 03 clause: the
+    # the first-moment pull's own window effect, for the 03 clause: the
     # windowed mean pull against the exact signed 2 S0/3 on the ramp's side (O27), SIGNED (positive is an
     # excess), on the resampled window with the same twenty fixed-point passes
-    # as the third cumulant. Four masked passes gave 0.104 as a shortfall and
+    # as the third moment. Four masked passes gave 0.104 as a shortfall and
     # the sign was hidden by abs(): an unconverged fixed point read as a
     # deficit for four days (a reader replayed it, 2026-09-04).
     y = model_profile(FINE, gamma_coll=0.55, sigma_laser_fwhm=SIGMA_LASER_FWHM,
@@ -216,8 +217,8 @@ def main() -> int:
                       grid_steps_per_kernel=GRID_STEPS)
     c = _selfcentred_mean(y, W)
     excess = 100 * (c / (ramp_mean_over_s0() * S0) - 1)
-    unrounded[("kappa1_window_excess_pct", "gc0.55")] = excess
-    rows.append(["kappa1_window_excess_pct", "gc0.55",
+    unrounded[("mu1_window_excess_pct", "gc0.55")] = excess
+    rows.append(["mu1_window_excess_pct", "gc0.55",
                  f"{excess:.3f}", "",
                  "per cent EXCESS of the windowed mean pull over the exact 2 S0/3 on the ramp's side "
                  "(a negative value would be a shortfall), same window and kernels "
@@ -238,13 +239,13 @@ def main() -> int:
     # precision is a refusal, not a result. This producer's first committed run
     # shipped a sign-flipping grid-noise row because nothing asserted this.
     for r in rows:
-        if not r[0].startswith(("survival_", "kappa1_")):
+        if not r[0].startswith(("survival_", "mu1_")):
             continue
         if r[0] == "survival_vs_S0":
             s0v = S0_2025 if r[1] == "S0_campaign_2025" else float(r[1].split("_")[1])
-            v2 = _selfcentred_k3(_line(0.55, True, s0v, 2 * GRID_STEPS, COARSE), W,
-                                 2 * M_WINDOW - 1, 40, COARSE) / ramp_kappa3(s0v)
-        elif r[0] == "kappa1_window_excess_pct":
+            v2 = _selfcentred_mu3(_line(0.55, True, s0v, 2 * GRID_STEPS, COARSE), W,
+                                 2 * M_WINDOW - 1, 40, COARSE) / ramp_mu3(s0v)
+        elif r[0] == "mu1_window_excess_pct":
             y2 = model_profile(COARSE, gamma_coll=0.55, sigma_laser_fwhm=SIGMA_LASER_FWHM,
                                transit_fwhm=TRANSIT_FWHM, s0=S0, resolve_shift=True,
                                grid_steps_per_kernel=2 * GRID_STEPS)
@@ -252,8 +253,8 @@ def main() -> int:
         else:
             gcv = float(r[1][2:])
             full = r[0].endswith("full_line")
-            v2 = _selfcentred_k3(_line(gcv, full, S0, 2 * GRID_STEPS, COARSE), W,
-                                 2 * M_WINDOW - 1, 40, COARSE) / ramp_kappa3(S0)
+            v2 = _selfcentred_mu3(_line(gcv, full, S0, 2 * GRID_STEPS, COARSE), W,
+                                 2 * M_WINDOW - 1, 40, COARSE) / ramp_mu3(S0)
         v1 = unrounded[(r[0], r[1])]
         if abs(v2 - v1) > 5e-4:   # half the last printed digit, unrounded on both sides
             raise SystemExit(f"UNCONVERGED: {r[0]}/{r[1]} moves "

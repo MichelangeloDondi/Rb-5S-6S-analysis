@@ -3,8 +3,9 @@ default path is untouched.
 
 Until 2026-09-08 `build_world_trace` convolved the pure transverse ramp, so
 the twin recovered what it injected and would not have recovered this bench's
-line: the collection window's divergence (kappa3 at 0.93 of the ramp's at
-64 um, reversed in sign at 16) and the standing wave's fringe-resolved tail
+line: the collection window's divergence (mu3 at 0.93 of the ramp's at the
+campaign waist of the time, reversed in sign at 16 microns) and the standing
+wave's fringe-resolved tail
 (a skew suppression near a quarter at 16 um) were both derived in the record
 and threaded into nothing. `lineshape.ramp_mixture` carries either or both
 from one local density; these tests hold it against the closed forms it
@@ -62,36 +63,36 @@ def _moments(x, dens):
 
 def test_the_fringe_density_without_contrast_is_the_ramp():
     """rho = 0 removes the fringe; dividing the path factor out leaves the
-    record's own ramp: mean +2/3, variance 1/18, third cumulant -1/135 (BLUE; O27)."""
-    d = fringe_shift_density(w0_m=64e-6, rho=0.0, n_atoms=200_000, seed=7,
+    record's own ramp: mean +2/3, variance 1/18, third moment -1/135 (BLUE; O27)."""
+    d = fringe_shift_density(w0_m=K.W0_CENTRAL_M, rho=0.0, n_atoms=200_000, seed=7,
                              coherence_s=COHERENCE_TRANSIT)
     assert d["kappa_bar"] == pytest.approx(math.sqrt(2.0 / 3.0), abs=1e-9)
-    m, v, k3 = _moments(d["x_grid"], d["density"])
+    m, v, mu3 = _moments(d["x_grid"], d["density"])
     assert m == pytest.approx(+2.0 / 3.0, abs=0.01)
     assert v == pytest.approx(1.0 / 18.0, rel=0.05)
-    assert k3 == pytest.approx(-1.0 / 135.0, rel=0.10)   # the odd cumulant mirrors (O27)
+    assert mu3 == pytest.approx(-1.0 / 135.0, rel=0.10)   # the odd moment mirrors (O27)
 
 
 def test_the_binned_density_agrees_with_the_pooled_sums_and_with_fringe_tail_mc():
-    """Same seed, same draws: the histogram's third cumulant in raw units is
+    """Same seed, same draws: the histogram's third moment in raw units is
     the power sums', and the power sums scale as S0 cubed against the MC."""
     d = fringe_shift_density(w0_m=16e-6, rho=0.94, n_atoms=200_000, seed=11,
                              coherence_s=COHERENCE_TRANSIT)
     x_raw = d["x_grid"] * d["kappa_bar"]
-    _, _, k3_hist = _moments(x_raw, d["density"] / d["kappa_bar"])
-    assert k3_hist == pytest.approx(d["kappa3_raw"], rel=0.02)
+    _, _, mu3_hist = _moments(x_raw, d["density"] / d["kappa_bar"])
+    assert mu3_hist == pytest.approx(d["mu3_raw"], rel=0.02)
     mc = fringe_tail_mc(w0_m=16e-6, s0_mhz=2.0, rho=0.94, n_atoms=200_000, seed=11)
-    assert mc["kappa3"] / 8.0 == pytest.approx(d["kappa3_raw"], rel=1e-6)
+    assert mc["mu3"] / 8.0 == pytest.approx(d["mu3_raw"], rel=1e-6)
     # and the fringe suppresses the skew at the tight waist, as the record says
-    assert mc["kappa3_nofringe"] != 0
-    assert -0.45 < mc["d_kappa3"] / mc["kappa3_nofringe"] < -0.10
+    assert mc["mu3_nofringe"] != 0
+    assert -0.45 < mc["d_mu3"] / mc["mu3_nofringe"] < -0.10
 
 
 def _world(kappa_scale=1.0, **kw):
     layers = {"cascade": False, "saturation": False, "stark": True,
               "bbr": False, "drift": False, "quantise": False, "randomise": False}
     return build_world_trace(
-        0.225, kappa_scale * kappa_pred_per_watt(K.W0_MEASURED_M, K.RHO_RETRO), 130.0, 0, 1, np.random.default_rng(4), layers,
+        0.225, kappa_scale * kappa_pred_per_watt(K.W0_CENTRAL_M, K.RHO_RETRO), 130.0, 0, 1, np.random.default_rng(4), layers,
         positions={"4192": 0.0}, shares={"4192": 1.0},
         gamma_coll=0.4, sigma_laser_fwhm=2.0, transit_fwhm=0.93,
         power_max_w=0.225, cycles_at_max=1.0, drift_mhz_total=0.0,
@@ -223,7 +224,7 @@ def test_the_coherence_end_is_named_and_the_old_silent_default_is_refused():
     instead of continuing to publish one end of a bracket as the answer."""
     for bad in (None, "cap", "", 0.0, -1e-9, float("inf")):
         with pytest.raises(ValueError):
-            fringe_shift_density(w0_m=64e-6, coherence_s=bad, n_atoms=200, seed=1)
+            fringe_shift_density(w0_m=K.W0_CENTRAL_M, coherence_s=bad, n_atoms=200, seed=1)
 
 
 def test_the_transit_sentinel_is_the_long_window_limit_and_a_short_one_moves_it():
@@ -233,9 +234,9 @@ def test_the_transit_sentinel_is_the_long_window_limit_and_a_short_one_moves_it(
     cap = fringe_shift_density(coherence_s=COHERENCE_TRANSIT, **kw)
     long_window = fringe_shift_density(coherence_s=1.0, **kw)   # 1 s >> 65 ns
     short = fringe_shift_density(coherence_s=K.TAU_6S_S, **kw)
-    assert long_window["kappa3_raw"] == pytest.approx(cap["kappa3_raw"], rel=1e-9)
+    assert long_window["mu3_raw"] == pytest.approx(cap["mu3_raw"], rel=1e-9)
     # and the short window is a real movement, not the same number twice
-    assert abs(short["kappa3_raw"] / cap["kappa3_raw"] - 1.0) > 0.02
+    assert abs(short["mu3_raw"] / cap["mu3_raw"] - 1.0) > 0.02
 
 
 def test_the_sweep_envelope_covers_the_coherence_corner_it_names():

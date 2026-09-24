@@ -24,8 +24,8 @@ nu = np.linspace(-20, 20, 4001)                      # MHz, laser axis
 profile = r.model_profile(nu, gamma_coll=0.5,        # collisional FWHM, MHz
                           sigma_laser_fwhm=1.0,      # laser width, MHz
                           transit_fwhm=r.transit_fwhm_from_w0(
-                              r.W0_MEASURED_M, 130.0),
-                          s0=r.stark_shift_S0_mhz(0.225, r.W0_MEASURED_M))
+                              r.W0_CENTRAL_M, 130.0),
+                          s0=r.stark_shift_S0_mhz(0.225, r.W0_CENTRAL_M))
 print(profile.sum() * (nu[1] - nu[0]))               # 1.000017, normalised
 ```
 

@@ -86,8 +86,10 @@ def test_no_direct_trapezoid_outside_compat():
         for py in (root / sub).glob("*.py"):
             if py.name in ("_compat.py", "test_constants.py"):  # shim + this guard
                 continue
-            if call.search(py.read_text()):
-                offenders.append(f"{sub}/{py.name}")
+            text = py.read_text()
+            if call.search(text):
+                rel = f"{sub}/{py.name}"
+                offenders.append(rel)
     assert not offenders, f"direct numpy trapezoid CALL outside _compat: {offenders}"
 
 

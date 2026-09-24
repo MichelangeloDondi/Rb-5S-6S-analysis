@@ -15,7 +15,7 @@ these three predictions, which are functions of P, not of time):
   (C3b) AMPLITUDE ~ P^2: two-photon rate ∝ I_forward·I_backward ∝ P^2, so the
         peak height should track P^2 until saturation/absorption bend it.
   (C3c) ASYMMETRY undetectable: the ramp's skew contribution to the whole line
-        scales as P^3 (cumulants add; only the ramp is asymmetric), which is
+        scales as P^3 (third moments add; only the ramp is asymmetric), which is
         ~1e-4 here against a ~1e-3 noise floor. So a SYMMETRIC-model fit should
         leave residual skew with NO significant trend vs power.
 

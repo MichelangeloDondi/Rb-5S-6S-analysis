@@ -81,9 +81,11 @@ def main(argv=None) -> int:
     ap.add_argument("--powers", type=float, nargs="*", default=list(DEFAULT_POWERS_MW),
                     help="ladder rungs in mW")
     ap.add_argument("--temperature", type=float, default=130.0, help="cell temperature in C")
-    ap.add_argument("--gamma-coll", type=float, default=0.580779)
-    ap.add_argument("--sigma-laser", type=float, default=1.560691)
-    ap.add_argument("--transit", type=float, default=0.957477)
+    from rb5s6s.reference_point import reference_point
+    _ap = reference_point()      # F313: the archive's line, read from the committed fit and the waist, never typed
+    ap.add_argument("--gamma-coll", type=float, default=round(_ap["gamma_coll"], 6))
+    ap.add_argument("--sigma-laser", type=float, default=round(_ap["sigma_laser"], 6))
+    ap.add_argument("--transit", type=float, default=round(_ap["transit_fwhm"], 6))
     ap.add_argument("--tau-int", type=float, default=3.8,
                     help="sample correlation, the campaign's measured median")
     ap.add_argument("--seed", type=int, default=20260824)

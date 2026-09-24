@@ -282,10 +282,10 @@ def project_pull(rows, inp) -> dict:
     # aperture's on-axis factor, so both signs are evaluated through it. Until that day this read
     # stark_shift_S0_mhz without the factor, and the other sign's arm read the static-tail
     # recompute's magnitude where its own note named Orson's +1093 (P7).
-    s0_pred = kappa_pred_per_watt(K.W0_MEASURED_M, K.RHO_RETRO) * QUOTE_P_W
+    s0_pred = kappa_pred_per_watt(K.W0_CENTRAL_M, K.RHO_RETRO) * QUOTE_P_W
     s0_pred_other_sign = (lineshape.stark_shift_S0_mhz(
-        QUOTE_P_W, K.W0_MEASURED_M, K.RHO_RETRO, K.DELTA_ALPHA_AU_ORSON2021)
-        * lineshape.aperture_onaxis_factor(K.W0_MEASURED_M))
+        QUOTE_P_W, K.W0_CENTRAL_M, K.RHO_RETRO, K.DELTA_ALPHA_AU_ORSON2021)
+        * lineshape.aperture_onaxis_factor_actual(K.W0_CENTRAL_M))
     sign_gap = s0_pred + s0_pred_other_sign
 
     _add(rows, "input_centre_precision_per_trace", "archive", 2.0 * inp["sigma_centre_laser"],

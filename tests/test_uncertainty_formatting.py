@@ -48,14 +48,26 @@ import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
 BASELINE = Path(__file__).with_name("_uncertainty_baseline.json")
-SKIP = ("PREREGISTRATION", "/lit/")
+SKIP = ("PREREGISTRATION", "/lit/",
+        # the generated index of the lit notes: other authors' published values, quoted as printed (8a.5),
+        # the same numbers the /lit/ exemption already covers one directory down
+        "LITERATURE_INDEX")
+
+# A FROZEN RECORD IS EXEMPT (protocol 2.1a), by the marker the other readers of records already honour:
+# the one definition is scripts/check_moved_values.py's _RECORD_MARK, and the plant below asserts the two
+# strings agree, so this is a pointer at that predicate and never a fourth spelling of it (F387).
+RECORD_MARK = "<!-- kind: record -->"
+
+# AN EXPRESSION, NOT A MEASUREMENT: the guided-mode note's intensity "modulated by 1 +- 2 eps" is algebra.
+FORMULAS = {("1", "2")}
 
 # An uncertainty a PERSON CHOSE keeps the precision they chose (protocol
 # 8a.5). RHO_RETRO_ERR = 0.04 is a declared one-sigma on an assumed retro
 # return fraction, so printing 0.040 would claim the assumption is known to
 # two digits. The test is provenance, not size.
 DECLARED = {("0.94", "0.04"),
-            ("18", "1"), ("50", "10")}   # the owner's stated optics tolerances (2026-09-04)
+            ("18", "1"), ("50", "10"),   # the owner's stated optics tolerances (2026-09-04)
+            ("50", "5"), ("6", "1")}     # as he restated them on 2026-09-13: the image distance and the QE
 
 # Another author's published value, quoted as they published it (8a.5). Not
 # ours to reformat: tidying someone else's paper is a different fault from
@@ -80,7 +92,7 @@ OTHERS = {("40", "0.54"),        # Cao 2025, 5S-5D3/2 self-broadening
 # `test_the_pair_guard_reads_wrapped_and_tagged_pairs` feeds it every shape,
 # the math span's backslash-pm among them.
 PAIR = re.compile(
-    r"(-?\d+\.?\d*)\s*(?:±|\+/-|plus\s+or\s+minus|\\pm"
+    r"(-?\d+\.?\d*)\s*(?:±|\+/-|\+-|plus\s+or\s+minus|\\pm"
     r"|against (?:its own |a )?scatter of|against a scatter of)\s*(\d+\.?\d*)")
 
 
@@ -153,9 +165,12 @@ def _violations() -> list[str]:
         path = ROOT / rel
         if not path.exists():
             continue
-        for n, m in _pairs_in(path.read_text()):
+        text = path.read_text()
+        if RECORD_MARK in text:
+            continue
+        for n, m in _pairs_in(text):
             value, unc = m.group(1), m.group(2)
-            if (value, unc) in DECLARED or (value, unc) in OTHERS:
+            if (value, unc) in DECLARED or (value, unc) in OTHERS or (value, unc) in FORMULAS:
                 continue
             if _sig(unc) != 2:
                 bad.append(f"{rel}:{n} {m.group(0)!r} uncertainty has "
@@ -181,6 +196,16 @@ def test_no_new_uncertainty_formatting_violations():
         + "\n  ".join(bad[:12]))
     if len(bad) < allowed:
         BASELINE.write_text(json.dumps({"count": len(bad)}, indent=2) + "\n")
+
+
+def test_the_ascii_connector_and_the_record_marker_are_read():
+    """THE BLINDNESS THE RULE FILE NAMED, CLOSED (owner, 2026-09-24: "always 2 significant digits of
+    uncertainty"). The governance prose writes the ASCII +- and this pattern did not read it, which hid eleven
+    tracked violations. And the record exemption is the SAME marker check_moved_values honours."""
+    ms = [m.group(0) for _, m in _pairs_in("the floor is 0.62 +- 0.03 MHz and 6.7 +- 2.9 there.\n")]
+    assert ms and ms[0].startswith("0.62"), "the ASCII connector must be read as a pair"
+    src = (ROOT / "scripts" / "check_moved_values.py").read_text()
+    assert f'_RECORD_MARK = "{RECORD_MARK}"' in src, "the record marker drifted from check_moved_values' definition"
 
 
 def test_the_guard_actually_finds_the_known_shapes():

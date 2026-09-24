@@ -221,7 +221,7 @@ def main() -> int:
     print("  The infrared absorbs as strongly per lower-state atom as D1 does.")
     print("  What separates the channels is population and nothing else.")
 
-    m = ramp_moments(C.W0_MEASURED_M, 0.225, 2.2e-3)
+    m = ramp_moments(C.W0_CENTRAL_M, 0.225, 2.2e-3)
     f_ex = (m["sat_w"] / 2.0) / (1.0 + m["sat_w"])
     n6s, n5p12, n5p32 = f_ex, f_ex * a12 * TAU_5P12_S, f_ex * a32 * TAU_5P32_S
     print()
@@ -234,8 +234,8 @@ def main() -> int:
     print("  So trapped infrared here stimulates 6S DOWN. The 5P to 6S")
     print("  re-excitation cannot happen where the atoms are being driven.")
 
-    z_r = math.pi * C.W0_MEASURED_M ** 2 / 993.4e-9
-    v_beam = math.pi * C.W0_MEASURED_M ** 2 * (2.0 * z_r) * 1e6
+    z_r = math.pi * C.W0_CENTRAL_M ** 2 / C_CONST.LAMBDA_LASER_M
+    v_beam = math.pi * C.W0_CENTRAL_M ** 2 * (2.0 * z_r) * 1e6
     v_halo = (4.0 / 3.0) * math.pi * HALO_RADIUS_CM ** 3
     print()
     print("THE HALO, where it does happen. Trapped 795 nm deposits 5P1/2")

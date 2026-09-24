@@ -135,8 +135,9 @@ wrong width: a band mismatch is a systematic, not a noise.
 
 ## The three separate questions
 
-Measured 2026-08-21, the line excludes a purely Lorentzian laser
-contribution at 26 of the 32 canonical conditions above three sigma
+Measured 2026-08-21 and re-read at the calculated waist, the line excludes a
+purely Lorentzian laser contribution at 16 of the 32 canonical conditions above
+three sigma
 ([the Voigt profile](voigt-profile.md)). That result and the tooth-scatter
 evidence above answer different questions. The lineshape asks which kernel
 family fits, answered at one end-member: not a pure Lorentzian. An
@@ -153,13 +154,13 @@ the other, a purely Gaussian one, leaving the answer between them.
 ## The laser-equivalent width, measured
 
 Later on 2026-08-21 that width was measured: freeing a Lorentzian-equivalent
-component alongside the Gaussian one is preferred at every peak by a nested
-likelihood ratio with one parameter on its boundary, and the inverse-variance
-mean across peaks is $\Gamma_{L,\text{equiv}} = 0.398$ MHz on the transition
-axis (`results/kernel_k3.csv`). The four per-peak values run from 0.315 to
-0.449 MHz, and a common scalar is neither rejected nor established, at
-$p = 0.097$: an aggregate over four spectral conditions, not a measured
-constant.
+component alongside the Gaussian one is preferred at three of four peaks
+by a nested likelihood ratio with one boundary parameter, and the
+inverse-variance mean across peaks is $\Gamma_{L,\text{equiv}} = 0.078$ MHz on
+the transition axis (`results/kernel_k3.csv`). The four per-peak values run
+from 0.009 to 0.115 MHz, and a common scalar is neither rejected nor
+established, at $p = 0.16$: an aggregate over four spectral conditions, not a
+measured constant.
 
 It is not identifiable at one condition: a Lorentzian laser width and the
 collisional width add exactly, so only their sum can be measured there,
@@ -167,11 +168,11 @@ and a well-determined split at a single condition is a numerical artefact,
 not physics. Density is the lever that separates them, since the
 collisional width scales with $N(T)$ and a laser width does not, so the
 width above is a property of the whole temperature ladder, not any single
-point. It also dominates the coefficient it perturbs: freeing the kernel
-moves $\beta_\text{self}$ by 42 to 66 per cent, with a kernel-representation
-sensitivity, within the family tested, of 3.24 times the statistical
-error, so more repetitions of the current construction do not improve
-$\beta_\text{self}$. That factor is a sensitivity within the tested
+point. It perturbs the coefficient by less than the statistics do:
+freeing the kernel moves $\beta_\text{self}$ by 5 to 48 per cent, with a
+kernel-representation sensitivity, within the family tested, of 0.61 times
+the statistical error, so more repetitions still improve $\beta_\text{self}$. That
+factor is a sensitivity within the tested
 family, not an uncertainty on the coefficient: the family's own adequacy
 is a separate question with its own instrument
 ([identifiability](identifiability.md)).

@@ -123,7 +123,7 @@ the waist and the laser width degenerate.
 ```python
 from rb5s6s import transit_fwhm_from_w0
 
-for w0_um in (32, 64, 90):
+for w0_um in (32, 42, 90):
     t = transit_fwhm_from_w0(w0_um * 1e-6, 130.0)
     print(f"w0 = {w0_um:3d} um -> transit FWHM {t:.3f} MHz")
 ```
@@ -143,7 +143,7 @@ for w0_um in (32, 64, 90):
   kernel adds a third term to.
 - [The beam waist](the-beam-waist.md), the provenance of the waist this
   kernel's width depends on and the page that carries this number's
-  lineage to the 64 µm value now used.
+  history to the calculated 42.38 µm value now used.
 - [Identifiability](identifiability.md), the transit-laser degeneracy
   through the waist.
 - [Monte Carlo methods](monte-carlo-methods.md), the trajectory average

@@ -275,6 +275,62 @@ def _baseline() -> dict:
     return json.loads(_BASELINE_PATH.read_text(encoding="utf-8"))
 
 
+# F299 (2026-09-22): the text extraction every check above reads DROPS MATHEMATICAL SYMBOLS. A radical lost
+# from Taylor, Joachimi and Kitching 2013's abstract bound rode through as "2/N_D", and so did the note's own
+# reasoning about it, an order of magnitude off. So a quotation carrying mathematics is verbatim only against
+# the RENDERED page, and its paragraph names that check: `<!-- rendered-page: p. N -->`. The quotations that
+# carried mathematics on 2026-09-22 without one are the members of `_math_quote_baseline.json`, which may only
+# shrink. This part reads the notes alone, so it runs where the shelf is absent too.
+_MATH_RE = re.compile(
+    r"[\u221a\u2211\u220f\u222b\u2202\u2207\u00b1\u00d7\u00f7\u2264\u2265\u2248\u2260\u221d\u221e"   # radical, sums, operators
+    r"\u00b2\u00b3\u00b9\u2070\u2074-\u2079\u207a\u207b\u2080-\u2089"                                    # super- and subscripts
+    r"\u03b1-\u03c9\u0393\u0394\u0398\u039b\u039e\u03a0\u03a3\u03a6\u03a8\u03a9]"                       # Greek
+    r"|\\[a-zA-Z]+|\$[^$\s][^$]*\$"                                                                  # LaTeX
+    r"|\b[A-Za-z][A-Za-z0-9]*_[A-Za-z0-9{]|[A-Za-z0-9)\]]\^[\w{(\-]|\bsqrt\b")                      # N_D, x^2, sqrt
+_RENDERED_RE = re.compile(r"<!--\s*rendered-page:")
+_MATH_BASELINE_PATH = Path(__file__).with_name("_math_quote_baseline.json")
+
+
+def _math_quotes(note: Path):
+    """(line, quotation, rendered) for every body quotation carrying mathematics; `rendered` when its paragraph
+    names a rendered-page check. Ellipsis spans are included: a dropped symbol does not care about an elision."""
+    text = note.read_text(encoding="utf-8")
+    ends = [m.end() for m in _FM_END.finditer(text)]
+    body_start = ends[1] if len(ends) >= 2 else 0
+    out, pos, line_no = [], 0, 1
+    for para in text.split("\n\n"):
+        start, at = line_no, pos
+        line_no += para.count("\n") + 2
+        pos += len(para) + 2
+        if at < body_start or _EXEMPT_RE.search(para):
+            continue
+        rendered = bool(_RENDERED_RE.search(para))
+        joined = " ".join(para.split())
+        for m in _QUOTE_RE.finditer(joined):
+            q = m.group(1).strip()
+            if len(q.split()) >= MIN_WORDS and _MATH_RE.search(q):
+                out.append((start, q, rendered))
+    return out
+
+
+def _math_debts() -> dict:
+    """{digest: note key} for every held note's mathematical quotation that names no rendered-page check."""
+    out = {}
+    for p in sorted(LIT_DIR.glob("*.md")):
+        if _frontmatter(p).get("held") != "true":
+            continue
+        for _, q, rendered in _math_quotes(p):
+            if not rendered:
+                out[_digest(p.stem, q)] = p.stem
+    return out
+
+
+def _math_baseline() -> dict:
+    if not _MATH_BASELINE_PATH.exists():
+        return {}
+    return json.loads(_MATH_BASELINE_PATH.read_text(encoding="utf-8"))["members"]
+
+
 def _extract(pdf: Path):
     """Normalised text of the PDF, or None when it cannot be read (not a note defect)."""
     try:
@@ -371,16 +427,66 @@ def test_the_escaped_substitution_is_now_caught_against_its_pdf():
     assert _norm("it is essential that the spectral estimate accounts for the window length") not in hay
 
 
+def test_a_quotation_carrying_mathematics_names_a_rendered_page_check():
+    """F299: a NEW mathematical quotation without a rendered-page check is refused, whatever the extraction says."""
+    base = _math_baseline()
+    new = sorted({k for d, k in _math_debts().items() if d not in base})
+    assert not new, (
+        "quotation(s) carrying mathematics with no rendered-page check (F299): the text extraction the verbatim "
+        "guard reads drops radicals, sums, exponents and Greek letters, so a lost symbol passes it. Check the "
+        "span against the RENDERED page and mark its paragraph '<!-- rendered-page: p. N -->', in: " + ", ".join(new))
+
+
+def test_the_math_quote_baseline_is_not_looser_than_reality():
+    """A member that no longer names an unchecked mathematical quotation is a paid debt, and the baseline shrinks."""
+    live = _math_debts()
+    stale = sorted({k for d, k in _math_baseline().items() if d not in live})
+    assert not stale, (
+        f"math-quote baseline members paid down or moved in {stale}: python tests/test_lit_quotes_are_verbatim.py "
+        f"--reseed-math --reason '<what was checked>'")
+
+
+def test_the_math_refusal_sees_the_radical_that_escaped(tmp_path):
+    """PLANTED on F299's own case, both ways, and on a plain quotation that carries no mathematics."""
+    note = tmp_path / "taylor_plant.md"
+    body = ('---\ncitekey: taylor_plant\nheld: true\n---\n# plant\n\n'
+            'The abstract bound, verbatim: "the variance of the estimate is inflated by 2/N_D for N_D data points" (p. 1).\n')
+    note.write_text(body, encoding="utf-8")
+    [(_, q, rendered)] = _math_quotes(note)
+    assert "N_D" in q and not rendered, "the unchecked mathematical quotation must be seen"
+    note.write_text(body.replace("(p. 1).", "(p. 1). <!-- rendered-page: p. 1 -->"), encoding="utf-8")
+    [(_, _, rendered)] = _math_quotes(note)
+    assert rendered, "the marked paragraph must count as checked"
+    note.write_text('---\nheld: true\n---\n\nIt says "the spectrum is given only by the local potential felt by '
+                    'the atoms" plainly.\n', encoding="utf-8")
+    assert _math_quotes(note) == [], "a plain quotation carries no mathematics"
+    for s in ("sqrt(2/N) holds for all eight samples", "the error is \u00b1 0.78 on every point here",
+              "an exponent x^2 grows with every step taken", "the width \\Gamma rises with the density here"):
+        assert _MATH_RE.search(s), s
+
+
 def main(argv=None) -> int:
     import argparse
     ap = argparse.ArgumentParser(description="re-seed the known-unmatched baseline from the shelf")
     ap.add_argument("--reseed", action="store_true")
+    ap.add_argument("--reseed-math", action="store_true",
+                    help="re-seed the F299 baseline of mathematical quotations without a rendered-page check")
     ap.add_argument("--reason", default=None)
     a = ap.parse_args(argv)
-    if not a.reseed:
-        ap.error("--reseed --reason '<why>' is the only action")
+    if not (a.reseed or a.reseed_math):
+        ap.error("--reseed or --reseed-math, with --reason '<why>', are the only actions")
     if not a.reason:
         ap.error("--reason is required: the baseline records what is known, and why it moved")
+    if a.reseed_math:
+        import datetime
+        members = _math_debts()
+        _MATH_BASELINE_PATH.write_text(json.dumps({
+            "_what": ("digests of (note, quotation) pairs carrying mathematics with no rendered-page check (F299); "
+                      "may only shrink"),
+            "_seeded": datetime.date.today().isoformat(), "_reason": a.reason,
+            "members": members}, indent=1, sort_keys=True) + "\n", encoding="utf-8")
+        print(f"math baseline: {len(members)} quotations in {len(set(members.values()))} notes")
+        return 0
     members, notes, quotes = {}, 0, 0
     for key, note, pdf in _CHECKED_ALL:
         hay = _extract(pdf)

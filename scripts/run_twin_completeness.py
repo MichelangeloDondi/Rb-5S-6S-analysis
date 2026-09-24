@@ -81,6 +81,10 @@ TWIN_SPAN = (-200.0, 200.0)
 #: here held out.
 
 
+from rb5s6s.reference_point import reference_point  # noqa: E402
+_AP = reference_point()   # F313: the archive's line, read from the committed fit and the waist, never typed
+
+
 def _cells(m: float, e: float) -> tuple[str, str, str]:
     """Value and error cells, with the uncertainty moved into the note when the
     pair falls outside the plain-decimal band.
@@ -185,7 +189,7 @@ def _floor_for(r: dict) -> float:
 def _twin(used: list[dict], tau_int: float, tilt: float = 0.0,
           floor: bool = True) -> list[dict]:
     """One twin trace per real trace, at that trace's own power, peak and law."""
-    law_s0 = 0.364   # a design value of its date (the static-tail prediction), queued: twin-working-point-ssot
+    law_s0 = _AP["s0_225mW"]   # the archive point's predicted S0 at 225 mW, READ (F313; was the static-tail era's typed value)
     out = []
     for i, r in enumerate(used):
         p_w = float(r["power_mW"] or 225.0) / 1000.0
@@ -196,7 +200,7 @@ def _twin(used: list[dict], tau_int: float, tilt: float = 0.0,
             layers=dict(cascade=True, saturation=True, stark=True, bbr=True,
                         drift=True, quantise=True),
             positions={r["peak"]: 0.0}, shares={r["peak"]: 1.0},
-            gamma_coll=0.55, sigma_laser_fwhm=1.6, transit_fwhm=0.9575,
+            gamma_coll=_AP["gamma_coll"], sigma_laser_fwhm=_AP["sigma_laser"], transit_fwhm=_AP["transit_fwhm"],
             power_max_w=0.225, cycles_at_max=1.0, drift_mhz_total=0.05,
             noise_frac_bright=0.004, adc_levels=65536, gamma_l=0.40,
             resolve_shift=True, grid_span=TWIN_SPAN, tau_int=tau_int,

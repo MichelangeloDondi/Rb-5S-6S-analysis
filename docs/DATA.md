@@ -116,14 +116,14 @@ traces that share one setting. Every construction in this repository that reads
 a position rather than a width is built to live inside those runs, and the ones
 that could not be are withdrawn.*
 
-Every trace is 2000 points, 0.5 ms step, 1.000 s window, taken on an
+Every trace is 2000 points, 0.5 ms step, 1.000 s window, taken on an <!-- other-quantity: the 1.000 s trace acquisition window, 2000 points at 0.5 ms, not a committed cell -->
 **Agilent/Keysight InfiniiVision DSO-x 3054A** (500 MHz, 4 GSa/s). The LeCroy
 on the same bench would not trigger reliably (recollection, 2026-07-23), and
 the export signature confirms which instrument wrote the files. Every CSV in
 the dataset opens `x-axis,N` and `second,Volt`, which is the InfiniiVision
 format and not LeCroy's.
 
-The voltage grid of those files spans 11.86 bits across the signal swing,
+The voltage grid of those files spans 11.86 bits across the signal swing, <!-- other-quantity: a bit count -->
 which an eight-bit converter cannot write at any record length, so the
 scope's High Resolution mode was active throughout. The vertical range that
 mode was applied on changed at every rung of the power ladder, by a factor
@@ -194,7 +194,7 @@ been logged, so the cooling blocks' drive power rests on this file alone.
 
 Three sessions precede the campaign, surfaced 2026-07-24 and kept outside the
 frozen record: the EOM first trials at 2025-07-04 03:37 JST, then the 50-trace
-LeCroy session that evening, at four peaks, 90/180/270 mW, `G=10^6`,
+LeCroy session that evening, at four peaks, 90/180/270 mW, `G=10^6`, <!-- other-quantity: a drive power in mW of the LeCroy evening -->
 double-temperature notation. Then on the campaign morning the ruler's final
 commissioning 04:18–06:33, `Initial attempts` → `Def`, and a four-power sweep at
 06:54–07:11, results report addendum 9. Its files say `91c650ma`, but that
@@ -330,7 +330,7 @@ byte-exact:
    e.g. 4207@90 °C).
 
 5. **InfiniiVision export quirks (found at first strict-parse contact, 2026-07-11).**
-   (i) ~180 files contain 1–4 "time-without-voltage" rows at the window
+   (i) ~180 files contain 1–4 "time-without-voltage" rows at the window <!-- other-quantity: a count of files -->
    edges (a benign export artifact, and the loader drops and counts them).
    (ii) `rulers_t/4192nm_T70C_P225mWi_RFon_r3.csv` is dropout-riddled: ~950 *interior*
    empty rows, only 1047 valid samples, hard-flagged and excluded from ruler
@@ -370,7 +370,7 @@ hash**:
 | where | what | status |
 |---|---|---|
 | `data_raw/` (this repo) | the frozen analysis record: MANIFEST.csv in every copy, and the 297 curated traces in the copy that carries them. Every fitted number regenerates from the traces. | **frozen**, never edited |
-| `data_recovered/` (this repo) | the backup-recovered layer: `CLOCK.csv` (the acquisition clock, hash→mtime for all 438 backup files), the 16 backup-only discards, the 4-variant lineage of the one degraded trace. See its README. | additive only |
+| `data_recovered/` (this repo) | the backup-recovered layer: `CLOCK.csv` (the acquisition clock, hash→mtime for all 438 backup files), the 16 backup-only discards, the 4-variant lineage of the one degraded trace. See its README. | additive only <!-- other-quantity: a file count --> |
 | release asset `raw-backup-2026-07-24` | the complete timestamped backup tree, verbatim (`tar.gz` preserving mtimes, sha256 in the release notes and addendum 10), covering all four sessions | preserved public record |
 | Desktop `RawDataBackUp` (private) | the provenance root, as found | never touched |
 | `~/Documents/*_QUARANTINE_*` (private) | read-only working copies the audit ran on, still carrying the folder names they were given in 2026-07. Two of them, the 4 July tree and the campaign-morning tree, are also read in place by `run_stark_joint.py` as the second and third sessions of the joint light-shift fit | never modified |
@@ -705,7 +705,7 @@ conclusions:
   behaviour (ramp-law inflation ≤2% across 25→225 mW). The third-moment and skew
   observable proposed in the brief is unmeasurable (≈1×10⁻⁴ vs noise floor
   ≈1×10⁻³), so power-shift physics moves to the fixed-lock session.
-- Traces are 1.000 s / 2000 pts (the brief said 840 ms, which is wrong).
+- Traces are 1.000 s / 2000 pts (the brief said 840 ms, which is wrong). <!-- other-quantity: the trace acquisition window, not a committed cell -->
 - The sweep turnaround can sit **inside** the acquisition window: in the
   4207 nm 25 mW block the triangle folds at t ≈ 432 ms and the retrace
   re-crosses the line near the window edge (in 3 of 5 keepers and the
@@ -776,13 +776,13 @@ the brief, and they moved no headline number.
 - **The lever test, in which the fitted γ_coll is a floor and β_self is lever-dependent,
   hence a *bound* (2026-07-12).** The figures in this entry are as MEASURED on
   its own date and the pipeline has been refit since, so read the current
-  values from `results/lever_crosscheck.csv` rather than from here. As of
-  2026-08-14 that file gives the 4-peak mean γ_coll as 0.401 / 0.391 / 0.444 / <!-- other-quantity: a collisional width of 2026-08-14, not the shift band's edge -->
-  0.594 MHz and the rise as ×[1.51](../results/lever_crosscheck.csv "ref:lever_crosscheck:gamma_rise_factor:70to130") over a density ratio of ×48.1 (Alcock, density.py's default law), and the joint
+  values from `results/lever_crosscheck.csv` rather than from here. At the
+  calculated waist that file gives the 4-peak mean γ_coll as 0.075 / 0.057 / 0.088 / <!-- other-quantity: a collisional width, not the shift band's edge -->
+  0.223 MHz and the rise as ×[2.99](../results/lever_crosscheck.csv "ref:lever_crosscheck:gamma_rise_factor:70to130") over a density ratio of ×48.1 (Alcock, density.py's default law), and the joint
   β dropping sharply once the ×48.1 130 °C anchor folds in, well below the
   cooling-only headline (see `results/lever_crosscheck.csv`'s
   `beta_lever_probe_130` and `beta_crosscheck` rows). The direction
-  and the conclusion are unchanged, so the entry stands: ×[1.51](../results/lever_crosscheck.csv "ref:lever_crosscheck:gamma_rise_factor:70to130") across
+  and the conclusion are unchanged, so the entry stands: ×[2.99](../results/lever_crosscheck.csv "ref:lever_crosscheck:gamma_rise_factor:70to130") across
   ×48.1 is still far sub-linear. What follows is the 2026-07-12 record.
   Per-condition fits (linefit_conditions):
   the 4-peak mean γ_coll is 0.245 / 0.231 / 0.289 / 0.454 MHz at 70/90/110/130 °C
@@ -845,8 +845,10 @@ the brief, and they moved no headline number.
   retracted.
 
 - **Literature provenance dig (2026-07-13).** The Nieddu 2019 /
-  Rajasree-KP 2020 direct beam-waist measurement (w₀ = 64 µm, in force since
-  2026-08-01 as the working prior) and the resolution
+  Rajasree-KP 2020 direct beam-waist measurement (in force since
+  2026-08-01 as the working prior, retired as the convention itself by owner
+  order O44, 2026-09-21, in favour of the calculated `W0_CENTRAL_M` = 42.38 µm)
+  and the resolution
   of a since-debunked "Nieddu 2.5 MHz" note are documented in full in
   `docs/LITERATURE.md` §6a, both external corroborations of the record's w₀ re-pin
   and the observed line width, not raised here to avoid duplicating that entry.

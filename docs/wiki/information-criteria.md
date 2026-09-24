@@ -104,10 +104,12 @@ violated.
 An effective BIC is the whitened chi-square against a penalty on the
 effective count. Using a raw chi-square against a reduced penalty inflates
 the fit's apparent gain by roughly the correlation time while lowering its
-parameter cost, and on this archive that half-treatment reverses a verdict,
-moving a delta-BIC from decisively negative to decisively positive (the two
-rows of [`sharing_bic.csv`](../../results/sharing_bic.csv), -52.0 and +61.3 at
-this writing, regenerated with the rates). The implementation refuses to
+parameter cost. On the joint line the fitter carries since C6b that
+half-treatment reverses this comparison's verdict: the two rows of
+[`sharing_bic.csv`](../../results/sharing_bic.csv) read [-41.2](../../results/sharing_bic.csv "ref:sharing_bic:dBIC_raw_block_minus_T:shared") raw and
+[63.3](../../results/sharing_bic.csv "ref:sharing_bic:dBIC_eff_block_minus_T:shared") effective, the effective form decisively favouring the shared
+form on this record's own Kass-Raftery threshold and the raw form the free
+one. On the convolution line both favoured sharing, and they stood at +46.9 and +77.5. The implementation refuses to
 compute the effective form unless both are supplied.
 
 The interpretation layer returns one of four outcomes:
@@ -233,7 +235,7 @@ And the silence is not conservative. In the layer study behind
 0.05 per cent each on their own, and a criterion scores no preference on any
 of them, giving the same answer whether the simulation has them right or
 wrong. The loud ones are not spared either: the saturation companion moves
-the fitted transit by [1.374](../../results/rf_saturation_ladder.csv "ref:rf_saturation_ladder:transit_bias_pct:one_tooth_waist_only") per cent and is
+the fitted transit by [3.263](../../results/rf_saturation_ladder.csv "ref:rf_saturation_ladder:transit_bias_pct:one_tooth_waist_only") per cent and is
 just as invisible to a criterion, because it is a world term with no fitted
 twin. A term invisible to the likelihood is invisible to AIC by
 construction.

@@ -374,7 +374,7 @@ def main() -> int:
         # the new one and it dominates away from the reference wavelength. The
         # reference waist's own measurement band rides along, scaled by the
         # same ratio, and it is all there is AT the reference.
-        _meas_rel = 0.5 * (K.W0_BAND_M[1] - K.W0_BAND_M[0]) / K.W0_MEASURED_M
+        _meas_rel = 0.5 * (K.W0_BAND_M[1] - K.W0_BAND_M[0]) / K.W0_CENTRAL_M
         w_err = math.hypot(0.5 * abs(wr - wa), wa * _meas_rel)
         rel_w = w_err / wa
         add(rung, "waist_aperture_limited_err", f"{w_err * 1e6:.3f}", "um",
@@ -400,14 +400,14 @@ def main() -> int:
             f"{zr_m * 1e3 * math.hypot(2 * rel_w, lam_err / lam):.4g}", "mm",
             "two powers of the waist and one of the wavelength, in quadrature",
             "the waist term dominates by three orders", "DIAGNOSTIC")
-        l_m = K.collection_z_ratio() * (math.pi * K.W0_MEASURED_M ** 2
+        l_m = K.collection_z_ratio() * (math.pi * K.W0_CENTRAL_M ** 2
                                         / K.LAMBDA_LASER_M)
         z_ratio = l_m / zr_m
         add(rung, "collection_z_ratio", f"{z_ratio:.4f}", "dimensionless",
             "the bench's own collection half-length over this rung's Rayleigh range",
             "THE COLLECTION OPTICS ARE NOT RETUNED BY CHANGING THE DRIVE, so the "
             "half-length is the 993 nm one and only the Rayleigh range moves. The "
-            "windowed third cumulant passes through zero near 1.117 and reverses "
+            "windowed third moment passes through zero near 1.117 and reverses "
             "beyond it", "CALIB")
         rel_zr = math.hypot(2 * rel_w, lam_err / lam)
         add(rung, "collection_z_ratio_err", f"{z_ratio * rel_zr:.4g}",
@@ -415,10 +415,10 @@ def main() -> int:
             "the collection half-length is held fixed by the optics, so it "
             "contributes nothing here and its own error is chapter 12's item",
             "DIAGNOSTIC")
-        add(rung, "k3_sign_reversed_by_the_window",
+        add(rung, "mu3_sign_reversed_by_the_window",
             "yes" if z_ratio > 1.117 else "no", "boolean",
             "z_ratio against the null of the axial window",
-            "a rung past the null reports the third cumulant with the wrong sign "
+            "a rung past the null reports the third moment with the wrong sign "
             "unless the collection window is shortened. A boolean carries no "
             "uncertainty of its own and the ratio it reads is the row above, "
             "whose error is emitted there", "DIAGNOSTIC")
@@ -427,7 +427,7 @@ def main() -> int:
             "sqrt(1 + z_ratio^2), the transit width's span over the collected volume",
             "derived in A138: at shift u the contributing slices reach "
             "sqrt(min(1+z_ratio^2, s0/u)). It is the input to the covariance that "
-            "sets the third cumulant's contamination", "CALIB")
+            "sets the third moment's contamination", "CALIB")
         _sp = math.sqrt(1.0 + z_ratio ** 2)
         add(rung, "kernel_width_spread_across_the_ramp_err",
             f"{z_ratio ** 2 * rel_zr / _sp:.4g}", "dimensionless",

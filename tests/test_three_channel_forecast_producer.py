@@ -15,7 +15,7 @@ from rb5s6s.stark import kappa_pred_per_watt
 
 #: The world's coefficient and its shift at 225 mW, read from the package so a test input cannot
 #: carry a retired prediction (these read 1.618 and 0.364, the static-tail values, until 2026-09-17).
-KAPPA_PRED = kappa_pred_per_watt(K.W0_MEASURED_M, K.RHO_RETRO)
+KAPPA_PRED = kappa_pred_per_watt(K.W0_CENTRAL_M, K.RHO_RETRO)
 S0_PRED_MHZ = KAPPA_PRED * 0.225
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -94,7 +94,7 @@ def test_the_pull_channel_reads_the_ramps_mean_from_the_fitted_centre():
     """The ramp's mean is 2 S0/3 on its side (+ on the blue side since O27): a centre fitted
     with s0 = 0 shifts by that amount, so kappa = (d centre / dP) / (the signed 2/3). Checked here on the model's own
     first moment; the producer's fitted centre on its quiet traces returns
-    the same to about a per cent at 16 um and better at 40 and 64."""
+    the same to about a per cent at 16 um and better at 40 um and at the retired waist convention."""
     from rb5s6s.lineshape import model_profile
     nu = np.linspace(-30, 30, 12001)
     cs = []
@@ -129,8 +129,8 @@ def test_a_rung_is_admitted_on_two_statistics_and_a_loud_coin_flip_is_not():
     settled = 1.0 + 0.1 * np.sin(i)                                  # all positive, tight: admitted
     loud = 50.0 * np.where(i % 2 == 0, 1.0, -1.0) * (1 + 0.01 * i)   # half negative, huge: refused
     quarter = np.where(i % 4 == 0, -1.0, 1.0) * (0.5 + 4.5 * (i % 97) / 96)  # 25 per cent negative, median well above its SE: admitted
-    k3_sets = np.column_stack([settled, loud, quarter])
-    usable, frac_neg = mod.admit_rungs(k3_sets, np.ones(3))
+    mu3_sets = np.column_stack([settled, loud, quarter])
+    usable, frac_neg = mod.admit_rungs(mu3_sets, np.ones(3))
     assert usable[0] and not usable[1] and usable[2]
     assert frac_neg[0] == 0.0 and frac_neg[1] == 0.5 and frac_neg[2] == 0.25
     # the second statistic is what refuses the case that actually happened: at
@@ -193,7 +193,11 @@ def test_every_cell_carries_its_seam_values_and_a_pooled_worker_builds_at_them()
     cells = mod.levers()
     for name, cfg in cells:
         assert cfg["two_beta"] == pytest.approx(mod._two_beta_default()) or "depth" in name, name
-        assert 0.005 < cfg["beta_self"] < 0.05, name
+        # A plausibility band, whose job is to catch a zero, a placeholder and a unit slip. Its lower edge
+        # was 0.005, which excluded the theory anchor itself (0.0035 MHz per 1e12 cm^-3,
+        # results/beta_self_theory.csv) and, at the calculated waist, the 4192 row this producer reads
+        # (F312: 0.0043); it now holds the anchor and both waist conventions' archival values.
+        assert 0.001 < cfg["beta_self"] < 0.05, name
     src = (ROOT / "scripts" / "run_three_channel_forecast.py").read_text()
     # no module global carries a seam value into _trace: the cfg does, and the
     # cfg is what the pool pickles into every worker
@@ -470,9 +474,9 @@ def test_a_monotone_acquisition_order_cannot_separate_the_drift_from_the_pull():
 
 
 def test_a_skew_channel_that_falls_with_power_is_not_reported():
-    """The third admission statistic. The ramp's third cumulant rises with
+    """The third admission statistic. The ramp's third moment rises with
     power because the shift does, so a cell whose sets fit a NEGATIVE
-    exponent is reading noise, however settled the sign of k3 happens to be.
+    exponent is reading noise, however settled the sign of mu3 happens to be.
     The base cell did exactly that once the saturation term was present:
     -1.0 against a quiet curve of +1.9.
 
@@ -483,7 +487,7 @@ def test_a_skew_channel_that_falls_with_power_is_not_reported():
     assert "ok = np.isfinite(row) & (row != 0) & usable" in src, (
         "and taken over the ADMITTED rungs: fitted over every finite rung the "
         "slope reads about -1 in every configuration, because a windowed "
-        "cumulant of pure noise is largest where the signal is smallest")
+        "moment of pure noise is largest where the signal is smallest")
 
     def refuses(expo):
         e = np.asarray(expo, dtype=float)
@@ -523,14 +527,14 @@ def test_the_ladders_own_abscissa_is_what_every_slope_is_fitted_against():
 
 def test_admission_reads_the_sign_of_the_quiet_curve_not_positive():
     """A77 on the skew channel: with the collection window threaded the true
-    third cumulant is reversed below 24 microns, and a gate on the fraction
+    third moment is reversed below 24 microns, and a gate on the fraction
     NEGATIVE refused every rung there. The sign is the quiet curve's."""
     mod = _load()
     rng = np.random.default_rng(3)
     sets = -np.abs(rng.normal(1.0, 0.05, size=(400, 3)))        # all negative, tight
-    usable, frac = mod.admit_rungs(sets, k3_quiet=np.array([-1.0, -1.0, -1.0]))
+    usable, frac = mod.admit_rungs(sets, mu3_quiet=np.array([-1.0, -1.0, -1.0]))
     assert usable.all() and frac.max() == 0.0
-    usable, frac = mod.admit_rungs(sets, k3_quiet=np.array([1.0, 1.0, 1.0]))
+    usable, frac = mod.admit_rungs(sets, mu3_quiet=np.array([1.0, 1.0, 1.0]))
     assert not usable.any() and frac.min() == 1.0
 
 

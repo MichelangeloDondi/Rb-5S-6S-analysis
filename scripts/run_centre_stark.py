@@ -278,7 +278,7 @@ def main() -> int:
                           "err": f"{err:.4f}" if isinstance(err, float) else err,
                           "unit": unit, "status": status})
 
-    add("n_multi_power_epochs", "found", float(n_multi), "", "count; task brief asserted 5",
+    add("n_multi_power_epochs", "found", float(n_multi), "", "count -- task brief asserted 5",
         "DIAGNOSTIC")
 
     per_epoch = {}
@@ -301,7 +301,7 @@ def main() -> int:
               f"{res['kappa_transition_err']:.3f} MHz/W")
         add("epoch_kappa_transition", f"{ep}_993.{peak}nm", res["kappa_transition"],
             res["kappa_transition_err"],
-            f"MHz per W, transition axis; n={res['n']}, dP={res['delta_p_w']*1000:.0f} mW, "
+            f"MHz per W, transition axis -- n={res['n']}, dP={res['delta_p_w']*1000:.0f} mW, "
             f"drift-prior-marginalised, multistart_agrees={res['multistart_agrees']}",
             "DIAGNOSTIC")
 
@@ -315,15 +315,15 @@ def main() -> int:
           f"(chi2_red={chi2_red:.2f}, PDG-inflated; {pull_sigma:.2f} sigma from 0, "
           f"{pull_sigma_raw:.2f} sigma uninflated)")
     add("combined_kappa_transition", "primary", combined, combined_err,
-        f"MHz per W, transition axis; inverse-variance + PDG inflation over "
+        f"MHz per W, transition axis -- inverse-variance + PDG inflation over "
         f"{len(per_epoch)} epochs, chi2_red={chi2_red:.2f}", "DIAGNOSTIC")
 
     print(f"  M23 kappa_ub95 (results/stark_joint.csv) = {kappa_ub95_m23:.3f} MHz/W")
     print(f"  kappa_pred (priors)                      = {kappa_pred:.3f} MHz/W")
     add("kappa_ub95_m23", "reference", kappa_ub95_m23, "",
-        "MHz per W; echoed from results/stark_joint.csv for comparison", "DIAGNOSTIC")
+        "MHz per W -- echoed from results/stark_joint.csv for comparison", "DIAGNOSTIC")
     add("kappa_pred", "reference", kappa_pred, "",
-        "MHz per W; echoed from results/stark_joint.csv for comparison", "DIAGNOSTIC")
+        "MHz per W -- echoed from results/stark_joint.csv for comparison", "DIAGNOSTIC")
 
     inside_bound = abs(combined) + 2 * combined_err < kappa_ub95_m23
 
@@ -339,7 +339,7 @@ def main() -> int:
     print(f"    double drift-prior sigma (0.009->0.018): combined "
           f"{d_mean:+.3f} +/- {d_err:.3f} MHz/W ({abs(d_mean)/d_err:.2f} sigma)")
     add("diag_double_drift_prior", "primary", d_mean, d_err,
-        f"MHz per W; drift prior sigma doubled to {2*DRIFT_PRIOR_SIGMA:.3f} MHz/min and refit",
+        f"MHz per W -- drift prior sigma doubled to {2*DRIFT_PRIOR_SIGMA:.3f} MHz/min and refit",
         "DIAGNOSTIC")
 
     # Sign-undetermined drift prior (amendment 29). The directional prior
@@ -359,7 +359,7 @@ def main() -> int:
           f"{DRIFT_PRIOR_SIGMA_UNDETERMINED:.3f}): combined "
           f"{u_mean:+.3f} +/- {u_err:.3f} MHz/W ({abs(u_mean)/u_err:.2f} sigma)")
     add("diag_sign_undetermined_drift_prior", "primary", u_mean, u_err,
-        f"MHz per W; drift prior replaced by 0 +/- "
+        f"MHz per W -- drift prior replaced by 0 +/- "
         f"{DRIFT_PRIOR_SIGMA_UNDETERMINED:.3f} MHz/min, the sign-undetermined "
         f"form the 2026-07-30 window-reference correction leaves licensed",
         "DIAGNOSTIC")
@@ -374,7 +374,7 @@ def main() -> int:
         print(f"    leave-one-out, drop {drop}: combined {m:+.3f} +/- {e:.3f} MHz/W "
               f"({abs(m)/e:.2f} sigma) from {list(remaining)}")
         add("diag_leave_one_out", f"drop_{drop}", m, e,
-            f"MHz per W; combined kappa_transition with epoch {drop} dropped", "DIAGNOSTIC")
+            f"MHz per W -- combined kappa_transition with epoch {drop} dropped", "DIAGNOSTIC")
 
     loo_sigmas = [abs(m) / e for m, e in loo.values()]
     loo_unstable = (max(loo_sigmas) - min(loo_sigmas)) > 1.5 or min(loo_sigmas) < 2.0
@@ -394,7 +394,7 @@ def main() -> int:
               f"({sig:.2f} sigma from 0)")
         add("control_epoch", f"{ep}_993.{peak}nm", r["kappa_transition"],
             r["kappa_transition_err"],
-            f"MHz per W; single-power epoch, synthetic {CONTROL_FAKE_DELTA_P_W*1000:.0f} mW "
+            f"MHz per W -- single-power epoch, synthetic {CONTROL_FAKE_DELTA_P_W*1000:.0f} mW "
             f"step injected at true Delta-power=0 -- estimator false-positive check",
             "DIAGNOSTIC")
 
@@ -428,8 +428,8 @@ def main() -> int:
     print(f"  centre-channel kappa_ub95 = {kappa_bound:.3f} MHz/W "
           f"({kappa_bound/kappa_ub95_m23:.1f}x the M23 width-channel bound)")
     add("kappa_ub95_centre", "primary", kappa_bound, "",
-        "MHz per W; one-sided 95% Wald bound on the combined centre-channel kappa "
-        "(same construction as stark_joint.csv's kappa_ub95); quote this, not the "
+        "MHz per W -- one-sided 95% Wald bound on the combined centre-channel kappa "
+        "(same construction as stark_joint.csv's kappa_ub95) -- quote this, not the "
         "combined point estimate -- see the verdict row", "BOUND")
 
     # The same bound under the sign-undetermined drift prior. It LOOSENS,
@@ -442,7 +442,7 @@ def main() -> int:
           f"{kappa_bound_undet:.3f} MHz/W "
           f"({kappa_bound_undet/kappa_ub95_m23:.1f}x the M23 width-channel bound)")
     add("diag_kappa_ub95_centre_sign_undetermined", "primary", kappa_bound_undet, "",
-        "MHz per W; the same one-sided 95% Wald bound rebuilt on the "
+        "MHz per W -- the same one-sided 95% Wald bound rebuilt on the "
         "sign-undetermined drift prior. It LOOSENS relative to the quoted "
         "bound, so the quoted bound is not conservative with respect to the "
         "2026-07-30 window-reference correction, and the channel stays "

@@ -9,21 +9,23 @@ import math
 
 import pytest
 
+from rb5s6s.constants import W0_REFERENCE_LAMBDA_NM
+
 from rb5s6s.polarisation import (GF_S_HALF, doppler_photon_split_hz,
                                  rank_one_leak_rate, vector_ratio,
                                  vector_spread_mhz, zeeman_satellite_mhz)
 
 
 def test_the_vector_ratio_is_small_and_comes_from_the_line_lists():
-    """1.7 per cent at the drive wavelength. Small because the fine-structure
+    """1.8 per cent at the drive wavelength. Small because the fine-structure
     doublet nearly cancels, which is why it needs computing rather than
     guessing."""
-    assert vector_ratio(993.4) == pytest.approx(0.017363, rel=1e-3)
+    assert vector_ratio(W0_REFERENCE_LAMBDA_NM) == pytest.approx(0.018265, rel=1e-3)
     assert 0.0 < vector_ratio(993.4) < 0.05
 
 
 def test_the_vector_spread_is_linear_in_both_of_its_inputs():
-    assert vector_spread_mhz(0.348, 1.0) == pytest.approx(0.006042, rel=1e-3)
+    assert vector_spread_mhz(0.348, 1.0) == pytest.approx(0.006356, rel=1e-3)
     assert vector_spread_mhz(0.348, 0.0) == 0.0
     assert vector_spread_mhz(0.696, 1.0) == pytest.approx(
         2.0 * vector_spread_mhz(0.348, 1.0))

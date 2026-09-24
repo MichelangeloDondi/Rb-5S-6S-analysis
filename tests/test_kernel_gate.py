@@ -13,7 +13,7 @@ from rb5s6s import kernel_gate as G
 
 def _pass_readings():
     return {name: {"mc": (0.0 if name.endswith("_abs") else 1.0), "model": (0.0 if name.endswith("_abs") else 1.0),
-                   **({"grid_movement": 0.0} if name == "ramp_k3_rel" else {})}
+                   **({"grid_movement": 0.0} if name == "ramp_mu3_rel" else {})}
             for name in G.READINGS}
 
 
@@ -33,11 +33,11 @@ def test_the_gates_own_plants_pass():
 
 def test_a_node_without_an_artefact_is_refused(tmp_path):
     with pytest.raises(G.KernelUnvalidated):
-        G.require_node(G.node_key(64.0), tmp_path)
+        G.require_node(G.node_key(60.0), tmp_path)
 
 
 def test_an_artefact_written_against_another_model_is_refused(tmp_path):
-    key = _write(tmp_path, 64.0, 0.05)
+    key = _write(tmp_path, 60.0, 0.05)
     f = G.mc_dir(tmp_path) / f"{key}.json"
     row = json.loads(f.read_text()); row["model_sha"] = "0" * 16; f.write_text(json.dumps(row))
     with pytest.raises(G.KernelUnvalidated):
@@ -47,22 +47,22 @@ def test_an_artefact_written_against_another_model_is_refused(tmp_path):
 def test_the_depletion_factor_interpolates_across_validated_nodes_and_refuses_otherwise(tmp_path):
     # the planted factor falls by 0.006 per 4 um, straight, as the real one nearly does (a part in
     # a thousand per micron, 2026-09-16); the bend case below is the refusal
-    _write(tmp_path, 64.0, 0.052); _write(tmp_path, 68.0, 0.046)     # a 4 um gap, coarse first
-    assert math.isclose(G.depletion_factor(64.0, "4121", cache=tmp_path), 1.052)
-    assert math.isclose(G.depletion_factor(66.0, "4121", cache=tmp_path), 1.049)
-    assert math.isclose(G.depletion_factor(65.0, "4121", cache=tmp_path), 1.0505)
+    _write(tmp_path, 74.0, 0.052); _write(tmp_path, 78.0, 0.046)     # a 4 um gap, coarse first
+    assert math.isclose(G.depletion_factor(74.0, "4121", cache=tmp_path), 1.052)
+    assert math.isclose(G.depletion_factor(76.0, "4121", cache=tmp_path), 1.049)
+    assert math.isclose(G.depletion_factor(75.0, "4121", cache=tmp_path), 1.0505)
     with pytest.raises(G.KernelUnvalidated):          # outside the validated span
-        G.depletion_factor(63.0, "4121", cache=tmp_path)
-    _write(tmp_path, 80.0, 0.028)                     # a 12 um gap is over the bound
+        G.depletion_factor(73.0, "4121", cache=tmp_path)
+    _write(tmp_path, 90.0, 0.028)                     # a 12 um gap is over the bound
     with pytest.raises(G.KernelUnvalidated):
-        G.depletion_factor(74.0, "4121", cache=tmp_path)
-    _write(tmp_path, 72.0, 0.040); _write(tmp_path, 76.0, 0.034)
-    assert math.isclose(G.depletion_factor(74.0, "4121", cache=tmp_path), 1.037)
-    _write(tmp_path, 84.0, 0.010); _write(tmp_path, 88.0, 0.030)     # a bend over the tolerance refuses
+        G.depletion_factor(84.0, "4121", cache=tmp_path)
+    _write(tmp_path, 82.0, 0.040); _write(tmp_path, 86.0, 0.034)
+    assert math.isclose(G.depletion_factor(84.0, "4121", cache=tmp_path), 1.037)
+    _write(tmp_path, 94.0, 0.010); _write(tmp_path, 98.0, 0.030)     # a bend over the tolerance refuses
     with pytest.raises(G.KernelUnvalidated):
-        G.depletion_factor(86.0, "4121", cache=tmp_path)
-    _write(tmp_path, 70.0, 0.030, verdict_ok=False)   # a FAILING node is simply not a validated one: its own
-    assert math.isclose(G.depletion_factor(70.0, "4121", cache=tmp_path), 1.043)   # value (0.030) is not what comes back
+        G.depletion_factor(96.0, "4121", cache=tmp_path)
+    _write(tmp_path, 80.0, 0.030, verdict_ok=False)   # a FAILING node is simply not a validated one: its own
+    assert math.isclose(G.depletion_factor(80.0, "4121", cache=tmp_path), 1.043)   # value (0.030) is not what comes back
 
 
 def test_the_fit_reaches_the_gate_through_its_own_call_path(tmp_path, monkeypatch):
@@ -78,11 +78,16 @@ def test_the_fit_reaches_the_gate_through_its_own_call_path(tmp_path, monkeypatc
     spec = importlib.util.spec_from_file_location("uj_gate_test", root / "scripts" / "run_ultra_joint.py")
     uj = importlib.util.module_from_spec(spec); sys.modules["uj_gate_test"] = spec.loader and spec.loader.exec_module(uj) or uj
     tr = [dict(T=130.0, P_W=0.225, iso=87, session="P", peak="4121", axis="mhz")]
+    # 44.0 um, not the retired-era 76: this Cell's own bloch_fraction (F324) raises outside its
+    # twelve-node grid (41 to 45 um, 70 to 130 C), and 76 is a fixture waist from before that grid
+    # existed. 44 sits inside both the grid and the ruled 40-45 um band, so the call below now
+    # reaches the KernelUnvalidated check this test is actually about, instead of raising a
+    # ValueError from bloch_fraction first (b_merge task, disagreement 1).
     with pytest.raises(G.KernelUnvalidated):
-        uj.Cell(uj._spec("mixed", 76.0), tr)
-    for w in (76.0,):
+        uj.Cell(uj._spec("mixed", 44.0), tr)
+    for w in (44.0,):
         G.record_node(G.node_key(w, 1.0, 0.94, 130.0, 225.0), _pass_readings(),
                       detail={"node": {}, "depletion_widening_rel": {"4121": 0.005, "4154": 0.004, "4192": 0.003, "4207": 0.003},
                               "depletion_fwhm_rel": {"4121": 0.05}, "depletion_note": "plant"}, cache=None)
-    c = uj.Cell(uj._spec("mixed", 76.0), tr)
+    c = uj.Cell(uj._spec("mixed", 44.0), tr)
     assert math.isclose(c.per[0]["dep"], 1.005)

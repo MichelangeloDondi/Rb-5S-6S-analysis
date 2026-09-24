@@ -19,7 +19,7 @@ distribution are printed directly onto the lineshape.
 
 ![Position-distribution cumulants mapped onto the lineshape](../../figures/fig30_third_cumulant.png)
 
-*How the position distribution's mean, variance and third cumulant print onto the lineshape, and which mechanisms can produce each.*
+*How the position distribution's mean, variance and third moment print onto the lineshape, and which mechanisms can produce each.*
 
 Which atoms contribute is itself intensity-weighted. A two-photon signal
 scales as intensity squared, so the bright centre of a focused beam is
@@ -79,9 +79,9 @@ distribution itself since 2026-09-08, through
 [`lineshape.ramp_mixture`](../../rb5s6s/lineshape.py), so its forecasts carry
 the axial collection window and the fringe-resolved tail and not the
 transverse ramp alone: the ramp's mean pull reads
-[0.9775](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_64um::pull_factor_quiet")
-of the pure form at the waist convention and
-[0.5754](../../results/three_channel_forecast.csv "ref:three_channel_forecast:base::pull_factor_quiet")
+[0.9079](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_42.38um::pull_factor_quiet")
+of the pure form at the calculated waist and
+[0.5753](../../results/three_channel_forecast.csv "ref:three_channel_forecast:base::pull_factor_quiet")
 at 16 microns. The guided-platform outlook carries
 it for a mode profile in
 [chapter 6 of the big picture](../big_picture/06_next-nanofibre.md) and
@@ -117,10 +117,11 @@ The committed machinery reproduces the case page's own prediction: the
 peak shift at 225 mW, the waist convention and the assumed retro ratio.
 
 ```python
-from rb5s6s.stark import stark_shift_S0_mhz, W0_MEASURED_M, RHO_RETRO
+from rb5s6s.stark import stark_shift_S0_mhz
+from rb5s6s.constants import W0_CENTRAL_M, RHO_RETRO
 
-S0 = stark_shift_S0_mhz(0.225, W0_MEASURED_M, rho=RHO_RETRO)
-print(f"peak shift S0 at 225 mW, waist convention: {S0:.3f} MHz")
+S0 = stark_shift_S0_mhz(0.225, W0_CENTRAL_M, rho=RHO_RETRO)
+print(f"peak shift S0 at 225 mW, central waist: {S0:.3f} MHz")
 ```
 
 The bound this is compared against, and the subset spread that dominates

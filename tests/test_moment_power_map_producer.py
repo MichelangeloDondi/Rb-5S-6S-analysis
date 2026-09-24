@@ -1,7 +1,7 @@
 """Guards for `scripts/run_moment_power_map.py`, the moment-power map.
 
 WHY EACH TEST IS HERE. The producer measures the power of S0 that each windowed
-odd cumulant carries, across the Lorentzian component, the noise level, the
+odd moment carries, across the Lorentzian component, the noise level, the
 oscilloscope and the window. Its first build called `model_profile` directly and
 added hand-rolled noise, which exercised none of the physics layers and could
 not vary the oscilloscope at all -- a narrower study wearing the right name,
@@ -82,7 +82,7 @@ def test_the_noiseless_resolved_limit_returns_the_cubic_law():
     """The verification that decides whether any row may be believed.
 
     With the shift resolved, no noise and the layers off, the windowed third
-    cumulant must go as S0 cubed, reproducing the analytic producer's 3.000.
+    moment must go as S0 cubed, reproducing the analytic producer's 3.000.
     This is re-runnable on purpose: the same check as a number in a commit
     message would not re-validate itself, and it is the check that located A33.
     """
@@ -101,7 +101,7 @@ def test_the_noiseless_resolved_limit_returns_the_cubic_law():
             drift_mhz_total=0.0, noise_frac_bright=1e-9, adc_levels=2 ** 16,
             gamma_l=0.0, resolve_shift=True, offset=0.0)
         xs.append(math.log(s0))
-        ys.append(math.log(abs(mod.selfcentred_cumulant(y, 8.0, 3, grid=nu))))
+        ys.append(math.log(abs(mod.selfcentred_moment(y, 8.0, 3, grid=nu))))
     slope = float(np.polyfit(np.asarray(xs), np.asarray(ys), 1)[0])
     assert slope == pytest.approx(3.0, abs=0.05), slope
 
@@ -109,12 +109,14 @@ def test_the_noiseless_resolved_limit_returns_the_cubic_law():
 def test_the_unresolved_grid_biases_small_shifts_and_not_the_campaign():
     """A33 as a standing measurement, and as the REGION it applies to.
 
-    The fitted slope alone would mislead: it mixes rungs. Rung by rung the
-    unresolved grid overstates the third cumulant by 68 per cent at S0 = 0.18,
-    reads 5 per cent low at the ladder's 0.364 rung (the archive's prediction of its date), and is exact at 1.0 and above
-    -- so the campaign's own regime is untouched and the archive's is not.
-    Guarding the structure rather than one number is what stops this being
-    restated as "the twin is biased", which is the overstatement it replaced.
+    The fitted slope alone would mislead: it mixes rungs. At the retired waist convention, until
+    2026-09-22, the unresolved grid overstated the third moment by 68 per cent at S0 = 0.18 and read
+    5 per cent low at the 0.364 rung. At the ruled waist the line is wider (its transit 1.45 MHz), the
+    grid is resolved further down, and the bias region moves to smaller shifts: a factor 4.3 at
+    S0 = 0.02 and a sign flip at 0.05, 9 per cent low at 0.1, within 2 per cent from 0.18 up, exact at
+    1.0 and above (2026-09-24). The campaign's own regime is untouched either way. Guarding the
+    structure rather than one number is what stops this being restated as "the twin is biased",
+    which is the overstatement it replaced.
     """
     mod = _load()
     from rb5s6s.forecast import build_world_trace
@@ -130,10 +132,10 @@ def test_the_unresolved_grid_biases_small_shifts_and_not_the_campaign():
             transit_fwhm=mod.TRANSIT, power_max_w=1.0, cycles_at_max=1.0,
             drift_mhz_total=0.0, noise_frac_bright=1e-9, adc_levels=2 ** 16,
             gamma_l=0.0, resolve_shift=resolve, offset=0.0)
-        return mod.selfcentred_cumulant(y, 8.0, 3, grid=nu)
+        return mod.selfcentred_moment(y, 8.0, 3, grid=nu)
 
-    # small shift: the unresolved grid is badly wrong
-    assert k3(0.18, False) / k3(0.18, True) > 1.3
+    # small shift: the unresolved grid is badly wrong (at the ruled waist, below about 0.05 MHz)
+    assert k3(0.02, False) / k3(0.02, True) > 1.3
     # the campaign's regime: resolving the shift changes nothing
     for s0 in (1.0, 2.0):
         assert k3(s0, False) == pytest.approx(k3(s0, True), rel=1e-6), s0
@@ -166,12 +168,15 @@ def test_the_default_generator_path_is_unchanged_by_the_new_switch():
 def test_the_rung_status_reads_the_sign_against_the_true_sign_and_never_against_zero():
     """The defect the deep-producer board found (two seats): the first status
     rule tagged every settled fifth-order rung NULL because it keyed on the
-    fraction NEGATIVE while the fifth cumulant's true sign is negative. The
-    rule now keys on the fraction with the WRONG sign, published to three
+    fraction NEGATIVE while the fifth cumulant's true sign is positive (the
+    table read cumulant signs then; owner order O49, 2026-09-22, moved it to
+    the moment basis the producer's own quadrature already used, and mu_5's
+    sign is negative, opposite the cumulant's -- see test_the_true_signs_are_the_ramps_own).
+    The rule now keys on the fraction with the WRONG sign, published to three
     decimals, and is re-derived from the file's own columns below."""
     mod = _load()
     from rb5s6s.lineshape import RAMP_SIDE
-    assert mod.TRUE_SIGN == {3: -RAMP_SIDE, 5: +RAMP_SIDE, 7: -RAMP_SIDE}
+    assert mod.TRUE_SIGN == {3: -RAMP_SIDE, 5: -RAMP_SIDE, 7: -RAMP_SIDE}
     assert mod.rung_status(0.004) == "DIAGNOSTIC"          # a settled sign
     assert mod.rung_status(0.349) == "DIAGNOSTIC"
     assert mod.rung_status(0.35) == "NULL"                 # the bar itself is not admitted
@@ -183,21 +188,28 @@ def test_the_rung_status_reads_the_sign_against_the_true_sign_and_never_against_
 
 
 def test_the_true_signs_are_the_ramps_own():
-    """Failure: the sign table drifts from the physics it encodes. The ramp's
-    density 2|s|/S0^2 on the package's side (lineshape.RAMP_SIDE, blue since the ruling of
-    2026-09-17) gives kappa_3 negative, kappa_5 positive, kappa_7 negative (docs/methods/03).
+    """Failure: the sign table drifts from the physics it encodes. TRUE_SIGN is read
+    against the CENTRAL MOMENT (owner order O49, 2026-09-22: the producer's own quadrature,
+    `windowed_orders`, returns moments through `windowed_moments`, and the table must match
+    what is actually compared against it, never a different basis). The ramp's density
+    2|s|/S0^2 on the package's side (lineshape.RAMP_SIDE, blue since the ruling of 2026-09-17)
+    gives mu_3 negative and mu_7 negative, same sign as their cumulants (mu_3 == kappa_3
+    exactly; mu_7 and kappa_7 merely agree in sign for this shape), but mu_5 negative where
+    kappa_5 is positive: kappa_5 = mu_5 - 10 mu_2 mu_3 EXACTLY, so mu_5 = kappa_5 + 10 mu_2 mu_3
+    = 1/567 + 10 (1/18)(-1/135) = -4/1701, the cross-term's sign prevailing over kappa_5's own.
     The density is built on RAMP_SIDE and not by hand: this test built the red side itself
     and so agreed with a table the kernel had left (P3)."""
-    from rb5s6s.cumulants import cumulants_from_central_moments
     from rb5s6s._compat import trapezoid          # the seam, never the numpy name
     mod = _load()
     from rb5s6s.lineshape import RAMP_SIDE
     x = np.linspace(0.0, 1.0, 200001); f = 2.0 * x; f /= trapezoid(f, x); s = RAMP_SIDE * x
     m1 = trapezoid(s * f, x)
-    mu = [trapezoid((s - m1) ** k * f, x) for k in range(1, 8)]
-    kap = cumulants_from_central_moments(mu)
+    mu = {k: trapezoid((s - m1) ** k * f, x) for k in range(1, 8)}
     for order, sign in mod.TRUE_SIGN.items():
-        assert np.sign(kap[order - 1]) == sign, (order, kap[order - 1])
+        assert np.sign(mu[order]) == sign, (order, mu[order])
+    # mu_5's exact closed form at this S0 = 1, so a future re-measurement has something to
+    # check against (RAMP_SIDE flips the sign, an odd order, never its magnitude)
+    assert mu[5] == pytest.approx(RAMP_SIDE * (-4.0 / 1701.0), rel=1e-6)
 
 
 def test_every_committed_rung_status_is_re_derivable_from_its_own_columns():

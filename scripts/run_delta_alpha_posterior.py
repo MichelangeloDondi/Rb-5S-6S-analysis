@@ -81,13 +81,16 @@ from rb5s6s import config as C  # noqa: E402
 from rb5s6s import constants as K  # noqa: E402
 from rb5s6s.lineshape import aperture_spread_factor, stark_shift_S0_mhz  # noqa: E402
 
-# The owner's stated priors, 2026-08-27. W0_PRIOR_M is the centre of the
-# committed 62-68 um band; the pinned constant is 64 um, and the two are
-# named separately here because a first draft of the prose conditioned on one
-# and compared against the other four lines apart.
-W0_PRIOR_M, W0_PRIOR_ERR_M = 65e-6, 3e-6
+# The owner's stated priors, 2026-08-27, RE-CENTRED 2026-09-21 (O44/F280) on the bore-limited
+# central value: W0_PRIOR_M now tracks constants.W0_CENTRAL_M directly rather than duplicating
+# its number, closing the "name-vs-truth" gap the previous literal-plus-comment form carried
+# (private/cache/plan_2026-09-18/RETIRE_64UM_INVENTORY.md Section 2). W0_PRIOR_ERR_M's 3 um width
+# was sized around the retired lineage convention's own provenance and is NOT re-derived here --
+# that is a physics judgement about how confidently this bore-limited value transfers, owed to the
+# wave that regenerates delta_alpha_posterior.csv, not a mechanical substitution.
+W0_PRIOR_M, W0_PRIOR_ERR_M = K.W0_CENTRAL_M, 3e-6
 RHO_PRIOR, RHO_PRIOR_ERR = 0.94, 0.04
-W0_PINNED_M = 64e-6                  # constants.W0_MEASURED_M
+W0_PINNED_M = K.W0_CENTRAL_M
 P_REF_W = 0.225                      # the campaign's maximum power
 N_DRAW = 200_000
 SEED = 20260827
@@ -111,23 +114,31 @@ def _rows():
     k_ub95 = float(named["kappa_ub95"]["value"])
     dchi2_0 = float(named["dchi2_kappa0"]["value"])
 
-    # The grid carries an adjacent pair whose fitted chi2 falls as kappa
-    # RISES, which cannot be physical and is therefore the profile's own
-    # numerical noise. It sets the resolution floor for any statement about
-    # the minimum. The pair's keys read 1.50 and 1.54, but run_stark_joint
-    # writes that column as f"{kap:.2f}" and the second point is the
-    # prediction point at KAPPA_PRED = 1.545, so the label is a ROUNDED
-    # WRITE and not a coordinate. An audit caught the first version of this
-    # row reading it as one.
-    i50, i54 = int(np.argmin(abs(kap - 1.50))), int(np.argmin(abs(kap - 1.54)))
-    scatter = float(abs(dchi2[i50] - dchi2[i54]))
+    # An adjacent pair whose fitted chi2 falls as kappa RISES cannot be
+    # physical and is therefore the profile's own numerical noise. It sets
+    # the resolution floor for any statement about the minimum. Under the
+    # retired convention such a pair sat beside that convention's prediction
+    # point, which run_stark_joint writes to two decimals, so its label was a
+    # ROUNDED WRITE and not a coordinate, and an audit caught the first
+    # version of this row reading it as one.
+    # FOUND AND NOT ASSUMED (C6a, 2026-09-22): at the calculated waist no profile point sits at 1.54, and the
+    # nearest-point lookup read the 1.50 point twice and wrote a fall of zero under a sentence describing a fall.
+    # Every adjacent pair above the minimum is read now, and the largest fall is the floor, keyed from the data.
+    imin = int(np.argmin(dchi2))
+    falls = [(float(dchi2[i] - dchi2[i + 1]), float(kap[i]), float(kap[i + 1]))
+             for i in range(imin, len(kap) - 1) if dchi2[i + 1] < dchi2[i]]
+    scatter, k_fall_a, k_fall_b = max(falls) if falls else (0.0, float("nan"), float("nan"))
 
     # a.u. per (MHz per W): stark_shift_S0_mhz is linear in delta_alpha_au,
     # so one evaluation inverts it exactly.
     # F39: kappa is read from the WIDTH channel, which reads the spread of the shift
     # distribution under the rate weighting, so the clipped focus enters through the SPREAD
-    # factor F(w0) (0.9595 at 64 um) and not the on-axis c; the conversion divides by it, so
-    # the same kappa buys a larger delta-alpha
+    # factor F(w0) (0.6964 at W0_CENTRAL_M, O44/F280's bore-limited value) and not the on-axis
+    # c; the conversion divides by it, so the same kappa buys a larger delta-alpha. This SPREAD
+    # factor is still the free-focus convention (aperture_spread_factor takes the unclipped
+    # input's own focus, same as aperture_onaxis_factor did before F280); only the ON-AXIS
+    # factor gained an actual-convention form (lineshape.aperture_onaxis_factor_actual) in this
+    # window, so a same-reading correction to THIS number is F280's own stated open item.
     conv = P_REF_W / (stark_shift_S0_mhz(P_REF_W, W0_PRIOR_M, RHO_PRIOR, 1.0)
                       * aperture_spread_factor(W0_PRIOR_M))
     conv_pinned = P_REF_W / (stark_shift_S0_mhz(P_REF_W, W0_PINNED_M, RHO_PRIOR, 1.0)
@@ -135,9 +146,10 @@ def _rows():
 
     # The spacing that limits a claim about the MINIMUM is the one that
     # brackets the minimum, not the smallest spacing anywhere on the grid.
-    # The first version took np.diff(kap).min(), which is the 0.04 of the
-    # 1.50/1.545 pair sitting 1.3 units away, and formerly argued a 149 a.u.
-    # vertex was unresolved beside a step five times smaller than it.
+    # The first version took np.diff(kap).min(), which under the retired
+    # convention was the 0.04 beside that convention's prediction point, 1.3
+    # units away, and formerly argued a 149 a.u. vertex was unresolved beside
+    # a step five times smaller than it.
     j = int(np.argmin(dchi2))
     local = [kap[j + 1] - kap[j] if j + 1 < len(kap) else np.inf,
              kap[j] - kap[j - 1] if j > 0 else np.inf]
@@ -196,6 +208,9 @@ def _rows():
     cg /= cg[-1]
     gauss_ratio = float(np.interp(0.95, cg, g)
                         / (mu_g + np.sqrt(2.706) * sig_g))
+    # where the profile departs from that Gaussian, read at the committed points and not described
+    gdev = ((kap - mu_g) / sig_g) ** 2 - dchi2
+    i_dev = int(np.argmax(gdev))
 
     # the tail probability under BOTH constructions, because it is not
     # construction-independent either and the first version said it was
@@ -215,10 +230,14 @@ def _rows():
            f"{W0_PRIOR_M * 1e6:g} um. The err column is ENTIRELY geometric, "
            f"because the crossing itself is a fixed committed number, so "
            f"tighter beam metrology WOULD sharpen this row even though it "
-           f"would not sharpen the posterior below. {cond}", "BOUND"]
+           f"would not sharpen the posterior below. The width channel's "
+           f"factor here is the free-focus convention's (aperture_spread_factor), "
+           f"not the same-reading one F280 maps for the bench's clipped beam, "
+           f"which is larger at this waist, so this limit is conservative until "
+           f"the same-reading spread factor lands. {cond}", "BOUND"]
     yield ["limit", "delta_alpha_abs_ub95_profile_at_pinned_w0",
            f"{k_ub95 * conv_pinned:.0f}", "", "a.u., magnitude only",
-           f"the same crossing at W0_MEASURED_M = {W0_PINNED_M * 1e6:g} um, "
+           f"the same crossing at W0_CENTRAL_M = {W0_PINNED_M * 1e6:g} um, "
            f"the record's pinned central value, against the row above at the "
            f"owner's stated prior centre of {W0_PRIOR_M * 1e6:g}. The two "
            f"differ by exactly ({W0_PRIOR_M / W0_PINNED_M:.4f})^2 and by "
@@ -241,25 +260,23 @@ def _rows():
            f"by {gauss_ratio:.3f}, so most of the gap is the generic "
            f"difference between a one-sided crossing and a posterior quantile "
            f"and would exist for an exactly Gaussian likelihood. Only "
-           f"{spread / gauss_ratio:.3f} is this profile's shape, and it comes "
-           f"from the SHOULDER near kappa 1 to 2 where the profile is "
-           f"flatter than that Gaussian. Below kappa = 1 the two agree to "
-           f"within this profile's own numerical scatter, so the core "
-           f"carries none of it",
+           f"{spread / gauss_ratio:.3f} is this profile's shape: among the committed points the profile sits "
+           f"furthest below that Gaussian at kappa {kap[i_dev]:.2f}, by {gdev[i_dev]:.2f} in Delta_chi2",
            "DIAGNOSTIC"]
     yield ["estimator", "sigma_from_zero", f"{np.sqrt(dchi2_0):.2f}", "",
            "sigma",
-           "sqrt of the committed Delta_chi2 at kappa = 0. Consistent with "
-           "no shift at all, which is why the licensed statement is a limit "
-           "and not a value", "DIAGNOSTIC"]
+           "sqrt of the committed Delta_chi2 at kappa = 0. "
+           + ("Consistent with no shift at all" if np.sqrt(dchi2_0) < 2.0 else "Short of a detection")
+           + ", which is why the licensed statement is a limit and not a value", "DIAGNOSTIC"]
     yield ["estimator", "delta_alpha_abs_vertex", f"{vertex_au:.0f}", "",
            "a.u., magnitude only",
            f"the vertex of a parabola through the three lowest committed "
            f"profile points. NOT A MEASUREMENT: the grid spacing that "
-           f"BRACKETS the minimum is {grid_quantum:.0f} a.u., larger than "
-           f"this value, and Delta_chi2 at zero is {dchi2_0:g}, below the "
-           f"profile's own numerical scatter of {scatter:g}. The central "
-           f"value is unresolved and this row exists to say by how much",
+           f"BRACKETS the minimum is {grid_quantum:.0f} a.u., "
+           + ("larger than" if grid_quantum > vertex_au else "smaller than")
+           + f" this value, and Delta_chi2 at zero is {dchi2_0:g}"
+           + (f", below the profile's own numerical scatter of {scatter:g}" if dchi2_0 < scatter else "")
+           + ". The central value is unresolved and this row exists to say by how much",
            "DIAGNOSTIC"]
     yield ["posterior", "delta_alpha_abs_mean", f"{mean:.0f}", f"{sd:.0f}",
            "a.u., magnitude only",
@@ -285,26 +302,35 @@ def _rows():
            "DIAGNOSTIC"]
     for name, val in (("computed_here", abs(K.DELTA_ALPHA_AU)),
                       ("orson2021", abs(K.DELTA_ALPHA_AU_ORSON2021))):
+        # A PROBABILITY UNDER 1e-4 IS WRITTEN IN ITS OWN DIGITS (C6a, 2026-09-22): at the calculated waist both
+        # comparisons read 0.0000 at four decimals, which says nothing about how far out the tail is
+        n_above = int((da_post > val).sum())
+        p_post = n_above / da_post.size
+
+        def _fmt(x: float) -> str:
+            return f"{x:.4f}" if x >= 1e-4 else f"{x:.1e}"
         yield ["comparison", f"posterior_prob_above_{name}",
-               f"{float((da_post > val).mean()):.4f}", "", "probability",
+               _fmt(p_post) if n_above else "0", "", "probability",
                f"posterior probability that |Delta_alpha| exceeds {val:g} "
-               f"a.u. Under the CROSSING construction the same comparison "
-               f"gives {_p_crossing(val):.4f}, so this figure moves by about "
-               f"a factor of two, most of that being the construction and about a tenth the geometry marginalisation. The two candidate "
-               f"values sit 0.0004 apart under the crossing, which is BELOW "
-               f"this profile's own numerical noise floor: the 1.50/1.54 pair "
-               f"differ by 0.24 in chi2, worth 0.0025 in p here, so no "
-               f"ordering between them may be read. The tension is "
-               f"real under both and neither may be quoted to three digits",
+               f"a.u., {n_above} of {da_post.size} draws"
+               + ("" if n_above else f", so it is below {1.0 / da_post.size:.0e}")
+               + f". Under the CROSSING construction the same comparison "
+               f"gives {_fmt(_p_crossing(val))}. The two candidate values sit "
+               f"{_fmt(abs(_p_crossing(abs(K.DELTA_ALPHA_AU)) - _p_crossing(abs(K.DELTA_ALPHA_AU_ORSON2021))))} apart "
+               f"under the crossing"
+               + (f", and the profile's own numerical noise ({scatter:.2f} in chi2 between the adjacent points "
+                  f"keyed {k_fall_a:.2f} and {k_fall_b:.2f}) forbids reading an ordering between them" if falls else "")
+               + ". The tension is real under both and neither may be quoted to three digits",
                "DIAGNOSTIC"]
     yield ["provenance", "profile_numerical_scatter", f"{scatter:.2f}", "",
            "dimensionless",
-           f"the committed profile carries adjacent points keyed 1.50 and "
-           f"1.54 whose fitted chi2 FALLS as kappa rises, by {scatter:g}. "
-           f"That cannot be physical, so it is the profile's own numerical "
-           f"noise, and it exceeds Delta_chi2 at kappa = 0. The 1.54 key is a "
-           f"rounded write of the prediction point at 1.545, so it is a label "
-           f"and not a coordinate", "DIAGNOSTIC"]
+           (f"the committed profile carries adjacent points keyed {k_fall_a:.2f} and {k_fall_b:.2f} whose "
+            f"fitted chi2 FALLS as kappa rises, by {scatter:g}. That cannot be physical, so it is the profile's "
+            f"own numerical noise" + (", and it exceeds Delta_chi2 at kappa = 0" if scatter > dchi2_0 else "")
+            if falls else
+            "the committed profile rises monotonically above its minimum at every one of its points, so no "
+            "adjacent pair shows numerical noise and this row reads zero: the floor sits below the grid's own "
+            "resolution and is not measured here"), "DIAGNOSTIC"]
 
 
 def main() -> int:

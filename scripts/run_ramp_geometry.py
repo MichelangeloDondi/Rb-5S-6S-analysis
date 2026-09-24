@@ -26,7 +26,7 @@ magnitude, not the sign, and near the crossover moving the PMT (changing M)
 remains a design knob. A session sees NEGATIVE skew at the large waist and
 POSITIVE at the small one — a sign flip no instrumental asymmetry (none of
 which depends on z_R) can mimic. The naive "skew scales as S0^3 = x64" reading of the small
-waist is wrong in SIGN at the placeholder geometry; the third cumulant
+waist is wrong in SIGN at the placeholder geometry; the third moment
 there is ~ +0.35 in units of the 2025 on-axis S0^3 (vs -0.0074 for the
 2025 triangle).
 
@@ -50,7 +50,7 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from rb5s6s import config as C  # noqa: E402
-from rb5s6s.constants import LAMBDA_LASER_M, W0_MEASURED_M  # noqa: E402
+from rb5s6s.constants import LAMBDA_LASER_M, W0_CENTRAL_M  # noqa: E402
 from rb5s6s.lineshape import stark_ramp_axial_moments  # noqa: E402
 
 TRIANGLE_G1 = 18.0 ** 1.5 / 135.0
@@ -73,7 +73,7 @@ def main() -> int:
                   f"{m['skew_standardized']:+8.4f}")
         print()
     print(f"Reading: g1 stays ~ -0.56 at BOTH the 60 um config and the "
-          f"{W0_MEASURED_M * 1e6:.0f} um 2025")
+          f"{W0_CENTRAL_M * 1e6:.0f} um 2025")
     print("archival geometry (clean form test -- the measured waist makes the")
     print("archival ramp nearly a pure triangle), and FLIPS SIGN only at the 16 um")
     print("config AT THE PLACEHOLDER Z_c -- the flip needs Z_c > ~0.9 mm there")

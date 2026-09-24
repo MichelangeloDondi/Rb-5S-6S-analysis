@@ -1,18 +1,18 @@
 world,quantity,value,unit,note,status
-A,trials_completed,500,count,of 500 requested (500 is the preregistered value); failures are dropped and counted here,DIAGNOSTIC
+A,trials_completed,500,count,of 500 requested (500 is the preregistered value) -- failures are dropped and counted here,DIAGNOSTIC
 A,gamma_l_median,0.0000,MHz,"median fitted Gamma_L,equiv across trials",DIAGNOSTIC
 A,false_positive_rate,0.0000,fraction,"fraction of trials with fitted Gamma_L above the preregistered 0.15 MHz detection threshold, given a TRUE zero. Binomial standard error 0.0000. Recorded as its number: a near-threshold pass is not a green light",DIAGNOSTIC
 A,false_positive_rate_se,0.0000,fraction,binomial standard error at the measured rate and count,DIAGNOSTIC
-B,trials_completed,500,count,of 500 requested (500 is the preregistered value); failures are dropped and counted here,DIAGNOSTIC
-B,gamma_l_median,0.5998,MHz,"median fitted Gamma_L,equiv across trials",DIAGNOSTIC
+B,trials_completed,500,count,of 500 requested (500 is the preregistered value) -- failures are dropped and counted here,DIAGNOSTIC
+B,gamma_l_median,0.6005,MHz,"median fitted Gamma_L,equiv across trials",DIAGNOSTIC
 B,injected_gamma_l,0.6000,MHz,the truth this world's coverage is measured against,DIAGNOSTIC
-B,coverage_1sigma,0.7460,fraction,fraction of trials whose one-sigma interval contains the truth; nominal 0.68. A shortfall does not block K3 but forces every quoted interval to be recalibrated against this number first,DIAGNOSTIC
-B,gamma_l_bias,-0.0001,MHz,mean fitted minus injected,DIAGNOSTIC
-C,trials_completed,500,count,of 500 requested (500 is the preregistered value); failures are dropped and counted here,DIAGNOSTIC
+B,coverage_1sigma,0.7260,fraction,fraction of trials whose one-sigma interval contains the truth -- nominal 0.68. A shortfall does not block K3 but forces every quoted interval to be recalibrated against this number first,DIAGNOSTIC
+B,gamma_l_bias,-0.0000,MHz,mean fitted minus injected,DIAGNOSTIC
+C,trials_completed,500,count,of 500 requested (500 is the preregistered value) -- failures are dropped and counted here,DIAGNOSTIC
 C,gamma_l_median,0.0000,MHz,"median fitted Gamma_L,equiv across trials",DIAGNOSTIC
 C,false_positive_rate,0.0000,fraction,"fraction of trials with fitted Gamma_L above the preregistered 0.15 MHz detection threshold, given a TRUE zero. Binomial standard error 0.0000. Recorded as its number: a near-threshold pass is not a green light",DIAGNOSTIC
 C,false_positive_rate_se,0.0000,fraction,binomial standard error at the measured rate and count,DIAGNOSTIC
-D,trials_completed,500,count,of 500 requested (500 is the preregistered value); failures are dropped and counted here,DIAGNOSTIC
+D,trials_completed,500,count,of 500 requested (500 is the preregistered value) -- failures are dropped and counted here,DIAGNOSTIC
 D,gamma_l_median,0.0000,MHz,"median fitted Gamma_L,equiv across trials",DIAGNOSTIC
 D,false_positive_rate,0.0000,fraction,"fraction of trials with fitted Gamma_L above the preregistered 0.15 MHz detection threshold, given a TRUE zero. Binomial standard error 0.0000. Recorded as its number: a near-threshold pass is not a green light",DIAGNOSTIC
 D,false_positive_rate_se,0.0000,fraction,binomial standard error at the measured rate and count,DIAGNOSTIC

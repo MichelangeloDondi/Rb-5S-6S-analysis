@@ -1,45 +1,45 @@
 quantity,key,value,err,unit,status
-kappa_min,primary,0.25,,"MHz per W; profile minimum, priors, dir -1; NOT a detection (see dchi2_kappa0)",DIAGNOSTIC
-dchi2_kappa0,primary,0.12,,chi2(kappa=0) - chi2(min); the strength of the kappa>0 preference,DIAGNOSTIC
-kappa_ub95,primary,1.147,,MHz per W; 95% one-sided profile-likelihood bound -- THE quoted construction (negative kappa is flat by construction: the ramp model only broadens red),BOUND
-S0_225mW_ub95,primary,0.258,,"MHz, transition axis; joint three-session bound at the campaign's maximum power",BOUND
-S0_270mW_ub95,primary,0.310,,MHz; at the rehearsal's maximum power,BOUND
-kappa_pred,prediction,1.545,,"MHz per W; the PREDICTED coefficient at the current priors (w0 = 64 um, rho = 0.94), computed from constants -- what the bound is compared against",ENVELOPE
-S0_225mW_pred,prediction,0.348,,"MHz, transition axis; the prediction at 225 mW",ENVELOPE
-kappa_ub95_drop4192,robustness,1.626,,"MHz per W; 95% bound with peak 4192 dropped, which removes the ENTIRE pilot session -- the most conservative subset",BOUND
-S0_225mW_ub95_drop4192,robustness,0.366,,MHz; the drop-4192 bound at 225 mW,BOUND
-kappa_ub95_camponly,robustness,0.674,,MHz per W; campaign rows of the same profile -- the bound does not lean on the rehearsal's soft rate anchor,BOUND
-kappa_min_wing,robustness,0.00,,MHz per W; minimum with the red-wing nuisance free,DIAGNOSTIC
-kappa_ub95_wing,robustness,1.066,,"MHz per W; bound with the wing marginalized -- quote alongside the primary, the gap IS the wing systematic",BOUND
-direction_dchi2_max,robustness,8.59,,max |chi2 difference| between rehearsal axis directions across the profile; small = indifferent,DIAGNOSTIC
-lopo_dchi2_pred,4121,+8.75,,"chi2(kappa_pred) - min with this peak dropped. compare against 2.706 and not against zero, since positivity was never the test, and reading these as all-positive-and-similar is the error withdrawn 2026-08-27. Do NOT summarise these as a count of arms below threshold either. Each arm is a fit with one peak REMOVED measured against its OWN minimum, so the four are separate likelihoods. Carrying them to the 1.618 the constants later gave needs no curvature model: each arm's own pair here, at kappa_pred and at 2.62, brackets it between its value at kappa_pred and that value plus its own secant slope across the gap. That gives 4121 in [8.75, 10.05], 4192 in [2.27, 2.77], 4154 in [1.12, 1.35] and 4207 in [0.61, 0.86]. So 4121 clears at both ends, 4154 and 4207 fail at both ends, and 4192 straddles 2.706 and is not callable. kappa_pred is whatever the constants gave at run time, so state which value these are at",DIAGNOSTIC
-lopo_dchi2_262,4121,+27.96,,chi2(kappa=2.62)-min with this peak dropped. This is a legacy checkpoint well above kappa_pred and it cannot speak to the exclusion at the prediction,DIAGNOSTIC
-lopo_dchi2_pred,4154,+1.12,,"chi2(kappa_pred) - min with this peak dropped. compare against 2.706 and not against zero, since positivity was never the test, and reading these as all-positive-and-similar is the error withdrawn 2026-08-27. Do NOT summarise these as a count of arms below threshold either. Each arm is a fit with one peak REMOVED measured against its OWN minimum, so the four are separate likelihoods. Carrying them to the 1.618 the constants later gave needs no curvature model: each arm's own pair here, at kappa_pred and at 2.62, brackets it between its value at kappa_pred and that value plus its own secant slope across the gap. That gives 4121 in [8.75, 10.05], 4192 in [2.27, 2.77], 4154 in [1.12, 1.35] and 4207 in [0.61, 0.86]. So 4121 clears at both ends, 4154 and 4207 fail at both ends, and 4192 straddles 2.706 and is not callable. kappa_pred is whatever the constants gave at run time, so state which value these are at",DIAGNOSTIC
-lopo_dchi2_262,4154,+4.52,,chi2(kappa=2.62)-min with this peak dropped. This is a legacy checkpoint well above kappa_pred and it cannot speak to the exclusion at the prediction,DIAGNOSTIC
-lopo_dchi2_pred,4192,+2.27,,"chi2(kappa_pred) - min with this peak dropped. compare against 2.706 and not against zero, since positivity was never the test, and reading these as all-positive-and-similar is the error withdrawn 2026-08-27. Do NOT summarise these as a count of arms below threshold either. Each arm is a fit with one peak REMOVED measured against its OWN minimum, so the four are separate likelihoods. Carrying them to the 1.618 the constants later gave needs no curvature model: each arm's own pair here, at kappa_pred and at 2.62, brackets it between its value at kappa_pred and that value plus its own secant slope across the gap. That gives 4121 in [8.75, 10.05], 4192 in [2.27, 2.77], 4154 in [1.12, 1.35] and 4207 in [0.61, 0.86]. So 4121 clears at both ends, 4154 and 4207 fail at both ends, and 4192 straddles 2.706 and is not callable. kappa_pred is whatever the constants gave at run time, so state which value these are at",DIAGNOSTIC
-lopo_dchi2_262,4192,+9.59,,chi2(kappa=2.62)-min with this peak dropped. This is a legacy checkpoint well above kappa_pred and it cannot speak to the exclusion at the prediction,DIAGNOSTIC
-lopo_dchi2_pred,4207,+0.61,,"chi2(kappa_pred) - min with this peak dropped. compare against 2.706 and not against zero, since positivity was never the test, and reading these as all-positive-and-similar is the error withdrawn 2026-08-27. Do NOT summarise these as a count of arms below threshold either. Each arm is a fit with one peak REMOVED measured against its OWN minimum, so the four are separate likelihoods. Carrying them to the 1.618 the constants later gave needs no curvature model: each arm's own pair here, at kappa_pred and at 2.62, brackets it between its value at kappa_pred and that value plus its own secant slope across the gap. That gives 4121 in [8.75, 10.05], 4192 in [2.27, 2.77], 4154 in [1.12, 1.35] and 4207 in [0.61, 0.86]. So 4121 clears at both ends, 4154 and 4207 fail at both ends, and 4192 straddles 2.706 and is not callable. kappa_pred is whatever the constants gave at run time, so state which value these are at",DIAGNOSTIC
-lopo_dchi2_262,4207,+4.22,,chi2(kappa=2.62)-min with this peak dropped. This is a legacy checkpoint well above kappa_pred and it cannot speak to the exclusion at the prediction,DIAGNOSTIC
-gamma_coll_post,4121,0.525,,MHz; posterior under the beta_self prior 0.459+/-0.031,PRELIM
-reh_rate,4121,0.01277,,"MHz per ms, transition; fitted rehearsal scan rate",CALIB
-gamma_coll_post,4154,0.545,,MHz; posterior under the beta_self prior 0.531+/-0.017,PRELIM
-reh_rate,4154,0.01366,,"MHz per ms, transition; fitted rehearsal scan rate",CALIB
-gamma_coll_post,4192,0.478,,MHz; posterior under the beta_self prior 0.385+/-0.020,PRELIM
-reh_rate,4192,0.01248,,"MHz per ms, transition; fitted rehearsal scan rate",CALIB
-gamma_coll_post,4207,0.540,,MHz; posterior under the beta_self prior 0.524+/-0.026,PRELIM
-reh_rate,4207,0.01187,,"MHz per ms, transition; fitted rehearsal scan rate",CALIB
-Vsat_camp,nuisance,403.4,,"V; detector saturation, campaign -- large = linear",DIAGNOSTIC
-Vsat_reh,nuisance,399.8,,"V; detector saturation, rehearsal",DIAGNOSTIC
-n_traces,camp/reh/pil,100/46/26,,canonical p_sweep / usable rehearsal (4 files corrupt or lineless) / pilot morning sweep,DIAGNOSTIC
-pilot_rate_scale,nuisance,1.0081,,"pilot axis = campaign 4192 bracket rate x this factor, box = measured M26 value +/- 5 sigma; the raw 210 vs 225 mW width ratio 0.971 justified the tight band",CALIB
-profile_point,0.00,186371.04,31476.63,"chi2 total (value) and campaign-only (err column), primary settings",DIAGNOSTIC
-profile_point,0.25,186370.92,31476.58,"chi2 total (value) and campaign-only (err column), primary settings",DIAGNOSTIC
-profile_point,0.50,186371.18,31477.16,"chi2 total (value) and campaign-only (err column), primary settings",DIAGNOSTIC
-profile_point,0.75,186372.12,31480.22,"chi2 total (value) and campaign-only (err column), primary settings",DIAGNOSTIC
-profile_point,1.00,186372.83,31481.89,"chi2 total (value) and campaign-only (err column), primary settings",DIAGNOSTIC
-profile_point,1.50,186375.52,31482.91,"chi2 total (value) and campaign-only (err column), primary settings",DIAGNOSTIC
-profile_point,1.54,186375.28,31482.80,"chi2 total (value) and campaign-only (err column), primary settings",DIAGNOSTIC
-profile_point,2.00,186378.17,31485.10,"chi2 total (value) and campaign-only (err column), primary settings",DIAGNOSTIC
-profile_point,2.62,186386.99,31491.05,"chi2 total (value) and campaign-only (err column), primary settings",DIAGNOSTIC
-profile_point,3.50,186405.81,31501.04,"chi2 total (value) and campaign-only (err column), primary settings",DIAGNOSTIC
-profile_point,5.00,186477.63,31531.31,"chi2 total (value) and campaign-only (err column), primary settings",DIAGNOSTIC
+kappa_min,primary,0.25,,"MHz per W, profile minimum, priors, dir -1, NOT a detection (see dchi2_kappa0)",DIAGNOSTIC
+dchi2_kappa0,primary,4.99,,"chi2(kappa=0) - chi2(min), the strength of the kappa>0 preference",DIAGNOSTIC
+kappa_ub95,primary,0.810,,"MHz per W, 95% one-sided profile-likelihood bound -- THE quoted construction (negative kappa is flat by construction: the ramp model only broadens red)",BOUND
+S0_225mW_ub95,primary,0.182,,"MHz, transition axis, joint three-session bound at the campaign's maximum power",BOUND
+S0_270mW_ub95,primary,0.219,,"MHz, at the evening session's maximum power",BOUND
+kappa_pred,prediction,3.241,,"MHz per W, the PREDICTED coefficient at the current priors (w0 = 42 um, rho = 0.94), computed from constants -- what the bound is compared against",ENVELOPE
+S0_225mW_pred,prediction,0.729,,"MHz, transition axis, the prediction at 225 mW",ENVELOPE
+kappa_ub95_drop4192,robustness,1.076,,"MHz per W, 95% bound with peak 4192 dropped, which removes the ENTIRE campaign-morning session -- the most conservative subset",BOUND
+S0_225mW_ub95_drop4192,robustness,0.242,,"MHz, the drop-4192 bound at 225 mW",BOUND
+kappa_ub95_camponly,robustness,0.688,,"MHz per W, campaign rows of the same profile -- the bound does not lean on the evening session's soft rate anchor",BOUND
+kappa_min_wing,robustness,0.25,,"MHz per W, minimum with the red-wing nuisance free",DIAGNOSTIC
+kappa_ub95_wing,robustness,0.634,,"MHz per W, bound with the wing marginalized -- quote alongside the primary, the gap IS the wing systematic",BOUND
+direction_dchi2_max,robustness,21.22,,"max |chi2 difference| between evening-session axis directions across the profile, small = indifferent",DIAGNOSTIC
+lopo_dchi2_pred,4121,+84.77,,"chi2(kappa_pred) - min with this peak dropped. compare against 2.706 and not against zero, since positivity was never the test, and reading these as all-positive-and-similar is the error withdrawn 2026-08-27. Each arm is a fit with one peak REMOVED measured against its OWN minimum, so the four are separate likelihoods. kappa_pred is whatever the constants gave at run time (this file's kappa_pred row). At another coefficient each arm is bracketed between its value here and that value plus its own secant slope to the 2.62 checkpoint, which RESULTS.md C3f computes from these rows, and a count of arms is read only from brackets clear of 2.706",DIAGNOSTIC
+lopo_dchi2_262,4121,+54.54,,chi2(kappa=2.62)-min with this peak dropped. This is a legacy checkpoint well above kappa_pred and it cannot speak to the exclusion at the prediction,DIAGNOSTIC
+lopo_dchi2_pred,4154,+52.29,,"chi2(kappa_pred) - min with this peak dropped. compare against 2.706 and not against zero, since positivity was never the test, and reading these as all-positive-and-similar is the error withdrawn 2026-08-27. Each arm is a fit with one peak REMOVED measured against its OWN minimum, so the four are separate likelihoods. kappa_pred is whatever the constants gave at run time (this file's kappa_pred row). At another coefficient each arm is bracketed between its value here and that value plus its own secant slope to the 2.62 checkpoint, which RESULTS.md C3f computes from these rows, and a count of arms is read only from brackets clear of 2.706",DIAGNOSTIC
+lopo_dchi2_262,4154,+31.11,,chi2(kappa=2.62)-min with this peak dropped. This is a legacy checkpoint well above kappa_pred and it cannot speak to the exclusion at the prediction,DIAGNOSTIC
+lopo_dchi2_pred,4192,+36.16,,"chi2(kappa_pred) - min with this peak dropped. compare against 2.706 and not against zero, since positivity was never the test, and reading these as all-positive-and-similar is the error withdrawn 2026-08-27. Each arm is a fit with one peak REMOVED measured against its OWN minimum, so the four are separate likelihoods. kappa_pred is whatever the constants gave at run time (this file's kappa_pred row). At another coefficient each arm is bracketed between its value here and that value plus its own secant slope to the 2.62 checkpoint, which RESULTS.md C3f computes from these rows, and a count of arms is read only from brackets clear of 2.706",DIAGNOSTIC
+lopo_dchi2_262,4192,+21.13,,chi2(kappa=2.62)-min with this peak dropped. This is a legacy checkpoint well above kappa_pred and it cannot speak to the exclusion at the prediction,DIAGNOSTIC
+lopo_dchi2_pred,4207,+52.23,,"chi2(kappa_pred) - min with this peak dropped. compare against 2.706 and not against zero, since positivity was never the test, and reading these as all-positive-and-similar is the error withdrawn 2026-08-27. Each arm is a fit with one peak REMOVED measured against its OWN minimum, so the four are separate likelihoods. kappa_pred is whatever the constants gave at run time (this file's kappa_pred row). At another coefficient each arm is bracketed between its value here and that value plus its own secant slope to the 2.62 checkpoint, which RESULTS.md C3f computes from these rows, and a count of arms is read only from brackets clear of 2.706",DIAGNOSTIC
+lopo_dchi2_262,4207,+30.01,,chi2(kappa=2.62)-min with this peak dropped. This is a legacy checkpoint well above kappa_pred and it cannot speak to the exclusion at the prediction,DIAGNOSTIC
+gamma_coll_post,4121,0.220,,"MHz, posterior under the beta_self prior 0.222+/-0.021",PRELIM
+reh_rate,4121,0.01323,,"MHz per ms, transition, fitted evening-session scan rate",CALIB
+gamma_coll_post,4154,0.198,,"MHz, posterior under the beta_self prior 0.209+/-0.011",PRELIM
+reh_rate,4154,0.01391,,"MHz per ms, transition, fitted evening-session scan rate",CALIB
+gamma_coll_post,4192,0.156,,"MHz, posterior under the beta_self prior 0.151+/-0.017",PRELIM
+reh_rate,4192,0.01306,,"MHz per ms, transition, fitted evening-session scan rate",CALIB
+gamma_coll_post,4207,0.227,,"MHz, posterior under the beta_self prior 0.244+/-0.021",PRELIM
+reh_rate,4207,0.01264,,"MHz per ms, transition, fitted evening-session scan rate",CALIB
+Vsat_camp,nuisance,403.4,,"V, detector saturation, campaign -- large = linear",DIAGNOSTIC
+Vsat_reh,nuisance,394.4,,"V, detector saturation, evening session",DIAGNOSTIC
+n_traces,camp/reh/pil,100/46/26,,canonical p_sweep / usable evening session (4 files corrupt or lineless) / campaign-morning sweep,DIAGNOSTIC
+pilot_rate_scale,nuisance,1.0081,,"campaign-morning axis = campaign 4192 bracket rate x this factor, box = measured M26 value +/- 5 sigma, the raw 210 vs 225 mW width ratio 0.971 justified the tight band",CALIB
+profile_point,0.00,224564.90,70169.50,"chi2 total (value) and campaign-only (err column), primary settings",DIAGNOSTIC
+profile_point,0.25,224559.91,70169.54,"chi2 total (value) and campaign-only (err column), primary settings",DIAGNOSTIC
+profile_point,0.50,224560.33,70170.46,"chi2 total (value) and campaign-only (err column), primary settings",DIAGNOSTIC
+profile_point,0.75,224562.01,70172.78,"chi2 total (value) and campaign-only (err column), primary settings",DIAGNOSTIC
+profile_point,1.00,224564.56,70176.17,"chi2 total (value) and campaign-only (err column), primary settings",DIAGNOSTIC
+profile_point,1.50,224572.05,70184.59,"chi2 total (value) and campaign-only (err column), primary settings",DIAGNOSTIC
+profile_point,2.00,224582.75,70196.80,"chi2 total (value) and campaign-only (err column), primary settings",DIAGNOSTIC
+profile_point,2.62,224604.58,70225.98,"chi2 total (value) and campaign-only (err column), primary settings",DIAGNOSTIC
+profile_point,3.24,224635.06,70247.48,"chi2 total (value) and campaign-only (err column), primary settings",DIAGNOSTIC
+profile_point,3.50,224648.83,70263.30,"chi2 total (value) and campaign-only (err column), primary settings",DIAGNOSTIC
+profile_point,5.00,224797.30,70401.43,"chi2 total (value) and campaign-only (err column), primary settings",DIAGNOSTIC

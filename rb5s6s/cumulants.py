@@ -1,13 +1,18 @@
-"""Windowed, self-centred cumulants of a line, converged to a tolerance and
+"""Windowed, self-centred moments of a line, converged to a tolerance and
 taken on the pedestal-subtracted trace.
 
-The windowed cumulant is the record's shift channel (`docs/methods/10`): a
+The windowed moment is the record's shift channel (`docs/methods/10`): a
 window of half-width W is centred on its own first moment by a fixed-point
 iteration, and the central moments of the normalised trace inside it are the
 estimator. Three producers carried their own copy of that iteration at a fixed
 twenty passes with the trace clipped at zero and no baseline removed. This
 module replaces the copies, and it exists because of what one of them did on a
 POWER LADDER on 2026-09-06.
+
+**Cumulants are retired from this module (owner order O49, 2026-09-22)**: it
+carried `windowed_cumulants`, `windowed_cumulant` and `cumulants_from_central_moments`
+until that day, converting the same central-moment array a caller could read
+directly. `windowed_moments` below is the one estimator this module offers now.
 
 **The fixed point is the line's own centroid, and the pedestal sets how fast
 it is reached.** With a flat pedestal b under the line inside the window, the
@@ -19,11 +24,11 @@ ladder, whose amplitude falls as the power squared while the detector offset
 does not, converges slowly, and at twenty passes the centre still carries an
 error delta.
 
-**And a centring error on a pedestal is a fake third cumulant that grows as
+**And a centring error on a pedestal is a fake third moment that grows as
 the window cubed.** The pedestal's own third moment about its centre is zero;
 about a point delta off it, the uniform's third moment is -delta W^2 per unit
 mass, so the fake term is of order -(2bW / (A + 2bW)) delta W^2. Measured on
-the twin's noiseless lowest rung (a 64 um beam, 50 mW, the 1 per cent offset
+the twin's noiseless lowest rung (a beam at the retired waist convention, 50 mW, the 1 per cent offset
 a third of the peak): at a 6 MHz half-width twenty passes read 0.0308e-3
 where eighty passes read 0.0006e-3, and at 24 MHz they read 31.8e-3 where
 eighty passes read -0.0012e-3, while the centre itself agreed to four
@@ -33,7 +38,7 @@ value.
 
 **The pedestal also dilutes the normalisation, which bends a power law.** The
 normalised trace inside the window includes the pedestal's mass, so the
-estimator reads the line's cumulant times the line's SHARE of the window, and
+estimator reads the line's moment times the line's SHARE of the window, and
 along a power ladder that share is not constant. Subtracting the pedestal
 first is what the standard analysis does with its per-trace baseline, and the
 estimator does it here from the trace's own far wings.
@@ -44,15 +49,13 @@ flag has been told.
 """
 from __future__ import annotations
 
-from math import comb
 from typing import Dict, Optional, Tuple, Union
 
 import numpy as np
 
 from ._compat import trapezoid
 
-__all__ = ["wing_baseline", "linear_baseline", "windowed_cumulant", "windowed_cumulants",
-           "windowed_moments", "cumulants_from_central_moments"]
+__all__ = ["wing_baseline", "linear_baseline", "windowed_moments"]
 
 
 def linear_baseline(grid: np.ndarray, y: np.ndarray, strip_a, strip_b) -> np.ndarray:
@@ -85,31 +88,18 @@ def wing_baseline(grid: np.ndarray, y: np.ndarray, fraction: float = 0.1) -> flo
     return float(np.median(np.asarray(y, dtype=float)[wings]))
 
 
-def cumulants_from_central_moments(mu: np.ndarray) -> np.ndarray:
-    """Cumulants kappa_1..kappa_n from central moments mu_1..mu_n (mu_1 = 0),
-    by kappa_n = mu_n - sum_{m=1}^{n-1} C(n-1, m-1) kappa_m mu_{n-m}. For n = 3
-    this is mu_3 itself; for n = 5 it is mu_5 - 10 mu_2 mu_3."""
-    mu = np.asarray(mu, dtype=float)
-    kappa = np.zeros_like(mu)
-    for n in range(1, mu.size + 1):
-        s = 0.0
-        for m in range(1, n):
-            s += comb(n - 1, m - 1) * kappa[m - 1] * mu[n - m - 1]
-        kappa[n - 1] = mu[n - 1] - s
-    return kappa
-
-
 def _centred_window_moments(grid: np.ndarray, y: np.ndarray, half_width: float, top: int, *,
                             baseline: Union[str, float, None] = "wings", n_points: int = 4001,
                             tol: float = 1e-7, max_passes: int = 400,
                             centre0: Optional[float] = None) -> Tuple[Optional[np.ndarray], Dict[str, float]]:
-    """The quadrature shared by `windowed_cumulants` and `windowed_moments`: recentre the
-    window on its own first moment by the fixed-point iteration, then return the central
-    moments mu_1..mu_top (mu_1 ~ 0 by construction) of the normalised trace inside it. `top`
-    is the HIGHEST order either caller wants; both build their own return from this ONE array,
-    so the centring and the interpolation run once regardless of how the caller's `orders` is
-    shaped. Returns `(None, info)` on any failure (a non-positive window, or a centring that
-    walks the window off the trace) so a caller can build its own NaN dict for its own orders;
+    """The quadrature behind `windowed_moments` (and, until O49 retired it, `windowed_cumulants`
+    beside it): recentre the window on its own first moment by the fixed-point iteration, then
+    return the central moments mu_1..mu_top (mu_1 ~ 0 by construction) of the normalised trace
+    inside it. `top` is the HIGHEST order the caller wants, and it builds its own return from
+    this ONE array, so the centring and the interpolation run once regardless of how the
+    caller's `orders` is shaped. Returns `(None, info)` on any failure (a non-positive window, or
+    a centring that walks the window off the trace) so a caller can build its own NaN dict for
+    its own orders;
     `info` is passed straight through either way.
 
     `baseline` is "wings" (the default: `wing_baseline` of this trace), a number
@@ -152,7 +142,7 @@ def _centred_window_moments(grid: np.ndarray, y: np.ndarray, half_width: float, 
         filled with a constant equal to the last sample. That is not a tail: it
         is a rectangular pedestal whose third moment grows without bound, and
         the estimator previously returned it with `converged` set to one. On a
-        +-60 MHz grid an asymmetric line gave k3 = 0.855 at a 50 MHz
+        +-60 MHz grid an asymmetric line gave mu3 = 0.855 at a 50 MHz
         half-width, -26.7 at 62 and -2778 at 120, converged at every step.
         The corruption begins BEFORE the edge, because `wing_baseline` reads a
         region the clamp has already flattened."""
@@ -190,45 +180,39 @@ def _centred_window_moments(grid: np.ndarray, y: np.ndarray, half_width: float, 
                 "in_span": 1.0}
 
 
-def windowed_cumulants(grid: np.ndarray, y: np.ndarray, half_width: float, orders=(3, 5, 7), *,
-                       baseline: Union[str, float, None] = "wings", n_points: int = 4001,
-                       tol: float = 1e-7, max_passes: int = 400,
-                       centre0: Optional[float] = None) -> Tuple[Dict[int, float], Dict[str, float]]:
-    """The self-centred windowed cumulants of several orders from ONE centring.
-
-    See `_centred_window_moments` for the window, the baseline conventions and the
-    convergence report; this function converts its central-moment array to cumulants
-    through `cumulants_from_central_moments`. A window whose integral is not positive
-    returns NaN for every order, as the copies this module replaced did.
-    """
-    orders = tuple(int(o) for o in orders)
-    nan = {o: float("nan") for o in orders}
-    top = max(orders)
-    mu, info = _centred_window_moments(grid, y, half_width, top, baseline=baseline,
-                                       n_points=n_points, tol=tol, max_passes=max_passes,
-                                       centre0=centre0)
-    if mu is None:
-        return nan, info
-    kappa = cumulants_from_central_moments(mu)
-    values = {o: float(kappa[o - 1]) for o in orders}
-    return values, info
-
-
 def windowed_moments(grid: np.ndarray, y: np.ndarray, half_width: float, orders=(3, 5, 7), *,
                      baseline: Union[str, float, None] = "wings", n_points: int = 4001,
                      tol: float = 1e-7, max_passes: int = 400,
                      centre0: Optional[float] = None) -> Tuple[Dict[int, float], Dict[str, float]]:
     """The self-centred windowed CENTRAL MOMENTS of several orders from ONE centring
-    (owner order O33, 2026-09-20): the same window, centring, baseline and convergence
-    machinery as `windowed_cumulants`, through the shared `_centred_window_moments`, so
-    there is no second quadrature -- only the final step differs, selecting mu_n directly
-    rather than converting it to kappa_n. mu_2 == kappa_2 and mu_3 == kappa_3 exactly (the
-    conversion is the identity at those two orders), so this and `windowed_cumulants` agree
-    there to machine precision; they diverge at order 4 and above, where kappa_n is a
-    cancelling combination of mu_n and lower moments (F211: k4 crosses zero across the
-    window grid for a Lorentzian while mu4, an absolute even moment, cannot). Same
-    arguments and same second return as `windowed_cumulants`.
+    (owner order O33, 2026-09-20, with the cumulant basis retired outright by O49,
+    2026-09-22): the window, centring, baseline and convergence machinery of
+    `_centred_window_moments`, selecting mu_n directly from its central-moment array.
+    mu_2 == kappa_2 and mu_3 == kappa_3 exactly, so a value this function returns at
+    those two orders is unchanged from what the retired cumulant conversion would have
+    given; they diverge at order 4 and above, where kappa_n is a cancelling combination
+    of mu_n and lower moments (F211: k4 crosses zero across the window grid for a
+    Lorentzian while mu4, an absolute even moment, cannot). See `_centred_window_moments`
+    for the window, the baseline conventions and the convergence report; a window whose
+    integral is not positive returns NaN for every order, as the copies this module
+    replaced did.
+
+    F451: a non-integer order RAISES rather than being rounded to one. `_centred_window_moments`
+    builds an array of INTEGER-order central moments and this function selects mu[o - 1] from it,
+    so a caller asking for order 4.5 was silently handed mu_4 under the 4.5 key, a different
+    statistic than the one named. A fractional order is a real, well-defined quantity (the
+    closed-form check 3**(x / 2) / (x + 1) holds at x = 3.5, 4.5 and 6.5 too, not only at even
+    integers), so the refusal names what a caller who wants one would still have to build:
+    E|nu|^x for an even x, E[sign(nu) |nu|^x] for an odd x, neither of which this function
+    computes today.
     """
+    for o in orders:
+        if float(o) != int(o):
+            raise ValueError(
+                f"windowed_moments: order {o!r} is not an integer. This function selects mu_n, a "
+                "central moment, from an array built at integer orders only, and a fractional "
+                "order would need E|nu|^x (even x) or E[sign(nu) |nu|^x] (odd x) built and "
+                "validated on its own, never obtained by rounding to the nearest integer.")
     orders = tuple(int(o) for o in orders)
     nan = {o: float("nan") for o in orders}
     top = max(orders)
@@ -239,13 +223,3 @@ def windowed_moments(grid: np.ndarray, y: np.ndarray, half_width: float, orders=
         return nan, info
     values = {o: float(mu[o - 1]) for o in orders}
     return values, info
-
-
-def windowed_cumulant(grid: np.ndarray, y: np.ndarray, half_width: float, order: int = 3, *,
-                      baseline: Union[str, float, None] = "wings", n_points: int = 4001,
-                      tol: float = 1e-7, max_passes: int = 400,
-                      centre0: Optional[float] = None) -> Tuple[float, Dict[str, float]]:
-    """One order of `windowed_cumulants`, same arguments and same second return."""
-    values, info = windowed_cumulants(grid, y, half_width, (order,), baseline=baseline, n_points=n_points,
-                                      tol=tol, max_passes=max_passes, centre0=centre0)
-    return values[order], info

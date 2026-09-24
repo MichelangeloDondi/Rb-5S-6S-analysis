@@ -14,11 +14,12 @@ its standard error is the replica mean's. It is subtracted ONCE from the data st
 standard error added in quadrature, and both written as columns beside the result so the
 subtraction is visible and reversible.
 
-STATISTIC KEYS ARE `k<n>@<window>` (a cumulant, e.g. `k4@8`) OR `mu<n>@<window>` (a central
-moment, e.g. `mu4@8`) AND THEIR RATIOS (owner order O33, 2026-09-20: central moments are the
-producer's primary vector at fourth order and above, with the cumulant retained beside them as a
-diagnostic). Both prefixes are read from the same surface files; a cell under one prefix says
-nothing about the other, and each is looked up under its own key.
+STATISTIC KEYS ARE `mu<n>@<window>` (a central moment, e.g. `mu4@8`) AND THEIR RATIOS. The parser
+also accepts a `k<n>@<window>` prefix for a cumulant, which every producer emitted until owner
+order O33 (2026-09-20) made central moments primary, and which owner order O49 (2026-09-22)
+retired outright: no producer writes a `k`-prefixed key any more, so the branch is read history and
+not a live grammar. Both prefixes are read from the same surface files when present; a cell under
+one prefix says nothing about the other, and each is looked up under its own key.
 
 REFUSALS. A (case, statistic, level) absent from the surface RAISES `KeyError`: no interpolation
 across windows, orders, conditions or levels, ever, because a bias read between cells is a number

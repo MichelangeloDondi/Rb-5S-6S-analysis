@@ -28,7 +28,7 @@ returned is worth more than a pass would have been.
 WHAT IT FOUND (2026-09-16, register A274). On data generated at 52 um the
 likelihood has NO interior minimum anywhere on 40 to 90 um: it falls
 monotonically to the grid edge, 383 chi2 below its own truth, while the real
-traces turn over at 52.0 and rise 111 by 64 um. The correlated arm differs from
+traces turn over at 52.0 and rise 111 further into the retired band of waists. The correlated arm differs from
 the white by 5.6 chi2 out of 313, so the estimator's treatment of correlated
 noise as independent is EXCLUDED and the 419 chi2 of high-side curvature that
 exists only in the real traces is MODEL ERROR. The production fit's
@@ -68,13 +68,19 @@ UJ = importlib.util.module_from_spec(_s)
 _s.loader.exec_module(UJ)
 
 from rb5s6s import ladder_gate             # noqa: E402
+from rb5s6s.constants import W0_CENTRAL_M  # noqa: E402  (SSOT: the canonical truth is the record's central waist)
 from rb5s6s.forecast import _correlate      # noqa: E402
 from rb5s6s.noise import sigma_of_v         # noqa: E402
+from rb5s6s.fullmodel import _add_pedestal, full_profile, saturation_companion_mhz    # noqa: E402
+from rb5s6s.lineshape import _kernel_widths                             # noqa: E402
+from rb5s6s.volume_line import GaussianBeam, collection_half_window_m, joint_spectrum    # noqa: E402
 
 FORM = "mixed"                  # the form the archive's own fit prefers on chi2
 SESSIONS = ("P", "T")           # the canonical L; E and M live off this machine
-TRUTH_UM = 42.0          # the 40 to 45 um band (2026-09-17); the 64 um convention stood until then
-GRID_UM = (40.0, 42.0, 44.0, 46.0, 48.0, 52.0, 56.0)   # the scan grid from the lowest waist whose kernel nodes all pass (2026-09-18): at 38 um five of eight nodes fail depleted_line_abs, at 34-36 the transit's width too; the fine band lives in GRID_NOISELESS
+TRUTH_UM = round(W0_CENTRAL_M * 1e6, 4)   # the record's central waist, read and never typed (owner, 2026-09-22:
+#: "make sure that the SSOT is working properly"); it was a typed 42.0 inside the 40 to 45 um band, and the ladder
+#: frozen at 42.0 went to private/history/records/ladders/ as the rule for a new canonical truth says
+GRID_UM = (41.0, 42.0, 44.0, 46.0, 48.0, 52.0, 56.0)   # the scan grid from the lowest waist whose kernel nodes all pass (2026-09-18): at 38 um five of eight nodes fail depleted_line_abs, at 34-36 the transit's width too; the fine band lives in GRID_NOISELESS
 # THE NOISELESS RUNG NEEDS A FINER GRID, AND THE TOLERANCE IS NOT THE THING TO MOVE.
 # `ladder_gate.NOISELESS_TOL` is 1e-3, which on a 52 um truth is 0.052 um -- and a
 # parabola through three points of a 4 um grid cannot localise to that however good
@@ -84,7 +90,8 @@ GRID_UM = (40.0, 42.0, 44.0, 46.0, 48.0, 52.0, 56.0)   # the scan grid from the 
 # rung walks the coarse grid AND a fine band about the truth -- the coarse half still
 # catches a landscape that rails far away, which is the failure mode actually seen, and
 # the fine half resolves a minimum if there is one to resolve.
-GRID_NOISELESS = tuple(sorted(set(GRID_UM) | {TRUTH_UM + k * 0.5 for k in range(-4, 5)}))
+GRID_NOISELESS = tuple(sorted(w for w in set(GRID_UM) | {TRUTH_UM + k * 0.5 for k in range(-4, 5)}
+                              if w >= GRID_UM[0]))   # C6a: nothing below the bore's floor (F291)
 
 
 #: THE FINE BAND'S STEP, SET BY MEASUREMENT (F175, 2026-09-19). `local_min` interpolates over the three
@@ -125,7 +132,7 @@ def grid_noiseless(truth: float, offset: float = GRID_OFFSET_UM, step: float = G
     """
     g = set(GRID_UM) | {truth + offset + k * step for k in range(-6, 7)}
     return tuple(w for w in sorted(g) if abs(w - truth) > 1e-9)
-WIDE_UM = (48.0, 56.0)          # tests the asymptote instead of extrapolating it (was 76 and 90 on the 64-90 grid)
+WIDE_UM = (48.0, 56.0)          # tests the asymptote instead of extrapolating it (was 76 and 90 on the grid used before the waist convention retired)
 SEED = 1000
 # THE SWEEP, AND IT IS THE RULE READ LITERALLY. The owner's words are "first on noiseless
 # synthetic traces, then on INCREASINGLY NOISY synthetic traces up to the archive noise
@@ -203,14 +210,22 @@ def _synthetic_source():
     return _tr
 
 
-def truth_params(traces, w0, prior_mean: bool = False):
+#: The Cell a weak-field world (`VolumeWorld`) is injected through: the physics the joint line carries and
+#: nothing it does not (the triangle's ramp, no transit depletion), so the truth's parameters are fitted under
+#: the same physics the world then renders.
+WORLD_CELL = {"ramp": "weak", "depletion": "none"}
+
+
+def truth_params(traces, w0, prior_mean: bool = False, spec_extra=None):
     """The archive's OWN best fit at the truth waist, as the world to inject.
 
     NOT `Cell.starts()[0]`: that is the optimiser's start vector, a per-form generic
     laser width and a Lorentzian floor the production fit does not use, and injecting
     it made this harness's first cell return 52.0 for a truth of 42.
+
+    `spec_extra` reaches the Cell's spec (`WORLD_CELL` for a weak-field world); None is the production Cell.
     """
-    cell = UJ.Cell(UJ._spec(FORM, w0, beta_profile=False), traces)
+    cell = UJ.Cell(UJ._spec(FORM, w0, beta_profile=False, **(spec_extra or {})), traces)
     best = None
     for p0 in cell.starts():
         f = cell.fit(list(p0))
@@ -238,10 +253,11 @@ def truth_params(traces, w0, prior_mean: bool = False):
 NOISELESS_NFEV = 1200
 
 
-def _fit_grid(traces, grid, max_nfev=None, logdet: bool = False, noise_scale: float = 1.0):
+def _fit_grid(traces, grid, max_nfev=None, logdet: bool = False, noise_scale: float = 1.0, spec_extra=None):
     out = []
     for w0 in grid:
-        c = UJ.Cell(dict(UJ._spec(FORM, w0, beta_profile=False), logdet=logdet, noise_scale=noise_scale), traces)
+        c = UJ.Cell(dict(UJ._spec(FORM, w0, beta_profile=False, **(spec_extra or {})), logdet=logdet,
+                         noise_scale=noise_scale), traces)
         best = None
         for p0 in c.starts():
             f = c.fit(list(p0)) if max_nfev is None else c.fit(list(p0), max_nfev=max_nfev)
@@ -265,19 +281,202 @@ def _fit_grid(traces, grid, max_nfev=None, logdet: bool = False, noise_scale: fl
 RECORD_NOISE_TAU = 1.0
 
 
-def inject(cell, p_truth, seed, correlated=False, noise_scale=1.0, residual_source=None):
+#: The natural width the Cell's line carries, read from `full_profile`'s own default so the world and the
+#: fitter cannot hold two copies of it.
+_GAMMA_NAT_MHZ = __import__("inspect").signature(full_profile).parameters["gamma_nat_mhz"].default
+
+
+class VolumeWorld:
+    """THE TWIN'S WORLD DRAWN FROM THE ATOM MONTE CARLO (C6b, D2 and D3; owner order O46, 2026-09-22: "the
+    model and the twin has to deal with the non convolving model directly ... in particular the TWIN").
+
+    `inject(..., world_source=VolumeWorld(...))` replaces the fitter's own line, `Cell.model`, with the
+    joint per-path line of `rb5s6s.volume_line.joint_spectrum`: atoms sampled over the diverging beam with
+    the crossing flux, each carrying its own light shift and its own transit together, so the pairing a
+    convolution throws away is in the world and a closure MEASURES what the fitter gets wrong (F293).
+
+    THE TWIN RUNS THE FULL MODEL, THE BORE INCLUDED (the owner's standing rule; F465/F471 landed the
+    Cell's own side of it). `beam=None`, the default, reads `cell._clipped_beam`, the SAME bore-clipped
+    focus (`beam_field.ClippedBeam.at_focus(cell.w0, m2=cell.m2)`) the Cell built once in its own
+    `__init__` and the kernel Monte Carlo's gate reference reads too, so the world and the fitter carry
+    one beam rather than two independently constructed ones that could drift apart. Where the Cell has
+    none (a waist this bore and lens cannot produce, `ClippedBeam.at_focus` raised and the Cell fell back
+    to `None`), the world falls back the same way, to `GaussianBeam(cell.w0, cell.m2)`, so the two sides
+    stay matched even off the reachable band. **The free-space Gaussian is reachable only by passing it
+    explicitly** (`VolumeWorld(GaussianBeam(cell.w0, cell.m2))`), which is then the plant: the pairing is
+    the only difference left between the world and the fitter. `_make_world`'s `"volume"` world spec still
+    does this by name.
+
+    WHAT THE WORLD CARRIES, read from the Cell's own `physics` at the truth and never recomputed: the
+    on-axis shift, the homogeneous Lorentzian (the natural width, the collisional width, the saturation
+    companion, the permeated gas, and the laser itself when its kernel is Lorentzian), the laser's
+    Gaussian, the collection window's physical half-length, the temperature and the isotope, and the
+    Doppler pedestal (`pedestal_height_frac`, F465), composed onto the joint line exactly as
+    `fullmodel._add_pedestal` composes it onto `Cell.model`'s own line -- the same function, not a second
+    copy of its shape. A clipped beam's on-axis intensity per recorded watt is its own
+    (`onaxis_per_watt`), so the shift follows the recorded power through the beam that is there.
+
+    WHAT IT DOES NOT CARRY: the saturated ramp density and the transit's depletion factor, because the joint
+    line is first order in the drive (`volume_line`'s WEAK FIELD ONLY). A Cell carrying either is REFUSED
+    unless `allow` names the omission, because a closure against a world missing a term the fitter carries
+    reads the world's omission as the fitter's bias. `allow` is written into `describe()`, so an artefact
+    built on an allowed omission says so.
+
+    THE HOMOGENEOUS WIDTHS ARE APPLIED ONCE, AFTER THE ENSEMBLE SUM, by `joint_spectrum` itself (F317): this
+    world's own plant found the per-atom route it replaced, a third moment of -0.072 MHz^3 on a symmetric line
+    with no light shift.
+
+    THE LINE IS COMPUTED ONCE PER CONDITION, on a common grid of `step_mhz` spanning every axis it is asked
+    for with `margin_mhz` beyond it, and interpolated onto each trace's axis, so the repeats and the
+    realisations of one condition share one world. The Monte Carlo's own sampling pattern is then a fixed
+    feature of that world, the same in every realisation, and its size is read by halving and doubling
+    `n_path` before a ladder is climbed on it.
+    """
+
+    def __init__(self, beam=None, *, n_path: int = 20000, seed: int = 20260922, step_mhz: float = 0.01,
+                 margin_mhz: float = 1.0, allow=(), n_tau: int = None):
+        self.beam = beam
+        self.n_path, self.seed = int(n_path), int(seed)
+        self.step_mhz, self.margin_mhz = float(step_mhz), float(margin_mhz)
+        self.allow = frozenset(allow)
+        self.n_tau = n_tau
+        self._lines: dict = {}
+        self._cells: dict = {}
+
+    def omissions(self, cell) -> tuple:
+        """The terms this Cell carries and the weak-field world does not."""
+        out = []
+        if getattr(cell, "ramp", "weak") != "weak":
+            out.append("saturated_ramp")
+        # what the Cell APPLIES, not what it names: a legacy-gate Cell names "mc" and applies 1.0
+        if getattr(cell, "depletion", "none") == "companion" or any(abs(float(p["dep"]) - 1.0) > 1e-12 for p in cell.per):
+            out.append("transit_depletion")
+        for k in ("world_density", "transit_scale"):
+            if cell.spec.get(k) is not None:
+                out.append(k)
+        return tuple(out)
+
+    def _bind(self, cell) -> dict:
+        key = id(cell)
+        got = self._cells.get(key)
+        if got is not None:
+            return got
+        missing = [o for o in self.omissions(cell) if o not in self.allow]
+        if missing:
+            raise ValueError(
+                "VolumeWorld: the Cell carries " + ", ".join(missing) + ", which the weak-field joint line does "
+                "not. Build the Cell with ramp='weak' and depletion='none' for this world, or name the omission "
+                "in allow= so the artefact says the world lacks it.")
+        # gaussian-limit: the free-space fallback taken only for a Gaussian-volume Cell or a waist the bore cannot produce, as the Cell's own transit falls back
+        ref = GaussianBeam(cell.w0, cell.m2)
+        # THE TWIN RUNS THE FULL MODEL, THE BORE INCLUDED (the owner's standing rule; F465/F471). An
+        # explicit self.beam is taken over any default (the free-space Gaussian is reachable this
+        # way, and that is the plant). Otherwise the default MATCHES WHAT THE CELL ITSELF READS ITS LINE FROM: a
+        # volume-line Cell already tabulates its own transit and shift through one beam
+        # (`self.volume["beam"]`, "gaussian" or "clipped", Cell._table); a world comparing against it
+        # under a DIFFERENT default beam would not be testing the pairing any more, it would be
+        # testing two different beams against each other (test_a_volume_cell_reads_the_monte_carlo_line
+        # exists to rule this out). A plain Cell has no such table, so the default is its own clipped
+        # beam, built once in Cell.__init__ and the SAME object scripts/run_kernel_mc.py's gate
+        # reference reads through beam_field.clipped_transit_fwhm_mhz, so the world and the fitter
+        # carry one beam and not two independently constructed ones that could drift apart. Either way,
+        # a Cell with no clipped beam (a waist this bore and lens cannot produce) falls back to the
+        # free-space Gaussian the same way the Cell's own transit already does.
+        if self.beam is not None:
+            beam = self.beam
+        elif getattr(cell, "volume", None) is not None and cell.volume.get("beam", "gaussian") == "gaussian":
+            beam = ref
+        else:
+            beam = getattr(cell, "_clipped_beam", None)
+            if beam is None:
+                beam = ref
+        # THE ON-AXIS INTENSITY PER RECORDED WATT: the Cell's shift carries a Gaussian's 2/(pi w0^2) times the
+        # bore's same-reading factor. A Gaussian world is the Cell's own beam and takes the Cell's shift as it
+        # is. A beam with its own `onaxis_per_watt` rescales the shift to the intensity that beam puts on axis,
+        # and must READ the Cell's waist, or the closure has no single truth.
+        onaxis = getattr(beam, "onaxis_per_watt", None)
+        if onaxis is None:
+            s0_ratio = 1.0
+        else:
+            focus = float(beam.actual_focus_m())
+            if abs(focus - cell.w0) > 2e-3 * cell.w0:
+                raise ValueError(
+                    f"VolumeWorld: the beam focuses to {focus * 1e6:.3f} um and the Cell reads {cell.w0 * 1e6:.3f} um; "
+                    "build it with ClippedBeam.at_focus(cell.w0) so the world reads the truth")
+            s0_ratio = float(onaxis()) / (2.0 / (math.pi * cell.w0 ** 2) * float(cell.aperture_onaxis))
+        bound = dict(beam=beam, s0_ratio=s0_ratio, half_window_m=collection_half_window_m(ref, cell.z_ratio))
+        self._cells[key] = bound
+        return bound
+
+    def inputs(self, cell, d, i, t) -> dict:
+        """The joint line's inputs for trace `i` at the parameters `d`, from the Cell's own physics."""
+        for k in ("w0_transit_rel", "w0_shift_rel", "w0_sat_rel"):
+            if abs(float(d.get(k, 1.0)) - 1.0) > 1e-12:
+                raise ValueError(f"VolumeWorld: {k} = {d[k]} and a world has one beam; inject at 1.0")
+        b = self._bind(cell)
+        phys = cell.physics(d, cell.per[i], t["peak"], t["session"])
+        # the homogeneous width by the one rule the fitter's line uses (`lineshape._kernel_widths`): the natural and
+        # collisional widths, the saturation companion, the permeated gas floored at zero, and the laser when its
+        # kernel is Lorentzian
+        lorentz_laser, gamma, _ = _kernel_widths(
+            phys["gamma_coll"] + saturation_companion_mhz(phys["omega_mhz"], t["peak"]), float(phys["sigma_laser_fwhm"]),
+            0.0, _GAMMA_NAT_MHZ, phys["laser_kind"], phys["gamma_l"])
+        sigma = 0.0 if lorentz_laser else float(phys["sigma_laser_fwhm"])
+        return dict(S0_mhz=float(phys["s0"]) * b["s0_ratio"], gamma_hom_mhz=float(gamma), sigma_laser_mhz=sigma,
+                    beam=b["beam"], T_C=float(t["T"]), half_window_m=float(b["half_window_m"]),
+                    isotope=int(t["iso"]), pedestal_height_frac=float(phys["pedestal_height_frac"]))
+
+    def __call__(self, cell, d, i, t, nu) -> np.ndarray:
+        kw = self.inputs(cell, d, i, t)
+        # F465: pedestal_height_frac is read from the Cell's own physics() above, exactly like every
+        # other term this world carries, but joint_spectrum takes no such keyword (it builds the
+        # weak-field homogeneous-and-laser line only), so it is popped out of kw before the **kw splat
+        # below and composed onto the line afterward, the same way Cell.model() composes it through
+        # fullmodel._add_pedestal -- the same function, not a second copy of its shape.
+        pedestal_height_frac = kw.pop("pedestal_height_frac")
+        nu = np.asarray(nu, float)
+        key = (round(kw["S0_mhz"], 12), round(kw["gamma_hom_mhz"], 12), round(kw["sigma_laser_mhz"], 12),
+               kw["T_C"], kw["isotope"], round(kw["half_window_m"], 15), id(kw["beam"]),
+               round(pedestal_height_frac, 12))
+        got = self._lines.get(key)
+        reach = float(np.max(np.abs(nu)))
+        if got is None or reach > got[2]:
+            span = max(reach, 0.0 if got is None else got[2]) + self.margin_mhz
+            half = int(np.ceil(span / self.step_mhz))
+            grid = np.linspace(-half * self.step_mhz, half * self.step_mhz, 2 * half + 1)
+            extra = {} if self.n_tau is None else {"n_tau": int(self.n_tau)}
+            line = joint_spectrum(n_path=self.n_path, seed=self.seed, delta_mhz=grid,  # twin-ungated: the closure world's line, its model the Cell's declared omissions and allow list
+                                  homog_step_mhz=self.step_mhz, **kw, **extra)
+            line = _add_pedestal(grid, line, pedestal_height_frac, kw["T_C"], kw["isotope"])
+            got = (grid, line, span - self.margin_mhz)
+            self._lines[key] = got
+        return np.interp(nu, got[0], got[1])
+
+    def describe(self) -> str:
+        beam = "the Cell's own clipped beam (its free-space Gaussian where it has none)" if self.beam is None else repr(self.beam)
+        allow = ", ".join(sorted(self.allow)) or "none"
+        return (f"world: the atom Monte Carlo's joint line (volume_line.joint_spectrum), {self.n_path} atoms, seed "
+                f"{self.seed}, beam {beam}, omissions allowed: {allow}")
+
+
+def inject(cell, p_truth, seed, correlated=False, noise_scale=1.0, residual_source=None, world_source=None):
     """Every trace's voltage replaced by the model at the truth, plus its noise.
 
     `noise_scale` is the ladder's rung: 0.0 is noiseless, 0.3 is `low`, 1.0 is the
     condition's own measured law. At 0.0 nothing is drawn at all, so the rung is
     deterministic and one realisation is the whole of it.
+
+    `world_source(cell, d, i, trace, nu)` returns the line the world puts on trace `i`'s axis; None is
+    the fitter's own line, `cell.model`, and `VolumeWorld` is the atom Monte Carlo's (C6b, O46). The
+    amplitude, offset and slope are the archive trace's own either way.
     """
     d = cell.unpack(p_truth)
     rng = np.random.default_rng(seed)
     out, used, held, draws = [], [], [], []
     for i, t in enumerate(cell.traces):
         nu = cell.axis(d, t)
-        m = cell.model(nu, d, cell.per[i], t["peak"], t["session"])
+        m = (cell.model(nu, d, cell.per[i], t["peak"], t["session"]) if world_source is None
+             else np.asarray(world_source(cell, d, i, t, nu), float))
         A = np.column_stack([m, t["ones"], nu])
         c, *_ = np.linalg.lstsq(A, t["v"], rcond=None)
         clean = A @ c
@@ -455,12 +654,30 @@ def _init():
     # THE GRID CHOICE TRAVELS BY ENVIRONMENT (A18): a spawned worker starts with an empty _W, so a flag set
     # in the parent's _W alone would silently leave every worker on the full grid while the log said fine.
     _W["grid"] = os.environ.get("RB5S6S_CLOSURE_GRID", "full")
+    # AND SO DOES THE WORLD (C6b D2): "kind:atoms:seed", or absent for the fitter's own line.
+    _W["world_spec"] = os.environ.get("RB5S6S_CLOSURE_WORLD") or None
+
+
+def _make_world(spec: str, cell):
+    """The Monte Carlo world a spec names: `volume` through the Cell's own Gaussian beam, `volume-clipped`
+    through the bench's bore-clipped focus built to read the Cell's waist (C6b D2 and D3)."""
+    kind, n_path, seed = spec.split(":")
+    beam = None
+    if kind == "volume-clipped":
+        from rb5s6s.beam_field import ClippedBeam
+        beam = ClippedBeam.at_focus(cell.w0, m2=cell.m2)
+    elif kind != "volume":
+        raise ValueError(f"unknown world {kind!r}: 'volume' or 'volume-clipped'")
+    return VolumeWorld(beam, n_path=int(n_path), seed=int(seed))
 
 
 def _truth(truth: float, prior_mean: bool):
     key = ("truth", float(truth), bool(prior_mean))
     if key not in _W:
-        _W[key] = truth_params(_W["real"], float(truth), prior_mean=prior_mean)
+        spec = _W.get("world_spec")
+        _W[key] = truth_params(_W["real"], float(truth), prior_mean=prior_mean,
+                               spec_extra=(WORLD_CELL if spec else None))
+        _W[("world",) + key[1:]] = _make_world(spec, _W[key][0]) if spec else None
     return _W[key]
 
 
@@ -475,16 +692,28 @@ def _task(args):
             key = f"cond_{t['peak']}_{t['T']:.0f}C_{1e3 * t['P_W']:.0f}mW"; p = _p.get(key, _p["shared"])
             nb = int(np.ceil(n / 16)); st = rng.integers(0, len(p) - 16, size=nb)
             o = np.concatenate([p[s:s + 16] for s in st])[:n]; return o / max(float(np.std(p)), 1e-300)
-    syn, level, shape = inject(cell, ptr, SEED + r, correlated=correlated, noise_scale=scale, residual_source=src)
+    world = _W.get(("world", float(truth), bool(prior_mean)))
+    syn, level, shape = inject(cell, ptr, SEED + r, correlated=correlated, noise_scale=scale, residual_source=src,
+                               world_source=world)
     wscale = scale if scale > 0.0 else 1.0          # the rung whitens at its own scale (F7)
     ld = bool(logdet and scale > 0.0)               # no log-determinant at zero noise
     # EVERY RUNG WALKS THE FINE BAND (F14, 2026-09-17): the noisy rungs walked the 4 um grid alone,
     # and a parabola through 4 um nodes of a profile that is not a parabola read +0.56 um at the
-    # first noisy level and railed a 64 um truth that had no interior triple there.
+    # first noisy level and railed a truth drawn from the retired band that had no interior triple there.
     _grid = grid_noiseless(truth) if _W.get("grid", "full") == "full" else \
         tuple(sorted({min(GRID_UM), max(GRID_UM)} | {truth + k * 0.5 for k in range(-4, 5)}))
+    if os.environ.get("RB5S6S_CLOSURE_GRID_UM"):               # an explicit walk (C6b D3's below-floor diagnostic)
+        _grid = tuple(float(x) for x in os.environ["RB5S6S_CLOSURE_GRID_UM"].split(","))
+    extra = dict(WORLD_CELL) if world is not None else {}
+    if os.environ.get("RB5S6S_CLOSURE_BELOW_FLOOR"):
+        extra["aperture_clamp_floor"] = True
+    fitter = os.environ.get("RB5S6S_CLOSURE_FITTER")          # "kind:atoms:seed" of a volume-table fitter
+    if fitter:
+        kind, n_path, seed = fitter.split(":")
+        extra.update(WORLD_CELL, volume_line={"beam": "clipped" if kind == "volume-clipped" else "gaussian",
+                                              "n_path": int(n_path), "seed": int(seed)})
     pts = _fit_grid(syn, _grid, max_nfev=(NOISELESS_NFEV if scale <= 0.0 else None),
-                    logdet=ld, noise_scale=wscale)
+                    logdet=ld, noise_scale=wscale, spec_extra=(extra or None))
     w, bar, why = parabola(pts)
     # THE NOISELESS RUNG READS THE GRID'S OWN MINIMUM, NOT THE PARABOLA'S VERTEX (2026-09-18, the
     # confirmed against the recorded profile). With no noise the profile is
@@ -625,7 +854,8 @@ def main() -> int:
     ap.add_argument("--conditions", default=None, help="'all' or the number of conditions in design order; sets RB5S6S_CLOSURE_CONDITIONS for the workers")
     ap.add_argument("--levels", default=None, help="a comma list of noise levels to walk instead of the sweep (0 is always walked first)")
     ap.add_argument("--truths", default=str(TRUTH_UM), help="comma-separated truth waists in um; the first is the ladder's canonical one")
-    ap.add_argument("--prior-mean", action="store_true", help="inject the truth at the prior means (beta_rel, omega_scale, alpha_rel = 1)")
+    ap.add_argument("--prior-mean", action=argparse.BooleanOptionalAction, default=True,
+                    help="inject the truth at the prior means (beta_rel, omega_scale, alpha_rel = 1). THE DEFAULT since 2026-09-22 (plan A2 said every closure carries it, and two runs that day did not, so the noiseless rung failed on the prior's pull, chi2_prior 24.75 at the truth); --no-prior-mean is the explicit comparison arm")
     # THE LOG-DETERMINANT IS ON BY DEFAULT (2026-09-19). It was `store_true`, so the DEFAULT objective
     # omitted `sum ln sigma^2` and was therefore not a likelihood at all by this record's own rule: an
     # objective whose weights depend on its own parameters rewards whatever inflates the level until the
@@ -661,9 +891,45 @@ def main() -> int:
     # grid and the plan takes whichever the numbers license. The default stays the full grid.
     ap.add_argument("--grid", default="full", choices=("full", "fine"),
                     help="'fine': the +-2 um band at 0.5 plus the 40 and 56 sentinels; 'full': grid_noiseless")
+    # THE WORLD (C6b D2 and D3, owner orders O46/O49, A148, C6B_CONVOLUTION_MAP.md's ranked item 2): the atom
+    # Monte Carlo's joint line by DEFAULT, through the Cell's Gaussian beam, or the bench's clipped focus. A
+    # Monte Carlo world injects through a weak-field Cell and the fitter walks weak-field Cells too
+    # (`WORLD_CELL`), so the difference the closure reads is the pairing of shift and transit, and for the
+    # clipped world the beam's shape. 'model' is the named comparison arm, the fitter's own line replayed
+    # back at itself (the transit-and-ramp convolution this closure built before this window). Every world
+    # other than 'model' climbs its own ladder id, `ultra_joint_waist@<world>`, because a rung passed on one
+    # world licenses nothing on another: the DEFAULT therefore climbs `ultra_joint_waist@volume`, a ladder
+    # this flip leaves to be climbed fresh, never `ultra_joint_waist` itself.
+    ap.add_argument("--world", default="volume", choices=("model", "volume", "volume-clipped"))
+    ap.add_argument("--world-paths", type=int, default=20000, help="atoms in the Monte Carlo world's line")
+    ap.add_argument("--world-seed", type=int, default=20260922, help="the Monte Carlo world's sampling seed")
+    ap.add_argument("--grid-um", default=None, help="an explicit comma list of waists to walk (a diagnostic)")
+    ap.add_argument("--fitter", default="volume", choices=("convolution", "volume", "volume-clipped"),
+                    help="the fitter's line: the volume table through the Gaussian beam by DEFAULT, the clipped "
+                         "focus, its atoms and seed the world's so a plant reads one sample twice, or "
+                         "'convolution' for the named comparison arm, the transit and ramp convolution this "
+                         "closure fitted with before this window")
+    ap.add_argument("--below-floor", action="store_true",
+                    help="DIAGNOSTIC: hold the on-axis factor at the bore's floor below it, so a world the Gaussian beam cannot "
+                         "describe is read as the size of its push and not as a rail at the floor (C6b D3)")
     a = ap.parse_args()
+    if a.grid_um:
+        os.environ["RB5S6S_CLOSURE_GRID_UM"] = a.grid_um
+    if a.fitter != "convolution":
+        os.environ["RB5S6S_CLOSURE_FITTER"] = f"{a.fitter}:{a.world_paths}:{a.world_seed}"
+    if a.below_floor:
+        os.environ["RB5S6S_CLOSURE_BELOW_FLOOR"] = "1"
+    global ANALYSIS_ID
+    if a.world != "model":
+        ANALYSIS_ID = f"{ANALYSIS_ID}@{a.world}"
+        os.environ["RB5S6S_CLOSURE_WORLD"] = f"{a.world}:{a.world_paths}:{a.world_seed}"
+        _W["world_spec"] = os.environ["RB5S6S_CLOSURE_WORLD"]
     from _producer_lock import producer_lock
-    with producer_lock("run_ultra_joint_closure"):
+    import contextlib
+    # A WAVE THAT ONLY DUMPS WRITES NO CSV AND RECORDS NO RUNG, so it takes no producer lock: two worlds or two
+    # slices may run side by side, which the lock refused for a run that wrote nothing (2026-09-22, the same
+    # repair the campaign twin's waves took that morning). A combine and a full run still take it.
+    with (contextlib.nullcontext() if a.dump else producer_lock("run_ultra_joint_closure")):
         t0 = time.time()
         # ---------------------------------------------------- THE SWEEP, ONE PASS
         # LONGEST FIRST, which this record already required and this file did not do.
@@ -697,8 +963,9 @@ def main() -> int:
         from rb5s6s import kernel_gate as _kg
         from rb5s6s.constants import RHO_RETRO as _rho
         _conds = sorted({(1.0, float(_rho), float(t["T"]), float(t["P_W"]) * 1e3) for t in _src})
-        _lo = min(list(GRID_UM) + list(GRID_NOISELESS) + [x - 2.0 for x in truths])
-        _hi = max(list(GRID_UM) + list(GRID_NOISELESS) + [x + 2.0 for x in truths])
+        _extra_grid = [float(x) for x in a.grid_um.split(",")] if a.grid_um else []
+        _lo = min(list(GRID_UM) + list(GRID_NOISELESS) + [x - 2.0 for x in truths] + _extra_grid)
+        _hi = max(list(GRID_UM) + list(GRID_NOISELESS) + [x + 2.0 for x in truths] + _extra_grid)
         # ON THE WAIST READING SET (D1 of PLAN v2, 2026-09-18): this closure fits one free amplitude per
         # trace, so the amplitude's power law is not consumed and the gate is asked for every other reading.
         for _line in sorted({str(t["peak"]) for t in _src}):
@@ -851,7 +1118,7 @@ def main() -> int:
                           nominal=0.68, chi2_red=d["chi2_red"],
                           odd_sign_agreement="n/a",
                           odd_sign_reason=("this closure estimates a LOCATION, the waist, from a "
-                                           "chi-squared profile, and no odd cumulant enters it, so there "
+                                           "chi-squared profile, and no odd moment enters it, so there "
                                            "is no sign to agree about and asserting True would be a "
                                            "pass nobody earned"),
                           blame=("the generator and the estimator are the same forward model, so this "
@@ -898,7 +1165,8 @@ def main() -> int:
                 climbed[rung] = f"MEASURED, not recorded ({why})"
                 continue
             try:
-                art = ladder_gate.record(ANALYSIS_ID, rung, detail=detail)
+                art = ladder_gate.record(ANALYSIS_ID, rung, detail=detail,
+                                         canonical={"truth_um": float(canon)})
             except ladder_gate.LadderRefused as exc:
                 print(f"  rung {rung:<10} NOT CLIMBED: {exc}", flush=True)
                 rows.append([f"rung_{rung}", "verdict", "NOT CLIMBED", "", "",

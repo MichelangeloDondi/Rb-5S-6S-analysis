@@ -72,9 +72,11 @@ DOC_TOKENS = [
     # first was +0.558, from the archival row of
     # methods/03's geometry table and its reading paragraph were still computed
     # at the replaced 50 um waist, which printed a LARGER Z_c/z_R than the
-    # 60 um row directly above it. Recomputed at the 64 um convention.
+    # 60 um row directly above it. Recomputed at the retired waist convention.
+    # The first cell moved with the waist: the table's archive row is now the ruled 42.38 um, where g1 reads -0.540
+    # (its -0.565 stood at the retired waist convention until 2026-09-22, when the row itself was replaced).
     ("docs/methods/03_the_ac_stark_ramp.md",
-     ["$-0.565$", "$+0.354$", "$-0.564$", "1.12"]),
+     ["$-0.540$", "$+0.354$", "$-0.564$", "1.12"]),
     ("scripts/run_ramp_geometry.py", ["1.12", "Z_c > ~0.9 mm"]),
     ("rb5s6s/config.py", ["1.12", "L_par/(2M)", "R636-10", "3 x 12 mm"]),
     ("docs/THEORY_NOTE.md", ["$Z_c/z_R\\approx1.12$", "L_\\parallel/2M"]),
@@ -93,15 +95,17 @@ def test_docs_quote_current_coefficients(relpath, tokens):
     )
 
 
-# the g1 values MIRROR with the ramp support (O27, 2026-09-17)
-@pytest.mark.parametrize("w0_um,doc_g1", [(60.0, -0.564), (64.0, -0.565),
+# the g1 values MIRROR with the ramp support (O27, 2026-09-17). RE-PINNED 2026-09-22 (O44): the row
+# that used the retired waist convention now uses the central waist (42.38 um, docs/methods/03's own
+# table), re-pinned by running _g1 directly rather than typed by hand.
+@pytest.mark.parametrize("w0_um,doc_g1", [(60.0, -0.564), (42.38, -0.540),
                                           (16.0, +0.354)])
 def test_tabulated_g1_match_computation(w0_um, doc_g1):
     assert _g1(_z_ratio(w0_um)) == pytest.approx(doc_g1, abs=2e-3)
 
 
 # Every document that mentions the small-waist skew gain must NOT quote the
-# naive x64 (S_0^3) scaling: the axial average changes the third cumulant's
+# naive x64 (S_0^3) scaling: the axial average changes the third moment's
 # magnitude and, past the crossover, its sign. PLAN itself retracts x64 as
 # "wrong in sign", yet four documents still carried it (found 2026-07-22).
 _X64 = re.compile(r"(×64|x64|64\\times|64\s*×)")
@@ -117,9 +121,12 @@ _NAIVE_GAIN = re.compile(
 # assigned. Of the 195 sentences in these documents that satisfied this
 # qualifier, 160 did so through that substring alone -- ordinary physics prose
 # was excusing the very claim the guard exists to catch. What actually
-# qualifies is naming the axial average, the crossover, the cumulant, or the
-# sign flip as such.
-_AXIAL = re.compile(r"axial|sign[- ]flip|flips? sign|1\.12|cumulant|"
+# qualifies is naming the axial average, the crossover, the cumulant (or its
+# current name, "third moment"/"mu3", O49), or the sign flip as such. A BARE
+# "moment" is not admitted here for the same reason a bare "sign" is not: it
+# is an ordinary English word ("at this moment") and would excuse prose the
+# guard exists to catch.
+_AXIAL = re.compile(r"axial|sign[- ]flip|flips? sign|1\.12|cumulant|third moment|mu_?3|"
                     r"not by the", re.I)
 
 # Every document that carries the claim -- INCLUDING the generated ledger and
@@ -446,14 +453,14 @@ def test_cathode_geometry_is_flagged_as_assumed():
 
 def test_small_waist_S0_factor_tracks_the_waist_prior():
     """The "small waist makes S0 N-times larger" factor is not a constant: it is
-    S0(16 um)/S0(W0_MEASURED_M), so it moves whenever the waist convention moves. It once
+    S0(16 um)/S0(W0_CENTRAL_M), so it moves whenever the waist convention moves. It once
     said 4x, which is exactly (32/16)^2 -- the ratio at the 32 um nominal that
     constants.py itself marks excluded. Recompute it and require the docs to
     quote the current value, so the factor cannot outlive the prior again."""
     import re
     from rb5s6s.lineshape import stark_shift_S0_mhz
-    from rb5s6s.constants import W0_MEASURED_M
-    ratio = stark_shift_S0_mhz(0.225, 16e-6) / stark_shift_S0_mhz(0.225, W0_MEASURED_M)
+    from rb5s6s.constants import W0_CENTRAL_M
+    ratio = stark_shift_S0_mhz(0.225, 16e-6) / stark_shift_S0_mhz(0.225, W0_CENTRAL_M)
     stale = round(stark_shift_S0_mhz(0.225, 16e-6)
                   / stark_shift_S0_mhz(0.225, 32e-6))          # the 4 that was there
     assert ratio > stale + 1, "prior moved; this guard's premise needs revisiting"
@@ -466,4 +473,4 @@ def test_small_waist_S0_factor_tracks_the_waist_prior():
                 bad.append(f"{rel}: {seg[:70]!r}")
     assert not bad, (
         f"the replaced x{stale} waist factor is back; the current ratio is "
-        f"x{ratio:.1f} at w0={W0_MEASURED_M * 1e6:.0f} um:\n  " + "\n  ".join(bad))
+        f"x{ratio:.1f} at w0={W0_CENTRAL_M * 1e6:.0f} um:\n  " + "\n  ".join(bad))

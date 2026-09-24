@@ -1,34 +1,34 @@
 #!/usr/bin/env python3
-"""Ratios and differences of the windowed second cumulant ACROSS the design's
+"""Ratios and differences of the windowed second moment ACROSS the design's
 axes, from the canonical traces and the committed fits, with the model's own
 prediction at three waists beside each.
 
 WHY THIS EXISTS. At one condition every same-parity ratio of the windowed
-cumulants carries the width once: the transit, the laser width and the
+moments carries the width once: the transit, the laser width and the
 Lorentzian floor move the whole even ladder in one direction. What carries new
 information is a ratio across a design axis, because the axis is what the
 terms differ on. Four such statistics are read here, none of them a fit:
 
-  power ratio      k2(225 mW) / k2(25 mW) at 130 C, per peak and pooled. Every
+  power ratio      mu2(225 mW) / mu2(25 mW) at 130 C, per peak and pooled. Every
                    power-independent width cancels (the laser, the Lorentzian
                    floor, the collisions, the transit) and what remains is the
                    P^2 family: the saturation companion and the AC-Stark ramp,
                    both going as w0^-4.
-  temperature      k2(T) - k2(70 C) at 225 mW, per peak. The session's laser
+  temperature      mu2(T) - mu2(70 C) at 225 mW, per peak. The session's laser
   difference       width and the Lorentzian floor cancel. beta Delta N(T) and
                    the transit's sqrt(T) remain.
-  window ratio     k2(3.25) / k2(12) per condition, dimensionless. The axis
+  window ratio     mu2(3.25) / mu2(12) per condition, dimensionless. The axis
                    scale and the amplitude cancel. the wing's weight against
                    the core remains, which is the Lorentzian fraction of the
                    line, a kernel-form probe.
-  isotope and F    at one condition, k2(85Rb) - k2(87Rb) and, within each
-  contrasts        isotope, k2 of the higher F line minus the lower. Every
+  isotope and F    at one condition, mu2(85Rb) - mu2(87Rb) and, within each
+  contrasts        isotope, mu2 of the higher F line minus the lower. Every
                    shared term cancels. the isotope contrast reads the
                    transit's mass ratio alone (the lighter 85Rb is faster and
                    wider), the F contrast reads the pumping companion's
                    branching and whatever F-dependent term the model lacks.
 
-THE ESTIMATOR is `rb5s6s.cumulants.windowed_cumulants` at half-widths 3.25, 6
+THE ESTIMATOR is `rb5s6s.cumulants.windowed_moments` at half-widths 3.25, 6
 and 12 MHz, self-centred, with a linear baseline through two strips 30 to
 40 MHz from the centre on each side so that a pedestal and a tilt are removed
 the same way from every trace and from the model. Every windowed statistic is
@@ -41,7 +41,7 @@ names. the ratios and differences propagate it in quadrature.
 
 THE PREDICTIONS come from `rb5s6s.fullmodel.full_profile` sampled on a grid
 like the traces' own (0.0425 MHz steps over 42 MHz each side) and read with
-the same estimator, at 42, 64 and 85 um: the transit from the waist and the
+the same estimator, at 42 um, the retired convention, and 85 um: the transit from the waist and the
 temperature (`constants.transit_fwhm_from_w0`, per isotope), the ramp depth
 from `lineshape.stark_shift_S0_mhz` at the retro ratio of record, the
 two-photon Rabi frequency from `hyperpolarizability.two_photon_rabi_hz`, the
@@ -114,7 +114,7 @@ N_FULL, N_HALF = 4001, 2001
 # grids settle a hair apart. A tenth of that tail, 1e-4, is where the grid
 # error is still a hundredth of the cell's own block scatter.
 GRID_TOL = 1e-4               # relative disagreement between the two grids that refuses a reading
-WAISTS_UM = (42.0, 64.0, 85.0)
+WAISTS_UM = (42.0, 56.0, 85.0)   # C6a: the band's centre, the grid's top and a far point
 PEAKS = ("4121", "4154", "4192", "4207")
 ISO = {p: K.PEAKS[p]["isotope"] for p in PEAKS}
 PAIRS_F = {"87Rb": ("4207", "4121"), "85Rb": ("4192", "4154")}     # higher F minus lower F
@@ -158,8 +158,8 @@ def qc_peak_positions():
     return {r["file"]: float(r["peak_pos_ms"]) for r in _read("qc_metrics.csv")}
 
 
-def k2_checked(nu, y, half_width, centre0):
-    """k2 on the full and the halved window grid. Returns (k2, relative
+def mu2_checked(nu, y, half_width, centre0):
+    """mu2 on the full and the halved window grid. Returns (mu2, relative
     disagreement) or (nan, disagreement) when the two disagree, the window
     did not converge, or a baseline strip is outside the trace."""
     baseline = ("linear", (centre0 - STRIP[1], centre0 - STRIP[0]), (centre0 + STRIP[0], centre0 + STRIP[1]))
@@ -178,7 +178,7 @@ def k2_checked(nu, y, half_width, centre0):
 
 
 def condition_task(key, fit, recs, seeds):
-    """Per trace and window: k2 on both grids. Returns per-window arrays."""
+    """Per trace and window: mu2 on both grids. Returns per-window arrays."""
     vals = {w: [] for w in WINDOWS}
     dis = {w: [] for w in WINDOWS}
     refused = {w: 0 for w in WINDOWS}
@@ -187,7 +187,7 @@ def condition_task(key, fit, recs, seeds):
         nu = to_frequency(t, fit["rate"])
         c0 = seeds[r["file"]] * fit["rate"]
         for w in WINDOWS:
-            k, d = k2_checked(nu, v, w, c0)
+            k, d = mu2_checked(nu, v, w, c0)
             if np.isfinite(k):
                 vals[w].append(k)
                 dis[w].append(d)
@@ -212,8 +212,8 @@ def cell(values):
     return float(x.mean()), float(x.std(ddof=1) / np.sqrt(x.size)), int(x.size)
 
 
-def model_k2(w0_um, T_C, P_mW, gamma_coll, sigma_laser, isotope, peak, windows=WINDOWS):
-    """The model's k2 per window, on the traces' own grid, read with the same
+def model_mu2(w0_um, T_C, P_mW, gamma_coll, sigma_laser, isotope, peak, windows=WINDOWS):
+    """The model's mu2 per window, on the traces' own grid, read with the same
     estimator on both grids. a disagreement raises rather than publishing."""
     w0 = w0_um * 1e-6
     P_W = P_mW / 1e3
@@ -224,9 +224,9 @@ def model_k2(w0_um, T_C, P_mW, gamma_coll, sigma_laser, isotope, peak, windows=W
                      s0=s0, peak=peak, omega_mhz=omega, T_C=T_C, isotope=isotope)
     out = {}
     for w in windows:
-        k, d = k2_checked(MODEL_NU, y, w, 0.0)
+        k, d = mu2_checked(MODEL_NU, y, w, 0.0)
         if not np.isfinite(k):
-            raise SystemExit(f"run_cross_arm_ratios: the model's k2 at {w} MHz, {w0_um} um, "
+            raise SystemExit(f"run_cross_arm_ratios: the model's mu2 at {w} MHz, {w0_um} um, "
                              f"{T_C} C, {P_mW} mW disagrees between the two grids by {d:.2e}. refused")
         out[w] = k
     return out
@@ -282,16 +282,16 @@ def main() -> int:
 
     out = [["quantity", "key", "value", "err", "unit", "note", "status"]]
     out.append(["estimator", "definition", f"{MAIN_WINDOW:g}", "", "MHz half-width",
-                f"self-centred windowed k2 (rb5s6s.cumulants.windowed_cumulants) at half-widths {', '.join(f'{w:g}' for w in WINDOWS)} MHz, a linear baseline through strips {STRIP[0]:g} to {STRIP[1]:g} MHz from the centre on each side, seeded on the committed QC peak position. every reading computed on {N_FULL} and {N_HALF} window points and refused beyond a relative disagreement of {GRID_TOL:g}: the largest disagreement admitted was {max_dis:.2e} and {n_refused} trace-windows were refused. the bar of a cell is the block scatter over its repeats", "DIAGNOSTIC"])
+                f"self-centred windowed mu2 (rb5s6s.cumulants.windowed_moments) at half-widths {', '.join(f'{w:g}' for w in WINDOWS)} MHz, a linear baseline through strips {STRIP[0]:g} to {STRIP[1]:g} MHz from the centre on each side, seeded on the committed QC peak position. every reading computed on {N_FULL} and {N_HALF} window points and refused beyond a relative disagreement of {GRID_TOL:g}: the largest disagreement admitted was {max_dis:.2e} and {n_refused} trace-windows were refused. the bar of a cell is the block scatter over its repeats", "DIAGNOSTIC"])
     for k in keys:
         for w in WINDOWS:
             m, e, n = cells[k][w]
             if n < 2:
-                out.append([f"k2_w{w:g}", label(k), "", "", "MHz^2",
+                out.append([f"mu2_w{w:g}", label(k), "", "", "MHz^2",
                             f"fewer than two traces admitted ({n}), so no scatter and no cell. {stats[k]['refused'][w]} refused", "DIAGNOSTIC"])
                 continue
             v, es = pm_cells(m, e)
-            out.append([f"k2_w{w:g}", label(k), v, es, "MHz^2",
+            out.append([f"mu2_w{w:g}", label(k), v, es, "MHz^2",
                         f"mean over {n} traces, the bar the block scatter. {stats[k]['refused'][w]} refused", "DIAGNOSTIC"])
 
     # ---- the power ratio at 130 C ---------------------------------------
@@ -307,21 +307,21 @@ def main() -> int:
         gc, sl = pooled_width(fits, rungs)
         preds = {}
         for w0 in WAISTS_UM:
-            a = model_k2(w0, 130.0, 225.0, gc, sl, ISO[peak], peak, (MAIN_WINDOW,))[MAIN_WINDOW]
-            b = model_k2(w0, 130.0, 25.0, gc, sl, ISO[peak], peak, (MAIN_WINDOW,))[MAIN_WINDOW]
+            a = model_mu2(w0, 130.0, 225.0, gc, sl, ISO[peak], peak, (MAIN_WINDOW,))[MAIN_WINDOW]
+            b = model_mu2(w0, 130.0, 25.0, gc, sl, ISO[peak], peak, (MAIN_WINDOW,))[MAIN_WINDOW]
             preds[w0] = a / b
             pooled_pred[w0].append(a / b)
         pooled_ratio.append((ratio, err))
         v, es = pm_cells(ratio, err)
-        out.append(["power_ratio_k2", peak, v, es, "",
-                    f"k2({MAIN_WINDOW:g} MHz) at 225 mW over 25 mW, 130 C, {nh} and {nl} traces. the P^2 terms alone move it. model at the per-peak pooled committed widths (gamma_coll {gc:.4f}, sigma_laser {sl:.4f} MHz), the ramp and the companion at the record's retro ratio: {pred_cells(preds)}. pulls " + ", ".join(f"{w0:g} um {(ratio - p) / err:+.1f}" for w0, p in preds.items()), "DIAGNOSTIC"])
+        out.append(["power_ratio_mu2", peak, v, es, "",
+                    f"mu2({MAIN_WINDOW:g} MHz) at 225 mW over 25 mW, 130 C, {nh} and {nl} traces. the P^2 terms alone move it. model at the per-peak pooled committed widths (gamma_coll {gc:.4f}, sigma_laser {sl:.4f} MHz), the ramp and the companion at the record's retro ratio: {pred_cells(preds)}. pulls " + ", ".join(f"{w0:g} um {(ratio - p) / err:+.1f}" for w0, p in preds.items()), "DIAGNOSTIC"])
     m, e, chi2, n = ivw(pooled_ratio)
     v, es = pm_cells(m, e)
     pp = {w0: float(np.mean(pooled_pred[w0])) for w0 in WAISTS_UM}
-    out.append(["power_ratio_k2", "pooled", v, es, "",
+    out.append(["power_ratio_mu2", "pooled", v, es, "",
                 f"inverse-variance pool over {n} peaks, chi2 {chi2:.1f} for {n - 1} dof. model, the mean over the peaks: {pred_cells(pp)}. pulls " + ", ".join(f"{w0:g} um {(m - p) / e:+.1f}" for w0, p in pp.items()), "DIAGNOSTIC"])
     for w0 in WAISTS_UM:
-        out.append(["power_ratio_k2_model", f"w{w0:g}", f"{pp[w0]:.5f}", "", "",
+        out.append(["power_ratio_mu2_model", f"w{w0:g}", f"{pp[w0]:.5f}", "", "",
                     f"the model's pooled ratio at {w0:g} um: the companion (Omega^2, w0^-4) and the ramp (S0^2, w0^-4) at 225 against 25 mW", "DIAGNOSTIC"])
 
     # ---- the temperature difference at 225 mW ----------------------------
@@ -340,21 +340,21 @@ def main() -> int:
             diff, err = mt - mb, float(np.hypot(et, eb))
             preds = {}
             for w0 in WAISTS_UM:
-                a = model_k2(w0, key[2], 225.0, fits[key]["gamma_coll"], fits[key]["sigma_laser"], ISO[peak], peak, (MAIN_WINDOW,))[MAIN_WINDOW]
-                b = model_k2(w0, 70.0, 225.0, fits[base]["gamma_coll"], fits[base]["sigma_laser"], ISO[peak], peak, (MAIN_WINDOW,))[MAIN_WINDOW]
+                a = model_mu2(w0, key[2], 225.0, fits[key]["gamma_coll"], fits[key]["sigma_laser"], ISO[peak], peak, (MAIN_WINDOW,))[MAIN_WINDOW]
+                b = model_mu2(w0, 70.0, 225.0, fits[base]["gamma_coll"], fits[base]["sigma_laser"], ISO[peak], peak, (MAIN_WINDOW,))[MAIN_WINDOW]
                 preds[w0] = a - b
             pooled_td[key[2]].append((diff, err))
             for w0 in WAISTS_UM:
                 pooled_td_pred[key[2]][w0].append(preds[w0])
             v, es = pm_cells(diff, err)
-            out.append(["temperature_difference_k2", f"{peak}_T{key[2]:g}_minus_T70", v, es, "MHz^2",
-                        f"k2({MAIN_WINDOW:g} MHz) at 225 mW, {key[2]:g} C minus 70 C, {nt} and {nb} traces. the session's laser width and the floor cancel, beta Delta N and the transit's sqrt(T) remain. model at each condition's own committed widths, the transit from the waist and the temperature: {pred_cells(preds)}. pulls " + ", ".join(f"{w0:g} um {(diff - p) / err:+.1f}" for w0, p in preds.items()), "DIAGNOSTIC"])
+            out.append(["temperature_difference_mu2", f"{peak}_T{key[2]:g}_minus_T70", v, es, "MHz^2",
+                        f"mu2({MAIN_WINDOW:g} MHz) at 225 mW, {key[2]:g} C minus 70 C, {nt} and {nb} traces. the session's laser width and the floor cancel, beta Delta N and the transit's sqrt(T) remain. model at each condition's own committed widths, the transit from the waist and the temperature: {pred_cells(preds)}. pulls " + ", ".join(f"{w0:g} um {(diff - p) / err:+.1f}" for w0, p in preds.items()), "DIAGNOSTIC"])
 
     for T, pairs in pooled_td.items():
         m, e, chi2, n = ivw(pairs)
         pp = {w0: float(np.mean(pooled_td_pred[T][w0])) for w0 in WAISTS_UM}
         v, es = pm_cells(m, e)
-        out.append(["temperature_difference_k2", f"pooled_T{T:g}_minus_T70", v, es, "MHz^2",
+        out.append(["temperature_difference_mu2", f"pooled_T{T:g}_minus_T70", v, es, "MHz^2",
                     f"inverse-variance pool over {n} peaks at {T:g} C minus 70 C, chi2 {chi2:.1f} for {n - 1} dof. model, the mean over the peaks: {pred_cells(pp)}. pulls " + ", ".join(f"{w0:g} um {(m - p) / e:+.1f}" for w0, p in pp.items()), "DIAGNOSTIC"])
 
     # ---- the window ratio per condition ----------------------------------
@@ -369,13 +369,13 @@ def main() -> int:
         r = np.array(a[:n]) / np.array(b[:n])
         m, e, n = cell(r)
         if n < 2:
-            out.append(["window_ratio_k2", label(k), "", "", "",
+            out.append(["window_ratio_mu2", label(k), "", "", "",
                         f"fewer than two traces admitted at both windows ({n}), so no scatter and no cell", "DIAGNOSTIC"])
             continue
-        preds = {w0: (lambda mk: mk[3.25] / mk[12.0])(model_k2(w0, T, P, fits[k]["gamma_coll"], fits[k]["sigma_laser"], ISO[peak], peak)) for w0 in WAISTS_UM}
+        preds = {w0: (lambda mk: mk[3.25] / mk[12.0])(model_mu2(w0, T, P, fits[k]["gamma_coll"], fits[k]["sigma_laser"], ISO[peak], peak)) for w0 in WAISTS_UM}
         v, es = pm_cells(m, e)
-        out.append(["window_ratio_k2", label(k), v, es, "",
-                    f"k2(3.25) over k2(12) per trace, the mean over {n} traces with the block scatter. the wing's weight against the core, a kernel-form probe. model at this condition's committed widths: {pred_cells(preds)}. pulls " + ", ".join(f"{w0:g} um {(m - p) / e:+.1f}" if np.isfinite(e) and e > 0 else f"{w0:g} um n/a" for w0, p in preds.items()), "DIAGNOSTIC"])
+        out.append(["window_ratio_mu2", label(k), v, es, "",
+                    f"mu2(3.25) over mu2(12) per trace, the mean over {n} traces with the block scatter. the wing's weight against the core, a kernel-form probe. model at this condition's committed widths: {pred_cells(preds)}. pulls " + ", ".join(f"{w0:g} um {(m - p) / e:+.1f}" if np.isfinite(e) and e > 0 else f"{w0:g} um n/a" for w0, p in preds.items()), "DIAGNOSTIC"])
         arm = "power_arm" if role == "p_sweep" else "temperature_arm"
         pooled_wr[arm].append((m, e))
         if role == "p_sweep" and P == 225.0:
@@ -383,7 +383,7 @@ def main() -> int:
     for arm, pairs in pooled_wr.items():
         m, e, chi2, n = ivw(pairs)
         v, es = pm_cells(m, e)
-        out.append(["window_ratio_k2", f"pooled_{arm}", v, es, "",
+        out.append(["window_ratio_mu2", f"pooled_{arm}", v, es, "",
                     f"inverse-variance pool over the {arm.replace('_', ' ')} ({n} conditions, the 130 C corner at 225 mW in both arms), chi2 {chi2:.1f} for {n - 1} dof", "DIAGNOSTIC"])
 
     # ---- the isotope and F contrasts per (T, P) --------------------------
@@ -403,13 +403,13 @@ def main() -> int:
         gc, sl = pooled_width(fits, [peaks[p] for p in PEAKS])
         preds = {}
         for w0 in WAISTS_UM:
-            a = model_k2(w0, T, P, gc, sl, 85, None, (MAIN_WINDOW,))[MAIN_WINDOW]
-            b = model_k2(w0, T, P, gc, sl, 87, None, (MAIN_WINDOW,))[MAIN_WINDOW]
+            a = model_mu2(w0, T, P, gc, sl, 85, None, (MAIN_WINDOW,))[MAIN_WINDOW]
+            b = model_mu2(w0, T, P, gc, sl, 87, None, (MAIN_WINDOW,))[MAIN_WINDOW]
             preds[w0] = a - b
         lab = f"T{T:g}_P{P:g}"
         v, es = pm_cells(contrast, err)
-        out.append(["isotope_contrast_k2", lab, v, es, "MHz^2",
-                    f"mean k2({MAIN_WINDOW:g} MHz) of 85Rb (4154, 4192) minus 87Rb (4121, 4207) at {T:g} C, {P:g} mW. every shared term cancels and the transit's mass ratio remains: the lighter 85Rb is faster, so a transit predicts a POSITIVE contrast. model at the four-peak pooled committed widths (gamma_coll {gc:.4f}, sigma_laser {sl:.4f} MHz) with only the transit's isotope changed: {pred_cells(preds)}. pulls " + ", ".join(f"{w0:g} um {(contrast - p) / err:+.1f}" for w0, p in preds.items()), "DIAGNOSTIC"])
+        out.append(["isotope_contrast_mu2", lab, v, es, "MHz^2",
+                    f"mean mu2({MAIN_WINDOW:g} MHz) of 85Rb (4154, 4192) minus 87Rb (4121, 4207) at {T:g} C, {P:g} mW. every shared term cancels and the transit's mass ratio remains: the lighter 85Rb is faster, so a transit predicts a POSITIVE contrast. model at the four-peak pooled committed widths (gamma_coll {gc:.4f}, sigma_laser {sl:.4f} MHz) with only the transit's isotope changed: {pred_cells(preds)}. pulls " + ", ".join(f"{w0:g} um {(contrast - p) / err:+.1f}" for w0, p in preds.items()), "DIAGNOSTIC"])
         arm = "power_arm" if role == "p_sweep" else "temperature_arm"
         pooled_iso[arm].append((contrast, err))
         if role == "p_sweep" and P == 225.0:
@@ -420,22 +420,22 @@ def main() -> int:
             gc2, sl2 = pooled_width(fits, [peaks[hi], peaks[lo]])
             fp = {}
             for w0 in WAISTS_UM:
-                a = model_k2(w0, T, P, gc2, sl2, ISO[hi], hi, (MAIN_WINDOW,))[MAIN_WINDOW]
-                b = model_k2(w0, T, P, gc2, sl2, ISO[lo], lo, (MAIN_WINDOW,))[MAIN_WINDOW]
+                a = model_mu2(w0, T, P, gc2, sl2, ISO[hi], hi, (MAIN_WINDOW,))[MAIN_WINDOW]
+                b = model_mu2(w0, T, P, gc2, sl2, ISO[lo], lo, (MAIN_WINDOW,))[MAIN_WINDOW]
                 fp[w0] = a - b
             v, es = pm_cells(fc, fe)
-            out.append([f"F_contrast_k2_{iso}", lab, v, es, "MHz^2",
-                        f"k2({MAIN_WINDOW:g} MHz) of {hi} minus {lo} at {T:g} C, {P:g} mW: the higher F minus the lower within {iso}. the pumping companion differs by the branching, the higher-branching lower-F line the wider, so the model's contrast is negative and grows as P^2. model at the pair's pooled committed widths: {pred_cells(fp)}. pulls " + ", ".join(f"{w0:g} um {(fc - p) / fe:+.1f}" for w0, p in fp.items()), "DIAGNOSTIC"])
+            out.append([f"F_contrast_mu2_{iso}", lab, v, es, "MHz^2",
+                        f"mu2({MAIN_WINDOW:g} MHz) of {hi} minus {lo} at {T:g} C, {P:g} mW: the higher F minus the lower within {iso}. the pumping companion differs by the branching, the higher-branching lower-F line the wider, so the model's contrast is negative and grows as P^2. model at the pair's pooled committed widths: {pred_cells(fp)}. pulls " + ", ".join(f"{w0:g} um {(fc - p) / fe:+.1f}" for w0, p in fp.items()), "DIAGNOSTIC"])
             pooled_f[iso].append((fc, fe))
     for arm, pairs in pooled_iso.items():
         m, e, chi2, n = ivw(pairs)
         v, es = pm_cells(m, e)
-        out.append(["isotope_contrast_k2", f"pooled_{arm}", v, es, "MHz^2",
+        out.append(["isotope_contrast_mu2", f"pooled_{arm}", v, es, "MHz^2",
                     f"inverse-variance pool over the {arm.replace('_', ' ')} ({n} conditions), chi2 {chi2:.1f} for {n - 1} dof. a transit predicts a positive value", "DIAGNOSTIC"])
     for iso, pairs in pooled_f.items():
         m, e, chi2, n = ivw(pairs)
         v, es = pm_cells(m, e)
-        out.append([f"F_contrast_k2_{iso}", "pooled", v, es, "MHz^2",
+        out.append([f"F_contrast_mu2_{iso}", "pooled", v, es, "MHz^2",
                     f"inverse-variance pool over {n} conditions, chi2 {chi2:.1f} for {n - 1} dof. the model's pumping contrast is negative", "DIAGNOSTIC"])
     out.append(["isotope_law", "transit", f"{np.sqrt(K.M_RB87_KG / K.M_RB85_KG) - 1:.5f}", "", "",
                 "the 85Rb transit over the 87Rb transit minus one, the root of the mass ratio", "DIAGNOSTIC"])

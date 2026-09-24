@@ -51,8 +51,11 @@ Matrix elements (reduced E1, atomic units) and their sources:
                                       lineage): 4.1462(82), 6.048(13),
                                       9.720(25), 13.645(36), 0.992(18),
                                       1.540(25), 0.3936(54), 0.6285(96)
-  6S core    9.1(5)                   Safronova, Williams & Clark, PRA 69,
-                                      022509 (2004); Arora et al. 2007
+  6S core    9.1(5)                   9.1 is the RPA value Safronova, Williams
+                                      & Clark, PRA 69, 022509 (2004) print (p. 6),
+                                      whose accuracy they put at 5 per cent from
+                                      their Ref. [3]; the (5) as printed is Arora
+                                      et al. 2007's Table I entry
   6S tail    +3.4 (fixed by the Safronova-group static alpha_6S = 5167(22);
              varied +-100% in the uncertainty band. Zang et al. 2012 is
              consistent but is weaker than this comment used to claim: they
@@ -107,9 +110,48 @@ LINES_6S = (
     (23715.081, 9.720, 0.025), (23792.591, 13.645, 0.036),
     (27835.02, 0.992, 0.018), (27870.11, 1.540, 0.025),
     (29834.94, 0.3936, 0.0054), (29853.79, 0.6285, 0.0096),
+    # 9P AND 10P, EXPLICIT (F307 corrected, A132.16, C6b). The flat TAIL_6S below is right only at
+    # lam_nm=0: at the drive, 993.4181 nm, the "6S plus one photon" virtual level (about 30199
+    # cm^-1) sits 760/771 cm^-1 below 9P and 1455/1462 below 10P, a dynamic enhancement
+    # (dE^2/(dE^2-w^2)) of 7.38/7.28 and 4.23/4.21 a flat constant cannot carry at this wavelength
+    # or at any other one `alpha_6s` is asked for (993 nm and the magic wavelengths both read this
+    # module). RMEs are the Coulomb approximation calibrated on the portal's own 6s-8p pair
+    # (0.949 +- 0.041, `results/polarizability_deep.csv`, `run_polarizability_deep.py`). Energies
+    # are the same NIST/quantum-defect terms LINES_5S already carries at indices 8-11, the term
+    # energy above 5S being the same level whichever state's polarizability is being summed.
+    (30958.91, 0.2312, 0.0099), (30970.19, 0.371, 0.016),
+    (31653.85, 0.1580, 0.0068), (31661.16, 0.257, 0.011),
 )
+#: THE LIST'S TWO EXTENTS, NAMED, so no consumer slices it by position (the audit of 2026-09-25): once 9P and 10P
+#: went explicit above, `run_polarizability_deep.py` summed the whole list AND its own computed 9P-and-above group,
+#: and its `LINES_6S[4:]` read as 7P and 8P grew to 7P through 10P. The first eight are 5P to 8P, the last four 9P and
+#: 10P; the assertion below fails at import if the list is ever reordered or grown in the middle.
+LINES_6S_5P_TO_8P = LINES_6S[:8]
+LINES_6S_9P_10P = LINES_6S[8:]
+assert (all(e < 30000.0 for e, _, _ in LINES_6S_5P_TO_8P) and len(LINES_6S_9P_10P) == 4
+        and all(e > 30900.0 for e, _, _ in LINES_6S_9P_10P)), \
+    "LINES_6S's extents moved: 5P to 8P lie below 30000 cm^-1 and 9P, 10P above 30900"
 CORE_6S, CORE_6S_SIG = 9.1, 0.5
-TAIL_6S, TAIL_6S_SIG = 3.4, 3.4           # fixed by static 5167(22); +-100%
+#: TAIL_6S was solved so the total STATIC alpha_6S matched the Safronova-group value, 5167(22) a.u.
+#: (F307 corrected, A132.16, C6b). Making 9P and 10P explicit above adds their own static
+#: contribution to that total, computed the same way `_alpha` sums a line (prefactor 1/6, static
+#: term 2*d^2/de at lam_nm=0), so the flat remainder here is reduced by exactly that amount and the
+#: static total is untouched: alpha_6s(0.0) still reads 5166.95. Only the DYNAMIC evaluation moves,
+#: which is where the defect was -- the module read -312.2 a.u. at 993.4 nm against the deep
+#: producer's dynamic -299.4 (`results/polarizability_deep.csv`), and this closes about 10.0 of
+#: that 12.8 a.u. gap, the 9P and 10P share of it (reproduced in `tests/test_polarizability.py`).
+#: The remaining 2.8 a.u. is 11P and above, still folded into this flat remainder and owed beyond
+#: C6b's window: A132.16 names only 9P and 10P explicit.
+_TAIL_6S_PRE_EXPLICIT_AU = 3.4            # the level TAIL_6S was solved at before 9P/10P were split out
+_TAIL_6S_NEW_LINES_STATIC_AU = sum(2.0 * d * d / ((e - E_6S_CM) / CM_PER_HARTREE)
+                                   for e, d, _ in LINES_6S[-4:]) / 6.0
+TAIL_6S = _TAIL_6S_PRE_EXPLICIT_AU - _TAIL_6S_NEW_LINES_STATIC_AU
+#: Unchanged in absolute terms: the pre-explicit tail's whole bar was "+-100%", a statement about
+#: how little the sum beyond 8P was constrained, and splitting a known slice off the front of it
+#: does not shrink what is still unknown about the slice left behind (11P and above). Carrying the
+#: same absolute sigma forward is a conservative choice and not a re-derivation of the tail's
+#: budget, which A132.16 does not ask for here.
+TAIL_6S_SIG = 3.4
 
 # Resonance wavelengths (nm) bound the pole-free search windows. Any search
 # for an alpha_5S = alpha_XS crossing must guard BOTH states' poles: the 5S

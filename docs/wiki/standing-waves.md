@@ -111,11 +111,12 @@ pools, and [`lineshape.ramp_mixture`](../../rb5s6s/lineshape.py) convolves it
 as an axial mixture, so a forecast trace carries the line this bench would
 produce and not the pure transverse ramp's. Measured on the quiet curve, the
 ramp's mean pull falls to
-[0.9775](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_64um::pull_factor_quiet")
-of the pure form at the waist convention and
-[0.5754](../../results/three_channel_forecast.csv "ref:three_channel_forecast:base::pull_factor_quiet")
+[0.9079](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_42.38um::pull_factor_quiet")
+of the pure form at the calculated waist and
+[0.5753](../../results/three_channel_forecast.csv "ref:three_channel_forecast:base::pull_factor_quiet")
 at the 16 micron configuration, the collection window carrying most of that
-movement and the fringe tail the rest.
+movement and the fringe tail the rest. The 16 micron configuration is an
+unclipped design, the bore out of the focusing path.
 
 The one open modelling choice travels with the density. The window over which
 the excitation amplitude stays coherent is bracketed between the
@@ -124,7 +125,7 @@ eleven in the fraction of atoms slow enough to freeze a fringe, so the density
 refuses to be called without naming which end it takes. The sweep-rate
 producer carries both ends as end-members of its envelope: at the campaign's
 tightest licensed waist that excursion is
-[0.0020](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:rate_variation_tolerance_coherence_err")
+[0.0024](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:rate_variation_tolerance_coherence_err")
 per cent of rate variation, most of that case's whole band.
 
 The wide-scan design in the fixed-lock proposal uses the same physics as a
@@ -164,7 +165,7 @@ three are ideal. It separates them: the tilt angle is negligible, since
 $k\sin\theta$ is four orders below the axial $2k$ and 0.5 mrad moves the mean
 survival by under 2 per cent, while an offset of one waist takes the mean
 contrast from 0.9995 to 0.836, both at the bench's retro ratio `RHO_RETRO`. The function's own default is a perfect retro, where the contrast is one by construction and the pair does not reproduce. Beam quality acts through the axial sampling, the
-mean radius over the collected region rising from 1.011 to 1.083 waists at
+mean radius over the collected region rising from 1.011 to 1.083 waists <!-- other-quantity: a mean radius in waist units, not paired_reference_forecast's width_err_ratio --> at
 $M^2 = 3$.
 
 A tilt reaches the fringes through the offset it produces and not

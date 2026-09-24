@@ -112,7 +112,7 @@ import numpy as np
 from scipy.optimize import least_squares
 from rb5s6s import composite_profile, transit_fwhm_from_w0
 
-t = transit_fwhm_from_w0(64e-6, 130.0)
+t = transit_fwhm_from_w0(42.38e-6, 130.0)
 grid, p = composite_profile(0.60, 1.40, t)
 nu = np.linspace(-15, 15, 1500)
 truth = np.interp(nu, grid, p / p.max(), left=0, right=0)

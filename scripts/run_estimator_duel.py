@@ -19,7 +19,10 @@ then estimates it two ways:
       width, light shift and a per-trace centre;
   (B) a likelihood on the ODD cumulants kappa_3 and kappa_5 over two windows,
      which are blind to every symmetric kernel by parity and therefore to the
-     laser width that A must fit.
+     laser width that A must fit. kappa_5 is a deliberately kept cumulant
+     (owner order O49, 2026-09-22, `_odd_cumulants`'s own docstring carries
+     the reason): it is the convolution-additivity that buys the blindness,
+     which mu_5 does not have.
 
 WHAT IT MEASURES, AND WHAT IT DOES NOT. Bias and spread of each estimator with
 and without a model error the fitter lacks, at two light shifts. It is ONE
@@ -46,16 +49,18 @@ sys.path.insert(0, str(ROOT / "scripts"))
 from _producer_lock import take_producer_lock                     # noqa: E402
 from rb5s6s import config as C                                    # noqa: E402
 from rb5s6s._compat import trapezoid as tz                        # noqa: E402
-from rb5s6s.constants import W0_MEASURED_M, transit_fwhm_from_w0  # noqa: E402
+from rb5s6s.constants import W0_CENTRAL_M, transit_fwhm_from_w0  # noqa: E402
 from rb5s6s.lineshape import model_profile                        # noqa: E402
 
 OUT = C.RESULTS_DIR / "estimator_duel.csv"
 
 # MHz, the campaign twin's own widths. The transit is now the twin's, where
-# a retired 1.8 stood here (2026-09-04): the record's transit at its measured
-# waist and 130 C is 0.9575, and no committed row ever held 1.8.
-GAMMA, SIGMA = 0.55, 1.6
-TRANSIT = transit_fwhm_from_w0(W0_MEASURED_M, T_C=130.0)
+# a retired 1.8 stood here (2026-09-04): the record's transit at the waist
+# convention of that day and 130 C was 0.9575, and no committed row ever held 1.8.
+from rb5s6s.reference_point import reference_point  # noqa: E402
+_AP = reference_point()   # F313: the archive's line, read from the committed fit and the waist, never typed
+GAMMA, SIGMA = _AP["gamma_coll"], _AP["sigma_laser"]
+TRANSIT = transit_fwhm_from_w0(W0_CENTRAL_M, T_C=130.0)
 SIGMA_HANDED_TO_B = 2.4                     # deliberately 50% wrong, to show parity
 NU = np.linspace(-20, 20, 2001)
 W1, W2 = 8.0, 16.0                          # the two moment windows, MHz
@@ -86,7 +91,20 @@ def _odd_cumulants(y, W):
     """kappa_3 and kappa_5 about the trace's OWN centre. The cumulants are
     translation-invariant but the WINDOW is not, so the centre is estimated
     per trace and its jitter is a real cost of this estimator, not an
-    idealisation away from one."""
+    idealisation away from one.
+
+    KAPPA_5 STAYS A CUMULANT (owner order O49, 2026-09-22, same reasoning as
+    `moment_coords.moment_s0_support`, method_vs_literature.md section 6.8):
+    channel (B)'s whole point is blindness to the symmetric laser kernel it
+    is compared against, which holds because CUMULANTS ADD EXACTLY under
+    convolution and every odd cumulant of a symmetric kernel is zero, so the
+    composite's kappa_n is the asymmetric piece's alone. mu_5 does not have
+    this property -- mu_5 = kappa_5 + 10 mu_2 mu_3, and the cross-term
+    carries the symmetric kernel's OWN variance through mu_2 -- so returning
+    mu_5 here would silently reopen the laser-width leak this estimator
+    exists to close. kappa_3 is unaffected either way (mu_3 == kappa_3
+    exactly), which is the only order this file's row names were renamed
+    for."""
     c = NU[int(np.argmax(np.convolve(y, np.ones(21) / 21, "same")))]
     m = np.abs(NU - c) <= W
     x, yy = NU[m] - c, np.clip(y[m], 0.0, None)
@@ -167,18 +185,18 @@ def main() -> int:
                  f"a symmetric kernel contributes nothing to a SELF-CENTRED "
                  f"odd moment (the Lorentzian to the truncation fraction "
                  f"docs/wiki/third-cumulant.md quantifies)"])
-    # The sigma-blindness of the self-centred kappa_3, with its centring
+    # The sigma-blindness of the self-centred mu_3, with its centring
     # NAMED because the same number under a lab-frame window is two orders
     # larger (audit finding, 2026-08-31): windows ride the profile's own
     # mean, the translation-invariant centring the fit licenses.
-    def _k3_centred(sigma):
+    def _mu3_centred(sigma):
         # MEAN-centred by fixed point on a fine local grid, with the
         # earlier centrings emitted as rows below so every retracted
-        # number stays reproducible: mean-centred 39.7, lab-frame 4.4,
-        # mode-on-trace-grid 248.4 (all per cent, this sweep, the rows'
-        # own values). The first version used the mode and shipped an
+        # number stays reproducible (the mean-centred, lab-frame and
+        # mode-on-trace-grid rows, each in per cent, read from the CSV and
+        # never typed here). The first version used the mode and shipped an
         # irreproducible figure; mode and mean differ by O(S0), and that
-        # offset leaks kappa_1 into kappa_3. The trio shares a four-pass
+        # offset leaks mu_1 into mu_3. The trio shares a four-pass
         # fixed point on a 40001-point grid, stated here because a sister
         # producer's four-pass mean-pull was construction-sensitive at the
         # 0.1 per cent scale.
@@ -194,15 +212,15 @@ def main() -> int:
         x, yy = fine[w] - c, np.clip(y[w], 0, None)
         yy = yy / tz(yy, x); m1 = tz(x * yy, x)
         return tz((x - m1) ** 3 * yy, x)
-    k3a, k3b = _k3_centred(SIGMA), _k3_centred(SIGMA * 4)
-    rows.append(["kappa3_sigma_blindness_pct", "S0_3",
-                 f"{100 * abs(k3b / k3a - 1):.1f}", "",
-                 f"per cent change of the self-centred windowed kappa_3, window "
+    mu3a, mu3b = _mu3_centred(SIGMA), _mu3_centred(SIGMA * 4)
+    rows.append(["mu3_sigma_blindness_pct", "S0_3",
+                 f"{100 * abs(mu3b / mu3a - 1):.1f}", "",
+                 f"per cent change of the self-centred windowed mu_3, window "
                  f"+/-{W1:g} MHz about its own mean (the centre iterated until "
                  f"it equals the windowed mean), laser width {SIGMA} to "
                  f"{SIGMA*4} MHz. Earlier centrings in the two rows below"])
 
-    def _k3_at(centre_mode, sigma):
+    def _mu3_at(centre_mode, sigma):
         fine = np.linspace(-20.0, 20.0, 40001)
         y = np.interp(fine, NU, _prof(GAMMA, sigma, 3.0, 0.0))
         if centre_mode == "lab":
@@ -215,8 +233,8 @@ def main() -> int:
         yy = yy / tz(yy, x); m1 = tz(x * yy, x)
         return tz((x - m1) ** 3 * yy, x)
     for mode, name in (("lab", "labframe"), ("mode", "modecentred")):
-        a, b = _k3_at(mode, SIGMA), _k3_at(mode, SIGMA * 4)
-        rows.append([f"kappa3_sigma_blindness_{name}_pct", "S0_3",
+        a, b = _mu3_at(mode, SIGMA), _mu3_at(mode, SIGMA * 4)
+        rows.append([f"mu3_sigma_blindness_{name}_pct", "S0_3",
                      f"{100 * abs(b / a - 1):.1f}", "",
                      f"the same sweep under the earlier "
                      f"{'window pinned at the laboratory zero' if mode == 'lab' else 'smoothed-mode centring on the trace grid'}, "

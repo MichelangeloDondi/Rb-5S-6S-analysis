@@ -16,12 +16,12 @@ the collection window (BASE below, and the threaded world recovers both). Every
 cell is the campaign's five-rung power ladder with a drawn rung order and every
 physics layer of the world builder on, replicated over N trace sets. Per cell:
 
-  skew   k3 per rung through rb5s6s.cumulants (converged, pedestal removed,
+  skew   mu3 per rung through rb5s6s.cumulants.windowed_moments (converged, pedestal removed,
          the window started at the carrier), inverted through the noiseless
          quiet curve's LOCAL power exponent at the rungs admitted on two
          statistics (wrong-sign fraction below 0.35, median beyond three
-         standard errors); the exponent fitted free as a diagnostic; k5 and
-         k7 beside it with their wrong-sign fractions and the quiet ratios'
+         standard errors); the exponent fitted free as a diagnostic; mu5 and
+         mu7 beside it with their wrong-sign fractions and the quiet ratios'
          power slopes, so their readmission is measured
   pull   the fitted centre per rung -> a line in power with the drift as a
          nuisance in acquisition order; kappa = -(3/2) slope
@@ -59,13 +59,14 @@ from rb5s6s import constants as K                                  # noqa: E402
 from rb5s6s import density as D                                    # noqa: E402
 from rb5s6s.lineshape import ramp_mean_over_s0                     # noqa: E402  (O27)
 from rb5s6s.forecast import build_world_trace                      # noqa: E402
+from rb5s6s.reference_point import reference_point                      # noqa: E402
 from rb5s6s.fringe_tail import COHERENCE_TRANSIT, fringe_shift_density
 from rb5s6s import stark                                           # noqa: E402
 from rb5s6s.lineshape import stark_shift_S0_mhz                    # noqa: E402
 from rb5s6s.linefit import fit_condition                           # noqa: E402
 from rb5s6s.qc import median_standard_error                        # noqa: E402
 # MOMENTS AT ORDERS 5 AND 7 (O33, A72): this producer asks for (3, 5, 7), and while
-# k3 = mu3 exactly, k5 and k7 are differences of large terms whose cancellation the
+# k3 = mu3 exactly, kappa5 and kappa7 are differences of large terms whose cancellation the
 # moments do not carry. Orders 2 and 3 are basis-independent; these are not.
 from rb5s6s.cumulants import windowed_moments                     # noqa: E402
 from rb5s6s.ruler import bessel_tooth_weights                      # noqa: E402
@@ -91,7 +92,7 @@ DEPTHS_2BETA = (0.4, 0.8, 1.2, 1.569, 2.0)
 # account follows, kept because it is why the base point is the RF-off trace:
 # the self-centred window follows a
 # carrier pulled 3.9 MHz toward the -1 tooth and that tooth's tail leaks into
-# it asymmetrically: measured 2026-09-06 with the cumulant window started at
+# it asymmetrically: measured 2026-09-06 with the moment window started at
 # the trace's maximum, which at the measured depth is a first-order tooth,
 # the skew read the wrong sign in most sets; with the window started at the
 # carrier it admits no rung at that spacing, and the pull reads -53 +- 44
@@ -102,8 +103,11 @@ BASE = dict(w0_um=16.0, p_top=0.225, t_c=130.0, rho=0.94, scope=("rtm3004", "hir
 # The record's collisional width at 130 C and the committed self-broadening
 # slope carry the width to other temperatures: gamma(T) = gamma(130) +
 # beta_self (N(T) - N(130)), beta_self the 4192 row of results/beta_self.csv.
-GAMMA_COLL_130 = 0.55
-SIGMA_LASER = 1.6
+# Both widths are the archive point's (130 C), READ and never typed (F313, 2026-09-22): the
+# typed pair was the retired waist convention's decomposition.
+_AP = reference_point()
+GAMMA_COLL_130 = _AP["gamma_coll"]
+SIGMA_LASER = _AP["sigma_laser"]
 MIN_PER_TRACE = 2.78                               # campaign_twin_forecast, per trace
 LAYERS = {"cascade": True, "saturation": True, "stark": True, "bbr": True,
           "drift": True, "quantise": True, "randomise": True}
@@ -171,7 +175,7 @@ def levers():
         return {**cfg, "beta_self": beta_self,
                 "two_beta": cfg["two_beta"] if cfg["two_beta"] is not None else two_beta}
     cells = [("base", fill(BASE))]
-    for w in (64.0, 40.0, 24.0):
+    for w in (round(K.W0_CENTRAL_M * 1e6, 2), 40.0, 24.0):   # C6a: the archive's own focus, unclipped like every cell
         cells.append((f"waist_{w:g}um", fill({**BASE, "w0_um": w})))
     cells.append(("power_top_0.5W", fill({**BASE, "p_top": 0.5})))
     for t in (150.0, 170.0):
@@ -378,8 +382,8 @@ def _trace_quiet(cfg: dict, power_w: float):
     return _trace(quiet, power_w, 0, 12345, noise=1e-9)
 
 
-def _k357(y, w, grid, centre0=0.0, baseline="wings"):
-    """The third, fifth and seventh windowed cumulants from one centring, NaN
+def _mu357(y, w, grid, centre0=0.0, baseline="wings"):
+    """The third, fifth and seventh windowed moments from one centring, NaN
     when unconverged. The background is the level of the trace's far wings
     for every cell. A straight line through strips between the carrier and its
     first teeth was tried for the wide combs and made things worse (exponent
@@ -392,7 +396,7 @@ def _k357(y, w, grid, centre0=0.0, baseline="wings"):
     still dominates. The fifth and seventh are recorded so their readmission
     as channels is measured on this ladder (plan 4c struck them on one point):
     the fraction of sets returning the sign opposite to the quiet curve's, and
-    the quiet ratios k5/k3 and k7/k5, which carry no shift if 4c is right.
+    the quiet ratios mu5/mu3 and mu7/mu5, which carry no shift if 4c is right.
     The window STARTS AT THE CARRIER (position zero in the twin's frame, the
     line the ruler identifies), never at the trace's maximum: at the measured
     modulation depth the first-order teeth stand higher than the carrier
@@ -424,9 +428,9 @@ def _centre(nu, y, cfg, transit):
 
 
 # ------------------------------------------------------------------ one cell
-def admit_rungs(k3_sets, k3_quiet, frac_wrong_max: float = 0.35, sigma_min: float = 3.0):
+def admit_rungs(mu3_sets, mu3_quiet, frac_wrong_max: float = 0.35, sigma_min: float = 3.0):
     """Which rungs of a ladder the skew channel may invert, from the sets'
-    third cumulants (sets by rungs) and the quiet curve's sign at each rung.
+    third moments (sets by rungs) and the quiet curve's sign at each rung.
     Two independent statistics, both needed: the fraction of sets returning
     the sign OPPOSITE to the quiet curve's below `frac_wrong_max`, and the
     median beyond `sigma_min` of its own standard error. The first alone
@@ -437,14 +441,14 @@ def admit_rungs(k3_sets, k3_quiet, frac_wrong_max: float = 0.35, sigma_min: floa
     sets a fraction below 0.35 is six standard deviations from one half and at
     eight sets it happens once in seven, which is why the second bar exists.
     THE SIGN IS THE QUIET CURVE'S, NOT POSITIVE (A77, 2026-09-08): with the
-    collection window threaded the true third cumulant is reversed below 24
+    collection window threaded the true third moment is reversed below 24
     microns, and a fraction-negative gate refused every rung there.
     Returns the mask and the wrong-sign fraction per rung."""
-    k3_sets = np.asarray(k3_sets, dtype=float); k3_quiet = np.asarray(k3_quiet, dtype=float)
+    mu3_sets = np.asarray(mu3_sets, dtype=float); mu3_quiet = np.asarray(mu3_quiet, dtype=float)
     frac_wrong = np.array([float(np.mean(np.sign(c[np.isfinite(c)]) != np.sign(q))) if (np.isfinite(c).any() and q != 0) else float("nan")
-                           for c, q in zip(k3_sets.T, k3_quiet)])
-    med = np.nanmedian(k3_sets, axis=0)
-    sem = np.array([median_standard_error(col[np.isfinite(col)]) for col in k3_sets.T])
+                           for c, q in zip(mu3_sets.T, mu3_quiet)])
+    med = np.nanmedian(mu3_sets, axis=0)
+    sem = np.array([median_standard_error(col[np.isfinite(col)]) for col in mu3_sets.T])
     with np.errstate(invalid="ignore", divide="ignore"):
         usable = (frac_wrong < frac_wrong_max) & (np.abs(med) > sigma_min * sem)
     return usable, frac_wrong
@@ -455,7 +459,7 @@ def _area(nu, y):
 
     The teeth's weights sum to one, so this is the quantity the sum rule
     governs. The baseline comes from the trace's far wings, the same estimator
-    the cumulants use, because a detector pedestal integrated over the span
+    the moments use, because a detector pedestal integrated over the span
     would otherwise dominate the area at every rung.
     """
     from rb5s6s._compat import trapezoid
@@ -468,27 +472,27 @@ def _cell(item):
     base = zlib.crc32(f"tcf:{name}".encode()) % (2 ** 31)
     powers = tuple(p * cfg["p_top"] / 0.225 for p in POWERS_W)
     kappa_true = None
-    k3_sets, c_sets, k2_sets, o_sets = [], [], [], []
-    k5_sets, k7_sets, a_sets = [], [], []
+    mu3_sets, c_sets, mu2_sets, o_sets = [], [], [], []
+    mu5_sets, mu7_sets, a_sets = [], [], []
     for s in range(N_SETS):
         rng = np.random.default_rng((base + 7919 * s) % (2 ** 31))
         order = rng.permutation(len(powers))
-        k3r, cr, k2r = np.zeros(len(powers)), np.zeros(len(powers)), np.zeros(len(powers))
-        k5r, k7r, ar = np.zeros(len(powers)), np.zeros(len(powers)), np.zeros(len(powers))
+        mu3r, cr, mu2r = np.zeros(len(powers)), np.zeros(len(powers)), np.zeros(len(powers))
+        mu5r, mu7r, ar = np.zeros(len(powers)), np.zeros(len(powers)), np.zeros(len(powers))
         for idx, rung in enumerate(order):
             seed = (base + 7919 * s + 104729 * int(rung) + 31) % (2 ** 31)
             rcfg, p_rung = _rung_cfg(cfg, int(rung))
             nu, y, kappa_true, gamma, transit = _trace(rcfg, p_rung, idx, seed)
-            k3r[rung], k5r[rung], k7r[rung] = _k357(y, cfg["window"], nu)
+            mu3r[rung], mu5r[rung], mu7r[rung] = _mu357(y, cfg["window"], nu)
             c, gc, sl = _centre(nu, y, cfg, transit)
             cr[rung] = c
-            k2r[rung] = gc
+            mu2r[rung] = gc
             ar[rung] = _area(nu, y)
         pos = np.empty(len(powers)); pos[order] = np.arange(len(powers))   # acquisition index of each rung
-        k3_sets.append(k3r); c_sets.append(cr); k2_sets.append(k2r); o_sets.append(pos)
-        k5_sets.append(k5r); k7_sets.append(k7r); a_sets.append(ar)
-    k3_sets, c_sets, k2_sets = np.asarray(k3_sets), np.asarray(c_sets), np.asarray(k2_sets)
-    k5_sets, k7_sets, a_sets = np.asarray(k5_sets), np.asarray(k7_sets), np.asarray(a_sets)
+        mu3_sets.append(mu3r); c_sets.append(cr); mu2_sets.append(mu2r); o_sets.append(pos)
+        mu5_sets.append(mu5r); mu7_sets.append(mu7r); a_sets.append(ar)
+    mu3_sets, c_sets, mu2_sets = np.asarray(mu3_sets), np.asarray(c_sets), np.asarray(mu2_sets)
+    mu5_sets, mu7_sets, a_sets = np.asarray(mu5_sets), np.asarray(mu7_sets), np.asarray(a_sets)
     # THE AREA SUM RULE. Median over the sets, normalised to the first rung, so
     # the column is a ratio and the arbitrary signal scale divides out.
     area_med = np.nanmedian(a_sets, axis=0)
@@ -507,13 +511,13 @@ def _cell(item):
     # cell actually varied.
     lp = np.log(_x)
     # ---- the windowed estimator's own response, per RUNG, from one noiseless
-    # trace at each power with every physical layer on: k3_quiet(P). The
-    # windowed k3 is cubic in the shift only while the shift is small against
+    # trace at each power with every physical layer on: mu3_quiet(P). The
+    # windowed mu3 is cubic in the shift only while the shift is small against
     # the line, and a 16 um top rung is not, so a single constant cannot serve
     # the ladder; the estimate inverts each usable rung through the quiet curve
     # and the exponent fitted free is reported as a diagnostic, never imposed.
     qt = [_trace_quiet(dict(cfg), pw) for pw in powers]
-    quiet = np.array([_k357(r[1], cfg["window"], r[0]) for r in qt])
+    quiet = np.array([_mu357(r[1], cfg["window"], r[0]) for r in qt])
     # THE PULL FACTOR (2026-09-08): with the collection window and the fringe
     # tail threaded, the mean pull per unit coefficient is the mixture's and
     # not the pure ramp's 2/3 on the package's side, so the centre channel inverts through the
@@ -528,7 +532,7 @@ def _cell(item):
         pull_factor_quiet = slope_quiet / (ramp_mean_over_s0() * kappa_true_cell)
     else:
         slope_quiet, pull_factor_quiet = float("nan"), float("nan")
-    k3_quiet, k5_quiet, k7_quiet = quiet[:, 0], quiet[:, 1], quiet[:, 2]
+    mu3_quiet, mu5_quiet, mu7_quiet = quiet[:, 0], quiet[:, 1], quiet[:, 2]
     # the higher orders' readmission statistics: the fraction of sets whose top
     # rung carries the sign opposite to the quiet curve's, and the quiet
     # ratios' response to power along the ladder (a log-log slope near zero is
@@ -536,31 +540,31 @@ def _cell(item):
     def wrong_sign(sets, q):
         top = sets[:, -1]; top = top[np.isfinite(top)]
         return float(np.mean(np.sign(top) != np.sign(q[-1]))) if top.size and q[-1] != 0 else float("nan")
-    frac_wrong_k5, frac_wrong_k7 = wrong_sign(k5_sets, k5_quiet), wrong_sign(k7_sets, k7_quiet)
+    frac_wrong_mu5, frac_wrong_mu7 = wrong_sign(mu5_sets, mu5_quiet), wrong_sign(mu7_sets, mu7_quiet)
     def ratio_slope(a, b):
         with np.errstate(invalid="ignore", divide="ignore"):
             r = np.log(np.abs(a / b))
         ok = np.isfinite(r)
         return float(np.polyfit(lp[ok], r[ok], 1)[0]) if ok.sum() >= 3 else float("nan")
-    slope_53, slope_75 = ratio_slope(k5_quiet, k3_quiet), ratio_slope(k7_quiet, k5_quiet)
-    # the quiet curve's LOCAL exponent at each rung, d ln k3 / d ln P by finite
+    slope_53, slope_75 = ratio_slope(mu5_quiet, mu3_quiet), ratio_slope(mu7_quiet, mu5_quiet)
+    # the quiet curve's LOCAL exponent at each rung, d ln mu3 / d ln P by finite
     # difference: three in the small-shift regime, less where the window
     # truncates a large shift, and it is this exponent, not an imposed three,
     # that inverts an observation into a coefficient
-    lq = np.log(np.abs(k3_quiet)); n_loc = np.gradient(lq, lp)
+    lq = np.log(np.abs(mu3_quiet)); n_loc = np.gradient(lq, lp)
     expo_quiet = float(np.polyfit(lp, lq, 1)[0]) if np.all(np.isfinite(lq)) else float("nan")
-    def invert(k3_obs, i):
-        if (not np.isfinite(k3_obs) or k3_quiet[i] == 0 or np.sign(k3_obs) != np.sign(k3_quiet[i])
+    def invert(mu3_obs, i):
+        if (not np.isfinite(mu3_obs) or mu3_quiet[i] == 0 or np.sign(mu3_obs) != np.sign(mu3_quiet[i])
                 or not np.isfinite(n_loc[i]) or n_loc[i] <= N_LOC_FLOOR):
             return np.nan
-        return kappa_true * (k3_obs / k3_quiet[i]) ** (1.0 / n_loc[i])
+        return kappa_true * (mu3_obs / mu3_quiet[i]) ** (1.0 / n_loc[i])
     # ---- skew channel, per trace set: the mean over the rungs whose sign is
     # settled across the sets (fraction negative below 0.35) AND whose median
     # stands three of its own standard errors from zero. The first alone
     # admitted a coin-flip rung by chance at eight sets (two of eight negative)
     # and inverted its noise into a coefficient 230 times the injected one;
     # the two statistics are independent and both are needed
-    usable, frac_wrong_rung = admit_rungs(k3_sets, k3_quiet)
+    usable, frac_wrong_rung = admit_rungs(mu3_sets, mu3_quiet)
     if cfg.get("ladder", "power") == "depth":
         usable = np.zeros_like(usable, dtype=bool)     # the shift does not move along this ladder
     # THE RUNGS ARE COMBINED BY INVERSE VARIANCE, not by an equal-weight
@@ -572,8 +576,8 @@ def _cell(item):
     # variance is not finite and positive is dropped rather than given a
     # large weight, which is the direction that would produce a false
     # tightening.
-    est_mat = np.full((len(k3_sets), len(powers)), np.nan)
-    for s, row in enumerate(k3_sets):
+    est_mat = np.full((len(mu3_sets), len(powers)), np.nan)
+    for s, row in enumerate(mu3_sets):
         for i in range(len(powers)):
             if usable[i] and np.isfinite(row[i]):
                 est_mat[s, i] = invert(row[i], i)
@@ -587,9 +591,9 @@ def _cell(item):
         for i in range(est_mat.shape[1])])
     w_rung = np.where(np.isfinite(rung_var) & (rung_var > 0), 1.0 / rung_var, np.nan)
     kap_skew, expo = [], []
-    for s, row in enumerate(k3_sets):
+    for s, row in enumerate(mu3_sets):
         # OVER THE ADMITTED RUNGS ONLY. Fitted over every finite rung this
-        # reads about -1 in every configuration, because a windowed cumulant
+        # reads about -1 in every configuration, because a windowed moment
         # of pure noise is largest where the signal is smallest, so the dim
         # rungs drag the slope down whatever the physics does. That is a fact
         # about the ladder and not about the channel, and the channel inverts
@@ -609,14 +613,14 @@ def _cell(item):
             kap_skew.append(np.nan)
     kap_skew = np.asarray(kap_skew); expo = np.asarray(expo)
     # THE POOLED FORM, which is how a campaign reads the channel: the median
-    # k3 over all sets at each rung, whose standard error falls as one over
+    # mu3 over all sets at each rung, whose standard error falls as one over
     # the root of the trace count, inverted once through the quiet curve at
     # the admitted rungs, with the delta-method spread. The per-set form above
     # asks each single trace to carry the sign; this form asks the trace
     # count to, and it is the form in which the count is a lever.
     pooled = []
     for i in range(len(powers)):
-        col = k3_sets[:, i]; col = col[np.isfinite(col)]
+        col = mu3_sets[:, i]; col = col[np.isfinite(col)]
         if col.size < 3:
             continue
         med = float(np.median(col)); se = median_standard_error(col)
@@ -647,7 +651,7 @@ def _cell(item):
         coef = np.linalg.lstsq(A, row, rcond=None)[0]
         kap_pull.append(coef[1] * kappa_true_cell / slope_quiet if cfg.get("ladder", "power") == "power" else coef[1])
     kap_pull = np.asarray(kap_pull)
-    frac_wrong_k3 = float(frac_wrong_rung[-1])
+    frac_wrong_mu3 = float(frac_wrong_rung[-1])
     def sig(a):
         # THE SPREAD IS ONE CONSTRUCTION FOR EVERY CHANNEL: the standard
         # deviation of the per-set estimates (ddof 1), the statistic the
@@ -659,9 +663,9 @@ def _cell(item):
         a = a[np.isfinite(a)]
         return (float(np.median(a)), float(np.std(a, ddof=1))) if a.size > 1 else (np.nan, np.nan)
     ks_med, ks_sd = sig(kap_skew); kp_med, kp_sd = sig(kap_pull)
-    # k3 must RISE with power, since the shift does. A cell whose admitted
+    # mu3 must RISE with power, since the shift does. A cell whose admitted
     # rungs fit a negative slope is reading noise through them, however settled
-    # the sign of k3 is at the top. Where fewer than three rungs are admitted
+    # the sign of mu3 is at the top. Where fewer than three rungs are admitted
     # there is no slope to test and the two other statistics stand alone, so
     # the refusal fires on a measured negative and never on an absence.
     _e = float(np.nanmedian(expo)) if np.isfinite(expo).any() else float("nan")
@@ -683,14 +687,14 @@ def _cell(item):
         sd_comb, corr, w1 = float("nan"), float("nan"), float("nan")
     return dict(name=name, cfg=cfg, kappa_true=kappa_true, n_sets=N_SETS,
                 kappa_skew=ks_med, sd_skew=ks_sd, expo=float(np.nanmedian(expo)),
-                expo_sd=float(np.nanstd(expo)), expo_quiet=expo_quiet, frac_wrong_sign_k3_top=frac_wrong_k3,
-                frac_wrong_k5_top=frac_wrong_k5, frac_wrong_k7_top=frac_wrong_k7,
-                slope_k5_over_k3=slope_53, slope_k7_over_k5=slope_75,
+                expo_sd=float(np.nanstd(expo)), expo_quiet=expo_quiet, frac_wrong_sign_mu3_top=frac_wrong_mu3,
+                frac_wrong_mu5_top=frac_wrong_mu5, frac_wrong_mu7_top=frac_wrong_mu7,
+                slope_mu5_over_mu3=slope_53, slope_mu7_over_mu5=slope_75,
                 kappa_pull=kp_med, sd_pull=kp_sd, pull_factor_quiet=pull_factor_quiet, corr=corr, w_skew=w1, sd_comb=sd_comb,
                 kappa_skew_pooled=kap_pooled, sd_skew_pooled=sd_pooled,
                 area_top=area_top, area_trend=area_trend,
                 ladder=cfg.get("ladder", "power"),
-                k2_top=float(np.median(k2_sets[:, -1])))
+                mu2_top=float(np.median(mu2_sets[:, -1])))
 
 
 def _refuse_ragged_rows(path) -> None:
@@ -722,7 +726,7 @@ def main() -> int:
         import time
         t0 = time.time(); r = _cell(cells[0]); dt = time.time() - t0
         print(f"one cell: {dt:.1f} s at {N_SETS} sets -> {len(cells)} cells, about {len(cells) * dt / 60 / workers:.0f} min at {workers} workers")
-        print(f"  base: kappa true {r['kappa_true']:.3f}; skew {r['kappa_skew']:.3f} +- {r['sd_skew']:.3f} (expo {r['expo']:+.2f}, quiet {r['expo_quiet']:+.2f}, frac wrong-sign top {r['frac_wrong_sign_k3_top']:.2f}); "
+        print(f"  base: kappa true {r['kappa_true']:.3f}; skew {r['kappa_skew']:.3f} +- {r['sd_skew']:.3f} (expo {r['expo']:+.2f}, quiet {r['expo_quiet']:+.2f}, frac wrong-sign top {r['frac_wrong_sign_mu3_top']:.2f}); "
               f"pull {r['kappa_pull']:.3f} +- {r['sd_pull']:.3f}; combined sd {r['sd_comb']:.3f}, corr {r['corr']:+.2f}")
         return 0
     if "--plant" in sys.argv:
@@ -751,8 +755,8 @@ def main() -> int:
     with OUT.open("w", newline="", encoding="utf-8") as fh:
         w = csv.writer(fh)
         w.writerow(["lever", "w0_um", "p_top_w", "t_c", "rho", "scope", "lock_mhz_per_min", "f_mod_mhz", "two_beta", "window_mhz",
-                    "n_sets", "kappa_true", "kappa_skew", "sd_skew", "exponent_free", "exponent_sd", "exponent_quiet", "frac_wrong_sign_k3_top",
-                    "frac_wrong_sign_k5_top", "frac_wrong_sign_k7_top", "quiet_slope_k5_over_k3", "quiet_slope_k7_over_k5",
+                    "n_sets", "kappa_true", "kappa_skew", "sd_skew", "exponent_free", "exponent_sd", "exponent_quiet", "frac_wrong_sign_mu3_top",
+                    "frac_wrong_sign_mu5_top", "frac_wrong_sign_mu7_top", "quiet_slope_mu5_over_mu3", "quiet_slope_mu7_over_mu5",
                     "kappa_pull", "sd_pull", "pull_factor_quiet", "corr", "w_skew", "sd_combined", "gain",
                     "kappa_skew_pooled", "sd_skew_pooled", "gamma_coll_top", "ladder",
                     "area_top", "area_trend", "status", "note"])
@@ -770,19 +774,19 @@ def main() -> int:
                     if not np.isfinite(r["kappa_skew_pooled"])
                     else "NaN: rungs were admitted and the CELL was refused, "
                          "its admitted rungs fitting a slope against power at "
-                         "or below zero where the ramp's third cumulant must "
+                         "or below zero where the ramp's third moment must "
                          "rise. kappa_skew_pooled is unaffected and stands")
             status = "DIAGNOSTIC" if np.isfinite(r["sd_pull"]) else "NULL"
             w.writerow([r["name"], f"{c['w0_um']:g}", f"{c['p_top']:g}", f"{c['t_c']:g}", f"{c['rho']:g}", f"{c['scope'][0]}/{c['scope'][1]}",
                         f"{c['drift_per_min']:g}", ("off" if c['f_mod'] is None else f"{c['f_mod']:g}"), f"{c['two_beta']:g}", f"{c['window']:g}",
                         r["n_sets"], f"{r['kappa_true']:.4f}", f"{r['kappa_skew']:.4f}", f"{r['sd_skew']:.4f}", f"{r['expo']:.3f}", f"{r['expo_sd']:.3f}", f"{r['expo_quiet']:.3f}",
-                        f"{r['frac_wrong_sign_k3_top']:.3f}",
-                        f"{r['frac_wrong_k5_top']:.3f}", f"{r['frac_wrong_k7_top']:.3f}", f"{r['slope_k5_over_k3']:+.3f}", f"{r['slope_k7_over_k5']:+.3f}", f"{r['kappa_pull']:.4f}", f"{r['sd_pull']:.4f}", f"{r['pull_factor_quiet']:.4f}", f"{r['corr']:.3f}", f"{r['w_skew']:.3f}",
+                        f"{r['frac_wrong_sign_mu3_top']:.3f}",
+                        f"{r['frac_wrong_mu5_top']:.3f}", f"{r['frac_wrong_mu7_top']:.3f}", f"{r['slope_mu5_over_mu3']:+.3f}", f"{r['slope_mu7_over_mu5']:+.3f}", f"{r['kappa_pull']:.4f}", f"{r['sd_pull']:.4f}", f"{r['pull_factor_quiet']:.4f}", f"{r['corr']:.3f}", f"{r['w_skew']:.3f}",
                         f"{r['sd_comb']:.4f}", f"{gain:.3f}", f"{r['kappa_skew_pooled']:.4f}", f"{r['sd_skew_pooled']:.4f}",
-                        f"{r['k2_top']:.4f}", r["ladder"],
+                        f"{r['mu2_top']:.4f}", r["ladder"],
                         f"{r['area_top']:.4f}", f"{r['area_trend']:.3f}", status,
                         "one campaign lever varied from the base point, the injected coefficient in kappa_true (MHz per W at this "
-                        "waist and retro ratio). kappa_skew is the third cumulant inverted through the noiseless quiet curve's local "
+                        "waist and retro ratio). kappa_skew is the third moment inverted through the noiseless quiet curve's local "
                         "exponent at the rungs admitted on two statistics (fraction of sets with the wrong sign below 0.35 and median "
                         f"beyond three standard errors), {_why}. kappa_pull inverts the fitted centre's slope through the quiet curve's own centroid slope per unit coefficient, and pull_factor_quiet is THIS ROW's ratio of that slope to the pure ramp's mean pull, the factor a campaign supplies from its collection geometry. It is not the mixture's geometric centroid ratio, which differs, and it moves with the analysis window, so read the column and not a remembered pair. kappa_pull is the "
                         "fitted centre against power with the lock drift as a nuisance in acquisition order. sd_skew, sd_pull and "
@@ -791,7 +795,7 @@ def main() -> int:
                         "that quantity and the two must not be compared: it is the precision of an estimate POOLED over all n_sets, "
                         "so it is smaller by about the root of n_sets, and three independent readers of the first version took the "
                         "two as comparable and read the wrong channel as the tighter. To compare them, pool the centre too by dividing "
-                        "sd_pull by the root of n_sets. kappa_skew_pooled inverts the median cumulant over all sets at the admitted rungs, the campaign's own "
+                        "sd_pull by the root of n_sets. kappa_skew_pooled inverts the median moment over all sets at the admitted rungs, the campaign's own "
                         "form, whose spread falls with the trace count. On a depth ladder (ladder = depth) the rungs are the "
                         "modulation depths at the top power, kappa_pull is the fitted centre's slope against depth in MHz per unit "
                         "of 2 beta, whose expected value is zero since the light shift is intensity-set, and the skew channel is "

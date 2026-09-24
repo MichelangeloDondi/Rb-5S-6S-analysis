@@ -164,7 +164,7 @@ Each of these decides a setting above, and none takes long.
 7. An independent measurement of the laser width, which 10c.1 argues is worth
    more than any other single item here. The lineage gives the number to hold
    it against: [Nieddu 2019](../lit/nieddu2019.md) ran an MBR-110 at about 100
-   kHz and saw 2.43 to 2.60 MHz per photon, which is 4.86 to 5.20 on the
+   kHz and saw 2.43 to 2.60 MHz per photon, which is 4.86 to 5.20 on the <!-- other-quantity: the laser-axis FWHM range, not the tilt table's residual-over-transit ratio -->
    transition axis, where the 2025 line already sits at about 5.25. The
    natural width of 3.49 MHz on that axis is what makes the reading
    unambiguous, since a line narrower than natural is impossible.

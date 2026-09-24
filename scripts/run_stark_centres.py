@@ -150,7 +150,7 @@ RATE = float(next(csv.DictReader(
 WIDTH_BOUND = float(next(
     r["value"] for r in csv.DictReader(open(_CFG_RESULTS / "stark_sweep.csv"))
     if r["quantity"] == "S0_225mW_ub95_profile"))   # MHz, width channel 95%
-PREDICTED = kappa_pred_per_watt(C.W0_MEASURED_M, C.RHO_RETRO) * 0.225  # MHz
+PREDICTED = kappa_pred_per_watt(C.W0_CENTRAL_M, C.RHO_RETRO) * 0.225  # MHz
 
 rows = [r for r in csv.DictReader(open(_CFG_RESULTS / "laser_history.csv"))]
 sci = [r for r in rows if r["role"] == "p_sweep" and r["flag"] == "canonical"]

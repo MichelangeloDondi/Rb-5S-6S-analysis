@@ -1,4 +1,4 @@
-*Chapter 1 of 9 of [the big picture](../BIG_PICTURE.md)*
+*Chapter 1 of 10 of [the big picture](../BIG_PICTURE.md)*
 
 ## 1. Motivation for characterising the line
 
@@ -60,7 +60,7 @@ The 7S row is also not the 7S number §1.4 anchors on. Zameroski 2014 measured
 the same 760 nm line at 129 ± 13 kHz/mTorr, about 0.0054 in the units of the
 third column, a factor of 2.6 below Wang's, and §1.4 converts it at his own
 429 K rather than the 423 K of the table above, that 429 being the
-effective temperature of a slope fitted over 353 to 438 K and not a single
+effective temperature of a slope fitted over 353 to 438 K and not a single <!-- other-quantity: a temperature -->
 cell, which is a difference of a few percent and none of the factor of 2.6
 ([FUTURE_TRANSITIONS_titsapph.md](../FUTURE_TRANSITIONS_titsapph.md) §3.2). The
 one quantity the expectation in §1.4 rides on therefore has two published
@@ -87,22 +87,26 @@ moving through the beam. Those are the transit and collisional terms this
 record spends its work bounding. Trapping fixes that, but a trap normally
 shifts the very line under measurement. A *magic* wavelength does not: both states shift equally, and
 the transition frequency is untouched. That is the trick behind lattice
-clocks (Sr at 813 nm). The polarizability recompute here gives the **first
-5S–6S magic wavelengths**, ≈ 1203.9 / 1287.9 / 1339.6 nm, all trapping (α > 0 for
-both states), with a 16 to 84 percent band of 1203.06 to 1204.73 nm on the
-1203.9 nm crossing, so the
+clocks (Sr at 813 nm).
+
+The polarizability recompute here gives the **first
+5S–6S magic wavelengths**, ≈ [1203.7](../../results/polarizability.csv "ref:polarizability:magic_5s6s:1204nm") / [1287.9](../../results/polarizability.csv "ref:polarizability:magic_5s6s:1288nm") / 1339.6 nm, all trapping (α > 0 for
+both states), with a 16 to 84 percent band of [1202.8](../../results/polarizability.csv "ref:polarizability:magic_5s6s:1204nm:err_lo16") to [1204.5](../../results/polarizability.csv "ref:polarizability:magic_5s6s:1204nm:err_hi84") nm on the
+1204 nm crossing, so the
 trapped-atom version of this measurement has candidate wavelengths where
 before it had none.
 
 The state pair has to be said out loud: Zang *et al.* 2012
 report six magic wavelengths between 1200 and 1600 nm for the **6S–5p₁/₂,₃/₂**
 pairs of a four-level active clock, two of which (1336 and 1342 nm) bracket the
-1339.6 here. They are a different state pair and a different magic condition,
+[1339.6](../../results/polarizability.csv "ref:polarizability:magic_5s6s:1340nm") here. They are a different state pair and a different magic condition,
 and the crowding is expected: between the 5p₁/₂–6s₁/₂ and 5p₃/₂–6s₁/₂
 resonances at 1323.88 and 1366.87 nm the 6S polarizability runs from one pole
 to the other through every value, so any pair built on 6S tends to put a root
 somewhere in that 43 nm window, theirs at 1336 and 1342 nm and this record's
-at 1339.6 nm included. These are an envelope, and scalar only, which for
+at [1339.6](../../results/polarizability.csv "ref:polarizability:magic_5s6s:1340nm") nm included.
+
+These are an envelope, and scalar only, which for
 these states is less of a caveat than it sounds: the tensor polarizability
 vanishes identically for $J=1/2$
 (triangle rule), so with linear polarization the scalar term is exact, not an
@@ -117,7 +121,7 @@ photon scattering and the sensitivity to trap-laser frequency make a crossing
 magic in name only. `rb5s6s/hyperpolarizability.py` puts numbers on all six crossings, the
 pole-hugging ones included, quantifying three trap-design quantities at each, the
 two shifts to within a factor of two. The fourth-order differential shift, the hyperpolarizability term, is
-+0.87 Hz per megahertz squared of trap depth at the 1203.9 nm crossing, where a
++0.87 Hz per megahertz squared of trap depth at the 1204 nm crossing, where a
 depth of h × 1 MHz is 48 µK, so a trap half a millikelvin deep moves the line
 by somewhere between fifty and two hundred hertz against the transition's
 3.49 MHz natural width.
@@ -125,15 +129,17 @@ by somewhere between fifty and two hundred hertz against the transition's
 The vector shift is the
 sharper requirement: at that same depth a stretched-state atom sees 280 kHz per
 megahertz of depth per unit circularity of the trap light, so holding the trap
-shift under a kilohertz needs the circularity below about 3 × 10⁻⁴. At the 1297.5 and 1339.6 nm
+shift under a kilohertz needs the circularity below about 3 × 10⁻⁴. At the 1297.5 and [1339.6](../../results/polarizability.csv "ref:polarizability:magic_5s6s:1340nm") nm
 crossings the same coefficient is nearly ninety times larger, so those two are
-usable only in strictly linear light. Trap photons scatter off the 6S state a few times per second per
-megahertz of depth at 1203.9 nm and ten to sixty times faster at the 1287.9,
-1297.5 and 1339.6 nm crossings. The pair near 1030 nm shows lower rates on
+usable only in strictly linear light.
+
+Trap photons scatter off the 6S state a few times per second per
+megahertz of depth at the 1204 nm crossing and ten to sixty times faster at the [1287.9](../../results/polarizability.csv "ref:polarizability:magic_5s6s:1288nm"),
+1297.5 and [1339.6](../../results/polarizability.csv "ref:polarizability:magic_5s6s:1340nm") nm crossings. The pair near 1030 nm shows lower rates on
 this line list, but there the module flags its upward entries as several-fold
 understatements, and holding a trap wavelength against the adjacent 6S–8P
 doublet would put the trap laser's own stability into the error budget. That
-leaves 1203.9 nm as the one practical operating point.
+leaves the 1204 nm crossing as the one practical operating point.
 
 The crossings also read backwards. Where one sits is fixed by
 the matrix elements that build the two polarizabilities, so measuring a
@@ -160,14 +166,14 @@ rather than of a measurement, which is why the crossings below are quoted with
 theirs. Nothing here has been checked against a trap.*
 
 Where they landed was not designed for. **Two of the three sit inside the
-telecom O-band** (1260–1360 nm, ITU), 1287.9 ± 0.2 and
-1339.6 ± 0.1 nm over the same Monte-Carlo band
+telecom O-band** (1260–1360 nm, ITU), [1287.88](../../results/polarizability.csv "ref:polarizability:magic_5s6s:1288nm") nm, its 16 to 84 per cent band [1287.72](../../results/polarizability.csv "ref:polarizability:magic_5s6s:1288nm:err_lo16") to [1288.04](../../results/polarizability.csv "ref:polarizability:magic_5s6s:1288nm:err_hi84"),
+and [1339.57](../../results/polarizability.csv "ref:polarizability:magic_5s6s:1340nm") nm, its 16 to 84 per cent band [1339.51](../../results/polarizability.csv "ref:polarizability:magic_5s6s:1340nm:err_lo16") to [1339.63](../../results/polarizability.csv "ref:polarizability:magic_5s6s:1340nm:err_hi84"), over the same Monte-Carlo band
 (`results/polarizability.csv`), so a trap at either could in principle be built
 from datacom-grade
 diodes, which are cheap, fibre-coupled by default and available space-qualified.
 Those two are not the practical pair, though, and the reason is not the diode.
 Both lie hard against 6S→nP resonances, where trap-photon scattering is high,
-so the 1203.9 nm crossing, which sits on the smooth part of the curve, is the
+so the 1204 nm crossing, which sits on the smooth part of the curve, is the
 usable one ([README.md](../../README.md)'s results table and
 [CLAIMS.md](../CLAIMS.md) §1 both say so). The O-band also has no erbium
 amplifier, so reaching trap power there is harder than in the C-band, but that

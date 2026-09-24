@@ -68,14 +68,14 @@ def synth_peak(beta_self, sigma_laser, transit_ref=0.9, temps=(70.0, 90.0, 110.0
 def test_recovers_injected_beta():
     beta_true = 0.15  # MHz per 1e12 cm^-3
     conds = synth_peak(beta_self=beta_true, sigma_laser=1.2)
-    fit = fit_beta_self(conds, transit_ref_mhz=0.9)
+    fit = fit_beta_self(conds, transit_ref_mhz=0.9, model="convolution")
     assert abs(fit["beta_self"] - beta_true) < 3 * fit["beta_self_err"] + 0.02, fit
     assert abs(fit["sigma_laser"] - 1.2) < 0.25, fit
 
 
 def test_zero_beta_recovered_near_zero():
     conds = synth_peak(beta_self=0.0, sigma_laser=1.2)
-    fit = fit_beta_self(conds, transit_ref_mhz=0.9)
+    fit = fit_beta_self(conds, transit_ref_mhz=0.9, model="convolution")
     # consistent with zero within ~3 sigma (bounded below at 0)
     assert fit["beta_self"] < 3 * fit["beta_self_err"] + 0.03, fit
 
@@ -87,8 +87,8 @@ def test_global_beats_single_condition_degeneracy():
     beta_true = 0.20
     conds = synth_peak(beta_self=beta_true, sigma_laser=1.5, noise_a=8e-3)
     single = fit_condition(conds[2]["freqs"], conds[2]["volts"], T_C=110.0,
-                           transit_fwhm=transit_fwhm_at_T(110.0, 0.9))
-    glob = fit_beta_self(conds, transit_ref_mhz=0.9)
+                           transit_fwhm=transit_fwhm_at_T(110.0, 0.9), model="convolution")
+    glob = fit_beta_self(conds, transit_ref_mhz=0.9, model="convolution")
     # global gamma_coll error at 110 C = beta_err * N(110)
     N110 = density_units(110.0)
     glob_gc_err = glob["beta_self_err"] * N110
@@ -102,7 +102,7 @@ def test_unbiased_across_seeds():
     vals, errs = [], []
     for s in range(1, 8):
         fit = fit_beta_self(synth_peak(beta_self=beta_true, sigma_laser=1.2, seed=s),
-                            transit_ref_mhz=0.9)
+                            transit_ref_mhz=0.9, model="convolution")
         vals.append(fit["beta_self"]); errs.append(fit["beta_self_err"])
     mean, sem = np.mean(vals), np.std(vals) / np.sqrt(len(vals))
     assert abs(mean - beta_true) < 3 * sem + 0.02, (mean, sem, vals)
@@ -442,7 +442,7 @@ def test_with_130C_extends_lever_arm():
     # Adding the 130 C (highest-density) point should tighten beta_self.
     beta_true = 0.15
     three = fit_beta_self(synth_peak(beta_self=beta_true, sigma_laser=1.2,
-                                     temps=(70.0, 90.0, 110.0)), transit_ref_mhz=0.9)
+                                     temps=(70.0, 90.0, 110.0)), transit_ref_mhz=0.9, model="convolution")
     four = fit_beta_self(synth_peak(beta_self=beta_true, sigma_laser=1.2,
-                                    temps=(70.0, 90.0, 110.0, 130.0)), transit_ref_mhz=0.9)
+                                    temps=(70.0, 90.0, 110.0, 130.0)), transit_ref_mhz=0.9, model="convolution")
     assert four["beta_self_err"] < three["beta_self_err"], (four, three)

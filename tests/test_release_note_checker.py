@@ -34,7 +34,7 @@ def _run(note_text: str, tmp_path: Path) -> subprocess.CompletedProcess:
 
 def test_an_uncited_united_quantity_is_refused(tmp_path):
     r = _run("A heading line.\n\n"
-             "The fit assumes a waist of 65 um and the limit falls.\n",
+             "The fit assumes a waist of 55 um and the limit falls.\n",
              tmp_path)
     assert r.returncode == 1, r.stdout
     assert "N3" in r.stdout

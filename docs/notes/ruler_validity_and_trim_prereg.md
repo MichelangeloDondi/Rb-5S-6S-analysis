@@ -1,5 +1,7 @@
 # Ruler fit validity and residual-tail trimming: specification of record
 
+<!-- kind: record -->  <!-- a preregistration states what was predicted before the result. Rewriting its numbers to match the present would destroy its only function, which is why it is declared a record and not propagated -->
+
 **Status: pre-registered 2026-08-04, before the code was written and before any
 number came out of it.** Every threshold below is fixed here, with its
 justification, so that the run can only confirm or fail it. No value in this
@@ -1104,8 +1106,8 @@ it can be made deliberately.
 |---|---|---|---|---|
 | `rate_laser` | 0.04252649 | 0.04252635 | 0.04252445 | 0.04252431 |
 | shift | reference | minus 0.00034% | minus 0.0048% | minus 0.0051% |
-| `block_chi2_red` | 8.078 | 8.071 | 8.001 | 7.987 |
-| `scatter_pct` | 0.6176 | 0.6173 | 0.6338 | 0.6328 |
+| `block_chi2_red` | 8.078 | 8.071 | 8.001 | 7.987 <!-- other-quantity: this table's own per-block chi2_red, not identifiability_profile's zoom_dchi2 cell --> |
+| `scatter_pct` | 0.6176 | 0.6173 | 0.6338 | 0.6328 <!-- other-quantity: this table's own per-block scatter percentage, not identifiability_profile's wide_transit cell --> |
 | 4207 before against after | 3.7 sigma | 3.7 | 3.7 | 3.7 |
 
 The rate moves by a fortieth of the 0.2 per cent bound section 9 set.
@@ -1240,7 +1242,7 @@ what every number in amendment 2's B5.7 census was measured against.
 |---|---|---|
 | 4 | 6.909 | 9.902 |
 | 5 | 7.926 | 11.411 |
-| 6 | 5.530 | 7.163 |
+| 6 | 5.530 | 7.163 <!-- other-quantity: this table's own row, not identifiability_profile's wide_dchi2 cell --> |
 | 7 | 5.854 | 7.611 |
 | 8 | 4.915 | 6.072 |
 
@@ -1413,7 +1415,7 @@ question for the recompute rather than an answer this amendment has.
 producers `scripts/verify_results_fresh.py` covers were re-run against the
 current tables and both move.
 `results/amplitude_ratios.csv` shifts its `err_total` by up to 0.7 per cent and
-`results/sharing_bic.csv` moves `dBIC_eff_block_minus_T` from 62.4 to 61.3,
+`results/sharing_bic.csv` moves `dBIC_eff_block_minus_T` from 62.4 to 61.3, retired since (Amendment 3, 2026-08-04),
 neither of which crosses a threshold either file quotes. Both were put back
 unchanged, because re-running two of the downstream producers and not the nine
 expensive ones would leave a tree that looks recomputed and is not. That is the
@@ -1424,7 +1426,7 @@ and it stays red until the recompute lands and is committed.
 
 **Update, 2026-08-05.** All three entries above are discharged.
 `results/amplitude_ratios.csv` and `results/sharing_bic.csv` were re-run and
-committed in `0bf2502`, where `dBIC_eff_block_minus_T` reads 61.3, and both
+committed in `0bf2502`, where `dBIC_eff_block_minus_T` read a since-retired 61.3, and both
 stand unmodified in the working tree. `results/linefit_conditions.csv` is being
 re-run by the Phase 5 recompute along with the four tables that fold it,
 `resolving_power`, `projections`, `lever_crosscheck` and `sigma_laser_sharing`,
@@ -1656,7 +1658,7 @@ mean, the two marginal cases are not well resolved and never enter under
 either cut, three different inversion brackets return the same roots because
 no comb sits near an endpoint, and seven definitions of the ratio move the
 median by at most 0.017. Reading the heights as the bare amplitude instead,
-and at beta rather than at 2 beta, returns 2 beta = 1.511 median with
+and at beta rather than at 2 beta, returns 2 beta = 1.511 median with <!-- other-quantity: the EOM's modulation depth 2 beta read off the tooth heights, not kernel_inhomogeneity's transit_span_err at 16 um, whose digits it happens to share -->
 standard deviation 0.137 and range 2 beta = 1.251 to 2 beta = 1.914. That is
 the number an earlier gallery constant carried. It lands close to the right
 one because its two errors run opposite ways and nearly cancel, which is why

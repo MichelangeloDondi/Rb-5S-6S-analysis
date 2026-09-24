@@ -45,14 +45,14 @@ def synth_condition(gamma_coll, sigma_laser, transit=0.9, s0=0.0,
 def test_recovers_injected_widths():
     # Bright warm-like condition: recover gamma_coll and sigma_laser.
     freqs, volts = synth_condition(gamma_coll=1.5, sigma_laser=1.2, transit=0.9)
-    fit = fit_condition(freqs, volts, T_C=110.0, transit_fwhm=0.9)
+    fit = fit_condition(freqs, volts, T_C=110.0, transit_fwhm=0.9, model="convolution")
     assert abs(fit["gamma_coll"] - 1.5) < 3 * fit["gamma_coll_err"] + 0.15, fit
     assert abs(fit["sigma_laser"] - 1.2) < 3 * fit["sigma_laser_err"] + 0.2, fit
 
 
 def test_zero_collision_recovered_near_zero():
     freqs, volts = synth_condition(gamma_coll=0.0, sigma_laser=1.0, transit=0.9)
-    fit = fit_condition(freqs, volts, T_C=110.0, transit_fwhm=0.9)
+    fit = fit_condition(freqs, volts, T_C=110.0, transit_fwhm=0.9, model="convolution")
     assert fit["gamma_coll"] < 0.5, fit  # consistent with ~0
 
 
@@ -60,7 +60,7 @@ def test_center_drift_absorbed_not_biasing_width():
     # Large per-trace drift must NOT inflate the recovered widths (the whole
     # point of per-trace free centers on the 2025 data).
     freqs, volts = synth_condition(gamma_coll=1.5, sigma_laser=1.0, drift_mhz=3.0)
-    fit = fit_condition(freqs, volts, T_C=110.0, transit_fwhm=0.9)
+    fit = fit_condition(freqs, volts, T_C=110.0, transit_fwhm=0.9, model="convolution")
     assert abs(fit["gamma_coll"] - 1.5) < 0.4, fit
     # recovered centers should span the injected drift
     assert np.std(fit["centers"]) > 0.5
@@ -74,7 +74,7 @@ def test_laser_collision_degeneracy_quantified():
     # pinning it — quantifying the degeneracy penalty rather than asserting a
     # magic error floor.
     freqs, volts = synth_condition(gamma_coll=1.5, sigma_laser=1.5, transit=0.9)
-    both_free = fit_condition(freqs, volts, T_C=110.0, transit_fwhm=0.9)
+    both_free = fit_condition(freqs, volts, T_C=110.0, transit_fwhm=0.9, model="convolution")
     assert both_free["corr_laser_coll"] < -0.3, both_free["corr_laser_coll"]
     # errors are real (not collapsed to ~machine-zero) and the recovery is sane
     assert both_free["gamma_coll_err"] > 1e-3
@@ -85,10 +85,10 @@ def test_dim_cold_condition_wider_errors():
     # Cold/dim condition (small amplitude): the fit must still run and report
     # LARGER errors than a bright one (correct error scaling).
     bright = fit_condition(*synth_condition(gamma_coll=1.0, sigma_laser=1.0, amp=1.0),
-                           T_C=110.0, transit_fwhm=0.9)
+                           T_C=110.0, transit_fwhm=0.9, model="convolution")
     dim = fit_condition(*synth_condition(gamma_coll=1.0, sigma_laser=1.0, amp=0.05,
                                          noise_a=3e-3),
-                        T_C=70.0, transit_fwhm=0.78)
+                        T_C=70.0, transit_fwhm=0.78, model="convolution")
     assert dim["gamma_coll_err"] > bright["gamma_coll_err"], (dim, bright)
 
 
@@ -101,7 +101,7 @@ def test_fit_window_excludes_mirror_crossing():
         # add a 60%-tall mirror line at +40 MHz (well outside the 18 MHz window)
         mir = model_profile(NU - 40.0, gamma_coll=1.5, sigma_laser_fwhm=1.2, transit_fwhm=0.9)
         volts[i] = volts[i] + 0.6 * mir / mir.max()
-    fit = fit_condition(freqs, volts, T_C=110.0, transit_fwhm=0.9)
+    fit = fit_condition(freqs, volts, T_C=110.0, transit_fwhm=0.9, model="convolution")
     assert abs(fit["gamma_coll"] - 1.5) < 0.4, fit          # not biased by the mirror
     for d in fit["per_trace_diag"]:
         assert d["chi2_red"] < 1.5, d                        # mirror is outside the window
@@ -113,7 +113,7 @@ def test_per_trace_residual_diagnostics():
     # the diagnostics must CATCH a corrupted trace (injected step -> its own
     # chi2/lag1 stand out while the siblings stay clean).
     freqs, volts = synth_condition(gamma_coll=1.5, sigma_laser=1.2)
-    fit = fit_condition(freqs, volts, T_C=110.0, transit_fwhm=0.9)
+    fit = fit_condition(freqs, volts, T_C=110.0, transit_fwhm=0.9, model="convolution")
     for d in fit["per_trace_diag"]:
         assert 0.7 < d["chi2_red"] < 1.4, d
         assert abs(d["lag1"]) < 0.15, d
@@ -124,7 +124,7 @@ def test_per_trace_residual_diagnostics():
     ipk = int(np.argmax(volts[2]))
     bump = 0.15 * np.exp(-0.5 * ((np.arange(len(volts[2])) - (ipk + 40)) / 6.0) ** 2)
     volts[2] = volts[2] + bump
-    fit2 = fit_condition(freqs, volts, T_C=110.0, transit_fwhm=0.9)
+    fit2 = fit_condition(freqs, volts, T_C=110.0, transit_fwhm=0.9, model="convolution")
     d_bad = fit2["per_trace_diag"][2]
     others = [d for i, d in enumerate(fit2["per_trace_diag"]) if i != 2]
     assert d_bad["chi2_red"] > 2.0 * max(o["chi2_red"] for o in others), fit2["per_trace_diag"]
@@ -136,7 +136,7 @@ def test_recovery_across_seeds_unbiased():
     vals, errs = [], []
     for s in range(1, 9):
         fit = fit_condition(*synth_condition(gamma_coll=2.0, sigma_laser=1.0, seed=s),
-                            T_C=110.0, transit_fwhm=0.9)
+                            T_C=110.0, transit_fwhm=0.9, model="convolution")
         vals.append(fit["gamma_coll"]); errs.append(fit["gamma_coll_err"])
     mean = np.mean(vals); sem = np.std(vals) / np.sqrt(len(vals))
     assert abs(mean - 2.0) < 3 * sem + 0.15, (mean, sem, vals)
@@ -155,8 +155,8 @@ def test_tau_inflation_scales_shared_errors_sqrt_tau():
     # ones (the diagnostic chi2_red is un-scaled back by design, so the
     # secondary max(chi2,1) rescale is common to both runs and cancels).
     freqs, volts = synth_condition(gamma_coll=1.5, sigma_laser=1.2)
-    f1 = fit_condition(freqs, volts, T_C=110.0, transit_fwhm=0.9, law=_law(1.0))
-    f4 = fit_condition(freqs, volts, T_C=110.0, transit_fwhm=0.9, law=_law(4.0))
+    f1 = fit_condition(freqs, volts, T_C=110.0, transit_fwhm=0.9, law=_law(1.0), model="convolution")
+    f4 = fit_condition(freqs, volts, T_C=110.0, transit_fwhm=0.9, law=_law(4.0), model="convolution")
     for p in ("gamma_coll", "sigma_laser"):
         assert abs(f1[p] - f4[p]) < 1e-6, (p, f1[p], f4[p])   # values unchanged
         ratio = f4[p + "_err"] / f1[p + "_err"]
@@ -186,8 +186,8 @@ def test_tau_inflation_covers_ar1_noise():
             e[k] = rho * e[k - 1] + np.sqrt(1 - rho ** 2) * w[k]
         volts.append(v + sig * e)
         freqs.append(NU.copy())
-    fit = fit_condition(freqs, volts, T_C=110.0, transit_fwhm=0.9, law=_law(tau_true))
-    white = fit_condition(freqs, volts, T_C=110.0, transit_fwhm=0.9, law=_law(1.0))
+    fit = fit_condition(freqs, volts, T_C=110.0, transit_fwhm=0.9, law=_law(tau_true), model="convolution")
+    white = fit_condition(freqs, volts, T_C=110.0, transit_fwhm=0.9, law=_law(1.0), model="convolution")
     assert abs(fit["gamma_coll"] - gamma_true) < 3 * fit["gamma_coll_err"] + 0.15, fit
     assert abs(fit["sigma_laser"] - sigma_true) < 3 * fit["sigma_laser_err"] + 0.2, fit
     for p in ("gamma_coll_err", "sigma_laser_err"):
@@ -201,9 +201,9 @@ def test_fit_condition_profile_default_bitwise():
     # passing it explicitly, bit for bit.
     from rb5s6s.lineshape import stark_ramp
     freqs, volts = synth_condition(gamma_coll=1.5, sigma_laser=1.2, s0=2.0)
-    base = fit_condition(freqs, volts, T_C=110.0, transit_fwhm=0.9, s0=2.0)
+    base = fit_condition(freqs, volts, T_C=110.0, transit_fwhm=0.9, s0=2.0, model="convolution")
     same = fit_condition(freqs, volts, T_C=110.0, transit_fwhm=0.9, s0=2.0,
-                         profile=stark_ramp)
+                         profile=stark_ramp, model="convolution")
     for k in ("gamma_coll", "sigma_laser", "gamma_coll_err", "chi2_red"):
         assert base[k] == same[k], (k, base[k], same[k])
     assert base["centers"] == same["centers"]
@@ -234,7 +234,7 @@ def test_fit_condition_adapted_geometry_closure():
         volts.append(v + rng.normal(0.0, 1.0, len(v)) * sig)
         freqs.append(NU.copy())
     fit = fit_condition(freqs, volts, T_C=110.0, transit_fwhm=0.9, s0=2.0,
-                        profile=flat)
+                        profile=flat, model="convolution")
     assert abs(fit["gamma_coll"] - 1.5) < 3 * fit["gamma_coll_err"] + 0.15, fit
     assert abs(fit["sigma_laser"] - 1.2) < 3 * fit["sigma_laser_err"] + 0.2, fit
 

@@ -19,7 +19,7 @@ amplitude $J_k(2\beta)$, not the $J_k(\beta)$ a one-photon reading of the
 same drive would give.
 
 That doubled argument moves the carrier null. A one-photon carrier vanishes
-at the first zero of $J_0$, near $\beta = 2.405$. A two-photon carrier
+at the first zero of $J_0$, near $\beta = 2.405$. <!-- other-quantity: the first zero of the Bessel function J0, not a committed cell --> A two-photon carrier
 vanishes where $2\beta$ reaches that same zero, so near $\beta = 1.202$. A
 depth chosen by one-photon intuition leaves a two-photon carrier far from
 empty, because the argument it actually reaches is nowhere near a zero of
@@ -160,7 +160,7 @@ tooth that already exists.
 
 At zero relative delay these pathways interfere, and their coherent sum is
 $J_s(2\beta)$ by the Bessel addition theorem, so a carrier vanishes at
-$2\beta = 2.405$ even though its crossover pathways still exist and
+$2\beta = 2.405$ <!-- other-quantity: the first zero of the Bessel function J0, not a committed cell --> even though its crossover pathways still exist and
 cancel. **A vanishing carrier is therefore a cancellation and not an
 absence**, which is the whole reason the retro delay below can undo it. One photon of each pair comes from the retro beam, delayed
 by $\tau(z)$ for an atom at $z$, so the pathway $(n, s-n)$ carries a phase
@@ -169,7 +169,7 @@ depth $2\beta\cos(\pi f\tau)$. An atom shows weights
 $J_s(2\beta\cos(\pi f\tau))^2$, and a cell shows their average.
 
 Smearing $\tau$ across a cell undoes the cancellation: the $(k,-k)$ pairs
-return to the carrier as added height, and the null at 2.405 fills in.
+return to the carrier as added height, and the null at 2.405 fills in. <!-- other-quantity: the first zero of the Bessel function J0, not a committed cell -->
 What matters is the phase $2\pi f\tau$: at a 12.5 MHz drive across a 10 cm
 cell it is 0.05 rad and the zero-delay weights hold to two parts in a
 thousand, while at 580 MHz it is order three, the effective depth sweeps

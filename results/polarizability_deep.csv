@@ -29,5 +29,5 @@ delta_alpha_sigma_independent,MC,4.6,,a.u.,every element drawn independently,ENV
 delta_alpha_sigma_pairs,MC,5.9,,a.u.,fine-structure pairs drawn fully correlated,ENVELOPE
 delta_alpha_sigma_all,MC,5.5,,a.u.,"every element of a state moved together, the envelope of an unknown correlation. the largest of the three is quoted",ENVELOPE
 delta_alpha,at_drive,-1131.8,5.9,a.u.,alpha_6s - alpha_5s at 993.4181 nm with the 9P-and-above group summed dynamically and the continuum carried as its own term. the package constant -1132 differs by -0. Orson 2021 carries 1093 in magnitude,ENVELOPE
-delta_alpha_shift_from_module,at_drive,+12.8,,a.u.,"against the module's static-tail sum, reproducible as rb5s6s.polarizability.delta_alpha at the drive. the whole move is the 9P-and-above group read dynamically instead of statically",DIAGNOSTIC
+delta_alpha_shift_from_module,at_drive,+2.8,,a.u.,"against the module's own sum at the drive, rb5s6s.polarizability.delta_alpha, which carries 9P and 10P explicitly since C6b (2026-09-25). the move is the 11P-and-above group, read dynamically here and through the module's flat tail there",DIAGNOSTIC
 delta_alpha_vs_orson,at_drive,+6.5,,sigma,"magnitude against Orson 2021's, over this derivation's sigma alone (Orson's own uncertainty is not carried by the record)",DIAGNOSTIC

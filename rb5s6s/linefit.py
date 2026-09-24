@@ -57,13 +57,161 @@ from scipy.optimize import least_squares
 from scipy.signal import fftconvolve
 
 from . import config as C
-from .constants import GAMMA_NAT_HZ
+from .constants import GAMMA_NAT_HZ, W0_CENTRAL_M, transit_fwhm_from_w0
 from ._compat import trapezoid
 from .lineshape import lorentzian, gaussian, two_sided_exponential, stark_ramp
 from .noise import signal_level, sigma_of_v
 from .fitutil import cov_from_jac, feasible_p0
+from .volume_line import GaussianBeam, JointTable, HOMOG_MARGIN_MHZ, HOMOG_STEP_MHZ
 
 GNAT_MHZ = GAMMA_NAT_HZ / 1e6
+
+# =====================================================================================
+# THE NON-CONVOLVING (JOINT) MODEL, owner order O49 (re-sent 15:1x, replacing
+# C6B_DESIGN.md's "linefit is out of scope"): "the model (either for the twin and in
+# general) is not anymore a convolution". `fit_condition`'s inhomogeneous part -- the
+# transit kernel and the AC-Stark shift, formerly two independent convolution factors
+# (`_shared_profile_grid`'s old body, kept below as the `model="convolution"` arm) --
+# becomes ONE joint table per condition (`volume_line.JointTable`, F294), built at the
+# record's own waist (`constants.W0_CENTRAL_M`) and the condition's own temperature, with
+# the homogeneous Lorentzian (natural + collisional [+ the permeated-gas family]) and the
+# laser's Gaussian convolved ONCE at evaluation time -- exact, per F294/F317, and not the
+# approximation being removed. S0 is the table's own axis, so a caller that fits or scans
+# S0 shares the same cached table across every trial value. Here S0 is fixed per call, as
+# it always was, and the table is built ONCE before the optimiser runs, not once per
+# `_shared_profile_grid` evaluation, since neither S0 nor the waist ever moves within
+# one `fit_condition` call. THE TRANSIT WIDTH STOPS BEING A FREE PARAMETER under this
+# model: it is the table's own, an emergent property of the atom-sampled ensemble at
+# (w0_m, T_C), so `fit_transit=True` is refused instead of silently ignored.
+# =====================================================================================
+
+#: Atom count for the per-condition table's Monte Carlo, and its bracketing seed. Measured
+#: in the C6b wide wave (`private/cache/plan_2026-09-18/c6b_wide_2026-09-22/REPORT.md`): a
+#: 2x2 (S0, w0) grid costs about 2.8 s to build at this n_path on this machine (four atom-MC
+#: nodes, though the tight bracket below means only one is ever queried -- see
+#: `condition_joint_table`). It costs 5.4 s at 8000 and 1.4 s at 2000. One table evaluation
+#: afterward (the Lorentzian/Gaussian convolution `JointTable.profile` does at every
+#: optimiser iteration) costs under 3 ms regardless. The table is cached per (T_C, s0, w0,
+#: m2, z_ratio, n_path, seed), so this cost is paid once per condition, not once per fit
+#: iteration nor once per Monte-Carlo trial at a fixed design point.
+JOINT_N_PATH = 4000
+JOINT_SEED = 0
+#: The C6b wave's own default collection ratio (`private/cache/plan_2026-09-18/
+#: C6B_CONVOLUTION_MAP.md`'s F293/F294 pre-wave node, 0.605). `volume_line`'s and
+#: `twin_volume`'s own tests use the same rounded value.
+JOINT_Z_RATIO = 0.6
+#: The S0 and w0 grid brackets are as tight as floating point allows while staying
+#: strictly ascending (`JointTable.__init__` requires it): the condition's own (s0, w0) is
+#: always queried exactly at the grid's lower node, so bilinear interpolation returns that
+#: node's own computed value with NO interpolation error. The bracket exists only because
+#: `JointTable` is a general (S0, w0) interpolant and always needs two points per axis
+#: (its own `__init__` guard). A zero S0 needs a strictly positive second node too.
+_JOINT_S0_BRACKET_FRAC = 0.01
+_JOINT_S0_BRACKET_FLOOR_MHZ = 0.01
+_JOINT_W0_BRACKET_FRAC = 1e-6
+
+#: Cache of built per-condition tables, keyed on every input that changes the table's own
+#: content. Cleared wholesale past `_JOINT_TABLE_CACHE_MAX` entries, mirroring
+#: `twin_volume._WORLD_CACHE`'s own convention instead of evicting by age, since a fit run
+#: touches at most a few dozen distinct conditions.
+_JOINT_TABLE_CACHE: Dict[tuple, "JointTable"] = {}
+_JOINT_TABLE_CACHE_MAX = 64
+
+
+def condition_joint_table(T_C: float, s0_mhz: float, *, w0_m: float = W0_CENTRAL_M,
+                          m2: float = 1.0, z_ratio: float = JOINT_Z_RATIO,
+                          n_path: int = JOINT_N_PATH, seed: int = JOINT_SEED,
+                          beam_factory: Optional[Callable[[float], object]] = None,
+                          ) -> "JointTable":
+    """The condition's own `volume_line.JointTable`, built once and cached.
+
+    A 2x2 (S0, w0) grid bracketing the condition's own (s0_mhz, w0_m) as tightly as
+    floating point allows (see the module-level bracket constants above), so every
+    `.profile(...)` query below lands exactly on the grid's lower node. This function
+    exists to give `fit_condition`/`fit_global`/`fit_beta_self`/`sharing_bic`/
+    `lever_crosscheck_beta` ONE shared, cached table-build path instead of five, not to
+    interpolate across a scan. A caller that DOES scan or fit S0 or w0 still benefits,
+    since each distinct value gets its own cached table keyed by this function's own
+    arguments.
+
+    Costs four atom-Monte-Carlo evaluations (the 2x2 grid), of which only one is ever
+    read. See `JOINT_N_PATH`'s docstring for the measured cost. `delta_mhz` spans the
+    widest window `fit_condition` ever fits against (`config.FIT_HALFWIDTH_MAX_MHZ`) plus
+    `volume_line.HOMOG_MARGIN_MHZ`'s own margin for the homogeneous convolution's reach, at
+    `volume_line.HOMOG_STEP_MHZ`'s own step -- the SAME margin and step the rest of this
+    wave's homogeneous-convolution code uses (`volume_line.joint_spectrum`), reused here
+    instead of re-derived.
+
+    `beam_factory` (C6b noise wave, 2026-09-22, the lever cross-check's replacement axis):
+    ``None`` (the default) keeps the exact existing beam, `lambda w0v: GaussianBeam(w0v, m2)`,
+    and the exact existing cache key -- byte-identical to every call made before this
+    parameter existed. A caller wanting a DIFFERENT beam (e.g. `beam_field.ClippedBeam`, for
+    the model-form axis `lever_crosscheck.lever_crosscheck_beta` reads under `model="joint"`)
+    passes its own factory. The cache then keys on its `id()` instead of trying to hash an
+    arbitrary callable, so a fresh factory object is always a cache miss (correct, since its
+    OUTPUT cannot be inferred from (w0, m2) alone) while the default path's caching is
+    unaffected.
+    """
+    key = (round(float(T_C), 6), round(float(s0_mhz), 9), round(float(w0_m), 12),
+          round(float(m2), 6), round(float(z_ratio), 6), int(n_path), int(seed),
+          id(beam_factory) if beam_factory is not None else None)
+    table = _JOINT_TABLE_CACHE.get(key)
+    if table is not None:
+        return table
+    s0 = max(float(s0_mhz), 0.0)
+    s0_hi = s0 + max(s0 * _JOINT_S0_BRACKET_FRAC, _JOINT_S0_BRACKET_FLOOR_MHZ)
+    w0 = float(w0_m)
+    w0_hi = w0 * (1.0 + _JOINT_W0_BRACKET_FRAC)
+    half_mhz = HOMOG_MARGIN_MHZ + C.FIT_HALFWIDTH_MAX_MHZ
+    delta_mhz = np.arange(-half_mhz, half_mhz + HOMOG_STEP_MHZ, HOMOG_STEP_MHZ)
+    m2 = float(m2)
+    # gaussian-limit: the fitter's joint table defaults to the ideal beam and owes the bore, the registry's bore-limited-recompute, until a caller passes the clipped factory
+    _factory = beam_factory if beam_factory is not None else (lambda w0v: GaussianBeam(float(w0v), m2))
+    table = JointTable.build(
+        S0_grid=np.array([s0, s0_hi]), w0_grid=np.array([w0, w0_hi]), delta_mhz=delta_mhz,
+        m2=m2, T_C=float(T_C), n_path=int(n_path), seed=int(seed), z_ratio=float(z_ratio),
+        beam_factory=_factory)
+    if len(_JOINT_TABLE_CACHE) >= _JOINT_TABLE_CACHE_MAX:
+        _JOINT_TABLE_CACHE.clear()
+    _JOINT_TABLE_CACHE[key] = table
+    return table
+
+
+def joint_condition_profile(gamma_coll: float, sigma_laser: float, laser_kind: str, *,
+                            gamma_l: float = 0.0, s0: float = 0.0, T_C: float,
+                            w0_m: float = W0_CENTRAL_M, m2: float = 1.0,
+                            z_ratio: float = JOINT_Z_RATIO, n_path: int = JOINT_N_PATH,
+                            seed: int = JOINT_SEED,
+                            beam_factory: Optional[Callable[[float], object]] = None):
+    """The non-convolving analogue of `lineshape.composite_profile`/the transit-and-shift
+    block of `_shared_profile_grid`: the condition's own `JointTable`
+    (`condition_joint_table`, cached), evaluated at this trial's homogeneous width and
+    laser width. Returns `(g, prof)`, matching `_shared_profile_grid`'s own convention
+    (`g` the frequency grid, `prof` the area-normalised profile on it), so every caller
+    that consumes that pair (`np.interp(freqs - centre, g, prof, ...)`) needs no change of
+    its own beyond selecting `model="joint"`.
+
+    The homogeneous-width split mirrors `_shared_profile_grid` exactly: `homog` bundles the
+    natural width, `gamma_coll` and `gamma_l`, and `sigma_laser` too, added in FWHM as an
+    exact Lorentzian, when `laser_kind != "gaussian"`. The DEFAULT `laser_kind="gaussian"`
+    keeps `sigma_laser` as the table's own separate Gaussian convolution instead.
+
+    `beam_factory`: threaded straight to `condition_joint_table` (its own docstring). ``None``
+    is byte-identical to every call made before this parameter existed.
+    """
+    if T_C is None:
+        raise ValueError("joint_condition_profile needs T_C: the atom-sampled table is "
+                         "built at a temperature, never inferred or left implicit")
+    _lorentz_laser = laser_kind != "gaussian"
+    homog = (GNAT_MHZ + max(gamma_coll, 0.0) + max(gamma_l, 0.0)
+            + (max(sigma_laser, 0.0) if _lorentz_laser else 0.0))
+    sigma_for_table = 0.0 if _lorentz_laser else max(sigma_laser, 0.0)
+    table = condition_joint_table(T_C, s0, w0_m=w0_m, m2=m2, z_ratio=z_ratio, n_path=n_path,
+                                  seed=seed, beam_factory=beam_factory)
+    g = table.delta_mhz
+    prof = table.profile(g, s0_mhz=s0, w0_m=w0_m, gamma_hom_mhz=homog,
+                         sigma_laser_mhz=sigma_for_table)
+    return g, prof
 
 
 def to_frequency(t_ms: np.ndarray, rate_transition_mhz_per_ms: float) -> np.ndarray:
@@ -76,9 +224,34 @@ def _shared_profile_grid(gamma_coll, sigma_laser, transit_fwhm, s0, laser_kind,
                          gamma_l: float = 0.0,
                          dnu_floor: float = 1e-3,
                          profile: Callable[[np.ndarray, np.ndarray], np.ndarray] = stark_ramp,
-                         transit_kind: str = "exp"):
+                         transit_kind: str = "exp",
+                         model: str = "convolution", T_C: Optional[float] = None,
+                         w0_m: float = W0_CENTRAL_M, m2: float = 1.0,
+                         z_ratio: float = JOINT_Z_RATIO, n_path: int = JOINT_N_PATH,
+                         seed: int = JOINT_SEED):
     """Build the area-normalized shared line shape ONCE on a fine grid; the
     per-trace fit interpolates it at (nu - center). Returns (grid, profile).
+
+    `model` selects the composer (owner order O49, the C6b wide wave). THE FUNCTION'S OWN
+    DEFAULT STAYS `"convolution"`, the pre-existing separable form below, UNCHANGED and
+    byte-identical to every call made before this parameter existed -- this helper is
+    called positionally, with the pre-existing five-argument signature, from over a dozen
+    scripts and tests outside `fit_condition` (`scripts/run_stark_joint.py`,
+    `run_kernel_k4.py`, `run_width_pinning.py`, `make_figures.py`, `tests/
+    test_transit_kind.py`, `test_laser_kind_degeneracy.py`, among others), none of which
+    pass `model=`, and every one of them tests or uses the convolution machinery
+    specifically (a transit-kernel form, a far-wing level, a saturation-probe patch) --
+    so changing this function's OWN default would silently swap what they exercise.
+    `fit_condition` is the only caller in this module that passes `model="joint"`
+    explicitly, which is where the wave's new default actually lives.
+
+    `model="joint"` routes the transit-and-shift block through `joint_condition_profile`
+    (the condition's own `volume_line.JointTable`, `T_C` and `w0_m` at the record's own
+    waist by default) instead of convolving `transit_kind`'s analytic kernel with
+    `profile`'s shift density. `T_C` is then required, since the table is built at a
+    temperature, and `profile`/`transit_kind` must stay at their defaults, since the
+    joint line samples atoms directly and has no seam for either. Passing a non-default
+    value raises instead of silently ignoring it.
 
     dnu_floor is the coarsest the internal grid step may get when a width
     parameter collapses. The 1e-3 MHz default reproduces every committed
@@ -102,6 +275,23 @@ def _shared_profile_grid(gamma_coll, sigma_laser, transit_fwhm, s0, laser_kind,
     the 18-23 per cent beta shift it produces is a SENSITIVITY result, not a
     model-form uncertainty (rule 19.25 and the transit-modelform finding).
     """
+    if model == "joint":
+        if profile is not stark_ramp:
+            raise ValueError(
+                "_shared_profile_grid: model='joint' has no seam for a custom shift-density "
+                "profile (the joint line samples atoms directly instead of convolving a "
+                "density). Pass model='convolution' to use an adapted geometry.")
+        if transit_kind != "exp":
+            raise ValueError(
+                "_shared_profile_grid: model='joint' has no transit_kind knob (the transit "
+                "comes from the atom-sampled table, never an analytic kernel). Pass "
+                "model='convolution' to select a transit kernel form.")
+        return joint_condition_profile(gamma_coll, sigma_laser, laser_kind, gamma_l=gamma_l,
+                                       s0=s0, T_C=T_C, w0_m=w0_m, m2=m2, z_ratio=z_ratio,
+                                       n_path=n_path, seed=seed)
+    if model != "convolution":
+        raise ValueError(f"_shared_profile_grid: model must be 'joint' or 'convolution', "
+                         f"got {model!r}")
     # A Lorentzian laser kernel is ADDED, not convolved: two Lorentzians
     # convolve to their summed width exactly, and doing it on a finite grid
     # instead made the profile depend on how the total was SPLIT, at up to
@@ -176,7 +366,7 @@ def transit_fwhm_at_T(T_C: float, transit_ref_mhz: float, T_ref_C: float = 110.0
     """
     # transit_ref_mhz is a WIDTH IN MHZ, not a waist. The distinction needs
     # a guard because the wrong call is the natural one and it did not raise:
-    # `transit_fwhm_at_T(130.0, W0_MEASURED_M)` accepted a waist of 6.4e-5 m
+    # `transit_fwhm_at_T(130.0, W0_CENTRAL_M)` accepted a waist in metres
     # and returned 0.0001 MHz, four orders of magnitude low, silently. Found
     # by the clean-install-from-GitHub gate on 2026-08-13, where it was the
     # first thing a reader of the public surface tried.
@@ -213,11 +403,37 @@ def fit_condition(freqs: List[np.ndarray], volts: List[np.ndarray], *,
                   laser_kind: str = "gaussian", trim_tails: bool = False,
                   gamma_l: float = 0.0, fit_gamma_l: bool = False,
                   halfwidth_mult: float = 1.0, fix_sigma_laser: float = None, fix_gamma_coll: float = None,
-                  profile: Callable[[np.ndarray, float], np.ndarray] = stark_ramp) -> Dict:
+                  profile: Callable[[np.ndarray, float], np.ndarray] = stark_ramp,
+                  model: str = "joint", w0_m: float = W0_CENTRAL_M, m2: float = 1.0,
+                  z_ratio: float = JOINT_Z_RATIO, joint_n_path: int = JOINT_N_PATH,
+                  joint_seed: int = JOINT_SEED) -> Dict:
     """Joint fit of one condition's repeats. `freqs` already in transition MHz.
 
-    Shared free params: gamma_coll, sigma_laser (+ transit_fwhm if fit_transit).
-    Per-trace free params: A_i, center_i, b0_i, b1_i.
+    Shared free params: gamma_coll, sigma_laser (+ transit_fwhm if fit_transit and
+    model="convolution"). Per-trace free params: A_i, center_i, b0_i, b1_i.
+
+    `model` (owner order O49, the C6b wide wave: "the model... is not anymore a
+    convolution") selects the composer `_shared_profile_grid` builds every shared line
+    from. THE DEFAULT IS `"joint"`: the inhomogeneous part (transit and AC-Stark shift,
+    formerly two independent convolution factors) becomes the condition's own
+    `volume_line.JointTable` (`joint_condition_profile`, cached per (T_C, s0, w0_m, m2,
+    z_ratio) by `condition_joint_table`), built at the record's own waist (`w0_m`,
+    default `constants.W0_CENTRAL_M`) and this condition's own `T_C`, with S0 as the
+    table's own axis (fixed at this call's `s0`, since `fit_condition` never frees S0
+    itself) and the homogeneous Lorentzian plus the laser's Gaussian convolved ONCE at
+    evaluation time -- exact (F294/F317), and not the approximation being removed.
+    `model="convolution"` is the pre-existing separable form, kept callable as the named
+    comparison arm and byte-identical to every fit made before this parameter existed.
+
+    TWO CONSEQUENCES OF `model="joint"`, each refused instead of silently ignored:
+    * THE TRANSIT WIDTH STOPS BEING A FREE PARAMETER: it is the table's own, an emergent
+      property of the atom-sampled ensemble at (w0_m, T_C), so `fit_transit=True` raises.
+      The returned `"transit_fwhm"` is then `constants.transit_fwhm_from_w0(w0_m, T_C)`,
+      the closed-form ensemble value at that waist and temperature (the same function
+      `config.TRANSIT_FWHM_PLACEHOLDER_MHZ` itself is built from), not a fitted number.
+    * `profile` MUST stay at its `stark_ramp` default: the joint line samples atoms
+      directly and has no seam for an adapted shift-density geometry (`model="convolution"`
+      is where `profile` reaches the fit, exactly as before).
 
     TWO CONVENTIONS A CALLER MUST KNOW, stated here because this is where they
     are used rather than only where they are defined:
@@ -260,6 +476,19 @@ def fit_condition(freqs: List[np.ndarray], volts: List[np.ndarray], *,
     resulting bias as a window trend. Widening therefore SATURATES rather than
     continuing, which a reader of the output has to know.
     """
+    if model not in ("joint", "convolution"):
+        raise ValueError(f"fit_condition: model must be 'joint' or 'convolution', got {model!r}")
+    if model == "joint":
+        if fit_transit:
+            raise ValueError(
+                "fit_condition: fit_transit=True is incompatible with model='joint': the "
+                "transit width is derived from (w0_m, T_C) through the atom-sampled table, "
+                "never fit. Pass model='convolution' to fit a free transit width.")
+        if profile is not stark_ramp:
+            raise ValueError(
+                "fit_condition: model='joint' has no seam for a custom shift-density profile "
+                "(the joint line samples atoms directly). Pass model='convolution' for an "
+                "adapted geometry.")
     ntr = len(freqs)
     # per-trace seeds from simple moments
     centers0, amps0, b0s = [], [], []
@@ -340,12 +569,14 @@ def fit_condition(freqs: List[np.ndarray], volts: List[np.ndarray], *,
     def residuals(p):
         gc, sl, tr, gl = unpack(p)
         g, prof = _shared_profile_grid(gc, sl, transit_fwhm_at_T(T_C, tr) if fit_transit else tr,
-                                       s0, laser_kind, gl, profile=profile)
+                                       s0, laser_kind, gl, profile=profile, model=model, T_C=T_C,
+                                       w0_m=w0_m, m2=m2, z_ratio=z_ratio, n_path=joint_n_path,
+                                       seed=joint_seed)
         out = []
         for i in range(ntr):
             A, c, b0, b1 = p[nshared + 4 * i: nshared + 4 * i + 4]
-            model = A * np.interp(freqs[i] - c, g, prof, left=0.0, right=0.0) + b0 + b1 * freqs[i]
-            out.append((volts[i] - model) / sigmas[i])
+            pred = A * np.interp(freqs[i] - c, g, prof, left=0.0, right=0.0) + b0 + b1 * freqs[i]
+            out.append((volts[i] - pred) / sigmas[i])
         return np.concatenate(out)
 
     p0 = feasible_p0(p0, lo, hi)  # project seed into bounds
@@ -362,16 +593,17 @@ def fit_condition(freqs: List[np.ndarray], volts: List[np.ndarray], *,
         gc0, sl0, tr0, gl0 = unpack(sol.x)
         g, prof = _shared_profile_grid(
             gc0, sl0, transit_fwhm_at_T(T_C, tr0) if fit_transit else tr0,
-            s0, laser_kind, gl0, profile=profile)
+            s0, laser_kind, gl0, profile=profile, model=model, T_C=T_C, w0_m=w0_m, m2=m2,
+            z_ratio=z_ratio, n_path=joint_n_path, seed=joint_seed)
         guard = C.TRIM_CORE_GUARD_FWHM_MULT * _profile_fwhm(g, prof)
         any_trim = False
         for i in range(ntr):
             A, c, b0, b1 = sol.x[nshared + 4 * i: nshared + 4 * i + 4]
-            model = A * np.interp(freqs[i] - c, g, prof, left=0.0, right=0.0) + b0 + b1 * freqs[i]
+            pred = A * np.interp(freqs[i] - c, g, prof, left=0.0, right=0.0) + b0 + b1 * freqs[i]
             inside = np.flatnonzero(np.abs(freqs[i] - c) <= guard)
             if inside.size == 0:
                 continue
-            rec = tail_trim(freqs[i], volts[i] - model,
+            rec = tail_trim(freqs[i], volts[i] - pred,
                             int(inside[0]), int(inside[-1]))
             trim_records[i] = {k: rec[k] for k in
                                ("trimmed", "trim_start_ms", "trim_end_ms",
@@ -430,10 +662,12 @@ def fit_condition(freqs: List[np.ndarray], volts: List[np.ndarray], *,
         gc0, sl0, tr0, gl0 = unpack(sol.x)
         g, prof = _shared_profile_grid(gc0, sl0,
                                        transit_fwhm_at_T(T_C, tr0) if fit_transit else tr0,
-                                       s0, laser_kind, gl0, profile=profile)
+                                       s0, laser_kind, gl0, profile=profile, model=model, T_C=T_C,
+                                       w0_m=w0_m, m2=m2, z_ratio=z_ratio, n_path=joint_n_path,
+                                       seed=joint_seed)
         A, c, b0, b1 = sol.x[nshared + 4 * i: nshared + 4 * i + 4]
-        model = A * np.interp(freqs[i] - c, g, prof, left=0.0, right=0.0) + b0 + b1 * freqs[i]
-        r = (volts[i] - model) / sigmas_raw[i]   # diagnostics on UNSCALED sigma
+        pred = A * np.interp(freqs[i] - c, g, prof, left=0.0, right=0.0) + b0 + b1 * freqs[i]
+        r = (volts[i] - pred) / sigmas_raw[i]   # diagnostics on UNSCALED sigma
         r0 = r - r.mean()
         lag1 = float(np.dot(r0[:-1], r0[1:]) / max(np.dot(r0, r0), 1e-12))
         diag.append({"chi2_red": float(np.mean(r ** 2)),
@@ -446,14 +680,24 @@ def fit_condition(freqs: List[np.ndarray], volts: List[np.ndarray], *,
     # the final shared profile and its full width, for the core check's mask (F42)
     _gc_f, _sl_f, _tr_f, _gl_f = unpack(sol.x)
     _g_final, _prof_final = _shared_profile_grid(_gc_f, _sl_f, transit_fwhm_at_T(T_C, _tr_f) if fit_transit else _tr_f,
-                                                 s0, laser_kind, _gl_f, profile=profile)
+                                                 s0, laser_kind, _gl_f, profile=profile, model=model,
+                                                 T_C=T_C, w0_m=w0_m, m2=m2, z_ratio=z_ratio,
+                                                 n_path=joint_n_path, seed=joint_seed)
     _half = 0.5 * float(np.max(_prof_final)); _idx = np.where(_prof_final >= _half)[0]
     _fwhm_final = float(_g_final[_idx[-1]] - _g_final[_idx[0]]) if _idx.size else float("nan")
+    # THE REPORTED transit_fwhm (owner order O49): under model="joint" it is never a fitted
+    # number (fit_transit=True is refused above), but the table's OWN emergent transit width,
+    # the closed-form ensemble value at this call's (w0_m, T_C) -- constants.transit_fwhm_from_w0,
+    # the SAME function config.TRANSIT_FWHM_PLACEHOLDER_MHZ is built from. Under
+    # model="convolution" this is exactly the pre-existing expression, unchanged.
+    _transit_fwhm_reported = (transit_fwhm_from_w0(w0_m, T_C) if model == "joint"
+                              else float(transit_fwhm_at_T(T_C, tr) if fit_transit else tr))
     return {
         "gamma_coll": float(gc), "gamma_coll_err": float(err[0]),
         "sigma_laser": float(sl), "sigma_laser_err": float(err[1]),
-        "transit_fwhm": float(transit_fwhm_at_T(T_C, tr) if fit_transit else tr),
+        "transit_fwhm": float(_transit_fwhm_reported),
         "transit_fitted": bool(fit_transit),
+        "model": model,
         # Gamma_L,equiv. Named for what it is: a Lorentzian-EQUIVALENT width.
         # It is not f_L and it is not "the laser linewidth"; attribution to the
         # laser is licensed by the K5 triangle, never by this fit.

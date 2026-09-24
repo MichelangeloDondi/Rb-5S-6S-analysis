@@ -45,7 +45,7 @@ assumed beyond undergraduate quantum mechanics and statistics.
 All width symbols above ($\Gamma_\text{nat}$, $\gamma_\text{coll}$,
 $\sigma_\text{laser}$) are **FWHM**, for direct comparison with measured
 linewidths. The one exception is $\sigma_\text{eff}$ in §2.6, which is a
-**standard deviation** ($\sqrt{\kappa_2}$) because it sits in a cumulant
+**standard deviation** ($\sqrt{\mu_2}$) because it sits in a cumulant
 ratio, and it is flagged again where it appears.
 
 ### The label schemes: C-results, M-modules and CI
@@ -124,6 +124,9 @@ it. The frequency-axis convention above (§0) is assumed by all of them.
 | **7** | [What we found](methods/07_what_we_found.md) | the 2025 dataset's results: the bounds, the nulls, and the consistency checks |
 | **8** | [Assumptions, and where this can go](methods/08_assumptions_and_outlook.md) | the load-bearing assumptions to challenge, and what a fixed-lock session would lift |
 | **9** | [The guided geometry](methods/09_the_guided_geometry.md) | the same four terms derived in an evanescent field: the guided mode solved from the fibre diameter and validated against its own boundary conditions, transit turning near-Lorentzian, the atom-surface potential, and which knobs separate them |
+| **10** | [Odd moments of the shifted line](methods/10_the_odd_moments.md) | the odd central moments the AC-Stark ramp gives the line, their signs by order, and the windowed estimator the package carries |
+| **11** | [The window limits](methods/11_the_window_limits.md) | what a self-centred window keeps of each moment, read at both limits, the geometry at small windows and each term's own law at large ones |
+| | [The model-terms registry](methods/model_terms.md) | which physical term each computation path carries, the fitter, the twin and the Monte Carlo, rendered from `rb5s6s/model_registry.py`, with every owed and neglected term named |
 
 For the project's goals, the prior art, and what each future measurement would
 add, see [BIG_PICTURE.md](BIG_PICTURE.md).
@@ -255,6 +258,14 @@ rb5s6s/   api(the supported entry point: a trace in, a linewidth out)
                 against, are in the guided-geometry chapter. A leaf module:
                 it imports core and core never imports it)
           fitutil pmfmt workers _compat
+          model_registry(which computation path carries each model term, with the status
+                    the committed results were computed with; rendered by make_model_terms.py)
+          reference_point(the 2025 line at its reference condition, read once from the committed fit and
+                    the waist, so no producer types the twin's truth)
+          volume_line beam_field twin_volume moment_coords(the non-convolving model's parts, new and
+                    not yet wired: the joint shift-and-transit line per path and its table, the
+                    bore-clipped beam through the focus, the twin's world drawn from the atom Monte Carlo,
+                    and the moment likelihood's coordinates, covariance and set statistic)
           (M18, M19, M29, M31, M32, M33, M34, M35, M36 and M37 are library-and-test only: they have
            no CSV product, so grepping results/ for them finds nothing -- see
            their test files, and for M34 also examples/campaign_twin.py)
@@ -269,7 +280,7 @@ scripts/  import_data (+ annotate_manifest_qc: qc_reason provenance)
           run_geometry_design (the running-wave and waist designs, whose
           weak-field branch reproduces lineshape.stark_ramp_axial_moments)
 data_raw/ MANIFEST.csv, and the 297 traces where the copy carries them
-tests/    5631-test battery (5444 fast ~5 min + 187 `slow` high-statistics
+tests/    the battery, counted by `pytest --collect-only -q` (the fast set, and the `slow` high-statistics
           closure tests via --runslow, incl. the M4d synthetic-β and M4e
           synthetic-κ closures, the MANIFEST qc_reason guards, and the
           docs-consistency gates: canonical numbers, links+anchors, math
@@ -293,8 +304,9 @@ The first six scripts form the pipeline (each reads the previous ones'
 
 ```bash
 python3 -m venv .venv && source .venv/bin/activate
-pip install -e ".[dev]" && pytest -q          # 5444 fast tests (~5 min)
-pytest -q --runslow                           # full 5631 incl. slow closures (what CI runs)
+pip install -e ".[dev]" && pytest -q          # the fast set (about five minutes)
+pytest -q --runslow                           # everything, slow closures included (what CI runs)
+pytest --collect-only -q | tail -1            # the count, measured where it is needed and never written
 
 # reproduce every committed CSV, figure, and docs/RESULTS.md from data_raw/
 # (already in git; import_data.py only re-imports from the original tree):

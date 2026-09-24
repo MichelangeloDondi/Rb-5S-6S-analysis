@@ -61,14 +61,18 @@ A Lorentzian core, a Gaussian residual, the transit cusp and the light-shift
 ramp, convolved. Solid arrows below enter that convolution. Dashed arrows act on
 the observation without belonging to the profile.
 
+This convolution fails on this bench, because one position in the beam sets both the shift and the transit.
+[The composite model](docs/methods/04_the_composite_model.md) measures the cost, and every bound below is
+conditional on the form until the fitter carries the joint line.
+
 ```mermaid
 flowchart LR
     NAT["natural 3.49 MHz<br/>literature"] --> CORE
     COL["collisional 0.19-0.93 MHz<br/>fitted"] --> CORE
     CORE["Lorentzian core<br/>adds in FWHM"] --> CONV
-    TRA["transit 0.93 MHz<br/>from an assumed waist"] --> CONV
+    TRA["transit 1.45 MHz<br/>from the calculated waist"] --> CONV
     LAS["residual Gaussian 1.75-2.15 MHz<br/>fitted, not the laser"] --> CONV
-    RAM["AC-Stark ramp 0.35 MHz<br/>calculated, the fit returns a bound"] --> CONV
+    RAM["AC-Stark ramp 0.73 MHz<br/>calculated, the fit returns a bound"] --> CONV
     CONV{{"convolution"}} --> OBS(["observed line"])
     SAT["saturation<br/>same P2 signature<br/>makes the joint bound conservative"] -.-> OBS
     BBR["blackbody<br/>a temperature ceiling,<br/>not a correction"] -.-> OBS
@@ -114,14 +118,15 @@ what would lift it. The calculated rows do not share it.
 
 | quantity | 2025 result | type | lifted by |
 |---|---|---|---|
-| **β_self** | ≲ 0.02–0.04 MHz per 10¹² cm⁻³ | bound | same-session 150–170 °C points |
+| **β_self** | ≲ 0.02–0.04 MHz per 10¹² cm⁻³ <!-- other-quantity: the collisional bound, not a forecast term --> | bound | same-session 150–170 °C points |
 | **σ_laser** | ≤ 2.4 MHz on the transition axis at the lineage waist, half that per photon | bound | a beam profile |
-| **S₀(225 mW)** | < 0.26 MHz, below the predicted 0.35 MHz at the waist convention | bound | fixed lock, tighter focus |
+| **S₀(225 mW)** | < 0.18 MHz, below the predicted 0.73 MHz at the calculated central waist (O44/F280) | bound | fixed lock, tighter focus |
 | power scaling | no width trend, and an amplitude departure from P² | null + a departure | not applicable |
-| **w₀** | 64 µm (prior), not a measurement of this beam: the lineage was profiled on the previous laser, and this beam passes a 3 mm modulator aperture that one did not. A Gaussian fit of the line returns 42.0 ± 1.7 µm. **The closure recovers the injected waist at zero noise, but an offset grows once noise is added and its fitted interval under-covers**, so the bar and not the centre is still open | carried, OPEN | a knife-edge scan here |
+| **w₀** | w0 ≈ 42 µm, calculated (42.38 µm, the bore-limited focus at this bench's 3 mm modulator aperture, O44/F280), not measured. A Gaussian fit of the line returns 42.0 ± 1.7 µm. **The closure recovers the waist at zero noise, but with noise an offset grows and the interval under-covers**, so the bar is open | carried, OPEN | a knife-edge scan here |
 | **Δα(993 nm)** | [-1131.8](results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive") ± [5.9](results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive:err") a.u. with the dynamic tail, [+6.5](results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha_vs_orson:at_drive") σ from the cited magnitude on this derivation's bar alone (the cited value states none), **opposite in sign**, adjudicated not measured | calculated | the fixed-lock pull direction, unrun |
-| **twin trust** | the twin's wing noise against the real traces': [0.00494](results/twin_completeness.csv "ref:twin_completeness:measured_sigma:") ± [0.00054](results/twin_completeness.csv "ref:twin_completeness:measured_sigma::err") against [0.00510](results/twin_completeness.csv "ref:twin_completeness:twin_at_measured_tau_sigma:") ± [0.00055](results/twin_completeness.csv "ref:twin_completeness:twin_at_measured_tau_sigma::err"). **The sizes agree; the shapes do not**, and the twin's Gaussian draw leaves its fourth-cumulant bar [4.9](results/residual_resampling.csv "ref:residual_resampling:sd_k4_over_gaussian_corrected:real")x too tight | measured vs envelope | the tail shape, sized |
-| **magic wavelengths** | ≈ 1203.9 / 1287.9 / 1339.6 nm, where a trap holds both states without pulling the line | calculated (envelope) | a trapped-atom experiment |
+<!-- C6b: re-measured as a moment (A149) -->
+| **twin trust** | the twin's wing noise against the real traces': [0.00494](results/twin_completeness.csv "ref:twin_completeness:measured_sigma:") ± [0.00054](results/twin_completeness.csv "ref:twin_completeness:measured_sigma::err") against [0.00510](results/twin_completeness.csv "ref:twin_completeness:twin_at_measured_tau_sigma:") ± [0.00055](results/twin_completeness.csv "ref:twin_completeness:twin_at_measured_tau_sigma::err"). **The sizes agree; the shapes do not**, and the twin's Gaussian draw leaves its fourth-cumulant bar [3.2](results/residual_resampling.csv "ref:residual_resampling:sd_mu4_over_gaussian_corrected:real")x too tight | measured vs envelope | the tail shape, sized |
+| **magic wavelengths** | ≈ [1203.7](results/polarizability.csv "ref:polarizability:magic_5s6s:1204nm") / [1287.9](results/polarizability.csv "ref:polarizability:magic_5s6s:1288nm") / 1339.6 nm, trapping both states without pulling the line | calculated (envelope) | a trapped-atom experiment |
 
 <p align="center">
   <img src="figures/fig16_fit_gallery.png" width="760" alt="The global model over one trace per peak, with residual panels below each">
@@ -143,7 +148,7 @@ for each day, and states what is cut when a day is lost.
 Both scenarios are forecast through the digital twin, which simulates traces,
 analyses them with this repository's own code and reads the covariance. For the
 cell it recovers the collisional width to
-[0.015](results/campaign_twin_forecast.csv "ref:campaign_twin_forecast:cell:gamma_coll_5traces_err") MHz
+[0.009](results/campaign_twin_forecast.csv "ref:campaign_twin_forecast:cell:gamma_coll_5traces_err") MHz
 from five traces. It finds that the fibre does not break the degeneracy limiting both
 arms, and [the campaign cases](docs/big_picture/09_the-campaign-cases.md) give
 the time cost of a fibre trace. The nanofibre arm is an

@@ -22,7 +22,7 @@ import numpy as np
 import pytest
 
 from rb5s6s import lineshape as L
-from rb5s6s.constants import RHO_RETRO, W0_MEASURED_M
+from rb5s6s.constants import RHO_RETRO, W0_CENTRAL_M
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -38,7 +38,7 @@ def test_every_construction_of_the_ramp_agrees_with_the_one_stated_side():
     assert L.ramp_mean_over_s0() == pytest.approx(side * 2.0 / 3.0)
     m = L.ramp_moment_contributions(0.5, z_ratio=1e-6)
     assert np.sign(m["pull"]) == side, "ramp_moment_contributions' pull"
-    assert np.sign(m["kappa3"]) == -side == np.sign(L.ramp_kappa3(0.5)), "the third cumulant opposes the side"
+    assert np.sign(m["mu3"]) == -side == np.sign(L.ramp_mu3(0.5)), "the third moment opposes the side"
     a = L.stark_ramp_axial_moments(0.5, 0.05, n_grid=20001)
     mean_key = next(k for k in a if "mean" in k or "pull" in k)
     assert np.sign(a[mean_key]) == side, f"stark_ramp_axial_moments' {mean_key}"
@@ -55,12 +55,16 @@ def test_every_construction_of_the_ramp_agrees_with_the_one_stated_side():
     assert np.sign(R.TRIANGLE_MEAN_OVER_S0) == side
     mv = R.moving_atom_moments(0.5, n_b=101, n_t=8001)
     assert np.sign(mv["mean_over_s0"]) == side, "ramp_transit.moving_atom_moments"
-    ft = F.fringe_tail_mc(w0_m=W0_MEASURED_M, s0_mhz=0.6, rho=RHO_RETRO, n_atoms=20000, seed=3)
+    ft = F.fringe_tail_mc(w0_m=W0_CENTRAL_M, s0_mhz=0.6, rho=RHO_RETRO, n_atoms=20000, seed=3)
     assert np.sign(ft["mean_over_s0"]) == side, "fringe_tail_mc"
-    d = F.fringe_shift_density(w0_m=W0_MEASURED_M, rho=RHO_RETRO, coherence_s=F.COHERENCE_TRANSIT, n_atoms=20000, seed=3)
+    d = F.fringe_shift_density(w0_m=W0_CENTRAL_M, rho=RHO_RETRO, coherence_s=F.COHERENCE_TRANSIT, n_atoms=20000, seed=3)
     x, y = np.asarray(d["x_grid"]), np.asarray(d["density"])
     assert float(y[np.sign(x) == side].sum()) / float(y.sum()) > 0.999, "fringe_shift_density's support"
 
+
+#: A sentence naming the red side is the retired convention unless it describes a deliberate mirror.
+WORDS = "the ramp's side stated red in words"
+MIRROR = re.compile(r"mirror", re.I)
 
 #: The old side, as it was written. Each pattern names what it catches.
 OLD_SIDE = [
@@ -83,6 +87,9 @@ OLD_SIDE = [
     ("the third cumulant as +1/135 in a LaTeX fraction", r"\+\s*\\[dt]?frac\{\s*1\s*\}\{\s*135\s*\}"),
     ("the ramp's standardised skew stated positive", r"\+\s*\$?0\.56[0-9]"),
     ("the ramp's mean over s0 stated negative", r"[-\u2212]\s*\$?0\.6[67][0-9]"),
+    # AND IN WORDS (F499, 2026-09-24): six live lines stated the retired side in prose, among them a
+    # producer's CSV note and the PI-facing case page, and no pattern above reads a sentence.
+    (WORDS, r"\b(ramp|wedge)\b[^.\n]{0,60}\bred\b"),
 ]
 HISTORY = re.compile(r"O27|until 2026-09-17|before 2026-09-17")
 SCOPE = ("rb5s6s", "scripts", "examples", "tests", "docs", "README.md")
@@ -103,6 +110,8 @@ def old_side_lines(files, reader=lambda f: (ROOT / f).read_text(encoding="utf-8"
                 continue
             for name, pat in OLD_SIDE:
                 if re.search(pat, line):
+                    if name == WORDS and MIRROR.search(line):
+                        continue   # a construction sampled red and mirrored on purpose
                     hits.append(f"{f}:{i} [{name}] {line.strip()[:100]}")
                     break
     return hits
@@ -122,10 +131,12 @@ def test_the_scan_catches_the_old_side_and_admits_it_as_history():
         "d.md": "the kernel was coded on [-S0, 0] until 2026-09-17, which O27 changed\n",
         "e.py": "s = RAMP_SIDE * np.linspace(0.0, s0, 400)\n",
         "f.py": "    excess = 100 * (c / (-2 * S0 / 3) - 1)\n",
+        "g.py": '                    "construction: the ramp model only broadens red)"])\n',
+        "h.py": "# The Monte Carlo below samples the wedge on the red side and MIRRORS every odd moment\n",
     }
     hits = old_side_lines(planted, reader=lambda f: planted[f])
     names = sorted({h.split(":")[0] for h in hits})
-    assert names == ["a.py", "b.md", "c.md", "f.py"], hits
+    assert names == ["a.py", "b.md", "c.md", "f.py", "g.py"], hits
 
 
 def test_no_tracked_line_restates_the_old_side():

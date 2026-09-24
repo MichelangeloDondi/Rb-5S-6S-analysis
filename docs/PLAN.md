@@ -24,9 +24,9 @@ with the collisional coefficient bounded at 0.02-0.04 MHz per 10¹² cm⁻³.
 
 And the degeneracy has a second face, measured 2026-08-20. It is not only
 the laser width that competes with the collisional one. The laser kernel's
-shape does too, and by more. Fitting every peak twice, differing only in
+shape does too. Fitting every peak twice, differing only in
 whether the laser's contribution is a Gaussian or a Lorentzian, moves the
-headline collisional coefficient by 45 to 67 per cent, nine to eighteen sigma
+headline collisional coefficient by 5 to 48 per cent, 0.6 to 4.3 sigma
 on its own quoted error. A per-condition version of the same comparison was
 withdrawn on 2026-08-20: at fixed condition the two widths enter only through
 their sum, so the split is unidentified and only the density ladder separates
@@ -37,19 +37,20 @@ The two kernels are not alternatives: the pure-Lorentzian
 model is nested inside the Gaussian one, reached by letting the Gaussian width
 go to zero, so the Gaussian cannot fit worse and the 32-of-32 tally is
 arithmetic rather than evidence. The informative quantity is the size of the
-improvement as a nested likelihood ratio, a median delta chi-square of 232 for
-one boundary parameter, which excludes a purely Lorentzian laser contribution
-at 26 of the 32 conditions at better than three sigma. What the session should carry from it is that a fitted
+improvement as a nested likelihood ratio, a median delta chi-square of 9.1 for
+one boundary parameter at the calculated waist, which excludes a purely Lorentzian
+laser contribution at 16 of the 32 conditions at better than three sigma
+(`results/laser_kernel.csv`). What the session should carry from it is that a fitted
 Lorentzian-equivalent width inside the containing model turns that comparison
 into the model-form error bar on the collisional coefficient, and costs a fit
 rather than beam time
 (`scripts/run_laser_kernel.py`).
 
-That fit has since been run, and it changes what the session is for. Freeing
+That fit has since been run, changing what the session is for. Freeing
 the Lorentzian-equivalent width inside the containing model at each peak gives a
-component present everywhere, by a nested likelihood ratio of 176 to 961, at
-0.315 to 0.449 MHz per peak (`results/kernel_k3.csv`). The model-form error bar
-it was meant to produce is $R_\text{kernel} = 3.24$ times the statistical one
+component present at three of four peaks, by a nested likelihood ratio of
+6.9 to 65 at those three, at 0.009 to 0.115 MHz per peak (`results/kernel_k3.csv`). That
+model-form error bar is $R_\text{kernel} = 0.61$ times the statistical one
 (`results/kernel_budget.csv`). So the model-form question no longer needs beam
 time and is answered.
 
@@ -115,7 +116,7 @@ costed against exactly that.*
 | 2 | [Priorities if the budget shrinks](plan/02_priorities.md) | the order in which blocks would be cut, and the one lever that acts on identifiability rather than on noise, the independent laser width |
 | 3 | [Configurations and optics](plan/03_optics-protocol.md) | the optical layout and the alignment protocol |
 | 4 | [Intensity and the light shift](plan/04_intensity-and-light-shift.md) | the intensity axis and the light-shift programme |
-| 5 | [Width, collisions and amplitude](plan/05_width-collision-amplitude.md) | the width and collision programme, the amplitude programme, the cascade's competing prediction that makes the four-peak trace discriminating, and the asymmetry budget that decomposes the open C3g finding by reversal knobs, the laser kernel as the largest assumption the width channel rests on, and the one term a density ladder cannot separate from collisions |
+| 5 | [Width, collisions and amplitude](plan/05_width-collision-amplitude.md) | the width and collision programme, the amplitude programme, the cascade's competing prediction that makes the four-peak trace discriminating, and the asymmetry budget that decomposes the open C3g finding by reversal knobs, the laser kernel as a width-channel assumption, and the one term a density ladder cannot separate from collisions |
 | 6 | [Session sizing and spending rules](plan/06_sizing-and-spending-rules.md) | **the eight-day schedule, D1 to D8**, each day with its content and its deliverable, ordered so that a truncation at any point leaves the higher-priority conversions done. Plus the uncertainty ledger, one row per component with its knob and its expected purchase |
 | 7 | [Acquisition settings](plan/07_acquisition-settings.md) | span, sweep and instrument settings, the three-oscilloscope comparison measured from the files, the settings card, and the modulation-and-rate menu that assigns the depth and the scan rate per scan purpose |
 | 8 | [The acquisition record](plan/08_the-acquisition-record.md) | what every block must log, the comb read as a ruler and as a clock, the EOM drive menu with the coincidence and cascade designs, the coincidence block's own in-cell field readout, the sweep-direction and mains-phase columns, and the wavemeter shots |

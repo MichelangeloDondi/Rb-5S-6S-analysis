@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""The S0 power of the truncated odd cumulants, across the conditions the archive spans.
+"""The S0 power of the truncated odd moments, across the conditions the archive spans.
 
 THE QUESTION, the owner's, asked three times before it could be run: use the
 twin to generate synthetic traces across many conditions -- noise level AND
@@ -14,21 +14,29 @@ argument. This grid varies the Lorentzian component AND the oscilloscope, so
 neither path could produce a single cell. Both now take both (2026-09-05).
 
 WHAT IS ALREADY SETTLED, so this study does not re-derive it. On the noiseless
-production path every windowed odd cumulant returns a slope of 3.000, not the
+production path every windowed odd moment returns a slope of 3.000, not the
 3/5/7 ladder: at a shift far below the line width each odd moment is dominated
-by the same leading asymmetry. And the windowed k5 does not converge against a
-Lorentzian, recovering 570, 1858 and 5946 per cent at half-windows 8, 16 and
-40. Those results are from ONE noiseless configuration. This map measures
-whether they hold across the grid, which is the difference between an assertion
-and a boundary.
+by the same leading asymmetry. And the windowed fifth order does not converge
+against a Lorentzian, recovering 570, 1858 and 5946 per cent at half-windows 8,
+16 and 40 UNDER THE RETIRED CUMULANT BASIS this file computed on before owner
+order O49 (2026-09-22): mu_5 = kappa_5 + 10 mu_2 mu_3 carries a cross-term
+kappa_5 does not, so these three figures are not re-stated as mu5's own and
+are pending re-measurement on the moment basis this file now computes
+(TRUE_SIGN's derivation below has the sign half of that difference already).
+Those results are from ONE noiseless configuration in either basis. This map
+measures whether they hold across the grid, which is the difference between an
+assertion and a boundary.
 
-THE READMISSION BARS for k5 and k7 are fixed before the run and are NOT the
-theoretical ladder: a correctly-behaving windowed k5 at the archive's shift
-SHOULD read 3, so a bar demanding 5 would strike a working estimator. A cell
-readmits an order only if its recovered fraction sits inside 0.9 to 1.1, its
-fitted power matches what the windowed theory predicts for that cell's regime,
-and its residual against k3 carries information k3 does not. A cell that merely
-fails to diverge is not a channel.
+THE READMISSION BARS for mu5 and mu7 are fixed before the run and are NOT the
+theoretical ladder: a correctly-behaving windowed mu5 at the archive's shift
+SHOULD read 3 in magnitude of its power-law slope (the readmission bar is on
+the fitted power, not on the moment's own sign or scale, so it is unmoved by
+the cumulant-to-moment switch above), so a bar demanding 5 would strike a
+working estimator. A cell readmits an order only if its recovered fraction
+sits inside 0.9 to 1.1, its fitted power matches what the windowed theory
+predicts for that cell's regime, and its residual against mu3 carries
+information mu3 does not. A cell that merely fails to diverge is not a
+channel.
 
     RB5S6S_WORKERS=8 .venv/bin/python scripts/run_moment_power_map.py --one-cell
     RB5S6S_WORKERS=8 .venv/bin/python scripts/run_moment_power_map.py
@@ -113,9 +121,11 @@ S0_LADDER = ((0.364, 0.5, 0.73, 1.0, 2.0) if os.environ.get("RB5S6S_MPM_DEEP")
 # A rung at 0.5 brackets the boundary between the archive and the campaign.
 ORDERS = (3, 5, 7)
 
-GAMMA_COLL, SIGMA_LASER, TRANSIT = 0.55, 1.6, 0.9575
+from rb5s6s.reference_point import reference_point  # noqa: E402
+_AP = reference_point()   # F313: the archive's line, read from the committed fit and the waist, never typed
+GAMMA_COLL, SIGMA_LASER, TRANSIT = _AP["gamma_coll"], _AP["sigma_laser"], _AP["transit_fwhm"]
 # THE TRACE COUNT IS THE STUDY'S OWN SUBJECT, not a convenience. At the
-# archive's shift and noise level a single trace's third cumulant is far
+# archive's shift and noise level a single trace's third moment is far
 # smaller than its own scatter, so the map must report the signal-to-scatter it
 # achieved in each cell or a reader cannot tell a measured power from noise
 # wearing one. Two thousand is not enough to clear that bar anywhere on this
@@ -131,14 +141,22 @@ GAMMA_COLL, SIGMA_LASER, TRANSIT = 0.55, 1.6, 0.9575
 # travels in the task or the environment, never on the parent's module.
 N_TRACES = int(os.environ.get("RB5S6S_MPM_TRACES", "2000"))
 FINE = np.linspace(-40.0, 40.0, 32001)
-# THE TRUE SIGN OF EACH ORDER, from the ramp's own cumulants (docs/methods/03):
-# on the package's side (lineshape.RAMP_SIDE, blue since the ruling of 2026-09-17) kappa_3 =
-# -S0^3/135, kappa_5 = +S0^5/567, kappa_7 negative again, and every odd one flips with the side;
-# this table read the red side's signs for the hours after the kernel flipped (P3). A statistic
-# built on the sign of a windowed cumulant is read against these, never
+# THE TRUE SIGN OF EACH ORDER, from the ramp's own MOMENTS -- the statistic this file's own
+# quadrature actually returns (`windowed_orders`, through `windowed_moments`), not the cumulant
+# the table quoted until owner order O49 (2026-09-22, "make sure that all cumulants are gone").
+# **RE-DERIVED, NOT RENAMED, because the two bases disagree here**: mu_3 = kappa_3 exactly, but
+# mu_5 = kappa_5 + 10 mu_2 mu_3 = 1/567 + 10 (1/18)(-1/135) = -4/1701 of S0^5, the OPPOSITE sign
+# from kappa_5's own +1/567 (docs/methods/03), because the cross-term dominates. mu_7 was not
+# hand-derived (it needs kappa_4 and kappa_6 too) but its sign is verified negative both directly,
+# by numerical quadrature of (s-mean)^7 on the closed-form density, and through
+# `rb5s6s.cumulants.windowed_moments` on `lineshape.stark_ramp` itself, so it is stated as
+# checked rather than derived. On the package's side (lineshape.RAMP_SIDE, blue since the ruling
+# of 2026-09-17) every one of mu_3, mu_5 and mu_7 is negative, unlike the cumulants' alternating
+# -, +, - -- this table read the red side's signs for the hours after the kernel flipped (P3).
+# A statistic built on the sign of a windowed moment is read against these, never
 # against zero: the first form of the per-rung status keyed on the fraction
 # NEGATIVE for every order and tagged every settled fifth-order rung NULL.
-TRUE_SIGN = {3: -RAMP_SIDE, 5: +RAMP_SIDE, 7: -RAMP_SIDE}
+TRUE_SIGN = {3: -RAMP_SIDE, 5: -RAMP_SIDE, 7: -RAMP_SIDE}
 # The rung-admission bar, and the null it is read against: under a coin flip
 # the fraction's standard deviation is 0.5/sqrt(n), 0.011 at two thousand
 # traces and 0.0025 at forty thousand, so 0.35 sits 13 and 60 standard
@@ -162,7 +180,7 @@ def windowed_orders(y, w, grid, orders=ORDERS):
     return v
 
 
-def selfcentred_cumulant(y, w, order, *, grid=None):
+def selfcentred_moment(y, w, order, *, grid=None):
     """One order, the form the tests call."""
     return windowed_orders(y, w, FINE if grid is None else grid, (order,))[order]
 
@@ -214,10 +232,10 @@ def _cell(spec):
     base = zlib.crc32(key.encode()) % (2 ** 31)
     rows, rung_rows = [], []
     # ONE TRACE SET PER RUNG, SHARED BY EVERY ORDER, and it matters twice. The
-    # first version keyed the seed on the order too, so k3, k5 and k7 were
+    # first version keyed the seed on the order too, so mu3, mu5 and mu7 were
     # measured on different traces: that makes them independent BY
     # CONSTRUCTION, which would overstate the rank of the moment family exactly
-    # where this plan asks whether three cumulants are three equations or one
+    # where this plan asks whether three moments are three equations or one
     # equation read three ways. Sharing the set lets that covariance be
     # measured. It is also cheaper, but by 1.65 and not by the 3 this comment
     # first claimed: generating a trace costs 1.7 ms and taking one moment of
@@ -300,7 +318,7 @@ def _grid():
 
 
 def main() -> int:
-    known = {"--one-cell", "--plant"}
+    known = {"--one-cell", "--plant", "--from", "--n", "--dump", "--combine"}
     bad = [a for a in sys.argv[1:] if a.startswith("-") and a not in known and not a.startswith("--tag=")]
     if bad:
         raise SystemExit(f"unknown flag(s) {bad}: the flags are --one-cell and --plant, "
@@ -343,6 +361,28 @@ def main() -> int:
             return 1
         return 0
 
+    # WAVES (C6a, 2026-09-22): the grid is 432 cells, 83 minutes at five workers under load, past the wave cap, so
+    # `--from F --n N --dump P` computes cells F..F+N-1 and dumps their rows, and `--combine DIR` writes the two
+    # CSVs from every dump in cell order. The cells are seeded each on its own (the plant above: one worker and
+    # eight byte-equal), so the waves return exactly the one-process grid; `private/checks/wave_runner.py` walks it.
+    if "--from" in sys.argv:
+        import json
+        lo = int(sys.argv[sys.argv.index("--from") + 1]); n = int(sys.argv[sys.argv.index("--n") + 1])
+        dump = Path(sys.argv[sys.argv.index("--dump") + 1])
+        out, out_rungs = _compute(cells[lo:lo + n], workers)
+        dump.write_text(json.dumps({"from": lo, "out": out, "out_rungs": out_rungs}))
+        print(f"wrote cells {lo}..{min(lo + n, len(cells)) - 1} to {dump}")
+        return 0
+    if "--combine" in sys.argv:
+        import json
+        d = Path(sys.argv[sys.argv.index("--combine") + 1])
+        parts = sorted((json.loads(f.read_text()) for f in d.glob("wave_*.json")), key=lambda x: x["from"])
+        out = [r for part in parts for r in part["out"]]
+        out_rungs = [r for part in parts for r in part["out_rungs"]]
+        if len(out) != len(cells):
+            raise SystemExit(f"--combine: {len(out)} of {len(cells)} cells have a dump in {d}; the grid is not complete")
+        return _write(out, out_rungs)
+
     # a half-hour eight-worker job into a shared results/ takes a lock, as
     # run_coverage_grid.py does; the lock belongs to the job
     # keyed on the checkout, so a scratch clone's run and this checkout's do
@@ -359,6 +399,11 @@ def main() -> int:
 
 
 def _run(cells, workers) -> int:
+    return _write(*_compute(cells, workers))
+
+
+def _compute(cells, workers):
+    """The cells' rows, collected in cell order (the CSV bytes never depend on completion order)."""
     print(f"  {len(cells)} cells on {workers} workers", flush=True)
     with ProcessPoolExecutor(max_workers=workers) as ex:
         # COLLECTED IN ORDER, so the CSV bytes do not depend on completion
@@ -370,6 +415,11 @@ def _run(cells, workers) -> int:
             if i % 24 == 0 or i == len(cells):
                 print(f"    {i}/{len(cells)} cells collected", flush=True)
 
+    return out, out_rungs
+
+
+def _write(out, out_rungs) -> int:
+    """Write the two CSVs from the cells' rows, in cell order."""
     OUT.parent.mkdir(parents=True, exist_ok=True)
     with OUT.open("w", newline="", encoding="utf-8") as fh:
         w = csv.writer(fh)
@@ -389,10 +439,10 @@ def _run(cells, workers) -> int:
                 # rung failure abandons the order; the rule says so instead of
                 # wearing a threshold nothing can reach
                 status = "DIAGNOSTIC" if r[9] == len(S0_LADDER) else "NULL"
-                note = ("the fitted power of S0 carried by the windowed cumulant "
+                note = ("the fitted power of S0 carried by the windowed moment "
                         "of this order at this configuration, from a log-log fit "
-                        "over the S0 ladder; NaN means the estimator returned a "
-                        "non-finite or zero cumulant on some rung")
+                        "over the S0 ladder -- NaN means the estimator returned a "
+                        "non-finite or zero moment on some rung")
                 w.writerow([f"{r[0]:g}", f"{r[1]:g}", r[2], r[3], f"{r[4]:g}",
                             str(r[5]).lower(), r[6], f"{r[7]:.4f}",
                             f"{r[8]:.4f}", r[9], f"{r[10]:.3f}", status, note])
@@ -410,7 +460,7 @@ def _run(cells, workers) -> int:
                             r[6], f"{r[7]:g}", f"{r[8]:.6e}", f"{r[9]:.3e}", f"{r[10]:.3f}", r[11],
                             f"{r[12]:.6e}", f"{r[13]:.3f}", f"{r[14]:.3f}", f"{r[15]:.3e}",
                             rung_status(round(r[13], 3)),
-                            "one rung of the ladder: the median windowed cumulant of this order over "
+                            "one rung of the ladder: the median windowed moment of this order over "
                             "n_traces twin traces, its standard error as a median, the fraction of "
                             "traces returning a negative value, the same estimator's value on a "
                             "noiseless trace of this rung (k_quiet), the fraction of traces whose sign "

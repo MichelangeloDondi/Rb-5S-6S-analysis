@@ -473,8 +473,12 @@ def fig_width_vs_density():
               frameon=True)
     fig.suptitle("Total FWHM against Rb density, four hyperfine components",
                  fontsize=12, y=0.968)
+    # the law and its scale systematic are READ from the density module: the typed "Nesmeyanov, 20%" stood here
+    # after the central law moved to Alcock (O42) and the arms' spread to 24 per cent (found 2026-09-22)
+    from rb5s6s import density as _dens
     _footer(fig, "Sources: results/linefit_conditions.csv, with the density from "
-                 "rb5s6s/density.py (Nesmeyanov, 20% scale systematic). "
+                 f"rb5s6s/density.py ({_dens.DENSITY_LAW.capitalize()}, "
+                 f"{100 * _dens.N_SCALE_FRAC_SYST:.0f}% scale systematic). "
                  "Regenerate: python scripts/make_figures.py.")
     _save(fig, "fig1_width_vs_density.png")
 
@@ -1487,7 +1491,15 @@ def fig_degeneracy_vs_observable():
     nu = np.arange(-40.0, 40.0, 0.01)
     W = np.array([[_fwhm_of(a, b, transit, 0.0, nu) for a in gg] for b in ss])
     cs = ax1.contour(gg, ss, W, levels=8, colors="0.55", linewidths=0.8)
-    ax1.clabel(cs, inline=True, fontsize=6, fmt="%.2f")
+    _cl = ax1.clabel(cs, inline=True, fontsize=6, fmt="%.2f")
+    # A CONTOUR LABEL IS PLACED BY MATPLOTLIB, and at the ruled waist one landed half outside the panel (the
+    # canvas guard, 2026-09-24): a label that leaves the axes is dropped rather than drawn through the spine.
+    fig.canvas.draw()
+    _rr = fig.canvas.get_renderer()
+    for _t in list(_cl):
+        _b = _t.get_window_extent(renderer=_rr)
+        if not (ax1.bbox.contains(_b.x0, _b.y0) and ax1.bbox.contains(_b.x1, _b.y1)):
+            _t.remove()
 
     th = np.linspace(0, 2 * np.pi, 120)
     for i, pk in enumerate(peaks):
@@ -2049,7 +2061,7 @@ def fig_hyperfine_pumping():
     the fit sees against what it attributes, which is the actual claim.
 
     THE CONSEQUENCE THAT CHANGED A CLAIM. f differs across the four lines,
-    0.375 to 0.625, while the ramp and the saturation do not, because the
+    0.375 to 0.625, while the ramp and the saturation do not, because the <!-- other-quantity: the (2F+1)/G shares, three and five eighths, not the S0 prediction -->
     two-photon Rabi frequency is F-independent here (constants.ABUNDANCE_RB85
     note). So the three same-signature terms are NOT degenerate across the line
     index, only across power and waist. The lever is 7 kHz between the extreme
@@ -2064,7 +2076,7 @@ def fig_hyperfine_pumping():
     from rb5s6s.polarizability import E_6S_CM, LINES_6S     # noqa: E402
 
     G_MHZ = GAMMA_NAT_HZ / 1e6
-    W0, ZC_M, P_MAX = C.W0_MEASURED_M, 2.2e-3, 0.225
+    W0, ZC_M, P_MAX = C.W0_CENTRAL_M, 2.2e-3, 0.225
     GC, SL, TR = 0.60, 1.50, 0.96
     NU = np.linspace(-40.0, 40.0, 200001)
 
@@ -2312,8 +2324,9 @@ def fig_weak_field_limit():
     from run_geometry_design import ramp_moments            # noqa: E402
 
     ZC_M, P_MAX = 2.2e-3, 0.225
-    W0 = C.W0_MEASURED_M
-    waists_um = np.array([64, 56, 48, 40, 36, 32, 28, 24, 20, 18, 16], float)
+    W0 = C.W0_CENTRAL_M
+    # C6a (O44): the dataset's point is the first row, so the grid opens at the archive's own focus
+    waists_um = np.array([W0 * 1e6, 40, 36, 32, 28, 24, 20, 18, 16], float)
     rows = [(w, ramp_moments(w * 1e-6, P_MAX, ZC_M, saturate=True),
              ramp_moments(w * 1e-6, P_MAX, ZC_M, saturate=False))
             for w in waists_um]
@@ -2989,10 +3002,13 @@ def fig_drift_story():
     # tight_layout declines to size margins around it. A label whose
     # legibility depends on the layout engine agreeing with you is a label
     # that will be cut in some other render.
+    # THE LEFT LIMIT FOLLOWS THE DATA (2026-09-24): it was a literal 0.14, and at the ruled waist one scenario
+    # reads 0.12, so its marker and value sat left of the panel, which the canvas guard caught.
+    _xlo = min(0.14, 0.8 * min(v for _l, v, _c, _m in scenarios))
     for i, (label, val, col, measured) in enumerate(scenarios):
-        ax.annotate(label, xy=(0.152, i + 0.26), fontsize=8.2, color="0.25",
+        ax.annotate(label, xy=(_xlo * 1.086, i + 0.26), fontsize=8.2, color="0.25",
                     va="bottom", ha="left", zorder=6)
-        ax.plot([0.15, val], [i, i], "-", color=col, lw=1.6, alpha=0.55,
+        ax.plot([_xlo * 1.07, val], [i, i], "-", color=col, lw=1.6, alpha=0.55,
                 zorder=2)
         ax.plot([val], [i], "o", ms=11, color=col if measured else "white",
                 mec=col, mew=1.8, zorder=4)
@@ -3010,7 +3026,7 @@ def fig_drift_story():
     ax.text(0.418, 0.955, "resolved\nat 2$\\sigma$", transform=ax.transAxes,
             fontsize=7.0, color="0.35", va="top", ha="right")
     ax.set_xscale("log")
-    ax.set_xlim(0.14, 9.0)
+    ax.set_xlim(_xlo, 9.0)
     ax.set_ylim(-0.65, 4.15)
     ax.set_yticks([])
     # Explicit ticks: the log locator put 3x10^0 and 4x10^0 close enough to
@@ -3071,7 +3087,7 @@ def _gallery_context():
     # numbers, from global_dataset_fit.csv, status PRELIM. They are NOT the
     # figures README.md and CLAIMS.md headline, which are the three-session
     # joint construction in stark_joint.csv, status BOUND, giving
-    # S0(225 mW) < 0.26 MHz against this fit's 0.217. The preregistration
+    # S0(225 mW) < 0.26 MHz against this fit's 0.126. The preregistration
     # deliberately leaves open which construction is of record, so this box
     # labels its own provenance rather than implying agreement. An earlier
     # version of this comment claimed the reader-facing documents report
@@ -4490,7 +4506,7 @@ def fig_radiation_environment():
                                   TAU_6S_S)
     from rb5s6s.polarizability import E_6S_CM               # noqa: E402
 
-    W0, ZC_M, P_MAX = C.W0_MEASURED_M, 2.2e-3, 0.225
+    W0, ZC_M, P_MAX = C.W0_CENTRAL_M, 2.2e-3, 0.225
     t_c = 130.0
     t_k = t_c + 273.15
     h, kb, cl = 6.62607015e-34, 1.380649e-23, 2.99792458e8
@@ -4795,8 +4811,8 @@ def fig_isotope_transit():
     temps = np.linspace(60.0, 140.0, 200)
     # THE REFERENCE TRANSIT WIDTH IS READ, NOT TYPED. This was 0.96 with a
     # comment calling it "the record's own transit width at 110 C". The
-    # record's value at the ADOPTED 64 um waist is 0.9334, and 0.964 is the
-    # value at the tight end of the waist band, w0 about 62 um, which
+    # record's value at the ADOPTED retired waist convention is 0.9334, and 0.964 is the
+    # value at the tight end of the retired waist band, which
     # laser_epoch.csv states. The panel's argument, that the two isotopes do
     # not share a transit width, is unaffected either way, and the gap it
     # draws moves by 2.9 per cent. Corrected 2026-08-20 with fig15's, since
@@ -4878,35 +4894,35 @@ def fig_isotope_transit():
     _save(fig, "fig29_isotope_transit.png", rect=(0, 0.055, 1, 1))
 
 
-def fig_third_cumulant():
-    """The third cumulant, and why it is the one channel the width budget
+def fig_third_moment():
+    """The third moment, and why it is the one channel the width budget
     cannot contaminate.
 
     WHY THIS FIGURE EXISTS. Every symmetric broadening mechanism in this
-    experiment contributes to the SECOND cumulant and to nothing odd. The
+    experiment contributes to the SECOND moment and to nothing odd. The
     natural width, the laser width, the transit kernel and the collisional
-    width all add variance and all leave the third cumulant exactly zero. The
+    width all add variance and all leave the third moment exactly zero. The
     AC-Stark ramp is the only term in the model that is asymmetric, so it is
-    the only term that reaches kappa_3.
+    the only term that reaches mu_3.
 
-    That is worth a figure because the second cumulant is where this analysis
+    That is worth a figure because the second moment is where this analysis
     keeps getting stuck. gamma_coll and sigma_laser slide against each other at
     a correlation of about -0.99 with the chi-squared nearly flat, and the
     2026-08-15 width budget failed to close because two independent constraints
-    on that pair pulled in opposite directions. None of that reaches kappa_3.
+    on that pair pulled in opposite directions. None of that reaches mu_3.
 
     THE READING, panel by panel. The first panel shows where the asymmetry
     comes from: the shift distribution is the beam's intensity measure pushed
     through the ramp, and for a ONE-photon process it is uniform and symmetric.
     The two-photon weighting is what tilts it, so the skew exists at all only
-    because this is a two-photon transition. The second panel is the cumulant
+    because this is a two-photon transition. The second panel is the moment
     ladder: three analytic functionals of the single parameter S0, which is
     what makes the fixed-lock session's joint fit a consistency test rather
     than three separate extractions. The third panel is the point of the
     figure, a contribution table in which the symmetric kernels' third column
     is empty for a self-centred readout up to the truncation fraction
     results/cumulant_window_check.csv measures (docs/wiki/third-cumulant.md). The fourth puts the campaign on it: at 225 mW the predicted
-    kappa_3 sits under the noise floor, which is why the record carries a bound
+    mu_3 sits under the noise floor, which is why the record carries a bound
     rather than a value, and it shows what a fixed-lock session buys.
     """
     from rb5s6s.lineshape import ramp_moment_contributions
@@ -4921,7 +4937,7 @@ def fig_third_cumulant():
     axA = fig.add_subplot(gs[0, 0])
     axD = fig.add_subplot(gs[1, 0], sharex=axA)
     nu = np.linspace(-14.0, 14.0, 3001)
-    transit = K.transit_fwhm_from_w0(K.W0_MEASURED_M, 110.0) * math.sqrt(
+    transit = K.transit_fwhm_from_w0(K.W0_CENTRAL_M, 110.0) * math.sqrt(
         403.15 / 383.15)
     s0_demo = 3.0                    # exaggerated so the eye can see it
     g0, p0 = _shared_profile_grid(0.58, 1.56, transit, 0.0, "gaussian")
@@ -4941,26 +4957,26 @@ def fig_third_cumulant():
     axD.axhline(0, color="#B4B2A9", lw=0.8)
     axD.set_ylabel("difference", fontsize=8)
     axD.set_xlabel("detuning  (MHz)")
-    axD.text(0.02, 0.10, "one lobe up, one down: that is the third cumulant",
+    axD.text(0.02, 0.10, "one lobe up, one down: that is the third moment",
              fontsize=7.5, transform=axD.transAxes, color="#5F5E5A")
 
-    # --- panel B: three cumulants, one parameter ---------------------------
+    # --- panel B: three moments, one parameter ---------------------------
     ax = fig.add_subplot(gs[:, 1])
     S = np.linspace(0.05, 3.0, 160)
     ax.plot(S, np.abs([ramp_moment_contributions(s)["pull"] for s in S]),
-            color="#185FA5", lw=1.8, label=r"$|\kappa_1| = \frac{2}{3}S_0$")
+            color="#185FA5", lw=1.8, label=r"$|\mu_1| = \frac{2}{3}S_0$")
     ax.plot(S, [ramp_moment_contributions(s)["excess_var"] for s in S],
-            color="#0F6E56", lw=1.8, label=r"$\kappa_2 = S_0^2/18$")
-    # THE MAGNITUDE, ON A LOG AXIS. kappa3 is NEGATIVE on the blue side (O27, 2026-09-17) and a
+            color="#0F6E56", lw=1.8, label=r"$\mu_2 = S_0^2/18$")
+    # THE MAGNITUDE, ON A LOG AXIS. mu3 is NEGATIVE on the blue side (O27, 2026-09-17) and a
     # negative value does not render on a log scale at all: the curve simply vanished, under a
     # legend that already said it was a magnitude. Found by reading the sign flip's whole
     # population rather than the figure it was drawn on (2026-09-17).
-    ax.plot(S, np.abs([ramp_moment_contributions(s)["kappa3"] for s in S]),
-            color="#993C1D", lw=2.2, label=r"$|\kappa_3| = S_0^3/135$")
+    ax.plot(S, np.abs([ramp_moment_contributions(s)["mu3"] for s in S]),
+            color="#993C1D", lw=2.2, label=r"$|\mu_3| = S_0^3/135$")
     ax.set_yscale("log")
     ax.set_ylim(1e-6, 30)
     ax.set_xlabel("$S_0$, the ramp depth  (MHz)")
-    ax.set_ylabel("cumulant contribution")
+    ax.set_ylabel("moment contribution")
     ax.set_title("B. three functionals of one $S_0$", fontsize=10,
                  loc="left")
     ax.legend(fontsize=8.5, frameon=False, loc="lower right")
@@ -4974,7 +4990,7 @@ def fig_third_cumulant():
     ax.text(0.0, 1.02, "C. what each mechanism reaches", fontsize=10,
             transform=ax.transAxes, va="top")
     xs = [0.0, 0.50, 0.68, 0.86]
-    for x, h in zip(xs, ["", r"$\kappa_1$", r"$\kappa_2$", r"$\kappa_3$"]):
+    for x, h in zip(xs, ["", r"$\mu_1$", r"$\mu_2$", r"$\mu_3$"]):
         ax.text(x, 0.86, h, fontsize=9.5, transform=ax.transAxes,
                 color="#5F5E5A")
     ax.plot([0.0, 0.98], [0.83, 0.83], transform=ax.transAxes,
@@ -4992,11 +5008,11 @@ def fig_third_cumulant():
                     transform=ax.transAxes,
                     color="#993C1D" if c else "#B4B2A9")
     ax.text(0.0, 0.19,
-            r"A self-centred $\kappa_3$ keeps a measured fraction of the ramp's"
+            r"A self-centred $\mu_3$ keeps a measured fraction of the ramp's"
             "\n"
             r"own value, so the $\gamma$ against $\sigma$ degeneracy, which"
             "\n"
-            r"lives entirely in $\kappa_2$, cannot reach it.",
+            r"lives entirely in $\mu_2$, cannot reach it.",
             fontsize=8.5, transform=ax.transAxes, va="top", color="#5F5E5A")
 
     _footer(fig, "figure 30 | rb5s6s.linefit._shared_profile_grid, "
@@ -5005,10 +5021,10 @@ def fig_third_cumulant():
     _save(fig, "fig30_third_cumulant.png", rect=(0, 0.10, 1, 1))
 
 
-def fig_third_cumulant_measured():
-    """The third cumulant computed on real traces, and the size of the gap.
+def fig_third_moment_measured():
+    """The third moment computed on real traces, and the size of the gap.
 
-    WHY THIS FIGURE EXISTS. Figure 30 argues that kappa_3 is the one channel
+    WHY THIS FIGURE EXISTS. Figure 30 argues that mu_3 is the one channel
     the symmetric width budget cannot contaminate. This one asks what the 2025
     data actually say in that channel, and the answer is worth drawing because
     it is not close.
@@ -5016,7 +5032,7 @@ def fig_third_cumulant_measured():
     THE READING. The first panel is a real trace at the campaign's maximum
     power with the fitted profile through it, and beneath it the residual on a
     magnified axis. An asymmetry of the predicted size would be invisible
-    there, which is the point. The second panel computes kappa_3 directly from
+    there, which is the point. The second panel computes mu_3 directly from
     each condition's traces as the third central moment of the baseline-removed
     profile, and plots it against power with its standard error across repeats.
     The measurements straddle zero, the two peaks disagree in sign, and the
@@ -5048,7 +5064,7 @@ def fig_third_cumulant_measured():
     # figure then fails on the first trace it opens.
     if not (C.DATA_RAW_DIR / "p_sweep").is_dir():
         print("  (raw traces absent -- skipping the measured "
-              "third-cumulant figure)")
+              "third-moment figure)")
         return None
 
     rate = {(r["peak"], r["T"], r["P"]): float(r["rate_t"])
@@ -5058,7 +5074,7 @@ def fig_third_cumulant_measured():
         if r["quantity"] == "S0_225mW_ub95":
             s0_bound = float(r["value"])
 
-    def cumulants(x, y, half=18.0):
+    def moments(x, y, half=18.0):
         m = np.abs(x) <= half
         x, y = x[m], y[m]
         n = max(len(y) // 8, 5)
@@ -5067,10 +5083,10 @@ def fig_third_cumulant_measured():
         if w.sum() <= 0:
             return (np.nan,) * 3
         w = w / trapezoid(w, x)
-        k1 = trapezoid(w * x, x)
-        k2 = trapezoid(w * (x - k1) ** 2, x)
-        k3 = trapezoid(w * (x - k1) ** 3, x)
-        return k1, k2, k3
+        mu1 = trapezoid(w * x, x)
+        mu2 = trapezoid(w * (x - mu1) ** 2, x)
+        mu3 = trapezoid(w * (x - mu1) ** 3, x)
+        return mu1, mu2, mu3
 
     def traces(peak, P):
         out = []
@@ -5092,8 +5108,8 @@ def fig_third_cumulant_measured():
     axA = fig.add_subplot(gs[0, 0])
     axR = fig.add_subplot(gs[1, 0], sharex=axA)
     x, v = traces("4192", 225)[0]
-    k1, k2, k3 = cumulants(x, v)
-    x = x - k1                      # fold about the CENTROID, not the argmax
+    mu1, mu2, mu3 = moments(x, v)
+    x = x - mu1                      # fold about the CENTROID, not the argmax
     m = np.abs(x) <= 18.0
     xs, vs = x[m], v[m]
     n = max(len(vs) // 8, 5)
@@ -5111,7 +5127,7 @@ def fig_third_cumulant_measured():
     axR.text(0.02, 0.08, "folded about the centroid, so a pure shift cancels",
              fontsize=7.5, transform=axR.transAxes, color="#5F5E5A")
 
-    # --- panel B: measured kappa_3 against power ---------------------------
+    # --- panel B: measured mu_3 against power ---------------------------
     ax = fig.add_subplot(gs[:, 1])
     colours = {"4154": "#185FA5", "4192": "#0F6E56"}
     for peak in ("4154", "4192"):
@@ -5120,13 +5136,13 @@ def fig_third_cumulant_measured():
             tr = traces(peak, P)
             if not tr:
                 continue
-            k3s = [cumulants(xx, vv)[2] for xx, vv in tr]
-            k3s = [k for k in k3s if np.isfinite(k)]
-            if len(k3s) < 2:
+            mu3s = [moments(xx, vv)[2] for xx, vv in tr]
+            mu3s = [k for k in mu3s if np.isfinite(k)]
+            if len(mu3s) < 2:
                 continue
             Ps.append(P)
-            ks.append(np.mean(k3s))
-            es.append(np.std(k3s, ddof=1) / np.sqrt(len(k3s)))
+            ks.append(np.mean(mu3s))
+            es.append(np.std(mu3s, ddof=1) / np.sqrt(len(mu3s)))
         ax.errorbar(Ps, ks, yerr=es, fmt="o-", ms=4, lw=1.2, capsize=3,
                     color=colours[peak], label=f"{peak} nm")
     ax.axhline(0, color="#B4B2A9", lw=1.0)
@@ -5137,12 +5153,12 @@ def fig_third_cumulant_measured():
     # channel either way, and the docstring records the values.
     ax.set_ylim(-1.6, 1.6)
     Pg = np.linspace(20, 235, 100)
-    pred = [ramp_moment_contributions(s0_bound * pp / 225.0)["kappa3"]
+    pred = [ramp_moment_contributions(s0_bound * pp / 225.0)["mu3"]
             for pp in Pg]
     ax.plot(Pg, pred, color="#993C1D", lw=2.0,
             label=r"prediction at the $S_0$ bound")
     ax.set_xlabel("power at the cell  (mW)")
-    ax.set_ylabel(r"measured $\kappa_3$  (MHz$^3$)")
+    ax.set_ylabel(r"measured $\mu_3$  (MHz$^3$)")
     ax.set_title("B. what the 2025 data say in this channel", fontsize=10,
                  loc="left")
     ax.legend(fontsize=8, frameon=False, loc="lower right")
@@ -5157,25 +5173,25 @@ def fig_third_cumulant_measured():
     # the MAGNITUDE again, for the same reason as panel B of fig30, and here it also kept the
     # arithmetic real: gap would be negative and gap ** (1/3) a complex number, which the format
     # string below raises on rather than draws.
-    k3_pred = abs(ramp_moment_contributions(s0_bound)["kappa3"])
+    mu3_pred = abs(ramp_moment_contributions(s0_bound)["mu3"])
     err225 = []
     for peak in ("4154", "4192"):
-        k3s = [cumulants(xx, vv)[2] for xx, vv in traces(peak, 225)]
-        k3s = [k for k in k3s if np.isfinite(k)]
-        err225.append(np.std(k3s, ddof=1) / np.sqrt(len(k3s)))
+        mu3s = [moments(xx, vv)[2] for xx, vv in traces(peak, 225)]
+        mu3s = [k for k in mu3s if np.isfinite(k)]
+        err225.append(np.std(mu3s, ddof=1) / np.sqrt(len(mu3s)))
     noise = float(np.mean(err225))
-    gap = noise / k3_pred
-    ax.bar([0], [k3_pred], color="#993C1D", width=0.55)
+    gap = noise / mu3_pred
+    ax.bar([0], [mu3_pred], color="#993C1D", width=0.55)
     ax.bar([1], [noise], color="#888780", width=0.55)
     ax.set_yscale("log")
     ax.set_xticks([0, 1])
     ax.set_xticklabels(["predicted\nat the bound", "2025 error\non one condition"],
                        fontsize=8)
-    ax.set_ylabel(r"$\kappa_3$  (MHz$^3$)")
+    ax.set_ylabel(r"$\mu_3$  (MHz$^3$)")
     ax.set_title("C. the gap is a factor of %.0f" % gap, fontsize=10,
                  loc="left")
     ax.text(0.06, 0.62,
-            r"$\kappa_3 \propto S_0^3 \propto (P/w_0^2)^3$"
+            r"$\mu_3 \propto S_0^3 \propto (P/w_0^2)^3$"
             "\n\n"
             f"closing this needs {gap ** (1/3):.0f}x in $S_0$,"
             f"\nso {gap ** (1/3):.0f}x the power or a\n"
@@ -5308,7 +5324,7 @@ def fig_campaign_projection():
 
     handles = [
         plt.Line2D([], [], marker="o", ls="", ms=8, color=TODAY,
-                   label="today, from the 2025 archive"),
+                   label="today, from the 2025 dataset"),
         plt.Line2D([], [], marker="o", ls="", ms=8, mfc="white", mec=FUTURE,
                    mew=2.0, label="projected, one designed campaign"),
     ]
@@ -5666,7 +5682,7 @@ def fig_orthogonal_information():
     axR.set_xlim(0, 10)
     axR.set_ylim(0, 10)
     axR.axis("off")
-    axR.set_title("why one lever settles it and another does not",
+    axR.set_title("the term each setting reaches",
                   fontsize=10, loc="left")
 
     terms = [("$\\gamma_{\\rm nat}$  3.49 MHz", 8.4, "#2F5D50", False),
@@ -5872,8 +5888,8 @@ def main() -> int:
     fig_radiation_environment()
     fig_cascade_resolved()
     fig_isotope_transit()
-    fig_third_cumulant()
-    fig_third_cumulant_measured()
+    fig_third_moment()
+    fig_third_moment_measured()
     fig_achieved_vs_achievable()
     fig_campaign_projection()
     fig_identifiability_matrix()

@@ -63,16 +63,17 @@ def test_the_halo_band_brackets_its_own_point_value():
     sys.path.insert(0, str(ROOT))
     import run_trapping_channels as T
     from rb5s6s import config as C
+    from rb5s6s import constants as C_CONST   # the drive wavelength lives here, as the producer reads it
     from run_geometry_design import ramp_moments
 
     lam12, a12 = T._leg(*T.LINES_6S[0][:2])
     lam32, a32 = T._leg(*T.LINES_6S[1][:2])
     b12 = a12 / (a12 + a32)
     s12 = T._sigma_peak_cm2(lam12, a12, 2, 2)
-    m = ramp_moments(C.W0_MEASURED_M, 0.225, 2.2e-3)
+    m = ramp_moments(C.W0_CENTRAL_M, 0.225, 2.2e-3)
     f_ex = (m["sat_w"] / 2.0) / (1.0 + m["sat_w"])
-    z_r = math.pi * C.W0_MEASURED_M ** 2 / 993.4e-9
-    v_beam = math.pi * C.W0_MEASURED_M ** 2 * (2.0 * z_r) * 1e6
+    z_r = math.pi * C.W0_CENTRAL_M ** 2 / C_CONST.LAMBDA_LASER_M
+    v_beam = math.pi * C.W0_CENTRAL_M ** 2 * (2.0 * z_r) * 1e6
 
     for r in _rows("trapping_channels.csv"):
         if r["quantity"] != "halo_reexcitation" or not r.get("err_hi"):

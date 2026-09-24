@@ -60,6 +60,7 @@ from typing import Dict, List
 import numpy as np
 
 from .global_fit import fit_global
+from .constants import W0_CENTRAL_M
 
 
 def _verdict(dbic: float) -> str:
@@ -69,7 +70,9 @@ def _verdict(dbic: float) -> str:
 
 
 def sharing_bic(blocks: List[Dict], *, transit_ref_mhz: float,
-                transit_kind: str = "exp", T_ref_C: float = 110.0) -> Dict:
+                transit_kind: str = "exp", T_ref_C: float = 110.0,
+                model: str = "joint", w0_m: float = W0_CENTRAL_M,
+                m2: float = 1.0) -> Dict:
     """Compare Model A (sigma_laser per_T) with Model B (per_block) by BIC,
     fitting BOTH with global_fit, using the correlation-corrected effective
     sample size as primary and the raw-sample count as a diagnostic.
@@ -78,11 +81,16 @@ def sharing_bic(blocks: List[Dict], *, transit_ref_mhz: float,
       dBIC     = BIC_eff(per_block) - BIC_eff(per_T)   (PRIMARY; >0 favours per_T)
       dBIC_raw = the naive raw-N version (over-counts correlated samples)
     and `robust` = whether the two agree in sign.
+
+    `model` (owner order O49, the C6b wide wave) reaches BOTH `fit_global` calls, so the
+    comparison stays a fair, matched comparison of the sharing axis alone under EITHER
+    line model. `"joint"` is the new default and `"convolution"` the named comparison arm.
     """
     models = {}
     for sharing in ("per_T", "per_block"):
         r = fit_global(blocks, sigma_sharing=sharing, transit_ref_mhz=transit_ref_mhz,
-                       transit_kind=transit_kind, T_ref_C=T_ref_C)
+                       transit_kind=transit_kind, T_ref_C=T_ref_C, model=model, w0_m=w0_m,
+                       m2=m2)
         k = int(r["nparams"])
         n_raw, n_eff = int(r["ndata"]), float(r["ndata_eff"])
         chi2_raw = float(r["chi2_red"]) * max(n_raw - k, 1)
@@ -104,4 +112,5 @@ def sharing_bic(blocks: List[Dict], *, transit_ref_mhz: float,
         "tau_mean": float(models["per_T"]["n_raw"] / models["per_T"]["n_eff"]),
         "delta_k": models["per_block"]["k"] - models["per_T"]["k"],
         "robust": bool((dbic_eff > 0) == (dbic_raw > 0)),
+        "model": model,
     }

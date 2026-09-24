@@ -55,7 +55,7 @@ The sharpest instance in this repository is dated 2026-09-08. The
 forecast's world builder and its centre estimator both omitted the axial
 collection window, so the study recovered the coefficient it injected to
 better than a per cent and would not have recovered this bench's, where the
-window puts the windowed third cumulant at about nine tenths of the pure
+window puts the windowed third moment at about nine tenths of the pure
 ramp's at the waist convention and reverses its sign at 16 microns. Nothing inside the closure
 test could see it, because the omission was common to both halves. What found
 it was reading the world builder against the record's own derivation of the
@@ -128,7 +128,7 @@ exponent out at the excluded hypothesis. A fit covariance describes the
 sampling distribution at the fitted value, not at a hypothesis being
 excluded, and only an injection at that hypothesis does
 ([`run_skew_scaling.py`](../../scripts/run_skew_scaling.py)). The exclusion
-is $p = 0.011$, not 6.6 sigma.
+is $p = 0.009$, not 6.6 sigma.
 
 ## Failure modes
 
@@ -163,7 +163,7 @@ import numpy as np
 from scipy.optimize import least_squares
 from rb5s6s import composite_profile, transit_fwhm_from_w0
 
-t = transit_fwhm_from_w0(64e-6, 130.0)
+t = transit_fwhm_from_w0(42.38e-6, 130.0)
 grid, p = composite_profile(0.60, 1.40, t)
 nu = np.linspace(-15, 15, 1200)
 shape = np.interp(nu, grid, p / p.max(), left=0, right=0)
@@ -208,7 +208,7 @@ is negative in a way that bears on every absolute number here.
 | level | bias | median bar | realisation scatter | bar over scatter |
 |---|---|---|---|---|
 | noiseless | +0.0082 um | - | - | - |
-| 0.1 of the law | +0.2656 um | 0.0295 | 0.1463 | 0.20 |
+| 0.1 of the law | +0.2656 um | 0.0295 | 0.1463 | 0.20 <!-- other-quantity: this injection-recovery table's own column, not transition_ladder's collection_z_ratio_err --> |
 | 0.3 of the law | +0.3136 um | 0.0891 | 0.0525 | 1.70 |
 
 Two readings follow and neither is about coverage, which is where this investigation started.

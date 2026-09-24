@@ -57,7 +57,7 @@ def test_recovers_per_isotope_beta_and_drifting_sigma():
     beta_true = {85: 0.05, 87: 0.02}           # isotopes genuinely differ
     sigma_true = {70.0: 1.0, 90.0: 1.4, 110.0: 0.9}  # NON-monotonic laser drift
     blocks = synth_blocks(beta_true, sigma_true)
-    fit = fit_global(blocks, transit_ref_mhz=0.9)
+    fit = fit_global(blocks, transit_ref_mhz=0.9, model="convolution")
     # per-isotope beta recovered and the two isotopes resolved as different
     for iso in (85, 87):
         assert abs(fit["beta_by_isotope"][iso] - beta_true[iso]) < \
@@ -187,3 +187,66 @@ def test_a_solver_that_ends_worse_than_its_start_or_not_stationary_is_named(monk
     fit = G.fit_global(blocks, transit_ref_mhz=0.9)
     assert fit["worse_than_start"] is True and fit["not_stationary"] is True
     assert fit["nfev"] == 25 and fit["optimality"] == 5.4e4
+
+
+def test_the_grouped_jacobian_returns_scipys_own_fit_bitwise_and_costs_nine_evaluations(monkeypatch):
+    """F301 (2026-09-22): the column-grouped Jacobian is a cost repair and not a model change, so the fit
+    it returns must be scipy's own dense-differencing fit to the last bit, and it must actually group.
+    Both ways: the default and `_jac='2-point'` agree bitwise on every returned number, and one grouped
+    Jacobian evaluates the residuals nshared + 4 + 1 times (the +1 is its own f0) where the dense
+    one evaluates them once per parameter."""
+    from rb5s6s import global_fit as G
+    blocks = synth_blocks(_BETA, {90.0: 1.4, 110.0: 1.1}, temps=(90.0, 110.0))
+    a = fit_global(blocks, transit_ref_mhz=0.9, _jac="2-point")
+    b = fit_global(blocks, transit_ref_mhz=0.9)
+    for key in ("sigma_laser", "sigma_laser_err", "beta_by_isotope", "beta_err_by_isotope",
+                "chi2_red", "cost", "nfev"):
+        assert a[key] == b[key], key
+    # the grouping is real: count the residual calls one grouped Jacobian makes
+    calls = {"n": 0}
+
+    def counted(x):
+        calls["n"] += 1
+        return np.zeros(8)
+    nshared, lens = 3, [2, 3, 3]
+    jac = G._grouped_jacobian(counted, np.zeros(nshared + 12), np.full(nshared + 12, np.inf), nshared, lens)
+    J = jac(np.ones(nshared + 12))
+    assert J.shape == (8, nshared + 12) and J.flags["F_CONTIGUOUS"]
+    assert calls["n"] == nshared + 4 + 1, calls["n"]
+
+
+def test_the_permeated_gas_switch_is_byte_identical_when_off_and_shared_when_on():
+    """`fit_gamma_l` plumbed into the joint fit (F426), planted BOTH ways.
+
+    Failure mode it guards: `linefit.fit_condition` has carried `fit_gamma_l` since 2026-08-21 while
+    `fit_global` took only a FIXED `gamma_l`, so every committed joint number pins the permeated gas
+    at exactly zero with no way to test the assumption. The switch must (a) leave the default path
+    bitwise unchanged, so no committed cell moves under it, and (b) add exactly ONE shared parameter
+    when thrown, because a permeated gas is one gas in one cell and never one number per block.
+    """
+    blocks = synth_blocks({85: 0.012, 87: 0.012}, {70.0: 1.4, 90.0: 1.4, 110.0: 1.4}, seed=11)
+
+    off_a = fit_global(blocks, transit_ref_mhz=0.9)
+    off_b = fit_global(blocks, transit_ref_mhz=0.9, fit_gamma_l=False)
+    assert off_a["beta_by_isotope"] == off_b["beta_by_isotope"], "the default path moved"
+    assert off_a["chi2_whitened"] == off_b["chi2_whitened"], "the default path moved"
+    assert off_a["gamma_l_fitted"] is False and off_a["gamma_l"] == 0.0
+    assert np.isnan(off_a["gamma_l_err"]), "a pinned gas must not report an error bar"
+
+    on = fit_global(blocks, transit_ref_mhz=0.9, fit_gamma_l=True)
+    assert on["gamma_l_fitted"] is True
+    assert on["nparams"] == off_a["nparams"] + 1, "the gas is ONE shared parameter, not one per block"
+    assert on["gamma_l"] >= 0.0 and np.isfinite(on["gamma_l_err"])
+    # freeing a parameter cannot raise the whitened cost at the minimum
+    assert on["chi2_whitened"] <= off_a["chi2_whitened"] * (1.0 + 1e-6)
+
+
+def test_p0_shared_names_the_gas_when_the_gas_is_free():
+    """The warm-start contract must count the new slot, or a continuation profile silently
+    misaligns the shared prefix (A11's own failure mode one parameter over)."""
+    blocks = synth_blocks({85: 0.012, 87: 0.012}, {70.0: 1.4, 90.0: 1.4, 110.0: 1.4}, seed=12)
+    off = fit_global(blocks, transit_ref_mhz=0.9)
+    n_off = len(off["sigma_laser"]) + len(off["beta_by_isotope"])
+    with pytest.raises(ValueError, match="gamma_l"):
+        fit_global(blocks, transit_ref_mhz=0.9, fit_gamma_l=True,
+                   p0_shared=np.ones(n_off))          # one short: the gas's slot is missing

@@ -24,7 +24,7 @@ differs:
                      shared by the isotopes cancels.
 
 The predictions read the record's own terms: the transit at the adopted
-waist (`constants.W0_MEASURED_M`, `transit_fwhm_from_w0`), the saturation
+waist (`constants.W0_CENTRAL_M`, `transit_fwhm_from_w0`), the saturation
 companion (`fullmodel.saturation_companion_mhz` at Omega tied to S0) and
 `cascade.BRANCHING_F`. Where the record carries no coefficient (spin exchange,
 hyperfine-changing collisions) the row says so and the contrast is reported
@@ -64,7 +64,7 @@ OMEGA_OVER_S0 = 1.2511     # the two-photon Rabi frequency over the light shift 
 
 
 def _transit_mhz(T_C: float) -> float:
-    return float(K.transit_fwhm_from_w0(K.W0_MEASURED_M, T_C, isotope=87))
+    return float(K.transit_fwhm_from_w0(K.W0_CENTRAL_M, T_C, isotope=87))
 
 
 def _sat_width_mhz(P_W: float, peak: str) -> float:
@@ -72,7 +72,7 @@ def _sat_width_mhz(P_W: float, peak: str) -> float:
     adopted waist and THIS peak's branching, from the record's own terms."""
     from rb5s6s.fullmodel import saturation_companion_mhz
     from rb5s6s.lineshape import stark_shift_S0_mhz
-    s0 = float(stark_shift_S0_mhz(P_W, K.W0_MEASURED_M))
+    s0 = float(stark_shift_S0_mhz(P_W, K.W0_CENTRAL_M))
     return float(saturation_companion_mhz(OMEGA_OVER_S0 * s0, peak=peak))
 
 
@@ -141,12 +141,14 @@ def _amplitude_face():
     pairs = {"87Rb": ("4207", "4121", 5.0 / 3.0), "85Rb": ("4192", "4154", 7.0 / 5.0)}
     powers = (0.025, 0.075, 0.125, 0.175, 0.225)
     for P in powers:
-        cyc = _cycles_per_crossing(P, K.W0_MEASURED_M)
-        rows.append(["cycles_per_crossing_axis", f"P{P*1e3:g}_w64", f"{cyc:.4f}", "", "",
+        cyc = _cycles_per_crossing(P, K.W0_CENTRAL_M)
+        # the key names the waist by its ROLE, never by digits: the rows are computed at W0_CENTRAL_M, and a
+        # typed suffix kept naming the retired waist after the value moved (found 2026-09-22, F331)
+        rows.append(["cycles_per_crossing_axis", f"P{P*1e3:g}_wcentral", f"{cyc:.4f}", "", "",
                      "excitation cycles on a central chord at 130 C: the saturated rate integrated along the chord, the local drive scaled as P exp(-2 v^2 t^2 / w0^2). P^2 / w0^3 in the weak-drive limit only, the core saturating at a tight waist", ""])
         for iso, (hi, lo, thermal) in pairs.items():
             dev = np.log(amplitude_factor(hi, cyc) / amplitude_factor(lo, cyc))
-            rows.append(["amplitude_face_predicted", f"{iso}_P{P*1e3:g}_w64", f"{dev:.5f}", "", "ln",
+            rows.append(["amplitude_face_predicted", f"{iso}_P{P*1e3:g}_wcentral", f"{dev:.5f}", "", "ln",
                          f"predicted ln({hi}/{lo}) minus ln({thermal:.3f}): the higher-branching line ({lo}, BRANCHING_F {BRANCHING_F[lo]:.3f}) is depleted more, so the ratio sits ABOVE the thermal law by this much", ""])
     for w_um in (40.0, 25.0, 16.0):
         cyc = _cycles_per_crossing(0.225, w_um * 1e-6)

@@ -44,7 +44,7 @@ Three things push back, and the first pass carried only one of them.
     matters most. The ramp law weights each shift by the signal it produces, and
     the two-photon signal goes as intensity squared only while the drive is weak.
     The saturation parameter goes as the FOURTH power of one over the waist, so it
-    runs away: 0.033 at 64 um becomes 0.53 at 32 um and 8.5 at 16 um, all at
+    runs away: 0.53 at 32 um becomes 8.5 at 16 um, all at
     225 mW. Where it is large the weight flattens toward a constant, the effective
     exponent falls toward one, and the pure transverse skew vanishes at n = 1 by
     the module's own docstring.
@@ -148,10 +148,10 @@ def ramp_moments(w0_m: float, power_w: float, zc_m: float,
     norm = integrate(dv)
     m = [integrate(dv * shift ** k) / norm for k in (1, 2, 3)]
     var = m[1] - m[0] ** 2
-    kappa3 = m[2] - 3.0 * m[0] * m[1] + 2.0 * m[0] ** 3
+    mu3 = m[2] - 3.0 * m[0] * m[1] + 2.0 * m[0] ** 3
     return {"s0": s0, "sat00": sat00, "sat_w": integrate(dv * sat) / norm,
-            "mean": m[0], "var": var, "kappa3": kappa3,
-            "g1": kappa3 / var ** 1.5, "signal": norm,
+            "mean": m[0], "var": var, "mu3": mu3,
+            "g1": mu3 / var ** 1.5, "signal": norm,
             "zc_over_zr": zc_m / z_r}
 
 
@@ -169,22 +169,22 @@ def waist_table() -> None:
     print("=" * 78)
     print(f"DESIGN 2  the waist, at {P_MAX_W*1e3:.0f} mW and a "
           f"{ZC_M*1e3:.1f} mm collection half-length")
-    print("  figure of merit = |kappa3| / width^3 x sqrt(signal), the "
-          "shot-noise-limited\n  significance of the third cumulant, "
+    print("  figure of merit = |mu3| / width^3 x sqrt(signal), the "
+          "shot-noise-limited\n  significance of the third moment, "
           "relative to the present waist\n")
     print(f"  {'w0':>5} {'Zc/zR':>6} {'sat':>7} {'S0':>7} {'g1':>8} "
-          f"{'g1 weak':>8} {'kappa3':>10} {'FWHM':>7} {'signal':>9} {'FoM':>8}")
+          f"{'g1 weak':>8} {'mu3':>10} {'FWHM':>7} {'signal':>9} {'FoM':>8}")
     ref = None
-    for w0_um in (64, 48, 40, 32, 24, 16):
+    for w0_um in (C.W0_CENTRAL_M * 1e6, 48.0, 40.0, 32.0, 24.0, 16.0):   # C6a: relative to the archive's own focus
         w0 = w0_um * 1e-6
         wet = ramp_moments(w0, P_MAX_W, ZC_M)
         dry = ramp_moments(w0, P_MAX_W, ZC_M, saturate=False)
         fw = total_fwhm_mhz(w0, wet["s0"], wet["sat_w"])
-        fom = abs(wet["kappa3"]) / fw ** 3 * math.sqrt(wet["signal"])
+        fom = abs(wet["mu3"]) / fw ** 3 * math.sqrt(wet["signal"])
         ref = ref or fom
-        print(f"  {w0_um:5d} {wet['zc_over_zr']:6.2f} {wet['sat00']:7.3f} "
+        print(f"  {w0_um:5.1f} {wet['zc_over_zr']:6.2f} {wet['sat00']:7.3f} "
               f"{wet['s0']:7.3f} {wet['g1']:+8.3f} {dry['g1']:+8.3f} "
-              f"{wet['kappa3']:10.4f} {fw:7.3f} {wet['signal']:9.2e} "
+              f"{wet['mu3']:10.4f} {fw:7.3f} {wet['signal']:9.2e} "
               f"{fom/ref:8.1f}")
     print("\n  Read the two skew columns together. Saturation SHRINKS the skew")
     print("  where it is positive and GROWS it where it is negative, because")
@@ -194,11 +194,15 @@ def waist_table() -> None:
     print("  the waist the record's small-waist session is written around.")
 
     print("\n  matched intensity instead of matched power (P as w0 squared):")
-    for w0_um in (64, 32, 16):
+    # RE-ANCHORED 2026-09-21 (O44/F280): the first point was the retired waist convention,
+    # where P_MAX_W was reached exactly by construction; it is now the calculated central waist
+    # (42.38 um), so p at that point is P_MAX_W to the precision this loop already displays.
+    _w0_anchor_um = C.W0_CENTRAL_M * 1e6
+    for w0_um in (_w0_anchor_um, 32.0, 16.0):
         w0 = w0_um * 1e-6
-        p = P_MAX_W * (w0_um / 64.0) ** 2
+        p = P_MAX_W * (w0_um / _w0_anchor_um) ** 2
         m = ramp_moments(w0, p, ZC_M)
-        print(f"    w0 = {w0_um:3d} um at {p*1e3:6.1f} mW: sat = "
+        print(f"    w0 = {w0_um:5.2f} um at {p*1e3:6.1f} mW: sat = "
               f"{m['sat00']:.4f}, S0 = {m['s0']:.3f} MHz, g1 = {m['g1']:+.3f}")
     print("    The shift is IDENTICAL at matched intensity, so a smaller waist")
     print("    buys no shift at all on its own. It buys the intensity a limited")
@@ -261,7 +265,7 @@ def fringe_velocity_classes() -> None:
     print()
     print("  STANDING WAVE, the frozen class |v_z| < lambda/(4 tau_c):")
     for label, tau in (("lifetime-capped", tau_6s),
-                       ("transit-capped, 64 um", 2 * C.W0_MEASURED_M / v_perp),
+                       ("transit-capped, central", 2 * C.W0_CENTRAL_M / v_perp),
                        ("transit-capped, 16 um", 2 * 16e-6 / v_perp)):
         vstar = LAMBDA_LASER_M / (4.0 * tau)
         frac = math.erf(vstar / (sigma_v * math.sqrt(2.0)))
@@ -285,12 +289,12 @@ def fringe_velocity_classes() -> None:
     print("  AND THE CONTRIBUTING POPULATION IS NOT THERMAL, because pumping")
     print("  removes the atoms that dwell longest, which are the ones the")
     print("  transit weighting favours most:")
-    m = ramp_moments(C.W0_MEASURED_M, P_MAX_W, ZC_M)
+    m = ramp_moments(C.W0_CENTRAL_M, P_MAX_W, ZC_M)
     rate = 2.0 * math.pi * GAMMA_NAT_HZ * (m["sat00"] / 2.0) / (1.0 + m["sat00"])
     v = np.linspace(1.0, 900.0, 4000)
     ray = (v / sigma_v ** 2) * np.exp(-v ** 2 / (2.0 * sigma_v ** 2))
     w_transit = ray / v          # crossing flux (v) times excitation (1/v^2)
-    dwell = 2.0 * C.W0_MEASURED_M / v
+    dwell = 2.0 * C.W0_CENTRAL_M / v
     base_v = trapezoid(w_transit * v, v) / trapezoid(w_transit, v)
     print(f"    mean contributing transverse speed, transit weighting alone: "
           f"{base_v:.1f} m/s")
@@ -310,12 +314,12 @@ def cross_check() -> None:
     print("=" * 78)
     print("CHECK  the weak-field branch against the committed axial machinery")
     print(f"  {'w0':>5} {'Zc/zR':>7} {'committed g1':>13} {'this integral':>14}")
-    for w0_um in (64, 32, 24, 16):
+    for w0_um in (C.W0_CENTRAL_M * 1e6, 32.0, 24.0, 16.0):   # C6a: the archive's own focus first
         w0 = w0_um * 1e-6
         ratio = ZC_M / rayleigh_range_m(w0)
         committed = stark_ramp_axial_moments(1.0, z_ratio=ratio)
         mine = ramp_moments(w0, P_MAX_W, ZC_M, saturate=False)
-        print(f"  {w0_um:5d} {ratio:7.2f} {committed['skew_standardized']:+13.4f} "
+        print(f"  {w0_um:5.1f} {ratio:7.2f} {committed['skew_standardized']:+13.4f} "
               f"{mine['g1']:+14.4f}")
     print("  Agreement to about two per cent on a two-dimensional quadrature")
     print("  against a one-dimensional analytic one is what licenses the")

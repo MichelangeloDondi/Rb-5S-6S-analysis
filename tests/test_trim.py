@@ -265,9 +265,9 @@ def test_a_known_mirror_is_trimmed_and_the_width_comes_back():
     truth = 1.5
     f, v = _condition(mirror=28.0)
     plain = fit_condition([x.copy() for x in f], [x.copy() for x in v],
-                          T_C=110.0, transit_fwhm=0.9)
+                          T_C=110.0, transit_fwhm=0.9, model="convolution")
     trimmed = fit_condition([x.copy() for x in f], [x.copy() for x in v],
-                            T_C=110.0, transit_fwhm=0.9, trim_tails=True)
+                            T_C=110.0, transit_fwhm=0.9, trim_tails=True, model="convolution")
     assert abs(plain["gamma_coll"] - truth) > 0.5, plain["gamma_coll"]
     assert abs(trimmed["gamma_coll"] - truth) < 0.4, trimmed["gamma_coll"]
     assert trimmed["chi2_red"] < 0.5 * plain["chi2_red"]
@@ -282,9 +282,9 @@ def test_a_clean_condition_is_untouched_by_the_trimmer():
     """The no-op that makes turning it on safe."""
     f, v = _condition()
     plain = fit_condition([x.copy() for x in f], [x.copy() for x in v],
-                          T_C=110.0, transit_fwhm=0.9)
+                          T_C=110.0, transit_fwhm=0.9, model="convolution")
     trimmed = fit_condition([x.copy() for x in f], [x.copy() for x in v],
-                            T_C=110.0, transit_fwhm=0.9, trim_tails=True)
+                            T_C=110.0, transit_fwhm=0.9, trim_tails=True, model="convolution")
     assert not any(r["trimmed"] for r in trimmed["trim_records"])
     assert trimmed["gamma_coll"] == plain["gamma_coll"]
 
@@ -294,7 +294,7 @@ def test_the_adaptive_window_still_excludes_the_far_mirror():
     out is excluded by the fit WINDOW, before the trimmer is consulted at all.
     This is tests/test_linefit.py's own case, re-asserted with trimming on."""
     f, v = _condition(mirror=40.0)
-    fit = fit_condition(f, v, T_C=110.0, transit_fwhm=0.9, trim_tails=True)
+    fit = fit_condition(f, v, T_C=110.0, transit_fwhm=0.9, trim_tails=True, model="convolution")
     assert abs(fit["gamma_coll"] - 1.5) < 0.4, fit["gamma_coll"]
 
 

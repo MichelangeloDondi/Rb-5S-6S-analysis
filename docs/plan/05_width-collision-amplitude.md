@@ -30,7 +30,7 @@ with their directions, the veto census, and the difference.
 ![the 2025 dataset's width-vs-density floor](../../figures/fig6_gamma_floor.png)
 
 *The floor in the 2025 dataset that this program upgrades: the mean of
-the four fitted collisional widths rises only ×[1.51](../../results/lever_crosscheck.csv "ref:lever_crosscheck:gamma_rise_factor:70to130") while the density
+the four fitted collisional widths rises only ×[2.99](../../results/lever_crosscheck.csv "ref:lever_crosscheck:gamma_rise_factor:70to130") while the density
 rises ×48.1 (Alcock), so the 2025 slope is a bound. A binary-collision width
 would be proportional to density, so these four points bound the
 coefficient rather than measure it, and the bound
@@ -65,11 +65,11 @@ fifth block buys.
 
 **7c. 150–170 °C in the same locked session, interleaved.** Wanted for a
 narrower reason than the 2025 reading gave it. The 2025 dataset's lever test
-shows the joint β collapses 0.0433 → 0.0164 for ⁸⁵Rb and 0.0181 for ⁸⁷Rb when
+shows the joint β collapses 0.0086 → 0.0058 for ⁸⁵Rb and 0.0093 → 0.0076 for ⁸⁷Rb when
 the ×48.1 anchor (Alcock, the 130 °C block) is folded in
 ([`lever_crosscheck.csv`](../../results/lever_crosscheck.csv)). That collapse is not a session artifact. It is the correct
 least-squares response to a line that barely moves across a 48.1× density span
-(gamma_coll rises only ×[1.51](../../results/lever_crosscheck.csv "ref:lever_crosscheck:gamma_rise_factor:70to130")–1.9), which is what makes "residual floor, not
+(gamma_coll rises only ×[2.99](../../results/lever_crosscheck.csv "ref:lever_crosscheck:gamma_rise_factor:70to130")–1.9), which is what makes "residual floor, not
 resolved collisions" a demonstrated conclusion rather than an assumption. The
 2026-08-02 decision that promoted the four-point fold-in to the record's
 headline, and the reasoning behind it, are recorded in
@@ -456,7 +456,7 @@ completes while crossing the beam, and the four lines have
 | line | branching f | surviving fraction after three cycles |
 |---|---|---|
 | 4121 | 0.3725 | 0.247 <!-- other-quantity: a hyperfine branching fraction, not an identifiability-profile cell --> |
-| 4154 | 0.3476 | 0.278 |
+| 4154 | 0.3476 | 0.278 <!-- other-quantity: a branching fraction --> |
 | 4192 | 0.2483 | 0.425 |
 | 4207 | 0.2235 | 0.468 |
 
@@ -498,17 +498,15 @@ already predicts it. If they follow brightness the effect belongs to the
 detection chain, and the dual-chain recording of chapter 7 is what localises
 it. Either outcome closes the question, which is the property worth having.
 
-## The laser kernel as the width channel's largest assumption
+## The laser kernel as a width-channel assumption
 
 Measured 2026-08-20 and worth stating before the session is designed, because
 it changes what the density ladder is buying.
 
 Fitting every peak twice under the record's own hierarchical construction,
 differing only in whether the laser's own contribution is modelled as a
-Gaussian or a Lorentzian, moves the headline $\beta_{\rm self}$ by 45 to 67
-per cent, **nine to eighteen sigma** on its own quoted error. That is a larger
-lever on the collisional coefficient than anything else the record has
-examined.
+Gaussian or a Lorentzian, moves the headline $\beta_{\rm self}$ by 5 to 48
+per cent, **0.6 to 4.3 sigma** on its own quoted error.
 
 Lorentzians add linearly, and that has a consequence sharper than competition
 for the same wings: at a fixed condition the model depends on the collisional
@@ -522,13 +520,13 @@ pure-Lorentzian model is nested inside the Gaussian one: a zero-width Gaussian
 is a delta function, so the Gaussian arm reaches the Lorentzian arm exactly by
 sending its own width to zero. A containing model cannot fit worse, which makes
 32 of 32 arithmetic rather than evidence. Read instead as the nested likelihood
-ratio it is, the median improvement is $\Delta\chi^2 = 232$ for one boundary
-parameter, about fifteen sigma, ranging from 0.1 to 1303 across conditions.
-**A purely Lorentzian laser contribution is excluded at 26 of the 32
-conditions at better than three sigma**, while at the remaining six the
-improvement falls below that and the data there do not settle it. The
-assumption the record makes is supported, on a firmer test than the one first
-reported.
+ratio it is, the median improvement at the calculated waist is $\Delta\chi^2 = 9.1$
+for one boundary parameter, about three sigma, ranging from -0.7 to 131 across
+conditions (`results/laser_kernel.csv`). **A purely Lorentzian laser contribution
+is excluded at 16 of the 32 conditions at better than three sigma**, while at the
+other sixteen the improvement falls below that and the data there do not settle
+it. The assumption the record makes is supported at half the conditions and
+open at the rest.
 
 **The session's carry-over from this.** The comparison run here is
 between two extremes. A laser kernel with a fitted Lorentzian fraction turns
@@ -588,7 +586,7 @@ what makes the budget separable:
 | detection lag | sweep rate | odd under sweep direction, so the triangle-half difference isolates it and the mean cancels it | separable by design, needs the direction column of [chapter 8](08_the-acquisition-record.md) |
 | the AC-Stark ramp | power | fixed side, follows $\kappa$ | in the model already, it is the signal |
 | neighbour wings and pedestals | geometry only | none, computable | the linear part is absorbed by each trace's fitted baseline, and the surviving curvature is sized inside the residual audit's model-set stage rather than guessed here. In the wide-span design the baseline is a sum of four pedestals by construction, per [chapter 9](09_the-fixed-lock.md) |
-| speed-dependent collisions | density | third cumulant against $N$ | admitted only if the density-keyed skew demands it. The far-wing version is already nulled by M24, and the core is a separate question |
+| speed-dependent collisions | density | third moment against $N$ | admitted only if the density-keyed skew demands it. The far-wing version is already nulled by M24, and the core is a separate question |
 | vector light shift with pumping | power times circular admixture | reverses with the ambient field or a half-wave flip | the one door the magnetic field has into this lineshape, and a coil on the cell makes the test free |
 | standing-wave fringe skew | geometry | suppressed by the fringe-resolved slow tail | closed |
 
@@ -613,10 +611,10 @@ More of the same measurement does not separate the widths. The
 regenerable form of the search
 ([`twin_span_sweep.csv`](../../results/twin_span_sweep.csv), truth from a
 named committed condition, seed fixed): the correlation between the laser
-and collisional widths moves by 0.0075 when the span widens five times and
-by 0.0000 at ten times the repeats. Repeats buy precision as sampling
-predicts, a factor 3.16 at ten times the traces, while the wider span
-costs a factor 2.72 at fixed points per trace. The direction the
+and collisional widths moves by 0.0009 when the span widens five times and
+by [0.1542](../../results/twin_span_sweep.csv "ref:twin_span_sweep:VERDICT:corr_move_with_traces") at ten times the repeats. Repeats buy precision, a factor 4.16 at
+ten times the traces, above the root of ten sampling alone predicts, while
+the wider span costs a factor 2.86 at fixed points per trace. The direction the
 observable cannot see stays invisible either way: the degeneracy is a
 property of the lineshape rather than of the sample size, so no scan
 design breaks it.

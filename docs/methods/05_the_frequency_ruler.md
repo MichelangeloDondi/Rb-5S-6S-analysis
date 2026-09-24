@@ -295,32 +295,36 @@ provenance of the combs themselves is [`DATA.md`](../DATA.md) §7.
 
 The ruler above fixes the scale of the frequency axis. How linear it is
 between anchors is a separate requirement, and the observable that sets it is the third
-cumulant, because a sweep whose rate varies stretches one side of the line
+moment, because a sweep whose rate varies stretches one side of the line
 against the other and so forges the very asymmetry that channel reads.
 
 **Derivation.** Write the true frequency against the assumed axis as
 $\nu = \hat\nu + \alpha\hat\nu^{2}$, keeping the leading departure. The rate
 $d\nu/d\hat\nu = 1 + 2\alpha\hat\nu$ varies across a window of half-width $W$
 by a fraction $\epsilon$ equal to $2\alpha W$, and since the distortion enters
-the profile at first order in the curvature, the induced third cumulant is
+the profile at first order in the curvature, the induced third moment is
 linear in that fraction. **Rung two for the form, rung three for the coefficient**, which is
 measured on the production estimator and not expanded analytically, because
 the window truncation has no closed form against this kernel.
 
-| configuration | window | the ramp's own windowed third cumulant | rate variation that fakes it |
+| configuration | window | the ramp's own windowed third moment | rate variation that fakes it |
 |---|---|---|---|
-| 2025, waist 64 microns | 6 MHz | [-0.00010447](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:k3_light_shift") MHz cubed | [0.00196](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:rate_variation_tolerance") per cent |
-| campaign, waist 40 microns, the tightest licensed | 6 MHz | [-0.00069510](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:k3_light_shift") MHz cubed | [0.0131](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:rate_variation_tolerance") per cent |
+| 2025, waist 42.38 microns | 6 MHz | [-0.00074096](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:mu3_light_shift") MHz cubed | [0.0135](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:rate_variation_tolerance") per cent |
+| campaign, waist 40 microns, the tightest licensed | 6 MHz | [-0.00083489](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:mu3_light_shift") MHz cubed | [0.0153](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:rate_variation_tolerance") per cent |
+
+The campaign row assumes the unclipped design, the bore out of the focusing
+path. With the 2025 input kept the light shift is smaller and this tolerance
+would need its own re-run.
 
 **Uncertainty and its blind region.** The tolerance is a property of the
 composed line, so the line's own width uncertainty is its own: scanned over
 both extremes of the collisional and the laser width bands, the waist band
 paired with the retro-ratio error, which moves it most, and the two ends of the
 coherence window, which the fringe tail brackets and does not correct for, it is
-[0.00196](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:rate_variation_tolerance") plus or minus
-[0.00061](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:rate_variation_tolerance_err") per cent at the 2025
-configuration and [0.0131](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:rate_variation_tolerance") plus or minus
-[0.0022](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:rate_variation_tolerance_err") at the campaign's tightest
+[0.0135](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:rate_variation_tolerance") plus or minus
+[0.0029](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:rate_variation_tolerance_err") per cent at the 2025
+configuration and [0.0153](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:rate_variation_tolerance") plus or minus
+[0.0026](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:rate_variation_tolerance_err") at the campaign's tightest
 licensed waist of 40 microns. The tolerance falls as the line widens, because a
 wider line leaves less of its asymmetry inside a fixed window, which is the
 direction of that band.
@@ -328,24 +332,24 @@ direction of that band.
 The coherence window is the one axis of the three set
 by a modelling choice and not by a measured band, and it moves the tolerance
 one way only: taking the 6S lifetime in place of the transit-limited cap moves it by
-[0.00018](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:rate_variation_tolerance_coherence_err")
+[0.0019](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:rate_variation_tolerance_coherence_err")
 per cent here and by
-[0.0020](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:rate_variation_tolerance_coherence_err")
+[0.0024](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:rate_variation_tolerance_coherence_err")
 at 40 microns, where that is nearly the whole band. The error is read as the
 largest excursion from the tolerance for that reason, since half a bracket
 covers a one-sided departure only to half its size. The result is first order in the curvature, confirmed
-by the induced cumulant rising [10.0006](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:artefact_linearity_ratio") times for a
+by the induced moment rising [10.0005](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:artefact_linearity_ratio") times for a
 tenfold rate variation, so it understates the damage from a departure large
 enough for the next term to matter.
 
 The 16 micron configuration the campaign
 proposes is outside this model's licence: the composition carries the
 axial collection window and the standing wave's fringe tail since 2026-09-08,
-and at 16 microns those reverse the sign of the cumulant the tolerance is set
+and at 16 microns those reverse the sign of the moment the tolerance is set
 against, but it still carries no saturation companion, which the record puts
-at the factor-of-three level on this cumulant there, so its
-[1.44](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_16um:rate_variation_tolerance") plus or minus
-[0.48](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_16um:rate_variation_tolerance_err") per cent carries that factor
+at the factor-of-three level on this moment there, so its
+[1.52](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_16um:rate_variation_tolerance") plus or minus
+[0.70](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_16um:rate_variation_tolerance_err") per cent carries that factor
 and not only its width band.
 
 The nonlinearity is the actuator's and not the scan's. With the best-fit
@@ -359,7 +363,7 @@ above a small amplitude it reverses the sweep and no rate variation exists.
 
 **Route to re-derive.** `rb5s6s.lineshape.model_profile` evaluated on the
 stretched axis $\hat\nu + \alpha\hat\nu^{2}$, read with
-`rb5s6s.cumulants.windowed_cumulants` at the same window, against the
+`rb5s6s.cumulants.windowed_moments` at the same window, against the
 unstretched profile at the injected shift.
 
 **What would falsify this.** A comb whose teeth were spaced $\Omega$ rather

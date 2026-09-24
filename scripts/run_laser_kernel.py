@@ -71,6 +71,9 @@ from run_linefit import load_block_rates, condition_rate          # noqa: E402
 
 OUT = C.RESULTS_DIR / "laser_kernel.csv"
 KINDS = ("gaussian", "lorentzian")
+#: the Gaussian arm's boundary point: a laser FWHM far below the fitter's 1e-3 MHz grid floor, so the
+#: kernel is a delta on the grid and the arm evaluates the contained Lorentzian model (F490)
+SIGMA_EDGE_MHZ = 1e-6
 
 
 def main() -> int:
@@ -120,6 +123,23 @@ def main() -> int:
                 print(f"  [warn] {key} {kind}: {e}")
         if len(fits) != len(KINDS):
             continue
+        # THE CONTAINING ARM IS TAKEN TO ITS OWN BOUNDARY (F490, 2026-09-24). The Lorentzian model is
+        # the Gaussian arm at sigma_laser -> 0, so the Gaussian arm's minimum lies at or below the
+        # Lorentzian's. Where the free Gaussian fit stopped above it -- six conditions at the ruled
+        # waist, where the transit is the widest kernel and the Gaussian laser width small -- the
+        # optimiser missed a point of its own parameter space. The boundary fit, sigma_laser pinned
+        # at SIGMA_EDGE_MHZ, is that point, and the arm reports the lower of the two with a column
+        # naming which, so the nested likelihood ratio is read on the arm's own minimum.
+        arm = "free"
+        if float(fits["gaussian"]["chi2_red"]) > float(fits["lorentzian"]["chi2_red"]):
+            try:
+                edge = fit_condition(freqs, volts, T_C=float(T), law=law, transit_fwhm=transit,
+                                     trim_tails=True, laser_kind="gaussian",
+                                     fix_sigma_laser=SIGMA_EDGE_MHZ)
+                if float(edge["chi2_red"]) < float(fits["gaussian"]["chi2_red"]):
+                    fits["gaussian"], arm = edge, "boundary"
+            except RuntimeError as e:
+                print(f"  [warn] {key} gaussian at its boundary: {e}")
 
         g_g = float(fits["gaussian"]["gamma_coll"])
         g_l = float(fits["lorentzian"]["gamma_coll"])
@@ -138,6 +158,7 @@ def main() -> int:
             "chi2_red_gaussian": f"{c_g:.6f}",
             "chi2_red_lorentzian": f"{c_l:.6f}",
             "chi2_red_diff": f"{c_l - c_g:+.6f}",
+            "gaussian_arm": arm,
             # dof of the gaussian arm: 2 shared (gamma_coll, sigma_laser)
             # plus 4 per trace (A, centre, b0, b1). Reported so the nested
             # likelihood ratio below can be recomputed from this file alone.

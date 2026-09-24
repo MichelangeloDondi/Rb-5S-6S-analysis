@@ -68,10 +68,10 @@ def test_the_committed_law_drives_the_twin_without_being_asked():
     # an explicit generator on both sides: the same draws, one filtered
     _, v_law = synthetic_traces(0.55, 1.6, 0.9575, n_traces=1, noise=law,
                                 n_points=4000,
-                                rng=np.random.default_rng(11))
+                                rng=np.random.default_rng(11), model="convolution")
     _, v_white = synthetic_traces(0.55, 1.6, 0.9575, n_traces=1,
                                   noise=dict(law, tau_int=1.0), n_points=4000,
-                                  rng=np.random.default_rng(11))
+                                  rng=np.random.default_rng(11), model="convolution")
     assert not np.array_equal(v_law[0], v_white[0])
 
 

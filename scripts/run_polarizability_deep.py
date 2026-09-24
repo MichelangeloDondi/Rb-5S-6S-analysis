@@ -60,7 +60,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from rb5s6s import config as C                                          # noqa: E402
 from rb5s6s.pmfmt import pm_cells                                       # noqa: E402
 from rb5s6s.constants import A_6S_RB85_HZ                             # noqa: E402
-from rb5s6s.polarizability import (LINES_5S, LINES_6S, E_6S_CM, CM_PER_HARTREE,   # noqa: E402
+from rb5s6s.polarizability import (LINES_5S, LINES_6S_5P_TO_8P, E_6S_CM, CM_PER_HARTREE,   # noqa: E402
                                    CORE_5S, CORE_5S_SIG, TAIL_5S, TAIL_5S_SIG,
                                    alpha_5s, delta_alpha)
 from rb5s6s.coulomb_approx import (reduced_e1_s_to_p, n_star,   # noqa: E402
@@ -175,11 +175,13 @@ def main() -> int:
     add("static_6s_9p_and_above", "computed", stat_hi + stat_cont, (stat_hi + stat_cont) * 2 * C_SIG / C_FAC, "a.u.",
         f"explicit to {N_MAX}P plus the n*^-3 remainder above it, {stat_cont:.2f}, which is the DISCRETE Rydberg tail. the positive-energy continuum is its own row below")
     # the paper's own residual for the same group
-    stat_7p8p = sum(term_static(e - E_6S_CM, d) for e, d, _ in LINES_6S[4:])
+    # the 5P-8P extent, never the whole list: 9P and above are this producer's own computed group (the audit of
+    # 2026-09-25 found both summed once the module made 9P and 10P explicit)
+    stat_7p8p = sum(term_static(e - E_6S_CM, d) for e, d, _ in LINES_6S_5P_TO_8P[4:])
     other_resid = OTHER_6S_STATIC - stat_7p8p - CORE_6S_SS
     other_resid_sig = np.hypot(OTHER_6S_STATIC_SIG, np.hypot(
-        2 * 0.0182 * term_static(LINES_6S[4][0] - E_6S_CM, LINES_6S[4][1]),
-        2 * 0.0162 * term_static(LINES_6S[5][0] - E_6S_CM, LINES_6S[5][1])))
+        2 * 0.0182 * term_static(LINES_6S_5P_TO_8P[4][0] - E_6S_CM, LINES_6S_5P_TO_8P[4][1]),
+        2 * 0.0162 * term_static(LINES_6S_5P_TO_8P[5][0] - E_6S_CM, LINES_6S_5P_TO_8P[5][1])))
     add("static_6s_9p_and_above", "SS2011_residual", other_resid, other_resid_sig, "a.u.",
         f"the paper's sixth table, its 'Other' row, {OTHER_6S_STATIC}({OTHER_6S_STATIC_SIG:.0f}) minus the tabulated 7P and 8P ({stat_7p8p:.2f}) and the core ({CORE_6S_SS}). "
         "the one literature test of the calibration", "CALIB")
@@ -216,7 +218,7 @@ def main() -> int:
         f"the same group at {LAM_DRIVE_NM:.4f} nm. the module carried +3.4 static for it")
 
     # ---- 3. the full 6S and 5S sums at the drive, term by term
-    a6_expl = sum(term(e - E_6S_CM, d) for e, d, _ in LINES_6S)
+    a6_expl = sum(term(e - E_6S_CM, d) for e, d, _ in LINES_6S_5P_TO_8P)
     a6 = a6_expl + CORE_6S_SS + dyn_hi + dyn_cont + cont_dyn
     a5 = alpha_5s(LAM_DRIVE_NM)
     d_alpha = a6 - a5
@@ -268,10 +270,10 @@ def main() -> int:
         for k in range(n):
             a6k = 0.0
             zg6, zg5 = rng.normal(), rng.normal()
-            for i in range(0, len(LINES_6S), 2):
+            for i in range(0, len(LINES_6S_5P_TO_8P), 2):
                 z1 = zg6 if correlated == "all" else rng.normal()
                 z2 = z1 if correlated else rng.normal()
-                (e1, d1, s1), (e2, d2, s2) = LINES_6S[i], LINES_6S[i + 1]
+                (e1, d1, s1), (e2, d2, s2) = LINES_6S_5P_TO_8P[i], LINES_6S_5P_TO_8P[i + 1]
                 a6k += term(e1 - E_6S_CM, d1 + s1 * z1) + term(e2 - E_6S_CM, d2 + s2 * z2)
             cfac = C_FAC + C_SIG * rng.normal()
             a6k += (dyn_hi + dyn_cont) * (cfac / C_FAC) ** 2
@@ -298,7 +300,7 @@ def main() -> int:
         f"alpha_6s - alpha_5s at {LAM_DRIVE_NM:.4f} nm with the 9P-and-above group summed dynamically and the continuum carried as its own term. "
         f"the package constant {DELTA_ALPHA_AU:.0f} differs by {d_alpha - DELTA_ALPHA_AU:+.0f}. Orson 2021 carries {DELTA_ALPHA_AU_ORSON2021:.0f} in magnitude", "ENVELOPE")
     add("delta_alpha_shift_from_module", "at_drive", f"{d_alpha - delta_alpha(LAM_DRIVE_NM):+.1f}", "", "a.u.",
-        "against the module's static-tail sum, reproducible as rb5s6s.polarizability.delta_alpha at the drive. the whole move is the 9P-and-above group read dynamically instead of statically")
+        "against the module's own sum at the drive, rb5s6s.polarizability.delta_alpha, which carries 9P and 10P explicitly since C6b (2026-09-25). the move is the 11P-and-above group, read dynamically here and through the module's flat tail there")
     add("delta_alpha_vs_orson", "at_drive", f"{(abs(d_alpha) - abs(DELTA_ALPHA_AU_ORSON2021)) / sig:+.1f}", "", "sigma",
         "magnitude against Orson 2021's, over this derivation's sigma alone (Orson's own uncertainty is not carried by the record)")
 

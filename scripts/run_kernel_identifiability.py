@@ -69,16 +69,33 @@ import numpy as np
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from rb5s6s import config as C                       # noqa: E402
 from rb5s6s.lineshape import (composite_profile)
+from rb5s6s.linefit import transit_fwhm_at_T          # noqa: E402
 
 OUT = C.RESULTS_DIR / "kernel_identifiability.csv"
 
 # A representative canonical condition: the 4121 peak, 130 C, 225 mW row of
 # results/laser_kernel.csv, whose fitted values are used as the expansion
-# point so the Jacobian is evaluated where the fit actually lands.
+# point so the Jacobian is evaluated where the fit actually lands. READ from
+# that row, with the transit the fit itself used, and never typed (F313,
+# 2026-09-22): the typed pair was the retired waist convention's fit and the
+# typed transit matched neither convention, so the Jacobian was evaluated
+# where no fit lands.
 NU = np.linspace(-8.0, 8.0, 801)          # MHz about line centre
-GAMMA_COLL = 0.5848                        # MHz, gaussian arm, 4121/130/225
-SIGMA_LASER = 1.5334                       # MHz FWHM, same row
-TRANSIT = 0.35                             # MHz, transit_fwhm_at_T(130)
+EXPANSION_ROW = ("p_sweep", "4121", "130", "225")
+
+
+def _expansion_point() -> tuple[float, float]:
+    """The gaussian arm's (gamma_coll, sigma_laser) at EXPANSION_ROW of the committed table."""
+    path = C.RESULTS_DIR / "laser_kernel.csv"
+    with open(path, newline="", encoding="utf-8") as fh:
+        for r in csv.DictReader(fh):
+            if (r["role"], r["peak"], r["T"], r["P"]) == EXPANSION_ROW:
+                return float(r["gamma_coll_gaussian"]), float(r["sigma_laser_gaussian"])
+    raise KeyError(f"{path} has no row {EXPANSION_ROW}; the expansion point is read, never typed (F313)")
+
+
+GAMMA_COLL, SIGMA_LASER = _expansion_point()   # MHz, the gaussian arm of that row
+TRANSIT = transit_fwhm_at_T(float(EXPANSION_ROW[2]), C.TRANSIT_FWHM_PLACEHOLDER_MHZ)  # the fit's own, MHz
 REL_STEP = 1e-4
 
 
@@ -287,7 +304,9 @@ def main() -> int:
     # THE VALIDATION ROW COMES FIRST and it gates everything after it: the
     # forecast machinery is run in the record's own TWO-parameter form
     # (beta, sigma_G, the gaussian arm of kernel_headline.csv) and its
-    # correlation must land near the committed -0.82 to -0.89. A first
+    # correlation must land near the committed range, READ from that file
+    # with the slack below (it read -0.82 to -0.89 at the retired waist
+    # convention, where this gate was first set). A first
     # version of this block failed its own gate at +0.06, for two reasons now
     # built in as requirements: the committed correlation belongs to the
     # 2-parameter model, not the 3-parameter one, and equal condition weights
@@ -307,11 +326,23 @@ def main() -> int:
     from rb5s6s.density import density_units
     from rb5s6s.linefit import transit_fwhm_at_T
 
-    BETA = 0.0156                 # MHz per 1e12 cm^-3, committed 4121 beta_self
-    SIGMA_G = 1.88                # MHz FWHM, committed 4121 sigma_laser
+    # THE EXPANSION POINT IS READ, never typed (F313's second half, 2026-09-22): beta and sigma_G from
+    # the committed 4121 gaussian-arm row of results/kernel_headline.csv, the transit reference from the
+    # config. The typed 0.0156, 1.88 and 0.9334 were the retired waist convention's, so the forecast was
+    # evaluated at a line the record no longer fits while the absolute anchor below read the CURRENT
+    # beta_err, a mixed construction.
+    with (C.RESULTS_DIR / "kernel_headline.csv").open() as fh:
+        _head = list(csv.DictReader(fh))
+    _h4121 = next(r for r in _head if r["peak"] == "4121")
+    BETA = float(_h4121["beta_gaussian"])            # MHz per 1e12 cm^-3, committed 4121 beta_self
+    SIGMA_G = float(_h4121["sigma_laser_gaussian"])  # MHz FWHM, committed 4121 sigma_laser
     GAMMA_L0 = 0.10               # MHz, expansion point for the Lorentzian content
-    TRANSIT_REF = 0.9334247073098216   # C.TRANSIT_FWHM_PLACEHOLDER_MHZ
+    TRANSIT_REF = C.TRANSIT_FWHM_PLACEHOLDER_MHZ
     TEMPS_C = (70.0, 90.0, 110.0, 130.0)
+    # the committed band the validation gate reads, over the four peaks, and its modelling slack
+    _corrs = [float(r["corr_beta_laser_gaussian"]) for r in _head]
+    CORR_LO, CORR_HI = min(_corrs), max(_corrs)
+    CORR_SLACK = 0.08
 
     def _mixed_cond(beta, sigma_g, gamma_l, T_C, nu):
         gc = beta * float(density_units(T_C)) + gamma_l
@@ -372,14 +403,15 @@ def main() -> int:
     # -- validation against the committed estimator (2 params, gaussian arm) --
     C2 = _fisher(("beta", "sigma_g"))
     corr2 = _corr(C2, 0, 1)
-    ok = -0.97 <= corr2 <= -0.74     # the committed band plus modelling slack
+    ok = CORR_LO - CORR_SLACK <= corr2 <= CORR_HI + CORR_SLACK   # the committed band plus modelling slack
     rows.append(dict(
         block="joint_cell_onf", kind="validation_cell_alone",
         corr_gamma_sigma=f"{corr2:+.4f}", sv_ratio="1.000",
         null_dir_gamma="", null_dir_sigma="",
         note=(f"the forecast machinery in the record's own 2-parameter form: "
               f"corr(beta, sigma_G) = {corr2:+.3f} against the committed "
-              f"-0.82 to -0.89 (kernel_headline.csv, gaussian arm): "
+              f"{CORR_LO:+.2f} to {CORR_HI:+.2f} (kernel_headline.csv, gaussian arm, "
+              f"slack {CORR_SLACK:g}): "
               f"{'CREDIBLE, the rows below may be read' if ok else 'OUT OF BAND, do not read the rows below'}"),
         status="DIAGNOSTIC"))
 

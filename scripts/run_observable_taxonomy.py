@@ -13,7 +13,7 @@ whole inventory a campaign actually takes -- four peaks, five powers, three
 temperatures, three oscilloscopes, two voltage zooms, read at six windows --
 what does each FAMILY OF OBSERVABLES deliver when every trace is pooled? The
 two producers share their estimators, which is why this file imports that one
-and does not copy `_trace`, `_k357` or `_centre` (the standing rule that a
+and does not copy `_trace`, `_mu357` or `_centre` (the standing rule that a
 numerical routine appearing twice in `scripts/` belongs in the package; these
 three are thin wrappers over `rb5s6s.cumulants` and `rb5s6s.linefit`, and the
 world assembly in `_trace` is the thing that must not fork).
@@ -54,7 +54,7 @@ this sentence ("nothing quotes rows from it") was false, and that plan block
 now carries the pull-factor debt explicitly. Threading them here is
 owed before its shape rows are quoted, and the centres family is NOT untouched
 by them either: the forecast's own `pull_factor_quiet` puts the fitted centre's
-response at 0.98, 0.89, 0.69 and 0.58 of the pure ramp's mean pull at 64, 40,
+response at 0.89, 0.69 and 0.58 of the pure ramp's mean pull at 40,
 24 and 16 microns, and its scatter grows by the reciprocal.
 
 THE ABSOLUTE-FREQUENCY LETTERS ARE CELL-ONLY BY PHYSICS, NOT BY EFFORT. An
@@ -91,6 +91,7 @@ import numpy as np
 from rb5s6s import config as C
 from rb5s6s.lineshape import ramp_mean_over_s0  # noqa: E402  (O27: the ramp's side, stated once)
 from rb5s6s.fibre import HE11Field, solve_he11, transit_fwhm as onf_transit_fwhm
+from rb5s6s.fullmodel import convolution_licence
 from rb5s6s.stark import stark_shift_S0_mhz
 
 # ---------------------------------------------------------------- the shared estimators
@@ -132,12 +133,12 @@ ZOOMS = (("nominal", 1.0), ("coarse", 4.0))
 WINDOW_RATIOS = (0.6, 0.75, 1.1, 1.5, 2.2, 3.0)
 CELL_FWHM_REF_MHZ = 5.4
 WAISTS_UM = tuple(float(w) for w in
-                  os.environ.get("RB5S6S_TAX_WAISTS", "64,40,24,16").split(","))
+                  os.environ.get("RB5S6S_TAX_WAISTS", f"{C.W0_CENTRAL_M * 1e6:.2f},40,24,16").split(","))
 N_SETS = int(os.environ.get("RB5S6S_TAX_SETS", "600"))
 # eight of ten is the standing rule while a gate may run; the owner lifted it to
 # ten for a compute that runs alone after the push (2026-09-08)
 WORKERS = min(10, int(os.environ.get("RB5S6S_WORKERS", "8")))
-# A rung answers when its injected cumulant stands this many standard errors
+# A rung answers when its injected moment stands this many standard errors
 # of the pooled observation clear of zero. Three is the conventional floor and
 # the count of admitted rungs is a column, so the choice is auditable rather
 # than buried.
@@ -146,7 +147,7 @@ SNR_FLOOR = 3.0
 # `model_profile` composes the line as a convolution, which holds exactly only
 # where the homogeneous kernel is the same at every collected volume element.
 # The transit width goes as the inverse local beam radius, so over the
-# collected length its spread runs 0.1 per cent at 128 microns, 1.0 at 64, 5.5
+# collected length its spread runs 0.1 per cent at 128 microns, 5.5
 # at 40, 23 at 24 and 47 at 16 (docs/plan/12, at the committed conjugates'
 # magnification of 1.8; 36 at 16 at the bench's estimated 2.5). The record's
 # reading is that the convolution holds at 40 microns and wider and not below.
@@ -164,8 +165,19 @@ SNR_FLOOR = 3.0
 # 2.6 in signal-to-noise on a peak that is already shot-limited
 # (docs/plan/04). That is an apparatus choice and not a modelling one, so this
 # file measures both faces and chooses neither.
-AXIAL_KERNEL_SPREAD_PCT = {128.0: 0.1, 64.0: 1.0, 40.0: 5.5, 24.0: 23.0, 16.0: 47.0}
-CONVOLUTION_LICENCE_MIN_WAIST_UM = 40.0
+# C6a (O44, 2026-09-22): the retired convention's entry is gone and the central waist is NOT typed in: a
+# waist outside the table reads NaN ("not tabulated") until the spread is computed there.
+# C6b (map item 4, 2026-09-22): the GATE below no longer reads a fixed minimum waist. It reads
+# `fullmodel.convolution_licence`'s own `z_ratio` threshold, the SAME dynamic condition
+# `full_profile`'s callers check, so a waist band later declared licensed or not (an M2 change, a
+# different collected length) moves this refusal with it instead of leaving a second, disagreeing
+# number here. `AXIAL_KERNEL_SPREAD_PCT` stays as the four measured points it always was: an
+# informational column, read at exactly the four waists it was measured at and NaN elsewhere,
+# never the gate. Retiring ITS four numbers in favour of a spread computed at an arbitrary waist
+# needs a callable that returns that percentage, which does not exist in this package yet
+# (`private/cache/plan_2026-09-18/C6B_CONVOLUTION_MAP.md` section 8 item 4). Until it does, the
+# table is kept for that one column and the gate alone moves to the dynamic condition.
+AXIAL_KERNEL_SPREAD_PCT = {128.0: 0.1, 40.0: 5.5, 24.0: 23.0, 16.0: 47.0}
 
 # The fibre, from the one place the record fixes it.
 ONF_DIAMETER_NM = 370.0
@@ -221,7 +233,7 @@ def onf_terms(t_c: float, trap_nm: float = ONF_TRAP_NM) -> tuple:
     a_eff = fld.stark_area_m2()
     frac = fld.stark_fraction_at(trap_nm * 1e-9)
     # the cell reference: 1 W through the archive's waist, same retro convention
-    w0_ref = 64e-6
+    w0_ref = C.W0_CENTRAL_M
     i_cell = 2.0 / (np.pi * w0_ref ** 2)            # peak axial intensity per watt
     kappa_cell = stark_shift_S0_mhz(1.0, w0_ref, rho=0.94)
     kappa_onf = kappa_cell * ((1.0 / a_eff) / i_cell) * frac
@@ -346,10 +358,10 @@ def _one_set(waist_um: float, arm: str, betas: dict, seed: int,
     else:
         onf_k, onf_tr, scale = None, None, 1.0
 
-    k3 = {W: [] for W in WINDOW_RATIOS}       # per condition, per rung
-    k5 = {W: [] for W in WINDOW_RATIOS}
-    k7 = {W: [] for W in WINDOW_RATIOS}
-    k2 = {W: [] for W in WINDOW_RATIOS}
+    mu3 = {W: [] for W in WINDOW_RATIOS}       # per condition, per rung
+    mu5 = {W: [] for W in WINDOW_RATIOS}
+    mu7 = {W: [] for W in WINDOW_RATIOS}
+    mu2 = {W: [] for W in WINDOW_RATIOS}
     centres, powers_col, order_col, block_col, peak_col = [], [], [], [], []
     kappa_true = None
 
@@ -373,25 +385,26 @@ def _one_set(waist_um: float, arm: str, betas: dict, seed: int,
             grid = nu
             fw = quiets[ci]["fwhm"]
             for W in WINDOW_RATIOS:
-                a, b, c = TCF._k357(v, W * fw, grid)
-                k3[W].append(a); k5[W].append(b); k7[W].append(c)
-                k2[W].append(_excess_k2(grid, v, W * fw,
-                                        quiets[ci]["k2"][W][ri]))
+                a, b, c = TCF._mu357(v, W * fw, grid)
+                mu3[W].append(a); mu5[W].append(b); mu7[W].append(c)
+                mu2[W].append(_excess_mu2(grid, v, W * fw,
+                                        quiets[ci]["mu2"][W][ri]))
             c_hat, _, _ = TCF._centre(nu, v, cfg, tr)
             centres.append(c_hat); powers_col.append(p); order_col.append(oi)
             block_col.append(ci); peak_col.append(cond["peak"])
 
     return dict(kappa_true=kappa_true,
                 fwhm_mhz=float(np.nanmean([q["fwhm"] for q in quiets])),
-                k3=k3, k5=k5, k7=k7, k2=k2,
+                mu3=mu3, mu5=mu5, mu7=mu7, mu2=mu2,
                 centres=np.asarray(centres), powers=np.asarray(powers_col),
                 order=np.asarray(order_col), block=np.asarray(block_col),
                 peak=np.asarray(peak_col), n_cond=len(conds), npow=npow)
 
 
-def _windowed_k2(grid, y, W_mhz) -> float:
-    """The windowed second cumulant, NaN when the estimator refuses."""
-    # MOMENTS, NOT CUMULANTS (O33). Order 2 only, where k2 = mu2 identically, so the switch cannot
+def _windowed_mu2(grid, y, W_mhz) -> float:
+    """The windowed second moment, NaN when the estimator refuses."""
+    # MOMENTS, NOT CUMULANTS (O33, and O49 which retired the cumulant name outright). Order 2
+    # only, where the cumulant and the moment were always identical, so the switch cannot
     # move a committed cell; it removes the retired name, which is the point of doing it everywhere.
     from rb5s6s.cumulants import windowed_moments
     v, info = windowed_moments(grid, y, W_mhz, (2,), centre0=0.0,
@@ -401,8 +414,8 @@ def _windowed_k2(grid, y, W_mhz) -> float:
     return float(v[2])
 
 
-def _excess_k2(grid, y, W_mhz, quiet_k2) -> float:
-    """The extra second cumulant over the SAME configuration run quiet.
+def _excess_mu2(grid, y, W_mhz, quiet_mu2) -> float:
+    """The extra second moment over the SAME configuration run quiet.
 
     It is the NUISANCE PROBE and not a channel: the log-derivative table puts
     its shift response at 0.001 against a worst width slope of 0.129, so it
@@ -414,15 +427,15 @@ def _excess_k2(grid, y, W_mhz, quiet_k2) -> float:
     and divided by eight log two, which is a GAUSSIAN rule applied to a line
     that is about two thirds Lorentzian. This record has published that
     composition once and withdrawn it, having understated the width by close to
-    a factor of two, and a Lorentzian's second cumulant does not exist at all,
+    a factor of two, and a Lorentzian's second moment does not exist at all,
     so no composition of full widths is available here. Differencing against
     the same estimator on the same configuration with the noise and the drift
     off needs no composition rule and leaves exactly what the acquisition adds.
     """
-    obs = _windowed_k2(grid, y, W_mhz)
-    if not np.isfinite(obs) or not np.isfinite(quiet_k2):
+    obs = _windowed_mu2(grid, y, W_mhz)
+    if not np.isfinite(obs) or not np.isfinite(quiet_mu2):
         return float("nan")
-    return float(obs - quiet_k2)
+    return float(obs - quiet_mu2)
 
 
 # ---------------------------------------------------------------- the quiet calibration
@@ -431,9 +444,9 @@ _QUIET_CACHE: dict = {}
 
 def _quiet_curve(waist_um: float, arm: str, cond: dict, powers: tuple,
                  trap_nm: float = ONF_TRAP_NM) -> dict:
-    """k_n(P) on a noiseless, drift-free, 30-bit trace with every layer on.
+    """mu_n(P) on a noiseless, drift-free, 30-bit trace with every layer on.
 
-    The estimator is calibrated WHERE IT IS USED. A truncated cumulant has no
+    The estimator is calibrated WHERE IT IS USED. A truncated moment has no
     closed form once the window cuts a saturated line, so the inversion runs
     through the estimator's own measured law and its LOCAL exponent by finite
     difference, never through an imposed cube. Cached per process because a
@@ -449,7 +462,7 @@ def _quiet_curve(waist_um: float, arm: str, cond: dict, powers: tuple,
         cfg = {**cfg, "onf_kappa": k, "onf_transit": tr, "trap_nm": trap_nm}
     # TWO PASSES, BECAUSE THE WINDOW IS A FRACTION OF A WIDTH THAT IS ONLY
     # KNOWN ONCE A TRACE EXISTS. The first version of this function computed
-    # the quiet cumulants at the bare RATIO while the observation used the
+    # the quiet moments at the bare RATIO while the observation used the
     # ratio times the measured line width, so the inversion compared a 0.6 MHz
     # window against an 11 MHz one and the admission test refused every rung of
     # every cell. Six and a half hours of pooled computation returned an empty
@@ -464,14 +477,14 @@ def _quiet_curve(waist_um: float, arm: str, cond: dict, powers: tuple,
         nu, v, _, _, _ = _trace_arm(quiet, p, 0, 12345, arm, noise=1e-9)
         traces.append((nu, v))
     fwhm_top = _measured_fwhm(*traces[-1])
-    k3 = {W: [] for W in WINDOW_RATIOS}
-    k2 = {W: [] for W in WINDOW_RATIOS}
+    mu3 = {W: [] for W in WINDOW_RATIOS}
+    mu2 = {W: [] for W in WINDOW_RATIOS}
     for nu, v in traces:
         for W in WINDOW_RATIOS:
-            k3[W].append(TCF._k357(v, W * fwhm_top, nu)[0])
-            k2[W].append(_windowed_k2(nu, v, W * fwhm_top))
-    curve = {"k3": {W: np.asarray(k3[W], float) for W in WINDOW_RATIOS},
-             "k2": {W: np.asarray(k2[W], float) for W in WINDOW_RATIOS},
+            mu3[W].append(TCF._mu357(v, W * fwhm_top, nu)[0])
+            mu2[W].append(_windowed_mu2(nu, v, W * fwhm_top))
+    curve = {"mu3": {W: np.asarray(mu3[W], float) for W in WINDOW_RATIOS},
+             "mu2": {W: np.asarray(mu2[W], float) for W in WINDOW_RATIOS},
              "fwhm": fwhm_top}
     _QUIET_CACHE[key] = curve
     return curve
@@ -496,7 +509,7 @@ def _measured_fwhm(nu, y) -> float:
 
 
 def _local_exponent(powers: np.ndarray, curve: np.ndarray) -> np.ndarray:
-    """d ln|k3| / d ln P by central difference, the law the inversion uses."""
+    """d ln|mu3| / d ln P by central difference, the law the inversion uses."""
     lp, lk = np.log(powers), np.log(np.abs(curve))
     with np.errstate(invalid="ignore", divide="ignore"):
         return np.gradient(lk, lp)
@@ -504,20 +517,20 @@ def _local_exponent(powers: np.ndarray, curve: np.ndarray) -> np.ndarray:
 
 # ---------------------------------------------------------------- the three channels
 def _lineshape_kappa(res: dict, betas: dict) -> dict:
-    """Channel 1: the shift read from the windowed third cumulant alone.
+    """Channel 1: the shift read from the windowed third moment alone.
 
     THE TRACES ARE POOLED BEFORE THE INVERSION, NEVER AFTER, and that ordering
-    is the whole design. A windowed cumulant of pure noise is LARGEST exactly
+    is the whole design. A windowed moment of pure noise is LARGEST exactly
     where the signal is smallest, so admitting single traces on their own sign
     keeps the upward halves of a coin flip and returns a coefficient high by
     tens of per cent: the record measured that one-sided gate at 5.3 to 33.3
-    per cent in six cells. Averaging the third cumulant over the whole
+    per cent in six cells. Averaging the third moment over the whole
     inventory at one rung first -- every peak, temperature, oscilloscope and
     voltage zoom, seventy-two traces -- is unbiased, and only then is the
     average inverted through the quiet curve pooled the same way, so the
     kernel's own truncation cancels to first order between them.
 
-    A rung enters where the pooled quiet cumulant has a settled sign and where
+    A rung enters where the pooled quiet moment has a settled sign and where
     the estimator's LOCAL exponent is above the producer's floor; the count is
     a column, so a reader sees how much of the ladder answered and need not
     infer it from a bare coefficient.
@@ -527,13 +540,13 @@ def _lineshape_kappa(res: dict, betas: dict) -> dict:
     ncond, npow = res["n_cond"], res["npow"]
     for W in WINDOW_RATIOS:
         # PLACED BY THE RECORDED RUNG, NEVER BY ARRIVAL (44ab3911).
-        obs = _by_rung(res, res["k3"][W], powers, ncond, npow)
-        qc = np.vstack([res["quiet"][ci]["k3"][W] for ci in range(ncond)])
+        obs = _by_rung(res, res["mu3"][W], powers, ncond, npow)
+        qc = np.vstack([res["quiet"][ci]["mu3"][W] for ci in range(ncond)])
         with np.errstate(invalid="ignore"):
             obs_p = np.nanmean(obs, axis=0)
             qc_p = np.nanmean(qc, axis=0)
         # THE ADMISSION TEST IS ABOUT THE DESIGN AND NOT ABOUT THE DRAW.
-        # It compares the rung's INJECTED cumulant, read off the noiseless
+        # It compares the rung's INJECTED moment, read off the noiseless
         # quiet curve, against the standard error of the pooled observation.
         # That asks whether this rung of this ladder can answer at this
         # inventory size, which is a property of the campaign; comparing the
@@ -559,7 +572,7 @@ def _lineshape_kappa(res: dict, betas: dict) -> dict:
         # THE REFUSAL IS REPORTED AS A DISTANCE AND NOT AS A BLANK. An empty
         # channel and a channel three per cent short read the same in a NaN,
         # and the design question is how many more traces would open it. The
-        # ratio below is the injected cumulant over the pooled observation's
+        # ratio below is the injected moment over the pooled observation's
         # standard error at the best rung, so the trace count that reaches the
         # floor is the inventory times the floor over the ratio, squared.
         with np.errstate(invalid="ignore", divide="ignore"):
@@ -610,7 +623,7 @@ def _centre_kappa(res: dict) -> float:
         # It was a literal -3/2 until the ramp's side was stated once (O27, P3), which returned the
         # coefficient with the wrong sign for the hours after the kernel flipped.
         # The forecast this producer imports measures what the window
-        # costs: pull_factor_quiet runs 0.9775 at 64 um to 0.5752 at 16,
+        # costs: pull_factor_quiet falls from the retired convention's value to 0.5752 at 16,
         # so at the campaign's own waist this reports about 0.575 of the
         # coefficient. Applying it needs a quiet CENTROID, which
         # _quiet_curve does not yet carry, so the factor is owed and this
@@ -701,7 +714,7 @@ def _block(item):
     line = {W: [] for W in WINDOW_RATIOS}
     line_n = {W: [] for W in WINDOW_RATIOS}
     snr = {W: [] for W in WINDOW_RATIOS}
-    k2s = {W: [] for W in WINDOW_RATIOS}
+    mu2s = {W: [] for W in WINDOW_RATIOS}
     centre, ivs = [], {}
     kappa_true = fwhm = float("nan")
     conds = _conditions(waist_um, arm, betas)
@@ -714,7 +727,7 @@ def _block(item):
         for W in WINDOW_RATIOS:
             line[W].append(lk[W][0]); line_n[W].append(lk[W][1])
             snr[W].append(lk[W][2])
-            k2s[W].append(float(np.nanmean(np.asarray(res["k2"][W], float))))
+            mu2s[W].append(float(np.nanmean(np.asarray(res["mu2"][W], float))))
         centre.append(_centre_kappa(res))
         for k, v in _interval_scatter(res).items():
             ivs.setdefault(k, []).append(v)
@@ -724,7 +737,7 @@ def _block(item):
     # function and an eight-hour run wrote nothing (A150). The value is a
     # property of the configuration, identical across the sets of one block.
     return dict(axis=axis, arm=arm, block=block, n_sets=n_sets, n_cond=len(conds),
-                kappa_true=kappa_true, fwhm_mhz=fwhm, snr=snr, line=line, line_n=line_n, k2s=k2s,
+                kappa_true=kappa_true, fwhm_mhz=fwhm, snr=snr, line=line, line_n=line_n, mu2s=mu2s,
                 centre=centre, ivs=ivs, seconds=time.time() - t0,
                 guided_power_mw=(1e3 * max(powers)) if arm == "onf" else float("nan"))
 
@@ -735,7 +748,7 @@ def _summarise(blocks: list) -> list:
     line = {W: [v for b in blocks for v in b["line"][W]] for W in WINDOW_RATIOS}
     line_n = {W: [v for b in blocks for v in b["line_n"][W]] for W in WINDOW_RATIOS}
     snr = {W: [v for b in blocks for v in b["snr"][W]] for W in WINDOW_RATIOS}
-    k2s = {W: [v for b in blocks for v in b["k2s"][W]] for W in WINDOW_RATIOS}
+    mu2s = {W: [v for b in blocks for v in b["mu2s"][W]] for W in WINDOW_RATIOS}
     cen = np.asarray([v for b in blocks for v in b["centre"]], float)
     ivs = {}
     for b in blocks:
@@ -773,9 +786,11 @@ def _summarise(blocks: list) -> list:
                 pass
         # the shape family is refused outside the convolution's licence before
         # its counts are read, because a channel the model cannot represent is
-        # not made available by more traces
+        # not made available by more traces. C6b (map item 4): the same dynamic
+        # z_ratio condition `full_profile`'s own callers check, not a second,
+        # fixed copy of the threshold it is derived from.
         licensed = (b0["arm"] != "cell"
-                    or b0["axis"] >= CONVOLUTION_LICENCE_MIN_WAIST_UM)
+                    or convolution_licence(b0["axis"] * 1e-6)["licensed"])
         if not licensed:
             lin = np.full_like(lin, np.nan)
             ok = np.zeros_like(ok, dtype=bool)
@@ -802,7 +817,7 @@ def _summarise(blocks: list) -> list:
             kappa_combined=k_comb, sd_combined=sd_comb, corr_channels=rho,
             gain_over_best=(best / sd_comb) if np.isfinite(sd_comb) and sd_comb > 0
             else float("nan"),
-            excess_k2_mean=float(np.nanmean(np.asarray(k2s[W], float))),
+            excess_mu2_mean=float(np.nanmean(np.asarray(mu2s[W], float))),
             interval_4121_4154_sd=_sd(ivs.get("4121_4154")),
             interval_4192_4207_sd=_sd(ivs.get("4192_4207")),
             seconds=sum(b["seconds"] for b in blocks)))
@@ -817,7 +832,7 @@ def _sd(v):
 
 
 def _traces_needed(snr: float, n_cond: int) -> float:
-    """How many traces a rung would need for its cumulant to clear the floor.
+    """How many traces a rung would need for its moment to clear the floor.
 
     The standard error of a pooled mean falls as the root of the count, so the
     inventory scales by the square of the shortfall. Reported so an empty
@@ -834,7 +849,7 @@ COLUMNS = ["axis", "axis_kind", "arm", "window_ratio", "window_mhz",
            "best_rung_snr", "traces_per_rung_for_admission",
            "axial_kernel_spread_pct", "lineshape_within_convolution_licence",
            "kappa_centres", "sd_centres", "kappa_combined", "sd_combined",
-           "corr_channels", "gain_over_best", "excess_k2_mean",
+           "corr_channels", "gain_over_best", "excess_mu2_mean",
            "interval_4121_4154_sd", "interval_4192_4207_sd", "seconds"]
 
 
@@ -876,7 +891,7 @@ def _plant() -> int:
     loudly on an empty comparison, since a plant that compared nothing is
     indistinguishable from one that passed.
     """
-    items = [(64.0, "cell", 900000, 2, 0), (64.0, "cell", 901000, 2, 1),
+    items = [(40.0, "cell", 900000, 2, 0), (40.0, "cell", 901000, 2, 1),
              (400.0, "onf", 700000, 1, 0)]
     serial = [_block(it) for it in items]
     with ProcessPoolExecutor(max_workers=3) as ex:
@@ -884,7 +899,7 @@ def _plant() -> int:
     bad = []
     for a, b in zip(serial, pooled):
         for W in WINDOW_RATIOS:
-            for key in ("line", "line_n", "k2s"):
+            for key in ("line", "line_n", "mu2s"):
                 if not _same(a[key][W], b[key][W]):
                     bad.append(f"{a['arm']}/{a['block']}/{key}/W={W}")
         for key in ("centre", "kappa_true", "guided_power_mw"):
@@ -971,7 +986,7 @@ def main() -> int:
         # A first draft of this check demanded a finite `kappa_combined` and
         # fired at every waist. The cause is not a defect: at smoke scale the
         # SHAPE channel admits no rung (`rungs_admitted` 0.0), which is this
-        # record's own result that the third cumulant opens only between one
+        # record's own result that the third moment opens only between one
         # and two megahertz of shift, so the combined value is correctly NaN
         # and forcing it would mean faking admission. The centre channel is
         # finite, so the arithmetic below it does run.

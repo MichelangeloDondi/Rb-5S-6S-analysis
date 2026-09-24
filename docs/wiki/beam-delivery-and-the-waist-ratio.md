@@ -42,7 +42,7 @@ restatement.
 On the bench this page is written against, the beam passes a 3 mm clear
 aperture before the focusing lens. Solved by diffraction through that bore
 rather than by the unclipped Gaussian formula, which does not hold under heavy
-truncation, the focal radius reads 65.0 microns at an input radius of 0.741 mm,
+truncation, the focal radius reads 79.1 microns at an input radius of 0.6 mm,
 51.1 at 1.06, 45.4 at 1.5, 43.3 at 2.0 and 41.4 at 4.0, against 0.0, 1.8, 13.5,
 32.5 and 75.5 per cent of the power clipped at those radii.
 
@@ -77,7 +77,9 @@ first.
 A fibre transmits its own mode and nothing else, so every rung presents the
 same transverse profile at a different scale. Every dimensionless shape number
 of the light-shift distribution therefore takes one value across the whole
-scan. For a Gaussian profile the standardised third cumulant is
+scan.
+<!-- C6b: re-measured as a moment (A149) -->
+For a Gaussian profile the standardised third cumulant is
 $-2\sqrt{2}/5$ and the normalised fourth is $-3/5$, both read off the ramp's own
 density and checkable from it. A shape number that moves across the scan is a
 systematic and can be nothing else.

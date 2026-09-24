@@ -65,7 +65,7 @@ is the whole content of the correction.
 
 ## 3. What changed
 
-All values from `rb5s6s.vanderwaals`, at 403.15 K and 10¹² cm⁻³.
+All values from `rb5s6s.vanderwaals`, at 403.15 K and 10¹² cm⁻³. <!-- other-quantity: the archive's 130 C reference cell temperature, not the twin's radiation-temperature cell -->
 
 | quantity | before | after |
 |---|---|---|
@@ -73,7 +73,7 @@ All values from `rb5s6s.vanderwaals`, at 403.15 K and 10¹² cm⁻³.
 | scale factor, ratio to the power 2/5 | 0.6551 | 0.6282 |
 | β_self(6S) anchored on Zameroski | 3.53 ± 0.30 kHz | 3.38 ± 0.29 kHz (before the 2026-09-14 correction of section 7) |
 | β_self(7S) predicted absolutely | 4.50 kHz | 4.40 kHz (before the 2026-09-14 correction of section 7) |
-| that prediction against the measured 5.29, both at 403.15 K | 17 per cent low | 18 per cent low |
+| that prediction against the measured 5.29, both at 403.15 K | 17 per cent low | 18 per cent low <!-- other-quantity: the archive's 130 C reference cell temperature, not the twin's radiation-temperature cell --> |
 
 Inputs before the 2026-09-14 correction (section 7): C₆(5S+5S) = 4180, C₆(5S+6S) = 28908, C₆(5S+7S) = 83228 a.u., so
 ΔC₆(6S) = 24728 and ΔC₆(7S) = 79048 a.u., both before that correction.
@@ -192,7 +192,7 @@ The pair coefficients above came from the Casimir-Polder integral, whose identit
 $1/(a+b) = (2/\pi)\int ab/((a^2+\omega^2)(b^2+\omega^2)) d\omega$ holds for positive $a$
 and $b$ only. An excited atom has downward lines ($6S\to5P$, and $7S\to5P$ and $6P$) with $a \lt 0$,
 for which the integral returns $-1/(|a|+b)$ where the sum has $1/(b-|a|)$. The direct
-second-order sum with signed denominators (`c6_direct`) gives C₆(5S+6S) = 53985 and
+second-order sum with signed denominators (`c6_direct`) gives C₆(5S+6S) = [54008](../../results/beta_self_theory.csv "ref:beta_self_theory:pair_coefficients:c6_5s_6s") and
 C₆(5S+7S) = 161474 a.u. against the retired 28908 and 83228 of section 3, factors 1.87 and 1.94, while
 the ground pair is unchanged at 4180 because every one of its lines is upward. The
 anchor ratio moved from the earlier 0.3128 to 0.3166 and β_self(6S) from 3.38 to 3.40 kHz per 10¹²
@@ -217,11 +217,11 @@ across the closing patterns and only its first three digits stand (the bracket 0
 0.45 this section carried earlier, and the 17510 typed beside it for a 6P-only flip the
 function never computed, are retired). It splits the potential into two branches
 C6(1 +- f) sampled with equal weight, and since the width goes as C6^(2/5) the width factor
-is ((1+f)^(2/5) + (1-f)^(2/5))/2, 0.985 for 6S and 1.000 for 7S, and the anchored value is
+is ((1+f)^(2/5) + (1-f)^(2/5))/2, 0.985 for 6S and 1.000 for 7S <!-- other-quantity: the 7S exchange-branch width factor, exactly 1 by construction, not a committed cell -->, and the anchored value is
 [3.50](../../results/beta_self_theory.csv "ref:beta_self_theory:beta_self_6s:anchored") kHz per 10¹² cm⁻³ (A251, the first-principles value 3.49). Section 7's
 envelope no longer stands at eleven per cent: it carried the cell temperature as an OPEN
 5 per cent term that Zameroski's own paper puts inside his ±11, so the double count was
 removed on 2026-09-15 and the measured budget is [10.64](../../results/beta_self_theory.csv "ref:beta_self_theory:beta_self_6s:rel_uncertainty") per cent, [0.37](../../results/beta_self_theory.csv "ref:beta_self_theory:beta_self_6s:anchored:err") kHz.
 The anchored centre also moved 1.8 per cent, from an earlier 3.35, because the 7S rate is now
-converted to a density at the 393 K it was measured at and carried to 403.15 K by the
+converted to a density at the 393 K it was measured at and carried to 403.15 K <!-- other-quantity: the archive's 130 C reference cell temperature, not the twin's radiation-temperature cell --> by the
 $T^{0.3}$ of the speed average, which are two steps and were one wrong one.

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """How each term of the composite line and each nuisance enters the
-self-centred windowed cumulants AS A FUNCTION OF THE WINDOW, and what the even
+self-centred windowed moments AS A FUNCTION OF THE WINDOW, and what the even
 window ladder measures once the nuisances are projected out.
 
 THE QUESTION THIS ANSWERS (owner, 2026-09-13): the truncated window is not a
@@ -13,12 +13,12 @@ of the even ladder, and reports the per-trace information the ladder then
 carries on the three width terms under four noise forms, with the covariance
 of the 36 statistics taken from realisations and never assumed diagonal.
 
-WHAT THE ROWS ARE. `law_<term>` rows: the log-log slope of |d k_n| over W in
+WHAT THE ROWS ARE. `law_<term>` rows: the log-log slope of |d mu_n| over W in
 4 to 20 MHz, one per order, err from the fit. `kept_<term>` rows: the fraction
 of the term's noise-weighted sensitivity over the W grid that survives
 projecting the tilt out, per even order. `sigma_ln_<param>` rows: the per-trace
-sigma from the joint Fisher of k2, k4, k6 at twelve windows with the tilt free,
-per noise form, err from a bootstrap of the realisation set. `bias_k<n>` rows:
+sigma from the joint Fisher of mu2, mu4, mu6 at twelve windows with the tilt free,
+per noise form, err from a bootstrap of the realisation set. `bias_mu<n>` rows:
 the estimator's own noise-induced bias in units of its per-trace sd at 6 and
 12 MHz, per noise form, err the standard error over realisations.
 
@@ -52,11 +52,13 @@ from rb5s6s.fullmodel import full_profile                          # noqa: E402
 from rb5s6s.noise import load_noise_model                          # noqa: E402
 from rb5s6s.pmfmt import pm_cells                                  # noqa: E402
 
-# THE SHIFT OF THIS WORKING POINT IS A DESIGN VALUE OF ITS DATE: 0.364 MHz was the archive's
-# prediction when the point was set (the static-tail polarizability, retired 2026-09-17), and the
-# record's own is stark_sweep.csv's S0_225mW_pred. The re-run at it is queued as twin-working-point-ssot.
-POINT = dict(gamma_coll=0.55, sigma_laser_fwhm=1.6, transit_fwhm=0.9575,
-             gamma_l=0.40, s0=0.364, peak="4192")
+# THE WORKING POINT IS THE ARCHIVE POINT (twin-working-point-ssot, done 2026-09-22, F313): the widths are the
+# committed fit's at the calculated waist and the shift is the predicted S0 at 225 mW, read from
+# `rb5s6s.reference_point`; the design values it carried before belonged to retired conventions.
+from rb5s6s.reference_point import reference_point  # noqa: E402
+_AP = reference_point()   # F313: the archive's line, read from the committed fit and the waist, never typed
+POINT = dict(gamma_coll=_AP["gamma_coll"], sigma_laser_fwhm=_AP["sigma_laser"], transit_fwhm=_AP["transit_fwhm"],
+             gamma_l=0.40, s0=_AP["s0_225mW"], peak="4192")
 NU = np.linspace(-45.0, 45.0, 3601)
 W = np.array([1.5, 2.0, 2.5, 3.25, 4.0, 5.0, 6.0, 8.0, 10.0, 12.0, 15.0, 20.0])
 ORDERS = (2, 3, 4, 5, 6, 7)
@@ -155,8 +157,8 @@ def main() -> int:
         for n in ORDERS:
             sl, se = _slope(np.abs(_vec(c, n) - _vec(c0, n)))
             v_cell, e_cell = ("", "") if np.isnan(sl) else pm_cells(sl, se)
-            rows.append([f"law_{name}_k{n}", "4-20", v_cell, e_cell,
-                         "log-log slope of |d k_n| over the window. blank when the signature is below the grid's resolution (removed by the wing baseline or the self-centring)", ""])
+            rows.append([f"law_{name}_mu{n}", "4-20", v_cell, e_cell,
+                         "deterministic log-log slope of |d mu_n| over the window on the noiseless profile, a signature law and not a bias. blank when the signature is below the grid's resolution (removed by the wing baseline or the self-centring)", ""])
     # per-trace white sd for the weights
     forms = _forms(rho1, tau_int)
     real = {f: np.array([_stat_even(y0 + gen(rng)) for _ in range(N_REAL)]) for f, gen in forms.items()}
@@ -170,7 +172,7 @@ def main() -> int:
         for name in ("transit", "lorentzian_sum", "gaussian_laser"):
             v = (_vec(terms[name], n) - _vec(c0, n)) / s
             res = v - Q * (Q @ v)
-            rows.append([f"kept_{name}_k{n}", "1.5-20", f"{float(res @ res / (v @ v)):.2f}", "",
+            rows.append([f"kept_{name}_mu{n}", "1.5-20", f"{float(res @ res / (v @ v)):.2f}", "",
                          "fraction of the term's noise-weighted sensitivity over the twelve windows surviving the tilt's projection", ""])
     # joint Fisher with the tilt free, per noise form, bootstrap error
     s0 = _stat_even(y0)
@@ -190,7 +192,7 @@ def main() -> int:
         boots = np.array([sig_from(R[rng.integers(0, N_REAL, N_REAL)])[0] for _ in range(N_BOOT)])
         for j, name in enumerate(names):
             rows.append([f"sigma_ln_{name}_{f}", "1.5-20", *pm_cells(float(sig[j]), float(boots[:, j].std())),
-                         f"per-trace sigma on ln {name} from k2, k4, k6 at twelve windows with the tilt free and the empirical covariance of {N_REAL} realisations, shrunk 5 per cent to its diagonal. err from {N_BOOT} bootstrap resamples", ""])
+                         f"per-trace sigma on ln {name} from mu2, mu4, mu6 at twelve windows with the tilt free and the empirical covariance of {N_REAL} realisations, shrunk 5 per cent to its diagonal. err from {N_BOOT} bootstrap resamples", ""])
         rows.append([f"corr_transit_lorentzian_{f}", "1.5-20", f"{corr:.2f}", "", "correlation of the transit and the Lorentzian sum in the joint covariance", ""])
         # the estimator's own bias at 6 and 12 MHz per order, from the same realisations
         for n_i, n in enumerate(EVEN):
@@ -198,11 +200,11 @@ def main() -> int:
                 k = n_i * nv + int(np.argmin(np.abs(W - wsel)))
                 col = R[:, k]
                 sd = col.std(); b = (col.mean() - s0[k]) / sd
-                rows.append([f"bias_k{n}_{f}", f"{wsel:g}", *pm_cells(float(b), 1 / np.sqrt(N_REAL)),
-                             "noise-induced bias of the self-centred windowed cumulant in units of its own per-trace sd", ""])
+                rows.append([f"bias_mu{n}_{f}", f"{wsel:g}", *pm_cells(float(b), 1 / np.sqrt(N_REAL)),
+                             "noise-induced bias of the self-centred windowed moment in units of its own per-trace sd", ""])
         for n_i, n in enumerate(EVEN):
             k6 = n_i * nv + int(np.argmin(np.abs(W - 6.0)))
-            rows.append([f"sd_ratio_k{n}_{f}", "6", f"{R[:, k6].std() / real['white'][:, k6].std():.2f}", "",
+            rows.append([f"sd_ratio_mu{n}_{f}", "6", f"{R[:, k6].std() / real['white'][:, k6].std():.2f}", "",
                          "per-trace sd relative to the white form at 6 MHz", ""])
     rows.append(["noise_law_rho1", "", f"{rho1:.3f}", "", f"first-lag correlation of the {ROLE} law, pooled median", ""])
     rows.append(["noise_law_tau_int", "", f"{tau_int:.2f}", "", "integrated correlation time of the same law. the ar1_tau_int form uses (tau-1)/(tau+1)", ""])

@@ -42,7 +42,7 @@ def _block(mod, arm, axis, n=12, seed=7):
     return {"line": {w: list(rng.normal(26.0, 1.0, n)) for w in W},
             "line_n": {w: [n] * n for w in W},
             "snr": {w: list(rng.normal(5.0, 1.0, n)) for w in W},
-            "k2s": {w: list(rng.normal(5.4, 0.2, n)) for w in W},
+            "mu2s": {w: list(rng.normal(5.4, 0.2, n)) for w in W},
             "centre": list(rng.normal(26.0, 0.5, n)),
             "ivs": {}, "n_sets": n, "arm": arm, "axis": axis,
             "fwhm_mhz": 5.4, "guided_power_mw": 0.3, "kappa_true": 25.9,
@@ -74,7 +74,11 @@ def test_the_real_block_carries_every_key_the_summariser_reads():
 
 
 @pytest.mark.parametrize("arm,axis,finite", [
-    ("cell", 40.0, True),      # inside the convolution's licence
+    # 41.0, not 40.0: the bore-limited floor is 40.892 um and convolution_licence(40.0um)
+    # itself reads z_ratio=0.667003, marginally UNlicensed (threshold 0.667); 41.0 is licensed
+    # with margin 0.032 and above the floor (b_merge task, disagreement 4).
+    ("cell", 41.0, True),      # inside the convolution's licence
+
     ("fibre", 400.0, True),    # the guided arm is not gated on the cell waist
     ("cell", 16.0, False),     # outside it: refused before its counts are read
 ])

@@ -27,6 +27,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
+from rb5s6s.config import RESULTS_DIR as _RESULTS_DIR  # noqa: E402  (F480: results where RB5S6S_RESULTS_DIR points)
 
 MANUAL_BITS = 12               # Keysight table, >= 20 us/div, manual p. 195
 TOL_FRAC = 0.25                # preregistered D1 band
@@ -41,9 +42,9 @@ def _nearest_frac(x: float) -> float:
 
 
 def main() -> int:
-    q = list(csv.DictReader(open(ROOT / "results" / "quantisation.csv",
+    q = list(csv.DictReader(open(_RESULTS_DIR / "quantisation.csv",
                                  encoding="utf-8")))
-    n = list(csv.DictReader(open(ROOT / "results" / "noise_model.csv",
+    n = list(csv.DictReader(open(_RESULTS_DIR / "noise_model.csv",
                                  encoding="utf-8")))
     sigma_v = {f'{r["role"]}_{r["peak"]}_{r["temperature_C"]}_'
                f'{r["power_mW"]}': float(r["sigma_wing_direct_V"])
@@ -100,7 +101,7 @@ def main() -> int:
          "steps inflated thirty per cent FAILED TO BREACH the band",
          "DIAGNOSTIC"],
     ]
-    out = ROOT / "results" / "quantisation_crosscheck.csv"
+    out = _RESULTS_DIR / "quantisation_crosscheck.csv"
     with out.open("w", newline="", encoding="utf-8") as fh:
         w = csv.writer(fh)
         w.writerow(["quantity", "value", "err", "unit", "note", "status"])

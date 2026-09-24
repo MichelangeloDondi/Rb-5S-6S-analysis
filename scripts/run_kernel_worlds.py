@@ -135,7 +135,7 @@ def main(argv=None) -> int:
         ge = np.array([r[1] for r in res])
         n_ok = len(res)
         add(world, "trials_completed", f"{n_ok}", "count",
-            f"of {n_trials} requested ({N_TRIALS} is the preregistered value); "
+            f"of {n_trials} requested ({N_TRIALS} is the preregistered value) -- "
             "failures are dropped and counted here")
         add(world, "gamma_l_median", f"{np.median(gl):.4f}", "MHz",
             "median fitted Gamma_L,equiv across trials")
@@ -146,7 +146,7 @@ def main(argv=None) -> int:
             add(world, "injected_gamma_l", f"{GL_TRUE_MIXED:.4f}", "MHz",
                 "the truth this world's coverage is measured against")
             add(world, "coverage_1sigma", f"{cov:.4f}", "fraction",
-                "fraction of trials whose one-sigma interval contains the truth; "
+                "fraction of trials whose one-sigma interval contains the truth -- "
                 "nominal 0.68. A shortfall does not block K3 but forces every "
                 "quoted interval to be recalibrated against this number first")
             add(world, "gamma_l_bias", f"{np.mean(gl) - GL_TRUE_MIXED:+.4f}", "MHz",

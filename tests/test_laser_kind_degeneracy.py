@@ -33,7 +33,9 @@ import pytest
 from rb5s6s.lineshape import composite_profile, model_profile, GAMMA_NAT_HZ
 from rb5s6s.linefit import _shared_profile_grid
 
-GC, SL, TR = 0.5848, 1.5334, 0.35          # a canonical 4121 / 130 C / 225 mW point
+# A representative point, not the archive's (it was the retired waist convention's 4121 / 130 C / 225 mW
+# gaussian-arm fit): the identity and its should-fail control hold at any point, so it is not re-pinned (F313).
+GC, SL, TR = 0.5848, 1.5334, 0.35
 D = 0.25                                    # a large sum-preserving move, not a nudge
 
 

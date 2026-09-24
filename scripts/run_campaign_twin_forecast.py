@@ -55,15 +55,18 @@ than hiding it.
 from __future__ import annotations
 
 import csv
+import sys
+import json
 from pathlib import Path
 
 from rb5s6s.cooperative import IONISATION_LIMIT_CM
 from rb5s6s.fibre import solve_he11, transit_fwhm
 from rb5s6s.forecast import forecast_precision
 from rb5s6s.polarizability import E_6S_CM
+from rb5s6s.config import RESULTS_DIR as _RESULTS_DIR  # noqa: E402  (F480: results where RB5S6S_RESULTS_DIR points)
 
 ROOT = Path(__file__).resolve().parents[1]
-RESULTS = ROOT / "results"
+RESULTS = _RESULTS_DIR
 
 # Committed acquisition realism and truth, read rather than retyped.
 REALISM = RESULTS / "twin_realism.csv"
@@ -103,30 +106,49 @@ def _band(text: str) -> tuple:
 from _producer_lock import take_producer_lock     # noqa: E402
 
 
-def main() -> None:
-    take_producer_lock("run_campaign_twin_forecast")
+#: THE FIVE MONTE CARLO CALLS ARE THE RUN'S UNITS (C6a, 2026-09-22): each `forecast_precision` call seeds its own
+#: generator (`default_rng(seed)`), so a unit computed in its own process returns exactly what the one-process run
+#: returns, and `--from/--n/--dump` plus `--combine` let `private/checks/wave_runner.py` walk the run a unit per wave
+#: (it took 84 minutes in one process under load, past the wave cap). No argument runs every unit in-process, as before.
+_UNITS = (("cell", 5, "5 traces"), ("cell", 20, "20 traces"), ("cell", 80, "80 traces"),
+          ("onf", 0.02, "noise 0.02"), ("onf", 0.004, "noise 0.004"))
+
+
+def _inputs() -> dict:
+    """Every input the rows read, from the committed tables and the mode solves (seconds)."""
     truth_rows = _read(REALISM, "quantity", "value",
                        filt=lambda r: r["scope"] == "TRUTH")
     onf = _read(ONF, "quantity", "value")
-
     g_cell = float(truth_rows["gamma_coll_mhz"])
     s_cell = float(truth_rows["sigma_laser_mhz"])
     t_cell = float(truth_rows["transit_fwhm_mhz"])
+    mode = solve_he11(ONF_DIAMETER_NM, PROBE_NM)
+    _tl = solve_he11(ONF_DIAMETER_NM + DIAMETER_TOL_NM, PROBE_NM).intensity_decay_nm
+    _th = solve_he11(ONF_DIAMETER_NM - DIAMETER_TOL_NM, PROBE_NM).intensity_decay_nm
+    t_onf_lo, t_onf_hi = sorted(
+        transit_fwhm(MOT_T_K, x * 1e-9).fwhm_hz / 1e3 for x in (_tl, _th))
+    g_onf = float(onf["gamma_coll_at_MOT_density"]) / 1e6      # Hz -> MHz
+    lorentzian_excess = (0.5 * (t_onf_lo + t_onf_hi)) / 1e3 + g_onf
+    return dict(g_cell=g_cell, s_cell=s_cell, t_cell=t_cell, mode=mode, g_onf=g_onf,
+                lorentzian_excess=lorentzian_excess)
 
+
+def _unit_rows(k: int, inp: dict) -> list:
+    """The rows unit `k` of `_UNITS` contributes, in the one-process run's order."""
     rows = []
 
     def add(arm, quantity, value, unit, basis, note, status):
         rows.append(dict(arm=arm, quantity=quantity, value=value, unit=unit,
                          basis=basis, note=note, status=status))
-
-    # ---------------- the cell arm, through the twin ----------------------
-    cell_design = {"span_mhz": 120.0, "n_points": 2000, "noise": CELL_NOISE,
-                   "amp": 1.0, "T_C": 130.0}
-    cell_truth = {"gamma_coll": g_cell, "sigma_laser": s_cell,
-                  "transit_fwhm": t_cell}
-
-    for n_traces, label in ((5, "5 traces"), (20, "20 traces"),
-                            (80, "80 traces")):
+    kind, x, label = _UNITS[k]
+    s_cell = inp["s_cell"]
+    lorentzian_excess = inp["lorentzian_excess"]
+    if kind == "cell":
+        cell_design = {"span_mhz": 120.0, "n_points": 2000, "noise": CELL_NOISE,
+                       "amp": 1.0, "T_C": 130.0}
+        cell_truth = {"gamma_coll": inp["g_cell"], "sigma_laser": s_cell,
+                      "transit_fwhm": inp["t_cell"]}
+        n_traces = x
         d = dict(cell_design, n_traces=n_traces)
         out = forecast_precision(cell_truth, d, n_trials=N_TRIALS,
                                  scalings=False, return_trials=True)
@@ -150,58 +172,8 @@ def main() -> None:
             "THE CELL'S FIRST DEGENERACY, measured by the twin rather than "
             "asserted. Near -1 means the two widths trade off and the split "
             "is not identified", "DIAGNOSTIC")
-
-    # ---------------- the fibre arm, through the same twin ----------------
-    mode = solve_he11(ONF_DIAMETER_NM, PROBE_NM)
-    add("onf", "neff", round(mode.neff, 5), "index",
-        f"HE11 solve, {ONF_DIAMETER_NM:.0f} nm fibre at {PROBE_NM} nm",
-        "SOLVED, replacing the assumed neff_band 1.08 to 1.25 which "
-        "corresponds to 485 to 796 nm fibres and does not contain this one",
-        "CALIB")
-    add("onf", "amplitude_decay_length", round(mode.amplitude_decay_nm, 1),
-        "nm", "1/q from the same solve",
-        "AMPLITUDE convention, the same one the committed "
-        "evanescent_decay_length band carries. That band read 211 to 388 nm "
-        "while it was an assumed index range and did not contain this value. "
-        "The producer now computes it from the solve and it does",
-        "CALIB")
-
-    # COMPUTED ON THIS FILE'S OWN FIBRE, not read from another's.
-    #
-    # This read `transit_onf_cold_band` from results/onf_candidate.csv, which
-    # is computed on a 400 nm fibre, into an arm whose every other row is the
-    # 370 nm one. The band is 73.5 to 99.0 kHz on the 400 nm fibre and 54.8 to
-    # 79.9 on the 370 nm, so the published lorentzian_excess_truth ran 1.28x
-    # high for the apparatus the row names.
-    #
-    # THE SIBLING PRODUCER CARRIES TWENTY-FIVE LINES ABOUT THIS EXACT CLASS,
-    # written earlier in the same wave, and the class was fixed there and not
-    # here. That is the sixth instance of a repair landing at one site of a
-    # class and not its siblings, and it is why the comment names the class
-    # rather than only the fix.
-    _tl = solve_he11(ONF_DIAMETER_NM + DIAMETER_TOL_NM, PROBE_NM).intensity_decay_nm
-    _th = solve_he11(ONF_DIAMETER_NM - DIAMETER_TOL_NM, PROBE_NM).intensity_decay_nm
-    t_onf_lo, t_onf_hi = sorted(
-        transit_fwhm(MOT_T_K, x * 1e-9).fwhm_hz / 1e3 for x in (_tl, _th))
-    g_onf = float(onf["gamma_coll_at_MOT_density"]) / 1e6      # Hz -> MHz
-
-    # The fibre transit is NEAR-Lorentzian, so it adds to the Lorentzian core
-    # to a good approximation and is not a separate kernel. This sum is exact
-    # only for true Lorentzians and the kernel is a Maxwell-averaged squared
-    # Lorentzian, so the linear addition is an approximation, not an identity.
-    lorentzian_excess = (0.5 * (t_onf_lo + t_onf_hi)) / 1e3 + g_onf
-    add("onf", "lorentzian_excess_truth", round(lorentzian_excess, 5), "MHz",
-        "mean fibre transit plus collisional at MOT density",
-        "the fibre's whole non-natural Lorentzian budget, summed linearly. "
-        "Its parts have almost no separate existence at one temperature, "
-        "which is the cost the fibre pays for removing the cell's "
-        "degeneracies. The sum is exact for Lorentzians and the transit "
-        "kernel is a Maxwell-averaged squared Lorentzian, so this is an "
-        "approximation whose error is not characterised here",
-        "ENVELOPE")
-
-    # Acquisition: photon counting, so a target fractional noise costs time.
-    for frac, label in ((0.02, "noise 0.02"), (0.004, "noise 0.004")):
+    else:
+        frac = x
         counts_needed = 1.0 / (frac ** 2)
         ms_per_point = counts_needed / ONF_COUNTS_PER_MS
         minutes = ms_per_point * 2000 / 1000.0 / 60.0
@@ -245,47 +217,113 @@ def main() -> None:
             "correlation", label,
             "the fibre's own degeneracy between its Lorentzian total and the "
             "Gaussian, to be read against the cell's", "DIAGNOSTIC")
+    return rows
 
-    # ---------------- what changes between the arms -----------------------
-    add("comparison", "collisional_budget_ratio",
-        round(g_cell / g_onf, 1), "factor",
-        "committed cell gamma_coll over gamma_coll at MOT density",
-        "the collisional channel essentially leaves the budget. This is the "
-        "cell contribution the fibre removes. It does NOT remove the "
-        "Lorentzian-against-Gaussian correlation, which the twin measures at "
-        "about -0.94 in BOTH arms",
-        "DIAGNOSTIC")
-    add("comparison", "geometry_parameter",
-        "waist assumed to diameter measured", "kind",
-        "w0 has no upper bound from the cell data. a fibre diameter is an "
-        "SEM or mode-cutoff measurement",
-        "A CHANGE OF KIND, not a smaller uncertainty, and the reason the "
-        "arms are not two versions of one measurement",
-        "DIAGNOSTIC")
 
-    # ---- the probe cannot drive the mechanism the ONF group diagnosed -----
-    # Carried here from a run_campaign_forecast.py that was DRAFTED AND
-    # WITHDRAWN inside this same uncommitted wave, whose Delta_alpha framing
-    # the owner refused. It is in no commit, so "retired" was an unverifiable
-    # history claim in permanent source and is not what happened. README and
-    # docs/plan/02_priorities.md both assert this exclusion and neither had a
-    # producer behind it.
-    CM_PER_EV = 8065.54429
-    photon_ev = 1239.84193 / (2e7 / E_6S_CM)      # the LITERATURE line
-    need_ev = (IONISATION_LIMIT_CM - E_6S_CM) / CM_PER_EV
-    add("model", "photoionisation_margin_from_6S", round(need_ev - photon_ev, 4),
-        "eV",
-        f"ionisation limit {IONISATION_LIMIT_CM} cm-1 minus the committed "
-        f"E_6S_CM {E_6S_CM:.2f} cm-1, minus the literature-line photon",
-        "positive means SINGLE-photon ionisation from 6S is excluded at the "
-        "probe wavelength. TWO-photon ionisation from 6S is energetically "
-        "OPEN and no committed row bounds its rate, so no claim that this probe "
-        "cannot "
-        "ionise rests on this margin alone. What does survive is that a 5S-6S "
-        "probe populates no Rydberg state, so the Rydberg-ground collisional "
-        "ionisation raj2026 identifies is absent by construction",
-        "CALIB")
+def _static_rows(inp: dict, where: str) -> list:
+    """The rows computed without a Monte Carlo: the fibre solve's rows ('fibre') and the comparison and model
+    rows ('tail'), each verbatim from the one-process run."""
+    rows = []
 
+    def add(arm, quantity, value, unit, basis, note, status):
+        rows.append(dict(arm=arm, quantity=quantity, value=value, unit=unit,
+                         basis=basis, note=note, status=status))
+    mode, g_cell, g_onf = inp["mode"], inp["g_cell"], inp["g_onf"]
+    lorentzian_excess = inp["lorentzian_excess"]
+    onf = _read(ONF, "quantity", "value")                  # the verbatim fibre block below reads it
+    if where == "fibre":
+        # ---------------- the fibre arm, through the same twin ----------------
+        mode = solve_he11(ONF_DIAMETER_NM, PROBE_NM)
+        add("onf", "neff", round(mode.neff, 5), "index",
+            f"HE11 solve, {ONF_DIAMETER_NM:.0f} nm fibre at {PROBE_NM} nm",
+            "SOLVED, replacing the assumed neff_band 1.08 to 1.25 which "
+            "corresponds to 485 to 796 nm fibres and does not contain this one",
+            "CALIB")
+        add("onf", "amplitude_decay_length", round(mode.amplitude_decay_nm, 1),
+            "nm", "1/q from the same solve",
+            "AMPLITUDE convention, the same one the committed "
+            "evanescent_decay_length band carries. That band read 211 to 388 nm "
+            "while it was an assumed index range and did not contain this value. "
+            "The producer now computes it from the solve and it does",
+            "CALIB")
+
+        # COMPUTED ON THIS FILE'S OWN FIBRE, not read from another's.
+        #
+        # This read `transit_onf_cold_band` from results/onf_candidate.csv, which
+        # is computed on a 400 nm fibre, into an arm whose every other row is the
+        # 370 nm one. The band is 73.5 to 99.0 kHz on the 400 nm fibre and 54.8 to
+        # 79.9 on the 370 nm, so the published lorentzian_excess_truth ran 1.28x
+        # high for the apparatus the row names.
+        #
+        # THE SIBLING PRODUCER CARRIES TWENTY-FIVE LINES ABOUT THIS EXACT CLASS,
+        # written earlier in the same wave, and the class was fixed there and not
+        # here. That is the sixth instance of a repair landing at one site of a
+        # class and not its siblings, and it is why the comment names the class
+        # rather than only the fix.
+        _tl = solve_he11(ONF_DIAMETER_NM + DIAMETER_TOL_NM, PROBE_NM).intensity_decay_nm
+        _th = solve_he11(ONF_DIAMETER_NM - DIAMETER_TOL_NM, PROBE_NM).intensity_decay_nm
+        t_onf_lo, t_onf_hi = sorted(
+            transit_fwhm(MOT_T_K, x * 1e-9).fwhm_hz / 1e3 for x in (_tl, _th))
+        g_onf = float(onf["gamma_coll_at_MOT_density"]) / 1e6      # Hz -> MHz
+
+        # The fibre transit is NEAR-Lorentzian, so it adds to the Lorentzian core
+        # to a good approximation and is not a separate kernel. This sum is exact
+        # only for true Lorentzians and the kernel is a Maxwell-averaged squared
+        # Lorentzian, so the linear addition is an approximation, not an identity.
+        lorentzian_excess = (0.5 * (t_onf_lo + t_onf_hi)) / 1e3 + g_onf
+        add("onf", "lorentzian_excess_truth", round(lorentzian_excess, 5), "MHz",
+            "mean fibre transit plus collisional at MOT density",
+            "the fibre's whole non-natural Lorentzian budget, summed linearly. "
+            "Its parts have almost no separate existence at one temperature, "
+            "which is the cost the fibre pays for removing the cell's "
+            "degeneracies. The sum is exact for Lorentzians and the transit "
+            "kernel is a Maxwell-averaged squared Lorentzian, so this is an "
+            "approximation whose error is not characterised here",
+            "ENVELOPE")
+    else:
+        # ---------------- what changes between the arms -----------------------
+        add("comparison", "collisional_budget_ratio",
+            round(g_cell / g_onf, 1), "factor",
+            "committed cell gamma_coll over gamma_coll at MOT density",
+            "the collisional channel essentially leaves the budget. This is the "
+            "cell contribution the fibre removes. It does NOT remove the "
+            "Lorentzian-against-Gaussian correlation, which the twin measures at "
+            "about -0.94 in BOTH arms",
+            "DIAGNOSTIC")
+        add("comparison", "geometry_parameter",
+            "waist assumed to diameter measured", "kind",
+            "w0 has no upper bound from the cell data. a fibre diameter is an "
+            "SEM or mode-cutoff measurement",
+            "A CHANGE OF KIND, not a smaller uncertainty, and the reason the "
+            "arms are not two versions of one measurement",
+            "DIAGNOSTIC")
+
+        # ---- the probe cannot drive the mechanism the ONF group diagnosed -----
+        # Carried here from a run_campaign_forecast.py that was DRAFTED AND
+        # WITHDRAWN inside this same uncommitted wave, whose Delta_alpha framing
+        # the owner refused. It is in no commit, so "retired" was an unverifiable
+        # history claim in permanent source and is not what happened. README and
+        # docs/plan/02_priorities.md both assert this exclusion and neither had a
+        # producer behind it.
+        CM_PER_EV = 8065.54429
+        photon_ev = 1239.84193 / (2e7 / E_6S_CM)      # the LITERATURE line
+        need_ev = (IONISATION_LIMIT_CM - E_6S_CM) / CM_PER_EV
+        add("model", "photoionisation_margin_from_6S", round(need_ev - photon_ev, 4),
+            "eV",
+            f"ionisation limit {IONISATION_LIMIT_CM} cm-1 minus the committed "
+            f"E_6S_CM {E_6S_CM:.2f} cm-1, minus the literature-line photon",
+            "positive means SINGLE-photon ionisation from 6S is excluded at the "
+            "probe wavelength. TWO-photon ionisation from 6S is energetically "
+            "OPEN and no committed row bounds its rate, so no claim that this probe "
+            "cannot "
+            "ionise rests on this margin alone. What does survive is that a 5S-6S "
+            "probe populates no Rydberg state, so the Rydberg-ground collisional "
+            "ionisation raj2026 identifies is absent by construction",
+            "CALIB")
+    return rows
+
+
+def _write(rows: list) -> None:
     out_path = RESULTS / "campaign_twin_forecast.csv"
     with open(out_path, "w", newline="", encoding="utf-8") as fh:
         w = csv.DictWriter(fh, fieldnames=["arm", "quantity", "value", "unit",
@@ -296,6 +334,38 @@ def main() -> None:
     for r in rows:
         print(f"  {r['arm']:<11} {r['quantity']:<26} {str(r['value']):>12} "
               f"{r['unit']:<12} {r['basis']}")
+
+
+def main() -> None:
+    argv = sys.argv[1:]
+    # THE LOCK GUARDS THE RESULTS CSV, so a slice that only dumps its units does not take it (2026-09-22).
+    # Two slices write two dump files; the combine, which writes the CSV, takes it as the one-process run
+    # does. Taken unconditionally, it refused a fresh run's slices while a stale run of the same producer
+    # held it, and the two would never have touched the same file.
+    if "--from" not in argv:
+        take_producer_lock("run_campaign_twin_forecast")
+    inp = _inputs()
+    if "--combine" in argv:                               # the waves' dumps, assembled in the one-process order
+        d = Path(argv[argv.index("--combine") + 1])
+        units = {}
+        for f in sorted(d.glob("wave_*.json")):
+            for k, rs in json.loads(f.read_text()).items():
+                units[int(k)] = rs
+        missing = [k for k in range(len(_UNITS)) if k not in units]
+        if missing:
+            raise SystemExit(f"--combine: units {missing} have no dump in {d}; the run is not complete")
+    elif "--from" in argv:                               # one wave: units from..from+n-1, dumped
+        lo = int(argv[argv.index("--from") + 1]); n = int(argv[argv.index("--n") + 1])
+        dump = Path(argv[argv.index("--dump") + 1])
+        out = {str(k): _unit_rows(k, inp) for k in range(lo, min(lo + n, len(_UNITS)))}
+        dump.write_text(json.dumps(out))
+        print(f"wrote units {sorted(out)} to {dump}")
+        return
+    else:
+        units = {k: _unit_rows(k, inp) for k in range(len(_UNITS))}
+    rows = (units[0] + units[1] + units[2] + _static_rows(inp, "fibre")
+            + units[3] + units[4] + _static_rows(inp, "tail"))
+    _write(rows)
 
 
 if __name__ == "__main__":

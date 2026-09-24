@@ -48,7 +48,7 @@ Reduced E1 matrix elements (Table II, recommended values, atomic units) for the 
 | 6s(1/2)-6p(1/2) | 9.721(24) | 0.25% |
 | 6s(1/2)-6p(3/2) | 13.647(34) | 0.25% |
 | 5s(1/2)-5p(1/2) | 4.253(34) | 0.79% |
-| 5s(1/2)-5p(3/2) | 6.003(24) | 0.80% |
+| 5s(1/2)-5p(3/2) | 6.003(48) | 0.80% |
 
 Table I gives the matching level energies, both the paper's own values and the NIST values, so the sum-over-states denominators come from the same document.
 
@@ -68,9 +68,14 @@ Static polarizabilities: alpha(5s) = 322(4) a0^3 (Table V), compared against mea
 | 7p(1/2) | 83270(300) | 6p(3/2) | 13440(70) |
 | 7p(3/2) | 90350(270) | | |
 
+Table I's E_NIST column gives the energies the thesis quotes, -13 557 cm^-1 for 6s1/2 and -20 874 cm^-1 for
+5p3/2, removal energies of 1.68 and 2.59 eV. Table VI's 6s1/2 column carries the rows behind the scalar
+polarizability: 5p1/2 -166(1), 5p3/2 -365(2), 6p1/2 1930(10), 6p3/2 3722(19), Other 49(1), total 5169(21) a.u.,
+against 5110 from the semi-empirical values of van Wijngaarden (their reference 38).
+
 **7d is absent from that table**, which is the one rung inside the Ti:Sapph band this paper cannot supply.
 
-Table II gives the reduced E1 matrix elements themselves for the channels behind these, including the full 7s set, 8s to 5p, 6p and 7p, and 4d, 5d, 7d and 8d to 5p, 6p, 7p and 8p, with the d-f channels beside them. Those are what a FREQUENCY-DEPENDENT sum needs.
+Table II gives the reduced E1 matrix elements themselves for the channels behind these, including the full 7s set, 8s to 5p and 6p, 4d to 5p, 7p and 8p, 5d to 6p and 8p, and 7d and 8d to 5p, with the d-f channels beside them. Those are what a FREQUENCY-DEPENDENT sum needs.
 
 ## Validity
 

@@ -1,8 +1,8 @@
-# The third cumulant
+# The third moment
 
 *[wiki index](README.md) · concept*
 
-How a single number can isolate a lineshape's asymmetry from every symmetric mechanism broadening it at the same time, provided the number is taken about the line's own centre, which is the condition the whole page turns on. This page builds on a line already understood as a convolution of kernels, and no fitted data of its own and sets out the additivity property that lets $\kappa_3$ single out one asymmetric mechanism, and the traps that forge a fake one. Not covered here: the asymmetry-producing mechanism itself, covered in [the AC-Stark shift](ac-stark-shift.md).
+How a single number can isolate a lineshape's asymmetry from every symmetric mechanism broadening it at the same time, provided the number is taken about the line's own centre, which is the condition the whole page turns on. This page builds on a line already understood as a convolution of kernels, and no fitted data of its own and sets out the additivity property that lets $\mu_3$ single out one asymmetric mechanism, and the traps that forge a fake one. Not covered here: the asymmetry-producing mechanism itself, covered in [the AC-Stark shift](ac-stark-shift.md).
 
 > [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
 > defines every term and symbol used anywhere in this repository.
@@ -19,6 +19,11 @@ variance, and $\kappa_3$ is the third central moment, the leading measure of
 asymmetry. Dividing by $\kappa_2^{3/2}$ gives the dimensionless skewness
 $g_1$.
 
+This record reports central moments, not cumulants. A central moment is
+positive at every even order and linear under mixture, and at second and
+third order, the two orders this page uses most, it is numerically identical
+to the cumulant just defined: $\mu_2=\kappa_2$ and $\mu_3=\kappa_3$ exactly.
+
 The property that makes cumulants worth the definition is that they add under
 convolution. The cumulant of a sum of independent variables is the sum of the
 cumulants, at every order. Moments do not do this, and neither do widths in
@@ -28,24 +33,24 @@ For spectroscopy the property holds in a qualified form (the dated account
 of how the qualification was reached is in
 the private correction record). Three layers:
 
-1. **Even cumulants of the observed line diverge.** The Lorentzian core's
+1. **Even moments of the observed line diverge.** The Lorentzian core's
    generating function is $-\gamma\lvert t\rvert$ ($\gamma$ the half-width
    here), not differentiable at the
-   origin, so its cumulants are undefined and $\kappa_2, \kappa_4$ of the
+   origin, so its cumulants are undefined and $\mu_2, \mu_4$ of the
    whole line grow with any window that tries to hold them.
-2. **Odd cumulants survive, about the line's own centre.** The Cauchy
+2. **Odd moments survive, about the line's own centre.** The Cauchy
    density is even, so a window symmetric about the line centre cancels its
-   odd moments, and the self-centred windowed $\kappa_3$ keeps a
+   odd moments, and the self-centred windowed $\mu_3$ keeps a
    truncation-limited fraction of the ramp's own $-S_0^3/135$. For this
    record's line at the $S_0 = 3$ MHz reference the fraction is
-   [0.525](../../results/cumulant_window_check.csv "ref:cumulant_window_check:survival_full_line:gc0.2"), [0.489](../../results/cumulant_window_check.csv "ref:cumulant_window_check:survival_full_line:gc0.55") and
-   [0.438](../../results/cumulant_window_check.csv "ref:cumulant_window_check:survival_full_line:gc1.1") at $\gamma_\mathrm{coll} = 0.2, 0.55, 1.1$ MHz,
+   [0.483](../../results/cumulant_window_check.csv "ref:cumulant_window_check:survival_full_line:gc0.2"), [0.450](../../results/cumulant_window_check.csv "ref:cumulant_window_check:survival_full_line:gc0.55") and
+   [0.403](../../results/cumulant_window_check.csv "ref:cumulant_window_check:survival_full_line:gc1.1") at $\gamma_\mathrm{coll} = 0.2, 0.55, 1.1$ MHz,
    [0.577](../../results/cumulant_window_check.csv "ref:cumulant_window_check:survival_lorentzian_alone:gc0.2") to [0.491](../../results/cumulant_window_check.csv "ref:cumulant_window_check:survival_lorentzian_alone:gc1.1") for
    the bare core the textbook case describes. The ratio is independent of the
    shift only while the shift is small against the window: at the archive's
-   own shift the row reads [0.498](../../results/cumulant_window_check.csv "ref:cumulant_window_check:survival_vs_S0:S0_campaign_2025")
-   and at 1 MHz [0.497](../../results/cumulant_window_check.csv "ref:cumulant_window_check:survival_vs_S0:S0_1") (the producer refuses a gap above
-   one per cent between those two), and at the 3 MHz reference [0.489](../../results/cumulant_window_check.csv "ref:cumulant_window_check:survival_vs_S0:S0_3"),
+   own shift the row reads [0.459](../../results/cumulant_window_check.csv "ref:cumulant_window_check:survival_vs_S0:S0_campaign_2025")
+   and at 1 MHz [0.459](../../results/cumulant_window_check.csv "ref:cumulant_window_check:survival_vs_S0:S0_1") (the producer refuses a gap above
+   one per cent between those two), and at the 3 MHz reference [0.450](../../results/cumulant_window_check.csv "ref:cumulant_window_check:survival_vs_S0:S0_3"),
    because the fixed spectral window clips more of the composite's tails as the
    shift grows (a fall the producer measures and no page yet derives), once the ramp is resolved on the model's grid (a first version
    put the ramp on fewer than five of the model's grid cells and read a lower
@@ -58,7 +63,7 @@ the private correction record). Three layers:
    the producer no longer carries).
 3. **Mis-centring is where the sensitivity lives.** A window off the line
    centre by $\delta$ injects roughly $(2/\pi)\gamma\delta W$ into
-   $\kappa_3$ ($\gamma$ again the half-width): the first cumulant leaking
+   $\mu_3$ ($\gamma$ again the half-width): the first cumulant leaking
    into the third. A lab-frame window under a drifting lock has $\delta$ =
    the drift, which is why a drift-immune readout must be **self-centred**:
    the free per-scan centre of the fit, or a window centred on the line's
@@ -85,29 +90,29 @@ field in one and a thermal population in the other. Here it is fixed by
 optics: a focused Gaussian beam with an `I^2` excitation weight gives the ramp
 in closed form, so Delone's integral closes, the cumulants are analytic rather
 than fitted, and the shape can be inverted for a parameter of the APPARATUS
-instead of the ensemble. The third cumulant's cubic law in the shift, and the
+instead of the ensemble. The third moment's cubic law in the shift, and the
 drift immunity below, are properties of that closed form.
 
 ## The problem it addresses
 
 It isolates one mechanism from a crowd. Where several effects broaden a line
-and only one skews it, the third cumulant measures that one alone, with no
+and only one skews it, the third moment measures that one alone, with no
 model of the others required beyond the assumption that they are symmetric.
 
 ## Application in this repository
 
 The line here is convolved from a natural Lorentzian, a laser kernel, a
 transit kernel and the light-shift distribution. The first three are
-symmetric, so a self-centred $\kappa_3$ is a channel for the
+symmetric, so a self-centred $\mu_3$ is a channel for the
 [AC-Stark shift](ac-stark-shift.md) alone up to the truncation fraction the
 layers above quantify. The derivation of
 the ramp's own cumulants, and the standardised skew they predict, is in
 [methods chapter 3](../methods/03_the_ac_stark_ramp.md) and
 [THEORY_NOTE.md](../THEORY_NOTE.md), which are the derivation of record.
 
-![the third cumulant as an observable](../../figures/fig30_third_cumulant.png)
+![the third moment as an observable](../../figures/fig30_third_cumulant.png)
 
-*How the third-cumulant observable works: symmetric kernels add no
+*How the third-moment observable works: symmetric kernels add no
 asymmetry of their own, so what a self-centred readout keeps belongs to the
 light-shift distribution (shift exaggerated for visibility). The kept
 fraction is the `survival` rows'.*
@@ -127,9 +132,9 @@ pattern across the four hyperfine lines, unchanged where the g-factor
 alternates, removes a third candidate by parity alone
 ([reversal tests](reversal-tests.md)).
 
-![measured third cumulant across the power sweep](../../figures/fig31_third_cumulant_measured.png)
+![measured third moment across the power sweep](../../figures/fig31_third_cumulant_measured.png)
 
-*The measured third cumulant across the 2025 power sweep: values straddling
+*The measured third moment across the 2025 power sweep: values straddling
 zero, the two hyperfine peaks disagreeing in sign, and the AC-Stark
 prediction four orders of magnitude below the error bars.*
 
@@ -140,9 +145,9 @@ instead of reading it from the fit's own covariance, which describes the
 spread at the fitted exponent and not at the one being excluded
 ([`scripts/run_skew_scaling.py`](../../scripts/run_skew_scaling.py),
 [`results/skew_scaling.csv`](../../results/skew_scaling.csv)). The four-line
-mean exponent comes out at $-0.405 \pm 0.091$ with a line-to-line scatter of
-0.180. That disfavours the fixed-size candidate at $p = 0.011$, about
-2.3 sigma one-sided, and leaves shot noise consistent at $p = 0.08$. The
+mean exponent comes out at $-0.387 \pm 0.079$ with a line-to-line scatter of
+0.158. That disfavours the fixed-size candidate at $p = 0.009$, about
+2.4 sigma one-sided, and leaves shot noise consistent at $p = 0.063$. The
 fixed-size candidate had been expected to survive this test. The data
 instead favour the null.
 
@@ -172,11 +177,11 @@ says the centroid is untouched at any $V(u)$, which is the immunity
 measured comparison confirms to five decimals at every waist tried.
 
 Against this bench's own mixture the covariance term tracks the measured
-contamination with a single constant. The identity says the two third cumulants
+contamination with a single constant. The identity says the two third moments
 differ by exactly three times the covariance, since the fixed kernel carries no
 covariance term at all. Measured, the ratio is $0.386$ with a spread of 4.0 per
 cent across a factor of sixteen in the collection ratio and three orders of
-magnitude in the cumulant itself. The shortfall is the analysis window
+magnitude in the moment itself. The shortfall is the analysis window
 truncating a Lorentzian, whose second moment does not exist, so the windowed
 stand-in over-states the covariance by the reciprocal factor $2.594$ and that
 factor belongs to the estimator. It is measured by
@@ -192,45 +197,47 @@ computed from geometry alone without rebuilding the mixture.**
 The assumption doing all the work is that every other kernel is symmetric,
 and it is a model assumption, not a fact. An unmodelled asymmetric
 contaminant, an optical fringe, a nearby unresolved line, a detector
-nonlinearity, adds to $\kappa_3$ indistinguishably from the effect being
+nonlinearity, adds to $\mu_3$ indistinguishably from the effect being
 measured. The selectivity is only as good as that list.
 
 The estimator has a data-insufficiency problem that is much sharper than for
 widths. Third-moment estimators have variance dominated by the tails of the
 distribution, so they converge slowly and are extremely sensitive to how far
-out the data extend and to where a baseline is placed. A cumulant computed
-over a truncated window is not the cumulant of the line, and the truncation
+out the data extend and to where a baseline is placed. A moment computed
+over a truncated window is not the moment of the line, and the truncation
 enters the answer.
 
 And the sharpest form of that problem was measured across 432
 configurations, in [`results/moment_power_map.csv`](../../results/moment_power_map.csv).
 The map generates traces through the production world builder at five
-light-shift rungs spanning the archive's [0.348](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred:shared") MHz and 1.0 MHz, a round figure inside the campaign's range (the plan's chapter 4 gives 1.42 MHz at a 40 um waist and 500 mW),
-at 2,000 traces a rung, and fits the power of $S_0$ that the windowed cumulant
-carries. In the noiseless limit, with the model's grid resolving the shift
+light-shift rungs spanning the archive's [0.729](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred:shared") MHz and 1.0 MHz, a round figure inside the campaign's range (the light shift at a 40 um design waist and 500 mW, with the 2025 input kept and the lens shortened to reach it, is 1.82 MHz),
+at 2,000 traces a rung, and fits the power of $S_0$ that the windowed moment
+carries.
+
+In the noiseless limit, with the model's grid resolving the shift
 and the physics layers off, that power is three: `tests/test_moment_power_map_producer.py`
 pins the slope at an 8 MHz half-window within five per cent, and that test is
 the re-derivation route, since the map itself carries no noiseless arm. With
 the layers on the noiseless power falls below three at every window, and
 under noise the ladder's lowest rung sits below the region where the
-windowed cumulant is cubic. The windowed cumulant is positive at every rung.
+windowed moment is cubic. The windowed moment is positive at every rung.
 
 That sign is the static composition's. A rung 3 computation of the chirped
 chord with its dephasing carried, whose producer is owed, puts the campaign's
 calibration of this channel on the collection window and the chirp together,
 as the plan hub's intensity chapter sets out.
 Since 2026-09-08 the three-channel forecast's world carries the window and
-the fringe tail, and its windowed cumulant at the tight waist is negative, the
+the fringe tail, and its windowed moment at the tight waist is negative, the
 window's reversal. The map keeps the pure ramp, and the chirp is still owed.
 It is not the ramp's own $-S_0^3/135$ from the derivation above but the
 truncated estimator's reading of it. Under the archive's own noise and
 quantisation **no configuration on the grid recovers it**: over all three
 orders the file's `min_snr_over_rungs` reaches 2.3 at best and 0.37 at the
-median, and the median fitted power of the third cumulant is 1.8.
+median, and the median fitted power of the third moment is 1.8.
 
 That column
 is a median over its own standard error and is inflated wherever the true
-cumulant lies below the noise, so 2.3 is not a signal-to-scatter but the
+moment lies below the noise, so 2.3 is not a signal-to-scatter but the
 noise's own reading of one. At the rung it belongs to, the same estimator's
 noiseless value stands below the median's own standard error (the per-rung
 table's `snr_true` column carries that ratio for every rung), and per trace
@@ -238,11 +245,11 @@ the signal is under a hundredth of the scatter.
 
 The failure is not that the answer is noisy. It is that the answer is
 confidently wrong, and the mechanism is worth stating because it is generic.
-Where the true cumulant lies below its own scatter, the magnitude of a noisy
+Where the true moment lies below its own scatter, the magnitude of a noisy
 estimate is inflated, since noise cannot cancel in an absolute value. That lifts
 the low rungs of the ladder, flattens the fitted slope, and returns a power near
 2 where the physics carries 3. A reader who quoted that slope would
-conclude the cumulant does not go as the cube, which is a statement about the
+conclude the moment does not go as the cube, which is a statement about the
 noise and not about the line. **The column that prevents it is
 `min_snr_over_rungs`**, and it exists so a power can be read beside the evidence
 that it was measurable at all.
@@ -265,6 +272,7 @@ package's estimator (`rb5s6s.cumulants`, the window recentred to a tolerance
 and the detector pedestal removed first, since a fixed pass count does not
 converge on the dim rungs of a power ladder).
 
+<!-- C6b: re-measured as a moment (A149) -->
 The deep map's `frac_negative` column is a sign statistic and is read against
 each order's own sign, which for the fifth cumulant is negative
 ([the ramp chapter](../methods/03_the_ac_stark_ramp.md)). Read that way, the
@@ -275,12 +283,13 @@ widens, and their ratios to the third carry no power dependence, so they
 read the third's shift information again through a heavier truncation
 weight.
 
+<!-- C6b: re-measured as a moment (A149) -->
 And at the 2025 archive's own noise they are not
 measurable at all, which is a stronger statement than carrying no extra
 information and was measured separately: under the correlation time
 `results/noise_model.csv` reports, the third, fifth, seventh and ninth
 cumulants and every ratio among them sit at a per-trace signal-to-noise
-between [0.0032500](../../results/moment_admission.csv "ref:moment_admission:snr_refused_min:") and [0.717](../../results/moment_admission.csv "ref:moment_admission:snr_refused_max:"), against [446.30](../../results/moment_admission.csv "ref:moment_admission:snr_admitted_min:") to [5871](../../results/moment_admission.csv "ref:moment_admission:snr_admitted_max:") for the even orders and the even
+between [0.0151](../../results/moment_admission.csv "ref:moment_admission:snr_refused_min:") and [0.7324](../../results/moment_admission.csv "ref:moment_admission:snr_refused_max:"), against [413.2](../../results/moment_admission.csv "ref:moment_admission:snr_admitted_min:") to [5627](../../results/moment_admission.csv "ref:moment_admission:snr_admitted_max:") for the even orders and the even
 ratios.
 
 An admission floor of three would refuse 21 of the 42 statistics and the
@@ -301,20 +310,20 @@ And the window starts at the carrier, the line the ruler identifies,
 never at the trace's maximum, which at the measured modulation depth is a
 first-order tooth. The map's ladder is the twin's,
 five shifts at constant amplitude and two thousand traces a rung. The 2025 archive took five traces a rung over shifts
-of 0.04 to [0.348](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred:shared") MHz with amplitude rising as the power squared, so the map's
+of 0.04 to [0.729](../../results/stark_sweep.csv "ref:stark_sweep:S0_225mW_pred:shared") MHz with amplitude rising as the power squared, so the map's
 exponent is not the archive's number. What is derivable from one cell is the
-archive's own: at its shift, noise and scope a single trace's cumulant has a
+archive's own: at its shift, noise and scope a single trace's moment has a
 signal-to-scatter of a few hundredths, so five traces reach a few tenths of
 that and a usable channel needs of order thirty thousand.
 
 The consequence for this repository is stated
 in [the campaign cases](../big_picture/09_the-campaign-cases.md): the third
-cumulant is a campaign channel and not an archive one, and the map is why. **Which channel leads is settled elsewhere and it is not this one**: the three-channel forecast reads the fitted centre against the third cumulant lever by lever and the centre is the tighter everywhere ([the campaign cases](../big_picture/09_the-campaign-cases.md)).
+moment is a campaign channel and not an archive one, and the map is why. **Which channel leads is settled elsewhere and it is not this one**: the three-channel forecast reads the fitted centre against the third moment lever by lever and the centre is the tighter everywhere ([the campaign cases](../big_picture/09_the-campaign-cases.md)).
 
 Two implementation traps follow from that. Subtracting a baseline that is
-itself slightly asymmetric injects a third cumulant directly. And at finite
+itself slightly asymmetric injects a third moment directly. And at finite
 noise the fitted centre is correlated with the trace it was fitted to, so a
-self-centred $\kappa_3$ carries a noise-coupling bias even though
+self-centred $\mu_3$ carries a noise-coupling bias even though
 self-centring is exactly the right convention for the signal: the
 centring that layer 3 requires is what this trap quantifies, not what it
 forbids.
@@ -329,11 +338,11 @@ the signal goes as the square of the intensity.
 And the kernel is not the same at every element, which this observable pays
 for hardest. The saturation companion follows the local light shift, so the
 broad elements are the shifted ones and the composition is a mixture and not a
-convolution. Measured element by element, the windowed third cumulant is wrong
-by [106.742](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w64um:k3_error") per cent at the archive's own
-waist and [89.925](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w16um:k3_error") at 16 microns, against
+convolution. Measured element by element, the windowed third moment is wrong
+by [103.942](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w42um:k3_error") per cent at the archive's own
+waist and [89.992](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w16um:k3_error") at 16 microns, against
 a centroid that is untouched at
-[-0.000](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w64um:centroid_pull_error") per cent everywhere.
+[-0.000](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w42um:centroid_pull_error") per cent everywhere.
 The zero-contribution statement above is exact per kernel and says nothing
 about a kernel that varies with the shift.
 
@@ -361,7 +370,7 @@ disagreement checks the model.
 
 ## Instrumental asymmetry
 
-An asymmetric instrument forges an asymmetric line, and a third cumulant
+An asymmetric instrument forges an asymmetric line, and a third moment
 cannot tell the two apart from a single measurement. A detector or amplifier
 with a one-sided response, which is what any first-order chain has, smears the
 signal in one direction only, so a line swept past it acquires a skew that
@@ -385,17 +394,17 @@ other, which is an asymmetry with no physical or electronic cause at all.
 Writing the true frequency against the assumed axis as
 $\nu = \hat\nu + \alpha\hat\nu^2$, the rate varies across a window of
 half-width $W$ by a fraction $\epsilon$ equal to $2\alpha W$, and the induced
-cumulant is linear in that fraction. The
-rate variation that fakes the whole light-shift signal is **[0.0131](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:rate_variation_tolerance") per
-cent at the campaign's tightest licensed waist and [0.00196](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:rate_variation_tolerance") at the 2025 one**, and about 1.5 per cent at the 16 micron configuration the
+moment is linear in that fraction. The
+rate variation that fakes the whole light-shift signal is **[0.0153](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:rate_variation_tolerance") per
+cent at the campaign's tightest licensed waist and [0.0135](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:rate_variation_tolerance") at the 2025 one**, and about 1.5 per cent at the 16 micron configuration the
 model does not license, so this channel demands an axis two to three orders
 better than a centre fit does.
 
 Each carries a band over the two width bands,
 the waist band paired with the retro-ratio error, and the two ends of the
 coherence window the fringe density leaves open, largest excursion reported:
-[0.0022](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:rate_variation_tolerance_err")
-and [0.00061](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:rate_variation_tolerance_err")
+[0.0026](../../results/sweep_linearity.csv "ref:sweep_linearity:campaign_40um:rate_variation_tolerance_err")
+and [0.0029](../../results/sweep_linearity.csv "ref:sweep_linearity:archive:rate_variation_tolerance_err")
 per cent for the first two.
 
 It does not separate by sweep rate, because it is not a response, and it
@@ -411,20 +420,25 @@ tenth of a per cent gives [10.0664](../../results/sweep_linearity.csv "ref:sweep
 [the frequency axis](the-wavemeter-and-the-frequency-axis.md) treats the ramp
 monitor as a requirement of this channel and not a convenience.
 
-## Why a cumulant and not a moment, and what a window does to the choice
+## Why this page once named it a cumulant, and what a window does to the choice
 
-This page computes a cumulant throughout. The reason is one property and its exact reverse.
+This page named the statistic a cumulant until now. The record reports the central moment instead, since
+the two are numerically identical at second and third order (the Definition section above). The reason a
+cumulant was named at all was one property and its exact reverse, both still worth carrying because they
+say what a window does to the estimate.
 
 **Under convolution cumulants add and moments do not.** For a line that is a convolution of independent
 broadening mechanisms, which this one is, $\kappa_n$ of the whole is the sum of the $\kappa_n$ of the
 parts at every order, while the $n\text{th}$ moment of the whole is a binomial sum over every pairing of the
 parts' moments. So in cumulants the forward model is a sum over terms and each term's contribution can be
-read on its own. That is the entire reason the skew channel is $\kappa_3$ and not $\mu_3$, even though
-the two are equal at third order: the equality is a coincidence of that order and the additivity is not.
+read on its own. That additivity is why this page once wrote the skew channel as $\kappa_3$: at third
+order the sum-over-terms property and the plain central moment give the same number, $\mu_3=\kappa_3$, so
+writing it as $\mu_3$ below costs nothing.
 
 **Under a mixture the relation reverses exactly.** If the collected signal averages a kernel over some
 latent variable, the moments of the average are the average of the moments and the cumulants are not.
 
+<!-- C6b: re-measured as a moment (A149) -->
 **Signs, which is where the two are most often confused.** An even central moment of a non-negative line
 is positive at every window, always. An even cumulant from the fourth order up is a difference,
 $\kappa_4 = \mu_4 - 3\mu_2^2$, and carries no sign constraint: negative where the truncated line is
@@ -438,14 +452,14 @@ cumulant.
 renormalises. Multiplication in frequency is convolution in the conjugate domain, so what a window
 convolves is the characteristic function, with a sinc of width $1/W$, and never the lineshape. Two things
 follow for this page. Cumulants do not add under truncation, because the window multiplies in the domain
-where the terms add, so a windowed $\kappa_3$ is a statistic of the whole line and is never the ramp's
-own third cumulant. And the renormalisation is nonlinear, so the number depends on the window through the
+where the terms add, so a windowed $\mu_3$ is a statistic of the whole line and is never the ramp's
+own third moment. And the renormalisation is nonlinear, so the number depends on the window through the
 retained mass as well as the retained shape. The sound use is forward: compare the windowed statistic
 against the model put through the same window, which is what the sections above do.
 
 **And the convolution itself is an approximation here.** Its first-order cost is a dropped covariance
 between the kernel's shift and its width across the collected volume, which is why the windowed third
-cumulant is misstated by about a factor of two at every waist. The derivation, the law of total cumulance
+moment is misstated by about a factor of two at every waist. The derivation, the law of total cumulance
 that makes it exact, and the first-order correction for a clipped non-cylindrical beam are in
 [methods/11](../methods/11_the_window_limits.md) sections 11.7 to 11.9 and in the thesis appendix F.11.
 

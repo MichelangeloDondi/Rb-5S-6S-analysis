@@ -197,7 +197,7 @@ million from the detected cascade, negligible here and worth watching at the 150
 to 170 °C extension [the outlook](08_assumptions_and_outlook.md) proposes. And
 the **blackbody AC-Stark shift is hundreds of hertz**, not the ~1 Hz the ground
 state alone would give, because the differential polarizability is 5171 minus
-318 a.u. and the 6S resonances sit inside the blackbody band.
+318 a.u. and the 6S resonances sit inside the blackbody band. <!-- other-quantity: a polarizability -->
 
 It runs −79.9 Hz
 at 70 °C to −161.0 Hz at 130 °C on the transition axis, $3\times10^{-5}$ of the
@@ -219,7 +219,7 @@ the physics. The error bar in `results/blackbody_channels.csv` is the committed
 
 *One consistency check, and a correction to how it was first reported.* The
 integration's long-wavelength limits, 318.3 and 5171.1 a.u., reproduce the
-committed `alpha_5s_static` [318.28](../../results/polarizability.csv "ref:polarizability:alpha_5s_static:model") and `alpha_6s_static` 5167.0 of
+committed `alpha_5s_static` [318.28](../../results/polarizability.csv "ref:polarizability:alpha_5s_static:model") and `alpha_6s_static` [5167.0](../../results/polarizability.csv "ref:polarizability:alpha_6s_static:model") of
 `results/polarizability.csv`. Those rows already carry their own Monte-Carlo
 bands and their own validation, against Holmgren 2010 and the Safronova-group
 value. This was first written up here as a free check of a module never tested
@@ -244,13 +244,13 @@ own variable, so the broad elements are the shifted ones.
 `scripts/run_kernel_inhomogeneity.py` builds the volume as a mixture with one
 kernel per element and measures what the difference costs. The centroid is exactly
 immune at
-every waist ([-0.000](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w64um:centroid_pull_error")
+every waist ([-0.000](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w42um:centroid_pull_error")
 per cent, the first moment of a mixture of symmetric kernels being the density's
 own mean), and nothing else is. The fitted centre moves by
-[-57.023](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w16um:fitted_centre_error") per cent at
-16 microns and the windowed third cumulant by
-[106.742](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w64um:k3_error") per cent at the
-archive's own 64. So `model_profile` is the right object for the centroid at
+[-60.912](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w16um:fitted_centre_error") per cent at
+16 microns and the windowed third moment by
+[103.942](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w42um:k3_error") per cent at the
+archive's own 42.38. So `model_profile` is the right object for the centroid at
 every waist and for the shape channels at none of them, and
 [the odd-moments chapter](10_the_odd_moments.md) section 1 carries the
 boundary.
@@ -260,19 +260,19 @@ record's shape channels use central moments, not cumulants, at fourth order
 and above. A cumulant buys exactly one property, additivity under
 convolution, and this record collects it nowhere: a truncated window is a
 multiplication and not a convolution, and the kernel above is inhomogeneous
-across the illuminated volume, which is why the windowed third cumulant is
-already over 100 per cent wrong at the archive's own 64 microns.
+across the illuminated volume, which is why the windowed third moment is
+already over 100 per cent wrong at the archive's own 42.38 microns.
 
 The other
 half is arithmetic: $\kappa_4=\mu_4-3\mu_2^2$ is a small difference of large
-numbers, on a Lorentzian at 5 MHz $\mu_4=46.75$ against $3\mu_2^2=48.67$, so
+numbers, on a Lorentzian at 5 MHz $\mu_4=46.75$ against $3\mu_2^2=48.66$, so
 $\kappa_4=-1.914$ is a four per cent residue of the two terms that build it,
 which costs it roughly that factor in relative precision once noise enters.
 Central moments carry neither defect, positive at every even order, no
 conversion bias, and linear under a mixture, which is what an ensemble of
 atoms sampling different intensities actually is. Nothing below fourth order
 changes, since $\kappa_2=\mu_2$ and $\kappa_3=\mu_3$ exactly, so the third
-cumulant above and everything argued from it stands.
+moment above and everything argued from it stands.
 
 The convolution's numerical evaluation
 was separately tested on 2026-09-06 against the two-time correlation spectrum of a
@@ -333,8 +333,9 @@ whose $1/e^2$ radius reads 42.4 µm gives a transit-integrated third cumulant of
 $-0.00066$ against a Gaussian's $+0.00994$ at the same reading, opposite in sign,
 and the reversal survives the Maxwell-Boltzmann speed mixture. The transit width
 differs by one to four per cent and not monotonically in the reading, so it
-cannot be absorbed into a rescaled waist either. At the 64 µm convention this is
-a small correction.
+cannot be absorbed into a rescaled waist either. At the retired, larger convention this was
+a small correction, which is why it went unnoticed until the bore-limited recalculation (owner
+order O44, 2026-09-21) placed the working waist inside the region where it is not.
 
 The reversal does not hold across the whole 40 to 45 µm region, and an earlier
 version of this page said it did. The same table's second row, a reading of
@@ -344,9 +345,15 @@ rows and 44.6 µm by the one-speed rows, so what the region contains is a sign
 change and not a uniform reversal. And the sign cannot be read off a fitted
 waist: at the archive's noise the closure's own waist carries a bias of
 $+1.5$ µm with a bar of $2.1$ µm, both larger than the 1.0 µm that separates
-the quoted reading from the crossing. The odd channel discriminates a clipped
+the quoted reading from the crossing.
+
+The odd channel discriminates a clipped
 focus from a Gaussian one only where an independent waist measurement places
 the beam below the crossing, which is one more thing the knife-edge buys.
+Discriminating the beam's own clipped or Gaussian shape from an odd moment's sign is the same
+kind of move, reading a geometric fact off a light-shifted two-photon line, that
+[Garreau et al.](../lit/garreau1990.md) 1990 made choosing their virtual-diaphragm radius from
+the line's asymmetry, worked through in [the AC-Stark chapter](03_the_ac_stark_ramp.md).
 
 The second is a **permeated gas**, and it is a family and not one species.
 Permeation carries a sealed cell to the atmosphere's own partial pressure of
@@ -379,11 +386,11 @@ $1/3$ and the older bracket of $1/3$ to $2/3$ quoted here was too high at the
 bottom, which is why the pumping term falls below the ramp on the first two
 lines and above it on the last two. **That per-crossing form is replaced** (2026-09-17): the
 kernel Monte Carlo of [the lineshape page's 2.5b](02_the_lineshape.md) resolves the depletion
-along each chord and finds the surviving transit kernel wider by a fraction [0.050](../../results/kernel_mc.csv "ref:kernel_mc:w64.0_m1.00_r0.940_T130_P225:depletion_fwhm_rel_4121:mc") at 64 µm and
-225 mW ([0.0015](../../results/kernel_mc.csv "ref:kernel_mc:w64.0_m1.00_r0.940_T130_P25:depletion_fwhm_rel_4121:mc") at 25 mW, faster than $P$ and slower than $P^2$), because the slowest atoms complete the most
+along each chord and finds the surviving transit kernel wider by a fraction [0.10](../../results/kernel_mc.csv "ref:kernel_mc:w42.0_m1.00_r0.940_T130_P225:depletion_fwhm_rel_4121:mc") at 42 µm, the
+node beside the calculated waist, and 225 mW ([0.0039](../../results/kernel_mc.csv "ref:kernel_mc:w42.0_m1.00_r0.940_T130_P25:depletion_fwhm_rel_4121:mc") at 25 mW, faster than $P$ and slower than $P^2$), because the slowest atoms complete the most
 cycles and are the kernel's narrow core.
 
-a cusp fitted to the surviving kernel reads only [0.0050](../../results/kernel_mc.csv "ref:kernel_mc:w64.0_m1.00_r0.940_T130_P225:depletion_widening_rel_4121:mc") wider after the natural Lorentzian (a third of a micron at 64 µm), because the wings are untouched, and that fitted ratio is what the fit carries, while the four lines' shares move by [0.0008](../../results/kernel_mc.csv "ref:kernel_mc:w64.0_m1.00_r0.940_T130_P225:shares_shift_abs:mc") from the thermal law.
+a cusp fitted to the surviving kernel reads only [0.014](../../results/kernel_mc.csv "ref:kernel_mc:w42.0_m1.00_r0.940_T130_P225:depletion_widening_rel_4121:mc") wider after the natural Lorentzian (about six tenths of a micron at 42 µm), because the wings are untouched, and that fitted ratio is what the fit carries, while the four lines' shares move by [0.0021](../../results/kernel_mc.csv "ref:kernel_mc:w42.0_m1.00_r0.940_T130_P225:shares_shift_abs:mc") from the thermal law.
 The fit carries that fitted ratio as a computed factor per node through the kernel gate and
 never as a fitted term. Both are omitted for the same reason: injecting them means
 committing to the two-level homogeneous saturation law with a two-photon Rabi

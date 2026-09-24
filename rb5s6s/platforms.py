@@ -45,6 +45,7 @@ from typing import Dict, Optional
 import numpy as np
 
 from . import constants as C
+from . import density as D
 from .hyperpolarizability import two_photon_rabi_hz
 from .detection import ir_branching_5p12, mean_5p_lifetime_s
 from ._compat import trapezoid  # the seam, never the numpy name
@@ -52,6 +53,14 @@ from ._compat import trapezoid  # the seam, never the numpy name
 H_PLANCK_JS = C.H_PLANCK_JS         # one home for the SI constants, constants.py (2026-09-12)
 C_M_PER_S = C.C_M_PER_S
 KB_J_PER_K = C.K_B_J_PER_K
+
+#: THE CELL'S DENSITY, READ FROM THE CENTRAL LAW AND NOT TYPED (F310, C6b, A132.17). The three rows
+#: below carried 2.94e13, `run_density_laws.n_nes(130)`, typed the day the central law was still
+#: Nesmeyanov and never updated when it moved to Alcock (2026-09-21): every rate those rows tabulate
+#: was 21 per cent low and nothing noticed, because a typed literal has no source for the freshness
+#: check to compare. One named constant, computed here, is the source now, and a law change moves
+#: this line and every row with it.
+CELL_130C_DENSITY_CM3 = float(D.number_density_cm3(130.0))
 
 #: Population decay rate of 6S, in 1/s. Gamma_nat is a FWHM in Hz, so the
 #: population rate is 2 pi times it. tau = 45.57 ns inverts to the same number.
@@ -78,7 +87,8 @@ class Platform:
     detection: str            # fluorescence | absorption
     guided: bool
     # NOT A SOLID ANGLE, which this line called it until 2026-09-11.
-    # `results/prediction_band.csv` derives 0.162 as `2 arctan(z_ratio) / pi`,
+    # `results/prediction_band.csv` derives it as `2 arctan(z_ratio) / pi` (its
+    # `fluorescence_collected_frac` row),
     # the fraction of the emitted fluorescence inside the COLLECTION WINDOW the
     # cathode and the lens define, at the archive's waist. So the detected rate
     # carries an axial window and NO solid angle: the record has never measured
@@ -429,6 +439,35 @@ def events_per_s_profile(power_w: float, p: Platform, rho: float = 0.94,
     return float(n_per_m3 * GAMMA_POP_PER_S * trapezoid(radial, z))
 
 
+def drive_absorbed_fraction_per_pass(power_w: float, p: Platform, rho: float = 0.94,
+                                     cascade: bool = True) -> float:
+    """What licenses treating the drive as FIXED along the propagation axis (F308, A132.11, C6b):
+    the fraction of one beam's own photons removed by excitation crossing this platform ONCE, on
+    resonance, at the platform's TOTAL density -- an upper bound, since a real trace sits somewhere
+    on the line and not always at its peak.
+
+    ONE PHOTON PER EXCITATION PER PASS, not two. A two-photon excitation event removes two photons
+    from the field, but on this bench the two come from OPPOSITE passes of the retro-reflected beam
+    (the Doppler-free geometry: the forward and backward arms each contribute one photon, which is
+    how the first-order Doppler shift cancels), so a single one-way pass removes exactly one. This is
+    the same convention `two_photon_rabi_hz`'s own docstring names for the coupling (`2 sqrt(rho)`,
+    not `1 + rho`) and the reason `signal_and_noise`'s absorption branch, built for a single-beam
+    guided probe with no retro partner, is NOT reused here: that branch counts two photons per event
+    because both genuinely leave the one beam it models. This function counts the ONE PASS the fixed
+    drive approximation needs to hold across, and applies the same convention to every platform so
+    the column compares like with like.
+
+    `platforms.events_per_s_profile` integrated over the whole mode, times the photon energy, over
+    the drive power: `events_per_s * h nu / power_w`. F308's own reading at the archive's corner
+    (130 C, 225 mW, the calculated waist): about 1.2e-3, so the fixed drive holds to about 0.1 per
+    cent in S0 across the cell. A guided platform, whose length is not bounded by a Rayleigh range,
+    is the case where this bound matters most and must be re-read rather than assumed.
+    """
+    events_per_s = events_per_s_profile(power_w, p, rho, cascade=cascade)
+    photon_energy_j = H_PLANCK_JS * C_M_PER_S / C.LAMBDA_LASER_M
+    return float(events_per_s * photon_energy_j / power_w)
+
+
 def events_per_s_on_axis(power_w: float, p: Platform, rho: float = 0.94) -> float:
     """The retired convention: the on-axis rate times the conventional volume.
 
@@ -506,11 +545,13 @@ def transit_fwhm_mhz(p: Platform) -> float:
 #: DESIGN FIGURES; the cell's are this record's own measured conditions.
 PLATFORMS: Dict[str, Platform] = {
     "cell_130C": Platform(
-        "cell_130C", "cell", 403.15, 2.94e13, 64e-6, 0.05, 1.0,
+        "cell_130C", "cell", 403.15, CELL_130C_DENSITY_CM3, C.W0_CENTRAL_M, 0.05, 1.0,
         "fluorescence", False,
-        note="the 2025 archive's own conditions, the only measured row here"),
+        note="the 2025 archive's own conditions, the only measured row here (the waist is "
+             "C.W0_CENTRAL_M itself, not a second copy of it -- O44, F280). The density is "
+             "density.number_density_cm3(130), the central law, not a typed copy (F310)."),
     "cell_130C_tight": Platform(
-        "cell_130C_tight", "cell", 403.15, 2.94e13, 16e-6, 0.05, 1.0,
+        "cell_130C_tight", "cell", 403.15, CELL_130C_DENSITY_CM3, 16e-6, 0.05, 1.0,
         "fluorescence", False,
         note="the tight-waist campaign proposal, outside the approximations this model rests on"),
     "mot": Platform(
@@ -525,7 +566,7 @@ PLATFORMS: Dict[str, Platform] = {
         note="colder and thinner than the MOT, and a shorter window. The "
              "radiation temperature is the chamber's, not the atoms'"),
     "hcpcf_warm": Platform(
-        "hcpcf_warm", "hcpcf", 403.15, 2.94e13, 19e-6, 0.10, 1.0,
+        "hcpcf_warm", "hcpcf", 403.15, CELL_130C_DENSITY_CM3, 19e-6, 0.10, 1.0,
         "absorption", True,
         note="vapour-filled kagome mode. The length is the fibre and not z_R"),
     "hcpcf_cold": Platform(

@@ -104,7 +104,8 @@ def test_the_assembly_pairs_each_task_with_its_own_result():
     It rotated the result list by one position before the pairing. The
     producer wrote a clean forty-row CSV, correct row count, no error -
     and every value sat on the wrong preset and waist, one case putting
-    a `campaign_cell/w0_8um` number on the `dataset_2025/w0_68um` row.
+    a `campaign_cell/w0_8um` number on the `dataset_2025` row for the
+    retired waist convention's preset.
     Every test in this file passed, because they all call `_fp_triple`
     directly and none of them reached the pairing.
 

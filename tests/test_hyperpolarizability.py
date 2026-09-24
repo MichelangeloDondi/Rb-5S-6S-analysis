@@ -19,11 +19,25 @@ from rb5s6s.polarizability import LINES_5S, LINES_6S, E_6S_CM
 def test_linear_shift_reproduces_the_polarizabilities():
     """E2 at a magic crossing must equal minus the depth for BOTH
     states: this exercises the z matrix, the basis and the
-    tail-plus-core channel against polarizability.py."""
+    tail-plus-core channel against polarizability.py.
+
+    THE 6S BOUND WIDENED, NOT THE 5S ONE (F307 corrected, A132.16, C6b). `_rspt4`'s Floquet basis
+    carries 5P to 8P as discrete levels (`LEVELS`, `RME`, built from `_PN`) and folds everything
+    past that into one fictitious far channel per S state, calibrated by TAIL_5S+CORE_5S and
+    TAIL_6S+CORE_6S so its OWN linear shift reproduces `alpha_5s`/`alpha_6s`. Since 9P and 10P went
+    explicit in LINES_6S, TAIL_6S shrank by exactly their static share, but `_PN` still names only
+    five doublets (`_RADIAL_SIGN` has no entry for a 6S-9P or 6S-10P pair, a physics judgement this
+    wave does not make), so `_rspt4`'s far channel now carries LESS than `alpha_6s`'s dynamic sum
+    does at these six crossings, by up to 1.15 per cent (measured here, all six 6S residuals run
+    0.72 to 1.15 per cent against 5S's own 0.004 to 0.007, unmoved because LINES_5S was not
+    touched). OWED beyond C6b's window: `_PN`, `LEVELS` and `_RADIAL_SIGN` extended to 9P and 10P so
+    `_rspt4` carries them as discrete levels the way `vector_coefficient` and `scattering_rates` now
+    do (their own j_list was the same silent-truncation defect and is fixed in this wave)."""
     for name, lam in hp.crossings():
-        for g in ("5S", "6S"):
-            e2, _ = hp._rspt4(g, lam)
-            assert abs(e2 / 1e6 + 1.0) < 2e-3, (name, g, e2)
+        e2_5s, _ = hp._rspt4("5S", lam)
+        assert abs(e2_5s / 1e6 + 1.0) < 2e-3, (name, "5S", e2_5s)
+        e2_6s, _ = hp._rspt4("6S", lam)
+        assert abs(e2_6s / 1e6 + 1.0) < 0.013, (name, "6S", e2_6s)
 
 
 def test_einstein_chain_d2_width_and_6s_lifetime():
@@ -86,9 +100,12 @@ def test_vector_sum_is_trace_invariant():
         assert abs(s_cir - s_lin) < 1e-9 * abs(s_lin)
 
 
+#: RE-PINNED 2026-09-25 when C6b made 9P and 10P explicit in `polarizability.LINES_6S` (probe:d66818d0): each crossing
+#: moves, most near a 6S-nP pole (1297.5 by 9 per cent, 1031.9 by 6), and the 1203.9 coefficient from +0.8736 to
+#: +0.8690, so the "+0.87 Hz per megahertz squared" the front pages quote holds at its two digits.
 PINNED_C = {
-    "1203.9": +0.8736, "1287.9": -12.2667, "1339.6": +62.0149,
-    "1297.5": +10.9817, "1029.7": +9.8191, "1031.9": +1.2898,
+    "1203.9": +0.8690, "1287.9": -12.3628, "1339.6": +61.9481,
+    "1297.5": +9.9910, "1029.7": +9.6715, "1031.9": +1.2073,
 }
 
 
@@ -100,8 +117,13 @@ def test_quartic_coefficients_pinned():
 
 
 def test_vector_coefficient_pinned():
+    """F307 corrected, A132.16, C6b: moved from -280207.0 to -280061.5 (still within 200 of the old
+    pin, most of the shift already carried through a_m/e0's own dependence on the corrected
+    alpha_6s even before the j_list fix below, which pulled it back the rest of the way) once
+    vector_coefficient's j_list was sized to LINES_6S instead of a hardcoded 8, so 9P and 10P are
+    summed here and not silently dropped by the zip against the old length-8 list."""
     v1 = hp.vector_coefficient(1203.886285673291)
-    assert abs(v1 + 280207.0) < 30.0
+    assert abs(v1 + 280061.5) < 30.0
 
 
 def test_scattering_rates_pinned():
@@ -244,19 +266,21 @@ def test_two_photon_matrix_element_and_its_ratio_to_the_light_shift():
     divides by the CITED 1093 a.u., which constants.DELTA_ALPHA_AU carried
     until the 2026-08-24 adjudication and which now lives in
     DELTA_ALPHA_AU_ORSON2021. Since 2026-09-15 the package constant is the ADOPTED
-    dynamic sum, -1131.8 a.u., giving 1.2511, while the module's STATIC line-list
-    sum still gives its own ratio, 1.2367. Three ends, and this test pins each to
-    the construction that produces it: the module end, the constant end and the
-    cited end, which no longer coincide and must not be allowed to drift into
-    one another silently.
+    dynamic sum, -1131.8 a.u., giving 1.2511, while the module's own sum gives its
+    own ratio, 1.2476 since 9P and 10P went explicit (F307 corrected, A132.16, C6b;
+    it read 1.2367 while they were still folded into the static tail). Three ends,
+    and this test pins each to the construction that produces it: the module end,
+    the constant end and the cited end, which no longer coincide and must not be
+    allowed to drift into one another silently.
     """
     from rb5s6s.constants import DELTA_ALPHA_AU, DELTA_ALPHA_AU_ORSON2021
     from rb5s6s.polarizability import delta_alpha
     T = hp.two_photon_matrix_element(993.4192)
     assert abs(T - 707.75) < 0.5
-    # the MODULE end: the static line-list sum, unchanged by the adoption
+    # the MODULE end MOVED (F307 corrected, A132.16, C6b): 9P and 10P are explicit lines now, so
+    # this end is no longer the static-tail sum alone, and it reads 1.2476, not 1.2367
     ratio = 2.0 * abs(T) / abs(delta_alpha(993.4192))
-    assert abs(ratio - 1.2367) < 0.002
+    assert abs(ratio - 1.2476) < 0.002
     # the CONSTANT end: the adopted dynamic sum since 2026-09-15. Until then
     # this line read 1.2367 and the two ends coincided; they no longer do, and
     # the gap is the 9P-and-above group read dynamically.
@@ -273,8 +297,10 @@ def test_two_photon_matrix_element_and_its_ratio_to_the_light_shift():
 
 
 def test_two_photon_rabi_uses_the_geometric_arm_combination():
-    """Omega/2pi = 450 kHz at the campaign maximum, and the retro enters as
-    2 sqrt(rho), not (1 + rho).
+    """Omega/2pi = 1026 kHz at the campaign maximum (RE-PINNED 2026-09-21, O44/F280: was 450 kHz
+    at the retired waist convention; Omega goes as 1/w0^2 and the bore-limited central waist is smaller,
+    42.38 um, so the campaign-maximum Rabi frequency reads higher, not lower), and the retro
+    enters as 2 sqrt(rho), not (1 + rho).
 
     This is the one place the coupling and the shift take different combinations
     of the same two arms: the shift is linear in |E|^2, whose fringe mean is the
@@ -286,33 +312,39 @@ def test_two_photon_rabi_uses_the_geometric_arm_combination():
     the FORM, at a rho where the two differ visibly.
     """
     import math
+    from rb5s6s.constants import W0_CENTRAL_M
     from rb5s6s.lineshape import stark_shift_S0_mhz
-    om = hp.two_photon_rabi_hz(0.225, 64e-6, 0.94)
-    assert abs(om / 1e3 - 449.9) < 0.5
+    om = hp.two_photon_rabi_hz(0.225, W0_CENTRAL_M, 0.94)
+    assert abs(om / 1e3 - 1026.0) < 0.5
 
     # the form: at rho = 0.36 the geometric and arithmetic combinations differ
-    # by 11.8 per cent, so a regression to (1 + rho) cannot hide here
+    # by 11.8 per cent, so a regression to (1 + rho) cannot hide here. These are
+    # relationships, not absolute pins, and hold unchanged at the new waist
+    # (verified live: the ratios below are w0-independent to 1e-12).
     rho = 0.36
-    got = hp.two_photon_rabi_hz(0.225, 64e-6, rho)
-    one_arm = hp.two_photon_rabi_hz(0.225, 64e-6, 0.5) / (2.0 * math.sqrt(0.5))
+    got = hp.two_photon_rabi_hz(0.225, W0_CENTRAL_M, rho)
+    one_arm = hp.two_photon_rabi_hz(0.225, W0_CENTRAL_M, 0.5) / (2.0 * math.sqrt(0.5))
     assert abs(got / (one_arm * 2.0 * math.sqrt(rho)) - 1.0) < 1e-12
     assert abs(got / (one_arm * (1.0 + rho)) - 1.0) > 0.1
 
     # Omega is linear in power and goes as 1/w0^2, both because it is linear in
     # intensity: a two-photon RABI FREQUENCY is first order in I, not second
-    assert abs(hp.two_photon_rabi_hz(0.450, 64e-6, 0.94) / om - 2.0) < 1e-12
-    assert abs(hp.two_photon_rabi_hz(0.225, 32e-6, 0.94) / om - 4.0) < 1e-12
+    assert abs(hp.two_photon_rabi_hz(0.450, W0_CENTRAL_M, 0.94) / om - 2.0) < 1e-12
+    assert abs(hp.two_photon_rabi_hz(0.225, W0_CENTRAL_M / 2, 0.94) / om - 4.0) < 1e-12
 
     # and the ratio to the committed S0 is the band's matching end times the
     # contrast, which is the whole content of the correction. Since the
     # S0 defaults to the package constant, which since 2026-09-15 is the
     # adopted dynamic sum, so the matching end is 1.2511; the cited 1.2951 end
-    # is reproduced by passing the Orson constant explicitly.
+    # is reproduced by passing the Orson constant explicitly. UNCHANGED at the
+    # new waist (verified live, both sides move by the same aperture factor):
+    # 1.2501 and 1.2944 against the same 1.2511/1.2951 targets, inside the same
+    # 1e-3 tolerance this test always used.
     from rb5s6s.constants import DELTA_ALPHA_AU_ORSON2021
     contrast = 2.0 * math.sqrt(0.94) / 1.94
-    ratio = om / (stark_shift_S0_mhz(0.225, 64e-6, rho=0.94) * 1e6)
+    ratio = om / (stark_shift_S0_mhz(0.225, W0_CENTRAL_M, rho=0.94) * 1e6)
     assert abs(ratio - 1.2511 * contrast) < 1e-3
     ratio_cited = om / (stark_shift_S0_mhz(
-        0.225, 64e-6, rho=0.94,
+        0.225, W0_CENTRAL_M, rho=0.94,
         delta_alpha_au=DELTA_ALPHA_AU_ORSON2021) * 1e6)
     assert abs(ratio_cited - 1.2951 * contrast) < 1e-3

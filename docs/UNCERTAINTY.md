@@ -164,17 +164,28 @@ see section 5.
 
 ### 3a. The fit window as an open systematic
 
-The fitted collisional width falls with widening fit window in 30 of 32
-conditions over the wing-safe range
-([`results/fit_window_scan.csv`](../results/fit_window_scan.csv),
-`sign_test_p` = 2.46e-7, a tail under exchangeable signs, its note says
-why) while the fit quality stays flat
-(`chi2_red_median` rows). In the bound's own units, the indicative
-per-window slope spans 0.0069 to 0.0105 MHz per 10¹² cm⁻³ across that range
-(`gamma_density_slope` rows): the slope values sit at a quarter to a third
-of the 0.030 headline bound, and window choice moves them by 0.0036, about
-an eighth of it. Every window is consistent with zero, so the committed
-bound stands. No
+At the calculated waist the fitted collisional width does not drift with the
+fit window over the wing-safe range: it falls in
+[18](../results/fit_window_scan.csv "ref:fit_window_scan:n_drift_negative:summary") of
+[32](../results/fit_window_scan.csv "ref:fit_window_scan:n_conditions:summary")
+conditions ([`results/fit_window_scan.csv`](../results/fit_window_scan.csv),
+`sign_test_p` = [0.597](../results/fit_window_scan.csv "ref:fit_window_scan:sign_test_p:summary"),
+a tail under exchangeable signs, its note says why), the mean drift is
+[-0.058](../results/fit_window_scan.csv "ref:fit_window_scan:gamma_drift_sigma_mean:summary") ±
+[0.062](../results/fit_window_scan.csv "ref:fit_window_scan:gamma_drift_sigma_mean:summary:err")
+σ, and the fit quality stays flat (`chi2_red_median` rows). The σ that drift
+is counted in is `fit_condition`'s own `gamma_coll_err`, which reads its
+covariance from a Jacobian stepped inside one profile-grid cell and is 1.6 to
+1.9 times too small on the width split (F521, repaired in the next wave): the
+normalised mean and the over-two-sigma fraction are therefore upper bounds
+on the drift in true σ, while the sign count uses no σ at all.
+
+The drift the
+retired waist showed, in 30 of 32 conditions, does not survive the
+recomputation. In the bound's own units the indicative per-window slope
+spans the `gamma_density_slope` rows, and the window moves it by less than
+its own error at every window. Every window is consistent with zero, so the
+committed bound stands. No
 committed error bar yet carries a window term. The closing measurement is
 the shared-slope construction re-run per window. §4.14 of
 [the statistics chapter](methods/06_the_statistics.md) carries the full
@@ -326,7 +337,7 @@ puts the aperture at the beam's own 1/e^2 radius. The direction of the error is
 stated here instead of left to be inferred: a real beam has `M^2 > 1`, so the true
 Rayleigh range is *shorter* than every number in this record assumes, the window
 ratio *larger*, and the collection-window correction on the second and third
-cumulants bigger than the signed rows the record carries.
+moments bigger than the signed rows the record carries.
 
 Nothing quantifies it,
 because nothing has measured `M^2` on this bench.
@@ -402,10 +413,10 @@ Across the campaign's own four-point grid, 70/90/110/130 C, the
 differential is below
 [0.054](../results/collisional_shift_bound.csv "ref:collisional_shift_bound:bound:shift_bound_differential")
 MHz, about
-[4.7](../results/collisional_shift_bound.csv "ref:collisional_shift_bound:comparison:light_shift_over_collisional")
+[3.4](../results/collisional_shift_bound.csv "ref:collisional_shift_bound:comparison:light_shift_over_collisional")
 times smaller than the light-shift bound this record quotes on the same
 axis, below
-[0.26](../results/stark_joint.csv "ref:stark_joint:S0_225mW_ub95:primary")
+[0.18](../results/stark_joint.csv "ref:stark_joint:S0_225mW_ub95:primary")
 MHz at 225 mW. So a collisional shift is not separable from zero by this
 dataset. The differential is quoted beside the absolute
 bound because it is the smaller and more relevant scale. **The mechanism this

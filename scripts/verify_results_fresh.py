@@ -55,6 +55,7 @@ CHEAP = {
     # the freshness canary that runs without --all.
     "run_moment_admission": ["moment_admission.csv"],
     "run_beta_self_theory": ["beta_self_theory.csv"],   # ~1 s, no data read
+    "run_ladder_terms": ["ladder_terms.csv"],   # ~1 s, reads two committed CSVs and the density law
     "run_density_laws": ["density_laws.csv"],
     "run_four_peak_contrasts": ["four_peak_contrasts.csv"],
     "run_detection_budget": ["detection_budget.csv"],
@@ -69,6 +70,7 @@ CHEAP = {
     # pure quadrature over the model line, a few seconds, no traces
     "run_cumulant_window_check": ["cumulant_window_check.csv"],
     "make_twin_term_census": ["twin_term_census.csv"],
+    "make_model_terms": ["model_terms.csv"],
     # closed forms over the package's own geometry functions, under a second
     "run_waist_ladder": ["waist_ladder.csv"],
     "run_kernel_identifiability": ["kernel_identifiability.csv"],
@@ -565,7 +567,7 @@ _EXPECTED_INSTABILITY = {
     ),
     ("identifiability_profile.csv", "*"): (
         "2026-08-19, three runs. The per-cell profile map of the same surface, "
-        "1857 cells, a different one moving each run. The bound the map "
+        "1857 cells, a different one moving each run. The bound the map "  # <!-- other-quantity: a count of profile-map cells, not the kernel_k5 headroom -->
         "delivers is stable; individual cells are not."
     ),
 }

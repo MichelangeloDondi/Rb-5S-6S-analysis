@@ -105,7 +105,7 @@ def climb() -> None:
             "chi2_red": 1.0,
             "odd_sign_agreement": "n/a",
             "odd_sign_reason": "this producer fits a VARIANCE law, an even quantity. No odd "
-                               "cumulant enters it, so there is no sign to agree about and "
+                               "moment enters it, so there is no sign to agree about and "
                                "asserting one would be a pass nobody earned",
             "injected_over_record": 1.0,
             "injected_tau_over_record": ladder_gate.spectrum_ratio(draws, 1.0),

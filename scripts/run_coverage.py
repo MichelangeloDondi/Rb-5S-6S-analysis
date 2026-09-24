@@ -22,6 +22,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from rb5s6s import config as C  # noqa: E402
 from rb5s6s.coverage import coverage_study, minimum_detectable_beta  # noqa: E402
+from rb5s6s.pmfmt import pm_cells  # noqa: E402   # every value and its err at two significant digits (owner, 2026-09-24)
 
 BETAS = (0.0, 0.05, 0.10, 0.20)   # MHz per 1e12 cm^-3
 
@@ -55,18 +56,18 @@ def main() -> int:
                         "off a grid, so its resolution is the grid step", "DIAGNOSTIC"])
         for r in rows:
             k = f"beta_true_{r['beta_true']:.2f}"
-            w.writerow(["bias", k, f"{r['bias']:.4f}", f"{r['bias_se']:.4f}",
+            w.writerow(["bias", k, *pm_cells(r["bias"], r["bias_se"]),
                         "MHz/1e12, mean(beta_eff)-beta_true. Err is the Monte-Carlo "
                         "standard error over n_trials", "DIAGNOSTIC"])
-            w.writerow(["scatter", k, f"{r['scatter']:.4f}", f"{r['scatter_se']:.4f}",
+            w.writerow(["scatter", k, *pm_cells(r["scatter"], r["scatter_se"]),
                         "MHz/1e12, sd of beta_eff across trials. Err is its own "
                         "Monte-Carlo standard error", "DIAGNOSTIC"])
-            w.writerow(["coverage95", k, f"{r['coverage']:.3f}", f"{r['coverage_se']:.3f}",
+            w.writerow(["coverage95", k, *pm_cells(r["coverage"], r["coverage_se"]),
                         "fraction bound95_nscale >= beta_true (>=0.95 = valid). Err is "
                         "binomial over n_trials, so a shortfall inside it is sampling "
                         "noise rather than a coverage failure", "DIAGNOSTIC"])
-            w.writerow(["false_measurement_rate", k, f"{r['false_measurement_rate']:.3f}",
-                        f"{r['false_measurement_rate_se']:.3f}",
+            w.writerow(["false_measurement_rate", k,
+                        *pm_cells(r["false_measurement_rate"], r["false_measurement_rate_se"]),
                         "fraction the SNR>=3 rule calls MEASUREMENT (the detection power / at beta=0 the false-positive). Err is binomial",
                         "DIAGNOSTIC"])
 

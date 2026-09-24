@@ -211,4 +211,7 @@ def test_the_long_format_sibling_is_recognised():
     """Checked on the storage shape that caused the worst false alarm."""
     names = {"d_skew", "d_skew_mc_err"}
     assert any(f"d_skew_{s}" in names for s in SIBLING_SUFFIXES)
-    assert not any(f"d_kappa9_{s}" in names for s in SIBLING_SUFFIXES)
+    # "d_moment9" is a synthetic negative control, not a real column: the live vector's
+    # ninth order is spelled "mu9" (results/moment_admission.csv), never spelled out, so
+    # this checks the sibling match does not fire on an absent, differently-spelled key.
+    assert not any(f"d_moment9_{s}" in names for s in SIBLING_SUFFIXES)

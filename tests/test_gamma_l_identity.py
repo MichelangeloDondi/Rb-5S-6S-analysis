@@ -212,8 +212,10 @@ def test_at_one_condition_only_the_SUM_of_the_lorentzian_widths_is_identified():
         for seed in range(3):
             rng = np.random.default_rng(seed)
             f, v = synthetic_traces(truth_gc, 3.0, 0.93, gamma_l=gl_true,
-                                    n_traces=5, n_points=2000, noise=0.004, rng=rng)
-            o = fit_condition(f, v, T_C=130.0, transit_fwhm=0.93, fit_gamma_l=True)
+                                    n_traces=5, n_points=2000, noise=0.004, rng=rng,
+                                    model="convolution")
+            o = fit_condition(f, v, T_C=130.0, transit_fwhm=0.93, fit_gamma_l=True,
+                              model="convolution")
             sums.append(o["gamma_coll"] + o["gamma_l"])
         recovered = float(np.mean(sums))
         true_sum = truth_gc + gl_true

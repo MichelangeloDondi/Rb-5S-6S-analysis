@@ -12,16 +12,26 @@ the shape of the distribution -- comes along for free.
 WHAT MADE IT URGENT. Measured the same day: the wing's excess kurtosis runs +0.18 to +2.86
 across conditions, median +0.82, against a Gaussian control of -0.005 +- 0.096. At
 matched sigma with only the shape differing, a Gaussian draw understates the replica spread
-of the variance by 1.20 times and of the FOURTH cumulant by 3.82. The covariance that
-weights the whole moment likelihood is estimated from those replicas, so every higher-moment
-bar is too TIGHT -- the dangerous direction, and the opposite of the other findings that day.
+of the variance by 1.20 times and of the FOURTH cumulant by 3.82 (owner order O49, 2026-09-22:
+the file now reads the fourth CENTRAL MOMENT instead, `scipy.stats.moment` in place of
+`scipy.stats.kstat`'s cumulant estimator, since mu_4 = kappa_4 + 3 mu_2^2 differs from kappa_4
+by a term that does not vanish; the 3.82 is the retired reading and stands only as the
+history that made the arm urgent, not as this file's own number, which C6b's re-run states).
+These factors describe the scatter of the NOISE'S OWN sample moments. They do not by themselves
+widen the LINE'S moment bars: a windowed line moment is, to first order, a weighted sum of the
+samples, whose variance is set by the noise's covariance and not by its shape (the thesis
+session's check of 2026-09-25: Student-t noise at matched sigma left the line's windowed mu2 to
+mu5 within 0.97 to 1.03 of a Gaussian draw's spread). What can move the line's bars is the
+correlation the resampled blocks carry. OWED: the line's windowed mu2 to mu5 under the
+block-resampled 2025 residuals against a Gaussian draw at matched sigma and matched correlation,
+per order and window, through the twin.
 
 THE LADDER, and this file climbs it rather than asserting it.
 
 | rung | what it asserts |
 |---|---|
 | **noiseless** | handed residuals that are identically zero, the resampler returns zero and the statistics equal their noiseless values exactly. A resampler that invents scatter from nothing fails here |
-| **low**, 0.3x | residuals scaled to 0.3 of their own amplitude: the injected sigma tracks the scale, and the cumulants' spread falls as it must |
+| **low**, 0.3x | residuals scaled to 0.3 of their own amplitude: the injected sigma tracks the scale, and the moments' spread falls as it must |
 | **archive**, 1.0x | the archive's residuals at their own amplitude, against the Gaussian arm at the SAME sigma. The ratio of the two spreads is the number this file exists to produce |
 
 WHAT IT CANNOT SEE, stated first. The residuals are what is left after a baseline is removed,
@@ -60,10 +70,11 @@ REPS = 400
 BLOCK = 16          # samples per bootstrap block; the wing's correlation dies well inside it
 MIN_POOL = 20000    # THE RUNGS SET THIS AND IT IS NOT A PREFERENCE. A bootstrap can only
                     # resample the tail its pool happens to contain, so it under-reads the
-                    # fourth cumulant's spread when the pool is small: measured against fresh
-                    # draws from the same law, the ratio is 0.56 at a pool of 5000 and settles
-                    # at 0.88 to 0.91 from 20000 upward. Below this size the arm would report a
-                    # correction far too small and call it a measurement.
+                    # fourth moment's spread when the pool is small: measured against fresh
+                    # draws from the same law (the retired kstat/cumulant reading; owner order O49,
+                    # 2026-09-22, re-derive on stats.moment), the ratio was 0.56 at a pool of 5000
+                    # and settled at 0.88 to 0.91 from 20000 upward. Below this size the arm would
+                    # report a correction far too small and call it a measurement.
 BOOTSTRAP_FLOOR = 0.90   # and it does not reach 1 even at 320000: the residual under-read is a
                          # property of resampling with replacement, so every ratio this file
                          # reports is a LOWER BOUND on the true one by about a tenth.
@@ -111,17 +122,22 @@ def block_resample(pool, n, rng, scale=1.0):
 
 
 def spread_table(pool, sigma, n, rng, scale):
-    """Replica spreads of k2 and k4 under the archive's own residuals and under a Gaussian
-    draw at the SAME sigma. Only the shape differs between the two columns."""
+    """Replica spreads of mu2 and mu4 under the archive's own residuals and under a Gaussian
+    draw at the SAME sigma. Only the shape differs between the two columns.
+
+    mu4 IS THE FOURTH CENTRAL MOMENT (owner order O49, 2026-09-22), `scipy.stats.moment`, not
+    `scipy.stats.kstat`'s fourth CUMULANT: kappa_4 = mu_4 - 3 mu_2^2, a term that does not
+    vanish, so every number this function returns for the fourth order moved when the estimator
+    did and is not the 3.82/0.56-family of readings the module docstring's history quotes."""
     got = {}
     for name, fn in (("residual", lambda: block_resample(pool, n, rng, scale)),
                      ("gaussian", lambda: rng.standard_normal(n) * (sigma * scale))):
-        k2, k4 = [], []
+        mu2, mu4 = [], []
         for _ in range(REPS):
             x = fn()
-            k2.append(float(np.var(x, ddof=1)))
-            k4.append(float(stats.kstat(x, 4)))
-        got[name] = (float(np.std(k2, ddof=1)), float(np.std(k4, ddof=1)),
+            mu2.append(float(np.var(x, ddof=1)))
+            mu4.append(float(stats.moment(x, moment=4)))
+        got[name] = (float(np.std(mu2, ddof=1)), float(np.std(mu4, ddof=1)),
                      float(np.std(x, ddof=1)))
     return got
 
@@ -150,7 +166,7 @@ def main() -> int:
     # is the archive's own measured median, scaled to unit variance so only the SHAPE differs
     # from the Gaussian arm. What the rung asserts is the thing the real arm will rely on and
     # the first draft simply assumed: that a MOVING-BLOCK BOOTSTRAP of a pool reproduces that
-    # pool's own fourth-cumulant spread rather than whitening it back toward Gaussian.
+    # pool's own fourth-moment spread rather than whitening it back toward Gaussian.
     NU = 11.3
     for rung, scale in (("low", 0.3), ("archive", 1.0)):
         # THE RUNG TESTS THE STATISTIC THE ARM ACTUALLY REPORTS, which is a MEDIAN over
@@ -167,10 +183,10 @@ def main() -> int:
             for _ in range(8):
                 pool = rng.standard_t(NU, 40000) / np.sqrt(NU / (NU - 2.0))
                 g = spread_table(pool, 1.0, 2000, rng, scale)
-                gb = float(np.std([float(stats.kstat(rng.standard_normal(2000) * scale, 4))
+                gb = float(np.std([float(stats.moment(rng.standard_normal(2000) * scale, moment=4))
                                    for _ in range(REPS)], ddof=1))
-                dd = float(np.std([float(stats.kstat(
-                    rng.standard_t(NU, 2000) / np.sqrt(NU / (NU - 2.0)) * scale, 4))
+                dd = float(np.std([float(stats.moment(
+                    rng.standard_t(NU, 2000) / np.sqrt(NU / (NU - 2.0)) * scale, moment=4))
                     for _ in range(REPS)], ddof=1))
                 bs.append(g["residual"][1] / g["gaussian"][1])
                 ds.append(dd / gb)
@@ -186,8 +202,8 @@ def main() -> int:
         # would refuse a method behaving exactly as its own closure says it must.
         cover = float(np.mean([abs(b / d / BOOTSTRAP_FLOOR - 1.0) < 0.20
                                for b, d in zip(boot, direct)]))
-        rows.append((rung, "sd_k4_bootstrap_over_gaussian", mb))
-        rows.append((rung, "sd_k4_direct_over_gaussian", md))
+        rows.append((rung, "sd_mu4_bootstrap_over_gaussian", mb))
+        rows.append((rung, "sd_mu4_direct_over_gaussian", md))
         rows.append((rung, "bootstrap_carries_of_truth", mb / md))
         rows.append((rung, "sigma_resampled_over_gaussian", ml))
         detail = {
@@ -195,8 +211,8 @@ def main() -> int:
             "coverage": cover, "nominal": 1.0,
             "chi2_red": 1.0,
             "odd_sign_agreement": "n/a",
-            "odd_sign_reason": "this arm compares the SPREAD of an even cumulant between two "
-                               "noise sources at one sigma. No odd cumulant is estimated and no "
+            "odd_sign_reason": "this arm compares the SPREAD of an even moment between two "
+                               "noise sources at one sigma. No odd moment is estimated and no "
                                "sign is predicted, so agreement would be a pass nobody earned",
             "injected_over_record": ml,
             "injected_tau_over_record": ladder_gate.spectrum_ratio(draws, RECORD_NOISE_TAU),
@@ -215,7 +231,8 @@ def main() -> int:
     # ------------------------------------- THE ARCHIVE'S OWN RESIDUALS, REFUSED UNTIL NOW
     # THE POOL IS NORMALISED AND SHARED, and the rungs are why. Per condition the archive
     # gives only a few thousand wing residuals, and the rungs measured that a bootstrap on a
-    # pool that small under-reads the fourth cumulant's spread by 44 per cent -- so the first
+    # pool that small under-reads the fourth moment's spread (44 per cent, the retired kstat
+    # reading; owner order O49, 2026-09-22, re-derive on stats.moment) -- so the first
     # version of this block refused all eight conditions and reported nothing. That was
     # correct and it was not usable. What the arm measures is the shape of the noise and
     # not its amplitude, and the amplitude is exactly what differs between conditions, so each
@@ -228,7 +245,12 @@ def main() -> int:
     # other three lines drawing the shared shape. The pool takes every condition with four or more
     # traces; the study's own rows keep their N_COND.
     tau_rows = []
-    _pool_keys = [k for k in sorted(groups) if len(groups[k]) >= 4] if os.environ.get("RB5S6S_RESIDUAL_POOL_OUT") else keys
+    # EVERY CONDITION, WHATEVER THE ENVIRONMENT SAYS (F328, 2026-09-22): the full pool used to be taken only when
+    # RB5S6S_RESIDUAL_POOL_OUT was set, so a chain that ran this producer without the export wrote the study's first eight
+    # conditions and dropped the other 24 conditions' `tau_resid` rows, and every keyed noise law read after it whitened three
+    # of the four lines by the raw segment time (a median 2.66 times the post-fit one). The committed table must not depend on
+    # an environment variable: the variable decides only whether the sample array is exported below.
+    _pool_keys = [k for k in sorted(groups) if len(groups[k]) >= 4]
     for k in _pool_keys:
         triples = ladder_gate.real_traces(ANALYSIS_ID, __file__, rows=groups[k][:5])
         rs = [residuals_of(t[1][1]) for t in triples]
@@ -282,11 +304,11 @@ def main() -> int:
         g = spread_table(shared, 1.0, 2000, rng, 1.0)
         gb2 = float(np.std([float(np.var(rng.standard_normal(2000), ddof=1))
                             for _ in range(REPS)], ddof=1))
-        gb4 = float(np.std([float(stats.kstat(rng.standard_normal(2000), 4))
+        gb4 = float(np.std([float(stats.moment(rng.standard_normal(2000), moment=4))
                             for _ in range(REPS)], ddof=1))
-        rows.append(("real", "sd_k2_over_gaussian", g["residual"][0] / gb2))
-        rows.append(("real", "sd_k4_over_gaussian", g["residual"][1] / gb4))
-        rows.append(("real", "sd_k4_over_gaussian_corrected",
+        rows.append(("real", "sd_mu2_over_gaussian", g["residual"][0] / gb2))
+        rows.append(("real", "sd_mu4_over_gaussian", g["residual"][1] / gb4))
+        rows.append(("real", "sd_mu4_over_gaussian_corrected",
                      (g["residual"][1] / gb4) / BOOTSTRAP_FLOOR))
 
     NOTE = ("the twin draws independent Gaussian samples and the archive does not. This arm "

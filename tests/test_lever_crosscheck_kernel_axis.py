@@ -29,7 +29,7 @@ def kernel_k3_range_mhz() -> tuple[float, float]:
     """What `results/kernel_k3.csv` FITS for this component, read from the file.
 
     It was typed as (0.315, 0.449) until a reader compared it with the file's
-    own extremes, 0.314803 and 0.449389, so the typed pair rounded INWARD on
+    own extremes, 0.314803 and 0.449389 (the extremes that stood at the time), so the typed pair rounded INWARD on
     both sides: the guard would have refused the very per-peak minimum and
     maximum it claimed to admit, and it held only because the constant sits in
     the middle. A range that bounds a constant is read from the thing it bounds.
@@ -118,3 +118,46 @@ def test_the_result_reports_the_axis(field):
     assert f'"{field}"' in src, (
         f"lever_crosscheck_beta no longer returns {field!r}, so the producer's "
         "row for the new axis would vanish without any test failing")
+
+
+def _kernel_k3_rows():
+    import csv
+    from rb5s6s import config as C
+    with (C.RESULTS_DIR / "kernel_k3.csv").open(encoding="utf-8", newline="") as fh:
+        rd = csv.DictReader(fh)
+        return rd.fieldnames, list(rd)
+
+
+def _write_rows(path, fieldnames, rows):
+    import csv
+    with path.open("w", encoding="utf-8", newline="") as fh:
+        w = csv.DictWriter(fh, fieldnames=fieldnames)
+        w.writeheader()
+        w.writerows(rows)
+
+
+def test_the_component_is_the_kernel_chains_own_mean_row():
+    """F322's repair reads the chain's row, so the constant has one producer."""
+    _, rows = _kernel_k3_rows()
+    chain = [float(r["value"]) for r in rows
+             if r.get("scope") == "all" and r.get("quantity") == "k2p5_gamma_l_weighted_mean"]
+    assert len(chain) == 1, f"expected one mean row in kernel_k3.csv, found {len(chain)}"
+    assert LC.GAMMA_L_MEASURED_MHZ == round(chain[0], 3)
+
+
+@pytest.mark.parametrize("plant", ["stale", "missing"])
+def test_a_mean_row_that_left_its_members_is_refused(tmp_path, monkeypatch, plant):
+    """Both ways: a mean row moved off its per-peak rows, and a file without one."""
+    from rb5s6s import config as C
+    fieldnames, rows = _kernel_k3_rows()
+    out = []
+    for r in rows:
+        if r.get("scope") == "all" and r.get("quantity") == "k2p5_gamma_l_weighted_mean":
+            if plant == "missing":
+                continue
+            r = dict(r, value=f"{float(r['value']) + 0.01:.6f}")
+        out.append(r)
+    _write_rows(tmp_path / "kernel_k3.csv", fieldnames, out)
+    monkeypatch.setattr(C, "RESULTS_DIR", tmp_path)
+    with pytest.raises(ValueError):
+        LC._kernel_k3_weighted_mean_mhz()

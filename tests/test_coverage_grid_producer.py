@@ -33,7 +33,7 @@ def test_the_transit_is_derived_and_not_typed():
     m = _module()
     from rb5s6s import constants as K
     assert m.TRANSIT == pytest.approx(
-        K.transit_fwhm_from_w0(K.W0_MEASURED_M, T_C=130.0)), (
+        K.transit_fwhm_from_w0(K.W0_CENTRAL_M, T_C=130.0)), (
         "the producer's transit no longer equals the record's own derivation")
     src = inspect.getsource(m).split("TRANSIT")[1][:120]
     assert "transit_fwhm_from_w0" in src, (
@@ -42,9 +42,15 @@ def test_the_transit_is_derived_and_not_typed():
 
 
 def test_the_widths_are_positive_and_ordered_as_the_record_has_them():
+    """RE-ORDERED 2026-09-24. At the retired waist convention the transit (0.93 MHz at 130 C) sat
+    below the laser width the fit returned; at the ruled 42.38 um it is 1.45 MHz, and the reference point's
+    laser width is 0.47, because the transit took the width the laser kernel had carried (the tied
+    sigma_laser(T) of results/global_fit.csv fell from 2.05, 2.15 and 1.54 to 0.64, 0.98 and 0.69 MHz).
+    The ordering is asserted as the record now has it, so a waist move that flips it again fails here and
+    is read rather than absorbed."""
     m = _module()
     assert 0 < m.GAMMA < m.SIGMA, "collisional width should sit below the laser width"
-    assert 0 < m.TRANSIT < m.SIGMA, "transit should sit below the laser width"
+    assert 0 < m.SIGMA < m.TRANSIT, "at the ruled waist the transit sits above the laser width"
 
 
 def test_the_worker_count_respects_the_standing_ceiling():

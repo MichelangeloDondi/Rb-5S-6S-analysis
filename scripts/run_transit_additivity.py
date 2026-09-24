@@ -121,7 +121,10 @@ M_RB87 = 86.909180527 * 1.66053906660e-27
 # the solved profile through the kernel is the named open derivation.
 LAMBDA_M = 400.8e-9
 TEMPS_UK = (10.0, 20.0, 50.0, 100.0, 170.0)
-GAMMA_L_EXTRA_MHZ = 0.398      # the twin's common Lorentzian component
+# the twin's common Lorentzian component: the record's own fitted constant Lorentzian, read from its
+# committed cell and never typed (F322, 2026-09-22; it was typed as the retired convention's 0.398)
+with (C.RESULTS_DIR / "kernel_budget.csv").open(encoding="utf-8") as _fh:
+    GAMMA_L_EXTRA_MHZ = float({r[0]: r[1] for r in csv.reader(_fh)}["gamma_l_weighted_mean"])
 SIGMA_G_MHZ = 0.30             # the twin's Gaussian laser contribution
 BRANCHES = ("single_velocity", "ensemble_flux", "ensemble_speed")
 

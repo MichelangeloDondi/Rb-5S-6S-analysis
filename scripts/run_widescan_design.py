@@ -121,7 +121,7 @@ def narrow_to_pedestal_area(rho: float) -> float:
 
 def main() -> int:
     gc, sl, fwhm, rate = committed()
-    transit = K.transit_fwhm_from_w0(K.W0_MEASURED_M, 110.0) * math.sqrt(
+    transit = K.transit_fwhm_from_w0(K.W0_CENTRAL_M, 110.0) * math.sqrt(
         (T_C + 273.15) / 383.15)
     ped_fwhm = pedestal_fwhm_mhz(T_C)
     ped_sigma = ped_fwhm / 2.3548200450309493

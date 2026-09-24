@@ -17,12 +17,12 @@ the apparatus. Rules:
 import os
 from pathlib import Path
 
-# W0_MEASURED_M and transit_fwhm_from_w0 are used below; RHO_RETRO,
+# W0_CENTRAL_M and transit_fwhm_from_w0 are used below; RHO_RETRO,
 # RHO_RETRO_ERR and W0_BAND_M are deliberate RE-EXPORTS so the scripts, which
 # already import config as C, can reach every prior through one namespace
 # instead of importing constants separately.
 from .constants import (  # noqa: F401
-    RHO_RETRO, RHO_RETRO_ERR, W0_BAND_M, W0_MEASURED_M, transit_fwhm_from_w0)
+    RHO_RETRO, RHO_RETRO_ERR, W0_BAND_M, W0_CENTRAL_M, transit_fwhm_from_w0)
 
 # --------------------------------------------------------------------------
 # Paths
@@ -549,11 +549,11 @@ FIT_HALFWIDTH_MAX_MHZ = 25.0
 ~40 MHz mirror separation so the window always excludes it, even if a
 condition is anomalously broad."""
 
-TRANSIT_FWHM_PLACEHOLDER_MHZ = transit_fwhm_from_w0(W0_MEASURED_M, 110.0)
+TRANSIT_FWHM_PLACEHOLDER_MHZ = transit_fwhm_from_w0(W0_CENTRAL_M, 110.0)
 """Central transit FWHM at 110 C (transition axis, bare kernel), scaled sqrt(T)
 elsewhere. DERIVED from the corrected transit<->w0 physics
-(constants.transit_fwhm_from_w0, Lehmann-validated) at the W0_MEASURED central
-(64 um) => ~0.93 MHz. This rides on w0, which is an ADOPTED prior until the
+(constants.transit_fwhm_from_w0, Lehmann-validated) at the central waist
+(constants.W0_CENTRAL_M, 42.38 um) => ~1.4 MHz. This rides on w0, which is an ADOPTED prior until the
 fixed-lock session
 knife-edge, so every M3 absolute width that uses this is PRELIMINARY; the
 degeneracy-robust total width and its T-trend are the trustworthy shakedown
@@ -562,18 +562,19 @@ outputs. Do not quote a number built on this without the w0 caveat.
 History: was a hand-set 0.9 (tied to the OLD buggy transit MC, which was ~2x
 too narrow); re-derived 2026-07-12 when the MC flux bug was fixed and w0
 re-centred 32 -> 50 um; re-derived again 2026-08-01 (v3.0.0) when w0 moved
-50 -> 64 um on the accepted lineage measurement, narrowing this to ~0.93 MHz.
-See constants.W0_MEASURED_M."""
+to the lineage's convention, and again on 2026-09-21 (O44) when that convention was retired
+for the bore-limited calculated focus, widening this to ~1.4 MHz.
+See constants.W0_CENTRAL_M."""
 
 RAMP_GEOMETRY_CONFIGS_UM = {
     "L (60 um, config)": 60.0,
     # the M entry is drawn from the record, so it can never drift from the prior
-    f"M ({W0_MEASURED_M * 1e6:.0f} um, recorded)": W0_MEASURED_M * 1e6,
+    f"M ({W0_CENTRAL_M * 1e6:.0f} um, recorded)": W0_CENTRAL_M * 1e6,
     "S (16 um, config)": 16.0,
 }
 """Beam-waist configurations for the ramp-geometry predictions (PLAN §4;
 run_ramp_geometry.py). M is the 2025 recorded prior (re-centred 32 -> 50 um
-2026-07-12, see constants.W0_MEASURED_M); L and S are target for a fixed-lock sessions, all
+2026-07-12, see constants.W0_CENTRAL_M); L and S are target for a fixed-lock sessions, all
 pending knife-edge measurement (OPEN)."""
 
 RAMP_COLLECTION_HALFLENGTH_MM_ENVELOPE = (1.0, 2.0, 4.0)

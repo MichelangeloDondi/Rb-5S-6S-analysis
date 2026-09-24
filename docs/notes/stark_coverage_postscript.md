@@ -17,8 +17,8 @@ Coverage of `kappa_ub95_profile` in the over-dispersed arm, target 0.95:
 
 | $\kappa_{\rm true}$ (MHz/W) | $S_0$(225) implied | coverage | MCSE |
 |---|---|---|---|
-| 0.00, the boundary the construction exists for | 0 | **1.0000** | 0 |
-| 1.15, the joint C3f bound | 0.259 | **1.0000** | 0 |
+| 0.00, the boundary the construction exists for | 0 | **1.0000** | 0 <!-- other-quantity: this note's own coverage sweep at kappa_true=0, exact by construction, not a committed cell --> |
+| 1.15, the joint C3f bound | 0.259 | **1.0000** | 0 <!-- other-quantity: this note's own coverage sweep at kappa_true=1.15, not a committed cell --> |
 | 2.81, the width-only C3d bound | 0.632 | **0.9954** | 0.0027 <!-- other-quantity: the S0 bound as committed when this record was written, since moved by the sweep's regeneration --> |
 | 4.00 | 0.900 | 0.9692 | 0.0068 |
 | 5.50 | 1.238 | **0.9354** | 0.0096 |
@@ -99,7 +99,7 @@ rather than per-point inflation, and that is a separate study.
 ## The Wald comparison, measured rather than repeated
 
 `rb5s6s/stark.py` says the Wald bound "carries no 95% coverage" at the
-boundary. Measured, Wald also over-covers at $\kappa = 0$, at 1.0000 in both
+boundary. Measured, Wald also over-covers at $\kappa = 0$, at 1.0000 in both <!-- other-quantity: this note's own Wald-coverage sweep at kappa=0, not a committed cell -->
 arms, so the docstring's claim is about the mechanism, the sigma being a
 finite-difference artifact where the Jacobian column vanishes, and not about a
 coverage failure at that point. Where Wald is genuinely worse is the middle of
@@ -122,8 +122,8 @@ different parameter, which no per-session nuisance in that fit absorbs.
 
 The committed `results/stark_joint.csv` shows part of the exposure and cannot
 show the rest. Among rows that are the same construction, the pooled kappa bound
-of 1.147 becomes [1.626](../../results/stark_joint.csv "ref:stark_joint:kappa_ub95_drop4192:robustness") with peak 4192 dropped, which removes the entire pilot, so
-a leave-one-peak-out alone moves it by a factor of 1.42.
+of [0.810](../../results/stark_joint.csv "ref:stark_joint:kappa_ub95:primary") becomes [1.076](../../results/stark_joint.csv "ref:stark_joint:kappa_ub95_drop4192:robustness") with peak 4192 dropped, which removes the entire pilot, so
+a leave-one-peak-out alone moves it by a factor of 1.18.
 
 **The spread cannot be widened using `kappa_ub95_camponly`.** Its value is the
 campaign's chi-square read along the joint profile rather than an independent

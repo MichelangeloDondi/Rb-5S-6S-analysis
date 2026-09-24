@@ -89,12 +89,14 @@ def main() -> int:
     print(f"    alpha_5S(0)  = {a5s:8.2f} au   (measured 318.79(1.42))")
     print(f"    alpha_6S(0)  = {a6s:8.1f} au   (Safronova-group 5167(22); tail calibrated)")
     print(f"    5S tune-out  = {t0:9.3f} nm  (measured 790.032326(32))")
-    # THE DIFFERENTIAL AT THE DRIVE IS NOT PRINTED HERE (owner, 2026-09-17). This module stops the 6S list at
-    # 8P and carries the omitted states with a static tail, and that sum is the retired value, which stands
-    # in private/history/ alone. The value of record is the dynamic sum of run_polarizability_deep.py.
+    # THE DIFFERENTIAL AT THE DRIVE IS NOT PRINTED HERE (owner, 2026-09-17). This module's 6S list ran to 8P
+    # with a static tail for the rest until C6b (2026-09-25) made 9P and 10P explicit; the retired value is that
+    # earlier sum, which stands in private/history/ alone. The value of record is the dynamic sum of
+    # run_polarizability_deep.py.
     print("\n  THE DIFFERENTIAL AT 993 nm: results/polarizability_deep.csv, the dynamic sum")
-    print("    to 12P with the 6s continuum, is the value of record; this module's static-tail sum")
-    print("    is not printed. The sign (6S pushed up, a blue shift) is the owner's ruling O27.")
+    print("    to 12P with the 6s continuum, is the value of record; this module's own sum, explicit")
+    print("    to 10P with a static tail above, is not printed. The sign (6S pushed up, a blue shift)")
+    print("    is the owner's ruling O27.")
     print("\n  DESIGN NUMBERS (unpublished; ENVELOPE):")
     print(f"    alpha_6S(1064) = {a6_1064:+.1f} au  (a 1064 trap arm is NOT line-neutral)")
     bands = {}

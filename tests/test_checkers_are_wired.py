@@ -35,6 +35,8 @@ to disagree.
 from __future__ import annotations
 
 import ast
+
+import pytest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -60,6 +62,16 @@ ROOT = Path(__file__).resolve().parents[1]
 #
 # checker path (relative to the repo root) -> why it is not wired
 NOT_WIRED = {
+    "private/checks/mirror_isolation.py":
+        "called by `landing.sh mirror` before every mirror suite (private/cache/ultra_joint_2026-09-12/"
+        "landing.sh:554), which runs in the governance tree this guard's caller globs do not read; it "
+        "asserts the mirror's suite imports the mirror's own package and has no place in the archive's gate.",
+    "private/checks/ch7_vs_outline.py":
+        "a measurement of the thesis chapter against its outline, run by hand in the thesis sessions and "
+        "printed, never a refusal: the chapter lives in another repository and no gate here grades it.",
+    "private/checks/ch7_worksheet.py":
+        "the chapter conversion worksheet's counter, run by hand in the thesis sessions and printed, "
+        "never a refusal: the chapter lives in another repository and no gate here grades it.",
     "private/checks/rename_heading.py":
         "an author's TOOL and not a gate check, the write half of the heading register. It "
         "renames one heading and carries every anchor that points at it across the tracked "
@@ -316,7 +328,11 @@ NOT_WIRED = {
 CALLER_GLOBS = ("scripts/ci_gate.sh", "scripts/run_all.sh",
                 "scripts/prefloor.sh", "scripts/targeted.sh",
                 "tests/*.py", ".github/workflows/*.yml",
-                ".github/workflows/*.yaml")
+                ".github/workflows/*.yaml",
+                # THE HOOK SETTINGS RUN CHECKERS TOO (2026-09-24): every PreToolUse, PostToolUse and Stop hook is a
+                # command naming its checker, and since the hook paths were made worktree-safe that command is the
+                # only place bash_hook, prune_hook, reply_stop_hook and their siblings are called from
+                ".claude/settings.json")  # term-of-art: the hook settings' own path, a link to the governance copy
 
 # A deliberate frozen snapshot of a past mirror state, not a tool anyone
 # runs; tests/test_no_shadowed_script_names.py documents it as such.
@@ -509,11 +525,32 @@ def test_a_written_stub_is_not_a_call(tmp_path):
     assert _is_called(rel, as_call)
 
 
+def _plant_run() -> set:
+    """The checkers the floor runs through its plant runner. `scripts/prefloor.sh` calls
+    `private/checks/run_plants.py`, which DISCOVERS every checker supporting --self-test at run time, so no
+    caller names them one by one; before this wave the floor named each, and folding them into the runner
+    made this guard read 21 of them as called by nothing (2026-09-24). A plant run is a call: the floor
+    refuses on its exit code."""
+    floor_script = ROOT / "scripts" / "prefloor.sh"
+    plant_runner = ROOT / "private" / "checks" / "run_plants.py"
+    if not (floor_script.is_file() and plant_runner.is_file() and "run_plants.py" in floor_script.read_text(errors="ignore")):
+        return set()
+    import importlib.util
+    try:
+        spec = importlib.util.spec_from_file_location("_run_plants", plant_runner)
+        mod = importlib.util.module_from_spec(spec); spec.loader.exec_module(mod)
+        found = mod.discover()
+    except Exception as e:           # a runner that cannot load leaves this guard unable to read its callers
+        pytest.skip(f"the plant runner could not be loaded, so its callers cannot be read: {e}")
+    return {("private/checks/" + n) if "/" not in n else n for n in found}
+
+
 def test_every_checker_is_called_by_something_or_says_why_not():
     sources = _caller_sources()
+    planted = _plant_run()
     orphans = []
     for rel in _checkers():
-        if _is_called(rel, sources) or rel in NOT_WIRED:
+        if _is_called(rel, sources) or rel in NOT_WIRED or rel in planted:
             continue
         orphans.append(rel)
     assert not orphans, (

@@ -68,8 +68,8 @@ The weak-field limit and its cost are discussed in
 with the committed panel at [fig24](../../figures/fig24_weak_field_limit.png).
 [`two_photon_rabi_hz`](../../rb5s6s/hyperpolarizability.py) computes the
 two-photon coupling from bench quantities, compared against
-[`GAMMA_NAT_HZ`](../../rb5s6s/constants.py) using the waist convention
-[`W0_MEASURED_M`](../../rb5s6s/constants.py). The
+[`GAMMA_NAT_HZ`](../../rb5s6s/constants.py) at the waist
+[`W0_CENTRAL_M`](../../rb5s6s/constants.py), the calculated bore-limited focus. The
 [`stark_ramp`](../../rb5s6s/lineshape.py) docstring states the same caveat
 and points at `scripts/run_saturation_probe.py`, which measures the
 light-shift tightening from a saturation term, detailed in
@@ -119,15 +119,15 @@ two-photon rate departs from the naive square law by a stated percentage.
 
 ```python
 import numpy as np
-from rb5s6s import (GAMMA_NAT_HZ, W0_MEASURED_M, stark_shift_S0_mhz,
-                    two_photon_rabi_hz)
+from rb5s6s import GAMMA_NAT_HZ, stark_shift_S0_mhz, two_photon_rabi_hz
+from rb5s6s.constants import W0_CENTRAL_M
 
 def saturation_parameter(power_w, w0_m):
     omega_hz = two_photon_rabi_hz(power_w, w0_m)
     return 2.0 * (omega_hz / GAMMA_NAT_HZ) ** 2
 
 power = 0.225  # W, one reference point on this bench
-w_wide, w_tight = W0_MEASURED_M, W0_MEASURED_M / 4.0
+w_wide, w_tight = W0_CENTRAL_M, W0_CENTRAL_M / 4.0
 shift_ratio = stark_shift_S0_mhz(power, w_tight) / stark_shift_S0_mhz(power, w_wide)
 sat_ratio = saturation_parameter(power, w_tight) / saturation_parameter(power, w_wide)
 print(f"waist tightened 4x: the light shift grows {shift_ratio:.1f}x (4^2 = 16), "

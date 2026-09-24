@@ -35,22 +35,26 @@ import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
+from rb5s6s.config import RESULTS_DIR as _RESULTS_DIR  # noqa: E402  (F480: results where RB5S6S_RESULTS_DIR points)
 
 from rb5s6s import constants as K  # noqa: E402
 from rb5s6s import stark  # noqa: E402
 from rb5s6s.forecast import synthetic_traces  # noqa: E402
 from rb5s6s.linefit import fit_condition  # noqa: E402
 from rb5s6s.noise import load_noise_model  # noqa: E402
+from rb5s6s.pmfmt import pm_cells  # noqa: E402   # coverage and its binomial err at two significant digits (owner, 2026-09-24)
 
 # MHz. The transit is the twin's own, where a retired 1.8 stood until
-# 2026-09-05: the record's transit at its waist convention and 130 C is 0.9575,
+# 2026-09-05: the record's transit at the waist convention of that day and 130 C was 0.9575,
 # so the literal was 88 per cent high and no committed row ever held 1.8. The
 # same triple was repaired in run_estimator_duel.py on 2026-09-04 and this
 # producer was missed by that sweep, which is why the value is now DERIVED
 # here rather than typed -- a literal cannot be missed by a sweep it cannot
 # be the subject of.
-GAMMA, SIGMA = 0.55, 1.6
-TRANSIT = K.transit_fwhm_from_w0(K.W0_MEASURED_M, T_C=130.0)
+from rb5s6s.reference_point import reference_point  # noqa: E402
+_AP = reference_point()   # F313: the archive's line, read from the committed fit and the waist, never typed
+GAMMA, SIGMA = _AP["gamma_coll"], _AP["sigma_laser"]
+TRANSIT = K.transit_fwhm_from_w0(K.W0_CENTRAL_M, T_C=130.0)
 AMP_V = 0.8
 N_TRIALS = 1000
 WORKERS = min(8, os.cpu_count() or 1)
@@ -110,7 +114,7 @@ def one_trial(args) -> bool:
 
 def _init():
     one_trial.law = load_noise_model(
-        ROOT / "results" / "noise_model.csv", role="p_sweep", pool="median")
+        _RESULTS_DIR / "noise_model.csv", role="p_sweep", pool="median")
 
 
 def main() -> int:
@@ -129,7 +133,7 @@ def main() -> int:
                 hits = sum(ex.map(one_trial, args, chunksize=25))
             cov = hits / N_TRIALS
             err = float(np.sqrt(cov * (1 - cov) / N_TRIALS))
-            rows.append([shape, f"{size:g}", f"{cov:.3f}", f"{err:.3f}",
+            rows.append([shape, f"{size:g}", *pm_cells(cov, err),
                          "fraction",
                          f"{hits} of {N_TRIALS} intervals cover the "
                          "injected 0.55 MHz, binomial err", "DIAGNOSTIC"])
@@ -146,7 +150,7 @@ def main() -> int:
                      f"the halved-transit plant covers at {plant:.3f}, "
                      "required below 0.90: a leg that cannot fail has "
                      "measured nothing", "DIAGNOSTIC"])
-        out = ROOT / "results" / "coverage_grid.csv"
+        out = _RESULTS_DIR / "coverage_grid.csv"
         with out.open("w", newline="", encoding="utf-8") as fh:
             w = csv.writer(fh)
             w.writerow(["defect", "size", "value", "err", "unit", "note",

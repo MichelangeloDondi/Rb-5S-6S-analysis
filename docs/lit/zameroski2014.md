@@ -50,6 +50,12 @@ the self-broadening and shift rates of both transitions "were also
 measured", and that "The temperature dependence of the self- frequency shift
 (Rb-Rb collisions) of these transitions is presented."
 
+For 5S-7S the self-broadening slope is 129 +- 11 kHz per mTorr in the running text (p. 5) and
+129 +- 13 in Table 3 (p. 10), the paper's own two statements of one number, and `rb5s6s/vanderwaals.py`
+carries 129 with the table's 13. The fit spans 353 to 438 K (the caption of Fig. 7), and the paper states
+that the self-shift rate could not be extracted. Its Table 2 likewise prints wider uncertainties than the
+running text for the foreign-gas rates quoted above (51.1 +- 0.7 and -13.16 +- 0.15, for example).
+
 ## Why it is the right comparison and not a substitute
 
 This record measures `beta_self` on 5S-6S at 993 nm. Zameroski measure the

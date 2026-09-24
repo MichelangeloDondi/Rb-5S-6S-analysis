@@ -46,6 +46,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from rb5s6s import config as C                                    # noqa: E402
 from rb5s6s.ingest import load_manifest, load_trace, trace_path   # noqa: E402
 from rb5s6s.linefit import _shared_profile_grid                   # noqa: E402
+from rb5s6s.noise import condition_key as noise_key                # noqa: E402
 from rb5s6s.linefit import (fit_condition, to_frequency,          # noqa: E402
                             transit_fwhm_at_T)
 from rb5s6s.noise import condition_noise_model, sigma_of_v, signal_level  # noqa: E402
@@ -201,7 +202,11 @@ def main() -> int:
             freqs.append(to_frequency(t, rate)); volts.append(v)
         if len(volts) < 3:
             continue
-        law = condition_noise_model(volts)
+        # THE SAME NOISE LAW THE COMMITTED FIT USED (C6a, 2026-09-22): run_linefit keys each condition's law
+        # (F36) and this refit called the unkeyed form, so it fitted with other weights and its own void check
+        # fired on the difference between the two producers (a median 2.5 per cent in gamma_coll), which is
+        # exactly the comparison of producers the check exists to refuse
+        law = condition_noise_model(volts, key=noise_key(peak, T, P or 225.0))
         transit = transit_fwhm_at_T(float(T), C.TRANSIT_FWHM_PLACEHOLDER_MHZ)
         for arm, kw in arms.items():
             try:

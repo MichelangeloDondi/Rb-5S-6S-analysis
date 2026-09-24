@@ -147,11 +147,16 @@ def test_the_excited_fraction_saturates_at_one_half_and_not_at_one():
 
 
 def test_the_saturation_parameter_reproduces_the_published_value():
-    """0.033 at the archive's waist, computed elsewhere by another route."""
+    """0.173 at the archive's waist, computed elsewhere by another route.
+
+    MOVED 2026-09-21 (O44/F280) from 0.033 at the retired waist convention: s carries the
+    two-photon Rabi frequency squared, which scales as the inverse SQUARE of the waist (so s
+    itself as the fourth power, per lineshape.stark_ramp's own docstring), and the fourth power of
+    the ratio between the retired waist convention and 42.38 is about 5.2, matching 0.033 * 5.2 = 0.17."""
     from rb5s6s.hyperpolarizability import two_photon_rabi_hz
     p = PL.PLATFORMS["cell_130C"]
     om = two_photon_rabi_hz(0.225, p.w0_m, 0.94)
-    assert 2.0 * (om / C.GAMMA_NAT_HZ) ** 2 == pytest.approx(0.033, abs=0.003)
+    assert 2.0 * (om / C.GAMMA_NAT_HZ) ** 2 == pytest.approx(0.173, abs=0.003)
 
 
 def test_transit_width_is_computed_in_celsius_not_kelvin():
@@ -179,7 +184,7 @@ def test_absorption_and_fluorescence_are_different_observables():
 
 
 def test_an_unknown_detection_mode_is_refused():
-    bad = PL.Platform("x", "cell", 400.0, 1e13, 64e-6, 0.05, 1.0,
+    bad = PL.Platform("x", "cell", 400.0, 1e13, C.W0_CENTRAL_M, 0.05, 1.0,
                       "telepathy", False)
     with pytest.raises(ValueError, match="detection"):
         PL.signal_and_noise(0.225, bad, 1.0)
@@ -192,6 +197,48 @@ def test_every_catalogued_platform_is_self_consistent():
         assert 0.0 < p.duty_cycle <= 1.0, key
         assert PL.atoms_in_probe(p) > 0, key
         assert p.guided == (p.kind in ("hcpcf", "onf")), key
+
+
+def test_the_cell_rows_read_the_central_density_law_not_a_typed_nesmeyanov_copy():
+    """F310, A132.17 (C6b): the three 130 C rows carried 2.94e13 typed, `run_density_laws.n_nes(130)`,
+    the day the central law was still Nesmeyanov; it moved to Alcock on 2026-09-21 and the typed
+    copy never moved with it, so every rate those rows tabulate was 21 per cent low. The rows now
+    read `density.number_density_cm3(130)` and move if the law ever does again."""
+    from rb5s6s import density as D
+    expected = D.number_density_cm3(130.0)
+    assert expected == pytest.approx(3.559e13, rel=2e-3), "the central law is Alcock, not Nesmeyanov"
+    for key in ("cell_130C", "cell_130C_tight", "hcpcf_warm"):
+        p = PL.PLATFORMS[key]
+        assert p.density_cm3 == pytest.approx(expected, rel=1e-9), key
+        assert p.density_cm3 == pytest.approx(PL.CELL_130C_DENSITY_CM3, rel=1e-9), key
+        # the retired typed literal must be gone, not merely outnumbered by a coincidence
+        assert abs(p.density_cm3 - 2.94e13) / 2.94e13 > 0.15, (
+            key, "still reads close to the stale Nesmeyanov literal")
+
+
+def test_drive_absorbed_fraction_per_pass_licenses_the_fixed_drive_at_the_record_corner():
+    """F308, A132.11 (C6b): one photon per excitation per pass, `events_per_s_profile * h nu / power`.
+    F308's own reading at 130 C, 225 mW, 1.24e-3, was computed straight from the central density law
+    (F308 is dated after the law moved to Alcock), never from the platform table's own stale
+    Nesmeyanov literal, so fixing F310 makes `platforms.py` reproduce F308's number directly. Before
+    the F310 fix this platform's density was 2.943e13, low by the 21 per cent F310 names, and this
+    reading came out low with it, about 1.02e-3, which is what this test fails against."""
+    p = PL.PLATFORMS["cell_130C"]
+    got = PL.drive_absorbed_fraction_per_pass(0.225, p, rho=0.94)
+    assert 1.15e-3 < got < 1.35e-3, got
+    assert got == pytest.approx(1.24e-3, rel=0.03), "F308's own reading at this corner"
+    # ONE photon per event, not two: half of signal_and_noise's absorption-mode fraction at the
+    # SAME platform and power, since that branch is built for a single-beam guided probe where
+    # both photons of the pair leave the one beam it models
+    hcpcf = PL.PLATFORMS["hcpcf_warm"]
+    got_guided = PL.drive_absorbed_fraction_per_pass(0.020, hcpcf, rho=0.94)
+    sn_guided = PL.signal_and_noise(0.020, hcpcf, 1.0, rho=0.94)
+    assert got_guided == pytest.approx(0.5 * sn_guided["absorbed_fraction"], rel=1e-9)
+    # every platform is evaluated on the same convention, never only the cell's
+    for key, plat in PL.PLATFORMS.items():
+        pw = 0.225 if plat.kind == "cell" else 0.020
+        val = PL.drive_absorbed_fraction_per_pass(pw, plat, rho=0.94)
+        assert 0.0 < val < 1.0, key
 
 
 def test_the_profile_integral_is_not_the_on_axis_rate_times_a_cylinder():

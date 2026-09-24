@@ -48,10 +48,10 @@ error budget the fixed-lock data will collapse.
 
 from __future__ import annotations
 
-from typing import Dict, List
+from typing import Callable, Dict, List, Optional
 
 from .global_fit import fit_global
-from .constants import W0_BAND_M, W0_MEASURED_M, transit_fwhm_from_w0
+from .constants import W0_BAND_M, W0_CENTRAL_M, transit_fwhm_from_w0
 from .config import TRANSIT_FWHM_PLACEHOLDER_MHZ
 
 # the 2x2 model-form matrix axes
@@ -67,12 +67,18 @@ GRID_CELLS = (("exp", "per_T"), ("gaussian", "per_T"), ("exp", "per_block"))
 # homogeneous Lorentzian component, ADDED into the homogeneous width rather
 # than convolved. Every producer of this coefficient had left it at its default
 # of zero, while results/kernel_k3.csv fits it free across the SAME density
-# ladder and finds 0.315 to 0.449 MHz in every peak, weighted mean 0.398.
-# Measured at that mean, the hierarchical coefficient moves from 0.0534 to
-# 0.0057 and the per-peak values from 0.0131-0.0181 to 0.0054-0.0082, and the
-# whitened chi-squared prefers it on all four (transit x sharing) forms by 28 to
-# 46. The account is in this repository's private correction record, which
-# is not published; the reader-facing half is
+# ladder. Under the retired convention's waist that chain found 0.315 to 0.449
+# MHz in every peak, weighted mean 0.398, and at that mean the hierarchical
+# coefficient moved from 0.0534 to 0.0057 and the per-peak values from
+# 0.0131-0.0181 to 0.0054-0.0082, with the whitened chi-squared preferring the
+# component on all four (transit x sharing) forms by 28 to 46. That account
+# belongs to the retired convention. At the calculated waist (C6a, 2026-09-22)
+# the chain fits a component five times smaller, the two cells of the re-run are
+# `beta_grid_exp_per_T` and `beta_grid_exp_per_T_gamma_l<mean>` in
+# results/lever_crosscheck.csv, their reduced chi-squared is the same to the
+# third digit, and their difference is `beta_err_kernel`, larger than either
+# cell's own bar. The account is in this repository's private correction record,
+# which is not published; the reader-facing half is
 # docs/quantities/self-broadening.md section 4.
 #
 # IT IS A SEPARATE CELL AND NOT A FOURTH MEMBER OF `GRID_CELLS`, deliberately.
@@ -89,9 +95,9 @@ GRID_CELLS = (("exp", "per_T"), ("gaussian", "per_T"), ("exp", "per_block"))
 # belongs in an error budget rather than in the central value.
 # AND THE MEAN IS QUOTED HERE UNDER A CAVEAT TWO SURFACES STATE.
 # docs/RESULTS.md and docs/BIG_PICTURE.md both say this inverse-variance mean
-# is never written on its own, because the four per-peak values span 0.315 to
-# 0.449 and a common scalar is neither rejected nor established, at a
-# heterogeneity p of 0.097. What justifies a single value HERE is that this is
+# is never written on its own, because the four per-peak values spread widely
+# and a common scalar is neither rejected nor established. What justifies a
+# single value HERE is that this is
 # a SCAN COORDINATE and not a reported quantity: the axis is walked from zero,
 # the coefficient is linear along it, and the whitened chi-squared moves by 1.1
 # across the whole fitted range, so no value inside that range is
@@ -99,31 +105,86 @@ GRID_CELLS = (("exp", "per_T"), ("gaussian", "per_T"), ("exp", "per_block"))
 # not what the kernel is claimed to be, and nothing downstream reports it.
 # The name keeps MEASURED because the kernel chain does FIT this component
 # and the value is its weighted mean. What the comment above withdraws is
-# any claim that the width fit MEASURES it: that likelihood is flat, and
-# its own minimum sits nearer 0.375 (A193).
-GAMMA_L_MEASURED_MHZ = 0.398
+# any claim that the width fit MEASURES it: that likelihood is flat (A193).
+# READ, NEVER TYPED (F322, 2026-09-22, the F313 class): this was typed as 0.398, the
+# retired convention's mean, and at the calculated waist the per-peak fits span
+# 0.009 to 0.115 MHz, so the cross-check sampled its kernel axis five times past
+# the component it names and read a rail at zero as physics. The mean is now the
+# kernel chain's own row, `all,k2p5_gamma_l_weighted_mean`, checked against the
+# per-peak rows it summarises and rounded to the kilohertz, and the guard in
+# tests/test_lever_crosscheck_kernel_axis.py bounds it by the same file.
+
+
+def _kernel_k3_weighted_mean_mhz() -> float:
+    """The kernel chain's own inverse-variance mean of its per-peak component.
+
+    Read from the row `all,k2p5_gamma_l_weighted_mean` of results/kernel_k3.csv,
+    which run_kernel_k3.py writes, so the number has one producer. The per-peak
+    rows it summarises are read beside it and the two must agree: a mean row
+    that stopped matching its members is a stale file, and the cross-check
+    refuses it instead of sampling the axis at either value.
+    """
+    import csv
+    from . import config as _C
+    vals, errs, chain = {}, {}, None
+    with (_C.RESULTS_DIR / "kernel_k3.csv").open(encoding="utf-8") as fh:
+        for row in csv.DictReader(fh):
+            q, v = row.get("quantity"), row.get("value")
+            if not v:
+                continue
+            if q in ("gamma_l_equiv", "gamma_l_equiv_err"):
+                (vals if q == "gamma_l_equiv" else errs)[row["scope"]] = float(v)
+            elif q == "k2p5_gamma_l_weighted_mean" and row.get("scope") == "all":
+                chain = float(v)
+    if chain is None:
+        raise ValueError("kernel_k3.csv carries no all,k2p5_gamma_l_weighted_mean row")
+    w = {k: 1.0 / errs[k] ** 2 for k in vals if errs.get(k, 0.0) > 0.0}
+    if len(w) < 4:
+        raise ValueError(f"kernel_k3.csv carries {len(w)} weighted components, not one per peak")
+    members = sum(vals[k] * w[k] for k in w) / sum(w.values())
+    if abs(members - chain) > 1e-4:
+        raise ValueError(f"kernel_k3.csv's mean row reads {chain} MHz and its per-peak rows give "
+                         f"{members:.6f}: the file is stale against itself")
+    return round(chain, 3)
+
+
+GAMMA_L_MEASURED_MHZ = _kernel_k3_weighted_mean_mhz()
 KERNEL_CELL = ("exp", "per_T", GAMMA_L_MEASURED_MHZ)
 # w0 confound band: transit_ref values from the CORRECTED transit<->w0 law at
 # the wide edge / central prior / tight edge. DERIVED from the constants since
 # v3.0.0 (was a parallel hard-coded (65,50,40) that had to be edited by hand
 # whenever the prior moved, and silently went stale when it did).
-W0_BAND_UM = (W0_BAND_M[1] * 1e6, W0_MEASURED_M * 1e6, W0_BAND_M[0] * 1e6)
+W0_BAND_UM = (W0_BAND_M[1] * 1e6, W0_CENTRAL_M * 1e6, W0_BAND_M[0] * 1e6)
 W0_BAND_MHZ = tuple(round(transit_fwhm_from_w0(w * 1e-6, 110.0), 3) for w in W0_BAND_UM)
 
 
 def _fit(blocks, transit_kind, sigma_sharing, transit_ref, T_ref_C,
-         gamma_l: float = 0.0):
+         gamma_l: float = 0.0, *, model: str = "joint", w0_m: Optional[float] = None,
+         m2: float = 1.0, beam_factory: Optional[Callable[[float], object]] = None):
     """One cell of the grid. `gamma_l` defaults to zero, so every existing call
-    is byte-identical and only the cell that asks for the axis moves."""
+    is byte-identical and only the cell that asks for the axis moves.
+
+    `model`/`w0_m`/`m2` (owner order O49, the C6b wide wave) pass straight through to
+    `fit_global`: `model="joint"` is the new default there too, so this cross-check moves
+    with it unless a caller pins `model="convolution"`. `w0_m=None` (this function's own
+    default) lets `fit_global` fall back to ITS OWN default (`constants.W0_CENTRAL_M`)
+    instead of restating that constant a second place. `beam_factory=None` (C6b noise wave,
+    2026-09-22) is likewise byte-identical. A caller passing one asks `fit_global` to build
+    its `model="joint"` tables from a beam other than the default `GaussianBeam`."""
+    kw = {} if w0_m is None else {"w0_m": w0_m}
+    if beam_factory is not None:
+        kw["beam_factory"] = beam_factory
     return fit_global(blocks, transit_ref_mhz=transit_ref, T_ref_C=T_ref_C,
                       transit_kind=transit_kind, sigma_sharing=sigma_sharing,
-                      gamma_l=gamma_l)
+                      gamma_l=gamma_l, model=model, m2=m2, **kw)
 
 
 def lever_crosscheck_beta(blocks: List[Dict], *,
                     transit_ref_mhz: float = TRANSIT_FWHM_PLACEHOLDER_MHZ,
                     T_ref_C: float = 110.0, do_w0_band: bool = True,
-                    do_loo: bool = True) -> Dict:
+                    do_loo: bool = True, model: str = "joint",
+                    w0_m: Optional[float] = None, m2: float = 1.0,
+                    beam_factory: Optional[Callable[[float], object]] = None) -> Dict:
     """Run the lever cross-check for beta_self over `blocks`.
 
     blocks: the fit_global block dicts (peak, isotope, T_C, N_units, freqs,
@@ -132,6 +193,37 @@ def lever_crosscheck_beta(blocks: List[Dict], *,
     Returns one dict with the headline beta per isotope and the three error
     bars (see module docstring). do_w0_band / do_loo can be switched off to
     keep unit tests fast (they add ~3 and ~N extra fits respectively).
+
+    `model` (owner order O49, the C6b wide wave) reaches every one of this function's
+    `_fit` calls, so the whole cross-check -- the grid, the kernel axis, the w0 band, both
+    LOO scans -- moves together onto `fit_global`'s new joint-line default. `"convolution"`
+    is the named comparison arm, byte-identical to every result committed before this
+    parameter existed.
+
+    THE REPLACEMENT AXES (C6b noise wave, 2026-09-22, brief
+    `private/cache/plan_2026-09-18/briefs_2026-09-22/c6b_noise_brief.md`, task (b)). Under
+    `model="joint"` the GRID_CELLS transit-kind axis (`err_transit`) reads exactly 0.0: the
+    transit is the table's emergent width, not a kernel choice, so `("exp","per_T")` and
+    `("gaussian","per_T")` are the identical fit and the axis measures nothing. That reading
+    is kept (an honest zero, not a bug), and TWO axes the joint line still carries take its
+    place in the model-form/confound budget:
+
+    * ``w0_band``/``w0_range`` -- under `model="joint"` this now scans `w0_m` itself over
+      `constants.W0_BAND_M`'s two edges (plus the fit's own centre), instead of the old
+      `transit_ref_mhz` scan, which `fit_global`'s `model="joint"` branch never reads at all
+      (`transit_ref_mhz` only reaches the `model="convolution"` residual function) and so
+      used to return a degenerate, zero-width band under joint. Under `model="convolution"`
+      the scan is UNCHANGED (byte-identical): it still varies `transit_ref_mhz` over
+      `W0_BAND_MHZ`, since that IS the convolution model's own w0 confound and there is
+      nothing dead to repair there.
+    * ``err_beam_clip``/``beam_clip_beta`` -- OPT IN via `beam_factory`, and zero when it is
+      None (every existing caller, and every call under `model="convolution"`, where a beam
+      is not part of the model at all): the PRIMARY cell refit with the caller's beam factory
+      in place of the default `GaussianBeam`, most usefully a `beam_field.ClippedBeam`-based
+      one, so |beta(default beam) - beta(caller's beam)| reads what the bore's clipping costs
+      the fitted beta_self. Kept opt-in instead of defaulted to a canonical `ClippedBeam`
+      here, since this module does not own the bench's input-radius convention. The caller
+      supplies it, exactly as `tests/test_joint_model_switch.py`'s new axis test does.
     """
     isos = sorted({b["isotope"] for b in blocks})
 
@@ -141,7 +233,8 @@ def lever_crosscheck_beta(blocks: List[Dict], *,
     # and the two axes are near-independent, so the L-shaped 3-cell design
     # (share the exp/per_T corner) measures the transit axis AND the sharing
     # axis for the quantify of one per_block fit. (gaussian, per_block) is dropped.
-    grid = {cell: _fit(blocks, cell[0], cell[1], transit_ref_mhz, T_ref_C)
+    grid = {cell: _fit(blocks, cell[0], cell[1], transit_ref_mhz, T_ref_C, model=model,
+                       w0_m=w0_m, m2=m2)
             for cell in GRID_CELLS}
     prim = grid[PRIMARY]
     headline = {iso: prim["beta_by_isotope"][iso] for iso in isos}
@@ -160,18 +253,41 @@ def lever_crosscheck_beta(blocks: List[Dict], *,
 
     # --- the kernel axis, one step from the primary corner (2026-09-11) ---
     kern = _fit(blocks, KERNEL_CELL[0], KERNEL_CELL[1], transit_ref_mhz,
-                T_ref_C, KERNEL_CELL[2])
+                T_ref_C, KERNEL_CELL[2], model=model, w0_m=w0_m, m2=m2)
     kernel_axis = {iso: abs(prim["beta_by_isotope"][iso]
                             - kern["beta_by_isotope"][iso]) for iso in isos}
 
+    # --- the beam-clipping axis (C6b noise wave, task (b)): opt in, zero without a factory or
+    # under model="convolution", where a beam is not part of the fitted line at all ---
+    err_beam_clip = {iso: 0.0 for iso in isos}
+    beam_clip_beta: Optional[Dict] = None
+    if model == "joint" and beam_factory is not None:
+        clip = _fit(blocks, *PRIMARY, transit_ref_mhz, T_ref_C, model=model, w0_m=w0_m, m2=m2,
+                    beam_factory=beam_factory)
+        err_beam_clip = {iso: abs(prim["beta_by_isotope"][iso] - clip["beta_by_isotope"][iso])
+                         for iso in isos}
+        beam_clip_beta = {iso: (clip["beta_by_isotope"][iso], clip["beta_err_by_isotope"][iso])
+                          for iso in isos}
+
     # --- confound/w0 band on the primary model (the dominant systematic) ---
+    # Under model="joint" this scans w0_m ITSELF over the calculated band (constants.W0_BAND_M),
+    # since fit_global's joint branch never reads transit_ref_mhz at all (task (b): the old scan
+    # below, which the "convolution" branch below keeps unchanged, was a dead axis under joint).
     w0_range = {}
     if do_w0_band:
         band = {iso: [] for iso in isos}
-        for tr in W0_BAND_MHZ:
-            f = _fit(blocks, *PRIMARY, tr, T_ref_C)
-            for iso in isos:
-                band[iso].append(f["beta_by_isotope"][iso])
+        if model == "joint":
+            centre_w0 = W0_CENTRAL_M if w0_m is None else float(w0_m)
+            for w0_pt in (W0_BAND_M[0], centre_w0, W0_BAND_M[1]):
+                f = _fit(blocks, *PRIMARY, transit_ref_mhz, T_ref_C, model=model, w0_m=w0_pt,
+                        m2=m2)
+                for iso in isos:
+                    band[iso].append(f["beta_by_isotope"][iso])
+        else:
+            for tr in W0_BAND_MHZ:
+                f = _fit(blocks, *PRIMARY, tr, T_ref_C, model=model, w0_m=w0_m, m2=m2)
+                for iso in isos:
+                    band[iso].append(f["beta_by_isotope"][iso])
         w0_range = {iso: (min(band[iso]), max(band[iso])) for iso in isos}
 
     # --- leave-one-out on the primary model: TWO physically distinct scans ---
@@ -191,7 +307,7 @@ def lever_crosscheck_beta(blocks: List[Dict], *,
             if len({b["isotope"] for b in sub}) < len(isos):
                 continue
             try:
-                f = _fit(sub, *PRIMARY, transit_ref_mhz, T_ref_C)
+                f = _fit(sub, *PRIMARY, transit_ref_mhz, T_ref_C, model=model, w0_m=w0_m, m2=m2)
             except (RuntimeError, ValueError):
                 continue
             if detail is not None:
@@ -222,9 +338,15 @@ def lever_crosscheck_beta(blocks: List[Dict], *,
         "headline": headline,
         "err_statistical": err_stat,
         "err_modelform": modelform,       # grid max-min
-        "err_transit": transit_axis,      # transit axis alone (dominant)
+        "err_transit": transit_axis,      # transit axis alone -- exactly 0.0 under model="joint"
+                                          # (the transit is the table's emergent width there, not
+                                          # a kernel choice), dominant only under model="convolution"
         "err_sharing": sharing_axis,      # sigma-sharing axis alone
         "err_kernel": kernel_axis,        # the extra homogeneous component, alone
+        "err_beam_clip": err_beam_clip,   # the joint line's replacement axis: default beam vs
+                                          # `beam_factory`'s (e.g. a ClippedBeam), 0.0 unless the
+                                          # caller supplies one under model="joint"
+        "beam_clip_beta": beam_clip_beta,  # (beta, err) per isotope under beam_factory, or None
         "kernel_cell": KERNEL_CELL,
         "kernel_beta": {iso: (kern["beta_by_isotope"][iso],
                               kern["beta_err_by_isotope"][iso]) for iso in isos},
@@ -236,7 +358,9 @@ def lever_crosscheck_beta(blocks: List[Dict], *,
         "kernel_chi2_red": kern["chi2_red"],
         "kernel_chi2_whitened": kern["chi2_whitened"],
         "primary_chi2_whitened": prim["chi2_whitened"],
-        "w0_band": w0_range,              # (lo, hi) beta over transit_ref band
+        "w0_band": w0_range,              # (lo, hi) beta over w0_m (model="joint") or transit_ref
+                                          # (model="convolution") -- the joint line's replacement
+                                          # for the waist axis, constants.W0_BAND_M
         "loo_peak": loo_peak,             # (largest |dbeta|, which peak) -- robustness
         "loo_peak_detail": loo_peak_detail,  # per-drop {beta, sigma_laser_by_T}
         "loo_temp": loo_temp,             # (largest |dbeta|, which T) -- lever leverage
@@ -246,5 +370,5 @@ def lever_crosscheck_beta(blocks: List[Dict], *,
                  for (tk, sh) in GRID_CELLS},
         "chi2_red": {f"{tk}|{sh}": grid[(tk, sh)]["chi2_red"]
                      for (tk, sh) in GRID_CELLS},
-        "n_traces": prim["n_traces"],
+        "n_traces": prim["n_traces"], "model": model,
     }

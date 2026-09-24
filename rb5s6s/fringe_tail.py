@@ -13,7 +13,7 @@ which modulates the instantaneous light shift an atom feels while it is being
 excited. constants.DELTA_ALPHA_AU pins the on-axis, fast-fringe-averaged peak
 shift S0 = Delta_alpha I_eff / (2 eps0 c h) with I_eff = (1+rho) 2P/(pi w0^2)
 the standing-wave MEAN; the archival ramp uses S0 and its symmetric transverse
-wedge (lineshape.stark_ramp: mean pull +(2/3) S0 and third cumulant -S0^3/135 on its blue side).
+wedge (lineshape.stark_ramp: mean pull +(2/3) S0 and third moment -S0^3/135 on its blue side).
 
 This module quantifies the ONE piece that mean picture drops: a slow-v_z tail.
 An atom whose axial speed is small crosses the fringes slowly, sits near a
@@ -66,7 +66,7 @@ flux and the Gaussian crossing time), exactly the transit_mc convention.
 
 COHERENCE WINDOW. tau_c is the ONE open modelling choice. The coherent
 excitation amplitude lives at most one 6S lifetime (tau_6S ~ 46 ns), but the
-beam crossing may be shorter or longer: at the 64 um waist convention the transit
+beam crossing may be shorter or longer: at the retired, wider waist convention the transit
 is ~260 ns (transit-limited, tau_c -> inf is the right cap), at the small
 16 um waist it is ~65 ns, comparable to tau_6S, so the two bracket the fringe
 survival. Both are w0/v at the 2D Maxwell-Boltzmann mean transverse speed,
@@ -78,7 +78,7 @@ report that bracket.
 WHAT FRACTION OF ATOMS THAT IS (2026-08-10). Worked out over the 3D
 Maxwell-Boltzmann spread in docs/notes/running_wave_and_waist_design.md design
 3, computed by scripts/run_geometry_design.fringe_velocity_classes: 2.21 per
-cent of atoms at the lifetime cap, 0.19 at the 64 um transit cap, 0.78 at
+cent of atoms at the lifetime cap, 0.19 at the retired convention's transit cap, 0.78 at
 16 um. The factor of eleven between the ends of that bracket is a modelling
 choice and not a measurement, which is the whole reason this is swept rather
 than corrected for. That section also settles what a frequency-shifted arm
@@ -92,7 +92,7 @@ threshold of the coherence-window fraction, through the transit time.
 ESTIMATOR NOTE. The standardized skewness is a third-moment ratio and converges
 slowly: a single 3e5-atom draw carries ~0.015 of skew noise, so a committable
 number pools several independent blocks (n_blocks) and reports the pooled value
-with the block-to-block standard error. The third CUMULANT change is far
+with the block-to-block standard error. The third MOMENT change is far
 better behaved -- the noisy wedge third moment cancels in the difference, so it
 reproduces the exact cross-term identity above to a fraction of a percent and is
 the primary reported leverage. Everything is deterministic at a fixed base seed.
@@ -221,7 +221,7 @@ def _one_block(w0_m: float, s0_mhz: float, rho: float, T_C: float,
         # fringe_tail_mc reports, so its across-block scatter is that
         # quantity's own Monte-Carlo error, by the identical construction
         # block_d_skew already used.
-        "block_d_kappa3": mu3_f - mu3_n,
+        "block_d_mu3": mu3_f - mu3_n,
         "block_excess_var_frac": (var_f - var_n) / var_f if var_f > 0 else 0.0,
         "block_frac_resolved": w_res_blk / w_tot_blk if w_tot_blk > 0 else 0.0,
         "sigma_v": sv,
@@ -256,11 +256,11 @@ def fringe_tail_mc(*, w0_m: float, s0_mhz: float, rho: float = 1.0,
                                           the mean, since E[1+x]=1);
       kappa_path                        : transit envelope path factor
                                           (sqrt(2/3) ~ 0.816, transit-limited);
-      kappa3, kappa3_nofringe, d_kappa3 : third cumulant (MHz^3) with/without
+      mu3, mu3_nofringe, d_mu3          : third moment (MHz^3) with/without
                                           the fringe and its change (the primary,
                                           well-converged leverage);
-      d_kappa3_mc_err                   : block-to-block standard error on
-                                          d_kappa3, same construction as
+      d_mu3_mc_err                      : block-to-block standard error on
+                                          d_mu3, same construction as
                                           d_skew_mc_err;
       skew, skew_nofringe, d_skew       : standardized skewness and its change;
       d_skew_mc_err                     : block-to-block standard error on d_skew;
@@ -288,7 +288,7 @@ def fringe_tail_mc(*, w0_m: float, s0_mhz: float, rho: float = 1.0,
     p_f = np.zeros(4)
     p_n = np.zeros(4)
     w_tot = w_res = w_fvar = w_kappa = 0.0
-    block_dskew, block_dkappa3, block_evf, block_fres = [], [], [], []
+    block_dskew, block_dmu3, block_evf, block_fres = [], [], [], []
     sv = _sigma_v1d(T_C)
     for _ in range(n_blocks):
         blk = _one_block(w0_m, s0_mhz, rho, T_C, inv2tau, contrast,
@@ -300,7 +300,7 @@ def fringe_tail_mc(*, w0_m: float, s0_mhz: float, rho: float = 1.0,
         w_fvar += blk["w_fvar"]
         w_kappa += blk["w_kappa"]
         block_dskew.append(blk["block_d_skew"])
-        block_dkappa3.append(blk["block_d_kappa3"])
+        block_dmu3.append(blk["block_d_mu3"])
         block_evf.append(blk["block_excess_var_frac"])
         block_fres.append(blk["block_frac_resolved"])
 
@@ -312,7 +312,7 @@ def fringe_tail_mc(*, w0_m: float, s0_mhz: float, rho: float = 1.0,
         return float(v.std(ddof=1) / sqrt(n_blocks)) if n_blocks > 1 else 0.0
 
     d_skew_mc_err = _mc_err(block_dskew)
-    d_kappa3_mc_err = _mc_err(block_dkappa3)
+    d_mu3_mc_err = _mc_err(block_dmu3)
     excess_var_frac_mc_err = _mc_err(block_evf)
     frac_resolved_mc_err = _mc_err(block_fres)
 
@@ -334,8 +334,8 @@ def fringe_tail_mc(*, w0_m: float, s0_mhz: float, rho: float = 1.0,
         "var": var, "var_nofringe": var_n,
         "excess_var_frac": (var - var_n) / var if var > 0 else 0.0,
         "f_res_var": w_fvar / w_tot,
-        "kappa3": -mu3, "kappa3_nofringe": -mu3_n, "d_kappa3": -(mu3 - mu3_n),
-        "d_kappa3_mc_err": d_kappa3_mc_err,
+        "mu3": -mu3, "mu3_nofringe": -mu3_n, "d_mu3": -(mu3 - mu3_n),
+        "d_mu3_mc_err": d_mu3_mc_err,
         "skew": -skew, "skew_nofringe": -skew_n, "d_skew": -(skew - skew_n),
         "d_skew_mc_err": d_skew_mc_err,
         "excess_var_frac_mc_err": excess_var_frac_mc_err,
@@ -369,10 +369,10 @@ def fringe_shift_density(*, w0_m: float, coherence_s, rho: float = 1.0,
 
     Returns x_grid (bin centres, ascending, on [0, 2/kappa_bar]), density
     (area one on that grid), kappa_bar, and the SAME draws' raw moments of
-    x_raw = s / S0 (mean_raw, var_raw, kappa3_raw) so a test can hold the
+    x_raw = s / S0 (mean_raw, var_raw, mu3_raw) so a test can hold the
     binned density against the pooled power sums and against fringe_tail_mc
     at the same seed. Every histogram bin is a signal-weighted count; the
-    binning error on the third cumulant is below a part in a thousand at the
+    binning error on the third moment is below a part in a thousand at the
     default 800 bins over [-2, 0]."""
     rng = np.random.default_rng(C.RNG_SEED if seed is None else seed)
     inv2tau = _inv_two_tau_squared(coherence_s)
@@ -403,7 +403,7 @@ def fringe_shift_density(*, w0_m: float, coherence_s, rho: float = 1.0,
         "x_grid": centres, "density": density, "kappa_bar": float(kappa_bar),
         # the ODD raw moments mirror with the support; the even one does not (O27)
         "mean_raw": float(-mean_raw), "var_raw": float(var_raw),
-        "kappa3_raw": float(-mu3_raw),
+        "mu3_raw": float(-mu3_raw),
         "w0_um": w0_m * 1e6, "rho": rho, "T_C": T_C, "contrast": contrast,
         "n_atoms": n_atoms, "n_blocks": n_blocks, "n_bins": n_bins,
     }

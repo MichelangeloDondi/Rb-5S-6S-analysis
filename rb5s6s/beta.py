@@ -49,7 +49,9 @@ from scipy.stats import t as student_t
 from . import config as C
 from .density import N_SCALE_FRAC_SYST
 from .lineshape import composite_profile
-from .linefit import transit_fwhm_at_T
+from .linefit import (transit_fwhm_at_T, joint_condition_profile, JOINT_Z_RATIO,
+                      JOINT_N_PATH, JOINT_SEED)
+from .constants import W0_CENTRAL_M
 from .noise import signal_level, sigma_of_v
 from .fitutil import cov_from_jac, feasible_p0
 
@@ -140,7 +142,10 @@ def fit_beta_self(conditions: List[Dict], *,
                   transit_ref_mhz: float = C.TRANSIT_FWHM_PLACEHOLDER_MHZ,
                   fit_transit: bool = False, T_ref_C: float = 110.0,
                   laser_kind: str = "gaussian", gamma_l: float = 0.0,
-                  fit_gamma_l: bool = False) -> Dict:
+                  fit_gamma_l: bool = False,
+                  model: str = "joint", w0_m: float = W0_CENTRAL_M, m2: float = 1.0,
+                  z_ratio: float = JOINT_Z_RATIO, joint_n_path: int = JOINT_N_PATH,
+                  joint_seed: int = JOINT_SEED) -> Dict:
     """Global beta_self fit for one peak across temperatures.
 
     conditions: list of dicts, each
@@ -151,7 +156,23 @@ def fit_beta_self(conditions: List[Dict], *,
     Returns beta_self (+err), sigma_laser (+err), transit_ref (+err if fit),
     per-condition implied gamma_coll, chi2_red, and the beta<->laser
     correlation.
+
+    `model` (owner order O49, the C6b wide wave): `"joint"` (the DEFAULT) builds each
+    condition's profile from its own `volume_line.JointTable` (`linefit.
+    joint_condition_profile`, cached, at S0=0 -- this fit carries no shift channel), at the
+    record's own waist (`w0_m`, default `constants.W0_CENTRAL_M`). `"convolution"` is the
+    pre-existing `lineshape.composite_profile` form, kept callable as the named comparison
+    arm and byte-identical to every fit made before this parameter existed.
+    `fit_transit=True` is refused under `model="joint"`: the transit width is the table's
+    own, an emergent property of (w0_m, T_C), never fit.
     """
+    if model not in ("joint", "convolution"):
+        raise ValueError(f"fit_beta_self: model must be 'joint' or 'convolution', got {model!r}")
+    if model == "joint" and fit_transit:
+        raise ValueError(
+            "fit_beta_self: fit_transit=True is incompatible with model='joint': the "
+            "transit width is derived from (w0_m, T_C), never fit. Pass "
+            "model='convolution' to fit a free transit width.")
     # index bookkeeping: flatten all traces, remember which condition each
     # belongs to and its (N_units, T_C)
     tr_cond, freqs, volts, sigmas = [], [], [], []
@@ -218,15 +239,23 @@ def fit_beta_self(conditions: List[Dict], *,
         profs = {}
         for ci, cond in enumerate(conditions):
             gc = beta * cond["N_units"]
-            tr = transit_fwhm_at_T(cond["T_C"], tref, T_ref_C) if fit_transit \
-                else transit_fwhm_at_T(cond["T_C"], transit_ref_mhz, T_ref_C)
-            profs[ci] = composite_profile(gc, sl, tr, laser_kind, gamma_l=gl)
+            if model == "joint":
+                # S0=0: this fit carries no shift channel, so the table replaces the
+                # analytic transit kernel with the atom-sampled ensemble average at this
+                # condition's own T_C (F294, see linefit.joint_condition_profile).
+                profs[ci] = joint_condition_profile(
+                    gc, sl, laser_kind, gamma_l=gl, s0=0.0, T_C=cond["T_C"], w0_m=w0_m,
+                    m2=m2, z_ratio=z_ratio, n_path=joint_n_path, seed=joint_seed)
+            else:
+                tr = transit_fwhm_at_T(cond["T_C"], tref, T_ref_C) if fit_transit \
+                    else transit_fwhm_at_T(cond["T_C"], transit_ref_mhz, T_ref_C)
+                profs[ci] = composite_profile(gc, sl, tr, laser_kind, gamma_l=gl)
         out = []
         for i in range(ntr):
             g, prof = profs[tr_cond[i]]
             A, c, b0, b1 = p[nshared + 4 * i: nshared + 4 * i + 4]
-            model = A * np.interp(freqs[i] - c, g, prof, left=0.0, right=0.0) + b0 + b1 * freqs[i]
-            out.append((volts[i] - model) / sigmas[i])
+            pred = A * np.interp(freqs[i] - c, g, prof, left=0.0, right=0.0) + b0 + b1 * freqs[i]
+            out.append((volts[i] - pred) / sigmas[i])
         return np.concatenate(out)
 
     p0 = feasible_p0(p0, lo, hi)  # project seed into bounds
@@ -251,7 +280,7 @@ def fit_beta_self(conditions: List[Dict], *,
         "sigma_laser": sl, "sigma_laser_err": float(err[1]),
         "transit_ref": float(sol.x[2] if fit_transit else transit_ref_mhz),
         "transit_fitted": bool(fit_transit),
-        "chi2_red": chi2_red, "corr_beta_laser": corr_bl,
+        "chi2_red": chi2_red, "corr_beta_laser": corr_bl, "model": model,
         # ABSOLUTE chi2 and its bookkeeping, appended 2026-08-21. A nested
         # likelihood ratio needs the chi2 DIFFERENCE between two fits of the
         # same data, and a reduced chi2 cannot supply it: the two fits have

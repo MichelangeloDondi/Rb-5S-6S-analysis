@@ -1,13 +1,13 @@
 """The window-noise surface of the twin (night order 3c.2, owner 2026-09-16).
 
 For ONE declared noise level per run (the level is the serial axis; windows, orders, conditions and
-replicas fan out), the windowed cumulants of orders 2 to 7 at half-windows 0.5 to 21 MHz on traces
+replicas fan out), the windowed moments of orders 2 to 7 at half-windows 0.5 to 21 MHz on traces
 the model itself generated with the archive's own axes, levels and noise laws. Two things per row:
 
 * at the noiseless rung, the package's self-centred estimator (`cumulants.windowed_moments` on the
   archive's grid) against the DIRECT truncated moments of the same model line on a tenfold finer
   grid, self-centred the same way: the estimator recovers what the model's own line carries at that
-  window, or it does not. That is the rung's `max_abs_rel_error`, each order scaled by k2^(n/2);
+  window, or it does not. That is the rung's `max_abs_rel_error`, each order scaled by mu2^(n/2);
 * at a noisy rung, the replica mean and spread per statistic, the noise bias (replica mean minus the
   noiseless value) that the likelihood subtracts, and a split-half coverage: the bias from one half
   of the replicas, the other half's corrected mean against the noiseless value with its own bar.
@@ -33,6 +33,7 @@ sys.path.insert(0, str(ROOT / "scripts"))
 from rb5s6s import config as C
 from rb5s6s import windows as _WINDOWS, ladder_gate                       # noqa: E402
 from rb5s6s.cumulants import windowed_moments                     # noqa: E402
+from rb5s6s.config import RESULTS_DIR as _RESULTS_DIR  # noqa: E402  (F480: results where RB5S6S_RESULTS_DIR points)
 
 _s = importlib.util.spec_from_file_location("closure_for_surface", ROOT / "scripts" / "run_ultra_joint_closure.py")
 CL = importlib.util.module_from_spec(_s); _s.loader.exec_module(CL)   # ladder-exempt: the injection's own source, the closure's route
@@ -102,6 +103,15 @@ def _condition_key(t) -> str:
     return f"{t['session']}_{t['peak']}_{1e3 * t['P_W']:.0f}mW_{t['T']:.0f}C"
 
 
+def _line(cell, d, i, t, nu):
+    """The world's line on `nu`: the fitter's own `cell.model`, or the world the run was asked for
+    (`--world`), which the injection draws from too, so the reference and the replicas share one world."""
+    world = _W.get("world")
+    if world is None:
+        return np.asarray(cell.model(nu, d, cell.per[i], t["peak"], t["session"]), float)
+    return np.asarray(world(cell, d, i, t, nu), float)
+
+
 def _model_line(cell, d, i, t, v_grid=None):
     """The model line on a FINE grid. With `v_grid` (the injected clean trace on the archive's
     grid) the injected amplitude, offset and slope are recovered by the same least squares the
@@ -109,10 +119,10 @@ def _model_line(cell, d, i, t, v_grid=None):
     baseline and can be de-baselined exactly as the estimator de-baselines the trace."""
     nu = cell.axis(d, t)
     fine = np.linspace(float(nu.min()), float(nu.max()), (nu.size - 1) * FINE + 1)
-    m = np.asarray(cell.model(fine, d, cell.per[i], t["peak"], t["session"]), float)
+    m = _line(cell, d, i, t, fine)
     if v_grid is None:
         return fine, m
-    mg = np.asarray(cell.model(nu, d, cell.per[i], t["peak"], t["session"]), float)
+    mg = _line(cell, d, i, t, nu)
     A = np.column_stack([mg, np.ones_like(nu), nu])
     c, *_ = np.linalg.lstsq(A, np.asarray(v_grid, float), rcond=None)
     return fine, c[0] * m + c[1] + c[2] * fine
@@ -124,10 +134,33 @@ _W: dict = {}
 POOL_BLOCK = 16     # samples per moving block, the residual-resampling producer's own
 
 
-def _init_worker(truth: float, pool_path=None):
+#: `--world`: the atom Monte Carlo's joint line through the Cell's own Gaussian beam by DEFAULT, or through
+#: the bench's bore-clipped focus (C6b D2 and D3). 'model' is the named comparison arm, the fitter's own
+#: transit-and-ramp convolution this producer read by default before this window (A148,
+#: C6B_CONVOLUTION_MAP.md's ranked item 2). A world other than 'model' climbs its own ladder id, `<id>@<world>`,
+#: because a rung passed on one world licenses nothing on another, so the DEFAULT now climbs `<id>@volume`.
+WORLDS = ("model", "volume", "volume-clipped")
+
+
+def _build_world(world, cell):
+    """The world object a worker injects from, or None for the fitter's own line."""
+    if world is None or world[0] == "model":
+        return None
+    kind, n_path, seed = world
+    beam = None
+    if kind == "volume-clipped":
+        from rb5s6s.beam_field import ClippedBeam
+        beam = ClippedBeam.at_focus(cell.w0, m2=cell.m2)
+    return CL.VolumeWorld(beam, n_path=int(n_path), seed=int(seed))
+
+
+def _init_worker(truth: float, pool_path=None, world=None):
     tr = CL._synthetic_source()
-    cell, ptr = CL.truth_params(tr, truth, prior_mean=True)
-    _W.update(tr=tr, cell=cell, ptr=ptr, d=cell.unpack(ptr), syn0=CL.inject(cell, ptr, CL.SEED, noise_scale=0.0)[0])
+    extra = None if world is None or world[0] == "model" else CL.WORLD_CELL
+    cell, ptr = CL.truth_params(tr, truth, prior_mean=True, spec_extra=extra)
+    _W["world"] = _build_world(world, cell)
+    _W.update(tr=tr, cell=cell, ptr=ptr, d=cell.unpack(ptr),
+              syn0=CL.inject(cell, ptr, CL.SEED, noise_scale=0.0, world_source=_W["world"])[0])
     _W["pool"] = None
     if pool_path:
         z = np.load(pool_path)
@@ -170,7 +203,8 @@ def _noisy_task(args):
     """One replica of every condition at one level: the per-condition estimates per window."""
     r, scale, keys, idx, windows, orders = args
     syn, level, shape = CL.inject(_W["cell"], _W["ptr"], CL.SEED + 1 + r, noise_scale=scale,
-                                  residual_source=(_pool_source if _W.get("pool") else None))
+                                  residual_source=(_pool_source if _W.get("pool") else None),
+                                  world_source=_W.get("world"))
     out = {}
     for k in keys:
         for W in windows:
@@ -201,7 +235,7 @@ def _spread_check(vals, refused_keys, half, reps, scale, has_pool):
     ref = os.environ.get("RB5S6S_SPREAD_REFERENCE", "")
     p = Path(ref) if ref else Path(C.RESULTS_DIR) / "ultra_joint_moments.csv"
     if not p.is_file():
-        p = ROOT / "results" / "ultra_joint_moments.csv"
+        p = _RESULTS_DIR / "ultra_joint_moments.csv"
     out["reference"] = str(p)
     # THE NULL IS NOT ONE (a reading of 2026-09-17 03:40): the repeats' standard error comes
     # from four or five traces, so sigma/s has a median of sqrt(nu / median chi2_nu), 1.092 for
@@ -263,7 +297,11 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--stage", type=int, default=3, help="the size stage. the default is the full noiseless surface the committed CSV carries")
     ap.add_argument("--noise", type=float, default=0.0, help="the level, a multiple of each condition's law. one per run")
-    ap.add_argument("--truth", type=float, default=64.0)
+    # DERIVED, NOT A BARE LITERAL (O44/F280, 2026-09-21): was a hardcoded literal, the retired
+    # convention, which the mechanical rename missed because it is a CLI default and not a named
+    # constant reference. Deriving it from C.W0_CENTRAL_M means a bare invocation (the one "the
+    # committed CSV carries", per --stage's own help text above) tracks the live convention.
+    ap.add_argument("--truth", type=float, default=round(C.W0_CENTRAL_M * 1e6, 2))
     ap.add_argument("--reps", type=int, default=1)
     ap.add_argument("--windows", default=",".join(str(w) for w in ALL_WINDOWS))
     ap.add_argument("--orders", default=",".join(str(o) for o in ALL_ORDERS))
@@ -276,8 +314,16 @@ def main() -> int:
                          "estimator is the same, the likelihood's own (F270), so the surface is one artefact under "
                          "the id its consumer gates on")
     ap.add_argument("--noise-source", default=None, help="an .npz of normalised residual pools (RB5S6S_RESIDUAL_POOL_OUT of run_residual_resampling.py): the twin draws the archive's own residual shape")
+    ap.add_argument("--world", default="volume", choices=WORLDS,
+                    help="the line the twin injects: the atom Monte Carlo's joint line through the Cell's Gaussian "
+                         "beam ('volume', the DEFAULT) or the bench's clipped focus ('volume-clipped'), or the "
+                         "fitter's own transit-and-ramp convolution ('model'), the named comparison arm. A Monte "
+                         "Carlo world injects through a weak-field Cell and climbs the ladder id <id>@<world>")
+    ap.add_argument("--world-paths", type=int, default=20000, help="atoms in the Monte Carlo world's line")
+    ap.add_argument("--world-seed", type=int, default=20260922, help="the Monte Carlo world's sampling seed")
     a = ap.parse_args()
-    ANALYSIS_ID = a.analysis_id
+    ANALYSIS_ID = a.analysis_id if a.world == "model" else f"{a.analysis_id}@{a.world}"
+    world = None if a.world == "model" else (a.world, a.world_paths, a.world_seed)
     windows = tuple(float(w) for w in a.windows.split(","))
     orders = tuple(int(o) for o in a.orders.split(","))
     scale = float(a.noise)
@@ -309,15 +355,15 @@ def main() -> int:
     import concurrent.futures as cf
     tasks = [(k, idx[k], windows, orders) for k in keys]
     if a.workers > 1:
-        with cf.ProcessPoolExecutor(max_workers=a.workers, initializer=_init_worker, initargs=(a.truth,)) as ex:
+        with cf.ProcessPoolExecutor(max_workers=a.workers, initializer=_init_worker, initargs=(a.truth, None, world)) as ex:
             results = list(ex.map(_noiseless_task, tasks))
     else:
-        _init_worker(a.truth); results = [_noiseless_task(t) for t in tasks]
+        _init_worker(a.truth, None, world); results = [_noiseless_task(t) for t in tasks]
     for k, out in results:
         for W, (r_, b_, e_) in out.items():
             ref[(k, W)], bare[(k, W)], est0[(k, W)] = r_, b_, e_
-    # ADMISSION PER STATISTIC (2026-09-16): the seventh cumulant at a 0.5 MHz window holds two dozen
-    # samples and the sixth at 21 MHz is set by the strip baseline; measured at stage 1, k7@0.5
+    # ADMISSION PER STATISTIC (2026-09-16): the seventh moment at a 0.5 MHz window holds two dozen
+    # samples and the sixth at 21 MHz is set by the strip baseline; measured at stage 1, mu7@0.5
     # missed the reference by 8.3e-2 while every order 2 to 4 at every window and every order at
     # 1 to 8 MHz sat under 1e-3. A statistic whose numerics are unresolved at the archive's own
     # sampling is REFUSED from the vector with its reason, and the rung is judged on the admitted
@@ -326,7 +372,7 @@ def main() -> int:
     for (k, W), r in ref.items():
         e = est0[(k, W)]
         for n in orders:
-            sc = max(abs(r[2]), 1e-12) ** (n / 2.0)     # every order in the units of k2^(n/2)
+            sc = max(abs(r[2]), 1e-12) ** (n / 2.0)     # every order in the units of mu2^(n/2)
             rel = abs(e[n] - r[n]) / sc
             if rel <= NOISELESS_TOL:
                 admitted.append([k, W, n, rel]); worst = max(worst, rel)
@@ -334,15 +380,19 @@ def main() -> int:
                 refused.append([k, W, n, rel])
             b = bare[(k, W)][n]
             rows.append([k, f"mu{n}@{W:g}", f"{e[n]:.6g}", "", f"MHz^{n}",
-                         f"estimator on the archive grid against the direct truncated moment {r[n]:.6g} of the same de-baselined line on a {FINE}x finer grid, both self-centred, scaled error {rel:.2e}. the bare model's truncated moment is {b:.6g}, so the strip baseline's bias at this window is {e[n] - b:+.4g} ({((e[n] - b) / max(abs(b), 1e-300) * 100) if n % 2 == 0 else (e[n] - b) / sc:+.3g} {'per cent' if n % 2 == 0 else 'in units of k2^(n/2), the odd orders of a symmetric line being zero'})",
+                         f"estimator on the archive grid against the direct truncated moment {r[n]:.6g} of the same de-baselined line on a {FINE}x finer grid, both self-centred, scaled error {rel:.2e}. the bare model's truncated moment is {b:.6g}, so the strip baseline's bias at this window is {e[n] - b:+.4g} ({((e[n] - b) / max(abs(b), 1e-300) * 100) if n % 2 == 0 else (e[n] - b) / sc:+.3g} {'per cent' if n % 2 == 0 else 'in units of mu2^(n/2), the odd orders of a symmetric line being zero'})",
                          f"noiseless, truth {a.truth:g} um at the prior means, {CL.FORM} form, strips {STRIPS[0]} MHz"
+                         + ("" if world is None else f", the {a.world} world ({a.world_paths} atoms, seed {a.world_seed})")
                          + ("" if rel <= NOISELESS_TOL else ". REFUSED from the vector: unresolved at the archive's sampling"), "DIAGNOSTIC"])
     print(f"  noiseless: {len(admitted)} statistics admitted (worst scaled error {worst:.3e}), {len(refused)} refused as "
-          f"unresolved at the archive's sampling: " + ", ".join(sorted({f'k{n}@{W:g}' for _, W, n, _ in refused})), flush=True)
+          f"unresolved at the archive's sampling: " + ", ".join(sorted({f'mu{n}@{W:g}' for _, W, n, _ in refused})), flush=True)
     detail = {"n_truths": 1, "n_statistics": len(ref) * len(orders), "max_abs_rel_error": worst,
+              "world": ("the fitter's own line (Cell.model)" if world is None else
+                        f"{a.world}: the atom Monte Carlo's joint line, {a.world_paths} atoms, seed {a.world_seed}, "
+                        f"injected through a weak-field Cell {CL.WORLD_CELL}"),
               "n_admitted": len(admitted), "n_refused": len(refused),
               "refused_statistics": sorted({f"mu{n}@{W:g}" for _, W, n, _ in refused}),
-              "admission_rule": f"a statistic enters only where the estimator meets the direct truncated moment within {NOISELESS_TOL:g} of k2^(n/2) on every condition",
+              "admission_rule": f"a statistic enters only where the estimator meets the direct truncated moment within {NOISELESS_TOL:g} of mu2^(n/2) on every condition",
               "windows": list(windows), "orders": list(orders), "conditions": n_cond}
     refused_keys = {(k, W, n) for k, W, n, _ in refused}
     # ---- the noisy replicas
@@ -354,10 +404,10 @@ def main() -> int:
         levels, shapes = [], []
         jobs = [(r, scale, keys, idx, windows, orders) for r in range(reps)]
         if a.workers > 1:
-            with cf.ProcessPoolExecutor(max_workers=a.workers, initializer=_init_worker, initargs=(a.truth, a.noise_source)) as ex:
+            with cf.ProcessPoolExecutor(max_workers=a.workers, initializer=_init_worker, initargs=(a.truth, a.noise_source, world)) as ex:
                 res = list(ex.map(_noisy_task, jobs))
         else:
-            _init_worker(a.truth, a.noise_source)
+            _init_worker(a.truth, a.noise_source, world)
             res = [_noisy_task(j) for j in jobs]
         for r, level, shape, out in sorted(res, key=lambda z: z[0]):
             levels.append(level); shapes.append(shape)
@@ -391,7 +441,8 @@ def main() -> int:
                 odd_n += 1; odd_ok += int(np.sign(v.mean()) == np.sign(e0))
             rows.append([k, f"mu{n}@{W:g}", f"{v.mean():.6g}", f"{sd:.3g}", f"MHz^{n}",
                          f"replica mean over {reps} at x{scale:g} of the law. noise bias {bias:+.4g} against the noiseless {e0:.6g}; sd {sd:.3g}",
-                         f"rung {rung}, truth {a.truth:g} um at the prior means, {CL.FORM} form", "DIAGNOSTIC"])
+                         f"rung {rung}, truth {a.truth:g} um at the prior means, {CL.FORM} form"
+                         + ("" if world is None else f", the {a.world} world"), "DIAGNOSTIC"])
         sv = _spread_check(vals, refused_keys, half, reps, scale, bool(a.noise_source))
         detail.update(n_realisations=reps, coverage=float(np.mean(cov)), nominal=0.68,
                       chi2_red=float(np.mean(pulls)),
@@ -407,7 +458,9 @@ def main() -> int:
                                         "rung's spread validation is the test against the data"),
                       spread_validated=sv["validated"], spread_check=sv,
                       blame=("the generator is the model with a GAUSSIAN draw at the condition's law. the archive's residual "
-                             "resampling gives k4 a spread 4.99x this draw's, so the spread is not validated until step 2's "
+                             "resampling gave mu4 a spread 4.99x this draw's under the retired cumulant estimator (O49 "
+                             "moved that producer's own fourth order from scipy.stats.kstat to scipy.stats.moment, so the "
+                             "ratio is pending re-measurement), and the spread is not validated until step 2's "
                              "covariance replaces the draw"))
         print(f"  x{scale:g}: split-half coverage {detail['coverage']:.2f}, bias-corrected chi2_red {detail['chi2_red']:.2f}, "
               f"level {detail['injected_over_record']:.3f}, shape {detail['injected_tau_over_record']:.3f}", flush=True)

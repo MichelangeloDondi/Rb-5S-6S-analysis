@@ -152,6 +152,7 @@ PHOTO = ROOT / "docs" / "apparatus" / "2025-06-11_wavemeter_drift_53min.jpg"
 # resolved through the config so RB5S6S_RESULTS_DIR redirects this producer;
 # a hand-built path is not redirected and verifies nothing.
 from rb5s6s import config as _CFG  # noqa: E402
+from rb5s6s.pmfmt import pm_cells  # noqa: E402   # the value and its err at two significant digits (owner, 2026-09-24)
 _CFG_RESULTS = _CFG.RESULTS_DIR
 OUT_CSV = _CFG_RESULTS / "wavemeter_reconstruction.csv"
 
@@ -535,53 +536,52 @@ if __name__ == "__main__":
         w = csv.writer(fh)
         w.writerow(["quantity", "key", "value", "err", "unit", "status"])
         w.writerow(["record_length", "2025-06-11", f"{r['record_min']:.1f}", "",
-                    "min; digitised from the screen photograph", "DIAGNOSTIC"])
+                    "min. Digitised from the screen photograph", "DIAGNOSTIC"])
         w.writerow(["scan_band_width", "2025-06-11", f"{r['band_mhz']:.1f}", "",
-                    "MHz; the scan modulation, laser axis", "DIAGNOSTIC"])
-        w.writerow(["settled_noise_floor", "2025-06-11", f"{r['sigma_inf']:.2f}",
-                    f"{r['boot_se']['sigma_inf']:.2f}",
-                    "MHz; THE RESULT. unmodelled laser motion once the re-lock "
-                    "steps and the per-interval ramps are removed; the one "
+                    "MHz. The scan modulation, laser axis", "DIAGNOSTIC"])
+        w.writerow(["settled_noise_floor", "2025-06-11", *pm_cells(r["sigma_inf"], r["boot_se"]["sigma_inf"]),
+                    "MHz. THE RESULT. unmodelled laser motion once the re-lock "
+                    "steps and the per-interval ramps are removed. The one "
                     "quantity that survived the 2026-08-03 replacement of the "
-                    "relaxation model by the sawtooth (0.63 before, 0.62 now); "
+                    "relaxation model by the sawtooth (0.63 before, 0.62 now). "
                     "err is a residual bootstrap standard error, "
                     f"n={r['boot_n']['sigma_inf']} replicates (module docstring, "
-                    "bootstrap_sigma_inf); see the module docstring for the "
+                    "bootstrap_sigma_inf). See the module docstring for the "
                     "point estimate", "DIAGNOSTIC"])
         w.writerow(["noise_settling_time", "2025-06-11", f"{r['tau_sigma']:.2f}",
                     f"{r['boot_se']['tau_sigma']:.2f}",
-                    "min; the scatter itself settles on this timescale. much "
+                    "min. The scatter itself settles on this timescale. much "
                     "shorter than the replaced model's 9.1 min because the "
                     "ramps now carry the early structure the noise term used "
-                    "to absorb; err is a residual bootstrap standard error", "DIAGNOSTIC"])
+                    "to absorb. Err is a residual bootstrap standard error", "DIAGNOSTIC"])
         w.writerow(["n_relock_events", "2025-06-11", r["n_kicks"],
-                    "", "count; candidate events from the kick finder, which did "
+                    "", "count. Candidate events from the kick finder, which did "
                     "not change at the 2026-08-03 replacement. order of "
                     "magnitude only, one per 5-7 min, consistent with the "
                     "apparatus record", "DIAGNOSTIC"])
         w.writerow(["n_modelled_steps", "2025-06-11", r["n_steps"],
-                    "", "count; the candidates the sawtooth can test. the first "
+                    "", "count. The candidates the sawtooth can test. the first "
                     "kick at 0.22 min falls inside the excluded opening 0.4 "
                     "min, so it has no fitted interval before it", "DIAGNOSTIC"])
         w.writerow(["n_upward_relocks", "2025-06-11", r["n_up"],
-                    "", f"count; modelled steps above +{STEP_MHZ:.0f} MHz, the "
+                    "", f"count. Modelled steps above +{STEP_MHZ:.0f} MHz, the "
                     "re-locks proper", "DIAGNOSTIC"])
         w.writerow(["n_downward_steps", "2025-06-11", r["n_down"],
-                    "", f"count; modelled steps below -{STEP_MHZ:.0f} MHz. the "
+                    "", f"count. Modelled steps below -{STEP_MHZ:.0f} MHz. the "
                     "replaced model could not express one: its amplitudes "
                     "were bounded non-negative", "DIAGNOSTIC"])
         w.writerow(["n_null_events", "2025-06-11", r["n_null"],
-                    "", f"count; flagged events whose modelled step is within "
+                    "", f"count. Flagged events whose modelled step is within "
                     f"{STEP_MHZ:.0f} MHz of zero, i.e. the end of a steep ramp "
                     "rather than a re-lock", "DIAGNOSTIC"])
         w.writerow(["relock_rise_time", "2025-06-11", f"{r['rise_min']:.4f}",
-                    "", "min; ONE shared rise time for the step at every re-lock "
+                    "", "min. ONE shared rise time for the step at every re-lock "
                     "(logistic width). about 2.6 s, roughly one digitised "
                     "pixel, so the record resolves the step as fast but not "
                     "as instantaneous", "DIAGNOSTIC"])
         w.writerow(["ramp_rate_first_interval", "2025-06-11",
                     f"{r['ramp_mhz_per_min'][0]:.2f}",
-                    "", "MHz/min; the fitted ramp of the first fitted inter-lock "
+                    "", "MHz/min. The fitted ramp of the first fitted inter-lock "
                     "interval. these per-interval ramps replace the replaced "
                     "model's record-wide drift and curvature", "DIAGNOSTIC"])
         # THE THERMAL SETTLE, measured 2026-08-25. Construction and the
@@ -606,25 +606,25 @@ if __name__ == "__main__":
                     "DIAGNOSTIC"])
         w.writerow(["ramp_rate_last_interval", "2025-06-11",
                     f"{r['ramp_mhz_per_min'][-1]:.2f}",
-                    "", "MHz/min; the fitted ramp of the last interval. the fall "
+                    "", "MHz/min. The fitted ramp of the last interval. the fall "
                     "in magnitude across the record is the thermal settle", "DIAGNOSTIC"])
         w.writerow(["pull_width", "2025-06-11", f"{r['pull_width']:.3f}",
-                    "", "dimensionless; 1.0 means the settling-noise model is right", "DIAGNOSTIC"])
+                    "", "dimensionless. 1.0 means the settling-noise model is right", "DIAGNOSTIC"])
         w.writerow(["residual_rms", "2025-06-11", f"{r['resid_rms']:.3f}",
-                    "", "MHz; over the fitted points, against the record's own "
+                    "", "MHz. Over the fitted points, against the record's own "
                     "kick-free scatter of 0.55 MHz", "DIAGNOSTIC"])
         w.writerow(["residual_runs_z", "2025-06-11", f"{r['resid_runs_z']:.2f}",
-                    "", "dimensionless; Wald-Wolfowitz runs statistic on the "
+                    "", "dimensionless. Wald-Wolfowitz runs statistic on the "
                     "residual signs. the replaced relaxation model sat at "
                     "-6.3, which is what retired it", "DIAGNOSTIC"])
         w.writerow(["residual_acf1", "2025-06-11", f"{r['resid_acf1']:.3f}",
-                    "", "dimensionless; lag-1 autocorrelation of the residual, "
+                    "", "dimensionless. Lag-1 autocorrelation of the residual, "
                     "0.68 under the replaced relaxation model", "DIAGNOSTIC"])
         w.writerow(["nll", "2025-06-11", f"{r['nll']:.3f}",
-                    "", f"dimensionless; negative log-likelihood at the optimum, "
+                    "", f"dimensionless. Negative log-likelihood at the optimum, "
                     f"{r['n_par']} parameters on {r['n_fit_points']} points. "
                     "not comparable to the replaced model's 259.3 as a "
-                    "number to prefer, since the parameter counts differ; the "
+                    "number to prefer, since the parameter counts differ. The "
                     "whiteness of the residual is what decided between them", "DIAGNOSTIC"])
     for k in ("record_min", "band_mhz", "n_kicks", "sigma_inf", "tau_sigma",
               "rise_min", "n_up", "n_down", "n_null", "pull_width",

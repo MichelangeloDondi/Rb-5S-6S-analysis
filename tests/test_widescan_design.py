@@ -90,7 +90,7 @@ def test_pedestal_height_is_a_few_tenths_of_a_percent():
     from rb5s6s.linefit import _shared_profile_grid
     from rb5s6s import config as C
     gc, sl, _, _ = committed()
-    transit = K.transit_fwhm_from_w0(K.W0_MEASURED_M, 110.0)*math.sqrt(403.15/383.15)
+    transit = K.transit_fwhm_from_w0(K.W0_CENTRAL_M, 110.0)*math.sqrt(403.15/383.15)
     _, prof = _shared_profile_grid(gc, sl, transit, 0.0, "gaussian")
     sD = pedestal_fwhm_mhz(130.0)/2.3548200450309493
     frac = (1.0/(sD*math.sqrt(2*math.pi))/narrow_to_pedestal_area(C.RHO_RETRO))/prof.max()

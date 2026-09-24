@@ -4,14 +4,14 @@ THE QUESTION. The EOM ruler fixes the SCALE of the frequency axis. Its
 linearity between anchors is a separate requirement, and nothing in this
 repository said how tight it is. A sweep whose rate is not constant stretches
 one side of a line against the other, which forges exactly the asymmetry the
-third cumulant reads, so that channel sets a bar far above what a centre fit
+third moment reads, so that channel sets a bar far above what a centre fit
 needs.
 
 THE PARAMETRISATION. Write the true frequency against the assumed axis as
 nu = nuhat + alpha * nuhat^2, keeping the leading departure. The rate
 d(nu)/d(nuhat) = 1 + 2 alpha nuhat then varies across a window of half-width W
 by a fraction eps = 2 alpha W, and the distortion enters the profile at first
-order in alpha, so the induced cumulant is linear in eps. The rows carry that
+order in alpha, so the induced moment is linear in eps. The rows carry that
 linearity as a measured check.
 
 THE NONLINEARITY IS THE ACTUATOR'S AND NOT THE SCAN'S, and the first version
@@ -46,7 +46,7 @@ composes the line as a convolution, which the record holds at 40 microns and
 wider and not below. Since 2026-09-08 the reference line carries the axial
 collection window and the standing wave's fringe tail at each case's own
 waist, and what it still carries neither of is
-the saturation companion that move the 16 micron third cumulant at the factor
+the saturation companion that move the 16 micron third moment at the factor
 of three level. The 16 micron case is kept because the campaign proposes it,
 with its status and note saying what it is, and a 40 micron case is the
 campaign's licensed configuration.
@@ -65,6 +65,7 @@ import numpy as np
 from rb5s6s import config as C
 from rb5s6s import constants as K
 from rb5s6s import stark
+from rb5s6s.reference_point import reference_point
 # MOMENTS, NOT CUMULANTS (O33). This producer asks only for orders 2 and/or 3, where the two
 # bases are the SAME NUMBER (k2 = mu2 and k3 = mu3 identically), so the switch cannot move a
 # committed cell -- it removes the retired name, which is the point of doing it everywhere.
@@ -74,21 +75,50 @@ from rb5s6s.fringe_tail import COHERENCE_TRANSIT, fringe_shift_density
 from rb5s6s.lineshape import model_profile, ramp_mixture
 
 NU = np.linspace(-120.0, 120.0, 480001)
-GAMMA_COLL = 0.55
-SIGMA_LASER = 1.6
-GAMMA_NAT = 3.49
-GAMMA_COLL_BAND = (0.40, 0.70)
-SIGMA_LASER_BAND = (1.2, 2.0)
+
+
+def _width_bands() -> tuple[tuple[float, float], tuple[float, float]]:
+    """The line's own width spread across the archive, READ from the committed fits (F313, 2026-09-22).
+
+    The 10th and 90th percentiles of `gamma_coll` and `sigma_laser` over the conditions of
+    `results/linefit_conditions.csv`, a fit at its bound excluded because it reports the bound and not
+    a width. The bands typed here on 2026-09-08 bracketed the typed widths at the retired waist
+    convention and sat close to that spread (the fits then gave 0.34 to 0.62 and 1.21 to 1.91 MHz).
+    """
+    path = C.RESULTS_DIR / "linefit_conditions.csv"
+    with open(path, newline="", encoding="utf-8") as fh:
+        rows = [r for r in csv.DictReader(fh)
+                if r["gamma_coll_at_bound"] != "True" and r["sigma_laser_at_bound"] != "True"]
+    if len(rows) < 10:
+        raise SystemExit(f"run_sweep_linearity: {path} holds {len(rows)} fits off their bounds, "
+                         "too few for the archive's width spread")
+    g = np.percentile([float(r["gamma_coll"]) for r in rows], [10.0, 90.0])
+    s = np.percentile([float(r["sigma_laser"]) for r in rows], [10.0, 90.0])
+    return (float(g[0]), float(g[1])), (float(s[0]), float(s[1]))
+
+
+# The reference line is the archive point, READ and never typed (F313, 2026-09-22): the typed
+# pair was the retired waist convention's decomposition. The natural width is the kernel's own.
+_AP = reference_point()
+GAMMA_COLL = _AP["gamma_coll"]
+SIGMA_LASER = _AP["sigma_laser"]
+GAMMA_NAT = stark._GAMMA_MHZ
+GAMMA_COLL_BAND, SIGMA_LASER_BAND = _width_bands()
 # the actuator's full travel: the four-peak span the campaign sweeps
 TRAVEL_MHZ = 6000.0
 # (name, waist, on-axis shift at 225 mW, window half-width, inside the licence)
-CASES = (("archive", 64e-6, 0.3599, 6.0, True),
+CASES = (("archive", K.W0_CENTRAL_M, 0.8208, 6.0, True),
          ("campaign_40um", 40e-6, 0.9213, 6.0, True),
          ("campaign_16um", 16e-6, 5.7584, 12.0, False))
 # MOVED 2026-09-15 from 0.364, 0.932 and 5.826, all by the same 1.16 per cent,
 # when DELTA_ALPHA_AU's static-tail value was replaced by the dynamic
 # sum's: S0 goes as
-# |Delta_alpha| and these are its value at the campaign's top power. The literals
+# |Delta_alpha| and these are its value at the campaign's top power.
+# MOVED AGAIN 2026-09-21 (O44/F280): the archive row's waist retired from the old convention to
+# K.W0_CENTRAL_M (42.38 um), and its shift literal from the retired convention's value to 0.8208 MHz, the package's own
+# stark.stark_shift_S0_mhz(0.225, K.W0_CENTRAL_M, K.RHO_RETRO) at the new value (this row does
+# NOT carry the F280 aperture on-axis factor, matching the check below, which never applied it
+# either). The other two rows are untouched: they were never the retired convention. The literals
 # stay literals ON PURPOSE -- deriving them would make the check below vacuous,
 # and the check firing at the floor is exactly how this drift was found.
 # EVERY SHIFT LITERAL ABOVE IS CHECKED AGAINST THE PACKAGE AT IMPORT, so the
@@ -133,7 +163,7 @@ def _profile_for(w0_m: float | None, coherence_s):
     THE REFERENCE LINE IS THE WORLD'S, not the pure ramp's (2026-09-08). This producer composed `model_profile`'s default while the
     same wave threaded the axial collection window and the standing wave's
     fringe tail into the world builder, so "the light shift's own third
-    cumulant" was a quantity the bench does not produce: at 40 microns the
+    moment" was a quantity the bench does not produce: at 40 microns the
     threaded value is 0.468 of the pure ramp's, which halves the tolerance in
     the direction that reads as licence.
 
@@ -159,9 +189,9 @@ def _profile_for(w0_m: float | None, coherence_s):
     return lambda nu_, s0_: ramp_mixture(nu_, s0_, z, _X_GRID, g)
 
 
-def induced_k3(eps, W, s0, transit, gamma_coll=GAMMA_COLL, sigma_laser=SIGMA_LASER,
+def induced_mu3(eps, W, s0, transit, gamma_coll=GAMMA_COLL, sigma_laser=SIGMA_LASER,
                w0_m=None, coherence_s=COHERENCE_TRANSIT):
-    """The windowed third cumulant of a line read on a stretched axis, on the
+    """The windowed third moment of a line read on a stretched axis, on the
     shift density this bench produces at `w0_m` (the pure ramp when None), at
     the named end of the coherence bracket."""
     alpha = eps / (2.0 * W)
@@ -224,15 +254,15 @@ def ripple_over_phases(n_cycles, eta, W, n_phase=41):
 
 
 def tolerance(W, s0, transit, real, gamma_coll=GAMMA_COLL, sigma_laser=SIGMA_LASER, n_iter=50):
-    """The rate variation whose forged cumulant equals the light shift's own,
+    """The rate variation whose forged moment equals the light shift's own,
     bisected on a logarithmic bracket; a refused reading or a bracket edge is
     an error and not a number."""
     lo, hi = 1e-6, 1.0
     for _ in range(n_iter):
         mid = float(np.sqrt(lo * hi))
-        f = induced_k3(mid, W, 0.0, transit, gamma_coll, sigma_laser)
+        f = induced_mu3(mid, W, 0.0, transit, gamma_coll, sigma_laser)
         if not np.isfinite(f):
-            raise RuntimeError(f"windowed cumulant refused at eps={mid:.3g}, W={W}")
+            raise RuntimeError(f"windowed moment refused at eps={mid:.3g}, W={W}")
         if abs(f) < abs(real):
             lo = mid
         else:
@@ -260,23 +290,23 @@ def main() -> int:
 
     for name, w0, s0, W, licensed in CASES:
         transit = K.transit_fwhm_from_w0(w0, 130.0)
-        real = induced_k3(0.0, W, s0, transit, w0_m=w0)
+        real = induced_mu3(0.0, W, s0, transit, w0_m=w0)
         lic = ("the reference line carries the collection window and the fringe tail since 2026-09-08" if licensed else
                "OUTSIDE the convolution licence: the reference line carries the "
                "collection window and the fringe tail, and at this waist the "
-               "window reverses this cumulant's sign, but the composition "
+               "window reverses this moment's sign, but the composition "
                "still carries no saturation companion, which the record puts "
-               "at the factor-of-three level on this cumulant here")
+               "at the factor-of-three level on this moment here")
         add(name, "window_half_width", f"{W:.2f}", "MHz",
             "the analysis window this configuration is read at", lic, "DIAGNOSTIC")
-        add(name, "k3_light_shift", f"{real:.6g}", "MHz^3",
-            f"windowed third cumulant of the ramp at a {s0:.3f} MHz on-axis shift",
+        add(name, "mu3_light_shift", f"{real:.6g}", "MHz^3",
+            f"windowed third moment of the ramp at a {s0:.3f} MHz on-axis shift",
             "the signal any forged asymmetry is measured against. " + lic, "ENVELOPE")
         tol = tolerance(W, s0, transit, real)
         corners = []
         for gc in GAMMA_COLL_BAND:
             for sl in SIGMA_LASER_BAND:
-                r_c = induced_k3(0.0, W, s0, transit, gc, sl, w0_m=w0)
+                r_c = induced_mu3(0.0, W, s0, transit, gc, sl, w0_m=w0)
                 corners.append(tolerance(W, s0, transit, r_c, gc, sl, n_iter=34))
         # THE WAIST BAND, UNDER THE RECORD'S OWN PAIRED CONVENTION
         # (rb5s6s/stark.py: the widest credible interval pairs the tight-waist
@@ -286,12 +316,12 @@ def main() -> int:
         # the same FRACTION of its own waist, since no campaign waist is
         # measured; docs/plan/12 carries that as its own open item.
         waist_corners = []
-        _f_lo, _f_hi = (b / K.W0_MEASURED_M for b in K.W0_BAND_M)
+        _f_lo, _f_hi = (b / K.W0_CENTRAL_M for b in K.W0_BAND_M)
         for w0c, rhoc in ((w0 * _f_lo, K.RHO_RETRO + K.RHO_RETRO_ERR),
                           (w0 * _f_hi, K.RHO_RETRO - K.RHO_RETRO_ERR)):
             s0c = stark.stark_shift_S0_mhz(0.225, w0c, rhoc)
             tc = K.transit_fwhm_from_w0(w0c, 130.0)
-            waist_corners.append(tolerance(W, s0c, tc, induced_k3(0.0, W, s0c, tc, w0_m=w0c), n_iter=34))
+            waist_corners.append(tolerance(W, s0c, tc, induced_mu3(0.0, W, s0c, tc, w0_m=w0c), n_iter=34))
         # THE COHERENCE BRACKET IS THE THIRD AXIS, and it is one-sided.
         # fringe_tail's own docstring calls tau_c its one open modelling
         # choice and sweeps it rather than correcting for it, so the reference
@@ -299,7 +329,7 @@ def main() -> int:
         # transit-limited one until 2026-09-08. The other end moves the
         # tolerance by more than the whole published half-span at 40 microns.
         cap_tol = tolerance(W, s0, transit,
-                            induced_k3(0.0, W, s0, transit, w0_m=w0,
+                            induced_mu3(0.0, W, s0, transit, w0_m=w0,
                                        coherence_s=K.TAU_6S_S), n_iter=34)
         # AND THE HALF-SPAN IS READ AS THE EXCURSION FROM THE VALUE, not as
         # half the bracket's width. The two agree wherever the corners sit
@@ -321,10 +351,10 @@ def main() -> int:
             "the excursion from the transit-limited reference line to the one "
             "at the 6S lifetime, the two ends fringe_tail brackets tau_c between",
             "a shorter coherence window freezes fewer fringes, so the shift "
-            "density and its third cumulant move. The end is a modelling "
+            "density and its third moment move. The end is a modelling "
             "choice and not a measurement, which is why both are corners. It "
             "is folded into the err row, which is at least this", "ENVELOPE")
-        k3c = [induced_k3(0.0, W, s0, transit, gc, sl, w0_m=w0) for gc in GAMMA_COLL_BAND for sl in SIGMA_LASER_BAND]
+        mu3c = [induced_mu3(0.0, W, s0, transit, gc, sl, w0_m=w0) for gc in GAMMA_COLL_BAND for sl in SIGMA_LASER_BAND]
         add(name, "rate_variation_tolerance_err", err_txt, "per cent",
             "the largest excursion from the tolerance over both extremes of the "
             "collisional and laser width bands, the two ends of the waist band, "
@@ -333,18 +363,23 @@ def main() -> int:
             "of its asymmetry inside a fixed window. The band is the line's own "
             "width uncertainty" + ("" if licensed else ", and not the factor of three above"),
             "ENVELOPE")
-        add(name, "k3_light_shift_err", f"{0.5 * (max(k3c) - min(k3c)):.6g}", "MHz^3",
+        add(name, "mu3_light_shift_err", f"{0.5 * (max(mu3c) - min(mu3c)):.6g}", "MHz^3",
             "half-span over the same width corners", "moves the same way", "ENVELOPE")
+        # THE BOW THAT REACHES THE TOLERANCE IS DERIVED, never typed (F313's second half, 2026-09-22): the
+        # sentence here read "two parts in a thousand ... two per cent exceeds it tenfold", true at the
+        # retired waist convention and false at the calculated one, where two parts in a thousand clear it.
+        eta_reach = tol * TRAVEL_MHZ / (12.0 * W)
+        reach = (f"a smooth bow of {100 * eta_reach:.2g} per cent of the full travel reaches this "
+                 f"(12 eta W / T), and two per cent exceeds it {0.02 / eta_reach:.2g}-fold")
         add(name, "rate_variation_tolerance", f"{100.0 * tol:.{dec}f}", "per cent",
-            "the rate variation across the window whose forged third cumulant "
+            "the rate variation across the window whose forged third moment "
             "equals the light shift's own",
-            {"archive": "a smooth bow of two parts in a thousand over the full travel "
-                        "already reaches this, and two per cent exceeds it tenfold",
-             "campaign_40um": "the campaign's tightest licensed waist",
+            {"archive": reach,
+             "campaign_40um": "at the campaign's tightest licensed waist " + reach,
              "campaign_16um": lic}[name], "ENVELOPE")
-        a, b = induced_k3(1e-3, W, 0.0, transit), induced_k3(1e-2, W, 0.0, transit)
+        a, b = induced_mu3(1e-3, W, 0.0, transit), induced_mu3(1e-2, W, 0.0, transit)
         add(name, "artefact_linearity_ratio", f"{b / a:.4f}", "dimensionless",
-            "induced k3 at a 1 per cent rate variation over that at 0.1 per cent",
+            "induced mu3 at a 1 per cent rate variation over that at 0.1 per cent",
             "ten is the first-order form, derivable from the parametrisation", "DIAGNOSTIC")
         # the bow, at the travel's centre and at two positions
         for eta in (0.002, 0.02, 0.10):

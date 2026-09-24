@@ -55,7 +55,7 @@ Three photons of the same colour absorbed together all share magnitude
 $k$. The condition $\vec k_1+\vec k_2+\vec k_3=0$ with
 $|\vec k_1|=|\vec k_2|=|\vec k_3|=k$ has one solution shape: three
 equal-length vectors summing to zero close only an equilateral triangle,
-120 degrees apart in a plane. No collinear arrangement of three
+120 degrees apart in a plane. No collinear arrangement of three <!-- other-quantity: an angle in degrees -->
 equal-length vectors satisfies it, so closing the triangle needs a
 genuinely non-collinear, three-beam geometry.
 
@@ -133,7 +133,7 @@ No committed measurement here uses a three-or-more-photon geometry.
 considers a one-colour three-photon transition out of $5S_{1/2}$: the
 equal-magnitude case applies exactly, a collinear geometry leaves too
 broad a residual, so the proposal turns to a STAR geometry of three
-coplanar beams at 120 degrees. Its other two channels, two photons from
+coplanar beams at 120 degrees. Its other two channels, two photons from <!-- other-quantity: an angle in degrees -->
 one beam and one from another, leave residual wavevectors of $\sqrt3 k$
 and $3k$, the three-beam analogue of the same-beam pedestal above. The
 document also meets the different-colour exception above: two photons of
@@ -185,7 +185,7 @@ import math
 
 from rb5s6s.constants import K_B_J_PER_K, LAMBDA_LASER_M, M_RB87_KG
 
-T_K = 403.15  # K, the reference cell temperature used elsewhere in this record
+T_K = 403.15  # K, other-quantity: the reference cell temperature used elsewhere in this record, not read from a committed cell
 v_sigma = math.sqrt(K_B_J_PER_K * T_K / M_RB87_KG)  # 1D thermal speed
 k_fund = 2.0 * math.pi / LAMBDA_LASER_M             # the fundamental wavevector
 
