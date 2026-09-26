@@ -6,8 +6,8 @@ as a committed CSV, so any single stage can be re-run and its output compared
 against the copy in the repository. Alongside the producers sit the builders
 that draw the figures and generate the documents, and two shell scripts.
 
-`run_all.sh` runs the forty-three analysis stages below in order, then the
-figures, then `docs/RESULTS.md`, then the status column. `ci_gate.sh` runs the
+`run_all.sh` runs the analysis stages below in order, then the status column,
+the reference graph, the figures and `docs/RESULTS.md`. `ci_gate.sh` runs the
 lint pass and the full test battery including the slow closure tests, in the
 order continuous integration runs them, and is meant to be run before a push.
 
@@ -174,7 +174,7 @@ diagnostic rather than write a table.
 
 | script | does |
 |---|---|
-| `run_all.sh` | the whole chain: the forty-three stages in dependency order, then the figures, the ledger and the status column |
+| `run_all.sh` | the whole chain: the stages in dependency order, then the status column, the reference graph, the figures and the ledger |
 | `ci_gate.sh` | the pre-push checks, in the order and on the content continuous integration uses: `ruff` over the library, the scripts and the tests, then the full battery with the slow tests. A battery failure whose every id matches a gate-excusable register signature continues as PASS_MODULO and greens only after all downstream stages; the verdict file carries the staged tree it graded. |
 | `targeted.sh` | the iteration instrument beside the gate's certification: maps the current change set (staged, plus a refusal on anything unstaged or untracked) to the test modules that own it, runs them in seconds, and stamps `.targeted_ok` with the index tree it graded. `ci_gate.sh` refuses to start without a stamp naming its tree (`CI_GATE_SKIP_TARGETED="<reason>"` is the logged exception, for a fresh clone or port); a change set with no owning modules stamps as NOMODULES so the full gate, which runs everything, proceeds. |
 | `verify_results_fresh.py` | runs each producer against a private directory seeded with the committed CSVs, through `RB5S6S_RESULTS_DIR`, and diffs what it writes there against what git holds. It no longer touches the live `results/` at all, so there is nothing to restore and a hard kill leaves the tree clean. Producers run pooled, and a producer that ignores the override is reported as having verified nothing instead of passing quietly. `--all` widens the set to the producers that need raw traces. A registry key may carry command-line arguments after the script name; the first word is the script. |
@@ -193,7 +193,9 @@ The 297 raw traces are held privately and are not in this repository, so any
 stage that opens one cannot run here. What that leaves is set out in
 [`../data_raw/README.md`](../data_raw/README.md), and the condition is visible
 in each script: the ones that need traces import `load_trace` from
-`rb5s6s.ingest`. Twenty-five do, and seventeen of those cannot run here at all.
+`rb5s6s.ingest` or reach it through `rb5s6s.ladder_gate.real_traces`
+(`grep -lE 'load_trace|real_traces\(' scripts/*.py` lists them), and seventeen
+of those cannot run here at all.
 They are `run_qc.py`, `run_noise.py`, `run_ruler.py`,
 `run_linefit.py`, `run_beta_self.py`, `run_global_fit.py`,
 `run_lever_crosscheck.py`, `run_power_sweep.py`, `run_amplitude_trapping.py`,

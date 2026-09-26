@@ -6,7 +6,7 @@
  "docs/ADAPTING.md": 26,
  "docs/APPARATUS.md": 13,
  "docs/BIG_PICTURE.md": 21,
- "docs/CLAIMS.md": 38,
+ "docs/CLAIMS.md": 37,
  "docs/DATA.md": 28,
  "docs/FUTURE_TRANSITIONS_titsapph.md": 54,
  "docs/GLOSSARY.md": 7,
@@ -489,7 +489,7 @@
  "private/GOVERNANCE.md": 0,
  "rb5s6s/README.md": 6,
  "results/ENVIRONMENT_OF_RECORD.md": 7,
- "results/README.md": 28,
+ "results/README.md": 27,
  "scripts/README.md": 19,
  "tests/README.md": 7,
  "tests/_ratchet_history.md": 3

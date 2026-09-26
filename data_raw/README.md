@@ -2,14 +2,15 @@
 
 This directory holds the 297 recorded traces of the 2025 dataset and
 **`MANIFEST.csv`**, the census that says what the dataset is. The traces are
-withheld from the published mirror, where this file says so and lists what can
-still be run without them. They are available on request.
+withheld from the published mirror, where every test that needs them carries
+the `requires_raw_traces` mark and skips. They are available on request.
 
 `MANIFEST.csv` carries one row per unique acquisition: its path, peak, role,
 temperature, power, curation flag, QC reason, the source filenames it was
 merged from, and its MD5. 297 rows. `tests/test_manifest.py` checks the
-manifest's internal consistency, and four further tests re-hash every trace in
-this directory against it, which is the check the mirror cannot run.
+manifest's internal consistency and, in `test_every_file_present_and_bitexact`,
+re-hashes every trace in this directory against it, the check the mirror cannot
+run.
 
 The subdirectories are the roles the manifest names:
 

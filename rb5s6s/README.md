@@ -51,13 +51,30 @@ that produce no results table.
 
 | module | what it computes | documented in |
 |---|---|---|
-| `lineshape.py` | the kernels and their convolution, on the transition axis: one Lorentzian carrying the natural and collisional widths, the two-sided-exponential transit cusp, the laser Gaussian, and the triangular AC-Stark ramp | [The lineshape](../docs/methods/02_the_lineshape.md), [The composite model](../docs/methods/04_the_composite_model.md) |
-| `linefit.py` | the joint fit of one condition's repeats, sharing the shape while each trace keeps its own amplitude, centre and linear background, and returning the full covariance | [The lineshape](../docs/methods/02_the_lineshape.md), [The statistics](../docs/methods/06_the_statistics.md) |
+| `lineshape.py` | the kernels and their convolution, on the transition axis: one Lorentzian carrying the natural and collisional widths, the two-sided-exponential transit cusp, the laser Gaussian, and the triangular AC-Stark ramp. Since the width fits moved to the joint line of `volume_line.py`, this separable form is their comparison route, and it still carries the light-shift fit | [The lineshape](../docs/methods/02_the_lineshape.md), [The composite model](../docs/methods/04_the_composite_model.md) |
+| `linefit.py` | the joint fit of one condition's repeats, sharing the shape while each trace keeps its own amplitude, centre and linear background, and returning the full covariance. The shape's transit comes from one joint table per condition, built on the bore-clipped beam (`fitter_beam`), with the light shift held at zero in the fits of record | [The lineshape](../docs/methods/02_the_lineshape.md), [The statistics](../docs/methods/06_the_statistics.md) |
 | `density.py` | rubidium vapour number density against temperature from the liquid-phase vapour-pressure correlation, and the density-scale systematic that everything inversely proportional to it inherits | [The lineshape](../docs/methods/02_the_lineshape.md) |
 | `beta.py` | the collisional self-broadening coefficient, fitting every temperature of one peak at once with the collisional width tied to the density law, so the density lever breaks the width degeneracy | [The statistics](../docs/methods/06_the_statistics.md), [What we found](../docs/methods/07_what_we_found.md) |
 | `global_fit.py` | the hierarchical fit of all peaks and temperatures together, sharing the laser width per temperature and the collisional coefficient per isotope, which turns the isotope equality into something testable | [The statistics](../docs/methods/06_the_statistics.md) |
 | `lever_crosscheck.py` | the packaged cross-check: the same fit across the model-form grid, returning one coefficient per isotope with separate statistical, model-form and beam-waist error bars, plus the leave-one-out scans and the density-anchor lever test | [What we found](../docs/methods/07_what_we_found.md) |
 | `stark.py` | the AC-Stark coefficient from width against power at fixed temperature, one coefficient shared across the peaks while each floats its own power-independent core width | [The AC-Stark ramp](../docs/methods/03_the_ac_stark_ramp.md) |
+
+## The joint line, the moments and the twin
+
+| module | what it computes | documented in |
+|---|---|---|
+| `beam_field.py` | the drive beam near the focus: a Gaussian clipped by the modulator's bore, focused, and propagated by the Fresnel diffraction integral through the whole focal region | [The composite model](../docs/methods/04_the_composite_model.md) |
+| `volume_line.py` | the non-convolving line: atoms sampled along their paths through that beam, each carrying its own light shift and transit, and the tabulated form the fitter reads | [The composite model](../docs/methods/04_the_composite_model.md) |
+| `fullmodel.py` | the full forward model for the joint maximum-likelihood fit, adding to the separable profile the terms it lacks | [The composite model](../docs/methods/04_the_composite_model.md) |
+| `moments.py` | windowed, self-centred moments of a line on the pedestal-subtracted trace, converged to a tolerance | [The odd moments](../docs/methods/10_the_odd_moments.md), [The window limits](../docs/methods/11_the_window_limits.md) |
+| `windows.py` | the window half-widths at which the moments are taken, defined in one place | [The window limits](../docs/methods/11_the_window_limits.md) |
+| `twin_bias.py` | the twin's bias on a windowed statistic, read from the window surface so it can be subtracted before the statistic enters a fit | [The odd moments](../docs/methods/10_the_odd_moments.md) |
+| `forecast.py` | the digital twin: synthetic traces from the same forward model, fitted back with the same fitter, to read the precision a design achieves | [The statistics](../docs/methods/06_the_statistics.md) |
+| `twin.py` | what a named instrument would store at given settings: its point count, vertical step and noise, for either platform | [The statistics](../docs/methods/06_the_statistics.md) |
+| `kernel_gate.py` | refuses a node of the full model until its Monte Carlo agrees with it | [The composite model](../docs/methods/04_the_composite_model.md) |
+| `ladder_gate.py` | refuses the real traces to an analysis until it has passed on noiseless, low-noise and archive-noise synthetic traces | [The statistics](../docs/methods/06_the_statistics.md) |
+
+Every module, listed here or not, opens with a docstring stating why it exists.
 
 ## Model comparison, identifiability and the observables
 

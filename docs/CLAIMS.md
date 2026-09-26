@@ -94,13 +94,13 @@ Bounds (95%, each with its own conditionality stated):
   The constraint lands on the
   (Δα, intensity) pair, that is, on the product the light shift actually
   measures, rather than on either factor alone.
-- The 2025 laser linewidth: below 1.2 MHz per photon, equivalently 2.4 MHz on
-  the transition axis, at the accepted lineage waist,
-  rising with the waist. The per-block fitted values, 1.75 to 2.15 MHz <!-- other-quantity: per-block fitted widths, not the halo band's old reconstruction -->
-  on the transition axis, are preliminary: their block-to-block
-  variation is partly the collision-laser degeneracy rather than
-  resolved laser physics, and they are quoted as the working range, not
-  as a result.
+- The residual Gaussian:
+  [0.71](../results/global_fit.csv "ref:global_fit:sigma_laser:70C") ± [0.22](../results/global_fit.csv "ref:global_fit:sigma_laser:70C:err"),
+  [1.053](../results/global_fit.csv "ref:global_fit:sigma_laser:90C") ± [0.094](../results/global_fit.csv "ref:global_fit:sigma_laser:90C:err") and
+  [0.74](../results/global_fit.csv "ref:global_fit:sigma_laser:110C") ± [0.18](../results/global_fit.csv "ref:global_fit:sigma_laser:110C:err") MHz at 70, 90 and 110 °C on the transition
+  axis, from one joint fit of those three temperatures. It is not the laser,
+  which the bench puts far below it, and its variation between blocks is partly
+  the collision-laser degeneracy, so it is a bound and not a result.
 - The ramp asymmetry: the skew channel sits below the noise floor at the
   campaign maximum of 225 mW, so what the record carries is an upper
   bound consistent with zero, not a quoted interval. A second cause, not about

@@ -62,7 +62,7 @@
   "quoting_sites": [
    {
     "file": "README.md",
-    "line": 121,
+    "line": 129,
     "writes": "0.04"
    },
    {
@@ -99,7 +99,7 @@
   "quoting_sites": [
    {
     "file": "README.md",
-    "line": 121,
+    "line": 129,
     "writes": "0.02"
    },
    {
@@ -730,7 +730,7 @@
   "quoting_sites": [
    {
     "file": "README.md",
-    "line": 151,
+    "line": 163,
     "writes": "0.014"
    }
   ],
@@ -1346,7 +1346,7 @@
   "quoting_sites": [
    {
     "file": "README.md",
-    "line": 125,
+    "line": 133,
     "writes": "42.38"
    },
    {
@@ -1457,6 +1457,11 @@
    {
     "file": "docs/methods/02_the_lineshape.md",
     "line": 281,
+    "writes": "42.38"
+   },
+   {
+    "file": "results/README.md",
+    "line": 173,
     "writes": "42.38"
    }
   ],
@@ -3155,6 +3160,108 @@
   ],
   "source_file": "results/global_fit.csv",
   "source_value": "0.0037"
+ },
+ "global_fit:sigma_laser:110C": {
+  "producer": "run_global_fit.py",
+  "quoting_sites": [
+   {
+    "file": "README.md",
+    "line": 130,
+    "writes": "0.74"
+   },
+   {
+    "file": "docs/CLAIMS.md",
+    "line": 100,
+    "writes": "0.74"
+   }
+  ],
+  "source_file": "results/global_fit.csv",
+  "source_value": "0.745"
+ },
+ "global_fit:sigma_laser:110C:err": {
+  "producer": "run_global_fit.py",
+  "quoting_sites": [
+   {
+    "file": "README.md",
+    "line": 130,
+    "writes": "0.18"
+   },
+   {
+    "file": "docs/CLAIMS.md",
+    "line": 100,
+    "writes": "0.18"
+   }
+  ],
+  "source_file": "results/global_fit.csv",
+  "source_value": "0.176"
+ },
+ "global_fit:sigma_laser:70C": {
+  "producer": "run_global_fit.py",
+  "quoting_sites": [
+   {
+    "file": "README.md",
+    "line": 130,
+    "writes": "0.71"
+   },
+   {
+    "file": "docs/CLAIMS.md",
+    "line": 98,
+    "writes": "0.71"
+   }
+  ],
+  "source_file": "results/global_fit.csv",
+  "source_value": "0.707"
+ },
+ "global_fit:sigma_laser:70C:err": {
+  "producer": "run_global_fit.py",
+  "quoting_sites": [
+   {
+    "file": "README.md",
+    "line": 130,
+    "writes": "0.22"
+   },
+   {
+    "file": "docs/CLAIMS.md",
+    "line": 98,
+    "writes": "0.22"
+   }
+  ],
+  "source_file": "results/global_fit.csv",
+  "source_value": "0.222"
+ },
+ "global_fit:sigma_laser:90C": {
+  "producer": "run_global_fit.py",
+  "quoting_sites": [
+   {
+    "file": "README.md",
+    "line": 130,
+    "writes": "1.053"
+   },
+   {
+    "file": "docs/CLAIMS.md",
+    "line": 99,
+    "writes": "1.053"
+   }
+  ],
+  "source_file": "results/global_fit.csv",
+  "source_value": "1.053"
+ },
+ "global_fit:sigma_laser:90C:err": {
+  "producer": "run_global_fit.py",
+  "quoting_sites": [
+   {
+    "file": "README.md",
+    "line": 130,
+    "writes": "0.094"
+   },
+   {
+    "file": "docs/CLAIMS.md",
+    "line": 99,
+    "writes": "0.094"
+   }
+  ],
+  "source_file": "results/global_fit.csv",
+  "source_value": "0.094"
  },
  "guided_mode_tables:evanescent_profile_370nm_at_100nm:flux_fraction": {
   "producer": "run_guided_mode_tables.py",
@@ -6484,7 +6591,7 @@
   "quoting_sites": [
    {
     "file": "README.md",
-    "line": 129,
+    "line": 137,
     "writes": "1203.7"
    },
    {
@@ -6580,7 +6687,7 @@
   "quoting_sites": [
    {
     "file": "README.md",
-    "line": 129,
+    "line": 137,
     "writes": "1287.9"
    },
    {
@@ -6666,7 +6773,7 @@
   "quoting_sites": [
    {
     "file": "README.md",
-    "line": 129,
+    "line": 137,
     "writes": "1339.6"
    },
    {
@@ -6879,7 +6986,7 @@
   "quoting_sites": [
    {
     "file": "README.md",
-    "line": 126,
+    "line": 134,
     "writes": "-1131.8"
    },
    {
@@ -7011,7 +7118,7 @@
   "quoting_sites": [
    {
     "file": "README.md",
-    "line": 126,
+    "line": 134,
     "writes": "5.9"
    },
    {
@@ -7080,7 +7187,7 @@
   "quoting_sites": [
    {
     "file": "README.md",
-    "line": 126,
+    "line": 134,
     "writes": "+6.5"
    },
    {
@@ -7668,7 +7775,7 @@
   "quoting_sites": [
    {
     "file": "README.md",
-    "line": 128,
+    "line": 136,
     "writes": "3.2"
    },
    {
@@ -8561,7 +8668,7 @@
   "quoting_sites": [
    {
     "file": "README.md",
-    "line": 123,
+    "line": 131,
     "writes": "0.73"
    },
    {
@@ -8600,7 +8707,7 @@
   "quoting_sites": [
    {
     "file": "README.md",
-    "line": 123,
+    "line": 131,
     "writes": "0.18"
    },
    {
@@ -10684,7 +10791,7 @@
   "quoting_sites": [
    {
     "file": "README.md",
-    "line": 128,
+    "line": 136,
     "writes": "0.00494"
    }
   ],
@@ -10696,7 +10803,7 @@
   "quoting_sites": [
    {
     "file": "README.md",
-    "line": 128,
+    "line": 136,
     "writes": "0.00054"
    }
   ],
@@ -10732,7 +10839,7 @@
   "quoting_sites": [
    {
     "file": "README.md",
-    "line": 128,
+    "line": 136,
     "writes": "0.00510"
    }
   ],
@@ -10744,7 +10851,7 @@
   "quoting_sites": [
    {
     "file": "README.md",
-    "line": 128,
+    "line": 136,
     "writes": "0.00055"
    }
   ],

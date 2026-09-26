@@ -2,8 +2,7 @@
 
 A working setup in five minutes, then a reading order by purpose. Where the
 vocabulary is unfamiliar, [docs/GLOSSARY.md](docs/GLOSSARY.md) sits beside
-any page here. The main [README](README.md) is the full account and runs to about four
-thousand words. This page is the front door.
+any page here. The main [README](README.md) is the full account. This page is the front door.
 
 ## 1. Installation and first run
 
@@ -14,8 +13,9 @@ pytest -q
 ```
 
 Then the smallest thing that is actually the physics. This runs from the
-installed package, needs no data from this repository, and the numbers it
-prints are the ones the analysis is built on:
+installed package, needs no data from this repository, and builds the
+separable form of the line, which the fitter keeps as its comparison route
+beside [the joint line](README.md#the-line-model):
 
 ```python
 import numpy as np, rb5s6s as r
@@ -69,7 +69,7 @@ Two things explain most apparent failures:
 
 * `pytest -q --runslow` is the full battery and is what CI runs. Run it before
   pushing, not the fast subset, because several guards live only in it.
-* Eight scripts read two data trees that are not in the repository. They exit
+* The scripts that read the two session trees kept outside the repository exit
   0 naming the missing tree instead of failing, and the committed CSVs are the
   record for those stages, so nothing is missing. Where the trees are
   available, point `RB5S6S_SESSION_20250704_DIR` and `RB5S6S_SESSION_20250717_DIR`

@@ -170,8 +170,8 @@ Every row DIAGNOSTIC, a reanalysis of held sessions against a design question, a
 | `cascade_branching.csv` | `run_zeeman_depletion.py` | DIAGNOSTIC, self-statused. The hyperfine pumping branching per line, resolved by intermediate F, with the levels that cannot reach the undriven ground level at all appearing as exact zeros. Its producer needs the optional `cascade` extra for exact Wigner symbols, so it is not in `run_all.sh` and this file is committed and read rather than recomputed. |
 
 All values are preliminary where they carry an absolute scale: they ride on
-the beam waist w₀, measured on this apparatus lineage rather than by this
-dataset (see the top-level README). The headline β_self is a
+the beam waist w₀, calculated at [42.38](../rb5s6s/constants.py "ref:constant:W0_CENTRAL_M:1e6") µm and never profiled on this bench
+(see the vocabulary above and the top-level README). The headline β_self is a
 bound, not a measurement.
 
 ## Four files beyond a table cell

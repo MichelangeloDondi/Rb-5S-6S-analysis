@@ -44,8 +44,8 @@ producers carry no stamp, and `fig0_spectrum.png` is exempt by design because
 it is drawn from the frozen raw traces. Every figure also carries a footer
 line naming the sources it is drawn from and the command that regenerates it.
 
-Ten figures are cited by no document. Their rows below name the claim they
-support instead of a citing passage.
+A figure cited by no document names, in its row below, the claim it supports
+instead of a citing passage.
 
 | file | what it shows | drawn by | discussed in |
 |---|---|---|---|
@@ -82,6 +82,14 @@ support instead of a citing passage.
 | `fig29_isotope_transit.png` | why the two isotopes do not share a transit width, and why the fits share one anyway. Panel (a) is the kernel against temperature for both masses, 12 kHz apart at 140 °C on a width quoted to 0.01 MHz. Panel (b) is the reason that is stated rather than corrected: against density, which is the lever the collisional coefficient is read from, the gap is almost all constant offset, and the free per-line core width absorbs a constant. The dashed line is what one standard error on the measured difference between the isotopes would look like on the same axes, and it is a factor of 240 steeper | `make_figures.py` | [docs/methods/02_the_lineshape.md](../docs/methods/02_the_lineshape.md) <!-- other-quantity: a temperature in degrees Celsius, not the dilute-gas margin of docs/methods/02 --> |
 | `fig21_joint_fit_five.png` | five repeats of one condition under a single shared line shape, the shared widths in the header, and each row printing its own fitted centre, peak height and reduced chi-squared. Five parameters are refitted for each repeat, because the frequency lock drifts between them: the line centre, the peak height, the background level, the background slope and the detector saturation. The slope was missing from this list while the producer had always fitted it (`_fit_rec_nuisances` solves for A, cc, b0, b1, logVs). The points are the measured signal and the line is the shared model. The point uncertainties come from the baseline scatter, which is conservative in the line core, so the reduced chi-squared sits below one. Each residual strip divides by that point's own uncertainty | `make_figures.py` | cited from [notes/full_dataset_fit_prereg.md](../docs/notes/full_dataset_fit_prereg.md), which now shows it. Supports the shared-shape dataset fit preregistered in [notes/full_dataset_fit_prereg.md](../docs/notes/full_dataset_fit_prereg.md). This row is its caption |
 | `fig22_joint_fit_twenty.png` | the same shared line shape across all twenty campaign power-sweep conditions, brightest repeat each, nothing retuned per panel. The model is a Lorentzian core, natural 3.49 MHz plus collisions, convolved with the laser width and the transit kernel, with detector saturation, and the shared collisional, laser and transit widths are in `results/global_dataset_fit.csv`, which the figure's own footer cites. Refitted for each trace, because the lock and the detector drift: line centre, peak height, background level, background slope, detector saturation. Five, not four, from the same `_fit_rec_nuisances` as fig21. The line shape itself is identical in all twenty panels. Every panel is scaled to its own trace, so peak heights cannot be compared across the grid and the numbers on the left apply to the first column only. The residual strips are in units of that trace's own point-by-point uncertainty, estimated from the baseline scatter, which overestimates the noise where the signal is strong, so the reduced chi-squared falls below one and the widths quoted above are correspondingly conservative. The signal is weakest in the 25 mW column, the lowest drive power of the sweep | `make_figures.py` | cited from [notes/full_dataset_fit_prereg.md](../docs/notes/full_dataset_fit_prereg.md), which now shows it. Supports the same fit as fig21, [notes/full_dataset_fit_prereg.md](../docs/notes/full_dataset_fit_prereg.md). This row is its caption |
+| `fig30_third_cumulant.png` | the third moment, and why it is the one channel the symmetric width budget cannot contaminate | `make_figures.py` | [wiki/third-cumulant.md](../docs/wiki/third-cumulant.md), [wiki/the-inhomogeneous-light-shift.md](../docs/wiki/the-inhomogeneous-light-shift.md), [big_picture/06_next-nanofibre.md](../docs/big_picture/06_next-nanofibre.md) |
+| `fig31_third_cumulant_measured.png` | the third moment computed on the 2025 traces, beside what the physics predicts for it | `make_figures.py` | [wiki/third-cumulant.md](../docs/wiki/third-cumulant.md), [big_picture/06_next-nanofibre.md](../docs/big_picture/06_next-nanofibre.md) |
+| `fig32_achieved_vs_achievable.png` | what the 2025 data established beside what a designed session projects | `make_figures.py` | [BIG_PICTURE.md](../docs/BIG_PICTURE.md) |
+| `fig33_identifiability_matrix.png` | which quantities each measurement configuration determines | `make_figures.py` | [BIG_PICTURE.md](../docs/BIG_PICTURE.md), [wiki/identifiability.md](../docs/wiki/identifiability.md) |
+| `fig34_campaign_projection.png` | where each bound stands today and where the campaign is projected to put it, with the lever that moves it named on its row | `make_figures.py` | [PLAN.md](../docs/PLAN.md), [wiki/the-digital-twin.md](../docs/wiki/the-digital-twin.md) |
+| `fig35_orthogonal_information.png` | which experimental variable breaks which degeneracy | `make_figures.py` | [big_picture/07_limitations-and-identifiability.md](../docs/big_picture/07_limitations-and-identifiability.md), [plan/00_the-case.md](../docs/plan/00_the-case.md), [wiki/identifiability.md](../docs/wiki/identifiability.md) |
+| `fig36_guided_mode.png` | the nanofibre's guided mode and its evanescent field, solved and approximated | `make_figures.py` | cited by no document. Supports [the guided geometry](../docs/methods/09_the_guided_geometry.md) |
+| `fig37_onf_levers.png` | what each fibre measurement buys per unit time, and what the lock costs | `make_figures.py` | cited by no document. Supports [the campaign cases](../docs/big_picture/09_the-campaign-cases.md) |
 
 The colour of a component is fixed across every panel here, so a colour means
 the same hyperfine line wherever it appears.
@@ -90,8 +98,8 @@ An axis label on these figures is a quantity and a unit, nothing more. Every
 caveat, status word and reading that used to be printed inside a canvas now
 lives in the caption of the document that references the figure, or in the row
 above where no document references it. Two of those caveats travel with every
-absolute width and are worth restating here. The beam waist has not been
-measured, the knife-edge scan is pending, and absolute widths ride on it, so a
+absolute width and are worth restating here. The beam waist is calculated and
+not measured, the knife-edge scan is pending, and absolute widths ride on it, so a
 smaller waist would lower a whole series together. The Rb density axis is
 logarithmic and carries a 20 per cent scale systematic from the vapour-pressure
 model, common to every point on it. Where a residual strip is drawn, it divides

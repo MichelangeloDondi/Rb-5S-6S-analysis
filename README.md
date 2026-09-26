@@ -53,36 +53,43 @@ assistance of Claude Code for coding, documentation and workflow support. The
 experiment, the data analysis and the scientific decisions are the author's own.
 A manuscript is in preparation.
 
-## The composite model
+## The line model
 
-$$I(\nu) = A\left[L_{\Gamma_\mathrm{nat}+\gamma_\mathrm{coll}} \otimes G_{\sigma} \otimes K_\mathrm{transit} \otimes R_{S_0}\right] + b$$
+$$I(\nu) = A\left[L_{\Gamma_\mathrm{nat}+\gamma_\mathrm{coll}} \otimes G_{\sigma} \otimes J_{w_0,T}(S_0)\right] + b$$
 
-A Lorentzian core, a Gaussian residual, the transit cusp and the light-shift
-ramp, convolved. Solid arrows below enter that convolution. Dashed arrows act on
+The Lorentzian core is the same for every atom, so it convolves exactly. The
+transit and the light shift are not, because one position in the beam sets both.
+They enter as one joint line $J$, sampled from atoms crossing the bore-clipped
+beam at the calculated waist, in the weak-field limit and at $M^2 = 1$, so the
+transit width is not a free parameter. The Gaussian residual also absorbs a
+Doppler term from the return beam's tilt, which scales with each atom's
+velocity, so that part of it does not convolve exactly either.
+
+Every width fit of record holds the light shift at zero, so only the transit
+half of $J$ is exercised, and the light-shift bound below comes from a separate
+fit on the separable form with the focal-plane ramp. And the return beam is
+modelled as the forward beam scaled by $\rho$, while on the bench it degrades
+further along the return path, a term the model does not yet carry. [The
+composite model](docs/methods/04_the_composite_model.md) measures the separable
+convolution's error. Solid arrows below enter the line, and dashed arrows act on
 the observation without belonging to the profile.
-
-This convolution fails on this bench, because one position in the beam sets both the shift and the transit.
-[The composite model](docs/methods/04_the_composite_model.md) measures the cost, and every bound below is
-conditional on the form until the fitter carries the joint line.
 
 ```mermaid
 flowchart LR
     NAT["natural 3.49 MHz<br/>literature"] --> CORE
-    COL["collisional 0.19-0.93 MHz<br/>fitted"] --> CORE
+    COL["collisional<br/>fitted per condition"] --> CORE
     CORE["Lorentzian core<br/>adds in FWHM"] --> CONV
-    TRA["transit 1.45 MHz<br/>from the calculated waist"] --> CONV
-    LAS["residual Gaussian 1.75-2.15 MHz<br/>fitted, not the laser"] --> CONV
-    RAM["AC-Stark ramp 0.73 MHz<br/>calculated, the fit returns a bound"] --> CONV
-    CONV{{"convolution"}} --> OBS(["observed line"])
+    LAS["residual Gaussian<br/>fitted, not the laser"] --> CONV
+    JNT["transit and light shift<br/>one atom-sampled line,<br/>bore-clipped beam"] --> CONV
+    CONV{{"convolution of<br/>the homogeneous parts"}} --> OBS(["observed line"])
     SAT["saturation<br/>same P2 signature<br/>makes the joint bound conservative"] -.-> OBS
     BBR["blackbody<br/>a temperature ceiling,<br/>not a correction"] -.-> OBS
     HFP["hyperfine pumping<br/>branching exact,<br/>width in fullmodel"] -.-> OBS
     PHI["photoionisation<br/>single-photon excluded by 0.433 eV,<br/>two-photon open, unbounded"] -.- OBS
 ```
 
-Each term is derived, not assumed. The transit kernel is a cusp and not a
-Gaussian. The light shift is a distribution, not a shift: for a
-two-photon transition the rate goes as $I^2$ while the shift goes as $I$, so
+Each term is derived, not assumed. The light shift is a distribution, not a shift: for a
+two-photon transition in the focal plane of a Gaussian beam the rate goes as $I^2$ while the shift goes as $I$, so
 
 $$f(s) \propto |s| \quad \text{across the shifts the beam applies}$$
 
@@ -90,6 +97,7 @@ running from zero at the dim edge to a depth $S_0$ on axis, a closed-form ramp
 with no free shape parameter, whose skew is the one channel a drifting lock
 cannot reach. Which side it sits on follows the sign of $\Delta\alpha$ and
 changes no bound. The [derivation](docs/methods/03_the_ac_stark_ramp.md) states it.
+At the tight focus the bore reshapes this ramp, and the joint line samples it from the beam instead of the closed form.
 
 <p align="center">
   <img src="figures/fig26_lineshape_kernels.png" width="680" alt="The four kernels on one axis: Lorentzian core, Gaussian residual, transit cusp and the light-shift ramp">
@@ -100,7 +108,7 @@ Further reading: [the composite model, term by term](docs/methods/04_the_composi
 [the AC-Stark ramp](docs/methods/03_the_ac_stark_ramp.md) ·
 [the same model in a guided geometry](docs/methods/09_the_guided_geometry.md)
 
-### Four quantities and their distinctions
+### Four quantities kept apart
 
 Confusing these four is the most consequential error available here.
 
@@ -119,21 +127,26 @@ what would lift it. The calculated rows do not share it.
 | quantity | 2025 result | type | lifted by |
 |---|---|---|---|
 | **β_self** | ≲ [0.02](results/beta_self_probe.csv "ref:beta_self_probe:4192::bound95_nscale")–[0.04](results/beta_self_probe.csv "ref:beta_self_probe:4154::bound95_nscale") MHz per 10¹² cm⁻³ <!-- other-quantity: the collisional bound, not a forecast term --> | bound | same-session 150–170 °C points |
-| **σ_laser** | ≤ 2.4 MHz on the transition axis at the lineage waist, half that per photon | bound | a beam profile |
-| **S₀(225 mW)** | < [0.18](results/stark_joint.csv "ref:stark_joint:S0_225mW_ub95:primary") MHz, below the predicted [0.73](results/stark_joint.csv "ref:stark_joint:S0_225mW_pred:prediction") MHz at the calculated central waist (O44/F280) | bound | fixed lock, tighter focus |
+| **σ, the residual Gaussian** | [0.71](results/global_fit.csv "ref:global_fit:sigma_laser:70C") ± [0.22](results/global_fit.csv "ref:global_fit:sigma_laser:70C:err"), [1.053](results/global_fit.csv "ref:global_fit:sigma_laser:90C") ± [0.094](results/global_fit.csv "ref:global_fit:sigma_laser:90C:err") and [0.74](results/global_fit.csv "ref:global_fit:sigma_laser:110C") ± [0.18](results/global_fit.csv "ref:global_fit:sigma_laser:110C:err") MHz at 70, 90 and 110 °C on the transition axis, from one joint fit of those three temperatures. It is not the laser, which the bench puts far below it | bound | a beam profile |
+| **S₀(225 mW)** | < [0.18](results/stark_joint.csv "ref:stark_joint:S0_225mW_ub95:primary") MHz on the separable form, below the predicted [0.73](results/stark_joint.csv "ref:stark_joint:S0_225mW_pred:prediction") MHz at the calculated central waist | bound | fixed lock, tighter focus |
 | power scaling | no width trend, and an amplitude departure from P² | null + a departure | not applicable |
-| **w₀** | w0 ≈ 42 µm, calculated ([42.38](rb5s6s/constants.py "ref:constant:W0_CENTRAL_M:1e6") µm, the bore-limited focus at this bench's 3 mm modulator aperture, O44/F280), not measured. A Gaussian fit of the line returns 42.0 ± 1.7 µm. **The closure recovers the waist at zero noise, but with noise an offset grows and the interval under-covers**, so the bar is open | carried, OPEN | a knife-edge scan here |
+| **w₀** | w0 ≈ 42 µm, calculated, not measured: [42.38](rb5s6s/constants.py "ref:constant:W0_CENTRAL_M:1e6") µm, the focus the 3 mm modulator bore allows. The closure recovers it at zero noise and under-covers with noise, so the bar is open | carried, OPEN | a knife-edge scan here |
 | **Δα(993 nm)** | [-1131.8](results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive") ± [5.9](results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive:err") a.u. with the dynamic tail, [+6.5](results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha_vs_orson:at_drive") σ from the cited magnitude on this derivation's bar alone (the cited value states none), **opposite in sign**, adjudicated not measured | calculated | the fixed-lock pull direction, unrun |
 <!-- C6b: re-measured as a moment (A149) -->
-| **twin trust** | the twin's wing noise against the real traces': [0.00494](results/twin_completeness.csv "ref:twin_completeness:measured_sigma:") ± [0.00054](results/twin_completeness.csv "ref:twin_completeness:measured_sigma::err") against [0.00510](results/twin_completeness.csv "ref:twin_completeness:twin_at_measured_tau_sigma:") ± [0.00055](results/twin_completeness.csv "ref:twin_completeness:twin_at_measured_tau_sigma::err"). **The sizes agree; the shapes do not**, and the twin's Gaussian draw leaves its fourth-cumulant bar [3.2](results/residual_resampling.csv "ref:residual_resampling:sd_mu4_over_gaussian_corrected:real")x too tight | measured vs envelope | the tail shape, sized |
+| **twin trust** | the twin's wing noise against the real traces': [0.00494](results/twin_completeness.csv "ref:twin_completeness:measured_sigma:") ± [0.00054](results/twin_completeness.csv "ref:twin_completeness:measured_sigma::err") against [0.00510](results/twin_completeness.csv "ref:twin_completeness:twin_at_measured_tau_sigma:") ± [0.00055](results/twin_completeness.csv "ref:twin_completeness:twin_at_measured_tau_sigma::err"). The sizes agree and the shapes do not: the twin's Gaussian draw leaves its fourth-moment bar [3.2](results/residual_resampling.csv "ref:residual_resampling:sd_mu4_over_gaussian_corrected:real")x too tight | measured vs envelope | the tail shape, sized |
 | **magic wavelengths** | ≈ [1203.7](results/polarizability.csv "ref:polarizability:magic_5s6s:1204nm") / [1287.9](results/polarizability.csv "ref:polarizability:magic_5s6s:1288nm") / [1339.6](results/polarizability.csv "ref:polarizability:magic_5s6s:1340nm") nm, trapping both states without pulling the line | calculated (envelope) | a trapped-atom experiment |
 
 <p align="center">
   <img src="figures/fig16_fit_gallery.png" width="760" alt="The global model over one trace per peak, with residual panels below each">
 </p>
 
-One trace per line at the best-fit parameters, with residuals below. Reduced
-chi-square runs 0.78 to 1.04 across the 32 fitted conditions.
+One trace per line at the best fit, residuals below. Reduced
+chi-square runs 0.78 to 1.04 across the 32 fitted conditions, on the ideal
+beam the fitter used before the clipped one, a re-run owed.
+
+Not yet run on the real traces: the fit this record is built toward, one
+maximum-likelihood fit of the traces with the line's higher moments and their
+ratios, the twin measuring and subtracting each statistic's bias.
 
 Further reading: [every headline read from its producing table](docs/RESULTS.md) ·
 [what is and is not claimed](docs/CLAIMS.md)
@@ -142,11 +155,10 @@ Further reading: [every headline read from its producing table](docs/RESULTS.md)
 
 A fixed-lock session would convert the light-shift and collisional bounds into
 measurements, with absolute centres available once the lock repaired in August
-2026 is characterised. The plan is scheduled day by day, names the instrument
-for each day, and states what is cut when a day is lost.
+2026 is characterised.
 
-Both scenarios are forecast through the digital twin, which simulates traces,
-analyses them with this repository's own code and reads the covariance. For the
+The digital twin forecasts both scenarios: it simulates traces, analyses them
+with this repository's code and reads the covariance. For the
 cell it recovers the collisional width to
 [0.014](results/campaign_twin_forecast.csv "ref:campaign_twin_forecast:cell:gamma_coll_5traces_err") MHz
 from five traces. It finds that the fibre does not break the degeneracy limiting both
@@ -165,7 +177,7 @@ Further reading: [the campaign proposal](docs/PLAN.md) ·
 |---|---|
 | installation and a reading order | [START_HERE.md](START_HERE.md) |
 | running the analysis | [docs/REPRODUCING.md](docs/REPRODUCING.md) |
-| the concepts, one page each | [the wiki](docs/wiki/README.md), 55 pages |
+| the concepts, one page each | [the wiki](docs/wiki/README.md) |
 | terms and symbols | [docs/GLOSSARY.md](docs/GLOSSARY.md) |
 | adapting it to another transition | [docs/ADAPTING.md](docs/ADAPTING.md) |
 | the apparatus | [docs/APPARATUS.md](docs/APPARATUS.md) |
@@ -176,11 +188,10 @@ Further reading: [the campaign proposal](docs/PLAN.md) ·
 ## Conventions
 
 Every frequency is on the transition axis, twice the laser axis. Every number
-carries a provenance tag, and uncertainties carry two significant digits. The
-order of evidence is physics first, mathematics where physics is not enough and
-simulation where neither suffices, and each term states which of the three it
-rests on. A temperature here is a thermocouple reading on the cell and never an
-oven dial, two archive labels being dials that read like temperatures.
+carries a provenance tag, and uncertainties carry two significant digits. Each
+term states whether it rests on physics, mathematics or simulation, preferred in
+that order. A temperature is a thermocouple reading on the cell, never an oven
+dial.
 
 ## Contact and citation
 
