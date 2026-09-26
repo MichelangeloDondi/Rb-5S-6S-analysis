@@ -16,9 +16,8 @@ import sys
 
 import numpy as np
 
-from rb5s6s.forecast import (external_constraint_gain,
+from rb5s6s.forecast import (external_constraint_gain, fit_world,
                              forecast_precision, synthetic_traces)
-from rb5s6s.linefit import fit_condition
 
 #: O58: this module's twin runs are a declared STUDY, and this is its reason
 _TWIN_STUDY = "the tutorial's worked example of the width channel, not a quoted number"
@@ -36,7 +35,7 @@ def chapter_3_generate(rng):
     freqs, volts = synthetic_traces(
         YOUR_LINE["gamma_coll"], YOUR_LINE["sigma_laser"],
         YOUR_LINE["transit_fwhm"], span_mhz=60.0, n_points=2000,
-        n_traces=5, noise=0.004, rng=rng, registry=_TWIN_STUDY)
+        n_traces=5, noise=0.004, T_C=130.0, rng=rng, registry=_TWIN_STUDY)
     print(f"   {len(freqs)} traces of {len(freqs[0])} points, "
           f"peak {max(volts[0]):.3f} V\n")
     return freqs, volts
@@ -44,8 +43,9 @@ def chapter_3_generate(rng):
 
 def chapter_4_fit(freqs, volts):
     print("4. FIT it back, and judge by the PULL")
-    res = fit_condition(freqs, volts, T_C=130.0,
-                        transit_fwhm=YOUR_LINE["transit_fwhm"])
+    # through the world door: the fitter reads the world these traces were drawn from, and under the joint
+    # model the transit is the ensemble's at the waist and temperature, so no transit is passed to it
+    res = fit_world(freqs, volts, T_C=130.0)
     ok = True
     for name in ("gamma_coll", "sigma_laser"):
         pull = abs(res[name] - YOUR_LINE[name]) / res[f"{name}_err"]
@@ -61,8 +61,8 @@ def chapter_5_degeneracy(res, rng):
     print(f"   laser-collision correlation: {res['corr_laser_coll']:+.3f}")
     f2, v2 = synthetic_traces(YOUR_LINE["gamma_coll"], YOUR_LINE["sigma_laser"],
                               YOUR_LINE["transit_fwhm"], n_points=2000,
-                              n_traces=5, noise=0.04, rng=rng, registry=_TWIN_STUDY)
-    r2 = fit_condition(f2, v2, T_C=130.0, transit_fwhm=YOUR_LINE["transit_fwhm"])
+                              n_traces=5, noise=0.04, T_C=130.0, rng=rng, registry=_TWIN_STUDY)
+    r2 = fit_world(f2, v2, T_C=130.0)
     grew = r2["gamma_coll_err"] > res["gamma_coll_err"]
     pull2 = abs(r2["gamma_coll"] - YOUR_LINE["gamma_coll"]) / r2["gamma_coll_err"]
     print(f"   noise x10 -> error {res['gamma_coll_err']:.4f} becomes "
@@ -79,9 +79,9 @@ def chapter_6_break_it(rng):
     for label, kw in (("baseline, 60 MHz span, 5 traces", {}),
                       ("wider span, 300 MHz", {"span_mhz": 300.0, "n_points": 9000}),
                       ("ten times the traces", {"n_traces": 50})):
-        f, v = synthetic_traces(*truth, noise=0.004,
+        f, v = synthetic_traces(*truth, noise=0.004, T_C=130.0,
                                 rng=np.random.default_rng(5), **kw, registry=_TWIN_STUDY)
-        r = fit_condition(f, v, T_C=130.0, transit_fwhm=truth[2])
+        r = fit_world(f, v, T_C=130.0)
         rows.append((label, r["corr_laser_coll"], r["gamma_coll_err"]))
         print(f"   {label:34s} corr {r['corr_laser_coll']:+.4f}  "
               f"gamma err {r['gamma_coll_err']:.4f}")

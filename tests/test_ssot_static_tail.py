@@ -49,16 +49,26 @@ def _text_cells(line):
     return " | ".join(keep)
 
 
-def _hits(files, reader):
+#: THE REFERENCE GRAPH'S POSITION FIELDS ARE NOT VALUES, the same predicate as the private guard's `_GRAPH_POSITION`
+#: (private/checks/retired_values.py, 2026-09-25), restated because a mirror has no private/ to import from. The
+#: mirror's suite on V7.0's port failed on a quoting site whose line NUMBER shared the retired value's digits.
+_GRAPH_POSITION = re.compile(r'^\s*"line":\s*\d+,?\s*$')
+
+
+def _hits(files, reader, digests=None):
+    digests = RETIRED_DIGESTS if digests is None else digests
     out = []
     for f in files:
         try:
             text = reader(f)
         except (OSError, UnicodeDecodeError):
             continue
+        graph = f.endswith("reference_graph.json")
         for i, line in enumerate(text.splitlines(), 1):
+            if graph and _GRAPH_POSITION.match(line):
+                continue
             line = _text_cells(line) if f.endswith(".csv") else line
-            if any(hashlib.sha256(form.encode()).hexdigest() in RETIRED_DIGESTS
+            if any(hashlib.sha256(form.encode()).hexdigest() in digests
                    for m in TOKEN.finditer(line) for form in _forms(m.group(0))):
                 out.append(f"{f}:{i}")
     return out
@@ -89,3 +99,13 @@ def test_the_tripwire_catches_every_form_and_no_float_that_contains_the_digits()
                "i.csv": f"wide_dchi2,5|15,{v}.4,delta chi2 (raw),DIAGNOSTIC"}
     hits = _hits(list(planted), lambda f: planted[f])
     assert sorted(h.split(":")[0] for h in hits) == ["a.md", "b.py", "c.csv", "d.md", "h.md"], hits
+
+
+def test_a_graph_position_is_not_a_value_and_a_quoted_value_still_is():
+    """Both ways, on a stand-in digest (no test prints the retired value): a graph line that is only a line number equal
+    to the digits passes, and the same digits quoted as a value in the graph are still a hit."""
+    fake = {hashlib.sha256(form.encode()).hexdigest() for form in _forms("12345")}
+    graph = '{\n "k": {\n  "file": "x.md",\n  "line": 12345,\n  "writes": "12345"\n }\n}\n'
+    hits = _hits(["docs/reference_graph.json"], lambda f: graph, digests=fake)
+    assert hits == ["docs/reference_graph.json:5"], hits
+

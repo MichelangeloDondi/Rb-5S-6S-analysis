@@ -51,6 +51,9 @@ tests/test_prose_shape.py
 # V7.1's board (2026-09-26): a module renamed away leaves no route to its old name; five survived O61 stage A outside
 # the dotted-routes test's population (a bare route on a methods page, every .py docstring). Text only, about a second.
 tests/test_retired_module_routes.py
+tests/test_twin_world_fit_door.py
+tests/test_producer_pools_honour_the_share.py
+tests/test_twin_term_census_reader.py
 # O58, 2026-09-25: the model-terms registry, its start-refusing preflight at every twin and Monte Carlo entry (planted
 # both ways, the two ratchets included) and the wiki status guard. Owner order O58 names the floor as where these are
 # summed; the module reads the registry and its renderings and takes about 2 s.

@@ -820,6 +820,10 @@ def _task(args):
     (w0, m2, rho, T, P), kw = args
     r, d = run_node(w0, m2, rho, T, P, **kw)
     key = kernel_gate.node_key(w0, m2, rho, T, P)
+    if r is None:
+        # stopped after the registry's door (--stop-after preflight): admitted and not one atom drawn, so
+        # nothing is recorded, since an artefact without readings would overwrite a validated node
+        return key, "ADMITTED", r, d
     art = kernel_gate.record_node(key, r, detail=d)
     return key, json.loads(art.read_text())["verdict"], r, d
 
@@ -955,6 +959,14 @@ def _parser() -> argparse.ArgumentParser:
     ap.add_argument("--rhos", default=None, help="a comma list of retro ratios for --grid (default the single --rho)")
     ap.add_argument("--window-mm", type=float, default=None, help="the collected half-window; default the record's own, z_ratio x z_R")
     ap.add_argument("--workers", type=int, default=1); ap.add_argument("--seed", type=int, default=0)
+    # A DECLARED DEVIATION REACHES THE NODE FROM THE COMMAND LINE (F561, 2026-09-26): the registry asks a campaign-regime
+    # node to declare the depletion its Monte Carlo column still owes (planted in tests/test_model_registry.py), and no
+    # argument could carry the declaration, so the node runner's every 350 and 500 mW node was refused. TERM=REASON,
+    # repeatable; the six-word rule is the registry's own and is not restated here.
+    ap.add_argument("--stop-after", default="", choices=("", "preflight"),
+                    help="stop once the registry's door has admitted the node (the door's own plant)")
+    ap.add_argument("--deviation", action="append", default=[], metavar="TERM=REASON",
+                    help="a declared deviation (O58), TERM=REASON of six words or more, repeatable")
     ap.add_argument("--nodes", default=None,
                     help="a text file of nodes to run, one 'w0_um m2 rho T_C P_mW' per line (# comments), for the "
                          "pooled re-run of every recorded node after a model edit (PLAN v2 Phase 1 step 5)")
@@ -965,12 +977,19 @@ def _parser() -> argparse.ArgumentParser:
 
 
 def main(argv=None) -> int:
-    a = _parser().parse_args(argv)
+    ap = _parser()
+    a = ap.parse_args(argv)
     if a.self_test:
         return _self_test()
     if a.collect:
         return _collect(a.rho)
-    kw = dict(n_atoms=a.n_atoms, beam_kind=a.beam, half_window_m=(None if a.window_mm is None else a.window_mm * 1e-3), cycles_model=a.cycles_model,
+    _devs = {}
+    for _d in a.deviation:
+        if "=" not in _d:
+            ap.error(f"--deviation takes TERM=REASON, got {_d!r}")
+        _t, _r = _d.split("=", 1)
+        _devs[_t.strip()] = _r.strip()
+    kw = dict(n_atoms=a.n_atoms, beam_kind=a.beam, mc_deviations=(_devs or None), stop_after=a.stop_after, half_window_m=(None if a.window_mm is None else a.window_mm * 1e-3), cycles_model=a.cycles_model,
               seed=a.seed, depletion_form=a.depletion_form, joint_n_path=a.joint_n_path)
     rhos = [float(x) for x in a.rhos.split(",")] if a.rhos else [a.rho]
     if a.nodes:
@@ -992,6 +1011,10 @@ def main(argv=None) -> int:
     # every node, because the summary waited for the whole pool.
     rows, res = [], []
     def _emit(key, verdict, r, d):
+        if r is None:
+            print(f"  {key}: {verdict} by the registry's door ({d['registry'].get('scope')}), "
+                  f"stopped before sampling", flush=True)
+            return
         print(f"  {key}: {verdict}  transit {r['transit_fwhm_rel']['mc']:.4f}/{r['transit_fwhm_rel']['model']:.4f}  "
               f"shape {r['transit_shape_rel']['mc']:.3g}  mu2 {r['ramp_mu2_rel']['mc']:.4f}/{r['ramp_mu2_rel']['model']:.4f}  "
               f"mu3 {r['ramp_mu3_rel']['mc']:.5f}/{r['ramp_mu3_rel']['model']:.5f} (grid {r['ramp_mu3_rel']['grid_movement']:.2g})  "

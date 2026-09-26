@@ -58,12 +58,11 @@ from rb5s6s import config as C                                    # noqa: E402
 from rb5s6s import constants as K                                  # noqa: E402
 from rb5s6s import density as D                                    # noqa: E402
 from rb5s6s.lineshape import ramp_mean_over_s0                     # noqa: E402  (O27)
-from rb5s6s.forecast import build_world_trace                      # noqa: E402
+from rb5s6s.forecast import build_world_trace, fit_world           # noqa: E402
 from rb5s6s.reference_point import reference_point                      # noqa: E402
 from rb5s6s.fringe_tail import COHERENCE_TRANSIT, fringe_shift_density
 from rb5s6s import stark                                           # noqa: E402
 from rb5s6s.lineshape import stark_shift_S0_mhz                    # noqa: E402
-from rb5s6s.linefit import fit_condition                           # noqa: E402
 from rb5s6s.qc import median_standard_error                        # noqa: E402
 # MOMENTS AT ORDERS 5 AND 7 (O33, A72): this producer asks for (3, 5, 7), and while
 # k3 = mu3 exactly, kappa5 and kappa7 are differences of large terms whose cancellation the
@@ -74,6 +73,10 @@ from rb5s6s.amplitudes import predicted_shares                     # noqa: E402
 
 #: O58: this module's twin runs are a declared STUDY, and this is its reason
 _TWIN_STUDY = 'the three-channel forecast on the layered world, a registered approximation of the joint twin'
+#: the standard channel is the archive's single-line fit with no ramp, so the pull lands in its centre: a declared
+#: mismatch at the world door, which also names the form that describes this world (F559)
+_STANDARD_CHANNEL = ("the standard channel fits the archive's way, with no ramp in the fitter, so the ramp's pull "
+                     "lands in the fitted centre this channel reads")
 
 OUT = C.RESULTS_DIR / "three_channel_forecast.csv"
 
@@ -426,7 +429,11 @@ def _centre(nu, y, cfg, transit):
     sm = np.convolve(y[core], np.ones(15) / 15.0, mode="same")
     peak = float(nu[core][int(np.argmax(sm))])
     m = np.abs(nu - peak) < half
-    res = fit_condition([nu[m] - peak], [y[m]], T_C=cfg["t_c"], transit_fwhm=transit)
+    # the world is the layered separable line (it carries the fringe tail and the comb, which the joint world
+    # line does not), so the form that describes it is named here rather than left to the fitter's joint
+    # default, which is F559's pairing (the world door, 2026-09-26)
+    res = fit_world([nu[m] - peak], [y[m]], T_C=cfg["t_c"], transit_fwhm=transit, model="convolution",
+                    world_mismatch_reason={"shift": _STANDARD_CHANNEL})
     return float(res["centers"][0]) + peak, float(res["gamma_coll"]), float(res["sigma_laser"])
 
 

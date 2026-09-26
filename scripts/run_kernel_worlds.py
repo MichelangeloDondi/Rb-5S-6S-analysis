@@ -34,6 +34,7 @@ along exactly the direction a kernel inference has to measure.
 from __future__ import annotations
 
 import csv
+import os
 import sys
 from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
@@ -42,8 +43,8 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from rb5s6s import config as C                       # noqa: E402
-from rb5s6s.beta import fit_beta_self                # noqa: E402
-from rb5s6s.forecast import synthetic_traces         # noqa: E402
+from rb5s6s.forecast import (WorldFitterMismatch, WorldTrace, fit_world_beta,  # noqa: E402
+                             synthetic_traces)
 from rb5s6s.linefit import transit_fwhm_at_T         # noqa: E402
 
 #: O58: this module's twin runs are a declared STUDY, and this is its reason
@@ -59,6 +60,14 @@ LADDER_C = (110.0, 120.0, 130.0)     # the narrow ladder the archive actually ha
 TREF = C.TRANSIT_FWHM_PLACEHOLDER_MHZ
 T_REF_C = 110.0
 FPR_THRESHOLD_MHZ = 0.15   # preregistered: "a Gamma_L above this counts as a detection"
+#: THE HOSTILE WORLDS SAY SO AT THE WORLD DOOR (F566): each is a wrong dataset met by the
+#: standard estimator on purpose, and the door refuses a world the fitter does not describe unless it is declared
+_WORLD_REASONS = {
+    "C": {"post-draw": "world C adds a quadratic baseline tilt the fitter's linear baseline cannot absorb, which is "
+                       "what the row measures"},
+    "D": {"form": "world D carries a convolution line with a Gaussian transit kernel the joint fitter does not "
+                  "model, which is what the row measures"},
+}
 
 
 def _n_units(T_C: float) -> float:
@@ -77,15 +86,18 @@ def _conditions(seed: int, gl_true: float, *, world: str):
         if world == "D":
             # wrong transit kernel: data carry a Gaussian transit, the fitter
             # will assume the two-sided exponential it always assumes
-            f, v = synthetic_traces(BETA_TRUE * n, SIGMA_L, tr, gamma_l=gl_true,
+            f, v = synthetic_traces(BETA_TRUE * n, SIGMA_L, tr, gamma_l=gl_true, T_C=T,
                                     n_traces=3, n_points=1500, noise=0.004, rng=rng, registry=_TWIN_STUDY)
             g, prof = __import__("rb5s6s.lineshape", fromlist=["x"]).composite_profile(
                 BETA_TRUE * n, SIGMA_L, tr, "gaussian", transit_kind="gaussian",
                 gamma_l=gl_true)
-            v = [np.interp(fi, g, prof / prof.max()) * 1.0 + 0.010
-                 + rng.normal(0.0, 0.004, size=fi.size) for fi in f]
+            # tagged as the convolution world it is, since np.interp returns a plain array (F566)
+            _dw = {"form": "convolution", "T_C": None, "s0": 0.0, "w0_m": None, "m2": None, "z_ratio": None,
+                   "transit_fwhm": float(tr)}
+            v = [WorldTrace(np.interp(fi, g, prof / prof.max()) * 1.0 + 0.010
+                            + rng.normal(0.0, 0.004, size=fi.size), _dw) for fi in f]
         else:
-            f, v = synthetic_traces(BETA_TRUE * n, SIGMA_L, tr, gamma_l=gl_true,
+            f, v = synthetic_traces(BETA_TRUE * n, SIGMA_L, tr, gamma_l=gl_true, T_C=T,
                                     n_traces=3, n_points=1500, noise=0.004, rng=rng, registry=_TWIN_STUDY)
         if world == "C":
             # wrong baseline: the data carry a quadratic tilt the fitter's
@@ -99,9 +111,12 @@ def _one(args):
     seed, world = args
     gl_true = GL_TRUE_MIXED if world == "B" else 0.0
     try:
-        out = fit_beta_self(_conditions(seed, gl_true, world=world),
-                            transit_ref_mhz=TREF, T_ref_C=T_REF_C,
-                            fit_gamma_l=True)
+        # through the world door (F560): each condition's world is checked at its own temperature, and the
+        # transit reference, which the joint fit never reads, is no longer passed
+        out = fit_world_beta(_conditions(seed, gl_true, world=world), fit_gamma_l=True,
+                             world_mismatch_reason=_WORLD_REASONS.get(world))
+    except WorldFitterMismatch:
+        raise                       # a refusal is not a failed fit, and a broad handler must not count it as one
     except Exception:
         return None
     return (float(out["gamma_l"]), float(out["gamma_l_err"]),
@@ -110,7 +125,9 @@ def _one(args):
 
 
 def _run(world: str, n: int):
-    with ProcessPoolExecutor(max_workers=8) as ex:
+    # THE POOL HONOURS RB5S6S_WORKERS (the share with the thesis session, 2026-09-26): a pool fixed at eight
+    # inside the command ran eight processes under a job declared as one, beside the other session's five
+    with ProcessPoolExecutor(max_workers=max(1, min(8, int(os.environ.get("RB5S6S_WORKERS", "8"))))) as ex:
         res = list(ex.map(_one, [(s, world) for s in range(n)], chunksize=8))
     return [r for r in res if r is not None]
 

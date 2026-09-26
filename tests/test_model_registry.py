@@ -675,6 +675,28 @@ def test_the_monte_carlo_admits_its_own_model_and_refuses_an_undeclared_reductio
         kmc.registry_preflight(beam_note="clipped", half_window_m=0.0, P_mW=225.0, T_C=130.0)
 
 
+@pytest.mark.skipif(not (ROOT / "private" / "checks" / "mc_contract.py").is_file(),
+                    reason="private/ is absent: without the Monte Carlo contract the node CLI refuses before its "
+                           "registry door, as in the public mirror")
+def test_a_campaign_node_declares_its_depletion_from_the_command_line():
+    """F561, both ways, through the script's own door: the node CLI had no argument for a declared deviation, so every
+    350 and 500 mW node the runner started was refused. Without `--deviation` a campaign node is refused at the
+    registry's preflight; with the planted declaration it is admitted and stopped before one atom, recording nothing."""
+    import subprocess
+    import sys
+    base = [sys.executable, str(ROOT / "scripts" / "run_kernel_mc.py"), "--w0", "44.0", "--T", "130", "--P", "500",
+            "--stop-after", "preflight", "--out", "/dev/null"]
+    r0 = subprocess.run(base, capture_output=True, text=True, cwd=ROOT)
+    assert r0.returncode != 0 and "extra 'depletion_cascade'" in (r0.stdout + r0.stderr)
+    r1 = subprocess.run(base + ["--deviation", "depletion_cascade=a campaign node extends the gate's coverage past "
+                                "the archive"], capture_output=True, text=True, cwd=ROOT)
+    assert r1.returncode == 0 and "ADMITTED" in r1.stdout, r1.stdout[-400:] + r1.stderr[-400:]
+    # a declaration without its reason is a usage error at the parser, never a crash (V7.2's own defect: the error
+    # path named a parser that did not exist, and no plant reached it)
+    r2 = subprocess.run(base + ["--deviation", "depletion_cascade"], capture_output=True, text=True, cwd=ROOT)
+    assert r2.returncode == 2 and "--deviation takes TERM=REASON" in r2.stderr, r2.stderr[-400:]
+
+
 def test_a_campaign_node_declares_the_depletion_its_registry_column_still_owes():
     kmc = _kmc()
     assert MR.kind_of(MR._BY_ID["depletion_cascade"].status_mc_campaign) == "owed"
@@ -695,10 +717,10 @@ def test_the_twins_default_world_is_a_reduced_twin_and_must_say_so(monkeypatch):
     from rb5s6s import forecast, twin_volume
     # NEGATIVE: the default world (s0 = 0) carries neither the ramp nor the chirp, and says nothing
     with pytest.raises(MR.ModelReduced, match="ac_stark_ramp, transit_chirp"):
-        forecast.synthetic_traces(0.5, 0.4, 0.95, n_traces=1, rng=np.random.default_rng(0))
+        forecast.synthetic_traces(0.5, 0.4, 0.95, n_traces=1, T_C=110.0, rng=np.random.default_rng(0))
     # NEGATIVE: a study's reason under six words
     with pytest.raises(MR.ModelReduced, match="under six words"):
-        forecast.synthetic_traces(0.5, 0.4, 0.95, n_traces=1, registry="a quick check", rng=np.random.default_rng(0))
+        forecast.synthetic_traces(0.5, 0.4, 0.95, n_traces=1, T_C=110.0, registry="a quick check", rng=np.random.default_rng(0))
     # NEGATIVE: the layered generator never carries the chirp, so an undeclared call is refused before it draws
     with pytest.raises(MR.ModelReduced, match="transit_chirp"):
         forecast.build_world_trace(0.225, 2.0, 130.0, 0, 1, np.random.default_rng(0),
@@ -711,10 +733,10 @@ def test_the_twins_default_world_is_a_reduced_twin_and_must_say_so(monkeypatch):
     # POSITIVE: the full twin configuration, undeclared, is admitted (a stub world so no atom is drawn)
     nu = np.linspace(-60.0, 60.0, 201)
     monkeypatch.setattr(twin_volume, "world_shape", lambda **k: (nu, np.exp(-nu ** 2)))
-    f, v = forecast.synthetic_traces(0.5, 0.4, 0.95, n_traces=1, s0=0.6, n_points=201, rng=np.random.default_rng(0))
+    f, v = forecast.synthetic_traces(0.5, 0.4, 0.95, n_traces=1, s0=0.6, n_points=201, T_C=110.0, rng=np.random.default_rng(0))
     assert len(v) == 1
     # POSITIVE: the weak-field world with its reason is admitted as the study it is
-    forecast.synthetic_traces(0.5, 0.4, 0.95, n_traces=1, n_points=201, registry=REASON, rng=np.random.default_rng(0))
+    forecast.synthetic_traces(0.5, 0.4, 0.95, n_traces=1, n_points=201, T_C=110.0, registry=REASON, rng=np.random.default_rng(0))
 
 
 def test_the_twin_of_records_direct_entry_refuses_an_undeclared_reduction():

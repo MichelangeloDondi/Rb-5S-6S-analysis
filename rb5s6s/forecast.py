@@ -33,6 +33,7 @@ are not read is a number, not a forecast.
 
 from __future__ import annotations
 
+import inspect
 import math
 from typing import Dict, List, Optional, Tuple
 
@@ -200,6 +201,221 @@ def n_eff(n: int, tau_int: float) -> float:
     return n / tau_int
 
 
+# ---------------------------------------------------------------------------------------------------------------------
+# THE WORLD A TRACE WAS DRAWN FROM TRAVELS WITH IT, AND THE TWIN'S FITTER REFUSES A WORLD IT DOES NOT DESCRIBE
+# (F559, F560, 2026-09-26). One class fired twice in one night: leg 1 of the twin validation fitted a world drawn on the
+# separable line with a fitter on the joint line, and the kernel worlds drew every temperature rung at 110 C and fitted
+# each at its own. Each was a sentence nobody could check. So every trace `synthetic_traces` and `build_world_trace`
+# return is a `WorldTrace`, an array that carries what its clean line was drawn at through arithmetic, masking and
+# pickling, and `fit_world` / `fit_world_beta` compare it with the fitter's own settings before the fit, reading the
+# fitter's defaults from its signature rather than restating them. The door is here and not in `linefit`, which sits in
+# the kernel digest, so a guard there would re-open every node; `tests/test_twin_world_fit_door.py` refuses a twin
+# harness that calls the fitter around it.
+# ---------------------------------------------------------------------------------------------------------------------
+
+class WorldTrace(np.ndarray):
+    """A synthetic trace carrying `world`, the dict of what its clean line was drawn at: `form` ("joint",
+    "convolution" or "separable"), `T_C`, `s0`, `w0_m`, `m2`, `z_ratio` and `transit_fwhm`, each None where the form
+    does not read it. Slicing, masking, pickling and arithmetic with a scalar keep it; `np.asarray`, `np.interp` and
+    `np.concatenate` return a plain array, which `fit_world` refuses as a trace with no world. A full reduction
+    returns a plain scalar, so `v.max()` is the number it was before the tag existed.
+
+    AN ARRAY OPERATION AFTER THE DRAW CHANGES THE WORLD (F566): adding or multiplying an
+    array into a trace (a tilt, a second line, a harness's own noise) makes a line the generator did not draw, so
+    the result's world carries `post_draw` and the door refuses it unless declared. A scalar (an amplitude, an
+    offset, a rounding step) leaves it as drawn: the fitter carries each trace's amplitude and baseline."""
+
+    world: Optional[Dict] = None
+
+    def __new__(cls, values, world: Dict):
+        obj = np.asarray(values, dtype=float).view(cls)
+        obj.world = dict(world)
+        return obj
+
+    def __array_finalize__(self, obj):
+        self.world = getattr(obj, "world", None)
+
+    def __array_wrap__(self, arr, context=None, return_scalar=False):
+        if return_scalar or np.ndim(arr) == 0:
+            return np.asarray(arr)[()]
+        return super().__array_wrap__(arr, context, return_scalar)
+
+    def __array_ufunc__(self, ufunc, method, *inputs, out=None, **kwargs):
+        worlds = [x.world for x in inputs if isinstance(x, WorldTrace) and x.world is not None]
+        arrays = sum(1 for x in inputs if isinstance(x, np.ndarray) and x.size > 1)
+        base = [x.view(np.ndarray) if isinstance(x, WorldTrace) else x for x in inputs]
+        if out is not None:
+            kwargs["out"] = tuple(o.view(np.ndarray) if isinstance(o, WorldTrace) else o for o in out)
+        result = getattr(ufunc, method)(*base, **kwargs)
+        if method != "__call__" or not worlds:
+            return result
+        world = dict(worlds[0])
+        if arrays > 1:
+            world["post_draw"] = True
+
+        def wrap(r):
+            if not isinstance(r, np.ndarray) or r.ndim == 0:
+                return r
+            w = r.view(WorldTrace)
+            w.world = world
+            return w
+        return tuple(wrap(r) for r in result) if isinstance(result, tuple) else wrap(result)
+
+    def __reduce__(self):
+        fn, args, state = super().__reduce__()
+        return fn, args, (state, self.world)
+
+    def __setstate__(self, state):
+        nd_state, world = state
+        super().__setstate__(nd_state)
+        self.world = world
+
+
+class WorldFitterMismatch(ValueError):
+    """The twin's fitter was handed a world it does not describe (F559, F560)."""
+
+
+#: which fitter form describes which world form: the joint line is fitted by the joint table, and both the
+#: convolution line and the layered separable line by the convolution composer (F555: leg 1 passes on its own form)
+WORLD_FIT_FORM = {"joint": "joint", "convolution": "convolution", "separable": "convolution"}
+#: a declared mismatch names what it measures, at the model registry's own minimum length for a reason
+MIN_WORLD_REASON_WORDS = 6
+
+
+def _world_same(a, b) -> bool:
+    return (a is not None and b is not None
+            and math.isclose(float(a), float(b), rel_tol=1e-9, abs_tol=1e-12))
+
+
+def world_disagreements(world: Dict, *, model: str, T_C: float, s0: float, w0_m: float, m2: float,
+                        z_ratio: float, transit_fwhm: float, fit_transit: bool,
+                        transit_default: float, laser_kind: str = "gaussian", gamma_l: float = 0.0,
+                        fit_gamma_l: bool = False) -> List[str]:
+    """Every way a fitter's settings disagree with `world`, in words; empty when they agree. Pure, so its
+    boundaries are planted without a fit. Across forms only the form is reported, since the other keys are read
+    against the form's own. `transit_default` is the fitter's own default transit, so a transit passed to a joint
+    fitter, which never reads it, is reported as the silent no-op it is (F560)."""
+    if world.get("post_draw"):
+        return ["post-draw: an array was added to or multiplied into the line after the generator drew it, a change "
+                "the fitter does not model (F566)"]
+    form = world.get("form")
+    want = WORLD_FIT_FORM.get(form)
+    if want is None:
+        return [f"the world's form {form!r} is not one this door knows ({sorted(WORLD_FIT_FORM)})"]
+    out: List[str] = []
+    same_form = model == want
+    if not same_form:
+        out.append(f"form: the world is drawn on the {form} line and the fitter reads model={model!r}, whose match "
+                   f"is model={want!r} (F559)")
+    if world.get("T_C") is not None and not _world_same(world["T_C"], T_C):
+        out.append(f"temperature: the world is drawn at {world['T_C']} C and fitted at {T_C} C (F560)")
+    if not _world_same(world.get("s0", 0.0), s0):
+        out.append(f"shift: the world's S0 is {world.get('s0')} MHz and the fitter's is {s0} MHz")
+    # THE LASER KERNEL AND THE GAS WIDTH (F566): both joint branches honour them, and a
+    # world that carries either differently from the fitter is a misspecification the harness must declare
+    if world.get("laser_kind", "gaussian") != laser_kind:
+        out.append(f"laser kernel: the world's is {world.get('laser_kind')!r} and the fitter's {laser_kind!r}")
+    if not fit_gamma_l and not _world_same(world.get("gamma_l", 0.0), gamma_l):
+        out.append(f"gas width: the world carries a Lorentzian of {world.get('gamma_l')} MHz and the fitter holds "
+                   f"{gamma_l} MHz fixed")
+    if same_form and form == "joint":
+        for key, fitv in (("w0_m", w0_m), ("m2", m2), ("z_ratio", z_ratio)):
+            if not _world_same(world.get(key), fitv):
+                out.append(f"{key}: the world's is {world.get(key)} and the fitter's is {fitv}")
+        if not _world_same(transit_fwhm, transit_default):
+            out.append(f"transit: {transit_fwhm} MHz was passed to the joint fitter, which never reads it (the "
+                       "table's transit is the ensemble's at the waist and temperature); pass none, or study a "
+                       "transit with model='convolution' on both sides (F560)")
+    elif same_form and not fit_transit and not _world_same(world.get("transit_fwhm"), transit_fwhm):
+        out.append(f"transit: the world's transit width is {world.get('transit_fwhm')} MHz and the fitter holds "
+                   f"{transit_fwhm} MHz")
+    return out
+
+
+def _kind(msg: str) -> str:
+    return msg.split(":", 1)[0].strip()
+
+
+def check_world_fit(volts, *, where: str, reason: Optional[Dict[str, str]], **fit) -> List[str]:
+    """Raise `WorldFitterMismatch` unless every trace in `volts` carries a world the fitter's settings `fit`
+    describe (`world_disagreements`). A declared `reason` of at least `MIN_WORLD_REASON_WORDS` words admits a
+    disagreement, and the disagreements are returned, so a comparison arm (a world fitted by the other form, or a
+    ramp left out of the fitter, on purpose) states at its call what it measures. A trace with no world is refused
+    whatever the reason: a real trace goes to `linefit.fit_condition`, never through this door."""
+    worlds = [getattr(v, "world", None) for v in volts]
+    bare = sum(w is None for w in worlds)
+    if bare:
+        raise WorldFitterMismatch(
+            f"{where}: {bare} of {len(worlds)} traces carry no world. A twin trace comes from `synthetic_traces` "
+            "or `build_world_trace`, which tag it; an operation that drops the tag (`np.asarray`, `np.interp`, "
+            "`np.concatenate`) is re-tagged with `WorldTrace(values, trace.world)`. A real trace goes to "
+            "`linefit.fit_condition`, never here.")
+    seen, msgs = set(), []
+    for w in worlds:
+        key = tuple(sorted(w.items()))
+        if key not in seen:
+            seen.add(key)
+            msgs += world_disagreements(w, **fit)
+    if not msgs:
+        return []
+    if reason is not None and not isinstance(reason, dict):
+        raise WorldFitterMismatch(f"{where}: world_mismatch_reason is keyed by the disagreement it admits "
+                                  f"(a dict of kind to reason, F566), not {type(reason).__name__}")
+    reason = reason or {}
+    unadmitted = [m for m in msgs if len(str(reason.get(_kind(m), "")).split()) < MIN_WORLD_REASON_WORDS]
+    if not unadmitted:
+        return msgs
+    raise WorldFitterMismatch(
+        f"{where}: the fitter does not describe the world these traces were drawn from:\n  - "
+        + "\n  - ".join(unadmitted)
+        + f"\nFit with the world's own settings, or declare world_mismatch_reason={{kind: reason}} naming each "
+        f"kind ({', '.join(sorted({_kind(m) for m in unadmitted}))}) in at least {MIN_WORLD_REASON_WORDS} words "
+        "saying what the mismatch measures.")
+
+
+def _defaults(fn) -> Dict:
+    return {k: p.default for k, p in inspect.signature(fn).parameters.items()
+            if p.default is not inspect.Parameter.empty}
+
+
+def fit_world(freqs, volts, *, world_mismatch_reason: Optional[Dict[str, str]] = None, **fit_kw) -> Dict:
+    """`linefit.fit_condition` for TWIN traces, after `check_world_fit` against the fitter's own settings, its
+    defaults read from its signature. Every keyword reaches the fitter unchanged."""
+    if "T_C" not in fit_kw:
+        raise TypeError("fit_world: T_C is required, as linefit.fit_condition requires it")
+    d = _defaults(fit_condition)
+    kw = {**d, **fit_kw}
+    check_world_fit(volts, where="fit_world", reason=world_mismatch_reason, model=kw["model"], T_C=kw["T_C"],
+                    s0=kw["s0"], w0_m=kw["w0_m"], m2=kw["m2"], z_ratio=kw["z_ratio"],
+                    transit_fwhm=kw["transit_fwhm"], fit_transit=kw["fit_transit"],
+                    transit_default=d["transit_fwhm"], laser_kind=kw["laser_kind"], gamma_l=kw["gamma_l"],
+                    fit_gamma_l=kw["fit_gamma_l"])
+    return fit_condition(freqs, volts, **fit_kw)
+
+
+def fit_world_beta(conditions: List[Dict], *, world_mismatch_reason: Optional[Dict[str, str]] = None,
+                   **beta_kw) -> Dict:
+    """`beta.fit_beta_self` for TWIN conditions, after `check_world_fit` on every condition's traces at that
+    condition's own temperature. The beta fit carries no shift channel (its own docstring), so it is checked at
+    S0 = 0; under the convolution form each condition's transit is the one the fit itself derives
+    (`linefit.transit_fwhm_at_T`)."""
+    from .beta import fit_beta_self
+    from .linefit import transit_fwhm_at_T
+    d = _defaults(fit_beta_self)
+    kw = {**d, **beta_kw}
+    for cond in conditions:
+        if kw["model"] == "joint":
+            tr, tr_default = kw["transit_ref_mhz"], d["transit_ref_mhz"]
+        else:
+            tr = tr_default = transit_fwhm_at_T(cond["T_C"], kw["transit_ref_mhz"], kw["T_ref_C"])
+        check_world_fit(cond["volts"], where=f"fit_world_beta at {cond['T_C']} C", reason=world_mismatch_reason,
+                        model=kw["model"], T_C=cond["T_C"], s0=0.0, w0_m=kw["w0_m"], m2=kw["m2"],
+                        z_ratio=kw["z_ratio"], transit_fwhm=tr, fit_transit=kw["fit_transit"],
+                        transit_default=tr_default, laser_kind=kw["laser_kind"], gamma_l=kw["gamma_l"],
+                        fit_gamma_l=kw["fit_gamma_l"])
+    return fit_beta_self(conditions, **beta_kw)
+
+
 def synthetic_traces(gamma_coll: float, sigma_laser: float, transit_fwhm: float,
                      *, span_mhz: float = 60.0, n_points: int = 2000,
                      n_traces: int = 5, noise: object = 0.004,
@@ -211,7 +427,7 @@ def synthetic_traces(gamma_coll: float, sigma_laser: float, transit_fwhm: float,
                      s0: float = 0.0, halo_fraction: float = 0.0,
                      rng: Optional[np.random.Generator] = None,
                      residual_source=None,
-                     model: str = "joint", T_C: float = 110.0,
+                     model: str = "joint", T_C: Optional[float] = None,
                      w0_m: float = W0_CENTRAL_M, m2: float = 1.0,
                      z_ratio: float = JOINT_Z_RATIO, n_path: int = JOINT_N_PATH,
                      seed: int = JOINT_SEED, registry: Optional[str] = None,
@@ -223,8 +439,8 @@ def synthetic_traces(gamma_coll: float, sigma_laser: float, transit_fwhm: float,
     `volume_line.joint_spectrum`'s atom-sampled two-time line, through `twin_volume.
     world_shape` (never `volume_line.JointTable` -- "the world must be the Monte
     Carlo, never the fitter's table", `twin_volume`'s own charter), at a beam built from
-    `w0_m` (default `constants.W0_CENTRAL_M`) and `m2`, and this call's own `T_C` (default
-    110.0, matching this module's and `linefit`'s own `T_ref_C` convention). `transit_fwhm`
+    `w0_m` (default `constants.W0_CENTRAL_M`) and `m2`, and this call's own `T_C`, which the joint model
+    REQUIRES and never defaults (F560); the convolution arm keeps 110.0. `transit_fwhm`
     IS NOT READ under this model: the transit comes from the atom-sampled ensemble at
     (w0_m, T_C), the same emergent quantity `linefit.fit_condition(model="joint")` now
     reports instead of fitting, so a twin generated here and a fit made there share the
@@ -310,6 +526,15 @@ def synthetic_traces(gamma_coll: float, sigma_laser: float, transit_fwhm: float,
     if model not in ("joint", "convolution"):
         raise ValueError(f"synthetic_traces: model must be 'joint' or 'convolution', "
                          f"got {model!r}")
+    # THE WORLD'S TEMPERATURE IS THE CALLER'S, NEVER A DEFAULT (F560, 2026-09-26): under the
+    # joint model the world is drawn at `T_C`, and four callers passed none while their fits read 120 or 130 C, so
+    # every rung was drawn at the old 110 C default and the kernel worlds' beta_self read about 7 per cent low. The
+    # convolution arm does not draw at `T_C` and keeps its old default, byte for byte.
+    if T_C is None:
+        if model == "joint":
+            raise ValueError("synthetic_traces(model='joint') draws the world at T_C: pass the temperature the fit "
+                             "reads (F560: a world drawn at a default while its fit read another condition)")
+        T_C = 110.0
     _ex = {"natural_width", "transit"}
     if s0 > 0.0:
         _ex.add("ac_stark_ramp")
@@ -347,10 +572,14 @@ def synthetic_traces(gamma_coll: float, sigma_laser: float, transit_fwhm: float,
             beam=beam, T_C=T_C, S0_mhz=s0, gamma_hom_mhz=homog,
             sigma_laser_mhz=sigma_for_line, z_ratio=z_ratio, span_mhz=span_mhz,
             n_points=n_points, centre_mhz=centre_mhz, n_path=n_path, seed=seed)
-        return _traces_from_shape(nu, shape, n_traces=n_traces, noise=noise, amp=amp,
-                                  amp_spread=amp_spread, offset=offset,
-                                  offset_spread=offset_spread, halo_fraction=halo_fraction,
-                                  tau_int=tau_int, residual_source=residual_source, rng=rng)
+        freqs, volts = _traces_from_shape(nu, shape, n_traces=n_traces, noise=noise, amp=amp,
+                                          amp_spread=amp_spread, offset=offset,
+                                          offset_spread=offset_spread, halo_fraction=halo_fraction,
+                                          tau_int=tau_int, residual_source=residual_source, rng=rng)
+        _world = {"form": "joint", "T_C": float(T_C), "s0": float(s0), "w0_m": float(w0_m), "m2": float(m2),
+                  "z_ratio": float(z_ratio), "transit_fwhm": None, "laser_kind": laser_kind,
+                  "gamma_l": float(gamma_l), "halo_fraction": float(halo_fraction)}
+        return freqs, [WorldTrace(v, _world) for v in volts]
     if rng is None:
         rng = np.random.default_rng()
     nu = np.linspace(-span_mhz, span_mhz, n_points)
@@ -389,10 +618,14 @@ def synthetic_traces(gamma_coll: float, sigma_laser: float, transit_fwhm: float,
     # sentence. An explicit `tau_int` overrides, and a float `noise` carries no law so it stays
     # white unless told otherwise. `_traces_from_shape` (C6b noise wave) is this SAME logic,
     # shared with `model="joint"` above instead of kept as a second copy here.
-    return _traces_from_shape(nu, shape, n_traces=n_traces, noise=noise, amp=amp,
-                              amp_spread=amp_spread, offset=offset, offset_spread=offset_spread,
-                              halo_fraction=halo_fraction, tau_int=tau_int,
-                              residual_source=residual_source, rng=rng)
+    freqs, volts = _traces_from_shape(nu, shape, n_traces=n_traces, noise=noise, amp=amp,
+                                      amp_spread=amp_spread, offset=offset, offset_spread=offset_spread,
+                                      halo_fraction=halo_fraction, tau_int=tau_int,
+                                      residual_source=residual_source, rng=rng)
+    _world = {"form": "convolution", "T_C": None, "s0": float(s0), "w0_m": None, "m2": None,
+              "z_ratio": None, "transit_fwhm": float(transit_fwhm), "laser_kind": laser_kind,
+              "gamma_l": float(gamma_l), "halo_fraction": float(halo_fraction)}
+    return freqs, [WorldTrace(v, _world) for v in volts]
 
 
 def build_world_trace(power_w: float, kappa: float, t_c: float,
@@ -424,6 +657,7 @@ def build_world_trace(power_w: float, kappa: float, t_c: float,
                      w0_m: Optional[float] = None,
                      omega_mhz: Optional[float] = None,
                      registry: Optional[str] = None,
+                     model: str = "separable",
                      ) -> Tuple[np.ndarray, np.ndarray, Dict]:
     """One campaign trace: every peak in `positions`, one vertical range.
 
@@ -465,10 +699,24 @@ def build_world_trace(power_w: float, kappa: float, t_c: float,
     twin that never carries the joint line's chirp, so every call is a STUDY and names its reason,
     six words or more (`twin_preflight`); None is refused before anything is drawn.
 
+    ``model`` (F559, V7.2's W2): "separable" draws each peak through `fullmodel.full_profile`, the
+    convolution of a closed-form transit with the ramp and the Voigt, and stays the default so every
+    committed table made through this path is unchanged until its consumer moves. "joint" draws each
+    peak's clean line from `twin_volume.world_shape`, the atom-sampled Monte Carlo line
+    `synthetic_traces(model="joint")` draws, at the beam (`w0_m`, `m2`), `t_c`, the shift, the
+    homogeneous width and the laser width, with the collection window of `z_ratio` (the fitter's
+    `JOINT_Z_RATIO` when None), which is the line `fit_condition`'s default describes. The layers
+    that act on amplitudes, centres, the range and the noise act on it as on the separable line; the
+    terms the joint world does not carry (the pedestal, the retro tilt, a Rabi-frequency companion,
+    a fringe tail) are REFUSED under it, never dropped. Leg 1 failed on the two forms side by side (F559).
+
     Returns (nu, volts, truth_amps): the frequency axis (MHz, transition
     axis), the one recorded trace, and each peak's injected amplitude.
     """
     _ex = {"natural_width", "transit"}
+    # the caller's own window, before the separable path folds M2 into it: the joint branch carries M2 in the
+    # beam itself, so it reads this one and M2 is never counted twice
+    _z_ratio_arg = z_ratio
     if sigma_laser_fwhm > 0.0:
         _ex.add("laser_kernel")
     if gamma_coll > 0.0:
@@ -491,6 +739,19 @@ def build_world_trace(power_w: float, kappa: float, t_c: float,
         _ex.add("doppler_pedestal")
     if retro_tilt_rad > 0.0:
         _ex.add("retro_tilt")
+    if model not in ("separable", "joint"):
+        raise ValueError(f"build_world_trace: model must be 'separable' or 'joint', got {model!r}")
+    if model == "joint":
+        _unc = [n for n, on in (("pedestal_height_frac", pedestal_height_frac > 0.0),
+                                ("retro_tilt_rad", retro_tilt_rad > 0.0),
+                                ("omega_mhz", omega_mhz is not None),
+                                ("fringe_density", fringe_density is not None)) if on]
+        if _unc:
+            raise ValueError(f"build_world_trace(model='joint') does not carry {', '.join(_unc)}: the joint "
+                             "world line has no such term, and dropping it silently is the defect F559 names")
+        _ex |= {"beam_quality_m2", "axial_collection_window"}
+        if layers["stark"] and kappa * power_w > 0.0:
+            _ex.add("transit_chirp")
     twin_preflight(_ex, registry, T_C=t_c, power_w=power_w)
     if grid_span is None:
         nu = np.linspace(min(positions.values()) - 60.0, 60.0, 6000)
@@ -658,6 +919,22 @@ def build_world_trace(power_w: float, kappa: float, t_c: float,
                     "companion by the Rabi frequency, or leave omega_mhz "
                     "None and let the layer key it on the light shift.")
             _extra["omega_mhz"] = float(omega_mhz) * float(np.sqrt(rate))
+        if model == "joint":
+            _lor = laser_kind != "gaussian"
+            _hom = (GNAT_MHZ + max(gamma, 0.0) + max(gamma_l, 0.0)
+                    + (max(sigma_laser_fwhm, 0.0) if _lor else 0.0))
+            _span = float(np.max(np.abs(nu - centre))) + 1.0
+            _gx, _gs = twin_volume.world_shape(
+                # gaussian-limit: the joint world line owes the bore until V7.3 draws it in the fitter's clipped beam (F564)
+                beam=GaussianBeam(float(W0_CENTRAL_M if w0_m is None else w0_m), float(m2)), T_C=float(t_c),
+                S0_mhz=(s0 if layers["stark"] else 0.0), gamma_hom_mhz=_hom,
+                sigma_laser_mhz=(0.0 if _lor else max(sigma_laser_fwhm, 0.0)),
+                z_ratio=(JOINT_Z_RATIO if _z_ratio_arg is None else float(_z_ratio_arg)), span_mhz=_span,
+                n_points=int(round(2.0 * _span / 0.02)) + 1, centre_mhz=0.0, n_path=JOINT_N_PATH, seed=JOINT_SEED)
+            shape = np.interp(nu - centre, _gx, _gs, left=0.0, right=0.0)
+            v += amp * (shape / shape.max())
+            truth_amps[peak] = amp
+            continue
         shape = _prof(nu - centre,
                               gamma_coll=gamma,
                               sigma_laser_fwhm=sigma_laser_fwhm,
@@ -737,7 +1014,18 @@ def build_world_trace(power_w: float, kappa: float, t_c: float,
     if layers["quantise"]:
         step = range_headroom * bright_peak / adc_levels
         v = np.round(v / step) * step
-    return nu, v, truth_amps
+    _s0w = float(s0 if layers["stark"] else 0.0)
+    if model == "joint":
+        _world = {"form": "joint", "T_C": float(t_c), "s0": _s0w,
+                  "w0_m": float(W0_CENTRAL_M if w0_m is None else w0_m), "m2": float(m2),
+                  "z_ratio": float(JOINT_Z_RATIO if _z_ratio_arg is None else _z_ratio_arg), "transit_fwhm": None,
+                  "laser_kind": laser_kind, "gamma_l": float(gamma_l), "halo_fraction": float(halo_fraction)}
+    else:
+        _world = {"form": "separable", "T_C": float(t_c), "s0": _s0w,
+                  "w0_m": None if w0_m is None else float(w0_m), "m2": float(m2),
+                  "z_ratio": None if z_ratio is None else float(z_ratio), "transit_fwhm": float(transit_fwhm),
+                  "laser_kind": laser_kind, "gamma_l": float(gamma_l), "halo_fraction": float(halo_fraction)}
+    return nu, WorldTrace(v, _world), truth_amps
 
 
 def _one_trial(truth: Dict, design: Dict, rng: np.random.Generator) -> Dict:
@@ -769,10 +1057,13 @@ def _one_trial(truth: Dict, design: Dict, rng: np.random.Generator) -> Dict:
     # 2025 S0 the answer is about 0.1 sigma on gamma_coll, and at a tight focus
     # it is not. A twin that generates and fits with the same s0 can never see
     # that, the way this one could not see it while s0 did not exist.
-    return fit_condition(freqs, volts, T_C=T_C,
-                         transit_fwhm=truth["transit_fwhm"],
-                         s0=float(design.get("fit_s0", s0)),
-                         law=design.get("law"), model=model, w0_m=w0_m, m2=m2)
+    fit_kw = dict(T_C=T_C, s0=float(design.get("fit_s0", s0)), law=design.get("law"), model=model,
+                  w0_m=w0_m, m2=m2)
+    if model == "convolution":
+        fit_kw["transit_fwhm"] = truth["transit_fwhm"]
+    return fit_world(freqs, volts, world_mismatch_reason=(
+        {"shift": "design['fit_s0'] sets the fitter's ramp apart from the world's on purpose, measuring what "
+                   "omitting or mis-sizing the ramp costs the widths"} if "fit_s0" in design else None), **fit_kw)
 
 
 def forecast_precision(truth: Dict, design: Dict, *, n_trials: int = 8,

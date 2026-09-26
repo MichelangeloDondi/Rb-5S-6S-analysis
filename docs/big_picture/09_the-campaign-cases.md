@@ -244,9 +244,8 @@ Everything in scenario one, plus five additions no cell can provide.
   [-0.83](../../results/campaign_twin_forecast.csv "ref:campaign_twin_forecast:cell:corr_laser_coll_5traces") in the cell arm at five traces
   ([chapter 6](06_next-nanofibre.md),
   `results/campaign_twin_forecast.csv`). Both readings are provisional:
-  that table is owed a fresh run (F553), and its twin fits a world built on
-  one line with a fitter on another until the world moves onto the fitter's
-  line (F559).
+  that table is owed a fresh run (F553), and its producer now draws and
+  fits through the twin's world door on one line (F562).
 * The intercept budget closes. With density, the sqrt(T) ladder, the laser
   prior and geometry each pinning their own slot, the width intercept
   becomes overdetermined, and the sum of independently measured parts

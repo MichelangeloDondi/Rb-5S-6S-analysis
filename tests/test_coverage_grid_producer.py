@@ -57,3 +57,31 @@ def test_the_worker_count_respects_the_standing_ceiling():
     """Eight of ten cores, so a gate and a session stay responsive beside it."""
     m = _module()
     assert m.WORKERS <= 8, f"WORKERS={m.WORKERS} exceeds the standing ceiling of 8"
+
+
+def test_the_waves_combine_to_the_one_process_run_and_a_missing_slice_refuses(tmp_path, monkeypatch):
+    """The configurations are the run's units (V7.2): slices dumped by `--from/--n/--dump` and assembled by
+    `--combine` write the CSV the one-process run writes, and a combine missing a configuration refuses rather than
+    writing a partial grid. The hits are a stub, so this plants the plumbing and not the physics, which each unit
+    computes through the same `_unit_hits` either way."""
+    m = _module()
+    monkeypatch.setattr(m, "_unit_hits", lambda k: 900 + 7 * k)
+    monkeypatch.setattr(m, "_init", lambda: None)
+    monkeypatch.setattr(m, "_RESULTS_DIR", tmp_path)
+    monkeypatch.setattr("sys.argv", ["x"])
+    assert m.main() == 0
+    whole = (tmp_path / "coverage_grid.csv").read_text(encoding="utf-8")
+    (tmp_path / "coverage_grid.csv").unlink()
+    dumps = tmp_path / "dumps"
+    dumps.mkdir()
+    n = len(m.CONFIGS)
+    for i, (lo, k) in enumerate(((0, 3), (3, 5), (8, n))):
+        monkeypatch.setattr("sys.argv", ["x", "--from", str(lo), "--n", str(k), "--dump",
+                                         str(dumps / f"wave_{i:04d}.json")])
+        assert m.main() == 0
+    monkeypatch.setattr("sys.argv", ["x", "--combine", str(dumps)])
+    assert m.main() == 0
+    assert (tmp_path / "coverage_grid.csv").read_text(encoding="utf-8") == whole
+    (dumps / "wave_0001.json").unlink()
+    with pytest.raises(SystemExit, match="have no dump"):
+        m.main()

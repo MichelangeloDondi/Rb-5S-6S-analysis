@@ -186,7 +186,7 @@ def test_fitting_gamma_l_is_off_by_default_and_inert():
     from rb5s6s.forecast import synthetic_traces
     from rb5s6s.linefit import fit_condition
     rng = np.random.default_rng(1)
-    f, v = synthetic_traces(1.2, 3.0, 0.93, n_traces=3, n_points=800, noise=0.004, rng=rng, registry=_TWIN_STUDY)
+    f, v = synthetic_traces(1.2, 3.0, 0.93, n_traces=3, n_points=800, noise=0.004, T_C=130.0, rng=rng, registry=_TWIN_STUDY)
     out = fit_condition(f, v, T_C=130.0, transit_fwhm=0.93)
     assert out["gamma_l"] == 0.0
     assert out["gamma_l_fitted"] is False
@@ -235,7 +235,7 @@ def test_gamma_l_is_appended_not_inserted_in_the_parameter_vector():
     from rb5s6s.forecast import synthetic_traces
     from rb5s6s.linefit import fit_condition
     rng = np.random.default_rng(3)
-    f, v = synthetic_traces(1.2, 3.0, 0.93, gamma_l=0.4, n_traces=4,
+    f, v = synthetic_traces(1.2, 3.0, 0.93, gamma_l=0.4, n_traces=4, T_C=130.0,
                             n_points=1200, noise=0.004, rng=rng, registry=_TWIN_STUDY)
     free = fit_condition(f, v, T_C=130.0, transit_fwhm=0.93, fit_gamma_l=True)
     # gamma_coll and sigma_laser still carry their own errors from cov[0,0]/[1,1]
@@ -275,7 +275,7 @@ def test_the_density_ladder_is_what_identifies_gamma_l():
         n_units = 10 ** ((T - 110.0) / 40.0)
         f, v = synthetic_traces(beta_true * n_units, sigma_l,
                                 transit_fwhm_at_T(T, tref, 110.0),
-                                gamma_l=gl_true, n_traces=3, n_points=1500,
+                                gamma_l=gl_true, n_traces=3, n_points=1500, T_C=T,
                                 noise=0.004, rng=rng, registry=_TWIN_STUDY)
         conds.append(dict(T_C=T, N_units=n_units, freqs=f, volts=v, law=None))
 

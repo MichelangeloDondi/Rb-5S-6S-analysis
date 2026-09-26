@@ -30,7 +30,7 @@ def test_n_eff_definition_and_guards():
 
 
 def test_traces_have_the_promised_shape():
-    f, v = synthetic_traces(**TRUTH, n_traces=4, n_points=600,
+    f, v = synthetic_traces(**TRUTH, n_traces=4, n_points=600, T_C=110.0,
                             rng=np.random.default_rng(0), registry=_TWIN_STUDY)
     assert len(f) == len(v) == 4
     assert all(len(x) == 600 for x in f)
@@ -43,9 +43,9 @@ def test_fraction_of_peak_noise_scales_with_amplitude():
     """The simple noise mode is a fraction of THIS trace's peak, so doubling
     the amplitude doubles the absolute noise and preserves SNR."""
     rng = np.random.default_rng(3)
-    _, v1 = synthetic_traces(**TRUTH, n_traces=1, noise=0.01, amp=1.0, rng=rng, registry=_TWIN_STUDY)
+    _, v1 = synthetic_traces(**TRUTH, n_traces=1, noise=0.01, amp=1.0, T_C=110.0, rng=rng, registry=_TWIN_STUDY)
     rng = np.random.default_rng(3)
-    _, v2 = synthetic_traces(**TRUTH, n_traces=1, noise=0.01, amp=2.0, rng=rng, registry=_TWIN_STUDY)
+    _, v2 = synthetic_traces(**TRUTH, n_traces=1, noise=0.01, amp=2.0, T_C=110.0, rng=rng, registry=_TWIN_STUDY)
     wing1 = np.std(v1[0][:100])
     wing2 = np.std(v2[0][:100])
     assert wing2 == pytest.approx(2.0 * wing1, rel=1e-9)
@@ -55,7 +55,7 @@ def test_measured_law_mode_is_signal_dependent():
     """Under a noise-law dict the wings are quieter than the peak, which the
     fraction-of-peak mode cannot produce."""
     law = {"a": 0.001, "b": 0.004, "c": 0.0}
-    f, v = synthetic_traces(**TRUTH, n_traces=1, noise=law, n_points=4000,
+    f, v = synthetic_traces(**TRUTH, n_traces=1, noise=law, n_points=4000, T_C=110.0,
                             rng=np.random.default_rng(7), registry=_TWIN_STUDY)
     clean_wing = np.std(v[0][:400])
     # residual scatter near the peak, detrended crudely by differencing
@@ -67,7 +67,7 @@ def test_measured_law_mode_is_signal_dependent():
 def test_ladder_step_one_known_truth_recovery():
     """The public API reproduces the committed example's discipline: every
     injected width recovered within three of the fit's own standard errors."""
-    f, v = synthetic_traces(**TRUTH, n_traces=5, noise=0.004,
+    f, v = synthetic_traces(**TRUTH, n_traces=5, noise=0.004, T_C=130.0,
                             rng=np.random.default_rng(20260819), model="convolution", registry=_TWIN_STUDY)
     res = fit_condition(f, v, T_C=130.0, transit_fwhm=TRUTH["transit_fwhm"], model="convolution")
     for name in ("gamma_coll", "sigma_laser"):
@@ -174,3 +174,17 @@ def test_coincidence_tooth_dies_on_the_common_path():
     a = comb_tooth_weights(5.32, 5, drive_hz=579.634e6,
                            retro_delay_s=(0.5e-9, 1.17e-9))
     assert p[4] > 0.15 and a[4] < 0.01     # the 50x collapse, both asserted
+
+
+def test_the_joint_world_takes_its_temperature_from_the_caller():
+    """F560, both ways: a joint world with no temperature is refused before anything is drawn, the same world at the
+    caller's temperature is drawn, and the convolution arm, which draws at no temperature, keeps its default."""
+    with pytest.raises(ValueError, match="F560"):
+        synthetic_traces(**TRUTH, n_traces=1, n_points=200, rng=np.random.default_rng(0), registry=_TWIN_STUDY)
+    f, v = synthetic_traces(**TRUTH, n_traces=1, n_points=200, T_C=130.0, rng=np.random.default_rng(0),
+                            registry=_TWIN_STUDY)
+    assert len(f) == 1 and len(v[0]) == 200
+    f, v = synthetic_traces(**TRUTH, n_traces=1, n_points=200, model="convolution", rng=np.random.default_rng(0),
+                            registry=_TWIN_STUDY)
+    assert len(v[0]) == 200
+

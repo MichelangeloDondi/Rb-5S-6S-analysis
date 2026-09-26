@@ -56,10 +56,18 @@ def _params(fn) -> set:
 
 
 def _example_layers() -> set:
-    """The layer keys the example actually switches, read from its source."""
+    """The layer keys the example actually switches, read from its source.
+
+    THE READER FAILS CLOSED (V7.2): the exhibit moved its `layers = {...}` from `main` to a module-level
+    `LAYERS = {...}` when its worlds were pooled, the old pattern matched nothing, and every layer the exhibit
+    switches read `no` with nothing saying why. Both spellings are read, and a source where neither is found
+    raises, because an empty set here is indistinguishable from an exhibit that switches no layer."""
     src = (ROOT / "examples" / "campaign_twin.py").read_text(encoding="utf-8")
-    m = re.search(r"layers = \{([^}]*)\}", src)
-    return set(re.findall(r'"(\w+)"', m.group(1))) if m else set()
+    m = re.search(r"\b(?:layers|LAYERS)\s*=\s*\{([^}]*)\}", src)
+    if not m:
+        raise SystemExit("make_twin_term_census: examples/campaign_twin.py defines no `layers` or `LAYERS` "
+                         "dict, so the exhibit's column cannot be read; point the reader at its new spelling")
+    return set(re.findall(r'"(\w+)"', m.group(1)))
 
 
 def _example_calls() -> str:

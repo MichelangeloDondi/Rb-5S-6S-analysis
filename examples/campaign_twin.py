@@ -42,8 +42,12 @@ constants. Runs from a bare clone:
 """
 from __future__ import annotations
 
+import json
 import math
+import os
 import sys
+from pathlib import Path
+from concurrent.futures import ProcessPoolExecutor
 
 import numpy as np
 
@@ -59,11 +63,21 @@ from rb5s6s import blackbody
 from rb5s6s import stark
 from rb5s6s.amplitudes import predicted_shares
 from rb5s6s.constants import PEAKS
-from rb5s6s.forecast import build_world_trace
-from rb5s6s.linefit import fit_condition
+from rb5s6s.forecast import build_world_trace, fit_world
 
 #: O58: this module's twin runs are a declared STUDY, and this is its reason
 _TWIN_STUDY = "the exhibit's layered world, a registered approximation of the joint twin"
+#: THE EXHIBIT KEEPS V7.1'S PAIRING FOR ONE WAVE, declared at the world door (F559, F562): a layered world fitted by
+#: the joint line. The plan re-runs this population on the REPAIRED world, the joint line with the bore (V7.3, F564),
+#: so it moves once and its golden output is regenerated once, instead of twice.
+_INTERIM_PAIRING = {
+    "form": ("the exhibit keeps its committed pairing, a layered world fitted by the joint line, until V7.3 "
+             "draws it on the joint line with the bore and regenerates its golden output once"),
+    "shift": ("each peak is fitted as the analysis fits it, with no ramp, so the ramp's pull lands in the "
+              "centre the exhibit reads kappa from"),
+    "gas width": ("the gas's Lorentzian adds to the collisional one, which a single-trace fit carries as one "
+                  "width"),
+}
 
 C_M_S = 299792458.0
 
@@ -154,14 +168,11 @@ def build_rung(power_w: float, kappa: float, t_c: float, order_idx: int,
     shift was wrong twice over, corrected 2026-08-30) lives on the function's
     own docstring and docs/wiki/third-cumulant.md.
 
-    IT KEEPS THE PURE TRANSVERSE RAMP. `build_world_trace` gained the axial
-    collection window and the standing wave's fringe-resolved tail on
-    2026-09-08 as two opt-in arguments, and this example passes neither, so
-    the exhibit's traces are unchanged and the forecast producers are where
-    those terms are read. At the archive's own central waist both are a few
-    per cent (docs/plan/12, re-read after O44/F280's 2026-09-21 retirement of
-    the old waist convention); at a tight waist they are not, which is why the campaign
-    forecast carries them and this example does not.
+    IT STILL DRAWS THE LAYERED SEPARABLE LINE, WHICH THE JOINT FITTER DOES NOT
+    DESCRIBE (F559), and says so at the world door rather than silently: the
+    exhibit moves onto the joint line with the bore in V7.3 (F564), when the
+    plan re-runs the twin's population on the repaired world, and its golden
+    output is regenerated once, then.
     """
     return build_world_trace(
         power_w, kappa, t_c, order_idx, n_rungs, rng, layers,
@@ -180,8 +191,8 @@ def fit_rung(nu, v, rng) -> dict:
     for peak in PEAKS:
         centre = pos[peak]
         m = np.abs(nu - centre) < 18.0
-        res = fit_condition([nu[m] - centre], [v[m]], T_C=130.0,
-                            transit_fwhm=TRANSIT_FWHM_MHZ)
+        res = fit_world([nu[m] - centre], [v[m]], T_C=130.0,
+                        world_mismatch_reason=_INTERIM_PAIRING)
         out[peak] = {"centre": float(res["centers"][0]) + centre,
                      "amp": float(res["amps"][0]),
                      "gamma_coll": res["gamma_coll"],
@@ -250,10 +261,57 @@ def run_world(kappa: float, layers: dict, seed: int) -> dict:
             "ratio_dev": dev}
 
 
+#: the companion setting every world is drawn with; a spawned worker re-imports this module and never sees a value
+#: `main` assigns, so each world sets it itself (the global-snapshot hazard, A245)
+COMPANIONS_SET = {"ratio": 1.2511, "scale": 1.0, "cycles": 1.0}
+
+
+def _world_task(args) -> dict:
+    kappa, layers, seed = args
+    stark.COMPANIONS = dict(COMPANIONS_SET)
+    return run_world(kappa, layers, seed=seed)
+
+
+def _run_worlds(tasks) -> list:
+    """The worlds in order. Each is seeded by its own seed, so a pool returns exactly what one process returns;
+    on the joint world line a world costs minutes (the pre-wave's probe b53a6260), so they run side by side, at
+    most five, the share with the thesis session, and never more than RB5S6S_WORKERS."""
+    n = max(1, min(5, int(os.environ.get("RB5S6S_WORKERS", "5")), len(tasks)))
+    if n == 1:
+        return [_world_task(t) for t in tasks]
+    with ProcessPoolExecutor(max_workers=n) as ex:
+        return list(ex.map(_world_task, tasks))
+
+
+#: every layer the exhibit switches on, shared by the in-process run, a slice and the combine
+LAYERS = {"cascade": True, "saturation": True, "stark": True, "bbr": True,
+          "drift": True, "quantise": True, "randomise": True}
+
+
+def _tasks() -> list:
+    """The ten worlds in their report order: the predicted kappa at each check-4 seed, then the null."""
+    return ([(KAPPA_PRED, LAYERS, s) for s in CHECK4_SEEDS]
+            + [(0.0, LAYERS, s + 100) for s in CHECK4_SEEDS])
+
+
 def main() -> int:
-    layers = {"cascade": True, "saturation": True, "stark": True, "bbr": True,
-              "drift": True, "quantise": True, "randomise": True}
-    stark.COMPANIONS = {"ratio": 1.2511, "scale": 1.0, "cycles": 1.0}
+    """No argument runs every world, pooled. THE WORLDS ARE THE RUN'S UNITS (V7.2, 2026-09-26): on the joint world
+    line a world costs minutes, so `--from K --n N --dump PATH` computes worlds K..K+N-1 (from zero, in `_tasks`'
+    order) and dumps them, and `--combine DIR` prints the report from every `wave_*.json` in DIR, refusing while a
+    world has no dump, so `private/checks/wave_runner.py` can walk it a slice per wave. Each world is seeded by its
+    own seed, so the combined report is the in-process one."""
+    argv = sys.argv[1:]
+    tasks = _tasks()
+    if "--from" in argv:
+        lo = int(argv[argv.index("--from") + 1])
+        n = int(argv[argv.index("--n") + 1])
+        dump = Path(argv[argv.index("--dump") + 1])
+        idx = list(range(lo, min(lo + n, len(tasks))))
+        got = _run_worlds([tasks[i] for i in idx])
+        dump.write_text(json.dumps({str(i): w for i, w in zip(idx, got)}, default=float))
+        print(f"wrote worlds {idx} to {dump}")
+        return 0
+    stark.COMPANIONS = dict(COMPANIONS_SET)
 
     print(__doc__.splitlines()[0], "\n")
     # claim 5, checked before anything is generated
@@ -278,8 +336,18 @@ def main() -> int:
     # ACROSS seeds is the uncertainty to report, and it states M21 more
     # directly: drift aliases onto the power order, so what moves between
     # worlds is the answer and not merely its error bar.
-    pred_worlds = [run_world(KAPPA_PRED, layers, seed=s) for s in CHECK4_SEEDS]
-    null_worlds = [run_world(0.0, layers, seed=s + 100) for s in CHECK4_SEEDS]
+    if "--combine" in argv:
+        d = Path(argv[argv.index("--combine") + 1])
+        byk = {}
+        for f in sorted(d.glob("wave_*.json")):
+            byk.update({int(k): w for k, w in json.loads(f.read_text()).items()})
+        missing = [i for i in range(len(tasks)) if i not in byk]
+        if missing:
+            raise SystemExit(f"--combine: worlds {missing} have no dump in {d}; the run is not complete")
+        worlds = [byk[i] for i in range(len(tasks))]
+    else:
+        worlds = _run_worlds(tasks)
+    pred_worlds, null_worlds = worlds[:len(CHECK4_SEEDS)], worlds[len(CHECK4_SEEDS):]
 
     def _pool(ws):
         k = np.array([w["kappa"] for w in ws])

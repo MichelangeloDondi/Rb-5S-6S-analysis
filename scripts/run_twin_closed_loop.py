@@ -17,12 +17,12 @@ different precision. A `gage` mode (--gage) runs the same leg with truth
 gamma_coll shifted +0.16 MHz and must FAIL A1: a leg that cannot fail has
 measured nothing, and the gage row is committed beside the verdicts.
 
-Runtime about four minutes, seed-pinned. Output:
+Runtime about twelve minutes on the joint world line (V7.2), seed-pinned. Output:
 results/twin_closed_loop.csv.
 
 WHAT ITS FIRST RUN FOUND, kept here because the CSV's A3 row quotes the
 conclusion and this is the derivation. A3 (the twin's reported error
-within a factor two of the record's) FAILS at 6.3x, and layer elimination
+within a factor two of the record's) FAILS, at the ratio its A3 row states, and layer elimination
 clears every physics layer: all six off leaves the ratio, chi2_red near
 0.002. The fitter weights by the M1 noise law in real volts while the
 world builder emits normalised units, so the reported error is the law's
@@ -47,8 +47,7 @@ from rb5s6s.config import RESULTS_DIR as _RESULTS_DIR  # noqa: E402  (F480: resu
 from rb5s6s.amplitudes import predicted_shares  # noqa: E402
 from rb5s6s.stark import kappa_pred_per_watt  # noqa: E402  (SSOT: one predicted coefficient)
 from rb5s6s.constants import PEAKS, W0_CENTRAL_M, RHO_RETRO, transit_fwhm_from_w0  # noqa: E402
-from rb5s6s.forecast import build_world_trace  # noqa: E402
-from rb5s6s.linefit import fit_condition  # noqa: E402
+from rb5s6s.forecast import build_world_trace, fit_world  # noqa: E402
 from rb5s6s.scenario import load_scenario  # noqa: E402
 
 C_M_S = 299_792_458.0
@@ -65,7 +64,11 @@ C_M_S = 299_792_458.0
 from rb5s6s.reference_point import reference_point  # noqa: E402
 
 #: O58: this module's twin runs are a declared STUDY, and this is its reason
-_TWIN_STUDY = 'the closed loop on the layered world, a registered approximation of the joint twin'
+_TWIN_STUDY = 'the closed loop on the joint world line drawn per peak, in the ideal beam until V7.3 (F559, F564)'
+#: the leg fits as the record's width fits are made, with no ramp in the fitter, while its world carries one: a
+#: declared mismatch at the world door (forecast.fit_world), since the omission is part of what the leg measures
+_NO_RAMP_IN_FIT = ("the leg fits with no ramp in the fitter, as the record's width fits are made, so the ramp's "
+                   "omission is part of the bias the leg measures")
 _AP = reference_point()   # F313: the archive's line, read from the committed fit and the waist, never typed
 TRUTH_GAMMA = _AP["gamma_coll"]
 TRUTH_SIGMA = _AP["sigma_laser"]
@@ -127,7 +130,7 @@ def run_leg(truth_gamma: float) -> dict:
             cycles_at_max=CYCLES_AT_MAX,
             drift_mhz_total=DRIFT_TOTAL_MHZ,
             noise_frac_bright=NOISE_FRAC_BRIGHT, adc_levels=ADC_LEVELS,
-            range_anchor="per_rung", registry=_TWIN_STUDY)
+            range_anchor="per_rung", registry=_TWIN_STUDY, model="joint")
             for _ in range(REPEATS)]
         for peak, centre in pos.items():
             fs, vs = [], []
@@ -135,8 +138,11 @@ def run_leg(truth_gamma: float) -> dict:
                 m = np.abs(nu - centre) < 18.0
                 fs.append(nu[m] - centre)
                 vs.append(v[m])
-            res = fit_condition(fs, vs, T_C=130.0,
-                                transit_fwhm=TRUTH_TRANSIT)
+            # THE WORLD AND THE FITTER ON ONE LINE (F559, 2026-09-26): until V7.2 this world was the layered
+            # separable line and the fitter's default the joint table, so the leg failed on a tree that had
+            # committed it as passing; the door refuses that pairing, and the transit, which the joint fitter
+            # never reads, is no longer passed (F560)
+            res = fit_world(fs, vs, T_C=130.0, world_mismatch_reason={"shift": _NO_RAMP_IN_FIT})
             rec_g.append(res["gamma_coll"])
             rec_ge.append(res["gamma_coll_err"])
             rec_s.append(res["sigma_laser"])

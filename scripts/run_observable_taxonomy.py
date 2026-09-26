@@ -897,7 +897,8 @@ def _plant() -> int:
     items = [(40.0, "cell", 900000, 2, 0), (40.0, "cell", 901000, 2, 1),
              (400.0, "onf", 700000, 1, 0)]
     serial = [_block(it) for it in items]
-    with ProcessPoolExecutor(max_workers=3) as ex:
+    # three items, so three workers at most, and never more than the share gives (RB5S6S_WORKERS, 2026-09-26)
+    with ProcessPoolExecutor(max_workers=max(1, min(3, WORKERS))) as ex:
         pooled = list(ex.map(_block, items))
     bad = []
     for a, b in zip(serial, pooled):
