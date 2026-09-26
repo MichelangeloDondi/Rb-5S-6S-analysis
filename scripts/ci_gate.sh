@@ -243,7 +243,11 @@ GATE_STAGE="pytest"
 # (A186). --verify asserts the two halves collect exactly the whole suite, and
 # a gate that grades a different population than the serial gate is worse than
 # a slow gate, so a drift here EXITS rather than warning.
-GATE_SPLIT="$GATE_ROOT/private/checks/gate_split.py"
+# THE SPLIT MAY LIVE IN ANOTHER CHECKOUT (F569): the public mirror carries no private/, so its gate takes the
+# archive's split from RB5S6S_GATE_SPLIT and points it at this checkout through GATE_SPLIT_ROOT; unset, both
+# resolve to this checkout and nothing changes.
+GATE_SPLIT="${RB5S6S_GATE_SPLIT:-$GATE_ROOT/private/checks/gate_split.py}"
+export GATE_SPLIT_ROOT="$GATE_ROOT"
 if [ -f "$GATE_SPLIT" ] && "$PY" -c "import xdist" 2>/dev/null; then
   GATE_STAGE="pytest-split-verify"
   : > "$GATE_PYLOG"
@@ -311,11 +315,12 @@ PYSAMPLE
   # shellcheck disable=SC2086
   # THE SERIAL STAGE IS ONE POOLED TEST (measured 2026-09-14: 376 of 432 s in
   # the freshness check, which runs its producers on RB5S6S_WORKERS), so in the
-  # all-cores mode it gets every core rather than the default four.
+  # all-cores mode it gets every core, and beside a pool the share's five (F568: unset, it ran on one core, timed
+  # out at 900 s beside the thesis session's pool and hid a drifted table for the whole gate).
   if [ -n "${CI_GATE_ALL_CORES:-}" ]; then
     RB5S6S_WORKERS="${RB5S6S_WORKERS:-$("$PY" "$GATE_SPLIT" --workers --all 2>/dev/null || echo 4)}" "$PY" -m pytest -q --runslow $GATE_SERIAL 2>&1 | tee -a "$GATE_PYLOG"
   else
-    "$PY" -m pytest -q --runslow $GATE_SERIAL 2>&1 | tee -a "$GATE_PYLOG"
+    RB5S6S_WORKERS="${RB5S6S_WORKERS:-5}" "$PY" -m pytest -q --runslow $GATE_SERIAL 2>&1 | tee -a "$GATE_PYLOG"
   fi
   GATE_SERRC=${PIPESTATUS[0]}
   [ -n "${GATE_SAMPLER:-}" ] && kill "$GATE_SAMPLER" 2>/dev/null

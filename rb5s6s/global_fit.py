@@ -48,7 +48,7 @@ from scipy.optimize import least_squares
 
 from . import config as C
 from .lineshape import composite_profile
-from .linefit import (transit_fwhm_at_T, adaptive_halfwidth, joint_condition_profile,
+from .linefit import (transit_fwhm_at_T, adaptive_halfwidth, joint_condition_profile, joint_table_identity,
                       JOINT_Z_RATIO, JOINT_N_PATH, JOINT_SEED)
 from .constants import W0_CENTRAL_M
 from .noise import signal_level, sigma_of_v
@@ -367,6 +367,7 @@ def fit_global(blocks: List[Dict], *, transit_ref_mhz: float = C.TRANSIT_FWHM_PL
                if sol.x[nS + bi] <= 1e-9]),
         "sig_keys": sig_keys, "beta_keys": beta_keys,
         "sigma_sharing": sigma_sharing, "transit_kind": transit_kind, "model": model,
+        "joint_table": joint_table_identity(model, joint_n_path, joint_seed, beam_factory),
     }
     if sigma_sharing == "per_T":     # back-compat dicts keyed by temperature
         result["sigma_laser_by_T"] = {T: float(sol.x[i]) for i, T in enumerate(sig_keys)}

@@ -283,7 +283,7 @@ it is worth is what it does to the joint problem. This record's bound fails on
 four couplings: the collisional width against the transit at
 [-0.954](../../results/identifiability.csv "ref:identifiability:corr:gamma_coll_transit"),
 the laser width against the collisional at
-[-0.8293](../../results/campaign_twin_forecast.csv "ref:campaign_twin_forecast:cell:corr_laser_coll_5traces"),
+[-0.9341](../../results/campaign_twin_forecast.csv "ref:campaign_twin_forecast:cell:corr_laser_coll_5traces"),
 a Lorentzian laser component and the collisional width entering only as their
 sum, and a beam waist nobody has measured, which is why every absolute result here is a bound
 and not a value. A guided arm attacks two of the four by geometry alone, and a cold free-space

@@ -106,8 +106,8 @@ effective count. Using a raw chi-square against a reduced penalty inflates
 the fit's apparent gain by roughly the correlation time while lowering its
 parameter cost. On the joint line the fitter carries since C6b that
 half-treatment reverses this comparison's verdict: the two rows of
-[`sharing_bic.csv`](../../results/sharing_bic.csv) read [-41.2](../../results/sharing_bic.csv "ref:sharing_bic:dBIC_raw_block_minus_T:shared") raw and
-[63.3](../../results/sharing_bic.csv "ref:sharing_bic:dBIC_eff_block_minus_T:shared") effective, the effective form decisively favouring the shared
+[`sharing_bic.csv`](../../results/sharing_bic.csv) read [-29.1](../../results/sharing_bic.csv "ref:sharing_bic:dBIC_raw_block_minus_T:shared") raw and
+[65.6](../../results/sharing_bic.csv "ref:sharing_bic:dBIC_eff_block_minus_T:shared") effective, the effective form decisively favouring the shared
 form on this record's own Kass-Raftery threshold and the raw form the free
 one. On the convolution line both favoured sharing, and they stood at +46.9 and +77.5. The implementation refuses to
 compute the effective form unless both are supplied.

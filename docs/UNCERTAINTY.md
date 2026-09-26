@@ -166,13 +166,13 @@ see section 5.
 
 At the calculated waist the fitted collisional width does not drift with the
 fit window over the wing-safe range: it falls in
-[18](../results/fit_window_scan.csv "ref:fit_window_scan:n_drift_negative:summary") of
+[19](../results/fit_window_scan.csv "ref:fit_window_scan:n_drift_negative:summary") of
 [32](../results/fit_window_scan.csv "ref:fit_window_scan:n_conditions:summary")
 conditions ([`results/fit_window_scan.csv`](../results/fit_window_scan.csv),
-`sign_test_p` = [0.597](../results/fit_window_scan.csv "ref:fit_window_scan:sign_test_p:summary"),
+`sign_test_p` = [0.377](../results/fit_window_scan.csv "ref:fit_window_scan:sign_test_p:summary"),
 a tail under exchangeable signs, its note says why), the mean drift is
-[-0.058](../results/fit_window_scan.csv "ref:fit_window_scan:gamma_drift_sigma_mean:summary") ±
-[0.062](../results/fit_window_scan.csv "ref:fit_window_scan:gamma_drift_sigma_mean:summary:err")
+[-0.019](../results/fit_window_scan.csv "ref:fit_window_scan:gamma_drift_sigma_mean:summary") ±
+[0.049](../results/fit_window_scan.csv "ref:fit_window_scan:gamma_drift_sigma_mean:summary:err")
 σ, and the fit quality stays flat (`chi2_red_median` rows). The σ that drift
 is counted in is `fit_condition`'s own `gamma_coll_err`, which reads its
 covariance from a Jacobian stepped inside one profile-grid cell and is 1.6 to

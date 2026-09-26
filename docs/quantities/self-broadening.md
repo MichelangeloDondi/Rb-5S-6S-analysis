@@ -88,7 +88,7 @@ cent.
 | Four-temperature width slope, pooled, dof 2 | $\lt$ [0.026](../../results/beta_self_probe.csv "ref:beta_self_probe:pooled_slope::bound95_nscale") MHz per 1e12 per cubic centimetre, the headline; [0.0205](../../results/beta_self_probe.csv "ref:beta_self_probe:pooled_slope::bound95") before the density-scale systematic | BOUND | [`beta_self_probe.csv`](../../results/beta_self_probe.csv) |
 | Four-temperature width slope, per peak | $\lt 0.0246$ to $\lt 0.0423$ | BOUND | `beta_self_probe.csv` |
 | Model-independent per-peak central values | 0.0043 to 0.0069 | PRELIM | [`beta_self.csv`](../../results/beta_self.csv) |
-| Hierarchical joint fit, cooling sweep | [0.0086](../../results/global_fit.csv "ref:global_fit:beta_self:85Rb") $\pm$ [0.0026](../../results/global_fit.csv "ref:global_fit:beta_self:85Rb:err") (85Rb) | BOUND | [`global_fit.csv`](../../results/global_fit.csv) |
+| Hierarchical joint fit, cooling sweep | [0.0103](../../results/global_fit.csv "ref:global_fit:beta_self:85Rb") $\pm$ [0.0034](../../results/global_fit.csv "ref:global_fit:beta_self:85Rb:err") (85Rb) | BOUND | [`global_fit.csv`](../../results/global_fit.csv) |
 | Same fit with the 130 C anchor folded in | [0.0058](../../results/lever_crosscheck.csv "ref:lever_crosscheck:beta_lever_probe_130:85Rb") (85Rb), [0.0076](../../results/lever_crosscheck.csv "ref:lever_crosscheck:beta_lever_probe_130:87Rb") (87Rb) | BOUND | [`lever_crosscheck.csv`](../../results/lever_crosscheck.csv) |
 | $\kappa$ and $\beta_{\rm self}$ both free | 0.0043, interval 0.0041 to 0.0046 | PRELIM | [`global_dataset_fit.csv`](../../results/global_dataset_fit.csv) |
 
@@ -102,7 +102,7 @@ component on top, not a resolved collision rate**, so the quantity the data
 support is an upper limit and that is what the record reports.
 
 The hierarchical construction is a cross-check and is not settled. Its
-central values of 0.0086 and 0.0093 move to 0.0058 and 0.0076 when the 130 C anchor
+central values of 0.0086 and 0.0093 (the lever cross-check's convolution-line table, owed a re-run on the joint line since V7.3) move to 0.0058 and 0.0076 when the 130 C anchor
 extends the density lever from 15 to 48 (Alcock), a third and a fifth lower, and
 dropping the 110 C condition moves the first by
 [0.0382](../../results/lever_crosscheck.csv "ref:lever_crosscheck:beta_loo_temp:85Rb"), more than four times its value.

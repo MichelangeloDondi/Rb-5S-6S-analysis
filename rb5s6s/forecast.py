@@ -44,10 +44,16 @@ from . import blackbody, cascade, model_registry, stark, twin_volume
 from .fullmodel import full_profile
 from .lineshape import (composite_profile, local_ramp_density, model_profile,
                         ramp_mixture, stark_ramp)
-from .linefit import fit_condition, GNAT_MHZ, JOINT_N_PATH, JOINT_SEED, JOINT_Z_RATIO
+from .linefit import (fit_condition, fitter_beam, FITTER_BEAM_KIND, GNAT_MHZ, JOINT_SEED,
+                      JOINT_Z_RATIO)
 from .constants import W0_CENTRAL_M
 from .noise import sigma_of_v
-from .volume_line import GaussianBeam
+
+#: THE WORLD'S DRAW IS ITS OWN (F566, V7.3): until V7.3 the twin's joint world and the fitter's table called one
+#: sampler with one seed and one count, so a closure drew the table's own atoms and could not see the table's
+#: sampling error. The world takes its own seed and the count its line converges at (probe:e9e8928d timed it).
+WORLD_SEED = JOINT_SEED + 1
+WORLD_N_PATH = 20000
 
 __all__ = ["synthetic_traces", "build_world_trace", "forecast_precision",
            "n_eff", "external_constraint_gain", "twin_preflight"]
@@ -319,6 +325,9 @@ def world_disagreements(world: Dict, *, model: str, T_C: float, s0: float, w0_m:
         out.append(f"gas width: the world carries a Lorentzian of {world.get('gamma_l')} MHz and the fitter holds "
                    f"{gamma_l} MHz fixed")
     if same_form and form == "joint":
+        if world.get("beam") != FITTER_BEAM_KIND:
+            out.append(f"beam: the world is drawn in the {world.get('beam')!r} beam and the fitter's table is built on the "
+                       f"{FITTER_BEAM_KIND!r} one (F564)")
         for key, fitv in (("w0_m", w0_m), ("m2", m2), ("z_ratio", z_ratio)):
             if not _world_same(world.get(key), fitv):
                 out.append(f"{key}: the world's is {world.get(key)} and the fitter's is {fitv}")
@@ -429,8 +438,8 @@ def synthetic_traces(gamma_coll: float, sigma_laser: float, transit_fwhm: float,
                      residual_source=None,
                      model: str = "joint", T_C: Optional[float] = None,
                      w0_m: float = W0_CENTRAL_M, m2: float = 1.0,
-                     z_ratio: float = JOINT_Z_RATIO, n_path: int = JOINT_N_PATH,
-                     seed: int = JOINT_SEED, registry: Optional[str] = None,
+                     z_ratio: float = JOINT_Z_RATIO, n_path: int = WORLD_N_PATH,
+                     seed: int = WORLD_SEED, registry: Optional[str] = None,
                      ) -> Tuple[List[np.ndarray], List[np.ndarray]]:
     """Generate the traces your instrument would record for this line.
 
@@ -545,7 +554,7 @@ def synthetic_traces(gamma_coll: float, sigma_laser: float, transit_fwhm: float,
     if halo_fraction > 0.0:
         _ex.add("radiation_trapping")
     if model == "joint":
-        _ex.add("beam_quality_m2")
+        _ex |= {"beam_quality_m2", "bore_clipping"}
         if s0 > 0.0:
             _ex.add("transit_chirp")
         if z_ratio > 0.0:
@@ -557,8 +566,9 @@ def synthetic_traces(gamma_coll: float, sigma_laser: float, transit_fwhm: float,
         # short of `tau_int`/`residual_source`/`halo_fraction`, so every one of the three
         # reaches this trace exactly as it reaches a `model="convolution"` one, through the
         # SAME `_traces_from_shape` helper below.
-        # gaussian-limit: the layered forecast generator is an approximation of the joint twin of record, and it owes the bore (registry bore-limited-recompute)
-        beam = GaussianBeam(float(w0_m), float(m2))
+        # THE WORLD IS DRAWN IN THE BEAM THE APPARATUS MAKES (F564, V7.3): the fitter's own predicate, the
+        # bore-clipped beam at the actual focus, so the world and the fitter's table share one beam
+        beam = fitter_beam(float(w0_m), float(m2))
         _lorentz_laser = laser_kind != "gaussian"
         homog = (GNAT_MHZ + max(gamma_coll, 0.0) + max(gamma_l, 0.0)
                 + (max(sigma_laser, 0.0) if _lorentz_laser else 0.0))
@@ -578,7 +588,7 @@ def synthetic_traces(gamma_coll: float, sigma_laser: float, transit_fwhm: float,
                                           tau_int=tau_int, residual_source=residual_source, rng=rng)
         _world = {"form": "joint", "T_C": float(T_C), "s0": float(s0), "w0_m": float(w0_m), "m2": float(m2),
                   "z_ratio": float(z_ratio), "transit_fwhm": None, "laser_kind": laser_kind,
-                  "gamma_l": float(gamma_l), "halo_fraction": float(halo_fraction)}
+                  "gamma_l": float(gamma_l), "halo_fraction": float(halo_fraction), "beam": FITTER_BEAM_KIND}
         return freqs, [WorldTrace(v, _world) for v in volts]
     if rng is None:
         rng = np.random.default_rng()
@@ -749,7 +759,7 @@ def build_world_trace(power_w: float, kappa: float, t_c: float,
         if _unc:
             raise ValueError(f"build_world_trace(model='joint') does not carry {', '.join(_unc)}: the joint "
                              "world line has no such term, and dropping it silently is the defect F559 names")
-        _ex |= {"beam_quality_m2", "axial_collection_window"}
+        _ex |= {"beam_quality_m2", "axial_collection_window", "bore_clipping"}
         if layers["stark"] and kappa * power_w > 0.0:
             _ex.add("transit_chirp")
     twin_preflight(_ex, registry, T_C=t_c, power_w=power_w)
@@ -925,12 +935,11 @@ def build_world_trace(power_w: float, kappa: float, t_c: float,
                     + (max(sigma_laser_fwhm, 0.0) if _lor else 0.0))
             _span = float(np.max(np.abs(nu - centre))) + 1.0
             _gx, _gs = twin_volume.world_shape(
-                # gaussian-limit: the joint world line owes the bore until V7.3 draws it in the fitter's clipped beam (F564)
-                beam=GaussianBeam(float(W0_CENTRAL_M if w0_m is None else w0_m), float(m2)), T_C=float(t_c),
+                beam=fitter_beam(float(W0_CENTRAL_M if w0_m is None else w0_m), float(m2)), T_C=float(t_c),
                 S0_mhz=(s0 if layers["stark"] else 0.0), gamma_hom_mhz=_hom,
                 sigma_laser_mhz=(0.0 if _lor else max(sigma_laser_fwhm, 0.0)),
                 z_ratio=(JOINT_Z_RATIO if _z_ratio_arg is None else float(_z_ratio_arg)), span_mhz=_span,
-                n_points=int(round(2.0 * _span / 0.02)) + 1, centre_mhz=0.0, n_path=JOINT_N_PATH, seed=JOINT_SEED)
+                n_points=int(round(2.0 * _span / 0.02)) + 1, centre_mhz=0.0, n_path=WORLD_N_PATH, seed=WORLD_SEED)
             shape = np.interp(nu - centre, _gx, _gs, left=0.0, right=0.0)
             v += amp * (shape / shape.max())
             truth_amps[peak] = amp
@@ -1019,7 +1028,8 @@ def build_world_trace(power_w: float, kappa: float, t_c: float,
         _world = {"form": "joint", "T_C": float(t_c), "s0": _s0w,
                   "w0_m": float(W0_CENTRAL_M if w0_m is None else w0_m), "m2": float(m2),
                   "z_ratio": float(JOINT_Z_RATIO if _z_ratio_arg is None else _z_ratio_arg), "transit_fwhm": None,
-                  "laser_kind": laser_kind, "gamma_l": float(gamma_l), "halo_fraction": float(halo_fraction)}
+                  "laser_kind": laser_kind, "gamma_l": float(gamma_l), "halo_fraction": float(halo_fraction),
+                  "beam": FITTER_BEAM_KIND}
     else:
         _world = {"form": "separable", "T_C": float(t_c), "s0": _s0w,
                   "w0_m": None if w0_m is None else float(w0_m), "m2": float(m2),

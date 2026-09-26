@@ -623,17 +623,28 @@ def test_a_divergence_whose_other_side_is_not_a_declared_debt_refuses(monkeypatc
 
 
 def test_a_paydown_onto_one_code_site_is_admitted_and_onto_two_is_refused(monkeypatch):
-    b = MR._BY_ID["bore_clipping"]
-    assert "bore_clipping" in MR.PAIRING_BASELINE["2025"]
-    # POSITIVE: the twin carries the bore through the Monte Carlo's own site, and the divergence shrinks
-    _with_rows(monkeypatch, bore_clipping=dataclasses.replace(b, status_twin_2025="carried", impl_twin=b.impl_mc))
+    # the bore's own paydown landed in V7.3 (F564), so the plant runs on the saturated arm, still in the debt
+    b = MR._BY_ID["saturation"]
+    assert "saturation" in MR.PAIRING_BASELINE["2025"]
+    # POSITIVE: the twin carries saturation through the Monte Carlo's own site, and the divergence shrinks
+    _with_rows(monkeypatch, saturation=dataclasses.replace(b, status_twin_2025="carried", impl_twin=b.impl_mc))
     MR.preflight("mc", "2025", MR.carried_term_ids("mc", "2025"))
-    assert "bore_clipping" not in MR.pairing_gaps("2025")
+    assert "saturation" not in MR.pairing_gaps("2025")
     # NEGATIVE: carried through a SECOND implementation trades the pairing debt for a code debt
-    _with_rows(monkeypatch, bore_clipping=dataclasses.replace(
+    _with_rows(monkeypatch, saturation=dataclasses.replace(
         b, status_twin_2025="carried", impl_twin="rb5s6s.volume_line:joint_spectrum"))
-    with pytest.raises(MR.ModelReduced, match="code ratchet: bore_clipping"):
+    with pytest.raises(MR.ModelReduced, match="code ratchet: saturation"):
         MR.preflight("mc", "2025", MR.carried_term_ids("mc", "2025"))
+
+
+def test_the_bores_paydown_is_one_code_site_on_both_paths_at_both_regimes():
+    """V7.3 (F564): the twin's joint world and the Monte Carlo carry the bore through the same class, so the term
+    left the pairing debt at both regimes; a later edit that forks the twin's site is a code debt, refused."""
+    b = MR._BY_ID["bore_clipping"]
+    assert b.impl_twin == b.impl_mc == "rb5s6s.beam_field:ClippedBeam"
+    for regime in MR.REGIMES:
+        assert "bore_clipping" not in MR.PAIRING_BASELINE[regime]
+        assert "bore_clipping" not in MR.pairing_gaps(regime)
 
 
 def test_preflight_rejects_an_unknown_consumer_regime_or_scope():

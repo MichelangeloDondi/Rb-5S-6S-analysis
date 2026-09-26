@@ -453,16 +453,16 @@ REGISTRY: tuple[ModelTerm, ...] = (
 
     ModelTerm(
         term_id="bore_clipping",
-        status_fitter_2025="owed:bore-limited-recompute", status_twin_2025="owed:bore-limited-recompute",
+        status_fitter_2025="owed:bore-limited-recompute", status_twin_2025="carried",
         status_mc_2025="carried",
         status_fitter_campaign="owed:bore-limited-recompute",
-        status_twin_campaign="owed:bore-limited-recompute",
+        status_twin_campaign="carried",
         status_mc_campaign="carried",
         physics="The EOM's 3 mm bore clips the focused Gaussian: the on-axis focal intensity per "
                 "recorded watt is reduced and the profile (side lobes, effective M2, the transit "
                 "kernel, the ramp's own f(s)) is reshaped by diffraction at the aperture.",
         impl_fitter="rb5s6s.lineshape:aperture_onaxis_factor_actual",
-        impl_twin="-",
+        impl_twin="rb5s6s.beam_field:ClippedBeam",
         impl_mc="rb5s6s.beam_field:ClippedBeam",
         param_keys="aperture_onaxis, w_act_m, EOM_APERTURE_RADIUS_M",
         thesis_anchor="tab:tps_magnitudes. Section 7.1.5. Section 7.2.9",
@@ -1105,10 +1105,10 @@ def manifest() -> dict:
 #: reseed and needs the owner's word (the rule file's reseed door).
 PAIRING_BASELINE: dict = {
     "2025": frozenset({
-        "bore_clipping", "companion_pull_reduction", "depletion_cascade", "hyperfine_pumping",
+        "companion_pull_reduction", "depletion_cascade", "hyperfine_pumping",
         "hyperfine_shares", "laser_kernel", "saturation", "self_broadening_vdw", "transit_chirp"}),
     "campaign": frozenset({
-        "bore_clipping", "companion_pull_reduction", "hyperfine_pumping", "hyperfine_shares",
+        "companion_pull_reduction", "hyperfine_pumping", "hyperfine_shares",
         "laser_kernel", "saturation", "self_broadening_vdw", "transit_chirp"}),
 }
 

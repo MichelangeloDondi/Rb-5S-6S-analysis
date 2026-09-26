@@ -59,7 +59,7 @@ vapour-cell result.
 The full fit ([§4.2](06_the_statistics.md),
 `fit_global`), which lets $\sigma_\text{laser}$ drift per temperature
 and weights each block by its own correlation time, returns
-$\beta_{85}=$ [0.0086](../../results/global_fit.csv "ref:global_fit:beta_self:85Rb") $\pm$ [0.0026](../../results/global_fit.csv "ref:global_fit:beta_self:85Rb:err") and $\beta_{87}=$ [0.0093](../../results/global_fit.csv "ref:global_fit:beta_self:87Rb") $\pm$ [0.0030](../../results/global_fit.csv "ref:global_fit:beta_self:87Rb:err") MHz per $10^{12}$ cm⁻³:
+$\beta_{85}=$ [0.0103](../../results/global_fit.csv "ref:global_fit:beta_self:85Rb") $\pm$ [0.0034](../../results/global_fit.csv "ref:global_fit:beta_self:85Rb:err") and $\beta_{87}=$ [0.0108](../../results/global_fit.csv "ref:global_fit:beta_self:87Rb") $\pm$ [0.0037](../../results/global_fit.csv "ref:global_fit:beta_self:87Rb:err") MHz per $10^{12}$ cm⁻³:
 **no isotope dependence**, the two differing by $0.0007$, well inside either
 error bar, and dropping any one peak moves the value by at most $0.0072$. It is
 a *model-based* value, and it sits **above** the per-peak model fits
@@ -104,13 +104,15 @@ At the retired waist convention, until 2026-09-22, the fit's
 $\sigma_\text{laser}(T)\approx2.0/2.2/1.5$ MHz was **not** a clean drift curve:
 the free per-condition fit gave a *flat* 1.5–1.75 MHz, so that trend was the
 $\beta \leftrightarrow \sigma_\text{laser}$ degeneracy under the density tie, not a
-physical laser drift. At the ruled 42.38 µm the tied values are 0.64/0.98/0.69 MHz
-(`results/global_fit.csv`) and the free per-condition inverse-variance means
+physical laser drift. At the ruled 42.38 µm the tied values are 0.71/1.05/0.75 MHz on the
+joint line with the forward bore (`results/global_fit.csv`, with F582 for the move, which is the model's switch from the convolution line and the bore's own lowering together) and the free per-condition inverse-variance means
 0.33/0.84/0.71 MHz (`results/linefit_conditions.csv`, the temperature arm): neither is
 flat, the laser width is small beside the 1.45 MHz transit, and at two conditions
 the fit rails it at zero, so what the trend says about the laser is not read until
 the fitter carries the full transit. It does not corrupt $\beta$, which the density
 lever still pins.
+
+On the joint line these widths carry two terms outside their bars: the return beam is modelled as the forward one scaled by rho on every path of record (the owner's O63), and the fitter's table is one Monte Carlo draw whose seed moves the fitted collisional width by about a fiftieth of itself (F567).
 
 The **lever cross-check** (`run_lever_crosscheck`) packages exactly this, the
 cooling-sweep $\beta$ with its stacked error bars and a leave-one-peak and

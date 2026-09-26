@@ -91,6 +91,7 @@ from rb5s6s import beam_field as BF                                 # noqa: E402
 from rb5s6s import fullmodel as FM                                  # noqa: E402
 from rb5s6s import kernel_gate                                      # noqa: E402
 from rb5s6s import lineshape                                        # noqa: E402
+from rb5s6s import linefit                                          # noqa: E402  (F564: the fitter's beam)
 from rb5s6s import model_registry as _MR                            # noqa: E402  (O58: a judge, not the model)
 from rb5s6s._compat import trapezoid                                # noqa: E402
 from rb5s6s.amplitudes import predicted_shares                      # noqa: E402
@@ -740,9 +741,15 @@ def run_node(w0_um, m2, rho, T_C, P_mW, *, n_atoms=None, half_window_m=None,
     # over the same span reads 0.2 per cent, matching the atom count's own Monte Carlo floor
     # (JOINT_S0_GRID_N below, the margin behind the gate's tolerance states this number).
     s0_hi = max(2.0 * s0_mhz, 1e-6)
+    # THE TABLE IS BUILT ON THE FITTER'S OWN BEAM (F564, V7.3): until then it took `JointTable.build`'s default, the
+    # ideal Gaussian, against atoms sampled in the clipped beam, and the band's nodes failed on the bore alone
+    # (probe:63871675; the fix design-probed at probe:90449a8e). A Gaussian node, a closed form or a declared
+    # deviation, reads its table on its own beam.
+    _table_beam = ((lambda w0v: linefit.fitter_beam(float(w0v), float(m2))) if beam_kind == "clipped"
+                   else (lambda w0v, _b=beam: _b))
     joint_table = JointTable.build(S0_grid=np.linspace(0.0, s0_hi, JOINT_S0_GRID_N), w0_grid=np.array([w0_m]),
                                    delta_mhz=nu_joint, m2=m2, T_C=T_C, n_path=int(joint_n_path),
-                                   seed=seed, half_window_m=half_window_m)
+                                   seed=seed, half_window_m=half_window_m, beam_factory=_table_beam)
     L_table_joint = joint_table.profile(nu_joint, s0_mhz=s0_mhz, w0_m=w0_m,
                                         gamma_hom_mhz=gamma_hom_ref_mhz, sigma_laser_mhz=0.0)
     L_table_peak = float(L_table_joint.max())

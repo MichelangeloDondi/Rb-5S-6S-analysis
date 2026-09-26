@@ -40,8 +40,8 @@ a reason to stop sharing.
 counting convention.** `results/sharing_bic.csv` compares a laser width shared per
 temperature against one free per block, on the joint line the fitter carries since C6b.
 Corrected for the roughly threefold spectral over-sampling, the criterion favours the
-shared model by [63.3](../../results/sharing_bic.csv "ref:sharing_bic:dBIC_eff_block_minus_T:shared"), which is decisive on the usual reading. Computed on raw
-sample counts it reverses, at [-41.2](../../results/sharing_bic.csv "ref:sharing_bic:dBIC_raw_block_minus_T:shared"), favouring the free model. The two models fit
+shared model by [65.6](../../results/sharing_bic.csv "ref:sharing_bic:dBIC_eff_block_minus_T:shared"), which is decisive on the usual reading. Computed on raw
+sample counts it reverses, at [-29.1](../../results/sharing_bic.csv "ref:sharing_bic:dBIC_raw_block_minus_T:shared"), favouring the free model. The two models fit
 almost identically, at reduced chi-square [0.851](../../results/sharing_bic.csv "ref:sharing_bic:chi2_red:per_T") against [0.848](../../results/sharing_bic.csv "ref:sharing_bic:chi2_red:per_block"). On the
 convolution line the fitter carried before C6b both conventions favoured sharing, and
 they stood at +46.9 raw and +77.5 corrected.

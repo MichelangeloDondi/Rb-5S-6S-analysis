@@ -293,7 +293,7 @@ line instead of a point, with the two factors as slope and intercept.
 No such control exists within one *platform* for the *Gaussian* laser width
 against the collisional Lorentzian, which is a different pair from the two
 Lorentzians above and is the one that correlates at
-[-0.8293](../../results/campaign_twin_forecast.csv "ref:campaign_twin_forecast:cell:corr_laser_coll_5traces").
+[-0.9341](../../results/campaign_twin_forecast.csv "ref:campaign_twin_forecast:cell:corr_laser_coll_5traces").
 The search was
 run over acquisition settings, not assumed:
 [`twin_span_sweep.csv`](../../results/twin_span_sweep.csv) rebuilds it in
@@ -1221,7 +1221,7 @@ before and after.
 This is the sharpest identifiability result the record holds, and it is a
 committed cell and not an argument. Fitted with the extra homogeneous
 component pinned at zero, the 85Rb collisional coefficient
-(`results/lever_crosscheck.csv`'s `beta_crosscheck` row) comes back at
+(`results/lever_crosscheck.csv`'s `beta_crosscheck` row (the lever cross-check's convolution-line table, owed a re-run on the joint line since V7.3)) comes back at
 **0.0086 plus or minus 0.0026**, 1.94 sigma above the van der Waals anchor
 of **0.00350 plus or minus 0.00037 MHz per 1e12 cm^-3 at 403.15 K** <!-- other-quantity: the archive's 130 C reference cell temperature, not the twin's radiation-temperature cell -->
 (`results/beta_self_theory.csv`'s `beta_self_6s_mhz` row).

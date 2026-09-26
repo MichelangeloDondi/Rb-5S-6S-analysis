@@ -240,8 +240,8 @@ Everything in scenario one, plus five additions no cell can provide.
   retroactively, before any new cell point is taken. **The payback is on the
   collisional coefficient specifically**, and it is not a general claim that
   the fibre improves the record: on the width channel the twin measures the
-  Lorentzian-against-Gaussian correlation at [-0.93](../../results/campaign_twin_forecast.csv "ref:campaign_twin_forecast:onf:corr_laser_coll_0.02") in the fibre arm against
-  [-0.83](../../results/campaign_twin_forecast.csv "ref:campaign_twin_forecast:cell:corr_laser_coll_5traces") in the cell arm at five traces
+  Lorentzian-against-Gaussian correlation at [-0.94](../../results/campaign_twin_forecast.csv "ref:campaign_twin_forecast:onf:corr_laser_coll_0.02") in the fibre arm against
+  [-0.93](../../results/campaign_twin_forecast.csv "ref:campaign_twin_forecast:cell:corr_laser_coll_5traces") in the cell arm at five traces
   ([chapter 6](06_next-nanofibre.md),
   `results/campaign_twin_forecast.csv`). Both readings are provisional:
   that table is owed a fresh run (F553), and its producer now draws and

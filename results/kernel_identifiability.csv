@@ -1,15 +1,15 @@
 block,kind,corr_gamma_sigma,sv_ratio,null_dir_gamma,null_dir_sigma,note,status
-fixed_condition_jacobian,gaussian,-0.8084348578,4.373e-01,+0.499247,+0.866460,"null direction weight on (gamma,sigma). 1/sqrt(2)=0.7071 is the SUM degeneracy",DIAGNOSTIC
-fixed_condition_jacobian,lorentzian,1.0000000000,2.161e-11,+0.707107,-0.707107,"null direction weight on (gamma,sigma). 1/sqrt(2)=0.7071 is the SUM degeneracy",DIAGNOSTIC
-sum_invariance,gaussian,,7.430e-01,7.844e-03,1.056e-02,"sum-preserving move changes the line by 7.84e-03 of peak, against 1.06e-02 for the sum-changing control",DIAGNOSTIC
-sum_invariance,lorentzian,,0.000e+00,0.000e+00,1.681e-02,"sum-preserving move changes the line by 0.00e+00 of peak, against 1.68e-02 for the sum-changing control",DIAGNOSTIC
+fixed_condition_jacobian,gaussian,0.9783110049,1.559e-01,-0.314027,+0.949414,"null direction weight on (gamma,sigma). 1/sqrt(2)=0.7071 is the SUM degeneracy",DIAGNOSTIC
+fixed_condition_jacobian,lorentzian,1.0000000000,1.850e-11,+0.707107,-0.707107,"null direction weight on (gamma,sigma). 1/sqrt(2)=0.7071 is the SUM degeneracy",DIAGNOSTIC
+sum_invariance,gaussian,,7.525e-01,7.861e-03,1.045e-02,"sum-preserving move changes the line by 7.86e-03 of peak, against 1.04e-02 for the sum-changing control",DIAGNOSTIC
+sum_invariance,lorentzian,,0.000e+00,0.000e+00,1.679e-02,"sum-preserving move changes the line by 0.00e+00 of peak, against 1.68e-02 for the sum-changing control",DIAGNOSTIC
 mixed_model_validation,gamma_L->0,,0.000e+00,,,reimplementation vs shipped composite_profile in this limit. AGREES,DIAGNOSTIC
 mixed_model_validation,sigma_G->0,,0.000e+00,,,reimplementation vs shipped composite_profile in this limit. AGREES,DIAGNOSTIC
-mixed_model_jacobian,G+L,1.0000000000,2.124e-11,+0.707107,-0.707107,"4 params (gamma_coll, sigma_G, Gamma_L_equiv, transit) at ONE condition. The corr column is gamma_coll against Gamma_L_equiv",DIAGNOSTIC
-fisher_transit_frozen,gaussian,,4.373e-01,+0.499247,+0.866460,n_params=2. Laser weight in worst direction 0.8665,DIAGNOSTIC
-fisher_transit_free,gaussian,,3.640e-02,+0.773302,+0.282850,n_params=3. Laser weight in worst direction 0.2829,DIAGNOSTIC
-fisher_transit_frozen,lorentzian,,2.161e-11,+0.707107,-0.707107,n_params=2. Laser weight in worst direction 0.7071,DIAGNOSTIC
-fisher_transit_free,lorentzian,,1.260e-11,-0.707107,+0.707107,n_params=3. Laser weight in worst direction 0.7071,DIAGNOSTIC
+mixed_model_jacobian,G+L,1.0000000000,2.155e-11,-0.707107,+0.707107,"4 params (gamma_coll, sigma_G, Gamma_L_equiv, transit) at ONE condition. The corr column is gamma_coll against Gamma_L_equiv",DIAGNOSTIC
+fisher_transit_frozen,gaussian,,1.559e-01,-0.314027,+0.949414,n_params=2. Laser weight in worst direction 0.9494,DIAGNOSTIC
+fisher_transit_free,gaussian,,4.531e-02,-0.651415,+0.653993,n_params=3. Laser weight in worst direction 0.6540,DIAGNOSTIC
+fisher_transit_frozen,lorentzian,,1.850e-11,+0.707107,-0.707107,n_params=2. Laser weight in worst direction 0.7071,DIAGNOSTIC
+fisher_transit_free,lorentzian,,1.141e-11,-0.707107,+0.707107,n_params=3. Laser weight in worst direction 0.7071,DIAGNOSTIC
 joint_cell_onf,validation_cell_alone,-0.7676,1.000,,,"the forecast machinery in the record's own 2-parameter form: corr(beta, sigma_G) = -0.768 against the committed -0.77 to -0.61 (kernel_headline.csv, gaussian arm, slack 0.08): CREDIBLE, the rows below may be read",DIAGNOSTIC
 joint_cell_onf,cost_of_freeing_gamma_L,-0.9310,2.740,+0.0191,,"freeing Gamma_L inflates sigma(beta) by this factor over the 2-parameter fit: what K3 pays for honesty about the kernel, and the quantity an ONF prior buys back",DIAGNOSTIC
 joint_cell_onf,prior_GL_rel1,-0.8746,0.753,2.063,,ONF prior at 1 x the cell-alone width on Gamma_L alone: sigma(beta) at this fraction of the FREE-Gamma_L fit (sv_ratio) and of the 2-parameter fit (null_dir_gamma),DIAGNOSTIC

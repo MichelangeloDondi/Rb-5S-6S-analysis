@@ -326,6 +326,7 @@ def main(argv=None) -> int:
           f"is unquantified, so this is not a percent-precise measurement |")
     hb = max((float(r["value"]) for r in betas), default=float("nan"))
     hbe = max((float(r["err"]) for r in betas), default=float("nan"))
+    W("\n> " + "On the joint line these widths carry two terms outside their bars: the return beam is modelled as the forward one scaled by rho on every path of record (the owner's O63), and the fitter's table is one Monte Carlo draw whose seed moves the fitted collisional width by about a fiftieth of itself (F567)." + "\n")
     W("\n> Why the hierarchical $\\beta$ can exceed both per-peak values (not a "
       "contradiction): it is not a pooling of them. Sharing one "
       "$\\sigma_\\text{laser}(T)$ across the four peaks pins the laser width lower "
@@ -376,7 +377,9 @@ def main(argv=None) -> int:
           "$\\beta$ spread is the model-form bar. Sharing is per-temperature "
           "$\\sigma_\\text{laser}$, which the sharing check (C2) finds consistent "
           "in sample. "
-          "Its statistical precision and audited systematics per isotope:\n")
+          "Its statistical precision and audited systematics per isotope, on the "
+          "convolution line its producer last ran on: that producer is owed a re-run on "
+          "the joint line, so these rows sit below the joint hierarchical row above (V7.3).\n")
         W("| isotope | $\\beta$ | statistical | model-form (transit / sharing) | "
           "kernel axis | $w_0$-band | drop-a-peak |")
         W("|---|---|---|---|---|---|---|")
@@ -525,11 +528,17 @@ def main(argv=None) -> int:
             mf = max(float(r["value"]) for r in gf_mf)
             gf_ns = [r for r in rows("global_fit") if r["quantity"] == "beta_nscale_syst"]
             ns = max((float(r["value"]) for r in gf_ns), default=0.0)
+            # A ZERO FROM A DEAD AXIS IS NOT A VANISHED SYSTEMATIC (F582, V7.3): on the joint line the table carries
+            # its own transit, so the |Voigt - Lehmann| axis reads exactly zero by construction and is not a bar.
+            mf_txt = (f"**transit model-form ±{mf:.3F}** (the |Voigt − Lehmann| $\\beta$ shift, `run_global_fit`)"
+                      if mf > 0 else
+                      "**transit model-form not measured on the joint line** (the |Voigt − Lehmann| axis reads "
+                      "zero by construction there, since the joint table carries its own transit; its replacement, "
+                      "the table's own draw and the return beam, is owed)")
             W(f"> **Four separate error bars on the hierarchical $\\beta$ ({hb:.3F}), and the "
               f"systematics dominate:** statistical ±{hbe:.3F} (joint-fit "
               f"covariance), the "
-              f"**transit model-form ±{mf:.3F}** (the |Voigt − Lehmann| $\\beta$ "
-              f"shift, `run_global_fit`), the $w_0$-band ~±0.01–0.02 (the "
+              f"{mf_txt}, the $w_0$-band ~±0.01–0.02 (the "
               f"unmeasured "
               f"beam waist), and the **density scale ±{ns:.3F}** ($\\beta\\propto1/N$, "
               f"the ~20% vapor-pressure-correlation spread, `density.py`). The paper "
@@ -1379,9 +1388,9 @@ def main(argv=None) -> int:
               "as `results/beta_self.csv` times the 130 °C density, and "
               "`results/stark_joint.csv` records the prior each peak was fit "
               "under. They disagree: " + ". ".join(moved) + ". Re-running "
-              "`run_stark_joint.py` would pick it up. Flagged rather than "
-              "done here, since that fit is a long profile-likelihood run "
-              "this regeneration does not repeat.\n")
+              "`run_stark_joint.py` would pick it up. This regeneration only "
+              "flags it, since that fit is a long profile-likelihood run it "
+              "does not repeat.\n")
         else:
             print("  [C3f] gamma_coll priors in stark_joint.csv match "
                   "beta_self.csv x N(130 C) on every peak")

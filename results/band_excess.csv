@@ -3,26 +3,26 @@ ENV,numpy,2.5.2,version,"the reconstruction environment. The 2026-08-17 run reco
 COMPOSITION,n_traces,79,count,"QC-passed canonical traces of peaks 4154 and 4192 entering the ladder. A trace is a raw repeat FILE after QC, which is the reading that resolves the note's own composition ambiguity",DIAGNOSTIC
 COMPOSITION,n_130C,50,count,note said 50 of 79,DIAGNOSTIC
 COMPOSITION,n_130C_225mW,10,count,"note said 39. The note's count does not reconcile with a manifest filter, and this row is the QC-passed answer",DIAGNOSTIC
-LADDER_k0,A_mean,-0.00004,fraction of peak,"shared band amplitude at per-trace polynomial order 0, across-trace mean. Note 2026-08-17: +0.00200",DIAGNOSTIC
+LADDER_k0,A_mean,+0.00007,fraction of peak,"shared band amplitude at per-trace polynomial order 0, across-trace mean. Note 2026-08-17: +0.00200",DIAGNOSTIC
 LADDER_k0,A_sem,0.00022,fraction of peak,note: 0.00028,DIAGNOSTIC
-LADDER_k0,z,-0.19,sigma,note: 7.1,DIAGNOSTIC
-LADDER_k1,A_mean,-0.00004,fraction of peak,"shared band amplitude at per-trace polynomial order 1, across-trace mean. Note 2026-08-17: +0.00201",DIAGNOSTIC
+LADDER_k0,z,0.33,sigma,note: 7.1,DIAGNOSTIC
+LADDER_k1,A_mean,+0.00007,fraction of peak,"shared band amplitude at per-trace polynomial order 1, across-trace mean. Note 2026-08-17: +0.00201",DIAGNOSTIC
 LADDER_k1,A_sem,0.00022,fraction of peak,note: 0.00028,DIAGNOSTIC
-LADDER_k1,z,-0.19,sigma,note: 7.1,DIAGNOSTIC
-LADDER_k2,A_mean,-0.00043,fraction of peak,"shared band amplitude at per-trace polynomial order 2, across-trace mean. Note 2026-08-17: +0.00076",DIAGNOSTIC
+LADDER_k1,z,0.34,sigma,note: 7.1,DIAGNOSTIC
+LADDER_k2,A_mean,-0.00035,fraction of peak,"shared band amplitude at per-trace polynomial order 2, across-trace mean. Note 2026-08-17: +0.00076",DIAGNOSTIC
 LADDER_k2,A_sem,0.00024,fraction of peak,note: 0.00021,DIAGNOSTIC
-LADDER_k2,z,-1.78,sigma,note: 3.7,DIAGNOSTIC
-LADDER_k3,A_mean,-0.00043,fraction of peak,"shared band amplitude at per-trace polynomial order 3, across-trace mean. Note 2026-08-17: +0.00075",DIAGNOSTIC
+LADDER_k2,z,-1.42,sigma,note: 3.7,DIAGNOSTIC
+LADDER_k3,A_mean,-0.00035,fraction of peak,"shared band amplitude at per-trace polynomial order 3, across-trace mean. Note 2026-08-17: +0.00075",DIAGNOSTIC
 LADDER_k3,A_sem,0.00024,fraction of peak,note: 0.00021,DIAGNOSTIC
-LADDER_k3,z,-1.78,sigma,note: 3.6,DIAGNOSTIC
-JOINT,height_coef,+0.00083,fraction of peak per SD,"per-trace band amplitude on standardised mean profile height inside the band, jointly with density. Note: +0.00138",DIAGNOSTIC
-JOINT,height_z,+1.67,sigma,note: +8.65,DIAGNOSTIC
-JOINT,density_coef,-0.00027,fraction of peak per SD,note: -0.00012,DIAGNOSTIC
-JOINT,density_z,-0.54,sigma,note: -0.75,DIAGNOSTIC
-JOINT,predictor_corr,+0.876,dimensionless,note: +0.415,DIAGNOSTIC
+LADDER_k3,z,-1.42,sigma,note: 3.6,DIAGNOSTIC
+JOINT,height_coef,+0.00073,fraction of peak per SD,"per-trace band amplitude on standardised mean profile height inside the band, jointly with density. Note: +0.00138",DIAGNOSTIC
+JOINT,height_z,+1.41,sigma,note: +8.65,DIAGNOSTIC
+JOINT,density_coef,-0.00016,fraction of peak per SD,note: -0.00012,DIAGNOSTIC
+JOINT,density_z,-0.31,sigma,note: -0.75,DIAGNOSTIC
+JOINT,predictor_corr,+0.888,dimensionless,note: +0.415,DIAGNOSTIC
 RECOVERY,predictor_corr_absolute,+0.414,dimensionless,"absolute in-band model height against density. Note: +0.415, matched by the absolute family and not by the shape-only predictor above, which is the recovery",DIAGNOSTIC
-RECOVERY,height_z_recovered_predictor,+0.10,sigma,joint height z under the recovered absolute predictor. The note reports +8.65 for what its correlation says is this construction,DIAGNOSTIC
-RECOVERY,density_z_recovered_predictor,+1.66,sigma,under the recovered predictor the density term carries the marginal instead of being stripped. The density-null reading is therefore CONSTRUCTION-DEPENDENT in the current tree,DIAGNOSTIC
-RECOVERY,density_z_marginal,+1.89,sigma,"density alone. The note's marginal was +2.2, and this approximate agreement plus the ladder mismatch localises the note's irreproducibility to the amplitude vector",DIAGNOSTIC
-RECOVERY,r_needed_for_note_z,0.704,dimensionless,"partial correlation the note's +8.65 would require at n=79. The best any candidate predictor achieves against the current amplitudes is 0.273, so NO predictor reproduces the note's z with these amplitudes",DIAGNOSTIC
+RECOVERY,height_z_recovered_predictor,+0.00,sigma,joint height z under the recovered absolute predictor. The note reports +8.65 for what its correlation says is this construction,DIAGNOSTIC
+RECOVERY,density_z_recovered_predictor,+1.84,sigma,under the recovered predictor the density term carries the marginal instead of being stripped. The density-null reading is therefore CONSTRUCTION-DEPENDENT in the current tree,DIAGNOSTIC
+RECOVERY,density_z_marginal,+2.04,sigma,"density alone. The note's marginal was +2.2, and this approximate agreement plus the ladder mismatch localises the note's irreproducibility to the amplitude vector",DIAGNOSTIC
+RECOVERY,r_needed_for_note_z,0.704,dimensionless,"partial correlation the note's +8.65 would require at n=79. The best any candidate predictor achieves against the current amplitudes is 0.272, so NO predictor reproduces the note's z with these amplitudes",DIAGNOSTIC
 VERDICT,claim_reproduces,NO,verdict,"the CLAIM, not the digits: a positive shared band amplitude that survives per-trace cubic freedom, and a joint regression where profile height carries the significance while density does not. Judged at the thresholds printed in this producer, fixed before the first run",DIAGNOSTIC

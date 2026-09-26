@@ -108,3 +108,19 @@ def test_lever_crosscheck_beta_recovers_injected_beta():
     dt, _ = res2["loo_temp"][85]
     assert np.isfinite(dp) and dp >= 0.0             # peak-LOO ran
     assert np.isfinite(dt) and dt >= 0.0             # temperature-LOO ran
+
+
+def test_the_fitter_band_starts_at_the_bores_floor_and_the_fitter_admits_it():
+    """V7.3's clipped fitter beam cannot focus below the bore's floor, which sits above W0_BAND_M's 40 um edge, so
+    the joint waist scan starts at the floor. Both ways: the fitter admits the returned low point, and the beam's own
+    refusal fires 0.02 um below it, so `_FLOOR_INPUT_M` cannot drift from `ClippedBeam.at_focus`'s bracket."""
+    from rb5s6s.beam_field import ClippedBeam
+    from rb5s6s.constants import W0_BAND_M
+    from rb5s6s.lever_crosscheck import fitter_band_m
+    from rb5s6s.linefit import fitter_beam
+    lo, hi = fitter_band_m(1.0)
+    assert hi == W0_BAND_M[1]
+    assert W0_BAND_M[0] < lo < W0_BAND_M[0] + 2e-6
+    fitter_beam(lo, 1.0)
+    with pytest.raises(ValueError, match="outside what this bore and lens"):
+        ClippedBeam.at_focus(lo - 2e-8)

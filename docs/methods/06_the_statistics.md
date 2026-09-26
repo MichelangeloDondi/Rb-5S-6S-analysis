@@ -659,12 +659,12 @@ conditions, a tail the model did not carry absorbed by the free width while
 the core stayed well described. At the calculated waist it passes. Over the
 wing-safe multiplier range the file's `wing_safe_mults` row defines, the width
 falls in
-[18](../../results/fit_window_scan.csv "ref:fit_window_scan:n_drift_negative:summary") of
+[19](../../results/fit_window_scan.csv "ref:fit_window_scan:n_drift_negative:summary") of
 [32](../../results/fit_window_scan.csv "ref:fit_window_scan:n_conditions:summary")
 conditions (the `sign_test_p` row takes the tail under exchangeable signs),
 the mean drift is
-[-0.058](../../results/fit_window_scan.csv "ref:fit_window_scan:gamma_drift_sigma_mean:summary") ±
-[0.062](../../results/fit_window_scan.csv "ref:fit_window_scan:gamma_drift_sigma_mean:summary:err")
+[-0.019](../../results/fit_window_scan.csv "ref:fit_window_scan:gamma_drift_sigma_mean:summary") ±
+[0.049](../../results/fit_window_scan.csv "ref:fit_window_scan:gamma_drift_sigma_mean:summary:err")
 σ, and the per-window median $\chi^2_\nu$ (`chi2_red_median` rows) is flat
 to a few parts in a thousand. The test grades the width channel's tail and
 nothing else, so its passing licenses no efficiency claim beyond it.

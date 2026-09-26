@@ -231,7 +231,7 @@ question and the answer is badly**: what the ladder reads is not
 $\Gamma_{\mathrm{transit}}$ but the second-order contribution below,
 [7.16 to 10.61](../../results/transit_additivity.csv "ref:transit_additivity:spanned:added_width_170uK_band")
 kHz at 170 µK against a 71 kHz kernel, and
-[4.0828](../../results/onf_lever_ranking.csv "ref:onf_lever_ranking:temperature_ladder:sigma_transit_frac")
+[4.9328](../../results/onf_lever_ranking.csv "ref:onf_lever_ranking:temperature_ladder:sigma_transit_frac")
 fractional precision at the 2025 lock, read from a design whose added width
 comes from `results/transit_additivity.csv` and not from a coefficient
 fitted here. Being the only lever and being a good one are different claims.
@@ -386,7 +386,7 @@ Monte Carlo through simulate, fit and read the covariance
    instead of two, and the ladder of 9.2 becomes attributive and not
    merely constraining. **Attributive is not the same as precise**: the
    ladder's own fractional precision is
-   [4.0828](../../results/onf_lever_ranking.csv "ref:onf_lever_ranking:temperature_ladder:sigma_transit_frac")
+   [4.9328](../../results/onf_lever_ranking.csv "ref:onf_lever_ranking:temperature_ladder:sigma_transit_frac")
    at the 2025 lock, so what it
    buys is which mechanism the width belongs to, not how big it is.
 3. **The cost is photons.** At the demonstrated 25 to 40 counts per ms,

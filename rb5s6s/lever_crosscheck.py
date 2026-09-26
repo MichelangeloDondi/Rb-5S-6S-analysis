@@ -48,6 +48,7 @@ error budget the fixed-lock data will collapse.
 
 from __future__ import annotations
 
+import math
 from typing import Callable, Dict, List, Optional
 
 from .global_fit import fit_global
@@ -157,6 +158,25 @@ KERNEL_CELL = ("exp", "per_T", GAMMA_L_MEASURED_MHZ)
 W0_BAND_UM = (W0_BAND_M[1] * 1e6, W0_CENTRAL_M * 1e6, W0_BAND_M[0] * 1e6)
 W0_BAND_MHZ = tuple(round(transit_fwhm_from_w0(w * 1e-6, 110.0), 3) for w in W0_BAND_UM)
 
+#: THE FITTER'S BAND (V7.3, where F280's open tension first binds a fit). Since V7.3 the joint fitter's table is
+#: built on the bore-clipped beam (`linefit.fitter_beam`), which cannot focus below the bore's floor, and
+#: `constants.W0_BAND_M`'s owner-stated low edge (40 um) sits below that floor. A fit at a sub-floor waist is
+#: refused by `ClippedBeam.at_focus` and never clamped (`lineshape.aperture_onaxis_factor_actual`'s docstring: a
+#: caller FITTING at a waist must not clamp), so the joint scan's low point is the floor itself, taken up to the
+#: next 0.01 um. The floor is `at_focus`'s own tightest reading, its 30 mm input; `tests/test_lever_crosscheck.py`
+#: holds the two together (the fitter admits the returned point and `at_focus` refuses just below the floor), so
+#: this constant cannot drift from the refusal it mirrors.
+_FLOOR_INPUT_M = 3e-2
+
+
+def fitter_band_m(m2: float = 1.0) -> tuple:
+    """(low, high) waist in metres over which the joint fitter's clipped beam exists at this M2: `W0_BAND_M` with
+    its low edge raised to the bore's floor wherever the floor sits above it (it does at M2 = 1, about 40.87 um)."""
+    from .beam_field import ClippedBeam
+    floor = ClippedBeam(w_in_m=_FLOOR_INPUT_M, m2=float(m2)).actual_focus_m()
+    lo = max(W0_BAND_M[0], math.floor(floor * 1e8) / 1e8 + 1e-8)
+    return (lo, W0_BAND_M[1])
+
 
 def _fit(blocks, transit_kind, sigma_sharing, transit_ref, T_ref_C,
          gamma_l: float = 0.0, *, model: str = "joint", w0_m: Optional[float] = None,
@@ -209,7 +229,9 @@ def lever_crosscheck_beta(blocks: List[Dict], *,
     place in the model-form/confound budget:
 
     * ``w0_band``/``w0_range`` -- under `model="joint"` this now scans `w0_m` itself over
-      `constants.W0_BAND_M`'s two edges (plus the fit's own centre), instead of the old
+      `fitter_band_m`'s two edges (plus the fit's own centre): `constants.W0_BAND_M` with its
+      low edge at the bore's floor, since V7.3's clipped fitter beam refuses a sub-floor waist,
+      and the points are returned as ``w0_band_points_um``; instead of the old
       `transit_ref_mhz` scan, which `fit_global`'s `model="joint"` branch never reads at all
       (`transit_ref_mhz` only reaches the `model="convolution"` residual function) and so
       used to return a degenerate, zero-width band under joint. Under `model="convolution"`
@@ -219,11 +241,12 @@ def lever_crosscheck_beta(blocks: List[Dict], *,
     * ``err_beam_clip``/``beam_clip_beta`` -- OPT IN via `beam_factory`, and zero when it is
       None (every existing caller, and every call under `model="convolution"`, where a beam
       is not part of the model at all): the PRIMARY cell refit with the caller's beam factory
-      in place of the default `GaussianBeam`, most usefully a `beam_field.ClippedBeam`-based
-      one, so |beta(default beam) - beta(caller's beam)| reads what the bore's clipping costs
-      the fitted beta_self. Kept opt-in instead of defaulted to a canonical `ClippedBeam`
-      here, since this module does not own the bench's input-radius convention. The caller
-      supplies it, exactly as `tests/test_joint_model_switch.py`'s new axis test does.
+      in place of the default beam, so |beta(default beam) - beta(caller's beam)| reads what the
+      difference between the two beams costs the fitted beta_self. SINCE V7.3 THE DEFAULT IS THE
+      FITTER'S OWN CLIPPED BEAM at the actual focus (`linefit.fitter_beam`, F564), so the useful
+      opt-in is now the ideal `GaussianBeam`, which reads what the bore moves; before V7.3 the
+      default was the Gaussian and the opt-in a `beam_field.ClippedBeam`. The caller supplies
+      it, exactly as `tests/test_joint_model_switch.py`'s axis test does.
     """
     isos = sorted({b["isotope"] for b in blocks})
 
@@ -274,11 +297,14 @@ def lever_crosscheck_beta(blocks: List[Dict], *,
     # since fit_global's joint branch never reads transit_ref_mhz at all (task (b): the old scan
     # below, which the "convolution" branch below keeps unchanged, was a dead axis under joint).
     w0_range = {}
+    w0_points_um = None
     if do_w0_band:
         band = {iso: [] for iso in isos}
         if model == "joint":
             centre_w0 = W0_CENTRAL_M if w0_m is None else float(w0_m)
-            for w0_pt in (W0_BAND_M[0], centre_w0, W0_BAND_M[1]):
+            band_lo, band_hi = fitter_band_m(m2)
+            w0_points_um = (band_lo * 1e6, centre_w0 * 1e6, band_hi * 1e6)
+            for w0_pt in (band_lo, centre_w0, band_hi):
                 f = _fit(blocks, *PRIMARY, transit_ref_mhz, T_ref_C, model=model, w0_m=w0_pt,
                         m2=m2)
                 for iso in isos:
@@ -361,6 +387,8 @@ def lever_crosscheck_beta(blocks: List[Dict], *,
         "w0_band": w0_range,              # (lo, hi) beta over w0_m (model="joint") or transit_ref
                                           # (model="convolution") -- the joint line's replacement
                                           # for the waist axis, constants.W0_BAND_M
+        "w0_band_points_um": w0_points_um,  # the joint scan's waists (low edge at the bore's floor),
+                                          # None under model="convolution"
         "loo_peak": loo_peak,             # (largest |dbeta|, which peak) -- robustness
         "loo_peak_detail": loo_peak_detail,  # per-drop {beta, sigma_laser_by_T}
         "loo_temp": loo_temp,             # (largest |dbeta|, which T) -- lever leverage

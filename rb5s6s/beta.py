@@ -49,7 +49,7 @@ from scipy.stats import t as student_t
 from . import config as C
 from .density import N_SCALE_FRAC_SYST
 from .lineshape import composite_profile
-from .linefit import (transit_fwhm_at_T, joint_condition_profile, JOINT_Z_RATIO,
+from .linefit import (transit_fwhm_at_T, joint_condition_profile, joint_table_identity, JOINT_Z_RATIO,
                       JOINT_N_PATH, JOINT_SEED)
 from .constants import W0_CENTRAL_M
 from .noise import signal_level, sigma_of_v
@@ -281,6 +281,7 @@ def fit_beta_self(conditions: List[Dict], *,
         "transit_ref": float(sol.x[2] if fit_transit else transit_ref_mhz),
         "transit_fitted": bool(fit_transit),
         "chi2_red": chi2_red, "corr_beta_laser": corr_bl, "model": model,
+        "joint_table": joint_table_identity(model, joint_n_path, joint_seed),
         # ABSOLUTE chi2 and its bookkeeping, appended 2026-08-21. A nested
         # likelihood ratio needs the chi2 DIFFERENCE between two fits of the
         # same data, and a reduced chi2 cannot supply it: the two fits have

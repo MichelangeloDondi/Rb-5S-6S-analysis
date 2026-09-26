@@ -175,7 +175,7 @@ stands either way.
 
 **The band excess outside the window gave +8.65 and
 -0.75 on the same two predictors by the same method**, in the unproduced note at the
-retired waist. This tree's reconstruction reads [+1.67](../../results/band_excess.csv "ref:band_excess:JOINT:height_z") and [-0.54](../../results/band_excess.csv "ref:band_excess:JOINT:density_z") at the ruled waist
+retired waist. This tree's reconstruction reads [+1.41](../../results/band_excess.csv "ref:band_excess:JOINT:height_z") and [-0.31](../../results/band_excess.csv "ref:band_excess:JOINT:density_z") at the ruled waist
 (`results/band_excess.csv`, +3.05 and -1.57 until 2026-09-22), neither resolved at the
 preregistered 3.0 sigma, so at this waist neither the band nor the window shows a
 height-tracking structure and nothing is left for the two to share. **The two band figures are the weaker
@@ -390,10 +390,10 @@ the fitted exponent and not at the one being excluded.
 **The physical cause.** There is now a candidate, and it is the lineshape model
 rather than the atom. A joint fit over every canonical trace, each granted its
 own free polynomial baseline, leaves a shared excess standing at 3.6 sigma under
-per-trace cubic freedom (the note's figure, against [-1.78](../../results/band_excess.csv "ref:band_excess:LADDER_k3:z") in the reconstruction at the ruled waist). Regressed on both competing predictors at once, that
+per-trace cubic freedom (the note's figure, against [-1.42](../../results/band_excess.csv "ref:band_excess:LADDER_k3:z") in the reconstruction at the ruled waist). Regressed on both competing predictors at once, that
 excess tracks the model's own profile height inside the band at 8.65 sigma while
 vapour density is a null predictor at -0.75 sigma (the note's figures at the retired
-waist, against [+1.67](../../results/band_excess.csv "ref:band_excess:JOINT:height_z") and [-0.54](../../results/band_excess.csv "ref:band_excess:JOINT:density_z") in the reconstruction at the ruled waist), and a band re-cut in units of
+waist, against [+1.41](../../results/band_excess.csv "ref:band_excess:JOINT:height_z") and [-0.31](../../results/band_excess.csv "ref:band_excess:JOINT:density_z") in the reconstruction at the ruled waist), and a band re-cut in units of
 each trace's own linewidth keeps the trend. A placebo band inside the fitted
 window carries structure too, which a general profile mismatch predicts and a
 far-wing collisional excess does not.

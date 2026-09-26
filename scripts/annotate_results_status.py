@@ -578,7 +578,9 @@ QUANTITY_STATUS = {
     },
     "global_fit.csv": {
         "beta_self": "BOUND", "sigma_laser": "BOUND",
-        "beta_modelform_syst": "BOUND", "beta_nscale_syst": "BOUND",
+        # F582: on the joint line the transit axis is dead by construction and the row reads zero, which is no
+        # bound; it is a diagnostic until the joint line's own model-form axis replaces it
+        "beta_modelform_syst": "DIAGNOSTIC", "beta_nscale_syst": "BOUND",
         "chi2_red": "DIAGNOSTIC", "noise_floor_limited": "DIAGNOSTIC",
         "params_at_bound": "DIAGNOSTIC",
     },

@@ -5,16 +5,16 @@
    {
     "file": "docs/big_picture/07_limitations-and-identifiability.md",
     "line": 178,
-    "writes": "-0.54"
+    "writes": "-0.31"
    },
    {
     "file": "docs/big_picture/07_limitations-and-identifiability.md",
     "line": 396,
-    "writes": "-0.54"
+    "writes": "-0.31"
    }
   ],
   "source_file": "results/band_excess.csv",
-  "source_value": "-0.54"
+  "source_value": "-0.31"
  },
  "band_excess:JOINT:height_z": {
   "producer": "run_band_excess.py",
@@ -22,16 +22,16 @@
    {
     "file": "docs/big_picture/07_limitations-and-identifiability.md",
     "line": 178,
-    "writes": "+1.67"
+    "writes": "+1.41"
    },
    {
     "file": "docs/big_picture/07_limitations-and-identifiability.md",
     "line": 396,
-    "writes": "+1.67"
+    "writes": "+1.41"
    }
   ],
   "source_file": "results/band_excess.csv",
-  "source_value": "+1.67"
+  "source_value": "+1.41"
  },
  "band_excess:LADDER_k3:z": {
   "producer": "run_band_excess.py",
@@ -39,11 +39,11 @@
    {
     "file": "docs/big_picture/07_limitations-and-identifiability.md",
     "line": 393,
-    "writes": "-1.78"
+    "writes": "-1.42"
    }
   ],
   "source_file": "results/band_excess.csv",
-  "source_value": "-1.78"
+  "source_value": "-1.42"
  },
  "band_excess:RECOVERY:r_needed_for_note_z": {
   "producer": "run_band_excess.py",
@@ -709,21 +709,21 @@
    {
     "file": "docs/big_picture/06_next-nanofibre.md",
     "line": 286,
-    "writes": "-0.8293"
+    "writes": "-0.9341"
    },
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
     "line": 244,
-    "writes": "-0.83"
+    "writes": "-0.93"
    },
    {
     "file": "docs/wiki/identifiability.md",
     "line": 296,
-    "writes": "-0.8293"
+    "writes": "-0.9341"
    }
   ],
   "source_file": "results/campaign_twin_forecast.csv",
-  "source_value": "-0.8293"
+  "source_value": "-0.9341"
  },
  "campaign_twin_forecast:cell:gamma_coll_5traces_err": {
   "producer": "run_campaign_twin_forecast.py",
@@ -731,11 +731,11 @@
    {
     "file": "README.md",
     "line": 151,
-    "writes": "0.009"
+    "writes": "0.014"
    }
   ],
   "source_file": "results/campaign_twin_forecast.csv",
-  "source_value": "0.00925"
+  "source_value": "0.01447"
  },
  "campaign_twin_forecast:cell:sigma_laser_20traces_err": {
   "producer": "run_campaign_twin_forecast.py",
@@ -743,11 +743,11 @@
    {
     "file": "docs/THEORY_NOTE.md",
     "line": 338,
-    "writes": "0.02595"
+    "writes": "0.04305"
    }
   ],
   "source_file": "results/campaign_twin_forecast.csv",
-  "source_value": "0.02595"
+  "source_value": "0.04305"
  },
  "campaign_twin_forecast:model:photoionisation_margin_from_6S": {
   "producer": "run_campaign_twin_forecast.py",
@@ -767,11 +767,11 @@
    {
     "file": "docs/big_picture/09_the-campaign-cases.md",
     "line": 243,
-    "writes": "-0.93"
+    "writes": "-0.94"
    }
   ],
   "source_file": "results/campaign_twin_forecast.csv",
-  "source_value": "-0.9322"
+  "source_value": "-0.9361"
  },
  "campaign_twin_forecast:onf:minutes_per_trace_0.004": {
   "producer": "run_campaign_twin_forecast.py",
@@ -872,7 +872,7 @@
   "quoting_sites": [
    {
     "file": "docs/RESULTS.md",
-    "line": 79,
+    "line": 82,
     "writes": "7.3"
    },
    {
@@ -906,7 +906,7 @@
    }
   ],
   "source_file": "results/centre_fisher.csv",
-  "source_value": "4.2229"
+  "source_value": "4.2232"
  },
  "centre_fisher:sigma_amplitude:linear_per_epoch": {
   "producer": "run_centre_fisher.py",
@@ -923,7 +923,7 @@
    }
   ],
   "source_file": "results/centre_fisher.csv",
-  "source_value": "1.7395"
+  "source_value": "1.7394"
  },
  "centre_fisher:sigma_amplitude_forecast:linear_drift_cycled": {
   "producer": "run_centre_fisher.py",
@@ -1036,7 +1036,7 @@
    }
   ],
   "source_file": "results/collisional_shift_bound.csv",
-  "source_value": "0.919"
+  "source_value": "0.920"
  },
  "collisional_shift_bound:expectation:shift_expected_differential": {
   "producer": "run_collisional_shift_bound.py",
@@ -1048,7 +1048,7 @@
    }
   ],
   "source_file": "results/collisional_shift_bound.csv",
-  "source_value": "0.04025"
+  "source_value": "0.04026"
  },
  "constant:DELTA_ALPHA_AU_ORSON2021:1": {
   "producer": null,
@@ -1371,27 +1371,27 @@
    },
    {
     "file": "docs/RESULTS.md",
-    "line": 68,
+    "line": 71,
     "writes": "42.38"
    },
    {
     "file": "docs/RESULTS.md",
-    "line": 75,
+    "line": 78,
     "writes": "42.38"
    },
    {
     "file": "docs/RESULTS.md",
-    "line": 75,
+    "line": 78,
     "writes": "42.38"
    },
    {
     "file": "docs/RESULTS.md",
-    "line": 77,
+    "line": 80,
     "writes": "42.38"
    },
    {
     "file": "docs/RESULTS.md",
-    "line": 93,
+    "line": 96,
     "writes": "42.38"
    },
    {
@@ -1469,18 +1469,18 @@
    {
     "file": "docs/methods/02_the_lineshape.md",
     "line": 92,
-    "writes": "2.5219"
+    "writes": "2.5222"
    }
   ],
   "source_file": "results/cooperative_channel.csv",
-  "source_value": "2.5219"
+  "source_value": "2.5222"
  },
  "cumulant_window_check:mu1_window_excess_pct:gc0.55": {
   "producer": "run_cumulant_window_check.py",
   "quoting_sites": [
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 343,
+    "line": 344,
     "writes": "0.058"
    },
    {
@@ -2699,16 +2699,16 @@
    {
     "file": "docs/UNCERTAINTY.md",
     "line": 174,
-    "writes": "-0.058"
+    "writes": "-0.019"
    },
    {
     "file": "docs/methods/06_the_statistics.md",
     "line": 666,
-    "writes": "-0.058"
+    "writes": "-0.019"
    }
   ],
   "source_file": "results/fit_window_scan.csv",
-  "source_value": "-0.058"
+  "source_value": "-0.019"
  },
  "fit_window_scan:gamma_drift_sigma_mean:summary:err": {
   "producer": "run_fit_window_scan.py",
@@ -2716,16 +2716,16 @@
    {
     "file": "docs/UNCERTAINTY.md",
     "line": 175,
-    "writes": "0.062"
+    "writes": "0.049"
    },
    {
     "file": "docs/methods/06_the_statistics.md",
     "line": 667,
-    "writes": "0.062"
+    "writes": "0.049"
    }
   ],
   "source_file": "results/fit_window_scan.csv",
-  "source_value": "0.062"
+  "source_value": "0.049"
  },
  "fit_window_scan:n_conditions:summary": {
   "producer": "run_fit_window_scan.py",
@@ -2760,26 +2760,26 @@
    {
     "file": "docs/UNCERTAINTY.md",
     "line": 169,
-    "writes": "18"
+    "writes": "19"
    },
    {
     "file": "docs/methods/06_the_statistics.md",
     "line": 662,
-    "writes": "18"
+    "writes": "19"
    },
    {
     "file": "docs/plan/12_open-apparatus-items.md",
     "line": 204,
-    "writes": "18"
+    "writes": "19"
    },
    {
     "file": "results/README.md",
     "line": 58,
-    "writes": "18"
+    "writes": "19"
    }
   ],
   "source_file": "results/fit_window_scan.csv",
-  "source_value": "18"
+  "source_value": "19"
  },
  "fit_window_scan:sign_test_p:summary": {
   "producer": "run_fit_window_scan.py",
@@ -2787,11 +2787,11 @@
    {
     "file": "docs/UNCERTAINTY.md",
     "line": 172,
-    "writes": "0.597"
+    "writes": "0.377"
    }
   ],
   "source_file": "results/fit_window_scan.csv",
-  "source_value": "5.966e-01"
+  "source_value": "3.771e-01"
  },
  "four_peak_contrasts:amplitude_face_measured:87Rb_P225": {
   "producer": "run_four_peak_contrasts.py",
@@ -3104,16 +3104,16 @@
    {
     "file": "docs/methods/07_what_we_found.md",
     "line": 62,
-    "writes": "0.0086"
+    "writes": "0.0103"
    },
    {
     "file": "docs/quantities/self-broadening.md",
     "line": 91,
-    "writes": "0.0086"
+    "writes": "0.0103"
    }
   ],
   "source_file": "results/global_fit.csv",
-  "source_value": "0.0086"
+  "source_value": "0.0103"
  },
  "global_fit:beta_self:85Rb:err": {
   "producer": "run_global_fit.py",
@@ -3121,16 +3121,16 @@
    {
     "file": "docs/methods/07_what_we_found.md",
     "line": 62,
-    "writes": "0.0026"
+    "writes": "0.0034"
    },
    {
     "file": "docs/quantities/self-broadening.md",
     "line": 91,
-    "writes": "0.0026"
+    "writes": "0.0034"
    }
   ],
   "source_file": "results/global_fit.csv",
-  "source_value": "0.0026"
+  "source_value": "0.0034"
  },
  "global_fit:beta_self:87Rb": {
   "producer": "run_global_fit.py",
@@ -3138,11 +3138,11 @@
    {
     "file": "docs/methods/07_what_we_found.md",
     "line": 62,
-    "writes": "0.0093"
+    "writes": "0.0108"
    }
   ],
   "source_file": "results/global_fit.csv",
-  "source_value": "0.0093"
+  "source_value": "0.0108"
  },
  "global_fit:beta_self:87Rb:err": {
   "producer": "run_global_fit.py",
@@ -3150,11 +3150,11 @@
    {
     "file": "docs/methods/07_what_we_found.md",
     "line": 62,
-    "writes": "0.0030"
+    "writes": "0.0037"
    }
   ],
   "source_file": "results/global_fit.csv",
-  "source_value": "0.0030"
+  "source_value": "0.0037"
  },
  "guided_mode_tables:evanescent_profile_370nm_at_100nm:flux_fraction": {
   "producer": "run_guided_mode_tables.py",
@@ -3950,7 +3950,7 @@
    },
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 538,
+    "line": 539,
     "writes": "-60.684"
    },
    {
@@ -4089,7 +4089,7 @@
    },
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 534,
+    "line": 535,
     "writes": "-0.000"
    },
    {
@@ -4126,7 +4126,7 @@
    },
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 537,
+    "line": 538,
     "writes": "-1.564"
    },
    {
@@ -4153,7 +4153,7 @@
    },
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 540,
+    "line": 541,
     "writes": "103.942"
    },
    {
@@ -4212,7 +4212,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 584,
+    "line": 585,
     "writes": "1.163"
    }
   ],
@@ -4318,7 +4318,7 @@
   "quoting_sites": [
    {
     "file": "docs/RESULTS.md",
-    "line": 54,
+    "line": 57,
     "writes": "0.6084"
    }
   ],
@@ -4330,7 +4330,7 @@
   "quoting_sites": [
    {
     "file": "docs/RESULTS.md",
-    "line": 54,
+    "line": 57,
     "writes": "0.000709"
    }
   ],
@@ -4342,7 +4342,7 @@
   "quoting_sites": [
    {
     "file": "docs/RESULTS.md",
-    "line": 54,
+    "line": 57,
     "writes": "0.001165"
    },
    {
@@ -4359,7 +4359,7 @@
   "quoting_sites": [
    {
     "file": "docs/RESULTS.md",
-    "line": 52,
+    "line": 55,
     "writes": "0.078459"
    }
   ],
@@ -4371,7 +4371,7 @@
   "quoting_sites": [
    {
     "file": "docs/RESULTS.md",
-    "line": 52,
+    "line": 55,
     "writes": "0.16"
    }
   ],
@@ -4482,29 +4482,29 @@
   "source_file": "results/kernel_k8.csv",
   "source_value": "0.489"
  },
- "kernel_mc:w40.0_m1.00_r0.940_T130_P225:ramp_k3_rel:mc": {
+ "kernel_mc:w41.0_m1.00_r0.940_T130_P225:ramp_mu3_rel:mc": {
   "producer": null,
   "quoting_sites": [
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 306,
-    "writes": "-0.00329"
+    "line": 307,
+    "writes": "-0.00652"
    }
   ],
   "source_file": "results/kernel_mc.csv",
-  "source_value": "-0.00329324"
+  "source_value": "-0.00651617"
  },
- "kernel_mc:w40.0_m1.00_r0.940_T130_P225:ramp_k3_rel:model": {
+ "kernel_mc:w41.0_m1.00_r0.940_T130_P225:ramp_mu3_rel:model": {
   "producer": null,
   "quoting_sites": [
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 308,
-    "writes": "-0.00328"
+    "line": 309,
+    "writes": "-0.00650"
    }
   ],
   "source_file": "results/kernel_mc.csv",
-  "source_value": "-0.00327889"
+  "source_value": "-0.00649638"
  },
  "kernel_mc:w42.0_m1.00_r0.940_T130_P125:depletion_fwhm_rel_4121:mc": {
   "producer": null,
@@ -4512,11 +4512,11 @@
    {
     "file": "docs/methods/02_the_lineshape.md",
     "line": 586,
-    "writes": "0.049"
+    "writes": "0.055"
    }
   ],
   "source_file": "results/kernel_mc.csv",
-  "source_value": "0.0486533"
+  "source_value": "0.0552071"
  },
  "kernel_mc:w42.0_m1.00_r0.940_T130_P175:depletion_fwhm_rel_4121:mc": {
   "producer": null,
@@ -4524,11 +4524,11 @@
    {
     "file": "docs/methods/02_the_lineshape.md",
     "line": 586,
-    "writes": "0.077"
+    "writes": "0.087"
    }
   ],
   "source_file": "results/kernel_mc.csv",
-  "source_value": "0.0767795"
+  "source_value": "0.0865062"
  },
  "kernel_mc:w42.0_m1.00_r0.940_T130_P225:cycles_mean_over_chords:mc": {
   "producer": null,
@@ -4560,21 +4560,21 @@
    {
     "file": "docs/methods/02_the_lineshape.md",
     "line": 583,
-    "writes": "0.10"
+    "writes": "0.12"
    },
    {
     "file": "docs/methods/02_the_lineshape.md",
     "line": 586,
-    "writes": "0.10"
+    "writes": "0.12"
    },
    {
     "file": "docs/methods/04_the_composite_model.md",
     "line": 389,
-    "writes": "0.10"
+    "writes": "0.12"
    }
   ],
   "source_file": "results/kernel_mc.csv",
-  "source_value": "0.104944"
+  "source_value": "0.117482"
  },
  "kernel_mc:w42.0_m1.00_r0.940_T130_P225:depletion_widening_rel_4121:mc": {
   "producer": null,
@@ -4582,16 +4582,16 @@
    {
     "file": "docs/methods/02_the_lineshape.md",
     "line": 598,
-    "writes": "0.014"
+    "writes": "0.017"
    },
    {
     "file": "docs/methods/04_the_composite_model.md",
     "line": 393,
-    "writes": "0.014"
+    "writes": "0.017"
    }
   ],
   "source_file": "results/kernel_mc.csv",
-  "source_value": "0.0143425"
+  "source_value": "0.0167795"
  },
  "kernel_mc:w42.0_m1.00_r0.940_T130_P225:shares_abs:mc": {
   "producer": null,
@@ -4599,11 +4599,11 @@
    {
     "file": "docs/methods/02_the_lineshape.md",
     "line": 603,
-    "writes": "0.0012"
+    "writes": "0.0009"
    }
   ],
   "source_file": "results/kernel_mc.csv",
-  "source_value": "0.00116515"
+  "source_value": "0.000858103"
  },
  "kernel_mc:w42.0_m1.00_r0.940_T130_P225:shares_shift_abs:mc": {
   "producer": null,
@@ -4611,16 +4611,16 @@
    {
     "file": "docs/methods/02_the_lineshape.md",
     "line": 602,
-    "writes": "0.0021"
+    "writes": "0.0024"
    },
    {
     "file": "docs/methods/04_the_composite_model.md",
     "line": 393,
-    "writes": "0.0021"
+    "writes": "0.0024"
    }
   ],
   "source_file": "results/kernel_mc.csv",
-  "source_value": "0.00208995"
+  "source_value": "0.00239699"
  },
  "kernel_mc:w42.0_m1.00_r0.940_T130_P225:transit_fwhm_rel:mc": {
   "producer": null,
@@ -4628,11 +4628,11 @@
    {
     "file": "docs/methods/02_the_lineshape.md",
     "line": 612,
-    "writes": "1.385"
+    "writes": "1.451"
    }
   ],
   "source_file": "results/kernel_mc.csv",
-  "source_value": "1.38461"
+  "source_value": "1.45126"
  },
  "kernel_mc:w42.0_m1.00_r0.940_T130_P225:transit_fwhm_rel:model": {
   "producer": null,
@@ -4640,11 +4640,11 @@
    {
     "file": "docs/methods/02_the_lineshape.md",
     "line": 612,
-    "writes": "1.388"
+    "writes": "1.449"
    }
   ],
   "source_file": "results/kernel_mc.csv",
-  "source_value": "1.38809"
+  "source_value": "1.44889"
  },
  "kernel_mc:w42.0_m1.00_r0.940_T130_P25:depletion_fwhm_rel_4121:mc": {
   "producer": null,
@@ -4652,16 +4652,16 @@
    {
     "file": "docs/methods/02_the_lineshape.md",
     "line": 586,
-    "writes": "0.0039"
+    "writes": "0.0045"
    },
    {
     "file": "docs/methods/04_the_composite_model.md",
     "line": 390,
-    "writes": "0.0039"
+    "writes": "0.0045"
    }
   ],
   "source_file": "results/kernel_mc.csv",
-  "source_value": "0.00391855"
+  "source_value": "0.00446956"
  },
  "kernel_mc:w42.0_m1.00_r0.940_T130_P75:depletion_fwhm_rel_4121:mc": {
   "producer": null,
@@ -4669,23 +4669,23 @@
    {
     "file": "docs/methods/02_the_lineshape.md",
     "line": 586,
-    "writes": "0.023"
+    "writes": "0.026"
    }
   ],
   "source_file": "results/kernel_mc.csv",
-  "source_value": "0.0228639"
+  "source_value": "0.0261535"
  },
- "kernel_mc:w90.0_m1.00_r0.940_T130_P225:depletion_fwhm_rel_4121:mc": {
+ "kernel_mc:w58.0_m1.00_r0.940_T130_P225:depletion_fwhm_rel_4121:mc": {
   "producer": null,
   "quoting_sites": [
    {
     "file": "docs/methods/02_the_lineshape.md",
     "line": 584,
-    "writes": "0.024"
+    "writes": "0.063"
    }
   ],
   "source_file": "results/kernel_mc.csv",
-  "source_value": "0.0240595"
+  "source_value": "0.0634475"
  },
  "kernel_worlds:B:coverage_1sigma": {
   "producer": "run_kernel_worlds.py",
@@ -4743,7 +4743,7 @@
    }
   ],
   "source_file": "results/ladder_terms.csv",
-  "source_value": "1.97253"
+  "source_value": "1.97234"
  },
  "ladder_terms:permeated_drift:fixed_density_hard_sphere": {
   "producer": "run_ladder_terms.py",
@@ -4822,12 +4822,12 @@
   "quoting_sites": [
    {
     "file": "docs/RESULTS.md",
-    "line": 67,
+    "line": 70,
     "writes": "0.7"
    },
    {
     "file": "docs/methods/07_what_we_found.md",
-    "line": 132,
+    "line": 134,
     "writes": "0.7"
    },
    {
@@ -4981,7 +4981,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/07_what_we_found.md",
-    "line": 119,
+    "line": 121,
     "writes": "0.0058"
    },
    {
@@ -4998,7 +4998,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/07_what_we_found.md",
-    "line": 121,
+    "line": 123,
     "writes": "-0.0028"
    }
   ],
@@ -5010,7 +5010,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/07_what_we_found.md",
-    "line": 120,
+    "line": 122,
     "writes": "0.0076"
    },
    {
@@ -5027,7 +5027,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/07_what_we_found.md",
-    "line": 122,
+    "line": 124,
     "writes": "-0.0016"
    }
   ],
@@ -5119,7 +5119,7 @@
    },
    {
     "file": "docs/methods/07_what_we_found.md",
-    "line": 124,
+    "line": 126,
     "writes": "2.99"
    },
    {
@@ -5877,16 +5877,16 @@
    {
     "file": "docs/methods/09_the_guided_geometry.md",
     "line": 234,
-    "writes": "4.0828"
+    "writes": "4.9328"
    },
    {
     "file": "docs/methods/09_the_guided_geometry.md",
     "line": 389,
-    "writes": "4.0828"
+    "writes": "4.9328"
    }
   ],
   "source_file": "results/onf_lever_ranking.csv",
-  "source_value": "4.0828"
+  "source_value": "4.9328"
  },
  "paired_reference_forecast:analog/j0.028/d0:shift_err_ratio_one_campaign:err": {
   "producer": "run_paired_reference_forecast.py",
@@ -6215,7 +6215,7 @@
    },
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 770,
+    "line": 771,
     "writes": "5.76"
    },
    {
@@ -6426,7 +6426,7 @@
   "quoting_sites": [
    {
     "file": "docs/RESULTS.md",
-    "line": 175,
+    "line": 181,
     "writes": "318.28"
    },
    {
@@ -6504,7 +6504,7 @@
    },
    {
     "file": "docs/RESULTS.md",
-    "line": 175,
+    "line": 181,
     "writes": "1203.7"
    },
    {
@@ -6605,7 +6605,7 @@
    },
    {
     "file": "docs/RESULTS.md",
-    "line": 175,
+    "line": 181,
     "writes": "1287.9"
    },
    {
@@ -6706,12 +6706,12 @@
    },
    {
     "file": "docs/RESULTS.md",
-    "line": 175,
+    "line": 181,
     "writes": "1339.6"
    },
    {
     "file": "docs/RESULTS.md",
-    "line": 175,
+    "line": 181,
     "writes": "1339.6"
    },
    {
@@ -6787,7 +6787,7 @@
   "quoting_sites": [
    {
     "file": "docs/RESULTS.md",
-    "line": 175,
+    "line": 181,
     "writes": "790.0339"
    },
    {
@@ -6804,7 +6804,7 @@
   "quoting_sites": [
    {
     "file": "docs/RESULTS.md",
-    "line": 176,
+    "line": 182,
     "writes": "1e-04"
    },
    {
@@ -6821,7 +6821,7 @@
   "quoting_sites": [
    {
     "file": "docs/RESULTS.md",
-    "line": 176,
+    "line": 182,
     "writes": "6e-06"
    },
    {
@@ -6904,12 +6904,12 @@
    },
    {
     "file": "docs/RESULTS.md",
-    "line": 93,
+    "line": 96,
     "writes": "-1131.8"
    },
    {
     "file": "docs/RESULTS.md",
-    "line": 176,
+    "line": 182,
     "writes": "-1131.8"
    },
    {
@@ -6964,7 +6964,7 @@
    },
    {
     "file": "docs/methods/07_what_we_found.md",
-    "line": 252,
+    "line": 254,
     "writes": "-1131.8"
    },
    {
@@ -7031,7 +7031,7 @@
    },
    {
     "file": "docs/RESULTS.md",
-    "line": 176,
+    "line": 182,
     "writes": "5.9"
    },
    {
@@ -7102,7 +7102,7 @@
   "quoting_sites": [
    {
     "file": "docs/RESULTS.md",
-    "line": 176,
+    "line": 182,
     "writes": "15.0"
    },
    {
@@ -7119,7 +7119,7 @@
   "quoting_sites": [
    {
     "file": "docs/RESULTS.md",
-    "line": 176,
+    "line": 182,
     "writes": "1.3"
    },
    {
@@ -7136,7 +7136,7 @@
   "quoting_sites": [
    {
     "file": "docs/RESULTS.md",
-    "line": 176,
+    "line": 182,
     "writes": "-0.81"
    },
    {
@@ -7153,7 +7153,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 482,
+    "line": 483,
     "writes": "0.8833"
    }
   ],
@@ -7165,7 +7165,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 484,
+    "line": 485,
     "writes": "0.6148"
    }
   ],
@@ -7177,7 +7177,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 489,
+    "line": 490,
     "writes": "-14.97"
    }
   ],
@@ -7194,7 +7194,7 @@
    },
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 486,
+    "line": 487,
     "writes": "-6.02"
    },
    {
@@ -7211,12 +7211,12 @@
   "quoting_sites": [
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 447,
+    "line": 448,
     "writes": "1.117"
    },
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 493,
+    "line": 494,
     "writes": "1.117"
    },
    {
@@ -7258,7 +7258,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 500,
+    "line": 501,
     "writes": "4.41"
    },
    {
@@ -7275,7 +7275,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 496,
+    "line": 497,
     "writes": "1.691"
    },
    {
@@ -7292,7 +7292,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/03_the_ac_stark_ramp.md",
-    "line": 469,
+    "line": 470,
     "writes": "0.59"
    },
    {
@@ -8142,21 +8142,21 @@
    {
     "file": "docs/big_picture/08_when-a-joint-fit-is-legitimate.md",
     "line": 43,
-    "writes": "63.3"
+    "writes": "65.6"
    },
    {
     "file": "docs/notes/model_selection_prereg.md",
     "line": 97,
-    "writes": "63.3"
+    "writes": "65.6"
    },
    {
     "file": "docs/wiki/information-criteria.md",
     "line": 110,
-    "writes": "63.3"
+    "writes": "65.6"
    }
   ],
   "source_file": "results/sharing_bic.csv",
-  "source_value": "63.3"
+  "source_value": "65.6"
  },
  "sharing_bic:dBIC_raw_block_minus_T:shared": {
   "producer": "run_sharing_bic.py",
@@ -8164,16 +8164,16 @@
    {
     "file": "docs/big_picture/08_when-a-joint-fit-is-legitimate.md",
     "line": 44,
-    "writes": "-41.2"
+    "writes": "-29.1"
    },
    {
     "file": "docs/wiki/information-criteria.md",
     "line": 109,
-    "writes": "-41.2"
+    "writes": "-29.1"
    }
   ],
   "source_file": "results/sharing_bic.csv",
-  "source_value": "-41.2"
+  "source_value": "-29.1"
  },
  "sobol_acquisition:check:mc_max_z": {
   "producer": "run_sobol_acquisition.py",
@@ -8615,7 +8615,7 @@
    },
    {
     "file": "docs/RESULTS.md",
-    "line": 81,
+    "line": 84,
     "writes": "0.18"
    },
    {
@@ -8635,7 +8635,7 @@
    },
    {
     "file": "docs/methods/07_what_we_found.md",
-    "line": 248,
+    "line": 250,
     "writes": "0.18"
    },
    {
@@ -8731,7 +8731,7 @@
    },
    {
     "file": "docs/RESULTS.md",
-    "line": 111,
+    "line": 114,
     "writes": "3.241"
    },
    {
@@ -8788,7 +8788,7 @@
    },
    {
     "file": "docs/methods/07_what_we_found.md",
-    "line": 289,
+    "line": 291,
     "writes": "0.810"
    },
    {
@@ -8933,7 +8933,7 @@
    },
    {
     "file": "docs/RESULTS.md",
-    "line": 111,
+    "line": 114,
     "writes": "84.77"
    },
    {
@@ -8965,7 +8965,7 @@
    },
    {
     "file": "docs/RESULTS.md",
-    "line": 111,
+    "line": 114,
     "writes": "52.29"
    },
    {
@@ -8997,7 +8997,7 @@
    },
    {
     "file": "docs/RESULTS.md",
-    "line": 111,
+    "line": 114,
     "writes": "36.16"
    },
    {
@@ -9029,7 +9029,7 @@
    },
    {
     "file": "docs/RESULTS.md",
-    "line": 111,
+    "line": 114,
     "writes": "52.23"
    },
    {
@@ -9093,12 +9093,12 @@
    },
    {
     "file": "docs/methods/07_what_we_found.md",
-    "line": 250,
+    "line": 252,
     "writes": "0.729"
    },
    {
     "file": "docs/methods/07_what_we_found.md",
-    "line": 263,
+    "line": 265,
     "writes": "0.729"
    },
    {
@@ -9256,7 +9256,7 @@
   "quoting_sites": [
    {
     "file": "docs/methods/07_what_we_found.md",
-    "line": 262,
+    "line": 264,
     "writes": "0.796"
    },
    {
@@ -9290,7 +9290,7 @@
    },
    {
     "file": "docs/RESULTS.md",
-    "line": 111,
+    "line": 114,
     "writes": "3.241"
    },
    {
@@ -9468,7 +9468,7 @@
    },
    {
     "file": "docs/RESULTS.md",
-    "line": 75,
+    "line": 78,
     "writes": "0.0135"
    },
    {
@@ -10793,11 +10793,11 @@
    {
     "file": "results/README.md",
     "line": 79,
-    "writes": "1.010"
+    "writes": "1.143"
    }
   ],
   "source_file": "results/twin_realism.csv",
-  "source_value": "1.010"
+  "source_value": "1.143"
  },
  "twin_realism:RECOVERY_tau1:sigma_laser_ratio": {
   "producer": "run_twin_realism.py",
@@ -10805,11 +10805,11 @@
    {
     "file": "results/README.md",
     "line": 79,
-    "writes": "1.266"
+    "writes": "1.246"
    }
   ],
   "source_file": "results/twin_realism.csv",
-  "source_value": "1.266"
+  "source_value": "1.246"
  },
  "twin_realism:RECOVERY_tau3.8:gamma_coll_ratio": {
   "producer": "run_twin_realism.py",
@@ -10817,11 +10817,11 @@
    {
     "file": "results/README.md",
     "line": 79,
-    "writes": "1.049"
+    "writes": "1.161"
    }
   ],
   "source_file": "results/twin_realism.csv",
-  "source_value": "1.049"
+  "source_value": "1.161"
  },
  "twin_realism:RECOVERY_tau3.8:sigma_laser_ratio": {
   "producer": "run_twin_realism.py",
@@ -10829,11 +10829,11 @@
    {
     "file": "results/README.md",
     "line": 79,
-    "writes": "1.353"
+    "writes": "1.400"
    }
   ],
   "source_file": "results/twin_realism.csv",
-  "source_value": "1.353"
+  "source_value": "1.400"
  },
  "twin_span_sweep:CAMPAIGN:corr_least_negative": {
   "producer": "run_twin_span_sweep.py",

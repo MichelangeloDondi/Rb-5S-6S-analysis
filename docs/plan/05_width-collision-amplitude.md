@@ -65,7 +65,7 @@ fifth block buys.
 
 **7c. 150–170 °C in the same locked session, interleaved.** Wanted for a
 narrower reason than the 2025 reading gave it. The 2025 dataset's lever test
-shows the joint β collapses 0.0086 → 0.0058 for ⁸⁵Rb and 0.0093 → 0.0076 for ⁸⁷Rb when
+shows the joint β (the lever cross-check's convolution-line table, owed a re-run on the joint line since V7.3) collapses 0.0086 → 0.0058 for ⁸⁵Rb and 0.0093 → 0.0076 for ⁸⁷Rb when
 the ×48.1 anchor (Alcock, the 130 °C block) is folded in
 ([`lever_crosscheck.csv`](../../results/lever_crosscheck.csv)). That collapse is not a session artifact. It is the correct
 least-squares response to a line that barely moves across a 48.1× density span

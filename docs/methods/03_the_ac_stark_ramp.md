@@ -302,10 +302,11 @@ The term was derived first and tested against the kernel Monte Carlo before it
 entered the model: over eight hundred nodes the ratio of the saturated to the
 weak-field third moment of this density agrees with the Monte Carlo's own to a
 median of zero and a worst of 3.8 per cent at the most saturated node, 40 µm
-and 225 mW. At that node the gate now reads the Monte Carlo's third moment at
-[-0.00329](../../results/kernel_mc.csv "ref:kernel_mc:w40.0_m1.00_r0.940_T130_P225:ramp_k3_rel:mc")
+and 225 mW, at the digest the term entered with. That waist lies below the bore's floor and is no
+longer a node. At the band's tightest, 41 µm and 225 mW, the gate reads the Monte Carlo's third moment at
+[-0.00652](../../results/kernel_mc.csv "ref:kernel_mc:w41.0_m1.00_r0.940_T130_P225:ramp_mu3_rel:mc")
 against the model's
-[-0.00328](../../results/kernel_mc.csv "ref:kernel_mc:w40.0_m1.00_r0.940_T130_P225:ramp_k3_rel:model"),
+[-0.00650](../../results/kernel_mc.csv "ref:kernel_mc:w41.0_m1.00_r0.940_T130_P225:ramp_mu3_rel:model"),
 where the weak-field reference had been fifteen per cent off. The on-axis
 intensity $P/w_0^2$, not the temperature, is the variable that separates the
 nodes that needed the term from the ones that did not.

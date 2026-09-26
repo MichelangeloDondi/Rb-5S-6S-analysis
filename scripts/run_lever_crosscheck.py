@@ -263,9 +263,12 @@ def main() -> int:
             w.writerow(["beta_err_sharing", f"{iso}Rb", f"{res['err_sharing'][iso]:.4f}", "",
                         "sigma-sharing axis (|per_T - per_block|)"])
             lo, hi = res["w0_band"][iso]
-            w.writerow(["beta_w0_band", f"{iso}Rb", f"{lo:.4f}", f"{hi:.4f}",
-                        f"value=lo err=hi over transit_ref {min(_LC.W0_BAND_MHZ):.2f}-{max(_LC.W0_BAND_MHZ):.2f} MHz "
-                        f"(w0 {_LC.W0_BAND_UM[0]:.0f}-{_LC.W0_BAND_UM[-1]:.0f} um, constants.W0_BAND_M, the OPEN w0)"])
+            pts = res.get("w0_band_points_um")
+            band_note = (f"value=lo err=hi over w0 = {pts[0]:.2f}, {pts[1]:.2f}, {pts[2]:.2f} um in the fitter's clipped "
+                         f"beam (constants.W0_BAND_M with its low edge at the bore's floor, the OPEN w0)" if pts else
+                         f"value=lo err=hi over transit_ref {min(_LC.W0_BAND_MHZ):.2f}-{max(_LC.W0_BAND_MHZ):.2f} MHz "
+                         f"(w0 {_LC.W0_BAND_UM[0]:.0f}-{_LC.W0_BAND_UM[-1]:.0f} um, constants.W0_BAND_M, the OPEN w0)")
+            w.writerow(["beta_w0_band", f"{iso}Rb", f"{lo:.4f}", f"{hi:.4f}", band_note])
             dp, wp = res["loo_peak"][iso]
             w.writerow(["beta_loo_peak", f"{iso}Rb", f"{dp:.4f}", "",
                         f"largest |dbeta| dropping one PEAK -- robustness ({wp or 'n/a'})"])

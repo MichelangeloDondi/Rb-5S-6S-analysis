@@ -335,7 +335,7 @@ stood in this paragraph and is the reason the sourced cells
 are quoted here.
 
 On a line of [5.4040](../results/identifiability.csv "ref:identifiability:width_signature_fwhm_mhz:gaussian_branch") MHz (Gaussian branch) to [5.3219](../results/identifiability.csv "ref:identifiability:width_signature_fwhm_mhz:cusp_branch") MHz (cusp branch)
-that signal is a part in some 185 to 208 ([5.4040](../results/identifiability.csv "ref:identifiability:width_signature_fwhm_mhz:gaussian_branch")/[0.02595](../results/campaign_twin_forecast.csv "ref:campaign_twin_forecast:cell:sigma_laser_20traces_err") and [5.3219](../results/identifiability.csv "ref:identifiability:width_signature_fwhm_mhz:cusp_branch")/0.02877),
+that signal is a part in some 185 to 208 ([5.4040](../results/identifiability.csv "ref:identifiability:width_signature_fwhm_mhz:gaussian_branch")/[0.04305](../results/campaign_twin_forecast.csv "ref:campaign_twin_forecast:cell:sigma_laser_20traces_err") and [5.3219](../results/identifiability.csv "ref:identifiability:width_signature_fwhm_mhz:cusp_branch")/0.02877),
 far below the width budget's own systematics. The 20-trace errors in these
 ratios come from the campaign forecast's fits, which stop short of their own
 minimum at 20 traces, so the ratios are re-read when the line fitter's

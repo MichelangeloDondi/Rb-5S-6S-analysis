@@ -94,17 +94,17 @@ signature) against `'gaussian'` (making the whole line a pure Voigt, no cusp).
 (241 parameters) against per block (250, nine more), scored with a
 correlation-corrected BIC on an effective sample size `N_eff = N / tau_int`.
 The committed `results/sharing_bic.csv` has `N_eff = 13853` and, on the joint line the fitter
-carries since C6b, `dBIC_eff` = +[63.3](../../results/sharing_bic.csv "ref:sharing_bic:dBIC_eff_block_minus_T:shared"), decisive in favour of sharing.
+carries since C6b, `dBIC_eff` = +[65.6](../../results/sharing_bic.csv "ref:sharing_bic:dBIC_eff_block_minus_T:shared"), decisive in favour of sharing.
 
 Working the arithmetic back from those committed numbers: the chi-squared
-difference is 63.3 - 9 ln(13853) = -22.5, meaning per-block still fits
+difference is 65.6 - 9 ln(13853) = -20.2, meaning per-block still fits
 better in raw chi-squared, as a nested richer model must. BIC charges
 9 ln(13853) = 85.8 for the nine extra parameters and AIC would charge 18, so
 
-    dAIC = -22.5 + 18 = -4.5
+    dAIC = -20.2 + 18 = -2.2
 
 **AIC and BIC disagree on the joint line**: BIC favours sharing decisively,
-and AIC mildly favours the free model (-4.5, inside this record's own 10
+and AIC mildly favours the free model (-2.2, inside this record's own 10
 threshold for decisive). On the convolution line the effective difference stood at
 +77.5, the chi-squared difference at -8.3 and dAIC at +9.7, so both agreed and the site did
 not flip. On the joint line it flips again, and no other site in this note

@@ -32,7 +32,8 @@ _TWIN_STUDY = "the world door's own plant, a tag check on a reduced world"
 
 def _joint(T=130.0, s0=0.0, **over):
     w = {"form": "joint", "T_C": T, "s0": s0, "w0_m": FIT_DEFAULTS["w0_m"], "m2": FIT_DEFAULTS["m2"],
-         "z_ratio": FIT_DEFAULTS["z_ratio"], "transit_fwhm": None, "laser_kind": "gaussian", "gamma_l": 0.0}
+         "z_ratio": FIT_DEFAULTS["z_ratio"], "transit_fwhm": None, "laser_kind": "gaussian", "gamma_l": 0.0,
+         "beam": F.FITTER_BEAM_KIND}
     w.update(over)
     return w
 
@@ -89,6 +90,11 @@ def test_the_laser_kernel_and_a_fixed_gas_width_bind_and_a_free_one_does_not():
     msgs = world_disagreements(_joint(gamma_l=0.3), **_fit())
     assert len(msgs) == 1 and "gas width" in msgs[0], msgs
     assert world_disagreements(_joint(gamma_l=0.3), **_fit(fit_gamma_l=True)) == []
+
+
+def test_f564_a_world_in_the_ideal_beam_is_refused_by_the_fitters_clipped_table():
+    msgs = world_disagreements(_joint(beam="gaussian"), **_fit())
+    assert len(msgs) == 1 and "beam" in msgs[0] and "F564" in msgs[0], msgs
 
 
 def test_a_transit_passed_to_the_joint_fitter_is_refused_as_unread():
@@ -167,6 +173,7 @@ def test_both_generators_tag_what_they_draw():
     _, joint = synthetic_traces(0.2, 0.5, 0.96, n_traces=1, n_points=200, span_mhz=20.0, model="joint",
                                 T_C=90.0, n_path=400, rng=rng, registry=_TWIN_STUDY)
     assert joint[0].world["form"] == "joint" and joint[0].world["T_C"] == 90.0
+    assert joint[0].world["beam"] == F.FITTER_BEAM_KIND
     layers = {"cascade": False, "saturation": False, "stark": False, "bbr": False, "drift": False, "quantise": False}
     nu, v, _ = build_world_trace(0.1, 0.0, 130.0, 0, 1, rng, layers, positions={"4121": 0.0},
                                  shares={"4121": 1.0}, gamma_coll=0.2, sigma_laser_fwhm=0.5, transit_fwhm=0.96,

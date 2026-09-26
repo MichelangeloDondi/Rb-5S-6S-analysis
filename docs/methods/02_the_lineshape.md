@@ -89,7 +89,7 @@ The derivation is in [collisional self-broadening](../wiki/self-broadening.md).
 Baranger's own dilute-gas/binary-collision validity condition (his interaction
 volume $U\ll n^{-1}$) holds by a margin of about five hundred thousand in volume at the densest point of this record,
 130 °C ($2.9\times10^{13}\ \text{cm}^{-3}$): the mean spacing is about 130 times the Weisskopf
-radius ([2.5219](../../results/cooperative_channel.csv "ref:cooperative_channel:size:rate ratio at 130 C:aux") nm),
+radius ([2.5222](../../results/cooperative_channel.csv "ref:cooperative_channel:size:rate ratio at 130 C:aux") nm),
 and the cube of that length ratio is the volume margin, so this Lorentzian, $N$-linear
 form is not in question anywhere in the sweep. What remains open is only the
 separate, later step from a $-C_6/R^6$ potential to a cross-section
@@ -580,10 +580,10 @@ width goes as $v/w$).
 Depletion therefore removes the narrow contributions preferentially and the
 *surviving* kernel is wider than the cusp by far more than the mean cycle count suggests: at the
 node beside the calculated waist (42 µm, 225 mW, 130 °C) the flux-weighted mean over chords is [0.039](../../results/kernel_mc.csv "ref:kernel_mc:w42.0_m1.00_r0.940_T130_P225:cycles_mean_over_chords:mc") cycles, the
-on-axis chord [0.26](../../results/kernel_mc.csv "ref:kernel_mc:w42.0_m1.00_r0.940_T130_P225:cycles_on_axis:mc"), and the surviving kernel is wider by a fraction [0.10](../../results/kernel_mc.csv "ref:kernel_mc:w42.0_m1.00_r0.940_T130_P225:depletion_fwhm_rel_4121:mc") on the line with the largest
-$q$, [0.024](../../results/kernel_mc.csv "ref:kernel_mc:w90.0_m1.00_r0.940_T130_P225:depletion_fwhm_rel_4121:mc") at 90 µm.
+on-axis chord [0.26](../../results/kernel_mc.csv "ref:kernel_mc:w42.0_m1.00_r0.940_T130_P225:cycles_on_axis:mc"), and the surviving kernel is wider by a fraction [0.12](../../results/kernel_mc.csv "ref:kernel_mc:w42.0_m1.00_r0.940_T130_P225:depletion_fwhm_rel_4121:mc") on the line with the largest
+$q$, [0.063](../../results/kernel_mc.csv "ref:kernel_mc:w58.0_m1.00_r0.940_T130_P225:depletion_fwhm_rel_4121:mc") at 58 µm, the widest node of the band's re-run.
 
-Along the power arm the fraction runs [0.0039](../../results/kernel_mc.csv "ref:kernel_mc:w42.0_m1.00_r0.940_T130_P25:depletion_fwhm_rel_4121:mc"), [0.023](../../results/kernel_mc.csv "ref:kernel_mc:w42.0_m1.00_r0.940_T130_P75:depletion_fwhm_rel_4121:mc"), [0.049](../../results/kernel_mc.csv "ref:kernel_mc:w42.0_m1.00_r0.940_T130_P125:depletion_fwhm_rel_4121:mc"), [0.077](../../results/kernel_mc.csv "ref:kernel_mc:w42.0_m1.00_r0.940_T130_P175:depletion_fwhm_rel_4121:mc"), [0.10](../../results/kernel_mc.csv "ref:kernel_mc:w42.0_m1.00_r0.940_T130_P225:depletion_fwhm_rel_4121:mc") at
+Along the power arm the fraction runs [0.0045](../../results/kernel_mc.csv "ref:kernel_mc:w42.0_m1.00_r0.940_T130_P25:depletion_fwhm_rel_4121:mc"), [0.026](../../results/kernel_mc.csv "ref:kernel_mc:w42.0_m1.00_r0.940_T130_P75:depletion_fwhm_rel_4121:mc"), [0.055](../../results/kernel_mc.csv "ref:kernel_mc:w42.0_m1.00_r0.940_T130_P125:depletion_fwhm_rel_4121:mc"), [0.087](../../results/kernel_mc.csv "ref:kernel_mc:w42.0_m1.00_r0.940_T130_P175:depletion_fwhm_rel_4121:mc"), [0.12](../../results/kernel_mc.csv "ref:kernel_mc:w42.0_m1.00_r0.940_T130_P225:depletion_fwhm_rel_4121:mc") at
 25 to 225 mW, faster than $P$ and slower than $P^2$ (the kernel Monte Carlo of `scripts/run_kernel_mc.py`, 100 000 chords
 per node, importance-sampled in the speed and the impact parameter so the weights are flat in
 the weak field, measured here at rung 3, the closed-form limit of the cusp recovered
@@ -595,12 +595,12 @@ as a waist that shrinks with power, by far less than the FWHM says.
 Depletion removes the
 slowest atoms, which are the cusp's core, and leaves its wings: the surviving kernel sits under the bare one at
 zero detuning and level with it at the half-width point, so a cusp fitted to it reads
-only [0.014](../../results/kernel_mc.csv "ref:kernel_mc:w42.0_m1.00_r0.940_T130_P225:depletion_widening_rel_4121:mc") wider after the natural Lorentzian at the same condition
+only [0.017](../../results/kernel_mc.csv "ref:kernel_mc:w42.0_m1.00_r0.940_T130_P225:depletion_widening_rel_4121:mc") wider after the natural Lorentzian at the same condition
 (about six tenths of a micron at 42 µm), and that fitted ratio, not the FWHM's, is the factor the fit
 carries. The FWHM stays the core-flattening diagnostic.
 
-**What it does not do.** The four lines' shares move by [0.0021](../../results/kernel_mc.csv "ref:kernel_mc:w42.0_m1.00_r0.940_T130_P225:shares_shift_abs:mc") from the thermal law at the record's own
-cycle count (the reading against the model's per-crossing factor agrees to [0.0012](../../results/kernel_mc.csv "ref:kernel_mc:w42.0_m1.00_r0.940_T130_P225:shares_abs:mc")), because the shares follow the mean depletion and not its slow tail. The measured
+**What it does not do.** The four lines' shares move by [0.0024](../../results/kernel_mc.csv "ref:kernel_mc:w42.0_m1.00_r0.940_T130_P225:shares_shift_abs:mc") from the thermal law at the record's own
+cycle count (the reading against the model's per-crossing factor agrees to [0.0009](../../results/kernel_mc.csv "ref:kernel_mc:w42.0_m1.00_r0.940_T130_P225:shares_abs:mc")), because the shares follow the mean depletion and not its slow tail. The measured
 hyperfine-pair contrast the record measured at 225 mW is therefore not depletion, and a per-crossing
 scalar at three mean cycles, which the twin and one fit arm carried, is excluded by the shares it
 would move. Depletion is symmetric in the detuning to this order and enters the odd channel only
@@ -609,7 +609,7 @@ through the chirp's weighting.
 **How the model carries it.** Not as a fitted parameter, which would be absorbed by the
 saturation companion: the fit's transit at every node is the cusp's closed form, times the
 collected column's window factor $\langle w^{-3} \rangle / \langle w^{-2} \rangle$
-(`fullmodel.transit_collection_factor`: the collected kernel reads [1.385](../../results/kernel_mc.csv "ref:kernel_mc:w42.0_m1.00_r0.940_T130_P225:transit_fwhm_rel:mc") MHz against the form's [1.388](../../results/kernel_mc.csv "ref:kernel_mc:w42.0_m1.00_r0.940_T130_P225:transit_fwhm_rel:model") at 42 µm and 225 mW), times the Monte Carlo's own
+(`fullmodel.transit_collection_factor`: the collected kernel reads [1.451](../../results/kernel_mc.csv "ref:kernel_mc:w42.0_m1.00_r0.940_T130_P225:transit_fwhm_rel:mc") MHz against the form's [1.449](../../results/kernel_mc.csv "ref:kernel_mc:w42.0_m1.00_r0.940_T130_P225:transit_fwhm_rel:model") at 42 µm and 225 mW), times the Monte Carlo's own
 fitted-width factor at the trace's node (`kernel_gate.depletion_factor`, about one and a half per cent at that
 node), read from an artefact the gate refuses to be without. Two approximations are named in every artefact: the per-atom pulse stays
 Gaussian and depletion reweights atoms without reshaping it, and the loss rate is the line-centre

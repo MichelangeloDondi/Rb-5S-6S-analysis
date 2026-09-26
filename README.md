@@ -148,7 +148,7 @@ for each day, and states what is cut when a day is lost.
 Both scenarios are forecast through the digital twin, which simulates traces,
 analyses them with this repository's own code and reads the covariance. For the
 cell it recovers the collisional width to
-[0.009](results/campaign_twin_forecast.csv "ref:campaign_twin_forecast:cell:gamma_coll_5traces_err") MHz
+[0.014](results/campaign_twin_forecast.csv "ref:campaign_twin_forecast:cell:gamma_coll_5traces_err") MHz
 from five traces. It finds that the fibre does not break the degeneracy limiting both
 arms, and [the campaign cases](docs/big_picture/09_the-campaign-cases.md) give
 the time cost of a fibre trace. The nanofibre arm is an

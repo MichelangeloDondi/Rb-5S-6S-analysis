@@ -88,9 +88,6 @@ def test_the_mixture_moments_reproduce_the_axial_closed_form():
     assert abs(mm0["mean"] - 2.0 / 3.0) < 1e-4 and abs(abs(mm0["mu3"]) - 1.0 / 135.0) < 1e-5
 
 
-@pytest.mark.xfail(strict=True, reason=(
-    "the fold of 2026-09-25 moved the model digest, so the band's node w41.0 has no row in results/kernel_mc.csv "
-    "until the band's frozen node list is re-run at the new digest (plan V6.3); an XPASS then removes this mark"))
 def test_the_band_node_agrees_with_its_monte_carlo_through_the_mixture():
     """The claim the model actually rests on: at 40 um and 225 mW the recorded Monte Carlo and the recorded
     model agree inside the kernel gate's own `ramp_mu3_rel` tolerance. Read from the committed table."""

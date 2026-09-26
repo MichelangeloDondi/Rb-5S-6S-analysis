@@ -838,8 +838,10 @@ def test_sigma_laser_panel_numbers_match_the_csvs():
     gf = {r["key"]: float(r["value"])
           for r in csv.DictReader(open(ROOT / "results" / "global_fit.csv"))
           if r["quantity"] == "sigma_laser"}
-    # re-pinned 2026-09-24: the 110 C cell reads 0.687 in the global fit the wave committed (0.6 until then)
-    assert [round(gf[k], 1) for k in ("70C", "90C", "110C")] == [0.6, 1.0, 0.7], (
+    # re-pinned 2026-09-24: the 110 C cell rounded to 0.7 in the global fit that wave committed (0.6 until then)
+    # RE-PINNED 2026-09-26 (V7.3): the joint fitter's table on the clipped beam moves the tied values, rounded, to
+    # 0.7, 1.1 and 0.7, with beta_self (F582); methods/07 quotes them from the table.
+    assert [round(gf[k], 1) for k in ("70C", "90C", "110C")] == [0.7, 1.1, 0.7], (
         "tied sigma_laser(T) moved; requote methods/07 and this test together")
     rows = list(csv.DictReader(open(ROOT / "results" / "linefit_conditions.csv")))
     means = []

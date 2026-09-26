@@ -100,7 +100,7 @@ one from its own fit.
 That sharpens something the record already reports. It does not contradict
 it. [`results/lever_crosscheck.csv`](../../results/lever_crosscheck.csv)
 carries the same comparison read the other way: folding the 130 °C point
-into the joint fit moves $\beta_\text{self}$ from 0.0086 to 0.0058 MHz per
+into the joint fit (the lever cross-check's convolution-line table, owed a re-run on the joint line since V7.3) moves $\beta_\text{self}$ from 0.0086 to 0.0058 MHz per
 $10^{12} \mathrm{cm^{-3}}$ for $^{85}\text{Rb}$, and from 0.0093 to 0.0076 for
 $^{87}\text{Rb}$, a shift the file logs directly, forty-eight per cent of the
 remaining $^{85}\text{Rb}$ coefficient and twenty-two per cent of the

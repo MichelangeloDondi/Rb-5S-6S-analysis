@@ -62,7 +62,7 @@ from ._compat import trapezoid
 from .lineshape import lorentzian, gaussian, two_sided_exponential, stark_ramp
 from .noise import signal_level, sigma_of_v
 from .fitutil import cov_from_jac, feasible_p0
-from .volume_line import GaussianBeam, JointTable, HOMOG_MARGIN_MHZ, HOMOG_STEP_MHZ
+from .volume_line import JointTable, HOMOG_MARGIN_MHZ, HOMOG_STEP_MHZ
 
 GNAT_MHZ = GAMMA_NAT_HZ / 1e6
 
@@ -94,6 +94,13 @@ GNAT_MHZ = GAMMA_NAT_HZ / 1e6
 #: optimiser iteration) costs under 3 ms regardless. The table is cached per (T_C, s0, w0,
 #: m2, z_ratio, n_path, seed), so this cost is paid once per condition, not once per fit
 #: iteration nor once per Monte-Carlo trial at a fixed design point.
+#: ON THE CLIPPED BEAM (V7.3, F567) a table costs 4.3 s at this count and 11.1 s at 16000 (probe:08f6a67b), and its
+#: draw, not the fit's own bar, sets how closely a noiseless closure returns the widths: over six table seeds the
+#: laser width's sample standard deviation is 0.072 MHz about 0.6 here and 0.057 at 16000, the collisional width's
+#: 0.019 and 0.017 about 1.2 (probe:ae51cc52, its own logged sd fields), so the count stays; no producer carries the
+#: scatter in its bars yet (F567, owed to the gates of D). A fixed table's draw is a
+#: fixed offset for a given truth, so the twin's bias subtraction removes it only when the twin's fit and the real
+#: fit build the same table: this count and `JOINT_SEED`.
 JOINT_N_PATH = 4000
 JOINT_SEED = 0
 #: The C6b wave's own default collection ratio (`private/cache/plan_2026-09-18/
@@ -116,6 +123,41 @@ _JOINT_W0_BRACKET_FRAC = 1e-6
 #: touches at most a few dozen distinct conditions.
 _JOINT_TABLE_CACHE: Dict[tuple, "JointTable"] = {}
 _JOINT_TABLE_CACHE_MAX = 64
+
+
+#: the beam the fitter's joint table is built on, named so the twin's world and the kernel gate's joint reading read
+#: the same predicate and cannot drift from it (F564)
+FITTER_BEAM_KIND = "clipped"
+_FITTER_BEAM_CACHE: Dict = {}
+
+
+def fitter_beam(w0_m: float, m2: float = 1.0):
+    """THE BEAM THE FITTER'S JOINT TABLE IS BUILT ON (F564, V7.3): the bore-clipped beam whose actual focus is
+    `w0_m` (`beam_field.ClippedBeam.at_focus`), the beam the apparatus makes and the kernel Monte Carlo samples. A
+    table on the ideal Gaussian read the band's nodes as failing their own Monte Carlo at every power, past the gate's
+    tolerance at high power, and the same node with its atoms in the Gaussian passed (probe:63871675); the table on
+    this beam passes it (probe:90449a8e). One predicate, read by `condition_joint_table`, by the twin's joint world
+    (`forecast`) and by the kernel gate's joint reading (`scripts/run_kernel_mc.py`), so the three cannot drift
+    apart. Cached per (w0, M2): the root-find costs about twenty beam builds. A waist below the bore's floor raises
+    with the floor's value, since this apparatus cannot make it."""
+    key = (round(float(w0_m), 12), round(float(m2), 6))
+    beam = _FITTER_BEAM_CACHE.get(key)
+    if beam is None:
+        from .beam_field import ClippedBeam
+        beam = ClippedBeam.at_focus(float(w0_m), m2=float(m2))
+        _FITTER_BEAM_CACHE[key] = beam
+    return beam
+
+
+def joint_table_identity(model: str, n_path: int, seed: int, beam_factory=None):
+    """THE TABLE A JOINT FIT STOOD ON (F567, V7.3): its atom count, its seed and its beam. A fixed table's Monte
+    Carlo draw is a fixed offset for a given truth, so a twin's bias removes it from a real fit only when both fits
+    built the same table; every joint fitter returns this, and a consumer that subtracts one fit's bias from
+    another's compares the two. ``None`` under the convolution model, which builds no table."""
+    if model != "joint":
+        return None
+    return {"n_path": int(n_path), "seed": int(seed),
+            "beam": FITTER_BEAM_KIND if beam_factory is None else "caller's factory"}
 
 
 def condition_joint_table(T_C: float, s0_mhz: float, *, w0_m: float = W0_CENTRAL_M,
@@ -143,18 +185,16 @@ def condition_joint_table(T_C: float, s0_mhz: float, *, w0_m: float = W0_CENTRAL
     instead of re-derived.
 
     `beam_factory` (C6b noise wave, 2026-09-22, the lever cross-check's replacement axis):
-    ``None`` (the default) keeps the exact existing beam, `lambda w0v: GaussianBeam(w0v, m2)`,
-    and the exact existing cache key -- byte-identical to every call made before this
-    parameter existed. A caller wanting a DIFFERENT beam (e.g. `beam_field.ClippedBeam`, for
-    the model-form axis `lever_crosscheck.lever_crosscheck_beta` reads under `model="joint"`)
-    passes its own factory. The cache then keys on its `id()` instead of trying to hash an
+    ``None`` (the default) is THE FITTER'S BEAM, `fitter_beam(w0v, m2)`, the bore-clipped beam at
+    the actual focus (F564, V7.3; the ideal Gaussian until then). A caller wanting a DIFFERENT
+    beam (the ideal Gaussian for a closed form, or a model-form axis) passes its own factory. The cache then keys on its `id()` instead of trying to hash an
     arbitrary callable, so a fresh factory object is always a cache miss (correct, since its
     OUTPUT cannot be inferred from (w0, m2) alone) while the default path's caching is
     unaffected.
     """
     key = (round(float(T_C), 6), round(float(s0_mhz), 9), round(float(w0_m), 12),
           round(float(m2), 6), round(float(z_ratio), 6), int(n_path), int(seed),
-          id(beam_factory) if beam_factory is not None else None)
+          id(beam_factory) if beam_factory is not None else FITTER_BEAM_KIND)
     table = _JOINT_TABLE_CACHE.get(key)
     if table is not None:
         return table
@@ -165,8 +205,7 @@ def condition_joint_table(T_C: float, s0_mhz: float, *, w0_m: float = W0_CENTRAL
     half_mhz = HOMOG_MARGIN_MHZ + C.FIT_HALFWIDTH_MAX_MHZ
     delta_mhz = np.arange(-half_mhz, half_mhz + HOMOG_STEP_MHZ, HOMOG_STEP_MHZ)
     m2 = float(m2)
-    # gaussian-limit: the fitter's joint table defaults to the ideal beam and owes the bore, the registry's bore-limited-recompute, until a caller passes the clipped factory
-    _factory = beam_factory if beam_factory is not None else (lambda w0v: GaussianBeam(float(w0v), m2))
+    _factory = beam_factory if beam_factory is not None else (lambda w0v: fitter_beam(float(w0v), m2))
     table = JointTable.build(
         S0_grid=np.array([s0, s0_hi]), w0_grid=np.array([w0, w0_hi]), delta_mhz=delta_mhz,
         m2=m2, T_C=float(T_C), n_path=int(n_path), seed=int(seed), z_ratio=float(z_ratio),
@@ -698,6 +737,7 @@ def fit_condition(freqs: List[np.ndarray], volts: List[np.ndarray], *,
         "transit_fwhm": float(_transit_fwhm_reported),
         "transit_fitted": bool(fit_transit),
         "model": model,
+        "joint_table": joint_table_identity(model, joint_n_path, joint_seed),
         # Gamma_L,equiv. Named for what it is: a Lorentzian-EQUIVALENT width.
         # It is not f_L and it is not "the laser linewidth"; attribution to the
         # laser is licensed by the K5 triangle, never by this fit.

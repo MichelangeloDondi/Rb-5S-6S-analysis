@@ -94,7 +94,15 @@ def test_a_different_seed_gives_a_different_answer():
 
 def _pid_probe(_):
     """Run inside a worker so a test can prove the pool has more than
-    one. Module level because a spawn child must import it by name."""
+    one. Module level because a spawn child must import it by name.
+
+    It holds its worker for half a second, so the queue outlasts the
+    spawn of the pool's other workers: an instant probe let the first
+    worker to finish spawning take all twelve tasks on a loaded machine,
+    and the test read one process (the mirror's gate of 2026-09-26, and
+    the same test run alone beside it)."""
+    import time
+    time.sleep(0.5)
     return os.getpid()
 
 

@@ -39,6 +39,8 @@ TWO THINGS THIS FILE CHECKS, PER THE BRIEF'S OWN ITEM 4:
 """
 from __future__ import annotations
 
+import platform
+
 import numpy as np
 import pytest
 
@@ -48,10 +50,10 @@ from rb5s6s._compat import trapezoid
 from rb5s6s.constants import GAMMA_NAT_HZ, W0_BAND_M, W0_CENTRAL_M, transit_fwhm_from_w0
 from rb5s6s.moments import windowed_moments
 from rb5s6s.density import density_units
-from rb5s6s.volume_line import GaussianBeam, collection_half_window_m, joint_spectrum
+from rb5s6s.volume_line import collection_half_window_m, joint_spectrum
 from rb5s6s import beam_field
 from rb5s6s import twin_volume as tv
-from rb5s6s.linefit import _shared_profile_grid, fit_condition, joint_condition_profile
+from rb5s6s.linefit import _shared_profile_grid, fit_condition, joint_condition_profile, fitter_beam
 from rb5s6s.global_fit import fit_global
 from rb5s6s.beta import fit_beta_self
 from rb5s6s.forecast import synthetic_traces, _traces_from_shape
@@ -147,6 +149,16 @@ def test_even_windowed_moments_agree_closely_odd_moments_carry_the_disagreement_
 # 2. INJECTION-RECOVERY CLOSURES, noiseless first
 # =============================================================================================
 
+#: THE FITTER'S TABLE IS A MONTE CARLO DRAW, AND IN A NOISELESS CLOSURE ITS DRAW, NOT THE FIT'S OWN BAR, SETS HOW
+#: CLOSELY THE LASER WIDTH COMES BACK (F567). The world is drawn apart from the table (V7.3), so the fit lands on
+#: the minimum of a profile that moves with the table's seed (probe:bf7583a5), and the laser width scatters over
+#: table seeds by these standard deviations: 0.066 MHz about 0.6 for one condition at 4000 atoms, pooled over
+#: nine seeds and two worlds (probe:ae51cc52, probe:2c2d0dd5), and 0.099 MHz about 0.8 for the three-temperature
+#: beta_self ladder at 3000 atoms (probe:11b5ddab). A closure asserts three of them; the collisional width's own
+#: scatter (0.017 about 1.2, the same probes) sits far inside its ten per cent band.
+TABLE_DRAW_SD_SIGMA_CONDITION = 0.066
+TABLE_DRAW_SD_SIGMA_BETA = 0.099
+
 def test_fit_condition_noiseless_closure_on_joint_line():
     """fit_condition(model="joint") recovers gamma_coll and sigma_laser injected through
     volume_line.joint_spectrum directly, with no added noise. A small residual (a few per
@@ -160,7 +172,7 @@ def test_fit_condition_noiseless_closure_on_joint_line():
     s0_true = 0.5
     gamma_hom = GNAT_MHZ + gamma_coll_true
 
-    beam = GaussianBeam(W0_CENTRAL_M, 1.0)
+    beam = fitter_beam(W0_CENTRAL_M, 1.0)      # the fitter's own beam (F564): world and table on one beam
     half_window_m = collection_half_window_m(beam, Z_RATIO)
     nu = np.linspace(-30.0, 30.0, 2000)
     world = joint_spectrum(S0_mhz=s0_true, gamma_hom_mhz=gamma_hom, beam=beam, T_C=T_C,
@@ -176,9 +188,11 @@ def test_fit_condition_noiseless_closure_on_joint_line():
 
     fit = fit_condition(freqs, volts, T_C=T_C, s0=s0_true, model="joint", joint_n_path=3000)
     assert abs(fit["gamma_coll"] - gamma_coll_true) < 0.10 * gamma_coll_true, fit
-    assert abs(fit["sigma_laser"] - sigma_laser_true) < 0.10 * sigma_laser_true, fit
+    assert abs(fit["sigma_laser"] - sigma_laser_true) < 3.0 * TABLE_DRAW_SD_SIGMA_CONDITION, fit
     assert fit["chi2_red"] < 0.05, "a noiseless closure should fit almost exactly"
     assert fit["model"] == "joint"
+    # the fit names the table it stood on, so a bias subtraction can refuse a different one (F567)
+    assert fit["joint_table"] == {"n_path": 3000, "seed": 0, "beam": "clipped"}, fit["joint_table"]
     # the reported transit_fwhm is the table's own emergent value, never fitted
     assert fit["transit_fitted"] is False
     assert fit["transit_fwhm"] == pytest.approx(transit_fwhm_from_w0(W0_CENTRAL_M, T_C))
@@ -194,7 +208,7 @@ def test_fit_condition_noisy_closure_on_joint_line():
     s0_true = 0.5
     gamma_hom = GNAT_MHZ + gamma_coll_true
 
-    beam = GaussianBeam(W0_CENTRAL_M, 1.0)
+    beam = fitter_beam(W0_CENTRAL_M, 1.0)      # the fitter's own beam (F564): world and table on one beam
     half_window_m = collection_half_window_m(beam, Z_RATIO)
     nu = np.linspace(-30.0, 30.0, 2000)
     world = joint_spectrum(S0_mhz=s0_true, gamma_hom_mhz=gamma_hom, beam=beam, T_C=T_C,
@@ -222,7 +236,7 @@ def test_fit_beta_self_noiseless_closure_on_joint_line():
     no shift channel)."""
     beta_true = 0.05
     sigma_laser_true = 0.8
-    beam = GaussianBeam(W0_CENTRAL_M, 1.0)
+    beam = fitter_beam(W0_CENTRAL_M, 1.0)      # the fitter's own beam (F564): world and table on one beam
     half_window_m = collection_half_window_m(beam, Z_RATIO)
     nu = np.linspace(-25.0, 25.0, 1600)
 
@@ -240,8 +254,9 @@ def test_fit_beta_self_noiseless_closure_on_joint_line():
 
     fit = fit_beta_self(conds, model="joint", joint_n_path=3000)
     assert abs(fit["beta_self"] - beta_true) < 0.10 * beta_true + 0.003, fit
-    assert abs(fit["sigma_laser"] - sigma_laser_true) < 0.15 * sigma_laser_true, fit
+    assert abs(fit["sigma_laser"] - sigma_laser_true) < 3.0 * TABLE_DRAW_SD_SIGMA_BETA, fit
     assert fit["model"] == "joint"
+    assert fit["joint_table"] == {"n_path": 3000, "seed": 0, "beam": "clipped"}, fit["joint_table"]
 
 
 def test_fit_global_noiseless_closure_on_joint_line():
@@ -249,7 +264,7 @@ def test_fit_global_noiseless_closure_on_joint_line():
     across peaks and temperatures, injected from volume_line.joint_spectrum at S0=0."""
     beta_true = {85: 0.06, 87: 0.03}
     sigma_by_T = {70.0: 0.9, 90.0: 1.1, 110.0: 0.8}
-    beam = GaussianBeam(W0_CENTRAL_M, 1.0)
+    beam = fitter_beam(W0_CENTRAL_M, 1.0)      # the fitter's own beam (F564): world and table on one beam
     half_window_m = collection_half_window_m(beam, Z_RATIO)
     nu = np.linspace(-25.0, 25.0, 1400)
 
@@ -366,7 +381,7 @@ def _lever_blocks_joint(T_values=(70.0, 110.0), n_path=1500, n_points=900, span_
     n_points, 2 repeats) to keep a multi-cell lever cross-check closure fast."""
     beta_true = 0.05
     sigma_laser_true = 0.7
-    beam = GaussianBeam(W0_CENTRAL_M, 1.0)
+    beam = fitter_beam(W0_CENTRAL_M, 1.0)      # the fitter's own beam (F564): world and table on one beam
     half_window_m = collection_half_window_m(beam, Z_RATIO)
     nu = np.linspace(-span_mhz, span_mhz, n_points)
     blocks = []
@@ -409,7 +424,8 @@ def test_lever_crosscheck_w0_band_axis_scans_the_waist_under_joint():
 @pytest.mark.slow
 def test_lever_crosscheck_beam_clip_axis_under_joint():
     """The second replacement axis: `_fit` (hence `lever_crosscheck_beta`) with a
-    `beam_field.ClippedBeam`-based `beam_factory` against the default `GaussianBeam`, at the
+    `beam_field.ClippedBeam`-based `beam_factory` against the default (the fitter's own clipped beam at the
+    actual focus since V7.3, F564; the ideal Gaussian before it), at the
     SAME w0_m/T/blocks. The "hoped" case (opt-out means zero) is checked FIRST, not assumed.
     The measured size is then read and reported, not asserted to any particular value, per the
     brief's own instruction."""
@@ -483,7 +499,7 @@ def test_noise_off_gives_identical_deterministic_lines_on_both_branches():
             assert np.array_equal(a1, a2), (
                 f"model={model!r}: noise=0.0 should be exactly independent of the rng draw")
 
-    beam = GaussianBeam(W0_CENTRAL_M, 1.0)
+    beam = fitter_beam(W0_CENTRAL_M, 1.0)      # the fitter's own beam (F564): world and table on one beam
     f_direct, v_direct = tv.synthetic_traces(
         beam=beam, T_C=115.0, S0_mhz=0.3, gamma_hom_mhz=GNAT_MHZ + 1.1, sigma_laser_mhz=0.6,
         span_mhz=40.0, n_points=600, n_traces=3, noise=0.0, amp=1.0, amp_spread=0.05,
@@ -584,7 +600,12 @@ def test_residual_seam_under_the_joint_branch_reproduces_the_pools_statistics():
     assert kurt_by_model["convolution"] > 3.0 * max(kurt_gaussian, 0.05), kurt_by_model
     # a float `noise` and no per-trace spread make the noise component independent of `shape`,
     # so the two models' readings are not merely close, they are the SAME draw: exact equality
-    # is the sharpest statement that this is one shared code path and not two.
-    assert kurt_by_model["joint"] == kurt_by_model["convolution"], (
+    # is the sharpest statement that this is one shared code path and not two. It holds bit for bit on
+    # Darwin arm64; the hosted Linux runner's reductions round the two draws' differences apart in the last digit
+    # (0.3372898779404436 against 0.33728987794044407, E71's class), so there the claim is a relative 1e-12.
+    exact = platform.system() == "Darwin" and platform.machine() == "arm64"
+    expected = (kurt_by_model["convolution"] if exact
+                else pytest.approx(kurt_by_model["convolution"], rel=1e-12, abs=0.0))
+    assert kurt_by_model["joint"] == expected, (
         f"the joint branch's residual-seam reading should equal the convolution branch's "
         f"exactly (one shared helper, the same rng draw): {kurt_by_model}")

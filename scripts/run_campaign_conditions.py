@@ -74,7 +74,7 @@ import numpy as np
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from rb5s6s import config as C  # noqa: E402
 from rb5s6s import stark  # noqa: E402
-from rb5s6s.constants import TAU_6S_S, transit_fwhm_from_w0  # noqa: E402
+from rb5s6s.constants import LAMBDA_LASER_M, TAU_6S_S, transit_fwhm_from_w0  # noqa: E402
 from rb5s6s.density import d1_optical_depth_per_cm, number_density_cm3  # noqa: E402
 from rb5s6s.polarizability import E_6S_CM, LINES_5S  # noqa: E402
 
@@ -147,7 +147,7 @@ def main() -> int:
     s12 = T._sigma_peak_cm2(lam12, a12, 2, 2)
     m = ramp_moments(C.W0_CENTRAL_M, 0.225, 2.2e-3)
     f_ex = (m["sat_w"] / 2.0) / (1.0 + m["sat_w"])
-    z_r = math.pi * C.W0_CENTRAL_M ** 2 / C.LAMBDA_LASER_M
+    z_r = math.pi * C.W0_CENTRAL_M ** 2 / LAMBDA_LASER_M
     v_beam = math.pi * C.W0_CENTRAL_M ** 2 * (2.0 * z_r) * 1e6
     print()
     print(f"   {'T':>5} {'n (1e12)':>10} {'tau/cm':>8} {'halo re-exc':>12} "

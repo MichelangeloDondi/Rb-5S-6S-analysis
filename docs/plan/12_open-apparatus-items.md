@@ -201,7 +201,7 @@ number but an analysis unknown the same rules govern: the window scan
 (`results/fit_window_scan.csv`) showed a coherent drift of the fitted width
 with the fit window at the retired waist, and at the calculated waist it does
 not, the width falling in
-[18](../../results/fit_window_scan.csv "ref:fit_window_scan:n_drift_negative:summary") of
+[19](../../results/fit_window_scan.csv "ref:fit_window_scan:n_drift_negative:summary") of
 [32](../../results/fit_window_scan.csv "ref:fit_window_scan:n_conditions:summary")
 conditions (`docs/uncertainty.md` §3a). No committed error bar carries a
 window term yet. What closes it: the committed shared-slope

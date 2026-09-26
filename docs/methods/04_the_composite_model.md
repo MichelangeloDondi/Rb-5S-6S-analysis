@@ -386,11 +386,11 @@ $1/3$ and the older bracket of $1/3$ to $2/3$ quoted here was too high at the
 bottom, which is why the pumping term falls below the ramp on the first two
 lines and above it on the last two. **That per-crossing form is replaced** (2026-09-17): the
 kernel Monte Carlo of [the lineshape page's 2.5b](02_the_lineshape.md) resolves the depletion
-along each chord and finds the surviving transit kernel wider by a fraction [0.10](../../results/kernel_mc.csv "ref:kernel_mc:w42.0_m1.00_r0.940_T130_P225:depletion_fwhm_rel_4121:mc") at 42 µm, the
-node beside the calculated waist, and 225 mW ([0.0039](../../results/kernel_mc.csv "ref:kernel_mc:w42.0_m1.00_r0.940_T130_P25:depletion_fwhm_rel_4121:mc") at 25 mW, faster than $P$ and slower than $P^2$), because the slowest atoms complete the most
+along each chord and finds the surviving transit kernel wider by a fraction [0.12](../../results/kernel_mc.csv "ref:kernel_mc:w42.0_m1.00_r0.940_T130_P225:depletion_fwhm_rel_4121:mc") at 42 µm, the
+node beside the calculated waist, and 225 mW ([0.0045](../../results/kernel_mc.csv "ref:kernel_mc:w42.0_m1.00_r0.940_T130_P25:depletion_fwhm_rel_4121:mc") at 25 mW, faster than $P$ and slower than $P^2$), because the slowest atoms complete the most
 cycles and are the kernel's narrow core.
 
-a cusp fitted to the surviving kernel reads only [0.014](../../results/kernel_mc.csv "ref:kernel_mc:w42.0_m1.00_r0.940_T130_P225:depletion_widening_rel_4121:mc") wider after the natural Lorentzian (about six tenths of a micron at 42 µm), because the wings are untouched, and that fitted ratio is what the fit carries, while the four lines' shares move by [0.0021](../../results/kernel_mc.csv "ref:kernel_mc:w42.0_m1.00_r0.940_T130_P225:shares_shift_abs:mc") from the thermal law.
+a cusp fitted to the surviving kernel reads only [0.017](../../results/kernel_mc.csv "ref:kernel_mc:w42.0_m1.00_r0.940_T130_P225:depletion_widening_rel_4121:mc") wider after the natural Lorentzian (about six tenths of a micron at 42 µm), because the wings are untouched, and that fitted ratio is what the fit carries, while the four lines' shares move by [0.0024](../../results/kernel_mc.csv "ref:kernel_mc:w42.0_m1.00_r0.940_T130_P225:shares_shift_abs:mc") from the thermal law.
 The fit carries that fitted ratio as a computed factor per node through the kernel gate and
 never as a fitted term. Both are omitted for the same reason: injecting them means
 committing to the two-level homogeneous saturation law with a two-photon Rabi
