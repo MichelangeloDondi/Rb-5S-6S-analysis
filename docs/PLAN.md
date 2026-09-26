@@ -182,9 +182,9 @@ A claim that some block improves a quantity by a factor is either supported by
 a simulation or it is an expectation, and the chapters now say which. Where the
 twin refuted a claim, the record says so: an early draft of the tutorial taught
 that widening the scan span breaks the width degeneracy, and the twin measured
-the correlation moving by 0.0075 across a factor of five in span
-([`twin_span_sweep.csv`](../results/twin_span_sweep.csv)), which is no
-movement at all. That correction is in
+the correlation moving by [0.0089](../results/twin_span_sweep.csv "ref:twin_span_sweep:VERDICT:corr_move_with_span") across a factor of five in span
+([`twin_span_sweep.csv`](../results/twin_span_sweep.csv)), which leaves the
+degeneracy where it was. That correction is in
 the private correction record, and the surviving lever is in
 [chapter 5](plan/05_width-collision-amplitude.md).
 

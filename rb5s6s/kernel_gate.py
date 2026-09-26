@@ -34,8 +34,10 @@ MODEL_FILE = ROOT / "rb5s6s" / "fullmodel.py"
 #: The Monte Carlo producer, whose own package imports are part of what a node's readings computed.
 MC_PRODUCER = ROOT / "scripts" / "run_kernel_mc.py"
 #: The judge is not the model: an edit to the gate re-judges every artefact at `status_node` time and
-#: must not re-open the Monte Carlo besides.
-_NOT_THE_MODEL = frozenset({"kernel_gate"})
+#: must not re-open the Monte Carlo besides. The model-terms registry is a judge of the same kind (O58,
+#: 2026-09-25): the Monte Carlo imports it to refuse a run whose term set is not the registry's before
+#: its first atom, and a registry row re-worded or a term added as owed changes no reading of any node.
+_NOT_THE_MODEL = frozenset({"kernel_gate", "model_registry"})
 
 
 _POPULATION_CACHE: dict = {}
@@ -54,6 +56,43 @@ def _stamp(files) -> tuple:
     return tuple(out)
 
 
+def _imports_of(path: pathlib.Path) -> set:
+    """The package modules one file imports, relative or absolute (the helper `model_population` and
+    `import_closure` share, moved out of the former so a second closure need not restate it)."""
+    import ast
+    pkg = ROOT / "rb5s6s"
+    out: set = set()
+    try:
+        tree = ast.parse(path.read_text(encoding="utf-8"))
+    except (OSError, SyntaxError):
+        return out
+    for n in ast.walk(tree):
+        if isinstance(n, ast.ImportFrom):
+            if n.level == 1:
+                out |= {n.module.split(".")[0]} if n.module else {a.name for a in n.names}
+            elif n.module and n.module.split(".")[0] == "rb5s6s":
+                parts = n.module.split(".")
+                out |= {parts[1]} if len(parts) > 1 else {a.name for a in n.names}
+        elif isinstance(n, ast.Import):
+            out |= {a.name.split(".")[1] for a in n.names if a.name.startswith("rb5s6s.")}
+    return {m for m in out if (pkg / f"{m}.py").is_file()}
+
+
+def import_closure(roots, exclude=frozenset()) -> tuple:
+    """Every package module the named modules import, transitively, DERIVED and never typed (F95): the model's
+    population below, and the twin's full-model line cache (O59 W1), which keys on the code its line computes with."""
+    pkg = ROOT / "rb5s6s"
+    seen: set = set()
+    todo = list(roots)
+    while todo:
+        m = todo.pop()
+        if m in seen or m in exclude:
+            continue
+        seen.add(m)
+        todo += sorted(_imports_of(pkg / f"{m}.py") - seen)
+    return tuple(pkg / f"{m}.py" for m in sorted(seen))
+
+
 def model_population() -> tuple:
     """Every package module whose CODE a node's readings depend on, DERIVED from the imports.
 
@@ -65,26 +104,7 @@ def model_population() -> tuple:
     is the transitive closure of package imports from `fullmodel.py` and the Monte Carlo producer,
     never a typed list, so a module either starts importing joins the digest without an edit here.
     """
-    import ast
     pkg = ROOT / "rb5s6s"
-
-    def imports_of(path: pathlib.Path) -> set:
-        out: set = set()
-        try:
-            tree = ast.parse(path.read_text(encoding="utf-8"))
-        except (OSError, SyntaxError):
-            return out
-        for n in ast.walk(tree):
-            if isinstance(n, ast.ImportFrom):
-                if n.level == 1:
-                    out |= {n.module.split(".")[0]} if n.module else {a.name for a in n.names}
-                elif n.module and n.module.split(".")[0] == "rb5s6s":
-                    parts = n.module.split(".")
-                    out |= {parts[1]} if len(parts) > 1 else {a.name for a in n.names}
-            elif isinstance(n, ast.Import):
-                out |= {a.name.split(".")[1] for a in n.names if a.name.startswith("rb5s6s.")}
-        return {m for m in out if (pkg / f"{m}.py").is_file()}
-
     # THE CLOSURE IS CACHED ON THE PACKAGE'S OWN STAMPS (F97, 2026-09-17): recomputed on every
     # `status_node`, it parsed nineteen modules per node and a 744-node status sweep ran past two
     # minutes; the closure calls the gate thousands of times per cell. A file whose stamp moved
@@ -92,15 +112,7 @@ def model_population() -> tuple:
     key = _stamp(sorted(pkg.glob("*.py")) + [MC_PRODUCER])
     if key in _POPULATION_CACHE:
         return _POPULATION_CACHE[key]
-    seen: set = set()
-    todo = ["fullmodel"] + sorted(imports_of(MC_PRODUCER))
-    while todo:
-        m = todo.pop()
-        if m in seen or m in _NOT_THE_MODEL:
-            continue
-        seen.add(m)
-        todo += sorted(imports_of(pkg / f"{m}.py") - seen)
-    out = tuple(pkg / f"{m}.py" for m in sorted(seen))
+    out = import_closure(["fullmodel"] + sorted(_imports_of(MC_PRODUCER)), exclude=_NOT_THE_MODEL)
     _POPULATION_CACHE.clear(); _POPULATION_CACHE[key] = out
     return out
 

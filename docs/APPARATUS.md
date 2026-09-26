@@ -203,7 +203,7 @@ documented in hardware:
 | EOM resonance | **12.5 MHz** (both units) | PHOTO |
 | EOM 3 dB bandwidth | 550 kHz / 546 kHz | PHOTO |
 | EOM ar coating | **650–1000 nm**, covers 993.4 nm | PHOTO |
-| EOM impedance / SWR | 52 Ω, 1.29:1 / 50 Ω, 1.09:1 | PHOTO |
+| EOM impedance / SWR | 52 Ω, 1.29:1 / 50 Ω, 1.09:1 <!-- other-quantity: a standing-wave ratio --> | PHOTO |
 | EOM clear aperture | **3 mm** (both crystal variants, eom-01 and eom-02) | manufacturer's "Standard Characteristics" table, `photonicstechnologies.com`, confirmed 2026-08-01, not on the test certificates §1.2 |
 | Drive for 100% modulation | 15.4 V / 16.0 V pk-pk | PHOTO |
 

@@ -10,10 +10,13 @@ import numpy as np
 import pytest
 
 from rb5s6s.constants import RHO_RETRO, W0_CENTRAL_M
-from rb5s6s.cumulants import windowed_moments
+from rb5s6s.moments import windowed_moments
 from rb5s6s.lineshape import aperture_onaxis_factor_actual
 from rb5s6s.volume_line import GaussianBeam, collection_half_window_m, joint_spectrum
 from rb5s6s import twin_volume as tv
+
+#: O58: this module's twin runs are a declared STUDY, and this is its reason
+_TWIN_STUDY = "a unit test of the generator's own arithmetic, not a quoted number"
 
 M2 = 1.0
 T_C = 130.0
@@ -88,7 +91,7 @@ def test_synthetic_traces_format_matches_forecast_convention(beam, s0_mhz):
                                        gamma_hom_mhz=GAMMA_HOM_MHZ, z_ratio=Z_RATIO,
                                        span_mhz=24.0, n_points=n_points, n_traces=n_traces,
                                        noise=0.01, n_path=300, seed=0,
-                                       rng=np.random.default_rng(1))
+                                       rng=np.random.default_rng(1), registry=_TWIN_STUDY)
     assert len(freqs) == n_traces and len(volts) == n_traces
     for f, v in zip(freqs, volts):
         assert f.shape == (n_points,)
@@ -108,7 +111,7 @@ def test_synthetic_traces_amp_and_offset_spread(beam, s0_mhz):
                                        span_mhz=24.0, n_points=801, n_traces=n_traces,
                                        noise=0.0, amp=1.0, amp_spread=0.1, offset=0.02,
                                        offset_spread=0.005, n_path=300, seed=0,
-                                       rng=np.random.default_rng(0))
+                                       rng=np.random.default_rng(0), registry=_TWIN_STUDY)
     for i, v in enumerate(volts):
         expected_peak = 1.0 * (1.0 + 0.1 * i) + 0.02 + 0.005 * i
         assert v.max() == pytest.approx(expected_peak, rel=1e-9)
@@ -120,9 +123,9 @@ def test_synthetic_traces_determinism(beam, s0_mhz):
     Generator, different noise otherwise, with the world held fixed)."""
     kwargs = dict(beam=beam, T_C=T_C, S0_mhz=s0_mhz, gamma_hom_mhz=GAMMA_HOM_MHZ, z_ratio=Z_RATIO,
                  span_mhz=24.0, n_points=401, n_traces=2, noise=0.01, n_path=300, seed=7)
-    _, v_a = tv.synthetic_traces(rng=np.random.default_rng(100), **kwargs)
-    _, v_b = tv.synthetic_traces(rng=np.random.default_rng(100), **kwargs)
-    _, v_c = tv.synthetic_traces(rng=np.random.default_rng(101), **kwargs)
+    _, v_a = tv.synthetic_traces(rng=np.random.default_rng(100), **kwargs, registry=_TWIN_STUDY)
+    _, v_b = tv.synthetic_traces(rng=np.random.default_rng(100), **kwargs, registry=_TWIN_STUDY)
+    _, v_c = tv.synthetic_traces(rng=np.random.default_rng(101), **kwargs, registry=_TWIN_STUDY)
     assert all(np.array_equal(a, b) for a, b in zip(v_a, v_b))
     assert not all(np.array_equal(a, c) for a, c in zip(v_a, v_c))
 
@@ -146,7 +149,7 @@ def test_synthetic_traces_noise_law_dict_mode(beam, s0_mhz):
     freqs, volts = tv.synthetic_traces(beam=beam, T_C=T_C, S0_mhz=s0_mhz,
                                        gamma_hom_mhz=GAMMA_HOM_MHZ, z_ratio=Z_RATIO,
                                        span_mhz=24.0, n_points=601, n_traces=2, noise=law,
-                                       n_path=300, seed=0, rng=np.random.default_rng(2))
+                                       n_path=300, seed=0, rng=np.random.default_rng(2), registry=_TWIN_STUDY)
     for v in volts:
         assert np.all(np.isfinite(v))
         assert v.std() > 0.0
@@ -160,7 +163,7 @@ def test_synthetic_traces_vanishing_line_raises(beam):
     with pytest.raises(ValueError):
         tv.synthetic_traces(beam=beam, T_C=T_C, S0_mhz=0.6, gamma_hom_mhz=0.0,
                             z_ratio=Z_RATIO, span_mhz=0.05, n_points=21, n_traces=1,
-                            centre_mhz=500.0, n_path=50, seed=0, rng=np.random.default_rng(0))
+                            centre_mhz=500.0, n_path=50, seed=0, rng=np.random.default_rng(0), registry=_TWIN_STUDY)
 
 
 # =============================================================================================
@@ -168,7 +171,7 @@ def test_synthetic_traces_vanishing_line_raises(beam):
 # =============================================================================================
 
 def test_windowed_moments_match_world_line_within_the_noise(beam, s0_mhz):
-    """A twin trace's windowed moments (`rb5s6s.cumulants.windowed_moments`) must match the
+    """A twin trace's windowed moments (`rb5s6s.moments.windowed_moments`) must match the
     world line's own, to within the noise the traces themselves carry. Ten traces (noise=0.01,
     amp/offset spread off so every trace shares one underlying shape) give the per-order mean and
     its standard error; the world's own moments (computed directly from `joint_spectrum` at the
@@ -184,7 +187,7 @@ def test_windowed_moments_match_world_line_within_the_noise(beam, s0_mhz):
                                        span_mhz=24.0, n_points=1201, n_traces=n_traces,
                                        noise=0.01, amp=1.0, amp_spread=0.0, offset=0.0,
                                        offset_spread=0.0, n_path=n_path, seed=seed,
-                                       rng=np.random.default_rng(42))
+                                       rng=np.random.default_rng(42), registry=_TWIN_STUDY)
     nu = freqs[0]
     half_window_m = collection_half_window_m(beam, Z_RATIO)
     world = joint_spectrum(S0_mhz=s0_mhz, gamma_hom_mhz=GAMMA_HOM_MHZ, beam=beam, T_C=T_C,

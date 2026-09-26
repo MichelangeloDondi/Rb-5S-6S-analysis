@@ -239,6 +239,17 @@ def _counts() -> dict[str, int]:
     # the two are the counts in the k4 crossing's own distribution (22 of 32 conditions at one
     # interval, 10 at the other), which are measured on a cache artefact and belong to no committed
     # cell until the surface is a tracked result. A RISE, and its reason.
+    # Re-seeded 2026-09-26 at V7.1 (O59's S3 binding pass and F552's width-correlation pass),
+    # movement pasted from the instrument after it printed: 25 files FELL (README.md 11 -> 5,
+    # docs/CLAIMS.md 85 -> 58, docs/BIG_PICTURE.md 29 -> 14, docs/big_picture/05 29 -> 14,
+    # docs/big_picture/07 52 -> 37, docs/big_picture/09 35 -> 21, and nineteen more by one to
+    # thirteen), because their numbers were bound to cells; and one ROSE:
+    #   docs/plan/07_acquisition-settings.md: 309 -> 311
+    # the owner's mirror distance of 25 to 35 mm turned the crossing-angle factor 2(1 - d/f) from
+    # one value into a range of apparatus literals with no cell behind them. A RISE, and its reason.
+    # Re-seeded again 2026-09-26 after V7.1's board, movement pasted from the instrument:
+    #   docs/plan/06_sizing-and-spending-rules.md: 56 -> 54
+    # the laser-width row's stale 2.3 to 3.0 bound to the span sweep's CAMPAIGN quartiles (statistics seat). A FALL.
     # Re-seeded 2026-08-31 across the board-2 fix wave. Measured against
     # HEAD, every moved key (the two blocks this replaces described the
     # movement from intention and got both the direction and the

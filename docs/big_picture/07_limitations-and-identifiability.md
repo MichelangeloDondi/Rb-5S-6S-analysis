@@ -27,7 +27,7 @@ kernel convolve into a profile whose shape barely distinguishes them at these
 widths. The information that would separate them is not weakly present in the
 lineshape. It is close to absent, which is why more data of the same kind does
 not help. Inside a single condition the two exchange at a correlation whose median
-across the 32 conditions is -0.90.
+across the [32](../../results/twin_span_sweep.csv "ref:twin_span_sweep:CAMPAIGN:n_conditions") conditions is [-0.81](../../results/twin_span_sweep.csv "ref:twin_span_sweep:CAMPAIGN:corr_median").
 
 **The change.** Measure one of them independently. The repaired cavity lock
 makes a beat note against a second laser, a cavity ringdown, or a delayed
@@ -45,14 +45,14 @@ to the real record.
 to a question whose general form is arithmetic. Conditioning on one member of
 a correlated pair leaves the other with $\sqrt{1-\rho^2}$ of its uncertainty,
 so the purchase is $1/\sqrt{1-\rho^2}$ and depends on the correlation alone.
-That is 2.29 at the record's median $-0.90$ and 2.97 at the pinning
+That is [1.70](../../results/twin_span_sweep.csv "ref:twin_span_sweep:CAMPAIGN:pin_factor_median") at the record's median [-0.81](../../results/twin_span_sweep.csv "ref:twin_span_sweep:CAMPAIGN:corr_median") and 2.97 at the pinning
 simulation's own bright condition, whose fitted correlation is $-0.9417$,
 against the $3.18 \pm 0.20$ the simulation measures there. The 7 per cent gap
 is what a Monte-Carlo scatter ratio carries that a covariance ratio does not. The
 comparison lives on
 [the identifiability page](../wiki/identifiability.md), and the consequence is
-that this row's purchase is a factor between two and three and a half rather
-than a single number.
+that this row's purchase is a factor between about one and a half and three,
+not a single number.
 
 **Whether the prediction's own band reaches the bound.** It is a producer row, and not a
 comparison made by eye. Carrying the waist band, the retro-ratio
@@ -62,7 +62,7 @@ error, the polarizability spread and a spanned power calibration,
 for the worst case, and the waist at which the prediction would meet the bound
 is
 [84.8](../../results/prediction_band.csv "ref:prediction_band:waist_at_bound:w0_um")
-um against the 42.38 this record carries. The tension is therefore conditional on the waist,
+um against the [42.38](../../rb5s6s/constants.py "ref:constant:W0_CENTRAL_M:1e6") this record carries. The tension is therefore conditional on the waist,
 which no measurement of this beam has fixed, and on the retro power ratio, an
 assumption the record labels as one with a deliberately modest spread: at the
 uncoated-window end of its physical range the prediction falls by about twelve
@@ -72,11 +72,14 @@ window corrects the bound in the same file, by
 per cent and in the direction that eases the tension, which is far too small to
 remove it.
 
-**Whether a design change could do it instead.** It cannot, and this was
-tested rather than assumed. Varying the span by a factor of five and the trace
-count by a factor of ten moves the correlation by 0.0075 and 0.0000
-(`results/twin_span_sweep.csv`), which is no movement at all. The degeneracy belongs to the lineshape
-rather than to the sample size, so no amount of archive data reaches it, and an
+**Whether a design change could do it instead.** Not in the twin's reference
+design, and this was tested rather than assumed. Varying the span by a factor of
+five and the trace count by a factor of ten moves the correlation by [0.0089](../../results/twin_span_sweep.csv "ref:twin_span_sweep:VERDICT:corr_move_with_span")
+and [0.0001](../../results/twin_span_sweep.csv "ref:twin_span_sweep:VERDICT:corr_move_with_traces") (`results/twin_span_sweep.csv`). The span's move is resolved and
+changes what a laser-width measurement buys from [2.84](../../results/twin_span_sweep.csv "ref:twin_span_sweep:span_060MHz:pin_factor") to [2.67](../../results/twin_span_sweep.csv "ref:twin_span_sweep:span_300MHz:pin_factor"). The traces' move is
+not resolved, which is what leading order predicts, since a replicated design
+scales the information matrix and leaves its correlation unchanged. The
+degeneracy belongs to the lineshape rather than to the sample size, and an
 external laser-width measurement is the route this record has costed. A waist
 ladder through a calibrated expander is proposed as a second, because the
 laser and transit variances carry different powers of the magnification. The
@@ -107,10 +110,10 @@ the band the science blocks' widths integrate
 That systematic is now measured, and measuring it did not settle the
 question. A mixed Gaussian-plus-Lorentzian laser kernel was fitted against
 the pinned-Gaussian one at every peak. At the calculated waist the mixed form
-is preferred at three of the four peaks, by $\Delta\chi^2$ of 6.9 to 65 on a
-nested test with one parameter at its boundary, and not at 4207 (0.69), so
+is preferred at three of the four peaks, by $\Delta\chi^2$ of [6.9](../../results/kernel_k3.csv "ref:kernel_k3:4154:delta_chi2_G_minus_GL") to 65 on a
+nested test with one parameter at its boundary, and not at 4207 ([0.69](../../results/kernel_k3.csv "ref:kernel_k3:4207:delta_chi2_G_minus_GL")), so
 **a non-Gaussian homogeneous component is present there**, with
-peak-conditioned values from 0.009 to 0.115 MHz
+peak-conditioned values from [0.009 to 0.115](../../results/kernel_budget.csv "ref:kernel_budget:gamma_l_span:") MHz
 (`results/kernel_k3.csv`). Its size against the statistical error is stated on
 a matched footing as $R_\text{kernel} = 0.61$
 (`results/kernel_budget.csv`): the choice of kernel moves the collisional
@@ -164,7 +167,7 @@ Its relation to the excess outside the window has since been measured, and at th
 calculated waist it no longer supports a shared cause. Regressing each condition's
 in-window amplitude on the model's own profile height and on vapour density at
 once, weighted, neither predictor is significant: height reads $-0.48$ sigma and
-density $-0.42$, with the two predictors correlated only 0.489, and the height
+density $-0.42$, with the two predictors correlated only [0.489](../../results/kernel_k8.csv "ref:kernel_k8:PRIMARY:predictor_corr"), and the height
 term stays within about one sigma on every leave-one-out ($-0.87$ to $-0.47$)
 (`results/kernel_k8.csv`), a verdict the producer computes as
 NEITHER_SIGNAL_NOR_DENSITY. The density null that excluded a collisional origin
@@ -172,7 +175,7 @@ stands either way.
 
 **The band excess outside the window gave +8.65 and
 -0.75 on the same two predictors by the same method**, in the unproduced note at the
-retired waist. This tree's reconstruction reads +1.67 and -0.54 at the ruled waist
+retired waist. This tree's reconstruction reads [+1.67](../../results/band_excess.csv "ref:band_excess:JOINT:height_z") and [-0.54](../../results/band_excess.csv "ref:band_excess:JOINT:density_z") at the ruled waist
 (`results/band_excess.csv`, +3.05 and -1.57 until 2026-09-22), neither resolved at the
 preregistered 3.0 sigma, so at this waist neither the band nor the window shows a
 height-tracking structure and nothing is left for the two to share. **The two band figures are the weaker
@@ -185,8 +188,8 @@ and the height significance come back far weaker.
 A preregistered recovery
 then identified the note's predictor (the absolute in-band model height,
 matching the note's 0.415 correlation to 0.001) **and proved no predictor
-reaches the note's significance with the current amplitudes** (0.70 partial
-correlation required, 0.39 available), so the discrepancy sits in the
+reaches the note's significance with the current amplitudes** ([0.70](../../results/band_excess.csv "ref:band_excess:RECOVERY:r_needed_for_note_z") partial
+correlation required, 0.27 available), so the discrepancy sits in the
 amplitude vector itself. The density reading is construction-dependent in
 the current tree, negative under the shape-only predictor and the marginal
 positive under the recovered one, so the band's mechanism question is OPEN.
@@ -387,10 +390,10 @@ the fitted exponent and not at the one being excluded.
 **The physical cause.** There is now a candidate, and it is the lineshape model
 rather than the atom. A joint fit over every canonical trace, each granted its
 own free polynomial baseline, leaves a shared excess standing at 3.6 sigma under
-per-trace cubic freedom. Regressed on both competing predictors at once, that
+per-trace cubic freedom (the note's figure, against [-1.78](../../results/band_excess.csv "ref:band_excess:LADDER_k3:z") in the reconstruction at the ruled waist). Regressed on both competing predictors at once, that
 excess tracks the model's own profile height inside the band at 8.65 sigma while
 vapour density is a null predictor at -0.75 sigma (the note's figures at the retired
-waist, against +1.67 and -0.54 in the reconstruction at the ruled waist), and a band re-cut in units of
+waist, against [+1.67](../../results/band_excess.csv "ref:band_excess:JOINT:height_z") and [-0.54](../../results/band_excess.csv "ref:band_excess:JOINT:density_z") in the reconstruction at the ruled waist), and a band re-cut in units of
 each trace's own linewidth keeps the trend. A placebo band inside the fitted
 window carries structure too, which a general profile mismatch predicts and a
 far-wing collisional excess does not.

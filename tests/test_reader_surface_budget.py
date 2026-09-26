@@ -308,6 +308,9 @@ names the calibration pair, and the README row says whose bar its sigma is.
 
 from __future__ import annotations
 
+import sys as _sys
+_sys.path.insert(0, str(__import__('pathlib').Path(__file__).parent))
+from _reader_text import reader_text  # noqa: E402
 import json
 import sys
 from pathlib import Path
@@ -348,8 +351,9 @@ SURFACE = [
 
 
 def _words(rel: str) -> int:
+    # the words a reader reads: a bound number's link target and title are not among them (V7.1)
     p = ROOT / rel
-    return len(p.read_text(encoding="utf-8").split()) if p.is_file() else 0
+    return len(reader_text(p.read_text(encoding="utf-8")).split()) if p.is_file() else 0
 
 
 def _counts() -> dict:

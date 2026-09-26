@@ -391,7 +391,7 @@ this section, which has to be in place before any of them runs.
    radial: the saturation companion follows the local light shift. The
    archive's own waist, which is the geometry this remedy reproduces, is where
    the measured cost is largest but for the band's upper edge, at
-   [103.942](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w42um:k3_error") per cent. One
+   [103.942](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w42um:mu3_error") per cent. One
    choice, two faces, and chapter 12 carries it as open, with the volume model
    the route that costs no light.
 

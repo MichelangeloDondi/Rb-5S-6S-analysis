@@ -275,7 +275,7 @@ committed results.*
 enter as a sum that the observable constrains almost perfectly and a split
 that it barely constrains at all. In the production per-condition fit, which
 holds the transit width at its waist-derived value, the two are correlated at
-about −0.92. A property of the lineshape, a Lorentzian core convolved with a Gaussian,
+a median of [-0.81](../../results/twin_span_sweep.csv "ref:twin_span_sweep:CAMPAIGN:corr_median") across the record's conditions. A property of the lineshape, a Lorentzian core convolved with a Gaussian,
 not of the sample size, so more data does not fix it
 ([the identifiability page](../wiki/identifiability.md)).
 Free the transit width as well and the degeneracy moves instead of lifting:
@@ -314,8 +314,8 @@ series. One session's internal temperature spans 110 to 130 °C, a factor
 | amplitude against detection | four peaks on one vertical range, and one photocurrent on two acquisition chains at once | the confound is the range switch and the chain, so hold both fixed |
 | temperature | the wide-scan Doppler pedestal as an in-situ thermometer | one slow trace per block converts an set-point temperature into a measured one |
 
-The width-split factor rides the correlation: 2.29 at the median ρ = −0.90
-over the 32 committed conditions, 2.52 at the tutorial's design point, and
+The width-split factor rides the correlation: [1.70](../../results/twin_span_sweep.csv "ref:twin_span_sweep:CAMPAIGN:pin_factor_median") at the median ρ = [-0.81](../../results/twin_span_sweep.csv "ref:twin_span_sweep:CAMPAIGN:corr_median")
+over the [32](../../results/twin_span_sweep.csv "ref:twin_span_sweep:CAMPAIGN:n_conditions") committed conditions, [2.84](../../results/twin_span_sweep.csv "ref:twin_span_sweep:span_060MHz:pin_factor") at the tutorial's design point, and
 2.97 at the pinning simulation's bright condition, where nine seeds give
 3.18 ± 0.20, quoted as an ensemble because a single seed of the same
 simulation returns the largest of the nine.

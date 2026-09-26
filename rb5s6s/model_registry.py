@@ -52,6 +52,17 @@ between what the census's own `fitter` column says and what this registry's `sta
 says, for every term the seed's own `census_row` column names. A term the seed maps to `NONE` (no
 census row exists) is outside the census's reach and is not checked.
 
+THE PREFLIGHT (owner order O58, 2026-09-25: "make sure ... that the twin and montecarlo are always wired to the same
+full model, and that the computations can't start without this match"). `preflight(consumer, regime, executes)` is
+called BEFORE a run's first atom, with the registry ids the configured run will execute, and raises `ModelReduced`
+unless (a) a run standing behind a result executes exactly its consumer's carried set, and a declared study names
+every term it drops or adds with a reason; (b) every term the twin and the Monte Carlo do not both carry is a
+declared debt on the other side (`owed` or `n/a`); and (c) the two RATCHETS hold: the set of terms carried by one
+path and not the other, and the set of terms both carry through DIFFERENT code, are each no larger than
+`PAIRING_BASELINE` and `IMPL_BASELINE`, frozen at the registry of 2026-09-25, so the twin and the Monte Carlo can
+only come together. The single full model (plan V6.1) is what empties both, and then any divergence refuses every
+computation at its start. `mc_contract.guard` calls it for every guarded harness.
+
 THE EXECUTED-TERM LEDGER (implemented and planted here; NOT YET WIRED into `fullmodel.py`,
 `volume_line.py` or `scripts/run_kernel_mc.py` themselves -- that wiring is a later, separate wave,
 named so a reader does not mistake this module's own self-consistency for the model modules'
@@ -74,10 +85,11 @@ from typing import Iterable, Optional, Sequence
 
 __all__ = [
     "ModelTerm", "REGISTRY", "TERM_IDS", "VALID_KINDS", "REGIMES", "CONSUMERS",
-    "kind_of", "status_fields", "carried_term_ids", "executed_digest", "registry_digest",
+    "kind_of", "status_fields", "carried_term_ids", "executed_digest", "registry_digest", "registry_content_digest",
     "consumer_digest", "ModelReduced", "run", "executed", "current", "require", "ablation",
     "manifest", "CENSUS_ROW_FOR", "census_says_fitter_carries", "check_census_agreement",
     "CensusDisagreement", "to_csv_rows", "CSV_COLUMNS",
+    "preflight", "pairing_gaps", "impl_gaps", "PAIRING_BASELINE", "IMPL_BASELINE",
 ]
 
 # ---------------------------------------------------------------------------
@@ -206,11 +218,11 @@ class ModelTerm:
 
 
 # ---------------------------------------------------------------------------
-# The registry: one row per term_id of the thesis session's 34-term seed.
-#
-# NO ROW HERE THAT THE SEED DOES NOT NAME: the seed's own instruction is that a term the seed
-# lacks is added only if all six statuses would read n/a, and none of the additions considered
-# while this module was built cleared that bar, so the population is exactly the seed's 34.
+# The registry: one row per term_id of the thesis session's 34-term seed, and the four terms the
+# two sessions agreed on 2026-09-25 after each side had read the forward model against its code
+# (retro_focus_offset, sweep_axis_curvature, amplitude_slope, quadratic_zeeman), each owed under
+# the chapter-7 marker the thesis already carries. A further term is added the same way: agreed
+# with the thesis session, with its marker, never by one side alone.
 # ---------------------------------------------------------------------------
 
 REGISTRY: tuple[ModelTerm, ...] = (
@@ -457,7 +469,13 @@ REGISTRY: tuple[ModelTerm, ...] = (
         wiki_page="beam-delivery-and-the-waist-ratio.md", methods_page="docs/methods/03_the_ac_stark_ramp.md",
         evidence="the Cell applies only the ON-AXIS reading correction to S0. The profile's side "
                  "lobes and kernel reshaping (aperture_spread_factor) never reach a committed fit "
-                 "(scripts/run_ultra_joint.py:Cell._per_trace)",
+                 "(scripts/run_ultra_joint.py:Cell._per_trace). F538: read along each chord the "
+                 "clipped focus carries 0.7713 +- 0.0029, 0.6910 +- 0.0039 and 0.5870 +- 0.0063 of the "
+                 "alpha signal on windowed mu3 of a Gaussian at the same focus, at W = 5, 6 and 8 MHz "
+                 "(against the Gaussian of equal width the ratios and the width channel move, the thesis "
+                 "side's reading of 2026-09-25, not yet re-obtained here), so a Gaussian reading "
+                 "of the bench's line puts alpha through mu3 low by about 1.3x to 1.7x "
+                 "(private/cache/plan_2026-09-25/v65_borecheck/borecheck.tsv)",
     ),
 
     ModelTerm(
@@ -466,8 +484,11 @@ REGISTRY: tuple[ModelTerm, ...] = (
         status_mc_2025="n/a",
         status_fitter_campaign="owed:retro-waist",
         status_twin_campaign="owed:retro-waist", status_mc_campaign="n/a",
-        physics="The returning (retro) beam is about 1.2 times wider than the forward beam, "
-                "reducing the standing-wave fringe contrast and the Doppler-free rate's uniformity.",
+        physics="The returning (retro) beam wider than the forward one at the atoms, about 1.2 "
+                "times, reducing the standing-wave fringe contrast and the Doppler-free rate's "
+                "uniformity. It is the scalar limit of retro_focus_offset: a returning focus displaced "
+                "by Delta is, at the forward focus, wider by sqrt(1 + (Delta/z_R)^2), which is 1.2 at "
+                "Delta = 0.66 z_R, while the full term also moves where along z the two arms peak.",
         impl_fitter="rb5s6s.fullmodel:fringe_survival_mc",
         impl_twin="-", impl_mc="-",
         param_keys="rho, e1_dot_e2",
@@ -635,21 +656,26 @@ REGISTRY: tuple[ModelTerm, ...] = (
 
     ModelTerm(
         term_id="radiation_trapping",
-        status_fitter_2025="absorbed:amplitude",
-        status_twin_2025="absorbed:amplitude", status_mc_2025="n/a",
-        status_fitter_campaign="absorbed:amplitude",
-        status_twin_campaign="absorbed:amplitude", status_mc_campaign="n/a",
-        physics="Trapped D-line cascade photons rescale the collected amplitude by a constant across the scan and "
-                "cannot reshape the line, because the detected photon's frequency does not depend on the "
-                "993 nm detuning. The per-trace free amplitude absorbs it. It matters only where an "
-                "amplitude is read as a density, which scripts/run_amplitude_trapping.py measures."
+        status_fitter_2025="owed:trapping-window",
+        status_twin_2025="owed:trapping-window", status_mc_2025="n/a",
+        status_fitter_campaign="owed:trapping-window",
+        status_twin_campaign="owed:trapping-window", status_mc_campaign="n/a",
+        physics="Trapped D-line cascade photons are re-emitted from a volume larger than the one the "
+                "993 nm drive excites, so the photons the detector collects come from a window whose "
+                "effective extent grows with the density: re-emission blurs the collected window with "
+                "temperature. The detected frequency does not depend on the 993 nm detuning, so it "
+                "cannot reshape the line directly, and the per-trace free amplitude absorbs its "
+                "constant part. What no free amplitude absorbs is the window it moves, which the "
+                "moments read through the ramp's distribution of shifts along z (re-read 2026-09-25 "
+                "with the thesis session, from absorbed:amplitude). It also matters where an amplitude "
+                "is read as a density, which scripts/run_amplitude_trapping.py measures."
 ,
         impl_fitter="-",
         impl_twin="rb5s6s.forecast:build_world_trace",
         impl_mc="-",
         param_keys="halo_fraction",
         thesis_anchor="Table 7.5",
-        wiki_page="photon-counting.md", methods_page="docs/methods/04_the_composite_model.md",
+        wiki_page="the-cascade-and-f-depletion.md", methods_page="docs/methods/04_the_composite_model.md",
         evidence="results/twin_term_census.csv: radiation_trapping ('the fitter parks it in "
                  "beta_self and the collisional coefficient reads high')",
     ),
@@ -797,6 +823,96 @@ REGISTRY: tuple[ModelTerm, ...] = (
     ),
 
     ModelTerm(
+        term_id="retro_focus_offset",
+        status_fitter_2025="owed:retro-waist", status_twin_2025="owed:retro-waist",
+        status_mc_2025="n/a",
+        status_fitter_campaign="owed:retro-waist",
+        status_twin_campaign="owed:retro-waist", status_mc_campaign="n/a",
+        physics="The returning lens (lens 8, f = 150 mm) and its mirror, a distance d behind it, image "
+                "the forward focus back onto itself only for a lens one focal length from the atoms and a "
+                "mirror at its focal plane. For a lens displaced by delta the round trip is, to first "
+                "order, minus a free propagation of 2 delta and a weak lens that vanishes only for d = f, "
+                "so the returning focus sits Delta = 2 delta + 2 z_R^2 (f - d)/f^2 away, positive toward "
+                "the lens. The owner gives d as 25 to 35 mm (2026-09-25): at d = 30 mm the fixed part is "
+                "0.344 mm (0.061 z_R), the power overlap of the two modes 0.99908, and a lens 1 mm out "
+                "puts the returning focus 2.34 mm (0.41 z_R) away (probe:1ec2face). At d = f it is 2 delta "
+                "alone. The two "
+                "arms' shifts and the Rabi frequency sqrt(I_fwd I_ret) then peak at different z, which "
+                "reshapes the ramp's distribution and so the odd moments that read alpha. "
+                "retro_mismatch is this term's scalar limit.",
+        impl_fitter="-", impl_twin="-", impl_mc="-",
+        param_keys="retro_focus_offset_m, lens8_displacement_m, mirror_behind_lens8_m",
+        thesis_anchor="Section 7.4.2",
+        wiki_page="standing-waves.md", methods_page="docs/methods/04_the_composite_model.md",
+        evidence="docs/plan/12_open-apparatus-items.md (the returning lens's focus along the beam), "
+                 "owed to the campaign's micrometric stage and infrared-viewer check "
+                 "(docs/plan/03_optics-protocol.md, section 4.2b2)",
+    ),
+
+    ModelTerm(
+        term_id="sweep_axis_curvature",
+        status_fitter_2025="owed:axis-curvature", status_twin_2025="owed:axis-curvature",
+        status_mc_2025="n/a",
+        status_fitter_campaign="owed:axis-curvature",
+        status_twin_campaign="owed:axis-curvature", status_mc_campaign="n/a",
+        physics="The frequency axis the traces are read on is not exactly linear: the ruler's "
+                "non-linearity map reads a curvature in its interior bins, and a quadratic term in the "
+                "axis turns an even moment of the line into a spurious odd one, degenerate at first "
+                "order with the ramp's own asymmetry. The prior is the ruler's two bins that bracket "
+                "the lines' own times in the sweep, not a fit across the interior, whose leverage "
+                "reaches far past them (the thesis side's reading of 2026-09-25, not yet re-obtained "
+                "here). The ripple below the 12.5 MHz teeth is what the marker still owes.",
+        impl_fitter="-", impl_twin="-", impl_mc="-",
+        param_keys="axis_curvature_per_mhz",
+        thesis_anchor="Section 7.3.3",
+        wiki_page="the-wavemeter-and-the-frequency-axis.md",
+        methods_page="docs/methods/05_the_frequency_ruler.md",
+        evidence="results/ruler_nlmap.csv: the two bins that bracket the lines' own sweep times, the "
+                 "prior this term would carry. No committed fit carries a curvature term "
+                 "(scripts/run_ultra_joint.py:Cell)",
+    ),
+
+    ModelTerm(
+        term_id="amplitude_slope",
+        status_fitter_2025="owed:axis-curvature", status_twin_2025="owed:axis-curvature",
+        status_mc_2025="n/a",
+        status_fitter_campaign="owed:axis-curvature",
+        status_twin_campaign="owed:axis-curvature", status_mc_campaign="n/a",
+        physics="A gain or drive power drifting linearly across the sweep multiplies the line by "
+                "(1 + a delta), which moves the centroid by a mu2 and the third central moment by "
+                "a (mu4 - 3 mu2^2), the line's fourth cumulant, at first order: an odd moment made from "
+                "the even ones, degenerate with the ramp's asymmetry exactly where alpha is read.",
+        impl_fitter="-", impl_twin="-", impl_mc="-",
+        param_keys="amplitude_slope_per_mhz",
+        thesis_anchor="Section 7.3.3",
+        wiki_page="the-wavemeter-and-the-frequency-axis.md",
+        methods_page="docs/methods/05_the_frequency_ruler.md",
+        evidence="the same ruler and detection chain as sweep_axis_curvature. No committed fit "
+                 "carries a slope term (scripts/run_ultra_joint.py:Cell)",
+    ),
+
+    ModelTerm(
+        term_id="quadratic_zeeman",
+        status_fitter_2025="owed:quadratic-zeeman", status_twin_2025="owed:quadratic-zeeman",
+        status_mc_2025="n/a",
+        status_fitter_campaign="owed:quadratic-zeeman",
+        status_twin_campaign="owed:quadratic-zeeman", status_mc_campaign="n/a",
+        physics="In a field B the m_F = 0 components shift by +-(g_J mu_B B)^2 (1/dE_6S - 1/dE_5S)/4, "
+                "positive on the F = I + 1/2 line and negative on the F = I - 1/2 line: 0.929 kHz for "
+                "87Rb and 2.091 kHz for 85Rb at 1 G, so each isotope's pair separates by 1.857 and "
+                "4.182 kHz per G^2 (probe:672aba88). It moves each line's centre, which the free centre "
+                "absorbs, and the spread of the m_F components is a width far below the collisional one "
+                "at a few gauss. A resistive heater's field squared scales with its power, roughly T - "
+                "T_amb, about twofold from 70 to 130 C while the density grows about fiftyfold, so it "
+                "cannot mimic beta_self. The field at the cell was not recorded.",
+        impl_fitter="-", impl_twin="-", impl_mc="-",
+        param_keys="B_gauss",
+        thesis_anchor="Appendix A.12",
+        wiki_page="magnetic-sublevels.md", methods_page="docs/methods/08_assumptions_and_outlook.md",
+        evidence="probe:672aba88",
+    ),
+
+    ModelTerm(
         term_id="population_lens",
         status_fitter_2025="owed:population-lens", status_twin_2025="owed:population-lens",
         status_mc_2025="owed:population-lens",
@@ -851,6 +967,18 @@ def carried_term_ids(consumer: str, regime: str) -> tuple[str, ...]:
 def registry_digest() -> str:
     """`executed_digest` of the twin's 2025 carried set: the model of record."""
     return executed_digest(carried_term_ids("twin", "2025"))
+
+
+def registry_content_digest() -> str:
+    """The digest of the registry's whole STATEMENT: every term id and every one of its six statuses, in row order.
+
+    `registry_digest` stamps what a computation CARRIED (the twin's 2025 carried set), so a term added as owed or a
+    status moved between absorbed and owed leaves it unchanged, correctly: no table computed with the carried set
+    changed its model. What did change is what the registry SAYS about the model, and a reader keyed on that (the thesis
+    side's model_sync, 2026-09-26) needs a digest that moves with every status. This is that digest; the two are stated
+    side by side, and neither stands in for the other."""
+    rows = [[row.term_id] + [str(getattr(row, f)) for f in STATUS_FIELDS] for row in REGISTRY]
+    return hashlib.sha256("\n".join("\t".join(r) for r in rows).encode("utf-8")).hexdigest()[:16]
 
 
 def consumer_digest(consumer: str, regime: str) -> str:
@@ -967,6 +1095,139 @@ def manifest() -> dict:
 
 
 # ---------------------------------------------------------------------------
+# The preflight (O58): a twin or Monte Carlo run refuses at its start unless it is the registry's
+# ---------------------------------------------------------------------------
+
+#: THE TWIN AND THE MONTE CARLO MAY ONLY COME TOGETHER. The terms one of the two carries and the
+#: other does not, frozen at the registry of 2026-09-25: a registry edit that adds a divergence is
+#: refused at the start of every twin and Monte Carlo computation, and a paydown shrinks this set in
+#: the same commit. Plan V6.1's single full model is what empties it. Raising it is a raising
+#: reseed and needs the owner's word (the rule file's reseed door).
+PAIRING_BASELINE: dict = {
+    "2025": frozenset({
+        "bore_clipping", "companion_pull_reduction", "depletion_cascade", "hyperfine_pumping",
+        "hyperfine_shares", "laser_kernel", "saturation", "self_broadening_vdw", "transit_chirp"}),
+    "campaign": frozenset({
+        "bore_clipping", "companion_pull_reduction", "hyperfine_pumping", "hyperfine_shares",
+        "laser_kernel", "saturation", "self_broadening_vdw", "transit_chirp"}),
+}
+
+#: THE SAME TERM THROUGH DIFFERENT CODE IS NOT THE SAME MODEL. The terms both paths carry whose
+#: `impl_twin` and `impl_mc` name different code sites, frozen the same day and under the same
+#: rule: every shared term runs through `volume_line` on the twin and `run_kernel_mc` on the Monte
+#: Carlo today, and the single full model makes both name one site. So a PAYDOWN moves a term onto ONE
+#: code site: carrying it on the twin through a second implementation of what the Monte Carlo already
+#: does trades a pairing debt for a code debt, and the second ratchet refuses it.
+IMPL_BASELINE: dict = {
+    "2025": frozenset({"ac_stark_ramp", "axial_collection_window", "beam_quality_m2", "natural_width",
+                       "transit"}),
+    "campaign": frozenset({"ac_stark_ramp", "axial_collection_window", "beam_quality_m2",
+                           "natural_width", "transit"}),
+}
+
+#: the kinds a declared study may ADD to a path: everything the registry names as outside the
+#: path's committed results except `n/a`, which is outside the method's own scope
+_ADDABLE_KINDS = ("owed", "neglected", "absorbed")
+
+
+def pairing_gaps(regime: str) -> dict:
+    """{term_id: (status_twin, status_mc)} for every term exactly one of the twin and the Monte
+    Carlo carries at `regime`."""
+    tw = set(carried_term_ids("twin", regime))
+    mc = set(carried_term_ids("mc", regime))
+    return {t: (getattr(_BY_ID[t], f"status_twin_{regime}"), getattr(_BY_ID[t], f"status_mc_{regime}"))
+            for t in sorted(tw ^ mc)}
+
+
+def impl_gaps(regime: str) -> dict:
+    """{term_id: (impl_twin, impl_mc)} for every term BOTH paths carry at `regime` through
+    different code sites."""
+    both = set(carried_term_ids("twin", regime)) & set(carried_term_ids("mc", regime))
+    return {t: (_BY_ID[t].impl_twin, _BY_ID[t].impl_mc) for t in sorted(both)
+            if _BY_ID[t].impl_twin != _BY_ID[t].impl_mc}
+
+
+def _pairing_refusals(regime: str) -> list:
+    bad = []
+    gaps = pairing_gaps(regime)
+    for t, (st_tw, st_mc) in gaps.items():
+        other, st = ("mc", st_mc) if kind_of(st_tw) == "carried" else ("twin", st_tw)
+        if kind_of(st) not in ("owed", "n/a"):
+            bad.append(f"pairing: {t} is carried by one path and {st!r} on the {other}, "
+                       "neither owed nor n/a")
+    grown = sorted(set(gaps) - PAIRING_BASELINE[regime])
+    if grown:
+        bad.append(f"pairing ratchet: {', '.join(grown)} now divide(s) the twin from the Monte Carlo "
+                   f"at {regime}, beyond the frozen baseline; the two paths may only come together")
+    split = sorted(set(impl_gaps(regime)) - IMPL_BASELINE[regime])
+    if split:
+        bad.append(f"code ratchet: {', '.join(split)} now run(s) through different code on the twin "
+                   f"and the Monte Carlo at {regime}, beyond the frozen baseline")
+    return bad
+
+
+def preflight(consumer: str, regime: str, executes: Iterable[str], *, scope: str = "result",
+              gaps: Optional[dict] = None, extras: Optional[dict] = None) -> dict:
+    """Refuse a twin, fitter or Monte Carlo run BEFORE its first atom unless its term set is the
+    registry's (O58). Returns the block a manifest carries.
+
+    `executes` is the set of registry term ids the configured run WILL execute, derived by the
+    caller from its own knobs before it computes. With `scope="result"` (a run standing behind a
+    quoted number) it must equal `carried_term_ids(consumer, regime)` exactly. With
+    `scope="study"` (a run that switches terms on purpose, a term budget or an ablation) every
+    carried term it drops is named in `gaps` and every term it adds in `extras`, each with a
+    reason of six words or more; an added term must be a registry term the path does not carry
+    and whose kind is not `n/a`. Whatever the scope, the registry's own pairing must hold: every
+    term only one path carries is `owed` or `n/a` on the other, and neither ratchet has grown.
+    """
+    if consumer not in CONSUMERS:
+        raise ValueError(f"unknown consumer {consumer!r}; expected one of {CONSUMERS}")
+    if regime not in REGIMES:
+        raise ValueError(f"unknown regime {regime!r}; expected one of {REGIMES}")
+    if scope not in ("result", "study"):
+        raise ValueError(f"unknown scope {scope!r}; expected 'result' or 'study'")
+    gaps, extras = dict(gaps or {}), dict(extras or {})
+    ex = set(executes)
+    carried = set(carried_term_ids(consumer, regime))
+    attr = f"status_{consumer}_{regime}"
+    bad = []
+    unknown = sorted(t for t in ex | set(gaps) | set(extras) if t not in _BY_ID)
+    if unknown:
+        bad.append(f"unknown term id(s): {', '.join(unknown)}")
+    if scope == "result" and (gaps or extras):
+        bad.append("a result run declares no gaps and no extras: it is the registry's model or it "
+                   "is a study (scope='study')")
+    for label, table in (("gap", gaps), ("extra", extras)):
+        for t, why in table.items():
+            if len(str(why).split()) < 6:
+                bad.append(f"{label} {t!r}: its reason is under six words")
+    for t in gaps:
+        if t in _BY_ID and t not in carried:
+            bad.append(f"gap {t!r} is not carried by {consumer}/{regime}, so there is nothing to drop")
+    for t in extras:
+        if t in _BY_ID:
+            k = kind_of(getattr(_BY_ID[t], attr))
+            if t in carried:
+                bad.append(f"extra {t!r} is already carried by {consumer}/{regime}")
+            elif k not in _ADDABLE_KINDS:
+                bad.append(f"extra {t!r} is {k!r} for {consumer}/{regime}, outside the path's scope")
+    missing = sorted(carried - ex - set(gaps))
+    if missing:
+        bad.append(f"carried term(s) the run will not execute and does not declare: "
+                   f"{', '.join(missing)}")
+    beyond = sorted(t for t in ex - carried - set(extras) if t in _BY_ID)
+    if beyond:
+        bad.append(f"term(s) the run executes that {consumer}/{regime} does not carry and the run "
+                   f"does not declare: {', '.join(beyond)} (update the registry, or declare a study)")
+    bad += _pairing_refusals(regime)
+    if bad:
+        raise ModelReduced(f"preflight {consumer}/{regime} ({scope}) REFUSED: " + "; ".join(bad))
+    return {"consumer": consumer, "regime": regime, "scope": scope, "executes": sorted(ex),
+            "gaps": gaps, "extras": extras, "executed_digest": executed_digest(ex),
+            "consumer_digest": consumer_digest(consumer, regime), "registry_digest": registry_digest()}
+
+
+# ---------------------------------------------------------------------------
 # The census cross-check
 # ---------------------------------------------------------------------------
 
@@ -1009,6 +1270,10 @@ CENSUS_ROW_FOR: dict = {
     "resonant_exchange_by_line_share": (),
     "pump_depletion": (),
     "population_lens": (),
+    "retro_focus_offset": (),
+    "sweep_axis_curvature": (),
+    "amplitude_slope": (),
+    "quadratic_zeeman": (),
 }
 
 if set(CENSUS_ROW_FOR) != set(TERM_IDS):

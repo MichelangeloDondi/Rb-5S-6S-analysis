@@ -16,7 +16,7 @@ the collection window (BASE below, and the threaded world recovers both). Every
 cell is the campaign's five-rung power ladder with a drawn rung order and every
 physics layer of the world builder on, replicated over N trace sets. Per cell:
 
-  skew   mu3 per rung through rb5s6s.cumulants.windowed_moments (converged, pedestal removed,
+  skew   mu3 per rung through rb5s6s.moments.windowed_moments (converged, pedestal removed,
          the window started at the carrier), inverted through the noiseless
          quiet curve's LOCAL power exponent at the rungs admitted on two
          statistics (wrong-sign fraction below 0.35, median beyond three
@@ -68,9 +68,12 @@ from rb5s6s.qc import median_standard_error                        # noqa: E402
 # MOMENTS AT ORDERS 5 AND 7 (O33, A72): this producer asks for (3, 5, 7), and while
 # k3 = mu3 exactly, kappa5 and kappa7 are differences of large terms whose cancellation the
 # moments do not carry. Orders 2 and 3 are basis-independent; these are not.
-from rb5s6s.cumulants import windowed_moments                     # noqa: E402
+from rb5s6s.moments import windowed_moments                     # noqa: E402
 from rb5s6s.ruler import bessel_tooth_weights                      # noqa: E402
 from rb5s6s.amplitudes import predicted_shares                     # noqa: E402
+
+#: O58: this module's twin runs are a declared STUDY, and this is its reason
+_TWIN_STUDY = 'the three-channel forecast on the layered world, a registered approximation of the joint twin'
 
 OUT = C.RESULTS_DIR / "three_channel_forecast.csv"
 
@@ -371,7 +374,7 @@ def _trace(cfg: dict, power_w: float, order_idx: int, seed: int, noise: float = 
         drift_mhz_total=drift_total, noise_frac_bright=noise,
         adc_levels=int(round(2.0 ** cfg["scope"][2])), resolve_shift=True, tooth_of=tooth_of,
         z_ratio=z_ratio, fringe_density=fringe,
-        grid_span=(None if cfg["f_mod"] is None else (-(3.0 * cfg["f_mod"] + 60.0), 3.0 * cfg["f_mod"] + 60.0)))
+        grid_span=(None if cfg["f_mod"] is None else (-(3.0 * cfg["f_mod"] + 60.0), 3.0 * cfg["f_mod"] + 60.0)), registry=_TWIN_STUDY)
     return nu, v, kappa, gamma, transit
 
 
@@ -463,7 +466,7 @@ def _area(nu, y):
     would otherwise dominate the area at every rung.
     """
     from rb5s6s._compat import trapezoid
-    from rb5s6s.cumulants import wing_baseline
+    from rb5s6s.moments import wing_baseline
     return float(trapezoid(y - wing_baseline(nu, y), nu))
 
 

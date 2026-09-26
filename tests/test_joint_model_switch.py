@@ -46,7 +46,7 @@ from scipy import stats
 
 from rb5s6s._compat import trapezoid
 from rb5s6s.constants import GAMMA_NAT_HZ, W0_BAND_M, W0_CENTRAL_M, transit_fwhm_from_w0
-from rb5s6s.cumulants import windowed_moments
+from rb5s6s.moments import windowed_moments
 from rb5s6s.density import density_units
 from rb5s6s.volume_line import GaussianBeam, collection_half_window_m, joint_spectrum
 from rb5s6s import beam_field
@@ -56,6 +56,9 @@ from rb5s6s.global_fit import fit_global
 from rb5s6s.beta import fit_beta_self
 from rb5s6s.forecast import synthetic_traces, _traces_from_shape
 from rb5s6s.noise import load_noise_model
+
+#: O58: this module's twin runs are a declared STUDY, and this is its reason
+_TWIN_STUDY = "a unit test of the generator's own arithmetic, not a quoted number"
 # lever_crosscheck_beta and sharing_bic are exercised through the LC./SB. module aliases
 # inside their own wiring tests below (the spy patches the MODULE attribute, so the call
 # must go through the module, not a name bound at import time)
@@ -294,7 +297,7 @@ def test_forecast_synthetic_traces_round_trips_with_fit_condition():
     f, v = synthetic_traces(gamma_coll_true, sigma_laser_true, transit_fwhm=float("nan"),
                             n_traces=5, n_points=1800, noise=0.006, s0=s0_true, model="joint",
                             T_C=T_C, n_path=16000, seed=9,
-                            rng=np.random.default_rng(9))
+                            rng=np.random.default_rng(9), registry=_TWIN_STUDY)
     fit = fit_condition(f, v, T_C=T_C, s0=s0_true, model="joint", joint_n_path=4000)
     assert abs(fit["gamma_coll"] - gamma_coll_true) < 3 * fit["gamma_coll_err"] + 0.1, fit
     assert abs(fit["sigma_laser"] - sigma_laser_true) < 3 * fit["sigma_laser_err"] + 0.1, fit
@@ -474,8 +477,8 @@ def test_noise_off_gives_identical_deterministic_lines_on_both_branches():
         kw = dict(common, model=model)
         if model == "joint":
             kw.update(s0=0.3, T_C=115.0, n_path=1500, seed=7)
-        f1, v1 = synthetic_traces(1.1, 0.6, 0.9575, rng=np.random.default_rng(1), **kw)
-        f2, v2 = synthetic_traces(1.1, 0.6, 0.9575, rng=np.random.default_rng(999), **kw)
+        f1, v1 = synthetic_traces(1.1, 0.6, 0.9575, rng=np.random.default_rng(1), **kw, registry=_TWIN_STUDY)
+        f2, v2 = synthetic_traces(1.1, 0.6, 0.9575, rng=np.random.default_rng(999), **kw, registry=_TWIN_STUDY)
         for a1, a2 in zip(v1, v2):
             assert np.array_equal(a1, a2), (
                 f"model={model!r}: noise=0.0 should be exactly independent of the rng draw")
@@ -484,11 +487,11 @@ def test_noise_off_gives_identical_deterministic_lines_on_both_branches():
     f_direct, v_direct = tv.synthetic_traces(
         beam=beam, T_C=115.0, S0_mhz=0.3, gamma_hom_mhz=GNAT_MHZ + 1.1, sigma_laser_mhz=0.6,
         span_mhz=40.0, n_points=600, n_traces=3, noise=0.0, amp=1.0, amp_spread=0.05,
-        offset=0.01, offset_spread=0.002, n_path=1500, seed=7, rng=np.random.default_rng(1))
+        offset=0.01, offset_spread=0.002, n_path=1500, seed=7, rng=np.random.default_rng(1), registry=_TWIN_STUDY)
     f_forecast, v_forecast = synthetic_traces(
         1.1, 0.6, 0.9575, s0=0.3, T_C=115.0, n_path=1500, seed=7, model="joint",
         n_traces=3, n_points=600, span_mhz=40.0, noise=0.0, amp=1.0, amp_spread=0.05,
-        offset=0.01, offset_spread=0.002, rng=np.random.default_rng(1))
+        offset=0.01, offset_spread=0.002, rng=np.random.default_rng(1), registry=_TWIN_STUDY)
     for a, b in zip(v_direct, v_forecast):
         assert np.array_equal(a, b), (
             "forecast.synthetic_traces(model='joint', noise=0.0) should match "
@@ -522,9 +525,9 @@ def test_correlated_noise_under_the_joint_branch_reproduces_the_laws_integrated_
     law = load_noise_model("results/noise_model.csv", role="p_sweep", pool="median")
     assert law["tau_int"] > 1.0, "the committed law must carry a correlation"
     kw = dict(s0=0.0, T_C=115.0, n_path=1500, seed=13, n_traces=1, n_points=4000, model="joint")
-    _, v_law = synthetic_traces(0.55, 1.6, 0.9575, noise=law, rng=np.random.default_rng(11), **kw)
+    _, v_law = synthetic_traces(0.55, 1.6, 0.9575, noise=law, rng=np.random.default_rng(11), **kw, registry=_TWIN_STUDY)
     _, v_white = synthetic_traces(0.55, 1.6, 0.9575, noise=dict(law, tau_int=1.0),
-                                  rng=np.random.default_rng(11), **kw)
+                                  rng=np.random.default_rng(11), **kw, registry=_TWIN_STUDY)
     assert not np.array_equal(v_law[0], v_white[0]), (
         "model='joint' should carry the law's own tau_int now, exactly as model='convolution' "
         "already does")
@@ -537,9 +540,9 @@ def test_halo_fraction_under_the_joint_branch_raises_the_amplitude():
     kw = dict(s0=0.0, T_C=115.0, n_path=1500, seed=5, n_traces=1, n_points=400, span_mhz=40.0,
              noise=0.0, amp_spread=0.0, offset_spread=0.0, offset=0.0, model="joint")
     f0, v0 = synthetic_traces(1.0, 0.5, float("nan"), halo_fraction=0.0,
-                              rng=np.random.default_rng(0), **kw)
+                              rng=np.random.default_rng(0), **kw, registry=_TWIN_STUDY)
     f1, v1 = synthetic_traces(1.0, 0.5, float("nan"), halo_fraction=0.25,
-                              rng=np.random.default_rng(0), **kw)
+                              rng=np.random.default_rng(0), **kw, registry=_TWIN_STUDY)
     ratio = float(np.max(v1[0]) / np.max(v0[0]))
     assert ratio == pytest.approx(1.25, rel=1e-9), f"halo_fraction=0.25 should scale the peak by 1.25x, got {ratio}"
 
@@ -568,13 +571,13 @@ def test_residual_seam_under_the_joint_branch_reproduces_the_pools_statistics():
         kw = dict(common, model=model)
         if model == "joint":
             kw.update(s0=0.0, T_C=115.0, n_path=1500, seed=17)
-        f, v = synthetic_traces(0.8, 0.5, 0.9575, rng=np.random.default_rng(41), **kw)
+        f, v = synthetic_traces(0.8, 0.5, 0.9575, rng=np.random.default_rng(41), **kw, registry=_TWIN_STUDY)
         diff = v[1] - v[0]
         kurt_by_model[model] = float(stats.kurtosis(diff, fisher=True, bias=False))
 
     kw_g = dict(common, model="joint", s0=0.0, T_C=115.0, n_path=1500, seed=17,
                residual_source=None)
-    f, v = synthetic_traces(0.8, 0.5, 0.9575, rng=np.random.default_rng(41), **kw_g)
+    f, v = synthetic_traces(0.8, 0.5, 0.9575, rng=np.random.default_rng(41), **kw_g, registry=_TWIN_STUDY)
     kurt_gaussian = float(stats.kurtosis(v[1] - v[0], fisher=True, bias=False))
 
     assert kurt_by_model["joint"] > 3.0 * max(kurt_gaussian, 0.05), kurt_by_model

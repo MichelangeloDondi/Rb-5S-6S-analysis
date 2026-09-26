@@ -214,6 +214,8 @@ a reader.
   technique that fixes the Gaussian's laser-noise coefficient at twice a
   single-pass value.
 
+*Model status:* what the fitter, the twin and the Monte Carlo carry of this page's physics is generated from the registry on [the model terms](../methods/model_terms.md), for `natural_width`.
+
 ---
 
 [← Standing waves](standing-waves.md) · *Experimental spectroscopy, 3 of 12* · [Transit-time broadening →](transit-time-broadening.md)

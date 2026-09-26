@@ -41,6 +41,12 @@ $PY private/checks/ssot_bind.py --bind >/dev/null || rc=1
 echo "propagate: 1b/5 rewriting ref: citations and the reference graph"
 $PY scripts/check_references.py --fix  >/dev/null 2>&1 || true
 $PY scripts/check_references.py --graph >/dev/null || rc=1
+# THE THIRD CARRIER (O40, O59): a DERIVED number, `ref:expr:`, follows its sources only through ssot_derived. The hook
+# ran it and this chain did not, so a landing propagated its bound numbers and left its derived ones behind.
+if [ -f private/checks/ssot_derived.py ]; then
+  echo "propagate: 1c/5 rewriting derived numbers (ssot_derived --fix)"
+  $PY private/checks/ssot_derived.py --fix >/dev/null || rc=1
+fi
 
 # 2. THE STATUS COLUMN, which annotate_results_status writes and which precheck
 #    refuses a staged CSV without. It runs LAST among the producers by design.
@@ -74,6 +80,8 @@ $PY scripts/make_figures.py >/dev/null || rc=1
 git add figures/ docs/ || rc=1
 
 if [ $rc -eq 0 ]; then
+  # O59: a whole propagation drains the hook's deferral debt, which the landing refuses to open or commit over
+  [ -f private/checks/ssot_hook.py ] && $PY private/checks/ssot_hook.py --mark
   echo "propagate: done. Run scripts/prefloor.sh next; it grades a propagated tree."
 else
   echo "propagate: a stage failed above. Fix it and re-run; do NOT hand-run the rest."

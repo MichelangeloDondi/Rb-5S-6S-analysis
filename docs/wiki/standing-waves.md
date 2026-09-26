@@ -145,8 +145,9 @@ The retro ratio above absorbs "imperfect overlap" into a single number, which is
 right for the channel arithmetic and hides the geometry that produces it. A
 mirror tilt $\theta$ does not simply reduce a ratio. Through a retro lens it
 reaches the atoms as a lateral **offset** as well, and on this bench, a mirror
-about 50 mm from an $f = 150$ mm lens, the conversion is **300 mm of offset per
-radian of tilt**. The beams therefore walk apart in position three hundred times
+25 to 35 mm behind an $f = 150$ mm lens, the conversion is **300 mm of offset per
+radian of tilt**, twice the focal length whatever the mirror's distance while the atoms sit at the lens's
+focus. The beams therefore walk apart in position three hundred times
 faster than they tilt, and it is the walking apart that matters.
 
 Two consequences. The residual two-photon wave-vector $2k\sin(\theta/2)$ returns
@@ -171,6 +172,16 @@ $M^2 = 3$.
 A tilt reaches the fringes through the offset it produces and not
 through its angle. The wavefront mismatch remains unmodelled, so these are an
 upper bound on the fringe effect at non-zero tilt.
+
+The returning beam's focus need not sit on the forward one either. Lens 8 and
+its mirror image the forward focus back onto itself only for a lens one focal
+length from the atoms and a mirror at its focal plane. A lens displaced by
+$\delta$ puts the returning focus $\Delta = 2\delta + 2 z_R^2 (f - d)/f^2$ away,
+toward the lens, for a mirror a distance $d$ behind it, which no page
+records. The full-model line carries it as `retro_focus_offset_m`, reading the
+returning beam as the forward field imaged about $\Delta$ where each atom
+crosses, and the campaign puts lens 8 on a micrometric stage
+([open apparatus items](../plan/12_open-apparatus-items.md)).
 
 And the retro ratio cannot supply the bound. The value this repository
 carries is an assumption, recorded as never informed by these data, and the
@@ -267,6 +278,8 @@ the private correction record carries the figure that was replaced.
   feeds once the standing wave is resolved.
 - [Doppler-free geometries](doppler-free-geometries.md), the general
   wavevector-closure rule behind the retro-reflected geometry.
+
+*Model status:* what the fitter, the twin and the Monte Carlo carry of this page's physics is generated from the registry on [the model terms](../methods/model_terms.md), for `fringe_tail`, `retro_focus_offset`, `retro_mismatch`, `retro_offset`, `retro_tilt`.
 
 ---
 

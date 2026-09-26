@@ -208,7 +208,7 @@ def main() -> int:
         w = csv.DictWriter(fh, fieldnames=list(out[0]))
         w.writeheader()
         w.writerows(out)
-    print(f"\nwrote {OUT.relative_to(C.REPO_ROOT)}  ({len(out)} conditions)")
+    print(f"\nwrote {OUT}  ({len(out)} conditions)")
     return 0
 
 

@@ -336,7 +336,7 @@ $\langle s\rangle=0.91(5)$, so ⁸⁵Rb is $0.09(8)$ *more* sublinear, which is 
 sign trapping predicts (⁸⁵Rb has $2.6\times$ the absorbers) but only at
 $\sim1\sigma$, a hint rather than a detection. (ii) The peak-*height* ratios are
 **non-monotonic** in density (e.g. 993.4207/993.4121 nm runs
-$1.09\to1.01\to2.48\to1.94$), whereas trapping would bend them *monotonically*,
+$1.09\to1.01\to2.48\to1.94$ <!-- other-quantity: a sequence of ratios -->), whereas trapping would bend them *monotonically*,
 so the 30 to 50% degeneracy-law disagreement (module M10, on the *areas*) is
 between-block **drift**, not trapping. (iii) A one-parameter trapping model does not improve
 the fit over pure $\propto N$ (both $\chi^2_\text{red}\gg1$, dominated by the

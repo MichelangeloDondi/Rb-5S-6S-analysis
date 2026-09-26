@@ -15,7 +15,7 @@ what does each FAMILY OF OBSERVABLES deliver when every trace is pooled? The
 two producers share their estimators, which is why this file imports that one
 and does not copy `_trace`, `_mu357` or `_centre` (the standing rule that a
 numerical routine appearing twice in `scripts/` belongs in the package; these
-three are thin wrappers over `rb5s6s.cumulants` and `rb5s6s.linefit`, and the
+three are thin wrappers over `rb5s6s.moments` and `rb5s6s.linefit`, and the
 world assembly in `_trace` is the thing that must not fork).
 
 THE ESTIMATE IS THE SCATTER OVER TRACE SETS, NEVER A FITTER COVARIANCE. One
@@ -93,6 +93,9 @@ from rb5s6s.lineshape import ramp_mean_over_s0  # noqa: E402  (O27: the ramp's s
 from rb5s6s.fibre import HE11Field, solve_he11, transit_fwhm as onf_transit_fwhm
 from rb5s6s.fullmodel import convolution_licence
 from rb5s6s.stark import stark_shift_S0_mhz
+
+#: O58: this module's twin runs are a declared STUDY, and this is its reason
+_TWIN_STUDY = 'the observable taxonomy on the layered world, a registered approximation of the joint twin'
 
 # ---------------------------------------------------------------- the shared estimators
 # A spawned worker re-imports THIS file, so the load below runs in the child
@@ -334,7 +337,7 @@ def _trace_arm(cfg, power_w, order_idx, seed, arm, noise):
         power_max_w=max(powers), cycles_at_max=1.0,
         drift_mhz_total=cfg["drift_per_min"] * TCF.MIN_PER_TRACE * len(powers),
         noise_frac_bright=noise, adc_levels=int(round(2.0 ** cfg["scope"][2])),
-        resolve_shift=True, grid_span=(-span, span))
+        resolve_shift=True, grid_span=(-span, span), registry=_TWIN_STUDY)
     return nu, v, kap, gamma, tr
 
 
@@ -406,7 +409,7 @@ def _windowed_mu2(grid, y, W_mhz) -> float:
     # MOMENTS, NOT CUMULANTS (O33, and O49 which retired the cumulant name outright). Order 2
     # only, where the cumulant and the moment were always identical, so the switch cannot
     # move a committed cell; it removes the retired name, which is the point of doing it everywhere.
-    from rb5s6s.cumulants import windowed_moments
+    from rb5s6s.moments import windowed_moments
     v, info = windowed_moments(grid, y, W_mhz, (2,), centre0=0.0,
                                  baseline="wings")
     if not info["converged"] or not info.get("in_span", True):

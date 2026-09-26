@@ -20,6 +20,9 @@ from rb5s6s import platforms as P
 from rb5s6s import constants as K
 from rb5s6s.stark import kappa_pred_per_watt
 
+#: O58: this module's twin runs are a declared STUDY, and this is its reason
+_TWIN_STUDY = "a unit test of the generator's own arithmetic, not a quoted number"
+
 #: The record's own shift at 225 mW (0.364, the static-tail prediction, until 2026-09-17).
 S0 = kappa_pred_per_watt(K.W0_CENTRAL_M, K.RHO_RETRO) * 0.225
 
@@ -39,22 +42,22 @@ def test_the_default_radiation_temperature_is_byte_identical():
     """t_bbr_k=None must reproduce the cell's old behaviour exactly, or every
     committed twin CSV silently moved."""
     from rb5s6s.forecast import build_world_trace
-    a = build_world_trace(1.0, S0, 130.0, 0, 1, np.random.default_rng(7), _LAYERS, **_kw())[1]
+    a = build_world_trace(1.0, S0, 130.0, 0, 1, np.random.default_rng(7), _LAYERS, **_kw(), registry=_TWIN_STUDY)[1]
     b = build_world_trace(1.0, S0, 130.0, 0, 1, np.random.default_rng(7), _LAYERS,
-                          t_bbr_k=None, **_kw())[1]
+                          t_bbr_k=None, **_kw(), registry=_TWIN_STUDY)[1]
     assert np.array_equal(a, b)
     # and passing the cell's OWN wall temperature explicitly is the same thing
     c = build_world_trace(1.0, S0, 130.0, 0, 1, np.random.default_rng(7), _LAYERS,
-                          t_bbr_k=403.15, **_kw())[1]
+                          t_bbr_k=403.15, **_kw(), registry=_TWIN_STUDY)[1]
     assert np.array_equal(a, c)
 
 
 def test_a_room_temperature_environment_changes_the_trace():
     """The other half: a switch that does nothing reports success."""
     from rb5s6s.forecast import build_world_trace
-    a = build_world_trace(1.0, S0, 130.0, 0, 1, np.random.default_rng(7), _LAYERS, **_kw())[1]
+    a = build_world_trace(1.0, S0, 130.0, 0, 1, np.random.default_rng(7), _LAYERS, **_kw(), registry=_TWIN_STUDY)[1]
     cold = build_world_trace(1.0, S0, 130.0, 0, 1, np.random.default_rng(7), _LAYERS,
-                             t_bbr_k=293.15, **_kw())[1]
+                             t_bbr_k=293.15, **_kw(), registry=_TWIN_STUDY)[1]
     assert not np.array_equal(a, cold)
 
 

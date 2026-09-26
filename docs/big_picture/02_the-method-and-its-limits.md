@@ -38,9 +38,9 @@ the mean leaves the spread untouched. At the twenty conditions drawn, all at
 130 °C, the total width is measured but its decomposition into components is not.
 In the left panel the split between the two components slides freely along a grey
 line of constant total width in MHz, the two are anticorrelated with a median
-correlation coefficient of −0.90, and one of the twenty one-sigma ellipses reaches
+correlation coefficient of [-0.82](../../results/twin_span_sweep.csv "ref:twin_span_sweep:CAMPAIGN:corr_median_power_arm"), and [2](../../results/twin_span_sweep.csv "ref:twin_span_sweep:CAMPAIGN:n_negative_gaussian_power_arm") of the twenty one-sigma ellipses reach
 negative Gaussian width. In the right panel the quantity actually measured, the
-fitted total, is known to 1.0 per cent within a condition, and no trend with
+fitted total, is known to [0.63](../../results/twin_span_sweep.csv "ref:twin_span_sweep:CAMPAIGN:total_fwhm_relerr_median_power_arm_pct") per cent at the median condition, and no trend with
 laser power survives the scatter between measurement blocks, which is several
 times larger than those bars.*
 
@@ -87,9 +87,9 @@ the shift as the square of the inverse spot size, but it raises the saturation
 parameter as the **fourth** power, because the two-photon coupling itself is
 quadratic in the field. So tightening the focus leaves the safe regime twice as
 fast as it gains signal. At the [42.38](../../rb5s6s/constants.py "ref:constant:W0_CENTRAL_M:1e6") µm spot of the 2025 sitting the parameter is
-0.173 and the square law is still safe, though no longer by an order of
+[0.173](../../results/platform_twins.csv "ref:platform_twins:cell_130C:cell:saturation_s") and the square law is still safe, though no longer by an order of
 magnitude. At the 16 µm a future sitting proposes it is
-8.5, and the predicted lopsidedness changes by a factor of three
+[8.5](../../results/platform_twins.csv "ref:platform_twins:cell_130C_tight:cell:saturation_s"), and the predicted lopsidedness changes by a factor of three
 ([fig24](../../figures/fig24_weak_field_limit.png)).
 
 2. An atom can fall out of the experiment mid-flight, and not come back.
@@ -120,7 +120,7 @@ sitting did not have. That is the single most valuable thing a further sitting
 would add, and section 5 costs it.
 
 The consequence for the published numbers is stated plainly wherever they
-appear: the light-shift bounds are **loose by a measured factor**, 2.8 on one
+appear: the light-shift bounds are **loose by a measured factor**, [2.8](../../results/saturation_companion.csv "ref:saturation_companion:C3d:factor_with_saturation_ratio_-1p2362") on one
 construction and 2.21 on the other, because the model behind them contains the
 light shift and neither companion. They are quoted as they stand, with the
 looseness and its size attached, rather than tightened by injecting a
@@ -238,11 +238,11 @@ The expected size is now computed rather than borrowed
 dipole-dipole term and the leading interaction is van der Waals, which means
 the coefficient follows from the same matrix elements that produced Δα(993),
 continued to imaginary frequency: C₆ = (3/π)∫α_5S(iω)α_6S(iω)dω. That gives
-**C₆(5S+6S) ≈ 5.4×10⁴ a.u.**
+**C₆(5S+6S) ≈ [5.4](../../results/beta_self_theory.csv "ref:expr:{beta_self_theory:pair_coefficients:c6_5s_6s} / 10000")×10⁴ a.u.**
 
 That absolute value should not be used on its own, and the reason is worth
 stating. Run on 7S, the one nS state in Rb whose self-broadening has been
-measured at all, the same code returns 5.61 kHz per 10¹² cm⁻³ against
+measured at all, the same code returns [5.61](../../results/beta_self_theory.csv "ref:beta_self_theory:beta_self_7s:predicted") kHz per 10¹² cm⁻³ against
 Zameroski 2014's measured 5.4 (129 ± 13 kHz/mTorr, converted at his own
 429 K), 4 per
 cent high and inside that measurement's bar. Before 2026-09-14 it returned 4.40,
@@ -269,9 +269,9 @@ and tail are common to the 6S and 7S rungs and divide out of the ratio.
 
 The ground-pair subtraction is not that kind of error and does not
 cancel, which is why the assumed ratio is a ratio of differences: with
-ΔC₆(6S) = 49828 and ΔC₆(7S) = 157294 a.u., the ratio 0.3168 enters
+ΔC₆(6S) = 49828 and ΔC₆(7S) = 157294 a.u., the ratio [0.3168](../../results/beta_self_theory.csv "ref:expr:({beta_self_theory:pair_coefficients:c6_5s_6s}-{beta_self_theory:pair_coefficients:c6_5s_5s})/({beta_self_theory:pair_coefficients:c6_5s_7s}-{beta_self_theory:pair_coefficients:c6_5s_5s})") enters
 through the (ΔC₆/ħ)^0.4 scaling and scales the *measured* 7S rate of
-5.290 kHz per 10¹² cm⁻³ by 0.3168^0.4 = 0.631 (before the exchange branches) and by
+5.290 kHz per 10¹² cm⁻³ by [0.3168](../../results/beta_self_theory.csv "ref:expr:({beta_self_theory:pair_coefficients:c6_5s_6s}-{beta_self_theory:pair_coefficients:c6_5s_5s})/({beta_self_theory:pair_coefficients:c6_5s_7s}-{beta_self_theory:pair_coefficients:c6_5s_5s})")^0.4 = [0.631](../../results/beta_self_theory.csv "ref:expr:(({beta_self_theory:pair_coefficients:c6_5s_6s}-{beta_self_theory:pair_coefficients:c6_5s_5s})/({beta_self_theory:pair_coefficients:c6_5s_7s}-{beta_self_theory:pair_coefficients:c6_5s_5s}))**0.4") (before the exchange branches) and by
 the ratio of the two rungs' exchange-branch factors (0.985 for 6S against 1.000 for 7S <!-- other-quantity: the 7S exchange-branch width factor, exactly 1 by construction, not a committed cell -->, the signs from the sum rule (A253), computed on
 2026-09-14, register A251), giving
 
@@ -287,12 +287,12 @@ line at 0.32 ± 0.01 MHz/mTorr, about 0.014 in these units against Zameroski's
 0.0054, a factor of 2.6, with no half-width or full-width convention stated on
 either side ([FUTURE_TRANSITIONS_titsapph.md](../FUTURE_TRANSITIONS_titsapph.md)
 §3.2). On Wang's value the anchor is near 9 kHz instead, and every standoff
-quoted from it loosens by that factor. The recorded bound of 0.02–0.04 MHz per
+quoted from it loosens by that factor. The recorded bound of [0.02](../../results/beta_self_probe.csv "ref:beta_self_probe:4192::bound95_nscale")–[0.04](../../results/beta_self_probe.csv "ref:beta_self_probe:4154::bound95_nscale") MHz per
 10¹² cm⁻³ (four-point, 70/90/110/130 °C) sits **7–12× above it** on the
 Zameroski anchor and about 3 to 5 times above it on Wang's, tighter
 than the earlier three-point bound (was 0.2–0.4 MHz, 57–113× above), because
 folding the 130 °C point into the headline extends the density lever from
-×15.2 to ×48.1 (Alcock, `scripts/run_beta_self.py`).
+×15.2 to ×[48.1](../../results/lever_crosscheck.csv "ref:lever_crosscheck:gamma_rise_factor:70to130:err") (Alcock, `scripts/run_beta_self.py`).
 
 The identical machinery gives C₆(5S+5S) = 4180 a.u. against the literature
 Rb₂ value of ~4691, 11% low, in

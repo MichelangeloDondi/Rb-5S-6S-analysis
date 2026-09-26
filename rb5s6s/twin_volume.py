@@ -43,10 +43,10 @@ from typing import Dict, List, Optional, Tuple
 
 import numpy as np
 
-from .constants import DELTA_ALPHA_AU, RHO_RETRO
+from .constants import DELTA_ALPHA_AU, GAMMA_NAT_HZ, RHO_RETRO
 from .lineshape import aperture_onaxis_factor_actual, stark_shift_S0_mhz
 from .noise import sigma_of_v
-from .volume_line import N_TAU, TAU_EDGE, collection_half_window_m, joint_spectrum
+from .volume_line import N_TAU, TAU_EDGE, GaussianBeam, collection_half_window_m, joint_spectrum
 
 __all__ = ["stark_s0_mhz", "world_shape", "synthetic_traces"]
 
@@ -150,6 +150,7 @@ def synthetic_traces(*, beam, T_C: float, S0_mhz: float, gamma_hom_mhz: float,
                      centre_mhz: float = 0.0, n_path: int = 20000, seed: int = 0,
                      n_tau: int = N_TAU, tau_edge: float = TAU_EDGE,
                      rng: Optional[np.random.Generator] = None,
+                     registry: Optional[str] = None,
                      ) -> Tuple[List[np.ndarray], List[np.ndarray]]:
     """Generate the traces the real instrument would record, with the line computed by the
     atom-sampled joint Monte Carlo (`volume_line.joint_spectrum`) at `n_path` atoms -- the WORLD,
@@ -169,9 +170,27 @@ def synthetic_traces(*, beam, T_C: float, S0_mhz: float, gamma_hom_mhz: float,
     gained the shared, fuller noise layer, by calling `world_shape` directly instead of this
     function).
 
+    `registry` (O58) is the twin's declaration, read by `forecast.twin_preflight` before the world
+    line is drawn: None for a run behind a result, or a study's reason of six words or more. The
+    homogeneous width arrives lumped, so a width above the natural one is read as the collisional
+    term the registry names; a caller whose width is something else declares a study.
+
     Returns (freqs, volts), each a list of `n_traces` arrays, in the form
     `rb5s6s.linefit.fit_condition` accepts (matching `forecast.synthetic_traces`'s own promise).
     """
+    from .forecast import twin_preflight
+    _ex = {"natural_width", "transit", "beam_quality_m2"}
+    if not isinstance(beam, GaussianBeam):
+        _ex.add("bore_clipping")
+    if S0_mhz > 0.0:
+        _ex |= {"ac_stark_ramp", "transit_chirp"}
+    if z_ratio > 0.0:
+        _ex.add("axial_collection_window")
+    if sigma_laser_mhz > 0.0:
+        _ex.add("laser_kernel")
+    if gamma_hom_mhz > GAMMA_NAT_HZ / 1e6 + 1e-12:
+        _ex.add("self_broadening_vdw")
+    twin_preflight(_ex, registry, T_C=T_C)
     if rng is None:
         # never from entropy: the noise stream is derived from `seed`, spawned apart from the world
         # line's own sampling stream, so a trace set is reproducible from its arguments alone

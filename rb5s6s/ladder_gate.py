@@ -32,7 +32,7 @@ import contextlib
 import json
 import pathlib
 import time
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Sequence
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 #: THE PRODUCERS THAT PREDATE THE GATE, and this is the ONE list.
@@ -679,6 +679,14 @@ SIZE_STAGE0_CAP = {"conditions": 1, "windows": 3, "orders": 3, "free": 8, "reali
                    "forms": 1, "truths": 1}
 
 
+#: A READOUT DECLARATION IS GRADED BY WHAT THE STAGE COST (2026-09-25). A stage
+#: admitted with `cost_axes` that then costs more than this factor times the prediction those axes made has shown
+#: that an axis declared a readout costs compute, and no later stage may declare readouts over it. Twice, because an
+#: axis that really costs moves the cost by its whole growth, up to SIZE_GROWTH, while a loaded machine moves a wall
+#: clock by less; a refusal on load alone is satisfied by launching with every axis counted.
+COST_REFUTED_FACTOR = 2.0
+
+
 class SizeRefused(RuntimeError):
     """Raised when an MLE attempt asks for a size no passing smaller rung licenses."""
 
@@ -687,9 +695,11 @@ def size_dir(analysis_id: str, cache: Optional[pathlib.Path] = None) -> pathlib.
     return ladder_dir(analysis_id, cache) / "size"
 
 
-def _size_cells(size: Dict[str, Any]) -> float:
+def _size_cells(size: Dict[str, Any], axes: Optional[Sequence[str]] = None) -> float:
+    """The product of the size over `axes` (every axis by default): the cells a stage runs, or, over the
+    axes that cost compute, the cells it PAYS for."""
     out = 1.0
-    for ax in SIZE_AXES:
+    for ax in (SIZE_AXES if axes is None else axes):
         out *= float(size.get(ax, 1))
     return out
 
@@ -731,15 +741,26 @@ def size_rung(analysis_id: str, stage: int, size: Dict[str, Any], cost_s: float,
     d = size_dir(analysis_id, cache)
     d.mkdir(parents=True, exist_ok=True)
     out = d / f"S{int(stage)}.json"
+    # the admission this stage ran under, written by launch(): its declared cost axes are graded here, by the cost
+    admission, refuted = None, False
+    pend = d / f"A{int(stage)}.json"
+    if pend.is_file():
+        adm = json.loads(pend.read_text())
+        if adm.get("size") == dict(size):
+            admission = {k: adm.get(k) for k in ("predicted_s", "cost_axes", "licensed_by")}
+            p = admission.get("predicted_s")
+            refuted = bool(admission.get("cost_axes") and p and float(cost_s) > COST_REFUTED_FACTOR * float(p))
     out.write_text(json.dumps({"analysis_id": analysis_id, "stage": int(stage), "size": dict(size),
                                "cells": _size_cells(size), "cost_s": float(cost_s),
                                "verdict": verdict, "reasons": reasons, "evidence": evidence,
+                               "admission": admission, "cost_refuted": refuted,
                                "when": time.strftime("%Y-%m-%dT%H:%M:%S")}, indent=1))
     return out
 
 
 def launch(analysis_id: str, stage: int, size: Dict[str, Any], *, pool_speedup: float = 1.0,
-           cache: Optional[pathlib.Path] = None, reason: str = "", workers: int = 0) -> Dict[str, Any]:
+           cache: Optional[pathlib.Path] = None, reason: str = "", workers: int = 0,
+           cost_axes: Optional[Sequence[str]] = None) -> Dict[str, Any]:
     """The refusal. Returns the admission with its cost prediction, or raises SizeRefused.
 
     THE CORES ARE PART OF THE SIZE (0g, F50, 2026-09-17). Pass `workers` and a pool that would
@@ -751,6 +772,16 @@ def launch(analysis_id: str, stage: int, size: Dict[str, Any], *, pool_speedup: 
     that rung (its cost per cell times this stage's cells, over the pool speed-up) under the
     stage's budget. A skipped stage, a failed predecessor or an eightfold jump on one axis is a
     refusal with the reason in words.
+
+    THE BUDGET IS THE LARGER OF THE STAGE'S TABLE AND ITS LICENSING STAGE'S COST GROWN FOURFOLD (2026-09-25).
+    The table was written for cells that take seconds; the moment term budget's smallest world, one line of
+    57 full-model Bloch lines at about 110 s each, cost 10 967 s at stage 0, so no stage 1 of it could ever sit
+    under 480 s and the owner's V6.2 could never be climbed. A stage may cost what its licensing stage cost
+    grown by SIZE_GROWTH, the growth rule itself read in compute: fourfold on one axis is admitted, fourfold on
+    two axes is refused however cheap the table would let it be. `cost_axes` names the axes that COST compute;
+    the others are readouts of the same computation (a window or an order read off a line already computed),
+    and a readout axis must be declared as such or it is counted as compute. Without it every axis costs, as
+    before.
     """
     if workers:
         _busy, _cores = busy_workers(), cores()
@@ -764,6 +795,11 @@ def launch(analysis_id: str, stage: int, size: Dict[str, Any], *, pool_speedup: 
     bad = [ax for ax in size if ax not in SIZE_AXES]
     if bad:
         raise ValueError(f"unknown size axes {bad}; the axes are {SIZE_AXES}")
+    if cost_axes is not None:
+        cost_axes = tuple(cost_axes)
+        bad = [ax for ax in cost_axes if ax not in SIZE_AXES]
+        if bad or not cost_axes:
+            raise ValueError(f"cost_axes {list(cost_axes)} must name at least one of {SIZE_AXES}")
     if stage == 0:
         over = {ax: (size.get(ax, 1), SIZE_STAGE0_CAP[ax]) for ax in SIZE_AXES
                 if float(size.get(ax, 1)) > SIZE_STAGE0_CAP[ax]}
@@ -807,21 +843,40 @@ def launch(analysis_id: str, stage: int, size: Dict[str, Any], *, pool_speedup: 
     if prev is None:
         raise SizeRefused(f"stage {stage} of '{analysis_id}' refused: no smaller stage has been "
                           f"recorded PASS. Start small: record stage 0 first.")
+    if cost_axes is not None and prev.get("cost_refuted"):
+        a = prev.get("admission") or {}
+        raise SizeRefused(f"stage {stage} of '{analysis_id}' refused: stage {prev['stage']} was admitted counting only "
+                          f"{'+'.join(a.get('cost_axes') or [])} as compute and predicted {float(a.get('predicted_s') or 0):.0f} s, "
+                          f"and it cost {float(prev['cost_s']):.0f} s, over {COST_REFUTED_FACTOR:g} times the prediction: "
+                          f"an axis declared a readout costs compute. Launch with every axis counted (no cost_axes), "
+                          f"or name the axis that costs.")
     jumps = {ax: (float(size.get(ax, 1)), float(prev["size"].get(ax, 1))) for ax in SIZE_AXES
              if float(size.get(ax, 1)) > SIZE_GROWTH * float(prev["size"].get(ax, 1))}
     if jumps:
         raise SizeRefused(f"stage {stage} of '{analysis_id}' refused: it grows more than "
                           f"{SIZE_GROWTH:g}x on {jumps} (axis: (asked, licensed)) over stage "
                           f"{prev['stage']}. Grow one axis at a time.")
-    per_cell = float(prev["cost_s"]) / max(float(prev["cells"]), 1.0)
-    predicted = per_cell * _size_cells(size) / max(float(pool_speedup), 1.0)
-    budget = SIZE_BUDGET_S.get(stage, SIZE_BUDGET_S[max(SIZE_BUDGET_S)])
-    if predicted > budget:
+    speed = max(float(pool_speedup), 1.0)
+    per_cell = float(prev["cost_s"]) / max(_size_cells(prev["size"], cost_axes), 1.0)
+    predicted = per_cell * _size_cells(size, cost_axes) / speed
+    table = SIZE_BUDGET_S.get(stage, SIZE_BUDGET_S[max(SIZE_BUDGET_S)])
+    grown = SIZE_GROWTH * float(prev["cost_s"]) / speed
+    budget = max(table, grown)
+    if predicted > budget * (1.0 + 1e-9):
         raise SizeRefused(f"stage {stage} of '{analysis_id}' refused: predicted {predicted:.0f} s "
-                          f"from stage {prev['stage']}'s {per_cell:.2f} s per cell, over the "
-                          f"{budget:.0f} s ceiling of this stage. A smaller stage comes first.")
-    return {"stage": stage, "cells": _size_cells(size), "predicted_s": predicted,
-            "licensed_by": prev["stage"], "per_cell_s": per_cell}
+                          f"from stage {prev['stage']}'s {per_cell:.2f} s per cell"
+                          f"{' over ' + '+'.join(cost_axes) if cost_axes else ''}, over the {budget:.0f} s "
+                          f"ceiling of this stage (the larger of its table's {table:.0f} s and its licensing "
+                          f"stage grown {SIZE_GROWTH:g}x, {grown:.0f} s). Grow one axis at a time.")
+    adm = {"stage": stage, "cells": _size_cells(size), "predicted_s": predicted,
+           "licensed_by": prev["stage"], "per_cell_s": per_cell,
+           "cost_axes": list(cost_axes) if cost_axes else None, "budget_s": budget}
+    try:
+        d.mkdir(parents=True, exist_ok=True)
+        (d / f"A{stage}.json").write_text(json.dumps(dict(adm, size=dict(size)), indent=1))
+    except OSError:
+        pass
+    return adm
 
 
 def _self_test() -> List[str]:
@@ -1107,6 +1162,50 @@ def _self_test() -> List[str]:
             bad.append("size-ladder: a stage predicted over its budget was admitted")
         if (size_dir("sz", _c) / "S1.json").is_file() is False:
             bad.append("size-ladder: the rung artefact was not written")
+
+        # AN EXPENSIVE STAGE 0 CAN STILL BE CLIMBED ONE AXIS AT A TIME (2026-09-25, the moment term budget:
+        # 10 967 s at stage 0, so the 480 s table refused every stage 1 whatever its size). The licensing
+        # stage's cost grown fourfold is the ceiling; readout axes are declared, never assumed.
+        size_rung("sz_heavy", 0, {"conditions": 1, "windows": 3, "orders": 3}, 10_000.0,
+                  {"max_abs_rel_error": 1e-6}, cache=_c)
+        four_lines = {"conditions": 4, "windows": 3, "orders": 4}
+        try:
+            adm_h = launch("sz_heavy", 1, four_lines, cache=_c, cost_axes=("conditions",))
+            if adm_h.get("licensed_by") != 0 or abs(adm_h["predicted_s"] - 40_000.0) > 1e-6:
+                bad.append(f"size-ladder: the heavy stage 1 was admitted with the wrong prediction {adm_h}")
+        except SizeRefused as exc:
+            bad.append(f"size-ladder: one axis grown fourfold over an expensive stage 0 was refused: {exc}")
+        if not _refused(launch, "sz_heavy", 1, dict(four_lines, realisations=4), cache=_c,
+                        cost_axes=("conditions", "realisations")):
+            bad.append("size-ladder: two axes grown fourfold each (16x in cost) were admitted")
+        if not _refused(launch, "sz_heavy", 1, four_lines, cache=_c):
+            bad.append("size-ladder: a readout axis cost nothing without being DECLARED a readout "
+                       "(4 x 3 x 4 against 1 x 3 x 3 is 5.3x in cost when every axis costs)")
+        try:
+            launch("sz_heavy", 1, four_lines, cache=_c, cost_axes=("lines",))
+            bad.append("size-ladder: a cost axis outside SIZE_AXES was accepted")
+        except ValueError:
+            pass
+        # THE READOUT DECLARATION IS GRADED BY THE COST (2026-09-25). Stage 1 was admitted with
+        # `orders` a readout (40 000 s predicted); it costs 160 000 s, so `orders` cost compute and stage 2 may not
+        # declare readouts over it; counting every axis it is licensed on the conservative model.
+        launch("sz_heavy", 1, four_lines, cache=_c, cost_axes=("conditions",))
+        size_rung("sz_heavy", 1, four_lines, 160_000.0, {"max_abs_rel_error": 1e-6}, cache=_c)
+        s1 = json.loads((size_dir("sz_heavy", _c) / "S1.json").read_text())
+        if not s1.get("cost_refuted"):
+            bad.append(f"size-ladder: a stage costing four times its readout prediction was not marked refuted: {s1}")
+        if not _refused(launch, "sz_heavy", 2, dict(four_lines, conditions=16), cache=_c, cost_axes=("conditions",)):
+            bad.append("size-ladder: readouts were declared again over a stage whose cost refuted them")
+        # and the other way: a stage costing what its declaration predicted licenses the next declaration
+        launch("sz_honest", 0, {"conditions": 1, "windows": 3, "orders": 3}, cache=_c)
+        size_rung("sz_honest", 0, {"conditions": 1, "windows": 3, "orders": 3}, 10_000.0,
+                  {"max_abs_rel_error": 1e-6}, cache=_c)
+        launch("sz_honest", 1, four_lines, cache=_c, cost_axes=("conditions",))
+        size_rung("sz_honest", 1, four_lines, 41_000.0, {"max_abs_rel_error": 1e-6}, cache=_c)
+        try:
+            launch("sz_honest", 2, dict(four_lines, conditions=16), cache=_c, cost_axes=("conditions",))
+        except SizeRefused as exc:
+            bad.append(f"size-ladder: a stage that cost its prediction did not license the next declaration: {exc}")
 
         # a smaller world at the SAME stage number licenses a larger one (reals 4 -> 8 on the L)
         size_rung("plant_size", 4, {"conditions": 32, "realisations": 4}, 400.0, {"max_abs_rel_error": 1e-5}, cache=_c)

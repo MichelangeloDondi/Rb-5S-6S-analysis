@@ -24,7 +24,7 @@ documented draw of the whole class ([Martin 2018](../lit/martin2018.md),
 
 993 nm 5S→6S shares that structure. It does **not** share the linewidth
 advantage: the 6S₁/₂ upper state lives [45.57](../../rb5s6s/constants.py "ref:constant:TAU_6S_S:1e9") ns
-([Gomez 2005](../lit/gomez2005.md)), giving the 3.49 MHz natural width every fit
+([Gomez 2005](../lit/gomez2005.md)), giving the [3.49](../../rb5s6s/constants.py "ref:constant:GAMMA_NAT_HZ:1e-6") MHz natural width every fit
 here carries, whereas 5D₅/₂ is far longer-lived: [Bandi 2025](../lit/bandi2025.md)
 quotes the 5S→5D two-photon working linewidth as **≈330 kHz**, about an order of
 magnitude narrower. On natural quality factor alone, 993 nm starts *behind* the
@@ -51,7 +51,7 @@ measuring it:
 |---|---|---|---|
 | 5S→5D₃/₂ ([Cao 2025](../lit/cao2025.md)) | 40 ± 0.54 kHz/mTorr | ≈ 0.0018 | FWHM, stated |
 | 5S→7S ([Wang 2025](../lit/wang2025.md)) | 0.32 ± 0.01 MHz/mTorr | ≈ 0.014 | not stated |
-| **5S→6S, this work** | not measured | **bound 0.02–0.04** | FWHM |
+| **5S→6S, this work** | not measured | **bound [0.02](../../results/beta_self_probe.csv "ref:beta_self_probe:4192::bound95_nscale")–[0.04](../../results/beta_self_probe.csv "ref:beta_self_probe:4154::bound95_nscale")** | FWHM |
 
 Converted at 423 K, the temperature both papers use. The 7S paper never says
 whether its linewidth is a half width or a full width, so the factor of eight
@@ -90,7 +90,7 @@ the transition frequency is untouched. That is the trick behind lattice
 clocks (Sr at 813 nm).
 
 The polarizability recompute here gives the **first
-5S–6S magic wavelengths**, ≈ [1203.7](../../results/polarizability.csv "ref:polarizability:magic_5s6s:1204nm") / [1287.9](../../results/polarizability.csv "ref:polarizability:magic_5s6s:1288nm") / 1339.6 nm, all trapping (α > 0 for
+5S–6S magic wavelengths**, ≈ [1203.7](../../results/polarizability.csv "ref:polarizability:magic_5s6s:1204nm") / [1287.9](../../results/polarizability.csv "ref:polarizability:magic_5s6s:1288nm") / [1339.6](../../results/polarizability.csv "ref:polarizability:magic_5s6s:1340nm") nm, all trapping (α > 0 for
 both states), with a 16 to 84 percent band of [1202.8](../../results/polarizability.csv "ref:polarizability:magic_5s6s:1204nm:err_lo16") to [1204.5](../../results/polarizability.csv "ref:polarizability:magic_5s6s:1204nm:err_hi84") nm on the
 1204 nm crossing, so the
 trapped-atom version of this measurement has candidate wavelengths where
@@ -124,7 +124,7 @@ two shifts to within a factor of two. The fourth-order differential shift, the h
 +0.87 Hz per megahertz squared of trap depth at the 1204 nm crossing, where a
 depth of h × 1 MHz is 48 µK, so a trap half a millikelvin deep moves the line
 by somewhere between fifty and two hundred hertz against the transition's
-3.49 MHz natural width.
+[3.49](../../rb5s6s/constants.py "ref:constant:GAMMA_NAT_HZ:1e-6") MHz natural width.
 
 The vector shift is the
 sharper requirement: at that same depth a stretched-state atom sees 280 kHz per

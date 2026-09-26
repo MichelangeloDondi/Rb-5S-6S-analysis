@@ -112,7 +112,12 @@ def _skew_scaling_clause():
         f"argues against")
 
 
-def main() -> int:
+def main(argv=None) -> int:
+    import argparse
+    ap = argparse.ArgumentParser(description="Generate docs/RESULTS.md from the committed results tables.")
+    ap.add_argument("--out", default=None,
+                    help="write the page here instead of docs/RESULTS.md (the floor compares the two)")
+    cli = ap.parse_args(argv)   # not `a`: main rebinds `a` to a row further down
     L = []
     W = L.append
     W("# Results ledger\n")
@@ -637,7 +642,7 @@ def main() -> int:
       # THIS GENERATOR and not on the page, for the reason the comment two
       # hundred lines below already gives. The earlier sentence called a retro
       # tilt of 3.2 to 3.5 mrad the leading candidate, on a geometry that put
-      # the pivot at the atoms. The mirror sits about 50 mm from an f = 150
+      # the pivot at the atoms. The mirror sits 25 to 35 mm behind an f = 150
       # lens, so its own lever arm is 300 mm per radian and that tilt offsets
       # the return beam by 960 um, fifteen waists, where no Doppler-free peak
       # would survive to be measured at all.
@@ -1852,7 +1857,7 @@ def main() -> int:
       "whether it is established, measured here, calculated, an envelope, open "
       "or descoped.*")
 
-    out = C.REPO_ROOT / "docs" / "RESULTS.md"
+    out = Path(cli.out) if cli.out else C.REPO_ROOT / "docs" / "RESULTS.md"
     out.write_text("\n".join(L) + "\n")
     print(f"wrote {out}")
     return 0

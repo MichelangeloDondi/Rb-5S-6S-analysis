@@ -46,6 +46,9 @@ from rb5s6s.beta import fit_beta_self                # noqa: E402
 from rb5s6s.forecast import synthetic_traces         # noqa: E402
 from rb5s6s.linefit import transit_fwhm_at_T         # noqa: E402
 
+#: O58: this module's twin runs are a declared STUDY, and this is its reason
+_TWIN_STUDY = "the laser kernel's form study on the width channel, at weak field by design"
+
 OUT = C.RESULTS_DIR / "kernel_worlds.csv"
 
 N_TRIALS = 500          # preregistered; see the prereg note for the precision argument
@@ -75,7 +78,7 @@ def _conditions(seed: int, gl_true: float, *, world: str):
             # wrong transit kernel: data carry a Gaussian transit, the fitter
             # will assume the two-sided exponential it always assumes
             f, v = synthetic_traces(BETA_TRUE * n, SIGMA_L, tr, gamma_l=gl_true,
-                                    n_traces=3, n_points=1500, noise=0.004, rng=rng)
+                                    n_traces=3, n_points=1500, noise=0.004, rng=rng, registry=_TWIN_STUDY)
             g, prof = __import__("rb5s6s.lineshape", fromlist=["x"]).composite_profile(
                 BETA_TRUE * n, SIGMA_L, tr, "gaussian", transit_kind="gaussian",
                 gamma_l=gl_true)
@@ -83,7 +86,7 @@ def _conditions(seed: int, gl_true: float, *, world: str):
                  + rng.normal(0.0, 0.004, size=fi.size) for fi in f]
         else:
             f, v = synthetic_traces(BETA_TRUE * n, SIGMA_L, tr, gamma_l=gl_true,
-                                    n_traces=3, n_points=1500, noise=0.004, rng=rng)
+                                    n_traces=3, n_points=1500, noise=0.004, rng=rng, registry=_TWIN_STUDY)
         if world == "C":
             # wrong baseline: the data carry a quadratic tilt the fitter's
             # linear baseline cannot absorb

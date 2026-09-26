@@ -286,6 +286,8 @@ here.
 - [Selection rules](selection-rules.md), for the rule that fixes which
   $J$ combines with nuclear spin to build each $F$.
 
+*Model status:* what the fitter, the twin and the Monte Carlo carry of this page's physics is generated from the registry on [the model terms](../methods/model_terms.md), for `quadratic_zeeman`.
+
 ---
 
 [← Hyperfine structure](hyperfine-structure.md) · *Atomic structure and selection rules, 4 of 7* · [Hyperfine populations and branching →](hyperfine-populations-and-branching.md)

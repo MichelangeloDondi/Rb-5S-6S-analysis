@@ -31,7 +31,7 @@ def test_n_eff_definition_and_guards():
 
 def test_traces_have_the_promised_shape():
     f, v = synthetic_traces(**TRUTH, n_traces=4, n_points=600,
-                            rng=np.random.default_rng(0))
+                            rng=np.random.default_rng(0), registry=_TWIN_STUDY)
     assert len(f) == len(v) == 4
     assert all(len(x) == 600 for x in f)
     # per-trace amplitude spread means the repeats genuinely differ
@@ -43,9 +43,9 @@ def test_fraction_of_peak_noise_scales_with_amplitude():
     """The simple noise mode is a fraction of THIS trace's peak, so doubling
     the amplitude doubles the absolute noise and preserves SNR."""
     rng = np.random.default_rng(3)
-    _, v1 = synthetic_traces(**TRUTH, n_traces=1, noise=0.01, amp=1.0, rng=rng)
+    _, v1 = synthetic_traces(**TRUTH, n_traces=1, noise=0.01, amp=1.0, rng=rng, registry=_TWIN_STUDY)
     rng = np.random.default_rng(3)
-    _, v2 = synthetic_traces(**TRUTH, n_traces=1, noise=0.01, amp=2.0, rng=rng)
+    _, v2 = synthetic_traces(**TRUTH, n_traces=1, noise=0.01, amp=2.0, rng=rng, registry=_TWIN_STUDY)
     wing1 = np.std(v1[0][:100])
     wing2 = np.std(v2[0][:100])
     assert wing2 == pytest.approx(2.0 * wing1, rel=1e-9)
@@ -56,7 +56,7 @@ def test_measured_law_mode_is_signal_dependent():
     fraction-of-peak mode cannot produce."""
     law = {"a": 0.001, "b": 0.004, "c": 0.0}
     f, v = synthetic_traces(**TRUTH, n_traces=1, noise=law, n_points=4000,
-                            rng=np.random.default_rng(7))
+                            rng=np.random.default_rng(7), registry=_TWIN_STUDY)
     clean_wing = np.std(v[0][:400])
     # residual scatter near the peak, detrended crudely by differencing
     core = v[0][1800:2200]
@@ -68,7 +68,7 @@ def test_ladder_step_one_known_truth_recovery():
     """The public API reproduces the committed example's discipline: every
     injected width recovered within three of the fit's own standard errors."""
     f, v = synthetic_traces(**TRUTH, n_traces=5, noise=0.004,
-                            rng=np.random.default_rng(20260819), model="convolution")
+                            rng=np.random.default_rng(20260819), model="convolution", registry=_TWIN_STUDY)
     res = fit_condition(f, v, T_C=130.0, transit_fwhm=TRUTH["transit_fwhm"], model="convolution")
     for name in ("gamma_coll", "sigma_laser"):
         pull = abs(res[name] - TRUTH[name]) / res[f"{name}_err"]
@@ -79,13 +79,13 @@ def test_forecast_reports_the_degeneracy():
     """The width pair's anticorrelation is a property of the physics, and the
     twin must show it on synthetic data or it is not a twin."""
     r = forecast_precision(TRUTH, {"n_traces": 3, "n_points": 800},
-                           n_trials=3, scalings=False)
+                           n_trials=3, scalings=False, registry=_TWIN_STUDY)
     assert r["corr_laser_coll"] < -0.7
 
 
 def test_forecast_carries_its_assumptions():
     r = forecast_precision(TRUTH, {"n_traces": 3, "n_points": 600},
-                           n_trials=2, scalings=False)
+                           n_trials=2, scalings=False, registry=_TWIN_STUDY)
     assert "assumptions" in r and "noise model as stated" in r["assumptions"]
 
 
@@ -95,7 +95,7 @@ def test_scalings_move_the_right_way():
     exact exponents are measured, not asserted, so the guard is one-sided."""
     r = forecast_precision(TRUTH, {"n_traces": 4, "n_points": 800,
                                    "noise": 0.006},
-                           n_trials=6, seed=2)
+                           n_trials=6, seed=2, registry=_TWIN_STUDY)
     ratios = r["gamma_coll_err_ratio"]
     for label, ratio in ratios.items():
         assert ratio < 1.1, (label, ratio)
@@ -120,7 +120,7 @@ def test_more_data_does_not_break_the_width_degeneracy():
     corrs = []
     for kw in ({}, {"span_mhz": 300.0, "n_points": 9000}):
         f, v = synthetic_traces(*truth, n_traces=5, noise=0.004, T_C=130.0,
-                                rng=np.random.default_rng(5), **kw)
+                                rng=np.random.default_rng(5), **kw, registry=_TWIN_STUDY)
         r = fit_condition(f, v, T_C=130.0, transit_fwhm=truth[2])
         corrs.append(r["corr_laser_coll"])
     assert abs(corrs[0] - corrs[1]) < 0.05, corrs
@@ -129,6 +129,9 @@ def test_more_data_does_not_break_the_width_degeneracy():
 # ---- the comb tooth weights, beyond the zero-delay limit (2026-08-19) ----
 from scipy.special import jv  # noqa: E402
 from rb5s6s.forecast import comb_tooth_weights  # noqa: E402
+
+#: O58: this module's twin runs are a declared STUDY, and this is its reason
+_TWIN_STUDY = "a unit test of the generator's own arithmetic, not a quoted number"
 
 def test_pathway_identity():
     """The averaged model equals the explicit pathway sum, not just a guess."""

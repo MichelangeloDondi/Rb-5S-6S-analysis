@@ -20,6 +20,9 @@ from rb5s6s.forecast import (external_constraint_gain,
                              forecast_precision, synthetic_traces)
 from rb5s6s.linefit import fit_condition
 
+#: O58: this module's twin runs are a declared STUDY, and this is its reason
+_TWIN_STUDY = "the tutorial's worked example of the width channel, not a quoted number"
+
 YOUR_LINE = {
     "name": "my transition",
     "gamma_coll": 0.5,
@@ -33,7 +36,7 @@ def chapter_3_generate(rng):
     freqs, volts = synthetic_traces(
         YOUR_LINE["gamma_coll"], YOUR_LINE["sigma_laser"],
         YOUR_LINE["transit_fwhm"], span_mhz=60.0, n_points=2000,
-        n_traces=5, noise=0.004, rng=rng)
+        n_traces=5, noise=0.004, rng=rng, registry=_TWIN_STUDY)
     print(f"   {len(freqs)} traces of {len(freqs[0])} points, "
           f"peak {max(volts[0]):.3f} V\n")
     return freqs, volts
@@ -58,7 +61,7 @@ def chapter_5_degeneracy(res, rng):
     print(f"   laser-collision correlation: {res['corr_laser_coll']:+.3f}")
     f2, v2 = synthetic_traces(YOUR_LINE["gamma_coll"], YOUR_LINE["sigma_laser"],
                               YOUR_LINE["transit_fwhm"], n_points=2000,
-                              n_traces=5, noise=0.04, rng=rng)
+                              n_traces=5, noise=0.04, rng=rng, registry=_TWIN_STUDY)
     r2 = fit_condition(f2, v2, T_C=130.0, transit_fwhm=YOUR_LINE["transit_fwhm"])
     grew = r2["gamma_coll_err"] > res["gamma_coll_err"]
     pull2 = abs(r2["gamma_coll"] - YOUR_LINE["gamma_coll"]) / r2["gamma_coll_err"]
@@ -77,7 +80,7 @@ def chapter_6_break_it(rng):
                       ("wider span, 300 MHz", {"span_mhz": 300.0, "n_points": 9000}),
                       ("ten times the traces", {"n_traces": 50})):
         f, v = synthetic_traces(*truth, noise=0.004,
-                                rng=np.random.default_rng(5), **kw)
+                                rng=np.random.default_rng(5), **kw, registry=_TWIN_STUDY)
         r = fit_condition(f, v, T_C=130.0, transit_fwhm=truth[2])
         rows.append((label, r["corr_laser_coll"], r["gamma_coll_err"]))
         print(f"   {label:34s} corr {r['corr_laser_coll']:+.4f}  "
@@ -100,7 +103,7 @@ def chapter_7_forecast():
     out = forecast_precision(
         truth={k: YOUR_LINE[k] for k in ("gamma_coll", "sigma_laser", "transit_fwhm")},
         design={"n_points": 1200, "n_traces": 4, "noise": 0.004, "T_C": 130.0},
-        n_trials=4, scalings=True)
+        n_trials=4, scalings=True, registry=_TWIN_STUDY)
     print(f"   gamma_coll uncertainty : {out['gamma_coll_err']:.4f} MHz")
     print(f"   sigma_laser uncertainty: {out['sigma_laser_err']:.4f} MHz")
     print(f"   correlation            : {out['corr_laser_coll']:+.3f}")

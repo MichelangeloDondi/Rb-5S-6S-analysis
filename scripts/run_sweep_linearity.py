@@ -69,7 +69,7 @@ from rb5s6s.reference_point import reference_point
 # MOMENTS, NOT CUMULANTS (O33). This producer asks only for orders 2 and/or 3, where the two
 # bases are the SAME NUMBER (k2 = mu2 and k3 = mu3 identically), so the switch cannot move a
 # committed cell -- it removes the retired name, which is the point of doing it everywhere.
-from rb5s6s.cumulants import windowed_moments
+from rb5s6s.moments import windowed_moments
 from rb5s6s.constants import collection_z_ratio
 from rb5s6s.fringe_tail import COHERENCE_TRANSIT, fringe_shift_density
 from rb5s6s.lineshape import model_profile, ramp_mixture

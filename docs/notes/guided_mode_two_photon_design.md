@@ -230,7 +230,7 @@ the beat lengths for a 48 µm core (a = 24 µm) are (calculated):
 | 420.30 nm | 12.16 mm | 4.38 mm |
 | 780.24 nm | 6.55 mm | 2.36 mm |
 | 794.98 nm | 6.43 mm | 2.32 mm |
-| 993.42 nm | 5.14 mm | 1.85 mm |
+| 993.42 nm | 5.14 mm | 1.85 mm <!-- other-quantity: a mode-beat length --> |
 | 1064.0 nm | 4.80 mm | 1.73 mm |
 
 Only the second column matters for the intensity an on-axis atom sees, because
@@ -247,7 +247,7 @@ modulated by `1 ± 2 eps` (calculated):
 | 1.0 % | ±30.5 % | ±61.0 % | ±30.5 % |
 
 An ensemble a few centimetres long spans many beat periods (10.8 periods of the
-1.85 mm beat over 2 cm), so it samples the beat phase almost uniformly, and the
+1.85 mm <!-- other-quantity: a mode-beat length --> beat over 2 cm), so it samples the beat phase almost uniformly, and the
 sampling distribution of `cos(2 pi z/L_beat)` is the arcsine, which piles up at
 the two extremes rather than at the mean. Differential loss does not clean this
 up over the length of an atom column: a published mode-resolved measurement puts
@@ -592,8 +592,8 @@ inhomogeneity that section 1.5 treats as a nuisance would become a directly
 scanned observable.
 
 What it would look like. At a conveyor speed `v`, the modulation frequency would
-be `v/L_beat`. For the 1.85 mm beat at 993 nm in a 48 µm core, that is 0.54 Hz
-at 1 mm/s and 0.054 Hz at 0.1 mm/s, one full period every 1.85 or 18.5 seconds
+be `v/L_beat`. For the 1.85 mm <!-- other-quantity: a mode-beat length --> beat at 993 nm in a 48 µm core, that is 0.54 Hz
+at 1 mm/s and 0.054 Hz at 0.1 mm/s, one full period every 1.85 or 18.5 seconds <!-- other-quantity: a beat period -->
 (calculated). Both are slow enough to record a line at each phase.
 
 Three features that would make it a measurement rather than a curiosity:
@@ -603,9 +603,9 @@ Three features that would make it a measurement rather than a curiosity:
   swing inverts directly to a higher-order power fraction. A ±9.6 % swing would
   read 0.1 %, a ±30.5 % swing 1.0 %.
 - **The spatial frequency identifies which mode.** The first on-axis
-  higher-order mode beats at 1.85 mm at 993 nm and the first higher-order group
+  higher-order mode beats at 1.85 mm <!-- other-quantity: a mode-beat length --> at 993 nm and the first higher-order group
   at 5.14 mm, and the latter has no on-axis field so it should not appear at
-  all. Finding power at 1/1.85 mm⁻¹ and nothing at 1/5.14 mm⁻¹ would be a
+  all. Finding power at 1/1.85 mm⁻¹ <!-- other-quantity: a mode-beat wavenumber --> and nothing at 1/5.14 mm⁻¹ would be a
   specific, falsifiable prediction of the model in section 1.5.
 - **Two observables move by different factors, which separates the effect from
   drift.** The shift scales as `I` and the two-photon rate as `I²`, so a ±9.6 %
@@ -619,7 +619,7 @@ transported ensemble would need to be shorter than a beat period, or the
 breathing would average out inside the sample itself, which is the same
 arcsine-sampling problem section 1.5 describes and is the main reason this is
 written as an idea. And the trap wavelength beat (1.73 mm) and the drive
-wavelength beat (1.85 mm) differ, so the trap depth and the drive intensity
+wavelength beat (1.85 mm <!-- other-quantity: a mode-beat length -->) differ, so the trap depth and the drive intensity
 would breathe at slightly different periods and beat against each other over
 roughly 2 cm. Whether that is a confound or a second handle is not worked out
 here.
@@ -694,7 +694,7 @@ attempt regardless of everything above.
 **Does the conveyor idea in section 5.5 survive the ensemble length?** Answerable
 from the existing transport parameters plus a beat-length measurement, without
 any new hardware, by asking whether the transported sample is shorter than
-1.85 mm.
+1.85 mm <!-- other-quantity: a mode-beat length -->.
 
 ---
 

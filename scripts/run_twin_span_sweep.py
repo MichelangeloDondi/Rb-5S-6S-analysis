@@ -37,6 +37,22 @@ WHAT IT CANNOT SETTLE. A Monte-Carlo correlation carries sampling scatter, and
 n_trials here is small enough to run inside a gate. The claim it supports is a
 comparison between designs under one seed, not a precision measurement of any
 one correlation, and the verdict row says which of those it is.
+
+THE CLAIM IS COMPUTED, SINCE V7.1 (F552). Until 2026-09-26 the claim row was a
+constant this producer wrote whatever the moves read, and on the table rebuilt at
+the calculated waist the correlation moved by 0.15 at ten times the traces while
+the row still said it stayed put. Each design's correlation now carries the
+standard error of its median over the trials, each move is read in units of the
+two errors in quadrature, and `_verdict` names the claim from those two readings.
+At leading order a replicated design scales the information matrix and leaves its
+correlation unchanged, so a move with the traces is the fit's nonlinearity at the
+one-trace precision or the seed's draw, never a property of the sample size.
+
+AND THE RECORD'S OWN CORRELATION IS A CELL. The CAMPAIGN rows carry the median,
+the quartiles and the extremes of the per-condition correlations in
+linefit_conditions.csv, with the conditioning factor 1/sqrt(1 - corr^2) at each:
+what an independent laser width buys the collisional width. Sixteen pages quoted
+these as copies, and the rebuild at the calculated waist reached none of them.
 """
 from __future__ import annotations
 
@@ -44,11 +60,16 @@ import csv
 from pathlib import Path
 import sys
 
+import numpy as np
+
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from rb5s6s import config as C                                    # noqa: E402
 from rb5s6s.constants import W0_CENTRAL_M, transit_fwhm_from_w0  # noqa: E402
 from rb5s6s.forecast import forecast_precision                    # noqa: E402
+
+#: O58: this module's twin runs are a declared STUDY, and this is its reason
+_TWIN_STUDY = "the twin's span sweep, a study of the width channel's grid"
 
 OUT = C.RESULTS_DIR / "twin_span_sweep.csv"
 REF = ("p_sweep", "4154", "130", "225")     # brightest condition, reference peak
@@ -57,6 +78,15 @@ W0_M = W0_CENTRAL_M                        # the committed waist convention, rea
                                             # standing as a copy of it (ssot-guard, 2026-09-18)
 SEED = 0
 N_TRIALS = 6
+#: a move is RESOLVED when it exceeds this many of its trials' standard errors (F552)
+Z_MOVED = 2.0
+#: and MATERIAL when it changes what an independent laser width buys, the conditioning factor
+#: 1/sqrt(1 - corr^2), by at least this fraction. Added when the first computed verdict called a
+#: 0.0089 move of the correlation a span effect: resolved at 47 standard errors because the trials
+#: agree to four decimals, and a 6 per cent change of the factor. The claim is about the second.
+PIN_MATERIAL = 0.10
+#: the standard error of a sample median is this times sd/sqrt(n) under normal theory
+MEDIAN_SE = 1.2533
 
 
 def _truth() -> dict:
@@ -70,6 +100,51 @@ def _truth() -> dict:
                         "_T_C": T_C,
                         "_campaign_corr": float(r["corr"])}
     raise SystemExit(f"reference condition {REF} not found")
+
+
+def _campaign_rows() -> list:
+    """Every condition of linefit_conditions.csv whose fit carries a width correlation."""
+    with (C.RESULTS_DIR / "linefit_conditions.csv").open() as fh:
+        return [r for r in csv.DictReader(fh) if (r.get("corr") or "").strip()]
+
+
+def _pin_factor(corr: float) -> float:
+    """What fixing one member of a correlated pair buys the other: 1/sqrt(1 - corr^2)."""
+    return float(1.0 / np.sqrt(1.0 - corr * corr))
+
+
+def _inert(z: float, pin_change: float) -> bool:
+    """A design leaves the degeneracy where it was unless its move is both resolved and material (F552)."""
+    return bool(z < Z_MOVED or abs(pin_change) < PIN_MATERIAL)
+
+
+def _verdict(span_inert: bool, traces_inert: bool) -> tuple:
+    """F552: the claim row, COMPUTED from the two readings and never written as a constant.
+
+    A reading is inert when `_inert` says so. The four cases name different claims, so a table whose moves
+    change cannot keep a claim they refute."""
+    tail = (f" A move counts when it is resolved, above {Z_MOVED:g} of its trials' standard errors, and "
+            f"material, changing the conditioning factor by {PIN_MATERIAL * 100:.0f} per cent or more. This "
+            "is a comparison between designs under one seed, not a precision measurement of any single "
+            "correlation")
+    if span_inert and traces_inert:
+        return ("DEGENERACY_IS_A_LINESHAPE_PROPERTY",
+                "neither a five times wider span nor ten times the data moves the correlation materially, "
+                "which is what a degeneracy belonging to the lineshape does and what one belonging to the "
+                "sample size does not." + tail)
+    if span_inert:
+        return ("SPAN_INERT_SAMPLE_SIZE_OPEN",
+                "a five times wider span leaves the degeneracy where it was, so a wider scan does not reach "
+                "it, while ten times the data moved it materially. At leading order a replicated design "
+                "scales the information matrix and leaves its correlation unchanged, so that move is the "
+                "fit's nonlinearity at the one-trace precision or this seed's draw, and repeating over seeds "
+                "tells them apart." + tail)
+    if traces_inert:
+        return ("SPAN_MOVES_IT",
+                "a five times wider span moved the correlation materially and ten times the data did not, "
+                "so the span reaches the degeneracy and the sample size does not." + tail)
+    return ("BOTH_MOVE_IT",
+            "both a five times wider span and ten times the data moved the correlation materially." + tail)
 
 
 def main() -> int:
@@ -109,14 +184,29 @@ def main() -> int:
         "each correlation carries sampling scatter and the comparison between "
         "designs is what this producer supports")
 
-    corrs = {}
+    corrs, ses, pins = {}, {}, {}
     for key, design, why in designs:
+        # return_trials adds keys and draws nothing, so every value below is the one
+        # the call without it returned
         r = forecast_precision(truth, design, n_trials=N_TRIALS, seed=SEED,
-                               scalings=False)
+                               scalings=False, return_trials=True, registry=_TWIN_STUDY)
         corr = float(r["corr_laser_coll"])
         corrs[key] = corr
         add(key, "corr_laser_coll", f"{corr:+.4f}", "dimensionless",
             f"correlation between the fitted laser and collisional widths. {why}")
+        tr = np.asarray(r["corr_laser_coll_trials"], float)
+        tr = tr[np.isfinite(tr)]
+        se = (MEDIAN_SE * float(np.std(tr, ddof=1)) / np.sqrt(tr.size)
+              if tr.size > 1 else float("nan"))
+        ses[key] = se
+        add(key, "corr_laser_coll_se", f"{se:.4f}", "dimensionless",
+            f"standard error of that median over the {tr.size} trials, {MEDIAN_SE} sd/sqrt(n) "
+            "under normal theory. At this many trials it is a scale for the moves below and "
+            "not a precise bar")
+        pins[key] = _pin_factor(corr)
+        add(key, "pin_factor", f"{pins[key]:.4f}", "dimensionless",
+            "1/sqrt(1 - corr^2): the factor by which fixing the laser width shrinks the "
+            "collisional width's uncertainty at this design's correlation")
         for p in ("gamma_coll", "sigma_laser"):
             err = r.get(f"{p}_err")
             if err is not None:
@@ -125,16 +215,26 @@ def main() -> int:
 
     move_span = abs(corrs["span_300MHz"] - corrs["span_060MHz"])
     move_n = abs(corrs["traces_10x"] - corrs["span_060MHz"])
+    z_span = move_span / float(np.hypot(ses["span_300MHz"], ses["span_060MHz"]))
+    z_n = move_n / float(np.hypot(ses["traces_10x"], ses["span_060MHz"]))
     add("VERDICT", "corr_move_with_span", f"{move_span:.4f}", "dimensionless",
         "how far the correlation moved when the span went from 60 to 300 MHz")
+    add("VERDICT", "corr_move_with_span_z", f"{z_span:.2f}", "sigma",
+        "that move over the two medians' standard errors in quadrature")
     add("VERDICT", "corr_move_with_traces", f"{move_n:.4f}", "dimensionless",
         "how far it moved at ten times the repeats")
-    add("VERDICT", "claim", "DEGENERACY_IS_A_LINESHAPE_PROPERTY", "verdict",
-        "the correlation stays close to its starting value under both a five "
-        "times wider span and ten times the data, which is what a degeneracy "
-        "belonging to the lineshape does and what one belonging to the sample "
-        "size does not. This is a comparison between designs under one seed, "
-        "not a precision measurement of any single correlation")
+    add("VERDICT", "corr_move_with_traces_z", f"{z_n:.2f}", "sigma",
+        "that move over the two medians' standard errors in quadrature")
+    dpin_span = pins["span_300MHz"] / pins["span_060MHz"] - 1.0
+    dpin_n = pins["traces_10x"] / pins["span_060MHz"] - 1.0
+    add("VERDICT", "pin_change_with_span", f"{dpin_span:+.4f}", "fraction",
+        "the relative change of the conditioning factor with the five times wider span: what the move "
+        "does to the purchase of an independent laser width")
+    add("VERDICT", "pin_change_with_traces", f"{dpin_n:+.4f}", "fraction",
+        "the same at ten times the repeats")
+    span_inert, traces_inert = _inert(z_span, dpin_span), _inert(z_n, dpin_n)
+    claim, claim_why = _verdict(span_inert, traces_inert)
+    add("VERDICT", "claim", claim, "verdict", claim_why)
     ratio_n = None
     ratio_span = None
     try:
@@ -151,8 +251,9 @@ def main() -> int:
         add("VERDICT", "err_ratio_10x_traces", f"{ratio_n:.2f}", "dimensionless",
             "how much the collisional-width uncertainty SHRANK at ten times the "
             "repeats. Near the root of ten is what independent samples give, and "
-            "it is the other half of the claim: the data buys precision while "
-            "the correlation stays put")
+            "it is the other half of the claim: the data buys precision "
+            + ("while the correlation stays put" if traces_inert
+               else "while the correlation moved, which the claim row reads"))
         add("VERDICT", "err_ratio_wide_span", f"{ratio_span:.2f}", "dimensionless",
             "how much it GREW at five times the span. Above one means widening "
             "COSTS precision here, which the record has not stated before. "
@@ -162,9 +263,52 @@ def main() -> int:
             "widen the span only alongside the points to match")
     add("VERDICT", "campaign_corr_for_scale",
         f"{campaign_corr:+.4f}", "dimensionless",
-        f"the CAMPAIGN's own fitted correlation at {'/'.join(REF)}, carried "
-        "here only so a reader can see the twin sits in the same region. It is "
-        "a different quantity from the twin's and must not be quoted as one")
+        f"the CAMPAIGN's own fitted correlation at {'/'.join(REF)}, carried beside the "
+        "twin's for scale. It is a different quantity from the twin's and must not be quoted "
+        "as one: the twin's design takes the forecast's defaults (a noise of 0.004 of peak, "
+        "five traces, 2000 points), not this condition's own noise law")
+    add("VERDICT", "twin_minus_campaign_corr",
+        f"{corrs['span_060MHz'] - campaign_corr:+.4f}", "dimensionless",
+        "the twin at its reference design less the record's own fit at the same condition. A "
+        "gap this size says the default design does not reproduce this condition's width "
+        "correlation, which a run at the condition's own noise law and trace count tests (F553)")
+
+    rows_c = _campaign_rows()
+    cc = np.asarray([float(r["corr"]) for r in rows_c], float)
+    q25, med, q75 = (float(v) for v in np.percentile(cc, [25, 50, 75]))
+    lo, hi = float(cc.min()), float(cc.max())
+    where = "across the conditions of linefit_conditions.csv"
+    add("CAMPAIGN", "n_conditions", int(cc.size), "count",
+        "the conditions of linefit_conditions.csv whose fit carries a width correlation")
+    for q, v, what in (("median", med, "the median"),
+                       ("q25", q25, "the 25th percentile, the more negative quartile"),
+                       ("q75", q75, "the 75th percentile, the less negative quartile"),
+                       ("most_negative", lo, "the most negative"),
+                       ("least_negative", hi, "the least negative")):
+        add("CAMPAIGN", f"corr_{q}", f"{v:+.4f}", "dimensionless",
+            f"{what} of the record's own fitted laser-collisional width correlation {where}")
+        add("CAMPAIGN", f"pin_factor_{q}", f"{_pin_factor(v):.4f}", "dimensionless",
+            f"1/sqrt(1 - corr^2) at {what} correlation: what an independent laser width buys "
+            "the collisional width's uncertainty there")
+
+    # the power arm alone, which is the population fig10 draws and two pages describe
+    arm = [r for r in rows_c if r["role"] == REF[0]]
+    ca = np.asarray([float(r["corr"]) for r in arm], float)
+    gc, gce, sl, sle, tw, twe = (np.asarray([float(r[k]) for r in arm], float) for k in (
+        "gamma_coll", "gamma_coll_err", "sigma_laser", "sigma_laser_err", "total_fwhm", "total_fwhm_err"))
+    add("CAMPAIGN", "n_conditions_power_arm", int(ca.size), "count",
+        "the power arm's conditions, all at 130 C: the population fig10 draws")
+    add("CAMPAIGN", "corr_median_power_arm", f"{float(np.median(ca)):+.4f}", "dimensionless",
+        "the median width correlation over the power arm's conditions")
+    add("CAMPAIGN", "n_negative_lorentzian_power_arm", int(np.sum(gc - gce < 0.0)), "count",
+        "power-arm conditions whose one-sigma ellipse reaches a negative collisional width: the "
+        "fitted value below its own one sigma")
+    add("CAMPAIGN", "n_negative_gaussian_power_arm", int(np.sum(sl - sle < 0.0)), "count",
+        "the same for the laser width")
+    add("CAMPAIGN", "total_fwhm_relerr_median_power_arm_pct",
+        f"{100.0 * float(np.median(twe / tw)):.2f}", "per cent",
+        "the median relative one-sigma of the fitted total width over the power arm's conditions: "
+        "the quantity the fit does measure")
 
     OUT.parent.mkdir(parents=True, exist_ok=True)
     with open(OUT, "w", newline="") as f:

@@ -1,4 +1,4 @@
-"""`rb5s6s.cumulants`: the windowed self-centred moment with its convergence
+"""`rb5s6s.moments`: the windowed self-centred moment with its convergence
 reported and the pedestal removed.
 
 Each test names the failure it exists to catch. The pedestal test carries its
@@ -15,7 +15,7 @@ import numpy as np
 import pytest
 
 from rb5s6s._compat import trapezoid
-from rb5s6s.cumulants import linear_baseline, windowed_moments, wing_baseline
+from rb5s6s.moments import linear_baseline, windowed_moments, wing_baseline
 from rb5s6s.lineshape import RAMP_SIDE, lorentzian, ramp_mean_over_s0, ramp_mu3
 
 GRID = np.linspace(-60.0, 60.0, 6001)
@@ -165,7 +165,7 @@ def test_a_window_wider_than_the_trace_is_refused_not_clamped():
     NEGATIVE case: windows past the edge must be NaN and must say why.
     """
     import numpy as np
-    from rb5s6s.cumulants import windowed_moments
+    from rb5s6s.moments import windowed_moments
     from rb5s6s.lineshape import model_profile
     from rb5s6s import constants as K
 
@@ -189,7 +189,7 @@ def test_windows_inside_the_trace_are_untouched_by_that_guard():
     worse than the defect it closes.
     """
     import numpy as np
-    from rb5s6s.cumulants import windowed_moments
+    from rb5s6s.moments import windowed_moments
     from rb5s6s.lineshape import model_profile
     from rb5s6s import constants as K
 

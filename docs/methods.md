@@ -187,7 +187,7 @@ rb5s6s/   api(the supported entry point: a trace in, a linewidth out)
                     raises has already published the number. The uncertainty
                     carries two significant digits and the value follows its
                     decimals)
-          cumulants(M39: the windowed self-centred cumulants of a line, recentred to
+          moments(M39: the windowed self-centred moments of a line, recentred to
                     a tolerance with the converged flag returned, the pedestal
                     removed from the trace's own far wings, any order by the
                     moment recursion)
@@ -266,6 +266,12 @@ rb5s6s/   api(the supported entry point: a trace in, a linewidth out)
                     not yet wired: the joint shift-and-transit line per path and its table, the
                     bore-clipped beam through the focus, the twin's world drawn from the atom Monte Carlo,
                     and the moment likelihood's coordinates, covariance and set statistic)
+          bloch_full(the full-model line: each atom's four-level Bloch equations along its own chord
+                    through the clipped beam, the returning beam imaged about its focus, every term a
+                    switch, and the registry's door before the first atom)
+          twin_bloch(the twin's clean line drawn from bloch_full: one line per condition on a grid,
+                    cached by every parameter and by the digest of the code it computes with, read onto
+                    the trace axis by a cubic spline, with the twin's own noise layer on top)
           (M18, M19, M29, M31, M32, M33, M34, M35, M36 and M37 are library-and-test only: they have
            no CSV product, so grepping results/ for them finds nothing -- see
            their test files, and for M34 also examples/campaign_twin.py)

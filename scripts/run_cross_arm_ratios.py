@@ -28,7 +28,7 @@ terms differ on. Four such statistics are read here, none of them a fit:
                    wider), the F contrast reads the pumping companion's
                    branching and whatever F-dependent term the model lacks.
 
-THE ESTIMATOR is `rb5s6s.cumulants.windowed_moments` at half-widths 3.25, 6
+THE ESTIMATOR is `rb5s6s.moments.windowed_moments` at half-widths 3.25, 6
 and 12 MHz, self-centred, with a linear baseline through two strips 30 to
 40 MHz from the centre on each side so that a pedestal and a tilt are removed
 the same way from every trace and from the model. Every windowed statistic is
@@ -95,7 +95,7 @@ from rb5s6s import constants as K                                  # noqa: E402
 # MOMENTS, NOT CUMULANTS (O33). This producer asks only for orders 2 and/or 3, where the two
 # bases are the SAME NUMBER (k2 = mu2 and k3 = mu3 identically), so the switch cannot move a
 # committed cell -- it removes the retired name, which is the point of doing it everywhere.
-from rb5s6s.cumulants import windowed_moments                    # noqa: E402
+from rb5s6s.moments import windowed_moments                    # noqa: E402
 from rb5s6s.fullmodel import full_profile                          # noqa: E402
 from rb5s6s.hyperpolarizability import two_photon_rabi_hz          # noqa: E402
 from rb5s6s.ingest import load_manifest, load_trace, trace_path    # noqa: E402
@@ -282,7 +282,7 @@ def main() -> int:
 
     out = [["quantity", "key", "value", "err", "unit", "note", "status"]]
     out.append(["estimator", "definition", f"{MAIN_WINDOW:g}", "", "MHz half-width",
-                f"self-centred windowed mu2 (rb5s6s.cumulants.windowed_moments) at half-widths {', '.join(f'{w:g}' for w in WINDOWS)} MHz, a linear baseline through strips {STRIP[0]:g} to {STRIP[1]:g} MHz from the centre on each side, seeded on the committed QC peak position. every reading computed on {N_FULL} and {N_HALF} window points and refused beyond a relative disagreement of {GRID_TOL:g}: the largest disagreement admitted was {max_dis:.2e} and {n_refused} trace-windows were refused. the bar of a cell is the block scatter over its repeats", "DIAGNOSTIC"])
+                f"self-centred windowed mu2 (rb5s6s.moments.windowed_moments) at half-widths {', '.join(f'{w:g}' for w in WINDOWS)} MHz, a linear baseline through strips {STRIP[0]:g} to {STRIP[1]:g} MHz from the centre on each side, seeded on the committed QC peak position. every reading computed on {N_FULL} and {N_HALF} window points and refused beyond a relative disagreement of {GRID_TOL:g}: the largest disagreement admitted was {max_dis:.2e} and {n_refused} trace-windows were refused. the bar of a cell is the block scatter over its repeats", "DIAGNOSTIC"])
     for k in keys:
         for w in WINDOWS:
             m, e, n = cells[k][w]

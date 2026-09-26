@@ -71,13 +71,13 @@ Outside it can, and it is about one per cent. Trapped 795 nm photons
 deposit $5P_{1/2}$ population in a halo around the driven column where there is
 no 6S at all, and there the infrared absorbs. That halo grows steeply with
 density, reaching $1.13\times10^{10}$ cm⁻³ at 130 °C, which is 0.64 of the 5P
-density inside the beam, and it re-excites 5P to 6S at **1.07 per cent** of the
-primary two-photon rate. At 110 °C it is 0.08 per cent and at 70 °C it is
+density inside the beam, and it re-excites 5P to 6S at **[1.38](../../results/trapping_channels.csv "ref:trapping_channels:halo_reexcitation:T130C") per cent** of the
+primary two-photon rate. At 110 °C it is [0.11](../../results/trapping_channels.csv "ref:trapping_channels:halo_reexcitation:T110C") per cent and at 70 °C it is
 nothing.
 
 Those are point values at a 2 mm standoff, and the standoff is **not recorded**.
 The result is geometry-dominated, so it is carried as a band over the 1 to 5 mm
-the record brackets: **0.49 to 1.85 per cent at 130 °C** and 0.04 to 0.12 at
+the record brackets: **0.63 to 2.41 per cent at 130 °C** and 0.054 to 0.18 at
 110 °C (`results/trapping_channels.csv`, `err_kind = geometry`). The conclusion
 is unchanged across the whole band.
 
@@ -247,9 +247,9 @@ immune at
 every waist ([-0.000](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w42um:centroid_pull_error")
 per cent, the first moment of a mixture of symmetric kernels being the density's
 own mean), and nothing else is. The fitted centre moves by
-[-60.912](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w16um:fitted_centre_error") per cent at
+[-60.684](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w16um:fitted_centre_error") per cent at
 16 microns and the windowed third moment by
-[103.942](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w42um:k3_error") per cent at the
+[103.942](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w42um:mu3_error") per cent at the
 archive's own 42.38. So `model_profile` is the right object for the centroid at
 every waist and for the shape channels at none of them, and
 [the odd-moments chapter](10_the_odd_moments.md) section 1 carries the

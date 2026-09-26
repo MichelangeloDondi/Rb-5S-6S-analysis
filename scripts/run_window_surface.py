@@ -4,7 +4,7 @@ For ONE declared noise level per run (the level is the serial axis; windows, ord
 replicas fan out), the windowed moments of orders 2 to 7 at half-windows 0.5 to 21 MHz on traces
 the model itself generated with the archive's own axes, levels and noise laws. Two things per row:
 
-* at the noiseless rung, the package's self-centred estimator (`cumulants.windowed_moments` on the
+* at the noiseless rung, the package's self-centred estimator (`moments.windowed_moments` on the
   archive's grid) against the DIRECT truncated moments of the same model line on a tenfold finer
   grid, self-centred the same way: the estimator recovers what the model's own line carries at that
   window, or it does not. That is the rung's `max_abs_rel_error`, each order scaled by mu2^(n/2);
@@ -32,7 +32,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 from rb5s6s import config as C
 from rb5s6s import windows as _WINDOWS, ladder_gate                       # noqa: E402
-from rb5s6s.cumulants import windowed_moments                     # noqa: E402
+from rb5s6s.moments import windowed_moments                     # noqa: E402
 from rb5s6s.config import RESULTS_DIR as _RESULTS_DIR  # noqa: E402  (F480: results where RB5S6S_RESULTS_DIR points)
 
 _s = importlib.util.spec_from_file_location("closure_for_surface", ROOT / "scripts" / "run_ultra_joint_closure.py")

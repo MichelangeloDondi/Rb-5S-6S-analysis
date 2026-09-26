@@ -36,10 +36,13 @@ not per line: a bold span may legitimately wrap across lines.
 from __future__ import annotations
 
 import re
+import sys
 import subprocess
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _reader_text import reader_text  # noqa: E402  the one predicate for what a reader sees (V7.1)
 
 _FENCE = re.compile(r"```.*?```", re.S)
 _INLINE_CODE = re.compile(r"`[^`\n]*`")
@@ -53,7 +56,9 @@ def _tracked_markdown() -> list[str]:
 
 
 def _bold_tokens(text: str) -> int:
-    """Bold delimiters outside code, where `** 2` is arithmetic and not markup."""
+    """Bold delimiters outside code and outside link titles, where `** 2` is arithmetic and not markup: a bound
+    number's `ref:expr:` title carries the power operator (V7.1's gate, two pages read odd on it)."""
+    text = reader_text(text)
     text = _FENCE.sub(" ", text)
     text = _INLINE_CODE.sub(" ", text)
     return len(re.findall(r"\*\*", text))
@@ -72,3 +77,9 @@ def test_every_bold_span_closes():
                        f"renders inverted")
     assert not odd, (
         "unclosed bold spans in tracked prose:\n  " + "\n  ".join(odd))
+
+
+def test_a_bound_power_is_not_markup_and_an_open_span_still_counts():
+    """V7.1, both ways: a `ref:expr:` title's power operator adds no delimiter, and a span left open stays odd."""
+    assert _bold_tokens('[0.34](x.csv "ref:expr:{a} ** 2") and **bold**') == 2
+    assert _bold_tokens('**open and [0.34](x.csv "ref:expr:{a} ** 2")') == 1

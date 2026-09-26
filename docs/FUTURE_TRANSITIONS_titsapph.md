@@ -786,7 +786,7 @@ locked.
 
 Computed here from the arc reduced elements and this section's own
 detunings, the level repulsion between target and near-resonant intermediate
-reaches the target's natural width at 740 W/cm^2 for 5F and 1.85e4 W/cm^2 for
+reaches the target's natural width at 740 W/cm^2 for 5F and 1.85e4 W/cm^2 <!-- other-quantity: an intensity --> for
 8P3/2, against the 3497 W/cm^2 per arm the present 993 nm drive already runs at.
 **The 5F target's own shift therefore exceeds its natural width at one fifth of
 today's intensity, and a three-photon rate needs far more intensity than a
@@ -1489,7 +1489,7 @@ steep root.
 
 On
 the response alone, [1339.6](../results/polarizability.csv "ref:polarizability:magic_5s6s:1340nm") nm looks like the better lever, at 1.6 per cent
-against 1.76 for the steep root.
+against 1.76 <!-- other-quantity: a root's own figure --> for the steep root.
 
 The quantity that decides the case is what the element is already known
 to, and it reverses that reading. The line lists carry their own quoted uncertainties, so the
@@ -1499,7 +1499,7 @@ quoted uncertainty divided by what the crossing would deliver:
 
 | crossing (nm) | steepness (a.u./pm) | locates to (pm) | reads | would give | already known | gain |
 |---|---|---|---|---|---|---|
-| 1297.5 | −11.3 | 26 | 6S–7P₁/₂ | 1.76% | 1.81% | **1.03** |
+| 1297.5 | −11.3 | 26 | 6S–7P₁/₂ | 1.76% <!-- other-quantity: a percentage of that table --> | 1.81% | **1.03** |
 | 1287.9 | −0.64 | 447 | 6S–7P₃/₂ | 4.5% | 1.62% | 0.36 <!-- other-quantity: a percentage of this table, not the ladder's shift per watt --> |
 | 1029.7 | −2.2 | 133 | 6S–8P₃/₂ | 9.3% | 1.53% | 0.17 |
 | [1339.6](../results/polarizability.csv "ref:polarizability:magic_5s6s:1340nm") | +0.77 | 374 | 6S–5P₃/₂ | 1.6% | 0.21% | 0.13 |

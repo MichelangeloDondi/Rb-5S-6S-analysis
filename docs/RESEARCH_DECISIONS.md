@@ -68,11 +68,11 @@ errors are one fact, not two.
 ![the degeneracy against the observable](../figures/fig10_degeneracy_vs_observable.png)
 
 *Left: each condition's 1σ error ellipse from its own covariance, over contours
-of constant total FWHM. The ellipses are elongated along the contours, two of
-the twenty reaching unphysical negative widths, and the centres scatter in the
-same direction, with a median correlation coefficient of −0.90 between the two
+of constant total FWHM. The ellipses are elongated along the contours, [2](../results/twin_span_sweep.csv "ref:twin_span_sweep:CAMPAIGN:n_negative_gaussian_power_arm") of
+the twenty reaching unphysical negative laser widths, and the centres scatter in the
+same direction, with a median correlation coefficient of [-0.82](../results/twin_span_sweep.csv "ref:twin_span_sweep:CAMPAIGN:corr_median_power_arm") between the two
 widths. Right: the quantity actually measured, the fitted total width, known to
-1.0 per cent within a condition. No trend with laser power survives the scatter
+[0.63](../results/twin_span_sweep.csv "ref:twin_span_sweep:CAMPAIGN:total_fwhm_relerr_median_power_arm_pct") per cent at the median condition. No trend with laser power survives the scatter
 between measurement blocks, which is several times larger than the plotted bars.
 All twenty conditions are at 130 °C, so what the figure shows is that the total
 is measured while its decomposition is not.*

@@ -29,6 +29,9 @@ paragraph in a tmp copy fails its axis; splitting it passes.
 """
 from __future__ import annotations
 
+import sys as _sys
+_sys.path.insert(0, str(__import__('pathlib').Path(__file__).parent))
+from _reader_text import reader_text  # noqa: E402
 import json
 import re
 import subprocess
@@ -75,6 +78,8 @@ def _paragraphs(text: str):
 
 
 def _shape(text: str) -> dict:
+    # counted as a reader sees it: a link is its text, so binding a number to its cell costs no wall (V7.1)
+    text = reader_text(text)
     paras = _paragraphs(text)
     longest = max((len(p.split()) for p in paras), default=0)
     words_before, seen_title = 0, False
@@ -174,3 +179,11 @@ if __name__ == "__main__":
                     json.dumps(new, indent=1, sort_keys=True) + "\n"))
         print(f"reseeded over {len(new['files'])} files, "
               f"rail debt {new['rail_debt']}")
+
+
+def test_a_binding_costs_no_wall():
+    """V7.1: binding a number to its cell adds a link target and a title, which a reader never sees."""
+    bare = "The correlation moves by 0.0089 across a wider span and barely at all with traces."
+    bound = bare.replace("0.0089", '[0.0089](../results/twin_span_sweep.csv "ref:twin_span_sweep:VERDICT:corr_move_with_span")')
+    assert _shape("# T\n\n" + bound)["longest_para"] == _shape("# T\n\n" + bare)["longest_para"]
+    assert _shape("# T\n\n" + bare + " " + bare)["longest_para"] > _shape("# T\n\n" + bare)["longest_para"]

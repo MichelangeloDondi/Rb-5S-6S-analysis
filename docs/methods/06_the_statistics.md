@@ -807,7 +807,7 @@ repair in that literature is the multivariate k-statistics, which are unbiased
 and consistent at finite sample size.
 
 Where this record sits. The cumulants here are computed by integrating a
-density over the frequency axis, in `rb5s6s/cumulants.py`, not by averaging $m$
+density over the frequency axis, in `rb5s6s/moments.py`, not by averaging $m$
 samples, so there is no $m$ and no k-statistic analogue to apply directly. The
 bias does not vanish for that reason: the conversion from central moments to
 cumulants is nonlinear, so $E[\hat\kappa_4] = \kappa_4 - 3\mathrm{Var}(\hat\mu_2)$

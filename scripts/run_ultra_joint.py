@@ -645,7 +645,7 @@ def _moment_stats(nu, y, windows=MOMENT_WINDOWS, orders=MOMENT_ORDERS):
     # to a cumulant any more: where a conditioning read is still wanted, it is the moments' own,
     # the replica spread over the mean that `moment_arm`'s SEM and SNR already carry, never a
     # second, cumulant-valued basis whose keys would stop corresponding to the model's.
-    from rb5s6s.cumulants import windowed_moments
+    from rb5s6s.moments import windowed_moments
     out = {}
     top = max(orders)
     for w in windows:

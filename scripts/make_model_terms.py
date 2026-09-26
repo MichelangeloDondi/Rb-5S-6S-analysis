@@ -14,6 +14,12 @@ Run:
 Then (registry convention, this producer runs before it):
 
     python scripts/annotate_results_status.py
+
+`--wiki` also rewrites the status line of every wiki page a registry row names (owner order O58: "make sure the
+repos and the wiki and the thesis are updated and in synch"): one generated line per page, before its navigation
+footer, naming the page's registry terms and linking this registry's rendering, so the wiki carries no status of its
+own that could go stale. It is a flag and never the default, because a producer run by the freshness check must not
+write tracked prose; `tests/test_model_registry.py` refuses a page whose line is not the one this would write.
 """
 from __future__ import annotations
 
@@ -27,6 +33,8 @@ from rb5s6s import config as C  # noqa: E402
 from rb5s6s import model_registry as MR  # noqa: E402
 
 DOC_PATH = ROOT / "docs" / "methods" / "model_terms.md"
+WIKI_DIR = ROOT / "docs" / "wiki"
+WIKI_STATUS_PREFIX = "*Model status:*"
 
 #: the doc page's own column order: the six statuses and the three impl sites, never the whole
 #: sixteen-column CSV, which is the file to read for physics/param_keys/anchors/evidence.
@@ -81,7 +89,8 @@ def doc_text() -> str:
         "`rb5s6s/model_registry.py`'s own module docstring, and the six-status detail, the "
         "physics, the parameter names, the thesis anchor and the evidence for every row live in "
         f"`results/model_terms.csv`, not repeated here. Registry digest (the joint twin's own "
-        f"2025 carried set): `{digest}`.",
+        f"2025 carried set, what a computation carried): `{digest}`. Registry content digest (every term and every "
+        f"status, what the registry says, which moves with any status): `{MR.registry_content_digest()}`.",
         "",
         "| " + " | ".join(h for _, h in _DOC_COLUMNS) + " |",
         "|" + "|".join(["---"] * len(_DOC_COLUMNS)) + "|",
@@ -93,7 +102,66 @@ def doc_text() -> str:
     return "\n".join(lines)
 
 
+def wiki_terms() -> dict:
+    """{wiki page: its registry term ids, sorted}, from every row's `wiki_page`."""
+    out: dict = {}
+    for row in MR.REGISTRY:
+        out.setdefault(row.wiki_page, []).append(row.term_id)
+    return {page: sorted(ids) for page, ids in sorted(out.items())}
+
+
+def wiki_status_line(term_ids) -> str:
+    """The one line a wiki page carries for the registry: its terms, and the page their statuses are generated on."""
+    names = ", ".join(f"`{t}`" for t in term_ids)
+    return (f"{WIKI_STATUS_PREFIX} what the fitter, the twin and the Monte Carlo carry of this page's physics is "
+            f"generated from the registry on [the model terms](../methods/model_terms.md), for {names}.")
+
+
+def wiki_with_status(text: str, line: str) -> str:
+    """`text` with its status line set to `line`: an existing one replaced, else one inserted before the navigation
+    footer's closing rule (the last line that is exactly `---`), else appended."""
+    lines = text.split("\n")
+    for i, ln in enumerate(lines):
+        if ln.startswith(WIKI_STATUS_PREFIX):
+            lines[i] = line
+            return "\n".join(lines)
+    rules = [i for i, ln in enumerate(lines) if ln.strip() == "---"]
+    if rules:
+        k = rules[-1]
+        return "\n".join(lines[:k] + [line, ""] + lines[k:])
+    return text.rstrip("\n") + "\n\n" + line + "\n"
+
+
+def wiki_status_stale(wiki_dir: Path = WIKI_DIR) -> list:
+    """Every page the registry names whose status line is not the one `--wiki` would write, or which is missing."""
+    bad = []
+    for page, ids in wiki_terms().items():
+        f = wiki_dir / page
+        if not f.is_file():
+            bad.append(f"{page}: named by the registry and not a wiki page")
+            continue
+        text = f.read_text(encoding="utf-8")
+        if wiki_with_status(text, wiki_status_line(ids)) != text:
+            bad.append(f"{page}: its status line is not the registry's ({', '.join(ids)})")
+    return bad
+
+
+def write_wiki_status(wiki_dir: Path = WIKI_DIR) -> list:
+    changed = []
+    for page, ids in wiki_terms().items():
+        f = wiki_dir / page
+        text = f.read_text(encoding="utf-8")
+        new = wiki_with_status(text, wiki_status_line(ids))
+        if new != text:
+            f.write_text(new, encoding="utf-8")
+            changed.append(page)
+    return changed
+
+
 def main() -> int:
+    if "--wiki" in sys.argv[1:]:
+        changed = write_wiki_status()
+        print(f"  wiki status lines rewritten on {len(changed)} page(s): {', '.join(changed) or 'none'}")
     out = Path(C.RESULTS_DIR) / "model_terms.csv"
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(csv_text())

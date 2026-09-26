@@ -112,6 +112,14 @@ The 2025 session's nonlinearity is mapped empirically in
 rate relative to its mean at a dozen ramp positions, each with its own
 uncertainty and sample count.
 
+The axis's curvature and a gain drifting across the sweep both reach the odd
+moments that read the polarizability, and neither is in the forward model yet ([the model terms](../methods/model_terms.md),
+`sweep_axis_curvature` and `amplitude_slope`). A quadratic term in the axis
+turns an even moment of the line into an odd one. A gain or drive drifting
+linearly across the sweep multiplies the line by $(1 + a\delta)$, which moves
+the centroid by $a\mu_2$ and the third central moment by $a(\mu_4 - 3\mu_2^2)$,
+the line's fourth cumulant, at first order.
+
 ## The comb as a clock
 
 The comb's teeth sit at exact multiples of an RF drive, a ruler laid down
@@ -327,6 +335,8 @@ misleading a reader.
   next page: another way the scan can distort a line.
 - [The two-photon comb](the-two-photon-comb.md), the previous page, on
   why the comb reaches only a couple of islands.
+
+*Model status:* what the fitter, the twin and the Monte Carlo carry of this page's physics is generated from the registry on [the model terms](../methods/model_terms.md), for `amplitude_slope`, `sweep_axis_curvature`.
 
 ---
 

@@ -219,6 +219,8 @@ the same band-thinking on the detection side · [Identifiability](identifiabilit
 what the kernel choice does to the width budget · [The Voigt profile](voigt-profile.md),
 the convolution the kernel enters
 
+*Model status:* what the fitter, the twin and the Monte Carlo carry of this page's physics is generated from the registry on [the model terms](../methods/model_terms.md), for `laser_kernel`.
+
 ---
 
 [← The wavemeter and the frequency axis](the-wavemeter-and-the-frequency-axis.md) · *Driving, modulating and detecting, 4 of 8* · [Sweep rate and detection lag →](sweep-rate-and-detection-lag.md)

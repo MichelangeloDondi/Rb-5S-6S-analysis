@@ -101,7 +101,7 @@ repairs it. Two consequences follow, and this repository has met both:
   a factor of nearly three.
 
 **Where this record stands, and which fit owns which number.** The
-per-condition line fits return 0.78 to 1.09 across the 32 fitted conditions,
+per-condition line fits return 0.78 to 1.04 across the 32 fitted conditions,
 so within a condition the model describes the data. The **width-against-power
 regression** over 20 summary widths returns about
 [50.1](../../results/stark_sweep.csv "ref:stark_sweep:chi2_red:fit"). Both come from the same

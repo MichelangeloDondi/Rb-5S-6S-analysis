@@ -168,7 +168,7 @@ the retired waist convention: still well under one, but no longer an order of
 magnitude inside it, so the weak-field law is to be re-checked here, not
 assumed safe. At the 16 µm the fixed-lock
 session proposes it is 8.5, and integrating the moments with the saturated
-weight instead moves the predicted axial skew from $+0.36$ to $+1.07$. So the
+weight instead moves the predicted axial skew from $+0.36$ to $+1.07$ <!-- other-quantity: the predicted axial skew, not the halo re-excitation -->. So the
 committed axial machinery, which takes an integer photon order, is being asked
 a question outside its range at exactly the configuration that was chosen to
 make the skew large.

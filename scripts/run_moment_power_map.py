@@ -65,7 +65,7 @@ from rb5s6s.forecast import build_world_trace                      # noqa: E402
 # MOMENTS, NOT CUMULANTS (owner order O33, A72). At orders 5 and 7 a cumulant is a difference
 # of large terms and carries a cancellation the moment does not; below fourth order the two are
 # identical (k2 = mu2, k3 = mu3 exactly), so switching changes only where it should.
-from rb5s6s.cumulants import windowed_moments                     # noqa: E402
+from rb5s6s.moments import windowed_moments                     # noqa: E402
 from rb5s6s.qc import median_standard_error                        # noqa: E402
 
 OUT = C.RESULTS_DIR / ("moment_power_map_deep.csv" if os.environ.get("RB5S6S_MPM_DEEP")
@@ -122,6 +122,9 @@ S0_LADDER = ((0.364, 0.5, 0.73, 1.0, 2.0) if os.environ.get("RB5S6S_MPM_DEEP")
 ORDERS = (3, 5, 7)
 
 from rb5s6s.reference_point import reference_point  # noqa: E402
+
+#: O58: this module's twin runs are a declared STUDY, and this is its reason
+_TWIN_STUDY = "the layered world's moments against power, a registered approximation of the joint twin"
 _AP = reference_point()   # F313: the archive's line, read from the committed fit and the waist, never typed
 GAMMA_COLL, SIGMA_LASER, TRANSIT = _AP["gamma_coll"], _AP["sigma_laser"], _AP["transit_fwhm"]
 # THE TRACE COUNT IS THE STUDY'S OWN SUBJECT, not a convenience. At the
@@ -149,7 +152,7 @@ FINE = np.linspace(-40.0, 40.0, 32001)
 # from kappa_5's own +1/567 (docs/methods/03), because the cross-term dominates. mu_7 was not
 # hand-derived (it needs kappa_4 and kappa_6 too) but its sign is verified negative both directly,
 # by numerical quadrature of (s-mean)^7 on the closed-form density, and through
-# `rb5s6s.cumulants.windowed_moments` on `lineshape.stark_ramp` itself, so it is stated as
+# `rb5s6s.moments.windowed_moments` on `lineshape.stark_ramp` itself, so it is stated as
 # checked rather than derived. On the package's side (lineshape.RAMP_SIDE, blue since the ruling
 # of 2026-09-17) every one of mu_3, mu_5 and mu_7 is negative, unlike the cumulants' alternating
 # -, +, - -- this table read the red side's signs for the hours after the kernel flipped (P3).
@@ -166,7 +169,7 @@ WRONG_SIGN_MAX = 0.35
 
 def windowed_orders(y, w, grid, orders=ORDERS):
     """Every order from ONE centring through the package estimator
-    (`rb5s6s.cumulants.windowed_moments`): the window recentred until it
+    (`rb5s6s.moments.windowed_moments`): the window recentred until it
     stops moving, the pedestal removed from the trace's own far wings, the
     window started at the line's position rather than the trace's maximum.
     An unconverged fixed point returns NaN for every order. The copy this
@@ -215,7 +218,7 @@ def _trace(s0, gamma_l, level, adc_levels, seed, resolve):
         transit_fwhm=TRANSIT, power_max_w=1.0, cycles_at_max=1.0,
         drift_mhz_total=0.0, noise_frac_bright=level,
         adc_levels=adc_levels, gamma_l=gamma_l,
-        resolve_shift=resolve)[:2]
+        resolve_shift=resolve, registry=_TWIN_STUDY)[:2]
 
 
 def _cell(spec):

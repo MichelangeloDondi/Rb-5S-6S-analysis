@@ -4,18 +4,45 @@ TRUTH,sigma_laser,0.474510,MHz,"read from linefit_conditions.csv at p_sweep/4154
 TRUTH,transit_fwhm,1.445930,MHz,from the committed 42 um waist through constants.transit_fwhm_from_w0 at 130 C,DIAGNOSTIC
 TRUTH,seed,0,count,"fixed, because the run this producer replaces recorded neither its truth nor its seed and therefore cannot be reproduced by anyone",DIAGNOSTIC
 TRUTH,n_trials,6,count,"Monte-Carlo trials per design. Small enough to run inside a gate, so each correlation carries sampling scatter and the comparison between designs is what this producer supports",DIAGNOSTIC
-span_060MHz,corr_laser_coll,-0.8236,dimensionless,correlation between the fitted laser and collisional widths. the campaign's own span,DIAGNOSTIC
-span_060MHz,gamma_coll_err,0.005934,MHz,"the fit's own reported one-sigma, median over trials",DIAGNOSTIC
-span_060MHz,sigma_laser_err,0.030017,MHz,"the fit's own reported one-sigma, median over trials",DIAGNOSTIC
-span_300MHz,corr_laser_coll,-0.8227,dimensionless,"correlation between the fitted laser and collisional widths. five times wider, which the withdrawn draft said would break the degeneracy",DIAGNOSTIC
-span_300MHz,gamma_coll_err,0.016953,MHz,"the fit's own reported one-sigma, median over trials",DIAGNOSTIC
-span_300MHz,sigma_laser_err,0.089411,MHz,"the fit's own reported one-sigma, median over trials",DIAGNOSTIC
-traces_10x,corr_laser_coll,-0.6694,dimensionless,"correlation between the fitted laser and collisional widths. ten times the repeats at the campaign's span, which tests the sample-size half of the same claim",DIAGNOSTIC
-traces_10x,gamma_coll_err,0.001426,MHz,"the fit's own reported one-sigma, median over trials",DIAGNOSTIC
-traces_10x,sigma_laser_err,0.010717,MHz,"the fit's own reported one-sigma, median over trials",DIAGNOSTIC
-VERDICT,corr_move_with_span,0.0009,dimensionless,how far the correlation moved when the span went from 60 to 300 MHz,DIAGNOSTIC
-VERDICT,corr_move_with_traces,0.1542,dimensionless,how far it moved at ten times the repeats,DIAGNOSTIC
-VERDICT,claim,DEGENERACY_IS_A_LINESHAPE_PROPERTY,verdict,"the correlation stays close to its starting value under both a five times wider span and ten times the data, which is what a degeneracy belonging to the lineshape does and what one belonging to the sample size does not. This is a comparison between designs under one seed, not a precision measurement of any single correlation",DIAGNOSTIC
-VERDICT,err_ratio_10x_traces,4.16,dimensionless,"how much the collisional-width uncertainty SHRANK at ten times the repeats. Near the root of ten is what independent samples give, and it is the other half of the claim: the data buys precision while the correlation stays put",DIAGNOSTIC
-VERDICT,err_ratio_wide_span,2.86,dimensionless,"how much it GREW at five times the span. Above one means widening COSTS precision here, which the record has not stated before. CAVEAT, and it is load-bearing: n_points is held fixed, so a wider span samples the line five times more thinly. This is a coupling between two design knobs and not a pure span effect, and it says widen the span only alongside the points to match",DIAGNOSTIC
-VERDICT,campaign_corr_for_scale,-0.7085,dimensionless,"the CAMPAIGN's own fitted correlation at p_sweep/4154/130/225, carried here only so a reader can see the twin sits in the same region. It is a different quantity from the twin's and must not be quoted as one",DIAGNOSTIC
+span_060MHz,corr_laser_coll,-0.9359,dimensionless,correlation between the fitted laser and collisional widths. the campaign's own span,DIAGNOSTIC
+span_060MHz,corr_laser_coll_se,0.0001,dimensionless,"standard error of that median over the 6 trials, 1.2533 sd/sqrt(n) under normal theory. At this many trials it is a scale for the moves below and not a precise bar",DIAGNOSTIC
+span_060MHz,pin_factor,2.8380,dimensionless,1/sqrt(1 - corr^2): the factor by which fixing the laser width shrinks the collisional width's uncertainty at this design's correlation,DIAGNOSTIC
+span_060MHz,gamma_coll_err,0.009409,MHz,"the fit's own reported one-sigma, median over trials",DIAGNOSTIC
+span_060MHz,sigma_laser_err,0.056648,MHz,"the fit's own reported one-sigma, median over trials",DIAGNOSTIC
+span_300MHz,corr_laser_coll,-0.9270,dimensionless,"correlation between the fitted laser and collisional widths. five times wider, which the withdrawn draft said would break the degeneracy",DIAGNOSTIC
+span_300MHz,corr_laser_coll_se,0.0002,dimensionless,"standard error of that median over the 6 trials, 1.2533 sd/sqrt(n) under normal theory. At this many trials it is a scale for the moves below and not a precise bar",DIAGNOSTIC
+span_300MHz,pin_factor,2.6658,dimensionless,1/sqrt(1 - corr^2): the factor by which fixing the laser width shrinks the collisional width's uncertainty at this design's correlation,DIAGNOSTIC
+span_300MHz,gamma_coll_err,0.025425,MHz,"the fit's own reported one-sigma, median over trials",DIAGNOSTIC
+span_300MHz,sigma_laser_err,0.192740,MHz,"the fit's own reported one-sigma, median over trials",DIAGNOSTIC
+traces_10x,corr_laser_coll,-0.9359,dimensionless,"correlation between the fitted laser and collisional widths. ten times the repeats at the campaign's span, which tests the sample-size half of the same claim",DIAGNOSTIC
+traces_10x,corr_laser_coll_se,0.0000,dimensionless,"standard error of that median over the 6 trials, 1.2533 sd/sqrt(n) under normal theory. At this many trials it is a scale for the moves below and not a precise bar",DIAGNOSTIC
+traces_10x,pin_factor,2.8396,dimensionless,1/sqrt(1 - corr^2): the factor by which fixing the laser width shrinks the collisional width's uncertainty at this design's correlation,DIAGNOSTIC
+traces_10x,gamma_coll_err,0.002980,MHz,"the fit's own reported one-sigma, median over trials",DIAGNOSTIC
+traces_10x,sigma_laser_err,0.016978,MHz,"the fit's own reported one-sigma, median over trials",DIAGNOSTIC
+VERDICT,corr_move_with_span,0.0089,dimensionless,how far the correlation moved when the span went from 60 to 300 MHz,DIAGNOSTIC
+VERDICT,corr_move_with_span_z,47.47,sigma,that move over the two medians' standard errors in quadrature,DIAGNOSTIC
+VERDICT,corr_move_with_traces,0.0001,dimensionless,how far it moved at ten times the repeats,DIAGNOSTIC
+VERDICT,corr_move_with_traces_z,1.15,sigma,that move over the two medians' standard errors in quadrature,DIAGNOSTIC
+VERDICT,pin_change_with_span,-0.0607,fraction,the relative change of the conditioning factor with the five times wider span: what the move does to the purchase of an independent laser width,DIAGNOSTIC
+VERDICT,pin_change_with_traces,+0.0006,fraction,the same at ten times the repeats,DIAGNOSTIC
+VERDICT,claim,DEGENERACY_IS_A_LINESHAPE_PROPERTY,verdict,"neither a five times wider span nor ten times the data moves the correlation materially, which is what a degeneracy belonging to the lineshape does and what one belonging to the sample size does not. A move counts when it is resolved, above 2 of its trials' standard errors, and material, changing the conditioning factor by 10 per cent or more. This is a comparison between designs under one seed, not a precision measurement of any single correlation",DIAGNOSTIC
+VERDICT,err_ratio_10x_traces,3.16,dimensionless,"how much the collisional-width uncertainty SHRANK at ten times the repeats. Near the root of ten is what independent samples give, and it is the other half of the claim: the data buys precision while the correlation stays put",DIAGNOSTIC
+VERDICT,err_ratio_wide_span,2.70,dimensionless,"how much it GREW at five times the span. Above one means widening COSTS precision here, which the record has not stated before. CAVEAT, and it is load-bearing: n_points is held fixed, so a wider span samples the line five times more thinly. This is a coupling between two design knobs and not a pure span effect, and it says widen the span only alongside the points to match",DIAGNOSTIC
+VERDICT,campaign_corr_for_scale,-0.7085,dimensionless,"the CAMPAIGN's own fitted correlation at p_sweep/4154/130/225, carried beside the twin's for scale. It is a different quantity from the twin's and must not be quoted as one: the twin's design takes the forecast's defaults (a noise of 0.004 of peak, five traces, 2000 points), not this condition's own noise law",DIAGNOSTIC
+VERDICT,twin_minus_campaign_corr,-0.2274,dimensionless,"the twin at its reference design less the record's own fit at the same condition. A gap this size says the default design does not reproduce this condition's width correlation, which a run at the condition's own noise law and trace count tests (F553)",DIAGNOSTIC
+CAMPAIGN,n_conditions,32,count,the conditions of linefit_conditions.csv whose fit carries a width correlation,DIAGNOSTIC
+CAMPAIGN,corr_median,-0.8076,dimensionless,the median of the record's own fitted laser-collisional width correlation across the conditions of linefit_conditions.csv,DIAGNOSTIC
+CAMPAIGN,pin_factor_median,1.6956,dimensionless,1/sqrt(1 - corr^2) at the median correlation: what an independent laser width buys the collisional width's uncertainty there,DIAGNOSTIC
+CAMPAIGN,corr_q25,-0.8222,dimensionless,"the 25th percentile, the more negative quartile of the record's own fitted laser-collisional width correlation across the conditions of linefit_conditions.csv",DIAGNOSTIC
+CAMPAIGN,pin_factor_q25,1.7567,dimensionless,"1/sqrt(1 - corr^2) at the 25th percentile, the more negative quartile correlation: what an independent laser width buys the collisional width's uncertainty there",DIAGNOSTIC
+CAMPAIGN,corr_q75,-0.7053,dimensionless,"the 75th percentile, the less negative quartile of the record's own fitted laser-collisional width correlation across the conditions of linefit_conditions.csv",DIAGNOSTIC
+CAMPAIGN,pin_factor_q75,1.4105,dimensionless,"1/sqrt(1 - corr^2) at the 75th percentile, the less negative quartile correlation: what an independent laser width buys the collisional width's uncertainty there",DIAGNOSTIC
+CAMPAIGN,corr_most_negative,-0.8724,dimensionless,the most negative of the record's own fitted laser-collisional width correlation across the conditions of linefit_conditions.csv,DIAGNOSTIC
+CAMPAIGN,pin_factor_most_negative,2.0460,dimensionless,1/sqrt(1 - corr^2) at the most negative correlation: what an independent laser width buys the collisional width's uncertainty there,DIAGNOSTIC
+CAMPAIGN,corr_least_negative,-0.2453,dimensionless,the least negative of the record's own fitted laser-collisional width correlation across the conditions of linefit_conditions.csv,DIAGNOSTIC
+CAMPAIGN,pin_factor_least_negative,1.0315,dimensionless,1/sqrt(1 - corr^2) at the least negative correlation: what an independent laser width buys the collisional width's uncertainty there,DIAGNOSTIC
+CAMPAIGN,n_conditions_power_arm,20,count,"the power arm's conditions, all at 130 C: the population fig10 draws",DIAGNOSTIC
+CAMPAIGN,corr_median_power_arm,-0.8202,dimensionless,the median width correlation over the power arm's conditions,DIAGNOSTIC
+CAMPAIGN,n_negative_lorentzian_power_arm,0,count,power-arm conditions whose one-sigma ellipse reaches a negative collisional width: the fitted value below its own one sigma,DIAGNOSTIC
+CAMPAIGN,n_negative_gaussian_power_arm,2,count,the same for the laser width,DIAGNOSTIC
+CAMPAIGN,total_fwhm_relerr_median_power_arm_pct,0.63,per cent,the median relative one-sigma of the fitted total width over the power arm's conditions: the quantity the fit does measure,DIAGNOSTIC

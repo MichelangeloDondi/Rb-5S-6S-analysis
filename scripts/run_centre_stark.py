@@ -456,7 +456,7 @@ def main() -> int:
         w = csv.DictWriter(f, fieldnames=cols)
         w.writeheader()
         w.writerows(out_rows)
-    print(f"\n  Wrote {OUT_CSV.relative_to(ROOT)}: {len(out_rows)} rows.")
+    print(f"\n  Wrote {OUT_CSV}: {len(out_rows)} rows.")
     return 0
 
 

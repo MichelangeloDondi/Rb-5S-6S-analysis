@@ -563,7 +563,7 @@ def main() -> int:
                     "status"])
         for q, k, v, e, ek, u, st in rows:
             w.writerow([q, k, f"{v:.9g}", e, ek, u, st])
-    print(f"  wrote {out_path.relative_to(C.REPO_ROOT)} ({len(rows)} rows)")
+    print(f"  wrote {out_path} ({len(rows)} rows)")
     print()
     print("=" * 78)
     print("The CSV carries its own status column.")

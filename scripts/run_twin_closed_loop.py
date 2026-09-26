@@ -63,6 +63,9 @@ C_M_S = 299_792_458.0
 # the record's transit at the waist convention of that day and 130 C was 0.9575 MHz, and
 # its predicted coefficient is `stark.kappa_pred_per_watt`.
 from rb5s6s.reference_point import reference_point  # noqa: E402
+
+#: O58: this module's twin runs are a declared STUDY, and this is its reason
+_TWIN_STUDY = 'the closed loop on the layered world, a registered approximation of the joint twin'
 _AP = reference_point()   # F313: the archive's line, read from the committed fit and the waist, never typed
 TRUTH_GAMMA = _AP["gamma_coll"]
 TRUTH_SIGMA = _AP["sigma_laser"]
@@ -124,7 +127,7 @@ def run_leg(truth_gamma: float) -> dict:
             cycles_at_max=CYCLES_AT_MAX,
             drift_mhz_total=DRIFT_TOTAL_MHZ,
             noise_frac_bright=NOISE_FRAC_BRIGHT, adc_levels=ADC_LEVELS,
-            range_anchor="per_rung")
+            range_anchor="per_rung", registry=_TWIN_STUDY)
             for _ in range(REPEATS)]
         for peak, centre in pos.items():
             fs, vs = [], []
@@ -165,7 +168,7 @@ def main() -> int:
          "worlds. The err is the median reported per-condition error",
          "DIAGNOSTIC"],
         ["sigma_laser_recovered", f"{base['sigma_median']:.4f}", "", "MHz",
-         "same fits, the injected truth 1.6", "DIAGNOSTIC"],
+         f"same fits, the injected truth {TRUTH_SIGMA:.4f}", "DIAGNOSTIC"],
         ["A1_gamma_within_band", str(a1), "", "",
          f"|{base['gamma_median']:.4f} - {TRUTH_GAMMA}| <= {BAND_GAMMA} "
          "(preregistered, linefit_conditions p_sweep median error)",
@@ -193,7 +196,7 @@ def main() -> int:
         w = csv.writer(fh)
         w.writerow(["quantity", "value", "err", "unit", "note", "status"])
         w.writerows(rows)
-    print(f"wrote {out.relative_to(ROOT)}")
+    print(f"wrote {out}")
     for r in rows[2:]:
         print(f"  {r[0]} = {r[1]}")
     if gage:

@@ -656,7 +656,7 @@ def test_the_moment_statistic_takes_a_fitted_baseline_and_not_a_wing_strip():
     statistic sits measurably below the truth on a trace built with no offset
     at all.
     """
-    from rb5s6s.cumulants import windowed_moments
+    from rb5s6s.moments import windowed_moments
     m = _uj
     nu = np.linspace(-42.5, 42.5, 4001)
     from rb5s6s.fullmodel import full_profile

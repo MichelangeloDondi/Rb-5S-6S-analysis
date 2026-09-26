@@ -63,7 +63,7 @@ HISTORY.
 The total width is well determined. The split between its causes is not
 ([identifiability](identifiability.md)). More data does not help:
 [`results/twin_span_sweep.csv`](../../results/twin_span_sweep.csv) shows ten
-times the data moving the width-width correlation by 0.0000.
+times the data moving the width-width correlation by [0.0001](../../results/twin_span_sweep.csv "ref:twin_span_sweep:VERDICT:corr_move_with_traces").
 
 Transit broadening is set by how long an atom stays in the light: a thermal
 velocity crossing the beam waist in a cell, a fixed geometry in a guide. The

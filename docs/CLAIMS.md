@@ -24,14 +24,14 @@ two-photon sum frequency, twice the laser frequency.
 Bounds (95%, each with its own conditionality stated):
 
 - Collisional self-broadening of the 993 nm line:
-  β_self < 0.02-0.04 MHz per 10¹² cm⁻³ across the four hyperfine
-  components, from a 48.1-fold density lever at four temperatures. This is
+  β_self < [0.02](../results/beta_self_probe.csv "ref:beta_self_probe:4192::bound95_nscale")-[0.04](../results/beta_self_probe.csv "ref:beta_self_probe:4154::bound95_nscale") MHz per 10¹² cm⁻³ across the four hyperfine
+  components, from a [48.1](../results/ladder_terms.csv "ref:ladder_terms:density:lever")-fold density lever at four temperatures. This is
   the model-independent construction: it does not lean
-  on the beam waist, and the 24.3 per cent density-scale systematic is applied in
+  on the beam waist, and the [24.3](../results/beta_self_probe.csv "ref:expr:{beta_self_probe:pooled_slope::n_frac_syst} * 100") per cent density-scale systematic is applied in
   the direction that raises the bound, since the cold-spot direction
   makes the fitted β an underestimate. The
   fitted collisional width grows only 1.47
-  times across that 48.1-fold span, so it is read as a floor, not as
+  times across that [48.1](../results/ladder_terms.csv "ref:ladder_terms:density:lever")-fold span, so it is read as a floor, not as
   resolved collisions, and that observation is what licenses the bound
   framing. The hierarchical cross-check quoted beside it carries a measured
   model-form systematic the section-2 kernel entry states: the laser-kernel
@@ -96,7 +96,7 @@ Bounds (95%, each with its own conditionality stated):
   measures, rather than on either factor alone.
 - The 2025 laser linewidth: below 1.2 MHz per photon, equivalently 2.4 MHz on
   the transition axis, at the accepted lineage waist,
-  rising with the waist. The per-block fitted values, 1.75 to 2.15 MHz
+  rising with the waist. The per-block fitted values, 1.75 to 2.15 MHz <!-- other-quantity: per-block fitted widths, not the halo band's old reconstruction -->
   on the transition axis, are preliminary: their block-to-block
   variation is partly the collision-laser degeneracy rather than
   resolved laser physics, and they are quoted as the working range, not
@@ -114,17 +114,17 @@ Bounds (95%, each with its own conditionality stated):
 
 ![line width against Rb density at four temperatures, with the four hyperfine components separated](../figures/fig1_width_vs_density.png)
 
-*The evidence behind the first bound. The density rises 48.1-fold across the
+*The evidence behind the first bound. The density rises [48.1](../results/ladder_terms.csv "ref:ladder_terms:density:lever")-fold across the
 four temperatures while the total width plotted here rises by at most
 12 per cent on any one component. The fitted collisional part of that total
 rises 1.47-fold over the same range, which fig6 draws, and between them that is
 what makes the collisional coefficient a bound and a floor rather than a
 resolved slope. The density axis is logarithmic, and the four oven settings happen to
 fall at nearly equal spacing on it, which reads as categorical unless the scale
-is stated. It also carries a 24.3 per cent scale systematic from the
+is stated. It also carries a [24.3](../results/beta_self_probe.csv "ref:expr:{beta_self_probe:pooled_slope::n_frac_syst} * 100") per cent scale systematic from the
 vapour-pressure model, the largest single uncertainty on the figure, and it is
 common to every point, so it slides the abscissa bodily. The 6S natural width
-is 3.49 MHz, below the bottom of the ordinate, so most of the width shown here
+is [3.49](../rb5s6s/constants.py "ref:constant:GAMMA_NAT_HZ:1e-6") MHz, below the bottom of the ordinate, so most of the width shown here
 is instrumental.
 
 The pale vertical band at 130 °C is the spread over the five
@@ -164,7 +164,7 @@ within the plotted uncertainties.
 Tying the collisional term to the density
 instead forces the laser width down to its lowest value at 110 °C, and that is
 the trade-off between the two widths inside the fit rather than a change in the
-laser. The density axis is logarithmic and carries the same 24.3 per cent
+laser. The density axis is logarithmic and carries the same [24.3](../results/beta_self_probe.csv "ref:expr:{beta_self_probe:pooled_slope::n_frac_syst} * 100") per cent
 scale systematic as fig1.*
 
 **Nulls and scaling laws:**
@@ -191,15 +191,15 @@ Bounded rather than assumed (ENVELOPE, computed 2026-08-10):
   can act through here, not only the detected one. Trapped light on the
   two infrared cascade legs cannot re-excite inside the driven column,
   where both lines are inverted by about five, and re-excites in the
-  halo outside it at 1.07 per cent of the primary rate at 130 °C, with a
-  0.49 to 1.85 band over the standoff range the record brackets, and at
+  halo outside it at [1.38](../results/trapping_channels.csv "ref:trapping_channels:halo_reexcitation:T130C") per cent of the primary rate at 130 °C, with a
+  0.63 to 2.41 band over the standoff range the record brackets, and at
   nothing by 70 °C. The cell's own thermal field drives those same legs
   at 1e-12 of that, because it peaks near 7 µm while the cascade lies
   below 3 µm, and its largest channel is a two-parts-per-million
   transfer at 2.7 µm. Both are amplitude effects rather than lineshape
   effects, so they bear on the amplitude-against-density comparisons and
   not on the widths. The thermal field also shifts the transition by
-  79.9 to 161.0 Hz across the sweep, a converged principal value through
+  [79.9](../results/blackbody_channels.csv "ref:expr:0 - {blackbody_channels:bbr_stark_shift:T70C}") to [161.0](../results/blackbody_channels.csv "ref:expr:0 - {blackbody_channels:bbr_stark_shift:T130C}") Hz across the sweep, a converged principal value through
   the 6S to 6P poles, which no width-derived number can see
   ([methods 4](methods/04_the_composite_model.md),
   `results/blackbody_channels.csv`).
@@ -228,7 +228,7 @@ Calculated (anchored, not fitted to this data):
   adjudication.
 - The first scalar magic wavelengths for the 5S-6S pair, near
   [1203.7](../results/polarizability.csv "ref:polarizability:magic_5s6s:1204nm"),
-  [1287.9](../results/polarizability.csv "ref:polarizability:magic_5s6s:1288nm") and 1339.6 nm, the 1204 nm crossing
+  [1287.9](../results/polarizability.csv "ref:polarizability:magic_5s6s:1288nm") and [1339.6](../results/polarizability.csv "ref:polarizability:magic_5s6s:1340nm") nm, the 1204 nm crossing
   being the usable one, its 16 to 84 percent band
   [1202.8](../results/polarizability.csv "ref:polarizability:magic_5s6s:1204nm:err_lo16") to
   [1204.5](../results/polarizability.csv "ref:polarizability:magic_5s6s:1204nm:err_hi84") nm. No published values were
@@ -275,7 +275,7 @@ Calculated (anchored, not fitted to this data):
   through its sum with the collisional width, so the kernel choice is a bias
   channel on $\beta_\text{self}$ and not only a modelling preference. Its
   size is measured: switching the kernel moves the hierarchical
-  $\beta_\text{self}$ by 5 to 48 per cent, 0.6 to 4.3 sigma on the
+  $\beta_\text{self}$ by 5 to 48 per cent, [0.6](../results/kernel_headline.csv "ref:kernel_headline:4207::beta_shift_in_sigma") to [4.3](../results/kernel_headline.csv "ref:expr:0 - {kernel_headline:4192::beta_shift_in_sigma}") sigma on the
   quoted statistical error (`results/kernel_headline.csv`). The headline
   slope bound above does not lean on the kernel and is unaffected. What the
   line itself settles, and what it does not: the pure-Lorentzian model is
@@ -327,15 +327,15 @@ Calculated (anchored, not fitted to this data):
   functional form. Zero events is not a rate: 0 of 500 gives a one-sided
   95 per cent upper bound near 0.6 per cent, **per world**, and the three
   zero-truth worlds are bounded separately rather than pooled. The exact-symmetry world, which tests the instrument rather than the
-  model, finds the profile invariant to 0.000e+00 when a fixed total
+  model, finds the profile invariant to [0.000e+00](../results/kernel_worlds.csv "ref:kernel_worlds:E:split_invariance_max_abs_deviation") when a fixed total
   Lorentzian width is re-split. The interval coverage against a true mixed
   kernel is [0.7260](../results/kernel_worlds.csv "ref:kernel_worlds:B:coverage_1sigma") where 0.68 is nominal, so the intervals OVER-cover and any
   quoted interval is recalibrated against that measured number rather than
   read as nominal. None of this attributes the width to the laser: that arrow
   is licensed by the transfer triangle and by nothing here.
   **What the existing comb bound settles, and what it does not** .
-  The committed 28.3 kHz limit was taken at the campaign scan rate, so its
-  clock averages at 6.8 Hz, below the band the scanned widths integrate, and
+  The committed [28.3](../results/kernel_k5.csv "ref:kernel_k5:B:comb_excursion_ub95_transition") kHz limit was taken at the campaign scan rate, so its
+  clock averages at [6.8](../results/kernel_k5.csv "ref:kernel_k5:B:clock_band_of_this_bound") Hz, below the band the scanned widths integrate, and
   converting an excursion at one averaging time into a linewidth needs a noise
   type measured nowhere. Granting the most favourable type, that bound permits
   a width some 1800 times the one measured, so it does not constrain the kernel
@@ -348,7 +348,7 @@ Calculated (anchored, not fitted to this data):
   effects carry the same square-of-power signature as the ramp and were
   absent from the forward model that produced them, atomic saturation and
   hyperfine pumping through the real cascade. Injecting the saturation
-  term and re-profiling tightens the width-only bound by 2.8 and the
+  term and re-profiling tightens the width-only bound by [2.8](../results/saturation_companion.csv "ref:saturation_companion:C3d:factor_with_saturation_ratio_-1p2362") and the
   joint bound by 2.21. Neither committed bound is moved, because the
   injected law is the two-level homogeneous form used with a two-photon
   Rabi frequency, which is standard practice and not a derivation for
@@ -431,10 +431,10 @@ would add:
   that would split the (Δα, intensity) pair and let the experiment
   adjudicate the sign-disputed polarizability. The projection, on one
   morning of randomized power cycling with the four lines interleaved,
-  is 0.09 MHz on S₀(225 mW), which would detect a shift of the predicted
+  is [0.09](../results/projections.csv "ref:projections:proj_pull_S0_sigma:24 per day, 1 day") MHz on S₀(225 mW), which would detect a shift of the predicted
   size at 3.8 sigma and separate the two disputed polarizability signs at
   8 sigma if the shift is that size, conditional on the lock holding to
-  the dataset's own held-lock BOUND, of order 0.02 MHz/min with the sign
+  the dataset's own held-lock BOUND, of order [0.02](../results/projections.csv "ref:expr:{projections:input_lock_drift_rate:held lock} / 2") MHz/min with the sign
   undetermined, rather than to any borrowed cavity figure. That bound is what
   the record defends: the directional 0.016 MHz/min reading was retracted on
   2026-07-30 (see [DATA.md](DATA.md)'s provenance note), so this condition is
@@ -454,14 +454,14 @@ would add:
   and 4 sigma if the block scatter is not cut, so the interleaving and
   the temperature reach are co-limiting rather than one refining the
   other. Resolving the rate is not the same as knowing it: the
-  24.3 per cent density-scale systematic would leave the coefficient itself known to
+  [24.3](../results/beta_self_probe.csv "ref:expr:{beta_self_probe:pooled_slope::n_frac_syst} * 100") per cent density-scale systematic would leave the coefficient itself known to
   about 22 percent until the absorption channel of [PLAN.md](PLAN.md) §8
   measures the density directly.
 - A demonstration of the self-centred third-moment readout
   ([the condition](wiki/third-cumulant.md)), under a
   named condition: the ramp asymmetry reaches detection only with the
   small-waist option (a tighter focus raises S₀ about 7.90-fold over
-  the dataset's 42.38 µm waist for an unclipped design, the bore out of
+  the dataset's [42.38](../rb5s6s/constants.py "ref:constant:W0_CENTRAL_M:1e6") µm waist for an unclipped design, the bore out of
   the focusing path, 7.02-fold with the 2025 input kept), which
   the plan carries as a second-stage item, and the moment's sign
   depends on collection geometry that would have to be measured in the
@@ -535,7 +535,7 @@ model carries and each of which is accounted for in its own place.
 
 The waist is per rung and not per bench. A drive of wavelength λ focused by
 the same f = 150 mm lens with the same input beam reaches `w0 = λf/(πw_in)`,
-so the 42.38 µm convention at 993.4 nm is 32.18 µm at 760.1 nm through that same
+so the [42.38](../rb5s6s/constants.py "ref:constant:W0_CENTRAL_M:1e6") µm convention at [993.4](../results/transition_ladder.csv "ref:transition_ladder:6S:drive_wavelength") nm is 32.18 µm at [760.1](../results/transition_ladder.csv "ref:transition_ladder:7S:drive_wavelength") nm through that same
 lens, and the on-axis shift, going as the inverse square of the waist, is
 larger than a common-waist reading gives. That geometric point is why a
 per-rung quantity is computed at that rung's own waist, and it is separate
@@ -577,7 +577,7 @@ so one wide trace carries both. For everyone using the
 density-conditioned numbers, the projection is that stacking wide scans
 pins the temperature in about 1.9 hours well enough that the vapour
 curve's 22-fold leverage leaves the implied density inside the
-24.3 per cent scale systematic it would check, and about 31 hours if only
+[24.3](../results/beta_self_probe.csv "ref:expr:{beta_self_probe:pooled_slope::n_frac_syst} * 100") per cent scale systematic it would check, and about 31 hours if only
 one hyperfine component's pedestal is fitted rather than the comb of
 four.
 

@@ -105,7 +105,7 @@ alone. The strip beneath the map carries the number of traces each window
 draws on, so the split is visible rather than asserted.
 
 The two leading-edge windows are not merely imprecise, they depart. At
--537 ms the local rate sits 1.75% below the whole-scan rate with an
+-537 ms the local rate sits 1.75% below <!-- other-quantity: a local sweep-rate offset, not the halo band's old reconstruction --> the whole-scan rate with an
 uncertainty of 0.40%, and at -412 ms it sits 0.73% above with an uncertainty
 of 0.18%, which are 4.4 and 4.0 standard deviations from flat. They are
 excluded from the bound on sample count, four and five traces against nineteen
@@ -363,7 +363,7 @@ above a small amplitude it reverses the sweep and no rate variation exists.
 
 **Route to re-derive.** `rb5s6s.lineshape.model_profile` evaluated on the
 stretched axis $\hat\nu + \alpha\hat\nu^{2}$, read with
-`rb5s6s.cumulants.windowed_moments` at the same window, against the
+`rb5s6s.moments.windowed_moments` at the same window, against the
 unstretched profile at the injected shift.
 
 **What would falsify this.** A comb whose teeth were spaced $\Omega$ rather

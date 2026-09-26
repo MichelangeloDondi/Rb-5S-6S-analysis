@@ -69,7 +69,7 @@ _s.loader.exec_module(UJ)
 
 from rb5s6s import ladder_gate             # noqa: E402
 from rb5s6s.constants import W0_CENTRAL_M  # noqa: E402  (SSOT: the canonical truth is the record's central waist)
-from rb5s6s.forecast import _correlate      # noqa: E402
+from rb5s6s.forecast import _correlate, twin_preflight      # noqa: E402
 from rb5s6s.noise import sigma_of_v         # noqa: E402
 from rb5s6s.fullmodel import _add_pedestal, full_profile, saturation_companion_mhz    # noqa: E402
 from rb5s6s.lineshape import _kernel_widths                             # noqa: E402
@@ -92,6 +92,19 @@ GRID_UM = (41.0, 42.0, 44.0, 46.0, 48.0, 52.0, 56.0)   # the scan grid from the 
 # the fine half resolves a minimum if there is one to resolve.
 GRID_NOISELESS = tuple(sorted(w for w in set(GRID_UM) | {TRUTH_UM + k * 0.5 for k in range(-4, 5)}
                               if w >= GRID_UM[0]))   # C6a: nothing below the bore's floor (F291)
+
+
+def preflight_span(truths, extra_grid=()):
+    """The waist span the kernel preflight must admit: the grids this run walks, never below the bore's floor.
+
+    The truth's two-micron margin is clamped at GRID_UM[0], the floor GRID_NOISELESS already takes (F291): after the
+    fallback purge (F454, F457) no node exists below it, and an unclamped truth - 2 (40.38 um at the ruled truth)
+    made `kernel_gate.require_span` refuse every run before its first cell. An explicit `--grid-um` diagnostic keeps
+    its own waists, below the floor included, because asking for them is the diagnostic's purpose."""
+    floor = GRID_UM[0]
+    lo = min(list(GRID_UM) + list(GRID_NOISELESS) + [max(floor, x - 2.0) for x in truths] + list(extra_grid))
+    hi = max(list(GRID_UM) + list(GRID_NOISELESS) + [x + 2.0 for x in truths] + list(extra_grid))
+    return lo, hi
 
 
 #: THE FINE BAND'S STEP, SET BY MEASUREMENT (F175, 2026-09-19). `local_min` interpolates over the three
@@ -322,6 +335,12 @@ class VolumeWorld:
     reads the world's omission as the fitter's bias. `allow` is written into `describe()`, so an artefact
     built on an allowed omission says so.
 
+    THE REGISTRY'S DOOR (O58, 2026-09-25). The world is a twin, so it refuses at its
+    first bind unless the registry admits the terms its line executes, read off the beam it BUILT and the window it
+    will sample (`registry_terms`), as the declared study it is: over the twin's registry model it adds the Doppler
+    pedestal and, through the Cell's own beam, the bore, both of which the forecast twin still owes. `registry` is
+    that study's reason; the block the door returns is in `describe()`.
+
     THE HOMOGENEOUS WIDTHS ARE APPLIED ONCE, AFTER THE ENSEMBLE SUM, by `joint_spectrum` itself (F317): this
     world's own plant found the per-atom route it replaced, a third moment of -0.072 MHz^3 on a symmetric line
     with no light shift.
@@ -333,9 +352,18 @@ class VolumeWorld:
     `n_path` before a ladder is climbed on it.
     """
 
+    #: the terms every world line executes, whatever the Cell (the joint line's own and the Cell's widths)
+    WORLD_TERMS = ("natural_width", "transit", "transit_chirp", "laser_kernel", "self_broadening_vdw",
+                   "ac_stark_ramp", "doppler_pedestal", "beam_quality_m2")
+    #: the study's reason: what the world adds over the twin's registry model, and why it may
+    CLOSURE_STUDY = ("the closure world adds the Doppler pedestal and the Cell's bore, "
+                     "which the forecast twin still owes")
+
     def __init__(self, beam=None, *, n_path: int = 20000, seed: int = 20260922, step_mhz: float = 0.01,
-                 margin_mhz: float = 1.0, allow=(), n_tau: int = None):
+                 margin_mhz: float = 1.0, allow=(), n_tau: int = None, registry: str = CLOSURE_STUDY):
         self.beam = beam
+        self.registry = registry
+        self._door: dict = {}
         self.n_path, self.seed = int(n_path), int(seed)
         self.step_mhz, self.margin_mhz = float(step_mhz), float(margin_mhz)
         self.allow = frozenset(allow)
@@ -355,6 +383,15 @@ class VolumeWorld:
             if cell.spec.get(k) is not None:
                 out.append(k)
         return tuple(out)
+
+    def registry_terms(self, beam, half_window_m: float) -> set:
+        """The registry ids this world's line executes on `beam` over a window of half-length `half_window_m`."""
+        ex = set(self.WORLD_TERMS)
+        if not isinstance(beam, GaussianBeam):
+            ex.add("bore_clipping")
+        if float(half_window_m) > 0.0:
+            ex.add("axial_collection_window")
+        return ex
 
     def _bind(self, cell) -> dict:
         key = id(cell)
@@ -405,6 +442,12 @@ class VolumeWorld:
                     "build it with ClippedBeam.at_focus(cell.w0) so the world reads the truth")
             s0_ratio = float(onaxis()) / (2.0 / (math.pi * cell.w0 ** 2) * float(cell.aperture_onaxis))
         bound = dict(beam=beam, s0_ratio=s0_ratio, half_window_m=collection_half_window_m(ref, cell.z_ratio))
+        # O58's door, before the first atom: the hottest trace and the strongest drive set the regime
+        bound["registry"] = twin_preflight(
+            self.registry_terms(beam, bound["half_window_m"]), self.registry,
+            T_C=max(float(t["T"]) for t in cell.traces),
+            power_w=max(float(t.get("P_W", 0.0)) for t in cell.traces))
+        self._door = bound["registry"]
         self._cells[key] = bound
         return bound
 
@@ -445,7 +488,7 @@ class VolumeWorld:
             half = int(np.ceil(span / self.step_mhz))
             grid = np.linspace(-half * self.step_mhz, half * self.step_mhz, 2 * half + 1)
             extra = {} if self.n_tau is None else {"n_tau": int(self.n_tau)}
-            line = joint_spectrum(n_path=self.n_path, seed=self.seed, delta_mhz=grid,  # twin-ungated: the closure world's line, its model the Cell's declared omissions and allow list
+            line = joint_spectrum(n_path=self.n_path, seed=self.seed, delta_mhz=grid,  # twin-ungated: no manifest here, the registry's door ran at _bind and describe() carries it
                                   homog_step_mhz=self.step_mhz, **kw, **extra)
             line = _add_pedestal(grid, line, pedestal_height_frac, kw["T_C"], kw["isotope"])
             got = (grid, line, span - self.margin_mhz)
@@ -455,8 +498,11 @@ class VolumeWorld:
     def describe(self) -> str:
         beam = "the Cell's own clipped beam (its free-space Gaussian where it has none)" if self.beam is None else repr(self.beam)
         allow = ", ".join(sorted(self.allow)) or "none"
+        door = self._door
+        admitted = (f", the registry's door {door.get('scope', '?')} at {door.get('regime', '?')}"
+                    if door else ", the registry's door not yet run")
         return (f"world: the atom Monte Carlo's joint line (volume_line.joint_spectrum), {self.n_path} atoms, seed "
-                f"{self.seed}, beam {beam}, omissions allowed: {allow}")
+                f"{self.seed}, beam {beam}, omissions allowed: {allow}{admitted}")
 
 
 def inject(cell, p_truth, seed, correlated=False, noise_scale=1.0, residual_source=None, world_source=None):
@@ -964,8 +1010,7 @@ def main() -> int:
         from rb5s6s.constants import RHO_RETRO as _rho
         _conds = sorted({(1.0, float(_rho), float(t["T"]), float(t["P_W"]) * 1e3) for t in _src})
         _extra_grid = [float(x) for x in a.grid_um.split(",")] if a.grid_um else []
-        _lo = min(list(GRID_UM) + list(GRID_NOISELESS) + [x - 2.0 for x in truths] + _extra_grid)
-        _hi = max(list(GRID_UM) + list(GRID_NOISELESS) + [x + 2.0 for x in truths] + _extra_grid)
+        _lo, _hi = preflight_span(truths, _extra_grid)
         # ON THE WAIST READING SET (D1 of PLAN v2, 2026-09-18): this closure fits one free amplitude per
         # trace, so the amplitude's power law is not consumed and the gate is asked for every other reading.
         for _line in sorted({str(t["peak"]) for t in _src}):

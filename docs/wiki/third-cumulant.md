@@ -268,7 +268,7 @@ archive's rung
 recovers the cubic law and shows the archive's rung sign-degenerate in every
 cell. The same question on the campaign's own power ladder under every layer
 is the joint-fit producer's, which lands with its regenerated file under the
-package's estimator (`rb5s6s.cumulants`, the window recentred to a tolerance
+package's estimator (`rb5s6s.moments`, the window recentred to a tolerance
 and the detector pedestal removed first, since a fixed pass count does not
 converge on the dim rungs of a power ladder).
 
@@ -339,8 +339,8 @@ And the kernel is not the same at every element, which this observable pays
 for hardest. The saturation companion follows the local light shift, so the
 broad elements are the shifted ones and the composition is a mixture and not a
 convolution. Measured element by element, the windowed third moment is wrong
-by [103.942](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w42um:k3_error") per cent at the archive's own
-waist and [89.992](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w16um:k3_error") at 16 microns, against
+by [103.942](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w42um:mu3_error") per cent at the archive's own
+waist and [89.992](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w16um:mu3_error") at 16 microns, against
 a centroid that is untouched at
 [-0.000](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w42um:centroid_pull_error") per cent everywhere.
 The zero-contribution statement above is exact per kernel and says nothing
@@ -491,6 +491,8 @@ tells it apart from a structural offset in the model.
   instrumental asymmetry that can forge the same signature.
 - [Allan deviation](allan-deviation.md) for the wiki's other mathematical
   descriptor, a statistic built to separate noise types instead of moments.
+
+*Model status:* what the fitter, the twin and the Monte Carlo carry of this page's physics is generated from the registry on [the model terms](../methods/model_terms.md), for `transit_chirp`.
 
 ---
 

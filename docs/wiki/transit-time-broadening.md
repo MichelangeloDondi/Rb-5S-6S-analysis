@@ -149,6 +149,8 @@ for w0_um in (32, 42, 90):
 - [Monte Carlo methods](monte-carlo-methods.md), the trajectory average
   that computes this kernel for the cell.
 
+*Model status:* what the fitter, the twin and the Monte Carlo carry of this page's physics is generated from the registry on [the model terms](../methods/model_terms.md), for `transit`.
+
 ---
 
 [← The Voigt profile](voigt-profile.md) · *Experimental spectroscopy, 4 of 12* · [The beam waist →](the-beam-waist.md)

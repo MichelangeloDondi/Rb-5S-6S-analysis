@@ -13,9 +13,9 @@ everything: **absolute centres are lost, line shapes survive**. The analysis
 therefore extracts what shapes alone can support, and states everything else
 as a bound. Concretely:
 
-- **A validated lineshape model.** Natural (3.49 MHz) ⊗ transit ⊗ laser
-  reproduces every line at reduced χ² between 0.78 and 1.09 across the 32
-  fitted conditions, mean 0.89. Why those sit below one is stated once,
+- **A validated lineshape model.** Natural ([3.49](../../rb5s6s/constants.py "ref:constant:GAMMA_NAT_HZ:1e-6") MHz) ⊗ transit ⊗ laser
+  reproduces every line at reduced χ² between 0.78 and 1.04 across the 32
+  fitted conditions, mean 0.88. Why those sit below one is stated once,
   beside the fit gallery in the README. The per-condition fits hold the
   ramp at zero, and the shared ramp coefficient of the width-versus-power
   fit rails at zero, so the ramp is a component the record bounds rather
@@ -27,7 +27,7 @@ as a bound. Concretely:
   work started from was a Gaussian-optics estimate that cannot account for how
   much of the beam the 3 mm EOM aperture removed, and transit physics excludes
   it. Residual clipping and imperfect retro overlap both pushed the *effective*
-  waist above the lineage value, so that reading gave a band with ρ = 0.94 ± 0.04.
+  waist above the lineage value, so that reading gave a band with ρ = [0.94](../../rb5s6s/constants.py "ref:constant:RHO_RETRO") ± [0.04](../../rb5s6s/constants.py "ref:constant:RHO_RETRO_ERR").
 
   **Neither the lineage convention nor that band stands.** The working region since
   2026-09-17 was revised to **40 to 45 µm**, on the reading that the beam is clipped
@@ -78,12 +78,12 @@ Which uncertainty dominates depends on
   corroboration. At the ruled waist they differ by a factor of 1.28, and why has
   not been read.
 
-  The bound behind it is S₀(225 mW) < 0.18 MHz (95%, from a joint
+  The bound behind it is S₀(225 mW) < [0.18](../../results/stark_joint.csv "ref:stark_joint:S0_225mW_ub95:primary") MHz (95%, from a joint
   full-profile fit of three sessions, every trace with a free centre so the
   drifting laser costs nothing. An earlier, tighter figure was
   cold-start-inflated and is retracted, preregistration addendum 24). The
-  predicted 0.73 MHz at the calculated geometry sits above it by a factor of
-  about 4.0.
+  predicted [0.73](../../results/stark_joint.csv "ref:stark_joint:S0_225mW_pred:prediction") MHz at the calculated geometry sits above it by a factor of
+  about [4.0](../../results/stark_joint.csv "ref:expr:{stark_joint:S0_225mW_pred:prediction} / {stark_joint:S0_225mW_ub95:primary}").
 
   The exclusion holds on the full fit, the limit lying
   below every point of the predicted envelope, and this bullet used to state
@@ -194,13 +194,13 @@ Either the intensity sits lower than the accepted geometry implies, or |Δα|
   ground state, hundreds of linewidths away, and is gone from the line rather
   than merely detuned.*
 - **β_self is bounded, and the bound's necessity is demonstrated.** The
-  fitted collisional width rises ×1.47 while the density rises ×48.1 (Alcock),
+  fitted collisional width rises ×1.47 while the density rises ×[48.1](../../results/lever_crosscheck.csv "ref:lever_crosscheck:gamma_rise_factor:70to130:err") (Alcock),
   a residual floor rather than resolved collisions, so a naive fit's "4–10σ
   detection" would be an artifact. The headline construction folds that same
-  ×48.1-lever 130 °C point into the density-slope fit itself
+  ×[48.1](../../results/lever_crosscheck.csv "ref:lever_crosscheck:gamma_rise_factor:70to130:err")-lever 130 °C point into the density-slope fit itself
   (`scripts/run_beta_self.py`), the apparatus having been confirmed unchanged
   across it. The per-peak bound is
-  ≲ 0.02–0.04 MHz per 10¹² cm⁻³ (95%, four points on two degrees of freedom,
+  ≲ [0.02](../../results/beta_self_probe.csv "ref:beta_self_probe:4192::bound95_nscale")–[0.04](../../results/beta_self_probe.csv "ref:beta_self_probe:4154::bound95_nscale") MHz per 10¹² cm⁻³ (95%, four points on two degrees of freedom,
   with the small-sample scatter and the vapour-pressure density scale both
   propagated).
 

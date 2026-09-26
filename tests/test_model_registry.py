@@ -10,6 +10,7 @@ import csv
 import dataclasses
 from pathlib import Path
 
+import numpy as np
 import pytest
 
 from rb5s6s import model_registry as MR
@@ -46,7 +47,7 @@ def test_committed_csv_equals_the_module_up_to_the_annotators_own_status_column(
 
 
 def test_committed_csv_is_not_trivially_empty():
-    assert len(_committed_rows()) == len(MR.REGISTRY) == 34
+    assert len(_committed_rows()) == len(MR.REGISTRY) == 38
 
 
 def test_generated_docs_page_is_fresh():
@@ -74,9 +75,11 @@ def test_no_duplicate_term_ids():
     assert len(MR.TERM_IDS) == len(set(MR.TERM_IDS))
 
 
-def test_registry_matches_the_thesis_seeds_34_term_ids():
+def test_registry_matches_the_thesis_seeds_34_term_ids_and_the_four_agreed_after():
     # THE EXACT POPULATION (PhD-Thesis session, 2026-09-25): renaming or dropping one of these
-    # is a contract break with the thesis chapter that reads this registry by term_id.
+    # is a contract break with the thesis chapter that reads this registry by term_id. The seed's
+    # 34, and the four the two sessions agreed the same evening (O58), each owed under a marker
+    # the thesis already carries.
     expected = {
         "natural_width", "transit", "transit_chirp", "laser_kernel", "self_broadening_vdw",
         "self_broadening_T03", "foreign_gas", "ac_stark_ramp", "doppler_pedestal", "saturation",
@@ -88,8 +91,14 @@ def test_registry_matches_the_thesis_seeds_34_term_ids():
         "speed_dependent_collisional_width", "resonant_exchange_by_line_share", "pump_depletion",
         "population_lens",
     }
-    assert set(MR.TERM_IDS) == expected
-    assert len(expected) == 34
+    agreed = {"retro_focus_offset", "sweep_axis_curvature", "amplitude_slope", "quadratic_zeeman"}
+    assert set(MR.TERM_IDS) == expected | agreed
+    assert len(expected) == 34 and len(agreed) == 4
+    tags = {"retro_focus_offset": "retro-waist", "sweep_axis_curvature": "axis-curvature",
+            "amplitude_slope": "axis-curvature", "quadratic_zeeman": "quadratic-zeeman",
+            "radiation_trapping": "trapping-window"}
+    for term, tag in tags.items():
+        assert MR._BY_ID[term].status_twin_2025 == f"owed:{tag}", term
 
 
 # ---------------------------------------------------------------------------
@@ -525,3 +534,222 @@ def test_modelterm_is_frozen():
     row = MR.REGISTRY[0]
     with pytest.raises(dataclasses.FrozenInstanceError):
         row.term_id = "changed"
+
+
+# ---------------------------------------------------------------------------
+# The preflight (O58): a run refuses at its start unless it is the registry's model, and the twin
+# and the Monte Carlo may only come together. Every refusal planted both ways.
+# ---------------------------------------------------------------------------
+
+REASON = "a declared study of this term's size on the moments"
+
+
+@pytest.mark.parametrize("consumer", MR.CONSUMERS)
+@pytest.mark.parametrize("regime", MR.REGIMES)
+def test_preflight_admits_each_paths_own_carried_set(consumer, regime):
+    block = MR.preflight(consumer, regime, MR.carried_term_ids(consumer, regime))
+    assert block["executed_digest"] == block["consumer_digest"] == MR.consumer_digest(consumer, regime)
+    assert block["registry_digest"] == MR.registry_digest()
+
+
+def test_preflight_refuses_a_run_that_silently_drops_a_carried_term():
+    full = set(MR.carried_term_ids("mc", "2025"))
+    with pytest.raises(MR.ModelReduced, match="will not execute and does not declare: saturation"):
+        MR.preflight("mc", "2025", full - {"saturation"})
+
+
+def test_preflight_refuses_an_unknown_term_and_an_undeclared_addition():
+    full = set(MR.carried_term_ids("twin", "2025"))
+    with pytest.raises(MR.ModelReduced, match="unknown term id"):
+        MR.preflight("twin", "2025", full | {"no_such_term"})
+    with pytest.raises(MR.ModelReduced, match="does not declare: retro_focus_offset"):
+        MR.preflight("twin", "2025", full | {"retro_focus_offset"})
+
+
+def test_a_result_run_declares_nothing_and_a_study_declares_everything():
+    full = set(MR.carried_term_ids("twin", "2025"))
+    with pytest.raises(MR.ModelReduced, match="a result run declares no gaps"):
+        MR.preflight("twin", "2025", full - {"transit_chirp"}, gaps={"transit_chirp": REASON})
+    # POSITIVE: the same drop is a study, with its reason
+    block = MR.preflight("twin", "2025", full - {"transit_chirp"}, scope="study",
+                         gaps={"transit_chirp": REASON})
+    assert block["gaps"] == {"transit_chirp": REASON} and block["scope"] == "study"
+    # NEGATIVE: a reason under six words
+    with pytest.raises(MR.ModelReduced, match="under six words"):
+        MR.preflight("twin", "2025", full - {"transit_chirp"}, scope="study",
+                     gaps={"transit_chirp": "chirp off"})
+    # POSITIVE: a study adds an owed term with its reason
+    MR.preflight("twin", "2025", full | {"retro_focus_offset"}, scope="study",
+                 extras={"retro_focus_offset": REASON})
+    # NEGATIVE: an addition outside the path's own scope (the laser kernel is n/a on the Monte Carlo)
+    with pytest.raises(MR.ModelReduced, match="outside the path's scope"):
+        MR.preflight("mc", "2025", set(MR.carried_term_ids("mc", "2025")) | {"laser_kernel"},
+                     scope="study", extras={"laser_kernel": REASON})
+    # NEGATIVE: a gap on a term the path does not carry
+    with pytest.raises(MR.ModelReduced, match="nothing to drop"):
+        MR.preflight("mc", "2025", MR.carried_term_ids("mc", "2025"), scope="study",
+                     gaps={"retro_focus_offset": REASON})
+
+
+def test_the_ratchets_are_seeded_at_the_live_divergence():
+    # a paydown lowers the baseline in the same commit, so the frozen sets always name what is true
+    for regime in MR.REGIMES:
+        assert set(MR.pairing_gaps(regime)) == MR.PAIRING_BASELINE[regime], regime
+        assert set(MR.impl_gaps(regime)) == MR.IMPL_BASELINE[regime], regime
+
+
+def _with_rows(monkeypatch, **rows):
+    """The registry with some rows replaced, for a plant; the module's own lookups follow it."""
+    reg = tuple(rows.get(r.term_id, r) for r in MR.REGISTRY)
+    monkeypatch.setattr(MR, "REGISTRY", reg)
+    monkeypatch.setattr(MR, "_BY_ID", {r.term_id: r for r in reg})
+
+
+def test_a_new_divergence_between_the_twin_and_the_monte_carlo_refuses_every_start(monkeypatch):
+    q = MR._BY_ID["quench_4D"]
+    _with_rows(monkeypatch, quench_4D=dataclasses.replace(
+        q, status_twin_2025="carried", impl_twin="rb5s6s.volume_line:joint_spectrum"))
+    for consumer in MR.CONSUMERS:
+        with pytest.raises(MR.ModelReduced, match="pairing ratchet: quench_4D"):
+            MR.preflight(consumer, "2025", MR.carried_term_ids(consumer, "2025"))
+
+
+def test_a_divergence_whose_other_side_is_not_a_declared_debt_refuses(monkeypatch):
+    s = MR._BY_ID["saturation"]
+    assert MR.kind_of(s.status_mc_2025) == "carried"
+    _with_rows(monkeypatch, saturation=dataclasses.replace(s, status_twin_2025="neglected:1e-3"))
+    with pytest.raises(MR.ModelReduced, match="neither owed nor n/a"):
+        MR.preflight("mc", "2025", MR.carried_term_ids("mc", "2025"))
+
+
+def test_a_paydown_onto_one_code_site_is_admitted_and_onto_two_is_refused(monkeypatch):
+    b = MR._BY_ID["bore_clipping"]
+    assert "bore_clipping" in MR.PAIRING_BASELINE["2025"]
+    # POSITIVE: the twin carries the bore through the Monte Carlo's own site, and the divergence shrinks
+    _with_rows(monkeypatch, bore_clipping=dataclasses.replace(b, status_twin_2025="carried", impl_twin=b.impl_mc))
+    MR.preflight("mc", "2025", MR.carried_term_ids("mc", "2025"))
+    assert "bore_clipping" not in MR.pairing_gaps("2025")
+    # NEGATIVE: carried through a SECOND implementation trades the pairing debt for a code debt
+    _with_rows(monkeypatch, bore_clipping=dataclasses.replace(
+        b, status_twin_2025="carried", impl_twin="rb5s6s.volume_line:joint_spectrum"))
+    with pytest.raises(MR.ModelReduced, match="code ratchet: bore_clipping"):
+        MR.preflight("mc", "2025", MR.carried_term_ids("mc", "2025"))
+
+
+def test_preflight_rejects_an_unknown_consumer_regime_or_scope():
+    for args, kw in ((("wiki", "2025", ()), {}), (("twin", "2030", ()), {}),
+                     (("twin", "2025", ()), {"scope": "ablation"})):
+        with pytest.raises(ValueError):
+            MR.preflight(*args, **kw)
+
+
+# ---------------------------------------------------------------------------
+# The Monte Carlo's own door: `scripts/run_kernel_mc.run_node` calls the preflight before its first
+# atom, reading what it will execute off the beam it BUILT and the window it will sample.
+# ---------------------------------------------------------------------------
+
+def _kmc():
+    """The Monte Carlo producer, imported when a test runs and never at collection."""
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("kmc_registry_door", ROOT / "scripts" / "run_kernel_mc.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+def test_the_monte_carlo_admits_its_own_model_and_refuses_an_undeclared_reduction():
+    kmc = _kmc()
+    node = dict(half_window_m=3.4e-3, P_mW=225.0, T_C=130.0)
+    # POSITIVE: the bore built and the window open, at the archive's regime, is the registry's Monte Carlo
+    block = kmc.registry_preflight(beam_note="clipped: the bore's own focus", **node)
+    assert block["scope"] == "result" and block["executed_digest"] == MR.consumer_digest("mc", "2025")
+    # NEGATIVE: a Gaussian beam with no reason drops the bore silently
+    with pytest.raises(MR.ModelReduced, match="gap 'bore_clipping': its reason is under six words"):
+        kmc.registry_preflight(beam_note="gaussian: asked for by the caller", **node)
+    # POSITIVE: the same beam with the caller's declared reason is a study
+    blk = kmc.registry_preflight(beam_note="gaussian: asked for by the caller", mc_deviations={
+        "beam_kind": "the closed form being checked is the Gaussian beam's own cusp"}, **node)
+    assert blk["scope"] == "study" and "bore_clipping" in blk["gaps"]
+    # NEGATIVE: a closed window with no reason
+    with pytest.raises(MR.ModelReduced, match="axial_collection_window"):
+        kmc.registry_preflight(beam_note="clipped", half_window_m=0.0, P_mW=225.0, T_C=130.0)
+
+
+def test_a_campaign_node_declares_the_depletion_its_registry_column_still_owes():
+    kmc = _kmc()
+    assert MR.kind_of(MR._BY_ID["depletion_cascade"].status_mc_campaign) == "owed"
+    node = dict(beam_note="clipped", half_window_m=3.4e-3, P_mW=500.0, T_C=170.0)
+    with pytest.raises(MR.ModelReduced, match="extra 'depletion_cascade': its reason is under six words"):
+        kmc.registry_preflight(**node)
+    blk = kmc.registry_preflight(mc_deviations={
+        "depletion_cascade": "a campaign node extends the gate's coverage past the archive"}, **node)
+    assert blk["regime"] == "campaign" and "depletion_cascade" in blk["extras"]
+
+
+# ---------------------------------------------------------------------------
+# The twin's doors: `forecast.synthetic_traces`, `forecast.build_world_trace` and
+# `twin_volume.synthetic_traces` read their terms off their own knobs and refuse before the first draw.
+# ---------------------------------------------------------------------------
+
+def test_the_twins_default_world_is_a_reduced_twin_and_must_say_so(monkeypatch):
+    from rb5s6s import forecast, twin_volume
+    # NEGATIVE: the default world (s0 = 0) carries neither the ramp nor the chirp, and says nothing
+    with pytest.raises(MR.ModelReduced, match="ac_stark_ramp, transit_chirp"):
+        forecast.synthetic_traces(0.5, 0.4, 0.95, n_traces=1, rng=np.random.default_rng(0))
+    # NEGATIVE: a study's reason under six words
+    with pytest.raises(MR.ModelReduced, match="under six words"):
+        forecast.synthetic_traces(0.5, 0.4, 0.95, n_traces=1, registry="a quick check", rng=np.random.default_rng(0))
+    # NEGATIVE: the layered generator never carries the chirp, so an undeclared call is refused before it draws
+    with pytest.raises(MR.ModelReduced, match="transit_chirp"):
+        forecast.build_world_trace(0.225, 2.0, 130.0, 0, 1, np.random.default_rng(0),
+                                   {"cascade": False, "saturation": False, "stark": True, "bbr": False,
+                                    "drift": False, "quantise": False},
+                                   positions={"4192": 0.0}, shares={"4192": 1.0}, gamma_coll=0.4,
+                                   sigma_laser_fwhm=0.4, transit_fwhm=0.95, power_max_w=0.225,
+                                   cycles_at_max=1.0, drift_mhz_total=0.0, noise_frac_bright=1e-3,
+                                   adc_levels=2 ** 12)
+    # POSITIVE: the full twin configuration, undeclared, is admitted (a stub world so no atom is drawn)
+    nu = np.linspace(-60.0, 60.0, 201)
+    monkeypatch.setattr(twin_volume, "world_shape", lambda **k: (nu, np.exp(-nu ** 2)))
+    f, v = forecast.synthetic_traces(0.5, 0.4, 0.95, n_traces=1, s0=0.6, n_points=201, rng=np.random.default_rng(0))
+    assert len(v) == 1
+    # POSITIVE: the weak-field world with its reason is admitted as the study it is
+    forecast.synthetic_traces(0.5, 0.4, 0.95, n_traces=1, n_points=201, registry=REASON, rng=np.random.default_rng(0))
+
+
+def test_the_twin_of_records_direct_entry_refuses_an_undeclared_reduction():
+    from rb5s6s import twin_volume
+    from rb5s6s.volume_line import GaussianBeam
+    beam = GaussianBeam(42.4e-6, 1.0)
+    with pytest.raises(MR.ModelReduced, match="ac_stark_ramp"):
+        twin_volume.synthetic_traces(beam=beam, T_C=130.0, S0_mhz=0.0, gamma_hom_mhz=3.6,
+                                     sigma_laser_mhz=0.4, n_traces=1, rng=np.random.default_rng(0))
+
+
+
+# ---------------------------------------------------------------------------
+# The wiki status guard (O58): every wiki page the registry names carries the ONE status line the registry's own
+# producer writes, naming exactly that page's terms and linking the generated statuses.
+# ---------------------------------------------------------------------------
+
+def test_every_wiki_page_the_registry_names_carries_its_generated_status_line():
+    assert _make_model_terms().wiki_status_stale() == []
+
+
+def test_the_wiki_status_guard_fires_on_a_stale_page_and_passes_a_fresh_one(tmp_path):
+    mm = _make_model_terms()
+    page, ids = next(iter(mm.wiki_terms().items()))
+    body = "# A page\n\nSome physics.\n\n---\n\n[<- prev](a.md) * nav * [next ->](b.md)\n"
+    (tmp_path / page).write_text(mm.wiki_with_status(body, mm.wiki_status_line(ids)))
+    for other in mm.wiki_terms():
+        if other != page:
+            (tmp_path / other).write_text(mm.wiki_with_status(body, mm.wiki_status_line(mm.wiki_terms()[other])))
+    assert mm.wiki_status_stale(tmp_path) == []
+    # the line sits before the footer's rule, so the footer stays the page's last line
+    lines = (tmp_path / page).read_text().splitlines()
+    assert lines[-1].startswith("[<- prev]") and any(l.startswith(mm.WIKI_STATUS_PREFIX) for l in lines)
+    # NEGATIVE: a term re-pointed away from the page, a line removed
+    (tmp_path / page).write_text(mm.wiki_with_status(body, mm.wiki_status_line(ids[:-1] + ["no_such_term"])))
+    assert any(page in b for b in mm.wiki_status_stale(tmp_path))
+    (tmp_path / page).write_text(body)
+    assert any(page in b for b in mm.wiki_status_stale(tmp_path))

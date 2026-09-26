@@ -135,9 +135,9 @@ differential polarizability it integrates, so the error is the committed
 And an `err_lo`/`err_hi` pair where a range is not symmetric about the value
 it belongs to. The halo rows use it: the point value sits at a 2 mm standoff
 while the band runs over 1 to 5 mm, and since the halo is not linear in the
-standoff the band is −0.58 and +0.78 about 1.07 at 130 °C. A single `err`
-column stored half the range, which reconstructs [0.39, 1.75] where the interval
-is [0.49, 1.85]. **The prose had it right and the machine-readable column had it
+standoff the band is −[0.75](../results/trapping_channels.csv "ref:trapping_channels:halo_reexcitation:T130C:err_lo") and +[1.03](../results/trapping_channels.csv "ref:trapping_channels:halo_reexcitation:T130C:err_hi") about [1.38](../results/trapping_channels.csv "ref:trapping_channels:halo_reexcitation:T130C") at 130 °C. A single `err`
+column storing half the range would reconstruct [0.49, 2.27] where the interval
+is [0.63, 2.41]. **The prose had it right and the machine-readable column had it
 wrong**, which is the dangerous direction: a reader checking by eye would have
 seen the correct band and a reader loading the CSV would not.
 

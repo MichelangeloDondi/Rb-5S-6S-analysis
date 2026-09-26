@@ -319,7 +319,7 @@ def joint_spectrum(*, S0_mhz: float, gamma_hom_mhz: float, beam, T_C: float,
 
     Returns `spec`, UNNORMALISED (units of MHz^-1 x atoms' flux weight) -- the caller normalises
     (an overall constant factor does not move a windowed CENTRAL moment,
-    `rb5s6s.cumulants.windowed_moments`, at all).
+    `rb5s6s.moments.windowed_moments`, at all).
     """
     delta_mhz = np.asarray(delta_mhz, dtype=float)
     if chord == "auto":

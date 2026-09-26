@@ -47,7 +47,7 @@ from rb5s6s import config as _CFG                                  # noqa: E402
 # MOMENTS, NOT CUMULANTS (owner order O33, A72). At orders 5 and 7 a cumulant is a difference
 # of large terms and carries a cancellation the moment does not; below fourth order the two are
 # identical (k2 = mu2, k3 = mu3 exactly), so switching changes only where it should.
-from rb5s6s.cumulants import windowed_moments                    # noqa: E402
+from rb5s6s.moments import windowed_moments                    # noqa: E402
 from rb5s6s.fullmodel import full_profile                          # noqa: E402
 from rb5s6s.noise import load_noise_model                          # noqa: E402
 from rb5s6s.pmfmt import pm_cells                                  # noqa: E402

@@ -210,7 +210,7 @@ with signal-dependent noise (`scripts/run_width_pinning.py`), freeing both
 recovers the collisional width with a scatter of 0.0073 MHz where fixing the
 laser width recovers it with 0.0022 MHz, a ratio of $3.18 \pm 0.20$ across
 nine seeds. That ratio is one condition's value of $1/\sqrt{1-\rho^2}$, which
-runs from 2.29 at the record's median correlation to 2.97 at the simulated
+runs from [1.70](../../results/twin_span_sweep.csv "ref:twin_span_sweep:CAMPAIGN:pin_factor_median") at the record's median correlation to 2.97 at the simulated
 condition's own $-0.9417$. **An independent laser-width diagnostic is worth more to this
 quantity than any improvement to the fitting**, and the computation with its
 construction is discussed in

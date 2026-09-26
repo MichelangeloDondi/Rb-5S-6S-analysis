@@ -158,6 +158,21 @@ than the alignment it was checking. Record the ratio whether or not it agrees.
 atoms and no lock for steps 1 to 4. It is the same afternoon §4.2 already
 schedules, run again, and a campaign that drives two lines schedules it twice.
 
+### 4.2b2 The returning lens on a micrometric stage
+
+The owner's check for the new campaign, and it closes the returning lens's item of [chapter 12](12_open-apparatus-items.md).
+Lens 8 behind the cell is mounted on a micrometric translation stage along the beam, because a lens off its
+position by $\delta$ returns the forward waist focused $2\delta$ away from the forward focus, and that offset
+reaches the odd moments that carry the polarizability.
+
+1. **Walk the stage on the infrared viewer.** Watch the returning beam at the fourth port of the polarising beam
+   splitter that sets the power on the cell's branch. The isolator passes enough of the return for a viewer card
+   there. Set the stage where the returning beam leaves that port as collimated as the forward one.
+2. **Size both beams.** With a camera or a knife edge, measure the forward and the returning beam at the cell's
+   focal region and at one plane further along, which gives each beam's waist and its collimation.
+3. **Record the stage position** beside the two sizes, and repeat the pair whenever step 2 of §4.2b re-collimates
+   lens 8.
+
 ### 4.2c The axial-window slit and its scan
 
 **Grounds for hardware, not a fit.** The collected axial half-length `L`

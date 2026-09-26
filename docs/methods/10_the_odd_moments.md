@@ -48,11 +48,11 @@ not small against a small cumulant: `scripts/run_kernel_inhomogeneity.py`
 builds the collected volume as a mixture with one kernel per element and
 measures the windowed third moment against the same mixture with the kernel
 held fixed at the volume's own weighted mean. The error is
-[103.942](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w42um:k3_error") per cent at the
+[103.942](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w42um:mu3_error") per cent at the
 archive's own 42.38 microns,
-[104.614](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w45um:k3_error") at 45,
-[96.571](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w24um:k3_error") at 24 and
-[89.992](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w16um:k3_error") at 16, every case
+[104.614](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w45um:mu3_error") at 45,
+[96.571](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w24um:mu3_error") at 24 and
+[89.992](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w16um:mu3_error") at 16, every case
 including the 42.38 and 45 micron rows an unclipped design, the bore out of
 the focusing path, and not the bench's own measured, bore-clipped
 prediction, and at the archive's waist it inverts the sign.
@@ -407,7 +407,7 @@ The verification above composes one kernel with the ramp and recovers what it
 injected, which is the check it is. It cannot see a kernel that follows the
 shift, because it does not have one. Against the mixture that does, the
 windowed third moment is wrong by
-[103.942](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w42um:k3_error") per cent at the
+[103.942](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w42um:mu3_error") per cent at the
 archive's waist. A self-consistent model verified against itself is evidence
 about the arithmetic and not about the licence.
 
@@ -446,9 +446,9 @@ second.
 
 ## 13. The estimator, as the package carries it
 
-The windowed moment is computed by `rb5s6s.cumulants.windowed_moments`, which
+The windowed moment is computed by `rb5s6s.moments.windowed_moments`, which
 replaced the windowed cumulant under owner order O49 ($\mu_2 = \kappa_2$ and
-$\mu_3 = \kappa_3$ exactly, tested in `tests/test_cumulants.py`). A window of half-width $W$ is recentred
+$\mu_3 = \kappa_3$ exactly, tested in `tests/test_moments.py`). A window of half-width $W$ is recentred
 on its own first moment until the centre moves by less than a tolerance, the
 pass count and a converged flag are returned beside the value, the detector
 pedestal is subtracted first as the median of the trace's own far wings, the
@@ -478,7 +478,7 @@ power ladder, where it bends a fitted exponent.
 The odd cumulants of the ramp alternate in sign, from its density
 $2s/S_0^2$ on $[0, S_0]$: $\kappa_3 = -S_0^3/135$, $\kappa_5 = +S_0^5/567$,
 $\kappa_7 = -S_0^7/1215$ (the cumulant recursion on the density's central moments,
-retired from the package by O49, and `tests/test_cumulants.py` pins the third).
+retired from the package by O49, and `tests/test_moments.py` pins the third).
 A usability statistic built on the sign of a windowed cumulant, such as the
 fraction of traces returning a negative value in
 `results/moment_power_map_deep_rungs.csv`, is therefore read against each

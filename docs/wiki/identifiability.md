@@ -105,8 +105,8 @@ improve with more traces.
 
 | where the correlation was measured | $\rho$ | factor $1/\sqrt{1-\rho^2}$ |
 |---|---|---|
-| median across the 32 committed conditions | $-0.90$ | 2.29 |
-| the twin's committed design condition ([`twin_span_sweep.csv`](../../results/twin_span_sweep.csv), 60 MHz span) | [-0.8236](../../results/twin_span_sweep.csv "ref:twin_span_sweep:span_060MHz:corr_laser_coll") | 1.76 |
+| median across the [32](../../results/twin_span_sweep.csv "ref:twin_span_sweep:CAMPAIGN:n_conditions") committed conditions | [-0.81](../../results/twin_span_sweep.csv "ref:twin_span_sweep:CAMPAIGN:corr_median") | [1.70](../../results/twin_span_sweep.csv "ref:twin_span_sweep:CAMPAIGN:pin_factor_median") |
+| the twin's committed design condition ([`twin_span_sweep.csv`](../../results/twin_span_sweep.csv), 60 MHz span) | [-0.9359](../../results/twin_span_sweep.csv "ref:twin_span_sweep:span_060MHz:corr_laser_coll") | [2.84](../../results/twin_span_sweep.csv "ref:twin_span_sweep:span_060MHz:pin_factor") |
 | the bright condition of the pinning simulation above | $-0.9417$ | 2.97 |
 
 The last row checks the first two: the pinning simulation's measured
@@ -298,17 +298,18 @@ The search was
 run over acquisition settings, not assumed:
 [`twin_span_sweep.csv`](../../results/twin_span_sweep.csv) rebuilds it in
 the [digital twin](the-digital-twin.md) from a named committed condition.
-The correlation between the laser and collisional widths moves by 0.0009
-when the span widens from 60 to 300 MHz and by [0.1542](../../results/twin_span_sweep.csv "ref:twin_span_sweep:VERDICT:corr_move_with_traces") at ten times the
-repeats. `results/twin_span_sweep.csv`'s own verdict still reads both
-moves as consistent with a degeneracy that belongs to the lineshape and
-not to the sample size, on the argument that a Lorentzian core inside a
+The correlation between the laser and collisional widths moves by [0.0089](../../results/twin_span_sweep.csv "ref:twin_span_sweep:VERDICT:corr_move_with_span")
+when the span widens from 60 to 300 MHz and by [0.0001](../../results/twin_span_sweep.csv "ref:twin_span_sweep:VERDICT:corr_move_with_traces") at ten times the
+repeats. `results/twin_span_sweep.csv`'s own verdict, computed from those moves,
+reads both as leaving the degeneracy where it was: the span's move is resolved but
+changes what a laser-width measurement buys only from [2.84](../../results/twin_span_sweep.csv "ref:twin_span_sweep:span_060MHz:pin_factor") to [2.67](../../results/twin_span_sweep.csv "ref:twin_span_sweep:span_300MHz:pin_factor"), and the
+traces' is not resolved, which is the argument that a Lorentzian core inside a
 Gaussian envelope exchanges the same way at every sample size.
 
 Repeats
-buy precision faster than plain sampling predicts: a factor 4.16 at ten
-times the traces against independent sampling's root-ten of 3.16 <!-- other-quantity: sqrt(10), not twin_span_sweep's err_ratio_10x_traces -->, while
-widening the span costs a factor 2.86 <!-- other-quantity: twin_span_sweep's err_ratio_wide_span, not detection_budget's gap ratio --> at fixed points per trace, since
+buy precision as plain sampling predicts: a factor [3.16](../../results/twin_span_sweep.csv "ref:twin_span_sweep:VERDICT:err_ratio_10x_traces") at ten
+times the traces against independent sampling's root of ten, while
+widening the span costs a factor [2.70](../../results/twin_span_sweep.csv "ref:twin_span_sweep:VERDICT:err_ratio_wide_span") at fixed points per trace, since
 the same points spread over more baseline. Among the acquisition settings the asymmetric
 knob does not exist, which is why the pinning approach above is used
 instead.
@@ -660,7 +661,7 @@ damage arrives earlier than the reversal: at 55 microns the third moment keeps
 So a working range for the waist is a region in $(w_0, M^2)$ and not an
 interval in $w_0$. The convolution condition holds across 55 to 85
 microns with room to spare, the kernel spread over the collected region running
-1.75, 0.98 and 0.32 per cent and reproduces the record's own measured 1.0 at 64. The collection
+1.75, 0.98 <!-- other-quantity: a set of per-cent readings, not the halo band's old reconstruction --> and 0.32 per cent and reproduces the record's own measured 1.0 at 64. The collection
 window is what strains, and it strains at the small end. A range of 55 to 85
 microns with $M^2$ under about two keeps every term inside its licence with a
 factor of two to spare.
@@ -1040,7 +1041,7 @@ which reads like a missing term and is not one.
 It is the Lorentzian sum of the section below, seen from one end. The
 collisional width, the far-wing floor and the saturation broadening enter the
 homogeneous core as one measurable total, and the record's own per-condition
-fits correlate the collisional width with the laser width at $-0.90$. So
+fits correlate the collisional width with the laser width at a median of [-0.81](../../results/twin_span_sweep.csv "ref:twin_span_sweep:CAMPAIGN:corr_median"). So
 whichever Lorentzian knob a given model form leaves free absorbs the constant
 excess. The three kernel arms show it directly: the two forms that pin the
 far-wing floor at zero drive the collisional coefficient up to fill the gap,

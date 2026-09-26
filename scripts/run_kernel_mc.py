@@ -91,10 +91,11 @@ from rb5s6s import beam_field as BF                                 # noqa: E402
 from rb5s6s import fullmodel as FM                                  # noqa: E402
 from rb5s6s import kernel_gate                                      # noqa: E402
 from rb5s6s import lineshape                                        # noqa: E402
+from rb5s6s import model_registry as _MR                            # noqa: E402  (O58: a judge, not the model)
 from rb5s6s._compat import trapezoid                                # noqa: E402
 from rb5s6s.amplitudes import predicted_shares                      # noqa: E402
 from rb5s6s.cascade import BRANCHING_F, amplitude_factor            # noqa: E402
-from rb5s6s.cumulants import windowed_moments                       # noqa: E402
+from rb5s6s.moments import windowed_moments                       # noqa: E402
 from rb5s6s.noise import load_noise_model, sigma_of_v                # noqa: E402
 from rb5s6s.platforms import PLATFORMS, excitation_rate_per_atom    # noqa: E402
 from rb5s6s.volume_line import JointTable                           # noqa: E402
@@ -462,9 +463,38 @@ def _record_sd_of_moments(nu_mhz, clean, law, orders, windows, *, n_rep=JOINT_SD
     return {(o, wdw): float(np.std(np.asarray(reps[o][wdw]), ddof=1)) for o in orders for wdw in windows}
 
 
+#: the registry terms this Monte Carlo applies by construction, whatever its knobs: the saturated chord rate with
+#: the cascade's pumping and depletion, the four lines' shares, the ramp and its reduced mean pull, the transit at
+#: the beam's own M2, the natural width. The bore and the collected window depend on what the node BUILT.
+MC_STRUCTURAL_TERMS = ("ac_stark_ramp", "beam_quality_m2", "companion_pull_reduction", "depletion_cascade",
+                       "hyperfine_pumping", "hyperfine_shares", "natural_width", "saturation", "transit")
+
+
+def registry_preflight(*, beam_note: str, half_window_m: float, P_mW: float, T_C: float,
+                       mc_deviations=None) -> dict:
+    """O58: the node refuses BEFORE its first atom unless the terms it will execute are the registry's
+    Monte Carlo at the node's regime, read off the beam it BUILT and the window it will sample (F457: a
+    contract graded against the request is not a contract). A term it drops or adds is a declared study,
+    and its reason is the deviation the caller already gave under the knob that drops it (`beam_kind` for
+    the bore, `half_window_m` for the collected window) or under the term's own id."""
+    dev = dict(mc_deviations or {})
+    executes = set(MC_STRUCTURAL_TERMS)
+    if not str(beam_note).startswith("gaussian"):
+        executes.add("bore_clipping")
+    if float(half_window_m) > 0.0:
+        executes.add("axial_collection_window")
+    regime = "2025" if (float(P_mW) <= 270.0 + 1e-9 and float(T_C) <= 130.0 + 1e-9) else "campaign"
+    carried = set(_MR.carried_term_ids("mc", regime))
+    knob = {"bore_clipping": "beam_kind", "axial_collection_window": "half_window_m"}
+    gaps = {t: dev.get(knob.get(t, t), dev.get(t, "")) for t in sorted(carried - executes)}
+    extras = {t: dev.get(t, "") for t in sorted(executes - carried)}
+    return _MR.preflight("mc", regime, executes, scope="study" if (gaps or extras) else "result",
+                         gaps=gaps, extras=extras)
+
+
 def run_node(w0_um, m2, rho, T_C, P_mW, *, n_atoms=None, half_window_m=None,
              cycles_model=0.0, seed=0, n_tau=N_TAU, depletion_form="mc",
-             beam_kind="clipped", mc_deviations=None, joint_n_path=JOINT_N_PATH):
+             beam_kind="clipped", mc_deviations=None, joint_n_path=JOINT_N_PATH, stop_after=""):
     """THE MONTE CARLO IS CALLED AT ONE SET OF NUMERICS OR THE RUN IS THROWN AWAY (O56, the owner,
     nine times). Until 2026-09-24 this file referenced `mc_contract` ZERO times: the twin's LINE was
     guarded by `twin_callers` and the KERNEL MONTE CARLO, which is what the order names, was under
@@ -511,6 +541,12 @@ def run_node(w0_um, m2, rho, T_C, P_mW, *, n_atoms=None, half_window_m=None,
                 f"{beam_note!r}. The bore is absent from this Monte Carlo, so every reading it "
                 f"returns is about a beam the apparatus cannot make (F382, A192). Ask for the "
                 f"Gaussian explicitly, declare the deviation, or choose a reachable waist.")
+    registry_block = registry_preflight(beam_note=beam_note, half_window_m=half_window_m, P_mW=P_mW, T_C=T_C,
+                                        mc_deviations=mc_deviations)
+    if stop_after == "preflight":
+        # a plant of the refusals at construction and at the door reads this far and no further (O59 F2): the beam is
+        # built and graded, the registry has admitted it, and not one atom has been sampled
+        return None, {"beam_note": beam_note, "registry": registry_block}
     w, v, u_b, flux_len, b_imp, z_imp = _sample(rng, n_atoms, w0_m, m2, T_C,
                                                 half_window_m, beam=beam)
     _bk = dict(beam=beam, b=b_imp, z0=z_imp)
@@ -748,6 +784,7 @@ def run_node(w0_um, m2, rho, T_C, P_mW, *, n_atoms=None, half_window_m=None,
     detail = {
         "node": dict(w0_um=w0_um, m2=m2, rho=rho, T_C=T_C, P_mW=P_mW), "n_atoms": n_atoms, "n_tau": n_tau,
         "half_window_m": half_window_m, "cycles_model": cycles_model, "seed": seed, "depletion_form": depletion_form,
+        "registry": registry_block,
         "beam_kind": beam_kind, "beam_note": beam_note, "beam_transit_corr": beam_transit_corr,
         "ramp_model_gaussian": {"mean": mm_gauss["mean"], "var": mm_gauss["var"], "mu3": mm_gauss["mu3"]},
         "beam_cost_rel": {k: (float(mm[k] / mm_gauss[k] - 1.0) if mm_gauss[k] else float("nan"))
@@ -826,8 +863,32 @@ def _collect(rho: float) -> int:
     return 0
 
 
+def limit_check() -> int:
+    """The two limits: window closed and drive weak, the sampler returns the closed-form cusp.
+
+    ITS COST IS ITS PHYSICS, SO THE GATE RUNS IT (O59 F2, 2026-09-25): the tolerance below is the sampler's own
+    noise at 100 000 atoms, so fewer atoms would stop it being the check, and inside the forty-second floor it was
+    the one plant that could not be made cheaper. `tests/test_kernel_mc_limit.py` runs it under `--runslow`."""
+    # THE CONTRACT BINDS THIS CALL TOO, AND THE DEVIATION IS DECLARED (F476, 2026-09-24): since F447 put
+    # `guard_kernel_node` in `run_node`, this limit check raised ContractBreach on its atom count and its
+    # beam, and nothing ran it, because the floor discovers plants under private/checks only.
+    r, d = run_node(44.0, 1.0, 0.94, 130.0, 25.0, n_atoms=100_000, half_window_m=0.0,
+                    beam_kind="gaussian",   # a CLOSED-FORM check, so the closed form's beam   # the window CLOSED: the transverse limit
+                    mc_deviations={"n_atoms": "a closed-form limit check, not a validated node, needs fewer atoms",
+                                   "beam_kind": "the closed form being checked is the Gaussian beam's own cusp",
+                                   "half_window_m": "the closed form is the focal plane's transverse limit alone"})
+    dev = abs(r["transit_fwhm_rel"]["mc"] - r["transit_fwhm_rel"]["model"]) / r["transit_fwhm_rel"]["model"]
+    print(f"  closed window, 25 mW: FWHM mc {r['transit_fwhm_rel']['mc']:.4f} against the closed form "
+          f"{r['transit_fwhm_rel']['model']:.4f} ({dev:.2%}); shape {r['transit_shape_rel']['mc']:.3g}; "
+          f"ramp mu2 {r['ramp_mu2_rel']['mc']:.4f} / {r['ramp_mu2_rel']['model']:.4f}, "
+          f"mu3 {r['ramp_mu3_rel']['mc']:.5f} / {r['ramp_mu3_rel']['model']:.5f}")
+    ok = dev < 0.005 and r["transit_shape_rel"]["mc"] - 1.0 < 0.01 and abs(r["ramp_mu2_rel"]["weak_field_mc"] / r["ramp_mu2_rel"]["model"] - 1) < 0.01
+    print("run_kernel_mc: limit check", "OK" if ok else "FAIL")
+    return 0 if ok else 1
+
+
 def _self_test() -> int:
-    """The two limits: window closed and drive weak, the sampler returns the closed-form cusp."""
+    """The fast half, the floor's: the bare command line against the contract, and the joint-line identity."""
     # the contract is loaded HERE as run_node loads it: `_MC` is run_node's local, and the first form of
     # this plant named it at module scope, so it raised NameError and graded nothing (F476)
     _MC = _load_contract()
@@ -836,19 +897,7 @@ def _self_test() -> int:
         print(f"run_kernel_mc: self-test FAIL -- a bare command line asks for {_bare} atoms against the "
               f"contract's {_MC.kernel_contract()['n_atoms']}, so every default node run is refused")
         return 1
-    # THE CONTRACT BINDS THIS CALL TOO, AND THE DEVIATION IS DECLARED (F476, 2026-09-24): since F447 put
-    # `guard_kernel_node` in `run_node`, this limit check raised ContractBreach on its atom count and its
-    # beam, and nothing ran it, because the floor discovers plants under private/checks only.
-    r, d = run_node(44.0, 1.0, 0.94, 130.0, 25.0, n_atoms=100_000, half_window_m=0.0,
-                    beam_kind="gaussian",   # a CLOSED-FORM check, so the closed form's beam   # the window CLOSED: the transverse limit
-                    mc_deviations={"n_atoms": "a closed-form limit check, not a validated node, needs fewer atoms",
-                                   "beam_kind": "the closed form being checked is the Gaussian beam's own cusp"})
-    dev = abs(r["transit_fwhm_rel"]["mc"] - r["transit_fwhm_rel"]["model"]) / r["transit_fwhm_rel"]["model"]
-    print(f"  closed window, 25 mW: FWHM mc {r['transit_fwhm_rel']['mc']:.4f} against the closed form "
-          f"{r['transit_fwhm_rel']['model']:.4f} ({dev:.2%}); shape {r['transit_shape_rel']['mc']:.3g}; "
-          f"ramp mu2 {r['ramp_mu2_rel']['mc']:.4f} / {r['ramp_mu2_rel']['model']:.4f}, "
-          f"mu3 {r['ramp_mu3_rel']['mc']:.5f} / {r['ramp_mu3_rel']['model']:.5f}")
-    ok = dev < 0.005 and r["transit_shape_rel"]["mc"] - 1.0 < 0.01 and abs(r["ramp_mu2_rel"]["weak_field_mc"] / r["ramp_mu2_rel"]["model"] - 1) < 0.01
+    ok = True
     # THE JOINT-LINE PLANT (C6b, the merge's 5a): `_joint_line` claims to be `volume_line.joint_spectrum`'s
     # own per-atom recipe verbatim, run on the SAME sampler. Both halves of that claim are checked here,
     # against the real call path (not a helper), on atoms this test draws itself. FALSE-PASS DIRECTION: a

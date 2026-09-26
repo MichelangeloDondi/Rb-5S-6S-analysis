@@ -35,6 +35,9 @@ import pytest
 from rb5s6s import lineshape as ls
 from rb5s6s._compat import trapezoid
 
+#: O58: this module's twin runs are a declared STUDY, and this is its reason
+_TWIN_STUDY = "a unit test of the generator's own arithmetic, not a quoted number"
+
 ROOT = Path(__file__).resolve().parents[1]
 NU = np.linspace(-40.0, 40.0, 4001)
 
@@ -183,7 +186,7 @@ def test_fitting_gamma_l_is_off_by_default_and_inert():
     from rb5s6s.forecast import synthetic_traces
     from rb5s6s.linefit import fit_condition
     rng = np.random.default_rng(1)
-    f, v = synthetic_traces(1.2, 3.0, 0.93, n_traces=3, n_points=800, noise=0.004, rng=rng)
+    f, v = synthetic_traces(1.2, 3.0, 0.93, n_traces=3, n_points=800, noise=0.004, rng=rng, registry=_TWIN_STUDY)
     out = fit_condition(f, v, T_C=130.0, transit_fwhm=0.93)
     assert out["gamma_l"] == 0.0
     assert out["gamma_l_fitted"] is False
@@ -213,7 +216,7 @@ def test_at_one_condition_only_the_SUM_of_the_lorentzian_widths_is_identified():
             rng = np.random.default_rng(seed)
             f, v = synthetic_traces(truth_gc, 3.0, 0.93, gamma_l=gl_true,
                                     n_traces=5, n_points=2000, noise=0.004, rng=rng,
-                                    model="convolution")
+                                    model="convolution", registry=_TWIN_STUDY)
             o = fit_condition(f, v, T_C=130.0, transit_fwhm=0.93, fit_gamma_l=True,
                               model="convolution")
             sums.append(o["gamma_coll"] + o["gamma_l"])
@@ -233,7 +236,7 @@ def test_gamma_l_is_appended_not_inserted_in_the_parameter_vector():
     from rb5s6s.linefit import fit_condition
     rng = np.random.default_rng(3)
     f, v = synthetic_traces(1.2, 3.0, 0.93, gamma_l=0.4, n_traces=4,
-                            n_points=1200, noise=0.004, rng=rng)
+                            n_points=1200, noise=0.004, rng=rng, registry=_TWIN_STUDY)
     free = fit_condition(f, v, T_C=130.0, transit_fwhm=0.93, fit_gamma_l=True)
     # gamma_coll and sigma_laser still carry their own errors from cov[0,0]/[1,1]
     assert np.isfinite(free["gamma_coll_err"]) and free["gamma_coll_err"] > 0
@@ -273,7 +276,7 @@ def test_the_density_ladder_is_what_identifies_gamma_l():
         f, v = synthetic_traces(beta_true * n_units, sigma_l,
                                 transit_fwhm_at_T(T, tref, 110.0),
                                 gamma_l=gl_true, n_traces=3, n_points=1500,
-                                noise=0.004, rng=rng)
+                                noise=0.004, rng=rng, registry=_TWIN_STUDY)
         conds.append(dict(T_C=T, N_units=n_units, freqs=f, volts=v, law=None))
 
     out = fit_beta_self(conds, transit_ref_mhz=tref, T_ref_C=110.0,

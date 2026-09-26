@@ -789,6 +789,26 @@ def _committed(name: str, dest: Path) -> bool:
     return True
 
 
+def _inner_workers(n: int):
+    """RB5S6S_WORKERS for a producer this pool runs: one while n producers run side by side, the caller's own otherwise."""
+    return "1" if n > 1 else None
+
+
+def _stamp_proven(keys) -> None:
+    """E87's code half (V7.1): a producer whose table reproduced here is proven at its current code, recorded in the
+    private code ledger when this checkout carries it (the public mirror has no private/, and nothing changes there)."""
+    cs = ROOT / "private" / "checks" / "code_staleness.py"
+    if keys and cs.is_file():
+        try:
+            import importlib.util
+            spec = importlib.util.spec_from_file_location("code_staleness", cs)
+            mod = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(mod)
+            mod.stamp(sorted(keys), "reproduced under verify_results_fresh")
+        except Exception as exc:                  # the ledger is a record, never a reason to fail a verify
+            print(f"verify_results_fresh: the code ledger was not stamped ({exc})", file=sys.stderr)
+
+
 def _one(job):
     """Run ONE producer in a private results directory and report its drift.
 
@@ -798,7 +818,7 @@ def _one(job):
     version carried silently, and it is what makes the pool safe: no two
     producers share a file.
     """
-    script, outputs, stash, root = job
+    script, outputs, stash, root, *rest = job
     priv = Path(root) / script.split()[0]
     priv.mkdir(parents=True, exist_ok=True)
     for f in Path(stash).glob("*.csv"):
@@ -811,6 +831,8 @@ def _one(job):
                OPENBLAS_NUM_THREADS="1", MKL_NUM_THREADS="1",
                VECLIB_MAXIMUM_THREADS="1", NUMEXPR_NUM_THREADS="1",
                OMP_NUM_THREADS="1")
+    if rest and rest[0]:
+        env["RB5S6S_WORKERS"] = rest[0]
     # THE SEED'S TIMESTAMP, so a producer that ignores the override is caught
     # LOUDLY. Without this the private copy stays as seeded, the comparison
     # measures the committed file against itself, and the check passes while
@@ -985,17 +1007,27 @@ def verify(producers: dict, workers: int | None = None) -> list[str]:
         # setting RB5S6S_WORKERS=1 beside a gate now gets one.
         from rb5s6s.workers import n_workers
         n = workers if workers is not None else min(n_workers(), len(jobs))
+        # ONE WORKER INSIDE EACH PRODUCER WHILE THE PRODUCERS RUN SIDE BY SIDE (V7.1): a producer with its own
+        # process pool opened a full one inside every slot of this pool, n times ten processes, which is F93's
+        # class; the tables are identical at any worker count, which every pooled producer's plant asserts
+        jobs = [j + (_inner_workers(n),) for j in jobs]
+        proven = []
         if n <= 1:
             for j in jobs:
-                problems.extend(_one(j))
+                out = _one(j)
+                problems.extend(out)
+                proven += [] if out else [j[0]]
         else:
             from concurrent.futures import ProcessPoolExecutor
             with ProcessPoolExecutor(max_workers=n) as ex:
-                for out in ex.map(_one, jobs):
+                for j, out in zip(jobs, ex.map(_one, jobs)):
                     problems.extend(out)
+                    proven += [] if out else [j[0]]
         now = {f.name: f.stat().st_mtime_ns for f in RESULTS.glob("*.csv")}
         touched = sorted(k for k in set(live) | set(now)
                          if live.get(k) != now.get(k))
+        if not touched:
+            _stamp_proven(proven)
         if touched:
             problems.append(
                 "THE LIVE results/ WAS WRITTEN during an isolated verify, so a "

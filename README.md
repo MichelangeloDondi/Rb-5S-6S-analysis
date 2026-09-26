@@ -118,22 +118,22 @@ what would lift it. The calculated rows do not share it.
 
 | quantity | 2025 result | type | lifted by |
 |---|---|---|---|
-| **β_self** | ≲ 0.02–0.04 MHz per 10¹² cm⁻³ <!-- other-quantity: the collisional bound, not a forecast term --> | bound | same-session 150–170 °C points |
+| **β_self** | ≲ [0.02](results/beta_self_probe.csv "ref:beta_self_probe:4192::bound95_nscale")–[0.04](results/beta_self_probe.csv "ref:beta_self_probe:4154::bound95_nscale") MHz per 10¹² cm⁻³ <!-- other-quantity: the collisional bound, not a forecast term --> | bound | same-session 150–170 °C points |
 | **σ_laser** | ≤ 2.4 MHz on the transition axis at the lineage waist, half that per photon | bound | a beam profile |
-| **S₀(225 mW)** | < 0.18 MHz, below the predicted 0.73 MHz at the calculated central waist (O44/F280) | bound | fixed lock, tighter focus |
+| **S₀(225 mW)** | < [0.18](results/stark_joint.csv "ref:stark_joint:S0_225mW_ub95:primary") MHz, below the predicted [0.73](results/stark_joint.csv "ref:stark_joint:S0_225mW_pred:prediction") MHz at the calculated central waist (O44/F280) | bound | fixed lock, tighter focus |
 | power scaling | no width trend, and an amplitude departure from P² | null + a departure | not applicable |
-| **w₀** | w0 ≈ 42 µm, calculated (42.38 µm, the bore-limited focus at this bench's 3 mm modulator aperture, O44/F280), not measured. A Gaussian fit of the line returns 42.0 ± 1.7 µm. **The closure recovers the waist at zero noise, but with noise an offset grows and the interval under-covers**, so the bar is open | carried, OPEN | a knife-edge scan here |
+| **w₀** | w0 ≈ 42 µm, calculated ([42.38](rb5s6s/constants.py "ref:constant:W0_CENTRAL_M:1e6") µm, the bore-limited focus at this bench's 3 mm modulator aperture, O44/F280), not measured. A Gaussian fit of the line returns 42.0 ± 1.7 µm. **The closure recovers the waist at zero noise, but with noise an offset grows and the interval under-covers**, so the bar is open | carried, OPEN | a knife-edge scan here |
 | **Δα(993 nm)** | [-1131.8](results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive") ± [5.9](results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive:err") a.u. with the dynamic tail, [+6.5](results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha_vs_orson:at_drive") σ from the cited magnitude on this derivation's bar alone (the cited value states none), **opposite in sign**, adjudicated not measured | calculated | the fixed-lock pull direction, unrun |
 <!-- C6b: re-measured as a moment (A149) -->
 | **twin trust** | the twin's wing noise against the real traces': [0.00494](results/twin_completeness.csv "ref:twin_completeness:measured_sigma:") ± [0.00054](results/twin_completeness.csv "ref:twin_completeness:measured_sigma::err") against [0.00510](results/twin_completeness.csv "ref:twin_completeness:twin_at_measured_tau_sigma:") ± [0.00055](results/twin_completeness.csv "ref:twin_completeness:twin_at_measured_tau_sigma::err"). **The sizes agree; the shapes do not**, and the twin's Gaussian draw leaves its fourth-cumulant bar [3.2](results/residual_resampling.csv "ref:residual_resampling:sd_mu4_over_gaussian_corrected:real")x too tight | measured vs envelope | the tail shape, sized |
-| **magic wavelengths** | ≈ [1203.7](results/polarizability.csv "ref:polarizability:magic_5s6s:1204nm") / [1287.9](results/polarizability.csv "ref:polarizability:magic_5s6s:1288nm") / 1339.6 nm, trapping both states without pulling the line | calculated (envelope) | a trapped-atom experiment |
+| **magic wavelengths** | ≈ [1203.7](results/polarizability.csv "ref:polarizability:magic_5s6s:1204nm") / [1287.9](results/polarizability.csv "ref:polarizability:magic_5s6s:1288nm") / [1339.6](results/polarizability.csv "ref:polarizability:magic_5s6s:1340nm") nm, trapping both states without pulling the line | calculated (envelope) | a trapped-atom experiment |
 
 <p align="center">
   <img src="figures/fig16_fit_gallery.png" width="760" alt="The global model over one trace per peak, with residual panels below each">
 </p>
 
 One trace per line at the best-fit parameters, with residuals below. Reduced
-chi-square runs 0.78 to 1.09 across the 32 fitted conditions.
+chi-square runs 0.78 to 1.04 across the 32 fitted conditions.
 
 Further reading: [every headline read from its producing table](docs/RESULTS.md) ·
 [what is and is not claimed](docs/CLAIMS.md)

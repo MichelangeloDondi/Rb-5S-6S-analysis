@@ -594,7 +594,7 @@ def ultra_joint_statistics(nu: np.ndarray, *, windows=DEFAULT_WINDOWS,
     # exception). `windowed_moments` returns the central moments in ONE quadrature per (window,
     # trace) and nothing here converts them to cumulants any more: a cumulant is an exact function
     # of the moments, so carrying it beside them costs no information and adds no evidence.
-    from .cumulants import windowed_moments
+    from .moments import windowed_moments
     y = full_profile(nu, **profile_kw)
     orders = tuple(orders)
     top = max(orders)
@@ -894,7 +894,7 @@ def ultra_joint_covariance(nu: np.ndarray, *, n_real: int = 400,
             else:
                 x = w
         yn = y0 + noise_frac * np.sqrt(np.clip(y0, 0.0, None) * peak) * x
-        from .cumulants import windowed_moments
+        from .moments import windowed_moments
         # KEYED, NEVER POSITIONAL. `keys` comes from a function that emits a
         # ratio only when its denominator is non-zero, while this loop always
         # appended, so at a light shift of zero the odd moments vanish, three

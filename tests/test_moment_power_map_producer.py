@@ -18,6 +18,9 @@ from pathlib import Path
 import numpy as np
 import pytest
 
+#: O58: this module's twin runs are a declared STUDY, and this is its reason
+_TWIN_STUDY = "a unit test of the generator's own arithmetic, not a quoted number"
+
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = ROOT / "scripts" / "run_moment_power_map.py"
 
@@ -99,7 +102,7 @@ def test_the_noiseless_resolved_limit_returns_the_cubic_law():
             gamma_coll=mod.GAMMA_COLL, sigma_laser_fwhm=mod.SIGMA_LASER,
             transit_fwhm=mod.TRANSIT, power_max_w=1.0, cycles_at_max=1.0,
             drift_mhz_total=0.0, noise_frac_bright=1e-9, adc_levels=2 ** 16,
-            gamma_l=0.0, resolve_shift=True, offset=0.0)
+            gamma_l=0.0, resolve_shift=True, offset=0.0, registry=_TWIN_STUDY)
         xs.append(math.log(s0))
         ys.append(math.log(abs(mod.selfcentred_moment(y, 8.0, 3, grid=nu))))
     slope = float(np.polyfit(np.asarray(xs), np.asarray(ys), 1)[0])
@@ -131,7 +134,7 @@ def test_the_unresolved_grid_biases_small_shifts_and_not_the_campaign():
             gamma_coll=mod.GAMMA_COLL, sigma_laser_fwhm=mod.SIGMA_LASER,
             transit_fwhm=mod.TRANSIT, power_max_w=1.0, cycles_at_max=1.0,
             drift_mhz_total=0.0, noise_frac_bright=1e-9, adc_levels=2 ** 16,
-            gamma_l=0.0, resolve_shift=resolve, offset=0.0)
+            gamma_l=0.0, resolve_shift=resolve, offset=0.0, registry=_TWIN_STUDY)
         return mod.selfcentred_moment(y, 8.0, 3, grid=nu)
 
     # small shift: the unresolved grid is badly wrong (at the ruled waist, below about 0.05 MHz)
@@ -159,7 +162,7 @@ def test_the_default_generator_path_is_unchanged_by_the_new_switch():
     def trace(**extra):
         return build_world_trace(1.0, 0.364, 130.0, 0, 1,
                                  np.random.default_rng(7), layers,
-                                 **kw, **extra)[1]
+                                 **kw, **extra, registry=_TWIN_STUDY)[1]
 
     assert np.array_equal(trace(), trace(resolve_shift=False))
     assert not np.array_equal(trace(), trace(resolve_shift=True))

@@ -32,14 +32,15 @@ physics:
 
    This sits second because it is the only item on the list that acts on
    identifiability rather than on precision. The collisional and laser widths
-   correlate at about -0.92 in the fit, and no acquisition setting moves that:
-   the correlation moves by 0.0075 across a five times wider span and by
-   0.0000 at ten times the traces (`results/twin_span_sweep.csv`), while
+   correlate at a median of [-0.81](../../results/twin_span_sweep.csv "ref:twin_span_sweep:CAMPAIGN:corr_median") in the record's fits, and in the twin's
+   reference design no acquisition setting moves that materially: the
+   correlation moves by [0.0089](../../results/twin_span_sweep.csv "ref:twin_span_sweep:VERDICT:corr_move_with_span") across a five times wider span and by
+   [0.0001](../../results/twin_span_sweep.csv "ref:twin_span_sweep:VERDICT:corr_move_with_traces") at ten times the traces (`results/twin_span_sweep.csv`), while
    repeats shrink the uncertainty as sampling predicts.
    Pinning one member leaves the other with the square root of one minus the
-   correlation squared, so the purchase is between 2.3 and 3.2 across the
-   conditions this record covers, larger than any other item here and
-   available without spending a single shot on the atoms.
+   correlation squared, so the purchase is about [1.7](../../results/twin_span_sweep.csv "ref:twin_span_sweep:CAMPAIGN:pin_factor_median") at the record's
+   median condition and [1.4](../../results/twin_span_sweep.csv "ref:twin_span_sweep:CAMPAIGN:pin_factor_q75") to [1.8](../../results/twin_span_sweep.csv "ref:twin_span_sweep:CAMPAIGN:pin_factor_q25") across the middle half of its
+   [32](../../results/twin_span_sweep.csv "ref:twin_span_sweep:CAMPAIGN:n_conditions") conditions, available without spending a single shot on the atoms.
 
    [Chapter 7](07_limitations-and-identifiability.md) carries the
    constructions.
@@ -88,14 +89,14 @@ physics:
    top of the range. Runs as [`PLAN.md`](../PLAN.md) §7c.
 
    Folding the dataset's own 130 °C point into the headline already stretched
-   the 2025 lever from ×15.2 to ×48.1 (Alcock) and tightened the bound an order of
-   magnitude (was 0.2–0.4, now 0.02–0.04 MHz per 10¹² cm⁻³). Even at ×48.1 the
-   bound sits only 7–12× above the ~3.5 kHz expectation of §1.4, on the
+   the 2025 lever from ×15.2 to ×[48.1](../../results/lever_crosscheck.csv "ref:lever_crosscheck:gamma_rise_factor:70to130:err") (Alcock) and tightened the bound an order of
+   magnitude (was 0.2–0.4, now [0.02](../../results/beta_self_probe.csv "ref:beta_self_probe:4192::bound95_nscale")–[0.04](../../results/beta_self_probe.csv "ref:beta_self_probe:4154::bound95_nscale") MHz per 10¹² cm⁻³). Even at ×[48.1](../../results/lever_crosscheck.csv "ref:lever_crosscheck:gamma_rise_factor:70to130:err") the
+   bound sits only 7–12× above the ~[3.5](../../results/beta_self_theory.csv "ref:beta_self_theory:beta_self_6s:anchored") kHz expectation of §1.4, on the
    contested anchor §1.4 records, closer than
    before, but a same-session 150–170 °C extension is still the cleaner route.
    It removes the cross-epoch calibration step that folding the 130 °C point in
    relies on, and the higher temperatures make the collisional width move by
-   0.07–0.25 MHz, against a ~20 kHz signal in 2025. **The hot points are
+   [0.07](../../results/resolving_power.csv "ref:resolving_power:projection:hot_only_low:signal")–[0.25](../../results/resolving_power.csv "ref:resolving_power:projection:hot_only_high:signal") MHz, against a ~20 kHz signal in 2025. **The hot points are
    necessary and not sufficient**: measured against the block-to-block width
    reproducibility that actually limits the comparison, they reach only
    0.9–3.0σ per block (`results/resolving_power.csv`).
@@ -163,9 +164,9 @@ removed, and could come back empty if the cascade photon rate sits under the
 detector's own floor ([`PLAN.md`](../PLAN.md) §8 item 5). The suppression is
 population, not wavelength. The 1.3 µm legs carry the same Doppler-broadened
 cross-section as D1, but inside the driven column both are population-inverted
-at 4.81 and 5.25 to one and cannot reabsorb, while a 5P halo outside it, fed
-by trapped D-line photons, re-excites at 1.07 per cent of the primary
-two-photon rate at 130 °C, a band of 0.49 to 1.85 per cent over the unmeasured
+at [4.81](../../results/trapping_channels.csv "ref:trapping_channels:inversion_in_beam:1324nm") and [5.25](../../results/trapping_channels.csv "ref:trapping_channels:inversion_in_beam:1367nm") to one and cannot reabsorb, while a 5P halo outside it, fed
+by trapped D-line photons, re-excites at [1.38](../../results/trapping_channels.csv "ref:trapping_channels:halo_reexcitation:T130C") per cent of the primary
+two-photon rate at 130 °C, a band of 0.63 to 2.41 per cent over the unmeasured
 detector standoff and nothing at 70 °C
 ([`scripts/run_trapping_channels.py`](../../scripts/run_trapping_channels.py)).
 

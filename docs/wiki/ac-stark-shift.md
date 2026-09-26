@@ -244,6 +244,8 @@ neither surface said so because both were written at 64.
   spreads the line, but ellipticity that pumps the population shifts it,
   uncovered by this page's scalar treatment.
 
+*Model status:* what the fitter, the twin and the Monte Carlo carry of this page's physics is generated from the registry on [the model terms](../methods/model_terms.md), for `ac_stark_ramp`, `companion_pull_reduction`.
+
 ---
 
 [← Beam delivery and the waist ratio](beam-delivery-and-the-waist-ratio.md) · *Experimental spectroscopy, 7 of 12* · [The inhomogeneous light shift →](the-inhomogeneous-light-shift.md)

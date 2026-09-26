@@ -611,21 +611,21 @@ More of the same measurement does not separate the widths. The
 regenerable form of the search
 ([`twin_span_sweep.csv`](../../results/twin_span_sweep.csv), truth from a
 named committed condition, seed fixed): the correlation between the laser
-and collisional widths moves by 0.0009 when the span widens five times and
-by [0.1542](../../results/twin_span_sweep.csv "ref:twin_span_sweep:VERDICT:corr_move_with_traces") at ten times the repeats. Repeats buy precision, a factor 4.16 at
-ten times the traces, above the root of ten sampling alone predicts, while
-the wider span costs a factor 2.86 at fixed points per trace. The direction the
+and collisional widths moves by [0.0089](../../results/twin_span_sweep.csv "ref:twin_span_sweep:VERDICT:corr_move_with_span") when the span widens five times and
+by [0.0001](../../results/twin_span_sweep.csv "ref:twin_span_sweep:VERDICT:corr_move_with_traces") at ten times the repeats. Repeats buy precision, a factor [3.16](../../results/twin_span_sweep.csv "ref:twin_span_sweep:VERDICT:err_ratio_10x_traces") at
+ten times the traces, near the root of ten sampling alone predicts, while
+the wider span costs a factor [2.70](../../results/twin_span_sweep.csv "ref:twin_span_sweep:VERDICT:err_ratio_wide_span") at fixed points per trace. The direction the
 observable cannot see stays invisible either way: the degeneracy is a
 property of the lineshape rather than of the sample size, so no scan
 design breaks it.
 
-An external constraint is worth a factor of two to three and a half, and
-it is the only thing that is. Pinning one member of a correlated pair
+An external constraint is worth a factor of about one and a half to three,
+and it is the only thing that is. Pinning one member of a correlated pair
 reduces the other's variance to $(1-\rho^2)$ of its joint value, so the
 uncertainty falls by $\sqrt{1-\rho^2}$. That factor depends on $\rho$ and on
-nothing else, which is why it is not a single number here: 2.29 at the
-correlation of $-0.90$ this record measures as its median across the 32
-conditions, 2.52 at the twin's design point, and 2.97 at the bright condition
+nothing else, which is why it is not a single number here: [1.70](../../results/twin_span_sweep.csv "ref:twin_span_sweep:CAMPAIGN:pin_factor_median") at the
+correlation of [-0.81](../../results/twin_span_sweep.csv "ref:twin_span_sweep:CAMPAIGN:corr_median") this record measures as its median across the [32](../../results/twin_span_sweep.csv "ref:twin_span_sweep:CAMPAIGN:n_conditions")
+conditions, [2.84](../../results/twin_span_sweep.csv "ref:twin_span_sweep:span_060MHz:pin_factor") at the twin's design point, and 2.97 at the bright condition
 of `scripts/run_width_pinning.py`, whose direct Monte-Carlo scatter ratio is
 $3.18 \pm 0.20$ across nine seeds. The arithmetic and the simulation agree to
 7 per cent at the same condition, and

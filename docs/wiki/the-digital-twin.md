@@ -153,10 +153,10 @@ in fibres can skip that thread.
 record once answered with unregenerable digits: the span-and-repeats
 search, rebuilt from a named committed condition into
 [`twin_span_sweep.csv`](../../results/twin_span_sweep.csv). Repeats
-reduce the uncertainty faster than plain sampling predicts, a factor 4.16
-at ten times the traces against independent sampling's root-ten of 3.16 <!-- other-quantity: sqrt(10), not twin_span_sweep's err_ratio_10x_traces -->,
-while a five times wider span increases it by a factor 2.86 <!-- other-quantity: twin_span_sweep's err_ratio_wide_span, not detection_budget's gap ratio --> at fixed
-points per trace, and the width degeneracy moves by at most [0.1542](../../results/twin_span_sweep.csv "ref:twin_span_sweep:VERDICT:corr_move_with_traces") under
+reduce the uncertainty as plain sampling predicts, a factor [3.16](../../results/twin_span_sweep.csv "ref:twin_span_sweep:VERDICT:err_ratio_10x_traces")
+at ten times the traces against independent sampling's root of ten,
+while a five times wider span increases it by a factor [2.70](../../results/twin_span_sweep.csv "ref:twin_span_sweep:VERDICT:err_ratio_wide_span") at fixed
+points per trace, and the width degeneracy moves by at most [0.0089](../../results/twin_span_sweep.csv "ref:twin_span_sweep:VERDICT:corr_move_with_span") under
 either, the regenerable form of the failed asymmetric-knob
 search that [identifiability](identifiability.md) records.
 

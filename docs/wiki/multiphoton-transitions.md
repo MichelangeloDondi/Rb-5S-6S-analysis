@@ -246,6 +246,8 @@ a reader.
 - [Doppler-free two-photon spectroscopy](doppler-free-two-photon.md), the
   beam geometry the cross and same-beam terms above belong to.
 
+*Model status:* what the fitter, the twin and the Monte Carlo carry of this page's physics is generated from the registry on [the model terms](../methods/model_terms.md), for `photoionisation`, `two_photon_absorption`.
+
 ---
 
 [← Selection rules](selection-rules.md) · *Atomic structure and selection rules, 2 of 7* · [Hyperfine structure →](hyperfine-structure.md)

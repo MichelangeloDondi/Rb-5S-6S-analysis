@@ -39,7 +39,7 @@ from typing import Dict, List, Optional, Tuple
 import numpy as np
 from scipy.special import jv
 
-from . import blackbody, cascade, stark, twin_volume
+from . import blackbody, cascade, model_registry, stark, twin_volume
 from .fullmodel import full_profile
 from .lineshape import (composite_profile, local_ramp_density, model_profile,
                         ramp_mixture, stark_ramp)
@@ -49,7 +49,27 @@ from .noise import sigma_of_v
 from .volume_line import GaussianBeam
 
 __all__ = ["synthetic_traces", "build_world_trace", "forecast_precision",
-           "n_eff", "external_constraint_gain"]
+           "n_eff", "external_constraint_gain", "twin_preflight"]
+
+
+def twin_preflight(executes, registry: Optional[str], *, T_C: float, power_w: float = 0.0) -> dict:
+    """O58: a twin refuses BEFORE its first draw unless it is the registry's twin, or a declared study.
+
+    `executes` is the set of registry term ids the configured generator WILL apply, read off its own
+    knobs by the caller. `registry=None` is a run standing behind a result: it must carry exactly the
+    twin's registry terms at the regime (`model_registry.preflight`). A string is a STUDY's reason, six
+    words or more, and every term the configuration drops or adds is declared with it: the weak-field
+    width study, the layered generator (which never carries the joint line's chirp), a unit test of the
+    noise layer. Returns the block a manifest carries."""
+    regime = "2025" if (float(T_C) <= 130.0 + 1e-9 and float(power_w) <= 0.270 + 1e-9) else "campaign"
+    executes = set(executes)
+    if registry is None:
+        return model_registry.preflight("twin", regime, executes)
+    carried = set(model_registry.carried_term_ids("twin", regime))
+    why = str(registry)
+    return model_registry.preflight("twin", regime, executes, scope="study",
+                                    gaps={t: why for t in carried - executes},
+                                    extras={t: why for t in executes - carried})
 
 
 def _correlate(w: np.ndarray, tau_int: float) -> np.ndarray:
@@ -194,7 +214,7 @@ def synthetic_traces(gamma_coll: float, sigma_laser: float, transit_fwhm: float,
                      model: str = "joint", T_C: float = 110.0,
                      w0_m: float = W0_CENTRAL_M, m2: float = 1.0,
                      z_ratio: float = JOINT_Z_RATIO, n_path: int = JOINT_N_PATH,
-                     seed: int = JOINT_SEED,
+                     seed: int = JOINT_SEED, registry: Optional[str] = None,
                      ) -> Tuple[List[np.ndarray], List[np.ndarray]]:
     """Generate the traces your instrument would record for this line.
 
@@ -279,12 +299,33 @@ def synthetic_traces(gamma_coll: float, sigma_laser: float, transit_fwhm: float,
     roughly sixteenfold, since S0 goes as 1/w0^2, and the ramp then dominates
     the width budget. FORECAST THAT SESSION WITH s0 SET.
 
+    ``registry`` (O58): None for a run behind a result, which must carry exactly the registry's
+    twin terms, or a STUDY's reason of six words or more (`twin_preflight`). The default s0 = 0
+    world has no ramp and no chirp, so it is a study and says so; the convolution arm never carries
+    the joint line's chirp or its collected window. Nothing is drawn before the door admits.
+
     Returns (freqs, volts), each a list of arrays, one per trace, in the form
     `fit_condition` accepts.
     """
     if model not in ("joint", "convolution"):
         raise ValueError(f"synthetic_traces: model must be 'joint' or 'convolution', "
                          f"got {model!r}")
+    _ex = {"natural_width", "transit"}
+    if s0 > 0.0:
+        _ex.add("ac_stark_ramp")
+    if gamma_coll > 0.0:
+        _ex.add("self_broadening_vdw")
+    if sigma_laser > 0.0:
+        _ex.add("laser_kernel")
+    if halo_fraction > 0.0:
+        _ex.add("radiation_trapping")
+    if model == "joint":
+        _ex.add("beam_quality_m2")
+        if s0 > 0.0:
+            _ex.add("transit_chirp")
+        if z_ratio > 0.0:
+            _ex.add("axial_collection_window")
+    twin_preflight(_ex, registry, T_C=T_C)
     if model == "joint":
         # THE REFUSAL IS GONE (C6b noise wave, 2026-09-22): `twin_volume.world_shape` returns
         # only the peak-normalised clean line, with no noise layer of its own to be silently
@@ -382,6 +423,7 @@ def build_world_trace(power_w: float, kappa: float, t_c: float,
                      noise_floor_v: float = 0.0,
                      w0_m: Optional[float] = None,
                      omega_mhz: Optional[float] = None,
+                     registry: Optional[str] = None,
                      ) -> Tuple[np.ndarray, np.ndarray, Dict]:
     """One campaign trace: every peak in `positions`, one vertical range.
 
@@ -419,9 +461,37 @@ def build_world_trace(power_w: float, kappa: float, t_c: float,
     small-shift moment study. ``tooth_of`` maps a position key to the physical
     peak it is a tooth of, for an EOM comb; None is the identity.
 
+    ``registry`` (O58): this is the LAYERED generator, a registered approximation of the joint
+    twin that never carries the joint line's chirp, so every call is a STUDY and names its reason,
+    six words or more (`twin_preflight`); None is refused before anything is drawn.
+
     Returns (nu, volts, truth_amps): the frequency axis (MHz, transition
     axis), the one recorded trace, and each peak's injected amplitude.
     """
+    _ex = {"natural_width", "transit"}
+    if sigma_laser_fwhm > 0.0:
+        _ex.add("laser_kernel")
+    if gamma_coll > 0.0:
+        _ex.add("self_broadening_vdw")
+    if layers["stark"] and kappa * power_w > 0.0:
+        _ex.add("ac_stark_ramp")
+    if layers["saturation"]:
+        _ex.add("saturation")
+    if layers["cascade"]:
+        _ex |= {"depletion_cascade", "hyperfine_pumping"}
+    if layers["bbr"]:
+        _ex.add("blackbody")
+    if halo_fraction > 0.0:
+        _ex.add("radiation_trapping")
+    if (z_ratio is not None and float(z_ratio) > 0.0) or float(m2) != 1.0:
+        _ex |= {"axial_collection_window", "beam_quality_m2"}
+    if fringe_density is not None:
+        _ex.add("fringe_tail")
+    if pedestal_height_frac > 0.0:
+        _ex.add("doppler_pedestal")
+    if retro_tilt_rad > 0.0:
+        _ex.add("retro_tilt")
+    twin_preflight(_ex, registry, T_C=t_c, power_w=power_w)
     if grid_span is None:
         nu = np.linspace(min(positions.values()) - 60.0, 60.0, 6000)
     else:
@@ -692,7 +762,7 @@ def _one_trial(truth: Dict, design: Dict, rng: np.random.Generator) -> Dict:
         noise=design.get("noise", 0.004),
         amp=design.get("amp", 1.0),
         s0=s0, model=model, T_C=T_C, w0_m=w0_m, m2=m2,
-        rng=rng)
+        rng=rng, registry=design.get("registry"))
     # The fitter is MATCHED to the injected ramp by default. `design["fit_s0"]`
     # deliberately mismatches it, which is how the twin measures what omitting
     # the ramp costs the widths rather than assuming it costs nothing: at the
@@ -707,7 +777,7 @@ def _one_trial(truth: Dict, design: Dict, rng: np.random.Generator) -> Dict:
 
 def forecast_precision(truth: Dict, design: Dict, *, n_trials: int = 8,
                        seed: int = 0, scalings: bool = True,
-                       return_trials: bool = False) -> Dict:
+                       return_trials: bool = False, registry: Optional[str] = None) -> Dict:
     """Forecast what your design would measure, by running it in software.
 
     ``truth`` holds the line you believe you have: gamma_coll, sigma_laser
@@ -726,7 +796,13 @@ def forecast_precision(truth: Dict, design: Dict, *, n_trials: int = 8,
     noise as its root), at doubled repeats, and at doubled points, and the
     measured ratios are returned. Measuring the exponent instead of asserting
     it costs three more Monte-Carlos and removes an assumption.
+
+    ``registry`` (O58) is the twin's declaration, threaded to every trial's `synthetic_traces`:
+    None for a result run, or a study's reason of six words or more (`twin_preflight`). A design
+    dict may carry it too, as ``design["registry"]``, and the keyword is used when both are given.
     """
+    if registry is not None:
+        design = {**design, "registry": registry}
     rng = np.random.default_rng(seed)
     trials = [_one_trial(truth, design, rng) for _ in range(n_trials)]
 
@@ -741,7 +817,11 @@ def forecast_precision(truth: Dict, design: Dict, *, n_trials: int = 8,
         # quoting the median as if it were exact. Additive, default off:
         # every committed CSV predates the key and does not read it.
         **({"gamma_coll_err_trials":
-            [t.get("gamma_coll_err", float("nan")) for t in trials]}
+            [t.get("gamma_coll_err", float("nan")) for t in trials],
+            # and the fit's own width correlation per trial, so a caller can put the trials'
+            # scale beside a move of the median (V7.1, F552)
+            "corr_laser_coll_trials":
+            [t.get("corr_laser_coll", float("nan")) for t in trials]}
            if return_trials else {}),
         "sigma_laser_err": med("sigma_laser_err"),
         "corr_laser_coll": med("corr_laser_coll"),

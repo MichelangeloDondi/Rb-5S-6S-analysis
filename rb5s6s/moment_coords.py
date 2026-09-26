@@ -10,13 +10,13 @@ module only has to be correct and tested on its own.
 WHAT IS HERE, AND WHERE ITS RULES COME FROM (private/PLAN_2026-09-18_CONSOLIDATED.md unless noted):
 
 (a) `windowed_moments_fixed_centre` -- central moments about a GIVEN, externally supplied centre,
-    with exactly `rb5s6s.cumulants.windowed_moments`'s window, interpolation and quadrature
+    with exactly `rb5s6s.moments.windowed_moments`'s window, interpolation and quadrature
     conventions, but no re-centring iteration. F287 measured why this has to exist:
     `windowed_moments(centre0=...)` re-centres to the trace's OWN noisy centroid on its very first
     pass, so it cannot hold a centre fixed, and self-centring is F284's/F287's diagnosed CAUSE of the
     even moments' narrow-window bias (E[mu2_hat] = mu2 - Var(mu1_hat)): "mu2@0.5 bias/SE -5.17 and
     -4.84 self-centred against -0.05 and +1.10 on the known centre" (F287). A121: "a fixed-centre
-    estimator added to rb5s6s.cumulants (a population module, so it rides a node re-run)" -- landing
+    estimator added to rb5s6s.moments (a population module, so it rides a node re-run)" -- landing
     it there is deferred; it lives here instead, by A129's explicit instruction, so it is usable now.
 
 (b) `cross_product_estimate` -- F284 point 2 / F287 point 2: a statistic that reuses one moment
@@ -117,7 +117,7 @@ from typing import Dict, Iterable, List, Mapping, Optional, Sequence, Tuple, Uni
 import numpy as np
 
 from rb5s6s._compat import trapezoid
-from rb5s6s.cumulants import linear_baseline, wing_baseline
+from rb5s6s.moments import linear_baseline, wing_baseline
 
 __all__ = [
     "windowed_moments_fixed_centre",
@@ -150,16 +150,16 @@ BaselineArg = Union[str, float, None, Tuple[str, Tuple[float, float], Tuple[floa
 
 
 # ----------------------------------------------------------------------------------------------------
-# Shared quadrature core, matching rb5s6s.cumulants._centred_window_moments' conventions exactly
+# Shared quadrature core, matching rb5s6s.moments._centred_window_moments' conventions exactly
 # (the baseline handling, the interpolated grid, the trapezoid normalisation) minus the recentring
 # iteration -- see the module docstring, item (a).
 # ----------------------------------------------------------------------------------------------------
 
 def _apply_baseline(grid: np.ndarray, y: np.ndarray, baseline: BaselineArg) -> np.ndarray:
-    """The baseline convention of `cumulants._centred_window_moments`, reproduced exactly: "wings"
+    """The baseline convention of `moments._centred_window_moments`, reproduced exactly: "wings"
     subtracts `wing_baseline`'s scalar pedestal, None leaves the trace as it is, a number subtracts
     that scalar, and `("linear", (lo, hi), (lo, hi))` subtracts `linear_baseline`'s line through two
-    named strips. Both helpers are imported from `rb5s6s.cumulants` rather than re-derived, so the two
+    named strips. Both helpers are imported from `rb5s6s.moments` rather than re-derived, so the two
     modules can never quietly disagree on what "wings" or "linear" means."""
     if isinstance(baseline, str) and baseline == "wings":
         return y - wing_baseline(grid, y)
@@ -201,13 +201,13 @@ def windowed_moments_fixed_centre(nu: np.ndarray, y: np.ndarray, centre: float,
                                    baseline: BaselineArg = None, n_points: int = 4001
                                    ) -> Tuple[Dict[float, Dict[int, float]], Dict[float, Dict[str, float]]]:
     """Central moments about a GIVEN, FIXED centre, at every window in `windows` and every order in
-    `orders`, with exactly `cumulants.windowed_moments`' window, interpolation and quadrature
+    `orders`, with exactly `moments.windowed_moments`' window, interpolation and quadrature
     conventions (see `_fixed_centre_core`). The two AGREE when `centre` is the self-converged centre
     `windowed_moments` itself returns (`info["centre"]` of its own second return value) -- checked in
     `tests/test_moment_coords.py` -- because at convergence that centre IS (to the iteration's own
     tolerance) the window's own first moment, which is exactly what `windowed_moments` centres on.
 
-    Unlike `cumulants.windowed_moments`, this takes MANY windows in one call (the coordinate catalogue
+    Unlike `moments.windowed_moments`, this takes MANY windows in one call (the coordinate catalogue
     needs orders 1 to 12 at every window of the grid, A100), and takes an externally supplied centre
     rather than discovering one, which is the whole point (F287): a self-converged centre is a NOISY
     estimate of the line's own position, and centring the moments on it manufactures a bias

@@ -18,6 +18,9 @@ from rb5s6s.lineshape import model_profile
 from rb5s6s.fullmodel import (doppler_pedestal_fwhm_mhz, saturation_companion_mhz,
                               collection_z_ratio_m2, full_profile)
 
+#: O58: this module's twin runs are a declared STUDY, and this is its reason
+_TWIN_STUDY = "a unit test of the generator's own arithmetic, not a quoted number"
+
 NU = np.linspace(-40, 40, 8001)
 #: The record's own shift at 225 mW, read from the package: these worlds typed 0.364, the
 #: static-tail prediction, until 2026-09-17.
@@ -75,7 +78,7 @@ def test_the_pedestal_moves_a_wide_window_moment_and_a_narrow_one_barely():
     """The measurement that motivated the term: it is invisible at 6 MHz and
     a large fraction of the 40 MHz window's own third moment, which is why
     wide-window moments need it carried."""
-    from rb5s6s.cumulants import windowed_moments
+    from rb5s6s.moments import windowed_moments
     grid = np.linspace(-200, 200, 200001)
     a = full_profile(grid, **B)
     b = full_profile(grid, **B, pedestal_height_frac=3e-3)
@@ -129,13 +132,13 @@ def test_the_twin_carries_the_two_campaign_terms_in_both_directions():
               sigma_laser_fwhm=1.6, transit_fwhm=0.9575, power_max_w=1.0,
               cycles_at_max=1.0, drift_mhz_total=0.0, noise_frac_bright=0.004,
               adc_levels=4096)
-    base = build_world_trace(1.0, S0, 130.0, 0, 1, np.random.default_rng(7), L, **kw)[1]
+    base = build_world_trace(1.0, S0, 130.0, 0, 1, np.random.default_rng(7), L, **kw, registry=_TWIN_STUDY)[1]
     same = build_world_trace(1.0, S0, 130.0, 0, 1, np.random.default_rng(7), L,
-                             pedestal_height_frac=0.0, retro_tilt_rad=0.0, **kw)[1]
+                             pedestal_height_frac=0.0, retro_tilt_rad=0.0, **kw, registry=_TWIN_STUDY)[1]
     assert np.array_equal(base, same)
     for extra in (dict(pedestal_height_frac=3e-3), dict(retro_tilt_rad=2.36e-3)):
         moved = build_world_trace(1.0, S0, 130.0, 0, 1, np.random.default_rng(7),
-                                  L, **extra, **kw)[1]
+                                  L, **extra, **kw, registry=_TWIN_STUDY)[1]
         assert not np.array_equal(base, moved), extra
 
 
@@ -289,7 +292,7 @@ def test_the_twin_carries_beam_quality_and_the_rabi_parameterisation():
               cycles_at_max=1.0, drift_mhz_total=0.0, noise_frac_bright=0.004,
               adc_levels=4096)
     g = lambda **e: build_world_trace(1.0, S0, 130.0, 0, 1,
-                                      np.random.default_rng(3), L, **e, **kw)[1]
+                                      np.random.default_rng(3), L, **e, **kw, registry=_TWIN_STUDY)[1]
     base = g()
     assert np.array_equal(base, g(m2=1.0))
     for m2 in (2.0, 3.0):
@@ -307,7 +310,7 @@ def test_the_twin_carries_beam_quality_and_the_rabi_parameterisation():
         g(omega_mhz=0.45)
     L_off = dict(L, saturation=False)
     h = lambda **e: build_world_trace(1.0, S0, 130.0, 0, 1,
-                                      np.random.default_rng(3), L_off, **e, **kw)[1]
+                                      np.random.default_rng(3), L_off, **e, **kw, registry=_TWIN_STUDY)[1]
     assert not np.array_equal(h(), h(omega_mhz=0.45))
 
 

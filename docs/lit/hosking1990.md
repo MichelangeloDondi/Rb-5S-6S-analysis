@@ -11,15 +11,15 @@ pages: 105--124
 year: 1990
 doi: 10.1111/j.2517-6161.1990.tb01775.x
 arxiv: null
-pdf: null
-held: false
+pdf: PDF_papers/Hosking_1990_L-moments-linear-combinations-of-order-statistics.pdf
+held: true
 status: REPORTED
 audit: private/cache/lit_intake_2026-09-21/audits/hosking1990.md  # bibliographic fields checked against Crossref/Oxford Academic, 2026-09-22; exact match; no claim of having read the paper found
 author: agent
 routing:
   - CITE
 verify_flags:
-  - 'Not held. Bibliographic record confirmed via Crossref (query.bibliographic, 2026-09-21):
+  - 'Held from 2026-09-25 and not yet read on this side, and not held before that. Bibliographic record confirmed via Crossref (query.bibliographic, 2026-09-21):
     exact title match, journal, volume, issue, pages and DOI as given (also independently visible
     on the Oxford Academic and Wiley listing pages for the same article). No abstract or page was
     read; the description below is a paraphrase of search-engine summaries and of the concept''s
@@ -30,7 +30,7 @@ summary: >
   alternative to ordinary (power) moments that exist whenever the mean exists, are less sensitive
   to outliers and heavy tails, and whose sample estimates are more robust than ordinary sample
   moments of the same order. The paper the task names for exactly the reason ordinary moments can
-  misbehave in heavy-tailed or noisy settings. Paywalled (RSS/Wiley); not fetched.
+  misbehave in heavy-tailed or noisy settings. Paywalled (RSS/Wiley); held from 2026-09-25, not yet read here.
 loci:
   - methods/06
   - THEORY
@@ -39,8 +39,10 @@ section: method-anchors
 
 # hosking1990
 
-REPORTED. Not held: behind the Royal Statistical Society / Wiley paywall (also listed on JSTOR),
-no open-access or preprint copy located by search on 2026-09-21. Everything below is second-hand.
+REPORTED. Held from 2026-09-25 (a JSTOR copy on the shelf) and not yet read on this side, so everything
+below is still second-hand. Until then it sat behind the Royal Statistical Society / Wiley paywall, with no
+open-access or preprint copy located by search on 2026-09-21. A full reading is the PhD Thesis session's intake
+note, which replaces this one once this side's quotation audit has passed it.
 
 ## What is reported about it
 
@@ -65,8 +67,8 @@ Named in the strategy document as the reason "hydrology uses L-moment ratios... 
 ordinary moments misbehave in heavy tails." This record's own programme uses ordinary
 (power/cumulant) moments, not L-moments, and its own truncated-window machinery is a different
 answer to a related problem (moments of a distribution observed only through a finite window, with
-a correction that is derived, not empirical). Citing this paper supports the claim that "moments can
-misbehave, and a field has built an alternative moment family to cope" as a general precedent,
+a correction that is derived, not empirical). Citing this paper supports the claim that moments can
+misbehave, and that a field has built an alternative moment family to cope, as a general precedent,
 without this record adopting L-moments itself. Whether an L-moment-style linear-combination-of-
 order-statistics estimator could be built for a windowed atomic lineshape (as opposed to a sample
 of independent draws, which is what L-moments were built for) is an open methodological question

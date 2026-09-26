@@ -65,8 +65,8 @@ the target of the form test below.
 The ramp's cumulants continue
 $\kappa_4 = -S_0^4/540$ and $\kappa_5 = +S_0^5/567$, with the seventh
 negative again (the cumulant recursion on the density's moments, which owner order
-O49 retired from the package for `rb5s6s.cumulants.windowed_moments`, and
-`tests/test_cumulants.py` pins the third, where $\mu_3 = \kappa_3$), so the odd
+O49 retired from the package for `rb5s6s.moments.windowed_moments`, and
+`tests/test_moments.py` pins the third, where $\mu_3 = \kappa_3$), so the odd
 orders alternate in sign, and a statistic built on the sign of a windowed
 cumulant is read against each order's own sign and never against zero. The
 signs are the coded blue side's, settled by the ruling of 2026-09-17 on the single-source
@@ -271,7 +271,7 @@ not safe to under a percent, as the next section's saturated density quantifies.
 
 At the 16 µm the small-waist session proposes, $s=8.5$, the
 weight is nearly flat in intensity, and re-integrating the moments with the
-saturated weight moves the predicted axial skew from $+0.36$ to $+1.07$. The
+saturated weight moves the predicted axial skew from $+0.36$ to $+1.07$ <!-- other-quantity: the predicted axial skew, not the halo re-excitation -->. The
 sign flip survives, the magnitude does not, so the tight-focus prediction is a
 factor-of-three statement and the reason is a modelling assumption rather than
 an unmeasured input. Computed by `scripts/run_geometry_design.py`, written up
@@ -534,10 +534,10 @@ The centroid is untouched at every waist,
 [-0.000](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w42um:centroid_pull_error") per cent, because the first
 moment of a mixture of symmetric kernels is the density's own mean whatever
 the kernels are. Nothing else is: the fitted centre moves by
-[-1.563](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w42um:fitted_centre_error") per cent here and
-[-60.912](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w16um:fitted_centre_error") at 16 microns, and the
+[-1.564](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w42um:fitted_centre_error") per cent here and
+[-60.684](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w16um:fitted_centre_error") at 16 microns, and the
 windowed third moment by
-[103.942](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w42um:k3_error") per cent at this bench's own waist,
+[103.942](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w42um:mu3_error") per cent at this bench's own waist,
 where it also inverts the sign.
 [The composite chapter](04_the_composite_model.md) carries the boundary and
 [the odd-moments chapter](10_the_odd_moments.md) carries what it costs the

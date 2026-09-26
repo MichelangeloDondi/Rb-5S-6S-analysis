@@ -116,6 +116,8 @@ the retro whose self-imaging form returns the same waist on every rung, and
 [designing an acquisition](designing-an-acquisition.md) for where a scan sits
 in a campaign.
 
+*Model status:* what the fitter, the twin and the Monte Carlo carry of this page's physics is generated from the registry on [the model terms](../methods/model_terms.md), for `bore_clipping`.
+
 ---
 
 [← The beam waist](the-beam-waist.md) · *Experimental spectroscopy, 6 of 12* · [The AC-Stark shift →](ac-stark-shift.md)

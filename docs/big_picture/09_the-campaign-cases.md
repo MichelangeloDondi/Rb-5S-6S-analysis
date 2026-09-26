@@ -65,7 +65,7 @@ the reversed and suppressed one the bench produces, not the pure ramp's. The cen
 slope, which those two terms leave at [0.91](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_42.38um::pull_factor_quiet"),
 [0.89](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_40um::pull_factor_quiet"), [0.69](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_24um::pull_factor_quiet")
 and [0.58](../../results/three_channel_forecast.csv "ref:three_channel_forecast:base::pull_factor_quiet") of the pure ramp's mean pull at
-42.38, 40, 24 and 16 microns, so the recovery below is against that geometry.
+[42.38](../../rb5s6s/constants.py "ref:constant:W0_CENTRAL_M:1e6"), 40, 24 and 16 microns, so the recovery below is against that geometry.
 
 The
 two-time computation in [the plan's intensity
@@ -77,14 +77,14 @@ one, because power broadening is symmetric and does not move a centre.
 
 | waist | injected | the centre recovers |
 |---|---|---|
-| 42.38 microns | [3.648](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_42.38um::kappa_true") | [3.64](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_42.38um::kappa_pull") plus or minus [0.12](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_42.38um::sd_pull") |
+| [42.38](../../rb5s6s/constants.py "ref:constant:W0_CENTRAL_M:1e6") microns | [3.648](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_42.38um::kappa_true") | [3.64](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_42.38um::kappa_pull") plus or minus [0.12](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_42.38um::sd_pull") |
 | 40 microns | [4.095](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_40um::kappa_true") | [4.09](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_40um::kappa_pull") plus or minus [0.12](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_40um::sd_pull") |
 | 24 microns | [11.375](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_24um::kappa_true") | [11.38](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_24um::kappa_pull") plus or minus [0.17](../../results/three_channel_forecast.csv "ref:three_channel_forecast:waist_24um::sd_pull") |
 | 16 microns | [25.593](../../results/three_channel_forecast.csv "ref:three_channel_forecast:base::kappa_true") | [25.59](../../results/three_channel_forecast.csv "ref:three_channel_forecast:base::kappa_pull") plus or minus [0.32](../../results/three_channel_forecast.csv "ref:three_channel_forecast:base::sd_pull") |
 
-Every κ in this table and in the pull factors above it, the 42.38 micron
+Every κ in this table and in the pull factors above it, the [42.38](../../rb5s6s/constants.py "ref:constant:W0_CENTRAL_M:1e6") micron
 row included, is computed at the unclipped design, the bore out of the
-focusing path, so the 42.38 micron row is a methodological check point and
+focusing path, so the [42.38](../../rb5s6s/constants.py "ref:constant:W0_CENTRAL_M:1e6") micron row is a methodological check point and
 not the bench's own measured, bore-clipped prediction.
 
 Every number in this section carries one model-form caveat, the centre
@@ -98,13 +98,13 @@ elements are the shifted ones. The homogeneous width runs over a factor of
 16 microns.
 
 Measured element by element against the same mixture with the kernel held
-fixed, at 42.38, 45, 24 and 16 microns:
+fixed, at [42.38](../../rb5s6s/constants.py "ref:constant:W0_CENTRAL_M:1e6"), 45, 24 and 16 microns:
 
-| what is read | 42.38 um | 45 um | 24 um | 16 um |
+| what is read | [42.38](../../rb5s6s/constants.py "ref:constant:W0_CENTRAL_M:1e6") um | 45 um | 24 um | 16 um |
 |---|---|---|---|---|
 | the centroid, per cent | [-0.000](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w42um:centroid_pull_error") | [0.000](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w45um:centroid_pull_error") | [0.000](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w24um:centroid_pull_error") | [0.000](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w16um:centroid_pull_error") |
-| the fitted centre, per cent | [-1.563](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w42um:fitted_centre_error") | [-1.198](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w45um:fitted_centre_error") | [-18.149](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w24um:fitted_centre_error") | [-60.912](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w16um:fitted_centre_error") |
-| the third moment, per cent | [103.942](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w42um:k3_error") | [104.614](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w45um:k3_error") | [96.571](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w24um:k3_error") | [89.992](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w16um:k3_error") |
+| the fitted centre, per cent | [-1.564](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w42um:fitted_centre_error") | [-1.202](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w45um:fitted_centre_error") | [-18.143](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w24um:fitted_centre_error") | [-60.684](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w16um:fitted_centre_error") |
+| the third moment, per cent | [103.942](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w42um:mu3_error") | [104.614](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w45um:mu3_error") | [96.571](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w24um:mu3_error") | [89.992](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w16um:mu3_error") |
 
 The centroid is exactly immune and the estimator is not, and reading the
 first as covering the second is the error this table replaces. The first
@@ -117,7 +117,7 @@ shifted elements are the broad ones. The pull rows above are that fit, through
 centroid stays exactly safe while the fitted centre is already off by more
 than a per cent, and at the campaign's own 16
 microns the standard channel reads the pull it inverts wrong by
-[-60.912](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w16um:fitted_centre_error") per cent,
+[-60.684](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w16um:fitted_centre_error") per cent,
 which is larger than anything the moment channel's caveat carries.
 
 So neither family is quotable at 24 microns or below until the kernel follows
@@ -126,7 +126,7 @@ are an upper bound on their own accuracy and not a result. The
 moment figures are quoted against the most charitable single kernel there
 is, the volume's own weighted mean. Against the kernel the twin actually
 composes with, the companion at the on-axis shift, the cost at 16 microns is
-[95.445](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w16um:k3_error_forecast_kernel") per cent. The
+[95.445](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w16um:mu3_error_forecast_kernel") per cent. The
 uncertainties are the saturation companion's own, which the record carries at
 the factor-of-three level, not a grid.
 
@@ -227,22 +227,26 @@ Everything in scenario one, plus five additions no cell can provide.
   enhancement**, and the group's papers carry the trap's light without
   reporting a loading: untrapped, atoms sampling 50 to 300 nm carry an
   inhomogeneous red tail that is degenerate with the laser width, and at a
-  fixed 200 nm it falls to 0.21 to 0.53 MHz and is largely common-mode
+  fixed 200 nm it falls to [0.21 to 0.53](../../results/onf_candidate.csv "ref:onf_candidate:cp_shift_at_200nm:") MHz and is largely common-mode
   (`results/onf_candidate.csv`). Fed back as a prior, it recovers
-  the collisional coefficient's error to 0.31 of the free-kernel fit
-  on the data already taken, against the exact floor of 0.365 that any
+  the collisional coefficient's error to [0.31](../../results/kernel_identifiability.csv "ref:kernel_identifiability:joint_cell_onf:prior_GL_and_sigmaG_rel0.2:sv_ratio") of the free-kernel fit
+  on the data already taken, against the exact floor of [0.365](../../results/kernel_identifiability.csv "ref:kernel_identifiability:joint_cell_onf:floor_GL_alone:sv_ratio") that any
   single-component measurement hits (`results/kernel_identifiability.csv`,
-  and **that prior is the one asking 11.6 kHz on Gamma_L and 24.8 kHz on
-  sigma_G. That is the 69-minute trace, not the 2.78-minute working point the
+  and **that prior is the one asking [11.6](../../results/kernel_identifiability.csv "ref:expr:{kernel_identifiability:joint_cell_onf:absolute_anchor:sv_ratio} * 0.2 * 1000") kHz on Gamma_L and [24.8](../../results/kernel_identifiability.csv "ref:expr:{kernel_identifiability:joint_cell_onf:absolute_anchor:null_dir_gamma} * 0.2 * 1000") kHz on
+  sigma_G. That is the 69-minute trace, not the [2.78](../../results/campaign_twin_forecast.csv "ref:campaign_twin_forecast:onf:minutes_per_trace_0.02")-minute working point the
   cost rows below quote. It is about 5.5 hours of acquisition, some
   twenty-four times the per-lever figure**,
   the joint rows). This addition improves the committed record
   retroactively, before any new cell point is taken. **The payback is on the
   collisional coefficient specifically**, and it is not a general claim that
   the fibre improves the record: on the width channel the twin measures the
-  same Lorentzian-against-Gaussian correlation of about -0.94 in both arms
+  Lorentzian-against-Gaussian correlation at [-0.93](../../results/campaign_twin_forecast.csv "ref:campaign_twin_forecast:onf:corr_laser_coll_0.02") in the fibre arm against
+  [-0.83](../../results/campaign_twin_forecast.csv "ref:campaign_twin_forecast:cell:corr_laser_coll_5traces") in the cell arm at five traces
   ([chapter 6](06_next-nanofibre.md),
-  `results/campaign_twin_forecast.csv`).
+  `results/campaign_twin_forecast.csv`). Both readings are provisional:
+  that table is owed a fresh run (F553), and its twin fits a world built on
+  one line with a fitter on another until the world moves onto the fitter's
+  line (F559).
 * The intercept budget closes. With density, the sqrt(T) ladder, the laser
   prior and geometry each pinning their own slot, the width intercept
   becomes overdetermined, and the sum of independently measured parts

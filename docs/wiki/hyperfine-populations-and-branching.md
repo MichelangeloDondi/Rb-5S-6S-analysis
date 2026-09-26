@@ -258,6 +258,8 @@ the chord integral already in the model.
   relation between a shortened interaction time and a broader line that
   the pumping argument above uses.
 
+*Model status:* what the fitter, the twin and the Monte Carlo carry of this page's physics is generated from the registry on [the model terms](../methods/model_terms.md), for `hyperfine_shares`, `resonant_exchange_by_line_share`.
+
 ---
 
 [← Magnetic sublevels](magnetic-sublevels.md) · *Atomic structure and selection rules, 5 of 7* · [The cascade and F-depletion →](the-cascade-and-f-depletion.md)

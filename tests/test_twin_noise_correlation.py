@@ -16,6 +16,9 @@ import pytest
 from rb5s6s.forecast import _correlate, synthetic_traces
 from rb5s6s.noise import load_noise_model
 
+#: O58: this module's twin runs are a declared STUDY, and this is its reason
+_TWIN_STUDY = "a unit test of the generator's own arithmetic, not a quoted number"
+
 
 def _integrated_time(x, lags=30):
     ac = [float(np.corrcoef(x[:-k], x[k:])[0, 1]) for k in range(1, lags + 1)]
@@ -68,10 +71,10 @@ def test_the_committed_law_drives_the_twin_without_being_asked():
     # an explicit generator on both sides: the same draws, one filtered
     _, v_law = synthetic_traces(0.55, 1.6, 0.9575, n_traces=1, noise=law,
                                 n_points=4000,
-                                rng=np.random.default_rng(11), model="convolution")
+                                rng=np.random.default_rng(11), model="convolution", registry=_TWIN_STUDY)
     _, v_white = synthetic_traces(0.55, 1.6, 0.9575, n_traces=1,
                                   noise=dict(law, tau_int=1.0), n_points=4000,
-                                  rng=np.random.default_rng(11), model="convolution")
+                                  rng=np.random.default_rng(11), model="convolution", registry=_TWIN_STUDY)
     assert not np.array_equal(v_law[0], v_white[0])
 
 

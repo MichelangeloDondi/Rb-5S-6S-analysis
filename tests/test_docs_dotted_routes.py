@@ -1,7 +1,7 @@
 """Every `rb5s6s.<module>.<name>` a methods page names as a route resolves in the package.
 
 WHY THIS EXISTS (the audit of 2026-09-25). Owner order O49 retired the cumulant functions from
-rb5s6s/cumulants.py in code and in tests, and four methods pages went on telling a reader to call
+rb5s6s/moments.py in code and in tests, and four methods pages went on telling a reader to call
 them, one of them under its own "Route to re-derive" heading, which is the third of the four things
 every model term carries. Nothing read a dotted path in prose against the live package, so a route
 could name a function that no longer existed for days and every check stayed green. This reads the
@@ -59,7 +59,7 @@ def test_every_dotted_route_resolves():
 def test_the_resolver_discriminates():
     """The plant, both ways, through the real resolver: a live function resolves, the retired
     cumulant function and a misspelt module do not."""
-    assert _resolves("rb5s6s.cumulants.windowed_moments")
+    assert _resolves("rb5s6s.moments.windowed_moments")
     assert _resolves("rb5s6s.lineshape")
-    assert not _resolves("rb5s6s.cumulants.windowed_cumulants")
+    assert not _resolves("rb5s6s.moments.windowed_cumulants")
     assert not _resolves("rb5s6s.cumulantz.windowed_moments")

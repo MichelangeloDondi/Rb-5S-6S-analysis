@@ -182,6 +182,10 @@ mc-coverage         show   private/checks/mc_contract.py --coverage
 wave-row            show   private/checks/plant_wave_rule_row.py
 # the runner FLAGS a declared job at twice its declaration and never kills it (T0z, F257); planted through the real runner
 overrun             show   private/checks/plant_fanout_overrun.py
+# E87's code half (V7.1): an EXPENSIVE producer whose code moved since its table was proven is owed, and an
+# owed producer outside the declared set is refused; its plant is the second line
+code-stale          show   private/checks/code_staleness.py
+code-stale-plant    quiet  private/checks/code_staleness.py --self-test
 # a members ratchet over the governance prose; the baseline may only shrink
 unc-digits          show   private/checks/uncertainty_digits.py
 # a results table writes its uncertainty at two significant digits, or no page can print two (owner, 2026-09-24)
@@ -243,6 +247,9 @@ plan-prune          show   private/checks/plan_prune_debt.py
 fanout-scan         show   private/checks/fanout.py --scan
 # a second definition of a window set (owner 2026-09-19: solve the SSOT issue once for all)
 window-ssot         show   private/checks/window_ssot.py
+# THE RESULTS PAGE IS ITS GENERATOR'S OUTPUT (O59 S2, F537): regenerated to a temporary file and compared, so a hand
+# edit, or a table that moved without its page, is refused here and not by a reader
+results-page        show   private/checks/results_page_fresh.py
 # a retired value outside private/history/, anywhere in the repository (owner, 2026-09-17: "strictly in the
 # history folder"); its plant runs with the others
 retired-values      show   private/checks/retired_values.py
@@ -332,6 +339,8 @@ fi
 # pool beside it passes and a floor that has grown does not. A plant run records nothing.
 if [ $PLANT = 0 ]; then
   echo "prefloor: ${SECONDS} s wall against the 60 s budget"
-  printf '%s\t%s\t%s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$SECONDS" "$ALL_RC" >> private/cache/floor_times.tsv
+  # O59 F3: the load the floor ran beside, so the audit can read the floors that ran beside a pool apart
+  LOAD1=$(sysctl -n vm.loadavg 2>/dev/null | awk '{print $2}')
+  printf '%s\t%s\t%s\t%s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$SECONDS" "$ALL_RC" "${LOAD1:-}" >> private/cache/floor_times.tsv
 fi
 exit $ALL_RC

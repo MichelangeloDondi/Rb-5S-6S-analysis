@@ -987,7 +987,7 @@ def main() -> int:
     print(f"  beta_self, five blocks       {beta['sigma_beta_mhz'] * 1e3:.3f} kHz "
           f"per 1e12, a {beta['detect']:.1f} sigma reach on the expected 3.5")
     print()
-    print(f"wrote {out.relative_to(ROOT)} with {len(rows)} rows")
+    print(f"wrote {out} with {len(rows)} rows")
     return 0
 
 

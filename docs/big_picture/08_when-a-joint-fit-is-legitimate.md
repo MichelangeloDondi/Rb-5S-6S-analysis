@@ -324,8 +324,8 @@ Each is answerable from artefacts this pipeline already writes.
    in which case constraining that channel buys nothing.
 
 Question 6 is the one most often skipped. For this dataset: the fixed natural
-Lorentzian width is [3.493](../../rb5s6s/constants.py "ref:constant:GAMMA_NAT_HZ:1e-6") ± 0.013 MHz on the transition axis, from the measured
-6S lifetime of 45.57 ± 0.17 ns ([Gomez 2005](../lit/gomez2005.md)), against an
+Lorentzian width is [3.493](../../rb5s6s/constants.py "ref:constant:GAMMA_NAT_HZ:1e-6") ± [0.013](../../rb5s6s/constants.py "ref:constant:GAMMA_NAT_ERR_HZ:1e-6") MHz on the transition axis, from the measured
+6S lifetime of [45.57](../../rb5s6s/constants.py "ref:constant:TAU_6S_S:1e9") ± [0.17](../../rb5s6s/constants.py "ref:constant:TAU_6S_ERR_S:1e9") ns ([Gomez 2005](../lit/gomez2005.md)), against an
 observed composite width near
 5.4 MHz, a linear ratio of about 0.65. That is a ratio of two defined widths and not an additive share,
 since the width of a convolution does not decompose additively, and its meaning
@@ -366,7 +366,7 @@ with the light shift. The perturbation is controlled, since the only change is
 whether the fit carries a free red-side wing, an alternative explanation of the
 same structure the light shift is read from. Granting it moves the campaign-alone
 upper limit by a factor of about 7.3 and the pooled upper limit by a factor of
-about 1.07, stated that way because the two movements are the same kind of ratio
+about 1.07 <!-- other-quantity: a ratio of two upper limits -->, stated that way because the two movements are the same kind of ratio
 and should read as one.
 
 That is a statement about the reported limits under two
@@ -384,7 +384,7 @@ Two desirable properties therefore point in opposite directions here. Adjudicati
 on either one alone would pick a different answer, which is the reason this chapter
 argues for a checklist rather than for a construction.
 
-The pooled bound stays the quoted construction, S₀(225 mW) below 0.18 MHz at the calculated waist (0.26 until 2026-09-22),
+The pooled bound stays the quoted construction, S₀(225 mW) below [0.18](../../results/stark_joint.csv "ref:stark_joint:S0_225mW_ub95:primary") MHz at the calculated waist (0.26 until 2026-09-22),
 because it is the one that has been run and published, with its convergence
 examined in section 4, and because withdrawing it on the strength of a diagnostic
 would replace a documented number with none. The two open items are recorded rather than resolved: the

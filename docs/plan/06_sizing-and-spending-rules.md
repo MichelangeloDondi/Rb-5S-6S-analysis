@@ -250,7 +250,7 @@ that contradicts it owes this page an edit.
 
 | component | size now | limited by | the knob | expected purchase | sized by | validated on day one by |
 |---|---|---|---|---|---|---|
-| laser width | under 2.4 MHz, not measured | identifiability, the width correlation at -0.90 to -0.94 | an independent laser measurement: the fast comb block at ten times the scan rate with the 0.5 MHz drive reaches the band the widths integrate ([`kernel_k7.csv`](../../results/kernel_k7.csv), reach 1.70), the cavity error channel recorded per block, or a self-heterodyne | 2.3 to 3.0 on the partner width by the pin factor, 3.18 ± 0.20 by direct Monte Carlo | the nine-seed run of [`run_width_pinning.py`](../../scripts/run_width_pinning.py), the five hostile worlds of [`kernel_worlds.csv`](../../results/kernel_worlds.csv) | item 7 of the day-one list |
+| laser width | under 2.4 MHz, not measured | identifiability, the width correlation at a median of [-0.81](../../results/twin_span_sweep.csv "ref:twin_span_sweep:CAMPAIGN:corr_median") in the record's fits and [-0.94](../../results/twin_span_sweep.csv "ref:twin_span_sweep:span_060MHz:corr_laser_coll") in the twin's reference design | an independent laser measurement: the fast comb block at ten times the scan rate with the 0.5 MHz drive reaches the band the widths integrate ([`kernel_k7.csv`](../../results/kernel_k7.csv), reach 1.70), the cavity error channel recorded per block, or a self-heterodyne | [1.4](../../results/twin_span_sweep.csv "ref:twin_span_sweep:CAMPAIGN:pin_factor_q75") to [1.8](../../results/twin_span_sweep.csv "ref:twin_span_sweep:CAMPAIGN:pin_factor_q25") on the partner width by the pin factor across the middle half of the record's conditions, 3.18 ± 0.20 by direct Monte Carlo at the pinning simulation's bright condition | the nine-seed run of [`run_width_pinning.py`](../../scripts/run_width_pinning.py), the five hostile worlds of [`kernel_worlds.csv`](../../results/kernel_worlds.csv) | item 7 of the day-one list |
 | collisional slope | pooled bound below 0.030 | between-block scatter on 2 degrees of freedom, common fraction 0.23 | repeats interleaved across the session with re-locks between visits, and interleaved high-temperature points on the same axis | root-n restored beyond the third repeat, and the lever already stretched 16 to 53 times when the 130 C point joined | the forecast's detection study, minimum detectable effect 0.015 to 0.038 | the pedestal thermometer against the logged thermocouples |
 | transit and waist | 42.38 um, band 40 to 45, the largest open systematic | never re-read in the campaign's own volume | a beam profile in the interaction volume, one afternoon, no atoms, standoff recorded | the prediction envelope (open item, pending re-derivation at the calculated waist; was 0.32 to 0.40 at the retired waist convention) collapses to a point, and the strong negative transit-collisional correlation (`results/identifiability.csv`'s `corr` row for `gamma_coll_transit`) unlocks | the campaign twin run at both ends of the waist band | the profile itself, first item on the bench |
 | light shift | limit below 0.26 against 0.73 predicted, excluded on the full fit, with the leave-one-out arms not supporting a count either way (RESULTS.md C3f) | the prediction's waist and a disputed polarizability sign | the beam profile above, a denser one-range power ladder in randomised order, and the sign adjudication already referred | exclusion becomes agreement or measurement | the campaign twin's ladder worlds | the one-range ladder rehearsal |
@@ -288,10 +288,11 @@ unmoved by all of it. A session that spends its whole budget on more of the
 same returns a tighter number for a quantity the record still cannot resolve
 into its components.
 
-One measurement outside the fit is worth more than any of them. The
-factor an independent laser width buys, between 2.3 and 3.2 depending on the
-condition it is evaluated at, is larger than any single design change in the
-twin's table, and it costs an afternoon on a different instrument.
+One measurement outside the fit does what none of them can. The factor an
+independent laser width buys the collisional width, about [1.7](../../results/twin_span_sweep.csv "ref:twin_span_sweep:CAMPAIGN:pin_factor_median") at the record's
+median condition and [1.4](../../results/twin_span_sweep.csv "ref:twin_span_sweep:CAMPAIGN:pin_factor_q75") to [1.8](../../results/twin_span_sweep.csv "ref:twin_span_sweep:CAMPAIGN:pin_factor_q25") across the middle half of its conditions,
+acts on the split that more of the same data leaves in place, and it costs an
+afternoon on a different instrument.
 
 The rule this adds to the spending rules already here: before buying more of
 a measurement, run the twin and ask whether the quantity of interest is limited

@@ -25,12 +25,12 @@ construction reads as model-independent and none of these are.
 
 | question | quantity | what is observed | what is inferred | parameter status | 2025 result | construction it depends on | what limits it |
 |---|---|---|---|---|---|---|---|
-| **Q-model-01** Does one lineshape model describe every condition? | the composite profile | 32 conditions of a temperature and power sweep | natural, transit, laser and collisional widths convolved | described | reduced chi-square 0.78 to 1.09, mean 0.89 | the accepted transit kernel and the waist of record | model |
-| **Q-width-01** Can the collisional and laser widths be separated? | the width split | one total width per condition, to 0.0032 MHz | the split into its parts | **not identified** | the split direction is constrained only to 0.0572 MHz, a factor of eighteen worse, at a condition number of 325 | the joint fit over the shared-width structure | identifiability |
+| **Q-model-01** Does one lineshape model describe every condition? | the composite profile | 32 conditions of a temperature and power sweep | natural, transit, laser and collisional widths convolved | described | reduced chi-square 0.78 to 1.04, mean 0.88 | the accepted transit kernel and the waist of record | model |
+| **Q-width-01** Can the collisional and laser widths be separated? | the width split | one total width per condition, to [0.0032](../results/identifiability.csv "ref:identifiability:best_constrained_sigma:total_width") MHz | the split into its parts | **not identified** | the split direction is constrained only to [0.0572](../results/identifiability.csv "ref:identifiability:worst_constrained_sigma:split") MHz, a factor of eighteen worse, at a condition number of 325 | the joint fit over the shared-width structure | identifiability |
 | **Q-beta-01** How fast do collisions broaden the line? | the collisional coefficient | widths across four densities | a rate per unit density | **bounded** | below 0.03 to 0.05 MHz per 1e12 per cubic centimetre, 95 per cent, per peak <!-- other-quantity: the headline beta_self bound band, not kernel_k3's gamma_l_equiv error terms or twin_span_sweep's forecast errors --> | the four-temperature construction, on a density scale from vapour-pressure curves | experimental, the density scale |
-| **Q-s0-01** How large is the light shift at full power? | the light-shift amplitude | line shapes across a power ladder | the shift amplitude through the shape | **bounded** | below 0.26 MHz at 225 mW, against 0.73 MHz predicted | the joint three-session fit, conditional on the waist of record | experimental, the waist, and identifiability if the three pooled sessions do not share it, since the coefficient goes as one over the waist squared. See [chapter 8](big_picture/08_when-a-joint-fit-is-legitimate.md) |
+| **Q-s0-01** How large is the light shift at full power? | the light-shift amplitude | line shapes across a power ladder | the shift amplitude through the shape | **bounded** | below [0.18](../results/stark_joint.csv "ref:stark_joint:S0_225mW_ub95:primary") MHz at 225 mW, against [0.73](../results/stark_joint.csv "ref:stark_joint:S0_225mW_pred:prediction") MHz predicted | the joint three-session fit, conditional on the waist of record | experimental, the waist, and identifiability if the three pooled sessions do not share it, since the coefficient goes as one over the waist squared. See [chapter 8](big_picture/08_when-a-joint-fit-is-legitimate.md) |
 | **Q-laser-01** How narrow was the laser? | the laser width | the total width and its trend | the laser part of it | **bounded** | below about 1.2 MHz on the laser axis, median 1.74 MHz across conditions | the same split as q-width-01, so conditional on it | identifiability |
-| **Q-geom-01** What is the beam waist? | the waist | nothing on this bench | calculated as the bore-limited actual focus | **not measured here** | 42.38 micrometres, calculated, band 40 to 45 | the EOM bore, the focusing lens and the drive wavelength, and a transit-width consistency argument | experimental, and it is the largest open systematic |
+| **Q-geom-01** What is the beam waist? | the waist | nothing on this bench | calculated as the bore-limited actual focus | **not measured here** | [42.38](../rb5s6s/constants.py "ref:constant:W0_CENTRAL_M:1e6") micrometres, calculated, band 40 to 45 | the EOM bore, the focusing lens and the drive wavelength, and a transit-width consistency argument | experimental, and it is the largest open systematic |
 | **Q-band-01** What is the excess outside the fit window? | the out-of-window residual | a real structured excess, 0.10 to 0.29 per cent of peak <!-- other-quantity: the band-excess magnitude, not kernel_k3's k2p5_heterogeneity_p --> | a candidate mechanism, the lineshape rather than the atom | **unattributed, with a candidate** | survives per-trace cubic baselines, and tracks the model's own in-band profile height while vapour density is a null predictor | the production baseline and window | model, and see [the finding](notes/band_excess_is_model_form.md) |
 
 **How to read the parameter status.** *Described* means the data are consistent
@@ -58,19 +58,18 @@ lever that moves one without the other, can break it.
 
 Both halves of that sentence are measured rather than argued. Varying the span
 by a factor of five and the trace count by a factor of ten moves the
-correlation between the two widths by 0.0009 and [0.1542](../results/twin_span_sweep.csv "ref:twin_span_sweep:VERDICT:corr_move_with_traces")
+correlation between the two widths by [0.0089](../results/twin_span_sweep.csv "ref:twin_span_sweep:VERDICT:corr_move_with_span") and [0.0001](../results/twin_span_sweep.csv "ref:twin_span_sweep:VERDICT:corr_move_with_traces")
 ([`twin_span_sweep.csv`](../results/twin_span_sweep.csv)), close to its
 starting value either way, so no acquisition setting is the asymmetric lever. Measuring
 one of them elsewhere buys the other a factor of one over the square root of
-one minus the correlation squared, between 2.3 and 3.2 across the conditions
-this record covers, and
+one minus the correlation squared, [1.7](../results/twin_span_sweep.csv "ref:twin_span_sweep:CAMPAIGN:pin_factor_median") at the record's median condition, and
 [chapter 7](big_picture/07_limitations-and-identifiability.md) carries the
 constructions, together with the second limitation hiding inside this one:
 the fit assigns the laser a kernel shape, and the wrong shape biases the
 collisional width rather than widening its error bar.
 
 What the record measures
-about the laser's noise brackets the question from both sides, 0.62 MHz of
+about the laser's noise brackets the question from both sides, [0.62](../results/wavemeter_reconstruction.csv "ref:wavemeter_reconstruction:settled_noise_floor:2025-06-11") MHz of
 slow wander below half a hertz from the digitised wavemeter record and under
 28 kHz at seven hertz from the comb clock, leaving exactly the band the width
 integrates as the unmeasured middle.
@@ -78,7 +77,7 @@ integrates as the unmeasured middle.
 That shape is no longer unmeasured, as of 2026-08-20, and the answer came
 from the line rather than from the laser. The switch selecting it had been
 wired through four modules and never thrown. Thrown, it moves the headline
-coefficient by 5 to 48 per cent, which is 0.6 to 4.3 sigma on the
+coefficient by 5 to 48 per cent, which is [0.6](../results/kernel_headline.csv "ref:kernel_headline:4207::beta_shift_in_sigma") to [4.3](../results/kernel_headline.csv "ref:expr:0 - {kernel_headline:4192::beta_shift_in_sigma}") sigma on the
 statistical error quoted beside it (`results/kernel_headline.csv`).
 
 The per-condition figure first reported beside it, a median 45 per cent shift
@@ -105,7 +104,7 @@ built on that tally is withdrawn.
 
 What the comparison does say is in the size of the improvement, read as the
 nested likelihood ratio it is: a median $\Delta\chi^2$ of 9.1 for one extra
-parameter sitting on its boundary, about three sigma, over a range from -0.7
+parameter sitting on its boundary, about three sigma, over a range from about zero
 to 131 across the conditions. **A purely Lorentzian laser contribution is
 excluded at 16 of the 32 conditions at better than three sigma, 1 of them at
 better than ten, and the line favours Gaussian-like content.** That
@@ -121,7 +120,7 @@ That remaining work was done on 2026-08-21, and it stops one level short of
 the sentence a reader will want. Fitting the Lorentzian-equivalent width
 inside the containing model at each peak, against the pinned-Gaussian arm,
 gives a component present at three of four peaks by
-$\Delta\chi^2$ of 0.69 to 65, with peak-conditioned values of 0.009 to 0.115
+$\Delta\chi^2$ of [0.69](../results/kernel_k3.csv "ref:kernel_k3:4207:delta_chi2_G_minus_GL") to 65, with peak-conditioned values of [0.009](../results/kernel_k3.csv "ref:kernel_k3:4207:gamma_l_equiv") to [0.115](../results/kernel_k3.csv "ref:kernel_k3:4192:gamma_l_equiv")
 MHz (`results/kernel_k3.csv`). The same producer checks its own footing: the
 pinned arm reproduces the committed collisional coefficient to the file's own
 precision, without which the difference would be between producers, not

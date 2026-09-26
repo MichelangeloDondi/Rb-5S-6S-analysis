@@ -147,12 +147,12 @@ This is where a twin stops being a demonstration and starts being a design
 tool, and the first thing it will tell you is unwelcome.
 
 Run the same fit with a five times wider span, then with ten times the
-traces. **The correlation barely moves**: by 0.0009 across the five times
-wider span and by [0.1542](../results/twin_span_sweep.csv "ref:twin_span_sweep:VERDICT:corr_move_with_traces") at ten times the traces, in the regenerable form
+traces. **The correlation barely moves**: by [0.0089](../results/twin_span_sweep.csv "ref:twin_span_sweep:VERDICT:corr_move_with_span") across the five times
+wider span and by [0.0001](../results/twin_span_sweep.csv "ref:twin_span_sweep:VERDICT:corr_move_with_traces") at ten times the traces, in the regenerable form
 of this exercise (`results/twin_span_sweep.csv`, truth from a named
 committed condition, seed fixed). Repeats shrink the uncertainty by a
-factor 4.16 at ten times the traces, above the root of ten independent
-samples would give, while the wider span costs a factor 2.86 at fixed
+factor [3.16](../results/twin_span_sweep.csv "ref:twin_span_sweep:VERDICT:err_ratio_10x_traces") at ten times the traces, near the root of ten independent
+samples give, while the wider span costs a factor [2.70](../results/twin_span_sweep.csv "ref:twin_span_sweep:VERDICT:err_ratio_wide_span") at fixed
 points per trace. That is the twin telling you something the residual
 plots never would: **the degeneracy is a property of the lineshape, not of how
 much data you collect.** A Lorentzian core convolved with a Gaussian looks

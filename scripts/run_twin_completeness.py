@@ -82,6 +82,9 @@ TWIN_SPAN = (-200.0, 200.0)
 
 
 from rb5s6s.reference_point import reference_point  # noqa: E402
+
+#: O58: this module's twin runs are a declared STUDY, and this is its reason
+_TWIN_STUDY = "the twin completeness study, which switches the layered world's terms one at a time"
 _AP = reference_point()   # F313: the archive's line, read from the committed fit and the waist, never typed
 
 
@@ -205,7 +208,7 @@ def _twin(used: list[dict], tau_int: float, tilt: float = 0.0,
             noise_frac_bright=0.004, adc_levels=65536, gamma_l=0.40,
             resolve_shift=True, grid_span=TWIN_SPAN, tau_int=tau_int,
             baseline_tilt_sigma=tilt,
-            noise_floor_v=(_floor_for(r) if floor else 0.0))
+            noise_floor_v=(_floor_for(r) if floor else 0.0), registry=_TWIN_STUDY)
         s = _wing_stats(v, detrend=(tilt == 0.0))
         if s:
             out.append(s)

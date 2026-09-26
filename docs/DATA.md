@@ -786,7 +786,7 @@ the brief, and they moved no headline number.
   ×48.1 is still far sub-linear. What follows is the 2026-07-12 record.
   Per-condition fits (linefit_conditions):
   the 4-peak mean γ_coll is 0.245 / 0.231 / 0.289 / 0.454 MHz at 70/90/110/130 °C
-  while the density rises ×52, a ×1.85 rise where a real binary-collision
+  while the density rises ×52, a ×1.85 rise <!-- other-quantity: the collisional width's rise factor --> where a real binary-collision
   width must be *linear* in N. Consistently, the joint hierarchical β collapses
   0.036 → 0.014 when the ×53 130 °C anchor (`serves_t130`, 225 mW) is folded
   in (lever_crosscheck.csv: beta_lever_probe_130), and the 130 °C widths sit on
@@ -804,7 +804,7 @@ the brief, and they moved no headline number.
   drop (the session difference stays a secondary, unseparable caveat).
   (ii) A corr(γ, log N) > corr(γ, N) argument, which is fragile (993.4121 nm is
   non-monotonic and the pooled means reverse it). The robust metric is the
-  rise factor ×1.85 over ×52 (lever_crosscheck.csv: gamma_rise_factor).
+  rise factor ×1.85 over <!-- other-quantity: the collisional width's rise factor --> ×52 (lever_crosscheck.csv: gamma_rise_factor).
 
 - **Discard/excluded audit adjudicated + `qc_reason` column added (2026-07-12).**
   An external audit of the excluded traces was verified against the

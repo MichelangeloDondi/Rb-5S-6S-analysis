@@ -219,6 +219,8 @@ for lam in (0.795, 1.324, 2.73):
 - [The wavemeter and the frequency axis](the-wavemeter-and-the-frequency-axis.md)
   for another background effect that has to be bounded, not measured away.
 
+*Model status:* what the fitter, the twin and the Monte Carlo carry of this page's physics is generated from the registry on [the model terms](../methods/model_terms.md), for `blackbody`.
+
 ---
 
 [← Bessel functions](bessel-functions.md) · *Driving, modulating and detecting, 8 of 8* · [wiki index →](README.md)

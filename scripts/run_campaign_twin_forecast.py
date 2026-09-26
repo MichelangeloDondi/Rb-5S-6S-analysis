@@ -105,6 +105,9 @@ def _band(text: str) -> tuple:
 
 from _producer_lock import take_producer_lock     # noqa: E402
 
+#: O58: this module's twin runs are a declared STUDY, and this is its reason
+_TWIN_STUDY = 'the campaign forecast of the width channel, a study on the width twin'
+
 
 #: THE FIVE MONTE CARLO CALLS ARE THE RUN'S UNITS (C6a, 2026-09-22): each `forecast_precision` call seeds its own
 #: generator (`default_rng(seed)`), so a unit computed in its own process returns exactly what the one-process run
@@ -151,7 +154,7 @@ def _unit_rows(k: int, inp: dict) -> list:
         n_traces = x
         d = dict(cell_design, n_traces=n_traces)
         out = forecast_precision(cell_truth, d, n_trials=N_TRIALS,
-                                 scalings=False, return_trials=True)
+                                 scalings=False, return_trials=True, registry=_TWIN_STUDY)
         import numpy as _np
         spread = float(_np.std(out["gamma_coll_err_trials"], ddof=1))
         add("cell", f"gamma_coll_{n_traces}traces_err",
@@ -203,7 +206,7 @@ def _unit_rows(k: int, inp: dict) -> list:
         d = dict(span_mhz=60.0, n_points=2000, n_traces=5, noise=frac,
                  amp=1.0, T_C=25.0)
         out = forecast_precision(onf_truth, d, n_trials=N_TRIALS,
-                                 scalings=False)
+                                 scalings=False, registry=_TWIN_STUDY)
         add("onf", f"lorentzian_excess_{frac:g}_err",
             round(out["gamma_coll_err"], 5), "MHz", label,
             "error on the TOTAL Lorentzian excess, which is what a fibre line "

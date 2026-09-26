@@ -37,7 +37,7 @@ A nanofibre does not fight those degeneracies. It removes them.
 |---|---|---|
 | collisional | 0.19 to 0.93 MHz, degenerate with the laser term at -0.9 | **178 Hz** at MOT density. Gone from the budget |
 | geometry | w₀ calculated, bore-limited, sets transit and intensity together, no upper bound from the data alone | no waist. A **diameter**, which is measurable, and a mode that is computable from it |
-| transit | cusp, 1.45 MHz, separable by shape | [73 to 98](../../results/onf_candidate.csv "ref:onf_candidate:transit_onf_cold_band:") kHz, and it enters the width at **second order**, contributing a small fraction of itself. A temperature ladder is the only lever that acts on it and it acts weakly |
+| transit | cusp, [1.45](../../results/onf_candidate.csv "ref:onf_candidate:transit_cell_130C:") MHz, separable by shape | [73 to 98](../../results/onf_candidate.csv "ref:onf_candidate:transit_onf_cold_band:") kHz, and it enters the width at **second order**, contributing a small fraction of itself. A temperature ladder is the only lever that acts on it and it acts weakly |
 | residual Gaussian | ~1 MHz unexplained, leading candidate a 0.19 degree retro tilt | no free-space retro to tilt, so the candidate is **testable** and not assumed |
 | blackbody | the density lever and the thermal field share one knob | cold atoms against a 300 K room. The two **decouple** |
 | atom to surface | absent | Casimir-Polder, a term to **measure** and not avoid |
@@ -126,7 +126,7 @@ cold-atom measurement. The group's 2025 fictitious-field paper states a radius
 of 175 nm, so a diameter of 350 nm, and the 2026 surface-charge paper's fibre is
 370 nm, the middle value the guided-mode tables already carry, so the committed
 400 is the thickest of three. Solved at each, the intensity decay length at 993.4 nm is
-312 nm at 400 and **492 nm at 350**, a factor of 1.58. **Every guided intensity,
+312 nm at 400 and **492 nm at 350**, a factor of [1.58](../../results/guided_mode_tables.csv "ref:expr:{guided_mode_tables:mode_solve_350nm:intensity_decay_length} / {guided_mode_tables:mode_solve_400nm:intensity_decay_length}"). **Every guided intensity,
 shift and rate in this chapter is keyed on the committed diameter**, and the
 band those rows advertise spans a plus or minus 20 nm tolerance about it, which
 is four times smaller than the gap between the two candidate fibres.
@@ -210,7 +210,7 @@ One number in the same analysis is refused. It infers an effective mode
 area of 1.4 square microns backwards from the group's published trap depth,
 and builds a table on it in which one milliwatt guided gives a 1.74 MHz shift.
 This record's validated field solve gives 0.62 square microns on the
-azimuthal-mean convention and 0.49 on the peak convention at the committed
+azimuthal-mean convention and [0.49](../../results/guided_mode_tables.csv "ref:guided_mode_tables:mode_solve_400nm:mode_area_peak") on the peak convention at the committed
 400 nm, and
 [0.826](../../results/guided_mode_tables.csv "ref:guided_mode_tables:mode_solve_350nm:mode_area_azimuthal_mean")
 and
@@ -309,7 +309,7 @@ first and the reason every absolute number here carries a bound.
 A free beam locks the shift to the interaction length, and a fibre does
 not. The light shift goes as the inverse square of the waist while the
 Rayleigh range goes as its square, so focusing buys shift and pays it straight
-back. Tightening the cell from 42.38 to 16 microns multiplies the shift by
+back. Tightening the cell from [42.38](../../rb5s6s/constants.py "ref:constant:W0_CENTRAL_M:1e6") to 16 microns multiplies the shift by
 about seven and divides the interaction length by about seven, from
 [5.6800](../../results/platform_twins.csv "ref:platform_twins:cell_130C:cell:length_eff_mm")
 mm to
@@ -334,7 +334,7 @@ instrument without new hardware.
 The convolution condition is exact in a guided mode. A convolution holds
 only where the homogeneous kernel is the same at every collected element, and
 in a free beam the transit follows the local beam radius, so the kernel varies
-along the axis by about four and a half per cent at the calculated 42.4 microns
+along the axis by about four and a half per cent at the calculated [42.4](../../rb5s6s/constants.py "ref:constant:W0_CENTRAL_M:1e6") microns
 and by nearly half at 16. A guided
 mode has the same transverse profile at every point along it, so the condition
 holds identically. The shape channels, which is to say the asymmetry this whole
@@ -438,7 +438,7 @@ on it.
 | **the thermal near field of the fibre** | the blackbody shift at the atom's position, which the record takes as free space | the atom sits within a twentieth of the thermal wavelength of a warm dielectric with phonon resonances in the thermal band, so the free-space shift is a lower bound and the near-field value is unevaluated (2026-09-06) |
 | **fibre diameter tolerance** | the mode area, and through it every guided intensity, shift and rate | a stated tolerance propagated through the mode solve in `results/onf_candidate.csv`, worked out with its two cited precisions in the open item further down this page  |
 | **two-photon ionisation rate from 6S** | whether the probe perturbs the surface charge it reads | no forecast rests on it. Single-photon ionisation is excluded by [0.433](../../results/campaign_twin_forecast.csv "ref:campaign_twin_forecast:model:photoionisation_margin_from_6S") eV, and the surviving claim is narrower: a 5S-6S probe populates no Rydberg state, so the Rydberg-ground mechanism is absent by construction |
-| **the evanescent envelope the transit kernel is built on** | [methods chapter 9](../methods/09_the_guided_geometry.md) section 9.1 states that the exponential approximation is not available at these radii, since $qa$ runs 0.18 to 0.32, and section 9.2 then builds the whole transit kernel on a plain exponential decay in time | **no forecast spans it, and it is the largest known error on the temperature ladder's value.** Carrying the chapter's own solved profile through shortens the effective decay length against the nominal 401 nm, and the kernel enters at second order so the width a ladder reads moves by the square of that factor. **The size depends on which effective length is meant and the definition has to be named.** Matched on the second moment, the quantity the added width depends on, the solved profile gives about 270 nm against the nominal, and about 2.2 on the width. A second evaluation of the same integral, written independently, lands a few nanometres shorter, so the length is good to about the nearest ten and the width factor to the first decimal. A log-linear fit over the first 600 nm gives about 218 nm and 3.3. **The second-moment length must exceed the fitted one**, because the profile's local decay length rises outward, 183 nm at 50 nm from the surface to 340 nm at two microns. **The direction is conservative under every definition**: the fibre lever is stronger than this chapter currently claims, so closing it is a gain and not a retraction. It is derivable and needs no apparatus fact, so it is mathematics and not a question for the group |
+| **the evanescent envelope the transit kernel is built on** | [methods chapter 9](../methods/09_the_guided_geometry.md) section 9.1 states that the exponential approximation is not available at these radii, since $qa$ runs [0.18](../../results/guided_mode_tables.csv "ref:guided_mode_tables:mode_solve_350nm:qa") to [0.32](../../results/guided_mode_tables.csv "ref:guided_mode_tables:mode_solve_400nm:qa"), and section 9.2 then builds the whole transit kernel on a plain exponential decay in time | **no forecast spans it, and it is the largest known error on the temperature ladder's value.** Carrying the chapter's own solved profile through shortens the effective decay length against the nominal 401 nm, and the kernel enters at second order so the width a ladder reads moves by the square of that factor. **The size depends on which effective length is meant and the definition has to be named.** Matched on the second moment, the quantity the added width depends on, the solved profile gives about 270 nm against the nominal, and about 2.2 on the width. A second evaluation of the same integral, written independently, lands a few nanometres shorter, so the length is good to about the nearest ten and the width factor to the first decimal. A log-linear fit over the first 600 nm gives about 218 nm and 3.3. **The second-moment length must exceed the fitted one**, because the profile's local decay length rises outward, 183 nm at 50 nm from the surface to 340 nm at two microns. **The direction is conservative under every definition**: the fibre lever is stronger than this chapter currently claims, so closing it is a gain and not a retraction. It is derivable and needs no apparatus fact, so it is mathematics and not a question for the group |
 | **Rb adsorption against exposure time** | how long the fibre runs before its transmission degrades, which bounds the whole arm and is what the campaign costs the fibre itself | no forecast rests on it. `results/campaign_twin_forecast.csv` reports the integration time so the exposure is visible, but nothing converts exposure into degradation |
 | **the trap's azimuth around the fibre** | which field magnitude an atom sees, and so every guided light shift. The field varies by about a third between the polarisation axis and perpendicular to it | spanned by a committed pair in `results/guided_mode_tables.csv`, the azimuthally averaged `stark_fraction` beside the on-axis one. The tensor term vanishes for this transition, both states having $J=1/2$, but the vector term does not, and a guided mode is strongly elliptically polarised near the surface. So the committed pair is a lower bound on how much the azimuth matters |
 | **trap position and its thermal spread** | the intensity at the atom, and the atom-surface distance the surface term depends on | the distance-scan lever reaches a fractional [0.2927](../../results/onf_lever_ranking.csv "ref:onf_lever_ranking:distance_scan:sigma_lambda_frac") on the decay length at the 2025 lock, and under a hundredth at the photon floor. The spread itself is unmodelled and no forecast rests on it |

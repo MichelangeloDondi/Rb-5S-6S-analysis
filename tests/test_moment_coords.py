@@ -13,7 +13,7 @@ import pytest
 from scipy.stats import multivariate_normal
 
 from rb5s6s._compat import trapezoid
-from rb5s6s.cumulants import windowed_moments
+from rb5s6s.moments import windowed_moments
 from rb5s6s.moment_coords import (
     Coordinate,
     CoordinateTrial,

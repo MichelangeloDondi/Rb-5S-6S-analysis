@@ -508,6 +508,8 @@ for N in (1.0e13, 2.9e13):
 - [Transit-time broadening](transit-time-broadening.md), the mechanism most
   likely to be mistaken for collisional broadening in a temperature sweep.
 
+*Model status:* what the fitter, the twin and the Monte Carlo carry of this page's physics is generated from the registry on [the model terms](../methods/model_terms.md), for `collisional_shift`, `foreign_gas`, `quench_4D`, `self_broadening_T03`, `self_broadening_vdw`, `speed_dependent_collisional_shift`, `speed_dependent_collisional_width`.
+
 ---
 
 [← Saturation](saturation.md) · *Experimental spectroscopy, 10 of 12* · [Vapour density and temperature →](vapour-density-and-temperature.md)

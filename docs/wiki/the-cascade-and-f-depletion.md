@@ -150,7 +150,7 @@ the driven volume both infrared lines are inverted, 4.81 and 5.25 to one,
 because 5P empties in 27 ns while the drive refills 6S, so trapped infrared
 stimulates 6S downward instead of pumping 5P upward. Outside it, trapped
 D-line photons build a 5P halo where there is no 6S, and there the infrared
-does absorb and re-excite, at about 1.07 per cent of the primary rate at
+does absorb and re-excite, at about [1.38](../../results/trapping_channels.csv "ref:trapping_channels:halo_reexcitation:T130C") per cent of the primary rate at
 130 °C and nothing at 70 °C. The optical depth for that reabsorption is
 $\tau = f_{HF} a N(T) \sigma L$ with $a$ the isotopic abundance, so it grows
 with density.
@@ -219,6 +219,8 @@ for peak, f in sorted(BRANCHING_F.items()):
 - [The AC-Stark dossier](../quantities/ac-stark-light-shift.md), where
   pumping is one of the mechanisms sharing the light shift's power
   signature.
+
+*Model status:* what the fitter, the twin and the Monte Carlo carry of this page's physics is generated from the registry on [the model terms](../methods/model_terms.md), for `depletion_cascade`, `hyperfine_pumping`, `pump_depletion`, `radiation_trapping`.
 
 ---
 

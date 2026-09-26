@@ -106,7 +106,7 @@ def main() -> int:
         w = csv.writer(fh)
         w.writerow(["quantity", "value", "err", "unit", "note", "status"])
         w.writerows(rows)
-    print(f"wrote {out.relative_to(ROOT)}")
+    print(f"wrote {out}")
     for r in rows[3:]:
         print(f"  {r[0]} = {r[1]}")
     return 0

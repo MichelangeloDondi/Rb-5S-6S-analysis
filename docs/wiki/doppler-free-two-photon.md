@@ -201,6 +201,8 @@ print("counter-propagating pair: cancels to first order, for every atom")
 - [Identifiability](identifiability.md), why the laser width cannot be
   separated from the other widths on a single line.
 
+*Model status:* what the fitter, the twin and the Monte Carlo carry of this page's physics is generated from the registry on [the model terms](../methods/model_terms.md), for `doppler_pedestal`, `second_order_doppler`.
+
 ---
 
 

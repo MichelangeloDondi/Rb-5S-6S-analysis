@@ -54,7 +54,7 @@ _CFG_RESULTS = _CFG.RESULTS_DIR
 HALF_WINDOW_M = 3.375e-3
 # THE LEVER ARM IS 300 mm PER RADIAN AND NOT THE MIRROR-TO-LENS DISTANCE.
 # The record derives the walk-off at the atoms as 2 theta [d + s(1 - d/f)]
-# (docs/plan/12), which for the bench's d = 50 mm and f = 150 is 300 mm per
+# (docs/plan/12), which with the atoms at s = f is 2 f = 300 mm per
 # radian, six times the 50 mm this file first used. Taking the mirror-to-lens
 # distance as the arm understates every offset by that factor and understated
 # the worst recovered-rho bias from 0.83 to 0.31.

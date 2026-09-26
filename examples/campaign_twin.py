@@ -62,6 +62,9 @@ from rb5s6s.constants import PEAKS
 from rb5s6s.forecast import build_world_trace
 from rb5s6s.linefit import fit_condition
 
+#: O58: this module's twin runs are a declared STUDY, and this is its reason
+_TWIN_STUDY = "the exhibit's layered world, a registered approximation of the joint twin"
+
 C_M_S = 299792458.0
 
 # ---- provenance-tagged inputs (no file reads, per the no-data rule) --------
@@ -167,7 +170,7 @@ def build_rung(power_w: float, kappa: float, t_c: float, order_idx: int,
         transit_fwhm=TRANSIT_FWHM_MHZ, power_max_w=POWERS_W.max(),
         cycles_at_max=CYCLES_AT_225MW, drift_mhz_total=DRIFT_MHZ_TOTAL,
         noise_frac_bright=NOISE_FRAC_BRIGHT, adc_levels=ADC_LEVELS,
-        gamma_l=GAMMA_L_MHZ)
+        gamma_l=GAMMA_L_MHZ, registry=_TWIN_STUDY)
 
 
 def fit_rung(nu, v, rng) -> dict:

@@ -653,6 +653,38 @@ def test_gate_coverage_refuses_fail_ceiling_and_consecutive(bl, repo):
     assert "his words" in bl.LEDGER.read_text()
 
 
+def test_an_amend_of_the_same_landing_replaces_its_row_and_is_not_a_run(bl, repo):
+    """2026-09-25: a landing whose tip was amended declares its delta twice, from one boarded tree; the first row
+    names a commit the amend took out of history. Read as consecutive, the second was refused and the pending marker
+    blocked every next board. It is a replacement exactly when the previous commit LEFT history and both rows share
+    `delta_from`; a new commit on top, whose predecessor is still in history, refuses as a run."""
+    for n in "abcd":
+        (repo / f"{n}.txt").write_text(n)
+    _run(repo, "add", "-A")
+    _point_at(bl, repo)
+    bl.begin(FULL, expect=0)
+    boarded = bl.staged_tree()
+    bl.record(FULL, CONFIRMS)
+
+    def _land(text, *extra):
+        (repo / "a.txt").write_text(text)
+        _run(repo, "add", "a.txt")
+        _run(repo, "commit", "-q", *extra, "-m", text)
+        (repo / ".targeted_ok").write_text(f"TARGETED\ntree {bl._git('rev-parse', 'HEAD^{tree}')}\n")
+        (repo / ".ci_gate_verdict").write_text("FAIL 1\n")
+
+    _land("the landing")
+    bl.declare_gate_covered("HEAD", "the landing's delta", delta_from=boarded)
+    # POSITIVE: the amend takes the first row's commit out of history, and the same boarded tree admits the second
+    _land("the landing, amended", "--amend")
+    bl.declare_gate_covered("HEAD", "the amended landing's delta", delta_from=boarded)
+    assert "the amended landing's delta" in bl.LEDGER.read_text()
+    # NEGATIVE: a NEW commit on top keeps its predecessor in history, so a second row is a run and refuses
+    _land("a further commit")
+    with pytest.raises(SystemExit, match="consecutive"):
+        bl.declare_gate_covered("HEAD", "probe", delta_from=boarded)
+
+
 def test_sibling_refusals_outrank_the_no_board_one(bl, repo):
     """The no-board refusal is the LAST resort: a conformance message must
     win over it, or one guard replaces its siblings (the first two placements

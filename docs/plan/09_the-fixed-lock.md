@@ -28,8 +28,8 @@ become materially easier to resolve from the lock alone.
 
 What does change is the degeneracy. The collisional and laser widths exchange
 against each other inside every single-condition fit, at a correlation whose
-median across the 32 committed conditions is -0.90 and whose range runs -0.92
-to -0.63 (`results/linefit_conditions.csv`, column `corr`), and that is the
+median across the [32](../../results/twin_span_sweep.csv "ref:twin_span_sweep:CAMPAIGN:n_conditions") committed conditions is [-0.81](../../results/twin_span_sweep.csv "ref:twin_span_sweep:CAMPAIGN:corr_median") and whose range runs [-0.87](../../results/twin_span_sweep.csv "ref:twin_span_sweep:CAMPAIGN:corr_most_negative")
+to [-0.25](../../results/twin_span_sweep.csv "ref:twin_span_sweep:CAMPAIGN:corr_least_negative") (`results/linefit_conditions.csv`, column `corr`, summarised in `results/twin_span_sweep.csv`), and that is the
 central obstacle of the whole analysis. An earlier version of this sentence
 quoted -0.85 without a source. The correction matters beyond the digit: three
 different quantities in this repository can be called the correlation between

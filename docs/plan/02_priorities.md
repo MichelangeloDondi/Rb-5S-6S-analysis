@@ -185,22 +185,22 @@ the protocol selected. Runs first in §9 D1, ahead of the export below.
 5a. **An independent measurement of the laser width, which is the only lever
    that acts on identifiability rather than on noise.** The collisional width
    and the laser width enter the lineshape as a Lorentzian core inside a
-   Gaussian envelope, and the fit separates them at a correlation of about
-   -0.92. That correlation is a property of the lineshape rather than of the
-   sample, so it does not improve with the session: measured on synthetic data
-   whose truth is known, it moves by 0.0075 across a five times wider span
-   and by 0.0000 at ten times the traces
+   Gaussian envelope, and the fit separates them at a median correlation of
+   [-0.81](../../results/twin_span_sweep.csv "ref:twin_span_sweep:CAMPAIGN:corr_median") across the record's conditions. That correlation is a property of the
+   lineshape rather than of the sample, so it does not improve with the session:
+   measured on synthetic data whose truth is known, at [-0.94](../../results/twin_span_sweep.csv "ref:twin_span_sweep:span_060MHz:corr_laser_coll") there, it moves by
+   [0.0089](../../results/twin_span_sweep.csv "ref:twin_span_sweep:VERDICT:corr_move_with_span") across a five times wider span and by [0.0001](../../results/twin_span_sweep.csv "ref:twin_span_sweep:VERDICT:corr_move_with_traces") at ten times the traces
    ([`twin_span_sweep.csv`](../../results/twin_span_sweep.csv)). Every other
    item on this list buys precision on a pair the fit still cannot separate.
 
 Pinning one member reduces the other's variance to $(1-\rho^2)$ of its
    joint value, so an external laser width is worth $1/\sqrt{1-\rho^2}$ on
-   the collisional width, which is 2.29 at this record's median correlation of
-   $-0.90$ and 2.97 at the bright condition where
+   the collisional width, which is [1.70](../../results/twin_span_sweep.csv "ref:twin_span_sweep:CAMPAIGN:pin_factor_median") at this record's median correlation of
+   [-0.81](../../results/twin_span_sweep.csv "ref:twin_span_sweep:CAMPAIGN:corr_median") and 2.97 at the bright condition where
    `scripts/run_width_pinning.py` measures a scatter ratio of 3.18 plus or
    minus 0.20 across nine seeds directly.
 
-Anywhere in that band it is larger than any design change in this chapter,
+It acts on the split, which the span and the repeat count leave where it was,
    and it is available from an instrument that never sees the cell. **Needs.** A heterodyne beat against a second laser, a delayed
    self-heterodyne line, or a cavity ring-down width, whichever the lab
    already has. No cell time. **Shots.** None on the atoms. **Empty.** If the
@@ -269,7 +269,7 @@ demonstration of what any one of them leaves behind: a null on a product.
    this item does not make. The ramp weights each shift by the signal it
    produces, and that weighting is the intensity squared only while the drive is
    weak, so at a saturation parameter of 8.5 the effective exponent falls and the
-   predicted skew at 16 µm moves from −0.36 to −1.07, a factor of three, in the
+   predicted skew at 16 µm moves from −0.36 to −1.07 <!-- other-quantity: the predicted axial skew at 16 um -->, a factor of three, in the
    same direction as the sign flip rather than against it. The committed axial
    machinery cannot see this, since it takes an integer photon exponent. So the
    sign-flip test stands and the magnitude does not, and the middle of the range

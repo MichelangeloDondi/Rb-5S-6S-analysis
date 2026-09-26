@@ -56,6 +56,9 @@ from rb5s6s.noise import load_noise_model  # noqa: E402
 from rb5s6s.qc import median_standard_error  # noqa: E402
 from rb5s6s.scenario import load_scenario  # noqa: E402
 
+#: O58: this module's twin runs are a declared STUDY, and this is its reason
+_TWIN_STUDY = 'the scenario forecast of the width channel, a study on the width twin'
+
 # The record's committed line, the truth the forecast perturbs around: the archive point, READ
 # from the committed fit of the reference condition and never typed (F313, 2026-09-22; the typed
 # pair was the retired waist convention's medians).
@@ -144,13 +147,13 @@ def _fp_triple(args):
     truth, design, law_noise, amp_law, seed, n_trials = args
     matched = forecast_precision(truth, design, n_trials=n_trials,
                                  seed=seed, scalings=False,
-                                 return_trials=True)
+                                 return_trials=True, registry=_TWIN_STUDY)
     omitted = forecast_precision(truth, {**design, "fit_s0": 0.0},
                                  n_trials=n_trials, seed=seed,
-                                 scalings=False, return_trials=True)
+                                 scalings=False, return_trials=True, registry=_TWIN_STUDY)
     lawful = forecast_precision(
         truth, {**design, "noise": law_noise, "amp": amp_law},
-        n_trials=n_trials, seed=seed, scalings=False, return_trials=True)
+        n_trials=n_trials, seed=seed, scalings=False, return_trials=True, registry=_TWIN_STUDY)
     return matched, omitted, lawful
 
 
@@ -366,10 +369,10 @@ def main() -> int:
     for gi in range(GAGE_SEEDS):
         seed_g = zlib.crc32(f"gage:G3:{gi}".encode()) % (2 ** 31)
         base_g = forecast_precision(tg, {**dg, "noise": law}, n_trials=GAGE_TRIALS,
-                                    seed=seed_g, scalings=False)
+                                    seed=seed_g, scalings=False, registry=_TWIN_STUDY)
         law2 = dict(law); law2["a"] = 2.0 * law["a"]
         dbl_g = forecast_precision(tg, {**dg, "noise": law2}, n_trials=GAGE_TRIALS,
-                                   seed=seed_g, scalings=False)
+                                   seed=seed_g, scalings=False, registry=_TWIN_STUDY)
         moves.append(100.0 * (dbl_g["gamma_coll_err"] / base_g["gamma_coll_err"] - 1.0))
     moved = float(np.median(moves))
     # THE VERDICT'S MARGIN IS PUBLISHED BESIDE IT, 2026-09-05. The row carried a
@@ -401,7 +404,7 @@ def main() -> int:
         w.writerow(["scenario", "key", "quantity", "value", "err", "unit",
                     "note", "status"])
         w.writerows(rows)
-    print(f"wrote {out.relative_to(ROOT)} ({len(rows)} rows)")
+    print(f"wrote {out} ({len(rows)} rows)")
     return 0
 
 

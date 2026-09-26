@@ -309,6 +309,8 @@ print("intensity and the light shift both run as 1/w0^2: the same band "
 - [Sensitivity analysis](sensitivity-analysis.md) for how much a projection
   actually moves when an input like the waist is varied.
 
+*Model status:* what the fitter, the twin and the Monte Carlo carry of this page's physics is generated from the registry on [the model terms](../methods/model_terms.md), for `axial_collection_window`, `beam_quality_m2`, `kerr_lens`, `population_lens`.
+
 ---
 
 ## The waist as the worst-conditioned self-calibrated quantity

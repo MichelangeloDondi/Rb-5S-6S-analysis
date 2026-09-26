@@ -52,6 +52,9 @@ from rb5s6s.pmfmt import pm_cells  # noqa: E402   # coverage and its binomial er
 # here rather than typed -- a literal cannot be missed by a sweep it cannot
 # be the subject of.
 from rb5s6s.reference_point import reference_point  # noqa: E402
+
+#: O58: this module's twin runs are a declared STUDY, and this is its reason
+_TWIN_STUDY = "the width fitter's coverage grid, a study of its bars at weak field"
 _AP = reference_point()   # F313: the archive's line, read from the committed fit and the waist, never typed
 GAMMA, SIGMA = _AP["gamma_coll"], _AP["sigma_laser"]
 TRANSIT = K.transit_fwhm_from_w0(K.W0_CENTRAL_M, T_C=130.0)
@@ -104,7 +107,7 @@ def one_trial(args) -> bool:
         gen["gamma_coll"], gen["sigma_laser"], gen["transit_fwhm"],
         n_traces=5, n_points=2000, noise=law, amp=amp,
         laser_kind=gen["laser_kind"], gamma_l=gen["gamma_l"],
-        s0=gen["s0"], rng=rng)
+        s0=gen["s0"], rng=rng, registry=_TWIN_STUDY)
     res = fit_condition(freqs, volts, T_C=130.0, transit_fwhm=fit_transit,
                         law=law)
     lo = res["gamma_coll"] - 1.96 * res["gamma_coll_err"]
@@ -156,7 +159,7 @@ def main() -> int:
             w.writerow(["defect", "size", "value", "err", "unit", "note",
                         "status"])
             w.writerows(rows)
-        print(f"wrote {out.relative_to(ROOT)}")
+        print(f"wrote {out}")
         return 0
     finally:
         lock.rmdir()

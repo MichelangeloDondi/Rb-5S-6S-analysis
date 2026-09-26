@@ -28,6 +28,9 @@ from rb5s6s.stark import kappa_pred_per_watt
 from rb5s6s.lineshape import (local_ramp_density, ramp_mixture, stark_ramp,
                               stark_ramp_axial)
 
+#: O58: this module's twin runs are a declared STUDY, and this is its reason
+_TWIN_STUDY = "a unit test of the generator's own arithmetic, not a quoted number"
+
 ROOT = Path(__file__).resolve().parents[1]
 NU = np.arange(-40.0, 40.0, 0.01)
 XG = np.linspace(0.0, 1.0, 4001)
@@ -96,7 +99,7 @@ def _world(kappa_scale=1.0, **kw):
         positions={"4192": 0.0}, shares={"4192": 1.0},
         gamma_coll=0.4, sigma_laser_fwhm=2.0, transit_fwhm=0.93,
         power_max_w=0.225, cycles_at_max=1.0, drift_mhz_total=0.0,
-        noise_frac_bright=1e-9, adc_levels=2 ** 16, offset=0.0, **kw)
+        noise_frac_bright=1e-9, adc_levels=2 ** 16, offset=0.0, **kw, registry=_TWIN_STUDY)
 
 
 def test_the_new_machinery_at_its_identity_setting_reproduces_the_untouched_path():

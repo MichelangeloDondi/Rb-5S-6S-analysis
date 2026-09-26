@@ -17,7 +17,7 @@ showed and not their decimals.
 
 The record's windowed cumulant $\kappa_n(W)$ is the $n$-th cumulant of the de-baselined line
 restricted to $[\nu_c - W, \nu_c + W]$ and renormalised there, with $\nu_c$ the window's own centroid
-iterated to convergence (`rb5s6s.cumulants.windowed_moments`, whose second and third orders equal the
+iterated to convergence (`rb5s6s.moments.windowed_moments`, whose second and third orders equal the
 cumulants exactly). Self-centring is what makes the
 odd orders a statement about the line's asymmetry and not about where the window was put.
 
@@ -35,7 +35,7 @@ dominate (leptokurtic). The rect window's own limit of 11.2, $\kappa_4 \to -2W^4
 end of exactly that statement.
 
 Measured on three analytic densities at this surface's own windows, every $\mu_2$, $\mu_4$ and $\mu_6$ is
-positive at every window while $\kappa_4$ changes sign: for a Lorentzian of half-width 1.75 MHz it is
+positive at every window while $\kappa_4$ changes sign: for a Lorentzian of half-width 1.75 MHz <!-- other-quantity: an illustrative Lorentzian half-width, not the halo band's old reconstruction --> it is
 negative out to 5 MHz and positive from 8 MHz. For a Gaussian it approaches zero from underneath and never
 becomes positive. **So the crossing is the object's own algebra, and where it falls moves with the line's
 parameters**, which is what makes a window at a crossing a poor place to quote a statistic, and what the
@@ -204,7 +204,7 @@ buys is optimisation. $\mu_x$ weights the wings as $|\nu|^x$, so $x$ is a soft c
 wing enters where $W$ is a hard one. Each can be loosened to tighten the other. A soft weight carries no
 truncation discontinuity, so its bias need not behave like the window's.
 
-**Status: derived and not yet reachable here.** `cumulants.windowed_moments` coerces its orders to
+**Status: derived and not yet reachable here.** `moments.windowed_moments` coerces its orders to
 integers, so a fractional order asked of this repository today returns a different moment. The
 refusal and the machinery are owed together.
 

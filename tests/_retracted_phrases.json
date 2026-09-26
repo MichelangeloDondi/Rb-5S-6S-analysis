@@ -131,6 +131,11 @@
    "pattern": "agrees well with the theoretical value|in agreement with (Hagel|the theoretical value of)\\W{0,3}6\\.58",
    "retired": "2026-09-21",
    "why": "F263, T0al: Lee 2010's theoretical -6.58 Hz/(mW/mm^2) divides Hagel's -58 Hz/mW by the area of a disk of DIAMETER 0.38 mm where Hagel prints a WAIST of 0.38 mm, so the figure is four times low and the measured -7.25(45) sits near four times below theory; the measured coefficients stand, the agreement does not."
+  },
+  {
+   "pattern": "the injected truth 1\\.6\\b",
+   "retired": "2026-09-26",
+   "why": "E88: results/twin_closed_loop.csv's note typed a laser width the leg no longer injects; the leg injects the reference point's, and the note is computed from TRUTH_SIGMA since V7.1."
   }
  ]
 }

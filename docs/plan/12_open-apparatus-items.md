@@ -119,19 +119,19 @@ The saturation companion follows the local light shift, the ramp's own variable,
 broad elements are the shifted ones and shortening the collected region cannot reach it.
 Measured element by element (`scripts/run_kernel_inhomogeneity.py`), the windowed third
 moment is wrong by [103.942](../../results/kernel_inhomogeneity.csv
-"ref:kernel_inhomogeneity:w42um:k3_error") per cent at the archive's own waist,
+"ref:kernel_inhomogeneity:w42um:mu3_error") per cent at the archive's own waist,
 [96.571](../../results/kernel_inhomogeneity.csv
-"ref:kernel_inhomogeneity:w24um:k3_error") at 24 microns and
+"ref:kernel_inhomogeneity:w24um:mu3_error") at 24 microns and
 [89.992](../../results/kernel_inhomogeneity.csv
-"ref:kernel_inhomogeneity:w16um:k3_error") at 16: **the band's two waists are the worst
+"ref:kernel_inhomogeneity:w16um:mu3_error") at 16: **the band's two waists are the worst
 of the four and not the licensed ones.** The centre channel splits.
 
 The centroid is exactly immune at every waist
 ([-0.000](../../results/kernel_inhomogeneity.csv
 "ref:kernel_inhomogeneity:w42um:centroid_pull_error") per cent), while the fitted centre
-the campaign actually inverts moves by [-1.563](../../results/kernel_inhomogeneity.csv
+the campaign actually inverts moves by [-1.564](../../results/kernel_inhomogeneity.csv
 "ref:kernel_inhomogeneity:w42um:fitted_centre_error") per cent at 42.38 microns and
-[-60.912](../../results/kernel_inhomogeneity.csv
+[-60.684](../../results/kernel_inhomogeneity.csv
 "ref:kernel_inhomogeneity:w16um:fitted_centre_error") at 16. **A campaign waist has no
 MEASURED band of its own**, so the tolerance producer applies the archive's 40 to 45
 micron band as the same fraction of each proposed waist, paired with the retro-ratio
@@ -678,17 +678,72 @@ It decides a second thing, found 2026-09-09, and this one rides on the retro
 ratio. Lens (8) and the flat mirror form a retro whose returning mode matches
 the forward one exactly when the mirror sits one focal length beyond the lens,
 and not otherwise: the round trip returns the waist onto itself with a power
-overlap of 1.000000 at that distance, 0.9967 at 50 mm and 0.9610 at 500 mm <!-- other-quantity: the retro mode-overlap power fraction, not the collection-window kappa2 ratio -->.
+overlap of 1.000000 at that distance, 0.99936 at 50 mm and 0.99225 at 500 mm at the calculated waist <!-- other-quantity: the retro mode-overlap power fraction, not the collection-window kappa2 ratio -->.
+The first reading of this, on 2026-09-09, was taken at the retired waist and read lower.
+
 So the `rho = 0.94` of record may be carrying an unmeasured mode-mismatch factor
 beside the surface losses it is meant to describe, and the item below on the
 retro power ratio cannot separate the two without this length. The same
 geometry is what makes `rho` non-transferable across drive wavelengths, since a
 retro aligned at 993 nm returns the 760 nm mode with an overlap of 0.9859 at
-the design distance.
+the design distance, a figure also taken at the retired waist and owed at the calculated one.
 
 It closes with a tape measure, and the
 same distance enters the misalignment item above and the mode-overlap reading
 here.
+
+### The returning lens's focus along the beam
+
+State of knowledge. Lens 8 behind the cell and a flat mirror behind it form the retro. The owner gives the
+mirror's distance $d$ behind the lens as 25 to 35 mm (2026-09-25), which replaces the misalignment item's
+unmeasured "about 50 mm". No page records where the returning beam comes to its focus along the beam.
+
+Bearing on the forecast, derived on rung 1. With the lens a distance $f + \delta$ from the forward focus and the
+mirror $d$ behind it, the round trip from the forward focus back to it is, to first order in $\delta$, a free
+propagation by $2\delta$ with the image inverted, and a weak lens that vanishes only for a mirror at the focal
+plane. The returning beam therefore comes back with the forward waist, focused $\Delta = 2\delta + 2 z_R^2 (f - d)/f^2$
+away, positive toward the lens. With $f = 150$ mm and the calculated waist's Rayleigh length of
+[5.68](../../results/transition_ladder.csv "ref:transition_ladder:6S:rayleigh_range") mm, the fixed part is zero at
+$d = f$ and [0.34](../../results/transition_ladder.csv "ref:expr:2 * (3.141592653589793 * {constant:W0_CENTRAL_M} ** 2 / {constant:LAMBDA_LASER_M}) ** 2 * (0.150 - 0.030) / 0.150 ** 2 * 1000") mm
+at the owner's $d = 30$ mm, [0.33](../../results/transition_ladder.csv "ref:expr:2 * (3.141592653589793 * {constant:W0_CENTRAL_M} ** 2 / {constant:LAMBDA_LASER_M}) ** 2 * (0.150 - 0.035) / 0.150 ** 2 * 1000") to [0.36](../../results/transition_ladder.csv "ref:expr:2 * (3.141592653589793 * {constant:W0_CENTRAL_M} ** 2 / {constant:LAMBDA_LASER_M}) ** 2 * (0.150 - 0.025) / 0.150 ** 2 * 1000") mm over 25 to 35 mm, and a lens 1 mm out adds 2 mm.
+
+At the atoms the returning beam is then wider, its size changes along the chord, and the two wavefronts' curvatures
+no longer match, so the Doppler-free cancellation fails off axis and each crossing picks up a chirp.
+
+That reaches the odd moments that read the polarizability. How far it moves them is measured in the moment
+budget, with the returning focus on the forward one and at half, one and two Rayleigh lengths from it, before any
+figure is quoted.
+
+Settlement: lens 8 goes on a micrometric translation stage along the beam for the new campaign. The returning
+beam's collimation is read at the fourth port of the polarising beam splitter that sets the power on the cell's
+branch, where the isolator's minimum of 35 dB still passes tens of microwatts from the return, enough for an
+infrared viewer card. The stage is walked until the returning beam leaves that port as collimated as the forward
+one. Then a camera or a knife edge sizes both beams, forward and returning, at the cell's focal region and at a
+second plane, which reads their waists and their collimation, and the stage position is recorded with them,
+beside the mirror's distance behind lens 8, taken with a tape measure.
+
+Cost: the same afternoon as the waist of the item below, with the same camera and knife edge and no atoms,
+plus the stage.
+
+### The bench list
+
+What the new campaign records that no computation here can supply, one line each, the id in front of each item
+stable and never reused (the thesis's chapter 8 renders this list from this page as committed).
+
+1. `l2-stage`: lens 8 (L2) on a micrometric translation stage along the beam, its position set and recorded
+2. `mirror-distance`: the retro mirror's distance behind lens 8, taken with a tape measure
+3. `mirror-at-focal-plane`: the retro mirror moved to the focal plane of lens 8, 150 mm behind it, so the round trip images the focus onto itself and a mirror tilt only offsets the returning beam
+4. `ir-viewer-pbs`: the infrared viewer at the fourth port of the beam splitter that sets the power on the cell's branch, reading the returning beam's collimation
+5. `beam-sizes`: a camera or a knife edge on both beams, forward and returning, at the cell's focal region and at a second plane, for their sizes and collimation
+6. `gaussmeter`: a gaussmeter at the cell, with the heater on and off
+7. `power-pickoff`: a power pick-off on a recorder channel
+8. `piezo-channel`: the piezo voltage on a recorder channel, for the sweep's direction and its turning points
+9. `trapping-profile`: the collection profile against temperature, for radiation trapping
+10. `power-reading-point`: where the recorded drive power is read, before or after the modulator
+11. `detector-settings`: the detector's settings at each power
+12. `cell-history`: the cell's glass, its sealing date and its thermal history
+13. `knife-edge-power`: a knife edge at low and at full power, the waist against the power
+14. `retro-tilt`: the returning beam's tilt and its offset at the atoms
 
 ### The waist measurement against its analysis substitute
 
@@ -1014,6 +1069,10 @@ ruler as the distances below. **The input beam at the lens closes with the same
 camera on the same afternoon**, and it is the item that decides whether a
 cross-transition ratio is quotable at all.
 
+The returning lens's focus closes on the waist's afternoon too, with lens 8 on a
+micrometric stage, the infrared viewer at the power-setting splitter's fourth port and
+the same camera and knife edge on both beams.
+
 The collection distances close in a minute with a ruler, and they are the
 only items on this page already carried into a committed result instead of
 being spanned around it.
@@ -1193,7 +1252,7 @@ A second route reaches the same bound, 2026-09-12. The paragraph above sizes
 the pair on the third moment's sign reversal. The convolution licence sizes it
 independently, on the rms spread of the transit width over the collected region:
 that spread is 1.73 per cent at 55 microns and a quality factor of 1, 3.61 at
-1.5, 4.70 at 1.75 and 5.84 at 2.0, against the 5.5 per cent edge the record sets
+1.5, 4.70 at 1.75 <!-- other-quantity: a point on that ladder, not the halo band's old reconstruction --> and 5.84 at 2.0, against the 5.5 per cent edge the record sets
 at 40 microns. **The bottom of the band leaves the licence at a quality factor
 of 1.93**, which is the "about two" above reached through a different term.
 
@@ -1264,7 +1323,7 @@ What does bound the tilt is the line's own presence, and it needs nothing
 assumed. The only premise is that the Doppler-free signal is there and not
 suppressed beyond some factor:
 
-| narrow line at | offset | tilt | residual width | against the 1.07 MHz gap |
+| narrow line at | offset | tilt | residual width | against the 1.07 MHz gap <!-- other-quantity: a frequency gap --> |
 |---|---|---|---|---|
 | 90 % of aligned | 21 µm | 0.069 mrad | 0.031 MHz | 34× short |
 | 50 % | 53 µm | 0.178 mrad | 0.081 MHz | 13× short |

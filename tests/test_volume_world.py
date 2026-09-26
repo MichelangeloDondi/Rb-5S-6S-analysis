@@ -123,6 +123,29 @@ def test_the_world_refuses_a_cell_carrying_a_term_it_cannot_render():
     assert "saturated_ramp" in world.describe()
 
 
+def test_the_world_passes_the_registrys_door_before_its_first_atom():
+    """O58 (2026-09-25): the closure world is a twin and is refused before its first atom unless the
+    registry admits the terms it executes. Its default study reason carries it; a reason under six words does not."""
+    cell = _with_data(_cell())
+    d = cell.unpack(_truth(cell))
+    nu = cell.traces[0]["x"]
+    world = CL.VolumeWorld(n_path=200)
+    assert np.all(np.isfinite(world(cell, d, 0, cell.traces[0], nu)))
+    assert "the registry's door study" in world.describe()
+    with pytest.raises(Exception, match="six words|reason"):
+        CL.VolumeWorld(n_path=200, registry="too short")(cell, d, 0, cell.traces[0], nu)
+
+
+def test_the_kernel_preflight_never_asks_below_the_bores_floor():
+    """The closure's preflight span sits on the floor its grid takes, and the retired form's did not: an unclamped
+    truth - 2 um fell under the lowest node the fallback purge left, so every run was refused before its first cell."""
+    lo, hi = CL.preflight_span([CL.TRUTH_UM])
+    assert lo == CL.GRID_UM[0]
+    assert hi == max(CL.GRID_UM)
+    assert CL.TRUTH_UM - 2.0 < CL.GRID_UM[0], "the planted case: the retired bound sits under the floor"
+    assert CL.preflight_span([CL.TRUTH_UM], [40.0])[0] == 40.0, "an explicit diagnostic grid keeps its own waists"
+
+
 def test_the_world_has_one_beam():
     """A w0-free arm's separate waist meters cannot be injected by a world with one beam."""
     cell = _with_data(_cell())

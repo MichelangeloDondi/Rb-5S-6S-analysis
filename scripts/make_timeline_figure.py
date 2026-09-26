@@ -187,7 +187,7 @@ def main() -> int:
              "to seconds — addendum 11). The record was take four.",
              fontsize=7.5, color=INK2)
     fig.savefig(OUT, dpi=150, bbox_inches="tight", facecolor=SURFACE)
-    print(f"wrote {OUT.relative_to(ROOT)}")
+    print(f"wrote {OUT}")
     return 0
 
 

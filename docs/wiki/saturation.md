@@ -201,6 +201,8 @@ changed the committed number.
 - [Identifiability](identifiability.md) for what it takes to tell a
   saturation term apart from the model's other mechanisms.
 
+*Model status:* what the fitter, the twin and the Monte Carlo carry of this page's physics is generated from the registry on [the model terms](../methods/model_terms.md), for `saturation`.
+
 ---
 
 [← The inhomogeneous light shift](the-inhomogeneous-light-shift.md) · *Experimental spectroscopy, 9 of 12* · [Collisional self-broadening →](self-broadening.md)
