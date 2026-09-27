@@ -711,11 +711,16 @@ def _make_world(spec: str, cell):
     """The Monte Carlo world a spec names: `volume` through the Cell's own Gaussian beam, `volume-clipped`
     through the bench's bore-clipped focus built to read the Cell's waist (C6b D2 and D3)."""
     kind, n_path, seed = spec.split(":")
-    beam = None
     if kind == "volume-clipped":
         from rb5s6s.beam_field import ClippedBeam
         beam = ClippedBeam.at_focus(cell.w0, m2=cell.m2)
-    elif kind != "volume":
+    elif kind == "volume":
+        # THE FREE-SPACE GAUSSIAN IS PASSED BY NAME (F593). VolumeWorld's default became the Cell's bore-clipped focus
+        # (F465/F471) while this branch went on passing None, so the 'volume' world carried the bore and the 'volume'
+        # fitter did not: at a truth of 44 um the noiseless rung read 2.4 um low, and the fitter's own line missed the
+        # injected one by a chi-square of 131 at the true vector, 0.0016 once this beam is named.
+        beam = GaussianBeam(cell.w0, cell.m2)   # gaussian-limit: the volume fitter's own free-space Gaussian, matched by design
+    else:
         raise ValueError(f"unknown world {kind!r}: 'volume' or 'volume-clipped'")
     return VolumeWorld(beam, n_path=int(n_path), seed=int(seed))
 
@@ -726,8 +731,26 @@ def _truth(truth: float, prior_mean: bool):
         spec = _W.get("world_spec")
         _W[key] = truth_params(_W["real"], float(truth), prior_mean=prior_mean,
                                spec_extra=(WORLD_CELL if spec else None))
+        if os.environ.get("RB5S6S_CLOSURE_SIGMA_L"):                     # the laser width's world (F594)
+            _cell0, _ptr0 = _W[key]              # not `_c`, which this file uses for the config module
+            _W[key] = (_cell0, pin_sigma_l(_cell0.names, _ptr0, float(os.environ["RB5S6S_CLOSURE_SIGMA_L"])))
         _W[("world",) + key[1:]] = _make_world(spec, _W[key][0]) if spec else None
     return _W[key]
+
+
+def pin_sigma_l(names, ptr, value: float):
+    """The true vector with every laser-width entry set to `value`, MHz (F594).
+
+    THE ARCHIVE'S OWN FIT PUTS THE LASER WIDTH ON THE FITTER'S FLOOR (`BOUNDS["sigma_l"]`, 0.2 MHz, the bench's
+    value and a cost), and `truth_params` injects that fit, so a closure with the width free measured the floor: a
+    bounded nuisance is pushed one way by the noise, the waist follows it through their degeneracy, and the offset
+    grows in proportion to the noise level. The plan's answer is the width as a WORLD (0.1, 0.6, 1.5 and 2.8 MHz,
+    coarse first): injected at a value and pinned there in the fit, never a free parameter against a wall."""
+    p = np.array(ptr, float)
+    for j, n in enumerate(names):
+        if n.startswith("sigma_l"):
+            p[j] = float(value)
+    return p
 
 
 def _random_directions(traces, seed):
@@ -783,6 +806,12 @@ def _task(args):
         kind, n_path, seed = fitter.split(":")
         extra.update(WORLD_CELL, volume_line={"beam": "clipped" if kind == "volume-clipped" else "gaussian",
                                               "n_path": int(n_path), "seed": int(seed)})
+    _sl = os.environ.get("RB5S6S_CLOSURE_SIGMA_L")
+    if _sl:
+        # PINNED THROUGH `_spec`, which merges a caller's `fixed` with the theory pins it sets itself (beta_rel and
+        # alpha_rel); a `fixed` set on the spec after `_spec` returns replaces those and frees both (F594's first
+        # pinned probe did exactly that).
+        extra["fixed"] = {n: float(_sl) for n in cell.names if n.startswith("sigma_l")}
     pts = _fit_grid(syn, _grid, max_nfev=(NOISELESS_NFEV if scale <= 0.0 else None),
                     logdet=ld, noise_scale=wscale, spec_extra=(extra or None))
     w, bar, why = parabola(pts)
@@ -816,7 +845,11 @@ def _task(args):
     # rung is judged on the data block (zero for a generator equal to the fitter at zero noise,
     # n_eff +- sqrt(2 n_eff) at a noisy rung whitened at its own scale); the objective's own
     # minimum carries the log-determinant residual and its offset and is not a chi-squared.
-    c = UJ.Cell(dict(UJ._spec(FORM, truth, beta_profile=False), logdet=ld, noise_scale=wscale), syn_rising)
+    # ON THE FITTER'S OWN LINE (OWED-CLOSURE-PARTS, F594): built from `_spec(FORM, truth)` alone, a volume-fitter rung's
+    # chi2_red graded the convolution's line against the volume world. The truth vector is the unpinned one, so the
+    # pins and the orientation stay out of this Cell.
+    _pextra = {k: v for k, v in extra.items() if k not in ("fixed", "orientation")}
+    c = UJ.Cell(dict(UJ._spec(FORM, truth, beta_profile=False, **_pextra), logdet=ld, noise_scale=wscale), syn_rising)
     parts = c.chi2_parts(ptr, np.zeros(len(syn_rising)))
     return scale, r, w, bar, why, pts, level, shape, float(truth), parts, (lo_hw, hi_hw, ref_hw)
 
@@ -993,9 +1026,17 @@ def main() -> int:
     ap.add_argument("--directions", default="rising", choices=("rising", "random"),
                     help="the injected traces' sweep directions: all rising, the record's construction, or each "
                          "falling with probability one half, as the 2025 traces were (O69)")
+    ap.add_argument("--no-noiseless", action="store_true",
+                    help="skip the noiseless task even in the first wave: for a latent-sign mixture it measures the plug-in "
+                         "of mean data into a likelihood whitened at the law, not the estimator (Jensen; O69, the PhD Thesis "
+                         "session's reading), so its noiseless check is a rung at a vanishing scale instead")
     ap.add_argument("--orientation", default="rising", choices=("rising", "two_sign"),
                     help="the fitter's reading of each trace's direction: assumed rising, or the two-sign likelihood "
                          "of rb5s6s.orientation (O69)")
+    ap.add_argument("--sigma-l", type=float, default=None,
+                    help="the laser width's WORLD, MHz: injected at this value and pinned there in the fit, on its own "
+                         "ladder id (F594: free against the fitter's floor, where the archive's own fit sits, the width "
+                         "is pushed one way by the noise and the waist follows)")
     ap.add_argument("--below-floor", action="store_true",
                     help="DIAGNOSTIC: hold the on-axis factor at the bore's floor below it, so a world the Gaussian beam cannot "
                          "describe is read as the size of its push and not as a rail at the floor (C6b D3)")
@@ -1022,6 +1063,9 @@ def main() -> int:
         os.environ["RB5S6S_CLOSURE_ORIENTATION"] = "two_sign"
         if a.dump:
             os.environ["RB5S6S_CLOSURE_POSTERIOR_LOG"] = a.dump + ".posteriors.jsonl"
+    if a.sigma_l is not None:                      # a rung passed at one laser width licenses nothing at another (F594)
+        ANALYSIS_ID = f"{ANALYSIS_ID}@sl{a.sigma_l:g}"
+        os.environ["RB5S6S_CLOSURE_SIGMA_L"] = repr(float(a.sigma_l))
     from _producer_lock import producer_lock
     import contextlib
     # A WAVE THAT ONLY DUMPS WRITES NO CSV AND RECORDS NO RUNG, so it takes no producer lock: two worlds or two
@@ -1047,7 +1091,7 @@ def main() -> int:
         _r0 = max(0, int(a.reals_from))
         jobs = [(sc, r, bool(a.correlated), t, a.prior_mean, a.logdet, a.pool) for t in truths for sc in sweep
                 for r in (range(1) if sc <= 0.0 else range(_r0, _r0 + a.reals))
-                if not (sc <= 0.0 and _r0 > 0)]
+                if not (sc <= 0.0 and (_r0 > 0 or a.no_noiseless))]
         jobs.sort(key=lambda j: (j[0] > 0.0, j[0]))      # the noiseless walks (the longest) first
         # THE SIZE LADDER (owner, 2026-09-16): this run declares its size and is refused unless a
         # smaller stage passed. Stage 0 is one truth and one realisation, which the probes of
