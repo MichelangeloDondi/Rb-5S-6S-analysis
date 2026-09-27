@@ -116,10 +116,14 @@ physics:
    S₀ grows over the 2025 dataset's calculated 42.38 µm waist (open item: the ~16× and
    ×14 factors this record stated at the retired waist convention are pending
    re-derivation, since `stark.kappa_pred_per_watt` now raises instead of
-   extrapolating a 16 µm actual focus below this bore's floor, F280), and the third moment grows
-   faster still, though not by the naive $S_0^3$ cube of that gain, a reading
+   extrapolating a 16 µm actual focus below this bore's floor, F280), and the observed third moment
+   grows faster still, because a tighter focus raises the shift and narrows the transit together and
+   the pairing term follows both ([methods 03](../methods/03_the_ac_stark_ramp.md)), never by the naive
+   $S_0^3$ cube of that gain, a reading
    that [THEORY_NOTE.md](../THEORY_NOTE.md) §3 and [RESULTS.md](../RESULTS.md) C3c
-   both record as replaced. The axial average over the
+   both record as replaced.
+
+   The axial average over the
    collection window changes both its size and, if the window is long enough,
    its sign ([`PLAN.md`](../PLAN.md) §6 item 4: the sign flip is secured by the
    along-beam cathode for any plausible magnification, while its size still

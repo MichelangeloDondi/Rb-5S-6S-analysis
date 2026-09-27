@@ -38,9 +38,14 @@ oscilloscope, the analysis window and the model's own grid, at two thousand
 traces on each of five shifts from 0.18 to 2.0 MHz, **the cubic law is not
 recovered on a ladder that starts below the 2025 shift**. The fitted exponent
 of the third moment comes back at 1.8 with a standard deviation of 0.7 across
-the grid where the physics gives 3, because the magnitude of a moment smaller
-than its own noise is inflated by that noise, and the rungs at and below the
-archive's shift are that case.
+the grid where the separable twin that drew the traces gives 3, because the
+magnitude of a moment smaller than its own noise is inflated by that noise, and
+the rungs at and below the archive's shift are that case.
+
+That twin carries the ramp's cube alone. The observed line's third moment gains
+a pairing term, linear in S₀ through the transit
+([methods 03](../methods/03_the_ac_stark_ramp.md)), so the map is owed a re-run
+on the joint line.
 
 The archive took five traces a rung against the
 map's two thousand, and a second map at forty thousand traces on a ladder from

@@ -57,11 +57,11 @@ A manuscript is in preparation.
 
 $$I(\nu) = A\left[L_{\Gamma_\mathrm{nat}+\gamma_\mathrm{coll}} \otimes G_{\sigma} \otimes J_{w_0,T}(S_0)\right] + b$$
 
-The Lorentzian core is the same for every atom, so it convolves exactly. The
+The weak-field Lorentzian core is the same for every atom, so it convolves exactly. The
 transit and the light shift are not, because one position in the beam sets both.
 They enter as one joint line $J$, sampled from atoms crossing the bore-clipped
 beam at the calculated waist, in the weak-field limit and at $M^2 = 1$, so the
-transit width is not a free parameter. The Gaussian residual also absorbs a
+transit width is not a free parameter. The Gaussian residual absorbs a
 Doppler term from the return beam's tilt, which scales with each atom's
 velocity, so that part of it does not convolve exactly either.
 

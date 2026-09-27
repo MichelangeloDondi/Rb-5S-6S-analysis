@@ -14,10 +14,16 @@ these three predictions, which are functions of P, not of time):
         classic "power null" is not a null result -- it is this prediction.
   (C3b) AMPLITUDE ~ P^2: two-photon rate ∝ I_forward·I_backward ∝ P^2, so the
         peak height should track P^2 until saturation/absorption bend it.
-  (C3c) ASYMMETRY undetectable: the ramp's skew contribution to the whole line
-        scales as P^3 (third moments add; only the ramp is asymmetric), which is
-        ~1e-4 here against a ~1e-3 noise floor. So a SYMMETRIC-model fit should
-        leave residual skew with NO significant trend vs power.
+  (C3c) ASYMMETRY undetectable on the separable profile this producer fits:
+        there the ramp's skew contribution to the whole line scales as P^3
+        (third moments add; only the ramp is asymmetric), which is ~1e-4 here
+        against a ~1e-3 noise floor. So a SYMMETRIC-model fit should leave
+        residual skew with NO significant trend vs power. The observed line is a
+        mixture whose third moment gains a pairing term, linear in S0 through
+        the transit (docs/methods/03), which this prediction does not carry. And
+        each trace's skew is read on an axis that assumes a rising sweep, while
+        the 2025 sweep direction was random per trace, so a mean over a
+        condition's traces measures only what is fixed in time (O66).
 
 We test all three model-independently where possible. Centers/pull are dead
 (2025 drift) so are not used. Rate from the peak's before/after brackets

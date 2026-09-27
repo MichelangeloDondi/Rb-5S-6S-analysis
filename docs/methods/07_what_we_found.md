@@ -212,8 +212,9 @@ single-temperature 2025 sweep cannot separate the two. The 4121 low slope
 is the visible symptom of that degeneracy, resolvable only by the fixed-lock
 session's multi-temperature sweeps.
 
-(C3c) The **ramp** skew, growing as $P^3$, is below detection and is therefore a
-bound. The committed residual skew is *not* zero: it is large and positive at
+(C3c) The **ramp** skew, which grows as $P^3$ on the separable form the fit carries, is below
+detection and is therefore a bound, and the observed line's third moment carries a pairing term
+besides ([methods 03](03_the_ac_stark_ramp.md)). The committed residual skew is *not* zero: it is large and positive at
 low power (up to about 10 sigma at 25 mW, e.g. 993.4154 nm $0.346\pm0.035$)
 and *falls* with amplitude as $\sim\text{amp}^{-0.5}$. That is the Poisson
 **shot-noise skewness** (the noise is right-skewed $\propto1/\sqrt{\text{counts}}$,

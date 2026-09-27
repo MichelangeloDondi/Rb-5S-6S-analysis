@@ -2,14 +2,20 @@
 Lineshape model kernels and convolution (module M3, physics core)
 =================================================================
 
-The two-photon line is a convolution of independent broadening mechanisms,
-built on the TRANSITION (two-photon sum) frequency axis in MHz:
+In the separable approximation (`model_profile`), the two-photon line is a
+convolution of independent broadening mechanisms, built on the TRANSITION
+(two-photon sum) frequency axis in MHz:
 
     I(nu) = A * [ Lorentzian(Gamma_nat + gamma_coll)      # homogeneous
                   (X) transit_kernel(w_transit; sqrt(T))  # Doppler-transit
                   (X) laser_kernel(sigma_laser)           # laser jitter x2
                   (X) stark_ramp(S0) ]                     # AC-Stark, per power
                 + background
+
+The bench line is not separable: each atom's shift is paired with the width of
+the kernel it carries, so the line is a mixture over the collected volume
+(`ramp_mixture` below, `rb5s6s.volume_line`, docs/methods/03), and its third
+moment gains a pairing term the convolution above does not carry.
 
 Design rules
 ------------

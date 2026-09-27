@@ -238,7 +238,9 @@ front-door orientation. A wiki page can never override an authoritative
 result, and the mechanism enforcing that is the guard suite documented in
 [tests/README.md](../../tests/README.md). Dated preregistrations are prospective commitments and
 the private correction record is the historical record, and neither is edited
-for navigation. For general theory the authority is the cited literature and
+for navigation.
+
+For general theory the authority is the cited literature and
 established mathematics: these pages explain, they are not sources, and a
 claim is only as good as the reference it carries. The general section of a
 page may stay valid across model revisions, and only its
@@ -271,7 +273,9 @@ repository-specific claims link to their source of truth.
 repository, which carries its own VERIFIED or REPORTED status. A citation to
 anything else is a standard reference given for the reader's benefit and is
 not held here or checked against its source, so it has the standing of
-REPORTED in the same vocabulary. Textbook results on these pages are
+REPORTED in the same vocabulary.
+
+Textbook results on these pages are
 verifiable by computation instead of by citation, and the numeric ones were
 checked that way: the Bessel zeros, the two carrier nulls, the Voigt width
 approximation against a numerical profile, the criterion crossing, the width

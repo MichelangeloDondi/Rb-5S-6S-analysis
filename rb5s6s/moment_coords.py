@@ -106,7 +106,11 @@ takes its data as plain arrays, dicts or dataclass rows, so it is testable and u
 A100.6's caveat is repeated everywhere this module computes an S0 power: the ramp-dominated total-order
 rule (`s0_w0_power`) holds ONLY on a ramp-dominated line, because mu2 in particular also carries the
 natural, collisional and transit widths, which do not scale as a power of S0 at all. Every caller states
-that scope beside the number; nothing here asserts it silently.
+that scope beside the number; nothing here asserts it silently. And the rule is the BARE RAMP's, the
+separable line's: on the observed joint line each element's shift is paired with the width of the kernel it
+carries, so every odd central moment is linear in S0 at leading order, mu5/mu3 is S0-free and mu1^3/mu3
+goes as S0^2 (F341). A coordinate's exponent on the line is measured on the twin per window, never read
+from this rule.
 """
 from __future__ import annotations
 
@@ -410,6 +414,9 @@ def s0_w0_power(factors: Iterable[Tuple[int, int]]) -> Tuple[int, int]:
     ratio of ramp moments is its total order" (F283), mechanical and never eyeballed (A100.6).
     Reproduces F283's own worked examples: mu4/mu2^2 -> (0, 0), mu3^2/mu2^3 -> (0, 0), mu1^3/mu3 ->
     (0, 0) (all S0-FREE), mu5/mu3 -> (0, 2) (S0-BEARING, "a shift meter, not an anchor").
+    These are the BARE RAMP's exponents, the separable line's. On the observed joint line the pairing of
+    each element's shift with its kernel's width makes every odd moment linear in S0 at leading order,
+    so there mu5/mu3 is S0-free and mu1^3/mu3 goes as S0^2 (F341); the twin measures each per window.
 
     HOLDS ONLY ON A RAMP-DOMINATED LINE. mu2 in particular also carries the natural, collisional and
     transit widths, none of which scales as a power of S0 (A100.6's own caveat, repeated here because
@@ -448,7 +455,8 @@ class Coordinate:
     `factors` -- the (order, power) monomial this coordinate is built from; empty for a derivative or
         an integral coordinate, which are not monomials in the bare moments (F297).
     `s0_power`, `w0_power` -- from `s0_w0_power(factors)` for a moment/ratio/cross_ratio coordinate
-        (ramp-dominated limit, A100.6); `None` for a derivative or integral coordinate, because F297
+        (the bare ramp's total order, A100.6, not the observed line's exponent, F341); `None` for a
+        derivative or integral coordinate, because F297
         gives their GEOMETRIC relation to the rectangular moments but not (yet) a derived S0/w0 scaling
         law, and this module asserts only what has actually been derived.
     `order` -- the coordinate's own order (the n of mu_n, or of the derivative/integral it carries).

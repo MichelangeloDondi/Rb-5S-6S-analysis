@@ -14,9 +14,13 @@ argument. This grid varies the Lorentzian component AND the oscilloscope, so
 neither path could produce a single cell. Both now take both (2026-09-05).
 
 WHAT IS ALREADY SETTLED, so this study does not re-derive it. On the noiseless
-production path every windowed odd moment returns a slope of 3.000, not the
-3/5/7 ladder: at a shift far below the line width each odd moment is dominated
-by the same leading asymmetry. And the windowed fifth order does not converge
+production path, which is the SEPARABLE twin (`build_world_trace`'s default),
+every windowed odd moment returns a slope of 3.000, not the 3/5/7 ladder: at a
+shift far below the line width each odd moment is dominated by the same leading
+asymmetry, the ramp's. On the observed joint line the leading odd term is the
+pairing of each atom's shift with its kernel's width, linear in S0 through the
+transit (F341, F589), so every slope and bar in this file is the separable
+twin's and is owed a re-run on the joint line (OWED-MPM-JOINT). And the windowed fifth order does not converge
 against a Lorentzian, recovering 570, 1858 and 5946 per cent at half-windows 8,
 16 and 40 UNDER THE RETIRED CUMULANT BASIS this file computed on before owner
 order O49 (2026-09-22): mu_5 = kappa_5 + 10 mu_2 mu_3 carries a cross-term

@@ -351,7 +351,11 @@ $$\text{centroid pull} = +\tfrac{2}{3}S_0,\qquad
 
 order the signal by statistical cost: pull $\propto P$, excess variance
 $\propto P^2$, skew $\propto P^3$, the last vanishing unless $n=2$, the $I^2$
-signature. The pull as a *measurement* becomes available only once a stable
+signature. That ordering is the separable line's. On the observed line each atom's shift is paired
+with the width of the kernel it carries, which adds to the third moment a part linear in $S_0$
+through the transit and one growing as $P^3$ through the saturation companion
+([methods 03](methods/03_the_ac_stark_ramp.md)), so where the transit's part dominates, the skew is
+not the costliest moment. The pull as a *measurement* becomes available only once a stable
 lock un-absorbs it.
 
 Two caveats attach to the drift argument. *Between*-scan drift is absorbed exactly by the
@@ -372,7 +376,7 @@ The within-scan
 skew is therefore bounded and small, not unmodelled.
 
 In the 2025 sweep the fitted asymmetry coefficient is consistent
-with zero. At $\le225$ mW its significance (the skew grows only as $S_0^3$)
+with zero. At $\le225$ mW its significance (on the separable line the fit carries, the skew grows only as $S_0^3$)
 sits below the SNR $\approx130$ floor, so the estimator, correct as it is,
 returns an **upper bound, not a detection**. A fit always returns *some* value
 with an error bar, and the discipline is to report a bound unless it clears
@@ -387,7 +391,9 @@ out of the focusing path (7.02 with the 2025 input kept), would lift the
 shape asymmetry into a detection, though not by
 the naive $S_0^3$ cube of that gain, because the axial average changes the
 third moment's magnitude and, for a long enough collection window, its sign
-(§7).
+(§7). Along the waist the observed line's pairing term grows faster than the cube of that gain,
+because a tighter focus raises the shift and narrows the transit together, which the forward model
+computes and no power of the gain does.
 
 Both are conditional on the small-waist skew corrections, the
 beam-divergence collection average of §7 (the larger, sign-flipping one) and
@@ -399,13 +405,17 @@ The three moments are not three rival
 measurements to be combined or cherry-picked. They are three analytic
 functionals of the *one* parameter $S_0(P)$
 (`lineshape.ramp_moment_contributions`): pull $\propto S_0$, excess variance
-$\propto S_0^2$, third moment $\propto S_0^3$. A fixed-lock fit would use a
+$\propto S_0^2$, third moment $\propto S_0^3$ on the separable line, while the observed line's
+third moment gains the pairing term's part linear in $S_0$, so the check below runs against the
+joint line's own prediction.
+
+A fixed-lock fit would use a
 single $S_0$ per condition and check that the pull, excess-variance and
 third-moment *measured from the data* are mutually consistent with it, a
 $\chi^2$ across the moment hierarchy. The primary observable at each intensity
 is pre-registered as the lowest-order moment above its own noise floor (the
-pull where $S_0$ is small, the skew only where $P^3$ has climbed clear of
-noise), and the others are consistency checks with their own error bars. A
+pull where $S_0$ is small, the skew only where it has climbed clear of
+noise, as $S_0$ through the transit's pairing and as $P^3$ through the companion's and the ramp's own), and the others are consistency checks with their own error bars. A
 spurious asymmetry from a fit artifact or from the diverging-beam geometry will
 not *also* reproduce the correct, more-robust lower-order pull and variance for
 the same $S_0$.
@@ -675,7 +685,8 @@ at $w_0=16$ µm for an unclipped design, the bore out of the focusing path,
 which is why a small waist would lift the ramp asymmetry to
 a detection, though *not* by the on-axis $S_0^3$ cube of the intensity gain,
 since the axial average over the collection window changes the third moment's
-magnitude and, past $Z_c/z_R\approx1.12$, its sign (§7).
+magnitude and, past $Z_c/z_R\approx1.12$, its sign (§7). That is the ramp's own term, and the
+observed line's pairing term, which grows faster still along the waist, is §3's.
 
 The $\langle E^2\rangle$ convention is magnitude-only.
 The *direction* of the pull is set by $\mathrm{sign}(\Delta\alpha)$. Until the

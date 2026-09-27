@@ -136,6 +136,56 @@
    "pattern": "the injected truth 1\\.6\\b",
    "retired": "2026-09-26",
    "why": "E88: results/twin_closed_loop.csv's note typed a laser width the leg no longer injects; the leg injects the reference point's, and the note is computed from TRUTH_SIGMA since V7.1."
+  },
+  {
+   "pattern": "true shift's third moment goes as the cube of the power",
+   "retired": "2026-09-27",
+   "why": "the observed third moment grows as P through the transit's pairing and as P^3 through the companion's and the ramp's own (F589, board fa013ba94bad)"
+  },
+  {
+   "pattern": "so the skew \\(∝ ?S₀³\\) becomes measurable",
+   "retired": "2026-09-27",
+   "why": "the observed skew is not the ramp's cube; a tighter focus grows the pairing faster than the cube (F589)"
+  },
+  {
+   "pattern": "skew, growing as \\$P\\^3\\$, is below detection",
+   "retired": "2026-09-27",
+   "why": "P^3 is the separable form's law; the observed line carries a pairing term besides (F589)"
+  },
+  {
+   "pattern": "Because κ₃ goes as the cube of S₀, closing",
+   "retired": "2026-09-27",
+   "why": "the prediction drawn in fig 31 is the separable line's; the observed line's is owed a redraw (F589)"
+  },
+  {
+   "pattern": "misstated by about a factor of two at every waist",
+   "retired": "2026-09-27",
+   "why": "the convolution keeps 3 to 10 per cent of the windowed third moment, of the wrong sign at 42 and 45 um (F589)"
+  },
+  {
+   "pattern": "which grows as the cube of S₀ where symmetric power",
+   "retired": "2026-09-27",
+   "why": "the skew is not the ramp's cube on the observed line (F589)"
+  },
+  {
+   "pattern": "\\(the skew grows only as \\$S_0\\^3\\$\\)",
+   "retired": "2026-09-27",
+   "why": "only on the separable line the fit carries (F589)"
+  },
+  {
+   "pattern": "where the physics gives 3",
+   "retired": "2026-09-27",
+   "why": "3 is the separable twin's power, not the observed line's (F589)"
+  },
+  {
+   "pattern": "observed line is the unshifted line convolved",
+   "retired": "2026-09-27",
+   "why": "the line is that convolution only in the separable approximation; on the bench it is a mixture (F589, O66 sweep)"
+  },
+  {
+   "pattern": "The observed line is a convolution of independent broadening",
+   "retired": "2026-09-27",
+   "why": "the bench line is a convolution only in part; one of its terms is a mixture over the collected volume (F589, O66 sweep)"
   }
  ]
 }

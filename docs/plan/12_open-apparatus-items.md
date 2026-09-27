@@ -364,8 +364,9 @@ imitate the third moment. That is the channel the campaign now rests on, and
 it is the single reason this item is worth an afternoon: **a shift-like
 asymmetry from the detection path would be read as a light shift by every
 estimator in this record.** The power ladder is what separates them, since the
-true shift's third moment goes as the cube of the power and a detection
-background does not, so the discriminator exists and is already in the design.
+true shift's third moment grows with the power, as $P$ through the transit's pairing and as $P^3$
+through the saturation companion's and the ramp's own ([methods 03](../methods/03_the_ac_stark_ramp.md)),
+while a detection background does not, so the discriminator exists and is already in the design.
 Until the measurement is made the forecast spans the term by treating it as
 absent and naming it here.
 

@@ -711,7 +711,9 @@ def build_world_trace(power_w: float, kappa: float, t_c: float,
 
     ``model`` (F559, V7.2's W2): "separable" draws each peak through `fullmodel.full_profile`, the
     convolution of a closed-form transit with the ramp and the Voigt, and stays the default so every
-    committed table made through this path is unchanged until its consumer moves. "joint" draws each
+    committed table made through this path is unchanged until its consumer moves. Its odd moments are
+    the ramp's alone, which grow as S0 cubed; the observed line's pairing of each atom's shift with its
+    transit width, linear in S0, is in "joint" only (F341, F589). "joint" draws each
     peak's clean line from `twin_volume.world_shape`, the atom-sampled Monte Carlo line
     `synthetic_traces(model="joint")` draws, at the beam (`w0_m`, `m2`), `t_c`, the shift, the
     homogeneous width and the laser width, with the collection window of `z_ratio` (the fitter's

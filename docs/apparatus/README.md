@@ -5,7 +5,9 @@ digitised scope record that establish what the 2025 measurement was made
 with. [../APPARATUS.md](../APPARATUS.md) is the document that reads them:
 each asset is embedded there inside the passage that uses it, under a caption
 saying what the frame shows, and every technical fact drawn from an asset
-carries a provenance tag on that page. What is published here is a curated,
+carries a provenance tag on that page.
+
+What is published here is a curated,
 metadata-stripped subset of the photograph set, with frames carrying
 equipment serials or a name held back. Every asset here is referenced from a
 documentation page, all but the last from `../APPARATUS.md`.

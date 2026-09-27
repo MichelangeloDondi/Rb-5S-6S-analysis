@@ -11,11 +11,14 @@ Why the light shift of an atom in a structured beam is a distribution and not a 
 
 A light shift follows intensity, and in any structured beam the intensity
 depends on where the atom sits. An ensemble therefore has no single shift.
-It has a distribution of shifts, one value per atom position, and the
-observed line is the unshifted line convolved with that distribution. The
-distribution's mean moves the line, its variance broadens it, and its skew
+It has a distribution of shifts, one value per atom position. In the
+separable approximation the line is the unshifted line convolved with that
+distribution: its mean moves the line, its variance broadens it, and its skew
 makes the shape asymmetric, so the first few cumulants of the position
-distribution are printed directly onto the lineshape.
+distribution are printed directly onto the lineshape. On the bench each atom's
+shift is paired with the width of the kernel it carries, so the line is a
+mixture and its third moment gains a pairing term
+([methods 03](../methods/03_the_ac_stark_ramp.md)).
 
 ![Position-distribution cumulants mapped onto the lineshape](../../figures/fig30_third_cumulant.png)
 

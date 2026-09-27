@@ -542,9 +542,15 @@ only asymmetric term in the model.*
 the first panel is noise, the measurements in the second straddle zero and the
 two peaks disagree in sign, and the third puts the gap at a factor of about
 2800 between the prediction at the record's own bound and the error on a single
-condition. Because κ₃ goes as the cube of S₀, closing that gap needs about
-fourteen times the ramp depth, which is fourteen times the power or a waist
-smaller by a factor of 3.8. This measures the instrument's reach in this
+condition. Each condition's mean is taken over traces whose sweep direction was random, so its sign
+measures only what is fixed in time.*
+
+*The prediction drawn is the ramp's own third moment, the separable line's, which goes as
+the cube of S₀, so on that line closing the gap needs about fourteen times the ramp depth, which is
+fourteen times the power or a waist smaller by a factor of 3.8. On the observed line the pairing
+term makes the prediction larger, its transit share linear in S₀ and its saturation share growing as the
+cube ([methods 03](../methods/03_the_ac_stark_ramp.md)), so the gap and its scaling are owed a redraw on
+the joint line. This measures the instrument's reach in this
 channel, not the ramp.*
 
 The group has already demonstrated the hard part. 5S–6S excitation in the

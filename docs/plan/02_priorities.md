@@ -246,9 +246,13 @@ configuration. It falsifies a mis-scaled geometry: if the effective waists
 do not stand in the ratio the bench implies, the two κ values say so
 directly, and that is the one systematic the 2025 record could not touch
 from inside its own data. **And the handle that finishes the job is the
-skew**, item 6 below, which grows as the cube of S₀ where symmetric power
-broadening grows as its square. It is the one signature the ramp has that
-its companions do not, and one this record already has the third-moment
+skew**, item 6 below. On the observed line its transit share grows as S₀ through the pairing of each
+atom's shift with its transit width, and a companion whose width follows the local shift skews the line
+too, its share growing as the cube along a power ladder, so the skew separates the ramp only through the
+forward model that carries both ([methods 03](../methods/03_the_ac_stark_ramp.md)).
+
+It is the channel a
+drifting lock cannot erase, and one this record already has the third-moment
 machinery to read. **The tight waist buys signal, the pair calibrates the
 geometry, and the skew separates the ramp.** Only the three together turn
 the null into a measurement. The 2025 dataset's own limit is the
@@ -258,7 +262,9 @@ demonstration of what any one of them leaves behind: a null on a product.
 6. **Small waist (16 µm), the Stark, skew and lineshape-form configuration**:
    more S₀ than at the width workhorse (the ~16× this item stated at the
    retired waist convention is pending re-derivation at the calculated
-   waist), so the skew (∝ S₀³) becomes measurable, and at the
+   waist), so the skew becomes measurable: a tighter focus raises the shift and narrows the transit
+   together, and the pairing term grows faster than the cube of that gain
+   ([methods 03](../methods/03_the_ac_stark_ramp.md)). And at the
    cliff (S₀ ≫ linewidth) the triangular ramp is directly visible. The skew's
    sign-flip test rides on the collection geometry: the flip happens where the
    axial window Z_c crosses 1.12 z_R, which the small waist puts within reach

@@ -174,8 +174,11 @@ this section, which has to be in place before any of them runs.
 3. **Skew hunt at S.** Not a promised result, and the twin says why: on a
    ladder of synthetic traces across the laser kernel, the noise, the
    oscilloscope and the analysis window
-   ([the map](../../results/moment_power_map.csv)), the third moment's
-   cubic law is not recovered at shifts at or below the 2025 one, and the
+   ([the map](../../results/moment_power_map.csv)), the separable twin's
+   cubic law for the third moment is not recovered at shifts at or below the
+   2025 one (the observed line's third moment gains a pairing term, linear in
+   S₀ through the transit, [methods 03](../methods/03_the_ac_stark_ramp.md), so
+   the map is owed a re-run on the joint line), and the
    per-rung table of the deep map
    ([`results/moment_power_map_deep_rungs.csv`](../../results/moment_power_map_deep_rungs.csv))
    finds the 2025 rung sign-degenerate in every configuration, the channel

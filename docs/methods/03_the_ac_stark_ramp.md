@@ -71,15 +71,16 @@ orders alternate in sign, and a statistic built on the sign of a windowed
 cumulant is read against each order's own sign and never against zero. The
 signs are the coded blue side's, settled by the ruling of 2026-09-17 on the single-source
 differential polarizability of [-1131.8](../../results/polarizability_deep.csv "ref:polarizability_deep:delta_alpha:at_drive") a.u. On the red side every odd one flips. What varies with power is the
-*observed line's* asymmetry, which follows by folding the ramp into the rest
-of the line.
+*observed line's* asymmetry, which would follow by folding the ramp into the rest
+of the line if the line were a convolution. The next paragraph gives that separable reading, and the
+one after it the reason the line is not one.
 
 [Cumulants add under convolution](../wiki/third-cumulant.md) (the cumulant of a sum of independent
 variables is the sum of the cumulants), and the Gaussian and transit kernels
 have $\kappa_1=\kappa_3=0$ exactly. **The Lorentzian is the qualified case.** Its even cumulants diverge, so
 whole-line $\mu_2$ and any standardised skew exist only at a fixed
-window, and the caveat below stands. The whole line's pre-window third
-moment is still $\mu_3^{\text{tot}} = -S_0^3/135$, since the odd
+window, and the caveat below stands. Under that convolution the whole line's pre-window third
+moment would still be $\mu_3^{\text{tot}} = -S_0^3/135$, since the odd
 moments of every kernel cancel. What a windowed, self-centred readout keeps
 of it is the truncation-limited fraction the `survival` rows of
 [`results/cumulant_window_check.csv`](../../results/cumulant_window_check.csv)
@@ -91,6 +92,39 @@ first among them. Derivation and numbers are on
 the history. The mean
 pull is the primary fixed-lock-session observable
 ([where this can go](08_assumptions_and_outlook.md)).
+
+The observed line is not that convolution ([the composite model](04_the_composite_model.md)).
+Each atom's shift is paired with the width of the kernel it carries, so the line is a mixture and its
+central third moment, taken about the line's own centre as every windowed moment here is, gains a
+covariance term between each element's shift and the variance of the kernel it carries. For untruncated
+kernels it is $3\mathrm{Cov}(u, V(u))$. With the windowed variance `scripts/run_kernel_inhomogeneity.py`
+uses, the difference between the two lines reads about
+[0.41](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w42um:covariance_identity_ratio")
+of that product at the calculated waist, so the identity sets the term's sign and its scaling, and the
+forward model its size.
+
+The transit's share of that term is linear in $S_0$, because the transit width follows the
+beam's geometry and not the shift. The saturation companion's share grows as $P^3$ along a power
+ladder, as the ramp's own term does, because at weak drive the companion's width goes as the square of
+the local shift (`stark.companion_gamma_mhz`), which holds at the archive's waist and not at a 16 µm focus.
+
+At the calculated waist and a 6 MHz half-window the static mixture's windowed third moment is
+[0.019](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w42um:mu3_exact") MHz³, with
+a band of [0.019](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w42um:mu3_exact_err") MHz³
+when the saturation companion is scaled by three each way, against the convolution's
+[-0.00077](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w42um:mu3_fixed_kernel"):
+opposite in sign and an order of magnitude or more larger across that band. Most of that value is the
+companion's at 225 mW, the share that grows as $P^3$, and the transit's is a minority of it in this
+model.
+
+So $-S_0^3/135$ is the ramp's third moment and the separable line's, not a prediction for the
+observed skew, and how much of that skew grows as $P$ and how much as $P^3$ rests on the saturation law,
+which the record has not validated. The chord-sampled joint line (`rb5s6s/volume_line.py`), which
+carries no saturation, finds the transit's share larger than this static mixture's whole value, and
+that difference between the two models is open. The
+centre matters: about a fixed external centre even a convolution's odd moments are linear in $S_0$,
+through the mean shift times the kernel's variance, so a statement of an odd moment's power of $S_0$
+names the centre it is taken about.
 
 (The dataset's centre channel supplies no bound of its own. A peak position is
 a frequency only within a run of traces taken at one scope horizontal setting,
@@ -114,7 +148,10 @@ since $S_0\propto$ power $P$. This is a self-centred construction, the
 window riding the fitted centre, which is what licenses using
 $\mu_3^{\text{tot}} = -S_0^3/135$ here at all (remark above). (No contradiction with the fixed $0.566$ magnitude: that
 is the standardized skew of the ramp *alone*, where here the same $\mu_3$ is
-divided by a much larger and nearly fixed symmetric width.)
+divided by a much larger and nearly fixed symmetric width.) Both steps of that estimate are the
+separable line's. On the observed line the pairing term above adds a part linear in $S_0$, so
+$g_1^{\text{obs}}$ grows as $P$ where the transit's share dominates, and as $P^3$ only where the ramp's
+own term and the companion's share do.
 
 **Two consequences for the 2025 data.** First, the ramp predicts the FWHM
 should move $\lesssim2$% across the power sweep, and the dataset shows no
@@ -776,7 +813,10 @@ The on-axis $\propto S_0^3$
 scaling above is the *pure transverse triangle*. At a small waist the axial
 average over the collection window changes the third moment's magnitude and,
 past $Z_c/z_R\approx1.12$, its sign, so the small-waist gain is not the naive
-$\times 19$, the cube of the 42.38-to-16 micron waist ratio (see the geometry discussion below and PLAN §6 #4). The **sign** is
+$\times 19$, the cube of the 42.38-to-16 micron waist ratio (see the geometry discussion below and PLAN §6 #4).
+That is the ramp's own term. On the observed line the pairing term scales with the waist through the
+transit and the companion instead, so the gain is read off the forward model and never off a power
+of the waist ratio. The **sign** is
 convention-independent, set by $\text{sign}(\Delta\alpha)$: **blue** for this
 record's negative $\Delta\alpha$, which the ruling of 2026-09-17 chose over
 Orson's published positive value, the two agreeing on magnitude to within 5 per cent

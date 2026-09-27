@@ -14,7 +14,11 @@ The odd cumulants of a shifted line are meant to be the channel that reads the s
 > interval and the search was over the positive one. Redone on the correct
 > support the residual is one part in a thousand, which is rounding. The
 > convolution holds, the ladder is the right prediction, and sections 1 to 10
-> stand.**
+> stand, for the separable model this chapter was built on. The bench line is
+> not that model: each atom's shift is paired with the width of the kernel it
+> carries, which adds a term to its odd moments, linear in $S_0$ through the
+> transit and growing as the cube through the saturation companion
+> ([methods 03](03_the_ac_stark_ramp.md)).**
 
 
 **Its central question is OPEN, and this chapter says so rather than hiding it:
@@ -90,6 +94,23 @@ fixed by the geometry gives, by the scaling of cumulants,
 So the untruncated ladder is exact: k_3 goes as the cube, k_5 as the fifth,
 k_7 as the seventh. Nothing about the kernel enters, and nothing about the
 intensity except through `S_max`.
+
+That derivation is the separable line's, and the observed line is not separable. It assumes one
+kernel `L` at every volume element. On this bench the kernel an element carries depends on its shift,
+the transit through the local beam radius and the saturation companion through the local intensity,
+so the line is a mixture and every odd moment gains a covariance term between each element's shift and
+its kernel's width ([methods 03](03_the_ac_stark_ramp.md), [the composite model](04_the_composite_model.md)).
+
+Its transit share is linear in the shift and its saturation companion's share grows as the cube
+along a power ladder, so on the observed line `k_3` is not the ramp's cube: at the calculated waist and
+a 6 MHz half-window the static mixture's windowed third moment reads
+[0.019](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w42um:mu3_exact") MHz³
+against the separable line's [-0.00077](../../results/kernel_inhomogeneity.csv "ref:kernel_inhomogeneity:w42um:mu3_fixed_kernel"),
+most of it the companion's at 225 mW, and the chord-sampled joint line, without saturation, finds the
+transit's share alone larger than that. Which share dominates the real line rests on the saturation law
+and on the two models' difference, which is open ([methods 03](03_the_ac_stark_ramp.md)).
+Where the sections below quote a power of the shift from this ladder, it is the separable line's, and
+the odd channel is read against the joint line's own forward prediction.
 
 ## 2. Limits on its direct use
 
@@ -425,7 +446,7 @@ is in the right units and it is the one to cite.
 And under noise the windowed third moment does not reach its own power law
 at the archive's shift. The moment-power map
 ([`results/moment_power_map.csv`](../../results/moment_power_map.csv)) runs
-the estimator above on synthetic traces from the world builder, every physics
+the estimator above on synthetic traces from the world builder's separable model, every physics
 layer on, across the laser kernel's Lorentzian component, the noise level, the
 oscilloscope, the analysis window and the model's own grid, at two thousand
 traces on each of five shifts from below the archive's to twice the campaign's.
@@ -487,7 +508,10 @@ measurement and a fraction near one half is the coin flip, and the reading
 that struck the fifth order as never settling had read the convention. The
 signs are those of the side the ramp was coded on before O27, the red one. On the blue side,
 which the polarizability this record uses implies and the record has used since O27, every odd
-sign flips and the reading inverts with it.
+sign flips and the reading inverts with it. On the observed line the third moment's sign is not the
+ramp's at all: the pairing term dominates it and has the opposite sign at the calculated waist
+(`results/kernel_inhomogeneity.csv`), so the sign a statistic is read against is the forward
+model's, never the ramp's own.
 
 `results/moment_power_map*.csv` are produced through the same package
 estimator, and their per-rung tables carry the quiet reference beside every

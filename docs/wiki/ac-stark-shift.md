@@ -212,8 +212,9 @@ quoted with the waist it assumes or not at all.
 
 **And the two approximations weaken together, which is the part worth carrying.** The same move to a
 tighter waist that shrinks this margin also worsens the convolution: the kernel's dependence on the
-mixture variable grows as the beam closes, and the windowed third moment is already misstated by about
-a factor of two at every waist the record has examined. So at 40 to 45 micron the composite model rests
+mixture variable grows as the beam closes, and the convolution already keeps only about three to ten per
+cent of the windowed third moment at every waist the record has examined, of the wrong sign at 42 and 45
+microns (`results/kernel_inhomogeneity.csv`). So at 40 to 45 micron the composite model rests
 on two approximations that each hold over a narrower range than the surfaces describing them suggest, and
 neither surface said so because both were written at 64.
 

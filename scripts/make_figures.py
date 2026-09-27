@@ -4984,6 +4984,8 @@ def fig_third_moment():
     # --- panel C: the contribution table -----------------------------------
     ax = fig.add_subplot(gs[:, 2])
     ax.axis("off")
+    # the separable line's budget: on the observed line the transit's pairing with the local shift gives it
+    # a third-moment share linear in S0 (F589), which this table and panel C do not draw (owed a redraw)
     rows = [("natural", 0, 1, 0), ("laser", 0, 1, 0), ("transit", 0, 1, 0),
             (r"collisional $\gamma_{coll}$", 0, 1, 0),
             ("AC-Stark ramp", 1, 1, 1)]
@@ -5141,6 +5143,9 @@ def fig_third_moment_measured():
             if len(mu3s) < 2:
                 continue
             Ps.append(P)
+            # the rate is one positive number per condition and the 2025 sweep direction was random per
+            # trace, so this signed mean measures only what is fixed in time (O66); owed a direction-free
+            # statistic before this panel is read as the line's
             ks.append(np.mean(mu3s))
             es.append(np.std(mu3s, ddof=1) / np.sqrt(len(mu3s)))
         ax.errorbar(Ps, ks, yerr=es, fmt="o-", ms=4, lw=1.2, capsize=3,

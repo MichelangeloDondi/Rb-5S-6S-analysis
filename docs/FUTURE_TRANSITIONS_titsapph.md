@@ -177,7 +177,8 @@ set, while 7D (660.8), 9S (655.8) and any >1000 work are custom.
   2. **Output power at 760–778 nm vs at 993 nm.** A 700–1000 set gives *more* power
      mid-band (760–778) than at the 993 edge, which is good news, since the 5D/7S work would run
      with *more* S₀ headroom than the current 6S work, which is what the asymmetry
-     signal (∝S₀³) needs.
+     signal needs (as S₀³ on a separable line, and on the observed one linearly through the transit's
+     pairing and as the cube through the saturation companion's, [methods 03](methods/03_the_ac_stark_ramp.md)).
 - You already reach **993 nm** with this pump, so your set reaches at least to 993
   (consistent with 700–1000 or 950–1050). Running the V18 near max at 18.5 A is
   consistent with holding that red edge.

@@ -80,7 +80,9 @@ and the ramp are compact, the collisional and natural widths are Lorentzian).
   $\exp(-W^2 / 2\sigma^2)$ factors, so past three widths every cumulant of the compact part is its
   own untruncated cumulant to any precision the surface carries. For the ramp alone this would be
   the value the record derives, $\mu_3 \to -S_0^3/135$ at weak drive (chapter 03). The third
-  bullet says why the whole line does not reach it.
+  bullet says why the whole line does not reach it, and the pairing of each element's shift with
+  its kernel's width is a second reason at every window: a mixture's odd moments carry that
+  covariance term, which the ramp alone does not (chapter 03).
 <!-- C6b: re-measured as a moment (A149) -->
 * **A Lorentzian wing makes the even orders diverge as powers.** The truncated central moment of a
   Cauchy wing of weight $f_L$ is $m_{2k}(W) = \tfrac{2 f_L \gamma}{\pi} \tfrac{W^{2k-1}}{2k-1} [1 + O(\gamma^2 / W^2)]$
@@ -317,9 +319,9 @@ performs, which is the whole of the matter.
 
 Under Convolution, cumulants add and moments do not. If $S = g * h$ then
 $\kappa_n(S) = \kappa_n(g) + \kappa_n(h)$ at every order, while $\mu_n(S)$ is a binomial sum over every
-pairing of the two factors' moments. The observed line is a convolution of independent broadening
-mechanisms, so in cumulants the forward model is a sum over terms and its Jacobian is readable term by
-term. That is why this record fits cumulants.
+pairing of the two factors' moments. For a line that is a convolution of independent broadening
+mechanisms, the forward model in cumulants is a sum over terms and its Jacobian is readable term by
+term. That is why this record fits cumulants, and this bench is such a line only in part (below).
 
 Under mixture, moments are linear and cumulants are not. If the collected signal is an average of
 kernels over a latent variable $\lambda$, written $S(\nu) = \mathbb{E}_\lambda[K(\nu, \lambda)]$, then

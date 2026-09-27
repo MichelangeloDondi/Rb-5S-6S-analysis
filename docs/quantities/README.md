@@ -4,7 +4,18 @@ One page per physical quantity this experiment tries to measure, constrain or
 calibrate, written to answer a single question about that quantity rather than
 to describe it.
 
-For one physical quantity: what is it, what has the field already achieved, what does this dataset establish, why not more, and exactly what would have to change at the bench to do better. This page builds on a quantity and a construction. Nothing else, and in particular no new fitting: every number on these pages is read from a committed artefact. It sets out A literature benchmark, the current result with its epistemic class, the named limitation, three defined levels of improvement with their bench recipes, the failure modes, and what remains impossible. Not covered here: the question is what a term means, which is [the glossary](../GLOSSARY.md), or how a method works, which is [the wiki](../wiki/README.md), or what the whole programme found, which is [the synthesis](../BIG_PICTURE.md).
+Each page asks, for one physical quantity, what it is, what the field has
+already achieved, what this dataset establishes, why not more, and exactly what
+would have to change at the bench to do better. It takes a quantity and a
+construction and nothing else, and in particular no new fitting: every number
+on these pages is read from a committed artefact.
+
+Each page gives a literature benchmark, the current result with its epistemic
+class, the named limitation, three defined levels of improvement with their
+bench recipes, the failure modes, and what remains impossible. Skip these pages
+if the question is what a term means, which is [the glossary](../GLOSSARY.md),
+how a method works, which is [the wiki](../wiki/README.md), or what the whole
+programme found, which is [the synthesis](../BIG_PICTURE.md).
 
 ## Scope of a dossier
 

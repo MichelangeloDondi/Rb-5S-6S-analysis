@@ -222,8 +222,10 @@ def test_cross_product_estimate_input_errors():
 def test_s0_power_matches_f283s_worked_examples():
     assert s0_w0_power(((4, 1), (2, -2))) == (0, 0)     # mu4/mu2^2, S0-free
     assert s0_w0_power(((3, 2), (2, -3))) == (0, 0)     # mu3^2/mu2^3, S0-free
-    assert s0_w0_power(((1, 3), (3, -1))) == (0, 0)     # mu1^3/mu3, S0-free
-    assert s0_w0_power(((5, 1), (3, -1))) == (0, 2)     # mu5/mu3, S0-bearing (a shift meter)
+    # the BARE RAMP's total-order exponents; on the observed joint line F341 reads mu1^3/mu3 as S0^2
+    # and mu5/mu3 as S0-free, which the twin measures per window and this function does not claim
+    assert s0_w0_power(((1, 3), (3, -1))) == (0, 0)     # mu1^3/mu3, S0-free on the bare ramp
+    assert s0_w0_power(((5, 1), (3, -1))) == (0, 2)     # mu5/mu3, S0-bearing on the bare ramp
     assert s0_w0_power(((7, 1),)) == (0, 7)             # a bare order carries its own order
 
 

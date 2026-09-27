@@ -251,8 +251,8 @@ Calculated (anchored, not fitted to this data):
   analytic cumulants on bounded support, and a third moment a drifting
   lock cannot corrupt when read self-centred
   ([the condition](wiki/third-cumulant.md)). That channel is a skew hunt the
-  plan does not promise: measured on the twin, no configuration recovers its
-  cubic law at the 2025 shift, and it opens only as the shift is raised.
+  plan does not promise: measured on the separable twin, no configuration recovers its
+  cubic law at the 2025 shift, and opens only as the shift is raised.
 - A self-calibrating frequency axis: an EOM comb acquired as its own
   bracketing traces in every block, so the axis is calibrated per block
   under a drifting lock, and the tooth spacing is proved exact by a

@@ -2,7 +2,7 @@
 
 *[wiki index](README.md) · concept*
 
-How a single number can isolate a lineshape's asymmetry from every symmetric mechanism broadening it at the same time, provided the number is taken about the line's own centre, which is the condition the whole page turns on. This page builds on a line already understood as a convolution of kernels, and no fitted data of its own and sets out the additivity property that lets $\mu_3$ single out one asymmetric mechanism, and the traps that forge a fake one. Not covered here: the asymmetry-producing mechanism itself, covered in [the AC-Stark shift](ac-stark-shift.md).
+How a single number can isolate a lineshape's asymmetry from every symmetric mechanism broadening it at the same time, provided the number is taken about the line's own centre, which is the condition the whole page turns on. It isolates only the mechanisms whose width is the same at every part of the line: a width that follows the shift enters the third moment itself (the mixture paragraph below). This page builds on a line already understood as a convolution of kernels, and no fitted data of its own and sets out the additivity property that lets $\mu_3$ single out one asymmetric mechanism, and the traps that forge a fake one. Not covered here: the asymmetry-producing mechanism itself, covered in [the AC-Stark shift](ac-stark-shift.md).
 
 > [GLOSSARY.md](../GLOSSARY.md) states the measurement in six sentences and
 > defines every term and symbol used anywhere in this repository.
@@ -40,7 +40,7 @@ the private correction record). Three layers:
    whole line grow with any window that tries to hold them.
 2. **Odd moments survive, about the line's own centre.** The Cauchy
    density is even, so a window symmetric about the line centre cancels its
-   odd moments, and the self-centred windowed $\mu_3$ keeps a
+   odd moments, and for a line that is a convolution the self-centred windowed $\mu_3$ keeps a
    truncation-limited fraction of the ramp's own $-S_0^3/135$. For this
    record's line at the $S_0 = 3$ MHz reference the fraction is
    [0.483](../../results/cumulant_window_check.csv "ref:cumulant_window_check:survival_full_line:gc0.2"), [0.450](../../results/cumulant_window_check.csv "ref:cumulant_window_check:survival_full_line:gc0.55") and
@@ -248,11 +248,15 @@ confidently wrong, and the mechanism is worth stating because it is generic.
 Where the true moment lies below its own scatter, the magnitude of a noisy
 estimate is inflated, since noise cannot cancel in an absolute value. That lifts
 the low rungs of the ladder, flattens the fitted slope, and returns a power near
-2 where the physics carries 3. A reader who quoted that slope would
-conclude the moment does not go as the cube, which is a statement about the
+2 where the separable model carries 3. A reader who quoted that slope would
+conclude the moment does not go as the cube, which on that model is a statement about the
 noise and not about the line. **The column that prevents it is
 `min_snr_over_rungs`**, and it exists so a power can be read beside the evidence
 that it was measurable at all.
+
+The observed line is not that model: its third moment carries a pairing term whose transit share is
+linear in $S_0$ and whose saturation companion's share grows as the cube along a power ladder (the
+mixture paragraph below), so its power of $S_0$ is below three only where the transit's share dominates.
 
 The three figures quoted above are aggregates over the whole file and so carry
 no single-cell reference. Recompute them from the committed file with
@@ -458,8 +462,10 @@ retained mass as well as the retained shape. The sound use is forward: compare t
 against the model put through the same window, which is what the sections above do.
 
 **And the convolution itself is an approximation here.** Its first-order cost is a dropped covariance
-between the kernel's shift and its width across the collected volume, which is why the windowed third
-moment is misstated by about a factor of two at every waist. The derivation, the law of total cumulance
+between the kernel's shift and its width across the collected volume, which is why the convolution
+keeps between about three and ten per cent of the windowed third moment at every waist the table
+carries, of the wrong sign at 42 and 45 microns (`results/kernel_inhomogeneity.csv`, the `mu3_exact`
+and `mu3_fixed_kernel` rows). The derivation, the law of total cumulance
 that makes it exact, and the first-order correction for a clipped non-cylindrical beam are in
 [methods/11](../methods/11_the_window_limits.md) sections 11.7 to 11.9 and in the thesis appendix F.11.
 
