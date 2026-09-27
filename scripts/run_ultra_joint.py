@@ -183,6 +183,7 @@ from rb5s6s.hyperpolarizability import two_photon_rabi_hz          # noqa: E402
 from rb5s6s.lineshape import (aperture_onaxis_factor_actual, local_ramp_density, ramp_mixture, saturated_ramp_density,   # noqa: E402
                               stark_shift_S0_mhz)
 from rb5s6s.noise import condition_noise_model, sigma_of_v         # noqa: E402
+from rb5s6s.orientation import mixture_chi2, posterior_plus       # noqa: E402
 from rb5s6s.qc import contiguous_fwhm_ms                           # noqa: E402
 from rb5s6s.vanderwaals import beta_self_anchored, beta_self_budget                  # noqa: E402
 from rb5s6s.workers import n_workers                               # noqa: E402
@@ -301,6 +302,8 @@ POWER_ARM_REFUSAL_BARS = 1.0
 BETA_PROFILE_REL = (0.0, 1.0, 5.0, 20.0)
 MAX_OUTER = 4                        # centre re-profiles per start
 CENTRE_TOL_MHZ = 0.02
+MAX_OUTER_TWO_SIGN = 12             # centre and weight re-profiles per start under orientation='two_sign'
+W_RISING_TOL = 1.0e-3               # the posterior weights' convergence, the expectation step's tolerance
 CENTRE_FINE_MHZ = 0.15
 _BETA = beta_self_anchored()
 # THE BAR IS THE WHOLE BUDGET, not the anchor measurement's share of it.
@@ -960,6 +963,18 @@ class Cell:
         # the archive rung sit at 1.0; the noiseless rung passes 1.0 for its data term and carries
         # no log-determinant, which is undefined at zero noise.
         self.noise_scale = float(spec.get("noise_scale", 1.0))
+        # THE SWEEP DIRECTION (owner order O69, 2026-09-27: "check for each trace the sign of the symmetry and then
+        # take it into account for the join fit"). The 2025 traces ran on a random side of the scan and every axis is
+        # built as rising, so a falling trace enters mirrored. "rising" keeps the record's construction and is the
+        # default, so no committed table moves; "two_sign" carries each trace's direction as a latent sign: a profiled
+        # centre per direction, and each trace's likelihood averaged over both (rb5s6s.orientation), reached by
+        # expectation-maximisation inside the fit's own outer loop. A trace's sign is never picked from its own
+        # asymmetry, which manufactures one from none. Centres are then an array (2, n_traces): rising, falling.
+        self.orientation = str(spec.get("orientation", "rising"))
+        if self.orientation not in ("rising", "two_sign"):
+            raise ValueError(f"Cell: orientation must be 'rising' or 'two_sign', got {self.orientation!r}")
+        self.p_rising = float(spec.get("p_rising", 0.5))
+        self.w_rising = np.full(len(traces), self.p_rising)
         self.power_scale = bool(spec.get("power_scale", False))
         self.evening_peaks = sorted({t["peak"] for t in traces if t["session"] == "E"})
         self.rate_seed = {pk: spec.get("rate_seeds", {}).get(pk, EVENING_RATE_SEED) for pk in self.evening_peaks}
@@ -1246,11 +1261,12 @@ class Cell:
         prior = float(sum(((d[n] - mu) / sig) ** 2 for n, mu, sig in self.prior_terms if n in d))
         return {"data": data, "prior": prior, "logdet": ld, "logdet_on": self.logdet}
 
-    def chi2_at(self, i, p, c):
+    def chi2_at(self, i, p, c, sign=1.0):
+        """One trace's whitened chi2 at centre c; `sign` -1 reads the trace as falling, its axis mirrored."""
         t, per = self.traces[i], self.per[i]
         d = self.unpack(p)
         nu = self.axis(d, t)
-        m = self.model(nu - c, d, per, t["peak"], t["session"])
+        m = self.model(sign * nu - c, d, per, t["peak"], t["session"])
         return self.linear(t, nu, m)[0]
 
     def moment_arm(self, p, centres):
@@ -1279,6 +1295,10 @@ class Cell:
         Cauchy-like, with no population mean for a pull to be computed against.
         Everything else enters, whatever its size.
         """
+        if self.orientation == "two_sign":
+            raise NotImplementedError("moment_arm reads each trace's odd moments on the rising axis; under "
+                                      "orientation='two_sign' the odd block enters through orientation-free "
+                                      "statistics (plan v9, step 2(b)), which this arm does not compute yet")
         d = self.unpack(p)
         conds: dict = {}
         for i, t in enumerate(self.traces):
@@ -1438,29 +1458,31 @@ class Cell:
                 return float(np.clip(v, x[j - 1], x[j + 1]))
         return float(x[j])
 
-    def centre(self, i, p, c_prev=None):
+    def centre(self, i, p, c_prev=None, sign=1.0):
         """The profiled centre of one trace: a coarse scan over +-5 MHz on the
         first call, a medium step, then a fine three-node parabola about the
         previous centre, re-centred while its vertex sits on an edge node."""
         c = c_prev
         if c is None:
             grid = np.linspace(-5.0, 5.0, 11)
-            c = self._parabola(grid, [self.chi2_at(i, p, g) for g in grid])
+            c = self._parabola(grid, [self.chi2_at(i, p, g, sign) for g in grid])
             mid = c + np.array([-0.5, 0.0, 0.5])
-            c = self._parabola(mid, [self.chi2_at(i, p, g) for g in mid])
+            c = self._parabola(mid, [self.chi2_at(i, p, g, sign) for g in mid])
         for _ in range(3):
             fine = c + np.array([-CENTRE_FINE_MHZ, 0.0, CENTRE_FINE_MHZ])
-            vals = [self.chi2_at(i, p, g) for g in fine]
+            vals = [self.chi2_at(i, p, g, sign) for g in fine]
             c2 = self._parabola(fine, vals)
             if abs(c2 - c) < 0.999 * CENTRE_FINE_MHZ:
                 break
             c = c2
-        f2 = self.chi2_at(i, p, c2)
+        f2 = self.chi2_at(i, p, c2, sign)
         if f2 > min(vals):
             c2, f2 = float(fine[int(np.argmin(vals))]), float(min(vals))
         return c2, f2
 
     def residuals(self, p, centres):
+        if self.orientation == "two_sign":
+            return self._residuals_two_sign(p, centres)
         d = self.unpack(p)
         parts = []
         for i, t in enumerate(self.traces):
@@ -1494,8 +1516,76 @@ class Cell:
         return np.concatenate(parts)
 
     def chi2(self, p, centres):
+        if self.orientation == "two_sign":
+            return self._mixture_objective(p, centres)
         r = self.residuals(p, centres)
         return float(r @ r)
+
+    # THE TWO-SIGN FIT (O69). Every method below reads the directions through these helpers, so the one-sign
+    # arithmetic is unchanged: a one-sign trace is one view of weight 1.
+
+    def _sign_terms(self, i, d, c, sign):
+        """One trace under one direction: its whitened residuals and, when the fit carries it, its log-determinant."""
+        t = self.traces[i]
+        nu = self.axis(d, t)
+        m = self.model(sign * nu - c, d, self.per[i], t["peak"], t["session"])
+        r = self.linear(t, nu, m)[1]
+        return r, (self.logdet_of(t, nu, m) if self.logdet else 0.0)
+
+    def _residuals_two_sign(self, p, centres):
+        """The M-step's vector: each trace's rising and falling residuals weighted by the current posterior,
+        sqrt(w) r(+) and sqrt(1 - w) r(-), the priors, and the log-determinant weighted the same way."""
+        d = self.unpack(p)
+        parts, ld = [], 0.0
+        for i in range(len(self.traces)):
+            w = float(self.w_rising[i])
+            rp, lp = self._sign_terms(i, d, centres[0][i], 1.0)
+            rm, lm = self._sign_terms(i, d, centres[1][i], -1.0)
+            parts += [math.sqrt(w) * rp, math.sqrt(1.0 - w) * rm]
+            ld += w * lp + (1.0 - w) * lm
+        parts.append(np.array([(d[n] - mu) / sig for n, mu, sig in self.prior_terms if n in d]))
+        if self.logdet:
+            if ld + LOGDET_OFFSET <= 0.0:
+                raise ValueError(f"logdet: sum ln sigma^2 = {ld:.0f} is below -LOGDET_OFFSET; raise the offset")
+            parts.append(np.array([math.sqrt(ld + LOGDET_OFFSET)]))
+        return np.concatenate(parts)
+
+    def _per_trace_sign_chi2(self, p, centres):
+        """Per trace, -2 ln L under each direction (the whitened chi2 plus the log-determinant when carried)."""
+        d = self.unpack(p)
+        a, b = [], []
+        for i in range(len(self.traces)):
+            rp, lp = self._sign_terms(i, d, centres[0][i], 1.0)
+            rm, lm = self._sign_terms(i, d, centres[1][i], -1.0)
+            a.append(float(rp @ rp) + lp)
+            b.append(float(rm @ rm) + lm)
+        return np.array(a), np.array(b), d
+
+    def _mixture_objective(self, p, centres):
+        """-2 ln of the likelihood averaged over each trace's two directions, plus the priors and the log-
+        determinant's offset. It is comparable across two-sign starts and cells, and exceeds a one-sign objective
+        by up to 2 ln 2 per trace, a constant that cancels from every likelihood ratio."""
+        a, b, d = self._per_trace_sign_chi2(p, centres)
+        prior = float(sum(((d[n] - mu) / sig) ** 2 for n, mu, sig in self.prior_terms if n in d))
+        return float(np.sum(mixture_chi2(a, b, self.p_rising))) + prior + (LOGDET_OFFSET if self.logdet else 0.0)
+
+    def e_step(self, p, centres):
+        """The probability that each trace ran rising, at p: the expectation step."""
+        a, b, _ = self._per_trace_sign_chi2(p, centres)
+        return posterior_plus(a, b, self.p_rising)
+
+    def _trace_views(self, d, centres):
+        """(trace index, weight, whitened residuals, centre, sign) for every direction a trace carries: one view
+        of weight 1 in the one-sign fit, two views weighted by the posterior in the two-sign fit."""
+        for i, t in enumerate(self.traces):
+            if self.orientation == "two_sign":
+                w = float(self.w_rising[i])
+                yield i, w, self._sign_terms(i, d, centres[0][i], 1.0)[0], centres[0][i], 1.0
+                yield i, 1.0 - w, self._sign_terms(i, d, centres[1][i], -1.0)[0], centres[1][i], -1.0
+            else:
+                nu = self.axis(d, t)
+                m = self.model(nu - centres[i], d, self.per[i], t["peak"], t["session"])
+                yield i, 1.0, self.linear(t, nu, m)[1], centres[i], 1.0
 
     def chi2_by_session(self, p, centres) -> dict:
         """chi2_red per session at p: the whitened residual sum of each session's
@@ -1505,12 +1595,10 @@ class Cell:
         evening rows cost nothing and their nuisances were free to absorb the kernel;
         a session outside the admitted band has no vote and the gate says so."""
         d = self.unpack(p); acc = {}
-        for i, t in enumerate(self.traces):
-            nu = self.axis(d, t)
-            m = self.model(nu - centres[i], d, self.per[i], t["peak"], t["session"])
-            r = self.linear(t, nu, m)[1]
+        for i, w, r, _c, _s in self._trace_views(d, centres):
+            t = self.traces[i]
             a = acc.setdefault(t["session"], [0.0, 0.0, 0])
-            a[0] += float(r @ r); a[1] += t["n"] / t["tau"]; a[2] += 1
+            a[0] += w * float(r @ r); a[1] += w * (t["n"] / t["tau"]); a[2] += w
         return {s: c / max(n_eff - 4.0 * n, 1.0) for s, (c, n_eff, n) in acc.items()}
 
     def chi2_split_by_session(self, p, centres) -> dict:
@@ -1533,19 +1621,20 @@ class Cell:
         {session: {"core": [chi2, n_eff], "wing": [chi2, n_eff]}}; each half's chi2_red is
         chi2 / n_eff, the per-trace nuisances being charged to the core."""
         d = self.unpack(p); acc: dict = {}
-        for i, t in enumerate(self.traces):
+        for i, w, r, c, s in self._trace_views(d, centres):
+            t = self.traces[i]
             nu = self.axis(d, t)
-            m = self.model(nu - centres[i], d, self.per[i], t["peak"], t["session"])
-            r = self.linear(t, nu, m)[1]
-            core = np.abs(nu - centres[i]) <= CORE_HALF_MHZ
+            core = np.abs(s * nu - c) <= CORE_HALF_MHZ
             a = acc.setdefault(t["session"], {"core": [0.0, 0.0], "wing": [0.0, 0.0]})
-            a["core"][0] += float(r[core] @ r[core]); a["core"][1] += float(np.sum(core)) / t["tau"] - 4.0
-            a["wing"][0] += float(r[~core] @ r[~core]); a["wing"][1] += float(np.sum(~core)) / t["tau"]
+            a["core"][0] += w * float(r[core] @ r[core]); a["core"][1] += w * (float(np.sum(core)) / t["tau"] - 4.0)
+            a["wing"][0] += w * float(r[~core] @ r[~core]); a["wing"][1] += w * (float(np.sum(~core)) / t["tau"])
         return acc
 
     def fit(self, p0, max_nfev=MAX_NFEV):
         """One start: inner bounded least squares with the centres held, outer
         re-profile of the centres until they stop moving."""
+        if self.orientation == "two_sign":
+            return self._fit_two_sign(p0, max_nfev)
         from scipy.optimize import least_squares
         lo = np.array([self.bounds(n)[0] for n in self.names])
         hi = np.array([self.bounds(n)[1] for n in self.names])
@@ -1565,6 +1654,38 @@ class Cell:
                 break
         return dict(p=p, centres=centres, chi2=self.chi2(p, centres), nfev=nfev, outer=outer,
                     centre_moved=moved)
+
+    def _fit_two_sign(self, p0, max_nfev):
+        """The one-sign loop with the expectation step inside it: the centres of both directions re-profiled, the
+        posterior weights recomputed from the new chi-squares -- the FIRST from the start itself, because at even
+        weights the M-step is symmetric in the asymmetry and zero is a fixed point it never leaves -- and the least-
+        squares M-step at fixed centres and weights, until centres and weights both stop moving."""
+        from scipy.optimize import least_squares
+        lo = np.array([self.bounds(n)[0] for n in self.names])
+        hi = np.array([self.bounds(n)[1] for n in self.names])
+        p = np.clip(np.asarray(p0, float), lo, hi)
+        n = len(self.traces)
+        signs = (1.0, -1.0)
+        centres = np.array([[self.centre(i, p, sign=s)[0] for i in range(n)] for s in signs])
+        self.w_rising = self.e_step(p, centres)
+        nfev, moved, w_moved, outer = 0, float("nan"), float("nan"), 0
+        for outer in range(1, MAX_OUTER_TWO_SIGN + 1):
+            res = least_squares(lambda q: self._residuals_two_sign(q, centres), p, bounds=(lo, hi),
+                                method="trf", diff_step=DIFF_STEP, x_scale="jac",
+                                max_nfev=max_nfev, xtol=1e-6, ftol=1e-6, gtol=1e-8)
+            p = np.clip(res.x, lo, hi)
+            nfev += int(res.nfev) * (1 + len(p))
+            new = np.array([[self.centre(i, p, centres[k][i], sign=s)[0] for i in range(n)]
+                            for k, s in enumerate(signs)])
+            moved = float(np.max(np.abs(new - centres)))
+            centres = new
+            w_new = self.e_step(p, centres)
+            w_moved = float(np.max(np.abs(w_new - self.w_rising)))
+            self.w_rising = w_new
+            if moved < CENTRE_TOL_MHZ and w_moved < W_RISING_TOL:
+                break
+        return dict(p=p, centres=centres, chi2=self._mixture_objective(p, centres), nfev=nfev, outer=outer,
+                    centre_moved=moved, w_moved=w_moved, p_rising=[float(x) for x in self.w_rising])
 
     def conditional_bars(self, p, centres):
         """One sigma per parameter with every other parameter pinned, from the
@@ -1787,7 +1908,13 @@ def _diag_task(job):
     traces = _load(design_spec)
     cell = Cell(rec["spec"], traces)
     p = np.array([float(rec["params"][n]) for n in cell.names], float)
-    centres = np.array([cell.centre(i, p)[0] for i in range(len(traces))])
+    if cell.orientation == "two_sign":
+        # both directions' centres, and the weights the saved cell carried (or the expectation step's at p)
+        centres = np.array([[cell.centre(i, p, sign=s)[0] for i in range(len(traces))] for s in (1.0, -1.0)])
+        cell.w_rising = (np.asarray(rec["p_rising"], float) if rec.get("p_rising") is not None
+                         else cell.e_step(p, centres))
+    else:
+        centres = np.array([cell.centre(i, p)[0] for i in range(len(traces))])
     ne, nt = _n_by_session(traces)
     return dict(idx=idx, chi2_red_session=cell.chi2_by_session(p, centres), chi2_split_session=cell.chi2_split_by_session(p, centres),
                 n_eff_session=ne, n_traces_session=nt)
@@ -1877,6 +2004,9 @@ def _cell_task(job):
     # escape valve the tie exists to close, so the check is made at the theory
     # coefficient with everything else at the fitted values, and the fitted
     # scale's own prediction is written beside it as the diagnostic.
+    # the two-sign fit's diagnostics read the BEST start's posterior, not the last start's (O69)
+    if cell.orientation == "two_sign":
+        cell.w_rising = np.asarray(best["p_rising"], float)
     preds = cell.power_ratios(best["p"], omega_scale=1.0)
     preds_fitted = cell.power_ratios(best["p"])
     chi2_red_session = cell.chi2_by_session(best["p"], best["centres"])
@@ -1896,7 +2026,9 @@ def _cell_task(job):
                 delta_alpha=cell.delta_alpha, rho=cell.rho, law=cell.law_name, sessions=cell.sessions,
                 beta_profile={str(k): v for k, v in beta_profile.items()},
                 at_bound=at_bound_of(cell.names, best["p"], bars),
-                p_vector=[float(x) for x in best["p"]])
+                p_vector=[float(x) for x in best["p"]],
+                **({"orientation": cell.orientation, "p_rising": best["p_rising"], "w_moved": best["w_moved"]}
+                   if cell.orientation == "two_sign" else {}))
 
 
 def _spec(form, w0, m2=1.0, cycles=0.0, propagation=None, starts=None, da=None, **extra):
@@ -2445,6 +2577,12 @@ def gate_checks(base, summaries, meas, coarse: bool) -> list[tuple[str, bool, st
         checks.append((name, bool(ok), detail))
     chk("every base cell's centres settled", all(r["centre_moved"] < CENTRE_TOL_MHZ for r in base),
         f"max last centre move {max(r['centre_moved'] for r in base):.3f} MHz over {len(base)} cells, tolerance {CENTRE_TOL_MHZ}")
+    # A TWO-SIGN CELL HAS A SECOND THING TO SETTLE (O69): its direction weights, which can still move after the
+    # centres stop, so a cell whose expectation step had not converged is refused here and not admitted silently.
+    _two = [r for r in base if r.get("orientation") == "two_sign"]
+    if _two:
+        chk("every two-sign cell's direction weights settled", all(r["w_moved"] < W_RISING_TOL for r in _two),
+            f"max last weight move {max(r['w_moved'] for r in _two):.4f} over {len(_two)} cells, tolerance {W_RISING_TOL}")
     sp = max(r["spread"] for r in base)
     # A START SPREAD BETWEEN 2 AND 10 IS A SYSTEMATIC, NOT A REFUSAL (2026-09-14):
     # three runs gave identical minima with a spread of 3.5 to 3.7, which the

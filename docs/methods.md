@@ -272,6 +272,9 @@ rb5s6s/   api(the supported entry point: a trace in, a linewidth out)
           twin_bloch(the twin's clean line drawn from bloch_full: one line per condition on a grid,
                     cached by every parameter and by the digest of the code it computes with, read onto
                     the trace axis by a cubic spline, with the twin's own noise layer on top)
+          orientation(the sweep direction as a latent sign: each trace's likelihood averaged over a rising and a
+                    falling axis, its posterior, and the expectation step the joint fit runs, so no trace's
+                    sign is picked from its own asymmetry; owner order O69)
           (M18, M19, M29, M31, M32, M33, M34, M35, M36 and M37 are library-and-test only: they have
            no CSV product, so grepping results/ for them finds nothing -- see
            their test files, and for M34 also examples/campaign_twin.py)

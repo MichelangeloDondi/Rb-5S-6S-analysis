@@ -863,3 +863,92 @@ def test_the_permeated_width_follows_its_sealed_cell_law_and_its_arms(monkeypatc
         cell.model(nu, d, cell.per[0], desc[0]["peak"], desc[0]["session"])
         assert abs(got["gamma_l"] - want) < 1e-12, (T, p, got["gamma_l"], want)
     assert _uj.GAMMA_L_EXP == 0.5 and 0.0 in _uj.GAMMA_L_EXP_ARMS     # the default is F245's and the old constant is an arm
+
+
+# ------------------------------------------------------- the sweep direction as a latent sign (owner order O69)
+
+# a drive where the line is plainly asymmetric, so a trace's direction is readable from its shape at low noise
+_P_DESC_HIGH = [dict(T=130.0, P_W=2.0, iso=85, session="P", peak="4192", axis="mhz")]
+
+
+def _signed_traces(signs, c_true=0.7, amp=0.3, sigma=1e-4, seed=69):
+    """Traces drawn from the cell's own model at the theory point, each rising or falling (its axis mirrored),
+    at a small white noise under a constant law."""
+    ref = _theory_cell(42.38, traces=_P_DESC_HIGH)
+    p = _theory_p(ref)
+    d = ref.unpack(p)
+    nu = np.linspace(-20.0, 20.0, 801)
+    rng = np.random.default_rng(seed)
+    out = []
+    for s in signs:
+        m = ref.model(s * nu - c_true, d, ref.per[0], "4192", "P")
+        t = dict(_P_DESC_HIGH[0], x=nu, v=amp * m / float(np.max(m)) + sigma * rng.standard_normal(nu.size),
+                 axis="mhz")
+        _uj._finish(t)
+        t["law"], t["tau"] = dict(a=sigma, b=0.0, c=0.0, lev_max=float("inf")), 1.0
+        out.append(t)
+    return out, p
+
+
+def test_the_two_sign_fit_reads_each_traces_direction_from_its_shape():
+    signs = (1.0, -1.0, 1.0, -1.0)
+    traces, p = _signed_traces(signs)
+    cell = _theory_cell(42.38, traces=traces, orientation="two_sign")
+    centres = np.array([[cell.centre(i, p, sign=s)[0] for i in range(len(traces))] for s in (1.0, -1.0)])
+    w = cell.e_step(p, centres)
+    assert np.all(w[[0, 2]] > 0.99) and np.all(w[[1, 3]] < 0.01), w
+    # the objective is the mixture's: finite, and no smaller than the better direction's chi2 summed
+    a, b, _ = cell._per_trace_sign_chi2(p, centres)
+    assert cell._mixture_objective(p, centres) >= float(np.sum(np.minimum(a, b))) - 1e-9
+    with pytest.raises(NotImplementedError):
+        cell.moment_arm(p, centres)
+
+
+def test_the_one_sign_diagnostics_keep_their_arithmetic_after_the_two_sign_refactor():
+    traces, p = _signed_traces((1.0, 1.0))
+    cell = _theory_cell(42.38, traces=traces)
+    assert cell.orientation == "rising"
+    centres = np.array([cell.centre(i, p)[0] for i in range(len(traces))])
+    d = cell.unpack(p)
+    rr, n_eff = 0.0, 0.0
+    for i, t in enumerate(traces):
+        nu = cell.axis(d, t)
+        r = cell.linear(t, nu, cell.model(nu - centres[i], d, cell.per[i], t["peak"], t["session"]))[1]
+        rr += float(r @ r)
+        n_eff += t["n"] / t["tau"]
+    assert cell.chi2_by_session(p, centres)["P"] == rr / max(n_eff - 4.0 * len(traces), 1.0)
+
+
+def test_an_unknown_orientation_is_refused():
+    with pytest.raises(ValueError, match="orientation"):
+        _theory_cell(42.38, orientation="upwards")
+
+
+def test_the_one_sign_core_and_wing_split_keeps_its_arithmetic_after_the_two_sign_refactor():
+    """Board 1c1e452c6b30's second finding: the split was refactored through `_trace_views` and no test read it."""
+    traces, p = _signed_traces((1.0, 1.0))
+    cell = _theory_cell(42.38, traces=traces)
+    centres = np.array([cell.centre(i, p)[0] for i in range(len(traces))])
+    d = cell.unpack(p)
+    core_rr = core_n = wing_rr = wing_n = 0.0
+    for i, t in enumerate(traces):
+        nu = cell.axis(d, t)
+        r = cell.linear(t, nu, cell.model(nu - centres[i], d, cell.per[i], t["peak"], t["session"]))[1]
+        core = np.abs(nu - centres[i]) <= _uj.CORE_HALF_MHZ
+        core_rr += float(r[core] @ r[core])
+        core_n += float(np.sum(core)) / t["tau"] - 4.0
+        wing_rr += float(r[~core] @ r[~core])
+        wing_n += float(np.sum(~core)) / t["tau"]
+    got = cell.chi2_split_by_session(p, centres)["P"]
+    assert got["core"] == [core_rr, core_n] and got["wing"] == [wing_rr, wing_n]
+
+
+def test_the_rung_gate_refuses_a_two_sign_cell_whose_direction_weights_still_move():
+    ok = dict(centre_moved=0.0, spread=0.0, errs={}, orientation="two_sign", w_moved=0.5 * _uj.W_RISING_TOL)
+    moving = dict(ok, w_moved=10.0 * _uj.W_RISING_TOL)
+    names = [c[0] for c in _uj.gate_checks([ok], {}, {}, coarse=True)]
+    assert "every two-sign cell's direction weights settled" in names
+    verdict = {c[0]: c[1] for c in _uj.gate_checks([moving], {}, {}, coarse=True)}
+    assert verdict["every two-sign cell's direction weights settled"] is False
+    one_sign = {c[0] for c in _uj.gate_checks([dict(centre_moved=0.0, spread=0.0, errs={})], {}, {}, coarse=True)}
+    assert "every two-sign cell's direction weights settled" not in one_sign

@@ -277,6 +277,9 @@ def _fit_grid(traces, grid, max_nfev=None, logdet: bool = False, noise_scale: fl
             if best is None or f["chi2"] < best["chi2"]:
                 best = f
         out.append((float(w0), float(best["chi2"])))
+        # the two-sign fit's posteriors at each waist, read by `_task` at the recovered one (O69)
+        if best.get("p_rising") is not None:
+            _W.setdefault("p_rising_at", {})[float(w0)] = [float(x) for x in best["p_rising"]]
     return out
 
 
@@ -727,6 +730,23 @@ def _truth(truth: float, prior_mean: bool):
     return _W[key]
 
 
+def _random_directions(traces, seed):
+    """Each injected trace swept falling with probability one half (owner order O69): its samples read on the
+    mirrored axis, v(x) -> v(-x), so its optical detuning runs opposite to the recorded one, as a 2025 trace taken on
+    the other side of the scan did. Seeded per realisation; the true sign rides on each trace as `true_sign`, and the
+    un-mirrored traces are what the injected-vector split reads."""
+    rng = np.random.default_rng(int(seed) + 7919)
+    out = []
+    for t in traces:
+        s = 1.0 if rng.random() < 0.5 else -1.0
+        if s < 0.0:
+            x = np.asarray(t["x"], float)
+            v = np.asarray(t["v"], float)
+            t = UJ._finish(dict(t, v=np.interp(x, (-x)[::-1], v[::-1])))
+        out.append(dict(t, true_sign=s))
+    return out
+
+
 def _task(args):
     """One realisation at one noise scale: inject, walk the grid, read the parabola."""
     scale, r, correlated, truth, prior_mean, logdet, pool = (list(args) + [None])[:7]
@@ -741,6 +761,9 @@ def _task(args):
     world = _W.get(("world", float(truth), bool(prior_mean)))
     syn, level, shape = inject(cell, ptr, SEED + r, correlated=correlated, noise_scale=scale, residual_source=src,
                                world_source=world)
+    syn_rising = syn
+    if os.environ.get("RB5S6S_CLOSURE_DIRECTIONS") == "random":
+        syn = _random_directions(syn, SEED + r)
     wscale = scale if scale > 0.0 else 1.0          # the rung whitens at its own scale (F7)
     ld = bool(logdet and scale > 0.0)               # no log-determinant at zero noise
     # EVERY RUNG WALKS THE FINE BAND (F14, 2026-09-17): the noisy rungs walked the 4 um grid alone,
@@ -751,6 +774,8 @@ def _task(args):
     if os.environ.get("RB5S6S_CLOSURE_GRID_UM"):               # an explicit walk (C6b D3's below-floor diagnostic)
         _grid = tuple(float(x) for x in os.environ["RB5S6S_CLOSURE_GRID_UM"].split(","))
     extra = dict(WORLD_CELL) if world is not None else {}
+    if os.environ.get("RB5S6S_CLOSURE_ORIENTATION") == "two_sign":
+        extra["orientation"] = "two_sign"
     if os.environ.get("RB5S6S_CLOSURE_BELOW_FLOOR"):
         extra["aperture_clamp_floor"] = True
     fitter = os.environ.get("RB5S6S_CLOSURE_FITTER")          # "kind:atoms:seed" of a volume-table fitter
@@ -777,12 +802,22 @@ def _task(args):
         # so the recovery check would grade the grid and not the estimator.
         w, _how = local_min(pts)
     lo_hw, hi_hw, ref_hw = crossings(pts)         # the profile's own interval AND where it was measured (F41, F164)
+    # THE DIRECTIONS READ BACK (O69): each trace's posterior at the grid waist nearest the recovered one, beside the sign
+    # it was injected with, one JSON line per task in the log `main` names; `_task`'s own return is unchanged.
+    _plog = os.environ.get("RB5S6S_CLOSURE_POSTERIOR_LOG")
+    if _plog and _W.get("p_rising_at"):
+        _at = min(_W["p_rising_at"], key=lambda g: abs(g - w)) if np.isfinite(w) else None
+        with open(_plog, "a", encoding="utf-8") as _fh:
+            _fh.write(json.dumps(dict(scale=float(scale), r=int(r), truth=float(truth), w=float(w), grid_at=_at,
+                                      true_sign=[float(t.get("true_sign", 1.0)) for t in syn],
+                                      p_rising=_W["p_rising_at"].get(_at))) + "\n")
+    _W["p_rising_at"] = {}
     # THE SPLIT AT THE INJECTED VECTOR, at every rung: data, prior and log-determinant blocks. The
     # rung is judged on the data block (zero for a generator equal to the fitter at zero noise,
     # n_eff +- sqrt(2 n_eff) at a noisy rung whitened at its own scale); the objective's own
     # minimum carries the log-determinant residual and its offset and is not a chi-squared.
-    c = UJ.Cell(dict(UJ._spec(FORM, truth, beta_profile=False), logdet=ld, noise_scale=wscale), syn)
-    parts = c.chi2_parts(ptr, np.zeros(len(syn)))
+    c = UJ.Cell(dict(UJ._spec(FORM, truth, beta_profile=False), logdet=ld, noise_scale=wscale), syn_rising)
+    parts = c.chi2_parts(ptr, np.zeros(len(syn_rising)))
     return scale, r, w, bar, why, pts, level, shape, float(truth), parts, (lo_hw, hi_hw, ref_hw)
 
 
@@ -955,6 +990,12 @@ def main() -> int:
                          "focus, its atoms and seed the world's so a plant reads one sample twice, or "
                          "'convolution' for the named comparison arm, the transit and ramp convolution this "
                          "closure fitted with before this window")
+    ap.add_argument("--directions", default="rising", choices=("rising", "random"),
+                    help="the injected traces' sweep directions: all rising, the record's construction, or each "
+                         "falling with probability one half, as the 2025 traces were (O69)")
+    ap.add_argument("--orientation", default="rising", choices=("rising", "two_sign"),
+                    help="the fitter's reading of each trace's direction: assumed rising, or the two-sign likelihood "
+                         "of rb5s6s.orientation (O69)")
     ap.add_argument("--below-floor", action="store_true",
                     help="DIAGNOSTIC: hold the on-axis factor at the bore's floor below it, so a world the Gaussian beam cannot "
                          "describe is read as the size of its push and not as a rail at the floor (C6b D3)")
@@ -970,6 +1011,17 @@ def main() -> int:
         ANALYSIS_ID = f"{ANALYSIS_ID}@{a.world}"
         os.environ["RB5S6S_CLOSURE_WORLD"] = f"{a.world}:{a.world_paths}:{a.world_seed}"
         _W["world_spec"] = os.environ["RB5S6S_CLOSURE_WORLD"]
+    # A RUNG PASSED ON ONE DIRECTION MODEL LICENSES NOTHING ON ANOTHER (O69), exactly as for the worlds above.
+    # (This block sits AFTER the world's: inserted between its lines on 2026-09-27, it closed the world's `if` early
+    # and set the world for two-sign runs alone, so the first rising arms injected the separable line; F592.)
+    if a.directions == "random":
+        ANALYSIS_ID = f"{ANALYSIS_ID}@dirs-random"
+        os.environ["RB5S6S_CLOSURE_DIRECTIONS"] = "random"
+    if a.orientation == "two_sign":
+        ANALYSIS_ID = f"{ANALYSIS_ID}@two-sign"
+        os.environ["RB5S6S_CLOSURE_ORIENTATION"] = "two_sign"
+        if a.dump:
+            os.environ["RB5S6S_CLOSURE_POSTERIOR_LOG"] = a.dump + ".posteriors.jsonl"
     from _producer_lock import producer_lock
     import contextlib
     # A WAVE THAT ONLY DUMPS WRITES NO CSV AND RECORDS NO RUNG, so it takes no producer lock: two worlds or two
